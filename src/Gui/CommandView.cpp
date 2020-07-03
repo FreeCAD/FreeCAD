@@ -3332,7 +3332,7 @@ StdCmdSelUp::StdCmdSelUp()
   :Command("Std_SelUp")
 {
   sGroup        = QT_TR_NOOP("View");
-  sMenuText     = QT_TR_NOOP("&Up hierarhcy");
+  sMenuText     = QT_TR_NOOP("&Up hierarchy");
   sToolTipText  = QT_TR_NOOP("Go up object hierarchy of the current selection");
   sWhatsThis    = "Std_SelUp";
   sStatusTip    = sToolTipText;
@@ -3737,9 +3737,9 @@ VIEW_CMD_DEF(SelBoundingBox, ShowSelectionBoundingBox)
 {
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("&Bounding box");
-  sToolTipText  = QT_TR_NOOP("Show selection bounding box");
+  sToolTipText  = ViewParams::docShowSelectionBoundingBox();
   sWhatsThis    = "Std_SelBoundingBox";
-  sStatusTip    = QT_TR_NOOP("Show selection bounding box");
+  sStatusTip    = sToolTipText;
   sPixmap       = "sel-bbox";
   eType         = Alter3DView;
 }
@@ -3751,7 +3751,7 @@ VIEW_CMD_DEF(TightBoundingBox, UseTightBoundingBox)
 {
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("Tighten bounding box");
-  sToolTipText  = QT_TR_NOOP("Show more accurate bounds when using bounding box selection style");
+  sToolTipText  = ViewParams::docUseTightBoundingBox();
   sWhatsThis    = "Std_TightBoundingBox";
   sStatusTip    = sToolTipText;
   eType         = NoDefaultAction;
@@ -3764,7 +3764,7 @@ VIEW_CMD_DEF(ProjectBoundingBox, RenderProjectedBBox)
 {
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("Project bounding box");
-  sToolTipText  = QT_TR_NOOP("Show projected bounding box that is aligned to axes of global coordinate space");
+  sToolTipText  = ViewParams::docRenderProjectedBBox();
   sWhatsThis    = "Std_ProjectBoundingBox";
   sStatusTip    = sToolTipText;
   eType         = NoDefaultAction;
@@ -3777,7 +3777,7 @@ VIEW_CMD_DEF(SelectionFaceWire, SelectionFaceWire)
 {
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("Show selected face wires");
-  sToolTipText  = QT_TR_NOOP("Show hidden tirangulation wires for selected face");
+  sToolTipText  = ViewParams::docSelectionFaceWire();
   sWhatsThis    = "Std_SelectionFaceWire";
   sStatusTip    = sToolTipText;
   eType         = NoDefaultAction;
@@ -3790,12 +3790,26 @@ VIEW_CMD_DEF(SelOnTop, ShowSelectionOnTop)
 {
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("&Selection on top");
-  sToolTipText  = QT_TR_NOOP("Show selection always on top");
+  sToolTipText  = ViewParams::docShowSelectionOnTop();
   sWhatsThis    = "Std_SelOnTop";
-  sStatusTip    = QT_TR_NOOP("Show selection always on top");
+  sStatusTip    = sToolTipText;
   sPixmap       = "sel-on-top";
   sAccel        = "V, T";
   eType         = Alter3DView;
+}
+
+//======================================================================
+// Std_SelHierarchyAscend
+//======================================================================
+VIEW_CMD_DEF(SelHierarchyAscend, SelectHierarchyAscend)
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Hierarchy selection");
+  sToolTipText  = ViewParams::docSelectHierarchyAscend();
+  sWhatsThis    = "Std_SelOnTop";
+  sStatusTip    = sToolTipText;
+  sAccel        = "V, H";
+  eType         = NoDefaultAction;
 }
 
 //======================================================================
@@ -3805,7 +3819,7 @@ VIEW_CMD_DEF(PartialHighlightOnFullSelect, PartialHighlightOnFullSelect)
 {
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("&Partial highlight");
-  sToolTipText  = QT_TR_NOOP("Enable partial highlight on full selection for object that supports it.");
+  sToolTipText  = ViewParams::docPartialHighlightOnFullSelect();
   sWhatsThis    = "Std_PartialHighlightOnFullSelect";
   sStatusTip    = sToolTipText;
   eType         = NoDefaultAction;
@@ -3818,7 +3832,7 @@ VIEW_CMD_DEF(EditingAutoTransparent, EditingAutoTransparent)
 {
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("Auto transparent on edit");
-  sToolTipText  = QT_TR_NOOP("Automatically make all object transparent except the one in edit");
+  sToolTipText  = ViewParams::docEditingAutoTransparent();
   sWhatsThis    = "Std_EditingAutoTransparent";
   sStatusTip    = sToolTipText;
   eType         = NoDefaultAction;
@@ -3831,7 +3845,7 @@ VIEW_CMD_DEF(PreselEdgeOnly, ShowHighlightEdgeOnly)
 {
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("&Highlight edge only");
-  sToolTipText  = QT_TR_NOOP("Show pre-selection highlight edge only");
+  sToolTipText  = ViewParams::docShowHighlightEdgeOnly();
   sWhatsThis    = "Std_PreselEdgeOnly";
   sStatusTip    = sToolTipText;
   sPixmap       = "presel-edge-only";
@@ -3845,9 +3859,7 @@ VIEW_CMD_DEF(MapChildrenPlacement, MapChildrenPlacement)
 {
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("Map children (Experimental!)");
-  sToolTipText  = QT_TR_NOOP("Map child object into parent's coordinate space when showing on top.\n"
-                             "Note that once activated, this option will also activate option ShowOnTop.\n"
-                             "WARNING! This is an experimental option. Please use with caution.");
+  sToolTipText  = ViewParams::docMapChildrenPlacement();
   sWhatsThis    = "Std_MapChildrenPlacement";
   sStatusTip    = sToolTipText;
   eType         = NoDefaultAction;
@@ -3880,6 +3892,7 @@ public:
         addCommand(new StdCmdSelectionFaceWire());
         addCommand(new StdCmdPreselEdgeOnly());
         addCommand(new StdTreePreSelection());
+        addCommand(new StdCmdSelHierarchyAscend());
         addCommand();
         addCommand(new StdCmdMapChildrenPlacement());
     };

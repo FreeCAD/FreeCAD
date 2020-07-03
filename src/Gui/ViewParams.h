@@ -76,13 +76,16 @@ public:
     FC_VIEW_PARAM(DefaultShapePointSize,int,Int,2, "") \
     FC_VIEW_PARAM(CoinCycleCheck,bool,Bool,true, "") \
     FC_VIEW_PARAM(EnablePropertyViewForInactiveDocument,bool,Bool,true, "") \
-    FC_VIEW_PARAM(ShowSelectionBoundingBox,bool,Bool,false, "") \
+    FC_VIEW_PARAM(ShowSelectionBoundingBox,bool,Bool,false, \
+       QT_TRANSLATE_NOOP("ViewParams","Show selection bounding box")) \
     FC_VIEW_PARAM(UpdateSelectionVisual,bool,Bool,true, "") \
     FC_VIEW_PARAM(LinkChildrenDirect,bool,Bool,true, "") \
-    FC_VIEW_PARAM2(ShowSelectionOnTop,bool,Bool,true, "") \
+    FC_VIEW_PARAM2(ShowSelectionOnTop,bool,Bool,true, \
+       QT_TRANSLATE_NOOP("ViewParams","Show selection always on top")) \
     FC_VIEW_PARAM(TransparencyOnTop,double,Float,0.5, \
        QT_TRANSLATE_NOOP("ViewParams","Transparency for the selected object when being shown on top."))\
-    FC_VIEW_PARAM(PartialHighlightOnFullSelect,bool,Bool,false, "") \
+    FC_VIEW_PARAM(PartialHighlightOnFullSelect,bool,Bool,false, \
+       QT_TRANSLATE_NOOP("ViewParams","Enable partial highlight on full selection for object that supports it."))\
     FC_VIEW_PARAM(SelectionLineThicken,double,Float,1.0, \
        QT_TRANSLATE_NOOP("ViewParams","Muplication factor to increase the width the selected line."))\
     FC_VIEW_PARAM(PickRadius,double,Float,5.0, "") \
@@ -91,18 +94,26 @@ public:
     FC_VIEW_PARAM(SelectionHiddenLineWidth,double,Float,1.0, \
        QT_TRANSLATE_NOOP("ViewParams","Width of the hidden line."))\
     FC_VIEW_PARAM(SelectionBBoxLineWidth,double,Float,3.0, "") \
-    FC_VIEW_PARAM(ShowHighlightEdgeOnly,bool,Bool,false, "") \
+    FC_VIEW_PARAM(ShowHighlightEdgeOnly,bool,Bool,false, \
+       QT_TRANSLATE_NOOP("ViewParams","Show pre-selection highlight edge only"))\
     FC_VIEW_PARAM(PreSelectionDelay,double,Float,0.1, "") \
     FC_VIEW_PARAM(SelectionPickThreshold,int,Int,50, "") \
     FC_VIEW_PARAM(UseNewRayPick,bool,Bool,true, "") \
     FC_VIEW_PARAM(ViewSelectionExtendFactor,double,Float,0.5, "") \
-    FC_VIEW_PARAM(UseTightBoundingBox,bool,Bool,true, "") \
+    FC_VIEW_PARAM(UseTightBoundingBox,bool,Bool,true, \
+       QT_TRANSLATE_NOOP("ViewParams", "Show more accurate bounds when using bounding box selection style"))\
     FC_VIEW_PARAM(UseBoundingBoxCache,bool,Bool,true, "") \
-    FC_VIEW_PARAM(RenderProjectedBBox,bool,Bool,true, "") \
-    FC_VIEW_PARAM(SelectionFaceWire,bool,Bool,false, "") \
+    FC_VIEW_PARAM(RenderProjectedBBox,bool,Bool,true, \
+       QT_TRANSLATE_NOOP("ViewParams", "Show projected bounding box that is aligned to axes of\n"\
+                                       "global coordinate space"))\
+    FC_VIEW_PARAM(SelectionFaceWire,bool,Bool,false, \
+       QT_TRANSLATE_NOOP("ViewParams", "Show hidden tirangulation wires for selected face"))\
     FC_VIEW_PARAM(NewDocumentCameraScale,double,Float,100.0, "") \
     FC_VIEW_PARAM(MaxOnTopSelections,int,Int,20, "") \
-    FC_VIEW_PARAM2(MapChildrenPlacement,bool,Bool,false, "") \
+    FC_VIEW_PARAM2(MapChildrenPlacement,bool,Bool,false, \
+       QT_TRANSLATE_NOOP("ViewParams", "Map child object into parent's coordinate space when showing on top.\n"\
+                             "Note that once activated, this option will also activate option ShowOnTop.\n"\
+                             "WARNING! This is an experimental option. Please use with caution."))\
     FC_VIEW_PARAM(NaviWidgetSize,int,Int,132, "") \
     FC_VIEW_PARAM2(CornerNaviCube,int,Int,1, "") \
     FC_VIEW_PARAM2(DockOverlayAutoView,bool,Bool,true, "") \
@@ -114,7 +125,8 @@ public:
     FC_VIEW_PARAM(DockOverlayAutoMouseThrough,bool,Bool,true, "") \
     FC_VIEW_PARAM(DockOverlayAlphaRadius,int,Int,2, "Dock overlay auto mouse through alpha test radius") \
     FC_VIEW_PARAM2(DockOverlayCheckNaviCube,bool,Bool,true, "") \
-    FC_VIEW_PARAM(EditingTransparency,double,Float,0.5, "") \
+    FC_VIEW_PARAM(EditingTransparency,double,Float,0.5, \
+       QT_TRANSLATE_NOOP("ViewParams", "Automatically make all object transparent except the one in edit"))\
     FC_VIEW_PARAM(EditingAutoTransparent,bool,Bool,true, "") \
     FC_VIEW_PARAM(HiddenLineTransparency,double,Float,0.4, \
        QT_TRANSLATE_NOOP("ViewParams","Override transparency of all objects in the scene."))\
@@ -195,6 +207,9 @@ public:
     FC_VIEW_PARAM(ShadowTransparentShadow, bool, Bool, false, \
         QT_TRANSLATE_NOOP("ViewParams","Whether to cast shadow from transparent objects."))\
     FC_VIEW_PARAM(PropertyViewTimer, unsigned long, Unsigned, 100, "") \
+    FC_VIEW_PARAM(SelectHierarchyAscend, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Enable selection of upper hierarhcy by repeatedly click some already\n"\
+                                       "selected sub-element."))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
