@@ -81,10 +81,8 @@ public:
     virtual void setPathValue(const App::ObjectIdentifier & path, const App::any & value);
     virtual App::any getPathValue(const App::ObjectIdentifier & /*path*/) const { return _lValue; }
 
-    virtual bool isSame(const Property &other) const {
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
-    }
+    virtual bool isSame(const Property &other) const;
+    virtual Property *copyBeforeChange() const {return Copy();}
 
 protected:
     long _lValue;
@@ -127,10 +125,8 @@ public:
     
     virtual unsigned int getMemSize (void) const;
 
-    virtual bool isSame(const Property &other) const {
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
-    }
+    virtual bool isSame(const Property &other) const;
+    virtual Property *copyBeforeChange() const {return Copy();}
 
 protected:
     boost::filesystem::path _cValue;
@@ -218,10 +214,8 @@ public:
     virtual App::any getPathValue(const App::ObjectIdentifier &path) const;
     virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &r) const;
 
-    virtual bool isSame(const Property &other) const {
-        return getTypeId() == other.getTypeId()
-            && getEnum() == static_cast<decltype(this)>(&other)->getEnum();
-    }
+    virtual bool isSame(const Property &other) const;
+    virtual Property *copyBeforeChange() const {return Copy();}
 
 private:
     Enumeration _enum;
@@ -275,6 +269,13 @@ public:
         {
             return candelete;
         }
+
+        bool operator==(const Constraints &other) const
+        {
+            return LowerBound == other.LowerBound
+                && UpperBound == other.UpperBound
+                && StepSize == other.StepSize;
+        }
     private:
         bool candelete;
     };
@@ -296,6 +297,8 @@ public:
 
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
+
+    virtual bool isSame(const Property &other) const;
 
 protected:
     const Constraints* _ConstStruct;
@@ -395,10 +398,9 @@ public:
     virtual void Paste(const Property &from);
     virtual unsigned int getMemSize (void) const;
 
-    virtual bool isSame(const Property &other) const {
-        return getTypeId() == other.getTypeId()
-            && getValues() == static_cast<decltype(this)>(&other)->getValues();
-    }
+    virtual bool isSame(const Property &other) const;
+    virtual Property *copyBeforeChange() const {return Copy();}
+
 private:
     std::set<long> _lValueSet;
 };
@@ -454,10 +456,8 @@ public:
     
     virtual unsigned int getMemSize (void) const;
     
-    virtual bool isSame(const Property &other) const {
-        return getTypeId() == other.getTypeId()
-            && getValues() == static_cast<decltype(this)>(&other)->getValues();
-    }
+    virtual bool isSame(const Property &other) const;
+    virtual Property *copyBeforeChange() const {return Copy();}
 
 private:
     std::map<std::string,std::string> _lValueList;
@@ -508,10 +508,8 @@ public:
     void setPathValue(const App::ObjectIdentifier &path, const App::any &value);
     App::any getPathValue(const App::ObjectIdentifier &path) const;
 
-    virtual bool isSame(const Property &other) const {
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
-    }
+    virtual bool isSame(const Property &other) const;
+    virtual Property *copyBeforeChange() const {return Copy();}
 
 protected:
     double _dValue;
@@ -571,6 +569,12 @@ public:
         {
             return candelete;
         }
+        bool operator==(const Constraints &other) const
+        {
+            return LowerBound == other.LowerBound
+                && UpperBound == other.UpperBound
+                && StepSize == other.StepSize;
+        }
     private:
         bool candelete;
     };
@@ -594,6 +598,8 @@ public:
 
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
+
+    virtual bool isSame(const Property &other) const;
 
 protected:
     const Constraints* _ConstStruct;
@@ -720,10 +726,8 @@ public:
     void setPathValue(const App::ObjectIdentifier &path, const App::any &value);
     App::any getPathValue(const App::ObjectIdentifier &path) const;
 
-    virtual bool isSame(const Property &other) const {
-        return getTypeId() == other.getTypeId()
-            && getStrValue() == static_cast<decltype(this)>(&other)->getStrValue();
-    }
+    virtual bool isSame(const Property &other) const;
+    virtual Property *copyBeforeChange() const {return Copy();}
 
 protected:
     std::string _cValue;
@@ -768,10 +772,8 @@ public:
     virtual void Paste(const Property &from);
     virtual unsigned int getMemSize (void) const;
 
-    virtual bool isSame(const Property &other) const {
-        return getTypeId() == other.getTypeId()
-            && _uuid.getValue() == static_cast<decltype(this)>(&other)->_uuid.getValue();
-    }
+    virtual bool isSame(const Property &other) const;
+    virtual Property *copyBeforeChange() const {return Copy();}
 
 private:
     Base::Uuid _uuid;
@@ -789,11 +791,6 @@ public:
     virtual ~PropertyFont();
     virtual const char* getEditorName(void) const
     { return "Gui::PropertyEditor::PropertyFontItem"; }
-
-    virtual bool isSame(const Property &other) const {
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
-    }
 };
 
 class AppExport PropertyStringList: public PropertyListsT<std::string>
@@ -875,10 +872,8 @@ public:
     void setPathValue(const App::ObjectIdentifier &path, const App::any &value);
     App::any getPathValue(const App::ObjectIdentifier &path) const;
 
-    virtual bool isSame(const Property &other) const {
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
-    }
+    virtual bool isSame(const Property &other) const;
+    virtual Property *copyBeforeChange() const {return Copy();}
 
 private:
     bool _lValue;
@@ -954,10 +949,8 @@ public:
     
     virtual unsigned int getMemSize (void) const{return sizeof(Color);}
     
-    virtual bool isSame(const Property &other) const {
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
-    }
+    virtual bool isSame(const Property &other) const;
+    virtual Property *copyBeforeChange() const {return Copy();}
 
 private:
     Color _cCol;
@@ -1044,10 +1037,8 @@ public:
     
     virtual unsigned int getMemSize (void) const{return sizeof(_cMat);}
     
-    virtual bool isSame(const Property &other) const {
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
-    }
+    virtual bool isSame(const Property &other) const;
+    virtual Property *copyBeforeChange() const {return Copy();}
 
 private:
     Material _cMat;
@@ -1112,6 +1103,9 @@ public:
     std::shared_ptr<Base::Persistence> getObject() const {
         return _pObject;
     }
+
+    virtual bool isSame(const Property &other) const override;
+    virtual Property *copyBeforeChange() const override {return Copy();}
 
 protected:
     std::shared_ptr<Base::Persistence> _pObject;

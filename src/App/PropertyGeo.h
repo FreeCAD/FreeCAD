@@ -108,9 +108,10 @@ public:
     }
 
     virtual bool isSame(const Property &other) const override {
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+        return other.isDerivedFrom(PropertyVector::getClassTypeId())
+            && getValue() == static_cast<const PropertyVector*>(&other)->getValue();
     }
+    virtual Property *copyBeforeChange() const override {return Copy();}
 
 private:
     Base::Vector3d _cVec;
@@ -305,9 +306,10 @@ public:
     }
 
     virtual bool isSame(const Property &other) const {
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+        return other.isDerivedFrom(PropertyMatrix::getClassTypeId())
+            && getValue() == static_cast<const PropertyMatrix*>(&other)->getValue();
     }
+    virtual Property *copyBeforeChange() const {return Copy();}
 
 private:
     Base::Matrix4D _cMat;
@@ -376,9 +378,10 @@ public:
     }
 
     virtual bool isSame(const Property &other) const override {
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+        return other.isDerivedFrom(PropertyPlacement::getClassTypeId())
+            && getValue() == static_cast<const PropertyPlacement*>(&other)->getValue();
     }
+    virtual Property *copyBeforeChange() const override {return Copy();}
 
     static const Placement Null;
 
@@ -496,6 +499,7 @@ public:
     virtual std::string getElementMapVersion(bool restored=false) const;
 
     virtual bool isSame(const Property &other) const;
+    virtual Property *copyBeforeChange() const {return Copy();}
 };
 
 } // namespace App

@@ -68,6 +68,31 @@ const char* PropertyQuantity::getEditorName(void) const
     return "Gui::PropertyEditor::PropertyUnitItem";
 }
 
+Property *PropertyQuantity::Copy(void) const
+{
+    PropertyQuantity *p= new PropertyQuantity();
+    p->_dValue = _dValue;
+    p->_Unit = _Unit;
+    return p;
+}
+
+void PropertyQuantity::Paste(const Property &from)
+{
+    aboutToSetValue();
+    auto &other = dynamic_cast<const PropertyQuantity&>(from);
+    _dValue = other._dValue;
+    _Unit = other._Unit;
+    hasSetValue();
+}
+
+bool PropertyQuantity::isSame(const Property &_other) const
+{
+    if (!_other.isDerivedFrom(PropertyQuantity::getClassTypeId()))
+        return false;
+    auto &other = static_cast<const PropertyQuantity&>(_other);
+    return this->getValue() == other.getValue() && this->_Unit == other._Unit;
+}
+
 PyObject *PropertyQuantity::getPyObject(void)
 {
     return new QuantityPy (new Quantity(_dValue,_Unit));
@@ -177,9 +202,27 @@ void PropertyQuantityConstraint::Paste(const Property &from)
     aboutToSetValue();
     auto &other = dynamic_cast<const PropertyQuantityConstraint&>(from);
     _dValue = other._dValue;
-    _Unit = _Unit;
+    _Unit = other._Unit;
     setConstraints(other._ConstStruct);
     hasSetValue();
+}
+
+bool PropertyQuantityConstraint::isSame(const Property &_other) const
+{
+    if (!_other.isDerivedFrom(PropertyQuantityConstraint::getClassTypeId()))
+        return false;
+    auto &other = static_cast<const PropertyQuantityConstraint&>(_other);
+    if (this->getValue() != other.getValue() || this->_Unit != other._Unit)
+        return false;
+
+    if (this->_ConstStruct == other._ConstStruct)
+        return true;
+
+    return this->_ConstStruct
+        && other._ConstStruct
+        && this->_ConstStruct->LowerBound == other._ConstStruct->LowerBound
+        && this->_ConstStruct->UpperBound == other._ConstStruct->UpperBound
+        && this->_ConstStruct->StepSize == other._ConstStruct->StepSize;
 }
 
 void PropertyQuantityConstraint::setConstraints(const Constraints* sConstrain)

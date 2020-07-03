@@ -54,6 +54,7 @@ public:
         return other.isDerivedFrom(getClassTypeId())
             && *this == static_cast<const PropertyRowHeights&>(other);
     }
+    virtual Property *copyBeforeChange() const {return Copy();}
 
     virtual App::Property *Copy(void) const;
 

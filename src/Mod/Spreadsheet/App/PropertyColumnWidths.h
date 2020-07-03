@@ -54,6 +54,7 @@ public:
         return other.isDerivedFrom(getClassTypeId())
             && *this == static_cast<const PropertyColumnWidths&>(other);
     }
+    virtual Property *copyBeforeChange() const {return Copy();}
 
     virtual Property *Copy(void) const;
 

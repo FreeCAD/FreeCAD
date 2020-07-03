@@ -256,11 +256,6 @@ void Property::hasSetValue(void)
     touch();
 }
 
-Property *Property::copyBeforeChange() const
-{
-    return Copy();
-}
-
 void Property::aboutToSetValue(void)
 {
     PropertyCleaner guard(this);

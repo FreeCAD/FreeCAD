@@ -89,8 +89,8 @@ void PropertyLinkBase::hasSetValue() {
 
 bool PropertyLinkBase::isSame(const Property &other) const
 {
-    if(getTypeId() != other.getTypeId()
-        || getScope() != static_cast<decltype(this)>(&other)->getScope())
+    if(other.isDerivedFrom(PropertyLinkBase::getClassTypeId())
+        || getScope() != static_cast<const PropertyLinkBase*>(&other)->getScope())
         return false;
 
     FC_STATIC std::vector<App::DocumentObject*> ret;

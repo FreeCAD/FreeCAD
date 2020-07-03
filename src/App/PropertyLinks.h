@@ -292,6 +292,7 @@ public:
     //@}
 
     virtual bool isSame(const Property &other) const override;
+    virtual Property *copyBeforeChange() const {return Copy();}
 
     /** Enable/disable temporary holding external object without throwing exception
      *

@@ -82,6 +82,12 @@ PropertyInteger::~PropertyInteger()
 // Base class implementer
 
 
+bool PropertyInteger::isSame(const Property &other) const
+{
+    return other.isDerivedFrom(PropertyInteger::getClassTypeId())
+        && this->getValue() == static_cast<const PropertyInteger&>(other).getValue();
+}
+
 void PropertyInteger::setValue(long lValue)
 {
     aboutToSetValue();
@@ -289,6 +295,12 @@ void PropertyPath::Paste(const Property &from)
 unsigned int PropertyPath::getMemSize (void) const
 {
     return static_cast<unsigned int>(_cValue.string().size());
+}
+
+bool PropertyPath::isSame(const Property &other) const
+{
+    return other.isDerivedFrom(PropertyPath::getClassTypeId())
+        && this->getValue() == static_cast<const PropertyPath&>(other).getValue();
 }
 
 //**************************************************************************
@@ -652,6 +664,12 @@ bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier &path, Py::Objec
     return true;
 }
 
+bool PropertyEnumeration::isSame(const Property &other) const
+{
+    return other.isDerivedFrom(PropertyEnumeration::getClassTypeId())
+        && getEnum() == static_cast<const PropertyEnumeration&>(other).getEnum();
+}
+
 //**************************************************************************
 //**************************************************************************
 // PropertyIntegerConstraint
@@ -674,6 +692,22 @@ PropertyIntegerConstraint::~PropertyIntegerConstraint()
 {
     if (_ConstStruct && _ConstStruct->isDeletable())
         delete _ConstStruct;
+}
+
+bool PropertyIntegerConstraint::isSame(const Property &_other) const
+{
+    if (!_other.isDerivedFrom(PropertyIntegerConstraint::getClassTypeId()))
+        return false;
+    const auto &other = static_cast<const PropertyIntegerConstraint&>(_other);
+    if (this->getValue() != other.getValue())
+        return false;
+
+    if (this->_ConstStruct == other._ConstStruct)
+        return true;
+
+    return this->_ConstStruct
+        && other._ConstStruct
+        && *this->_ConstStruct == *other._ConstStruct;
 }
 
 Property *PropertyIntegerConstraint::Copy(void) const
@@ -1043,7 +1077,11 @@ unsigned int PropertyIntegerSet::getMemSize (void) const
     return static_cast<unsigned int>(_lValueSet.size() * sizeof(long));
 }
 
-
+bool PropertyIntegerSet::isSame(const Property &other) const
+{
+    return other.isDerivedFrom(PropertyIntegerSet::getClassTypeId())
+        && getValues() == static_cast<const PropertyIntegerSet&>(other).getValues();
+}
 
 //**************************************************************************
 //**************************************************************************
@@ -1164,6 +1202,12 @@ App::any PropertyFloat::getPathValue(const ObjectIdentifier &path) const
 {
     verifyPath(path);
     return _dValue;
+}
+
+bool PropertyFloat::isSame(const Property &other) const
+{
+    return other.isDerivedFrom(PropertyFloat::getClassTypeId())
+        && getValue() == static_cast<const PropertyFloat&>(other).getValue();
 }
 
 //**************************************************************************
@@ -1303,6 +1347,22 @@ void PropertyFloatConstraint::setPyObject(PyObject *value)
         error += value->ob_type->tp_name;
         throw Base::TypeError(error);
     }
+}
+
+bool PropertyFloatConstraint::isSame(const Property &_other) const
+{
+    if (!_other.isDerivedFrom(PropertyFloatConstraint::getClassTypeId()))
+        return false;
+    auto &other = static_cast<const PropertyFloatConstraint&>(_other);
+    if (this->getValue() != other.getValue())
+        return false;
+
+    if (this->_ConstStruct == other._ConstStruct)
+        return true;
+
+    return this->_ConstStruct
+        && other._ConstStruct
+        && *this->_ConstStruct == *other._ConstStruct;
 }
 
 //**************************************************************************
@@ -1775,6 +1835,12 @@ App::any PropertyString::getPathValue(const ObjectIdentifier &path) const
     return _cValue;
 }
 
+bool PropertyString::isSame(const Property &other) const
+{
+    return other.isDerivedFrom(PropertyString::getClassTypeId())
+        && this->getValue() == static_cast<const PropertyString&>(other).getValue();
+}
+
 //**************************************************************************
 //**************************************************************************
 // PropertyUUID
@@ -1897,6 +1963,12 @@ void PropertyUUID::Paste(const Property &from)
 unsigned int PropertyUUID::getMemSize (void) const
 {
     return static_cast<unsigned int>(sizeof(_uuid));
+}
+
+bool PropertyUUID::isSame(const Property &other) const
+{
+    return other.isDerivedFrom(PropertyUUID::getClassTypeId())
+        && this->getValue() == static_cast<const PropertyUUID&>(other).getValue();
 }
 
 //**************************************************************************
@@ -2244,7 +2316,11 @@ void PropertyMap::Paste(const Property &from)
     hasSetValue();
 }
 
-
+bool PropertyMap::isSame(const Property &other) const
+{
+    return other.isDerivedFrom(PropertyMap::getClassTypeId())
+        && getValues() == static_cast<const PropertyMap &>(other).getValues();
+}
 
 
 //**************************************************************************
@@ -2364,6 +2440,12 @@ App::any PropertyBool::getPathValue(const ObjectIdentifier &path) const
     verifyPath(path);
 
     return _lValue;
+}
+
+bool PropertyBool::isSame(const Property &other) const
+{
+    return other.isDerivedFrom(PropertyBool::getClassTypeId())
+        && this->getValue() == static_cast<const PropertyBool&>(other).getValue();
 }
 
 //**************************************************************************
@@ -2630,6 +2712,12 @@ void PropertyColor::Paste(const Property &from)
     hasSetValue();
 }
 
+bool PropertyColor::isSame(const Property &other) const
+{
+    return other.isDerivedFrom(PropertyColor::getClassTypeId())
+        && this->getValue() == static_cast<const PropertyColor&>(other).getValue();
+}
+
 //**************************************************************************
 // PropertyColorList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2868,6 +2956,13 @@ void PropertyMaterial::Paste(const Property &from)
     hasSetValue();
 }
 
+bool PropertyMaterial::isSame(const Property &other) const
+{
+    return other.isDerivedFrom(PropertyMaterial::getClassTypeId())
+        && this->getValue() == static_cast<const PropertyMaterial&>(other).getValue();
+}
+
+
 //**************************************************************************
 // PropertyMaterialList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -3030,21 +3125,40 @@ void PropertyPersistentObject::Restore(Base::XMLReader &reader){
     reader.readEndElement(ELEMENT_PERSISTENT_OBJ);
 }
 
+FC_STATIC Base::StringWriter _PersistentWriter;
+
 Property *PropertyPersistentObject::Copy(void) const{
     auto *p= new PropertyPersistentObject();
-    p->_cValue = _cValue;
-    p->_pObject = _pObject;
+    _PersistentWriter.clear();
+    Save(_PersistentWriter);
+    p->_cValue = _PersistentWriter.getString();
     return p;
 }
 
 void PropertyPersistentObject::Paste(const Property &from){
     const auto &prop = dynamic_cast<const PropertyPersistentObject&>(from);
-    if(_cValue!=prop._cValue || _pObject!=prop._pObject) {
+    if (!prop._cValue.size() || !prop._pObject) {
         aboutToSetValue();
+        _pObject.reset();
         _cValue = prop._cValue;
-        _pObject = prop._pObject;
         hasSetValue();
+    } else {
+        std::istringstream in(prop._cValue);
+        XMLReader reader("<memory>", in);
+        reader.read();
+        Restore(reader);
     }
+}
+
+bool PropertyPersistentObject::isSame(const Property &_other) const
+{
+    if (!_other.isDerivedFrom(PropertyPersistentObject::getClassTypeId()))
+        return false;
+
+    const auto &other = static_cast<const PropertyPersistentObject&>(_other);
+    _PersistentWriter.clear();
+    Save(_PersistentWriter);
+    return _PersistentWriter.getString() == other._cValue;
 }
 
 unsigned int PropertyPersistentObject::getMemSize (void) const{

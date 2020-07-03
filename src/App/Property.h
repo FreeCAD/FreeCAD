@@ -265,7 +265,7 @@ public:
      *
      * This function is used internally by property to detect changes.
      */
-    virtual Property *copyBeforeChange(void) const;
+    virtual Property *copyBeforeChange(void) const {return nullptr;}
 
     /** Return a unique ID for the property
      *
@@ -547,6 +547,7 @@ public:
     typedef typename ListT::const_reference const_reference;
     typedef ListT list_type;
     typedef ParentT parent_type;
+    typedef PropertyListsT<T, ListT, ParentT> this_type;
     typedef typename AtomicPropertyChangeInterface<
         PropertyListsT<T,ListT,ParentT> >::AtomicPropertyChange atomic_change;
 
@@ -602,10 +603,12 @@ public:
 
     const_reference operator[] (int idx) const {return _lValueList[idx];} 
 
-    virtual bool isSame(const Property &other) const override {
-        return this->getTypeId() == other.getTypeId()
-            && this->getValue() == static_cast<decltype(this)>(&other)->getValue();
+    virtual bool isSame(const Property &_other) const override {
+        auto other = dynamic_cast<const this_type*>(&_other);
+        return other && this->getValues() == other->getValues();
     }
+
+    virtual Property *copyBeforeChange(void) const {return this->Copy();}
 
     virtual void setPyObject(PyObject *value) override {
         try {
