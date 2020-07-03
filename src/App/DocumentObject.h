@@ -628,6 +628,8 @@ protected:
     virtual void onBeforeChange(const Property* prop) override;
     /// get called by the container when a property was changed
     virtual void onChanged(const Property* prop) override;
+    /// get called by the container when a property was changed
+    virtual void onEarlyChange(const Property* prop) override;
     /// get called after a document has been fully restored
     virtual void onDocumentRestored();
     /// get called after setting the document

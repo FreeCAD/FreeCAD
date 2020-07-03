@@ -226,9 +226,13 @@ void Property::destroy(Property *p) {
 
 void Property::touch()
 {
+    if(GetApplication().isClosingAll())
+        return;
+
     PropertyCleaner guard(this);
     _StatusBits.set(Touched);
     if (getName() && father && !Transaction::isApplying(this)) {
+        father->onEarlyChange(this);
         father->onChanged(this);
         if(!testStatus(Busy)) {
             Base::BitsetLocker<StatusBits> guard(_StatusBits,Busy);
