@@ -189,3 +189,25 @@ App::DocumentObjectExecReturn *Extend::execute(void)
 
     return StdReturn;
 }
+
+void Extend::handleChangedPropertyName(Base::XMLReader &reader,
+                                       const char * TypeName,
+                                       const char *PropName)
+{
+    Base::Type type = Base::Type::fromName(TypeName);
+    if (App::PropertyFloatConstraint::getClassTypeId() == type && strcmp(PropName, "ExtendU") == 0) {
+        App::PropertyFloatConstraint v;
+        v.Restore(reader);
+        ExtendUNeg.setValue(v.getValue());
+        ExtendUPos.setValue(v.getValue());
+    }
+    else if (App::PropertyFloatConstraint::getClassTypeId() == type && strcmp(PropName, "ExtendV") == 0) {
+        App::PropertyFloatConstraint v;
+        v.Restore(reader);
+        ExtendVNeg.setValue(v.getValue());
+        ExtendVPos.setValue(v.getValue());
+    }
+    else {
+        Part::Spline::handleChangedPropertyName(reader, TypeName, PropName);
+    }
+}

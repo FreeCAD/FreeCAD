@@ -57,8 +57,11 @@ public:
     App::DocumentObjectExecReturn *execute(void) override;
     short mustExecute() const override;
 
-private:
+protected:
     virtual void onChanged(const App::Property* prop) override;
+    virtual void handleChangedPropertyName(Base::XMLReader &reader,
+                                           const char * TypeName,
+                                           const char *PropName) override;
 };
 
 }//Namespace Surface
