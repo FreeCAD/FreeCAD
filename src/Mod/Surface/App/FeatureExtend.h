@@ -28,8 +28,6 @@
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
 
-#include <mutex>
-
 namespace Surface
 {
 
@@ -51,7 +49,6 @@ public:
     App::PropertyBool            ExtendVSymetric;
     App::PropertyIntegerConstraint SampleU;
     App::PropertyIntegerConstraint SampleV;
-    std::mutex lockOnChangeMutex;
 
     // recalculate the feature
     App::DocumentObjectExecReturn *execute(void) override;
@@ -62,6 +59,9 @@ protected:
     virtual void handleChangedPropertyName(Base::XMLReader &reader,
                                            const char * TypeName,
                                            const char *PropName) override;
+
+private:
+    bool lockOnChangeMutex;
 };
 
 }//Namespace Surface

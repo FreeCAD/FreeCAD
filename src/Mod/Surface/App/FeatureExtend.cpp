@@ -46,7 +46,7 @@ const App::PropertyFloatConstraint::Constraints ToleranceRange = {0.0,10.0,0.01}
 const App::PropertyFloatConstraint::Constraints ExtendRange = {-0.5,10.0,0.01};
 PROPERTY_SOURCE(Surface::Extend, Part::Spline)
 
-Extend::Extend()
+Extend::Extend() : lockOnChangeMutex(false)
 {
     ADD_PROPERTY(Face,(0));
     Face.setScope(App::LinkScope::Global);
@@ -157,9 +157,9 @@ App::DocumentObjectExecReturn *Extend::execute(void)
 void Extend::onChanged(const App::Property* prop)
 {
     // using a mutex and lock to protect a recursive calling when setting the new values
-    if (!lockOnChangeMutex.try_lock()) return;
-    lockOnChangeMutex.unlock();
-    std::lock_guard<std::mutex> lock(lockOnChangeMutex);
+    if (lockOnChangeMutex)
+        return;
+    Base::StateLocker lock(lockOnChangeMutex);
 
     if (ExtendUSymetric.getValue())
     {
