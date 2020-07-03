@@ -161,10 +161,9 @@ void Extend::onChanged(const App::Property* prop)
     lockOnChangeMutex.unlock();
     std::lock_guard<std::mutex> lock(lockOnChangeMutex);
 
-    if ( ExtendUSymetric.getValue() )
+    if (ExtendUSymetric.getValue())
     {
-        if (prop->getName() == ExtendUNeg.getName()
-          || prop->getName() == ExtendUPos.getName())
+        if (prop == &ExtendUNeg || prop == &ExtendUPos)
         {
             auto changedValue = dynamic_cast<const App::PropertyFloat*>(prop);
             if (changedValue)
@@ -174,10 +173,10 @@ void Extend::onChanged(const App::Property* prop)
             }
         }
     }
+
     if (ExtendVSymetric.getValue())
     {
-        if (prop->getName() == ExtendVNeg.getName()
-          || prop->getName() == ExtendVPos.getName())
+        if (prop == &ExtendVNeg || prop == &ExtendVPos)
         {
             auto changedValue = dynamic_cast<const App::PropertyFloat*>(prop);
             if (changedValue)
