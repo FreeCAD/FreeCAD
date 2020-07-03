@@ -28,7 +28,7 @@
 # include <sstream>
 #endif
 
-
+#include "Rotation.h"
 #include "Matrix.h"
 #include "Converter.h"
 
@@ -850,3 +850,557 @@ int Matrix4D::hasScale(double tol) const
     else
         return 0;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Following code modified from Coin3D Matrix.cpp for decompose matrix into
+// translation, rotation and scale.
+////////////////////////////////////////////////////////////////////////////////
+
+/*
+ * declarations for polar_decomp algorithm from Graphics Gems IV,
+ * by Ken Shoemake <shoemake@graphics.cis.upenn.edu>
+ */
+enum QuatPart {X, Y, Z, W};
+typedef double HMatrix[4][4]; /* Right-handed, for column vectors */
+struct Vector4d{
+  double v[4];
+
+  Vector4d() {}
+
+  Vector4d(double x, double y, double z, double w)
+      :v{x,y,z,w}
+  {}
+
+  double operator[](int idx) const
+  {
+      return v[idx];
+  }
+  double &operator[](int idx)
+  {
+      return v[idx];
+  }
+};
+typedef struct {
+  Vector4d t;    /* Translation components */
+  Rotation  q;        /* Essential rotation     */
+  Rotation  u;        /* Stretch rotation       */
+  Vector4d k;    /* Stretch factors        */
+  double f;      /* Sign of determinant    */
+} AffineParts;
+static double polar_decomp(const HMatrix &M, HMatrix Q, HMatrix S);
+static Vector4d spect_decomp(HMatrix S, HMatrix U);
+static Rotation snuggle(Rotation q, Vector4d & k);
+static void decomp_affine(const HMatrix &A, AffineParts * parts);
+
+/***********************************************************************
+   below is the polar_decomp implementation by Ken Shoemake
+   <shoemake@graphics.cis.upenn.edu>. It was part of the
+   Graphics Gems IV archive.
+************************************************************************/
+
+/**** Decompose.c ****/
+/* Ken Shoemake, 1993 */
+
+/******* Matrix Preliminaries *******/
+
+/** Fill out 3x3 matrix to 4x4 **/
+#define mat_pad(A) (A[W][X]=A[X][W]=A[W][Y]=A[Y][W]=A[W][Z]=A[Z][W]=0, A[W][W]=1)
+
+/** Copy nxn matrix A to C using "gets" for assignment **/
+#define mat_copy(C, gets, A, n) {int i, j; for (i=0;i<n;i++) for (j=0;j<n;j++)\
+    C[i][j] gets (A[i][j]);}
+
+/** Copy transpose of nxn matrix A to C using "gets" for assignment **/
+#define mat_tpose(AT, gets, A, n) {int i, j; for (i=0;i<n;i++) for (j=0;j<n;j++)\
+    AT[i][j] gets (A[j][i]);}
+
+/** Assign nxn matrix C the element-wise combination of A and B using "op" **/
+#define mat_binop(C, gets, A, op, B, n) {int i, j; for (i=0;i<n;i++) for (j=0;j<n;j++)\
+    C[i][j] gets (A[i][j]) op (B[i][j]);}
+
+/** Multiply the upper left 3x3 parts of A and B to get AB **/
+static void
+mat_mult(HMatrix A, const HMatrix &B, HMatrix AB)
+{
+  int i, j;
+  for (i=0; i<3; i++) for (j=0; j<3; j++)
+    AB[i][j] = A[i][0]*B[0][j] + A[i][1]*B[1][j] + A[i][2]*B[2][j];
+}
+
+/** Return dot product of length 3 vectors va and vb **/
+static double
+vdot(double * va, double * vb)
+{
+  return (va[0]*vb[0] + va[1]*vb[1] + va[2]*vb[2]);
+}
+
+/** Set v to cross product of length 3 vectors va and vb **/
+static void
+vcross(double * va, double * vb, double * v)
+{
+  v[0] = va[1]*vb[2] - va[2]*vb[1];
+  v[1] = va[2]*vb[0] - va[0]*vb[2];
+  v[2] = va[0]*vb[1] - va[1]*vb[0];
+}
+
+/** Set MadjT to transpose of inverse of M times determinant of M **/
+static void
+adjoint_transpose(HMatrix M, HMatrix MadjT)
+{
+  vcross(M[1], M[2], MadjT[0]);
+  vcross(M[2], M[0], MadjT[1]);
+  vcross(M[0], M[1], MadjT[2]);
+}
+
+/******* Decomp Auxiliaries *******/
+
+static HMatrix mat_id = {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
+
+/** Compute either the 1 or infinity norm of M, depending on tpose **/
+static double
+mat_norm(HMatrix M, int tpose)
+{
+  int i;
+  double sum, max;
+  max = 0.0;
+  for (i=0; i<3; i++) {
+    if (tpose) sum = static_cast<double>(fabs(M[0][i])+fabs(M[1][i])+fabs(M[2][i]));
+    else sum = static_cast<double>(fabs(M[i][0])+fabs(M[i][1])+fabs(M[i][2]));
+    if (max<sum) max = sum;
+  }
+  return max;
+}
+
+static double norm_inf(HMatrix M) {return mat_norm(M, 0);}
+static double norm_one(HMatrix M) {return mat_norm(M, 1);}
+
+/** Return index of column of M containing maximum abs entry, or -1 if M=0 **/
+static int
+find_max_col(HMatrix M)
+{
+  double abs, max;
+  int i, j, col;
+  max = 0.0; col = -1;
+  for (i=0; i<3; i++) for (j=0; j<3; j++) {
+    abs = M[i][j]; if (abs<0.0) abs = -abs;
+    if (abs>max) {max = abs; col = j;}
+  }
+    return col;
+}
+
+/** Setup u for Household reflection to zero all v components but first **/
+static void
+make_reflector(double * v, double * u)
+{
+  double s = static_cast<double>(sqrt(vdot(v, v)));
+  u[0] = v[0]; u[1] = v[1];
+  u[2] = v[2] + ((v[2]<0.0) ? -s : s);
+  s = static_cast<double>(sqrt(2.0/vdot(u, u)));
+  u[0] = u[0]*s; u[1] = u[1]*s; u[2] = u[2]*s;
+}
+
+/** Apply Householder reflection represented by u to column vectors of M **/
+static void
+reflect_cols(HMatrix M, double * u)
+{
+  int i, j;
+  for (i=0; i<3; i++) {
+    double s = u[0]*M[0][i] + u[1]*M[1][i] + u[2]*M[2][i];
+    for (j=0; j<3; j++) M[j][i] -= u[j]*s;
+  }
+}
+/** Apply Householder reflection represented by u to row vectors of M **/
+static void
+reflect_rows(HMatrix M, double * u)
+{
+  int i, j;
+  for (i=0; i<3; i++) {
+    double s = vdot(u, M[i]);
+    for (j=0; j<3; j++) M[i][j] -= u[j]*s;
+  }
+}
+
+/** Find orthogonal factor Q of rank 1 (or less) M **/
+static void
+do_rank1(HMatrix M, HMatrix Q)
+{
+  double v1[3], v2[3], s;
+  int col;
+  mat_copy(Q, =, mat_id, 4);
+  /* If rank(M) is 1, we should find a non-zero column in M */
+  col = find_max_col(M);
+  if (col<0) return; /* Rank is 0 */
+  v1[0] = M[0][col]; v1[1] = M[1][col]; v1[2] = M[2][col];
+  make_reflector(v1, v1); reflect_cols(M, v1);
+  v2[0] = M[2][0]; v2[1] = M[2][1]; v2[2] = M[2][2];
+  make_reflector(v2, v2); reflect_rows(M, v2);
+  s = M[2][2];
+  if (s<0.0) Q[2][2] = -1.0;
+  reflect_cols(Q, v1); reflect_rows(Q, v2);
+}
+
+/** Find orthogonal factor Q of rank 2 (or less) M using adjoint transpose **/
+static void
+do_rank2(HMatrix M, HMatrix MadjT, HMatrix Q)
+{
+  double v1[3], v2[3];
+  double w, x, y, z, c, s, d;
+  int col;
+  /* If rank(M) is 2, we should find a non-zero column in MadjT */
+  col = find_max_col(MadjT);
+  if (col<0) {do_rank1(M, Q); return;} /* Rank<2 */
+  v1[0] = MadjT[0][col]; v1[1] = MadjT[1][col]; v1[2] = MadjT[2][col];
+  make_reflector(v1, v1); reflect_cols(M, v1);
+  vcross(M[0], M[1], v2);
+  make_reflector(v2, v2); reflect_rows(M, v2);
+  w = M[0][0]; x = M[0][1]; y = M[1][0]; z = M[1][1];
+  if (w*z>x*y) {
+    c = z+w; s = y-x; d = static_cast<double>(sqrt(c*c+s*s)); c = c/d; s = s/d;
+    Q[0][0] = Q[1][1] = c; Q[0][1] = -(Q[1][0] = s);
+  }
+  else {
+    c = z-w; s = y+x; d = static_cast<double>(sqrt(c*c+s*s)); c = c/d; s = s/d;
+    Q[0][0] = -(Q[1][1] = c); Q[0][1] = Q[1][0] = s;
+  }
+  Q[0][2] = Q[2][0] = Q[1][2] = Q[2][1] = 0.0; Q[2][2] = 1.0;
+  reflect_cols(Q, v1); reflect_rows(Q, v2);
+}
+
+
+
+/******* Polar Decomposition *******/
+
+/* Polar Decomposition of 3x3 matrix in 4x4,
+ * M = QS.  See Nicholas Higham and Robert S. Schreiber,
+ * Fast Polar Decomposition of An Arbitrary Matrix,
+ * Technical Report 88-942, October 1988,
+ * Department of Computer Science, Cornell University.
+ */
+static double
+polar_decomp(const HMatrix &M, HMatrix Q, HMatrix S)
+{
+#define TOL 1.0e-6
+  HMatrix Mk, MadjTk, Ek;
+  double det, M_one, M_inf, MadjT_one, MadjT_inf, E_one, gamma, g1, g2;
+  int i, j;
+  mat_tpose(Mk, =, M, 3);
+  M_one = norm_one(Mk);  M_inf = norm_inf(Mk);
+  do {
+    adjoint_transpose(Mk, MadjTk);
+    det = vdot(Mk[0], MadjTk[0]);
+    if (det==0.0) {do_rank2(Mk, MadjTk, Mk); break;}
+    MadjT_one = norm_one(MadjTk); MadjT_inf = norm_inf(MadjTk);
+    gamma = static_cast<double>(sqrt(sqrt((MadjT_one*MadjT_inf)/(M_one*M_inf))/fabs(det)));
+    g1 = gamma*0.5;
+    g2 = 0.5/(gamma*det);
+    mat_copy(Ek, =, Mk, 3);
+    mat_binop(Mk, =, g1*Mk, +, g2*MadjTk, 3);
+    mat_copy(Ek, -=, Mk, 3);
+    E_one = norm_one(Ek);
+    M_one = norm_one(Mk);  M_inf = norm_inf(Mk);
+  } while (E_one>(M_one*TOL));
+  mat_tpose(Q, =, Mk, 3); mat_pad(Q);
+  mat_mult(Mk, M, S);    mat_pad(S);
+  for (i=0; i<3; i++) for (j=i; j<3; j++)
+    S[i][j] = S[j][i] = 0.5*(S[i][j]+S[j][i]);
+  return (det);
+}
+
+/******* Spectral Decomposition *******/
+
+/* Compute the spectral decomposition of symmetric positive semi-definite S.
+ * Returns rotation in U and scale factors in result, so that if K is a diagonal
+ * matrix of the scale factors, then S = U K (U transpose). Uses Jacobi method.
+ * See Gene H. Golub and Charles F. Van Loan. Matrix Computations. Hopkins 1983.
+ */
+static Vector4d
+spect_decomp(HMatrix S, HMatrix U)
+{
+  Vector4d kv;
+  double Diag[3], OffD[3]; /* OffD is off-diag (by omitted index) */
+  double g, h, fabsh, fabsOffDi, t, theta, c, s, tau, ta, OffDq, a, b;
+  static char nxt[] = {Y, Z, X};
+  int sweep, i, j;
+  mat_copy(U, =, mat_id, 4);
+  Diag[X] = S[X][X]; Diag[Y] = S[Y][Y]; Diag[Z] = S[Z][Z];
+  OffD[X] = S[Y][Z]; OffD[Y] = S[Z][X]; OffD[Z] = S[X][Y];
+  for (sweep=20; sweep>0; sweep--) {
+    double sm = static_cast<double>(fabs(OffD[X])+fabs(OffD[Y])+fabs(OffD[Z]));
+    if (sm==0.0) break;
+    for (i=Z; i>=X; i--) {
+      int p = nxt[i]; int q = nxt[p];
+      fabsOffDi = fabs(OffD[i]);
+      g = 100.0*fabsOffDi;
+      if (fabsOffDi>0.0) {
+        h = Diag[q] - Diag[p];
+        fabsh = fabs(h);
+        if (fabsh+g==fabsh) {
+          t = OffD[i]/h;
+        }
+        else {
+          theta = 0.5*h/OffD[i];
+          t = 1.0/(fabs(theta)+sqrt(theta*theta+1.0));
+          if (theta<0.0) t = -t;
+        }
+        c = 1.0/sqrt(t*t+1.0); s = t*c;
+        tau = s/(c+1.0);
+        ta = t*OffD[i]; OffD[i] = 0.0;
+        Diag[p] -= ta; Diag[q] += ta;
+        OffDq = OffD[q];
+        OffD[q] -= s*(OffD[p] + tau*OffD[q]);
+        OffD[p] += s*(OffDq   - tau*OffD[p]);
+        for (j=Z; j>=X; j--) {
+          a = U[j][p]; b = U[j][q];
+          U[j][p] -= static_cast<double>(s*(b + tau*a));
+          U[j][q] += static_cast<double>(s*(a - tau*b));
+        }
+      }
+    }
+  }
+  kv[X] = static_cast<double>(Diag[X]);
+  kv[Y] = static_cast<double>(Diag[Y]);
+  kv[Z] = static_cast<double>(Diag[Z]);
+  kv[W] = 1.0;
+  return (kv);
+}
+
+/* Helper function for the snuggle() function below. */
+static inline void
+cycle(double * a, bool flip)
+{
+  if (flip) {
+    a[3]=a[0]; a[0]=a[1]; a[1]=a[2]; a[2]=a[3];
+  }
+  else {
+    a[3]=a[2]; a[2]=a[1]; a[1]=a[0]; a[0]=a[3];
+  }
+}
+
+/******* Spectral Axis Adjustment *******/
+
+/* Given a unit quaternion, q, and a scale vector, k, find a unit quaternion, p,
+ * which permutes the axes and turns freely in the plane of duplicate scale
+ * factors, such that q p has the largest possible w component, i.e. the
+ * smallest possible angle. Permutes k's components to go with q p instead of q.
+ * See Ken Shoemake and Tom Duff. Matrix Animation and Polar Decomposition.
+ * Proceedings of Graphics Interface 1992. Details on p. 262-263.
+ */
+static Rotation
+snuggle(Rotation q, Vector4d & k)
+{
+#define SQRTHALF (0.7071067811865475244f)
+#define sgn(n, v)    ((n)?-(v):(v))
+#define swap(a, i, j) {a[3]=a[i]; a[i]=a[j]; a[j]=a[3];}
+
+  Rotation p;
+  double ka[4];
+  int i, turn = -1;
+  ka[X] = k[X]; ka[Y] = k[Y]; ka[Z] = k[Z];
+  if (ka[X]==ka[Y]) {if (ka[X]==ka[Z]) turn = W; else turn = Z;}
+  else {if (ka[X]==ka[Z]) turn = Y; else if (ka[Y]==ka[Z]) turn = X;}
+  if (turn>=0) {
+    Rotation qtoz, qp;
+    unsigned neg[3], win;
+    double mag[3], t;
+    static Rotation qxtoz(0.0, SQRTHALF, 0.0, SQRTHALF);
+    static Rotation qytoz(SQRTHALF, 0.0, 0.0, SQRTHALF);
+    static Rotation qppmm(0.5, 0.5, -0.5, -0.5);
+    static Rotation qpppp(0.5, 0.5, 0.5, 0.5);
+    static Rotation qmpmm(-0.5, 0.5, -0.5, -0.5);
+    static Rotation qpppm(0.5, 0.5, 0.5, -0.5);
+    static Rotation q0001(0.0, 0.0, 0.0, 1.0);
+    static Rotation q1000(1.0, 0.0, 0.0, 0.0);
+    switch (turn) {
+    default: return Rotation(q).invert();
+    case X: q = (qtoz = qxtoz) * q; swap(ka, X, Z) break;
+    case Y: q = (qtoz = qytoz) * q; swap(ka, Y, Z) break;
+    case Z: qtoz = q0001; break;
+    }
+    q.invert();
+    mag[0] = static_cast<double>(q.getValue()[Z]*q.getValue()[Z])+static_cast<double>(q.getValue()[W]*q.getValue()[W]-0.5);
+    mag[1] = static_cast<double>(q.getValue()[X]*q.getValue()[Z])-static_cast<double>(q.getValue()[Y]*q.getValue()[W]);
+    mag[2] = static_cast<double>(q.getValue()[Y]*q.getValue()[Z]+static_cast<double>(q.getValue()[X]*q.getValue()[W]));
+    for (i=0; i<3; i++) if ((neg[i] = (mag[i] < 0.0))) mag[i] = -mag[i];
+    if (mag[0]>mag[1]) {if (mag[0]>mag[2]) win = 0; else win = 2;}
+    else {if (mag[1]>mag[2]) win = 1; else win = 2;}
+    switch (win) {
+    case 0: if (neg[0]) p = q1000; else p = q0001; break;
+    case 1: if (neg[1]) p = qppmm; else p = qpppp; cycle(ka, false); break;
+    case 2: if (neg[2]) p = qmpmm; else p = qpppm; cycle(ka, true); break;
+    }
+    qp = p * q;
+    t = sqrt(mag[win]+0.5);
+    p = Rotation(0.0, 0.0, -qp.getValue()[Z]/static_cast<double>(t), qp.getValue()[W]/static_cast<double>(t)) * p;
+    p = Rotation(p).invert() * qtoz;
+  }
+  else {
+    double qa[4], pa[4];
+    unsigned lo, hi, neg[4], par = 0;
+    double all, big, two;
+    qa[0] = q.getValue()[X]; qa[1] = q.getValue()[Y]; qa[2] = q.getValue()[Z]; qa[3] = q.getValue()[W];
+    for (i=0; i<4; i++) {
+      pa[i] = 0.0;
+      if ((neg[i] = (qa[i]<0.0))) qa[i] = -qa[i];
+      par ^= neg[i];
+    }
+    /* Find two largest components, indices in hi and lo */
+    if (qa[0]>qa[1]) lo = 0; else lo = 1;
+    if (qa[2]>qa[3]) hi = 2; else hi = 3;
+    if (qa[lo]>qa[hi]) {
+      if (qa[lo^1]>qa[hi]) {hi = lo; lo ^= 1;}
+      else {hi ^= lo; lo ^= hi; hi ^= lo;}
+    } else {if (qa[hi^1]>qa[lo]) lo = hi^1;}
+    all = (qa[0]+qa[1]+qa[2]+qa[3])*0.5;
+    two = (qa[hi]+qa[lo])*SQRTHALF;
+    big = qa[hi];
+    if (all>two) {
+      if (all>big) {/*all*/
+        {int i; for (i=0; i<4; i++) pa[i] = sgn(neg[i], 0.5);}
+        cycle(ka, par);
+      }
+      else {/*big*/ pa[hi] = sgn(neg[hi], 1.0);}
+    }
+    else {
+      if (two>big) {/*two*/
+        pa[hi] = sgn(neg[hi], SQRTHALF); pa[lo] = sgn(neg[lo], SQRTHALF);
+        if (lo>hi) {hi ^= lo; lo ^= hi; hi ^= lo;}
+        if (hi==W) {hi = "\001\002\000"[lo]; lo = 3-hi-lo;}
+        swap(ka, hi, lo)
+          } else {/*big*/ pa[hi] = sgn(neg[hi], 1.0);}
+    }
+    // FIXME: p = conjugate(pa)? 20010114 mortene.
+    p.setValue(-pa[0], -pa[1], -pa[2], pa[3]);
+  }
+  k[X] = ka[X]; k[Y] = ka[Y]; k[Z] = ka[Z];
+  return (p);
+}
+
+/******* Decompose Affine Matrix *******/
+
+/* Decompose 4x4 affine matrix A as TFRUK(U transpose), where t contains the
+ * translation components, q contains the rotation R, u contains U, k contains
+ * scale factors, and f contains the sign of the determinant.
+ * Assumes A transforms column vectors in right-handed coordinates.
+ * See Ken Shoemake and Tom Duff. Matrix Animation and Polar Decomposition.
+ * Proceedings of Graphics Interface 1992.
+ */
+static void
+decomp_affine(const HMatrix &A, AffineParts * parts)
+{
+  HMatrix Q, S, U;
+  Rotation p;
+  parts->t = Vector4d(A[X][W], A[Y][W], A[Z][W], 0);
+  double det = polar_decomp(A, Q, S);
+  if (det<0.0) {
+    mat_copy(Q, =, -Q, 3);
+    parts->f = -1;
+  }
+  else parts->f = 1;
+
+  // reinterpret_cast to humor MSVC6, this should have no effect on
+  // other compilers.
+  Matrix4D TQ;
+  TQ.setMatrix(reinterpret_cast<const double *>(&Q));
+  // parts->q = Rotation(TQ.transpose());
+  parts->q = Rotation(TQ);
+  parts->k = spect_decomp(S, U);
+  // Transpose for our code (we use OpenGL's convention for numbering
+  // rows and columns).
+
+  // reinterpret_cast to humor MSVC6, this should have no effect on
+  // other compilers.
+  Matrix4D TU;
+  TU.setMatrix(reinterpret_cast<const double *>(&U));
+  // parts->u = Rotation(TU.transpose());
+  parts->u = Rotation(TU);
+  p = snuggle(parts->u, parts->k);
+  parts->u = p * parts->u;
+}
+
+void Matrix4D::getTransform(Vector3d & t, Rotation & r,
+                            Vector3d & s, Rotation & so) const
+{
+  AffineParts parts;
+
+  // transpose-copy
+  decomp_affine(this->dMtrx4D, &parts);
+
+  double mul = 1.0;
+  if (parts.t[W] != 0.0) mul = 1.0 / parts.t[W];
+  t[0] = parts.t[X] * mul;
+  t[1] = parts.t[Y] * mul;
+  t[2] = parts.t[Z] * mul;
+
+  r = parts.q;
+  mul = 1.0;
+  if (parts.k[W] != 0.0) mul = 1.0 / parts.k[W];
+  // mul be sign of determinant to support negative scales.
+  mul *= parts.f;
+  s[0] = parts.k[X] * mul;
+  s[1] = parts.k[Y] * mul;
+  s[2] = parts.k[Z] * mul;
+
+  so = parts.u;
+}
+
+void
+Matrix4D::getTransform(Vector3d & translation,
+                       Rotation & rotation,
+                       Vector3d & scaleFactor,
+                       Rotation & scaleOrientation,
+                       const Vector3d & center) const
+{
+    Matrix4D tmp;
+    tmp.move(center);
+    tmp *= *this;
+    tmp.move(Vector3d() - center);
+    tmp.getTransform(translation, rotation, scaleFactor, scaleOrientation);
+}
+
+void Matrix4D::setTransform(const Vector3d & t, const Rotation & r, const Vector3d & s)
+{
+    this->setToUnity();
+    this->scale(s);
+    Matrix4D tmp;
+    r.getValue(tmp);
+    *this *= tmp;
+    this->move(t);
+}
+
+void
+Matrix4D::setTransform(const Vector3d & t, const Rotation & r,
+                       const Vector3d & s, const Rotation & so)
+{
+    Matrix4D tmp;
+    so.inverse().getValue(tmp);
+    *this = tmp;
+    this->scale(s);
+    so.getValue(tmp);
+    *this *= tmp;
+    r.getValue(tmp);
+    *this *= tmp;
+    this->move(t);
+}
+
+void
+Matrix4D::setTransform(const Vector3d & translation,
+                       const Rotation & rotation,
+                       const Vector3d & scaleFactor,
+                       const Rotation & scaleOrientation,
+                       const Vector3d & center)
+{
+    this->setToUnity();
+    this->move(Vector3d() - center);
+    Matrix4D tmp;
+    scaleOrientation.inverse().getValue(tmp);
+    *this *= tmp;
+    this->scale(scaleFactor);
+    scaleOrientation.getValue(tmp);
+    *this *= tmp;
+    rotation.getValue(tmp);
+    *this *= tmp;
+    this->move(translation);
+    this->move(center);
+}
+

@@ -34,6 +34,8 @@
 
 namespace Base {
 
+class Rotation;
+
 /**
  * The Matrix4D class.
  */
@@ -165,6 +167,28 @@ public:
   /// Arbitrary, non-singular matrix
   void inverseGauss (void);
   void transpose    (void);
+  //@}
+
+  /** @name Compose/Decompose matrix into translation, rotation, scale and scale orientation*/
+  void getTransform(Vector3d & t, Rotation & r,
+                    Vector3d & s, Rotation & so) const;
+
+  void getTransform(Vector3d & translation,
+                    Rotation & rotation,
+                    Vector3d & scaleFactor,
+                    Rotation & scaleOrientation,
+                    const Vector3d & center) const;
+
+  void setTransform(const Vector3d & t, const Rotation & r, const Vector3d & s);
+
+  void setTransform(const Vector3d & t, const Rotation & r,
+                    const Vector3d & s, const Rotation & so);
+
+  void setTransform(const Vector3d & translation,
+                    const Rotation & rotation,
+                    const Vector3d & scaleFactor,
+                    const Rotation & scaleOrientation,
+                    const Vector3d & center);
   //@}
 
   void Print        (void) const;

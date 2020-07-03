@@ -90,7 +90,7 @@ Rotation::Rotation(const Rotation& rot)
     this->_angle   = rot._angle;
 }
 
-void Rotation::operator = (const Rotation& rot)
+Rotation & Rotation::operator = (const Rotation& rot)
 {
     this->quat[0] = rot.quat[0];
     this->quat[1] = rot.quat[1];
@@ -101,6 +101,8 @@ void Rotation::operator = (const Rotation& rot)
     this->_axis[1] = rot._axis[1];
     this->_axis[2] = rot._axis[2];
     this->_angle   = rot._angle;
+
+    return *this;
 }
 
 const double * Rotation::getValue(void) const

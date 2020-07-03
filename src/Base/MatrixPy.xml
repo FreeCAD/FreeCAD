@@ -149,6 +149,30 @@ Analyzes the type of transformation.
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getTransform">
+      <Documentation>
+        <UserDocu>
+getTransform() -> (translation, rotation, scale, scaleOrientation)
+getTransform(center) -> (translation, rotation, scale, scaleOrientation)
+
+Factor the matrix into translation, rotation, scale and scaleOrientation with optional center
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setTransform">
+      <Documentation>
+        <UserDocu>
+setTransform(translation, rotation, scale)
+Set matrix as scale * rotation * translation
+
+setTransform(translation, rotation, scale, scaleOrientation)
+Set matrix as scaleOrientation^-1 * scale * scaleOrientation * scale * rotation * translation
+
+setTransform(translation, rotation, scale, scaleOrientation, center)
+Set matrix as -center * scaleOrientation^-1 * scale * scaleOrientation * rotation * translation * center
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="A11" ReadOnly="false">
       <Documentation>
         <UserDocu>The matrix elements</UserDocu>

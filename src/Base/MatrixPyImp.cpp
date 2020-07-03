@@ -622,6 +622,60 @@ PyObject* MatrixPy::analyze(PyObject * args)
     PY_CATCH;
 }
 
+PyObject *MatrixPy::getTransform(PyObject *args)
+{
+    PyObject *pyCenter = nullptr;
+    if (!PyArg_ParseTuple(args, "|O!", &VectorPy::Type, &pyCenter))
+        return NULL;
+
+    Vector3d scale, translation;
+    Rotation rotation, scaleOrientation;
+    if (pyCenter) {
+        Vector3d center = *static_cast<VectorPy*>(pyCenter)->getVectorPtr();
+        getMatrixPtr()->getTransform(translation, rotation, scale, scaleOrientation, center);
+    } else
+        getMatrixPtr()->getTransform(translation, rotation, scale, scaleOrientation);
+
+    return Py::new_reference_to(Py::TupleN(
+                Py::Vector(translation), Py::Rotation(rotation),
+                Py::Vector(scale), Py::Rotation(scaleOrientation)));
+}
+
+PyObject *MatrixPy::setTransform(PyObject *args)
+{
+    PyObject *pyTranslation = nullptr;
+    PyObject *pyRotation = nullptr;
+    PyObject *pyScale = nullptr;
+    PyObject *pyScaleOrientation = nullptr;
+    PyObject *pyCenter = nullptr;
+    if (!PyArg_ParseTuple(args, "O!O!O!|O!O!", 
+                &VectorPy::Type, &pyTranslation,
+                &RotationPy::Type, &pyRotation,
+                &VectorPy::Type, &pyScale,
+                &RotationPy::Type, &pyScaleOrientation,
+                &VectorPy::Type, &pyCenter))
+        return NULL;
+
+    Vector3d scale, translation, center;
+    Rotation rotation, scaleOrientation;
+
+    translation = *static_cast<VectorPy*>(pyTranslation)->getVectorPtr();
+    rotation = *static_cast<RotationPy*>(pyRotation)->getRotationPtr();
+    scale = *static_cast<VectorPy*>(pyScale)->getVectorPtr();
+    if(pyScaleOrientation)
+        scaleOrientation = *static_cast<RotationPy*>(pyScaleOrientation)->getRotationPtr();
+    if(pyCenter)
+        center = *static_cast<VectorPy*>(pyCenter)->getVectorPtr();
+    if (!pyScaleOrientation)
+        getMatrixPtr()->setTransform(translation, rotation, scale);
+    else if (!pyCenter)
+        getMatrixPtr()->setTransform(translation, rotation, scale, scaleOrientation);
+    else
+        getMatrixPtr()->setTransform(translation, rotation, scale, scaleOrientation, center);
+
+    Py_Return;
+}
+
 Py::Float MatrixPy::getA11(void) const
 {
     double val = (*this->getMatrixPtr())[0][0];
