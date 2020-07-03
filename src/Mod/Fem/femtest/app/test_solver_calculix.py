@@ -49,10 +49,6 @@ class TestSolverCalculix(unittest.TestCase):
 
         # more inits
         self.mesh_name = "Mesh"
-        self.temp_dir = testtools.get_unit_test_tmp_dir(
-            testtools.get_fem_test_tmp_dir(),
-            "FEM_solver_calculix"
-        )
 
     # ********************************************************************************************
     def tearDown(
@@ -78,40 +74,65 @@ class TestSolverCalculix(unittest.TestCase):
     def test_solver_calculix(
         self
     ):
-        fcc_print("\n--------------- Start of FEM tests solver framework solver CalculiX ------")
-
-        # set up the CalculiX static analysis example
         from femexamples.boxanalysis_static import setup
         setup(self.document, "calculix")
+        self.calculix_inputfile_writing_test("cube_static")
 
-        solver_obj = self.document.SolverCalculiX
+    # ********************************************************************************************
+    def calculix_inputfile_writing_test(
+        self,
+        base_name
+    ):
 
-        base_name = "cube_static"
-        analysis_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, solver_obj.Name)
+        self.document.recompute()
 
-        # save the file
-        save_fc_file = join(analysis_dir, solver_obj.Name + "_" + base_name + ".FCStd")
-        fcc_print("Save FreeCAD file to {}...".format(save_fc_file))
+        # start
+        fcc_print(
+            "\n------------- Start of FEM CalculiX tests for {} -------"
+            .format(base_name)
+        )
+
+        # get analysis working directory and save FreeCAD file
+        working_dir = testtools.get_fem_test_tmp_dir("solver_calculix_" + base_name)
+        save_fc_file = join(working_dir, base_name + ".FCStd")
+        fcc_print("Save FreeCAD file to {} ...".format(save_fc_file))
         self.document.saveAs(save_fc_file)
 
         # write input file
-        fcc_print("Checking FEM input file writing for CalculiX solver framework solver ...")
-        machine_ccx = solver_obj.Proxy.createMachine(
-            solver_obj,
-            analysis_dir
+        machine = self.document.SolverCalculiX.Proxy.createMachine(
+            self.document.SolverCalculiX,
+            working_dir,
+            True  # set testmode to True
         )
-        machine_ccx.target = femsolver.run.PREPARE
-        machine_ccx.start()
-        machine_ccx.join()  # wait for the machine to finish.
+        machine.target = femsolver.run.PREPARE
+        machine.start()
+        machine.join()  # wait for the machine to finish
 
-        infile_given = join(
+        # compare input file with the given one
+        inpfile_given = join(
             testtools.get_fem_test_home_dir(),
             "ccx",
             (base_name + ".inp")
         )
-        inpfile_totest = join(analysis_dir, (self.mesh_name + ".inp"))
-        fcc_print("Comparing {} to {}".format(infile_given, inpfile_totest))
-        ret = testtools.compare_inp_files(infile_given, inpfile_totest)
-        self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
+        inpfile_totest = join(
+            working_dir,
+            self.mesh_name + ".inp"
+        )
+        fcc_print(
+            "Comparing {}  to  {}"
+            .format(inpfile_given, inpfile_totest)
+        )
+        ret = testtools.compare_inp_files(
+            inpfile_given,
+            inpfile_totest
+        )
+        self.assertFalse(
+            ret,
+            "CalculiX write_inp_file for {0} test failed.\n{1}".format(base_name, ret)
+        )
 
-        fcc_print("--------------- End of FEM tests solver framework solver CalculiX --------")
+        # end
+        fcc_print(
+            "--------------- End of FEM CalculiX tests for {} ---------"
+            .format(base_name)
+        )
