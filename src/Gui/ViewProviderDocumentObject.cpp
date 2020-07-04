@@ -109,8 +109,6 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
 
 ViewProviderDocumentObject::~ViewProviderDocumentObject()
 {
-    // Make sure that the property class does not destruct our string list
-    DisplayMode.setEnums(0);
 }
 
 void ViewProviderDocumentObject::getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>& vec) const
@@ -342,19 +340,7 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
         pcObj->Visibility.setValue(Visibility.getValue());
     }
 
-    // Retrieve the supported display modes of the view provider
-    aDisplayModesArray = this->getDisplayModes();
-
-    if (aDisplayModesArray.empty())
-        aDisplayModesArray.push_back("");
-
-    // We must collect the const char* of the strings and give it to PropertyEnumeration,
-    // but we are still responsible for them, i.e. the property class must not delete the literals.
-    for (std::vector<std::string>::iterator it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
-        aDisplayEnumsArray.push_back( it->c_str() );
-    }
-    aDisplayEnumsArray.push_back(0); // null termination
-    DisplayMode.setEnums(&(aDisplayEnumsArray[0]));
+    DisplayMode.setEnumVector(this->getDisplayModes());
 
     if(!isRestoring()) {
         // set the active mode

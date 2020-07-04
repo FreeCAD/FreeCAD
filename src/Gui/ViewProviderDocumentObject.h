@@ -243,8 +243,6 @@ protected:
     CoinPtr<SoShadowStyle> pcShadowStyle;
 
 private:
-    std::vector<const char*> aDisplayEnumsArray;
-    std::vector<std::string> aDisplayModesArray;
     bool _Busy = false;
     bool _Showable = true;
 
