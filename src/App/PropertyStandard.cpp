@@ -3130,40 +3130,31 @@ void PropertyPersistentObject::Restore(Base::XMLReader &reader){
     reader.readEndElement(ELEMENT_PERSISTENT_OBJ);
 }
 
-FC_STATIC Base::StringWriter _PersistentWriter;
-
 Property *PropertyPersistentObject::Copy(void) const{
     auto *p= new PropertyPersistentObject();
-    _PersistentWriter.clear();
-    Save(_PersistentWriter);
-    p->_cValue = _PersistentWriter.getString();
+    p->_cValue = _cValue;
+    p->_pObject = _pObject;
     return p;
 }
 
 void PropertyPersistentObject::Paste(const Property &from){
     const auto &prop = dynamic_cast<const PropertyPersistentObject&>(from);
-    if (!prop._cValue.size() || !prop._pObject) {
+    if(_cValue!=prop._cValue || _pObject!=prop._pObject) {
         aboutToSetValue();
-        _pObject.reset();
         _cValue = prop._cValue;
+        _pObject = prop._pObject;
         hasSetValue();
-    } else {
-        std::istringstream in(prop._cValue);
-        XMLReader reader("<memory>", in);
-        reader.read();
-        Restore(reader);
     }
 }
 
-bool PropertyPersistentObject::isSame(const Property &_other) const
+bool PropertyPersistentObject::isSame(const Property &) const
 {
-    if (!_other.isDerivedFrom(PropertyPersistentObject::getClassTypeId()))
-        return false;
+    return false;
+}
 
-    const auto &other = static_cast<const PropertyPersistentObject&>(_other);
-    _PersistentWriter.clear();
-    Save(_PersistentWriter);
-    return _PersistentWriter.getString() == other._cValue;
+Property *PropertyPersistentObject::copyBeforeChange() const
+{
+    return nullptr;
 }
 
 unsigned int PropertyPersistentObject::getMemSize (void) const{

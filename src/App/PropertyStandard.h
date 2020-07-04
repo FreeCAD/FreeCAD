@@ -1108,7 +1108,7 @@ public:
     }
 
     virtual bool isSame(const Property &other) const override;
-    virtual Property *copyBeforeChange() const override {return Copy();}
+    virtual Property *copyBeforeChange() const override;
 
 protected:
     std::shared_ptr<Base::Persistence> _pObject;
