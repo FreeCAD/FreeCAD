@@ -161,6 +161,9 @@ public:
             // with an empty linkInfo. So we need to check here.
             ext->linkInfo = Pointer(new LinkInfo(vp));
             ext->linkInfo->update();
+        } else if (!ext->linkInfo->isLinked()) {
+            ext->linkInfo->pcLinked = vp;
+            ext->linkInfo->update();
         }
         if(owner)
             ext->linkInfo->links.insert(owner);
@@ -1937,15 +1940,17 @@ void ViewProviderLink::onChanged(const App::Property* prop) {
                 if(pcModeSwitch->getNumChildren()>1){
                     childVpLink = LinkInfo::get(childVp,0);
                     auto node = childVpLink->getSnapshot(LinkView::SnapshotTransform);
-                    pcModeSwitch->replaceChild(1,node);
-                    if(pcModeSwitch->getNumChildren() > 1
-                            && pcModeSwitch->getChild(2)->isOfType(SoGroup::getClassTypeId()))
-                    {
-                        auto group = static_cast<SoGroup*>(pcModeSwitch->getChild(2));
-                        if(group->getNumChildren() > 1)
-                            group->replaceChild(1,node);
-                        else
-                            group->addChild(node);
+                    if (node) {
+                        pcModeSwitch->replaceChild(1,node);
+                        if(pcModeSwitch->getNumChildren() > 2
+                                && pcModeSwitch->getChild(2)->isOfType(SoGroup::getClassTypeId()))
+                        {
+                            auto group = static_cast<SoGroup*>(pcModeSwitch->getChild(2));
+                            if(group->getNumChildren() > 1)
+                                group->replaceChild(1,node);
+                            else
+                                group->addChild(node);
+                        }
                     }
                 }
             }
