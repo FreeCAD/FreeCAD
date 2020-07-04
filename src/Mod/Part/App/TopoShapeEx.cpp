@@ -908,7 +908,7 @@ TopoShape &TopoShape::makEGTransform(const TopoShape &shape,
     if(shape.isNull())
         HANDLE_NULL_INPUT;
 
-    if(!op) op = TOPOP_GTRANSFORM;
+    // if(!op) op = TOPOP_GTRANSFORM;
     gp_GTrsf mat;
     mat.SetValue(1,1,rclTrf[0][0]);
     mat.SetValue(2,1,rclTrf[1][0]);
@@ -925,7 +925,13 @@ TopoShape &TopoShape::makEGTransform(const TopoShape &shape,
 
     // geometric transformation
     BRepBuilderAPI_GTransform mkTrf(shape.getShape(), mat, copy);
-    return makEShape(mkTrf,shape,op);
+    if (op)
+        return makEShape(mkTrf,shape,op);
+
+    // FIXME: confirm that topo index does not change with BRepBuilderAPI_GTransform
+    _Shape = mkTrf.Shape();
+    _ElementMap = shape._ElementMap;
+    return *this;
 }
 
 
