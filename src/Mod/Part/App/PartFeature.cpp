@@ -496,8 +496,12 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         if(pyobj && PyObject_TypeCheck(pyobj,&TopoShapePy::Type)) {
             shape = *static_cast<TopoShapePy*>(pyobj)->getTopoShapePtr();
             if(!shape.isNull()) {
-                if(obj->getDocument() != linked->getDocument() && canCache(obj))
-                    PropertyShapeCache::setShape(obj,shape,subname);
+                if(canCache(obj)) {
+                    if(obj->getDocument() != linked->getDocument()
+                            || mat.hasScale()
+                            || (linked != owner && linkMat.hasScale()))
+                        PropertyShapeCache::setShape(obj,shape,subname);
+                }
                 if(noElementMap) {
                     shape.resetElementMap();
                     shape.Tag = 0;
