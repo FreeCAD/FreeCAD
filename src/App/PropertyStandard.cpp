@@ -392,6 +392,11 @@ std::vector<std::string> PropertyEnumeration::getEnumVector(void) const
     return _enum.getEnumVector();
 }
 
+void PropertyEnumeration::setEnumVector(const std::vector<std::string> &values)
+{
+    _enum.setEnums(values);
+}
+
 const char ** PropertyEnumeration::getEnums(void) const
 {
     return _enum.getEnums();
