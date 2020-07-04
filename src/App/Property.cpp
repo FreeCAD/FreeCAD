@@ -38,9 +38,12 @@
 #include "Transactions.h"
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <Base/Console.h>
 #include "Application.h"
 #include "DocumentParams.h"
 #include "DocumentObject.h"
+
+FC_LOG_LEVEL_INIT("App",true,true)
 
 using namespace App;
 
@@ -249,8 +252,10 @@ void Property::setReadOnly(bool readOnly)
 void Property::hasSetValue(void)
 {
     if (father && _old) {
-        if(isSame(*_old))
+        if(isSame(*_old)) {
+            FC_LOG("no change of " << getFullName());
             return;
+        }
         _old.reset();
     }
     touch();
