@@ -1,3 +1,25 @@
+# -*- coding: utf8 -*-
+# ***************************************************************************
+# *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2018 George Shuklin (amarao)                            *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 """Provides functions to return the SVG representation of various shapes."""
 ## @defgroup getSVG getSVG
 #  \ingroup DRAFT
@@ -5,11 +27,15 @@
 
 ## \addtogroup getSVG
 # @{
+import math
 import six
 
-import FreeCAD, math, os, DraftVecUtils, WorkingPlane
+import FreeCAD
+import DraftVecUtils
+import WorkingPlane
+import draftutils.utils as utils
+
 from FreeCAD import Vector
-from Draft import getType, getrgb, svgpatterns, gui
 
 
 def getLineStyle(linestyle, scale):
@@ -69,8 +95,8 @@ def getDiscretized(edge, plane):
 
 
 def getPattern(pat):
-    if pat in svgpatterns():
-        return svgpatterns()[pat][0]
+    if pat in utils.svg_patterns():
+        return utils.svg_patterns()[pat][0]
     return ''
 
 
@@ -85,7 +111,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     # if this is a group, gather all the svg views of its children
     if hasattr(obj,"isDerivedFrom"):
-        if obj.isDerivedFrom("App::DocumentObjectGroup") or getType(obj) == "Layer":
+        if obj.isDerivedFrom("App::DocumentObjectGroup") or utils.get_type(obj) == "Layer":
             svg = ""
             for child in obj.Group:
                 svg += getSVG(child,scale,linewidth,fontsize,fillstyle,direction,linestyle,color,linespacing,techdraw,rotation,fillSpaces,override)
@@ -122,13 +148,13 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if "#" in color:
             stroke = color
         else:
-            stroke = getrgb(color)
-    elif gui:
+            stroke = utils.get_rgb(color)
+    elif FreeCAD.GuiUp:
         if hasattr(obj,"ViewObject"):
             if hasattr(obj.ViewObject,"LineColor"):
-                stroke = getrgb(obj.ViewObject.LineColor)
+                stroke = utils.get_rgb(obj.ViewObject.LineColor)
             elif hasattr(obj.ViewObject,"TextColor"):
-                stroke = getrgb(obj.ViewObject.TextColor)
+                stroke = utils.get_rgb(obj.ViewObject.TextColor)
     lstyle = "none"
     if override:
         lstyle = getLineStyle(linestyle, scale)
@@ -339,7 +365,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     def getArrow(arrowtype,point,arrowsize,color,linewidth,angle=0):
         svg = ""
-        if gui:
+        if FreeCAD.GuiUp:
             if not obj.ViewObject:
                 return svg
             if obj.ViewObject.ArrowType == "Circle":
@@ -492,8 +518,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += getPath(obj.Edges,pathname="")
 
 
-    elif getType(obj) in ["Dimension","LinearDimension"]:
-        if gui:
+    elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
+        if FreeCAD.GuiUp:
             if not obj.ViewObject:
                 print ("export of dimensions to SVG is only available in GUI mode")
             elif obj.ViewObject.Proxy:
@@ -586,8 +612,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     # drawing text
                     svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
 
-    elif getType(obj) == "AngularDimension":
-        if gui:
+    elif utils.get_type(obj) == "AngularDimension":
+        if FreeCAD.GuiUp:
             if not obj.ViewObject:
                 print ("export of dimensions to SVG is only available in GUI mode")
             elif obj.ViewObject.Proxy:
@@ -637,7 +663,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                         tbase = getProj(prx.tbase, plane)
                     svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
 
-    elif getType(obj) == "Label":
+    elif utils.get_type(obj) == "Label":
         if getattr(obj.ViewObject, "Line", True):  # some Labels may have no Line property
             def format_point(coords, action='L'):
                 return "{action}{x},{y}".format(
@@ -672,7 +698,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 )
 
         # print text
-        if gui:
+        if FreeCAD.GuiUp:
             if not obj.ViewObject:
                 print("export of texts to SVG is only available in GUI mode")
             else:
@@ -684,29 +710,29 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 svg += getText(stroke, fontsize, fontname, rotation, position,
                                text, linespacing, justification)
 
-    elif getType(obj) in ["Annotation","DraftText"]:
-        "returns an svg representation of a document annotation"
-        if gui:
+    elif utils.get_type(obj) in ["Annotation", "DraftText", "Text"]:
+        # returns an svg representation of a document annotation
+        if FreeCAD.GuiUp:
             if not obj.ViewObject:
-                print ("export of texts to SVG is only available in GUI mode")
+                print("export of texts to SVG is only available in GUI mode")
             else:
                 n = obj.ViewObject.FontName
-                if getType(obj) == "Annotation":
+                if utils.get_type(obj) == "Annotation":
                     p = getProj(obj.Position, plane)
                     r = obj.ViewObject.Rotation.getValueAs("rad")
                     t = obj.LabelText
-                else: # DraftText
+                else:  # DraftText (old) or Text (new, 0.19)
                     p = getProj(obj.Placement.Base, plane)
                     r = obj.Placement.Rotation
                     t = obj.Text
                 j = obj.ViewObject.Justification
                 svg += getText(stroke,fontsize,n,r,p,t,linespacing,j)
 
-    elif getType(obj) == "Axis":
-        "returns the SVG representation of an Arch Axis system"
-        if gui:
+    elif utils.get_type(obj) == "Axis":
+        # returns the SVG representation of an Arch Axis system
+        if FreeCAD.GuiUp:
             if not obj.ViewObject:
-                print ("export of axes to SVG is only available in GUI mode")
+                print("export of axes to SVG is only available in GUI mode")
             else:
                 vobj = obj.ViewObject
                 lorig = lstyle
@@ -748,7 +774,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                                 n += 1
                 lstyle = lorig
 
-    elif getType(obj) == "Pipe":
+    elif utils.get_type(obj) == "Pipe":
         fill = stroke
         if obj.Base and obj.Diameter:
             svg += getPath(obj.Base.Shape.Edges)
@@ -757,7 +783,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 if isinstance(f.Edges[0].Curve,Part.Circle):
                     svg += getCircle(f.Edges[0])
 
-    elif getType(obj) == "Rebar":
+    elif utils.get_type(obj) == "Rebar":
         fill = "none"
         basewire = obj.Base.Shape.Wires[0].copy()
         # Not applying rounding because the results are not correct
@@ -772,14 +798,14 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             wires.append(wire)
         svg += getPath(wires=wires)
 
-    elif getType(obj) == "PipeConnector":
+    elif utils.get_type(obj) == "PipeConnector":
         pass
 
-    elif getType(obj) == "Space":
-        "returns an SVG fragment for the text of a space"
-        if gui:
+    elif utils.get_type(obj) == "Space":
+        # returns an SVG fragment for the text of a space
+        if FreeCAD.GuiUp:
             if not obj.ViewObject:
-                print ("export of spaces to SVG is only available in GUI mode")
+                print("export of spaces to SVG is only available in GUI mode")
             else:
                 if fillSpaces:
                     if hasattr(obj,"Proxy"):
@@ -787,13 +813,14 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                             obj.Proxy.getArea(obj,notouch=True)
                         if hasattr(obj.Proxy,"face"):
                             # setting fill
-                            if gui:
-                                fill = getrgb(obj.ViewObject.ShapeColor,testbw=False)
+                            if FreeCAD.GuiUp:
+                                fill = utils.get_rgb(obj.ViewObject.ShapeColor,
+                                                     testbw=False)
                                 fill_opacity = 1 - (obj.ViewObject.Transparency / 100.0)
                             else:
                                 fill = "#888888"
                             svg += getPath(wires=[obj.Proxy.face.OuterWire])
-                c = getrgb(obj.ViewObject.TextColor)
+                c = utils.get_rgb(obj.ViewObject.TextColor)
                 n = obj.ViewObject.FontName
                 a = 0
                 if rotation != 0:
@@ -820,14 +847,15 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             return ''
         # setting fill
         if obj.Shape.Faces:
-            if gui:
+            if FreeCAD.GuiUp:
                 try:
                     m = obj.ViewObject.DisplayMode
                 except AttributeError:
                     m = None
                 if (m != "Wireframe"):
                     if fillstyle == "shape color":
-                        fill = getrgb(obj.ViewObject.ShapeColor,testbw=False)
+                        fill = utils.get_rgb(obj.ViewObject.ShapeColor,
+                                             testbw=False)
                         fill_opacity = 1 - (obj.ViewObject.Transparency / 100.0)
                     else:
                         fill = 'url(#'+fillstyle+')'
