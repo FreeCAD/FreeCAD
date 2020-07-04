@@ -7483,13 +7483,13 @@ void SketchObject::Save(Writer &writer) const
         // Therefore, we cannot rely on Geometry::Ref as key to map geometry to
         // external object reference. So, before exporting, we pre-calculate
         // the mapping and store them in Geometry::RefIndex. When importing,
-        // inside updateGeometryRef() (called by onDocumentRestore()), we shall
+        // inside updateGeometryRefs() (called by onDocumentRestore()), we shall
         // regenerate Geometry::Ref based on RefIndex. 
         //
         // Note that the regenerated Ref will not be using the new topological
         // naming either, because we didn't export them.  This is exactly the
         // same as if we are opening a legacy file without new names.
-        // updateGeometryRef() will know how to handle the name change thanks
+        // updateGeometryRefs() will know how to handle the name change thanks
         // to a flag setup in onUpdateElementReference().
         for(auto &key : externalGeoRef) {
             ++index;
@@ -7633,12 +7633,15 @@ void SketchObject::updateGeometryRefs() {
         originalRefs = std::move(externalGeoRef);
     }
     externalGeoRef.clear();
+    std::unordered_map<std::string, int> legacyMap;
     for(int i=0;i<(int)objs.size();++i) {
         auto obj = objs[i];
         const std::string &sub=shadows[i].first.size()?shadows[i].first:subs[i];        
         externalGeoRef.emplace_back(obj->getNameInDocument());
         auto &key = externalGeoRef.back();
         key += '.';
+
+        legacyMap[key + Data::ComplexGeoData::oldElementName(sub.c_str())] = i;
 
         if (!obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()) &&
                 obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) 
@@ -7652,8 +7655,17 @@ void SketchObject::updateGeometryRefs() {
     auto geos = ExternalGeo.getValues();
     if(refMap.empty()) {
         for(auto geo : geos) {
-            if(geo->RefIndex<0)
+            if(geo->RefIndex<0) {
+                auto it = legacyMap.find(geo->Ref);
+                if (it != legacyMap.end()) {
+                    // FIXME: this is a bug. Find out when and why does this happen
+                    FC_WARN("Update legacy external reference " << geo->Ref << " -> "
+                            << externalGeoRef[it->second] << " in " << getFullName());
+                    touched = true;
+                    geo->Ref = externalGeoRef[it->second];
+                }
                 continue;
+            }
             if(geo->RefIndex < (int)externalGeoRef.size() 
                     && geo->Ref != externalGeoRef[geo->RefIndex])
             {
