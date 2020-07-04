@@ -1,6 +1,6 @@
 # This package depends on automagic byte compilation
-# https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_2
-%global _python_bytecompile_extra 1
+# https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_3
+%global py_bytecompile 1
 
 # Setup python target for shiboken so the right cmake file is imported.
 %global py_suffix %(%{__python3} -c "import sysconfig; print(sysconfig.get_config_var('SOABI'))")

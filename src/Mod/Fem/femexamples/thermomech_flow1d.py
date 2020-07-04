@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -45,6 +46,18 @@ def init_doc(doc=None):
     if doc is None:
         doc = FreeCAD.newDocument()
     return doc
+
+
+def get_information():
+    info = {"name": "Thermomech Flow 1D",
+            "meshtype": "solid",
+            "meshelement": "Seg3",
+            "constraints": ["self weight"],
+            "solvers": ["ccx"],
+            "material": "fluid",
+            "equation": "thermomechanical"
+            }
+    return info
 
 
 def setup(doc=None, solvertype="ccxtools"):

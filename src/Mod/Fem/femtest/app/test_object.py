@@ -100,11 +100,10 @@ class TestObjectCreate(unittest.TestCase):
         )
 
         # save the file
-        save_dir = testtools.get_unit_test_tmp_dir(
-            testtools.get_fem_test_tmp_dir(),
-            "FEM_all_objects"
+        save_fc_file = join(
+            testtools.get_fem_test_tmp_dir("objects_create_all"),
+            "all_objects.FCStd"
         )
-        save_fc_file = join(save_dir, "all_objects.FCStd")
         fcc_print(
             "Save FreeCAD all objects file to {} ..."
             .format(save_fc_file)

@@ -340,6 +340,21 @@ class _EquationHeat(CommandManager):
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
+class _Examples(CommandManager):
+    "The FEM_Examples command definition"
+
+    def __init__(self):
+        super(_Examples, self).__init__()
+        self.pixmap = "preferences-fem"
+        self.menuetext = "Open FEM examples"
+        self.tooltip = "Open FEM examples"
+        self.is_active = "always"
+
+    def Activated(self):
+        FreeCADGui.addModule("femexamples.examplesgui")
+        FreeCADGui.doCommand("femexamples.examplesgui.show_examplegui()")
+
+
 class _MaterialEditor(CommandManager):
     "The FEM_MaterialEditor command definition"
 
@@ -871,6 +886,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_EquationHeat",
     _EquationHeat()
+)
+FreeCADGui.addCommand(
+    "FEM_Examples",
+    _Examples()
 )
 FreeCADGui.addCommand(
     "FEM_MaterialEditor",

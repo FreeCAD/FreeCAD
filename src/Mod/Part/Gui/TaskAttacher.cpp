@@ -455,19 +455,12 @@ void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
         pl.setPosition(pos);
     }
 
-    Base::Rotation rot = pl.getRotation();
-    double yaw, pitch, roll;
-    rot.getYawPitchRoll(yaw, pitch, roll);
-    if (idx == 3) {
-        yaw = ui->attachmentOffsetYaw->value().getValueAs(Base::Quantity::Degree);
-    }
-    if (idx == 4) {
-        pitch = ui->attachmentOffsetPitch->value().getValueAs(Base::Quantity::Degree);
-    }
-    if (idx == 5) {
-        roll = ui->attachmentOffsetRoll->value().getValueAs(Base::Quantity::Degree);
-    }
     if (idx >= 3  &&  idx <= 5){
+        double yaw, pitch, roll;
+        yaw = ui->attachmentOffsetYaw->value().getValueAs(Base::Quantity::Degree);
+        pitch = ui->attachmentOffsetPitch->value().getValueAs(Base::Quantity::Degree);
+        roll = ui->attachmentOffsetRoll->value().getValueAs(Base::Quantity::Degree);
+        Base::Rotation rot;
         rot.setYawPitchRoll(yaw,pitch,roll);
         pl.setRotation(rot);
     }

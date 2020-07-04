@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -48,6 +49,18 @@ def init_doc(doc=None):
     if doc is None:
         doc = FreeCAD.newDocument()
     return doc
+
+
+def get_information():
+    info = {"name": "Thermomech Bimetall",
+            "meshtype": "solid",
+            "meshelement": "Tet10",
+            "constraints": ["fixed", "initial temperature", "temperature"],
+            "solvers": ["ccx", "elmer"],
+            "material": "multimaterial",
+            "equation": "thermomechanical"
+            }
+    return info
 
 
 def setup(doc=None, solvertype="ccxtools"):
