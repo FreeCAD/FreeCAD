@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 
 import FreeCAD
-import Drawing
 
 import tempfile, os, io
 
@@ -230,6 +229,9 @@ def getSVG(shape, opts=None, view_vector=(-1.75, 1.1, 5.0)):
     """
         Export a shape to SVG
     """
+
+    # in case Drawing mod is deprecated, delay import here.
+    import Drawing
     
     d = {'width':800,'height':240,'marginLeft':200,'marginTop':20}
 
