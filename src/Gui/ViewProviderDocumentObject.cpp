@@ -341,6 +341,7 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     }
 
     DisplayMode.setEnumVector(this->getDisplayModes());
+    DisplayMode.setPersistEnums(false);
 
     if(!isRestoring()) {
         // set the active mode

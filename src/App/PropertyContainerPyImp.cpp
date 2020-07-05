@@ -217,8 +217,6 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
         PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", name);
         return 0;
     }
-    auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
-
     std::bitset<32> status(prop->getStatus());
     size_t count = 1;
     bool isSeq = false;
@@ -242,11 +240,16 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
             }
             auto it = statusMap.find(v);
             if(it == statusMap.end()) {
-                if(linkProp && v == "AllowPartial") {
+                if(v == "AllowPartial" && prop->isDerivedFrom(PropertyLinkBase::getClassTypeId())) {
+                    auto linkProp = static_cast<PropertyLinkBase*>(prop);
                     linkProp->setAllowPartial(value);
                     continue;
+                } else if (v == "NoPersistEnums" && prop->isDerivedFrom(PropertyEnumeration::getClassTypeId())) {
+                    auto enumProp = static_cast<PropertyEnumeration*>(prop);
+                    enumProp->setPersistEnums(!value);
+                    continue;
                 }
-                PyErr_Format(PyExc_ValueError, "Unknown property status '%s'", v.c_str());
+                PyErr_Format(PyExc_ValueError, "Unsupported property status '%s'", v.c_str());
                 return 0;
             }
             status.set(it->second,value);
@@ -280,14 +283,20 @@ PyObject*  PropertyContainerPy::getPropertyStatus(PyObject *args)
     if(!name[0]) {
         for(auto &v : statusMap)
             ret.append(Py::String(v.first.c_str()));
+        ret.append(Py::String("AllowPartial"));
+        ret.append(Py::String("NoPersistEnums"));
     }else{
         App::Property* prop = getPropertyContainerPtr()->getPropertyByName(name);
         if (prop) {
-
-            auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
-            if(linkProp && linkProp->testFlag(App::PropertyLinkBase::LinkAllowPartial))
-                ret.append(Py::String("AllowPartial"));
-
+            if (prop->isDerivedFrom(PropertyLinkBase::getClassTypeId())) {
+                auto linkProp = static_cast<PropertyLinkBase*>(prop);
+                if(linkProp && linkProp->testFlag(PropertyLinkBase::LinkAllowPartial))
+                    ret.append(Py::String("AllowPartial"));
+            } else if (prop->isDerivedFrom(PropertyEnumeration::getClassTypeId())) {
+                auto enumProp = static_cast<PropertyEnumeration*>(prop);
+                if (!enumProp->getPersistEnums())
+                    ret.append(Py::String("NoPersistEnums"));
+            }
             std::bitset<32> bits(prop->getStatus());
             for(size_t i=1;i<bits.size();++i) {
                 if(!bits[i]) continue;

@@ -193,6 +193,12 @@ public:
     /// set enum values as vector of strings
     void setEnumVector(const std::vector<std::string> &);
 
+    /// Set whether to persist custom enum values while saving
+    void setPersistEnums(bool enable);
+
+    /// Whether the enum values is persisted when saved to file
+    bool getPersistEnums() const {return persistEnums;}
+
     /// get the pointer to the enum list
     const char ** getEnums(void) const;
 
@@ -223,6 +229,7 @@ public:
 private:
     Enumeration _enum;
     std::string _editorTypeName;
+    bool persistEnums = true;
 };
 
 /** Constraint integer properties

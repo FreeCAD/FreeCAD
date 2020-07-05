@@ -410,10 +410,10 @@ bool PropertyEnumeration::isValid(void) const
 void PropertyEnumeration::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<Integer value=\"" <<  _enum.getInt() <<"\"";
-    if (_enum.isCustom())
+    if (persistEnums && _enum.isCustom())
         writer.Stream() << " CustomEnum=\"true\"";
     writer.Stream() << "/>\n";
-    if (_enum.isCustom()) {
+    if (persistEnums && _enum.isCustom()) {
         std::vector<std::string> items = getEnumVector();
         writer.Stream() << writer.ind() << "<CustomEnumList count=\"" <<  items.size() <<"\">\n";
         writer.incInd();
@@ -424,6 +424,11 @@ void PropertyEnumeration::Save(Base::Writer &writer) const
         writer.decInd();
         writer.Stream() << writer.ind() << "</CustomEnumList>\n";
     }
+}
+
+void PropertyEnumeration::setPersistEnums(bool enable)
+{
+    persistEnums = enable;
 }
 
 void PropertyEnumeration::Restore(Base::XMLReader &reader)

@@ -127,6 +127,11 @@ void Enumeration::setEnums(const char **plEnums)
 
 void Enumeration::setEnums(const std::vector<std::string> &values)
 {
+    if (values.empty()) {
+        setEnums(NULL);
+        return;
+    }
+
     std::string oldValue;
     bool preserve = isValid();
     if (preserve) {
