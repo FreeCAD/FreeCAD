@@ -519,14 +519,13 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
     if(needSubElement && subelement && *subelement)
         return shape;
 
-    bool scaled = false;
     if(obj!=owner) {
         if(canCache(owner) && PropertyShapeCache::getShape(owner,shape)) {
-            auto scaled = shape.transformShape(mat,false,true);
+            bool scaled = shape.transformShape(mat,false,true);
             if(owner->getDocument()!=obj->getDocument()) {
                 shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
                 PropertyShapeCache::setShape(obj,shape,subname);
-            } else if(scaled)
+            } else if(scaled || (linked != owner && linkMat.hasScale()))
                 PropertyShapeCache::setShape(obj,shape,subname);
         }
         if(!shape.isNull()) {
@@ -629,20 +628,17 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         shape.makECompound(shapes);
     }
 
-    PropertyShapeCache::setShape(owner,shape);
-
     if(cacheable && canCache(owner))
         PropertyShapeCache::setShape(owner,shape);
 
     if(owner!=obj) {
-        scaled = shape.transformShape(mat,false,true);
-        if(canCache(obj)) {
-            if(owner->getDocument()!=obj->getDocument()) {
-                shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
-                PropertyShapeCache::setShape(obj,shape,subname);
-            }else if(scaled)
-                PropertyShapeCache::setShape(obj,shape,subname);
+        bool scaled = shape.transformShape(mat,false,true);
+        if(owner->getDocument()!=obj->getDocument()) {
+            shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
+            scaled = true; // force cache
         }
+        if(canCache(obj) && scaled)
+            PropertyShapeCache::setShape(obj,shape,subname);
     }
     if(noElementMap) {
         shape.resetElementMap();
