@@ -68,7 +68,7 @@ fc_target_copy_resource(MaterialToolsLib
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${MaterialTools_Files})
 
-INSTALL(FILES ${MaterialTools_Files} DESTINATION Mod/Material/materialtools)
+INSTALL(FILES ${MaterialTools_Files} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Material/materialtools)
 
 
 IF (BUILD_GUI)
@@ -98,7 +98,7 @@ fc_target_copy_resource(FluidMaterialLib
 
 INSTALL(
     FILES ${Material_SRCS} ${Material_QRC_SRCS}
-    DESTINATION Mod/Material
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Material
 )
 
 INSTALL(

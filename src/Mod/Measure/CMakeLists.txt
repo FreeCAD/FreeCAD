@@ -8,5 +8,5 @@ INSTALL(
     FILES
         Init.py
     DESTINATION
-        Mod/Measure
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Measure
 )

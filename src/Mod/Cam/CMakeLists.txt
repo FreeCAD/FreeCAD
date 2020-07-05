@@ -9,5 +9,5 @@ INSTALL(
         Init.py
         InitGui.py
     DESTINATION
-        Mod/Cam
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Cam
 )

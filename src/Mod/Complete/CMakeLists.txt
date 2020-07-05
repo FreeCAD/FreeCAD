@@ -19,5 +19,5 @@ INSTALL(
     FILES
         ${Complete_SRCS}
     DESTINATION
-        Mod/Complete
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Complete
 )

@@ -1425,7 +1425,7 @@ INSTALL(
     FILES
         ${FreeCADGui_Scripts}
     DESTINATION
-        Ext/freecad/gui
+        ${CMAKE_INSTALL_LIBDIR}/Ext/freecad/gui
 )
 
 INSTALL(

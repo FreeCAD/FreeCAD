@@ -43,14 +43,14 @@ INSTALL(
     FILES
         ${ply_SRCS}
     DESTINATION
-        Mod/OpenSCAD/ply
+        ${CMAKE_INSTALL_LIBDIR}/Mod/OpenSCAD/ply
 )
 INSTALL(
     FILES
         ${OpenSCAD_SRCS}
         ${OpenSCAD_QRC_SRCS}
     DESTINATION
-        Mod/OpenSCAD
+        ${CMAKE_INSTALL_LIBDIR}/Mod/OpenSCAD
 )
 INSTALL(
     FILES

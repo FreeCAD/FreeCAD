@@ -28,5 +28,5 @@ install(
     FILES
         ${Spreadsheet_Scripts}
     DESTINATION
-        Mod/Spreadsheet
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Spreadsheet
 )

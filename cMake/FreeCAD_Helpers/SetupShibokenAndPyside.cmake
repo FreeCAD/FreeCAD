@@ -99,7 +99,7 @@ macro(SetupShibokenAndPyside)
                 DIRECTORY
                     ${CMAKE_BINARY_DIR}/Ext/PySide
                 DESTINATION
-                    Ext
+                    ${CMAKE_INSTALL_LIBDIR}/Ext
             )
         endif()
     else(BUILD_QT5)

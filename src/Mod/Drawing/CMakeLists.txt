@@ -55,7 +55,7 @@ INSTALL(
     FILES
         ${Drawing_Scripts}
     DESTINATION
-        Mod/Drawing
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Drawing
 )
 
 INSTALL(

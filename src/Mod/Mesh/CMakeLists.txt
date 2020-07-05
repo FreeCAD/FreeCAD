@@ -28,5 +28,5 @@ INSTALL(
     FILES
         ${Mesh_Scripts}
     DESTINATION
-        Mod/Mesh
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Mesh
 )

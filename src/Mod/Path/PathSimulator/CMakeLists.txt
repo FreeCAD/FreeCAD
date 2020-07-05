@@ -8,5 +8,5 @@ add_subdirectory(App)
     # FILES
         # Gui/PathSimulator.py
     # DESTINATION
-        # Mod/Path
+        # ${CMAKE_INSTALL_LIBDIR}/Mod/Path
 # )

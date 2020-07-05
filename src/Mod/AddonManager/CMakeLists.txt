@@ -33,7 +33,7 @@ INSTALL(
         ${AddonManager_SRCS}
         ${AddonManager_QRC_SRCS}
     DESTINATION
-        Mod/AddonManager
+        ${CMAKE_INSTALL_LIBDIR}/Mod/AddonManager
 )
 
 

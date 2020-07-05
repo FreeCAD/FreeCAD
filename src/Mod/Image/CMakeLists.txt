@@ -31,12 +31,12 @@ INSTALL(
     FILES
         ${Image_Scripts}
     DESTINATION
-        Mod/Image
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Image
 )
 
 INSTALL(
     FILES
         ${Image_ToolsScripts}
     DESTINATION
-        Mod/Image/ImageTools
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Image/ImageTools
 )

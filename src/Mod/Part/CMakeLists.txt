@@ -79,40 +79,40 @@ INSTALL(
     FILES
         ${Part_Scripts}
     DESTINATION
-        Mod/Part
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Part
 )
 
 INSTALL(
     FILES
         ${AttachmentEditor_Scripts}
     DESTINATION
-        Mod/Part/AttachmentEditor
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Part/AttachmentEditor
 )
 
 INSTALL(
     FILES
         ${BasicShapes_Scripts}
     DESTINATION
-        Mod/Part/BasicShapes
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Part/BasicShapes
 )
 
 INSTALL(
     FILES
         ${BOPTools_Scripts}
     DESTINATION
-        Mod/Part/BOPTools
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Part/BOPTools
 )
 
 INSTALL(
     FILES
         ${CompoundTools_Scripts}
     DESTINATION
-        Mod/Part/CompoundTools
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Part/CompoundTools
 )
 
 INSTALL(
     FILES
         ${Part_tests}
     DESTINATION
-        Mod/Part/parttests
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Part/parttests
 )

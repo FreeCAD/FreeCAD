@@ -41,7 +41,7 @@ INSTALL(
     FILES
         ${Raytracing_Scripts}
     DESTINATION
-        Mod/Raytracing
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Raytracing
 )
 
 INSTALL(

@@ -1862,7 +1862,7 @@ void Application::initTypes(void)
 void Application::initConfig(int argc, char ** argv)
 {
     // find the home path....
-    mConfig["AppHomePath"] = FindHomePath(argv[0]);
+    mConfig["AppHomePath"] = PREFIX_DIR + PATHSEP;
 
     // Version of the application extracted from SubWCRef into src/Build/Version.h
     // We only set these keys if not yet defined. Therefore it suffices to search
@@ -2665,8 +2665,8 @@ void Application::ParseOptions(int ac, char ** av)
 void Application::ExtractUserPath()
 {
     // std paths
-    mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
-    mConfig["DocPath"] = mConfig["AppHomePath"] + "doc" + PATHSEP;
+    mConfig["BinPath"] = BIN_DIR + PATHSEP;
+    mConfig["DocPath"] = DATA_DIR + "doc" + PATHSEP;
 
 #if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
     // Default paths for the user specific stuff

@@ -18,5 +18,5 @@ INSTALL(
         PythonQt.py
         Tests.py
     DESTINATION
-        Mod/TemplatePyMod
+        ${CMAKE_INSTALL_LIBDIR}/Mod/TemplatePyMod
 )

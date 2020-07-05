@@ -53,7 +53,7 @@ INSTALL(
     FILES
         ${Robot_Scripts}
     DESTINATION
-        Mod/Robot
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Robot
 )
 
 INSTALL(

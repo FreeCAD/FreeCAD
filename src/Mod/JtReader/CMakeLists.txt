@@ -8,5 +8,5 @@ INSTALL(
     FILES
         Init.py
     DESTINATION
-        Mod/JtReader
+        ${CMAKE_INSTALL_LIBDIR}/Mod/JtReader
 )   

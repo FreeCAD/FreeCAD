@@ -26,5 +26,5 @@ install(
     FILES
         ${Reen_Scripts}
     DESTINATION
-        Mod/ReverseEngineering
+        ${CMAKE_INSTALL_LIBDIR}/Mod/ReverseEngineering
 )

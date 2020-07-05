@@ -75,44 +75,44 @@ INSTALL(
     FILES
         ${PlotAxes_SRCS}
     DESTINATION
-        Mod/Plot/plotAxes
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Plot/plotAxes
 )
 INSTALL(
     FILES
         ${PlotLabels_SRCS}
     DESTINATION
-        Mod/Plot/plotLabels
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Plot/plotLabels
 )
 INSTALL(
     FILES
         ${PlotPositions_SRCS}
     DESTINATION
-        Mod/Plot/plotPositions
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Plot/plotPositions
 )
 INSTALL(
     FILES
         ${PlotSave_SRCS}
     DESTINATION
-        Mod/Plot/plotSave
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Plot/plotSave
 )
 INSTALL(
     FILES
         ${PlotSeries_SRCS}
     DESTINATION
-        Mod/Plot/plotSeries
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Plot/plotSeries
 )
 INSTALL(
     FILES
         ${PlotUtils_SRCS}
     DESTINATION
-        Mod/Plot/plotUtils
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Plot/plotUtils
 )
 INSTALL(
     FILES
         ${PlotMain_SRCS}
         ${Plot_QRC_SRCS}
     DESTINATION
-        Mod/Plot
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Plot
 )
 INSTALL(
     FILES

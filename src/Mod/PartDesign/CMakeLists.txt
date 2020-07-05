@@ -102,35 +102,35 @@ INSTALL(
     FILES
         ${PartDesign_Scripts}
     DESTINATION
-        Mod/PartDesign
+        ${CMAKE_INSTALL_LIBDIR}/Mod/PartDesign
 )
 
 INSTALL(
     FILES
         ${PartDesign_OtherScripts}
     DESTINATION
-        Mod/PartDesign/Scripts
+        ${CMAKE_INSTALL_LIBDIR}/Mod/PartDesign/Scripts
        )
 
 INSTALL(
     FILES
         ${PartDesign_TestScripts}
     DESTINATION
-        Mod/PartDesign/PartDesignTests
+        ${CMAKE_INSTALL_LIBDIR}/Mod/PartDesign/PartDesignTests
        )
         
 INSTALL(
     FILES
         ${PartDesign_GearScripts}
     DESTINATION
-        Mod/PartDesign/fcgear
+        ${CMAKE_INSTALL_LIBDIR}/Mod/PartDesign/fcgear
 )
 
 INSTALL(
     FILES
         ${PartDesign_SprocketScripts}
     DESTINATION
-        Mod/PartDesign/fcsprocket
+        ${CMAKE_INSTALL_LIBDIR}/Mod/PartDesign/fcsprocket
 )
 
 if(BUILD_FEM)
@@ -153,7 +153,7 @@ if(BUILD_FEM)
         FILES
             ${WizardShaft_SRCS}
         DESTINATION
-            Mod/PartDesign/WizardShaft
+            ${CMAKE_INSTALL_LIBDIR}/Mod/PartDesign/WizardShaft
     )
 endif(BUILD_FEM)
 

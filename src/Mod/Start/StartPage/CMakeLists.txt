@@ -48,7 +48,7 @@ fc_target_copy_resource(StartPage
     ${StartPage_Resources})
 
 INSTALL(FILES ${StartPage_Scripts}
-    DESTINATION Mod/Start/StartPage
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Start/StartPage
 )
 
 INSTALL(FILES ${StartPage_PythonResources}
