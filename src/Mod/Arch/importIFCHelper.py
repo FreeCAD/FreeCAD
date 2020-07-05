@@ -568,7 +568,7 @@ def getPlacement(entity,scaling=1000):
         if loc:
             pl.move(loc)
     elif entity.is_a("IfcAxis2Placement2D"):
-        print("not implemented IfcAxis2Placement2D, ", end="")
+        print("not implemented IfcAxis2Placement2D, ")
     elif entity.is_a("IfcLocalPlacement"):
         pl = getPlacement(entity.PlacementRelTo,1)  # original placement
         relpl = getPlacement(entity.RelativePlacement,1)  # relative transf
