@@ -608,7 +608,9 @@ public:
         return other && this->getValues() == other->getValues();
     }
 
-    virtual Property *copyBeforeChange(void) const {return this->Copy();}
+    virtual Property *copyBeforeChange(void) const override {
+        return this->Copy();
+    }
 
     virtual void setPyObject(PyObject *value) override {
         try {
