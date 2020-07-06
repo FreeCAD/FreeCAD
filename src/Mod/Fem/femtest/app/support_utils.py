@@ -26,6 +26,7 @@ __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 import os
+import sys
 import tempfile
 import unittest
 
@@ -68,6 +69,11 @@ def fcc_print(
     message
 ):
     FreeCAD.Console.PrintMessage("{} \n".format(message))
+
+
+def get_namefromdef(strdel="", stradd=""):
+    # https://code.activestate.com/recipes/66062-determining-current-function-name/
+    return (sys._getframe(1).f_code.co_name).replace(strdel, stradd)
 
 
 def get_defmake_count(
