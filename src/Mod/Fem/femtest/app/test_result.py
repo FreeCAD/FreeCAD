@@ -72,8 +72,8 @@ class TestResult(unittest.TestCase):
         # read data from frd file
         frd_file = join(
             testtools.get_fem_test_home_dir(),
-            "ccx",
-            "Flow1D_thermomech.frd"
+            "calculix",
+            "thermomech_flow1D.frd"
         )
         from feminout.importCcxFrdResults import read_frd_result as read_frd
         frd_content = read_frd(frd_file)

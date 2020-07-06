@@ -76,7 +76,7 @@ class TestSolverCalculix(unittest.TestCase):
     ):
         from femexamples.boxanalysis_static import setup
         setup(self.document, "calculix")
-        self.calculix_inputfile_writing_test("cube_static")
+        self.calculix_inputfile_writing_test("box_static")
 
     # ********************************************************************************************
     def calculix_inputfile_writing_test(
@@ -111,7 +111,7 @@ class TestSolverCalculix(unittest.TestCase):
         # compare input file with the given one
         inpfile_given = join(
             testtools.get_fem_test_home_dir(),
-            "ccx",
+            "calculix",
             (base_name + ".inp")
         )
         inpfile_totest = join(
