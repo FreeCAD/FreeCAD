@@ -33,6 +33,7 @@ import FreeCAD
 import femsolver.run
 from . import support_utils as testtools
 from .support_utils import fcc_print
+from .support_utils import get_namefromdef
 
 
 class TestSolverCalculix(unittest.TestCase):
@@ -48,7 +49,13 @@ class TestSolverCalculix(unittest.TestCase):
         self.document = FreeCAD.newDocument(self.__class__.__name__)
 
         # more inits
-        self.mesh_name = "Mesh"
+        self.pre_dir_name = "solver_calculix_"
+        self.ending = ".inp"
+        self.infilename = "Mesh"
+        self.test_file_dir = join(
+            testtools.get_fem_test_home_dir(),
+            "calculix"
+        )
 
     # ********************************************************************************************
     def tearDown(
@@ -64,38 +71,32 @@ class TestSolverCalculix(unittest.TestCase):
         # since method name starts with 00 this will be run first
         # this test just prints a line with stars
 
-        fcc_print("\n{0}\n{1} run FEM TestSolverFrameWork tests {2}\n{0}".format(
+        fcc_print("\n{0}\n{1} run FEM TestSolverCalculix tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
             55 * "*"
         ))
 
     # ********************************************************************************************
-    def test_solver_calculix(
+    def test_box_static(
         self
     ):
+        fcc_print("")
         from femexamples.boxanalysis_static import setup
         setup(self.document, "calculix")
-        self.calculix_inputfile_writing_test("box_static")
+        self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def calculix_inputfile_writing_test(
+    def input_file_writing_test(
         self,
         base_name
     ):
-
         self.document.recompute()
 
-        # start
-        fcc_print(
-            "\n------------- Start of FEM CalculiX tests for {} -------"
-            .format(base_name)
-        )
-
         # get analysis working directory and save FreeCAD file
-        working_dir = testtools.get_fem_test_tmp_dir("solver_calculix_" + base_name)
+        working_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
         save_fc_file = join(working_dir, base_name + ".FCStd")
-        fcc_print("Save FreeCAD file to {} ...".format(save_fc_file))
+        # fcc_print("Save FreeCAD file to {} ...".format(save_fc_file))
         self.document.saveAs(save_fc_file)
 
         # write input file
@@ -110,18 +111,14 @@ class TestSolverCalculix(unittest.TestCase):
 
         # compare input file with the given one
         inpfile_given = join(
-            testtools.get_fem_test_home_dir(),
-            "calculix",
-            (base_name + ".inp")
+            self.test_file_dir,
+            base_name + self.ending
         )
         inpfile_totest = join(
             working_dir,
-            self.mesh_name + ".inp"
+            self.infilename + self.ending
         )
-        fcc_print(
-            "Comparing {}  to  {}"
-            .format(inpfile_given, inpfile_totest)
-        )
+        # fcc_print("Comparing {}  to  {}".format(inpfile_given, inpfile_totest))
         ret = testtools.compare_inp_files(
             inpfile_given,
             inpfile_totest
@@ -129,10 +126,4 @@ class TestSolverCalculix(unittest.TestCase):
         self.assertFalse(
             ret,
             "CalculiX write_inp_file for {0} test failed.\n{1}".format(base_name, ret)
-        )
-
-        # end
-        fcc_print(
-            "--------------- End of FEM CalculiX tests for {} ---------"
-            .format(base_name)
         )
