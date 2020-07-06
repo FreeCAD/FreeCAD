@@ -26,6 +26,7 @@
 #include <QStandardItemModel>
 #include <QDialog>
 #include <QHash>
+#include "InventorBase.h"
 
 class SoNode;
 
@@ -36,7 +37,7 @@ namespace Dialog {
 class Ui_SceneInspector;
 
 /// Stores data representing scenegraph nodes.
-class SceneModel : public QStandardItemModel
+class SceneModel : public QAbstractItemModel
 {
     Q_OBJECT
 
@@ -44,8 +45,6 @@ public:
     SceneModel(QObject* parent);
     virtual ~SceneModel();
 
-    /// Tree structure: column count is 1.
-    int columnCount (const QModelIndex & parent = QModelIndex()) const;
     /** returns empty QVariant, unless orientation == Qt::Horizontal,
      *  role == Qt::DisplayRole and section == 0 where it returns
      *  "Inventor Tree"
@@ -57,11 +56,23 @@ public:
     void setNode(SoNode* node);
     /// set names per node
     void setNodeNames(const QHash<SoNode*, QString>& names);
-    /// returns standard parent's flags
-    Qt::ItemFlags flags (const QModelIndex & index) const;
+
+    virtual QModelIndex parent(const QModelIndex & index) const;
+    virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+    virtual QModelIndex index(int row, int, const QModelIndex &parent = QModelIndex()) const;
+    virtual int rowCount(const QModelIndex & parent = QModelIndex()) const;
+    virtual int columnCount(const QModelIndex &) const;
 
 private:
-    void setNode(QModelIndex, SoNode*, bool expand=true);
+
+    struct Item {
+        QModelIndex parent;
+        CoinPtr<SoNode> node;
+        bool expand = true;
+    };
+    mutable QMap<QModelIndex, Item> items;
+    Item rootItem;
+
     QHash<SoNode*, QString> nodeNames;
 };
 

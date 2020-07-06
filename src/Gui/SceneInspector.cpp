@@ -44,7 +44,7 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::SceneModel */
 
 SceneModel::SceneModel(QObject* parent)
-    : QStandardItemModel(parent)
+    : QAbstractItemModel(parent)
 {
 }
 
@@ -52,15 +52,9 @@ SceneModel::~SceneModel()
 {
 }
 
-int SceneModel::columnCount (const QModelIndex & parent) const
+void SceneModel::setNodeNames(const QHash<SoNode*, QString>& names)
 {
-    Q_UNUSED(parent); 
-    return 2;
-}
-
-Qt::ItemFlags SceneModel::flags (const QModelIndex & index) const
-{
-    return QAbstractItemModel::flags(index);
+    nodeNames = names;
 }
 
 QVariant SceneModel::headerData (int section, Qt::Orientation orientation, int role) const
@@ -84,21 +78,31 @@ bool SceneModel::setHeaderData (int, Qt::Orientation, const QVariant &, int)
 
 void SceneModel::setNode(SoNode* node)
 {
-    this->clear();
-    this->setHeaderData(0, Qt::Horizontal, tr("Nodes"), Qt::DisplayRole);
-
-    this->insertColumns(0,2);
-    this->insertRows(0,1);
-    setNode(this->index(0, 0), node);
+    this->beginResetModel();
+    items.clear();
+    rootItem.node = node;
+    this->endResetModel();
 }
 
-void SceneModel::setNode(QModelIndex index, SoNode* node, bool expand)
+QVariant SceneModel::data(const QModelIndex & index, int role) const
 {
-    this->setData(index, QVariant(QString::fromLatin1(node->getTypeId().getName())));
-    QHash<SoNode*, QString>::iterator it = nodeNames.find(node);
+    if (role != Qt::DisplayRole || index.column() > 1)
+        return QVariant();
+
+    auto it = items.find(index);
+    if (it == items.end())
+        return QVariant();
+
+    auto &item = it.value();
+
+    if (index.column() == 0)
+        return QString::fromLatin1(item.node->getTypeId().getName());
+
+    SoNode *node = item.node.get();
+    auto itName = nodeNames.find(node);
     QString name;
     QTextStream stream(&name);
-    stream << node << ", ";
+    stream << item.node.get() << ", ";
     if(node->isOfType(SoSwitch::getClassTypeId())) {
         auto pcSwitch = static_cast<SoSwitch*>(node);
         stream << pcSwitch->whichChild.getValue() << ", ";
@@ -115,42 +119,89 @@ void SceneModel::setNode(QModelIndex index, SoNode* node, bool expand)
         auto shape = static_cast<SoIndexedShape*>(node);
         stream << shape->coordIndex.getNum() << ", ";
     }
-    if (it != nodeNames.end())
-        stream << it.value();
+    if (itName != nodeNames.end())
+        stream << itName.value();
     else
         stream << node->getName();
-    this->setData(this->index(index.row(), 1, index.parent()), QVariant(name));
-
-    if(!expand)
-        return;
-
-    if (node->getTypeId().isDerivedFrom(SoFCPathAnnotation::getClassTypeId())) {
-        auto path = static_cast<SoFCPathAnnotation*>(node)->getPath();
-        if(path && path->getLength()) {
-            // insert SoGroup icon
-            this->insertColumns(0,2,index);
-            this->insertRows(0,path->getLength(), index);
-            for (int i=0; i<path->getLength();i++) {
-                SoNode* child = path->getNode(i);
-                setNode(this->index(i, 0, index), child, i==path->getLength()-1);
-            }
-        }
-    } else if (node->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
-        SoGroup *group = static_cast<SoGroup*>(node);
-        // insert SoGroup icon
-        this->insertColumns(0,2,index);
-        this->insertRows(0,group->getNumChildren(), index);
-        for (int i=0; i<group->getNumChildren();i++) {
-            SoNode* child = group->getChild(i);
-            setNode(this->index(i, 0, index), child);
-        }
-    }
-    // insert icon
+    return name;
 }
 
-void SceneModel::setNodeNames(const QHash<SoNode*, QString>& names)
+QModelIndex SceneModel::parent(const QModelIndex & index) const
 {
-    nodeNames = names;
+    auto it = items.find(index);
+    if (it == items.end())
+        return QModelIndex();
+    return it.value().parent;
+}
+
+QModelIndex SceneModel::index(int row, int column, const QModelIndex &parent) const
+{
+    const Item *item = nullptr;
+    if (parent.isValid()) {
+        auto it = items.find(parent);
+        if (it == items.end())
+            return QModelIndex();
+        item = &it.value();
+    } else
+        item = &rootItem;
+
+    SoNode *node = item->node;
+
+    if (!item->expand)
+        return QModelIndex();
+
+    QModelIndex index = createIndex(row, column, (void*)item);
+
+    if (node->isOfType(SoFCPathAnnotation::getClassTypeId())) {
+        auto path = static_cast<SoFCPathAnnotation*>(node)->getPath();
+        if (!path || row < 0 || row >= path->getLength())
+            return QModelIndex();
+
+        auto &child = items[index];
+        if (!child.node) {
+            child.node = path->getNode(row);
+            child.expand = false;
+            child.parent = parent;
+        }
+        return index;
+    } else if (node->isOfType(SoGroup::getClassTypeId())) {
+        auto group = static_cast<SoGroup*>(node);
+        if (row < 0 || row >= group->getNumChildren())
+            return QModelIndex();
+
+        auto &child = items[index];
+        if (!child.node) {
+            child.node = group->getChild(row);
+            child.parent = parent;
+        }
+        return index;
+    }
+    return QModelIndex();
+}
+
+int SceneModel::rowCount(const QModelIndex & parent) const
+{
+    const Item *item = nullptr;
+    if (parent.isValid()) {
+        auto it = items.find(parent);
+        if (it == items.end())
+            return 0;
+        item = &it.value();
+    } else
+        item = &rootItem;
+    SoNode *node = item->node;
+    if (node->isOfType(SoFCPathAnnotation::getClassTypeId())) {
+        auto path = static_cast<SoFCPathAnnotation*>(node)->getPath();
+        return path ? path->getLength() : 0;
+    } else if (node->isOfType(SoGroup::getClassTypeId()))
+        return static_cast<SoGroup*>(node)->getNumChildren();
+
+    return 0;
+}
+
+int SceneModel::columnCount(const QModelIndex &) const
+{
+    return 2;
 }
 
 // --------------------------------------------------------
@@ -253,10 +304,6 @@ void DlgInspector::on_refreshButton_clicked()
             setNode(viewer->getSoRenderManager()->getSceneGraph());
             ui->treeView->expandToDepth(4);
         }
-    }
-    else {
-        SceneModel* model = static_cast<SceneModel*>(ui->treeView->model());
-        model->clear();
     }
 }
 
