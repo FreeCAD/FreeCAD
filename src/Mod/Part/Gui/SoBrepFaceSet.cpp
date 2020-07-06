@@ -80,6 +80,7 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include <boost/algorithm/string/predicate.hpp>
 
@@ -126,23 +127,75 @@ bool SoBrepFaceSet::makeDistinctColor(uint32_t &res, uint32_t color, uint32_t ot
 
 class SoBrepFaceSet::VBO {
 public:
-    
+
+    struct TextureInfo {
+        int unit;
+        int stripe;
+        int count;
+        const unsigned char *coords;
+    };
+
+#pragma pack(push, 1)
+    struct VertexAttr{ 
+        GLfloat x,y,z;
+        GLfloat nx,ny,nz;
+        GLbyte r, g, b, a;
+
+        void fill(const SbVec3f &coord, const SbVec3f &normal,
+                const SbColor &color, const float &t)
+        {
+            coord.getValue(x,y,z);
+            normal.getValue(nx,ny,nz);
+            uint32_t RGBA = color.getPackedValue(t);
+            r = (GLbyte)(( RGBA & 0xFF000000 ) >> 24);
+            g = (GLbyte)(( RGBA & 0xFF0000 ) >> 16);
+            b = (GLbyte)(( RGBA & 0xFF00 ) >> 8);
+            a = (GLbyte)( RGBA & 0xFF );
+            return;
+        }
+
+        VertexAttr *fill(const SbVec3f &coord, const SbVec3f &normal,
+                        const SbColor &color, const float &t,
+                        const SoMultiTextureCoordinateElement *mtelem,
+                        const std::vector<TextureInfo> &texinfo,
+                        int tindex)
+        {
+            fill(coord, normal, color, t);
+
+            unsigned char *ptr = (unsigned char*)(this+1);
+            for (auto &tex : texinfo) {
+                if (tex.coords && tindex < tex.count)
+                    memcpy(ptr, tex.coords+tex.stripe*tindex, tex.stripe);
+                else {
+                    SbVec4f v = mtelem->get(tex.unit, coord, normal);
+                    memcpy(ptr, &v, tex.stripe);
+                }
+                ptr += tex.stripe;
+            }
+            return (VertexAttr*)ptr;
+        }
+    };
+#pragma pack(pop)
+
     struct Buffer {
-        uint32_t myvbo[2];
-        std::size_t vertex_array_size;
-        std::size_t index_array_size;
-        bool updateVbo;
-        bool vboLoaded;
+        uint32_t myvbo = GL_INVALID_VALUE;
+        GLsizei vertex_array_size = 0;
+        std::vector<TextureInfo> tex;
+        int texstripe = 0;
+        bool updateVbo = true;
+        bool vboLoaded = false;
+
+        int stripe() const {
+            return sizeof(VertexAttr) + texstripe;
+        }
     };
 
     static SbBool vboAvailable;
-    uint32_t indice_array;
     std::map<uint32_t, Buffer> vbomap;
 
     VBO()
     {
         SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
-        indice_array = 0;
     }
 
     ~VBO()
@@ -152,10 +205,9 @@ public:
         // schedule delete for all allocated GL resources
         std::map<uint32_t, Buffer>::iterator it;
         for (it = vbomap.begin(); it != vbomap.end(); ++it) {
-            void * ptr0 = (void*) ((uintptr_t) it->second.myvbo[0]);
+            if (it->second.myvbo == GL_INVALID_VALUE) continue;
+            void * ptr0 = (void*) ((uintptr_t) it->second.myvbo);
             SoGLCacheContextElement::scheduleDeleteCallback(it->first, VBO::vbo_delete, ptr0);
-            void * ptr1 = (void*) ((uintptr_t) it->second.myvbo[1]);
-            SoGLCacheContextElement::scheduleDeleteCallback(it->first, VBO::vbo_delete, ptr1);
         }
     }
 
@@ -183,7 +235,7 @@ public:
         return true;
     }
 
-    void render(SoGLRenderAction * action,
+    bool render(SoGLRenderAction * action,
                 bool color_override,
                 const std::vector<int32_t> &render_indices,
                 const SoCoordinateElement *coords,
@@ -196,7 +248,6 @@ public:
                 const int32_t *normindices,
                 SoMaterialBundle *const materials,
                 const int32_t *matindices,
-                SoTextureCoordinateBundle * const texcoords,
                 const int32_t *texindices,
                 const int nbind,
                 const int mbind,
@@ -212,9 +263,9 @@ public:
             const cc_glglue * glue = cc_glglue_instance((int) context);
             PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
 #endif
-            //cc_glglue_glDeleteBuffers(glue, buffer.size(), buffer.data());
             auto &buffer = it->second;
-            glDeleteBuffersARB(2, buffer.myvbo);
+            if (buffer.myvbo != GL_INVALID_VALUE)
+                glDeleteBuffersARB(1, &buffer.myvbo);
             self->vbomap.erase(it);
         }
     }
@@ -329,6 +380,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
         for(auto &v : PRIVATE(this)->vbomap) {
             v.second.updateVbo = true;
             v.second.vboLoaded = false;
+            v.second.vertex_array_size = 0;
         }
         onPartIndexChange();
         touch();
@@ -655,10 +707,18 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bo
         auto element = SoLazyElement::getInstance(state);
         const float *trans = element->getTransparencyPointer();
         int numtrans = element->getNumTransparencies();
+        float _trans = 0.01;
 
-        // In case not all faces are transparent, render opaque one first, with
-        // depth test enabled
-        if(!action->isRenderingTranspPaths()) {
+        if (shapestyleflags & SoShapeStyleElement::TRANSP_TEXTURE) {
+            numtrans = 1;
+            trans = &_trans;
+
+            if (!action->isRenderingTranspPaths())
+                action->handleTransparency(true);
+
+        } else if (!action->isRenderingTranspPaths()) {
+            // In case not all faces are transparent, render opaque one first, with
+            // depth test enabled
             if(!transpShadow && SoMaterialBindingElement::get(state) != SoMaterialBindingElement::OVERALL) {
                 RenderIndices.clear();
                 int numparts = partIndex.getNum();
@@ -695,7 +755,6 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bo
         } 
 
         if (transpShadow || action->isRenderingDelayedPaths() || action->isRenderingTranspPaths()) {
-
             // We perform our own "per part" face sorting to avoid artifacts in
             // transparent face rendering, where some triangle inside a part is
             // mis-sorted.
@@ -747,6 +806,8 @@ int SoBrepFaceSet::overrideMaterialBinding(
 
     float defaultTrans = Gui::ViewParams::getSelectionTransparency();
 
+    unsigned int shapestyleflags = SoShapeStyleElement::get(state)->getFlags();
+
     int pushed = 0;
     if(Gui::SoFCDisplayModeElement::showHiddenLines(state)) {
         state->push();
@@ -790,11 +851,10 @@ int SoBrepFaceSet::overrideMaterialBinding(
         this->uniqueId = oldId;
 
     } else if(!selected && !ctx && !ctx2) {
-        if(!(SoShapeStyleElement::get(state)->getFlags() 
-                & (SoShapeStyleElement::TRANSP_TEXTURE|SoShapeStyleElement::TRANSP_MATERIAL)))
-        {
+        if(shapestyleflags & SoShapeStyleElement::TRANSP_TEXTURE)
+            defaultTrans = 0.01;
+        else if(!(shapestyleflags & SoShapeStyleElement::TRANSP_MATERIAL))
             return 0;
-        }
     }
 
     auto mb = SoMaterialBindingElement::get(state);
@@ -817,6 +877,11 @@ int SoBrepFaceSet::overrideMaterialBinding(
             trans0 = trans[i]<defaultTrans?defaultTrans:trans[i];
             break;
         }
+    }
+
+    if (trans0 == 0.0 && (shapestyleflags & SoShapeStyleElement::TRANSP_TEXTURE)) {
+        hasTransparency = true;
+        trans0 = 0.01;
     }
 
     // Override material binding to PER_PART_INDEXED so that we can reuse coin
@@ -1592,7 +1657,7 @@ void SoBrepFaceSet::_renderSelection(SoGLRenderAction *action, SbColor color, bo
     }
 }
 
-void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
+bool SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                                 bool color_override,
                                 const std::vector<int32_t> &render_indices,
                                 const SoCoordinateElement *coords,
@@ -1605,99 +1670,128 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                                 const int32_t *normalindices,
                                 SoMaterialBundle *const materials,
                                 const int32_t *matindices,
-                                SoTextureCoordinateBundle * const texcoords,
                                 const int32_t *texindices,
                                 const int nbind,
                                 const int mbind,
                                 const int texture)
 {
-    auto vertexlist = static_cast<const SoGLCoordinateElement*>(coords);
-
-    (void)texcoords; (void)texindices; (void)texture;
-    const SbVec3f * coords3d = NULL;
-    SbVec3f * cur_coords3d = NULL;
-    coords3d = vertexlist->getArrayPtr3();
-    cur_coords3d = ( SbVec3f *)coords3d;
-
     const int32_t *mindices = matindices;
-    const int32_t *viptr = vertexindices;
-    const int32_t *viendptr = viptr + num_indices;
-    const int32_t *piptr = partindices;
-    const int32_t *piendptr = piptr + num_partindices;
-    int32_t v1, v2, v3, v4, pi;
-    SbVec3f dummynormal(0,0,1);
-    int numverts = vertexlist->getNum();
 
-    const SbVec3f *currnormal = &dummynormal;
-    if (normals) currnormal = normals;
-
-    int matnr = 0;
-    int trinr = 0;
-
-    float * vertex_array = NULL;
-    GLuint * index_array = NULL;
-    SbColor  mycolor1,mycolor2,mycolor3;
-    float t1, t2, t3;
-    SbVec3f *mynormal1 = (SbVec3f *)currnormal;
-    SbVec3f *mynormal2 = (SbVec3f *)currnormal;
-    SbVec3f *mynormal3 = (SbVec3f *)currnormal;
-    int indice=0;
-    uint32_t RGBA,R,G,B,A;
-    float Rf,Gf,Bf,Af;
-
-#ifdef FC_OS_WIN32
+    SoState * state = action->getState();
     const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
-#endif
 
     uint32_t contextId = action->getCacheContext();
     auto res = this->vbomap.insert(std::make_pair(contextId,VBO::Buffer()));
     VBO::Buffer &buf = res.first->second;
-    if (res.second) {
-#ifdef FC_OS_WIN32
-        PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
-#endif
-        glGenBuffersARB(2, buf.myvbo);
-        buf.vertex_array_size = 0;
-        buf.index_array_size = 0;
-        buf.vboLoaded = false;
+
+    if (buf.vertex_array_size < 0) {
+        // Non triangles, not supported at this time
+        return false;
     }
 
-    if ((buf.vertex_array_size != (sizeof(float) * num_indices * 10)) ||
-        (buf.index_array_size != (sizeof(GLuint) * num_indices))) {
-        if ((buf.vertex_array_size != 0 ) && ( buf.index_array_size != 0))
+    if (buf.vertex_array_size != num_indices) {
+        if (buf.vertex_array_size != 0 )
             buf.updateVbo = true;
     }
 
-    // vbo loaded is defining if we must pre-load data into the VBO. When the variable is set to 0
-    // it means that the VBO has not been initialized
-    // updateVbo is tracking the need to update the content of the VBO which act as a buffer within
-    // the graphic card
-    // TODO FINISHING THE COLOR SUPPORT !
-
 #ifdef FC_OS_WIN32
-    PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glBindBufferARB");
+    static PFNGLBINDBUFFERARBPROC glBindBufferARB;
+    static PFNGLMAPBUFFERARBPROC glMapBufferARB;
+    static PFNGLGENBUFFERSPROC glGenBuffersARB;
+    static PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB;
+    static PFNGLBUFFERDATAARBPROC glBufferDataARB;
+    if (!glBindBufferARB) {
+        glBindBufferARB = (PFNGLBINDBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glBindBufferARB");
+        glMapBufferARB = (PFNGLMAPBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glMapBufferARB");
+        glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
+        glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
+        glBufferDataARB = (PFNGLBUFFERDATAARBPROC)cc_glglue_getprocaddress(glue, "glBufferDataARB");
+    }
 #endif
 
     if (!buf.vboLoaded || buf.updateVbo) {
-#ifdef FC_OS_WIN32
-        PFNGLMAPBUFFERARBPROC glMapBufferARB = (PFNGLMAPBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glMapBufferARB");
-        PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
-        PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
-        PFNGLBUFFERDATAARBPROC glBufferDataARB = (PFNGLBUFFERDATAARBPROC)cc_glglue_getprocaddress(glue, "glBufferDataARB");
-#endif
+        auto vertexlist = static_cast<const SoGLCoordinateElement*>(coords);
+
+        const SbVec3f * coords3d = NULL;
+        SbVec3f * cur_coords3d = NULL;
+        coords3d = vertexlist->getArrayPtr3();
+        cur_coords3d = ( SbVec3f *)coords3d;
+
+        const int32_t *viptr = vertexindices;
+        const int32_t *viendptr = viptr + num_indices;
+        const int32_t *piptr = partindices;
+        const int32_t *piendptr = piptr + num_partindices;
+        int32_t v1, v2, v3, v4, pi;
+        SbVec3f dummynormal(0,0,1);
+        int numverts = vertexlist->getNum();
+
+        const SbVec3f *currnormal = &dummynormal;
+        if (normals) currnormal = normals;
+
+        int texidx = 0;
+        int matnr = 0;
+        int trinr = 0;
+
+        SbColor  mycolor1,mycolor2,mycolor3;
+        float t1, t2, t3;
+        SbVec3f *mynormal1 = (SbVec3f *)currnormal;
+        SbVec3f *mynormal2 = (SbVec3f *)currnormal;
+        SbVec3f *mynormal3 = (SbVec3f *)currnormal;
+
         // We must manage buffer size increase let's clear everything and re-init to test the
         // clearing process
-        glDeleteBuffersARB(2, buf.myvbo);
-        glGenBuffersARB(2, buf.myvbo);
-        vertex_array = ( float * ) malloc ( sizeof(float) * num_indices * 10 );
-        index_array = ( GLuint *) malloc ( sizeof(GLuint) * num_indices );
-        buf.vertex_array_size = sizeof(float) * num_indices * 10;
-        buf.index_array_size = sizeof(GLuint) * num_indices;
-        this->vbomap[contextId] = buf;
-        this->indice_array = 0;
+        if (buf.myvbo != GL_INVALID_VALUE) {
+            glDeleteBuffersARB(1, &buf.myvbo);
+            buf.myvbo = GL_INVALID_VALUE;
+        }
 
-        // Get the initial colors
-        SoState * state = action->getState();
+        buf.tex.clear();
+        buf.texstripe = 0;
+        const SoMultiTextureCoordinateElement * mtelem = NULL;
+        if (texture) {
+            int lastenabled = -1;
+            const SbBool * enabledunits = NULL;
+            enabledunits = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+            if (enabledunits)
+                mtelem = SoMultiTextureCoordinateElement::getInstance(state);
+            if (!SoGLDriverDatabase::isSupported(glue, SO_GL_MULTITEXTURE)) {
+                static int hasWarned = 0;
+                if (lastenabled>0) {
+                    if (!hasWarned) {
+                        SoDebugError::postWarning("VBO::render",
+                                "Multitexturing is not supported on this hardware, "
+                                "but more than one textureunit is in use.");
+                        hasWarned = 1;
+                    }
+                    lastenabled = 0;
+                }
+            }
+            for (int i = 0; i <= lastenabled; i++) {
+                if (!enabledunits[i]) continue;
+                buf.tex.emplace_back();
+                auto &tex = buf.tex.back();
+                int dim = mtelem->getDimension(i);
+                tex.stripe = sizeof(GLfloat) * dim;
+                buf.texstripe += tex.stripe;
+                tex.count = mtelem->getNum(i);
+                tex.unit = i;
+                tex.coords = nullptr;
+                if (tex.count) {
+                    switch (dim) {
+                    case 2: tex.coords = (const unsigned char*) mtelem->getArrayPtr2(i); break;
+                    case 3: tex.coords = (const unsigned char*) mtelem->getArrayPtr3(i); break;
+                    case 4: tex.coords = (const unsigned char*) mtelem->getArrayPtr4(i); break;
+                    }
+                }
+            }
+        }
+
+        FC_COIN_THREAD_LOCAL std::vector<unsigned char> vertex_array;
+        vertex_array.resize(buf.stripe() * num_indices);
+
+        VertexAttr *vertex_attr = (VertexAttr*)(&vertex_array[0]);
+
+        buf.vertex_array_size = 0;
 
         if(mbind == PER_PART_INDEXED || mbind == PER_VERTEX_INDEXED || mbind == PER_FACE_INDEXED) {
             mycolor1 = mycolor2 = mycolor3 = SoLazyElement::getDiffuse(state,matindices[0]);
@@ -1727,7 +1821,13 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                 break;
             }
             v4 = viptr < viendptr ? *viptr++ : -1;
-            (void)v4;
+            if (v4 != -1) {
+                // not triangle, bail
+                buf.vertex_array_size = -1;
+                SoDebugError::postWarning("SoBrepFaceSet::VBO::render",
+                        "Non-triangle elements are not supported. Fallback to CPU rendering.");
+                return false;
+            }
 
             if (mbind == PER_PART) {
                 if (trinr == 0) {
@@ -1821,89 +1921,27 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
             if (nbind == PER_VERTEX_INDEXED)
                 normalindices++;
 
-            /* We building the Vertex dataset there and push it to a VBO */
-            /* The Vertex array shall contain per element vertex_coordinates[3],
-            normal_coordinates[3], color_value[3] (RGBA format) */
+            if (buf.tex.empty()) {
+                (vertex_attr++)->fill(cur_coords3d[v1], *mynormal1, mycolor1, t1);
+                (vertex_attr++)->fill(cur_coords3d[v2], *mynormal2, mycolor2, t2);
+                (vertex_attr++)->fill(cur_coords3d[v3], *mynormal3, mycolor3, t3);
+            } else {
+                int tindex;
+                tindex = texindices ? *texindices++ : texidx++;
+                vertex_attr = vertex_attr->fill(cur_coords3d[v1], *mynormal1, mycolor1, t1,
+                                                mtelem, buf.tex, tindex);
 
-            index_array[this->indice_array] =   this->indice_array;
-            index_array[this->indice_array+1] = this->indice_array + 1;
-            index_array[this->indice_array+2] = this->indice_array + 2;
-            this->indice_array += 3;
+                tindex = texindices ? *texindices++ : texidx++;
+                vertex_attr = vertex_attr->fill(cur_coords3d[v2], *mynormal2, mycolor2, t2,
+                                                mtelem, buf.tex, tindex);
 
-
-            ((SbVec3f *)(cur_coords3d+v1 ))->getValue(vertex_array[indice+0],
-                                                      vertex_array[indice+1],
-                                                      vertex_array[indice+2]);
-
-            ((SbVec3f *)(mynormal1))->getValue(vertex_array[indice+3],
-                                               vertex_array[indice+4],
-                                               vertex_array[indice+5]);
-
-            /* We decode the Vertex1 color */
-            RGBA = mycolor1.getPackedValue(t1);
-            R = ( RGBA & 0xFF000000 ) >> 24 ;
-            G = ( RGBA & 0xFF0000 ) >> 16;
-            B = ( RGBA & 0xFF00 ) >> 8;
-            A = ( RGBA & 0xFF );
-
-            Rf = (((float )R) / 255.0);
-            Gf = (((float )G) / 255.0);
-            Bf = (((float )B) / 255.0);
-            Af = (((float )A) / 255.0);
-
-            vertex_array[indice+6] = Rf;
-            vertex_array[indice+7] = Gf;
-            vertex_array[indice+8] = Bf;
-            vertex_array[indice+9] = Af;
-            indice+=10;
-
-            ((SbVec3f *)(cur_coords3d+v2))->getValue(vertex_array[indice+0],
-                                                     vertex_array[indice+1],
-                                                     vertex_array[indice+2]);
-            ((SbVec3f *)(mynormal2))->getValue(vertex_array[indice+3],
-                                               vertex_array[indice+4],
-                                               vertex_array[indice+5]);
-
-            RGBA = mycolor2.getPackedValue(t2);
-            R = ( RGBA & 0xFF000000 ) >> 24 ;
-            G = ( RGBA & 0xFF0000 ) >> 16;
-            B = ( RGBA & 0xFF00 ) >> 8;
-            A = ( RGBA & 0xFF );
-
-            Rf = (((float )R) / 255.0);
-            Gf = (((float )G) / 255.0);
-            Bf = (((float )B) / 255.0);
-            Af = (((float )A) / 255.0);
-
-            vertex_array[indice+6] = Rf;
-            vertex_array[indice+7] = Gf;
-            vertex_array[indice+8] = Bf;
-            vertex_array[indice+9] = Af;
-            indice+=10;
-
-            ((SbVec3f *)(cur_coords3d+v3))->getValue(vertex_array[indice+0],
-                                                     vertex_array[indice+1],
-                                                     vertex_array[indice+2]);
-            ((SbVec3f *)(mynormal3))->getValue(vertex_array[indice+3],
-                                               vertex_array[indice+4],
-                                               vertex_array[indice+5]);
-
-            RGBA = mycolor3.getPackedValue(t3);
-            R = ( RGBA & 0xFF000000 ) >> 24 ;
-            G = ( RGBA & 0xFF0000 ) >> 16;
-            B = ( RGBA & 0xFF00 ) >> 8;
-            A = ( RGBA & 0xFF );
-
-            Rf = (((float )R) / 255.0);
-            Gf = (((float )G) / 255.0);
-            Bf = (((float )B) / 255.0);
-            Af = (((float )A) / 255.0);
-
-            vertex_array[indice+6] = Rf;
-            vertex_array[indice+7] = Gf;
-            vertex_array[indice+8] = Bf;
-            vertex_array[indice+9] = Af;
-            indice+=10;
+                tindex = texindices ? *texindices++ : texidx++;
+                vertex_attr = vertex_attr->fill(cur_coords3d[v3], *mynormal3, mycolor3, t3,
+                                                mtelem, buf.tex, tindex);
+                if (texindices)
+                    texindices++;
+            }
+            buf.vertex_array_size += 3;
 
             /* ============================================================ */
             trinr++;
@@ -1921,55 +1959,74 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
             }
         }
 
-        glBindBufferARB(GL_ARRAY_BUFFER_ARB, buf.myvbo[0]);
-        glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(float) * indice , vertex_array, GL_DYNAMIC_DRAW_ARB);
-
-        glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, buf.myvbo[1]);
-        glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER_ARB, sizeof(GLuint) * this->indice_array , &index_array[0], GL_DYNAMIC_DRAW_ARB);
-
-        // glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
-        // glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
+        glGenBuffersARB(1, &buf.myvbo);
+        glBindBufferARB(GL_ARRAY_BUFFER_ARB, buf.myvbo);
+        glBufferDataARB(GL_ARRAY_BUFFER_ARB,
+                        buf.vertex_array_size * buf.stripe(),
+                        &vertex_array[0],
+                        GL_DYNAMIC_DRAW_ARB);
 
         buf.updateVbo = true; // set to true here avoid calling glBindBuffer below
         buf.vboLoaded = true;
-        free(vertex_array);
-        free(index_array);
     }
 
     // This is the VBO rendering code
 
     if (!buf.updateVbo) {
-        glBindBufferARB(GL_ARRAY_BUFFER_ARB, buf.myvbo[0]);
-        glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, buf.myvbo[1]);
+        glBindBufferARB(GL_ARRAY_BUFFER_ARB, buf.myvbo);
     }
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
 
-    glVertexPointer(3,GL_FLOAT,10*sizeof(GLfloat),0);
-    glNormalPointer(GL_FLOAT,10*sizeof(GLfloat),(GLvoid *)(3*sizeof(GLfloat)));
+    glVertexPointer(3,GL_FLOAT,buf.stripe(),0);
+    glNormalPointer(GL_FLOAT,buf.stripe(),(GLvoid *)(3*sizeof(GLfloat)));
 
-    if(!color_override && render_indices.empty()) {
+    if (!color_override) {
+        glEnableClientState(GL_COLOR_ARRAY);
+        glColorPointer(4,GL_UNSIGNED_BYTE,buf.stripe(),(GLvoid *)(6*sizeof(GLfloat)));
+
+        size_t offset = sizeof(VertexAttr);
+        for (auto &tex : buf.tex) {
+            cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + tex.unit);
+            cc_glglue_glTexCoordPointer(glue,
+                                        tex.stripe / sizeof(GLfloat),
+                                        GL_FLOAT,
+                                        buf.stripe(),
+                                        (GLvoid *)offset);
+            offset += tex.stripe;
+            cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+        }
+    }
+
+    if((!color_override || mbind == OVERALL) && render_indices.empty()) {
         // no color override, no out of order rendering, just render with vbo buffer
 
-        glEnableClientState(GL_COLOR_ARRAY);
-        glColorPointer(4,GL_FLOAT,10*sizeof(GLfloat),(GLvoid *)(6*sizeof(GLfloat)));
-        glDrawElements(GL_TRIANGLES, this->indice_array, GL_UNSIGNED_INT, (void *)0);
+        // glDrawElements(GL_TRIANGLES, this->indice_array, GL_UNSIGNED_INT, (void *)0);
+        glDrawArrays(GL_TRIANGLES, 0, buf.vertex_array_size);
 
-    } else if(!color_override) {
+    } else if(!color_override || mbind == OVERALL) {
         // no color override, but out of order rendering
 
-        glEnableClientState(GL_COLOR_ARRAY);
-        glColorPointer(4,GL_FLOAT,10*sizeof(GLfloat),(GLvoid *)(6*sizeof(GLfloat)));
-
-        for(int id : render_indices) {
+        if (render_indices.size() == 1) {
+            int id = render_indices[0];
             uint32_t count = (uint32_t)partindices[id]*3;
-            intptr_t offset = (intptr_t)indexoffsets[id]*3*4;
-            glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void *)offset);
+            intptr_t offset = (intptr_t)indexoffsets[id]*3;
+            // glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void *)offset*4);
+            glDrawArrays(GL_TRIANGLES, offset, count);
+        } else {
+            FC_COIN_THREAD_LOCAL std::vector<GLint> array_offsets;
+            FC_COIN_THREAD_LOCAL std::vector<GLsizei> array_counts;
+            array_offsets.clear();
+            array_counts.clear();
+            for (int id : render_indices) {
+                array_counts.push_back(partindices[id]*3);
+                array_offsets.push_back(indexoffsets[id]*3);
+            }
+            cc_glglue_glMultiDrawArrays(glue, GL_TRIANGLES,
+                    &array_offsets[0], &array_counts[0], (GLsizei)array_counts.size());
         }
-
     } else if(render_indices.empty()) {
-
         // color override only
         for(int id=0;id<num_partindices;++id) {
             if (mbind == PER_PART)
@@ -1977,12 +2034,12 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
             else if (mbind == PER_PART_INDEXED)
                 materials->send(mindices[id], true);
             uint32_t count = (uint32_t)partindices[id]*3;
-            intptr_t offset = (intptr_t)indexoffsets[id]*3*4;
-            glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void *)offset);
+            intptr_t offset = (intptr_t)indexoffsets[id]*3;
+            // glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void *)offset*4);
+            glDrawArrays(GL_TRIANGLES, offset, count);
         }
 
     } else {
-
         // color override and out of order rendering
         for(int id : render_indices) {
             if (mbind == PER_PART)
@@ -1990,17 +2047,26 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
             else if (mbind == PER_PART_INDEXED)
                 materials->send(mindices[id], true);
             uint32_t count = (uint32_t)partindices[id]*3;
-            intptr_t offset = (intptr_t)indexoffsets[id]*3*4;
-            glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void *)offset);
+            intptr_t offset = (intptr_t)indexoffsets[id]*3;
+            // glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void *)offset*4);
+            glDrawArrays(GL_TRIANGLES, offset, count);
         }
+    }
+
+    if (!color_override && buf.tex.size()) {
+        for (auto &tex : buf.tex) {
+            cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + tex.unit);
+            cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+        }
+        cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0);
     }
 
     glDisableClientState(GL_COLOR_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
-    glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
     buf.updateVbo = false;
+    return true;
 }
 
 void SoBrepFaceSet::renderShape(SoGLRenderAction * action, bool check_override) {
@@ -2031,6 +2097,21 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action, bool check_override) 
                         nindices, tindices, mindices, numindices,
                         sendNormals, normalCacheUsed);
 
+
+    if (doTextures) {
+        if (tb.isFunction() && !tb.needIndices()) {
+            tindices = NULL;
+        }
+        else if (SoTextureCoordinateBindingElement::get(state) ==
+                 SoTextureCoordinateBindingElement::PER_VERTEX) {
+            tindices = NULL;
+        }
+        else {
+            if (tindices == NULL)
+                tindices = cindices;
+        }
+    }
+
     // just in case someone forgot
     if (!mindices) mindices = cindices;
     if (!nindices) nindices = cindices;
@@ -2040,6 +2121,7 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action, bool check_override) 
     buildPartIndexCache();
 
     // Can we use vertex buffer objects?
+    bool didvbo = false;
     if(PRIVATE(this)->isVboAvailable(action)) {
         SoState* state = action->getState();
         if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
@@ -2053,15 +2135,16 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action, bool check_override) 
                                                 SoOverrideElement::MATERIAL_BINDING|
                                                 SoOverrideElement::TRANSPARENCY));
 
-        PRIVATE(this)->render(action, check_override, RenderIndices, coords, cindices, numindices,
-                              pindices, &indexOffset[0], numparts, normals, nindices,
-                              &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
+        didvbo = PRIVATE(this)->render(action, check_override, RenderIndices, coords,
+                cindices, numindices, pindices, &indexOffset[0], numparts,
+                normals, nindices, &mb, mindices, tindices, nbind, mbind, doTextures);
 
-    } else {
+    }
 
+    if (!didvbo) {
         if(RenderIndices.empty())
             renderFaces(coords, cindices, numindices, pindices, 0, numparts,
-                    normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
+                    normals, nindices, &mb, mindices, tb, tindices, nbind, mbind, doTextures);
         else {
             int start = 0;
             int next = 0;
@@ -2073,14 +2156,14 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action, bool check_override) 
                 }
                 if(next!=start) {
                     renderFaces(coords, cindices, numindices, pindices, start, next-start,
-                            normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
+                            normals, nindices, &mb, mindices, tb, tindices, nbind, mbind, doTextures);
                 }
                 start = id;
                 next = id+1;
             }
             if(next!=start) {
                 renderFaces(coords, cindices, numindices, pindices, start, next-start,
-                        normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
+                        normals, nindices, &mb, mindices, tb, tindices, nbind, mbind, doTextures);
             }
         }
     }
@@ -2100,7 +2183,7 @@ void SoBrepFaceSet::renderFaces(const SoCoordinateElement *coords,
                                 const int32_t *normalindices,
                                 SoMaterialBundle *const materials,
                                 const int32_t *matindices,
-                                SoTextureCoordinateBundle * const texcoords,
+                                SoTextureCoordinateBundle &tb,
                                 const int32_t *texindices,
                                 int nbind,
                                 int mbind,
@@ -2114,8 +2197,13 @@ void SoBrepFaceSet::renderFaces(const SoCoordinateElement *coords,
     assert(partIndex.getNum()+1 == (int)indexOffset.size());
 
     int start = (int)indexOffset[start_partindex]*4;
-    int length = (int)(indexOffset[start_partindex+num_partindices]
+    int length;
+    if (indexOffset.size() == 2 && indexOffset[0] == 0 && indexOffset[1] < 0)
+        length = num_indices;
+    else
+        length = (int)(indexOffset[start_partindex+num_partindices]
                         - indexOffset[start_partindex])*4;
+
     // normals
     if (nbind == PER_VERTEX_INDEXED)
         normalindices += start;
@@ -2126,17 +2214,14 @@ void SoBrepFaceSet::renderFaces(const SoCoordinateElement *coords,
 
     if(mbind == PER_PART_INDEXED) {
         matindices += start_partindex;
-        if(texindices)
-            texindices += start_partindex;
     } else if (mbind == PER_VERTEX_INDEXED) {
         matindices += start;
-        if(texindices)
-            texindices += start;
     } else if (mbind == PER_FACE_INDEXED) {
         matindices += start/4;
-        if(texindices)
-            texindices += start/4;
     }
+
+    if(texindices)
+        texindices += start;
 
     vertexindices += start;
     num_indices = length;
@@ -2146,11 +2231,13 @@ void SoBrepFaceSet::renderFaces(const SoCoordinateElement *coords,
     const SbVec3f * coords3d = NULL;
     coords3d = vertexlist->getArrayPtr3();
 
+    int mode = GL_POLYGON;
+    int newmode;
     const int32_t *viptr = vertexindices;
     const int32_t *viendptr = viptr + num_indices;
     const int32_t *piptr = partindices;
     const int32_t *piendptr = piptr + num_partindices;
-    int32_t v1, v2, v3, v4, pi;
+    int32_t v1, v2, v3, v4, v5 = 0, pi;
     SbVec3f dummynormal(0,0,1);
     int numverts = vertexlist->getNum();
 
@@ -2170,7 +2257,6 @@ void SoBrepFaceSet::renderFaces(const SoCoordinateElement *coords,
             matindices++;
     }
 
-    glBegin(GL_TRIANGLES);
     while (viptr + 2 < viendptr) {
         v1 = *viptr++;
         v2 = *viptr++;
@@ -2180,7 +2266,19 @@ void SoBrepFaceSet::renderFaces(const SoCoordinateElement *coords,
             break;
         }
         v4 = viptr < viendptr ? *viptr++ : -1;
-        (void)v4;
+        if (v4  < 0) newmode = GL_TRIANGLES;
+        else {
+            v5 = viptr < viendptr ? *viptr++ : -1;
+            if (v5 < 0) newmode = GL_QUADS;
+            else newmode = GL_POLYGON;
+        }
+        if (newmode != mode) {
+            if (mode != GL_POLYGON) glEnd();
+            mode = newmode;
+            glBegin(mode);
+        }
+        else if (mode == GL_POLYGON) glBegin(mode);
+
         /* vertex 1 *********************************************************/
         if (mbind == PER_PART) {
             if (trinr == 0)
@@ -2209,61 +2307,55 @@ void SoBrepFaceSet::renderFaces(const SoCoordinateElement *coords,
         }
 
         if (texture) {
-            texcoords->send(texindices ? *texindices++ : texidx++,
-                        vertexlist->get3(v1),
-                        *currnormal);
+            if (tb.isFunction())
+                tb.send(texindices ? *texindices++ : texidx++, coords3d[v1], *currnormal);
+            else
+                tb.send(texindices ? *texindices++ : texidx++);
         }
         glVertex3fv((const GLfloat*) (coords3d + v1));
 
-        /* vertex 2 *********************************************************/
-        if (mbind == PER_VERTEX)
-            materials->send(matnr++, true);
-        else if (mbind == PER_VERTEX_INDEXED)
-            materials->send(*matindices++, true);
+        auto doVertex = [&](int v) {
+            if (mbind == PER_VERTEX)
+                materials->send(matnr++, true);
+            else if (mbind == PER_VERTEX_INDEXED)
+                materials->send(*matindices++, true);
 
-        if (normals) {
-            if (nbind == PER_VERTEX) {
-                currnormal = normals++;
-                glNormal3fv((const GLfloat*)currnormal);
+            if (normals) {
+                if (nbind == PER_VERTEX) {
+                    currnormal = normals++;
+                    glNormal3fv((const GLfloat*)currnormal);
+                }
+                else if (nbind == PER_VERTEX_INDEXED) {
+                    currnormal = &normals[*normalindices++];
+                    glNormal3fv((const GLfloat*)currnormal);
+                }
             }
-            else if (nbind == PER_VERTEX_INDEXED) {
-                currnormal = &normals[*normalindices++];
-                glNormal3fv((const GLfloat*)currnormal);
+
+            if (texture) {
+                if (tb.isFunction())
+                    tb.send(texindices ? *texindices++ : texidx++, coords3d[v], *currnormal);
+                else
+                    tb.send(texindices ? *texindices++ : texidx++);
+            }
+
+            glVertex3fv((const GLfloat*) (coords3d + v));
+        };
+        
+        doVertex(v2);
+        doVertex(v3);
+
+        if (mode != GL_TRIANGLES) {
+            doVertex(v4);
+            if (mode == GL_POLYGON) {
+                doVertex(v5);
+                v1 = viptr < viendptr ? *viptr++ : -1;
+                while (v1 >= 0) {
+                    doVertex(v1);
+                    v1 = viptr < viendptr ? *viptr++ : -1;
+                }
+                glEnd();
             }
         }
-
-        if (texture) {
-            texcoords->send(texindices ? *texindices++ : texidx++,
-                            vertexlist->get3(v2),
-                            *currnormal);
-        }
-
-        glVertex3fv((const GLfloat*) (coords3d + v2));
-
-        /* vertex 3 *********************************************************/
-        if (mbind == PER_VERTEX)
-            materials->send(matnr++, true);
-        else if (mbind == PER_VERTEX_INDEXED)
-            materials->send(*matindices++, true);
-
-        if (normals) {
-            if (nbind == PER_VERTEX) {
-                currnormal = normals++;
-                glNormal3fv((const GLfloat*)currnormal);
-            }
-            else if (nbind == PER_VERTEX_INDEXED) {
-                currnormal = &normals[*normalindices++];
-                glNormal3fv((const GLfloat*)currnormal);
-            }
-        }
-
-        if (texture) {
-            texcoords->send(texindices ? *texindices++ : texidx++,
-                            vertexlist->get3(v3),
-                            *currnormal);
-        }
-
-        glVertex3fv((const GLfloat*) (coords3d + v3));
 
         if (mbind == PER_VERTEX_INDEXED)
             matindices++;
@@ -2289,7 +2381,9 @@ void SoBrepFaceSet::renderFaces(const SoCoordinateElement *coords,
             trinr = 0;
         }
     }
-    glEnd();
+
+    if (mode != GL_POLYGON)
+        glEnd();
 }
 
 int SoBrepFaceSet::getPartFromFace(int index) {

@@ -132,7 +132,7 @@ private:
                      const int32_t *normindices,
                      SoMaterialBundle *const materials,
                      const int32_t *matindices,
-                     SoTextureCoordinateBundle * const texcoords,
+                     SoTextureCoordinateBundle & tb,
                      const int32_t *texindices,
                      int nbind,
                      int mbind,
