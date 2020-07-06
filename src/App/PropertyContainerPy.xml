@@ -45,6 +45,11 @@ always belong to this container (e.g. from a linked object).
         <UserDocu>Returns the C++ class name of a named property.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="touchProperty">
+      <Documentation>
+        <UserDocu>Signal property change without actually change the property.</UserDocu>
+      </Documentation>
+    </Methode>
       <Methode Name="setEditorMode">
             <Documentation>
                 <UserDocu>Set the behaviour of the property in the property editor.

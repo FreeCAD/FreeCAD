@@ -71,6 +71,20 @@ PyObject*  PropertyContainerPy::getPropertyByName(PyObject *args)
     return NULL;
 }
 
+PyObject*  PropertyContainerPy::touchProperty(PyObject *args)
+{
+    char *pstr;
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+    App::Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
+    if (prop) {
+        prop->touch();
+        Py_Return;
+    }
+    PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+    return NULL;
+}
+
 PyObject*  PropertyContainerPy::getPropertyTouchList(PyObject *args)
 {
     char *pstr;
