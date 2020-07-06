@@ -411,6 +411,14 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
 {
     Instances.insert(this);
 
+    this->setIconSize(QSize(iconSize(), iconSize()));
+
+    if (TreeParams::FontSize() > 0) {
+        QFont font = this->font();
+        font.setPointSize(TreeParams::FontSize());
+        this->setFont(font);
+    }
+
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
     this->setDropIndicatorShown(false);
@@ -1199,8 +1207,12 @@ void TreeWidget::setIconHeight(int height)
 }
 
 int TreeWidget::iconSize() {
+    if (_TreeIconSize == 0)
+        _TreeIconSize = TreeParams::IconSize();
+
     if (_TreeIconSize > 0)
         return _TreeIconSize;
+
     auto tree = instance();
     if(tree)
         return tree->viewOptions().decorationSize.width();
