@@ -37,6 +37,7 @@
 
 #include "ViewProvider.h"
 #include "WidgetFactory.h"
+#include "SoFCSelectionAction.h"
 
 #include <Base/BoundBoxPy.h>
 
@@ -544,6 +545,17 @@ PyObject *ViewProviderPy::doubleClicked(PyObject *args) {
     PY_TRY {
         return Py::new_reference_to(Py::Boolean(getViewProviderPtr()->doubleClicked()));
     }PY_CATCH;
+}
+
+PyObject *ViewProviderPy::updateVBO(PyObject *args) {
+    if(!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    SoUpdateVBOAction action;
+    SoSwitch *node = getViewProviderPtr()->getModeSwitch();
+    for (int i=0, c=node->getNumChildren(); i<c; ++i)
+        action.apply(node->getChild(i));
+    Py_Return;
 }
 
 PyObject *ViewProviderPy::getCustomAttributes(const char* attr) const

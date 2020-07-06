@@ -180,6 +180,11 @@ getBoundingBox(subname=None, transform=True, view=None): obtain the bounding box
                 </UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="updateVBO">
+            <Documentation>
+                <UserDocu>Signal VBO update</UserDocu>
+            </Documentation>
+        </Methode>
 		<Attribute Name="Annotation" ReadOnly="false">
 			<Documentation>
 				<UserDocu>A pivy Separator to add a custom scenegraph to this ViewProvider</UserDocu>
