@@ -26,7 +26,6 @@ __title__ = "Ccxtools FEM unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-import sys
 import unittest
 from os.path import join
 
@@ -135,76 +134,6 @@ class TestCcxTools(unittest.TestCase):
             fea=fea,
             res_obj_name=res_obj_name,
         )
-
-    # ********************************************************************************************
-    def test_ccxcantilever_hexa20(
-        self
-    ):
-        from femexamples.ccx_cantilever_hexa20faceload import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, get_namefromdef("test_"))
-
-    # ********************************************************************************************
-    def test_constraint_contact_shell_shell(
-        self
-    ):
-        from femexamples.constraint_contact_shell_shell import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, get_namefromdef("test_"))
-
-    # ********************************************************************************************
-    def test_constraint_contact_solid_solid(
-        self
-    ):
-        # does not pass on travis, but on my local system it does, Bernd
-        return
-        # TODO does not pass on Python 2
-        if sys.version_info.major < 3:
-            return
-
-        from femexamples.constraint_contact_solid_solid import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, get_namefromdef("test_"))
-
-    # ********************************************************************************************
-    def test_constraint_sectionprint(
-        self
-    ):
-        from femexamples.constraint_section_print import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, get_namefromdef("test_"))
-
-    # ********************************************************************************************
-    def test_constraint_tie(
-        self
-    ):
-        from femexamples.constraint_tie import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, get_namefromdef("test_"))
-
-    # ********************************************************************************************
-    def test_material_multiple(
-        self
-    ):
-        from femexamples.material_multiple_twoboxes import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, get_namefromdef("test_"))
-
-    # ********************************************************************************************
-    def test_material_nonlinear(
-        self
-    ):
-        from femexamples.material_nl_platewithhole import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, get_namefromdef("test_"))
-
-    # ********************************************************************************************
-    def test_thermomech_bimetall(
-        self
-    ):
-        from femexamples.thermomech_bimetall import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, get_namefromdef("test_"))
 
     # ********************************************************************************************
     def test_thermomech_flow1D(
