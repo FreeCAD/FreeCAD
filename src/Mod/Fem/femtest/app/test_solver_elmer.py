@@ -33,6 +33,7 @@ import FreeCAD
 import femsolver.run
 from . import support_utils as testtools
 from .support_utils import fcc_print
+from .support_utils import get_namefromdef
 
 
 class TestSolverElmer(unittest.TestCase):
@@ -91,7 +92,7 @@ class TestSolverElmer(unittest.TestCase):
         ))
 
     # ********************************************************************************************
-    def test_solver_elmer(
+    def test_box_static(
         self
     ):
         fcc_print("")
@@ -106,8 +107,8 @@ class TestSolverElmer(unittest.TestCase):
         # the examples do use a gmsh mesh object thus ok
         # FIXME elmer elasticity needs the dict key "ThermalExpansionCoefficient" in material
 
-        base_name = "elmer_generic_test"
-        analysis_dir = testtools.get_fem_test_tmp_dir("solver_" + base_name)
+        base_name = get_namefromdef("test_")
+        analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
 
         # save the file
         save_fc_file = join(analysis_dir, base_name + ".FCStd")
@@ -133,8 +134,8 @@ class TestSolverElmer(unittest.TestCase):
         self.assertFalse(ret, "STARTINFO write file test failed.\n{}".format(ret))
 
         fcc_print("Test writing case file")
-        casefile_given = join(self.test_file_dir, "case_mm.sif")
-        casefile_totest = join(analysis_dir, "case.sif")
+        casefile_given = join(self.test_file_dir, base_name + "_mm" + self.ending)
+        casefile_totest = join(analysis_dir, self.infilename + self.ending)
         # fcc_print("Comparing {} to {}".format(casefile_given, casefile_totest))
         ret = testtools.compare_files(casefile_given, casefile_totest)
         self.assertFalse(ret, "case write file test failed.\n{}".format(ret))
@@ -147,22 +148,22 @@ class TestSolverElmer(unittest.TestCase):
         self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
 
     # ********************************************************************************************
-    def test_elmer_ccxcantilever_faceload(
+    def test_ccxcantilever_faceload(
         self
     ):
         fcc_print("")
         from femexamples.ccx_cantilever_faceload import setup
         setup(self.document, "elmer")
-        self.input_file_writing_test("elmer_ccxcanti_faceload")
+        self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_elmer_ccxcantilever_nodeload(
+    def test_ccxcantilever_nodeload(
         self
     ):
         fcc_print("")
         from femexamples.ccx_cantilever_nodeload import setup
         setup(self.document, "elmer")
-        self.input_file_writing_test("elmer_ccxcanti_nodeload")
+        self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
     def input_file_writing_test(
@@ -172,7 +173,7 @@ class TestSolverElmer(unittest.TestCase):
         self.document.recompute()
 
         # get analysis working directory and save FreeCAD file
-        working_dir = testtools.get_fem_test_tmp_dir("solver_" + base_name)
+        working_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
         save_fc_file = join(working_dir, base_name + ".FCStd")
         # fcc_print("Save FreeCAD file to {} ...".format(save_fc_file))
         self.document.saveAs(save_fc_file)
