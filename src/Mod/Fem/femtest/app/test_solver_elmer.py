@@ -48,7 +48,13 @@ class TestSolverElmer(unittest.TestCase):
         self.document = FreeCAD.newDocument(self.__class__.__name__)
 
         # more inits
-        self.mesh_name = "Mesh"
+        self.pre_dir_name = "solver_elmer_"
+        self.ending = ".sif"
+        self.infilename = "case"
+        self.test_file_dir = join(
+            testtools.get_fem_test_home_dir(),
+            "elmer"
+        )
 
         # make sure std FreeCAD unit system mm/kg/s is used
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
@@ -69,6 +75,7 @@ class TestSolverElmer(unittest.TestCase):
 
         # tearDown is executed after every test
         FreeCAD.closeDocument(self.document.Name)
+        fcc_print("")
 
     # ********************************************************************************************
     def test_00print(
@@ -77,7 +84,7 @@ class TestSolverElmer(unittest.TestCase):
         # since method name starts with 00 this will be run first
         # this test just prints a line with stars
 
-        fcc_print("\n{0}\n{1} run FEM TestSolverFrameWork tests {2}\n{0}".format(
+        fcc_print("\n{0}\n{1} run FEM TestSolverElmer tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
             55 * "*"
@@ -87,7 +94,7 @@ class TestSolverElmer(unittest.TestCase):
     def test_solver_elmer(
         self
     ):
-        fcc_print("\n--------------- Start of FEM tests solver framework solver Elmer ---------")
+        fcc_print("")
 
         # set up the Elmer static analysis example
         from femexamples.boxanalysis_static import setup
@@ -104,11 +111,11 @@ class TestSolverElmer(unittest.TestCase):
 
         # save the file
         save_fc_file = join(analysis_dir, base_name + ".FCStd")
-        fcc_print("Save FreeCAD file to {}...".format(save_fc_file))
+        # fcc_print("Save FreeCAD file to {}...".format(save_fc_file))
         self.document.saveAs(save_fc_file)
 
         # write input files
-        fcc_print("Checking FEM input file writing for Elmer solver framework solver ...")
+        # fcc_print("Checking FEM input file writing for Elmer solver framework solver ...")
         machine_elmer = self.document.SolverElmer.Proxy.createMachine(
             self.document.SolverElmer,
             analysis_dir,
@@ -118,67 +125,56 @@ class TestSolverElmer(unittest.TestCase):
         machine_elmer.start()
         machine_elmer.join()  # wait for the machine to finish.
 
-        # compare startinfo, case and gmsh input files
-        test_file_dir_elmer = join(testtools.get_fem_test_home_dir(), "elmer")
-        fcc_print(test_file_dir_elmer)
-
         fcc_print("Test writing STARTINFO file")
-        startinfo_given = join(test_file_dir_elmer, "ELMERSOLVER_STARTINFO")
+        startinfo_given = join(self.test_file_dir, "ELMERSOLVER_STARTINFO")
         startinfo_totest = join(analysis_dir, "ELMERSOLVER_STARTINFO")
-        fcc_print("Comparing {} to {}".format(startinfo_given, startinfo_totest))
+        # fcc_print("Comparing {} to {}".format(startinfo_given, startinfo_totest))
         ret = testtools.compare_files(startinfo_given, startinfo_totest)
         self.assertFalse(ret, "STARTINFO write file test failed.\n{}".format(ret))
 
         fcc_print("Test writing case file")
-        casefile_given = join(test_file_dir_elmer, "case_mm.sif")
+        casefile_given = join(self.test_file_dir, "case_mm.sif")
         casefile_totest = join(analysis_dir, "case.sif")
-        fcc_print("Comparing {} to {}".format(casefile_given, casefile_totest))
+        # fcc_print("Comparing {} to {}".format(casefile_given, casefile_totest))
         ret = testtools.compare_files(casefile_given, casefile_totest)
         self.assertFalse(ret, "case write file test failed.\n{}".format(ret))
 
         fcc_print("Test writing GMSH geo file")
-        gmshgeofile_given = join(test_file_dir_elmer, "group_mesh.geo")
+        gmshgeofile_given = join(self.test_file_dir, "group_mesh.geo")
         gmshgeofile_totest = join(analysis_dir, "group_mesh.geo")
-        fcc_print("Comparing {} to {}".format(gmshgeofile_given, gmshgeofile_totest))
+        # fcc_print("Comparing {} to {}".format(gmshgeofile_given, gmshgeofile_totest))
         ret = testtools.compare_files(gmshgeofile_given, gmshgeofile_totest)
         self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
 
-        fcc_print("--------------- End of FEM tests solver framework solver Elmer -----------")
-
     # ********************************************************************************************
-    def test_elmer_ccxcanti_faceload(
+    def test_elmer_ccxcantilever_faceload(
         self
     ):
+        fcc_print("")
         from femexamples.ccx_cantilever_faceload import setup
         setup(self.document, "elmer")
-        self.elmer_inputfile_writing_test("elmer_ccxcanti_faceload")
+        self.input_file_writing_test("elmer_ccxcanti_faceload")
 
     # ********************************************************************************************
-    def test_elmer_ccxcanti_nodeload(
+    def test_elmer_ccxcantilever_nodeload(
         self
     ):
+        fcc_print("")
         from femexamples.ccx_cantilever_nodeload import setup
         setup(self.document, "elmer")
-        self.elmer_inputfile_writing_test("elmer_ccxcanti_nodeload")
+        self.input_file_writing_test("elmer_ccxcanti_nodeload")
 
     # ********************************************************************************************
-    def elmer_inputfile_writing_test(
+    def input_file_writing_test(
         self,
         base_name
     ):
-
         self.document.recompute()
-
-        # start
-        fcc_print(
-            "\n------------- Start of FEM elmer tests for {} -------"
-            .format(base_name)
-        )
 
         # get analysis working directory and save FreeCAD file
         working_dir = testtools.get_fem_test_tmp_dir("solver_" + base_name)
         save_fc_file = join(working_dir, base_name + ".FCStd")
-        fcc_print("Save FreeCAD file to {} ...".format(save_fc_file))
+        # fcc_print("Save FreeCAD file to {} ...".format(save_fc_file))
         self.document.saveAs(save_fc_file)
 
         # write input file
@@ -193,18 +189,14 @@ class TestSolverElmer(unittest.TestCase):
 
         # compare input file with the given one
         inpfile_given = join(
-            testtools.get_fem_test_home_dir(),
-            "elmer",
-            (base_name + "_mm.sif")
+            self.test_file_dir,
+            base_name + "_mm" + self.ending
         )
         inpfile_totest = join(
             working_dir,
-            ("case.sif")
+            self.infilename + self.ending
         )
-        fcc_print(
-            "Comparing {}  to  {}"
-            .format(inpfile_given, inpfile_totest)
-        )
+        # fcc_print("Comparing {}  to  {}".format(inpfile_given, inpfile_totest))
         ret = testtools.compare_inp_files(
             inpfile_given,
             inpfile_totest
@@ -212,10 +204,4 @@ class TestSolverElmer(unittest.TestCase):
         self.assertFalse(
             ret,
             "Elmer write_inp_file for {0} test failed.\n{1}".format(base_name, ret)
-        )
-
-        # end
-        fcc_print(
-            "--------------- End of FEM elmer tests for {} ---------"
-            .format(base_name)
         )
