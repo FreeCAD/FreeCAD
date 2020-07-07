@@ -204,7 +204,6 @@ class FemExamples(QtGui.QWidget):
             self.setup_button.setEnabled(False)
 
 
-
 def show_examplegui():
     mw = FreeCADGui.getMainWindow()
     example_widget = QtGui.QDockWidget("FEM Examples", mw)
