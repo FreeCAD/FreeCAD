@@ -39,14 +39,6 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer
 # methods
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_box_frequency
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_box_static
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_ccxcantilever_hexa20
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_constraint_contact_shell_shell
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_constraint_contact_solid_solid
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_constraint_sectionprint
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_constraint_tie
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_material_multiple
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_material_nonlinear
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_thermomech_bimetall
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_thermomech_flow1D
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_thermomech_spine
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_common.TestFemCommon.test_adding_refshaps
@@ -81,7 +73,21 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult.test_stress_
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult.test_stress_principal_reinforced
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult.test_rho
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult.test_disp_abs
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_box_frequency
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_box_static
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_ccxcantilever_faceload
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_ccxcantilever_hexa20
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_ccxcantilever_nodeload
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_ccxcantilever_prescribeddisplacement
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_contact_shell_shell
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_contact_solid_solid
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_sectionprint
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_tie
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_material_multiple
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_material_nonlinear
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_thermomech_bimetall
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_thermomech_flow1D
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_thermomech_spine
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_box_static
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_faceload
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_nodeload
@@ -97,46 +103,6 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
     'femtest.app.test_ccxtools.TestCcxTools.test_box_static'
-))
-
-import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_ccxtools.TestCcxTools.test_ccxcantilever_hexa20'
-))
-
-import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_ccxtools.TestCcxTools.test_constraint_contact_shell_shell'
-))
-
-import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_ccxtools.TestCcxTools.test_constraint_contact_solid_solid'
-))
-
-import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_ccxtools.TestCcxTools.test_constraint_sectionprint'
-))
-
-import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_ccxtools.TestCcxTools.test_constraint_tie'
-))
-
-import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_ccxtools.TestCcxTools.test_material_multiple'
-))
-
-import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_ccxtools.TestCcxTools.test_material_nonlinear'
-))
-
-import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_ccxtools.TestCcxTools.test_thermomech_bimetall'
 ))
 
 import unittest
@@ -311,7 +277,77 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_box_frequency'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
     'femtest.app.test_solver_calculix.TestSolverCalculix.test_box_static'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_ccxcantilever_faceload'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_ccxcantilever_hexa20'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_ccxcantilever_nodeload'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_ccxcantilever_prescribeddisplacement'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_contact_shell_shell'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_contact_solid_solid'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_sectionprint'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_tie'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_material_multiple'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_material_nonlinear'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_thermomech_bimetall'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_thermomech_flow1D'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_thermomech_spine'
 ))
 
 import unittest

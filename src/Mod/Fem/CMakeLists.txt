@@ -229,7 +229,10 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/box_static_expected_values
     femtest/data/calculix/box_static.FCStd
     femtest/data/calculix/box.FCStd
+    femtest/data/calculix/ccxcantilever_faceload.inp
     femtest/data/calculix/ccxcantilever_hexa20.inp
+    femtest/data/calculix/ccxcantilever_nodeload.inp
+    femtest/data/calculix/ccxcantilever_prescribeddisplacement.inp
     femtest/data/calculix/constraint_contact_shell_shell.FCStd
     femtest/data/calculix/constraint_contact_shell_shell.inp
     femtest/data/calculix/constraint_contact_solid_solid.FCStd
