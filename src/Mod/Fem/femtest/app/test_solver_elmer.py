@@ -105,7 +105,6 @@ class TestSolverElmer(unittest.TestCase):
         # elmer needs gmsh mesho object
         # FIXME error message on Python solver run
         # the examples do use a gmsh mesh object thus ok
-        # FIXME elmer elasticity needs the dict key "ThermalExpansionCoefficient" in material
 
         base_name = get_namefromdef("test_")
         analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)

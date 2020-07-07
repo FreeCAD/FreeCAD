@@ -82,10 +82,6 @@ def setup_base(doc=None, solvertype="ccxtools"):
     mat["YoungsModulus"] = "200000 MPa"
     mat["PoissonRatio"] = "0.30"
     mat["Density"] = "7900 kg/m^3"
-    if solvertype == "elmer":
-        # set ThermalExpansionCoefficient
-        # FIXME elmer elasticity needs the dictionary key "ThermalExpansionCoefficient"
-        mat["ThermalExpansionCoefficient"] = "0.012 mm/m/K"
     material_object.Material = mat
 
     # mesh
