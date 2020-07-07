@@ -566,7 +566,7 @@ class Writer(object):
         pass
 
     def _handleElasticityBodyForces(self, bodies):
-        obj = self._getSingleMember("FemConstraintSelfWeight")
+        obj = self._getSingleMember("Fem::ConstraintSelfWeight")
         if obj is not None:
             for name in bodies:
                 gravity = getConstant("Gravity", "L/T^2")
