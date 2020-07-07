@@ -22,6 +22,10 @@
 # *                                                                         *
 # ***************************************************************************
 
+"""
+https://forum.freecadweb.org/viewtopic.php?f=10&t=48427
+"""
+
 import os
 
 from importlib import import_module
@@ -135,15 +139,20 @@ class FemExamples(QtGui.QWidget):
         self.view.addTopLevelItem(all_materials)
 
         self.view.setHeaderHidden(True)
+        self.view.itemClicked.connect(self.enable_buttons)
 
         # Ok buttons:
         self.button_box = QtGui.QDialogButtonBox(self)
         self.button_box.setOrientation(QtCore.Qt.Horizontal)
         self.button_box.setStandardButtons(
-            QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Ok
+            QtGui.QDialogButtonBox.Cancel
         )
-        run_button = QtGui.QPushButton(QtGui.QIcon.fromTheme("system-run"), "Run")
-        self.button_box.addButton(run_button, QtGui.QDialogButtonBox.ApplyRole)
+        self.setup_button = QtGui.QPushButton(QtGui.QIcon.fromTheme("document-new"), "Setup")
+        self.setup_button.setEnabled(False)
+        self.button_box.addButton(self.setup_button, QtGui.QDialogButtonBox.AcceptRole)
+        self.run_button = QtGui.QPushButton(QtGui.QIcon.fromTheme("system-run"), "Run")
+        self.run_button.setEnabled(False)
+        self.button_box.addButton(self.run_button, QtGui.QDialogButtonBox.ApplyRole)
         self.button_box.clicked.connect(self.clicked)
 
         # Layout:
@@ -171,6 +180,11 @@ class FemExamples(QtGui.QWidget):
     def reject(self):
         self.close()
 
+    def closeEvent(self, ev):
+        pw = self.parentWidget()
+        if pw and pw.inherits("QDockWidget"):
+            pw.deleteLater()
+
     def run(self):
         item = self.view.selectedItems()[0]
         name = item.text(0)
@@ -179,9 +193,19 @@ class FemExamples(QtGui.QWidget):
         FreeCADGui.doCommand("from femexamples.manager import run_example")
         FreeCADGui.doCommand("run_example(\"" + str(example) + "\")")
 
+    def enable_buttons(self):
+        # only enable buttons if a example is selected
+        sel_item_text = self.view.selectedItems()[0].text(0)
+        if sel_item_text in self.files_name:
+            self.run_button.setEnabled(True)
+            self.setup_button.setEnabled(True)
+        else:
+            self.run_button.setEnabled(False)
+            self.setup_button.setEnabled(False)
+
 
 def show_examplegui():
     mw = FreeCADGui.getMainWindow()
-    d = QtGui.QDockWidget("FEM Examples")
-    d.setWidget(FemExamples())
-    mw.addDockWidget(QtCore.Qt.RightDockWidgetArea, d)
+    example_widget = QtGui.QDockWidget("FEM Examples", mw)
+    example_widget.setWidget(FemExamples())
+    mw.addDockWidget(QtCore.Qt.RightDockWidgetArea, example_widget)
