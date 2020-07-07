@@ -91,6 +91,7 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalc
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_box_static
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_faceload
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_nodeload
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_prescribeddisplacement
 
 
 # methods in FreeCAD
@@ -363,4 +364,9 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
     'femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_nodeload'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_prescribeddisplacement'
 ))

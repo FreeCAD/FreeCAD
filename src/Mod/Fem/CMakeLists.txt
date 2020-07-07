@@ -260,6 +260,7 @@ SET(FemTestsElmer_SRCS
     femtest/data/elmer/box_static_mm.sif
     femtest/data/elmer/ccxcantilever_faceload_mm.sif
     femtest/data/elmer/ccxcantilever_nodeload_mm.sif
+    femtest/data/elmer/ccxcantilever_prescribeddisplacement_mm.sif
     femtest/data/elmer/group_mesh.geo
     femtest/data/elmer/ELMERSOLVER_STARTINFO
 )

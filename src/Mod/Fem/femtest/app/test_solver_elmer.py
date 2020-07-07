@@ -166,6 +166,15 @@ class TestSolverElmer(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
+    def test_ccxcantilever_prescribeddisplacement(
+        self
+    ):
+        fcc_print("")
+        from femexamples.ccx_cantilever_prescribeddisplacement import setup
+        setup(self.document, "elmer")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
     def input_file_writing_test(
         self,
         base_name
