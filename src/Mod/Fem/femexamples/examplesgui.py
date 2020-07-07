@@ -170,7 +170,6 @@ class FemExamples(QtGui.QWidget):
 
     def reject(self):
         self.close()
-        d.close()
 
     def run(self):
         item = self.view.selectedItems()[0]
