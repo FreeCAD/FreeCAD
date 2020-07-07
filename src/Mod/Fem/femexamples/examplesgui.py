@@ -22,6 +22,10 @@
 # *                                                                         *
 # ***************************************************************************
 
+"""
+https://forum.freecadweb.org/viewtopic.php?f=10&t=48427
+"""
+
 import os
 
 from importlib import import_module
@@ -176,6 +180,11 @@ class FemExamples(QtGui.QWidget):
     def reject(self):
         self.close()
 
+    def closeEvent(self, ev):
+        pw = self.parentWidget()
+        if pw and pw.inherits("QDockWidget"):
+            pw.deleteLater()
+
     def run(self):
         item = self.view.selectedItems()[0]
         name = item.text(0)
@@ -185,12 +194,19 @@ class FemExamples(QtGui.QWidget):
         FreeCADGui.doCommand("run_example(\"" + str(example) + "\")")
 
     def enable_buttons(self):
-        self.run_button.setEnabled(True)
-        self.setup_button.setEnabled(True)
+        # only enable buttons if a example is selected
+        sel_item_text = self.view.selectedItems()[0].text(0)
+        if sel_item_text in self.files_name:
+            self.run_button.setEnabled(True)
+            self.setup_button.setEnabled(True)
+        else:
+            self.run_button.setEnabled(False)
+            self.setup_button.setEnabled(False)
+
 
 
 def show_examplegui():
     mw = FreeCADGui.getMainWindow()
-    d = QtGui.QDockWidget("FEM Examples")
-    d.setWidget(FemExamples())
-    mw.addDockWidget(QtCore.Qt.RightDockWidgetArea, d)
+    example_widget = QtGui.QDockWidget("FEM Examples", mw)
+    example_widget.setWidget(FemExamples())
+    mw.addDockWidget(QtCore.Qt.RightDockWidgetArea, example_widget)
