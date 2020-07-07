@@ -92,6 +92,11 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
         ObjectsFem.makeEquationElasticity(doc, solver_object)
     elif solvertype == "z88":
         analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Not known or not supported solver type: {}. "
+            "No solver object was created.\n".format(solvertype)
+        )
     if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.SplitInputWriter = False
         solver_object.AnalysisType = "static"

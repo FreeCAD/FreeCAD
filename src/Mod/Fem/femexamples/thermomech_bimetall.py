@@ -113,6 +113,11 @@ def setup(doc=None, solvertype="ccxtools"):
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver_object.WorkingDir = u""
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Not known or not supported solver type: {}. "
+            "No solver object was created.\n".format(solvertype)
+        )
     if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.AnalysisType = "thermomech"
         solver_object.GeometricalNonlinearity = "linear"
