@@ -230,6 +230,30 @@ void ViewProviderDocumentObject::hide(void)
     }
 }
 
+bool ViewProviderDocumentObject::isShowable() const
+{
+    return _Showable;
+}
+
+void ViewProviderDocumentObject::setShowable(bool enable)
+{
+    if (_Showable == enable)
+        return;
+    _Showable = enable;
+    int which = getModeSwitch()->whichChild.getValue();
+    if(_Showable && which == -1 && Visibility.getValue()) {
+        setModeSwitch();
+    } else if (!_Showable) {
+        if(which >= 0)
+            ViewProvider::hide();
+    }
+}
+
+void ViewProviderDocumentObject::setModeSwitch() {
+    if(isShowable())
+        ViewProvider::setModeSwitch();
+}
+
 void ViewProviderDocumentObject::show(void)
 {
     if(TreeWidget::isObjectShowable(getObject()))

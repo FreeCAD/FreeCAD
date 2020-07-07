@@ -288,6 +288,9 @@ public:
         std::set<App::DocumentObject *> newSet;
         bool updated = false;
         for (auto child : newChildren) {
+            auto childVp = docItem->getViewProvider(child);
+            if (!childVp)
+                continue;
             if(child && child->getNameInDocument()) {
                 if(!newSet.insert(child).second) {
                     TREE_WARN("duplicate child item " << obj->getFullName() 
@@ -309,8 +312,7 @@ public:
                                     break;
                                 }
                             }
-                            if(!showable)
-                                child->Visibility.setValue(false);
+                            childVp->setShowable(showable);
                         }
                     }
                 }
@@ -321,6 +323,10 @@ public:
                 // this means old child removed
                 updated = true;
                 docItem->_ParentMap[child].erase(obj);
+
+                auto childVp = docItem->getViewProvider(child);
+                if (childVp && child->getDocument()==obj->getDocument())
+                    childVp->setShowable(docItem->isObjectShowable(child));
             }
         }
         // We still need to check the order of the children
@@ -330,10 +336,9 @@ public:
 
         if(updated && checkVisibility) {
             for(auto child : children) {
-                if(!child || !child->getNameInDocument() || !child->Visibility.getValue())
-                    continue;
-                if(child->getDocument()==obj->getDocument() && !docItem->isObjectShowable(child))
-                    child->Visibility.setValue(false);
+                auto childVp = docItem->getViewProvider(child);
+                if (childVp && child->getDocument() == obj->getDocument())
+                    childVp->setShowable(docItem->isObjectShowable(child));
             }
         }
         return updated;
@@ -3238,14 +3243,13 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
         // Check for any child of the deleted object that is not in the tree, and put it
         // under document item.
         for(auto child : data->children) {
-            if(!child || !child->getNameInDocument() || child->getDocument()!=doc)
+            auto childVp = docItem->getViewProvider(child);
+            if(!childVp || child->getDocument()!=doc)
                 continue;
             docItem->_ParentMap[child].erase(obj);
             auto cit = docItem->ObjectMap.find(child);
             if(cit==docItem->ObjectMap.end() || cit->second->items.empty()) {
-                auto vpd = docItem->getViewProvider(child);
-                if(!vpd) continue;
-                if(docItem->createNewItem(*vpd))
+                if(docItem->createNewItem(*childVp))
                     needUpdate = true;
             }else {
                 auto childItem = *cit->second->items.begin();
@@ -3254,8 +3258,7 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
                         needUpdate = true;
                 }
             }
-            if(child->Visibility.getValue() && !docItem->isObjectShowable(child))
-                child->Visibility.setValue(false);
+            childVp->setShowable(docItem->isObjectShowable(child));
         }
         docItem->ObjectMap.erase(obj);
     }
@@ -4124,7 +4127,7 @@ DocumentObjectItem *DocumentItem::findItem(
     auto subObj = obj->getSubObject(name.c_str());
     if(!subObj || subObj==obj) {
         if(!subObj && !getTree()->searchDoc)
-            TREE_WARN("sub object not found " << item->getName() << '.' << name.c_str());
+            TREE_LOG("sub object not found " << item->getName() << '.' << name.c_str());
         if(select) {
             item->selected += 2;
             if(std::find(item->mySubs.begin(),item->mySubs.end(),subname)==item->mySubs.end())

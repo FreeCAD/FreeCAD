@@ -534,6 +534,9 @@ protected:
      */
     virtual QIcon mergeOverlayIcons (const QIcon & orig) const;
 
+    /// Turn on mode switch
+    virtual void setModeSwitch();
+
 protected:
     /// The root Separator of the ViewProvider
     SoSeparator *pcRoot;
@@ -549,7 +552,6 @@ protected:
     std::bitset<32> StatusBits;
 
 private:
-    void setModeSwitch();
     int _iActualMode;
     int _iEditMode;
     int viewOverrideMode;
