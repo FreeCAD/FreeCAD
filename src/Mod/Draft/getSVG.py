@@ -239,6 +239,85 @@ def getEllipse(plane,
     return get_ellipse(plane, fill, stroke, linewidth, lstyle, edge)
 
 
+def get_arrow(obj,
+              arrowtype, point, arrowsize, color, linewidth, angle=0):
+    """Get the SVG representation from an arrow."""
+    svg = ""
+
+    if not FreeCAD.GuiUp or not obj.ViewObject:
+        return svg
+
+    _cx_cy_r = 'cx="{}" cy="{}" r="{}"'.format(point.x, point.y, arrowsize)
+    _rotate = 'rotate({},{},{})'.format(math.degrees(angle),
+                                        point.x, point.y)
+    _transl = 'translate({},{})'.format(point.x, point.y)
+    _scale = 'scale({},{})'.format(arrowsize, arrowsize)
+    _style = 'style="stroke-miterlimit:4;stroke-dasharray:none"'
+
+    if obj.ViewObject.ArrowType == "Circle":
+        svg += '<circle '
+        svg += _cx_cy_r + ' '
+        svg += 'fill="{}" stroke="{}" '.format("none", color)
+        svg += 'style="stroke-width:{};'.format(linewidth)
+        svg += 'stroke-miterlimit:4;stroke-dasharray:none" '
+        svg += 'freecad:skip="1"'
+        svg += '/>\n'
+    elif obj.ViewObject.ArrowType == "Dot":
+        svg += '<circle '
+        svg += _cx_cy_r + ' '
+        svg += 'fill="{}" stroke="{}" '.format(color, "none")
+        svg += _style + ' '
+        svg += 'freecad:skip="1"'
+        svg += '/>\n'
+    elif obj.ViewObject.ArrowType == "Arrow":
+        svg += '<path '
+        svg += 'transform="'
+        svg += _rotate + ' '
+        svg += _transl + ' '
+        svg += _scale + '" '
+        svg += 'freecad:skip="1" '
+        svg += 'fill="{}" stroke="{}" '.format(color, "none")
+        svg += _style + ' '
+        svg += 'd="M 0 0 L 4 1 L 4 -1 Z"'
+        svg += '/>\n'
+    elif obj.ViewObject.ArrowType == "Tick":
+        svg += '<path '
+        svg += 'transform="'
+        svg += _rotate + ' '
+        svg += _transl + ' '
+        svg += _scale + '" '
+        svg += 'freecad:skip="1" '
+        svg += 'fill="{}" stroke="{}" '.format(color, "none")
+        svg += _style + ' '
+        svg += 'd="M -1 -2 L 0 2 L 1 2 L 0 -2 Z"'
+        svg += '/>\n'
+    elif obj.ViewObject.ArrowType == "Tick-2":
+        svg += '<line '
+        svg += 'transform="'
+        svg += 'rotate({},{},{}) '.format(math.degrees(angle) + 45,
+                                          point.x, point.y)
+        svg += _transl + '" '
+        svg += 'freecad:skip="1" '
+        svg += 'fill="{}" stroke="{}" '.format("none", color)
+        svg += 'style="stroke-dasharray:none;stroke-linecap:square;'
+        svg += 'stroke-width:{}" '.format(linewidth)
+        svg += 'x1="-{}" y1="0" '.format(2 * arrowsize)
+        svg += 'x2="{}" y2="0"'.format(2 * arrowsize)
+        svg += '/>\n'
+    else:
+        _wrn("getSVG: arrow type not implemented")
+
+    return svg
+
+
+def getArrow(obj,
+             arrowtype, point, arrowsize, color, linewidth, angle=0):
+    """Get the SVG representation from an arrow. DEPRECATED."""
+    utils.use_instead("get_arrow")
+    return get_arrow(obj,
+                     arrowtype, point, arrowsize, color, linewidth, angle)
+
+
 def get_path(obj, plane,
              fill, pathdata, stroke, linewidth, lstyle,
              fill_opacity=None,
@@ -577,55 +656,6 @@ def getSVG(obj,
         if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "DrawStyle"):
             lstyle = get_line_style(obj.ViewObject.DrawStyle, scale)
 
-    def getArrow(arrowtype,point,arrowsize,color,linewidth,angle=0):
-        svg = ""
-        if FreeCAD.GuiUp:
-            if not obj.ViewObject:
-                return svg
-            if obj.ViewObject.ArrowType == "Circle":
-                svg += '<circle cx="'+str(point.x)+'" cy="'+str(point.y)
-                svg += '" r="'+str(arrowsize)+'" '
-                svg += 'fill="none" stroke="'+ color + '" '
-                svg += 'style="stroke-width:'+ str(linewidth) + ';stroke-miterlimit:4;stroke-dasharray:none" '
-                svg += 'freecad:skip="1"'
-                svg += '/>\n'
-            elif obj.ViewObject.ArrowType == "Dot":
-                svg += '<circle cx="'+str(point.x)+'" cy="'+str(point.y)
-                svg += '" r="'+str(arrowsize)+'" '
-                svg += 'fill="'+ color +'" stroke="none" '
-                svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
-                svg += 'freecad:skip="1"'
-                svg += '/>\n'
-            elif obj.ViewObject.ArrowType == "Arrow":
-                svg += '<path transform="rotate('+str(math.degrees(angle))
-                svg += ','+ str(point.x) + ',' + str(point.y) + ') '
-                svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
-                svg += 'scale('+str(arrowsize)+','+str(arrowsize)+')" freecad:skip="1" '
-                svg += 'fill="'+ color +'" stroke="none" '
-                svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
-                svg += 'd="M 0 0 L 4 1 L 4 -1 Z"/>\n'
-            elif obj.ViewObject.ArrowType == "Tick":
-                svg += '<path transform="rotate('+str(math.degrees(angle))
-                svg += ','+ str(point.x) + ',' + str(point.y) + ') '
-                svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
-                svg += 'scale('+str(arrowsize)+','+str(arrowsize)+')" freecad:skip="1" '
-                svg += 'fill="'+ color +'" stroke="none" '
-                svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
-                svg += 'd="M -1 -2 L 0 2 L 1 2 L 0 -2 Z"/>\n'
-            elif obj.ViewObject.ArrowType == "Tick-2":
-                svg += '<line transform="rotate('+str(math.degrees(angle)+45)
-                svg += ','+ str(point.x) + ',' + str(point.y) + ') '
-                svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
-                svg += '" freecad:skip="1" '
-                svg += 'fill="none" stroke="'+ color +'" '
-                svg += 'style="stroke-dasharray:none;stroke-linecap:square;'
-                svg += 'stroke-width:'+ str(linewidth) +'" '
-                svg += 'x1="-'+ str(arrowsize*2) +'" y1="0" '
-                svg += 'x2="' + str(arrowsize*2) +'" y2="0" />\n'
-            else:
-                print("getSVG: arrow type not implemented")
-        return svg
-
     def getOvershoot(point,shootsize,color,linewidth,angle=0):
         svg = '<line transform="rotate('+str(math.degrees(angle))
         svg += ','+ str(point.x) + ',' + str(point.y) + ') '
@@ -821,8 +851,14 @@ def getSVG(obj,
                             if hasattr(obj.ViewObject,"FlipArrows"):
                                 if obj.ViewObject.FlipArrows:
                                     angle = angle+math.pi
-                            svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
-                            svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,stroke,linewidth,angle+math.pi)
+                            svg += get_arrow(obj,
+                                             obj.ViewObject.ArrowType,
+                                             p2, arrowsize, stroke, linewidth,
+                                             angle)
+                            svg += get_arrow(obj,
+                                             obj.ViewObject.ArrowType,
+                                             p3, arrowsize, stroke, linewidth,
+                                             angle + math.pi)
 
                     # drawing text
                     svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
@@ -872,8 +908,14 @@ def getSVG(obj,
                             if obj.ViewObject.FlipArrows:
                                 angle1 = angle1+math.pi
                                 angle2 = angle2+math.pi
-                        svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle1)
-                        svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,stroke,linewidth,angle2)
+                        svg += get_arrow(obj,
+                                         obj.ViewObject.ArrowType,
+                                         p2, arrowsize, stroke, linewidth,
+                                         angle1)
+                        svg += get_arrow(obj,
+                                         obj.ViewObject.ArrowType,
+                                         p3, arrowsize, stroke, linewidth,
+                                         angle2)
 
                     # drawing text
                     if obj.ViewObject.DisplayMode == "2D":
@@ -915,14 +957,11 @@ def getSVG(obj,
             if hasattr(obj.ViewObject, "ArrowType") and len(obj.Points) >= 2:
                 last_segment = FreeCAD.Vector(obj.Points[-1] - obj.Points[-2])
                 angle = -DraftVecUtils.angle(get_proj(last_segment, plane)) + math.pi
-                svg += getArrow(
-                    arrowtype=obj.ViewObject.ArrowType,
-                    point=proj_points[-1],
-                    arrowsize=obj.ViewObject.ArrowSize.Value/pointratio,
-                    color=stroke,
-                    linewidth=linewidth,
-                    angle=angle
-                )
+                svg += get_arrow(obj,
+                                 obj.ViewObject.ArrowType,
+                                 proj_points[-1],
+                                 obj.ViewObject.ArrowSize.Value/pointratio,
+                                 stroke, linewidth, angle)
 
         # print text
         if FreeCAD.GuiUp:
@@ -1162,7 +1201,9 @@ def getSVG(obj,
                     p2 = get_proj(obj.Shape.Vertexes[-2].Point, plane)
                     angle = -DraftVecUtils.angle(p2.sub(p1))
                     arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
-                    svg += getArrow(obj.ViewObject.ArrowType,p1,arrowsize,stroke,linewidth,angle)
+                    svg += get_arrow(obj,
+                                     obj.ViewObject.ArrowType,
+                                     p1, arrowsize, stroke, linewidth, angle)
 
     # techdraw expects bottom-to-top coordinates
     if techdraw:
