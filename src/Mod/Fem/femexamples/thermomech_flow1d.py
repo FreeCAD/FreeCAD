@@ -53,7 +53,7 @@ def get_information():
             "meshtype": "solid",
             "meshelement": "Seg3",
             "constraints": ["self weight"],
-            "solvers": ["ccx"],
+            "solvers": ["calculix"],
             "material": "fluid",
             "equation": "thermomechanical"
             }

@@ -56,7 +56,7 @@ def get_information():
             "meshtype": "solid",
             "meshelement": "Tet10",
             "constraints": ["fixed", "initial temperature", "temperature"],
-            "solvers": ["ccx", "elmer"],
+            "solvers": ["calculix", "elmer"],
             "material": "multimaterial",
             "equation": "thermomechanical"
             }
