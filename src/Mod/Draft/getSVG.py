@@ -166,6 +166,50 @@ def getPattern(pat):
     return get_pattern(pat)
 
 
+def get_circle(plane,
+               fill, stroke, linewidth, lstyle,
+               edge):
+    """Get the SVG representation from a circular edge."""
+    cen = get_proj(edge.Curve.Center, plane)
+    rad = edge.Curve.Radius
+
+    if hasattr(FreeCAD, "DraftWorkingPlane"):
+        drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
+    else:
+        drawing_plane_normal = FreeCAD.Vector(0, 0, 1)
+
+    if plane:
+        drawing_plane_normal = plane.axis
+
+    if round(edge.Curve.Axis.getAngle(drawing_plane_normal), 2) in [0, 3.14]:
+        # Perpendicular projection: circle
+        svg = '<circle '
+        svg += 'cx="{}" cy="{}" r="{}" '.format(cen.x, cen.y, rad)
+    else:
+        # Any other projection: ellipse
+        svg = '<path d="{}" '.format(get_discretized(edge, plane))
+
+    svg += 'stroke="{}" '.format(stroke)
+    # Editor: why is stroke-width repeated? Is this really necessary
+    # for the generated SVG?
+    svg += 'stroke-width="{} px" '.format(linewidth)
+    svg += 'style="'
+    svg += 'stroke-width:{};'.format(linewidth)
+    svg += 'stroke-miterlimit:4;'
+    svg += 'stroke-dasharray:{};'.format(lstyle)
+    svg += 'fill:{}'.format(fill) + '"'
+    svg += '/>\n'
+    return svg
+
+
+def getCircle(plane,
+              fill, stroke, linewidth, lstyle,
+              edge):
+    """Get the SVG representation from a circular edge."""
+    utils.use_instead("get_circle")
+    return get_circle(plane, fill, stroke, linewidth, lstyle, edge)
+
+
 def get_path(obj, plane,
              fill, pathdata, stroke, linewidth, lstyle,
              fill_opacity=None,
@@ -251,7 +295,9 @@ def get_path(obj, plane,
                     if not done:
                         if len(e.Vertexes) == 1 and iscircle:
                             # Complete circle not only arc
-                            svg = getCircle(e)
+                            svg = get_circle(plane,
+                                             fill, stroke, linewidth, lstyle,
+                                             e)
                             return svg
                         elif len(e.Vertexes) == 1 and isellipse:
                             # Complete ellipse not only arc
@@ -499,33 +545,6 @@ def getSVG(obj,
     else:
         if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "DrawStyle"):
             lstyle = get_line_style(obj.ViewObject.DrawStyle, scale)
-
-    def getCircle(edge):
-        cen = get_proj(edge.Curve.Center, plane)
-        rad = edge.Curve.Radius
-        if hasattr(FreeCAD,"DraftWorkingPlane"):
-            drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
-        else:
-            drawing_plane_normal = FreeCAD.Vector(0,0,1)
-        if plane: drawing_plane_normal = plane.axis
-        if round(edge.Curve.Axis.getAngle(drawing_plane_normal),2) in [0, 3.14]:
-            # perpendicular projection: circle
-            svg = '<circle cx="' + str(cen.x)
-            svg += '" cy="' + str(cen.y)
-            svg += '" r="' + str(rad)+'" '
-        else:
-            # any other projection: ellipse
-            svg = '<path d="'
-            svg += get_discretized(edge, plane)
-            svg += '" '
-        svg += 'stroke="' + stroke + '" '
-        svg += 'stroke-width="' + str(linewidth) + ' px" '
-        svg += 'style="stroke-width:'+ str(linewidth)
-        svg += ';stroke-miterlimit:4'
-        svg += ';stroke-dasharray:' + lstyle
-        svg += ';fill:' + fill + '"'
-        svg += '/>\n'
-        return svg
 
     def getEllipse(edge):
         cen = get_proj(edge.Curve.Center, plane)
@@ -956,7 +975,9 @@ def getSVG(obj,
                         dv = p2.sub(p1)
                         dv.normalize()
                         center = p2.add(dv.scale(rad,rad,rad))
-                        svg += getCircle(Part.makeCircle(rad,center))
+                        svg += get_circle(plane,
+                                          fill, stroke, linewidth, lstyle,
+                                          Part.makeCircle(rad, center))
                         if hasattr(vobj.Proxy,"bubbletexts"):
                             if len (vobj.Proxy.bubbletexts) >= n:
                                 svg += '<text fill="' + stroke + '" '
@@ -981,7 +1002,9 @@ def getSVG(obj,
         for f in obj.Shape.Faces:
             if len(f.Edges) == 1:
                 if isinstance(f.Edges[0].Curve,Part.Circle):
-                    svg += getCircle(f.Edges[0])
+                    svg += get_circle(plane,
+                                      fill, stroke, linewidth, lstyle,
+                                      f.Edges[0])
 
     elif utils.get_type(obj) == "Rebar":
         fill = "none"
@@ -1110,7 +1133,9 @@ def getSVG(obj,
             # closed circle or spline
             if obj.Shape.Edges:
                 if isinstance(obj.Shape.Edges[0].Curve,Part.Circle):
-                    svg = getCircle(obj.Shape.Edges[0])
+                    svg = get_circle(plane,
+                                     fill, stroke, linewidth, lstyle,
+                                     obj.Shape.Edges[0])
                 else:
                     svg = get_path(obj, plane,
                                    fill, pathdata, stroke, linewidth, lstyle,
