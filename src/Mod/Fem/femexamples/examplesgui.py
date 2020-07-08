@@ -144,15 +144,14 @@ class FemExamples(QtGui.QWidget):
         # Ok buttons:
         self.button_box = QtGui.QDialogButtonBox(self)
         self.button_box.setOrientation(QtCore.Qt.Horizontal)
-        self.button_box.setStandardButtons(
-            QtGui.QDialogButtonBox.Cancel
-        )
         self.setup_button = QtGui.QPushButton(QtGui.QIcon.fromTheme("document-new"), "Setup")
         self.setup_button.setEnabled(False)
         self.button_box.addButton(self.setup_button, QtGui.QDialogButtonBox.AcceptRole)
         self.run_button = QtGui.QPushButton(QtGui.QIcon.fromTheme("system-run"), "Run")
         self.run_button.setEnabled(False)
         self.button_box.addButton(self.run_button, QtGui.QDialogButtonBox.ApplyRole)
+        self.close_button = QtGui.QPushButton(QtGui.QIcon.fromTheme("window-close"), "Close")
+        self.button_box.addButton(self.close_button, QtGui.QDialogButtonBox.RejectRole)
         self.button_box.clicked.connect(self.clicked)
 
         # Layout:
