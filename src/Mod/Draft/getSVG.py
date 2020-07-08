@@ -210,6 +210,35 @@ def getCircle(plane,
     return get_circle(plane, fill, stroke, linewidth, lstyle, edge)
 
 
+def get_ellipse(plane,
+                fill, stroke, linewidth, lstyle,
+                edge):
+    """Get the SVG representation from an elliptical edge."""
+    cen = get_proj(edge.Curve.Center, plane)
+    mir = edge.Curve.MinorRadius
+    mar = edge.Curve.MajorRadius
+    svg = '<ellipse '
+    svg += 'cx="{}" cy="{}" '.format(cen.x, cen.y)
+    svg += 'rx="{}" ry="{}" '.format(mar, mir)
+    svg += 'stroke="{}" '.format(stroke)
+    svg += 'stroke-width="{} px" '.format(linewidth)
+    svg += 'style="'
+    svg += 'stroke-width:{};'.format(linewidth)
+    svg += 'stroke-miterlimit:4;'
+    svg += 'stroke-dasharray:{};'.format(lstyle)
+    svg += 'fill:{}'.format(fill) + '"'
+    svg += '/>\n'
+    return svg
+
+
+def getEllipse(plane,
+               fill, stroke, linewidth, lstyle,
+               edge):
+    """Get the SVG representation from an elliptical edge. DEPRECATED."""
+    utils.use_instead("get_ellipse")
+    return get_ellipse(plane, fill, stroke, linewidth, lstyle, edge)
+
+
 def get_path(obj, plane,
              fill, pathdata, stroke, linewidth, lstyle,
              fill_opacity=None,
@@ -301,7 +330,9 @@ def get_path(obj, plane,
                             return svg
                         elif len(e.Vertexes) == 1 and isellipse:
                             # Complete ellipse not only arc
-                            # svg = getEllipse(e)
+                            # svg = get_ellipse(plane,
+                            #                   fill, stroke, linewidth,
+                            #                   lstyle, edge)
                             # return svg
 
                             # Difference in angles
@@ -545,23 +576,6 @@ def getSVG(obj,
     else:
         if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "DrawStyle"):
             lstyle = get_line_style(obj.ViewObject.DrawStyle, scale)
-
-    def getEllipse(edge):
-        cen = get_proj(edge.Curve.Center, plane)
-        mir = edge.Curve.MinorRadius
-        mar = edge.Curve.MajorRadius
-        svg = '<ellipse cx="' + str(cen.x)
-        svg += '" cy="' + str(cen.y)
-        svg += '" rx="' + str(mar)
-        svg += '" ry="' + str(mir)+'" '
-        svg += 'stroke="' + stroke + '" '
-        svg += 'stroke-width="' + str(linewidth) + ' px" '
-        svg += 'style="stroke-width:'+ str(linewidth)
-        svg += ';stroke-miterlimit:4'
-        svg += ';stroke-dasharray:' + lstyle
-        svg += ';fill:' + fill + '"'
-        svg += '/>\n'
-        return svg
 
     def getArrow(arrowtype,point,arrowsize,color,linewidth,angle=0):
         svg = ""
