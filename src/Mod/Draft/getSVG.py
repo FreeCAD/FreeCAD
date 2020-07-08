@@ -318,6 +318,29 @@ def getArrow(obj,
                      arrowtype, point, arrowsize, color, linewidth, angle)
 
 
+def get_overshoot(point, shootsize, color, linewidth, angle=0):
+    """Get the SVG representation of a dimension line overshoot."""
+    svg = '<line '
+    svg += 'transform="'
+    svg += 'rotate({},{},{}) '.format(math.degrees(angle),
+                                      point.x, point.y)
+    svg += 'translate({},{})" '.format(point.x, point.y)
+    svg += 'freecad:skip="1" '
+    svg += 'fill="{}" stroke="{}" '.format("none", color)
+    svg += 'style="stroke-dasharray:none;stroke-linecap:square;'
+    svg += 'stroke-width:{}" '.format(linewidth)
+    svg += 'x1="0" y1="0" '
+    svg += 'x2="{}" y2="0"'.format(-1 * shootsize)
+    svg += '/>\n'
+    return svg
+
+
+def getOvershoot(point, shootsize, color, linewidth, angle=0):
+    """Get the SVG representation of a dimension line overshoot. DEPRECATED."""
+    utils.use_instead("get_overshoot")
+    return get_overshoot(point, shootsize, color, linewidth, angle)
+
+
 def get_path(obj, plane,
              fill, pathdata, stroke, linewidth, lstyle,
              fill_opacity=None,
@@ -656,18 +679,6 @@ def getSVG(obj,
         if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "DrawStyle"):
             lstyle = get_line_style(obj.ViewObject.DrawStyle, scale)
 
-    def getOvershoot(point,shootsize,color,linewidth,angle=0):
-        svg = '<line transform="rotate('+str(math.degrees(angle))
-        svg += ','+ str(point.x) + ',' + str(point.y) + ') '
-        svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
-        svg += '" freecad:skip="1" '
-        svg += 'fill="none" stroke="'+ color +'" '
-        svg += 'style="stroke-dasharray:none;stroke-linecap:square;'
-        svg += 'stroke-width:'+ str(linewidth) +'" '
-        svg += 'x1="0" y1="0" '
-        svg += 'x2="'+ str(shootsize*-1) +'" y2="0" />\n'
-        return svg
-
     def getText(tcolor,fontsize,fontname,angle,base,text,linespacing=0.5,align="center",flip=True):
         if isinstance(angle,FreeCAD.Rotation):
             if not plane:
@@ -837,13 +848,17 @@ def getSVG(obj,
                         # drawing dimension and extension lines overshoots
                         if hasattr(obj.ViewObject,"DimOvershoot") and obj.ViewObject.DimOvershoot.Value:
                             shootsize = obj.ViewObject.DimOvershoot.Value/pointratio
-                            svg += getOvershoot(p2,shootsize,stroke,linewidth,angle)
-                            svg += getOvershoot(p3,shootsize,stroke,linewidth,angle+math.pi)
+                            svg += get_overshoot(p2, shootsize, stroke,
+                                                 linewidth, angle)
+                            svg += get_overshoot(p3, shootsize, stroke,
+                                                 linewidth, angle + math.pi)
                         if hasattr(obj.ViewObject,"ExtOvershoot") and obj.ViewObject.ExtOvershoot.Value:
                             shootsize = obj.ViewObject.ExtOvershoot.Value/pointratio
                             shootangle = -DraftVecUtils.angle(p1.sub(p2))
-                            svg += getOvershoot(p2,shootsize,stroke,linewidth,shootangle)
-                            svg += getOvershoot(p3,shootsize,stroke,linewidth,shootangle)
+                            svg += get_overshoot(p2, shootsize, stroke,
+                                                 linewidth, shootangle)
+                            svg += get_overshoot(p3, shootsize, stroke,
+                                                 linewidth, shootangle)
 
                         # drawing arrows
                         if hasattr(obj.ViewObject,"ArrowType"):
