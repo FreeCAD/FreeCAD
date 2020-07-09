@@ -67,7 +67,7 @@ class ObjectDressup:
         obj.addProperty("App::PropertyFile", "probefile", "ProbeData", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "The point file from the surface probing."))
         obj.Proxy = self
         obj.addProperty("Part::PropertyPartShape", "interpSurface", "Path")
-        obj.setEditorMode('interpSurface', 2)  # hide
+        #obj.setEditorMode('interpSurface', 2)  # hide
         obj.addProperty("App::PropertyDistance", "ArcInterpolate", "Interpolate", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "Deflection distance for arc interpolation"))
         obj.addProperty("App::PropertyDistance", "SegInterpolate", "Interpolate", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrectp", "break segments into smaller segments of this length."))
         obj.ArcInterpolate = 0.1
