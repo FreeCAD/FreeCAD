@@ -478,6 +478,11 @@ def getText(plane, techdraw,
                     linespacing, align, flip)
 
 
+def format_point(coords, action='L'):
+    """Return a string with a formatted point."""
+    return "{action}{x},{y}".format(x=coords.x, y=coords.y, action=action)
+
+
 def get_path(obj, plane,
              fill, pathdata, stroke, linewidth, lstyle,
              fill_opacity=None,
@@ -1010,11 +1015,6 @@ def getSVG(obj,
 
     elif utils.get_type(obj) == "Label":
         if getattr(obj.ViewObject, "Line", True):  # some Labels may have no Line property
-            def format_point(coords, action='L'):
-                return "{action}{x},{y}".format(
-                    x=coords.x, y=coords.y, action=action
-                )
-
             # Draw multisegment line
             proj_points = list(map(lambda x: get_proj(x, plane), obj.Points))
             path_dir_list = [format_point(proj_points[0], action='M')]
