@@ -341,6 +341,143 @@ def getOvershoot(point, shootsize, color, linewidth, angle=0):
     return get_overshoot(point, shootsize, color, linewidth, angle)
 
 
+def get_text(plane, techdraw,
+             tcolor, fontsize, fontname,
+             angle, base, text,
+             linespacing=0.5, align="center", flip=True):
+    """Get the SVG representation of a textual element."""
+    if isinstance(angle, FreeCAD.Rotation):
+        if not plane:
+            angle = angle.Angle
+        else:
+            if plane.axis.getAngle(angle.Axis) < 0.001:
+                angle = angle.Angle
+            elif abs(plane.axis.getAngle(angle.Axis) - math.pi) < 0.001:
+                if abs(angle.Angle) > 0.1:
+                    angle = -angle.Angle
+                else:
+                    angle = angle.Angle
+            elif abs(plane.axis.getAngle(angle.Axis) - math.pi/2) < 0.001:
+                # text is perpendicular to view, so it shouldn't appear
+                return ""
+            else:
+                # TODO maybe there is something better to do here?
+                angle = 0
+
+    # text should be a list of strings separated by a newline
+    if not isinstance(text, list):
+        text = text.split("\n")
+
+    if align.lower() == "center":
+        anchor = "middle"
+    elif align.lower() == "left":
+        anchor = "start"
+    else:
+        anchor = "end"
+
+    if techdraw:
+        svg = ""
+        for i in range(len(text)):
+            _t = text[i].replace("&", "&amp;")
+            _t = _t.replace("<", "&lt;")
+            t = _t.replace(">", "&gt;")
+
+            if six.PY2 and not isinstance(t, six.text_type):
+                t = t.decode("utf8")
+
+            # possible workaround if UTF8 is unsupported
+            #   import unicodedata as U
+            #   v = list()
+            #   for c in U.normalize("NFKD", t):
+            #       if not U.combining(c):
+            #           v.append(c)
+            #
+            #   t = u"".join(v)
+            #   t = t.encode("utf8")
+
+            svg += '<text '
+            svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
+            svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)
+            svg += 'style="text-anchor:{};text-align:{};'.format(anchor,
+                                                                 align.lower())
+            svg += 'font-family:{}" '.format(fontname)
+            svg += 'transform="'
+            svg += 'rotate({},{},{}) '.format(math.degrees(angle),
+                                              base.x,
+                                              base.y - i * linespacing)
+            svg += 'translate({},{}) '.format(base.x,
+                                              base.y - i * linespacing)
+            svg += 'scale(1,-1)"'
+            # svg += 'freecad:skip="1"'
+            svg += '>\n'
+            svg += t
+            svg += '</text>\n'
+    else:
+        svg = '<text '
+        svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
+        svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)
+        svg += 'style="text-anchor:{};text-align:{};'.format(anchor,
+                                                             align.lower())
+        svg += 'font-family:{}" '.format(fontname)
+        svg += 'transform="'
+        svg += 'rotate({},{},{}) '.format(math.degrees(angle),
+                                          base.x,
+                                          base.y)
+        if flip:
+            svg += 'translate({},{}) '.format(base.x, base.y)
+        else:
+            svg += 'translate({},{}) '.format(base.x, -base.y)
+        # svg += 'scale({},-{}) '.format(tmod/2000, tmod/2000)
+
+        if flip:
+            svg += 'scale(1,-1) '
+        else:
+            svg += 'scale(1,1) '
+
+        svg += '" '
+        svg += 'freecad:skip="1"'
+        svg += '>\n'
+
+        if len(text) == 1:
+            try:
+                _t = text[0].replace("&", "&amp;").replace("<", "&lt;")
+                svg += _t.replace(">", "&gt;")
+            except:
+                _t = text[0].decode("utf8")
+                _t = _t.replace("&", "&amp;").replace("<", "&lt;")
+                svg += _t.replace(">", "&gt;")
+        else:
+            for i in range(len(text)):
+                if i == 0:
+                    svg += '<tspan>'
+                else:
+                    svg += '<tspan x="0" dy="{}">'.format(linespacing)
+
+                try:
+                    _t = text[i].replace("&", "&amp;").replace("<", "&lt;")
+                    svg += _t.replace(">", "&gt;")
+                except:
+                    _t = text[i].decode("utf8")
+                    _t = _t.replace("&", "&amp;").replace("<", "&lt;")
+                    svg += _t.replace(">", "&gt;")
+
+                svg += '</tspan>\n'
+        svg += '</text>\n'
+    return svg
+
+
+def getText(plane, techdraw,
+            tcolor, fontsize, fontname,
+            angle, base, text,
+            linespacing=0.5, align="center", flip=True):
+    """Get the SVG representation of a textual element. DEPRECATED."""
+    utils.use_instead("get_text")
+    return get_text(plane, techdraw,
+                    tcolor, fontsize, fontname,
+                    angle, base, text,
+                    linespacing, align, flip)
+
+
 def get_path(obj, plane,
              fill, pathdata, stroke, linewidth, lstyle,
              fill_opacity=None,
@@ -679,86 +816,6 @@ def getSVG(obj,
         if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "DrawStyle"):
             lstyle = get_line_style(obj.ViewObject.DrawStyle, scale)
 
-    def getText(tcolor,fontsize,fontname,angle,base,text,linespacing=0.5,align="center",flip=True):
-        if isinstance(angle,FreeCAD.Rotation):
-            if not plane:
-                angle = angle.Angle
-            else:
-                if plane.axis.getAngle(angle.Axis) < 0.001:
-                    angle = angle.Angle
-                elif abs(plane.axis.getAngle(angle.Axis)-math.pi) < 0.001:
-                    if abs(angle.Angle) > 0.1:
-                        angle = -angle.Angle
-                    else:
-                        angle = angle.Angle
-                elif abs(plane.axis.getAngle(angle.Axis)-math.pi/2) < 0.001:
-                    return "" # text is perpendicular to view, so it shouldn't appear
-                else:
-                    angle = 0 #TODO maybe there is something better to do here?
-        if not isinstance(text,list):
-            text = text.split("\n")
-        if align.lower() == "center":
-            anchor = "middle"
-        elif align.lower() == "left":
-            anchor = "start"
-        else:
-            anchor = "end"
-        if techdraw:
-            svg = ""
-            for i in range(len(text)):
-                t = text[i].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
-                if six.PY2 and not isinstance(t, six.text_type):
-                    t = t.decode("utf8")
-                # possible workaround if UTF8 is unsupported
-                #    import unicodedata
-                #    t = u"".join([c for c in unicodedata.normalize("NFKD",t) if not unicodedata.combining(c)]).encode("utf8")
-                svg += '<text stroke-width="0" stroke="' + tcolor + '" fill="' + tcolor +'" font-size="' + str(fontsize) + '" '
-                svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
-                svg += 'font-family:'+ fontname +'" '
-                svg += 'transform="rotate('+str(math.degrees(angle))
-                svg += ','+ str(base.x) + ',' + str(base.y-linespacing*i) + ') '
-                svg += 'translate(' + str(base.x) + ',' + str(base.y-linespacing*i) + ') '
-                svg += 'scale(1,-1)" '
-                #svg += '" freecad:skip="1"'
-                svg += '>\n' + t + '</text>\n'
-        else:
-            svg = '<text stroke-width="0" stroke="' + tcolor + '" fill="'
-            svg += tcolor +'" font-size="'
-            svg += str(fontsize) + '" '
-            svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
-            svg += 'font-family:'+ fontname +'" '
-            svg += 'transform="rotate('+str(math.degrees(angle))
-            svg += ','+ str(base.x) + ',' + str(base.y) + ') '
-            if flip:
-                svg += 'translate(' + str(base.x) + ',' + str(base.y) + ')'
-            else:
-                svg += 'translate(' + str(base.x) + ',' + str(-base.y) + ')'
-            #svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+') '
-            if flip:
-                svg += ' scale(1,-1) '
-            else:
-                svg += ' scale(1,1) '
-            svg += '" freecad:skip="1"'
-            svg += '>\n'
-            if len(text) == 1:
-                try:
-                    svg += text[0].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
-                except:
-                    svg += text[0].decode("utf8").replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
-            else:
-                for i in range(len(text)):
-                    if i == 0:
-                        svg += '<tspan>'
-                    else:
-                        svg += '<tspan x="0" dy="'+str(linespacing)+'">'
-                    try:
-                        svg += text[i].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
-                    except:
-                        svg += text[i].decode("utf8").replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
-                    svg += '</tspan>\n'
-            svg += '</text>\n'
-        return svg
-
     if not obj:
         pass
 
@@ -876,7 +933,9 @@ def getSVG(obj,
                                              angle + math.pi)
 
                     # drawing text
-                    svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
+                    svg += get_text(plane, techdraw,
+                                    stroke, fontsize, obj.ViewObject.FontName,
+                                    tangle, tbase, prx.string)
 
     elif utils.get_type(obj) == "AngularDimension":
         if FreeCAD.GuiUp:
@@ -945,7 +1004,9 @@ def getSVG(obj,
                     else:
                         tangle = 0
                         tbase = get_proj(prx.tbase, plane)
-                    svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
+                    svg += get_text(plane, techdraw,
+                                    stroke, fontsize, obj.ViewObject.FontName,
+                                    tangle, tbase, prx.string)
 
     elif utils.get_type(obj) == "Label":
         if getattr(obj.ViewObject, "Line", True):  # some Labels may have no Line property
@@ -988,8 +1049,10 @@ def getSVG(obj,
                 rotation = obj.Placement.Rotation
                 justification = obj.ViewObject.TextAlignment
                 text = obj.Text
-                svg += getText(stroke, fontsize, fontname, rotation, position,
-                               text, linespacing, justification)
+                svg += get_text(plane, techdraw,
+                                stroke, fontsize, fontname,
+                                rotation, position, text,
+                                linespacing, justification)
 
     elif utils.get_type(obj) in ["Annotation", "DraftText", "Text"]:
         # returns an svg representation of a document annotation
@@ -1007,7 +1070,10 @@ def getSVG(obj,
                     r = obj.Placement.Rotation
                     t = obj.Text
                 j = obj.ViewObject.Justification
-                svg += getText(stroke,fontsize,n,r,p,t,linespacing,j)
+                svg += get_text(plane, techdraw,
+                                stroke, fontsize, n,
+                                r, p, t,
+                                linespacing, j)
 
     elif utils.get_type(obj) == "Axis":
         # returns the SVG representation of an Arch Axis system
@@ -1132,13 +1198,19 @@ def getSVG(obj,
                 lspc = FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue())
                 p1 = p2.add(lspc)
                 j = obj.ViewObject.TextAlign
-                t3 = getText(c,f1,n,a,get_proj(p1, plane),t1,linespacing,j,flip=True)
+                t3 = get_text(plane, techdraw,
+                              c, f1, n,
+                              a, get_proj(p1, plane), t1,
+                              linespacing, j, flip=True)
                 svg += t3
                 if t2:
                     ofs = FreeCAD.Vector(0,-lspc.Length,0)
                     if a:
                         ofs = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),-rotation).multVec(ofs)
-                    t4 = getText(c,fontsize,n,a,get_proj(p1, plane).add(ofs),t2,linespacing,j,flip=True)
+                    t4 = get_text(plane, techdraw,
+                                  c, fontsize, n,
+                                  a, get_proj(p1, plane).add(ofs), t2,
+                                  linespacing, j, flip=True)
                     svg += t4
 
     elif obj.isDerivedFrom('Part::Feature'):
