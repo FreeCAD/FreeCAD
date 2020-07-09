@@ -148,11 +148,19 @@ def getDiscretized(edge, plane):
     return get_discretized(edge, plane)
 
 
-def getPattern(pat):
+def get_pattern(pat):
     """Get an SVG pattern."""
-    if pat in utils.svg_patterns():
-        return utils.svg_patterns()[pat][0]
+    patterns = utils.svg_patterns()
+
+    if pat in patterns:
+        return patterns[pat][0]
     return ''
+
+
+def getPattern(pat):
+    """Get an SVG pattern. DEPRECATED."""
+    utils.use_instead("get_pattern")
+    return get_pattern(pat)
 
 
 def getSVG(obj,
@@ -969,7 +977,7 @@ def getSVG(obj,
                         fill_opacity = 1 - (obj.ViewObject.Transparency / 100.0)
                     else:
                         fill = 'url(#'+fillstyle+')'
-                        svg += getPattern(fillstyle)
+                        svg += get_pattern(fillstyle)
                 else:
                     fill = "none"
             else:
