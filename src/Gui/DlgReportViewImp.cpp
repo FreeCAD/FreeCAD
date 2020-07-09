@@ -65,6 +65,7 @@ void DlgReportViewImp::saveSettings()
     ui->checkShowReportViewOnError->onSave();
     ui->checkShowReportViewOnNormalMessage->onSave();
     ui->checkShowReportViewOnLogMessage->onSave();
+    ui->checkShowReportTimecode->onSave();
     ui->colorText->onSave();
     ui->colorLogging->onSave();
     ui->colorWarning->onSave();
@@ -82,6 +83,7 @@ void DlgReportViewImp::loadSettings()
     ui->checkShowReportViewOnError->onRestore();
     ui->checkShowReportViewOnNormalMessage->onRestore();
     ui->checkShowReportViewOnLogMessage->onRestore();
+    ui->checkShowReportTimecode->onRestore();
     ui->colorText->onRestore();
     ui->colorLogging->onRestore();
     ui->colorWarning->onRestore();
