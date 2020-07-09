@@ -68,6 +68,8 @@
 #include "Widgets.h"
 #include "ExpressionCompleter.h"
 #include "MetaTypes.h"
+#include "Action.h"
+#include "SelectionView.h"
 
 FC_LOG_LEVEL_INIT("Tree",false,true,true)
 
@@ -1569,17 +1571,20 @@ void TreeWidget::keyPressEvent(QKeyEvent *event)
 void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
 {
     QTreeWidgetItem* item = itemAt(event->pos());
-    if (!item) return;
+    if (item && !onDoubleClickItem(item))
+        QTreeWidget::mouseDoubleClickEvent(event);
+}
 
+bool TreeWidget::onDoubleClickItem(QTreeWidgetItem *item)
+{
     try {
         if (item->type() == TreeWidget::DocumentType) {
-            //QTreeWidget::mouseDoubleClickEvent(event);
             Gui::Document* doc = static_cast<DocumentItem*>(item)->document();
-            if (!doc) return;
+            if (!doc) return false;
             if(doc->getDocument()->testStatus(App::Document::PartialDoc)) {
                 contextItem = item;
                 onReloadDoc();
-                return;
+                return true;
             }
             if(!doc->setActiveView())
                 doc->setActiveView(0,View3DInventor::getClassTypeId());
@@ -1597,7 +1602,7 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
             ss << Command::getObjectCmd(objitem->object()->getObject())
                 << ".ViewObject.doubleClicked()";
             if (!objitem->object()->doubleClicked())
-                QTreeWidget::mouseDoubleClickEvent(event);
+                return false;
             else if(lines == manager->getLines())
                 manager->addLine(MacroManager::Gui,ss.str().c_str());
 
@@ -1613,6 +1618,7 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
     } catch (...) {
         FC_ERR("Unknown exception");
     }
+    return true;
 }
 
 void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
@@ -3418,44 +3424,214 @@ TreeDockWidget::~TreeDockWidget()
 {
 }
 
+static QIcon getItemIcon(int currentStatus, const QIcon &icon_orig, QIcon::Mode mode, int size=0);
+
+static QIcon getItemIcon(App::Document *doc, ViewProviderDocumentObject *vp, int size)
+{
+    App::DocumentObject *obj = vp->getObject();
+    bool external = (doc != obj->getDocument()
+            || doc != obj->getLinkedObject(true)->getDocument());
+
+    int currentStatus =
+        ((external?0:1)<<4) |
+        ((obj->isError()          ? 1 : 0) << 2) |
+        ((obj->isTouched()||obj->mustExecute()== 1 ? 1 : 0) << 1);
+
+    return getItemIcon(currentStatus, vp->getIcon(), QIcon::Normal, size);
+}
+
+static QString getItemStatus(App::DocumentObject *obj)
+{
+    QString status;
+    if (obj->isError()) {
+#if (QT_VERSION >= 0x050000)
+        status = QApplication::translate(obj->getTypeId().getName(), obj->getStatusString());
+#else
+        status = QApplication::translate(obj->getTypeId().getName(), obj->getStatusString(), 0, QApplication::UnicodeUTF8);
+#endif
+    }
+    if (status.isEmpty()) {
+        if(obj->Label2.getStrValue().size())
+            status = QString::fromLatin1("%1\n\n").arg(QString::fromUtf8(obj->Label2.getValue()));
+        status += QObject::tr("Left click to select. Right click to show children.\n"
+                              "Shift + Left click to edit. Shift + Right click for edit menu.");
+    }
+    return status;
+}
+
 void TreeWidget::populateSelUpMenu(QMenu *menu)
 {
     auto tree = instance();
     if (!tree)
         return;
 
-    auto sels = tree->selectedItems();
-    if (sels.size() != 1)
-        return;
+    // Static variable that remembers the last hierarhcy
+    static std::vector<std::string> lastItemNames;
 
-    QList<DocumentObjectItem*> items;
-    for (auto item=sels.front()->parent(); item; item=item->parent()) {
+    QList<QTreeWidgetItem*> items;
+    QTreeWidgetItem *currentItem = nullptr;
+    DocumentItem *docItem = nullptr;
+
+    QPoint pos = QCursor::pos();
+    QWidget *widget = qApp->widgetAt(pos);
+    if (widget)
+        widget = widget->parentWidget();
+    auto viewer = qobject_cast<View3DInventorViewer*>(widget);
+    // First try to find the time cooresponding to the object under the mouse
+    // cursor in 3D view
+    if (viewer) {
+        auto selList = viewer->getPickedList(true);
+        if (selList.size()) {
+            const auto &objT = selList.front();
+            docItem = tree->getDocumentItem(Application::Instance->getDocument(
+                        objT.getDocumentName().c_str()));
+            if (docItem)
+                currentItem = docItem->findItemByObject(
+                        false, objT.getObject(), objT.getSubName().c_str());
+        }
+    }
+
+    // Then try to find any tree item under cursor
+    if (!currentItem)
+        currentItem = tree->itemAt(tree->viewport()->mapFromGlobal(pos));
+
+    if (!currentItem) {
+        auto sels = tree->selectedItems();
+        // If no object under cursor, try use the first selected item
+        if (sels.size() > 0)
+            currentItem = sels.front();
+        else if (lastItemNames.size()) {
+            // If no selection, then use the last hierarhcy
+            docItem = tree->getDocumentItem(
+                    Application::Instance->getDocument(lastItemNames.back().c_str()));
+            if (docItem) {
+                currentItem = docItem;
+                for(std::size_t i=1; i<lastItemNames.size(); ++i) {
+                    auto itName = lastItemNames.begin() + (lastItemNames.size()-i-1);
+                    bool found = false;
+                    docItem->forcePopulateItem(currentItem);
+                    for (int j=0, c=currentItem->childCount(); j<c; ++j) {
+                        if (currentItem->child(j)->type() != ObjectType)
+                            continue;
+                        auto child = static_cast<DocumentObjectItem*>(currentItem->child(j));
+                        if (*itName == child->object()->getObject()->getNameInDocument()) {
+                            currentItem = child;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        lastItemNames.erase(lastItemNames.begin(), itName+1);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    if (!currentItem) {
+        lastItemNames.clear();
+        currentItem = tree->getDocumentItem(Application::Instance->activeDocument());
+        if (!currentItem)
+            return;
+    }
+
+    std::vector<std::string> itemNames;
+    docItem = nullptr;
+    for (auto item=currentItem; item; item=item->parent()) {
         if (item->type() == ObjectType) {
-            items.prepend(static_cast<DocumentObjectItem*>(item));
+            auto objItem = static_cast<DocumentObjectItem*>(item);
+            items.prepend(objItem);
+            itemNames.push_back(objItem->object()->getObject()->getNameInDocument());
         } else if (item->type() == DocumentType) {
-            QAction *action = menu->addAction(tree->documentPixmap, item->text(0));
-            auto docItem = static_cast<DocumentItem*>(item);
-            action->setData(QByteArray(docItem->document()->getDocument()->getName()));
+            docItem = static_cast<DocumentItem*>(item);
+            items.prepend(docItem);
+            itemNames.push_back(docItem->document()->getDocument()->getName());
             break;
         }
     }
 
+    if (!docItem || items.empty()) {
+        lastItemNames.clear();
+        return;
+    }
+
+    currentItem = items.back();
+    if (lastItemNames.size() <= itemNames.size())
+        lastItemNames = std::move(itemNames);
+    else {
+        // Check if the current hierarhcy is a sub-path of the last
+        // hierarhcy. If so, populate the tail path.
+        std::size_t i=0;
+        for (auto rit=lastItemNames.rbegin(), rit2=itemNames.rbegin();
+                rit2!=itemNames.rend(); ++rit2, ++rit)
+        {
+            if (*rit != *rit2)
+                break;
+            ++i;
+        }
+        if (i != itemNames.size())
+            lastItemNames = std::move(itemNames);
+        else {
+            QTreeWidgetItem *lastItem = currentItem;
+            for (; i<lastItemNames.size(); ++i) {
+                bool found = false;
+                auto itName = lastItemNames.begin() + (lastItemNames.size()-i-1);
+                docItem->forcePopulateItem(lastItem);
+                for (int j=0, c=lastItem->childCount(); j<c; ++j) {
+                    if (lastItem->child(j)->type() != ObjectType)
+                        continue;
+                    auto child = static_cast<DocumentObjectItem*>(lastItem->child(j));
+                    if (*itName == child->object()->getObject()->getNameInDocument()) {
+                        lastItem = child;
+                        items.push_back(child);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    lastItemNames.erase(lastItemNames.begin(), itName+1);
+                    break;
+                }
+            }
+        }
+    }
+
+    QAction *action = menu->addAction(tree->documentPixmap, docItem->text(0));
+    action->setData(QByteArray(lastItemNames.back().c_str()));
+    // The first item is a document item.
+    items.pop_front();
     if (items.empty())
         return;
 
-    App::SubObjectT objT(items.front()->object()->getObject(), "");
+    int iconsize = QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
+
+    App::Document *doc = docItem->document()->getDocument();
+
+    App::SubObjectT objT(static_cast<DocumentObjectItem*>(items.front())->object()->getObject(), "");
     bool first = true;
-    for (auto item : items) {
+    for (auto _item : items) {
+        auto item = static_cast<DocumentObjectItem*>(_item);
         if (first)
             first = false;
         else
             objT.setSubName(objT.getSubName() + item->object()->getObject()->getNameInDocument() + ".");
-        QAction *action = menu->addAction(item->object()->getIcon(), item->text(0));
+        QString text = item->text(0);
+        if (item->isSelected()) {
+            // It would be ideal if Qt checkable menu item always show the tick
+            // instead of a embossed icon. But that's not the case on some
+            // system. So we add a unicode triangle here to indicate the
+            // current item.
+            text = QString::fromUtf8("\xe2\x96\xB6  ") + text;
+        }
+        QAction *action = menu->addAction(getItemIcon(doc, item->object(), iconsize), text);
         action->setData(QVariant::fromValue(objT));
+        action->setToolTip(getItemStatus(item->object()->getObject()));
     }
+    return;
 }
 
-void TreeWidget::selectUp(QAction *action)
+void TreeWidget::selectUp(QAction *action, QMenu *parentMenu)
 {
     auto tree = instance();
     if (!tree)
@@ -3492,13 +3668,18 @@ void TreeWidget::selectUp(QAction *action)
     }
 
     App::SubObjectT objT = qvariant_cast<App::SubObjectT>(action->data());
+    App::DocumentObject *sobj = objT.getSubObject();
+    if (!sobj)
+        return;
     auto it = tree->DocumentMap.find(Application::Instance->getDocument(objT.getDocument()));
     if (it == tree->DocumentMap.end())
         return;
 
-    QTreeWidgetItem *item = it->second;
+    DocumentItem *docItem = it->second;
+    QTreeWidgetItem *item = docItem;
     for (auto obj : objT.getSubObjectList()) {
         bool found = false;
+        docItem->forcePopulateItem(item);
         for (int i=0, c=item->childCount(); i<c; ++i) {
             QTreeWidgetItem *child = item->child(i);
             if (child->type() != ObjectType)
@@ -3514,12 +3695,55 @@ void TreeWidget::selectUp(QAction *action)
             return;
     }
 
-    if (item->type() == ObjectType) {
-        Gui::Selection().selStackPush();
-        Gui::Selection().clearCompleteSelection();
-        tree->onSelectTimer();
+    if (item->type() != ObjectType)
+        return;
+
+    if (!parentMenu) {
+        auto modifier = QApplication::queryKeyboardModifiers();
+
+        if (modifier != Qt::ControlModifier) {
+            Gui::Selection().selStackPush();
+            Gui::Selection().clearCompleteSelection();
+            tree->onSelectTimer();
+        }
         item->setSelected(true);
         tree->scrollToItem(item);
+
+        if(modifier == Qt::ShiftModifier)
+            tree->onDoubleClickItem(item);
+        return;
+    }
+
+    SelUpMenu menu(parentMenu);
+
+    if(QApplication::queryKeyboardModifiers() == Qt::ShiftModifier) {
+        setupObjectMenu(menu, &objT);
+    } else {
+        docItem->forcePopulateItem(item);
+        if (!item->childCount())
+            return;
+        int iconsize = QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
+        App::Document *doc = docItem->document()->getDocument();
+        for(int i=0, c=item->childCount(); i<c; ++i) {
+            QTreeWidgetItem *child = item->child(i);
+            if (child->type() != ObjectType)
+                continue;
+            auto citem = static_cast<DocumentObjectItem*>(child);
+            App::SubObjectT sobjT = objT;
+            sobjT.setSubName(sobjT.getSubName()
+                    + citem->object()->getObject()->getNameInDocument() + ".");
+            QAction *action = menu.addAction(getItemIcon(doc, citem->object(), iconsize), citem->text(0));
+            action->setData(QVariant::fromValue(sobjT));
+            action->setToolTip(getItemStatus(citem->object()->getObject()));
+        }
+    }
+
+    if(menu.exec(QCursor::pos())) {
+        for(QWidget *w=parentMenu; w; w=w->parentWidget()) {
+            if(!qobject_cast<SelUpMenu*>(w))
+                break;
+            w->hide();
+        }
     }
 }
 
@@ -3880,6 +4104,17 @@ bool DocumentItem::populateObject(App::DocumentObject *obj, bool delay) {
     item->populated = true;
     populateItem(item,true);
     return true;
+}
+
+void DocumentItem::forcePopulateItem(QTreeWidgetItem *item)
+{
+    if(item->type() != TreeWidget::ObjectType)
+        return;
+    auto objItem = static_cast<DocumentObjectItem*>(item);
+    if (!objItem->populated) {
+        objItem->populated = true;
+        populateItem(objItem, true, false);
+    }
 }
 
 void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool delay)
@@ -5035,140 +5270,143 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
 
     if(icon.isNull()) {
         Timing(getIcon);
-        QPixmap px;
-        if (currentStatus & 4) {
-            static QPixmap pxError;
-            if(pxError.isNull()) {
-            // object is in error state
-                const char * const feature_error_xpm[]={
-                    "9 9 3 1",
-                    ". c None",
-                    "# c #ff0000",
-                    "a c #ffffff",
-                    "...###...",
-                    ".##aaa##.",
-                    ".##aaa##.",
-                    "###aaa###",
-                    "###aaa###",
-                    "#########",
-                    ".##aaa##.",
-                    ".##aaa##.",
-                    "...###..."};
-                pxError = QPixmap(feature_error_xpm);
-            }
-            px = pxError;
-        }
-        else if (currentStatus & 2) {
-            static QPixmap pxRecompute;
-            if(pxRecompute.isNull()) {
-                // object must be recomputed
-                const char * const feature_recompute_xpm[]={
-                    "9 9 3 1",
-                    ". c None",
-                    "# c #0000ff",
-                    "a c #ffffff",
-                    "...###...",
-                    ".######aa",
-                    ".#####aa.",
-                    "#####aa##",
-                    "#aa#aa###",
-                    "#aaaa####",
-                    ".#aa####.",
-                    ".#######.",
-                    "...###..."};
-                pxRecompute = QPixmap(feature_recompute_xpm);
-            }
-            px = pxRecompute;
-        }
-
-        // get the original icon set
-        QIcon icon_org = object()->getIcon();
-
-        int w = TreeWidget::iconSize();
-
-        QPixmap pxOn,pxOff;
-
-        // if needed show small pixmap inside
-        if (!px.isNull()) {
-            pxOff = BitmapFactory().merge(icon_org.pixmap(w, w, mode, QIcon::Off),
-                px,BitmapFactoryInst::TopRight);
-            pxOn = BitmapFactory().merge(icon_org.pixmap(w, w, mode, QIcon::On ),
-                px,BitmapFactoryInst::TopRight);
-        } else {
-            pxOff = icon_org.pixmap(w, w, mode, QIcon::Off);
-            pxOn = icon_org.pixmap(w, w, mode, QIcon::On);
-        }
-
-        if(currentStatus & 8)  {// hidden item
-            static QPixmap pxHidden;
-            if(pxHidden.isNull()) {
-                const char * const feature_hidden_xpm[]={
-                    "9 7 3 1",
-                    ". c None",
-                    "# c #000000",
-                    "a c #ffffff",
-                    "...###...",
-                    "..#aaa#..",
-                    ".#a###a#.",
-                    "#aa###aa#",
-                    ".#a###a#.",
-                    "..#aaa#..",
-                    "...###..."};
-                pxHidden = QPixmap(feature_hidden_xpm);
-            }
-            pxOff = BitmapFactory().merge(pxOff, pxHidden, BitmapFactoryInst::TopLeft);
-            pxOn = BitmapFactory().merge(pxOn, pxHidden, BitmapFactoryInst::TopLeft);
-        }
-
-        if(external) {// external item
-            static QPixmap pxExternal;
-            if(pxExternal.isNull()) {
-                const char * const feature_external_xpm[]={
-                    "7 7 3 1",
-                    ". c None",
-                    "# c #000000",
-                    "a c #ffffff",
-                    "..###..",
-                    ".#aa##.",
-                    "..#aa##",
-                    "..##aa#",
-                    "..#aa##",
-                    ".#aa##.",
-                    "..###.."};
-                pxExternal = QPixmap(feature_external_xpm);
-            }
-            pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
-            pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
-        }
-
-        icon.addPixmap(pxOn, QIcon::Normal, QIcon::On);
-        icon.addPixmap(pxOff, QIcon::Normal, QIcon::Off);
+        icon = getItemIcon(currentStatus, object()->getIcon(), mode);
     }
-
-
     _Timing(2,setIcon);
     this->setIcon(0, icon);
+}
+
+static QIcon getItemIcon(int currentStatus, const QIcon &icon_orig, QIcon::Mode mode, int size)
+{
+    QIcon icon;
+    QPixmap px;
+    if (currentStatus & 4) {
+        static QPixmap pxError;
+        if(pxError.isNull()) {
+        // object is in error state
+            const char * const feature_error_xpm[]={
+                "9 9 3 1",
+                ". c None",
+                "# c #ff0000",
+                "a c #ffffff",
+                "...###...",
+                ".##aaa##.",
+                ".##aaa##.",
+                "###aaa###",
+                "###aaa###",
+                "#########",
+                ".##aaa##.",
+                ".##aaa##.",
+                "...###..."};
+            pxError = QPixmap(feature_error_xpm);
+        }
+        px = pxError;
+    }
+    else if (currentStatus & 2) {
+        static QPixmap pxRecompute;
+        if(pxRecompute.isNull()) {
+            // object must be recomputed
+            const char * const feature_recompute_xpm[]={
+                "9 9 3 1",
+                ". c None",
+                "# c #0000ff",
+                "a c #ffffff",
+                "...###...",
+                ".######aa",
+                ".#####aa.",
+                "#####aa##",
+                "#aa#aa###",
+                "#aaaa####",
+                ".#aa####.",
+                ".#######.",
+                "...###..."};
+            pxRecompute = QPixmap(feature_recompute_xpm);
+        }
+        px = pxRecompute;
+    }
+
+    int w = size;
+    if (!w)
+        w = TreeWidget::iconSize();
+
+    QPixmap pxOn,pxOff;
+
+    // if needed show small pixmap inside
+    if (!px.isNull()) {
+        pxOff = BitmapFactory().merge(icon_orig.pixmap(w, w, mode, QIcon::Off),
+            px,BitmapFactoryInst::TopRight);
+        pxOn = BitmapFactory().merge(icon_orig.pixmap(w, w, mode, QIcon::On ),
+            px,BitmapFactoryInst::TopRight);
+    } else {
+        pxOff = icon_orig.pixmap(w, w, mode, QIcon::Off);
+        pxOn = icon_orig.pixmap(w, w, mode, QIcon::On);
+    }
+
+    if(currentStatus & 8)  {// hidden item
+        static QPixmap pxHidden;
+        if(pxHidden.isNull()) {
+            const char * const feature_hidden_xpm[]={
+                "9 7 3 1",
+                ". c None",
+                "# c #000000",
+                "a c #ffffff",
+                "...###...",
+                "..#aaa#..",
+                ".#a###a#.",
+                "#aa###aa#",
+                ".#a###a#.",
+                "..#aaa#..",
+                "...###..."};
+            pxHidden = QPixmap(feature_hidden_xpm);
+        }
+        pxOff = BitmapFactory().merge(pxOff, pxHidden, BitmapFactoryInst::TopLeft);
+        pxOn = BitmapFactory().merge(pxOn, pxHidden, BitmapFactoryInst::TopLeft);
+    }
+
+    if(currentStatus & (1<<4)) {// external item
+        static QPixmap pxExternal;
+        if(pxExternal.isNull()) {
+            const char * const feature_external_xpm[]={
+                "7 7 3 1",
+                ". c None",
+                "# c #000000",
+                "a c #ffffff",
+                "..###..",
+                ".#aa##.",
+                "..#aa##",
+                "..##aa#",
+                "..#aa##",
+                ".#aa##.",
+                "..###.."};
+            pxExternal = QPixmap(feature_external_xpm);
+        }
+        pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
+        pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
+    }
+
+    icon.addPixmap(pxOn, QIcon::Normal, QIcon::On);
+    icon.addPixmap(pxOff, QIcon::Normal, QIcon::Off);
+    return icon;
 }
 
 void DocumentObjectItem::displayStatusInfo()
 {
     App::DocumentObject* Obj = object()->getObject();
 
-    QString status;
-    if ( (Obj->isTouched() || Obj->mustExecute() == 1) && !Obj->isError())
-        status = QString::fromLatin1("Touched, ");
-
-    status += QLatin1String("Internal name: %1");
     QString objName = QString::fromLatin1(Obj->getNameInDocument());
-    status = status.arg(objName);
+    QString status = objName;
 
     std::ostringstream ss;
     App::DocumentObject *parent = nullptr;
     getSubName(ss, parent);
-    if(parent) {
-        status += QString::fromLatin1(", Path: %1.%2%3.").arg(
+    if(parent) 
+        status += QString::fromLatin1(", (%1.%2%3.)").arg(
                 QLatin1String(parent->getFullName().c_str()),
                 QLatin1String(ss.str().c_str()), objName);
+
+    if ( (Obj->isTouched() || Obj->mustExecute() == 1) && !Obj->isError()) {
+        status += QString::fromLatin1(", ");
+        status += QObject::tr("Touched");
     }
 
     getMainWindow()->showMessage(status);

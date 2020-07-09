@@ -25,6 +25,7 @@
 #define GUI_ACTION_H
 
 #include <QAction>
+#include <QMenu>
 #include <QComboBox>
 #include <QKeySequence>
 
@@ -338,8 +339,6 @@ private:
     QMenu* _menu;
 };
 
-// --------------------------------------------------------------------
-
 /**
  * Special action for Std_SelUp command.
  */
@@ -351,10 +350,10 @@ public:
     SelUpAction (Command* pcCmd, QObject * parent = 0);
     virtual ~SelUpAction();
     void addTo (QWidget * w);
+    void popup(const QPoint &pt);
 
 protected Q_SLOTS:
     void onShowMenu();
-    void onTriggered(QAction *);
 
 private:
     QMenu* _menu;

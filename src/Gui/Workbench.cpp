@@ -557,8 +557,6 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
             visu->setCommand("Visibility");
             *visu << "Std_ToggleVisibility" << "Std_ToggleGroupVisibility" << "Std_ToggleShowOnTop"
                   << "Std_ShowSelection" << "Std_HideSelection";
-            if (Gui::Selection().size() == 1)
-                *item << "Std_SelUp";
             *item << visu
                   << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator" 
                   << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 

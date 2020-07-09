@@ -1590,7 +1590,6 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
         return;
     Base::FlagToggler<> guard(PRIVATE(this)->menuactive);
 
-    Q_UNUSED(position); 
     // ask workbenches and view provider, ...
     MenuItem view;
     Gui::Application::Instance->setupContextMenu("View", &view);

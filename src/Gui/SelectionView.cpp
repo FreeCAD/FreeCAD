@@ -52,6 +52,7 @@
 #include "ViewProvider.h"
 #include "BitmapFactory.h"
 #include "MetaTypes.h"
+#include "MainWindow.h"
 
 FC_LOG_LEVEL_INIT("Selection",true,true,true)
 
@@ -538,10 +539,8 @@ static QLatin1String _DefaultStyle(
 static QLatin1String _DefaultStyle("QMenu {menu-scrollable:1}");
 #endif
 
-SelectionMenu::SelectionMenu(QWidget *parent)
-    :QMenu(parent),pSelList(0)
+static void setupMenuStyle(QMenu *menu)
 {
-    connect(this, SIGNAL(aboutToShow()), this, SLOT(beforeShow()));
 #if QT_VERSION  >= 0x050000
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
                     "User parameter:BaseApp/Preferences/MainWindow");
@@ -569,13 +568,20 @@ SelectionMenu::SelectionMenu(QWidget *parent)
     }
     if(_Stylesheet.isEmpty())
         _Stylesheet = _DefaultStyle;
-    setStyleSheet(_Stylesheet);
-    setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_NoSystemBackground, true);
-    setAttribute(Qt::WA_TranslucentBackground, true);
+    menu->setStyleSheet(_Stylesheet);
+    menu->setWindowFlags(menu->windowFlags() | Qt::FramelessWindowHint);
+    menu->setAttribute(Qt::WA_NoSystemBackground, true);
+    menu->setAttribute(Qt::WA_TranslucentBackground, true);
 #else
-    setStyleSheet(QLatin1String(_DefaultStyle));
+    menu->setStyleSheet(QLatin1String(_DefaultStyle));
 #endif
+}
+
+SelectionMenu::SelectionMenu(QWidget *parent)
+    :QMenu(parent),pSelList(0)
+{
+    connect(this, SIGNAL(aboutToShow()), this, SLOT(beforeShow()));
+    setupMenuStyle(this);
 }
 
 void SelectionMenu::beforeShow()
@@ -801,6 +807,76 @@ void SelectionMenu::onSubMenu() {
 
     timer.start(500);
     tooltipIndex = -idx;
+}
+
+// --------------------------------------------------------------------
+
+SelUpMenu::SelUpMenu(QWidget *parent, bool trigger)
+    :QMenu(parent)
+{
+    if (trigger)
+        connect(this, SIGNAL(triggered(QAction*)), this, SLOT(onTriggered(QAction *)));
+    connect(this, SIGNAL(hovered(QAction*)), this, SLOT(onHovered(QAction *)));
+    setupMenuStyle(this);
+
+    // Temporary disable tooltips to not disturb 3D view
+#if QT_VERSION >= 0x050100
+    // setToolTipsVisible(true);
+#endif
+}
+
+void SelUpMenu::mouseReleaseEvent(QMouseEvent *e)
+{
+    if (e->button() == Qt::RightButton) {
+        QAction *action = actionAt(e->pos());
+        if (action) {
+            TreeWidget::selectUp(action, this);
+            return;
+        }
+    }
+    QMenu::mouseReleaseEvent(e);
+}
+
+void SelUpMenu::mousePressEvent(QMouseEvent *e)
+{
+	for (auto w = this; w; w = qobject_cast<SelUpMenu*>(w->parentWidget())) {
+        if (w->rect().contains(w->mapFromGlobal(e->globalPos()))) {
+            if (w == this)
+                QMenu::mousePressEvent(e);
+            break;
+        }
+        w->hide();
+    }
+}
+
+void SelUpMenu::onTriggered(QAction *action)
+{
+    TreeWidget::selectUp(action);
+}
+
+void SelUpMenu::onHovered(QAction *action)
+{
+    App::SubObjectT objT = qvariant_cast<App::SubObjectT>(action->data());
+    auto obj = objT.getSubObject();
+    if (!obj)
+        return;
+    Selection().setPreselect(objT.getDocumentName().c_str(),
+            objT.getObjectName().c_str(), objT.getSubName().c_str(), 0,0,0,2);
+
+    QString status;
+    status = QString::fromLatin1("%1 (%2#%3.%4)%5").arg(
+            QString::fromLatin1(obj->getNameInDocument()),
+            QString::fromLatin1(objT.getDocumentName().c_str()),
+            QString::fromLatin1(objT.getObjectName().c_str()),
+            QString::fromLatin1(objT.getSubName().c_str()),
+            status);
+
+    if ( (obj->isTouched() || obj->mustExecute() == 1) && !obj->isError()) {
+        status += QString::fromLatin1(", ");
+        status += tr("Touched");
+    }
+
+    getMainWindow()->showMessage(status);
 }
 
 #include "moc_SelectionView.cpp"

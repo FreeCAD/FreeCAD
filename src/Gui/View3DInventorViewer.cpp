@@ -3645,6 +3645,13 @@ View3DInventorViewer::getPickedList(const SbVec2s &pos, bool singlePick) const {
             getSoRenderManager()->getViewportRegion(), singlePick);
 }
 
+std::vector<App::SubObjectT>
+View3DInventorViewer::getPickedList(bool singlePick) const {
+    auto p = this->mapFromGlobal(QCursor::pos());
+    SbVec2s pos(p.x(), this->height() - p.y() - 1);
+    return this->getPickedList(pos, singlePick);
+}
+
 SbBool View3DInventorViewer::pubSeekToPoint(const SbVec2s& pos)
 {
     return this->seekToPoint(pos);

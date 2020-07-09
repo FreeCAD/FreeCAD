@@ -296,6 +296,7 @@ public:
     SbBool pubSeekToPoint(const SbVec2s& pos);
     void pubSeekToPoint(const SbVec3f& pos);
     std::vector<App::SubObjectT> getPickedList(const SbVec2s &pos, bool singlePick=false) const;
+    std::vector<App::SubObjectT> getPickedList(bool singlePick=false) const;
     //@}
 
     /**

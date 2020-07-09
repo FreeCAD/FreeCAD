@@ -73,6 +73,7 @@
 #include "Utilities.h"
 #include "NavigationStyle.h"
 #include "DockWindowManager.h"
+#include "SelectionView.h"
 
 #include <Base/Console.h>
 #include <Base/Tools2D.h>
@@ -3343,13 +3344,14 @@ StdCmdSelUp::StdCmdSelUp()
 
 bool StdCmdSelUp::isActive(void)
 {
-    return Selection().size() == 1;
+    return App::GetApplication().getActiveDocument();
 }
 
 void StdCmdSelUp::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    TreeWidget::selectUp();
+    if (_pcAction)
+        static_cast<SelUpAction*>(_pcAction)->popup(QCursor::pos());
 }
 
 Action * StdCmdSelUp::createAction(void)

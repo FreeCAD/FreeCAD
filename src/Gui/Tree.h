@@ -95,7 +95,7 @@ public:
     static void selectLinkedObject(App::DocumentObject *linked); 
     static void selectAllLinks(App::DocumentObject *obj); 
     static void populateSelUpMenu(QMenu *menu); 
-    static void selectUp(QAction *action=nullptr); 
+    static void selectUp(QAction *action=nullptr, QMenu *parentMenu=nullptr); 
     static void expandSelectedItems(TreeItemMode mode);
     static bool setupObjectMenu(QMenu &menu, const App::SubObjectT *sobj=nullptr);
     static bool isDragging();
@@ -182,6 +182,7 @@ protected:
     void leaveEvent(QEvent *) override;
     void _updateStatus(bool delay=true);
     void _dragMoveEvent(QDragMoveEvent *event);
+    bool onDoubleClickItem(QTreeWidgetItem *);
 
 protected Q_SLOTS:
     void onCreateGroup();
@@ -319,6 +320,7 @@ public:
     void testStatus(void);
     void setData(int column, int role, const QVariant & value) override;
     void populateItem(DocumentObjectItem *item, bool refresh=false, bool delayUpdate=true);
+    void forcePopulateItem(QTreeWidgetItem *item);
     bool populateObject(App::DocumentObject *obj, bool delay=false);
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     bool showItem(DocumentObjectItem *item, bool select, bool force=false);

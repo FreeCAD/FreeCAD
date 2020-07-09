@@ -131,6 +131,22 @@ private:
     int tooltipIndex;
 };
 
+
+class GuiExport SelUpMenu : public QMenu
+{
+    Q_OBJECT
+public:
+    SelUpMenu(QWidget *parent, bool trigger=true);
+
+protected:
+    void mouseReleaseEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent *e);
+
+protected Q_SLOTS:
+    void onTriggered(QAction *action);
+    void onHovered(QAction *action);
+};
+
 } // namespace Gui
 
 #endif // GUI_DOCKWND_SELECTIONVIEW_H

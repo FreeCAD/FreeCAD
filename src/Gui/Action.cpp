@@ -38,6 +38,7 @@
 #endif
 
 #include <Base/Tools.h>
+#include <App/DocumentObserver.h>
 #include "Action.h"
 #include "Application.h"
 #include "Command.h"
@@ -51,6 +52,7 @@
 #include "WorkbenchManager.h"
 #include "View3DInventor.h"
 #include "Document.h"
+#include "SelectionView.h"
 
 #include <Base/Exception.h>
 #include <App/Application.h>
@@ -1108,15 +1110,15 @@ SelUpAction::SelUpAction ( Command* pcCmd, QObject * parent )
 
 SelUpAction::~SelUpAction()
 {
+    delete _menu;
 }
 
 void SelUpAction::addTo ( QWidget * w )
 {
     if (!_menu) {
-        _menu = new QMenu();
+        _menu = new SelUpMenu(nullptr);
         _action->setMenu(_menu);
         connect(_menu, SIGNAL(aboutToShow()), this, SLOT(onShowMenu()));
-        connect(_menu, SIGNAL(triggered(QAction*)), this, SLOT(onTriggered(QAction*)));
     }
     w->addAction(_action);
 }
@@ -1127,9 +1129,9 @@ void SelUpAction::onShowMenu()
     TreeWidget::populateSelUpMenu(_menu);
 }
 
-void SelUpAction::onTriggered(QAction *action)
+void SelUpAction::popup(const QPoint &pt)
 {
-    TreeWidget::selectUp(action);
+    _menu->exec(pt);
 }
 
 #include "moc_Action.cpp"
