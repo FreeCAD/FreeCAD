@@ -415,7 +415,18 @@ void ReportOutput::SendLog(const std::string& msg, Base::LogStyle level)
             break;
     }
 
-    QString qMsg = QString::fromUtf8(msg.c_str());
+    QString qMsg;
+
+    bool showTimecode = getWindowParameter()->GetBool("checkShowReportTimecode", true);
+    if (showTimecode) {
+        QTime time = QTime::currentTime();
+        qMsg = time.toString(QLatin1String("hh:mm:ss  "));
+        qMsg += QString::fromUtf8(msg.c_str());
+    }
+    else
+    {
+        qMsg = QString::fromUtf8(msg.c_str());
+    }
 
     // This truncates log messages that are too long
     if (style == ReportHighlighter::LogText) {
