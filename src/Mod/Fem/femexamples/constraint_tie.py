@@ -89,7 +89,6 @@ def setup(doc=None, solvertype="ccxtools"):
         cone_cut_obj.ViewObject.hide()
         line_fix_obj.ViewObject.hide()
         line_force_obj.ViewObject.hide()
-
     doc.recompute()
 
     if FreeCAD.GuiUp:

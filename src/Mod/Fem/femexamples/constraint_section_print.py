@@ -200,7 +200,6 @@ def setup(doc=None, solvertype="ccxtools"):
     geom_obj.Mode = 'CompSolid'
     # geom_obj.Proxy.execute(geom_obj)
     geom_obj.purgeTouched()
-
     if FreeCAD.GuiUp:
         solid_one.ViewObject.hide()
         solid_two.ViewObject.hide()

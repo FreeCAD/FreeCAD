@@ -110,20 +110,20 @@ def setup(doc=None, solvertype="ccxtools"):
     # compound out of bool frag and lower tube
     geom_obj = doc.addObject("Part::Compound", "AllGeomCompound")
     geom_obj.Links = [boolfrag, lower_tube]
-
-    # line for load direction
-    sh_load_line = Part.makeLine(v_force_pt, FreeCAD.Vector(0, 150, 475))
-    load_line = doc.addObject("Part::Feature", "Load_direction_line")
-    load_line.Shape = sh_load_line
-    if FreeCAD.GuiUp:
-        load_line.ViewObject.LineWidth = 5.0
-        load_line.ViewObject.LineColor = (1.0, 0.0, 0.0)
-
     doc.recompute()
 
     if FreeCAD.GuiUp:
         geom_obj.ViewObject.Document.activeView().viewAxonometric()
         geom_obj.ViewObject.Document.activeView().fitAll()
+
+    # line for load direction
+    sh_load_line = Part.makeLine(v_force_pt, FreeCAD.Vector(0, 150, 475))
+    load_line = doc.addObject("Part::Feature", "Load_direction_line")
+    load_line.Shape = sh_load_line
+    doc.recompute()
+    if FreeCAD.GuiUp:
+        load_line.ViewObject.LineWidth = 5.0
+        load_line.ViewObject.LineColor = (1.0, 0.0, 0.0)
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
