@@ -1353,6 +1353,9 @@ void View3DInventorViewer::setRenderCache(int mode)
         // SoGLLazyElement::begin/endCaching() when on top rendering
         // transparent object with SORTED_OBJECT_SORTED_TRIANGLE_BLEND
         // transparency type.
+        //
+        // For more details see:
+        // https://forum.freecadweb.org/viewtopic.php?f=18&t=43305&start=10#p412537
         coin_setenv("COIN_AUTO_CACHING", "0", TRUE);
 
         int setting = ViewParams::instance()->getRenderCache();
