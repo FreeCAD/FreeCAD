@@ -116,8 +116,8 @@ def getProj(vec, plane=None):
     return get_proj(vec, plane)
 
 
-def getDiscretized(edge, plane):
-    """Get discretization of the edge."""
+def get_discretized(edge, plane):
+    """Get a discretized edge on a plane."""
     pieces = param.GetFloat("svgDiscretization", 10.0)
 
     if pieces == 0:
@@ -140,6 +140,12 @@ def getDiscretized(edge, plane):
             edata += 'L ' + str(v.x) + ' ' + str(v.y) + ' '
 
     return edata
+
+
+def getDiscretized(edge, plane):
+    """Get a discretized edge on a plane. DEPRECATED."""
+    utils.use_instead("get_discretized")
+    return get_discretized(edge, plane)
 
 
 def getPattern(pat):
@@ -370,7 +376,7 @@ def getSVG(obj,
                                         str(int(flag_large_arc)),\
                                         str(int(flag_sweep)),str(v.x),str(v.y))
                     else:
-                        edata += getDiscretized(e, plane)
+                        edata += get_discretized(e, plane)
                 elif DraftGeomUtils.geomType(e) == "Line":
                     v = get_proj(vs[-1].Point, plane)
                     edata += 'L '+ str(v.x) +' '+ str(v.y) + ' '
@@ -439,7 +445,7 @@ def getSVG(obj,
         else:
             # any other projection: ellipse
             svg = '<path d="'
-            svg += getDiscretized(edge, plane)
+            svg += get_discretized(edge, plane)
             svg += '" '
         svg += 'stroke="' + stroke + '" '
         svg += 'stroke-width="' + str(linewidth) + ' px" '
