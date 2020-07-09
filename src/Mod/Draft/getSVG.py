@@ -79,7 +79,7 @@ def getLineStyle(linestyle, scale):
     return get_line_style(linestyle, scale)
 
 
-def getProj(vec, plane=None):
+def get_proj(vec, plane=None):
     """Get a projection of the vector in the plane's u and v directions.
 
     Parameters
@@ -110,6 +110,12 @@ def getProj(vec, plane=None):
     return Vector(lx, ly, 0)
 
 
+def getProj(vec, plane=None):
+    """Get a projection of a vector. DEPRECATED."""
+    utils.use_instead("get_proj")
+    return get_proj(vec, plane)
+
+
 def getDiscretized(edge, plane):
     """Get discretization of the edge."""
     pieces = param.GetFloat("svgDiscretization", 10.0)
@@ -126,7 +132,7 @@ def getDiscretized(edge, plane):
         _length = edge.LastParameter - edge.FirstParameter
         _point = edge.FirstParameter + float(i)/d * _length
         _vec = edge.valueAt(_point)
-        v = getProj(_vec, plane)
+        v = get_proj(_vec, plane)
 
         if not edata:
             edata += 'M ' + str(v.x) + ' ' + str(v.y) + ' '
@@ -294,7 +300,7 @@ def getSVG(obj,
                     if (vs[0].Point-previousvs[-1].Point).Length > 1e-6:
                         vs.reverse()
                 if edgeindex == 0:
-                    v = getProj(vs[0].Point, plane)
+                    v = get_proj(vs[0].Point, plane)
                     edata += 'M '+ str(v.x) +' '+ str(v.y) + ' '
                 else:
                     if (vs[0].Point-previousvs[-1].Point).Length > 1e-6:
@@ -331,10 +337,10 @@ def getSVG(obj,
                             elif len(e.Vertexes) == 1 and isellipse:
                                 #svg = getEllipse(e)
                                 #return svg
-                                endpoints = [getProj(c.value((c.LastParameter-c.FirstParameter)/2.0), plane),
-                                             getProj(vs[-1].Point, plane)]
+                                endpoints = [get_proj(c.value((c.LastParameter-c.FirstParameter)/2.0), plane),
+                                             get_proj(vs[-1].Point, plane)]
                             else:
-                                endpoints = [getProj(vs[-1].Point, plane)]
+                                endpoints = [get_proj(vs[-1].Point, plane)]
                             # arc
                             if iscircle:
                                 rx = ry = c.Radius
@@ -366,7 +372,7 @@ def getSVG(obj,
                     else:
                         edata += getDiscretized(e, plane)
                 elif DraftGeomUtils.geomType(e) == "Line":
-                    v = getProj(vs[-1].Point, plane)
+                    v = get_proj(vs[-1].Point, plane)
                     edata += 'L '+ str(v.x) +' '+ str(v.y) + ' '
                 else:
                     bspline=e.Curve.toBSpline(e.FirstParameter,e.LastParameter)
@@ -386,13 +392,13 @@ def getSVG(obj,
                             elif bezierseg.Degree==3:
                                 edata +='C '
                             for pole in bezierseg.getPoles()[1:]:
-                                v = getProj(pole, plane)
+                                v = get_proj(pole, plane)
                                 edata += str(v.x) +' '+ str(v.y) + ' '
                     else:
                         print("Debug: one edge (hash ",e.hashCode(),\
                                 ") has been discretized with parameter 0.1")
                         for linepoint in bspline.discretize(0.1)[1:]:
-                            v = getProj(linepoint, plane)
+                            v = get_proj(linepoint, plane)
                             edata += 'L '+ str(v.x) +' '+ str(v.y) + ' '
             if fill != 'none':
                 edata += 'Z '
@@ -418,7 +424,7 @@ def getSVG(obj,
         return svg
 
     def getCircle(edge):
-        cen = getProj(edge.Curve.Center, plane)
+        cen = get_proj(edge.Curve.Center, plane)
         rad = edge.Curve.Radius
         if hasattr(FreeCAD,"DraftWorkingPlane"):
             drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
@@ -445,7 +451,7 @@ def getSVG(obj,
         return svg
 
     def getEllipse(edge):
-        cen = getProj(edge.Curve.Center, plane)
+        cen = get_proj(edge.Curve.Center, plane)
         mir = edge.Curve.MinorRadius
         mar = edge.Curve.MajorRadius
         svg = '<ellipse cx="' + str(cen.x)
@@ -625,16 +631,16 @@ def getSVG(obj,
                     prx = obj.ViewObject.Proxy
                     ts = (len(prx.string)*obj.ViewObject.FontSize.Value)/4.0
                     rm = ((prx.p3.sub(prx.p2)).Length/2.0)-ts
-                    p2a = getProj(prx.p2.add(DraftVecUtils.scaleTo(prx.p3.sub(prx.p2),rm)), plane)
-                    p2b = getProj(prx.p3.add(DraftVecUtils.scaleTo(prx.p2.sub(prx.p3),rm)), plane)
-                    p1 = getProj(prx.p1, plane)
-                    p2 = getProj(prx.p2, plane)
-                    p3 = getProj(prx.p3, plane)
-                    p4 = getProj(prx.p4, plane)
-                    tbase = getProj(prx.tbase, plane)
+                    p2a = get_proj(prx.p2.add(DraftVecUtils.scaleTo(prx.p3.sub(prx.p2),rm)), plane)
+                    p2b = get_proj(prx.p3.add(DraftVecUtils.scaleTo(prx.p2.sub(prx.p3),rm)), plane)
+                    p1 = get_proj(prx.p1, plane)
+                    p2 = get_proj(prx.p2, plane)
+                    p3 = get_proj(prx.p3, plane)
+                    p4 = get_proj(prx.p4, plane)
+                    tbase = get_proj(prx.tbase, plane)
                     r = prx.textpos.rotation.getValue().getValue()
                     rv = FreeCAD.Rotation(r[0],r[1],r[2],r[3]).multVec(FreeCAD.Vector(1,0,0))
-                    angle = -DraftVecUtils.angle(getProj(rv, plane))
+                    angle = -DraftVecUtils.angle(get_proj(rv, plane))
                     #angle = -DraftVecUtils.angle(p3.sub(p2))
 
                     svg = ''
@@ -731,12 +737,12 @@ def getSVG(obj,
 
                     # drawing arrows
                     if hasattr(obj.ViewObject,"ArrowType"):
-                        p2 = getProj(prx.p2, plane)
-                        p3 = getProj(prx.p3, plane)
+                        p2 = get_proj(prx.p2, plane)
+                        p3 = get_proj(prx.p3, plane)
                         arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
                         arrowlength = 4*obj.ViewObject.ArrowSize.Value
-                        u1 = getProj((prx.circle.valueAt(prx.circle.FirstParameter+arrowlength)).sub(prx.circle.valueAt(prx.circle.FirstParameter)), plane)
-                        u2 = getProj((prx.circle.valueAt(prx.circle.LastParameter-arrowlength)).sub(prx.circle.valueAt(prx.circle.LastParameter)), plane)
+                        u1 = get_proj((prx.circle.valueAt(prx.circle.FirstParameter+arrowlength)).sub(prx.circle.valueAt(prx.circle.FirstParameter)), plane)
+                        u2 = get_proj((prx.circle.valueAt(prx.circle.LastParameter-arrowlength)).sub(prx.circle.valueAt(prx.circle.LastParameter)), plane)
                         angle1 = -DraftVecUtils.angle(u1)
                         angle2 = -DraftVecUtils.angle(u2)
                         if hasattr(obj.ViewObject,"FlipArrows"):
@@ -749,16 +755,16 @@ def getSVG(obj,
                     # drawing text
                     if obj.ViewObject.DisplayMode == "2D":
                         t = prx.circle.tangentAt(prx.circle.FirstParameter+(prx.circle.LastParameter-prx.circle.FirstParameter)/2.0)
-                        t = getProj(t, plane)
+                        t = get_proj(t, plane)
                         tangle = DraftVecUtils.angle(t)
                         if (tangle <= -math.pi/2) or (tangle > math.pi/2):
                             tangle = tangle + math.pi
-                        tbase = getProj(prx.circle.valueAt(prx.circle.FirstParameter+(prx.circle.LastParameter-prx.circle.FirstParameter)/2.0), plane)
+                        tbase = get_proj(prx.circle.valueAt(prx.circle.FirstParameter+(prx.circle.LastParameter-prx.circle.FirstParameter)/2.0), plane)
                         tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2.0/scale,0),tangle))
                         #print(tbase)
                     else:
                         tangle = 0
-                        tbase = getProj(prx.tbase, plane)
+                        tbase = get_proj(prx.tbase, plane)
                     svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
 
     elif utils.get_type(obj) == "Label":
@@ -769,7 +775,7 @@ def getSVG(obj,
                 )
 
             # Draw multisegment line
-            proj_points = list(map(lambda x: getProj(x, plane), obj.Points))
+            proj_points = list(map(lambda x: get_proj(x, plane), obj.Points))
             path_dir_list = [format_point(proj_points[0], action='M')]
             path_dir_list += map(format_point, proj_points[1:])
             path_dir_str = " ".join(path_dir_list)
@@ -785,7 +791,7 @@ def getSVG(obj,
             # if Line is set to 'off', no arrow is drawn
             if hasattr(obj.ViewObject, "ArrowType") and len(obj.Points) >= 2:
                 last_segment = FreeCAD.Vector(obj.Points[-1] - obj.Points[-2])
-                angle = -DraftVecUtils.angle(getProj(last_segment, plane)) + math.pi
+                angle = -DraftVecUtils.angle(get_proj(last_segment, plane)) + math.pi
                 svg += getArrow(
                     arrowtype=obj.ViewObject.ArrowType,
                     point=proj_points[-1],
@@ -801,7 +807,7 @@ def getSVG(obj,
                 print("export of texts to SVG is only available in GUI mode")
             else:
                 fontname = obj.ViewObject.TextFont
-                position = getProj(obj.Placement.Base, plane)
+                position = get_proj(obj.Placement.Base, plane)
                 rotation = obj.Placement.Rotation
                 justification = obj.ViewObject.TextAlignment
                 text = obj.Text
@@ -816,11 +822,11 @@ def getSVG(obj,
             else:
                 n = obj.ViewObject.FontName
                 if utils.get_type(obj) == "Annotation":
-                    p = getProj(obj.Position, plane)
+                    p = get_proj(obj.Position, plane)
                     r = obj.ViewObject.Rotation.getValueAs("rad")
                     t = obj.LabelText
                 else:  # DraftText (old) or Text (new, 0.19)
-                    p = getProj(obj.Placement.Base, plane)
+                    p = get_proj(obj.Placement.Base, plane)
                     r = obj.Placement.Rotation
                     t = obj.Text
                 j = obj.ViewObject.Justification
@@ -931,13 +937,13 @@ def getSVG(obj,
                 lspc = FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue())
                 p1 = p2.add(lspc)
                 j = obj.ViewObject.TextAlign
-                t3 = getText(c,f1,n,a,getProj(p1, plane),t1,linespacing,j,flip=True)
+                t3 = getText(c,f1,n,a,get_proj(p1, plane),t1,linespacing,j,flip=True)
                 svg += t3
                 if t2:
                     ofs = FreeCAD.Vector(0,-lspc.Length,0)
                     if a:
                         ofs = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),-rotation).multVec(ofs)
-                    t4 = getText(c,fontsize,n,a,getProj(p1, plane).add(ofs),t2,linespacing,j,flip=True)
+                    t4 = getText(c,fontsize,n,a,get_proj(p1, plane).add(ofs),t2,linespacing,j,flip=True)
                     svg += t4
 
     elif obj.isDerivedFrom('Part::Feature'):
@@ -995,8 +1001,8 @@ def getSVG(obj,
         if FreeCAD.GuiUp:
             if hasattr(obj.ViewObject,"EndArrow") and hasattr(obj.ViewObject,"ArrowType") and (len(obj.Shape.Vertexes) > 1):
                 if obj.ViewObject.EndArrow:
-                    p1 = getProj(obj.Shape.Vertexes[-1].Point, plane)
-                    p2 = getProj(obj.Shape.Vertexes[-2].Point, plane)
+                    p1 = get_proj(obj.Shape.Vertexes[-1].Point, plane)
+                    p2 = get_proj(obj.Shape.Vertexes[-2].Point, plane)
                     angle = -DraftVecUtils.angle(p2.sub(p1))
                     arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
                     svg += getArrow(obj.ViewObject.ArrowType,p1,arrowsize,stroke,linewidth,angle)
