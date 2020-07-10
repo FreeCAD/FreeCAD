@@ -24,7 +24,7 @@
 
 # to run the example use:
 """
-from femexamples.material_multiple_twoboxes import setup
+from femexamples.material_multiple_tensionrod_twoboxes import setup
 setup()
 
 """

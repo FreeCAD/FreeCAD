@@ -56,7 +56,7 @@ SET(FemExamples_SRCS
     femexamples/manager.py
     femexamples/material_multiple_bendingbeam_fiveboxes.py
     femexamples/material_multiple_bendingbeam_fivefaces.py
-    femexamples/material_multiple_twoboxes.py
+    femexamples/material_multiple_tensionrod_twoboxes.py
     femexamples/material_nl_platewithhole.py
     femexamples/rc_wall_2d.py
     femexamples/thermomech_bimetall.py
@@ -245,7 +245,7 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/constraint_tie.inp
     femtest/data/calculix/material_multiple_bendingbeam_fiveboxes.inp
     femtest/data/calculix/material_multiple_bendingbeam_fivefaces.inp
-    femtest/data/calculix/material_multiple.inp
+    femtest/data/calculix/material_multiple_tensionrod_twoboxes.inp
     femtest/data/calculix/material_nonlinear.inp
     femtest/data/calculix/thermomech_bimetall.inp
     femtest/data/calculix/thermomech_flow1D.inp

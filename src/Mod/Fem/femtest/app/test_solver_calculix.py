@@ -183,10 +183,10 @@ class TestSolverCalculix(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_material_multiple(
+    def test_material_multiple_tensionrod_twoboxes(
         self
     ):
-        from femexamples.material_multiple_twoboxes import setup
+        from femexamples.material_multiple_tensionrod_twoboxes import setup
         setup(self.document, "calculix")
         self.input_file_writing_test(get_namefromdef("test_"))
 
