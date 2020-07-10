@@ -167,6 +167,14 @@ class TestSolverCalculix(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
+    def test_material_multiple_bendingbeam_fiveboxes(
+        self
+    ):
+        from femexamples.material_multiple_bendingbeam_fiveboxes import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
     def test_material_multiple(
         self
     ):
