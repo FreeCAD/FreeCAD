@@ -54,6 +54,7 @@ SET(FemExamples_SRCS
     femexamples/constraint_tie.py
     femexamples/examplesgui.py
     femexamples/manager.py
+    femexamples/material_multiple_bendingbeam_fiveboxes.py
     femexamples/material_multiple_twoboxes.py
     femexamples/material_nl_platewithhole.py
     femexamples/rc_wall_2d.py
@@ -71,6 +72,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_constraint_tie_tetra10.py
     femexamples/meshes/mesh_contact_box_halfcylinder_tetra10.py
     femexamples/meshes/mesh_contact_tube_tube_tria3.py
+    femexamples/meshes/mesh_multibodybeam_tetra10.py
     femexamples/meshes/mesh_rc_wall_2d_tria6.py
     femexamples/meshes/mesh_section_print_tetra10.py
     femexamples/meshes/mesh_platewithhole_tetra10.py
