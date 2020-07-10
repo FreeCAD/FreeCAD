@@ -32,6 +32,7 @@ that is, previews, of the real objects that will be created on the 3D view.
 # that are used by the Draft Workbench to draw temporary geometry,
 # that is, previews, of the real objects that will be created on the 3D view.
 
+import os
 import math
 from pivy import coin
 import re
@@ -1079,6 +1080,17 @@ class gridTracker(Tracker):
                 self.text2.string = txt
                 self.textpos1.translation.setValue((-bound+self.space,-border+self.space,z))
                 self.textpos2.translation.setValue((-bound-self.space,-bound+self.space,z))
+                # human from BIM workbench
+                loc = FreeCAD.Vector(-bound+self.space/2,-bound+self.space/2,0)
+                try:
+                    import BimProject
+                    hpts = BimProject.getHuman(loc)
+                except:
+                    # BIM not installed
+                    pass
+                else:
+                    mpts.extend([tuple(p) for p in hpts])
+                    midx.append(len(hpts))
             else:
                 self.text1.string = " "
                 self.text2.string = " "
