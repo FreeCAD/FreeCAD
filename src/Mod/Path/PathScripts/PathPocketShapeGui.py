@@ -178,11 +178,13 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         # Unfortunately there's no direct way to determine the object's
         # livelihood without causing an error so we look for the object
         # in the document and clean up if it still exists.
-        for o in self.obj.Document.getObjectsByLabel(self.obj.Label):
-            if o == obj:
-                self.obj.ViewObject.RootNode.removeChild(self.switch)
-                return
-        PathLog.debug("%s already destroyed - no cleanup required" % (obj.Label))
+        try:
+            for o in self.obj.Document.getObjectsByLabel(self.obj.Label):
+                if o == obj:
+                    self.obj.ViewObject.RootNode.removeChild(self.switch)
+                    return
+        except ReferenceError:
+            PathLog.debug("obj already destroyed - no cleanup required")
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketExtEdit.ui")
