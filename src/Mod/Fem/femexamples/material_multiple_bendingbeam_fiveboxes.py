@@ -43,7 +43,7 @@ def init_doc(doc=None):
 
 
 def get_information():
-    info = {"name": "Multibody Analysis",
+    info = {"name": "Multimaterial bending beam 5 boxes",
             "meshtype": "solid",
             "meshelement": "Tet10",
             "constraints": ["fixed", "force"],
