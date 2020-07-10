@@ -76,10 +76,10 @@ def setup(doc=None, solvertype="ccxtools"):
     doc.recompute()
     bf.Proxy.execute(bf)
     bf.purgeTouched()
+    doc.recompute()
     if FreeCAD.GuiUp:
         for child in bf.ViewObject.Proxy.claimChildren():
             child.ViewObject.hide()
-    doc.recompute()
 
     # extract CompSolid by compound filter tool
     geom_obj = CompoundFilter.makeCompoundFilter(name="MultiMatCompSolid")
@@ -88,7 +88,7 @@ def setup(doc=None, solvertype="ccxtools"):
     geom_obj.Proxy.execute(geom_obj)
     geom_obj.purgeTouched()
     if FreeCAD.GuiUp:
-        geom_obj.Base.ViewObject.hide()
+        bf.ViewObject.hide()
     doc.recompute()
 
     if FreeCAD.GuiUp:
