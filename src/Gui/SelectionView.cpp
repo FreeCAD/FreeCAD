@@ -715,14 +715,11 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
 
             bool ctrl = (QApplication::queryKeyboardModifiers() == Qt::ControlModifier);
             if(!ctrl) {
-                if(TreeParams::Instance()->RecordSelection())
-                    Gui::Selection().selStackPush();
+                Gui::Selection().selStackPush();
                 Gui::Selection().clearSelection();
             }
             Gui::Selection().addSelection(sel.getDocumentName().c_str(),
                     sel.getObjectName().c_str(), sel.getSubName().c_str());
-            if(TreeParams::Instance()->RecordSelection())
-                Gui::Selection().selStackPush(false,ctrl);
         }
     }
     pSelList = 0;

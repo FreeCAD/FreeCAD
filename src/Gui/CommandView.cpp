@@ -3426,6 +3426,52 @@ bool StdCmdSelForward::isActive(void)
   return !!Selection().selStackForwardSize();
 }
 
+//===========================================================================
+// Std_SelGeometry
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdPickGeometry)
+
+StdCmdPickGeometry::StdCmdPickGeometry()
+  :Command("Std_PickGeometry")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Pick geometry");
+  sToolTipText  = QT_TR_NOOP("Pick hidden geometires under the mouse cursor in 3D view.\n"
+                             "This command is supposed to be actived by keyboard shortcut.");
+  sWhatsThis    = "Std_PickGeometry";
+  sStatusTip    = sToolTipText;
+  // sPixmap       = "sel-geo";
+  sAccel        = "G, G";
+  eType         = NoTransaction | AlterSelection | NoDefaultAction;
+}
+
+void StdCmdPickGeometry::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+
+    QPoint pos = QCursor::pos();
+    QWidget *widget = qApp->widgetAt(pos);
+    if (widget)
+        widget = widget->parentWidget();
+    auto viewer = qobject_cast<View3DInventorViewer*>(widget);
+    if (!viewer)
+        return;
+
+    auto sels = viewer->getPickedList(false);
+    if (sels.empty())
+        return;
+
+    SelectionMenu menu;
+    menu.doPick(sels);
+}
+
+bool StdCmdPickGeometry::isActive(void)
+{
+    auto view = Application::Instance->activeView();
+    return view && view->isDerivedFrom(View3DInventor::getClassTypeId());
+}
+
 //=======================================================================
 // Std_TreeSingleDocument
 //===========================================================================
@@ -3897,6 +3943,7 @@ public:
         addCommand(new StdCmdSelHierarchyAscend());
         addCommand();
         addCommand(new StdCmdMapChildrenPlacement());
+        addCommand(new StdCmdPickGeometry());
     };
     virtual const char* className() const {return "StdCmdSelOptions";}
 };
