@@ -29,13 +29,16 @@
 import math
 import lazy_loader.lazy_loader as lz
 
-import FreeCAD
+import FreeCAD as App
 import DraftVecUtils
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 
-params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+PARAMGRP = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+
+# Default normal direction for all geometry operations
+NORM = App.Vector(0, 0, 1)
 
 
 def precision():
@@ -49,9 +52,9 @@ def precision():
     #      15 that the code would never consider 2 points are coincident
     #      as internal float is not that precise)
     precisionMax = 10
-    precisionInt = params.GetInt("precision", 6)
+    precisionInt = PARAMGRP.GetInt("precision", 6)
     precisionInt = (precisionInt if precisionInt <= 10 else precisionMax)
-    return precisionInt	 # return params.GetInt("precision",6)
+    return precisionInt  # return PARAMGRP.GetInt("precision", 6)
 
 
 def vec(edge):
@@ -67,7 +70,7 @@ def vec(edge):
 
 def edg(p1, p2):
     """Return an edge from 2 vectors."""
-    if isinstance(p1, FreeCAD.Vector) and isinstance(p2, FreeCAD.Vector):
+    if isinstance(p1, App.Vector) and isinstance(p2, App.Vector):
         if DraftVecUtils.equals(p1, p2):
             return None
 
@@ -97,13 +100,13 @@ def isNull(something):
     """
     if isinstance(something, Part.Shape):
         return something.isNull()
-    elif isinstance(something, FreeCAD.Vector):
-        if something == FreeCAD.Vector(0, 0, 0):
+    elif isinstance(something, App.Vector):
+        if something == App.Vector(0, 0, 0):
             return True
         else:
             return False
-    elif isinstance(something, FreeCAD.Placement):
-        if (something.Base == FreeCAD.Vector(0, 0, 0)
+    elif isinstance(something, App.Placement):
+        if (something.Base == App.Vector(0, 0, 0)
                 and something.Rotation.Q == (0, 0, 0, 1)):
             return True
         else:
@@ -180,7 +183,7 @@ def getQuad(face):
     if len(face.Edges) != 4:
         return None
 
-    v1 = vec(face.Edges[0])
+    v1 = vec(face.Edges[0])  # Warning redefinition of function v1
     v2 = vec(face.Edges[1])
     v3 = vec(face.Edges[2])
     v4 = vec(face.Edges[3])
@@ -265,3 +268,74 @@ def isValidPath(shape):
     if shape.isClosed():
         return False
     return True
+
+
+def findClosest(base_point, point_list):
+    """Find closest point in a list of points to the base point.
+
+    Returns
+    -------
+    int
+        An index from the list of points is returned.
+
+    None
+        If point_list is empty.
+    """
+    npoint = None
+    if not point_list:
+        return None
+
+    smallest = 1000000
+    for n in range(len(point_list)):
+        new = base_point.sub(point_list[n]).Length
+        if new < smallest:
+            smallest = new
+            npoint = n
+
+    return npoint
+
+
+def getBoundaryAngles(angle, alist):
+    """Return the 2 closest angles that encompass the given angle."""
+    negs = True
+    while negs:
+        negs = False
+        for i in range(len(alist)):
+            if alist[i] < 0:
+                alist[i] = 2*math.pi + alist[i]
+                negs = True
+        if angle < 0:
+            angle = 2*math.pi + angle
+            negs = True
+
+    lower = None
+    for a in alist:
+        if a < angle:
+            if lower is None:
+                lower = a
+            else:
+                if a > lower:
+                    lower = a
+
+    if lower is None:
+        lower = 0
+        for a in alist:
+            if a > lower:
+                lower = a
+
+    higher = None
+    for a in alist:
+        if a > angle:
+            if higher is None:
+                higher = a
+            else:
+                if a < higher:
+                    higher = a
+
+    if higher is None:
+        higher = 2*math.pi
+        for a in alist:
+            if a < higher:
+                higher = a
+
+    return lower, higher

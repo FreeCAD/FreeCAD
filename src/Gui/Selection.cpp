@@ -26,7 +26,7 @@
 #ifndef _PreComp_
 # include <assert.h>
 # include <string>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <QApplication>
 # include <QString>
 # include <QStatusBar>
@@ -44,6 +44,7 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -61,6 +62,7 @@ FC_LOG_LEVEL_INIT("Selection",false,true,true)
 
 using namespace Gui;
 using namespace std;
+namespace bp = boost::placeholders;
 
 SelectionGateFilterExternal::SelectionGateFilterExternal(const char *docName, const char *objName) {
     if(docName) {
@@ -135,7 +137,7 @@ void SelectionObserver::attachSelection()
                 resolve?Selection().signalSelectionChanged2:
                 Selection().signalSelectionChanged);
         connectSelection = signal.connect(boost::bind
-            (&SelectionObserver::_onSelectionChanged, this, _1));
+            (&SelectionObserver::_onSelectionChanged, this, bp::_1));
         if(filterDocName.size())
             Selection().addSelectionGate(
                     new SelectionGateFilterExternal(filterDocName.c_str(),filterObjName.c_str()));
@@ -855,6 +857,34 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
     return DocName.empty()?0:1;
 }
 
+namespace Gui {
+std::array<std::pair<double, std::string>, 3> schemaTranslatePoint(double x, double y, double z, double precision)
+{
+    Base::Quantity mmx(Base::Quantity::MilliMetre);
+    mmx.setValue(fabs(x) > precision ? x : 0.0);
+    Base::Quantity mmy(Base::Quantity::MilliMetre);
+    mmy.setValue(fabs(y) > precision ? y : 0.0);
+    Base::Quantity mmz(Base::Quantity::MilliMetre);
+    mmz.setValue(fabs(z) > precision ? z : 0.0);
+
+    double xfactor, yfactor, zfactor;
+    QString xunit, yunit, zunit;
+
+    Base::UnitsApi::schemaTranslate(mmx, xfactor, xunit);
+    Base::UnitsApi::schemaTranslate(mmy, yfactor, yunit);
+    Base::UnitsApi::schemaTranslate(mmz, zfactor, zunit);
+
+    double xuser = fabs(x) > precision ? x / xfactor : 0.0;
+    double yuser = fabs(y) > precision ? y / yfactor : 0.0;
+    double zuser = fabs(z) > precision ? z / zfactor : 0.0;
+
+    std::array<std::pair<double, std::string>, 3> ret = {std::make_pair(xuser, xunit.toUtf8().constBegin()),
+                                                         std::make_pair(yuser, yunit.toUtf8().constBegin()),
+                                                         std::make_pair(zuser, zunit.toUtf8().constBegin())};
+    return ret;
+}
+}
+
 void SelectionSingleton::setPreselectCoord( float x, float y, float z)
 {
     static char buf[513];
@@ -866,13 +896,17 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
     CurrentPreselection.y = y;
     CurrentPreselection.z = z;
 
-    snprintf(buf,512,"Preselected: %s.%s.%s (%f,%f,%f)",CurrentPreselection.pDocName
-                                                       ,CurrentPreselection.pObjectName
-                                                       ,CurrentPreselection.pSubName
-                                                       ,x,y,z);
+    auto pts = schemaTranslatePoint(x, y, z, 0.0);
+    snprintf(buf,512,"Preselected: %s.%s.%s (%f %s,%f %s,%f %s)"
+                    ,CurrentPreselection.pDocName
+                    ,CurrentPreselection.pObjectName
+                    ,CurrentPreselection.pSubName
+                    ,pts[0].first, pts[0].second.c_str()
+                    ,pts[1].first, pts[1].second.c_str()
+                    ,pts[2].first, pts[2].second.c_str());
 
     if (getMainWindow())
-        getMainWindow()->showMessage(QString::fromLatin1(buf));
+        getMainWindow()->showMessage(QString::fromUtf8(buf));
 }
 
 void SelectionSingleton::rmvPreselect()
@@ -1737,8 +1771,8 @@ SelectionSingleton::SelectionSingleton()
     hz = 0;
     ActiveGate = 0;
     gateResolve = 1;
-    App::GetApplication().signalDeletedObject.connect(boost::bind(&Gui::SelectionSingleton::slotDeletedObject, this, _1));
-    signalSelectionChanged.connect(boost::bind(&Gui::SelectionSingleton::slotSelectionChanged, this, _1));
+    App::GetApplication().signalDeletedObject.connect(boost::bind(&Gui::SelectionSingleton::slotDeletedObject, this, bp::_1));
+    signalSelectionChanged.connect(boost::bind(&Gui::SelectionSingleton::slotSelectionChanged, this, bp::_1));
 }
 
 /**
@@ -1784,7 +1818,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "given the complete selection is cleared."},
     {"isSelected",           (PyCFunction) SelectionSingleton::sIsSelected, METH_VARARGS,
      "isSelected(object,resolve=True) -- Check if a given object is selected"},
-    {"setPreselection",      (PyCFunction) SelectionSingleton::sSetPreselection, METH_VARARGS|METH_KEYWORDS,
+    {"setPreselection",      reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( SelectionSingleton::sSetPreselection )), METH_VARARGS|METH_KEYWORDS,
      "setPreselection() -- Set preselected object"},
     {"getPreselection",      (PyCFunction) SelectionSingleton::sGetPreselection, METH_VARARGS,
      "getPreselection() -- Get preselected object"},

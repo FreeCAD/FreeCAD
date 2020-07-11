@@ -120,7 +120,7 @@ using namespace Gui::DockWnd;
  *   void activated(int)
  *   {
  *     QString filter ... // make a filter of all supported file formats
- *     QStringList FileList = QFileDialog::getOpenFileNames( filter,QString::null, getMainWindow() );
+ *     QStringList FileList = QFileDialog::getOpenFileNames( filter,QString(), getMainWindow() );
  *     for ( QStringList::Iterator it = FileList.begin(); it != FileList.end(); ++it ) {
  *       getGuiApplication()->open((*it).latin1());
  *     }
@@ -649,7 +649,11 @@ void Command::_doCommand(const char *file, int line, DoCmd_Type eType, const cha
     va_list ap;
     va_start(ap, sCmd);
     QString s;
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     const QString cmd = s.vsprintf(sCmd, ap);
+#else
+    const QString cmd = s.vasprintf(sCmd, ap);
+#endif
     va_end(ap);
 
     // 'vsprintf' expects a utf-8 string for '%s'

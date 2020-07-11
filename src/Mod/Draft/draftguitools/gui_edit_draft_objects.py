@@ -383,7 +383,7 @@ def recomputePointsBezier(obj, pts, idx, v,
             if idx >= 1: #move left pole
                 knotidx = idx if idx < len(pts) else 0
                 pts[idx-1] = pts[idx-1] + v - pts[knotidx]
-                #if moveTrackers: # trackers are reseted after editing
+                #if moveTrackers: # trackers are reset after editing
                 #    self.trackers[obj.Name][idx-1].set(pts[idx-1])
             if idx < len(pts)-1: #move right pole
                 pts[idx+1] = pts[idx+1] + v - pts[idx]

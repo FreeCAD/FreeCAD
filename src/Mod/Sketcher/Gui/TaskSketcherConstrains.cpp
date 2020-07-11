@@ -33,7 +33,7 @@
 # include <QStyledItemDelegate>
 # include <QPainter>
 # include <QPixmapCache>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "TaskSketcherConstrains.h"
@@ -380,7 +380,7 @@ protected:
             .arg(size.width())
             .arg(size.height());
         QPixmap icon;
-        if (QPixmapCache::find(key, icon))
+        if (QPixmapCache::find(key, &icon))
             return icon;
 
         icon = Gui::BitmapFactory().pixmapFromSvg(name, size);

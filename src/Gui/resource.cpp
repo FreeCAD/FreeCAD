@@ -96,6 +96,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new WidgetProducer<Gui::PrefDoubleSpinBox>;
     new WidgetProducer<Gui::PrefLineEdit>;
     new WidgetProducer<Gui::PrefComboBox>;
+    new WidgetProducer<Gui::PrefFontBox>;
     new WidgetProducer<Gui::PrefCheckBox>;
     new WidgetProducer<Gui::PrefRadioButton>;
     new WidgetProducer<Gui::PrefSlider>;
@@ -110,5 +111,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new WidgetProducer<Gui::UrlLabel>;
     new WidgetProducer<Gui::FileChooser>;
     new WidgetProducer<Gui::UIntSpinBox>;
+    new WidgetProducer<Gui::IntSpinBox>;
+    new WidgetProducer<Gui::DoubleSpinBox>;
     new WidgetProducer<Gui::QuantitySpinBox>;
 }

@@ -33,6 +33,7 @@
 #include <QGraphicsSceneHoverEvent>
 #include <QPainterPathStroker>
 #include <QPainter>
+#include <QPainterPath>
 #include <QTextOption>
 #include <QBitmap>
 #include <QImage>
@@ -58,6 +59,7 @@
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 //#include <Mod/TechDraw/App/Preferences.h>
@@ -424,7 +426,6 @@ void QGIViewPart::updateView(bool update)
 }
 
 void QGIViewPart::draw() {
-//    Base::Console().Message("QGIVP::draw()\n");
     if (!isVisible()) {
         return;
     }
@@ -507,22 +508,20 @@ void QGIViewPart::drawViewPart()
                 if (!fHatch->SvgIncluded.isEmpty()) {
                     if (getExporting()) {
                         newFace->hideSvg(true);
-                        newFace->isHatched(false);
-                        newFace->setFillMode(QGIFace::PlainFill);
                     } else {
                         newFace->hideSvg(false);
-                        newFace->isHatched(true);
-                        newFace->setFillMode(QGIFace::FromFile);
-                        newFace->setHatchFile(fHatch->SvgIncluded.getValue());
-                        Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
-                        ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
-                        if (hatchVp != nullptr) {
-                            double hatchScale = hatchVp->HatchScale.getValue();
-                            if (hatchScale > 0.0) {
-                                newFace->setHatchScale(hatchVp->HatchScale.getValue());
-                            }
-                            newFace->setHatchColor(hatchVp->HatchColor.getValue());
+                    }
+                    newFace->isHatched(true);
+                    newFace->setFillMode(QGIFace::SvgFill);
+                    newFace->setHatchFile(fHatch->SvgIncluded.getValue());
+                    Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
+                    ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
+                    if (hatchVp != nullptr) {
+                        double hatchScale = hatchVp->HatchScale.getValue();
+                        if (hatchScale > 0.0) {
+                            newFace->setHatchScale(hatchVp->HatchScale.getValue());
                         }
+                        newFace->setHatchColor(hatchVp->HatchColor.getValue());
                     }
                 }
             }
@@ -661,7 +660,7 @@ void QGIViewPart::drawViewPart()
 //                TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexByGeom(i);
                 if (cv != nullptr) {
                     item->setNormalColor(cv->color.asValue<QColor>());
-                    item->setRadius(cv->size);
+                    item->setRadius(Rez::guiX(cv->size));
                 } else {
                     item->setNormalColor(vertexColor);
                     item->setFillColor(vertexColor);
@@ -721,17 +720,27 @@ QGIFace* QGIViewPart::drawFace(TechDraw::Face* f, int idx)
     for(std::vector<TechDraw::Wire *>::iterator wire = fWires.begin(); wire != fWires.end(); ++wire) {
         QPainterPath wirePath;
         std::vector<TechDraw::BaseGeom*> geoms = (*wire)->geoms;
-        for(std::vector<TechDraw::BaseGeom *>::iterator edge = (*wire)->geoms.begin(); edge != (*wire)->geoms.end(); ++edge) {
-            //Save the start Position
+        TechDraw::BaseGeom* firstGeom = geoms.front();
+        //QPointF startPoint(firstGeom->getStartPoint().x, firstGeom->getStartPoint().y);
+        //wirePath.moveTo(startPoint);
+        QPainterPath firstSeg = drawPainterPath(firstGeom);
+        wirePath.connectPath(firstSeg);
+        for(std::vector<TechDraw::BaseGeom *>::iterator edge = ((*wire)->geoms.begin()) + 1; edge != (*wire)->geoms.end(); ++edge) {
             QPainterPath edgePath = drawPainterPath(*edge);
-            // If the current end point matches the shape end point the new edge path needs reversing
-            // wf: this check isn't good enough. 
-            //if ((*edge)->reversed) {
-            //    path = ???
-//            QPointF shapePos = (wirePath.currentPosition()- edgePath.currentPosition());
-//            if(sqrt(shapePos.x() * shapePos.x() + shapePos.y()*shapePos.y()) < 0.05) {    //magic tolerance
-//                edgePath = edgePath.toReversed();
-//            }
+            //handle section faces differently
+            if (idx == -1) {
+                    QPointF wEnd = wirePath.currentPosition();
+                    auto element = edgePath.elementAt(0);
+                    QPointF eStart(element.x, element.y);
+                    QPointF eEnd = edgePath.currentPosition();
+                    QPointF sVec = wEnd - eStart;
+                    QPointF eVec = wEnd - eEnd;
+                    double sDist2 = sVec.x() * sVec.x() + sVec.y() * sVec.y();
+                    double eDist2 = eVec.x() * eVec.x() + eVec.y() * eVec.y();
+                    if (sDist2 > eDist2) {
+                        edgePath = edgePath.toReversed();
+                    }
+           }
             wirePath.connectPath(edgePath);
         }
 //        dumpPath("wirePath:",wirePath);
@@ -865,7 +874,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         double fontSize = Preferences::dimFontSizeMM();
         sectionLine->setFont(m_font, fontSize);
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
-        sectionLine->setRotation(viewPart->Rotation.getValue());
+        sectionLine->setRotation(- viewPart->Rotation.getValue());
         sectionLine->draw();
     }
 }

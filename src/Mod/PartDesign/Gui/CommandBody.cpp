@@ -329,8 +329,6 @@ void CmdPartDesignBody::activated(int iMsg)
         }
     }
 
-    // The method 'SoCamera::viewBoundingBox' is still declared as protected in Coin3d versions
-    // older than 4.0.
     // if no part feature was there then auto-adjust the camera
     if (viewAll) {
         Gui::Document* doc = Gui::Application::Instance->getDocument(getDocument());

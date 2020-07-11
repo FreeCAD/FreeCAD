@@ -77,59 +77,31 @@ def makeSite(objectslist=None,baseobj=None,name="Site"):
     return obj
 
 
-def getSunDirections(longitude,latitude,tz=None):
+def toNode(shape):
 
-    """getSunDirections(longitude,latitude,[tz]): returns a list of 9
-    directional 3D vectors corresponding to sun direction at 9h, 12h
-    and 15h on summer solstice, equinox and winter solstice. Tz is the
-    timezone related to UTC (ex: -3 = UTC-3)"""
+    """builds a linear pivy node from a shape"""
 
-    oldversion = False
-    try:
-        import pysolar
-    except:
-        try:
-            import Pysolar as pysolar
-        except:
-            FreeCAD.Console.PrintError("The pysolar module was not found. Unable to generate solar diagrams\n")
-            return None
-        else:
-            oldversion = True
-
-    if tz:
-        tz = datetime.timezone(datetime.timedelta(hours=-3))
-    else:
-        tz = datetime.timezone.utc
-
-    year = datetime.datetime.now().year
-    hpts = [ [] for i in range(24) ]
-    m = [(6,21),(9,21),(12,21)]
+    from pivy import coin
+    buf = shape.writeInventor(2,0.01)
+    buf = buf.replace("\n","")
+    buf = re.findall("point \[(.*?)\]",buf)
     pts = []
-    for i,d in enumerate(m):
-        for h in [9,12,15]:
-            if oldversion:
-                dt = datetime.datetime(year, d[0], d[1], h)
-                alt = math.radians(pysolar.solar.GetAltitudeFast(latitude, longitude, dt))
-                az = pysolar.solar.GetAzimuth(latitude, longitude, dt)
-                az = -90 + az # pysolar's zero is south, ours is X direction
-            else:
-                dt = datetime.datetime(year, d[0], d[1], h, tzinfo=tz)
-                alt = math.radians(pysolar.solar.get_altitude_fast(latitude, longitude, dt))
-                az = pysolar.solar.get_azimuth(latitude, longitude, dt)
-                az = 90 + az # pysolar's zero is north, ours is X direction
-            if az < 0:
-                az = 360 + az
-            az = math.radians(az)
-            zc = math.sin(alt)
-            ic = math.cos(alt)
-            xc = math.cos(az)*ic
-            yc = math.sin(az)*ic
-            p = FreeCAD.Vector(xc,yc,zc).negative()
-            p.normalize()
-            if not oldversion:
-                p.x = -p.x # No idea why that is, empirical find
-            pts.append(p)
-    return pts
+    for c in buf:
+        pts.extend(c.split(","))
+    pc = []
+    for p in pts:
+        v = p.strip().split()
+        v = [float(v[0]),float(v[1]),float(v[2])]
+        if (not pc) or (pc[-1] != v):
+            pc.append(v)
+    coords = coin.SoCoordinate3()
+    coords.point.setValues(0,len(pc),pc)
+    line = coin.SoLineSet()
+    line.numVertices.setValue(-1)
+    item = coin.SoSeparator()
+    item.addChild(coords)
+    item.addChild(line)
+    return item
 
 
 def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
@@ -140,46 +112,37 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
     UTC (ex: -3 = UTC-3)"""
 
     oldversion = False
+    ladybug = False
     try:
-        import pysolar
+        import ladybug
+        from ladybug import location
+        from ladybug import sunpath
     except:
+        # TODO - remove pysolar dependency
+        # FreeCAD.Console.PrintWarning("Ladybug module not found, using pysolar instead. Warning, this will be deprecated in the future\n")
+        ladybug = False
         try:
-            import Pysolar as pysolar
+            import pysolar
         except:
-            FreeCAD.Console.PrintError("The pysolar module was not found. Unable to generate solar diagrams\n")
-            return None
+            try:
+                import Pysolar as pysolar
+            except:
+                FreeCAD.Console.PrintError("The pysolar module was not found. Unable to generate solar diagrams\n")
+                return None
+            else:
+                oldversion = True
+        if tz:
+            tz = datetime.timezone(datetime.timedelta(hours=-3))
         else:
-            oldversion = True
+            tz = datetime.timezone.utc
+    else:
+        loc = ladybug.location.Location(latitude=latitude,longitude=longitude,time_zone=tz)
+        sunpath = ladybug.sunpath.Sunpath.from_location(loc)
 
     from pivy import coin
 
     if not scale:
         return None
-
-    if tz:
-        tz = datetime.timezone(datetime.timedelta(hours=-3))
-    else:
-        tz = datetime.timezone.utc
-
-    def toNode(shape):
-        "builds a pivy node from a simple linear shape"
-        from pivy import coin
-        buf = shape.writeInventor(2,0.01)
-        buf = buf.replace("\n","")
-        pts = re.findall("point \[(.*?)\]",buf)[0]
-        pts = pts.split(",")
-        pc = []
-        for p in pts:
-            v = p.strip().split()
-            pc.append([float(v[0]),float(v[1]),float(v[2])])
-        coords = coin.SoCoordinate3()
-        coords.point.setValues(0,len(pc),pc)
-        line = coin.SoLineSet()
-        line.numVertices.setValue(-1)
-        item = coin.SoSeparator()
-        item.addChild(coords)
-        item.addChild(line)
-        return item
 
     circles = []
     sunpaths = []
@@ -208,7 +171,11 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
     for i,d in enumerate(m):
         pts = []
         for h in range(24):
-            if oldversion:
+            if ladybug:
+                sun = sunpath.calculate_sun(month=d[0], day=d[1], hour=h)
+                alt = math.radians(sun.altitude)
+                az = 90 + sun.azimuth
+            elif oldversion:
                 dt = datetime.datetime(year, d[0], d[1], h)
                 alt = math.radians(pysolar.solar.GetAltitudeFast(latitude, longitude, dt))
                 az = pysolar.solar.GetAzimuth(latitude, longitude, dt)
@@ -247,6 +214,7 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
                     hourpos.append((h,ep))
         if i < 7:
             sunpaths.append(Part.makePolygon(pts))
+
     for h in hpts:
         if complete:
             h.append(h[0])
@@ -319,6 +287,67 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
         item.addChild(text)
         numsep.addChild(item)
     return mastersep
+
+
+def makeWindRose(epwfile,scale=1,sectors=24):
+
+    """makeWindRose(site,sectors):
+    returns a wind rose diagram as a pivy node"""
+
+    try:
+        import ladybug
+        from ladybug import epw
+    except:
+        FreeCAD.Console.PrintError("The ladybug module was not found. Unable to generate solar diagrams\n")
+        return None
+    if not epwfile:
+        FreeCAD.Console.PrintWarning("No EPW file, unable to generate wind rose.\n")
+        return None
+    epw_data = ladybug.epw.EPW(epwfile)
+    baseangle = 360/sectors
+    sectorangles = [i * baseangle for i in range(sectors)] # the divider angles between each sector
+    basebissect = baseangle/2
+    angles = [basebissect] # build a list of central direction for each sector
+    for i in range(1,sectors):
+        angles.append(angles[-1]+baseangle)
+    windsbysector = [0 for i in range(sectors)] # prepare a holder for values for each sector
+    for hour in epw_data.wind_direction:
+        sector = min(angles, key=lambda x:abs(x-hour)) # find the closest sector angle
+        sectorindex = angles.index(sector)
+        windsbysector[sectorindex] = windsbysector[sectorindex] + 1
+    maxwind = max(windsbysector)
+    windsbysector = [wind/maxwind for wind in windsbysector] # normalize
+    vectors = [] # create 3D vectors
+    dividers = []
+    for i in range(sectors):
+        angle = math.radians(90 + angles[i])
+        x = math.cos(angle) * windsbysector[i] * scale
+        y = math.sin(angle) * windsbysector[i] * scale
+        vectors.append(FreeCAD.Vector(x,y,0))
+        secangle = math.radians(90 + sectorangles[i])
+        x = math.cos(secangle) * scale
+        y = math.sin(secangle) * scale
+        dividers.append(FreeCAD.Vector(x,y,0))
+    vectors.append(vectors[0])
+
+    # build coin node
+    import Part
+    from pivy import coin
+    masternode = coin.SoSeparator()
+    for r in (0.25,0.5,0.75,1.0):
+        c = Part.makeCircle(r * scale)
+        masternode.addChild(toNode(c))
+    for divider in dividers:
+        l = Part.makeLine(FreeCAD.Vector(),divider)
+        masternode.addChild(toNode(l))
+    ds = coin.SoDrawStyle()
+    ds.lineWidth = 2.0
+    masternode.addChild(ds)
+    d = Part.makePolygon(vectors)
+    masternode.addChild(toNode(d))
+    return masternode
+
+
 
 # Values in mm
 COMPASS_POINTER_LENGTH = 1000
@@ -525,7 +554,7 @@ Site creation aborted.") + "\n"
 class _Site(ArchIFC.IfcProduct):
     """The Site object.
 
-    Turns a <Part::FeaturePython> into a site object. 
+    Turns a <Part::FeaturePython> into a site object.
 
     If an object is assigned to the Terrain property, gains a shape, and deals
     with additions and subtractions as earthmoving, calculating volumes of
@@ -610,6 +639,8 @@ class _Site(ArchIFC.IfcProduct):
             obj.IcfType = "Site"
         if not "TimeZone" in pl:
             obj.addProperty("App::PropertyInteger","TimeZone","Site",QT_TRANSLATE_NOOP("App::Property","The time zone where this site is located"))
+        if not "EPWFile" in pl:
+            obj.addProperty("App::PropertyFileIncluded","EPWFile","Site",QT_TRANSLATE_NOOP("App::Property","An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one"))
         self.Type = "Site"
 
     def onDocumentRestored(self,obj):
@@ -619,7 +650,7 @@ class _Site(ArchIFC.IfcProduct):
 
     def execute(self,obj):
         """Method run when the object is recomputed.
-        
+
         If the site has no Shape or Terrain property assigned, do nothing.
 
         Perform additions and subtractions on terrain, and assign to the site's
@@ -768,6 +799,16 @@ class _Site(ArchIFC.IfcProduct):
         if obj.AdditionVolume.Value != addvol:
             obj.AdditionVolume = addvol
 
+    def addObject(self,obj,child):
+
+        "Adds an object to the group of this BuildingPart"
+
+        if not child in obj.Group:
+            g = obj.Group
+            g.append(child)
+            obj.Group = g
+
+
 class _ViewProviderSite:
     """A View Provider for the Site object.
 
@@ -792,6 +833,8 @@ class _ViewProviderSite:
         """
 
         pl = vobj.PropertiesList
+        if not "WindRose" in pl:
+            vobj.addProperty("App::PropertyBool","WindRose","Site",QT_TRANSLATE_NOOP("App::Property","Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module"))
         if not "SolarDiagram" in pl:
             vobj.addProperty("App::PropertyBool","SolarDiagram","Site",QT_TRANSLATE_NOOP("App::Property","Show solar diagram or not"))
         if not "SolarDiagramScale" in pl:
@@ -902,7 +945,7 @@ class _ViewProviderSite:
         """Add display modes' data to the coin scenegraph.
 
         Add each display mode as a coin node, whose parent is this view
-        provider. 
+        provider.
 
         Each display mode's node includes the data needed to display the object
         in that mode. This might include colors of faces, or the draw style of
@@ -915,15 +958,22 @@ class _ViewProviderSite:
 
         self.Object = vobj.Object
         from pivy import coin
-        self.diagramsep = coin.SoSeparator()
+        basesep = coin.SoSeparator()
+        vobj.Annotation.addChild(basesep)
         self.color = coin.SoBaseColor()
         self.coords = coin.SoTransform()
+        basesep.addChild(self.coords)
+        basesep.addChild(self.color)
+        self.diagramsep = coin.SoSeparator()
         self.diagramswitch = coin.SoSwitch()
         self.diagramswitch.whichChild = -1
         self.diagramswitch.addChild(self.diagramsep)
-        self.diagramsep.addChild(self.coords)
-        self.diagramsep.addChild(self.color)
-        vobj.Annotation.addChild(self.diagramswitch)
+        basesep.addChild(self.diagramswitch)
+        self.windrosesep = coin.SoSeparator()
+        self.windroseswitch = coin.SoSwitch()
+        self.windroseswitch.whichChild = -1
+        self.windroseswitch.addChild(self.windrosesep)
+        basesep.addChild(self.windroseswitch)
         self.compass = Compass()
         self.updateCompassVisibility(vobj)
         self.updateCompassScale(vobj)
@@ -989,6 +1039,25 @@ class _ViewProviderSite:
                         del self.diagramnode
                 else:
                     self.diagramswitch.whichChild = -1
+        elif prop == "WindRose":
+            if hasattr(self,"windrosenode"):
+                del self.windrosenode
+            if hasattr(vobj,"WindRose"):
+                if vobj.WindRose:
+                    if hasattr(vobj.Object,"EPWFile") and vobj.Object.EPWFile:
+                        try:
+                            import ladybug
+                        except:
+                            pass
+                        else:
+                            self.windrosenode = makeWindRose(vobj.Object.EPWFile,vobj.SolarDiagramScale)
+                            if self.windrosenode:
+                                self.windrosesep.addChild(self.windrosenode)
+                                self.windroseswitch.whichChild = 0
+                            else:
+                                del self.windrosenode
+                else:
+                    self.windroseswitch.whichChild = -1
         elif prop == 'Visibility':
             if vobj.Visibility:
                 self.updateCompassVisibility(self.Object)
@@ -1010,7 +1079,7 @@ class _ViewProviderSite:
             self.updateCompassLocation(vobj)
 
     def updateDeclination(self,vobj):
-        """Update the declination of the compass 
+        """Update the declination of the compass
 
         Update the declination by adding together how the site has been rotated
         within the document, and the rotation of the site compass.

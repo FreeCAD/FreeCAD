@@ -229,6 +229,9 @@ PyTypeObject LinePyOld::Type = {
 #if PY_MAJOR_VERSION >=3
     ,0                                                /*tp_finalize */
 #endif
+#if PY_VERSION_HEX >= 0x03080000
+    ,0                                                /*tp_vectorcall */
+#endif
 };
 
 }

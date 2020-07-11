@@ -41,6 +41,7 @@
 #include "BitmapFactory.h"
 #include "MainWindow.h"
 #include "Application.h"
+#include "Tools.h"
 
 using namespace Gui;
 using namespace Gui::DockWnd;
@@ -70,7 +71,7 @@ ReportView::ReportView( QWidget* parent )
 
     // create the output window
     tabOutput = new ReportOutput();
-    tabOutput->setWindowTitle(trUtf8("Output"));
+    tabOutput->setWindowTitle(tr("Output"));
     tabOutput->setWindowIcon(BitmapFactory().pixmap("MacroEditor"));
     int output = tabWidget->addTab(tabOutput, tabOutput->windowTitle());
     tabWidget->setTabIcon(output, tabOutput->windowIcon());
@@ -78,7 +79,7 @@ ReportView::ReportView( QWidget* parent )
     // create the python console
     tabPython = new PythonConsole();
     tabPython->setWordWrapMode(QTextOption::NoWrap);
-    tabPython->setWindowTitle(trUtf8("Python console"));
+    tabPython->setWindowTitle(tr("Python console"));
     tabPython->setWindowIcon(BitmapFactory().iconFromTheme("applications-python"));
     int python = tabWidget->addTab(tabPython, tabPython->windowTitle());
     tabWidget->setTabIcon(python, tabPython->windowIcon());
@@ -102,8 +103,8 @@ void ReportView::changeEvent(QEvent *e)
 {
     QWidget::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
-        tabOutput->setWindowTitle(trUtf8("Output"));
-        tabPython->setWindowTitle(trUtf8("Python console"));
+        tabOutput->setWindowTitle(tr("Output"));
+        tabPython->setWindowTitle(tr("Python console"));
         for (int i=0; i<tabWidget->count();i++)
             tabWidget->setTabText(i, tabWidget->widget(i)->windowTitle());
     }
@@ -706,8 +707,12 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
         QFont font(fontFamily, fontSize);
         setFont(font);
         QFontMetrics metric(font);
-        int width = metric.width(QLatin1String("0000"));
+        int width = QtTools::horizontalAdvance(metric, QLatin1String("0000"));
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
         setTabStopWidth(width);
+#else
+        setTabStopDistance(width);
+#endif
     }
     else if (strcmp(sReason, "RedirectPythonOutput") == 0) {
         bool checked = rclGrp.GetBool(sReason, true);

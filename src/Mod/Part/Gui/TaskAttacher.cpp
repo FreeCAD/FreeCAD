@@ -31,7 +31,7 @@
 # include <QMessageBox>
 # include <Precision.hxx>
 # include <Standard_Failure.hxx>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include <Base/Console.h>
@@ -62,6 +62,7 @@
 using namespace PartGui;
 using namespace Gui;
 using namespace Attacher;
+namespace bp = boost::placeholders;
 
 /* TRANSLATOR PartDesignGui::TaskAttacher */
 
@@ -217,8 +218,8 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     updatePreview();
 
     // connect object deletion with slot
-    auto bnd1 = boost::bind(&TaskAttacher::objectDeleted, this, _1);
-    auto bnd2 = boost::bind(&TaskAttacher::documentDeleted, this, _1);
+    auto bnd1 = boost::bind(&TaskAttacher::objectDeleted, this, bp::_1);
+    auto bnd2 = boost::bind(&TaskAttacher::documentDeleted, this, bp::_1);
     Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
     connectDelObject = document->signalDeletedObject.connect(bnd1);
     connectDelDocument = document->signalDeleteDocument.connect(bnd2);
@@ -454,19 +455,12 @@ void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
         pl.setPosition(pos);
     }
 
-    Base::Rotation rot = pl.getRotation();
-    double yaw, pitch, roll;
-    rot.getYawPitchRoll(yaw, pitch, roll);
-    if (idx == 3) {
-        yaw = ui->attachmentOffsetYaw->value().getValueAs(Base::Quantity::Degree);
-    }
-    if (idx == 4) {
-        pitch = ui->attachmentOffsetPitch->value().getValueAs(Base::Quantity::Degree);
-    }
-    if (idx == 5) {
-        roll = ui->attachmentOffsetRoll->value().getValueAs(Base::Quantity::Degree);
-    }
     if (idx >= 3  &&  idx <= 5){
+        double yaw, pitch, roll;
+        yaw = ui->attachmentOffsetYaw->value().getValueAs(Base::Quantity::Degree);
+        pitch = ui->attachmentOffsetPitch->value().getValueAs(Base::Quantity::Degree);
+        roll = ui->attachmentOffsetRoll->value().getValueAs(Base::Quantity::Degree);
+        Base::Rotation rot;
         rot.setYawPitchRoll(yaw,pitch,roll);
         pl.setRotation(rot);
     }

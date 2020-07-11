@@ -166,6 +166,7 @@
 #include "SoTouchEvents.h"
 #include "WinNativeGestureRecognizers.h"
 #include "Document.h"
+#include "ViewParams.h"
 
 #include "ViewProviderLink.h"
 
@@ -2165,9 +2166,12 @@ void View3DInventorViewer::setRenderCache(int mode)
         // SoGLLazyElement::begin/endCaching() when on top rendering
         // transparent object with SORTED_OBJECT_SORTED_TRIANGLE_BLEND
         // transparency type.
+        //
+        // For more details see:
+        // https://forum.freecadweb.org/viewtopic.php?f=18&t=43305&start=10#p412537
         coin_setenv("COIN_AUTO_CACHING", "0", TRUE);
 
-        int setting = ViewParams::getRenderCache();
+        int setting = ViewParams::instance()->getRenderCache();
         if (mode == -2) {
             if (pcViewProviderRoot && setting != 1)
                 pcViewProviderRoot->renderCaching = SoSeparator::ON;
@@ -2191,7 +2195,8 @@ void View3DInventorViewer::setRenderCache(int mode)
         mode = 1;
 
     auto caching = mode == 0 ? SoSeparator::AUTO :
-           (mode == 1 ? SoSeparator::ON : SoSeparator::OFF);
+                  (mode == 1 ? SoSeparator::ON :
+                               SoSeparator::OFF);
 
     SoFCSeparator::setCacheMode(caching);
 }

@@ -47,7 +47,7 @@ import FreeCADGui
 from FreeCADGui import Workbench
 
 # needed imports
-from femtools.migrate_gui import FemMigrateGui
+from femguiutils.migrate_gui import FemMigrateGui
 
 
 if sys.version_info.major >= 3:

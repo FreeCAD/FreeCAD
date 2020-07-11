@@ -99,13 +99,13 @@ class ElectrostaticProxy(BaseProxy):
     pass
 
 
-class FluxsolverViewProxy(BaseViewProxy):
+class FluxViewProxy(BaseViewProxy):
 
     def getIcon(self):
-        return ":/icons/FEM_EquationFluxsolver.svg"
+        return ":/icons/FEM_EquationFlux.svg"
 
 
-class FluxsolverProxy(BaseProxy):
+class FluxProxy(BaseProxy):
     pass
 
 

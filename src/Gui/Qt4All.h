@@ -28,6 +28,7 @@
 // QtCore
 #include <qglobal.h>
 #include <QBuffer>
+#include <QElapsedTimer>
 #include <qeventloop.h>
 #include <qfile.h>
 #include <QLibraryInfo>

@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
 # include <BRep_Builder.hxx>
@@ -38,6 +38,7 @@
 #endif
 
 #include <unordered_map>
+#include <unordered_set>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/find.hpp>
 #include <boost/range.hpp>
@@ -64,6 +65,7 @@ FC_LOG_LEVEL_INIT("PartDesign",true,true)
 #endif
 
 using namespace PartDesign;
+namespace bp = boost::placeholders;
 
 // ============================================================================
 
@@ -242,7 +244,7 @@ void ShapeBinder::onSettingDocument()
     App::Document* document = getDocument();
     if (document) {
         this->connectDocumentChangedObject = document->signalChangedObject.connect(boost::bind
-            (&ShapeBinder::slotChangedObject, this, _1, _2));
+            (&ShapeBinder::slotChangedObject, this, bp::_1, bp::_2));
     }
 }
 
@@ -831,7 +833,7 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
         {
             contextDoc = Context.getValue()->getDocument();
             connRecomputedObj = contextDoc->signalRecomputedObject.connect(
-                    boost::bind(&SubShapeBinder::slotRecomputedObject, this, _1));
+                    boost::bind(&SubShapeBinder::slotRecomputedObject, this, bp::_1));
         }
     }else if(!isRestoring() && !getDocument()->isPerformingTransaction()) {
         if(prop == &Support) {

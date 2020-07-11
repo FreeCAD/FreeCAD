@@ -28,6 +28,7 @@
 # include <QCompleter>
 # include <QComboBox>
 # include <QDesktopServices>
+# include <QDialogButtonBox>
 # include <QDir>
 # include <QGridLayout>
 # include <QGroupBox>
@@ -46,6 +47,7 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "BitmapFactory.h"
+#include "Tools.h"
 
 using namespace Gui;
 
@@ -282,8 +284,8 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         if (selectedFilter && !selectedFilter->isEmpty())
             dlg.selectNameFilter(*selectedFilter);
         dlg.onSelectedFilter(dlg.selectedNameFilter());
-        dlg.setNameFilterDetailsVisible(true);
-        dlg.setConfirmOverwrite(true);
+        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
+        dlg.setOption(QFileDialog::DontConfirmOverwrite, false);
         dlg.selectFile(fileName);
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter)
@@ -302,7 +304,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         setWorkingDirectory(checkDocumentXML(file));
         return file;
     } else {
-        return QString::null;
+        return QString();
     }
 }
 
@@ -379,7 +381,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         dlg.setDirectory(dirName);
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
-        dlg.setNameFilterDetailsVisible(true);
+        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
         if (selectedFilter && !selectedFilter->isEmpty())
             dlg.selectNameFilter(*selectedFilter);
         if (dlg.exec() == QDialog::Accepted) {
@@ -399,7 +401,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         setWorkingDirectory(checkDocumentXML(file));
         return file;
     } else {
-        return QString::null;
+        return QString();
     }
 }
 
@@ -457,7 +459,7 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
         dlg.setDirectory(dirName);
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
-        dlg.setNameFilterDetailsVisible(true);
+        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
         if (selectedFilter && !selectedFilter->isEmpty())
             dlg.selectNameFilter(*selectedFilter);
         if (dlg.exec() == QDialog::Accepted) {
@@ -545,6 +547,7 @@ void FileDialog::saveLocation(const QString& dirName)
 
 FileOptionsDialog::FileOptionsDialog( QWidget* parent, Qt::WindowFlags fl )
   : QFileDialog( parent, fl )
+  , extensionPos(ExtensionRight)
 {
     extensionButton = new QPushButton( this );
     extensionButton->setText( tr( "Extended" ) );
@@ -552,6 +555,10 @@ FileOptionsDialog::FileOptionsDialog( QWidget* parent, Qt::WindowFlags fl )
 #if QT_VERSION >= 0x050000
     setOption(QFileDialog::DontUseNativeDialog);
 #endif
+
+    // This is an alternative to add the button to the grid layout
+    //QDialogButtonBox* box = this->findChild<QDialogButtonBox*>();
+    //box->addButton(extensionButton, QDialogButtonBox::ActionRole);
 
     //search for the grid layout and add the new button
     QGridLayout* grid = this->findChild<QGridLayout*>();
@@ -628,22 +635,55 @@ void FileOptionsDialog::accept()
 
 void FileOptionsDialog::toggleExtension()
 {
-    QWidget* w = extension();
-    if (w)
-        showExtension(!w->isVisible());
+    if (extensionWidget) {
+        bool showIt = !extensionWidget->isVisible();
+        if (showIt) {
+            oldSize = size();
+            QSize s(extensionWidget->sizeHint()
+                   .expandedTo(extensionWidget->minimumSize())
+                   .boundedTo(extensionWidget->maximumSize()));
+            if (extensionPos == ExtensionRight) {
+                setFixedSize(width() + s.width(), height());
+            }
+            else {
+                setFixedSize(width(), height() + s.height());
+            }
+
+            extensionWidget->show();
+        }
+        else {
+            extensionWidget->hide();
+            setFixedSize(oldSize);
+        }
+    }
 }
 
 void FileOptionsDialog::setOptionsWidget(FileOptionsDialog::ExtensionPosition pos, QWidget* w, bool show)
 {
-    if (pos == ExtensionRight) {
-        setExtension(w);
-        setOrientation(Qt::Horizontal);
+    extensionPos = pos;
+    extensionWidget = w;
+    if (extensionWidget->parentWidget() != this)
+        extensionWidget->setParent(this);
+
+    QGridLayout* grid = this->findChild<QGridLayout*>();
+
+    if (extensionPos == ExtensionRight) {
+        int cols = grid->columnCount();
+        grid->addWidget(extensionWidget, 0, cols, -1, -1);
+        setMinimumHeight(extensionWidget->height());
     }
-    else if (pos == ExtensionBottom) {
-        setExtension(w);
-        setOrientation(Qt::Vertical);
+    else if (extensionPos == ExtensionBottom) {
+        int rows = grid->rowCount();
+        grid->addWidget(extensionWidget, rows, 0, -1, -1);
+        setMinimumWidth(extensionWidget->width());
     }
 
+    // Instead of resizing the dialog we can fix the layout size.
+    // This however, doesn't work nicely when the extension widget
+    // is higher/wider than the dialog. 
+    //grid->setSizeConstraint(QLayout::SetFixedSize);
+
+    oldSize = size();
     w->hide();
     if (show)
         toggleExtension();
@@ -651,7 +691,7 @@ void FileOptionsDialog::setOptionsWidget(FileOptionsDialog::ExtensionPosition po
 
 QWidget* FileOptionsDialog::getOptionsWidget() const
 {
-    return this->extension();
+    return extensionWidget;
 }
 
 // ======================================================================
@@ -705,7 +745,7 @@ FileChooser::FileChooser ( QWidget * parent )
   : QWidget(parent)
   , md( File )
   , accMode( AcceptOpen )
-  , _filter( QString::null )
+  , _filter( QString() )
 {
     QHBoxLayout *layout = new QHBoxLayout( this );
     layout->setMargin( 0 );
@@ -862,8 +902,8 @@ void FileChooser::setFilter ( const QString& filter )
 void FileChooser::setButtonText( const QString& txt )
 {
     button->setText( txt );
-    int w1 = 2*button->fontMetrics().width(txt);
-    int w2 = 2*button->fontMetrics().width(QLatin1String(" ... "));
+    int w1 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), txt);
+    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QLatin1String(" ... "));
     button->setFixedWidth( (w1 > w2 ? w1 : w2) );
 }
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>477</width>
-    <height>407</height>
+    <width>499</width>
+    <height>520</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,6 +37,23 @@ lower right corner within opened files</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>CornerCoordSystem</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="CheckBox_ShowAxisCross">
+        <property name="toolTip">
+         <string>Axis cross will be shown by default at file
+opening or creation</string>
+        </property>
+        <property name="text">
+         <string>Show axis cross by default</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowAxisCross</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>View</cstring>

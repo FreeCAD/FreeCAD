@@ -1,6 +1,6 @@
 # This package depends on automagic byte compilation
-# https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_2
-%global _python_bytecompile_extra 1
+# https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_3
+%global py_bytecompile 1
 
 # Setup python target for shiboken so the right cmake file is imported.
 %global py_suffix %(%{__python3} -c "import sysconfig; print(sysconfig.get_config_var('SOABI'))")
@@ -46,7 +46,7 @@ BuildRequires:  git
 
 # Development Libraries
 
-BuildRequires:  Coin3-devel
+BuildRequires:  Coin4-devel
 BuildRequires:  Inventor-devel
 BuildRequires:  opencascade-devel
 BuildRequires:  boost-devel
@@ -70,6 +70,7 @@ BuildRequires:  netgen-mesher-devel
 BuildRequires:  netgen-mesher-devel-private
 BuildRequires:  python3-pivy
 BuildRequires:  mesa-libEGL-devel
+BuildRequires:  openmpi-devel
 BuildRequires:  pcl-devel
 BuildRequires:  pyside2-tools
 BuildRequires:  python3
@@ -197,8 +198,8 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python3 \
        -DMEDFILE_INCLUDE_DIRS=%{MEDFILE_INCLUDE_DIRS} \
        -DOpenGL_GL_PREFERENCE=GLVND \
-       -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin3 \
-       -DCOIN3D_DOC_PATH=%{_datadir}/Coin3/Coin \
+       -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin4 \
+       -DCOIN3D_DOC_PATH=%{_datadir}/Coin4/Coin \
        -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
        -DUSE_OCC=TRUE \
 %if ! %{bundled_smesh}

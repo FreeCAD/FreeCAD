@@ -32,7 +32,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <QAbstractItemModel>
 #include <QProgressDialog>
-#include <QTime>
+#include <QElapsedTimer>
 
 class SoSeparator;
 class SoSwitch;
@@ -200,7 +200,7 @@ public:
 private:
     int steps;
     bool canceled;
-    QTime time;
+    QElapsedTimer time;
     QProgressDialog* myProgress;
 };
 

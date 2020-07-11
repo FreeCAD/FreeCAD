@@ -53,6 +53,7 @@ public:
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
     virtual bool load(QString fileSpec);
+    virtual bool load(QPixmap map);
     virtual QSize imageSize(void);
 
 protected:

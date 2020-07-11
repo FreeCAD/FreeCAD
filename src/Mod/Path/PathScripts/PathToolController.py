@@ -80,7 +80,7 @@ class ToolController:
     def onDelete(self, obj, arg2=None):
         # pylint: disable=unused-argument
         if not self.usesLegacyTool(obj):
-            if len(obj.Tool.InList) == 1:
+            if hasattr(obj.Tool, 'InList') and len(obj.Tool.InList) == 1:
                 if hasattr(obj.Tool.Proxy, 'onDelete'):
                     obj.Tool.Proxy.onDelete(obj.Tool)
                 obj.Document.removeObject(obj.Tool.Name)

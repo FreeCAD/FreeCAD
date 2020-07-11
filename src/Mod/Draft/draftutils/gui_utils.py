@@ -357,6 +357,8 @@ def format_object(target, origin=None):
         if not origin or not hasattr(origin, 'ViewObject'):
             if "FontSize" in obrep.PropertiesList:
                 obrep.FontSize = fs
+            if "TextSize" in obrep.PropertiesList:
+                obrep.TextSize = fs
             if "TextColor" in obrep.PropertiesList:
                 obrep.TextColor = col
             if "LineWidth" in obrep.PropertiesList:

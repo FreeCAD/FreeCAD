@@ -48,7 +48,8 @@ jobs:
 #      - python: 3.7
     fast_finish: true  # https://blog.travis-ci.com/2013-11-27-fast-finishing-builds
     include:
-      - os: linux
+      - if: type != pull_request
+        os: linux
         dist: bionic
         language: cpp
         compiler: clang

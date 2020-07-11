@@ -40,7 +40,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include "../App/Utils.h"
 #include "../App/Cell.h"
 #include <App/Range.h>
@@ -54,6 +54,7 @@
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace App;
+namespace bp = boost::placeholders;
 
 void SheetViewHeader::mouseReleaseEvent(QMouseEvent *event)
 {
@@ -556,7 +557,7 @@ void SheetTableView::updateCellSpan(CellAddress address)
 void SheetTableView::setSheet(Sheet * _sheet)
 {
     sheet = _sheet;
-    cellSpanChangedConnection = sheet->cellSpanChanged.connect(bind(&SheetTableView::updateCellSpan, this, _1));
+    cellSpanChangedConnection = sheet->cellSpanChanged.connect(bind(&SheetTableView::updateCellSpan, this, bp::_1));
 
     // Update row and column spans
     std::vector<std::string> usedCells = sheet->getUsedCells();

@@ -68,7 +68,8 @@ class FlipDimension(gui_base.GuiCommandNeedsSelection):
         super(Draft_FlipDimension, self).Activated()
 
         for o in Gui.Selection.getSelection():
-            if utils.get_type(o) in ("Dimension", "AngularDimension"):
+            if utils.get_type(o) in ("Dimension",
+                                     "LinearDimension", "AngularDimension"):
                 self.doc.openTransaction("Flip dimension")
                 _cmd = "App.activeDocument()." + o.Name + ".Normal"
                 _cmd += " = "

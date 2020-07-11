@@ -53,8 +53,6 @@ Body 1
 End
 
 Material 1
-  Density = Real 7.9e-06
-  Heat expansion Coefficient = Real 0.0
   Poisson ratio = Real 0.3
   Youngs Modulus = Real 200000000.0
 End

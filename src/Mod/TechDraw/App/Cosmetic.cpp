@@ -55,6 +55,7 @@
 
 #include "DrawUtil.h"
 #include "Preferences.h"
+#include "LineGroup.h"
 #include "GeometryObject.h"
 #include "Geometry.h"
 #include "DrawViewPart.h"
@@ -137,7 +138,8 @@ CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
     permaPoint = Base::Vector3d(0.0, 0.0, 0.0);
     linkGeom = -1;
     color = Preferences::vertexColor();
-    size  = 3.0;
+    size  = Preferences::vertexScale() * 
+            LineGroup::getDefaultWidth("Thick", Preferences::lineGroup());
     style = 1;
     visible = true;
     hlrVisible = true;
@@ -165,8 +167,8 @@ CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
     permaPoint = loc;
     linkGeom = -1;
     color = Preferences::vertexColor();
-    //TODO: size = hGrp->getFloat("VertexSize",30.0);
-    size  = 30.0;
+    size  = Preferences::vertexScale() * 
+            LineGroup::getDefaultWidth("Thick", Preferences::lineGroup());
     style = 1;        //TODO: implement styled vertexes
     visible = true;
     hlrVisible = true;

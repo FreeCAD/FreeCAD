@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #include "PyExport.h"
 #include "Exception.h"
+#include <sstream>
 #include "Console.h"
 FC_LOG_LEVEL_INIT("swig_1_3_36")
 #if defined(__clang__)

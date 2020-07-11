@@ -59,6 +59,7 @@
 #include "Document.h"
 #include "Window.h"
 #include "ViewParams.h"
+#include "Tools.h"
 
 using namespace Gui;
 
@@ -493,7 +494,7 @@ void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
     QStringList lines;
     for (std::vector<std::string>::const_iterator it = s.begin(); it != s.end(); ++it) {
         QString line = QString::fromUtf8(it->c_str());
-        w = std::max<int>(w, fm.width(line));
+        w = std::max<int>(w, QtTools::horizontalAdvance(fm, line));
         lines << line;
     }
 

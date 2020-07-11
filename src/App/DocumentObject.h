@@ -62,7 +62,8 @@ enum ObjectStatus {
     NoTouch = 14, // no touch on any property change
     Expand = 16, // indicate the object's tree item expansion status
     NoAutoExpand = 17, // disable tree item auto expand on selection for this object
-    ViewProviderAttached = 18, // indicate if a view provider is attached to this object
+    PendingTransactionUpdate = 18, // mark that the object expects a call to onUndoRedoFinished() after transaction is finished.
+    ViewProviderAttached = 19, // indicate if a view provider is attached to this object
 };
 
 /** Return object for feature execution
@@ -440,6 +441,7 @@ public:
 
     friend class Document;
     friend class Transaction;
+    friend class TransactionGuard;
     friend class ObjectExecution;
 
     static DocumentObjectExecReturn *StdReturn;
@@ -632,6 +634,8 @@ protected:
     virtual void onEarlyChange(const Property* prop) override;
     /// get called after a document has been fully restored
     virtual void onDocumentRestored();
+    /// get called after an undo/redo transaction is finished
+    virtual void onUndoRedoFinished();
     /// get called after setting the document
     virtual void onSettingDocument();
     /// get called after a brand new object was created

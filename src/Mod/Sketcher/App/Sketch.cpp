@@ -69,6 +69,7 @@ Sketch::Sketch()
   , RecalculateInitialSolutionWhileMovingPoint(false)
   , GCSsys(), ConstraintsCounter(0)
   , isInitMove(false), isFine(true), moveStep(0)
+  , malformedConstraints(false)
   , defaultSolver(GCS::DogLeg)
   , defaultSolverRedundant(GCS::DogLeg)
   , debugMode(GCS::Minimal)
@@ -116,6 +117,7 @@ void Sketch::clear(void)
     isInitMove = false;
     ConstraintsCounter = 0;
     Conflicting.clear();
+    malformedConstraints = false;
 }
 
 int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
@@ -1493,6 +1495,7 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList)
 
         if(rtn == -1) {
             Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
+            malformedConstraints = true;
         }
     }
 
@@ -1511,6 +1514,7 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList,
 
             if(rtn == -1) {
                 Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
+                malformedConstraints = true;
             }
         }
         else {
@@ -3684,6 +3688,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
             }
         }
+        break;
         case Line:
         {
             switch(pos) {
@@ -3693,6 +3698,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return false;break;
             }
         }
+        break;
         case Arc:
         {
             switch(pos) {
@@ -3702,6 +3708,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
             }
         }
+        break;
         case Circle:
         {
             switch(pos) { // NOTE: points are added to all the cases, see addition.
@@ -3711,7 +3718,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
             }
         }
-
+        break;
         case Ellipse:
         {
             switch(pos) { // NOTE: points are added to all the cases, see addition.
@@ -3721,6 +3728,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
             }
         }
+        break;
         case ArcOfEllipse:
         {
             switch(pos) {
@@ -3730,6 +3738,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
             }
         }
+        break;
         case ArcOfHyperbola:
         {
             switch(pos) {
@@ -3739,6 +3748,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
             }
         }
+        break;
         case ArcOfParabola:
         {
             switch(pos) {
@@ -3748,6 +3758,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
             }
         }
+        break;
         case BSpline:
         {
             switch(pos) {
@@ -3757,6 +3768,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return false;break;
             }
         }
+        break;
         case None:
             return false; break;
     }

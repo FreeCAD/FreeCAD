@@ -535,36 +535,33 @@ PyObject*  DocumentPy::getObjectsByLabel(PyObject *args)
     return Py::new_reference_to(list);
 }
 
-PyObject*  DocumentPy::findObjects(PyObject *args)
+PyObject*  DocumentPy::findObjects(PyObject *args, PyObject *kwds)
 {
-    char *sType="App::DocumentObject", *sName=0;
-    if (!PyArg_ParseTuple(args, "|ss",&sType, &sName))     // convert args: Python->C 
-        return NULL;                                      // NULL triggers exception 
+    const char *sType = "App::DocumentObject", *sName = nullptr, *sLabel = nullptr;
+    static char *kwlist[] = {"Type", "Name", "Label", nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|sss",
+                kwlist, &sType, &sName, &sLabel))
+        return nullptr;
 
     Base::Type type = Base::Type::fromName(sType);
     if (type == Base::Type::badType()) {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "'%s' is not a valid type", sType);
-        return NULL;
+        PyErr_Format(PyExc_TypeError, "'%s' is not a valid type", sType);
+        return nullptr;
     }
 
     if (!type.isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "Type '%s' does not inherit from 'App::DocumentObject'", sType);
-        return NULL;
+        PyErr_Format(PyExc_TypeError, "Type '%s' does not inherit from 'App::DocumentObject'", sType);
+        return nullptr;
     }
 
     std::vector<DocumentObject*> res;
 
-    if (sName) {
-        try {
-            res = getDocumentPtr()->findObjects(type, sName);
-        }
-        catch (const boost::regex_error& e) {
-            PyErr_SetString(PyExc_RuntimeError, e.what());
-            return 0;
-        }
+    try {
+        res = getDocumentPtr()->findObjects(type, sName, sLabel);
     }
-    else {
-        res = getDocumentPtr()->getObjectsOfType(type);
+    catch (const boost::regex_error& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return 0;
     }
 
     Py_ssize_t index=0;

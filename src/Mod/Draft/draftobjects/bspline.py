@@ -41,21 +41,20 @@ class BSpline(DraftObject):
     def __init__(self, obj):
         super(BSpline, self).__init__(obj, "BSpline")
 
-        _tip = "The points of the B-spline"
-        obj.addProperty("App::PropertyVectorList","Points",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip =  QT_TRANSLATE_NOOP("App::Property",
+                "The points of the B-spline")
+        obj.addProperty("App::PropertyVectorList","Points", "Draft", _tip)
 
-        _tip = "If the B-spline is closed or not"
-        obj.addProperty("App::PropertyBool","Closed",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "If the B-spline is closed or not")
+        obj.addProperty("App::PropertyBool","Closed", "Draft", _tip)
 
-        _tip = "Create a face if this spline is closed"
-        obj.addProperty("App::PropertyBool","MakeFace",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", 
+                "Create a face if this spline is closed")
+        obj.addProperty("App::PropertyBool","MakeFace", "Draft",_tip)
 
-        _tip = "The area of this object"
-        obj.addProperty("App::PropertyArea","Area",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The area of this object")
+        obj.addProperty("App::PropertyArea","Area", "Draft", _tip)
 
         obj.MakeFace = get_param("fillmode",True)
         obj.Closed = False
@@ -64,7 +63,8 @@ class BSpline(DraftObject):
 
     def assureProperties(self, obj): # for Compatibility with older versions
         if not hasattr(obj, "Parameterization"):
-            obj.addProperty("App::PropertyFloat","Parameterization","Draft",QT_TRANSLATE_NOOP("App::Property","Parameterization factor"))
+            _tip = QT_TRANSLATE_NOOP("App::Property","Parameterization factor")
+            obj.addProperty("App::PropertyFloat", "Parameterization", "Draft", _tip)
             obj.Parameterization = 1.0
             self.knotSeq = []
 
@@ -101,9 +101,9 @@ class BSpline(DraftObject):
         plm = obj.Placement
         if obj.Closed and (len(obj.Points) > 2):
             if obj.Points[0] == obj.Points[-1]:  # should not occur, but OCC will crash
-                _err = "_BSpline.createGeometry: \
-                        Closed with same first/last Point. Geometry not updated."
-                App.Console.PrintError(QT_TRANSLATE_NOOP('Draft', _err)+"\n")
+                _err = QT_TRANSLATE_NOOP('Draft', "_BSpline.createGeometry: "
+                        "Closed with same first/last Point. Geometry not updated.")
+                App.Console.PrintError(_err+"\n")
                 return
             spline = Part.BSplineCurve()
             spline.interpolate(obj.Points, PeriodicFlag = True, Parameters = self.knotSeq)

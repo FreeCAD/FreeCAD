@@ -133,6 +133,19 @@ class _ClippingPlaneRemoveAll(CommandManager):
         FreeCADGui.doCommand(line1 + line2 + line3)
 
 
+class _ConstantVacuumPermittivity(CommandManager):
+    "The FEM_ConstantVacuumPermittivity command definition"
+
+    def __init__(self):
+        super(_ConstantVacuumPermittivity, self).__init__()
+        self.pixmap = "fem-solver-analysis-thermomechanical.svg"
+        self.menuetext = "Constant vacuum permittivity"
+        self.tooltip = "Creates a FEM constant vacuum permittivity to overwrite standard value"
+        self.is_active = "with_document"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_noset_edit"
+
+
 class _ConstraintBodyHeatSource(CommandManager):
     "The FEM_ConstraintBodyHeatSource command definition"
 
@@ -174,6 +187,17 @@ class _ConstraintInitialFlowVelocity(CommandManager):
         super(_ConstraintInitialFlowVelocity, self).__init__()
         self.menuetext = "Constraint initial flow velocity"
         self.tooltip = "Creates a FEM constraint initial flow velocity"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
+
+
+class _ConstraintSectionPrint(CommandManager):
+    "The FEM_ConstraintSectionPrint command definition"
+
+    def __init__(self):
+        super(_ConstraintSectionPrint, self).__init__()
+        self.menuetext = "Constraint sectionprint"
+        self.tooltip = "Creates a FEM constraint sectionprint"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
 
@@ -283,13 +307,13 @@ class _EquationFlow(CommandManager):
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
-class _EquationFluxsolver(CommandManager):
-    "The FEM_EquationFluxsolver command definition"
+class _EquationFlux(CommandManager):
+    "The FEM_EquationFlux command definition"
 
     def __init__(self):
-        super(_EquationFluxsolver, self).__init__()
-        self.menuetext = "Fluxsolver equation"
-        self.tooltip = "Creates a FEM equation for fluxsolver"
+        super(_EquationFlux, self).__init__()
+        self.menuetext = "Flux equation"
+        self.tooltip = "Creates a FEM equation for flux"
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
@@ -310,10 +334,25 @@ class _EquationHeat(CommandManager):
 
     def __init__(self):
         super(_EquationHeat, self).__init__()
-        self.menuetext = "Fluxsolver heat"
+        self.menuetext = "Heat equation"
         self.tooltip = "Creates a FEM equation for heat"
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+
+
+class _Examples(CommandManager):
+    "The FEM_Examples command definition"
+
+    def __init__(self):
+        super(_Examples, self).__init__()
+        self.pixmap = "preferences-fem"
+        self.menuetext = "Open FEM examples"
+        self.tooltip = "Open FEM examples"
+        self.is_active = "always"
+
+    def Activated(self):
+        FreeCADGui.addModule("femexamples.examplesgui")
+        FreeCADGui.doCommand("femexamples.examplesgui.show_examplegui()")
 
 
 class _MaterialEditor(CommandManager):
@@ -777,6 +816,10 @@ FreeCADGui.addCommand(
     _ClippingPlaneRemoveAll()
 )
 FreeCADGui.addCommand(
+    "FEM_ConstantVacuumPermittivity",
+    _ConstantVacuumPermittivity()
+)
+FreeCADGui.addCommand(
     "FEM_ConstraintBodyHeatSource",
     _ConstraintBodyHeatSource()
 )
@@ -791,6 +834,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_ConstraintInitialFlowVelocity",
     _ConstraintInitialFlowVelocity()
+)
+FreeCADGui.addCommand(
+    "FEM_ConstraintSectionPrint",
+    _ConstraintSectionPrint()
 )
 FreeCADGui.addCommand(
     "FEM_ConstraintSelfWeight",
@@ -829,8 +876,8 @@ FreeCADGui.addCommand(
     _EquationFlow()
 )
 FreeCADGui.addCommand(
-    "FEM_EquationFluxsolver",
-    _EquationFluxsolver()
+    "FEM_EquationFlux",
+    _EquationFlux()
 )
 FreeCADGui.addCommand(
     "FEM_EquationElectricforce",
@@ -839,6 +886,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_EquationHeat",
     _EquationHeat()
+)
+FreeCADGui.addCommand(
+    "FEM_Examples",
+    _Examples()
 )
 FreeCADGui.addCommand(
     "FEM_MaterialEditor",

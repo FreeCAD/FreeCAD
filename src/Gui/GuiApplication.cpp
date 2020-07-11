@@ -325,6 +325,15 @@ bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
 {
     if (qobject_cast<QComboBox*>(obj) && ev->type() == QEvent::Wheel)
         return true;
+    QAbstractSpinBox* sb = qobject_cast<QAbstractSpinBox*>(obj);
+    if (sb) {
+        if (ev->type() == QEvent::Show) {
+            sb->setFocusPolicy(Qt::StrongFocus);
+        }
+        else if (ev->type() == QEvent::Wheel) {
+            return !sb->hasFocus();
+        }
+    }
     return false;
 }
 

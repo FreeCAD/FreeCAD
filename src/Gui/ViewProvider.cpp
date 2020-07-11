@@ -38,6 +38,7 @@
 # include <Inventor/actions/SoGetMatrixAction.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include <unordered_map>
@@ -64,7 +65,6 @@
 #include "ViewProviderLink.h"
 #include "ViewParams.h"
 
-#include <boost/bind.hpp>
 
 FC_LOG_LEVEL_INIT("ViewProvider",true,true)
 

@@ -449,7 +449,7 @@ public:
             std::string *topSubname=0) const;
 
     // return the top most linked group owner's name, and subname.  This method
-    // is necssary despite have getFullSubName above is because native geo group
+    // is necessary despite have getFullSubName above is because native geo group
     // cannot handle selection with sub name. So only a linked group can have
     // subname in selection
     int getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;

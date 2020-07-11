@@ -28,10 +28,10 @@
 
 import lazy_loader.lazy_loader as lz
 
-import FreeCAD
+import FreeCAD as App
 import DraftVecUtils
 
-from draftgeoutils.general import geomType
+from draftgeoutils.general import geomType, vec
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
@@ -58,17 +58,17 @@ def orientEdge(edge, normal=None, make_arc=False):
     """
     # This 'normalizes' the placement to the xy plane
     edge = edge.copy()
-    xyDir = FreeCAD.Vector(0, 0, 1)
-    base = FreeCAD.Vector(0, 0, 0)
+    xyDir = App.Vector(0, 0, 1)
+    base = App.Vector(0, 0, 0)
 
     if normal:
-        angle = DraftVecUtils.angle(normal, xyDir) * FreeCAD.Units.Radian
+        angle = DraftVecUtils.angle(normal, xyDir) * App.Units.Radian
         axis = normal.cross(xyDir)
     else:
         axis = edge.Placement.Rotation.Axis
-        angle = -1*edge.Placement.Rotation.Angle*FreeCAD.Units.Radian
-    if axis == FreeCAD.Vector(0.0, 0.0, 0.0):
-        axis = FreeCAD.Vector(0.0, 0.0, 1.0)
+        angle = -1 * edge.Placement.Rotation.Angle * App.Units.Radian
+    if axis == App.Vector(0.0, 0.0, 0.0):
+        axis = App.Vector(0.0, 0.0, 1.0)
     if angle:
         edge.rotate(base, axis, angle)
     if isinstance(edge.Curve, Part.Line):
@@ -169,13 +169,39 @@ def findMidpoint(edge):
         ray = first.sub(center)
         apothem = ray.dot(perp)
         sagitta = radius - apothem
-        startpoint = FreeCAD.Vector.add(first, chord.multiply(0.5))
+        startpoint = App.Vector.add(first, chord.multiply(0.5))
         endpoint = DraftVecUtils.scaleTo(perp, sagitta)
-        return FreeCAD.Vector.add(startpoint, endpoint)
+        return App.Vector.add(startpoint, endpoint)
 
     elif geomType(edge) == "Line":
         halfedge = (last.sub(first)).multiply(0.5)
-        return FreeCAD.Vector.add(first, halfedge)
+        return App.Vector.add(first, halfedge)
 
     else:
         return None
+
+
+def getTangent(edge, from_point=None):
+    """Return the tangent to an edge, including BSpline and circular arcs.
+
+    If from_point is given, it is used to calculate the tangent,
+    only useful for a circular arc.
+    """
+    if geomType(edge) == "Line":
+        return vec(edge)
+
+    elif (geomType(edge) == "BSplineCurve"
+          or geomType(edge) == "BezierCurve"):
+        if not from_point:
+            return None
+        cp = edge.Curve.parameter(from_point)
+        return edge.Curve.tangent(cp)[0]
+
+    elif geomType(edge) == "Circle":
+        if not from_point:
+            v1 = edge.Vertexes[0].Point.sub(edge.Curve.Center)
+        else:
+            v1 = from_point.sub(edge.Curve.Center)
+        return v1.cross(edge.Curve.Axis)
+
+    return None

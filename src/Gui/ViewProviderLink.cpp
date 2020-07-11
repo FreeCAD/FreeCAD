@@ -48,7 +48,7 @@
 #include <QMenu>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/range.hpp>
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <Base/Console.h>
 #include <Base/PlacementPy.h>
 #include <Base/MatrixPy.h>

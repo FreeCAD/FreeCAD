@@ -45,6 +45,7 @@
 # include <QImage>
 # include <QImageReader>
 # include <QPainter>
+# include <QPainterPath>
 # include <QThread>
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoImage.h>
@@ -56,7 +57,7 @@
 # if BOOST_VERSION >= 104100
 # include <boost/thread/future.hpp>
 # endif
-# include <boost/bind.hpp>
+# include <boost/bind/bind.hpp>
 # include <boost/shared_ptr.hpp>
 #endif
 
@@ -80,6 +81,8 @@
 #include "Workbench.h"
 #include "GLGraphicsView.h"
 #include "TaskPanelView.h"
+
+namespace bp = boost::placeholders;
 
 DEF_STD_CMD(CmdSandboxDocumentThread);
 
@@ -829,7 +832,7 @@ void CmdSandboxMeshTestJob::activated(int)
         Base::Console().Message("Mesh test (step %d)...\n",iteration++);
         MeshTestJob meshJob;
         QFuture<Mesh::MeshObject*> mesh_future = QtConcurrent::mapped
-            (mesh_groups, boost::bind(&MeshTestJob::run, &meshJob, _1));
+            (mesh_groups, boost::bind(&MeshTestJob::run, &meshJob, bp::_1));
 
         // keep it responsive during computation
         QFutureWatcher<Mesh::MeshObject*> mesh_watcher;

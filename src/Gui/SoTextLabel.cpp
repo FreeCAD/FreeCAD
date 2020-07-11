@@ -65,6 +65,7 @@
 #include "SoTextLabel.h"
 #include "SoFCInteractiveElement.h"
 #include "BitmapFactory.h"
+#include "Tools.h"
 
 using namespace Gui;
 
@@ -452,7 +453,7 @@ void SoFrameLabel::drawImage()
     QStringList lines;
     for (int i=0; i<num; i++) {
         QString line = QString::fromUtf8(s[i].getString());
-        w = std::max<int>(w, fm.width(line));
+        w = std::max<int>(w, QtTools::horizontalAdvance(fm, line));
         lines << line;
     }
 

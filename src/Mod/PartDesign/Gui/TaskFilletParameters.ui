@@ -61,7 +61,11 @@ be removed using the Delete key.</string>
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="filletRadius" native="true"/>
+      <widget class="Gui::QuantitySpinBox" name="filletRadius">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

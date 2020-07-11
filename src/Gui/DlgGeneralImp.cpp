@@ -294,6 +294,24 @@ void DlgGeneralImp::loadSettings()
 
         QString selectedStyleSheet = QString::fromLatin1(hGrp->GetASCII(key).c_str());
         int index = combo->findData(selectedStyleSheet);
+
+        // might be an absolute path name
+        if (index < 0 && !selectedStyleSheet.isEmpty()) {
+            QFileInfo fi(selectedStyleSheet);
+            if (fi.isAbsolute()) {
+                QString path = fi.absolutePath();
+                if (qssPaths.indexOf(path) >= 0) {
+                    selectedStyleSheet = fi.fileName();
+                }
+                else {
+                    selectedStyleSheet = fi.absoluteFilePath();
+                    combo->addItem(fi.baseName(), selectedStyleSheet);
+                }
+
+                index = combo->findData(selectedStyleSheet);
+            }
+        }
+
         if (index > -1) combo->setCurrentIndex(index);
     };
 

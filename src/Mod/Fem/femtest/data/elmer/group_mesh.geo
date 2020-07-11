@@ -13,7 +13,7 @@ Physical Volume("Solid1") = {1};
 // no boundary layer settings for this mesh
 // min, max Characteristic Length
 Mesh.CharacteristicLengthMax = 1e+22;
-Mesh.CharacteristicLengthMin = 9.0;
+Mesh.CharacteristicLengthMin = 8.0;
 
 // optimize the mesh
 Mesh.Optimize = 1;
@@ -22,7 +22,7 @@ Mesh.HighOrderOptimize = 0;  // for more HighOrderOptimize parameter check http:
 
 // mesh order
 Mesh.ElementOrder = 2;
-Mesh.SecondOrderLinear = 1; // Second order nodes are created by linear interpolation instead by curvilinear
+Mesh.SecondOrderLinear = 0; // Second order nodes are created by linear interpolation instead by curvilinear
 
 // mesh algorithm, only a few algorithms are usable with 3D boundary layer generation
 // 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad)

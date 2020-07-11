@@ -53,7 +53,9 @@
 # include <QWhatsThis>
 #endif
 
-#include <boost/bind.hpp>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+# include <QScreen>
+#endif
 
 // FreeCAD Base header
 #include <Base/Parameter.h>
@@ -119,6 +121,7 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "DlgObjectSelection.h"
+#include "Tools.h"
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
 
@@ -1389,7 +1392,16 @@ void MainWindow::updateActions(bool delay)
         return;
 
     if (!d->activityTimer->isActive()) {
-        d->activityTimer->start(150);
+        // If for some reason updateActions() is called from a worker thread
+        // we must avoid to directly call QTimer::start() because this leaves
+        // the whole application in a weird state
+        if (d->activityTimer->thread() != QThread::currentThread()) {
+            QMetaObject::invokeMethod(d->activityTimer, "start", Qt::QueuedConnection,
+                QGenericReturnArgument(), Q_ARG(int, 150));
+        }
+        else {
+            d->activityTimer->start(150);
+        }
     }
     else if (delay) {
         if (!d->actionUpdateDelay)
@@ -1465,7 +1477,11 @@ void MainWindow::loadWindowSettings()
     QString qtver = QString::fromLatin1("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    QRect rect = QApplication::primaryScreen()->availableGeometry();
+#else
     QRect rect = QApplication::desktop()->availableGeometry();
+#endif
     int maxHeight = rect.height();
     int maxWidth = rect.width();
 
@@ -1607,14 +1623,14 @@ QPixmap MainWindow::splashImage() const
         QFont fontExe = painter.font();
         fontExe.setPointSize(20);
         QFontMetrics metricExe(fontExe);
-        int l = metricExe.width(title);
+        int l = QtTools::horizontalAdvance(metricExe, title);
         int w = splash_image.width();
         int h = splash_image.height();
 
         QFont fontVer = painter.font();
         fontVer.setPointSize(12);
         QFontMetrics metricVer(fontVer);
-        int v = metricVer.width(version);
+        int v = QtTools::horizontalAdvance(metricVer, version);
 
         int x = -1, y = -1;
         QRegExp rx(QLatin1String("(\\d+).(\\d+)"));
@@ -1868,7 +1884,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
         QFileInfo info((*it).toLocalFile());
         if (info.exists() && info.isFile()) {
             if (info.isSymLink())
-                info.setFile(info.readLink());
+                info.setFile(info.symLinkTarget());
             std::vector<std::string> module = App::GetApplication()
                 .getImportModules(info.completeSuffix().toLatin1());
             if (module.empty()) {

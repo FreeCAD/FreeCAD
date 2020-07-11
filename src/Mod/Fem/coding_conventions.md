@@ -35,7 +35,14 @@ These coding rules apply to FEM module code only. Other modules or the base syst
 - double quotes as string identifier
 
 ### Imports
-- Python imports should be grouped into three groups:
+- Only one import per line.
+- Even on import from some_module import something. There should only be one something per line.
+- Each import group should be sorted alphabetically.
+- First the import some_module ones, afterwards the from some_module import something.
+- First absolute path imports than relative path imports.
+- On relative path imports first the one dot ones, afterwards the two dot ones.
+- Star import should not be used at all (from some_module import *).
+- Python imports should be grouped into groups:
     - Standard library imports
     - One empty line
     - Third-party imports
@@ -52,13 +59,7 @@ These coding rules apply to FEM module code only. Other modules or the base syst
         - Third-party Gui imports
         - FreeCAD-specific imports from module FreeCADGui
         - other FreeCAD Gui imports
-- Each group should be sorted alphabetically
-- First the import imports, than the from imports
-- On from imports firs the one dot, than two dot and so on imports 
-- Only one import per line
-- Even for from mymodule import mymethod should only be one method
-- The above paragraphs highly reduces merge conflicts
-- Star import should not be used at all (from mymodule import *)
+- The above paragraphs highly reduces merge conflicts.
 
 ### Naming policy
 - snake_case_names
@@ -100,6 +101,14 @@ find src/Mod/Fem/ -name "*\.py" | xargs -I [] flake8 --ignore=E266,W503 --max-li
 Python style is preferred over Doxygen style
     - see `ccx` tools module in fem tools package
     - see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=37094)
+
+### Module structure
+- task panels should go into a separate package too
+    - according pep8 imports should be on module beginning
+    - if task panel class in inside viewprovider module, the imports needed for task panel are module beginning too
+    - might be some special plot module or what ever is needed
+    - if this is not available the object can not even created
+    - if task panel is separate the object can be createdh
 
 ## C++
 ### Naming policy

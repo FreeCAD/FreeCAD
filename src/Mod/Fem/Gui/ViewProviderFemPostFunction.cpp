@@ -47,7 +47,7 @@
 
 # include <QMessageBox>
 
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 
 # include <math.h>
 #endif
@@ -69,12 +69,13 @@
 #include "ui_SphereWidget.h"
 
 using namespace FemGui;
+namespace bp = boost::placeholders;
 
 void FunctionWidget::setViewProvider(ViewProviderFemPostFunction* view) {
 
     m_view = view;
     m_object = static_cast<Fem::FemPostFunction*>(view->getObject());
-    m_connection = m_object->getDocument()->signalChangedObject.connect(boost::bind(&FunctionWidget::onObjectsChanged, this, _1, _2));
+    m_connection = m_object->getDocument()->signalChangedObject.connect(boost::bind(&FunctionWidget::onObjectsChanged, this, bp::_1, bp::_2));
 }
 
 void FunctionWidget::onObjectsChanged(const App::DocumentObject& obj, const App::Property& p) {
@@ -177,6 +178,7 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject *pcObj)
     m_manip->ref();
 
     SoSeparator* pcEditNode = new SoSeparator();
+    pcEditNode->ref();
 
     pcEditNode->addChild(color);
     pcEditNode->addChild(m_transform);
@@ -205,6 +207,7 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject *pcObj)
 
     addDisplayMaskMode(pcEditNode, "Default");
     setDisplayMaskMode("Default");
+    pcEditNode->unref();
 }
 
 bool ViewProviderFemPostFunction::doubleClicked(void) {

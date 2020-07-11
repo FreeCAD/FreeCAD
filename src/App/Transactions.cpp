@@ -242,6 +242,15 @@ TransactionGuard::~TransactionGuard()
     _PendingProps.clear();
     _PendingPropIndex = 0;
 
+    for (auto doc : docs) {
+        for(auto obj : doc->getObjects()) {
+            if(obj->testStatus(ObjectStatus::PendingTransactionUpdate)) {
+                obj->onUndoRedoFinished();
+                obj->setStatus(ObjectStatus::PendingTransactionUpdate,false);
+            }
+        }
+    }
+
     if(undo) {
         for (auto doc : docs)
             doc->signalUndo(*doc);

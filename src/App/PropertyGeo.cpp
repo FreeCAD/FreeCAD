@@ -415,6 +415,11 @@ void PropertyVectorList::Paste(const Property &from)
     setValues(dynamic_cast<const PropertyVectorList&>(from)._lValueList);
 }
 
+unsigned int PropertyVectorList::getMemSize (void) const
+{
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3d));
+}
+
 //**************************************************************************
 // _PropertyVectorList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -482,6 +487,11 @@ Property *_PropertyVectorList::Copy(void) const
 void _PropertyVectorList::Paste(const Property &from)
 {
     setValues(dynamic_cast<const _PropertyVectorList&>(from)._lValueList);
+}
+
+unsigned int _PropertyVectorList::getMemSize (void) const
+{
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3f));
 }
 
 //**************************************************************************

@@ -23,12 +23,6 @@
 
 #include "PreCompiled.h"
 
-#if defined(__clang__) && defined(__has_warning)
-#if __has_warning("-Wdeprecated-copy")
-# pragma clang diagnostic ignored "-Wdeprecated-copy"
-#endif
-#endif
-
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <gp_Circ.hxx>

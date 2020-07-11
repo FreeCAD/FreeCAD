@@ -46,6 +46,7 @@
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
 
 #include "Rez.h"
@@ -423,6 +424,18 @@ void QGIView::draw()
     if (getViewObject() != nullptr) {
         x = Rez::guiX(getViewObject()->X.getValue());
         y = Rez::guiX(getViewObject()->Y.getValue());
+        if (getFrameState()) {
+            //+/- space for label if DPGI
+            TechDraw::DrawProjGroupItem* dpgi = dynamic_cast<TechDraw::DrawProjGroupItem*>(getViewObject());
+            if (dpgi != nullptr) {
+                double vertLabelSpace = Rez::guiX(Preferences::labelFontSizeMM());
+                if (y > 0) {
+                    y += vertLabelSpace;
+                } else if (y < 0) {
+                    y -= vertLabelSpace;
+                }
+            }
+        }
         setPosition(x, y);
     }
     if (isVisible()) {
@@ -719,7 +732,7 @@ int QGIView::calculateFontPixelSize(double sizeInMillimetres)
 int QGIView::calculateFontPixelWidth(const QFont &font)
 {
     // Return the width of digit 0, most likely the most wide digit
-    return QFontMetrics(font).width(QChar::fromLatin1('0'));
+    return Gui::QtTools::horizontalAdvance(QFontMetrics(font), QChar::fromLatin1('0'));
 }
 
 const double QGIView::DefaultFontSizeInMM = 5.0;

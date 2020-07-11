@@ -107,6 +107,10 @@ FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true)
 
 using namespace Gui;
 
+namespace Gui {
+std::array<std::pair<double, std::string>,3 > schemaTranslatePoint(double x, double y, double z, double precision);
+}
+
 // *************************************************************************
 
 SO_NODE_SOURCE(SoFCUnifiedSelection)
@@ -682,7 +686,9 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
         const char *docname = vpd->getObject()->getDocument()->getName();
         const char *objname = vpd->getObject()->getNameInDocument();
 
+        this->preSelection = 1;
         char buf[513];
+
         size_t offset = 0;
         auto sobj = vpd->getObject()->getSubObject(subname);
         const char *element = nullptr;
@@ -695,16 +701,16 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
                     element[0] ? ") " : "");
         }
         if(offset <= sizeof(buf)) {
-            snprintf(buf+offset, sizeof(buf)-offset-1, "[%g, %g, %g] %s#%s.%s",
-                    fabs(x)>1e-7?x:0.0,
-                    fabs(y)>1e-7?y:0.0,
-                    fabs(z)>1e-7?z:0.0,
-                    docname, objname, subname);
+            auto pts = schemaTranslatePoint(x, y, z, 1e-7);
+            snprintf(buf+offset, sizeof(buf)-offset-1, "[%f %s, %f %s, %f %s] %s#%s.%s"
+                    ,pts[0].first,pts[0].second.c_str()
+                    ,pts[1].first,pts[1].second.c_str()
+                    ,pts[2].first,pts[2].second.c_str()
+                    ,docname, objname, subname);
         }
 
-        getMainWindow()->showMessage(QString::fromLatin1(buf));
+        getMainWindow()->showMessage(QString::fromUtf8(buf));
 
-        this->preSelection = 1;
 
         int ret = Gui::Selection().setPreselect(docname,objname,subname,x,y,z);
         if(ret<0 && hasHighlight())
@@ -1917,7 +1923,7 @@ SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
 
     SoFCSelectionRoot *front = stack.front();
 
-    // NOTE: _node is not necssary of type SoFCSelectionRoot, but it is safe
+    // NOTE: _node is not necessary of type SoFCSelectionRoot, but it is safe
     // here since we only use it as searching key, although it is probably not
     // a best practice.
     stack.front() = static_cast<SoFCSelectionRoot*>(node);

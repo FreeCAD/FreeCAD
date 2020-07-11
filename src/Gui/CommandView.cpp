@@ -39,7 +39,7 @@
 # include <QPainter>
 # include <QPointer>
 # include <QTextStream>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "Command.h"
@@ -70,6 +70,7 @@
 #include "SceneInspector.h"
 #include "DemoMode.h"
 #include "TextureMapping.h"
+#include "Tools.h"
 #include "Utilities.h"
 #include "NavigationStyle.h"
 #include "DockWindowManager.h"
@@ -96,6 +97,7 @@
 
 using namespace Gui;
 using Gui::Dialog::DlgSettingsImageImp;
+namespace bp = boost::placeholders;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -588,7 +590,7 @@ StdCmdDrawStyle::StdCmdDrawStyle()
     sPixmap       = "DrawStyleAsIs";
     eType         = Alter3DView;
 
-    this->getGuiApplication()->signalActivateView.connect(boost::bind(&StdCmdDrawStyle::updateIcon, this, _1));
+    this->getGuiApplication()->signalActivateView.connect(boost::bind(&StdCmdDrawStyle::updateIcon, this, bp::_1));
     this->getGuiApplication()->signalViewModeChanged.connect(
         [this](const MDIView *view) {
             if (view == Application::Instance->activeView())
@@ -1939,7 +1941,7 @@ void StdViewScreenShot::activated(int iMsg)
         opt->setMethod(method);
 
         fd.setOptionsWidget(FileOptionsDialog::ExtensionRight, opt);
-        fd.setConfirmOverwrite(true);
+        fd.setOption(QFileDialog::DontConfirmOverwrite, false);
         opt->onSelectedFilter(fd.selectedNameFilter());
         QObject::connect(&fd, SIGNAL(filterSelected(const QString&)),
                          opt, SLOT(onSelectedFilter(const QString&)));
@@ -2017,14 +2019,15 @@ void StdViewScreenShot::activated(int iMsg)
                     QFont font = painter.font();
                     font.setPointSize(20);
 
-                    int n = QFontMetrics(font).width(name);
+                    QFontMetrics fm(font);
+                    int n = QtTools::horizontalAdvance(fm, name);
                     int h = pixmap.height();
 
                     painter.setFont(font);
                     painter.drawText(8+appicon.width(), h-24, name);
 
                     font.setPointSize(12);
-                    int u = QFontMetrics(font).width(url);
+                    int u = QtTools::horizontalAdvance(fm, url);
                     painter.setFont(font);
                     painter.drawText(8+appicon.width()+n-u, h-9, url);
 
@@ -2064,10 +2067,6 @@ void StdCmdViewCreate::activated(int iMsg)
     Q_UNUSED(iMsg);
     getActiveGuiDocument()->createView(View3DInventor::getClassTypeId());
     getActiveGuiDocument()->getActiveView()->viewAll();
-
-    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    if (hViewGrp->GetBool("ShowAxisCross"))
-        doCommand(Command::Gui,"Gui.ActiveDocument.ActiveView.setAxisCross(True)");
 }
 
 bool StdCmdViewCreate::isActive(void)
@@ -2223,6 +2222,7 @@ StdCmdAxisCross::StdCmdAxisCross()
         sToolTipText  = QT_TR_NOOP("Toggle axis cross");
         sStatusTip    = QT_TR_NOOP("Toggle axis cross");
         sWhatsThis    = "Std_AxisCross";
+        sAccel        = "A,C";
 }
 
 void StdCmdAxisCross::activated(int iMsg)
@@ -2234,9 +2234,6 @@ void StdCmdAxisCross::activated(int iMsg)
             doCommand(Command::Gui,"Gui.ActiveDocument.ActiveView.setAxisCross(True)");
         else
             doCommand(Command::Gui,"Gui.ActiveDocument.ActiveView.setAxisCross(False)");
-
-        ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-        hViewGrp->SetBool("ShowAxisCross", view->getViewer()->hasAxisCross());
     }
 }
 

@@ -56,7 +56,7 @@
 typedef boost::iterator_range<const char*> CharRange;
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -78,6 +78,7 @@ typedef boost::iterator_range<const char*> CharRange;
 #include "TopoShapePy.h"
 
 using namespace Part;
+namespace bp = boost::placeholders;
 
 FC_LOG_LEVEL_INIT("Part",true,true)
 

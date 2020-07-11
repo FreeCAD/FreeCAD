@@ -109,8 +109,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>419</width>
-        <height>632</height>
+        <width>420</width>
+        <height>589</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -168,12 +168,9 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="Gui::InputField" name="LineSpacing">
-            <property name="toolTip">
-             <string>Line spacing in system units</string>
-            </property>
-            <property name="quantity" stdset="0">
-             <double>10.000000000000000</double>
+           <widget class="QDoubleSpinBox" name="LineSpacing">
+            <property name="value">
+             <double>1.000000000000000</double>
             </property>
            </widget>
           </item>

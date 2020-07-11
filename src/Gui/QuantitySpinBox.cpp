@@ -41,6 +41,7 @@
 #include "DlgExpressionInput.h"
 #include "propertyeditor/PropertyItem.h"
 #include "BitmapFactory.h"
+#include "Tools.h"
 #include "Command.h"
 #include <Base/Tools.h>
 #include <Base/Exception.h>
@@ -63,6 +64,7 @@ class QuantitySpinBoxPrivate
 public:
     QuantitySpinBoxPrivate() :
       validInput(true),
+      pendingEmit(false),
       unitValue(0),
       maximum(DOUBLE_MAX),
       minimum(-DOUBLE_MAX),
@@ -85,6 +87,34 @@ public:
         return text;
     }
 
+    bool validate(QString& input, Base::Quantity& result) const
+    {
+        bool success = false;
+        QString tmp = input;
+        int pos = 0;
+        QValidator::State state;
+        Base::Quantity res = validateAndInterpret(tmp, pos, state);
+        res.setFormat(quantity.getFormat());
+        if (state == QValidator::Acceptable) {
+            success = true;
+            result = res;
+            input = tmp;
+        }
+        else if (state == QValidator::Intermediate) {
+            tmp = tmp.trimmed();
+            tmp += QLatin1Char(' ');
+            tmp += unitStr;
+            Base::Quantity res2 = validateAndInterpret(tmp, pos, state);
+            res2.setFormat(quantity.getFormat());
+            if (state == QValidator::Acceptable) {
+                success = true;
+                result = res2;
+                input = tmp;
+            }
+        }
+
+        return success;
+    }
     Base::Quantity validateAndInterpret(QString& input, int& pos, QValidator::State& state) const
     {
         Base::Quantity res;
@@ -226,8 +256,10 @@ end:
 
     QLocale locale;
     bool validInput;
+    bool pendingEmit;
     QString validStr;
     Base::Quantity quantity;
+    Base::Quantity cached;
     Base::Unit unit;
     double unitValue;
     QString unitStr;
@@ -250,6 +282,8 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
     QObject::connect(lineEdit(), SIGNAL(textChanged(QString)),
                      this, SLOT(userInput(QString)));
+    QObject::connect(this, SIGNAL(editingFinished()),
+                     this, SLOT(handlePendingEmit()));
 
     defaultPalette = lineEdit()->palette();
 
@@ -389,6 +423,8 @@ void Gui::QuantitySpinBox::onChange()
             s << value->getValue();
 
             lineEdit()->setText(getUserString(value->getQuantity()));
+            handlePendingEmit();
+
             setReadOnly(true);
             QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
             iconLabel->setPixmap(pixmap);
@@ -501,6 +537,7 @@ void QuantitySpinBox::updateText(const Quantity &quant)
     QString txt = getUserString(quant, dFactor, d->unitStr);
     d->unitValue = quant.getValue()/dFactor;
     lineEdit()->setText(txt);
+    handlePendingEmit();
 }
 
 Base::Quantity QuantitySpinBox::value() const
@@ -547,44 +584,26 @@ void QuantitySpinBox::userInput(const QString & text)
 {
     Q_D(QuantitySpinBox);
 
+    d->pendingEmit = true;
+
     QString tmp = text;
-    int pos = 0;
-    QValidator::State state;
-    Base::Quantity res = d->validateAndInterpret(tmp, pos, state);
-    res.setFormat(d->quantity.getFormat());
-    if (state == QValidator::Acceptable) {
+    Base::Quantity res;
+    if (d->validate(tmp, res)) {
+        d->validStr = tmp;
         d->validInput = true;
-        d->validStr = text;
-    }
-    else if (state == QValidator::Intermediate) {
-        tmp = tmp.trimmed();
-        tmp += QLatin1Char(' ');
-        tmp += d->unitStr;
-        Base::Quantity res2 = d->validateAndInterpret(tmp, pos, state);
-        res2.setFormat(d->quantity.getFormat());
-        if (state == QValidator::Acceptable) {
-            d->validInput = true;
-            d->validStr = tmp;
-            res = res2;
-        }
-        else {
-            d->validInput = false;
-            return;
-        }
     }
     else {
         d->validInput = false;
         return;
     }
 
-    double factor;
-    getUserString(res, factor, d->unitStr);
-    d->unitValue = res.getValue()/factor;
-    d->quantity = res;
-
-    // signaling
-    valueChanged(res);
-    valueChanged(res.getValue());
+    if (keyboardTracking()) {
+        d->cached = res;
+        handlePendingEmit();
+    }
+    else {
+        d->cached = res;
+    }
 }
 
 void QuantitySpinBox::openFormulaDialog()
@@ -619,6 +638,30 @@ void QuantitySpinBox::finishFormulaDialog()
     box->deleteLater();
 
     Q_EMIT showFormulaDialog(false);
+}
+
+void QuantitySpinBox::handlePendingEmit()
+{
+    updateFromCache(true);
+}
+
+void QuantitySpinBox::updateFromCache(bool notify)
+{
+    Q_D(QuantitySpinBox);
+    if (d->pendingEmit) {
+        double factor;
+        const Base::Quantity& res = d->cached;
+        getUserString(res, factor, d->unitStr);
+        d->unitValue = res.getValue() / factor;
+        d->quantity = res;
+
+        // signaling
+        if (notify) {
+            d->pendingEmit = false;
+            valueChanged(res);
+            valueChanged(res.getValue());
+        }
+    }
 }
 
 Base::Unit QuantitySpinBox::unit() const
@@ -787,6 +830,7 @@ QAbstractSpinBox::StepEnabled QuantitySpinBox::stepEnabled() const
 void QuantitySpinBox::stepBy(int steps)
 {
     Q_D(QuantitySpinBox);
+    updateFromCache(false);
 
     double step = d->singleStep * steps;
     double val = d->unitValue + step;
@@ -796,6 +840,7 @@ void QuantitySpinBox::stepBy(int steps)
         val = d->minimum;
 
     lineEdit()->setText(QString::fromUtf8("%L1 %2").arg(val).arg(d->unitStr));
+    updateFromCache(true);
     update();
     selectNumber();
 }
@@ -821,7 +866,7 @@ QSize QuantitySpinBox::sizeHint() const
     s = textFromValue(q);
     s.truncate(18);
     s += fixedContent;
-    w = qMax(w, fm.width(s));
+    w = qMax(w, QtTools::horizontalAdvance(fm, s));
 
     w += 2; // cursor blinking space
     w += iconHeight;
@@ -855,7 +900,7 @@ QSize QuantitySpinBox::minimumSizeHint() const
     s = textFromValue(q);
     s.truncate(18);
     s += fixedContent;
-    w = qMax(w, fm.width(s));
+    w = qMax(w, QtTools::horizontalAdvance(fm, s));
 
     w += 2; // cursor blinking space
     w += iconHeight;
@@ -879,6 +924,18 @@ void QuantitySpinBox::showEvent(QShowEvent * event)
     updateText(d->quantity);
     if (selected)
         selectNumber();
+}
+
+void QuantitySpinBox::hideEvent(QHideEvent * event)
+{
+    handlePendingEmit();
+    QAbstractSpinBox::hideEvent(event);
+}
+
+void QuantitySpinBox::closeEvent(QCloseEvent * event)
+{
+    handlePendingEmit();
+    QAbstractSpinBox::closeEvent(event);
 }
 
 bool QuantitySpinBox::event(QEvent * event)
@@ -939,6 +996,9 @@ void QuantitySpinBox::focusOutEvent(QFocusEvent * event)
     if (state != QValidator::Acceptable) {
         lineEdit()->setText(d->validStr);
     }
+
+    handlePendingEmit();
+
     QToolTip::hideText();
     QAbstractSpinBox::focusOutEvent(event);
 }

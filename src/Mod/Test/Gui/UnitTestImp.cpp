@@ -324,7 +324,7 @@ void UnitTestDialog::insertError(const QString& failure, const QString& details)
 {
     QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeViewFailure);
     item->setText(0,failure);
-    item->setTextColor(0, Qt::red);
+    item->setForeground(0, Qt::red);
     item->setData(0, Qt::UserRole, QVariant(details));
 }
 

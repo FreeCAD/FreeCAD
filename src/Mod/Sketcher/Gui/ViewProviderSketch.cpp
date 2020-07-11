@@ -71,7 +71,7 @@
 # include <QTextStream>
 # include <QKeyEvent>
 
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <boost/scoped_ptr.hpp>
 #endif
 
@@ -92,6 +92,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Selection.h>
+#include <Gui/Tools.h>
 #include <Gui/Utilities.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MenuManager.h>
@@ -136,6 +137,7 @@ FC_LOG_LEVEL_INIT("Sketch",true,true)
 
 using namespace SketcherGui;
 using namespace Sketcher;
+namespace bp = boost::placeholders;
 
 SbColor ViewProviderSketch::VertexColor                 (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
 SbColor ViewProviderSketch::CurveColor                  (1.0f,1.0f,1.0f);     // #FFFFFF -> (255,255,255)
@@ -372,18 +374,31 @@ ViewProviderSketch::~ViewProviderSketch()
 
 void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
 {
-    if(getSketchObject()->noRecomputes)
-        getSketchObject()->solve();    // the sketch must be solved to update the DoF of the solver
-    else
-        getSketchObject()->getDocument()->recompute(); // or fully recomputed if applicable
+    // Note 1: this slot is only operative during edit mode (see signal connection/disconnection)
+    // Note 2: ViewProviderSketch::UpdateData does not generate updates during undo/redo
+    //         transactions as mid-transaction data may not be in a valid state (e.g. constraints
+    //         may reference invalid geometry). However undo/redo notify SketchObject after the undo/redo
+    //         and before this slot is called.
+    // Note 3: Note that recomputes are no longer inhibited during the call to this slot.
+    forceUpdateData();
 }
 
 void ViewProviderSketch::slotRedoDocument(const Gui::Document& /*doc*/)
 {
-    if(getSketchObject()->noRecomputes)
-        getSketchObject()->solve();    // the sketch must be solved to update the DoF of the solver
-    else
-        getSketchObject()->getDocument()->recompute();  // or fully recomputed if applicable
+    // Note 1: this slot is only operative during edit mode (see signal connection/disconnection)
+    // Note 2: ViewProviderSketch::UpdateData does not generate updates during undo/redo
+    //         transactions as mid-transaction data may not be in a valid state (e.g. constraints
+    //         may reference invalid geometry). However undo/redo notify SketchObject after the undo/redo
+    //         and before this slot is called.
+    // Note 3: Note that recomputes are no longer inhibited during the call to this slot.
+    forceUpdateData();
+}
+
+void ViewProviderSketch::forceUpdateData()
+{
+    if(!getSketchObject()->noRecomputes) { // the sketch was already solved in SketchObject in onUndoRedoFinished
+        Gui::Command::updateActive();
+    }
 }
 
 // handler management ***************************************************************
@@ -3086,8 +3101,8 @@ void ViewProviderSketch::drawConstraintIcons()
             {   // second icon is available only for colinear line segments
                 const Part::Geometry *geo1 = getSketchObject()->getGeometry((*it)->First);
                 const Part::Geometry *geo2 = getSketchObject()->getGeometry((*it)->Second);
-                if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
-                    geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                if (geo1 && geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
+                    geo2 && geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     multipleIcons = true;
                 }
             }
@@ -3502,7 +3517,7 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
                 boundingBoxes->push_back(labelBB);
             }
 
-            cursorOffset += qfm.width(labelStr);
+            cursorOffset += Gui::QtTools::horizontalAdvance(qfm, labelStr);
         }
     }
 
@@ -5470,15 +5485,18 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 if ((*it)->Type == Tangent) {
                     const Part::Geometry *geo1 = getSketchObject()->getGeometry((*it)->First);
                     const Part::Geometry *geo2 = getSketchObject()->getGeometry((*it)->Second);
-                    if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
-                        geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                    if (!geo1 || !geo2) {
+                        Base::Console().Warning("Tangent constraint references non-existing geometry\n");
+                    }
+                    else if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
+                             geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                         // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
                         sep->addChild(new SoZoomTranslation());
                         // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
                         sep->addChild(new SoImage());
                         // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
                         sep->addChild(new SoInfo());
-                        }
+                    }
                 }
 
                 edit->vConstrType.push_back((*it)->Type);
@@ -5578,9 +5596,14 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 {
     ViewProvider2DObject::updateData(prop);
 
-    if (edit && (prop == &(getSketchObject()->Geometry) ||
+    // In the case of an undo/redo transaction, updateData is triggered by SketchObject::onUndoRedoFinished() in the solve()
+    // In the case of an internal transaction, touching the geometry results in a call to updateData.
+    if (edit && !getSketchObject()->getDocument()->isPerformingTransaction()
+             && !getSketchObject()->isPerformingInternalTransaction()
+             && (prop == &(getSketchObject()->Geometry) ||
                  prop == &(getSketchObject()->ExternalGeo) ||
                  prop == &(getSketchObject()->Constraints))) {
+
         edit->FullyConstrained = false;
         // At this point, we do not need to solve the Sketch
         // If we are adding geometry an update can be triggered before the sketch is actually solved.
@@ -5816,9 +5839,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
     draw(false,true);
 
     connectUndoDocument = getDocument()
-        ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, _1));
+        ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, bp::_1));
     connectRedoDocument = getDocument()
-        ->signalRedoDocument.connect(boost::bind(&ViewProviderSketch::slotRedoDocument, this, _1));
+        ->signalRedoDocument.connect(boost::bind(&ViewProviderSketch::slotRedoDocument, this, bp::_1));
 
     // Enable solver initial solution update while dragging.
     ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -6055,6 +6078,9 @@ void ViewProviderSketch::createEditInventorNodes(void)
 
     // stuff for the edit coordinates ++++++++++++++++++++++++++++++++++++++
     SoSeparator *Coordsep = new SoSeparator();
+    SoPickStyle* ps = new SoPickStyle();
+    ps->style.setValue(SoPickStyle::UNPICKABLE);
+    Coordsep->addChild(ps);
     Coordsep->setName("CoordSeparator");
     // no caching for fluctuand data structures
     Coordsep->renderCaching = SoSeparator::OFF;
@@ -6279,8 +6305,7 @@ void ViewProviderSketch::setPositionText(const Base::Vector2d &Pos)
 {
     SbString text;
     text.sprintf(" (%.1f,%.1f)", Pos.x, Pos.y);
-    edit->textX->string = text;
-    edit->textPos->translation = SbVec3f(Pos.x,Pos.y,zText);
+    setPositionText(Pos,text);
 }
 
 void ViewProviderSketch::resetPositionText(void)

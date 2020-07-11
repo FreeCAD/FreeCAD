@@ -150,6 +150,7 @@ void Gui::SoFCDB::init()
     PropertyAngleItem               ::init();
     PropertyBoolItem                ::init();
     PropertyVectorItem              ::init();
+    PropertyVectorListItem          ::init();
     PropertyVectorDistanceItem      ::init();
     PropertyPositionItem            ::init();
     PropertyDirectionItem           ::init();
@@ -305,7 +306,12 @@ SoNode* replaceSwitchesInSceneGraph(SoNode* node)
     return node;
 }
 
-bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
+SoNode* Gui::SoFCDB::replaceSwitches(SoNode* node)
+{
+    return replaceSwitchesInSceneGraph(node);
+}
+
+void Gui::SoFCDB::writeToVRML(SoNode* node, std::string& buffer)
 {
     SoNode* noSwitches = replaceSwitchesInSceneGraph(node);
     noSwitches->ref();
@@ -317,13 +323,19 @@ bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
     SoVRMLGroup* vrmlRoot = tovrml2.getVRML2SceneGraph();
     vrmlRoot->setInstancePrefix(SbString("o"));
     vrmlRoot->ref();
-    std::string buffer = SoFCDB::writeNodesToString(vrmlRoot);
+    buffer = SoFCDB::writeNodesToString(vrmlRoot);
     vrmlRoot->unref(); // release the memory as soon as possible
 
     // restore old settings
     vrml2.setOverrideMode(false);
     vrml2.apply(noSwitches);
     noSwitches->unref();
+}
+
+bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
+{
+    std::string buffer;
+    writeToVRML(node, buffer);
 
     Base::FileInfo fi(filename);
     if (binary) {

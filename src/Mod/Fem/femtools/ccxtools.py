@@ -655,6 +655,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                         )
                     return False
                 else:
+                    FreeCAD.Console.PrintMessage("**** try to read result files\n")
                     self.load_results()
                     # TODO: output an error message if there where problems reading the results
         return True
@@ -805,10 +806,20 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         """
         import feminout.importCcxDatResults as importCcxDatResults
         dat_result_file = os.path.splitext(self.inp_file_name)[0] + ".dat"
+
         if os.path.isfile(dat_result_file):
             mode_frequencies = importCcxDatResults.import_dat(dat_result_file, self.analysis)
+
+            obj = FreeCAD.ActiveDocument.addObject("App::TextDocument", "ccx dat file")
+            # TODO this object should be inside analysis or under result object
+            # self.result_object.addObject(obj)
+            file = open(dat_result_file, "r")
+            obj.Text = file.read()
+            file.close()
+            # TODO make the Text of obj read only, or the obj itself
         else:
             raise Exception("FEM: No .dat results found at {}!".format(dat_result_file))
+
         if mode_frequencies:
             # print(mode_frequencies)
             for m in self.analysis.Group:

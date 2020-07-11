@@ -208,7 +208,7 @@ const char*  Base::XMLReader::getAttribute (const char* AttrName, const char *de
     else if(def) 
         return def;
     else {
-        _FC_READER_THROW(Base::XMLAttributeError, "XML Attribute: '" << AttrName << "' not count");
+        _FC_READER_THROW(Base::XMLAttributeError, "XML Attribute: '" << AttrName << "' not found");
     }
 }
 

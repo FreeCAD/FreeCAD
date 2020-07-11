@@ -29,12 +29,7 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief view provider for mesh group object
 
-from PySide import QtCore
-
-import FreeCAD
-import FreeCADGui
-
-from femguiutils import selection_widgets
+from femtaskpanels import task_mesh_group
 from . import view_base_femconstraint
 
 
@@ -48,70 +43,5 @@ class VPMeshGroup(view_base_femconstraint.VPBaseFemConstraint):
             self,
             vobj,
             mode,
-            _TaskPanel
+            task_mesh_group._TaskPanel
         )
-
-
-class _TaskPanel:
-    """
-    The TaskPanel for editing References property of MeshGroup objects
-    """
-
-    def __init__(self, obj):
-
-        self.obj = obj
-
-        # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshGroup.ui"
-        )
-        QtCore.QObject.connect(
-            self.parameterWidget.rb_name,
-            QtCore.SIGNAL("toggled(bool)"),
-            self.choose_exportidentifier_name
-        )
-        QtCore.QObject.connect(
-            self.parameterWidget.rb_label,
-            QtCore.SIGNAL("toggled(bool)"),
-            self.choose_exportidentifier_label
-        )
-        self.init_parameter_widget()
-
-        # geometry selection widget
-        # start with Solid in list!
-        self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Solid", "Face", "Edge", "Vertex"]
-        )
-
-        # form made from param and selection widget
-        self.form = [self.parameterWidget, self.selectionWidget]
-
-    def accept(self):
-        self.obj.UseLabel = self.use_label
-        self.obj.References = self.selectionWidget.references
-        self.recompute_and_set_back_all()
-        return True
-
-    def reject(self):
-        self.recompute_and_set_back_all()
-        return True
-
-    def recompute_and_set_back_all(self):
-        doc = FreeCADGui.getDocument(self.obj.Document)
-        doc.Document.recompute()
-        self.selectionWidget.setback_listobj_visibility()
-        if self.selectionWidget.sel_server:
-            FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
-        doc.resetEdit()
-
-    def init_parameter_widget(self):
-        self.use_label = self.obj.UseLabel
-        self.parameterWidget.rb_name.setChecked(not self.use_label)
-        self.parameterWidget.rb_label.setChecked(self.use_label)
-
-    def choose_exportidentifier_name(self, state):
-        self.use_label = not state
-
-    def choose_exportidentifier_label(self, state):
-        self.use_label = state

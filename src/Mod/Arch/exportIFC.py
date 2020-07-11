@@ -38,6 +38,7 @@ import Arch
 import DraftVecUtils
 import ArchIFCSchema
 import exportIFCHelper
+import exportIFCStructuralTools
 
 from DraftGeomUtils import vec
 from importIFCHelper import dd2dms
@@ -140,7 +141,8 @@ def getPreferences():
         'ADD_DEFAULT_BUILDING': p.GetBool("IfcAddDefaultBuilding",True),
         'IFC_UNIT': u,
         'SCALE_FACTOR': f,
-        'GET_STANDARD': p.GetBool("getStandardType",False)
+        'GET_STANDARD': p.GetBool("getStandardType",False),
+        'EXPORT_MODEL': ['arch','struct','hybrid'][p.GetInt("ifcExportModel",0)]
     }
     if hasattr(ifcopenshell,"schema_identifier"):
         schema = ifcopenshell.schema_identifier
@@ -228,7 +230,7 @@ def export(exportList,filename,colors=None,preferences=None):
     if preferences['FULL_PARAMETRIC']:
         objectslist = Arch.getAllChildren(objectslist)
 
-    # create project and context
+    # create project, context and geodata settings
 
     contextCreator = exportIFCHelper.ContextCreator(ifcfile, objectslist)
     context = contextCreator.model_view_subcontext
@@ -238,6 +240,16 @@ def export(exportList,filename,colors=None,preferences=None):
     if Draft.getObjectsOfType(objectslist, "Site"):  # we assume one site and one representation context only
         decl = Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian)
         contextCreator.model_context.TrueNorth.DirectionRatios = (math.cos(decl+math.pi/2), math.sin(decl+math.pi/2))
+
+    # reusable entity system
+
+    global ifcbin
+    ifcbin = exportIFCHelper.recycler(ifcfile)
+
+    # setup analytic model
+
+    if preferences['EXPORT_MODEL'] in ['struct','hybrid']:
+        exportIFCStructuralTools.setup(ifcfile,ifcbin,preferences['SCALE_FACTOR'])
 
     # define holders for the different types we create
 
@@ -251,11 +263,6 @@ def export(exportList,filename,colors=None,preferences=None):
     profiledefs = {} # { ProfileDefString:profiledef,...}
     shapedefs = {} # { ShapeDefString:[shapes],... }
     spatialelements = {} # {Name:IfcEntity, ... }
-
-    # reusable entity system
-
-    global ifcbin
-    ifcbin = exportIFCHelper.recycler(ifcfile)
 
     # build clones table
 
@@ -279,6 +286,14 @@ def export(exportList,filename,colors=None,preferences=None):
 
     for obj in objectslist:
 
+        # structural analysis object
+
+        structobj = None
+        if preferences['EXPORT_MODEL'] in ['struct','hybrid']:
+            structobj = exportIFCStructuralTools.createStructuralMember(ifcfile,ifcbin,obj)
+            if preferences['EXPORT_MODEL'] == 'struct':
+                continue
+
         # getting generic data
 
         name = getText("Name",obj)
@@ -291,7 +306,7 @@ def export(exportList,filename,colors=None,preferences=None):
             continue
 
         # handle assemblies (arrays, app::parts, references, etc...)
-        
+
         assemblyElements = []
 
         if ifctype == "IfcArray":
@@ -327,7 +342,7 @@ def export(exportList,filename,colors=None,preferences=None):
                     placement,
                     representation,
                     preferences)
-                
+
                 assemblyElements.append(subproduct)
                 ifctype = "IfcElementAssembly"
 
@@ -352,7 +367,7 @@ def export(exportList,filename,colors=None,preferences=None):
                     placement,
                     representation,
                     preferences)
-                
+
                 assemblyElements.append(subproduct)
                 ifctype = "IfcElementAssembly"
 
@@ -432,7 +447,7 @@ def export(exportList,filename,colors=None,preferences=None):
             if isStandardCase(obj,ifctype):
                 ifctype += "StandardCase"
 
-        if preferences['DEBUG']: 
+        if preferences['DEBUG']:
             print(str(count).ljust(3)," : ", ifctype, " (",shapetype,") : ",name)
 
         # creating the product
@@ -452,6 +467,11 @@ def export(exportList,filename,colors=None,preferences=None):
         products[obj.Name] = product
         if ifctype in ["IfcBuilding","IfcBuildingStorey","IfcSite","IfcSpace"]:
             spatialelements[obj.Name] = product
+
+        # associate with structural analysis object if any
+
+        if structobj:
+            exportIFCStructuralTools.associates(ifcfile,product,structobj)
 
         # gather assembly subelements
 
@@ -833,6 +853,11 @@ def export(exportList,filename,colors=None,preferences=None):
                 )
 
         count += 1
+
+    # relate structural analysis objects to the struct model
+
+    if preferences['EXPORT_MODEL'] in ['struct','hybrid']:
+        exportIFCStructuralTools.createStructuralGroup(ifcfile)
 
     # relationships
 
@@ -1631,7 +1656,7 @@ def buildAddress(obj,ifcfile):
     return addr
 
 
-def createCurve(ifcfile,wire):
+def createCurve(ifcfile,wire,scaling=1.0):
 
     "creates an IfcCompositeCurve from a shape"
 
@@ -1643,6 +1668,8 @@ def createCurve(ifcfile,wire):
     else:
         edges = Part.__sortEdges__(wire.Edges)
     for e in edges:
+        if scaling not in (0,1):
+            e.scale(scaling)
         if isinstance(e.Curve,Part.Circle):
             xaxis = e.Curve.XAxis
             zaxis = e.Curve.Axis
@@ -1746,16 +1773,18 @@ def getProfile(ifcfile,p):
         pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
         if isinstance(p.Edges[0].Curve,Part.Circle):
             # extruded circle
-            profile = ifcfile.createIfcCircleProfileDef("AREA",None,pt,p.Edges[0].Curve.Radius)
+            profile = ifcbin.createIfcCircleProfileDef("AREA",None,pt,p.Edges[0].Curve.Radius)
         elif isinstance(p.Edges[0].Curve,Part.Ellipse):
             # extruded ellipse
-            profile = ifcfile.createIfcEllipseProfileDef("AREA",None,pt,p.Edges[0].Curve.MajorRadius,p.Edges[0].Curve.MinorRadius)
+            profile = ifcbin.createIfcEllipseProfileDef("AREA",None,pt,p.Edges[0].Curve.MajorRadius,p.Edges[0].Curve.MinorRadius)
     elif (checkRectangle(p.Edges)):
         # arbitrarily use the first edge as the rectangle orientation
         d = vec(p.Edges[0])
         d.normalize()
         pxvc = ifcbin.createIfcDirection(tuple(d)[:2])
-        povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass[:2]))
+        povc = ifcbin.createIfcCartesianPoint((0.0,0.0))
+        # profile must be located at (0,0) because placement gets added later
+        #povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass[:2]))
         pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
         #semiPerimeter = p.Length/2
         #diff = math.sqrt(semiPerimeter**2 - 4*p.Area)
@@ -1763,7 +1792,7 @@ def getProfile(ifcfile,p):
         #h = min(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
         b = p.Edges[0].Length
         h = p.Edges[1].Length
-        profile = ifcfile.createIfcRectangleProfileDef("AREA",'rectangular',pt,b,h)
+        profile = ifcbin.createIfcRectangleProfileDef("AREA",'rectangular',pt,b,h)
     elif (len(p.Faces) == 1) and (len(p.Wires) > 1):
         # face with holes
         f = p.Faces[0]
@@ -1946,7 +1975,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             shapes.append(shape)
             solidType = "SweptSolid"
             shapetype = "extrusion"
-                    
+
 
     if (not shapes) and (not skipshape):
 
@@ -2010,11 +2039,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 productdef = ifcfile.add(p)
                                 for rep in productdef.Representations:
                                     rep.ContextOfItems = context
-                                xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
-                                zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
-                                ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-                                gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-                                placement = ifcbin.createIfcLocalPlacement(gpl)
+                                placement = ifcbin.createIfcLocalPlacement()
                                 shapetype = "advancedbrep"
                                 shapes = None
                                 serialized = True
@@ -2122,10 +2147,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
         colorshapes = shapes # to keep track of individual shapes for coloring below
         if tostore:
             subrep = ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)
-            xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
-            zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
-            ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-            gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+            gpl = ifcbin.createIfcAxis2Placement3D()
             repmap = ifcfile.createIfcRepresentationMap(gpl,subrep)
             pla = obj.getGlobalPlacement()
             axis1 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
@@ -2192,13 +2214,14 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     surfstyles[key] = psa
                 isi = ifcfile.createIfcStyledItem(shape,[psa],None)
 
-        xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
-        zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
-        ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-        gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-        placement = ifcbin.createIfcLocalPlacement(gpl)
-        representation = ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)
-        productdef = ifcfile.createIfcProductDefinitionShape(None,None,[representation])
+        placement = ifcbin.createIfcLocalPlacement()
+        representation = [ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)]
+        # additional representations?
+        if Draft.getType(obj) in ["Wall"]:
+            addrepr = createAxis(ifcfile,obj,preferences)
+            if addrepr:
+                representation = representation + [addrepr]
+        productdef = ifcfile.createIfcProductDefinitionShape(None,None,representation)
 
     return productdef,placement,shapetype
 
@@ -2261,7 +2284,7 @@ def getUID(obj,preferences):
 
 def getText(field,obj):
     """Returns the value of a text property of an object"""
-        
+
     result = ""
     if field == "Name":
         field = "Label"
@@ -2270,3 +2293,31 @@ def getText(field,obj):
     if six.PY2:
         result = result.encode("utf8")
     return result
+
+def getAxisContext(ifcfile):
+
+    """gets or creates an axis context"""
+
+    contexts = ifcfile.by_type("IfcGeometricRepresentationContext")
+    # filter out subcontexts
+    subcontexts = [c for c in contexts if c.is_a() == "IfcGeometricRepresentationSubContext"]
+    contexts = [c for c in contexts if c.is_a() == "IfcGeometricRepresentationContext"]
+    for ctx in subcontexts:
+        if ctx.ContextIdentifier == "Axis":
+            return ctx
+    ctx = contexts[0] # arbitrarily take the first one...
+    nctx = ifcfile.createIfcGeometricRepresentationSubContext('Axis','Model',None,None,None,None,ctx,None,"MODEL_VIEW",None);
+    return nctx
+
+def createAxis(ifcfile,obj,preferences):
+
+    """Creates an axis for a given wall, if applicable"""
+
+    if hasattr(obj,"Base") and hasattr(obj.Base,"Shape") and obj.Base.Shape:
+        if obj.Base.Shape.ShapeType in ["Wire","Edge"]:
+            curve = createCurve(ifcfile,obj.Base.Shape,preferences["SCALE_FACTOR"])
+            if curve:
+                ctx = getAxisContext(ifcfile)
+                axis = ifcfile.createIfcShapeRepresentation(ctx,'Axis','Curve2D',[curve])
+                return axis
+    return None

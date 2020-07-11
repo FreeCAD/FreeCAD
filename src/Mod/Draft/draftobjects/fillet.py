@@ -40,35 +40,35 @@ class Fillet(base.DraftObject):
     def _set_properties(self, obj):
         """Set the properties of objects if they don't exist."""
         if not hasattr(obj, "Start"):
-            _tip = "The start point of this line."
+            _tip = QT_TRANSLATE_NOOP("App::Property", "The start point of this line.")
             obj.addProperty("App::PropertyVectorDistance",
                             "Start",
                             "Draft",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.Start = App.Vector(0, 0, 0)
 
         if not hasattr(obj, "End"):
-            _tip = "The end point of this line."
+            _tip = QT_TRANSLATE_NOOP("App::Property", "The end point of this line.")
             obj.addProperty("App::PropertyVectorDistance",
                             "End",
                             "Draft",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.End = App.Vector(0, 0, 0)
 
         if not hasattr(obj, "Length"):
-            _tip = "The length of this line."
+            _tip = QT_TRANSLATE_NOOP("App::Property", "The length of this line.")
             obj.addProperty("App::PropertyLength",
                             "Length",
                             "Draft",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.Length = 0
 
         if not hasattr(obj, "FilletRadius"):
-            _tip = "Radius to use to fillet the corner."
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Radius to use to fillet the corner.")
             obj.addProperty("App::PropertyLength",
                             "FilletRadius",
                             "Draft",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.FilletRadius = 0
 
         # TODO: these two properties should link two straight lines
@@ -78,14 +78,14 @@ class Fillet(base.DraftObject):
         #    obj.addProperty("App::PropertyLinkGlobal",
         #                    "Edge1",
         #                    "Draft",
-        #                    QT_TRANSLATE_NOOP("App::Property", _tip))
+        #                    _tip))
 
         # if not hasattr(obj, "Edge2"):
         #    _tip = "Second line used as reference."
         #    obj.addProperty("App::PropertyLinkGlobal",
         #                    "Edge2",
         #                    "Draft",
-        #                    QT_TRANSLATE_NOOP("App::Property", _tip))
+        #                    _tip))
 
         # Read only, change to 0 to make it editable.
         # The Fillet Radius should be made editable

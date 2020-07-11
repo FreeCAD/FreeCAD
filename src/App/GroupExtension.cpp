@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "Application.h"
@@ -40,6 +41,7 @@
 FC_LOG_LEVEL_INIT("App",true,true);
 
 using namespace App;
+namespace bp = boost::placeholders;
 
 EXTENSION_PROPERTY_SOURCE(App::GroupExtension, App::DocumentObjectExtension)
 
@@ -446,12 +448,12 @@ void GroupExtension::extensionOnChanged(const Property* p) {
                 continue;
             queryChildExport(obj);
             _Conns.push_back(obj->Visibility.signalChanged.connect(boost::bind(
-                            &GroupExtension::slotChildChanged,this,_1)));
+                            &GroupExtension::slotChildChanged,this,bp::_1)));
             auto groupTouched = Base::freecad_dynamic_cast<PropertyBool>(
                     obj->getPropertyByName("_GroupTouched"));
             if(groupTouched && groupTouched->getContainer() == obj)
                 _Conns.push_back(groupTouched->signalChanged.connect(boost::bind(
-                                &GroupExtension::slotChildChanged,this,_1)));
+                                &GroupExtension::slotChildChanged,this,bp::_1)));
         }
     } else if(p == &owner->Visibility) {
         if(!_togglingVisibility 

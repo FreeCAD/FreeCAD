@@ -1,6 +1,6 @@
 %{
 /* Lexer for the FreeCAD  Expression language   */
-/* (c) 2010 Juergen Riegel  LGPL           */
+/* (c) 2010 Jürgen Riegel LGPL                 */
 /* (c) 2015 Eivind Kvedalen LGPL           */
 /* (c) 2018 Zheng, Lei      LGPL           */
 

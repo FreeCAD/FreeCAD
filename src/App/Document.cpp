@@ -83,7 +83,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <boost/graph/visitors.hpp>
 #endif //USE_OLD_DAG
 
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <boost/regex.hpp>
 #include <unordered_set>
 #include <unordered_map>
@@ -190,6 +190,7 @@ struct DocumentP
     int iUndoMode;
     unsigned int UndoMemSize;
     unsigned int UndoMaxStackSize;
+    std::string programVersion;
     mutable HasherMap hashers;
 #ifdef USE_OLD_DAG
     DependencyList DepList;
@@ -637,7 +638,10 @@ void Document::exportGraphviz(std::ostream& out) const
                 //first build up the coordinate system subgraphs
                 for (auto objectIt : d->objectArray) {
                     // do not require an empty inlist (#0003465: Groups breaking dependency graph)
-                    if (objectIt->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
+                    // App::Origin now has the GeoFeatureGroupExtension but it should not move its
+                    // group symbol outside its parent
+                    if (!objectIt->isDerivedFrom(Origin::getClassTypeId()) &&
+                         objectIt->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
                         recursiveCSSubgraphs(objectIt, nullptr);
                 }
             }
@@ -815,6 +819,12 @@ void Document::exportGraphviz(std::ostream& out) const
             }
         }
 
+#if defined(__clang__)
+#elif defined (__GNUC__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+
         void markCycles() {
             bool changed = true;
             std::unordered_set<Vertex> in_use;
@@ -879,6 +889,11 @@ void Document::exportGraphviz(std::ostream& out) const
             for (auto ei = out_edges.begin(), ei_end = out_edges.end(); ei != ei_end; ++ei)
                 edgeAttrMap[ei->second]["color"] = "red";
         }
+
+#if defined(__clang__)
+#elif defined (__GNUC__)
+# pragma GCC diagnostic pop
+#endif
 
         void markOutOfScopeLinks() {
             const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
@@ -2097,6 +2112,9 @@ void Document::readObject(Base::XMLReader &reader) {
         catch (const Base::RuntimeError &e) {
             e.ReportException();
         }
+        catch (const Base::XMLAttributeError &e) {
+            e.ReportException();
+        }
 
         pObj->setStatus(ObjectStatus::Restore, false);
 
@@ -2973,7 +2991,9 @@ void Document::restore(Base::XMLReader &reader,
     } catch (const Base::Exception& e) {
         Base::Console().Error("Invalid Document.xml: %s\n", e.what());
     }
+
     d->partialLoadObjects.clear();
+    d->programVersion = reader.ProgramVersion;
 
     // Special handling for Gui document, the view representations must already
     // exist, what is done in Restore().
@@ -3149,6 +3169,11 @@ App::Document *Document::getOwnerDocument() const {
 
 const char *Document::getFileName() const {
     return testStatus(TempDoc)?TransientDir.getValue():FileName.getValue();
+}
+
+const char* Document::getProgramVersion() const
+{
+    return d->programVersion.c_str();
 }
 
 /// Remove all modifications. After this call The document becomes valid again.
@@ -4814,15 +4839,31 @@ std::vector< DocumentObject* > Document::getObjectsWithExtension(const Base::Typ
 }
 
 
-std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, const char* objname) const
+std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, const char* objname, const char* label) const
 {
-    boost::regex rx(objname);
     boost::cmatch what;
+    boost::regex rx_name, rx_label;
+
+    if (objname)
+        rx_name.set_expression(objname);
+
+    if (label)
+        rx_label.set_expression(label);
+
     std::vector<DocumentObject*> Objects;
+    DocumentObject* found = nullptr;
     for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(typeId)) {
-            if (boost::regex_match((*it)->getNameInDocument(), what, rx))
-                Objects.push_back(*it);
+            found = *it;
+
+            if (!rx_name.empty() && !boost::regex_search((*it)->getNameInDocument(), what, rx_name))
+                found = nullptr;
+
+            if (!rx_label.empty() && !boost::regex_search((*it)->Label.getValue(), what, rx_label))
+                found = nullptr;
+
+            if (found)
+                Objects.push_back(found);
         }
     }
     return Objects;

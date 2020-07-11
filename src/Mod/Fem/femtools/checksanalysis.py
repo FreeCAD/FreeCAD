@@ -267,6 +267,17 @@ def check_analysismember(analysis, solver, mesh, member):
                     "{} doesn't references exactly two needed faces.\n"
                     .format(c["Object"].Name)
                 )
+    # sectionprint
+    if member.cons_sectionprint:
+        for c in member.cons_sectionprint:
+            items = 0
+            for reference in c["Object"].References:
+                items += len(reference[1])
+            if items != 1:
+                message += (
+                    "{} doesn't reference exactly one needed face.\n"
+                    .format(c["Object"].Name)
+                )
     # transform
     if member.cons_transform:
         for c in member.cons_transform:

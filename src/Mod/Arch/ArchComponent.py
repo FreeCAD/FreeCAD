@@ -172,7 +172,7 @@ class Component(ArchIFC.IfcProduct):
     ----------
     obj: <App::FeaturePython>
         The object to turn into an Arch Component
-    """ 
+    """
 
     def __init__(self, obj):
         obj.Proxy = self
@@ -275,7 +275,7 @@ class Component(ArchIFC.IfcProduct):
         return None
 
     def onBeforeChange(self,obj,prop):
-        """Method called before the object has a property changed. 
+        """Method called before the object has a property changed.
 
         Specifically, this method is called before the value changes.
 
@@ -392,7 +392,7 @@ class Component(ArchIFC.IfcProduct):
         <App::PropertyLength>
             The Height value of the found Floor or BuildingPart.
         """
-        
+
         for parent in obj.InList:
             if Draft.getType(parent) in ["Floor","BuildingPart"]:
                 if obj in parent.Group:
@@ -476,7 +476,7 @@ class Component(ArchIFC.IfcProduct):
 
         Recursively scrape the Bases of the object, until a Base that is
         derived from a <Part::Extrusion> is found. From there, copy the
-        extrusion to the (0,0,0) origin. 
+        extrusion to the (0,0,0) origin.
 
         With this copy, get the <Part.Face> the shape was originally
         extruded from, the <Base.Vector> of the extrusion, and the
@@ -645,7 +645,7 @@ class Component(ArchIFC.IfcProduct):
         """Hides Additions and Subtractions of this Component when that list changes.
 
         Intended to be used in conjunction with the .onChanged() method, to
-        access the property that has changed.  
+        access the property that has changed.
 
         When an object loses or gains an Addition, this method hides all
         Additions.  When it gains or loses a Subtraction, this method hides all
@@ -697,7 +697,7 @@ class Component(ArchIFC.IfcProduct):
             The base shape to add Additions and Subtractions to.
         placement: <Base.Placement>, optional
             Prior to adding or subtracting subshapes, the <Base.Placement> of
-            the subshapes are multiplied by the inverse of this parameter. 
+            the subshapes are multiplied by the inverse of this parameter.
 
         Returns
         -------
@@ -753,41 +753,44 @@ class Component(ArchIFC.IfcProduct):
 
         # treat subtractions
         subs = obj.Subtractions
-        for link in obj.InList:
+        for link in obj.InListRecursive:
             if hasattr(link,"Hosts"):
                 for host in link.Hosts:
                     if host == obj:
                         subs.append(link)
+            elif hasattr(link,"Host"):
+                if link.Host == obj:
+                    subs.append(link)
         for o in subs:
-
             if base:
                 if base.isNull():
                     base = None
 
             if base:
+                subvolume = None
                 if (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window",True)):
                         # windows can be additions or subtractions, treated the same way
-                        f = o.Proxy.getSubVolume(o)
-                        if f:
-                            if base.Solids and f.Solids:
-                                if placement:
-                                    f.Placement = f.Placement.multiply(placement)
-                                if len(base.Solids) > 1:
-                                    base = Part.makeCompound([sol.cut(f) for sol in base.Solids])
-                                else:
-                                    base = base.cut(f)
-
+                        subvolume = o.Proxy.getSubVolume(o)
                 elif (Draft.getType(o) == "Roof") or (Draft.isClone(o,"Roof")):
                     # roofs define their own special subtraction volume
-                    f = o.Proxy.getSubVolume(o)
-                    if f:
-                        if base.Solids and f.Solids:
-                            if len(base.Solids) > 1:
-                                base = Part.makeCompound([sol.cut(f) for sol in base.Solids])
-                            else:
-                                base = base.cut(f)
+                    subvolume = o.Proxy.getSubVolume(o)
+                elif hasattr(o,"Subvolume") and hasattr(o.Subvolume,"Shape"):
+                    # Any other object with a Subvolume property
+                    subvolume = o.Subvolume.Shape.copy()
+                    if hasattr(o,"Placement"):
+                        subvolume.Placement = subvolume.Placement.multiply(o.Placement)
+                    
+                if subvolume:
+                    if base.Solids and subvolume.Solids:
+                        if placement:
+                            subvolume.Placement = subvolume.Placement.multiply(placement)
+                        if len(base.Solids) > 1:
+                            base = Part.makeCompound([sol.cut(subvolume) for sol in base.Solids])
+                        else:
+                            base = base.cut(subvolume)
 
                 elif hasattr(o,'Shape'):
+                    # no subvolume, we subtract the whole shape
                     if o.Shape:
                         if not o.Shape.isNull():
                             if o.Shape.Solids and base.Solids:
@@ -941,7 +944,7 @@ class Component(ArchIFC.IfcProduct):
         """Compute the area properties of the object's shape.
 
         Compute the vertical area, horizontal area, and perimeter length of
-        the object's shape. 
+        the object's shape.
 
         The vertical area is the surface area of the faces perpendicular to the
         ground.
@@ -1101,6 +1104,30 @@ class Component(ArchIFC.IfcProduct):
             # - must have an IfcWindowType and IfcRelFillsElement (to be implemented in IFC exporter)
             return False
 
+    def getHosts(self,obj):
+        """Return the objects that have this one as host,
+        that is, objects with a "Host" property pointing
+        at this object, or a "Hosts" property containing
+        this one.
+
+        Returns
+        -------
+        list of <Arch._Structure>
+            The Arch Structures hosting this component.
+        """
+
+        hosts = []
+        for link in obj.InListRecursive:
+            if hasattr(link,"Host"):
+                if link.Host:
+                    if link.Host == obj:
+                        hosts.append(link)
+            elif hasattr(link,"Hosts"):
+                for host in link.Hosts:
+                    if host == obj:
+                        hosts.append(link)
+        return hosts
+
 
 class ViewProviderComponent:
     """A default View Provider for Component objects.
@@ -1112,13 +1139,13 @@ class ViewProviderComponent:
     ----------
     vobj: <Gui.ViewProviderDocumentObject>
         The view provider to turn into a component view provider.
-    """ 
+    """
 
     def __init__(self,vobj):
         vobj.Proxy = self
         self.Object = vobj.Object
         self.setProperties(vobj)
-        
+
     def setProperties(self,vobj):
         """Give the component view provider its component view provider specific properties.
 
@@ -1242,7 +1269,7 @@ class ViewProviderComponent:
                     d = vobj.DiffuseColor
                     vobj.DiffuseColor = d
         elif prop == "Visibility":
-            for host in self.getHosts():
+            for host in vobj.Object.Proxy.getHosts(vobj.Object):
                 if hasattr(host, 'ViewObject'):
                     host.ViewObject.Visibility = vobj.Visibility
 
@@ -1252,7 +1279,7 @@ class ViewProviderComponent:
         """Add display modes' data to the coin scenegraph.
 
         Add each display mode as a coin node, whose parent is this view
-        provider. 
+        provider.
 
         Each display mode's node includes the data needed to display the object
         in that mode. This might include colors of faces, or the draw style of
@@ -1309,7 +1336,7 @@ class ViewProviderComponent:
 
         When HiRes is set as display mode, display the component as a copy of
         the mesh associated as the HiRes property of the host object. See
-        ArchComponent.Component's properties. 
+        ArchComponent.Component's properties.
 
         If no shape is set in the HiRes property, just display the object as
         the Flat Lines display mode.
@@ -1419,8 +1446,9 @@ class ViewProviderComponent:
                     objlink = getattr(self.Object,link)
                     if objlink:
                         c.append(objlink)
-            for link in self.getHosts():
-                c.append(link)
+            if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ClaimHosted",True):
+                for link in self.Object.Proxy.getHosts(self.Object):
+                    c.append(link)
 
             return c
         return []
@@ -1532,39 +1560,11 @@ class ViewProviderComponent:
         """
 
         if obj.CloneOf:
-            if (self.areDifferentColors(obj.ViewObject.DiffuseColor, 
-                                        obj.CloneOf.ViewObject.DiffuseColor) 
+            if (self.areDifferentColors(obj.ViewObject.DiffuseColor,
+                                        obj.CloneOf.ViewObject.DiffuseColor)
                     or force):
 
                 obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
-    
-    def getHosts(self):
-        """Return the hosts of the view provider's host object.
-
-        Note that in this case, the hosts are the objects referenced by Arch
-        Rebar's "Host" and/or "Hosts" properties specifically. Only Arch Rebar
-        has these properties.
-
-        Returns
-        -------
-        list of <Arch._Structure>
-            The Arch Structures hosting this component.
-        """
-
-        hosts = []
-
-        if hasattr(self,"Object"):
-            for link in self.Object.InList:
-                if hasattr(link,"Host"):
-                    if link.Host:
-                        if link.Host == self.Object:
-                            hosts.append(link)
-                elif hasattr(link,"Hosts"):
-                    for host in link.Hosts:
-                        if host == self.Object:
-                            hosts.append(link)
-        
-        return hosts
 
 
 class ArchSelectionObserver:
@@ -1665,7 +1665,7 @@ class SelectionTaskPanel:
 
     def reject(self):
         """The method run when the user selects the cancel button."""
-        
+
         if hasattr(FreeCAD,"ArchObserver"):
             FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
             del FreeCAD.ArchObserver
@@ -2067,7 +2067,7 @@ class ComponentTaskPanel:
 
     def acceptIfcProperties(self):
         """This method runs as a callback when the user selects the ok button in the IFC editor.
-        
+
         Scrape through the rows of the IFC editor's items, and compare them to
         the object being edited's .IfcData. If the two are different, change
         the object's .IfcData to match the editor's items.
@@ -2164,7 +2164,7 @@ class ComponentTaskPanel:
 
     def addIfcPset(self,idx=0):
         """Add an IFC property set to the object, within the IFC editor.
-        
+
         This method runs as a callback when the user selects a property set
         within the Add property set dropdown.
 
@@ -2270,7 +2270,7 @@ if FreeCAD.GuiUp:
             ----------
             parent: <pyside2.qtwidgets.qwidget>
                 The table cell that is being edited.
-            option: 
+            option:
                 Unused?
             index: <PySide2.QtCore.QModelIndex>
                 The index object of the table of the IFC editor.

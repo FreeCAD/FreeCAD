@@ -33,9 +33,10 @@ import FreeCADGui as Gui
 import Draft_rc  # include resources, icons, ui files
 import DraftVecUtils
 import draftutils.utils as utils
+
+from FreeCAD import Units as U
 from draftutils.messages import _msg, _err, _log
 from draftutils.translate import _tr
-from FreeCAD import Units as U
 
 # The module is used to prevent complaints from code checkers (flake8)
 bool(Draft_rc.__name__)
@@ -186,7 +187,8 @@ class TaskPanelOrthoArray:
                                                self.n_x, self.n_y, self.n_z)
         if self.valid_input:
             self.create_object()
-            self.print_messages()
+            # The internal function already displays messages
+            # self.print_messages()
             self.finish()
 
     def validate_input(self, selection,
@@ -237,14 +239,12 @@ class TaskPanelOrthoArray:
             sel_obj = self.selection[0]
 
         # This creates the object immediately
-        # obj = Draft.makeArray(sel_obj,
-        #                       self.v_x, self.v_y, self.v_z,
-        #                       self.n_x, self.n_y, self.n_z,
-        #                       self.use_link)
-        # if obj:
-        #     obj.Fuse = self.fuse
+        # obj = Draft.make_ortho_array(sel_obj,
+        #                              self.v_x, self.v_y, self.v_z,
+        #                              self.n_x, self.n_y, self.n_z,
+        #                              self.use_link)
 
-        # Instead, we build the commands to execute through the parent
+        # Instead, we build the commands to execute through the caller
         # of this class, the GuiCommand.
         # This is needed to schedule geometry manipulation
         # that would crash Coin3D if done in the event callback.

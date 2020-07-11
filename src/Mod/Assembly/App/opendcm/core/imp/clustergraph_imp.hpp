@@ -27,7 +27,9 @@
 #include <boost/fusion/include/at_c.hpp>
 #include <boost/fusion/include/make_vector.hpp>
 
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
+
+namespace bp = boost::placeholders;
 
 namespace dcm {
 
@@ -686,7 +688,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::downstreamRemo
             re.push_back(* (it.first));
     };
 
-    std::for_each(re.begin(), re.end(), boost::bind(&ClusterGraph::simpleRemoveEdge, this, _1));
+    std::for_each(re.begin(), re.end(), boost::bind(&ClusterGraph::simpleRemoveEdge, this, bp::_1));
 
     //if we have the real vertex here and not only a containing cluster we can delete it
     if(!isCluster(res.first)) {
@@ -751,7 +753,7 @@ template<typename Functor>
 void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeEdge(LocalEdge id, Functor& f) {
 
     std::vector<edge_bundle_single>& vec = fusion::at_c<1> ((*this) [id]);
-    std::for_each(vec.begin(), vec.end(), boost::bind<void> (boost::ref(apply_remove_prediacte<placehoder, ClusterGraph> (f, -1)), _1));
+    std::for_each(vec.begin(), vec.end(), boost::bind<void> (boost::ref(apply_remove_prediacte<placehoder, ClusterGraph> (f, -1)), bp::_1));
     boost::remove_edge(id, *this);
 };
 

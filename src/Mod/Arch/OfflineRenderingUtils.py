@@ -427,6 +427,7 @@ def buildScene(objects,colors=None):
                     if isinstance(color,list):
                         # DiffuseColor, not supported here
                         color = color[0]
+                    color = color[:3]
                     mat = coin.SoMaterial()
                     mat.diffuseColor = color
                     node.insertChild(mat,0)

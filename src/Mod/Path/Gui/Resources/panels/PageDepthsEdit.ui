@@ -7,11 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>345</width>
-    <height>235</height>
+    <height>234</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../Path.qrc">
+    <normaloff>:/icons/Path-Depths.svg</normaloff>:/icons/Path-Depths.svg</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="1">
@@ -78,7 +82,7 @@
       <string>...</string>
      </property>
      <property name="icon">
-      <iconset resource="../../../../../Gui/Icons/resource.qrc">
+      <iconset>
        <normaloff>:/icons/button_left.svg</normaloff>:/icons/button_left.svg</iconset>
      </property>
     </widget>
@@ -92,7 +96,7 @@
       <string>...</string>
      </property>
      <property name="icon">
-      <iconset resource="../../../../../Gui/Icons/resource.qrc">
+      <iconset>
        <normaloff>:/icons/button_left.svg</normaloff>:/icons/button_left.svg</iconset>
      </property>
     </widget>
@@ -165,7 +169,7 @@
  <customwidgets>
   <customwidget>
    <class>Gui::QuantitySpinBox</class>
-   <extends>QDoubleSpinBox</extends>
+   <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
@@ -178,7 +182,7 @@
   <tabstop>finalDepthSet</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../../../Gui/Icons/resource.qrc"/>
+  <include location="../Path.qrc"/>
  </resources>
  <connections/>
 </ui>

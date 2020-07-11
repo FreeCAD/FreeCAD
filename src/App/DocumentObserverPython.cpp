@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "Application.h"
@@ -34,6 +35,7 @@
 #include <Base/Console.h>
 
 using namespace App;
+namespace bp = boost::placeholders;
 
 std::vector<DocumentObserverPython*> DocumentObserverPython::_instances;
 
@@ -72,7 +74,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
         FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
         if (!py##_name1.py.isNone())\
             py##_name1.slot = App::GetApplication().signal##_name2.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name1, this, _1));\
+                    boost::bind(&DocumentObserverPython::slot##_name1, this, bp::_1));\
     }\
     while(0);
 
@@ -80,7 +82,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
         FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
         if (!py##_name1.py.isNone())\
             py##_name1.slot = App::GetApplication().signal##_name2.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name1, this, _1, _2));\
+                    boost::bind(&DocumentObserverPython::slot##_name1, this, bp::_1, bp::_2));\
     }\
     while(0);
 

@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,11 +24,8 @@
 
 # to run the example use:
 """
-from femexamples import boxanalysis as box
-
-box.setup_base()
-box.setup_static()
-box.setup_frequency()
+from femexamples.ccx_cantilever_faceload import setup
+setup()
 
 """
 
@@ -45,15 +43,29 @@ def init_doc(doc=None):
     return doc
 
 
-def setup_base(doc=None, solvertype="ccxtools"):
-    # setup box base model
+def get_information():
+    info = {"name": "CCX cantilever face load",
+            "meshtype": "solid",
+            "meshelement": "Tet10",
+            "constraints": ["fixed", "force"],
+            "solvers": ["calculix", "z88", "elmer"],
+            "material": "solid",
+            "equation": "mechanical"
+            }
+    return info
+
+
+def setup_cantileverbase(doc=None, solvertype="ccxtools"):
+    # setup CalculiX cantilever base model
 
     if doc is None:
         doc = init_doc()
 
     # geometry object
+    # name is important because the other method in this module use obj name
     geom_obj = doc.addObject("Part::Box", "Box")
-    geom_obj.Height = geom_obj.Width = geom_obj.Length = 10
+    geom_obj.Height = geom_obj.Width = 1000
+    geom_obj.Length = 8000
     doc.recompute()
 
     if FreeCAD.GuiUp:
@@ -62,42 +74,6 @@ def setup_base(doc=None, solvertype="ccxtools"):
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
-
-    # material
-    material_object = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
-    )[0]
-    mat = material_object.Material
-    mat["Name"] = "Steel-Generic"
-    mat["YoungsModulus"] = "200000 MPa"
-    mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7900 kg/m^3"
-    material_object.Material = mat
-
-    # mesh
-    from .meshes.mesh_boxanalysis_tetra10 import create_nodes, create_elements
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        doc.addObject("Fem::FemMeshObject", mesh_name)
-    )[0]
-    femmesh_obj.FemMesh = fem_mesh
-
-    doc.recompute()
-    return doc
-
-
-def setup_static(doc=None, solvertype="ccxtools"):
-    # setup box static, add a fixed, force and a pressure constraint
-
-    doc = setup_base(doc, solvertype)
-    geom_obj = doc.Box
-    analysis = doc.Analysis
 
     # solver
     if solvertype == "calculix":
@@ -110,9 +86,17 @@ def setup_static(doc=None, solvertype="ccxtools"):
         )[0]
         solver_object.WorkingDir = u""
     elif solvertype == "elmer":
-        analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
+        solver_object = analysis.addObject(
+            ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        )[0]
+        ObjectsFem.makeEquationElasticity(doc, solver_object)
     elif solvertype == "z88":
         analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Not known or not supported solver type: {}. "
+            "No solver object was created.\n".format(solvertype)
+        )
     if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.SplitInputWriter = False
         solver_object.AnalysisType = "static"
@@ -121,58 +105,56 @@ def setup_static(doc=None, solvertype="ccxtools"):
         solver_object.MatrixSolverType = "default"
         solver_object.IterationsControlParameterTimeUse = False
 
+    # material
+    material_object = analysis.addObject(
+        ObjectsFem.makeMaterialSolid(doc, "FemMaterial")
+    )[0]
+    mat = material_object.Material
+    mat["Name"] = "CalculiX-Steel"
+    mat["YoungsModulus"] = "210000 MPa"
+    mat["PoissonRatio"] = "0.30"
+    mat["Density"] = "7900 kg/m^3"
+    material_object.Material = mat
+
     # fixed_constraint
     fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, name="FemConstraintFixed")
+        ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed")
     )[0]
     fixed_constraint.References = [(geom_obj, "Face1")]
 
-    # force_constraint
-    force_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="FemConstraintForce")
+    # mesh
+    from .meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
+    fem_mesh = Fem.FemMesh()
+    control = create_nodes(fem_mesh)
+    if not control:
+        FreeCAD.Console.PrintError("Error on creating nodes.\n")
+    control = create_elements(fem_mesh)
+    if not control:
+        FreeCAD.Console.PrintError("Error on creating elements.\n")
+    femmesh_obj = analysis.addObject(
+        ObjectsFem.makeMeshGmsh(doc, mesh_name)
     )[0]
-    force_constraint.References = [(geom_obj, "Face6")]
-    force_constraint.Force = 40000.0
-    force_constraint.Direction = (geom_obj, ["Edge5"])
-    force_constraint.Reversed = True
-
-    # pressure_constraint
-    pressure_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintPressure(doc, name="FemConstraintPressure")
-    )[0]
-    pressure_constraint.References = [(geom_obj, "Face2")]
-    pressure_constraint.Pressure = 1000.0
-    pressure_constraint.Reversed = False
+    femmesh_obj.FemMesh = fem_mesh
+    femmesh_obj.Part = geom_obj
+    femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()
     return doc
 
 
-def setup_frequency(doc=None, solvertype="ccxtools"):
-    # setup box frequency, change solver attributes
+def setup(doc=None, solvertype="ccxtools"):
+    # setup CalculiX cantilever, apply 9 MN on surface of front end face
 
-    doc = setup_base(doc, solvertype)
-    analysis = doc.Analysis
+    doc = setup_cantileverbase(doc, solvertype)
 
-    # solver
-    if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
-    elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
-    if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.AnalysisType = "frequency"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
-        solver_object.EigenmodesCount = 10
-        solver_object.EigenmodeHighLimit = 1000000.0
-        solver_object.EigenmodeLowLimit = 0.01
+    # force_constraint
+    force_constraint = doc.Analysis.addObject(
+        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
+    )[0]
+    force_constraint.References = [(doc.Box, "Face2")]
+    force_constraint.Force = 9000000.0
+    force_constraint.Direction = (doc.Box, ["Edge5"])
+    force_constraint.Reversed = True
 
     doc.recompute()
     return doc

@@ -47,7 +47,7 @@
 #include "GeoFeatureGroupExtension.h"
 #include "ComplexGeoData.h"
 #include <App/DocumentObjectPy.h>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 typedef boost::iterator_range<const char*> CharRange;
 
@@ -989,6 +989,11 @@ void DocumentObject::onDocumentRestored()
     callExtension(&DocumentObjectExtension::onExtendedDocumentRestored);
     if(Visibility.testStatus(Property::Output))
         Visibility.setStatus(Property::NoModify,true);
+}
+
+void DocumentObject::onUndoRedoFinished()
+{
+
 }
 
 void DocumentObject::onSettingDocument()

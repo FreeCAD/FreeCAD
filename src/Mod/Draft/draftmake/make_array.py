@@ -1,7 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-# *   Copyright (c) 2020 FreeCAD Developers                                 *
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,29 +20,29 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_array function.
-"""
+"""Provide the code for the Draft make_array function."""
 ## @package make_array
 # \ingroup DRAFT
 # \brief This module provides the code for Draft make_array function.
 
 import FreeCAD as App
-
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
+from draftutils.messages import _wrn, _err
+from draftutils.translate import _tr
 from draftobjects.array import Array
 
-from draftviewproviders.view_draftlink import ViewProviderDraftLink
 if App.GuiUp:
     from draftviewproviders.view_array import ViewProviderDraftArray
+    from draftviewproviders.view_draftlink import ViewProviderDraftLink
 
 
-def make_array(baseobject, arg1, arg2, arg3, arg4=None, 
-               arg5=None, arg6=None, name="Array", use_link=False):
-    """ 
-    Creates a Draft Array of the given object.
-
+def make_array(base_object,
+               arg1, arg2, arg3,
+               arg4=None, arg5=None, arg6=None,
+               use_link=True):
+    """Create a Draft Array of the given object.
 
     Rectangular array
     -----------------
@@ -50,76 +50,101 @@ def make_array(baseobject, arg1, arg2, arg3, arg4=None,
     makeArray(object,xvector,yvector,zvector,xnum,ynum,znum,[name])
 
     xnum of iterations in the x direction
-    at xvector distance between iterations, same for y direction with yvector and ynum,
-    same for z direction with zvector and znum. 
-
+    at xvector distance between iterations, same for y direction
+    with yvector and ynum, same for z direction with zvector and znum.
 
     Polar array
     -----------
     makeArray(object,center,totalangle,totalnum,[name]) for polar array, or
 
-    center is a vector, totalangle is the angle to cover (in degrees) and totalnum 
-    is the number of objects, including the original. 
-    
+    center is a vector, totalangle is the angle to cover (in degrees)
+    and totalnum is the number of objects, including the original.
 
     Circular array
     --------------
     makeArray(object,rdistance,tdistance,axis,center,ncircles,symmetry,[name])
 
     In case of a circular array, rdistance is the distance of the
-    circles, tdistance is the distance within circles, axis the rotation-axes, center the
-    center of rotation, ncircles the number of circles and symmetry the number
-    of symmetry-axis of the distribution. The result is a parametric Draft Array.
-    """
+    circles, tdistance is the distance within circles, axis the rotation-axis,
+    center the center of rotation, ncircles the number of circles
+    and symmetry the number of symmetry-axis of the distribution.
 
-    if not App.ActiveDocument:
-        App.Console.PrintError("No active document. Aborting\n")
-        return
+    To Do
+    -----
+    The `Array` class currently handles three types of arrays,
+    orthogonal, polar, and circular. In the future, probably they should be
+    split in separate classes so that they are easier to manage.
+    """
+    found, doc = utils.find_doc(App.activeDocument())
+    if not found:
+        _err(_tr("No active document. Aborting."))
+        return None
+
     if use_link:
-        obj = App.ActiveDocument.addObject("Part::FeaturePython",name, Array(None),None,True)
+        # The Array class must be called in this special way
+        # to make it a LinkArray
+        new_obj = doc.addObject("Part::FeaturePython", "Array",
+                                Array(None), None, True)
     else:
-        obj = App.ActiveDocument.addObject("Part::FeaturePython",name)
-        Array(obj)
-    obj.Base = baseobject
+        new_obj = doc.addObject("Part::FeaturePython", "Array")
+        Array(new_obj)
+
+    new_obj.Base = base_object
     if arg6:
         if isinstance(arg1, (int, float, App.Units.Quantity)):
-            obj.ArrayType = "circular"
-            obj.RadialDistance = arg1
-            obj.TangentialDistance = arg2
-            obj.Axis = arg3
-            obj.Center = arg4
-            obj.NumberCircles = arg5
-            obj.Symmetry = arg6
+            new_obj.ArrayType = "circular"
+            new_obj.RadialDistance = arg1
+            new_obj.TangentialDistance = arg2
+            new_obj.Axis = arg3
+            new_obj.Center = arg4
+            new_obj.NumberCircles = arg5
+            new_obj.Symmetry = arg6
         else:
-            obj.ArrayType = "ortho"
-            obj.IntervalX = arg1
-            obj.IntervalY = arg2
-            obj.IntervalZ = arg3
-            obj.NumberX = arg4
-            obj.NumberY = arg5
-            obj.NumberZ = arg6
+            new_obj.ArrayType = "ortho"
+            new_obj.IntervalX = arg1
+            new_obj.IntervalY = arg2
+            new_obj.IntervalZ = arg3
+            new_obj.NumberX = arg4
+            new_obj.NumberY = arg5
+            new_obj.NumberZ = arg6
     elif arg4:
-        obj.ArrayType = "ortho"
-        obj.IntervalX = arg1
-        obj.IntervalY = arg2
-        obj.NumberX = arg3
-        obj.NumberY = arg4
+        new_obj.ArrayType = "ortho"
+        new_obj.IntervalX = arg1
+        new_obj.IntervalY = arg2
+        new_obj.NumberX = arg3
+        new_obj.NumberY = arg4
     else:
-        obj.ArrayType = "polar"
-        obj.Center = arg1
-        obj.Angle = arg2
-        obj.NumberPolar = arg3
+        new_obj.ArrayType = "polar"
+        new_obj.Center = arg1
+        new_obj.Angle = arg2
+        new_obj.NumberPolar = arg3
+
     if App.GuiUp:
         if use_link:
-            ViewProviderDraftLink(obj.ViewObject)
+            ViewProviderDraftLink(new_obj.ViewObject)
         else:
-            ViewProviderDraftArray(obj.ViewObject)
-            gui_utils.format_object(obj,obj.Base)
-            if len(obj.Base.ViewObject.DiffuseColor) > 1:
-                obj.ViewObject.Proxy.resetColors(obj.ViewObject)
-        baseobject.ViewObject.hide()
-        gui_utils.select(obj)
-    return obj
+            ViewProviderDraftArray(new_obj.ViewObject)
+            gui_utils.format_object(new_obj, new_obj.Base)
+
+            if hasattr(new_obj.Base.ViewObject, "DiffuseColor"):
+                if len(new_obj.Base.ViewObject.DiffuseColor) > 1:
+                    new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
+
+        new_obj.Base.ViewObject.hide()
+        gui_utils.select(new_obj)
+
+    return new_obj
 
 
-makeArray = make_array
+def makeArray(baseobject,
+              arg1, arg2, arg3,
+              arg4=None, arg5=None, arg6=None,
+              name="Array", use_link=False):
+    """Create an Array. DEPRECATED. Use 'make_array'."""
+    _wrn("Do not use this function directly; instead, use "
+         "'make_ortho_array', 'make_polar_array', "
+         "or 'make_circular_array'.")
+
+    return make_array(baseobject,
+                      arg1, arg2, arg3,
+                      arg4, arg5, arg6, use_link)

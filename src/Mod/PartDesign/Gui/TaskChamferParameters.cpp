@@ -45,6 +45,7 @@
 #include <Base/UnitsApi.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/Tools.h>
 #include <Mod/PartDesign/App/FeatureChamfer.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -113,10 +114,10 @@ void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
     ui->stackedWidget->setFixedHeight(ui->chamferSize2->sizeHint().height());
 
     QFontMetrics fm(ui->typeLabel->font());
-    int minWidth = fm.width(ui->typeLabel->text());
-    minWidth = std::max<int>(minWidth, fm.width(ui->sizeLabel->text()));
-    minWidth = std::max<int>(minWidth, fm.width(ui->size2Label->text()));
-    minWidth = std::max<int>(minWidth, fm.width(ui->angleLabel->text()));
+    int minWidth = Gui::QtTools::horizontalAdvance(fm, ui->typeLabel->text());
+    minWidth = std::max<int>(minWidth, Gui::QtTools::horizontalAdvance(fm, ui->sizeLabel->text()));
+    minWidth = std::max<int>(minWidth, Gui::QtTools::horizontalAdvance(fm, ui->size2Label->text()));
+    minWidth = std::max<int>(minWidth, Gui::QtTools::horizontalAdvance(fm, ui->angleLabel->text()));
     minWidth = minWidth + 5; //spacing
     ui->typeLabel->setMinimumWidth(minWidth);
     ui->sizeLabel->setMinimumWidth(minWidth);

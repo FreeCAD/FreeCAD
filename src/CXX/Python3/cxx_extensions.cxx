@@ -222,7 +222,7 @@ extern "C"
     // All the following functions redirect the call from Python
     // onto the matching virtual function in PythonExtensionBase
     //
-#ifdef PYCXX_PYTHON_2TO3
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
     static int print_handler( PyObject *, FILE *, int );
 #endif
     static PyObject *getattr_handler( PyObject *, char * );
@@ -381,7 +381,11 @@ PythonType::PythonType( size_t basic_size, int itemsize, const char *default_nam
 
     // Methods to implement standard operations
     table->tp_dealloc = (destructor)standard_dealloc;
+#if PY_VERSION_HEX < 0x03080000
     table->tp_print = 0;
+#else
+    table->tp_vectorcall_offset = 0;
+#endif
     table->tp_getattr = 0;
     table->tp_setattr = 0;
     table->tp_repr = 0;
@@ -524,7 +528,9 @@ PythonType &PythonType::supportClass()
 #ifdef PYCXX_PYTHON_2TO3
 PythonType &PythonType::supportPrint()
 {
+#if PY_VERSION_HEX < 0x03080000
     table->tp_print = print_handler;
+#endif
     return *this;
 }
 #endif
@@ -616,7 +622,7 @@ PythonExtensionBase *getPythonExtensionBase( PyObject *self )
     }
 }
 
-#ifdef PYCXX_PYTHON_2TO3
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
 extern "C" int print_handler( PyObject *self, FILE *fp, int flags )
 {
     try

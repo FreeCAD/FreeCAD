@@ -141,10 +141,8 @@ def rotate(objectslist, angle, center=App.Vector(0,0,0),
                     g = newgroups.setdefault(p.Name, App.ActiveDocument.addObject(p.TypeId, p.Name))
                     g.addObject(newobj)
                     break
-    if copy and utils.getType("selectBaseObjects"): # was utils.getType("selectBaseObjects", False)
-        gui_utils.select(objectslist)
-    else:
-        gui_utils.select(newobjlist)
+
+    gui_utils.select(newobjlist)
     if len(newobjlist) == 1: return newobjlist[0]
     return newobjlist
 

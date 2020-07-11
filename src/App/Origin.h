@@ -28,6 +28,7 @@
 #include "GeoFeature.h"
 
 #include "OriginFeature.h"
+#include "GeoFeatureGroupExtension.h"
 #include "PropertyLinks.h"
 
 namespace App
@@ -135,6 +136,17 @@ protected:
     virtual void setupObject ();
     /// Removes all planes and axis if they are still linked to the document
     virtual void unsetupObject ();
+
+private:
+    class OriginExtension : public GeoFeatureGroupExtension {
+        Origin* obj;
+    public:
+        OriginExtension(Origin* obj);
+        void initExtension(ExtensionContainer* obj);
+        bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
+                PyObject **, Base::Matrix4D *, bool, int) const;
+    };
+    OriginExtension extension;
 };
 
 } //namespace App

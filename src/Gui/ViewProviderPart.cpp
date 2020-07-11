@@ -27,7 +27,7 @@
 # include <QApplication>
 # include <QMenu>
 # include <QPixmap>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <Inventor/nodes/SoMaterial.h>
 #endif
 

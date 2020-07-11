@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost_bind_bind.hpp>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -47,6 +48,7 @@ FC_LOG_LEVEL_INIT("App::Link", true,true)
 
 using namespace App;
 using namespace Base;
+namespace bp = boost::placeholders;
 
 class LinkParams: public ParameterGrp::ObserverType {
 public:

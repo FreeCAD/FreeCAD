@@ -19,7 +19,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>&amp;Contents</string>
+        <string>&amp;Content:</string>
        </property>
        <property name="buddy">
         <cstring>cellContent</cstring>
@@ -36,7 +36,7 @@
      <item row="0" column="2">
       <widget class="QLabel" name="alias_label">
        <property name="text">
-        <string>&amp;Alias</string>
+        <string>&amp;Alias:</string>
        </property>
        <property name="buddy">
         <cstring>cellAlias</cstring>
@@ -49,9 +49,8 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-       <string>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </string>
+        <string>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</string>
        </property>
       </widget>
      </item>

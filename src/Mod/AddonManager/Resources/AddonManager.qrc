@@ -52,6 +52,7 @@
         <file>icons/workfeature_workbench_icon.svg</file>
         <file>icons/yaml-workspace_workbench_icon.svg</file>
         <file>icons/OSE3dPrinter_workbench_icon.svg</file>
+        <file>icons/ImportNURBS_workbench_icon.svg</file>
         <file>translations/AddonManager_af.qm</file>
         <file>translations/AddonManager_ar.qm</file>
         <file>translations/AddonManager_ca.qm</file>

@@ -121,12 +121,14 @@ public:
             mat *= linkMat;
             mat.inverse();
             Base::Vector3d pt = mat*Base::Vector3d(msg.x,msg.y,msg.z);
-            const SbVec3f &ptTo = *vp->pcLineCoords->point.getValues(vp->pt0Index);
-            SbVec3f ptFrom(pt.x,pt.y,pt.z);
-            if(ptFrom != ptTo) {
-                vp->pcArrowTransform->pointAt(ptFrom,ptTo);
-                setArrow(vp->pcArrowSwitch);
-                return;
+            if(vp->pcLineCoords->point.getNum() > 0){
+                auto ptTo = vp->pcLineCoords->point.getValues(vp->pt0Index);
+                SbVec3f ptFrom(pt.x,pt.y,pt.z);
+                if(ptTo && ptFrom != *ptTo) {
+                    vp->pcArrowTransform->pointAt(ptFrom,*ptTo);
+                    setArrow(vp->pcArrowSwitch);
+                    return;
+                }
             }
         }
         setArrow();

@@ -146,13 +146,16 @@ protected Q_SLOTS:
     void userInput(const QString & text);
     void openFormulaDialog();
     void finishFormulaDialog();
-    
+    void handlePendingEmit();
+
     //get notified on expression change
     virtual void onChange();
 
 protected:
     virtual StepEnabled stepEnabled() const;
     virtual void showEvent(QShowEvent * event);
+    virtual void hideEvent(QHideEvent * event);
+    virtual void closeEvent(QCloseEvent * event);
     virtual void focusInEvent(QFocusEvent * event);
     virtual void focusOutEvent(QFocusEvent * event);
     virtual void keyPressEvent(QKeyEvent *event);
@@ -160,6 +163,7 @@ protected:
 
 private:
     void updateText(const Base::Quantity&);
+    void updateFromCache(bool);
     QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
     QString getUserString(const Base::Quantity& val) const;
 

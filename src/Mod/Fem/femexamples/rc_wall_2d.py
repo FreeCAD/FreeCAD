@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -48,6 +49,18 @@ def init_doc(doc=None):
     return doc
 
 
+def get_information():
+    info = {"name": "RC Wall 2D",
+            "meshtype": "solid",
+            "meshelement": "Tria6",
+            "constraints": ["fixed", "force", "displacement"],
+            "solvers": ["calculix"],
+            "material": "reinforced",
+            "equation": "mechanical"
+            }
+    return info
+
+
 def setup(doc=None, solvertype="ccxtools"):
     # setup reinfoced wall in 2D
 
@@ -93,6 +106,11 @@ def setup(doc=None, solvertype="ccxtools"):
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver.WorkingDir = u""
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Not known or not supported solver type: {}. "
+            "No solver object was created.\n".format(solvertype)
+        )
     if solvertype == "calculix" or solvertype == "ccxtools":
         solver.SplitInputWriter = False
         solver.AnalysisType = "static"
@@ -159,9 +177,11 @@ def setup(doc=None, solvertype="ccxtools"):
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(
-        doc.addObject("Fem::FemMeshObject", mesh_name)
+        ObjectsFem.makeMeshGmsh(doc, mesh_name)
     )[0]
     femmesh_obj.FemMesh = fem_mesh
+    femmesh_obj.Part = geom_obj
+    femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()
     return doc

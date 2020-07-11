@@ -694,7 +694,7 @@ class Plane:
         if self.weak or force:
             if direction and point:
                 self.alignToPointAndAxis(point, direction, 0, upvec)
-            else:
+            elif FreeCAD.GuiUp:
                 try:
                     import FreeCADGui
                     from pivy import coin

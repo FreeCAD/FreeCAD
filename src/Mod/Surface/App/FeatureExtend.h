@@ -33,7 +33,7 @@ namespace Surface
 
 class SurfaceExport Extend :  public Part::Spline
 {
-    PROPERTY_HEADER(Surface::Extend);
+    PROPERTY_HEADER_WITH_OVERRIDE(Surface::Extend);
 
 public:
     Extend();
@@ -41,14 +41,27 @@ public:
 
     App::PropertyLinkSub Face;
     App::PropertyFloatConstraint Tolerance;
-    App::PropertyFloatConstraint ExtendU;
-    App::PropertyFloatConstraint ExtendV;
+    App::PropertyFloatConstraint ExtendUNeg;
+    App::PropertyFloatConstraint ExtendUPos;
+    App::PropertyBool            ExtendUSymetric;
+    App::PropertyFloatConstraint ExtendVNeg;
+    App::PropertyFloatConstraint ExtendVPos;
+    App::PropertyBool            ExtendVSymetric;
     App::PropertyIntegerConstraint SampleU;
     App::PropertyIntegerConstraint SampleV;
 
     // recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute(void) override;
+    short mustExecute() const override;
+
+protected:
+    virtual void onChanged(const App::Property* prop) override;
+    virtual void handleChangedPropertyName(Base::XMLReader &reader,
+                                           const char * TypeName,
+                                           const char *PropName) override;
+
+private:
+    bool lockOnChangeMutex;
 };
 
 }//Namespace Surface

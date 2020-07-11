@@ -26,7 +26,7 @@
 #ifndef _PreComp_
 # include "InventorAll.h"
 # include <boost/signals2.hpp>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <sstream>
 # include <stdexcept>
 # include <iostream>
@@ -141,6 +141,7 @@
 using namespace Gui;
 using namespace Gui::DockWnd;
 using namespace std;
+namespace bp = boost::placeholders;
 
 
 Application* Application::Instance = 0L;
@@ -150,14 +151,17 @@ namespace Gui {
 // Pimpl class
 struct ApplicationP
 {
-    ApplicationP() :
+    ApplicationP(bool GUIenabled) :
     activeDocument(0L),
     editDocument(0L),
     isClosing(false),
     startingUp(true)
     {
         // create the macro manager
-        macroMngr = new MacroManager();
+        if (GUIenabled)
+            macroMngr = new MacroManager();
+        else
+            macroMngr = nullptr;
     }
 
     ~ApplicationP()
@@ -204,8 +208,16 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
                 vp->setDisplayMode(modes.front().c_str());
             node = vp->getRoot()->copy();
             node->ref();
-            std::string type = "So";
-            type += node->getTypeId().getName().getString();
+            std::string prefix = "So";
+            std::string type = node->getTypeId().getName().getString();
+            // doesn't start with the prefix 'So'
+            if (type.rfind("So", 0) != 0) {
+                type = prefix + type;
+            }
+            else if (type == "SoFCSelectionRoot") {
+                type = "SoSeparator";
+            }
+
             type += " *";
             PyObject* proxy = 0;
             proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", type.c_str(), (void*)node, 1);
@@ -220,6 +232,48 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
 
     Py_INCREF(Py_None);
     return Py_None;
+}
+
+static PyObject *
+FreeCADGui_exportSubgraph(PyObject * /*self*/, PyObject *args)
+{
+    const char* format = "VRML";
+    PyObject* proxy;
+    PyObject* output;
+    if (!PyArg_ParseTuple(args, "OO|s", &proxy, &output, &format))
+        return nullptr;
+
+    void* ptr = 0;
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
+        SoNode* node = reinterpret_cast<SoNode*>(ptr);
+        if (node) {
+            std::string formatStr(format);
+            std::string buffer;
+
+            if (formatStr == "VRML") {
+                SoFCDB::writeToVRML(node, buffer);
+            }
+            else if (formatStr == "IV") {
+                buffer = SoFCDB::writeNodesToString(node);
+            }
+            else {
+                throw Base::ValueError("Unsupported format");
+            }
+
+            Base::PyStreambuf buf(output);
+            std::ostream str(0);
+            str.rdbuf(&buf);
+            str << buffer;
+        }
+
+        Py_INCREF(Py_None);
+        return Py_None;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return nullptr;
+    }
 }
 
 static PyObject *
@@ -285,6 +339,10 @@ struct PyMethodDef FreeCADGui_methods[] = {
     {"subgraphFromObject",FreeCADGui_subgraphFromObject,METH_VARARGS,
      "subgraphFromObject(object) -> Node\n\n"
      "Return the Inventor subgraph to an object"},
+    {"exportSubgraph",FreeCADGui_exportSubgraph,METH_VARARGS,
+     "exportSubgraph(Node, File or Buffer, [Format='VRML']) -> None\n\n"
+     "Exports the sub-graph in the requested format"
+     "The format string can be VRML or IV"},
     {"getSoDBVersion",FreeCADGui_getSoDBVersion,METH_VARARGS,
      "getSoDBVersion() -> String\n\n"
      "Return a text string containing the name\n"
@@ -298,12 +356,12 @@ Application::Application(bool GUIenabled)
 {
     //App::GetApplication().Attach(this);
     if (GUIenabled) {
-        App::GetApplication().signalNewDocument.connect(boost::bind(&Gui::Application::slotNewDocument, this, _1, _2));
-        App::GetApplication().signalDeleteDocument.connect(boost::bind(&Gui::Application::slotDeleteDocument, this, _1));
-        App::GetApplication().signalRenameDocument.connect(boost::bind(&Gui::Application::slotRenameDocument, this, _1));
-        App::GetApplication().signalActiveDocument.connect(boost::bind(&Gui::Application::slotActiveDocument, this, _1));
-        App::GetApplication().signalRelabelDocument.connect(boost::bind(&Gui::Application::slotRelabelDocument, this, _1));
-        App::GetApplication().signalShowHidden.connect(boost::bind(&Gui::Application::slotShowHidden, this, _1));
+        App::GetApplication().signalNewDocument.connect(boost::bind(&Gui::Application::slotNewDocument, this, bp::_1, bp::_2));
+        App::GetApplication().signalDeleteDocument.connect(boost::bind(&Gui::Application::slotDeleteDocument, this, bp::_1));
+        App::GetApplication().signalRenameDocument.connect(boost::bind(&Gui::Application::slotRenameDocument, this, bp::_1));
+        App::GetApplication().signalActiveDocument.connect(boost::bind(&Gui::Application::slotActiveDocument, this, bp::_1));
+        App::GetApplication().signalRelabelDocument.connect(boost::bind(&Gui::Application::slotRelabelDocument, this, bp::_1));
+        App::GetApplication().signalShowHidden.connect(boost::bind(&Gui::Application::slotShowHidden, this, bp::_1));
 
         App::GetApplication().signalFinishOpenDocument.connect([]() {
             std::vector<App::Document*> docs;
@@ -480,7 +538,7 @@ Application::Application(bool GUIenabled)
     View3DInventorViewerPy      ::init_type();
     AbstractSplitViewPy         ::init_type();
 
-    d = new ApplicationP;
+    d = new ApplicationP(GUIenabled);
 
     // global access
     Instance = this;
@@ -755,13 +813,13 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     d->documents[&Doc] = pDoc;
 
     // connect the signals to the application for the new document
-    pDoc->signalNewObject.connect(boost::bind(&Gui::Application::slotNewObject, this, _1));
-    pDoc->signalDeletedObject.connect(boost::bind(&Gui::Application::slotDeletedObject, this, _1));
-    pDoc->signalChangedObject.connect(boost::bind(&Gui::Application::slotChangedObject, this, _1, _2));
-    pDoc->signalRelabelObject.connect(boost::bind(&Gui::Application::slotRelabelObject, this, _1));
-    pDoc->signalActivatedObject.connect(boost::bind(&Gui::Application::slotActivatedObject, this, _1));
-    pDoc->signalInEdit.connect(boost::bind(&Gui::Application::slotInEdit, this, _1));
-    pDoc->signalResetEdit.connect(boost::bind(&Gui::Application::slotResetEdit, this, _1));
+    pDoc->signalNewObject.connect(boost::bind(&Gui::Application::slotNewObject, this, bp::_1));
+    pDoc->signalDeletedObject.connect(boost::bind(&Gui::Application::slotDeletedObject, this, bp::_1));
+    pDoc->signalChangedObject.connect(boost::bind(&Gui::Application::slotChangedObject, this, bp::_1, bp::_2));
+    pDoc->signalRelabelObject.connect(boost::bind(&Gui::Application::slotRelabelObject, this, bp::_1));
+    pDoc->signalActivatedObject.connect(boost::bind(&Gui::Application::slotActivatedObject, this, bp::_1));
+    pDoc->signalInEdit.connect(boost::bind(&Gui::Application::slotInEdit, this, bp::_1));
+    pDoc->signalResetEdit.connect(boost::bind(&Gui::Application::slotResetEdit, this, bp::_1));
 
     signalNewDocument(*pDoc, isMainDoc);
     if(isMainDoc)

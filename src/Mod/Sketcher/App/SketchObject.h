@@ -56,7 +56,7 @@ class SketchAnalysis;
 
 class SketcherExport SketchObject : public Part::Part2DObject
 {
-    PROPERTY_HEADER(Sketcher::SketchObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Sketcher::SketchObject);
 
 public:
     SketchObject();
@@ -70,12 +70,12 @@ public:
     Part    ::PropertyGeometryList   ExternalGeo;
     /** @name methods override Feature */
     //@{
-    short mustExecute() const;
+    short mustExecute() const override;
     /// recalculate the Feature (if no recompute is needed see also solve() and solverNeedsUpdate boolean)
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute(void) override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "SketcherGui::ViewProviderSketch";
     }
     //@}
@@ -319,18 +319,18 @@ public:
     int port_reversedExternalArcs(bool justAnalyze);
 
     // from base class
-    virtual PyObject *getPyObject(void);
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+    virtual PyObject *getPyObject(void) override;
+    virtual unsigned int getMemSize(void) const override;
+    virtual void Save(Base::Writer &/*writer*/) const override;
+    virtual void Restore(Base::XMLReader &/*reader*/) override;
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
     /// returns the number of construction lines (to be used as axes)
-    virtual int getAxisCount(void) const;
+    virtual int getAxisCount(void) const override;
     /// retrieves an axis iterating through the construction lines of the sketch (indices start at 0)
-    virtual Base::Axis getAxis(int axId) const;
+    virtual Base::Axis getAxis(int axId) const override;
     /// verify and accept the assigned geometry
-    virtual void acceptGeometry();
+    virtual void acceptGeometry() override;
     /// Check if constraint has invalid indexes
     bool evaluateConstraint(const Constraint *constraint) const;
     /// Check for constraints with invalid indexes
@@ -396,7 +396,7 @@ public:
     bool isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn = 0) const;
 
     virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0, 
-            Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
+            Base::Matrix4D *mat=0, bool transform=true, int depth=0) const override;
 
     std::vector<std::string> checkSubNames(const std::vector<std::string> &) const;
     std::string checkSubName(const char *) const;
@@ -424,6 +424,7 @@ public:
     virtual std::pair<std::string,std::string> getElementName(
             const char *name, ElementNameType type) const;
 
+    bool isPerformingInternalTransaction() const {return internaltransaction;};
 public:
     // Analyser functions
     int autoConstraint(double precision = Precision::Confusion() * 1000, double angleprecision = M_PI/20, bool includeconstruction = true);
@@ -458,11 +459,11 @@ protected:
 
     void buildShape();
     /// get called by the container when a property has changed
-    virtual void onChanged(const App::Property* /*prop*/);
-    virtual void onDocumentRestored();
-    virtual void restoreFinished();
+    virtual void onChanged(const App::Property* /*prop*/) override;
+    virtual void onDocumentRestored() override;
+    virtual void restoreFinished() override;
 
-    virtual void setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr);
+    virtual void setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr) override;
 
     std::string validateExpression(const App::ObjectIdentifier &path, boost::shared_ptr<const App::Expression> expr);
 
@@ -484,11 +485,13 @@ protected:
 
     void initExternalGeo();
 
-    virtual void onUpdateElementReference(const App::Property *);
+    virtual void onUpdateElementReference(const App::Property *) override;
 
     void delExternalPrivate(const std::set<long> &ids, bool removeReference);
 
     void updateGeometryRefs();
+
+    virtual void onUndoRedoFinished() override;
 
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
@@ -544,6 +547,10 @@ private:
     std::unique_ptr<GeoHistory> geoHistory;
 
     SketchAnalysis * analyser;
+
+    bool internaltransaction;
+
+    bool managedoperation; // indicates whether changes to properties are the deed of SketchObject or not (for input validation)
 };
 
 typedef App::FeaturePythonT<SketchObject> SketchObjectPython;
