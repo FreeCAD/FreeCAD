@@ -1395,23 +1395,10 @@ void Document::RestoreDocFile(Base::Reader &reader)
         else
             saveCameraSettings(xmlReader.readCharacters().c_str());
 
-        if(cameraSettings.size()) {
-            try {
-                const char** pReturnIgnore=0;
-                std::list<MDIView*> mdi = getMDIViews();
-                for (std::list<MDIView*>::iterator it = mdi.begin(); it != mdi.end(); ++it) {
-                    if ((*it)->onHasMsg("SetCamera"))
-                        (*it)->onMsg(cameraSettings.c_str(), pReturnIgnore);
-                }
-            }
-            catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
-            }
-        }
-
         d->_savedViews.clear();
+        d->_savedViews.emplace_back(cameraId, cameraBinding, std::string(cameraSettings));
+
         if(cameraExtra) {
-            d->_savedViews.emplace_back(cameraId, cameraBinding, std::string(cameraSettings));
             for(int i=0; i<cameraExtra; ++i) {
                 xmlReader.readElement("CameraExtra");
                 int id = xmlReader.getAttributeAsInteger("id");
@@ -1419,34 +1406,6 @@ void Document::RestoreDocFile(Base::Reader &reader)
                 std::string settings;
                 saveCameraSettings(xmlReader.readCharacters().c_str(),&settings);
                 d->_savedViews.emplace_back(id, binding, std::move(settings));
-            }
-
-            auto views = getMDIViewsOfType(View3DInventor::getClassTypeId());
-            if(views.size()) {
-                while(views.size() < d->_savedViews.size())
-                    views.push_back(createView(View3DInventor::getClassTypeId()));
-
-                std::map<int,View3DInventor*> viewMap;
-                size_t i=0;
-                for(auto v : views) {
-                    if(i == d->_savedViews.size())
-                        break;
-                    auto &info = d->_savedViews[i++];
-                    auto view = static_cast<View3DInventor*>(v);
-                    const char *ppReturn = 0;
-                    view->onMsg(info.settings.c_str(), &ppReturn);
-                    viewMap[info.id] = view;
-                }
-                i=0;
-                for(auto v : views) {
-                    if(i == d->_savedViews.size())
-                        break;
-                    auto &info = d->_savedViews[i++];
-                    auto view = static_cast<View3DInventor*>(v);
-                    auto it = viewMap.find(info.binding);
-                    if(it != viewMap.end())
-                        view->bindCamera(it->second->getCamera());
-                }
             }
         }
     }
@@ -1504,6 +1463,34 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
         ViewProvider* viewProvider = getViewProvider(act);
         if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
             signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
+        }
+    }
+
+    auto views = getMDIViewsOfType(View3DInventor::getClassTypeId());
+    if(views.size()) {
+        while(views.size() < d->_savedViews.size())
+            views.push_back(createView(View3DInventor::getClassTypeId()));
+
+        std::map<int,View3DInventor*> viewMap;
+        size_t i=0;
+        for(auto v : views) {
+            if(i == d->_savedViews.size())
+                break;
+            auto &info = d->_savedViews[i++];
+            auto view = static_cast<View3DInventor*>(v);
+            const char *ppReturn = 0;
+            view->onMsg(info.settings.c_str(), &ppReturn);
+            viewMap[info.id] = view;
+        }
+        i=0;
+        for(auto v : views) {
+            if(i == d->_savedViews.size())
+                break;
+            auto &info = d->_savedViews[i++];
+            auto view = static_cast<View3DInventor*>(v);
+            auto it = viewMap.find(info.binding);
+            if(it != viewMap.end())
+                view->bindCamera(it->second->getCamera());
         }
     }
 
