@@ -226,3 +226,14 @@ bool Origin::OriginExtension::extensionGetSubObject(DocumentObject *&ret, const 
         return false;
     }
 }
+
+void Origin::Save(Base::Writer& writer) const
+{
+    // Skip ExtensionContainer::Save() to NOT save the private extension
+    App::PropertyContainer::Save(writer);
+}
+
+void Origin::Restore(Base::XMLReader& reader)
+{
+    App::PropertyContainer::Restore(reader);
+}
