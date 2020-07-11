@@ -245,6 +245,7 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/constraint_contact_solid_solid.FCStd
     femtest/data/calculix/constraint_contact_solid_solid.inp
     femtest/data/calculix/constraint_sectionprint.inp
+    femtest/data/calculix/constraint_selfweight_cantilever.inp
     femtest/data/calculix/constraint_tie.inp
     femtest/data/calculix/material_multiple_bendingbeam_fiveboxes.inp
     femtest/data/calculix/material_multiple_bendingbeam_fivefaces.inp
