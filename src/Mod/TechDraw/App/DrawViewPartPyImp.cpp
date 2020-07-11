@@ -193,7 +193,6 @@ PyObject* DrawViewPartPy::makeCosmeticVertex3d(PyObject *args)
 //get by unique tag
 PyObject* DrawViewPartPy::getCosmeticVertex(PyObject *args)
 {
-//    Base::Console().Message("DVPP::getCosmeticVertex()\n");
     PyObject* result = nullptr;
     char* id;                      //unique tag
     if (!PyArg_ParseTuple(args, "s", &id)) {
@@ -212,7 +211,6 @@ PyObject* DrawViewPartPy::getCosmeticVertex(PyObject *args)
 //get by selection name 
 PyObject* DrawViewPartPy::getCosmeticVertexBySelection(PyObject *args)
 {
-//    Base::Console().Message("DVPP::getCosmeticVertexBySelection()\n");
     PyObject* result = nullptr;
     char* selName;           //Selection routine name - "Vertex0"
     if (!PyArg_ParseTuple(args, "s", &selName)) {
@@ -231,7 +229,6 @@ PyObject* DrawViewPartPy::getCosmeticVertexBySelection(PyObject *args)
 
 PyObject* DrawViewPartPy::removeCosmeticVertex(PyObject *args)
 {
-//    Base::Console().Message("DVPP::removeCosmeticVertex()\n");
     DrawViewPart* dvp = getDrawViewPartPtr();
     if (dvp == nullptr) {
         return Py_None;
@@ -285,17 +282,6 @@ PyObject* DrawViewPartPy::replaceCosmeticVertex(PyObject *args)
     Base::Console().Message("DVPP::replaceCosmeticVertex() - deprecated. do not use.\n");
     return PyBool_FromLong(0l);
     
-//    PyObject* pNewCV = nullptr;
-//    if (!PyArg_ParseTuple(args, "O!", &(TechDraw::CosmeticVertexPy::Type), &pNewCV)) {
-//        throw Py::TypeError("expected (CosmeticVertex)");
-//    }
-//    DrawViewPart* dvp = getDrawViewPartPtr();
-//    TechDraw::CosmeticVertexPy* cvPy = static_cast<TechDraw::CosmeticVertexPy*>(pNewCV);
-//    TechDraw::CosmeticVertex* cv = cvPy->getCosmeticVertexPtr();
-//    bool result = dvp->replaceCosmeticVertex(cv);
-//    dvp->refreshCVGeoms();
-//    dvp->requestPaint();
-//    return PyBool_FromLong((long) result);
 }
 
 
@@ -318,14 +304,11 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
-    //points inverted in addCosmeticEdge(p1, p2)
     Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
     Base::Vector3d pnt2 = static_cast<Base::VectorPy*>(pPnt2)->value();
     std::string newTag = dvp->addCosmeticEdge(pnt1, pnt2);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce != nullptr) {
-        ce->permaStart = pnt1;
-        ce->permaEnd   = pnt2;
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
         if (pColor == nullptr) {
@@ -348,8 +331,6 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
 {
     PyObject* pPnt1 = nullptr;
     double radius = 5.0;
-//    double angle1 = 0.0;
-//    double angle2 = 360.0;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
     App::Color defCol = LineFormat::getDefEdgeColor();
@@ -368,8 +349,6 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
     std::string newTag = dvp->addCosmeticEdge(bg);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce != nullptr) {
-        ce->permaStart = pnt1;
-        ce->permaEnd   = pnt1;
         ce->permaRadius = radius;
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
@@ -413,8 +392,6 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     std::string newTag = dvp->addCosmeticEdge(bg);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce != nullptr) {
-        ce->permaStart = pnt1;
-        ce->permaEnd   = pnt1;
         ce->permaRadius = radius;
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;

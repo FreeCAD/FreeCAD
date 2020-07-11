@@ -346,13 +346,14 @@ CosmeticEdge::CosmeticEdge()
     initialize();
 }
 
-//TODO: set permaStart/permaEnd in ctors. Need scale. 
 CosmeticEdge::CosmeticEdge(CosmeticEdge* ce)
 {
 //    Base::Console().Message("CE::CE(ce)\n");
     TechDraw::BaseGeom* newGeom = ce->m_geometry->copy();
+    //these endpoints are already YInverted
     permaStart = ce->permaStart;
-    permaEnd   = ce->permaEnd;      
+    permaEnd   = ce->permaEnd;
+    permaRadius = ce->permaRadius; 
     m_geometry = newGeom;
     m_format   = ce->m_format;
     initialize();
@@ -376,8 +377,16 @@ CosmeticEdge::CosmeticEdge(TopoDS_Edge e)
 {
 //    Base::Console().Message("CE::CE(TopoDS_Edge)\n");
     m_geometry = TechDraw::BaseGeom::baseFactory(e);
+    //we assume input edge is already in Yinverted coordinates
     permaStart = m_geometry->getStartPoint();
     permaEnd   = m_geometry->getEndPoint();
+    if ((m_geometry->geomType == TechDraw::GeomType::CIRCLE) ||
+        (m_geometry->geomType == TechDraw::GeomType::ARCOFCIRCLE) ) {
+       TechDraw::Circle* circ = static_cast<TechDraw::Circle*>(m_geometry);
+       permaStart  = circ->center;
+       permaEnd    = circ->center;
+       permaRadius = circ->radius;
+    } 
     initialize();
 }
 
@@ -387,6 +396,13 @@ CosmeticEdge::CosmeticEdge(TechDraw::BaseGeom* g)
     m_geometry = g;
     permaStart = m_geometry->getStartPoint();
     permaEnd   = m_geometry->getEndPoint();
+    if ((g->geomType == TechDraw::GeomType::CIRCLE) ||
+       (g->geomType == TechDraw::GeomType::ARCOFCIRCLE)) {
+       TechDraw::Circle* circ = static_cast<TechDraw::Circle*>(g);
+       permaStart  = circ->center;
+       permaEnd    = circ->center;
+       permaRadius = circ->radius;
+    } 
     initialize();
 }
 
@@ -407,14 +423,6 @@ void CosmeticEdge::initialize(void)
     createNewTag();
     m_geometry->setCosmeticTag(getTagAsString());
 }
-
-//why is this needed?  isn't permaxxxx always unscaled??
-//void CosmeticEdge::unscaleEnds(double scale)
-//{
-//    permaStart = permaStart / scale;
-//    permaEnd   = permaEnd   / scale;
-//    permaRadius = permaRadius / scale;
-//}
 
 TechDraw::BaseGeom* CosmeticEdge::scaledGeometry(double scale)
 {
