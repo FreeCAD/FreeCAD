@@ -60,6 +60,9 @@ def setup(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever
     # apply a prescribed displacement of 250 mm in -z on the front end face
 
+    if solvertype == "z88":
+        solvertype = "z88_not_valid"
+
     doc = setup_cantileverbase(doc, solvertype)
 
     # displacement_constraint
