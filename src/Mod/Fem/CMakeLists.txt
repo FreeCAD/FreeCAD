@@ -51,6 +51,7 @@ SET(FemExamples_SRCS
     femexamples/constraint_contact_shell_shell.py
     femexamples/constraint_contact_solid_solid.py
     femexamples/constraint_section_print.py
+    femexamples/constraint_selfweight_cantilever.py
     femexamples/constraint_tie.py
     femexamples/examplesgui.py
     femexamples/manager.py
@@ -77,6 +78,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_multibodybeam_tria6.py
     femexamples/meshes/mesh_rc_wall_2d_tria6.py
     femexamples/meshes/mesh_section_print_tetra10.py
+    femexamples/meshes/mesh_selfweight_cantilever_tetra10.py
     femexamples/meshes/mesh_platewithhole_tetra10.py
     femexamples/meshes/mesh_thermomech_bimetall_tetra10.py
     femexamples/meshes/mesh_thermomech_flow1d_seg3.py
