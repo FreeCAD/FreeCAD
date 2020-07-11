@@ -513,7 +513,7 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
 {
     if (event->text() == QString::fromUtf8("=") && isBound())
         openFormulaDialog();
-    else if (!hasExpression())
+    else
         QAbstractSpinBox::keyPressEvent(event);
 }
 
