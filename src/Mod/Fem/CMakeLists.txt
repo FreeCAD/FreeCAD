@@ -54,7 +54,9 @@ SET(FemExamples_SRCS
     femexamples/constraint_tie.py
     femexamples/examplesgui.py
     femexamples/manager.py
-    femexamples/material_multiple_twoboxes.py
+    femexamples/material_multiple_bendingbeam_fiveboxes.py
+    femexamples/material_multiple_bendingbeam_fivefaces.py
+    femexamples/material_multiple_tensionrod_twoboxes.py
     femexamples/material_nl_platewithhole.py
     femexamples/rc_wall_2d.py
     femexamples/thermomech_bimetall.py
@@ -71,6 +73,8 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_constraint_tie_tetra10.py
     femexamples/meshes/mesh_contact_box_halfcylinder_tetra10.py
     femexamples/meshes/mesh_contact_tube_tube_tria3.py
+    femexamples/meshes/mesh_multibodybeam_tetra10.py
+    femexamples/meshes/mesh_multibodybeam_tria6.py
     femexamples/meshes/mesh_rc_wall_2d_tria6.py
     femexamples/meshes/mesh_section_print_tetra10.py
     femexamples/meshes/mesh_platewithhole_tetra10.py
@@ -217,46 +221,52 @@ SET(FemTestsFiles_SRCS
 )
 
 SET(FemTestsCcx_SRCS
-    femtest/data/ccx/__init__.py
-    femtest/data/ccx/canti_ccx_faceload_hexa20.inp
-    femtest/data/ccx/constraint_contact_shell_shell.FCStd
-    femtest/data/ccx/constraint_contact_shell_shell.inp
-    femtest/data/ccx/constraint_contact_solid_solid.FCStd
-    femtest/data/ccx/constraint_contact_solid_solid.inp
-    femtest/data/ccx/constraint_sectionprint.inp
-    femtest/data/ccx/constraint_tie.inp
-    femtest/data/ccx/cube_frequency.inp
-    femtest/data/ccx/cube_frequency.dat
-    femtest/data/ccx/cube_frequency.frd
-    femtest/data/ccx/cube_frequency_expected_values
-    femtest/data/ccx/cube_frequency.FCStd
-    femtest/data/ccx/cube_static.inp
-    femtest/data/ccx/cube_static.dat
-    femtest/data/ccx/cube_static.frd
-    femtest/data/ccx/cube_static_expected_values
-    femtest/data/ccx/cube_static.FCStd
-    femtest/data/ccx/cube.FCStd
-    femtest/data/ccx/mat_multiple.inp
-    femtest/data/ccx/mat_nonlinear.inp
-    femtest/data/ccx/spine_thermomech.inp
-    femtest/data/ccx/spine_thermomech.dat
-    femtest/data/ccx/spine_thermomech.frd
-    femtest/data/ccx/spine_thermomech_expected_values
-    femtest/data/ccx/spine_thermomech.FCStd
-    femtest/data/ccx/Flow1D_thermomech.inp
-    femtest/data/ccx/Flow1D_thermomech.dat
-    femtest/data/ccx/Flow1D_thermomech.frd
-    femtest/data/ccx/Flow1D_thermomech_expected_values
-    femtest/data/ccx/Flow1D_thermomech_inout_nodes.txt
-    femtest/data/ccx/Flow1D_thermomech.FCStd
-    femtest/data/ccx/thermomech_bimetall.inp
+    femtest/data/calculix/__init__.py
+    femtest/data/calculix/box_frequency.inp
+    femtest/data/calculix/box_frequency.dat
+    femtest/data/calculix/box_frequency.frd
+    femtest/data/calculix/box_frequency_expected_values
+    femtest/data/calculix/box_frequency.FCStd
+    femtest/data/calculix/box_static.inp
+    femtest/data/calculix/box_static.dat
+    femtest/data/calculix/box_static.frd
+    femtest/data/calculix/box_static_expected_values
+    femtest/data/calculix/box_static.FCStd
+    femtest/data/calculix/box.FCStd
+    femtest/data/calculix/ccxcantilever_faceload.inp
+    femtest/data/calculix/ccxcantilever_hexa20.inp
+    femtest/data/calculix/ccxcantilever_nodeload.inp
+    femtest/data/calculix/ccxcantilever_prescribeddisplacement.inp
+    femtest/data/calculix/constraint_contact_shell_shell.FCStd
+    femtest/data/calculix/constraint_contact_shell_shell.inp
+    femtest/data/calculix/constraint_contact_solid_solid.FCStd
+    femtest/data/calculix/constraint_contact_solid_solid.inp
+    femtest/data/calculix/constraint_sectionprint.inp
+    femtest/data/calculix/constraint_tie.inp
+    femtest/data/calculix/material_multiple_bendingbeam_fiveboxes.inp
+    femtest/data/calculix/material_multiple_bendingbeam_fivefaces.inp
+    femtest/data/calculix/material_multiple_tensionrod_twoboxes.inp
+    femtest/data/calculix/material_nonlinear.inp
+    femtest/data/calculix/thermomech_bimetall.inp
+    femtest/data/calculix/thermomech_flow1D.inp
+    femtest/data/calculix/thermomech_flow1D.dat
+    femtest/data/calculix/thermomech_flow1D.frd
+    femtest/data/calculix/thermomech_flow1D_expected_values
+    femtest/data/calculix/thermomech_flow1D_inout_nodes.txt
+    femtest/data/calculix/thermomech_flow1D.FCStd
+    femtest/data/calculix/thermomech_spine.inp
+    femtest/data/calculix/thermomech_spine.dat
+    femtest/data/calculix/thermomech_spine.frd
+    femtest/data/calculix/thermomech_spine_expected_values
+    femtest/data/calculix/thermomech_spine.FCStd
 )
 
 SET(FemTestsElmer_SRCS
     femtest/data/elmer/__init__.py
-    femtest/data/elmer/case_mm.sif
-    femtest/data/elmer/elmer_ccxcanti_faceload_mm.sif
-    femtest/data/elmer/elmer_ccxcanti_nodeload_mm.sif
+    femtest/data/elmer/box_static_mm.sif
+    femtest/data/elmer/ccxcantilever_faceload_mm.sif
+    femtest/data/elmer/ccxcantilever_nodeload_mm.sif
+    femtest/data/elmer/ccxcantilever_prescribeddisplacement_mm.sif
     femtest/data/elmer/group_mesh.geo
     femtest/data/elmer/ELMERSOLVER_STARTINFO
 )
@@ -338,7 +348,7 @@ INSTALL(FILES ${FemSolverZ88_SRCS} DESTINATION Mod/Fem/femsolver/z88)
 INSTALL(FILES ${FemTests_SRCS} DESTINATION Mod/Fem/femtest)
 INSTALL(FILES ${FemTestsApp_SRCS} DESTINATION Mod/Fem/femtest/app)
 INSTALL(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/data)
-INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/data/ccx)
+INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/data/calculix)
 INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/data/elmer)
 INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
 INSTALL(FILES ${FemTestsOpen_SRCS} DESTINATION Mod/Fem/femtest/data/open)

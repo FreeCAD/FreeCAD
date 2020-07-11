@@ -211,6 +211,11 @@ void QGISectionLine::makeSymbolsTrad()
 
     QPointF posSymbol2 = m_arrow2->pos() + qAdjust;
     m_symbol2->centerAt(posSymbol2);
+
+    m_symbol1->setTransformOriginPoint(m_symbol1->mapFromParent(posSymbol1));
+    m_symbol1->setRotation(360.0 - rotation());
+    m_symbol2->setTransformOriginPoint(m_symbol2->mapFromParent(posSymbol2));
+    m_symbol2->setRotation(360.0 - rotation());
 }
 
 void QGISectionLine::makeSymbolsISO()
@@ -246,6 +251,12 @@ void QGISectionLine::makeSymbolsISO()
 
     m_symbol1->centerAt(symPosStart);
     m_symbol2->centerAt(symPosEnd);
+
+    m_symbol1->setTransformOriginPoint(m_symbol1->mapFromParent(symPosStart));
+    m_symbol1->setRotation(360.0 - rotation());
+    m_symbol2->setTransformOriginPoint(m_symbol2->mapFromParent(symPosEnd));
+    m_symbol2->setRotation(360.0 - rotation());
+
 }
 
 void QGISectionLine::extensionEndsTrad()

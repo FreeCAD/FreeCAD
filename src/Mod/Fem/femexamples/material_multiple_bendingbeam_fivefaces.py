@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
-# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -24,9 +23,8 @@
 
 # to run the example use:
 """
-from femexamples.ccx_cantilever_faceload import setup
+from femexamples.material_multiple_bendingbeam_fivefaces import setup
 setup()
-
 """
 
 import FreeCAD
@@ -44,28 +42,55 @@ def init_doc(doc=None):
 
 
 def get_information():
-    info = {"name": "CCX cantilever face load",
+    info = {"name": "Multimaterial bending beam 5 faces",
             "meshtype": "solid",
-            "meshelement": "Tet10",
+            "meshelement": "Tria6",
             "constraints": ["fixed", "force"],
-            "solvers": ["calculix", "z88", "elmer"],
+            "solvers": ["calculix"],
             "material": "solid",
             "equation": "mechanical"
             }
     return info
 
 
-def setup_cantileverbase(doc=None, solvertype="ccxtools"):
-    # setup CalculiX cantilever base model
+def setup(doc=None, solvertype="ccxtools"):
 
     if doc is None:
         doc = init_doc()
 
     # geometry object
     # name is important because the other method in this module use obj name
-    geom_obj = doc.addObject("Part::Box", "Box")
-    geom_obj.Height = geom_obj.Width = 1000
-    geom_obj.Length = 8000
+    # parts
+    face_obj1 = doc.addObject('Part::Plane', 'Face1')
+    face_obj1.Width = 10
+    face_obj1.Length = 20
+    face_obj2 = doc.addObject('Part::Plane', 'Face2')
+    face_obj2.Width = 10
+    face_obj2.Length = 20
+    face_obj2.Placement.Base = (20, 0, 0)
+    face_obj3 = doc.addObject('Part::Plane', 'Face3')
+    face_obj3.Width = 10
+    face_obj3.Length = 20
+    face_obj3.Placement.Base = (40, 0, 0)
+    face_obj4 = doc.addObject('Part::Plane', 'Face4')
+    face_obj4.Width = 10
+    face_obj4.Length = 20
+    face_obj4.Placement.Base = (60, 0, 0)
+    face_obj5 = doc.addObject('Part::Plane', 'Face5')
+    face_obj5.Width = 10
+    face_obj5.Length = 20
+    face_obj5.Placement.Base = (80, 0, 0)
+    doc.recompute()
+
+    # make a Shell out of the facees, to be able to remesh with GUI
+    geom_obj = doc.addObject("Part::MultiFuse", "Fusion")
+    geom_obj.Shapes = [face_obj1, face_obj2, face_obj3, face_obj4, face_obj5]
+    if FreeCAD.GuiUp:
+        face_obj1.ViewObject.hide()
+        face_obj2.ViewObject.hide()
+        face_obj3.ViewObject.hide()
+        face_obj4.ViewObject.hide()
+        face_obj5.ViewObject.hide()
     doc.recompute()
 
     if FreeCAD.GuiUp:
@@ -85,13 +110,6 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver_object.WorkingDir = u""
-    elif solvertype == "elmer":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverElmer(doc, "SolverElmer")
-        )[0]
-        ObjectsFem.makeEquationElasticity(doc, solver_object)
-    elif solvertype == "z88":
-        analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "
@@ -105,25 +123,77 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
         solver_object.MatrixSolverType = "default"
         solver_object.IterationsControlParameterTimeUse = False
 
-    # material
-    material_object = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "FemMaterial")
+    # shell thickness
+    analysis.addObject(
+        ObjectsFem.makeElementGeometry2D(doc, 10, 'ShellThickness')
+    )
+
+    # materials
+    # material1
+    material_object1 = analysis.addObject(
+        ObjectsFem.makeMaterialSolid(doc, 'FemMaterial1')
     )[0]
-    mat = material_object.Material
-    mat["Name"] = "CalculiX-Steel"
-    mat["YoungsModulus"] = "210000 MPa"
-    mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7900 kg/m^3"
-    material_object.Material = mat
+    material_object1.References = [(doc.Face3, "Face1")]
+    mat = material_object1.Material
+    mat['Name'] = "Concrete-Generic"
+    mat['YoungsModulus'] = "32000 MPa"
+    mat['PoissonRatio'] = "0.17"
+    mat['Density'] = "0 kg/m^3"
+    material_object1.Material = mat
+
+    # material2
+    material_object2 = analysis.addObject(
+        ObjectsFem.makeMaterialSolid(doc, 'FemMaterial2')
+    )[0]
+    material_object2.References = [
+        (doc.Face2, "Face1"),
+        (doc.Face4, "Face1")
+    ]
+    mat = material_object2.Material
+    mat['Name'] = "PLA"
+    mat['YoungsModulus'] = "3640 MPa"
+    mat['PoissonRatio'] = "0.36"
+    mat['Density'] = "0 kg/m^3"
+    material_object2.Material = mat
+
+    # material3
+    material_object3 = analysis.addObject(
+        ObjectsFem.makeMaterialSolid(doc, 'FemMaterial3')
+    )[0]
+    material_object3.References = []
+    mat = material_object3.Material
+    mat['Name'] = "Steel-Generic"
+    mat['YoungsModulus'] = "200000 MPa"
+    mat['PoissonRatio'] = "0.30"
+    mat['Density'] = "7900 kg/m^3"
+    material_object3.Material = mat
 
     # fixed_constraint
     fixed_constraint = analysis.addObject(
         ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed")
     )[0]
-    fixed_constraint.References = [(geom_obj, "Face1")]
+    fixed_constraint.References = [
+        (doc.Face1, "Edge1"),
+        (doc.Face5, "Edge3")
+    ]
+
+    # force_constraint
+    force_constraint = analysis.addObject(
+        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
+    )[0]
+    force_constraint.References = [
+        (doc.Face1, "Edge4"),
+        (doc.Face2, "Edge4"),
+        (doc.Face3, "Edge4"),
+        (doc.Face4, "Edge4"),
+        (doc.Face5, "Edge4")
+    ]
+    force_constraint.Force = 10000.00
+    force_constraint.Direction = (doc.Face1, ["Edge1"])
+    force_constraint.Reversed = True
 
     # mesh
-    from .meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
+    from .meshes.mesh_multibodybeam_tria6 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -137,24 +207,6 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
-
-    doc.recompute()
-    return doc
-
-
-def setup(doc=None, solvertype="ccxtools"):
-    # setup CalculiX cantilever, apply 9 MN on surface of front end face
-
-    doc = setup_cantileverbase(doc, solvertype)
-
-    # force_constraint
-    force_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
-    )[0]
-    force_constraint.References = [(doc.Box, "Face2")]
-    force_constraint.Force = 9000000.0
-    force_constraint.Direction = (doc.Box, ["Edge5"])
-    force_constraint.Reversed = True
 
     doc.recompute()
     return doc

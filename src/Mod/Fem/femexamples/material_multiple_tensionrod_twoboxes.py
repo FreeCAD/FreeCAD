@@ -24,7 +24,7 @@
 
 # to run the example use:
 """
-from femexamples.ccx_cantilever_faceload import setup
+from femexamples.material_multiple_tensionrod_twoboxes import setup
 setup()
 
 """
@@ -33,6 +33,8 @@ import FreeCAD
 
 import Fem
 import ObjectsFem
+from BOPTools import SplitFeatures
+from CompoundTools import CompoundFilter
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -44,28 +46,49 @@ def init_doc(doc=None):
 
 
 def get_information():
-    info = {"name": "CCX cantilever face load",
+    info = {"name": "Multimaterial tension rod 2 boxes",
             "meshtype": "solid",
             "meshelement": "Tet10",
-            "constraints": ["fixed", "force"],
-            "solvers": ["calculix", "z88", "elmer"],
-            "material": "solid",
+            "constraints": ["fixed", "pressure"],
+            "solvers": ["calculix"],
+            "material": "multimaterial",
             "equation": "mechanical"
             }
     return info
 
 
-def setup_cantileverbase(doc=None, solvertype="ccxtools"):
-    # setup CalculiX cantilever base model
+def setup(doc=None, solvertype="ccxtools"):
+    # setup model
 
     if doc is None:
         doc = init_doc()
 
-    # geometry object
-    # name is important because the other method in this module use obj name
-    geom_obj = doc.addObject("Part::Box", "Box")
-    geom_obj.Height = geom_obj.Width = 1000
-    geom_obj.Length = 8000
+    # geometry objects
+    # two boxes
+    boxlow = doc.addObject("Part::Box", "BoxLower")
+    boxupp = doc.addObject("Part::Box", "BoxUpper")
+    boxupp.Placement.Base = (0, 0, 10)
+
+    # boolean fragment of the two boxes
+    bf = SplitFeatures.makeBooleanFragments(name="BooleanFragments")
+    bf.Objects = [boxlow, boxupp]
+    bf.Mode = "CompSolid"
+    doc.recompute()
+    bf.Proxy.execute(bf)
+    bf.purgeTouched()
+    doc.recompute()
+    if FreeCAD.GuiUp:
+        for child in bf.ViewObject.Proxy.claimChildren():
+            child.ViewObject.hide()
+
+    # extract CompSolid by compound filter tool
+    geom_obj = CompoundFilter.makeCompoundFilter(name="MultiMatCompSolid")
+    geom_obj.Base = bf
+    geom_obj.FilterType = "window-volume"
+    geom_obj.Proxy.execute(geom_obj)
+    geom_obj.purgeTouched()
+    if FreeCAD.GuiUp:
+        bf.ViewObject.hide()
     doc.recompute()
 
     if FreeCAD.GuiUp:
@@ -85,13 +108,6 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver_object.WorkingDir = u""
-    elif solvertype == "elmer":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverElmer(doc, "SolverElmer")
-        )[0]
-        ObjectsFem.makeEquationElasticity(doc, solver_object)
-    elif solvertype == "z88":
-        analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "
@@ -106,24 +122,45 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
         solver_object.IterationsControlParameterTimeUse = False
 
     # material
-    material_object = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "FemMaterial")
+    material_object_low = analysis.addObject(
+        ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterialLow")
     )[0]
-    mat = material_object.Material
-    mat["Name"] = "CalculiX-Steel"
-    mat["YoungsModulus"] = "210000 MPa"
+    mat = material_object_low.Material
+    mat["Name"] = "Aluminium-Generic"
+    mat["YoungsModulus"] = "70000 MPa"
+    mat["PoissonRatio"] = "0.35"
+    mat["Density"] = "2700  kg/m^3"
+    material_object_low.Material = mat
+    material_object_low.References = [(boxlow, "Solid1")]
+    analysis.addObject(material_object_low)
+
+    material_object_upp = analysis.addObject(
+        ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterialUpp")
+    )[0]
+    mat = material_object_upp.Material
+    mat["Name"] = "Steel-Generic"
+    mat["YoungsModulus"] = "200000 MPa"
     mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7900 kg/m^3"
-    material_object.Material = mat
+    mat["Density"] = "7980 kg/m^3"
+    material_object_upp.Material = mat
+    material_object_upp.References = [(boxupp, "Solid1")]
 
     # fixed_constraint
     fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed")
+        ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
     )[0]
-    fixed_constraint.References = [(geom_obj, "Face1")]
+    fixed_constraint.References = [(geom_obj, "Face5")]
+
+    # pressure_constraint
+    pressure_constraint = analysis.addObject(
+        ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
+    )[0]
+    pressure_constraint.References = [(geom_obj, "Face11")]
+    pressure_constraint.Pressure = 1000.0
+    pressure_constraint.Reversed = False
 
     # mesh
-    from .meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
+    from .meshes.mesh_boxes_2_vertikal_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -137,24 +174,6 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
-
-    doc.recompute()
-    return doc
-
-
-def setup(doc=None, solvertype="ccxtools"):
-    # setup CalculiX cantilever, apply 9 MN on surface of front end face
-
-    doc = setup_cantileverbase(doc, solvertype)
-
-    # force_constraint
-    force_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
-    )[0]
-    force_constraint.References = [(doc.Box, "Face2")]
-    force_constraint.Force = 9000000.0
-    force_constraint.Direction = (doc.Box, ["Edge5"])
-    force_constraint.Reversed = True
 
     doc.recompute()
     return doc

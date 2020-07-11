@@ -49,7 +49,7 @@ def get_information():
             "meshtype": "solid",
             "meshelement": "Tet10",
             "constraints": [],
-            "solvers": ["ccx"],
+            "solvers": ["calculix"],
             "material": "solid",
             "equation": "frequency"
             }

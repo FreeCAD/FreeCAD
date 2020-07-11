@@ -23,6 +23,7 @@
 
 import FreeCAD, Mesh, Draft, Part
 import json
+import six
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -48,7 +49,10 @@ def export(exportList, filename):
         }
 
     # Write file
-    outfile = pythonopen(filename, "wb")
+    if six.PY2:
+        outfile = pythonopen(filename, "wb")
+    else:
+        outfile = pythonopen(filename, "w")
     json.dump(data, outfile, separators = (',', ':'))
     outfile.close()
 

@@ -48,7 +48,7 @@ def get_information():
             "meshtype": "solid",
             "meshelement": "Tet10",
             "constraints": ["fixed", "initial temperature", "temperature", "heatflux"],
-            "solvers": ["ccx"],
+            "solvers": ["calculix"],
             "material": "solid",
             "equation": "thermomechanical"
             }
@@ -88,6 +88,11 @@ def setup(doc=None, solvertype="ccxtools"):
     # should be possible with elmer too
     # elif solvertype == "elmer":
     #     analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Not known or not supported solver type: {}. "
+            "No solver object was created.\n".format(solvertype)
+        )
     if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.SplitInputWriter = False
         solver_object.AnalysisType = "thermomech"

@@ -7040,7 +7040,9 @@ void SketchObject::onChanged(const App::Property* prop)
 
     if (prop == &Geometry || prop == &Constraints) {
 
-        if(getDocument()->isPerformingTransaction()) { // undo/redo
+        auto doc = getDocument();
+
+        if(doc && doc->isPerformingTransaction()) { // undo/redo
             setStatus(App::PendingTransactionUpdate, true);
         }
         else {

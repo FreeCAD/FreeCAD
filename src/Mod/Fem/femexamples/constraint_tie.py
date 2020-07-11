@@ -54,7 +54,7 @@ def get_information():
             "meshtype": "solid",
             "meshelement": "Tet10",
             "constraints": ["fixed", "force", "tie"],
-            "solvers": ["ccx"],
+            "solvers": ["calculix"],
             "material": "solid",
             "equation": "mechanical"
             }
@@ -89,7 +89,6 @@ def setup(doc=None, solvertype="ccxtools"):
         cone_cut_obj.ViewObject.hide()
         line_fix_obj.ViewObject.hide()
         line_force_obj.ViewObject.hide()
-
     doc.recompute()
 
     if FreeCAD.GuiUp:
@@ -109,6 +108,11 @@ def setup(doc=None, solvertype="ccxtools"):
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver_object.WorkingDir = u""
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Not known or not supported solver type: {}. "
+            "No solver object was created.\n".format(solvertype)
+        )
     if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.AnalysisType = "static"
         solver_object.GeometricalNonlinearity = "linear"

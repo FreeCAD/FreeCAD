@@ -566,7 +566,7 @@ class Writer(object):
         pass
 
     def _handleElasticityBodyForces(self, bodies):
-        obj = self._getSingleMember("FemConstraintSelfWeight")
+        obj = self._getSingleMember("Fem::ConstraintSelfWeight")
         if obj is not None:
             for name in bodies:
                 gravity = getConstant("Gravity", "L/T^2")
@@ -598,6 +598,7 @@ class Writer(object):
         return None
 
     def _handleElasticityMaterial(self, bodies):
+        gravObj = self._getSingleMember("Fem::ConstraintSelfWeight")
         tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")
         if tempObj is not None:
             refTemp = getFromUi(tempObj.initialTemperature, "K", "O")
@@ -611,10 +612,11 @@ class Writer(object):
                 else self._getAllBodies()
             )
             for name in (n for n in refs if n in bodies):
-                self._material(
-                    name, "Density",
-                    self._getDensity(m)
-                )
+                if gravObj:
+                    self._material(
+                        name, "Density",
+                        self._getDensity(m)
+                    )
                 self._material(
                     name, "Youngs Modulus",
                     self._getYoungsModulus(m)
@@ -623,10 +625,11 @@ class Writer(object):
                     name, "Poisson ratio",
                     float(m["PoissonRatio"])
                 )
-                self._material(
-                    name, "Heat expansion Coefficient",
-                    convert(m["ThermalExpansionCoefficient"], "O^-1")
-                )
+                if tempObj:
+                    self._material(
+                        name, "Heat expansion Coefficient",
+                        convert(m["ThermalExpansionCoefficient"], "O^-1")
+                    )
 
     def _getDensity(self, m):
         density = convert(m["Density"], "M/L^3")
