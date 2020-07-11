@@ -815,11 +815,29 @@ SelUpMenu::SelUpMenu(QWidget *parent, bool trigger)
         connect(this, SIGNAL(triggered(QAction*)), this, SLOT(onTriggered(QAction *)));
     connect(this, SIGNAL(hovered(QAction*)), this, SLOT(onHovered(QAction *)));
     setupMenuStyle(this);
+}
 
-    // Temporary disable tooltips to not disturb 3D view
-#if QT_VERSION >= 0x050100
-    // setToolTipsVisible(true);
-#endif
+bool SelUpMenu::event(QEvent *e)
+{
+    switch (e->type()) {
+    case QEvent::ToolTip:
+        if(QApplication::queryKeyboardModifiers() == Qt::ShiftModifier) {
+            const QHelpEvent *ev = static_cast<const QHelpEvent*>(e);
+            if (const QAction *action = actionAt(ev->pos())) {
+                if (action) {
+                    const QString &toolTip = action->toolTip();
+                    if (!toolTip.isEmpty()) {
+                        QToolTip::showText(ev->globalPos(), toolTip, this);
+                        return true;
+                    }
+                }
+            }
+        }
+        QToolTip::hideText();
+        return true;
+    default:
+        return QMenu::event(e);
+    }
 }
 
 void SelUpMenu::mouseReleaseEvent(QMouseEvent *e)
