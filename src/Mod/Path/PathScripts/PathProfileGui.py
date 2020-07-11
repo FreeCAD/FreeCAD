@@ -22,26 +22,35 @@
 # *                                                                         *
 # ***************************************************************************
 
+__title__ = "Path Profile Operation UI"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Profile operation page controller and command implementation."
+__contributors__ = ""
+
+# Standard
+# Third-party
+from PySide import QtCore
+# FreeCAD
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathProfile as PathProfile
 
-from PySide import QtCore
-
-
-__title__ = "Path Profile Operation UI"
-__author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
-__doc__ = "Profile operation page controller and command implementation."
-
-
+# Supported features
 FeatureSide       = 0x01
 FeatureProcessing = 0x02
 
+
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
+
+def debugMsg(msg):
+    DEBUG = False
+    if DEBUG:
+        FreeCAD.Console.PrintMessage(__name__ + ':: ' + msg + '\n')
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -52,7 +61,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def initPage(self, obj):
         self.setTitle("Profile - " + obj.Label)
-        self.updateVisibility()
 
     def profileFeatures(self):
         '''profileFeatures() ... return which of the optional profile features are supported.
@@ -72,28 +80,23 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
-        if obj.Side != str(self.form.cutSide.currentText()):
-            obj.Side = str(self.form.cutSide.currentText())
-        if obj.Direction != str(self.form.direction.currentText()):
-            obj.Direction = str(self.form.direction.currentText())
+        obj.Side = str(self.form.cutSide.currentText())
+        obj.Direction = str(self.form.direction.currentText())
+
         PathGui.updateInputField(obj, 'OffsetExtra', self.form.extraOffset)
-        if obj.EnableRotation != str(self.form.enableRotation.currentText()):
-            obj.EnableRotation = str(self.form.enableRotation.currentText())
+        obj.EnableRotation = str(self.form.enableRotation.currentText())
 
-        if obj.UseComp != self.form.useCompensation.isChecked():
-            obj.UseComp = self.form.useCompensation.isChecked()
-        if obj.UseStartPoint != self.form.useStartPoint.isChecked():
-            obj.UseStartPoint = self.form.useStartPoint.isChecked()
+        obj.UseComp = self.form.useCompensation.isChecked()
+        obj.UseStartPoint = self.form.useStartPoint.isChecked()
 
-        if obj.processHoles != self.form.processHoles.isChecked():
-            obj.processHoles = self.form.processHoles.isChecked()
-        if obj.processPerimeter != self.form.processPerimeter.isChecked():
-            obj.processPerimeter = self.form.processPerimeter.isChecked()
-        if obj.processCircles != self.form.processCircles.isChecked():
-            obj.processCircles = self.form.processCircles.isChecked()
+        obj.processHoles = self.form.processHoles.isChecked()
+        obj.processPerimeter = self.form.processPerimeter.isChecked()
+        obj.processCircles = self.form.processCircles.isChecked()
 
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
+        self.sync_combobox_with_enumerations()  # Also updates self.propEnums
+
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
 
@@ -127,47 +130,39 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         return signals
 
-    def updateVisibility(self):
-        hasFace = False
-        hasGeom = False
-        fullModel = False
-        objBase = list()
+    def on_Base_Geometry_change(self):
+        '''on_Base_Geometry_change()...
+        Called with a change made in Base Geometry.
+        '''
+        debugMsg('on_Base_Geometry_change()')
+        self.sync_combobox_with_enumerations()  # located in PathOpGui module
+        debugMsg(' -call updateVisibility()')
+        self.updateVisibility()
 
-        if hasattr(self.obj, 'Base'):
-            objBase = self.obj.Base
+    def setObjectMaps(self):
+        # dictionary formats: {'property_name': UI_panel_input_name}
+        # visibilityMap is for editor modes
+        self.visibilityMap = {
+            'processCircles': 'processCircles',
+            'processHoles': 'processHoles',
+            'processPerimeter': 'processPerimeter',
+            'Side': 'cutSide'
+        }
+        # enumerationMap is for combo boxes
+        self.enumerationMap = {}
 
-        if objBase.__len__() > 0:
-            for (base, subsList) in objBase:
-                for sub in subsList:
-                    if sub[:4] == 'Face':
-                        hasFace = True
-                        break
-        else:
-            fullModel = True
-
-        if hasFace:
-            self.form.processCircles.show()
-            self.form.processHoles.show()
-            self.form.processPerimeter.show()
-        else:
-            self.form.processCircles.hide()
-            self.form.processHoles.hide()
-            self.form.processPerimeter.hide()
-
-        side = False
-        if self.form.useCompensation.isChecked() is True:
-            if not fullModel:
-                side = True
-
-        if side:
-            self.form.cutSide.show()
-            self.form.cutSideLabel.show()
-        else:
+    def custom_editor_mode_actions(self, modes_dict):
+        '''custom_editor_mode_actions(modes_dict) ...
+        Custom modifications to editor modes and related UI panel elements,
+        and custom actions based on updated editor modes.
+        '''
+        if modes_dict['Side'] == 2:
             # Reset cutSide to 'Outside' for full model before hiding cutSide input
-            if self.form.cutSide.currentText() == 'Inside':
-                self.selectInComboBox('Outside', self.form.cutSide)
-            self.form.cutSide.hide()
-            self.form.cutSideLabel.hide()
+            self.selectInComboBox('Outside', self.form.cutSide)
+            # self.obj.Side = 'Outside'
+
+    def updateVisibility(self):
+        self.apply_prop_editor_modes()  # located in PathOpGui module
 
     def registerSignalHandlers(self, obj):
         self.form.useCompensation.stateChanged.connect(self.updateVisibility)

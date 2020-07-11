@@ -58,7 +58,7 @@
     <widget class="QWidget" name="widget" native="true">
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-       <widget class="QLabel" name="cutSideLabel">
+       <widget class="QLabel" name="cutSide_label">
         <property name="text">
          <string>Cut Side</string>
         </property>
@@ -82,7 +82,7 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="directionLabel">
+       <widget class="QLabel" name="direction_label">
         <property name="text">
          <string>Direction</string>
         </property>
@@ -106,7 +106,7 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="extraOffsetLabel">
+       <widget class="QLabel" name="extraOffset_label">
         <property name="text">
          <string>Extra Offset</string>
         </property>
@@ -126,7 +126,7 @@
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="enableRotation_label">
         <property name="text">
          <string>Enable Rotation</string>
         </property>

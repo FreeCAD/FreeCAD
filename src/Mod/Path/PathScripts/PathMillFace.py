@@ -195,7 +195,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             else:
                 env = PathUtils.getEnvelope(partshape=planeshape, depthparams=self.depthparams)
         elif obj.BoundaryShape == 'Face Region':
-            import PathScripts.PathSurfaceSupport as PathSurfaceSupport
+            import PathScripts.path_operations.surface_support as PathSurfaceSupport
             baseShape = oneBase[0].Shape
             psZMin = planeshape.BoundBox.ZMin
             ofstShape = PathSurfaceSupport.extractFaceOffset(planeshape, self.tool.Diameter * 1.1, planeshape)

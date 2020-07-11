@@ -484,12 +484,14 @@ class ProcessSelectedFaces:
                     FreeCAD.Console.PrintWarning(self.msgNoFaces)
 
     def PathWaterline(self):
-        if self.obj.Base:
-            if len(self.obj.Base) > 0:
-                self.checkBase = True
-                if self.obj.Algorithm in ['OCL Dropcutter', 'Experimental']:
-                    self.checkBase = False
-                    FreeCAD.Console.PrintWarning(self.msgNoFaces)
+        # Removed FeatureBaseFaces, so following is unnecessary
+        # if self.obj.Base:
+        #    if len(self.obj.Base) > 0:
+        #        self.checkBase = True
+        #        if self.obj.Algorithm in ['OCL Dropcutter', 'Experimental']:
+        #            self.checkBase = False
+        #            FreeCAD.Console.PrintWarning(self.msgNoFaces)
+        pass
 
     # public class methods
     def setShowDebugObjects(self, grpObj, val):

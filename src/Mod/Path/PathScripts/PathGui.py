@@ -22,28 +22,24 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
-import PathScripts.PathGeom as PathGeom
-import PathScripts.PathLog as PathLog
-import PathScripts.PathUtil as PathUtil
-import PySide
-
-
 __title__ = "Path UI helper and utility functions"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "A collection of helper and utility functions for the Path GUI."
 
+import PySide
+import FreeCAD
+import PathScripts.PathGeom as PathGeom
+import PathScripts.PathLog as PathLog
+import PathScripts.PathUtil as PathUtil
+
+
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
+
+
 def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
-
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 def updateInputField(obj, prop, widget, onBeforeChange=None):

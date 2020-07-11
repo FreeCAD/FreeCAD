@@ -22,27 +22,27 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
-import FreeCADGui
-import PathScripts.PathSlot as PathSlot
-import PathScripts.PathGui as PathGui
-import PathScripts.PathOpGui as PathOpGui
-
-from PySide import QtCore
-
 __title__ = "Path Slot Operation UI"
 __author__ = "russ4262 (Russell Johnson)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Slot operation page controller and command implementation."
 __contributors__ = ""
 
+# Standard
+# Third-party
+from PySide import QtCore
+# FreeCAD
+import FreeCAD
+import FreeCADGui
+import PathScripts.PathSlot as PathSlot
+import PathScripts.PathGui as PathGui
+import PathScripts.PathOpGui as PathOpGui
 
-DEBUG = False
 
 def debugMsg(msg):
-    global DEBUG
+    DEBUG = False
     if DEBUG:
-        FreeCAD.Console.PrintMessage('PathSlotGui:: ' + msg + '\n')
+        FreeCAD.Console.PrintMessage(__name__ + ':: ' + msg + '\n')
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -56,12 +56,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def initPage(self, obj):
         '''initPage(obj) ... Is called after getForm() to initiate the task panel.'''
         debugMsg('initPage()')
-        # pylint: disable=attribute-defined-outside-init
-        self.CATS = [None, None]
-        self.propEnums = PathSlot.ObjectSlot.opPropertyEnumerations(False)
-        self.ENUMS = dict()
         self.setTitle("Slot - " + obj.Label)
-        # retrieve property enumerations
         # Requirements due to Gui::QuantitySpinBox class use in UI panel
         self.geo1Extension = PathGui.QuantitySpinBox(self.form.geo1Extension, obj, 'ExtendPathStart')
         self.geo2Extension = PathGui.QuantitySpinBox(self.form.geo2Extension, obj, 'ExtendPathEnd')
@@ -69,35 +64,25 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
         debugMsg('setFields()')
-        debugMsg('... calling updateVisibility()')
-        self.updateVisibility()
+        self.sync_combobox_with_enumerations()  # Also updates self.propEnums
 
         self.updateQuantitySpinBoxes()
 
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
 
-        enums = self.propEnums['Reference1']
-        if 'Reference1' in self.ENUMS:
-            enums = self.ENUMS['Reference1']
-        debugMsg(' -enums1: {}'.format(enums))
-        idx = enums.index(obj.Reference1)
+        idx = self.propEnums['Reference1'].index(obj.Reference1)
         self.form.geo1Reference.setCurrentIndex(idx)
 
-        enums = self.propEnums['Reference2']
-        if 'Reference2' in self.ENUMS:
-            enums = self.ENUMS['Reference2']
-        debugMsg(' -enums2: {}'.format(enums))
-        idx = enums.index(obj.Reference2)
+        idx = self.propEnums['Reference2'].index(obj.Reference2)
         self.form.geo2Reference.setCurrentIndex(idx)
 
         self.selectInComboBox(obj.LayerMode, self.form.layerMode)
         self.selectInComboBox(obj.PathOrientation, self.form.pathOrientation)
 
-        if obj.ReverseDirection:
-            self.form.reverseDirection.setCheckState(QtCore.Qt.Checked)
-        else:
-            self.form.reverseDirection.setCheckState(QtCore.Qt.Unchecked)
+        self.form.reverseDirection.setChecked(obj.ReverseDirection)
+
+        self.updateVisibility()
 
     def updateQuantitySpinBoxes(self):
         self.geo1Extension.updateSpinBox()
@@ -115,11 +100,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.Reference2 = str(self.form.geo2Reference.currentText())
         self.geo2Extension.updateProperty()
 
-        val = self.propEnums['LayerMode'][self.form.layerMode.currentIndex()]
-        obj.LayerMode = val
+        obj.LayerMode = str(self.form.layerMode.currentText())
 
-        val = self.propEnums['PathOrientation'][self.form.pathOrientation.currentIndex()]
-        obj.PathOrientation = val
+        obj.PathOrientation = str(self.form.pathOrientation.currentText())
 
         obj.ReverseDirection = self.form.reverseDirection.isChecked()
 
@@ -138,104 +121,57 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.reverseDirection.stateChanged)
         return signals
 
-    def updateVisibility(self, sentObj=None):
-        '''updateVisibility(sentObj=None)... Updates visibility of Tasks panel objects.'''
+    def on_Base_Geometry_change(self):
+        '''on_Base_Geometry_change()...
+        Called with a change made in Base Geometry.
+        '''
+        debugMsg('on_Base_Geometry_change()')
+        self.sync_combobox_with_enumerations()  # located in gui_features module
+        debugMsg(' -call updateVisibility()')
+        self.updateVisibility()
+
+    def setObjectMaps(self):
+        # visibilityMap is for editor modes
+        self.visibilityMap = {
+            'Reference1': 'geo1Reference',
+            'Reference2': 'geo2Reference',
+            'ExtendRadius': None,  # Not in UI panel, then `None` value
+            'PathOrientation': 'pathOrientation'
+        }
+        # enumerationMap is for combo boxes
+        self.enumerationMap = {
+            'Reference1': 'geo1Reference',
+            'Reference2': 'geo2Reference'
+        }
+
+    def custom_editor_mode_actions(self, modes_dict):
+        '''custom_editor_mode_actions(modes_dict) ...
+        Custom modifications to editor modes and related UI panel elements,
+        and custom actions based on updated editor modes.
+        The visibility of UI `customPoints` frame is dependent
+        upon use of Base Geometry: `Reference1` and `Reference2`.
+        '''
+        # Custom modification for Slot UI panel
+        if modes_dict['Reference1'] != 2 or modes_dict['Reference2'] != 2:
+            modes_dict['CustomPoints'] = 2  # add and set hide flag
+            # add entry to visibility map
+            self.visibilityMap['CustomPoints'] = 'customPoints'
+        elif modes_dict['Reference1'] == 2 or modes_dict['Reference2'] == 2:
+            modes_dict['CustomPoints'] = 0  # add and set show flag
+            # add entry to visibility map
+            self.visibilityMap['CustomPoints'] = 'customPoints'
+
+    def updateVisibility(self):
+        '''updateVisibility()... Updates visibility of Tasks panel objects.'''
         # debugMsg('updateVisibility()')
-        hideFeatures = True
-        if hasattr(self.obj, 'Base'):
-            if self.obj.Base:
-                self.form.customPoints.hide()
-                self.form.featureReferences.show()
-                self.form.pathOrientation_label.show()
-                self.form.pathOrientation.show()
-                hideFeatures = False
-                base, sublist = self.obj.Base[0]
-                subCnt = len(sublist)
-
-                if subCnt == 1:
-                    debugMsg(' -subCnt == 1')
-                    # Save value, then reset choices
-                    n1 = sublist[0]
-                    s1 = getattr(base.Shape, n1)
-                    # Show Reference1 and cusomize options within
-                    self.form.geo1Reference.show()
-                    self.form.geo1Reference_label.show()
-                    self.form.geo1Reference_label.setText('Reference:  {}'.format(n1))
-                    self.customizeReference_1(n1, single=True)
-                    # Hide Reference2
-                    self.form.geo2Reference.hide()
-                    self.form.geo2Reference_label.hide()
-                    self.form.geo2Reference_label.setText('End Reference')
-                    if self.CATS[1]:
-                        self.CATS[1] = None
-                elif subCnt == 2:
-                    debugMsg(' -subCnt == 2')
-                    n1 = sublist[0]
-                    n2 = sublist[1]
-                    s1 = getattr(base.Shape, n1)
-                    s2 = getattr(base.Shape, n2)
-                    # Show Reference1 and cusomize options within
-                    self.form.geo1Reference.show()
-                    self.form.geo1Reference_label.show()
-                    self.form.geo1Reference_label.setText('Start Reference:  {}'.format(n1))
-                    self.customizeReference_1(n1)
-                    # Show Reference2 and cusomize options within
-                    self.form.geo2Reference.show()
-                    self.form.geo2Reference_label.show()
-                    self.form.geo2Reference_label.setText('End Reference:  {}'.format(n2))
-                    self.customizeReference_2(n2)
-            else:
-                self.form.pathOrientation_label.hide()
-                self.form.pathOrientation.hide()
-
-        if hideFeatures:
-            # reset values
-            self.CATS = [None, None]
-            self.selectInComboBox('Start to End', self.form.pathOrientation)
-            # hide inputs and show message
-            self.form.featureReferences.hide()
-            self.form.customPoints.show()
-
-    def customizeReference_1(self, sub, single=False):
-        debugMsg('customizeReference_1()')
-        # Customize Reference1 combobox options
-        # by removing unavailable choices
-        cat = sub[:4]
-        if cat != self.CATS[0]:
-            self.CATS[0] = cat
-            slot = PathSlot.ObjectSlot
-            enums = slot._makeReference1Enumerations(slot, sub, single)
-            self.ENUMS['Reference1'] = enums
-            debugMsg('Ref1: {}'.format(enums))
-            self._updateComboBox(self.form.geo1Reference, enums)
-            # self.form.geo1Reference.setCurrentIndex(0)
-            # self.form.geo1Reference.setCurrentText(enums[0])
-
-    def customizeReference_2(self, sub):
-        debugMsg('customizeReference_2()')
-        # Customize Reference2 combobox options
-        # by removing unavailable choices
-        cat = sub[:4]
-        if cat != self.CATS[1]:
-            self.CATS[1] = cat
-            slot = PathSlot.ObjectSlot
-            enums = slot._makeReference2Enumerations(slot, sub)
-            self.ENUMS['Reference2'] = enums
-            debugMsg('Ref2: {}'.format(enums))
-            self._updateComboBox(self.form.geo2Reference, enums)
-            # self.form.geo2Reference.setCurrentIndex(0)
-            # self.form.geo2Reference.setCurrentText(enums[0])
+        self.apply_prop_editor_modes()  # located in gui_features module
 
     def registerSignalHandlers(self, obj):
         # debugMsg('registerSignalHandlers()')
         # self.form.pathOrientation.currentIndexChanged.connect(self.updateVisibility)
         pass
+# Eclass
 
-    def _updateComboBox(self, cBox, enums):
-        cBox.blockSignals(True)
-        cBox.clear()
-        cBox.addItems(enums)
-        cBox.blockSignals(False)
 
 Command = PathOpGui.SetupOperation('Slot',
         PathSlot.Create,

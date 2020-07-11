@@ -22,6 +22,11 @@
 # *                                                                         *
 # ***************************************************************************
 
+__title__ = "Path Surface Operation UI"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Surface operation page controller and command implementation."
+
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathSurface as PathSurface
@@ -30,10 +35,11 @@ import PathScripts.PathOpGui as PathOpGui
 
 from PySide import QtCore
 
-__title__ = "Path Surface Operation UI"
-__author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
-__doc__ = "Surface operation page controller and command implementation."
+
+def debugMsg(msg):
+    DEBUG = False
+    if DEBUG:
+        FreeCAD.Console.PrintMessage(__name__ + ':: ' + msg + '\n')
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -41,9 +47,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def initPage(self, obj):
         self.setTitle("3D Surface - " + obj.Label)
-        # self.updateVisibility()
-        # retrieve property enumerations
-        self.propEnums = PathSurface.ObjectSurface.opPropertyEnumerations(False)
 
     def getForm(self):
         '''getForm() ... returns UI'''
@@ -110,6 +113,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
+        debugMsg('setFields()')
+        self.sync_combobox_with_enumerations()  # Also updates self.propEnums
+
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
         self.selectInComboBox(obj.BoundBox, self.form.boundBoxSelect)
@@ -120,7 +126,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         The following method of setting values in the UI form
             allows for translations of combobox options in the UI.
         The requirement is that the enumeration lists must
-            be in the same order in both the opPropertyEnumerations() method
+            be in the same order in both the operation's enumeration list
             and the UI panel QComboBox list.
         The original method is commented out below.
         """
@@ -179,38 +185,47 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         return signals
 
-    def updateVisibility(self, sentObj=None):
-        '''updateVisibility(sentObj=None)... Updates visibility of Tasks panel objects.'''
-        if self.form.scanType.currentText() == 'Planar':
-            self.form.cutPattern.show()
-            self.form.cutPattern_label.show()
-            self.form.optimizeStepOverTransitions.show()
-            if hasattr(self.form, 'profileEdges'):
-                self.form.profileEdges.show()
-                self.form.profileEdges_label.show()
-                self.form.avoidLastX_Faces.show()
-                self.form.avoidLastX_Faces_label.show()
+    def on_Base_Geometry_change(self):
+        '''on_Base_Geometry_change()...
+        Called with a change made in Base Geometry.
+        '''
+        debugMsg('on_Base_Geometry_change()')
+        self.sync_combobox_with_enumerations()  # located in gui_features module
+        debugMsg(' -call updateVisibility()')
+        self.updateVisibility()
 
+    def setObjectMaps(self):
+        # visibilityMap is for editor modes
+        self.visibilityMap = {
+            'CutPattern': 'cutPattern',
+            'OptimizeStepOverTransitions': 'optimizeStepOverTransitions',
+            'ProfileEdges': 'profileEdges',
+            'AvoidLastX_Faces': 'avoidLastX_Faces',
+            'DropCutterDir': 'dropCutterDirSelect'
+        }
+        # enumerationMap is for combo boxes
+        self.enumerationMap = {}
+
+    def custom_editor_mode_actions(self, modes_dict):
+        '''custom_editor_mode_actions(modes_dict) ...
+        Custom modifications to editor modes and related UI panel elements,
+        and custom actions based on updated editor modes.
+        The visibility of UI `customPoints` frame is dependent
+        upon use of Base Geometry: `Reference1` and `Reference2`.
+        '''
+        if modes_dict['DropCutterExtraOffset'] == 2:
             self.form.boundBoxExtraOffsetX.hide()
             self.form.boundBoxExtraOffsetY.hide()
             self.form.boundBoxExtraOffset_label.hide()
-            self.form.dropCutterDirSelect.hide()
-            self.form.dropCutterDirSelect_label.hide()
-        elif self.form.scanType.currentText() == 'Rotational':
-            self.form.cutPattern.hide()
-            self.form.cutPattern_label.hide()
-            self.form.optimizeStepOverTransitions.hide()
-            if hasattr(self.form, 'profileEdges'):
-                self.form.profileEdges.hide()
-                self.form.profileEdges_label.hide()
-                self.form.avoidLastX_Faces.hide()
-                self.form.avoidLastX_Faces_label.hide()
-
+        else:
             self.form.boundBoxExtraOffsetX.show()
             self.form.boundBoxExtraOffsetY.show()
             self.form.boundBoxExtraOffset_label.show()
-            self.form.dropCutterDirSelect.show()
-            self.form.dropCutterDirSelect_label.show()
+
+    def updateVisibility(self):
+        '''updateVisibility()... Updates visibility of Tasks panel objects.'''
+        # debugMsg('updateVisibility()')
+        self.apply_prop_editor_modes()  # located in gui_features module
 
     def registerSignalHandlers(self, obj):
         self.form.scanType.currentIndexChanged.connect(self.updateVisibility)

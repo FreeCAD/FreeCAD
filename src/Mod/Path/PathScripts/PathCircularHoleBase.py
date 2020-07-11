@@ -21,19 +21,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *                                                                         *
-# *   Additional modifications and contributions beginning 2019             *
-# *   Focus: 4th-axis integration                                           *
-# *   by Russell Johnson  <russ4262@gmail.com>                              *
-# *                                                                         *
-# ***************************************************************************
 
+__title__ = "Path Circular Holes Base Operation"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "https://www.freecadweb.org"
+__doc__ = "Base class an implementation for operations on circular holes."
+__contributors__ = ""
+
+import math
+from PySide import QtCore
 import FreeCAD
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
-
-from PySide import QtCore
 import PathScripts.PathGeom as PathGeom
 
 # lazily loaded modules
@@ -43,18 +43,8 @@ Draft = LazyLoader('Draft', globals(), 'Draft')
 Part = LazyLoader('Part', globals(), 'Part')
 DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
 
-import math
 if FreeCAD.GuiUp:
     import FreeCADGui
-
-__title__ = "Path Circular Holes Base Operation"
-__author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
-__doc__ = "Base class an implementation for operations on circular holes."
-__contributors__ = "russ4262 (Russell Johnson)"
-__created__ = "2017"
-__scriptVersion__ = "2b"
-__lastModified__ = "2020-02-13 17:11 CST"
 
 
 # Qt translation handling
@@ -243,9 +233,12 @@ class ObjectOp(PathOp.ObjectOp):
                 self.visualAxis()
 
             # Set axial feed rates based upon horizontal feed rates
-            safeCircum = 2 * math.pi * obj.SafeHeight.Value
-            self.axialFeed = 360 / safeCircum * self.horizFeed  # pylint: disable=attribute-defined-outside-init
-            self.axialRapid = 360 / safeCircum * self.horizRapid  # pylint: disable=attribute-defined-outside-init
+            safeCircum = 2 * math.pi * (obj.SafeHeight.Value -
+                                        obj.FinalDepth.Value)
+            if safeCircum != 0 and self.horizFeed != 0:
+                self.axialFeed = 360.0 / safeCircum * self.horizFeed
+            if safeCircum != 0 and self.horizRapid != 0:
+                self.axialRapid = 360.0 / safeCircum * self.horizRapid
 
         # Complete rotational analysis and temp clone creation as needed
         if obj.EnableRotation == 'Off':

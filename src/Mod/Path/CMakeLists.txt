@@ -27,7 +27,6 @@ SET(PathScripts_SRCS
     PathCommands.py
     PathScripts/PathAdaptive.py
     PathScripts/PathAdaptiveGui.py
-    PathScripts/PathAreaOp.py
     PathScripts/PathArray.py
     PathScripts/PathCircularHoleBase.py
     PathScripts/PathCircularHoleBaseGui.py
@@ -73,6 +72,7 @@ SET(PathScripts_SRCS
     PathScripts/PathMillFace.py
     PathScripts/PathMillFaceGui.py
     PathScripts/PathOp.py
+    PathScripts/PathOpBase.py
     PathScripts/PathOpGui.py
     PathScripts/PathOpTools.py
     PathScripts/PathPocket.py
@@ -110,7 +110,6 @@ SET(PathScripts_SRCS
     PathScripts/PathStop.py
     PathScripts/PathSurface.py
     PathScripts/PathSurfaceGui.py
-    PathScripts/PathSurfaceSupport.py
     PathScripts/PathToolBit.py
     PathScripts/PathToolBitCmd.py
     PathScripts/PathToolBitEdit.py
@@ -131,6 +130,25 @@ SET(PathScripts_SRCS
     PathScripts/__init__.py
 )
 
+SET(PathScripts_path_features_SRCS
+    PathScripts/path_features/__init__.py
+    PathScripts/path_features/features.py
+    PathScripts/path_features/gui_features.py
+)
+
+SET(PathScripts_path_operations_SRCS
+    PathScripts/path_operations/__init__.py
+    PathScripts/path_operations/areaOp.py
+    PathScripts/path_operations/areaOp_base.py
+    PathScripts/path_operations/profile.py
+    PathScripts/path_operations/profile_openedge.py
+    PathScripts/path_operations/slot.py
+    PathScripts/path_operations/slot_support.py
+    PathScripts/path_operations/surface.py
+    PathScripts/path_operations/surface_support.py
+    PathScripts/path_operations/waterline.py
+)
+
 SET(PathScripts_post_SRCS
     PathScripts/post/__init__.py
     PathScripts/post/centroid_post.py
@@ -148,6 +166,11 @@ SET(PathScripts_post_SRCS
     PathScripts/post/rml_post.py
     PathScripts/post/slic3r_pre.py
     PathScripts/post/smoothie_post.py
+)
+
+SET(PathScripts_path_support_SRCS
+    PathScripts/path_support/__init__.py
+    PathScripts/path_support/rotation.py
 )
 
 SET(Tools_Bit_SRCS
@@ -219,7 +242,10 @@ SET(Path_Images
 
 SET(all_files
     ${PathScripts_SRCS}
+    ${PathScripts_path_features_SRCS}
+    ${PathScripts_path_operations_SRCS}
     ${PathScripts_post_SRCS}
+    ${PathScripts_path_support_SRCS}
     ${Tools_Bit_SRCS}
     ${Tools_Library_SRCS}
     ${Tools_Shape_SRCS}
@@ -258,9 +284,30 @@ INSTALL(
 
 INSTALL(
     FILES
+        ${PathScripts_path_features_SRCS}
+    DESTINATION
+        Mod/Path/PathScripts/path_features
+)
+
+INSTALL(
+    FILES
+        ${PathScripts_path_operations_SRCS}
+    DESTINATION
+        Mod/Path/PathScripts/path_operations
+)
+
+INSTALL(
+    FILES
         ${PathScripts_post_SRCS}
     DESTINATION
         Mod/Path/PathScripts/post
+)
+
+INSTALL(
+    FILES
+        ${PathScripts_path_support_SRCS}
+    DESTINATION
+        Mod/Path/PathScripts/path_support
 )
 
 INSTALL(

@@ -23,18 +23,24 @@
 # *                                                                         *
 # ***************************************************************************
 
+__title__ = "Path Waterline Operation UI"
+__author__ = "sliptonic (Brad Collette), russ4262 (Russell Johnson)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Waterline operation page controller and command implementation."
+
+from PySide import QtCore
+
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathWaterline as PathWaterline
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
 
-from PySide import QtCore
 
-__title__ = "Path Waterline Operation UI"
-__author__ = "sliptonic (Brad Collette), russ4262 (Russell Johnson)"
-__url__ = "http://www.freecadweb.org"
-__doc__ = "Waterline operation page controller and command implementation."
+def debugMsg(msg):
+    DEBUG = False
+    if DEBUG:
+        FreeCAD.Console.PrintMessage(__name__ + ':: ' + msg + '\n')
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -42,7 +48,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def initPage(self, obj):
         self.setTitle("Waterline - " + obj.Label)
-        self.updateVisibility()
 
     def getForm(self):
         '''getForm() ... returns UI'''
@@ -50,6 +55,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getFields(self, obj):
         '''getFields(obj) ... transfers values from UI to obj's proprties'''
+        debugMsg('getFields()')
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
@@ -77,6 +83,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
+        debugMsg('setFields()')
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
         self.selectInComboBox(obj.Algorithm, self.form.algorithmSelect)
@@ -92,6 +99,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         else:
             self.form.optimizeEnabled.setCheckState(QtCore.Qt.Unchecked)
 
+        debugMsg(' -call updateVisibility()')
         self.updateVisibility()
 
     def getSignalsForUpdate(self, obj):
@@ -110,8 +118,44 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         return signals
 
-    def updateVisibility(self, sentObj=None):
+    def on_Base_Geometry_change(self):
+        '''on_Base_Geometry_change()...
+        Called with a change made in Base Geometry.
+        '''
+        debugMsg('on_Base_Geometry_change()')
+        self.sync_combobox_with_enumerations()  # located in PathOpGui module
+        debugMsg(' -call updateVisibility()')
+        self.updateVisibility()
+
+    def setObjectMaps(self):
+        # visibilityMap is for editor modes
+        self.visibilityMap = {
+            'CutPattern': 'cutPattern',
+            'BoundaryAdjustment': 'boundaryAdjustment',
+            'StepOver': 'stepOver',
+            'SampleInterval': 'sampleInterval',
+            'OptimizeLinearPaths': 'optimizeEnabled'
+        }
+        # enumerationMap is for combo boxes
+        self.enumerationMap = {}
+
+    def custom_editor_mode_actions(self, modes_dict):
+        '''custom_editor_mode_actions(modes_dict) ...
+        Custom modifications to editor modes and related UI panel elements,
+        and custom actions based on updated editor modes.
+        The visibility of UI `customPoints` frame is dependent
+        upon use of Base Geometry: `Reference1` and `Reference2`.
+        '''
+        # debugMsg('custom_editor_mode_actions()')
+        pass
+
+
+    def updateVisibility(self):
+        self.apply_prop_editor_modes()  # located in PathOpGui module
+
+    def updateVisibility_ORIG(self, sentObj=None):
         '''updateVisibility(sentObj=None)... Updates visibility of Tasks panel objects.'''
+        debugMsg('updateVisibility()')
         Algorithm = self.form.algorithmSelect.currentText()
         self.form.optimizeEnabled.hide()  # Has no independent QLabel object
 
@@ -126,8 +170,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.sampleInterval_label.show()
         elif Algorithm == 'Experimental':
             self.form.cutPattern.show()
-            self.form.boundaryAdjustment.show()
             self.form.cutPattern_label.show()
+            self.form.boundaryAdjustment.show()
             self.form.boundaryAdjustment_label.show()
             if self.form.cutPattern.currentText() == 'None':
                 self.form.stepOver.hide()

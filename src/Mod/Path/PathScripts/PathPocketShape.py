@@ -36,6 +36,9 @@ from lazy_loader.lazy_loader import LazyLoader
 Draft = LazyLoader('Draft', globals(), 'Draft')
 Part = LazyLoader('Part', globals(), 'Part')
 TechDraw = LazyLoader('TechDraw', globals(), 'TechDraw')
+Rotation = \
+    LazyLoader('PathScripts.path_support.rotation',
+               globals(), 'PathScripts.path_support.rotation')
 
 from PySide import QtCore
 
@@ -535,7 +538,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
                                     if abs(praAngle) == 180.0:
                                         rtn = False
-                                        if self.isFaceUp(clnBase, faceIA) is False:
+                                        if Rotation.isFaceUp(clnBase, faceIA) is False:
                                             PathLog.debug('isFaceUp is False')
                                             angle -= 180.0
 
@@ -548,7 +551,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                                 msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
                                                 PathLog.warning(msg)
 
-                                            if self.isFaceUp(clnBase, faceIA) is False:
+                                            if Rotation.isFaceUp(clnBase, faceIA) is False:
                                                 PathLog.debug('isFaceUp is False')
                                                 angle += 180.0
                                     else:
@@ -654,7 +657,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     useAngle = angle
                     shpZMin = face.BoundBox.ZMin
                     PathLog.debug('self.horizontal shpZMin: {}'.format(shpZMin))
-                    if self.isFaceUp(subBase, face) is False:
+                    if Rotation.isFaceUp(subBase, face) is False:
                         useAngle += 180.0
                         invZ = (-2 * shpZMin) - clrnc
                         face.translate(FreeCAD.Vector(0.0, 0.0, invZ))
