@@ -7046,7 +7046,7 @@ void SketchObject::onChanged(const App::Property* prop)
             setStatus(App::PendingTransactionUpdate, true);
         }
         else {
-            if(!internaltransaction) { // internal sketchobject operations changing both geometry and constraints will explicity perform an update
+            if(!internaltransaction) { // internal sketchobject operations changing both geometry and constraints will explicitly perform an update
                 if(prop == &Geometry) {
                     if(managedoperation || isRestoring()) {
                         acceptGeometry(); // if geometry changed, the constraint geometry indices must be updated

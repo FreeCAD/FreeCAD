@@ -196,7 +196,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
             # In v0.19 this code causes an `AttributeError` exception
             # during loading of the document as `ScaleMultiplier`
             # apparently isn't set immediately when the document loads.
-            # So the if condition tests for the existance
+            # So the if condition tests for the existence
             # of `ScaleMultiplier` before even changing the font size.
             # A try-except block may be used as well to catch and ignore
             # this error.
