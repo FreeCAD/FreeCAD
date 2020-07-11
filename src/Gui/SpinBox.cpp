@@ -405,10 +405,8 @@ void UIntSpinBox::keyPressEvent(QKeyEvent *event)
 {
     if (event->text() == QString::fromUtf8("=") && isBound())
         openFormulaDialog();
-    else {
-        if (!hasExpression())
-            QAbstractSpinBox::keyPressEvent(event);
-    }
+    else
+        QAbstractSpinBox::keyPressEvent(event);
 }
 
 
@@ -584,10 +582,8 @@ void IntSpinBox::keyPressEvent(QKeyEvent *event)
 {
     if (event->text() == QString::fromUtf8("=") && isBound())
         openFormulaDialog();
-    else {
-        if (!hasExpression())
-            QAbstractSpinBox::keyPressEvent(event);
-    }
+    else
+        QAbstractSpinBox::keyPressEvent(event);
 }
 
 
@@ -762,10 +758,8 @@ void DoubleSpinBox::keyPressEvent(QKeyEvent *event)
 {
     if (event->text() == QString::fromUtf8("=") && isBound())
         openFormulaDialog();
-    else {
-        if (!hasExpression())
-            QAbstractSpinBox::keyPressEvent(event);
-    }
+    else
+        QAbstractSpinBox::keyPressEvent(event);
 }
 
 #include "moc_SpinBox.cpp"
