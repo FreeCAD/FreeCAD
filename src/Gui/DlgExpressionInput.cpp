@@ -107,6 +107,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
             this->resize(ui->expression->width()+18,this->height());
     }
     ui->expression->setFocus();
+    ui->expression->activateWindow();
 }
 
 DlgExpressionInput::~DlgExpressionInput()
