@@ -48,7 +48,7 @@ def get_information():
             "meshtype": "solid",
             "meshelement": "Tet10",
             "constraints": ["fixed", "force"],
-            "solvers": ["ccx", "z88", "elmer"],
+            "solvers": ["calculix", "z88", "elmer"],
             "material": "solid",
             "equation": "mechanical"
             }
@@ -92,6 +92,11 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
         ObjectsFem.makeEquationElasticity(doc, solver_object)
     elif solvertype == "z88":
         analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Not known or not supported solver type: {}. "
+            "No solver object was created.\n".format(solvertype)
+        )
     if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.SplitInputWriter = False
         solver_object.AnalysisType = "static"
@@ -109,9 +114,6 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     mat["YoungsModulus"] = "210000 MPa"
     mat["PoissonRatio"] = "0.30"
     mat["Density"] = "7900 kg/m^3"
-    if solvertype == "elmer":
-        # set ThermalExpansionCoefficient, elmer elasticity needs it FIXME
-        mat["ThermalExpansionCoefficient"] = "0.012 mm/m/K"
     material_object.Material = mat
 
     # fixed_constraint

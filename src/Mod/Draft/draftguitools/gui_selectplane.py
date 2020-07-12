@@ -186,69 +186,22 @@ class Draft_SelectPlane:
         sel = FreeCADGui.Selection.getSelectionEx()
         if len(sel) == 1:
             sel = sel[0]
-            if Draft.getType(sel.Object) == "Axis":
+            if hasattr(sel.Object, 'TypeId') and sel.Object.TypeId == 'App::Part':
+                self.setPlaneFromObjPlacement(sel.Object)
+                return True
+            elif Draft.getType(sel.Object) == "Axis":
                 FreeCAD.DraftWorkingPlane.alignToEdges(sel.Object.Shape.Edges)
                 self.display(FreeCAD.DraftWorkingPlane.axis)
                 return True
-            elif Draft.getType(sel.Object) in ("WorkingPlaneProxy",
-                                               "BuildingPart"):
-                FreeCAD.DraftWorkingPlane.setFromPlacement(sel.Object.Placement, rebase=True)
-                FreeCAD.DraftWorkingPlane.weak = False
-                if hasattr(sel.Object.ViewObject, "AutoWorkingPlane"):
-                    if sel.Object.ViewObject.AutoWorkingPlane:
-                        FreeCAD.DraftWorkingPlane.weak = True
-                if hasattr(sel.Object.ViewObject, "CutView") and hasattr(sel.Object.ViewObject, "AutoCutView"):
-                    if sel.Object.ViewObject.AutoCutView:
-                        sel.Object.ViewObject.CutView = True
-                if hasattr(sel.Object.ViewObject, "RestoreView"):
-                    if sel.Object.ViewObject.RestoreView:
-                        if hasattr(sel.Object.ViewObject, "ViewData"):
-                            if len(sel.Object.ViewObject.ViewData) >= 12:
-                                d = sel.Object.ViewObject.ViewData
-                                camtype = "orthographic"
-                                if len(sel.Object.ViewObject.ViewData) == 13:
-                                    if d[12] == 1:
-                                        camtype = "perspective"
-                                c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
-                                if isinstance(c, coin.SoOrthographicCamera):
-                                    if camtype == "perspective":
-                                        FreeCADGui.ActiveDocument.ActiveView.setCameraType("Perspective")
-                                elif isinstance(c, coin.SoPerspectiveCamera):
-                                    if camtype == "orthographic":
-                                        FreeCADGui.ActiveDocument.ActiveView.setCameraType("Orthographic")
-                                c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
-                                c.position.setValue([d[0], d[1], d[2]])
-                                c.orientation.setValue([d[3], d[4], d[5], d[6]])
-                                c.nearDistance.setValue(d[7])
-                                c.farDistance.setValue(d[8])
-                                c.aspectRatio.setValue(d[9])
-                                c.focalDistance.setValue(d[10])
-                                if camtype == "orthographic":
-                                    c.height.setValue(d[11])
-                                else:
-                                    c.heightAngle.setValue(d[11])
-                if hasattr(sel.Object.ViewObject, "RestoreState"):
-                    if sel.Object.ViewObject.RestoreState:
-                        if hasattr(sel.Object.ViewObject, "VisibilityMap"):
-                            if sel.Object.ViewObject.VisibilityMap:
-                                for k,v in sel.Object.ViewObject.VisibilityMap.items():
-                                    o = FreeCADGui.ActiveDocument.getObject(k)
-                                    if o:
-                                        if o.Visibility != (v == "True"):
-                                            FreeCADGui.doCommand("FreeCADGui.ActiveDocument.getObject(\""+k+"\").Visibility = "+v)
-                self.display(FreeCAD.DraftWorkingPlane.axis)
-                self.wpButton.setText(sel.Object.Label)
-                self.wpButton.setToolTip(translate("draft", "Current working plane")+": "+self.wpButton.text())
+            elif Draft.getType(sel.Object) in ("WorkingPlaneProxy", "BuildingPart"):
+                self.setPlaneOnWPProxy(sel.Object)
                 return True
             elif Draft.getType(sel.Object) == "SectionPlane":
-                FreeCAD.DraftWorkingPlane.setFromPlacement(sel.Object.Placement, rebase=True)
-                FreeCAD.DraftWorkingPlane.weak = False
-                self.display(FreeCAD.DraftWorkingPlane.axis)
-                self.wpButton.setText(sel.Object.Label)
-                self.wpButton.setToolTip(translate("draft", "Current working plane")+": "+self.wpButton.text())
+                self.setPlaneFromObjPlacement(sel.Object)
                 return True
             elif sel.HasSubObjects:
                 if len(sel.SubElementNames) == 1:
+                    # look for a face or a plane
                     if "Face" in sel.SubElementNames[0]:
                         FreeCAD.DraftWorkingPlane.alignToFace(sel.SubObjects[0], self.getOffset())
                         self.display(FreeCAD.DraftWorkingPlane.axis)
@@ -258,6 +211,7 @@ class Draft_SelectPlane:
                         self.display(FreeCAD.DraftWorkingPlane.axis)
                         return True
                 elif len(sel.SubElementNames) == 3:
+                    # look for 3 points
                     if ("Vertex" in sel.SubElementNames[0]) \
                     and ("Vertex" in sel.SubElementNames[1]) \
                     and ("Vertex" in sel.SubElementNames[2]):
@@ -273,7 +227,12 @@ class Draft_SelectPlane:
                         FreeCAD.DraftWorkingPlane.alignToFace(sel.Object.Shape.Faces[0], self.getOffset())
                         self.display(FreeCAD.DraftWorkingPlane.axis)
                         return True
+            elif hasattr(sel.Object, 'Placement'):
+                self.setPlaneFromObjPlacement(sel.Object)
+                return True
+
         elif sel:
+            # look for 3 points
             subs = []
             import Part
             for s in sel:
@@ -288,6 +247,73 @@ class Draft_SelectPlane:
                 self.display(FreeCAD.DraftWorkingPlane.axis)
                 return True
         return False
+
+    def setPlaneFromObjPlacement(self, obj):
+        """Called by handle(): set the working plane according to an object placement."""
+        if hasattr(obj, 'getGlobalPlacement'):
+            pl = obj.getGlobalPlacement()
+        else:
+            pl = obj.Placement
+        FreeCAD.DraftWorkingPlane.setFromPlacement(pl, rebase=True)
+        FreeCAD.DraftWorkingPlane.weak = False
+        self.display(FreeCAD.DraftWorkingPlane.axis)
+        self.wpButton.setText(obj.Label)
+        self.wpButton.setToolTip(translate("draft", "Current working plane")+": " + self.wpButton.text())
+        m = translate("draft", "Working plane aligned to global placement of")
+        _msg(m + " " + obj.Label + ".\n")
+        return True
+
+    def setPlaneOnWPProxy(self, obj):
+        """Called by handle(): set the working plane according to a WorkingPlaneProxy or a BuildingPart.
+        This method also apply the clipping view according to object properties.
+        """
+        FreeCAD.DraftWorkingPlane.setFromPlacement(obj.Placement, rebase=True)
+        FreeCAD.DraftWorkingPlane.weak = False
+        if hasattr(obj.ViewObject, "AutoWorkingPlane"):
+            if obj.ViewObject.AutoWorkingPlane:
+                FreeCAD.DraftWorkingPlane.weak = True
+        if hasattr(obj.ViewObject, "CutView") and hasattr(obj.ViewObject, "AutoCutView"):
+            if obj.ViewObject.AutoCutView:
+                obj.ViewObject.CutView = True
+        if hasattr(obj.ViewObject, "RestoreView"):
+            if obj.ViewObject.RestoreView:
+                if hasattr(obj.ViewObject, "ViewData"):
+                    if len(obj.ViewObject.ViewData) >= 12:
+                        d = obj.ViewObject.ViewData
+                        camtype = "orthographic"
+                        if len(obj.ViewObject.ViewData) == 13:
+                            if d[12] == 1:
+                                camtype = "perspective"
+                        c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+                        if isinstance(c, coin.SoOrthographicCamera):
+                            if camtype == "perspective":
+                                FreeCADGui.ActiveDocument.ActiveView.setCameraType("Perspective")
+                        elif isinstance(c, coin.SoPerspectiveCamera):
+                            if camtype == "orthographic":
+                                FreeCADGui.ActiveDocument.ActiveView.setCameraType("Orthographic")
+                        c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+                        c.position.setValue([d[0], d[1], d[2]])
+                        c.orientation.setValue([d[3], d[4], d[5], d[6]])
+                        c.nearDistance.setValue(d[7])
+                        c.farDistance.setValue(d[8])
+                        c.aspectRatio.setValue(d[9])
+                        c.focalDistance.setValue(d[10])
+                        if camtype == "orthographic":
+                            c.height.setValue(d[11])
+                        else:
+                            c.heightAngle.setValue(d[11])
+        if hasattr(obj.ViewObject, "RestoreState"):
+            if obj.ViewObject.RestoreState:
+                if hasattr(obj.ViewObject, "VisibilityMap"):
+                    if obj.ViewObject.VisibilityMap:
+                        for k,v in obj.ViewObject.VisibilityMap.items():
+                            o = FreeCADGui.ActiveDocument.getObject(k)
+                            if o:
+                                if o.Visibility != (v == "True"):
+                                    FreeCADGui.doCommand("FreeCADGui.ActiveDocument.getObject(\""+k+"\").Visibility = "+v)
+        self.display(FreeCAD.DraftWorkingPlane.axis)
+        self.wpButton.setText(obj.Label)
+        self.wpButton.setToolTip(translate("draft", "Current working plane")+": "+self.wpButton.text())
 
     def getCenterPoint(self, x, y, z):
         """Get the center point."""

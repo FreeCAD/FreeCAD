@@ -133,6 +133,7 @@ class TestFemCommon(unittest.TestCase):
 
             if (
                 mod == "femsolver.solver_taskpanel"
+                or mod == "femexamples.examplesgui"
                 or mod == "TestFemGui"
             ) and not FreeCAD.GuiUp:
                 continue

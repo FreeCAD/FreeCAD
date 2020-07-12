@@ -117,12 +117,12 @@ class DraftLink(DraftObject):
         if not hasattr(obj, 'LinkTransform'):
             obj.addProperty('App::PropertyBool',
                             'LinkTransform',
-                            'Link')
+                            ' Link')
 
         if not hasattr(obj, 'ColoredElements'):
             obj.addProperty('App::PropertyLinkSubHidden',
                             'ColoredElements',
-                            'Link')
+                            ' Link')
             obj.setPropertyStatus('ColoredElements', 'Hidden')
 
         obj.configLinkProperty('LinkTransform', 'ColoredElements')

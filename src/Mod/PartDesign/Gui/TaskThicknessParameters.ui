@@ -67,23 +67,23 @@ click again to end selection</string>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="Value" native="true">
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
+      <widget class="Gui::QuantitySpinBox" name="Value">
+       <property name="keyboardTracking">
+        <bool>false</bool>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
        </property>
-       <property name="minimum" stdset="0">
+       <property name="minimum">
         <double>0.000000000000000</double>
        </property>
-       <property name="maximum" stdset="0">
+       <property name="maximum">
         <double>999999999.000000000000000</double>
        </property>
-       <property name="singleStep" stdset="0">
+       <property name="singleStep">
         <double>0.100000000000000</double>
        </property>
-       <property name="value" stdset="0">
+       <property name="value">
         <double>1.000000000000000</double>
        </property>
       </widget>

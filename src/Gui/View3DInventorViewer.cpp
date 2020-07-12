@@ -146,6 +146,7 @@
 #include "SoTouchEvents.h"
 #include "WinNativeGestureRecognizers.h"
 #include "Document.h"
+#include "ViewParams.h"
 
 #include "ViewProviderLink.h"
 
@@ -1345,11 +1346,19 @@ bool View3DInventorViewer::isEnabledVBO() const
 
 void View3DInventorViewer::setRenderCache(int mode)
 {
-    if (mode<0) {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/View");
+    static int canAutoCache = -1;
 
-        int setting = hGrp->GetInt("RenderCache", 0);
+    if (mode<0) {
+        // Work around coin bug of unmatched call of
+        // SoGLLazyElement::begin/endCaching() when on top rendering
+        // transparent object with SORTED_OBJECT_SORTED_TRIANGLE_BLEND
+        // transparency type.
+        //
+        // For more details see:
+        // https://forum.freecadweb.org/viewtopic.php?f=18&t=43305&start=10#p412537
+        coin_setenv("COIN_AUTO_CACHING", "0", TRUE);
+
+        int setting = ViewParams::instance()->getRenderCache();
         if (mode == -2) {
             if (pcViewProviderRoot && setting != 1)
                 pcViewProviderRoot->renderCaching = SoSeparator::ON;
@@ -1362,10 +1371,21 @@ void View3DInventorViewer::setRenderCache(int mode)
         }
     }
 
-    SoFCSeparator::setCacheMode(
-            mode == 0 ? SoSeparator::AUTO :
-           (mode == 1 ? SoSeparator::ON : SoSeparator::OFF)
-    );
+    if (canAutoCache < 0) {
+        const char *env = coin_getenv("COIN_AUTO_CACHING");
+        canAutoCache = env ? atoi(env) : 1;
+    }
+
+    // If coin auto cache is disabled, do not use 'Auto' render cache mode, but
+    // fallback to 'Distributed' mode.
+    if (!canAutoCache && mode != 2)
+        mode = 1;
+
+    auto caching = mode == 0 ? SoSeparator::AUTO :
+                  (mode == 1 ? SoSeparator::ON :
+                               SoSeparator::OFF);
+
+    SoFCSeparator::setCacheMode(caching);
 }
 
 void View3DInventorViewer::setEnabledNaviCube(bool on)

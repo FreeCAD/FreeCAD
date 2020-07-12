@@ -304,6 +304,9 @@ class CommandManager(object):
         FreeCADGui.addModule(
             "ObjectsFem"
         )
+        FreeCADGui.addModule(
+            "FemGui"
+        )
         FreeCADGui.doCommand(
             "FemGui.getActiveAnalysis().addObject(ObjectsFem."
             "make{}(FreeCAD.ActiveDocument))"
@@ -323,6 +326,9 @@ class CommandManager(object):
         )
         FreeCADGui.addModule(
             "ObjectsFem"
+        )
+        FreeCADGui.addModule(
+            "FemGui"
         )
         FreeCADGui.doCommand(
             "FemGui.getActiveAnalysis().addObject(ObjectsFem."

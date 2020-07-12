@@ -26,7 +26,6 @@ __title__ = "Ccxtools FEM unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-import sys
 import unittest
 from os.path import join
 
@@ -34,6 +33,7 @@ import FreeCAD
 
 from . import support_utils as testtools
 from .support_utils import fcc_print
+from .support_utils import get_namefromdef
 from femtools import ccxtools
 
 
@@ -56,7 +56,7 @@ class TestCcxTools(unittest.TestCase):
         self.mesh_name = "Mesh"
         self.test_file_dir = join(
             testtools.get_fem_test_home_dir(),
-            "ccx"
+            "calculix"
         )
 
     # ********************************************************************************************
@@ -80,13 +80,13 @@ class TestCcxTools(unittest.TestCase):
         ))
 
     # ********************************************************************************************
-    def test_freq_analysis(
+    def test_box_frequency(
         self
     ):
         # set up
         from femexamples.boxanalysis_frequency import setup
         setup(self.document, "ccxtools")
-        base_name = "cube_frequency"
+        base_name = get_namefromdef("test_")
         res_obj_name = "CCX_Mode1_Results"
         analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
 
@@ -108,13 +108,13 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_static_analysis(
+    def test_box_static(
         self
     ):
         # set up
         from femexamples.boxanalysis_static import setup
         setup(self.document, "ccxtools")
-        base_name = "cube_static"
+        base_name = get_namefromdef("test_")
         res_obj_name = "CCX_Results"
         analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
 
@@ -136,83 +136,13 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_static_constraint_force_faceload_hexa20(
-        self
-    ):
-        from femexamples.ccx_cantilever_hexa20faceload import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, "canti_ccx_faceload_hexa20")
-
-    # ********************************************************************************************
-    def test_static_constraint_contact_shell_shell(
-        self
-    ):
-        from femexamples.constraint_contact_shell_shell import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, "constraint_contact_shell_shell")
-
-    # ********************************************************************************************
-    def test_static_constraint_contact_solid_solid(
-        self
-    ):
-        # does not pass on travis, but on my local system it does, Bernd
-        return
-        # TODO does not pass on Python 2
-        if sys.version_info.major < 3:
-            return
-
-        from femexamples.constraint_contact_solid_solid import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, "constraint_contact_solid_solid")
-
-    # ********************************************************************************************
-    def test_static_constraint_sectionprint(
-        self
-    ):
-        from femexamples.constraint_section_print import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, "constraint_sectionprint")
-
-    # ********************************************************************************************
-    def test_static_constraint_tie(
-        self
-    ):
-        from femexamples.constraint_tie import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, "constraint_tie")
-
-    # ********************************************************************************************
-    def test_static_material_multiple(
-        self
-    ):
-        from femexamples.material_multiple_twoboxes import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, "mat_multiple")
-
-    # ********************************************************************************************
-    def test_static_material_nonlinar(
-        self
-    ):
-        from femexamples.material_nl_platewithhole import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, "mat_nonlinear")
-
-    # ********************************************************************************************
-    def test_thermomech_bimetall(
-        self
-    ):
-        from femexamples.thermomech_bimetall import setup
-        setup(self.document, "ccxtools")
-        self.input_file_writing_test(None, "thermomech_bimetall")
-
-    # ********************************************************************************************
-    def test_thermomech_flow1D_analysis(
+    def test_thermomech_flow1D(
         self
     ):
         # set up
         from femexamples.thermomech_flow1d import setup
         setup(self.document, "ccxtools")
-        base_name = "Flow1D_thermomech"
+        base_name = get_namefromdef("test_")
         res_obj_name = "CCX_Time1_0_Results"
         analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
 
@@ -234,13 +164,13 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_thermomech_spine_analysis(
+    def test_thermomech_spine(
         self
     ):
         # set up
         from femexamples.thermomech_spine import setup
         setup(self.document, "ccxtools")
-        base_name = "spine_thermomech"
+        base_name = get_namefromdef("test_")
         res_obj_name = "CCX_Results"
         analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
 

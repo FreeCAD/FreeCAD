@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -90,7 +91,10 @@ def run_example(example, solver=None, base_name=None):
     from importlib import import_module
     module = import_module("femexamples." + example)
     if hasattr(module, "setup"):
-        doc = getattr(module, "setup")()
+        if solver is None:
+            doc = getattr(module, "setup")()
+        else:
+            doc = getattr(module, "setup")(solvertype=solver)
 
     if base_name is None:
         base_name = example

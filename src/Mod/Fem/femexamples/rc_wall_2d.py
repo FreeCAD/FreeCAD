@@ -54,7 +54,7 @@ def get_information():
             "meshtype": "solid",
             "meshelement": "Tria6",
             "constraints": ["fixed", "force", "displacement"],
-            "solvers": ["ccx"],
+            "solvers": ["calculix"],
             "material": "reinforced",
             "equation": "mechanical"
             }
@@ -106,6 +106,11 @@ def setup(doc=None, solvertype="ccxtools"):
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver.WorkingDir = u""
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Not known or not supported solver type: {}. "
+            "No solver object was created.\n".format(solvertype)
+        )
     if solvertype == "calculix" or solvertype == "ccxtools":
         solver.SplitInputWriter = False
         solver.AnalysisType = "static"

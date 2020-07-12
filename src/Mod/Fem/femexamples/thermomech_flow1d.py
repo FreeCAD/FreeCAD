@@ -53,7 +53,7 @@ def get_information():
             "meshtype": "solid",
             "meshelement": "Seg3",
             "constraints": ["self weight"],
-            "solvers": ["ccx"],
+            "solvers": ["calculix"],
             "material": "fluid",
             "equation": "thermomechanical"
             }
@@ -124,6 +124,11 @@ def setup(doc=None, solvertype="ccxtools"):
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")  # CalculiX
         )[0]
         solver_object.WorkingDir = u""
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Not known or not supported solver type: {}. "
+            "No solver object was created.\n".format(solvertype)
+        )
     if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.SplitInputWriter = False
         solver_object.AnalysisType = "thermomech"

@@ -45,11 +45,11 @@ def init_doc(doc=None):
 
 
 def get_information():
-    info = {"name": "CCX cantilever face load",
+    info = {"name": "CCX cantilever hexa20 face load",
             "meshtype": "solid",
             "meshelement": "Hexa20",
             "constraints": ["fixed", "force"],
-            "solvers": ["ccx", "z88", "elmer"],
+            "solvers": ["calculix", "z88", "elmer"],
             "material": "solid",
             "equation": "mechanical"
             }

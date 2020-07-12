@@ -388,15 +388,10 @@ class AttachmentEditorTaskPanel(FrozenClass):
         if index >= 0  and  index <= 2:
             plm.Base = pos
 
-        rot = plm.Rotation;
-        (yaw, pitch, roll) = rot.toEuler()
-        if index==3:
-            yaw = Q(self.form.attachmentOffsetYaw.text()).getValueAs(deg)
-        if index==4:
-            pitch = Q(self.form.attachmentOffsetPitch.text()).getValueAs(deg)
-        if index==5:
-            roll = Q(self.form.attachmentOffsetRoll.text()).getValueAs(deg)
         if index >= 3  and  index <= 5:
+            yaw = Q(self.form.attachmentOffsetYaw.text()).getValueAs(deg)
+            pitch = Q(self.form.attachmentOffsetPitch.text()).getValueAs(deg)
+            roll = Q(self.form.attachmentOffsetRoll.text()).getValueAs(deg)
             rot = App.Rotation(yaw,pitch,roll)
             plm.Rotation = rot
 

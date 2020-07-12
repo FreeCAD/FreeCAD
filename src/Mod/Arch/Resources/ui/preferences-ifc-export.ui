@@ -116,7 +116,7 @@ Use this to force all objects to be exported as BREP geometry.</string>
         <property name="toolTip">
          <string>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
-If this is checked, additional calculation is done to join coplanar facets.</string>
+If this is checked, an additional calculation is done to join coplanar facets.</string>
         </property>
         <property name="text">
          <string>Join coplanar facets when triangulating</string>

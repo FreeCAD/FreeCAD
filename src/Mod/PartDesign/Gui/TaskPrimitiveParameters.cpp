@@ -746,36 +746,43 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
     primitive = new TaskBoxPrimitives(PrimitiveView);
     Content.push_back(primitive);
 
+    /*
     // handle visibility automation differently to the default method
     auto customvisfunc = [] (bool opening_not_closing,
+                             const std::string &postfix,
                              Gui::ViewProviderDocumentObject* vp,
                              App::DocumentObject *editObj,
                              const std::string& editSubName) {
         if (opening_not_closing) {
             QString code = QString::fromLatin1(
                 "import Show\n"
-                "tv = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
+                "_tv_%4 = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
                 "tvObj = %1\n"
-                "dep_features = tv.get_all_dependent(%2, '%3')\n"
+                "dep_features = _tv_%4.get_all_dependent(%2, '%3')\n"
                 "if tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
                 "\tvisible_features = [feat for feat in tvObj.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
                 "\tdep_features = [feat for feat in dep_features if feat not in visible_features]\n"
                 "\tdel(visible_features)\n"
-                "tv.hide(dep_features)\n"
+                "_tv_%4.hide(dep_features)\n"
                 "del(dep_features)\n"
                 "del(tvObj)"
                 ).arg(
                     QString::fromLatin1(Gui::Command::getObjectCmd(vp->getObject()).c_str()),
                     QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
-                    QString::fromLatin1(editSubName.c_str()));
+                    QString::fromLatin1(editSubName.c_str()),
+                    QString::fromLatin1(postfix.c_str()));
+            Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
+        } else if(postfix.size()) {
+            QString code = QString::fromLatin1(
+                "_tv_%1.restore()\n"
+                "del(_tv_%1)"
+                ).arg(QString::fromLatin1(postfix.c_str()));
             Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
         }
-        else {
-            Base::Interpreter().runString("del(tv)");
-        }
     };
-
     parameter = new PartGui::TaskAttacher(PrimitiveView, nullptr, QString(), tr("Attachment"), customvisfunc);
+    */
+    parameter = new PartGui::TaskAttacher(PrimitiveView, nullptr, QString(), tr("Attachment"));
     Content.push_back(parameter);
 }
 

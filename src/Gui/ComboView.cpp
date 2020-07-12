@@ -62,6 +62,7 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
     tabs->setTabPosition(QTabWidget::North);
     pLayout->addWidget( tabs, 0, 0 );
 
+    connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));
     if (showModel) {
         // splitter between tree and property view
         QSplitter *splitter = new QSplitter();
@@ -145,5 +146,10 @@ void ComboView::changeEvent(QEvent *e)
     DockWindow::changeEvent(e);
 }
 
+void ComboView::onCurrentTabChanged(int index)
+{
+    if (index != taskIndex)
+        oldTabIndex = index;
+}
 
 #include "moc_ComboView.cpp"

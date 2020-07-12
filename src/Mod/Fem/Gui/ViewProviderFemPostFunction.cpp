@@ -178,6 +178,7 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject *pcObj)
     m_manip->ref();
 
     SoSeparator* pcEditNode = new SoSeparator();
+    pcEditNode->ref();
 
     pcEditNode->addChild(color);
     pcEditNode->addChild(m_transform);
@@ -206,6 +207,7 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject *pcObj)
 
     addDisplayMaskMode(pcEditNode, "Default");
     setDisplayMaskMode("Default");
+    pcEditNode->unref();
 }
 
 bool ViewProviderFemPostFunction::doubleClicked(void) {

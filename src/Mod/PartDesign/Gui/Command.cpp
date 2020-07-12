@@ -352,50 +352,32 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    PartDesign::SubShapeBinder *binder = 0;
-    App::DocumentObject *binderParent = 0;
-    std::string binderSub;
+    App::DocumentObject *parent = 0;
+    std::string parentSub;
     std::map<App::DocumentObject *, std::vector<std::string> > values;
     for(auto &sel : Gui::Selection().getCompleteSelection(0)) {
         if(!sel.pObject) continue;
-        if(!binder) {
-            const char *dot = sel.SubName?strrchr(sel.SubName,'.'):0;
-            if(!dot || dot[1]==0) {
-                auto sobj = sel.pObject->getSubObject(sel.SubName);
-                if(!sobj) continue;
-                binder = dynamic_cast<PartDesign::SubShapeBinder*>(sobj->getLinkedObject(true));
-                if(binder) {
-                    binderParent = sel.pObject;
-                    if(sel.SubName)
-                        binderSub = sel.SubName;
-                    continue;
-                }
-            }
-        }
         auto &subs = values[sel.pObject];
         if(sel.SubName && sel.SubName[0])
             subs.emplace_back(sel.SubName);
     }
 
-    PartDesign::Body *pcActiveBody = 0;
     std::string FeatName;
-    if(!binder) {
-        pcActiveBody = PartDesignGui::getBody(false,true,true,&binderParent,&binderSub);
-        FeatName = getUniqueObjectName("Binder",pcActiveBody);
-    }
-    if(binderParent && binderParent!=binder) {
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(false,true,true,&parent,&parentSub);
+    FeatName = getUniqueObjectName("Binder",pcActiveBody);
+    if(parent) {
         decltype(values) links;
         for(auto &v : values) {
             App::DocumentObject *obj = v.first;
-            if(obj != binderParent) {
+            if(obj != parent) {
                 auto &subs = links[obj];
                 subs.insert(subs.end(),v.second.begin(),v.second.end());
                 continue;
             }
             for(auto &sub : v.second) {
                 auto link = obj;
-                auto linkSub = binderSub;
-                binderParent->resolveRelativeLink(linkSub,link,sub);
+                auto linkSub = parentSub;
+                parent->resolveRelativeLink(linkSub,link,sub);
                 if(link && link != pcActiveBody)
                     links[link].push_back(sub);
             }
@@ -403,22 +385,19 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         values = std::move(links);
     }
         
+    PartDesign::SubShapeBinder *binder = 0;
     try {
-        if (binder)
-            openCommand("Change SubShapeBinder");
-        else {
-            openCommand("Create SubShapeBinder");
-            if(pcActiveBody) {
-                FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
-                binder = dynamic_cast<PartDesign::SubShapeBinder*>(pcActiveBody->getObject(FeatName.c_str()));
-            } else {
-                doCommand(Command::Doc,
-                        "App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",FeatName.c_str());
-                binder = dynamic_cast<PartDesign::SubShapeBinder*>(
-                        App::GetApplication().getActiveDocument()->getObject(FeatName.c_str()));
-            }
-            if(!binder) return;
+        openCommand("Create SubShapeBinder");
+        if(pcActiveBody) {
+            FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
+            binder = dynamic_cast<PartDesign::SubShapeBinder*>(pcActiveBody->getObject(FeatName.c_str()));
+        } else {
+            doCommand(Command::Doc,
+                    "App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",FeatName.c_str());
+            binder = dynamic_cast<PartDesign::SubShapeBinder*>(
+                    App::GetApplication().getActiveDocument()->getObject(FeatName.c_str()));
         }
+        if(!binder) return;
         binder->setLinks(std::move(values));
         updateActive();
         commitCommand();

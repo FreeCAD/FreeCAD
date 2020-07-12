@@ -131,12 +131,13 @@ def make_text(string, placement=None, screen=False):
     if App.GuiUp:
         ViewProviderText(new_obj.ViewObject)
 
-        h = utils.get_param("textheight", 0.20)
+        h = utils.get_param("textheight", 2)
 
+        new_obj.ViewObject.DisplayMode = "3D text"
         if screen:
             _msg("screen: {}".format(screen))
-            new_obj.ViewObject.DisplayMode = "3D text"
-            h = h*10
+            new_obj.ViewObject.DisplayMode = "2D text"
+            h = h * 10
 
         new_obj.ViewObject.FontSize = h
         new_obj.ViewObject.FontName = utils.get_param("textfont", "")

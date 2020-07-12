@@ -7040,11 +7040,13 @@ void SketchObject::onChanged(const App::Property* prop)
 
     if (prop == &Geometry || prop == &Constraints) {
 
-        if(getDocument()->isPerformingTransaction()) { // undo/redo
+        auto doc = getDocument();
+
+        if(doc && doc->isPerformingTransaction()) { // undo/redo
             setStatus(App::PendingTransactionUpdate, true);
         }
         else {
-            if(!internaltransaction) { // internal sketchobject operations changing both geometry and constraints will explicity perform an update
+            if(!internaltransaction) { // internal sketchobject operations changing both geometry and constraints will explicitly perform an update
                 if(prop == &Geometry) {
                     if(managedoperation || isRestoring()) {
                         acceptGeometry(); // if geometry changed, the constraint geometry indices must be updated

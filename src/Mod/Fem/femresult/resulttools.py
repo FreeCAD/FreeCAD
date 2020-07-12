@@ -275,6 +275,7 @@ def fill_femresult_stats(res_obj):
     if res_obj.DisplacementVectors:
         x_max, y_max, z_max = map(max, zip(*res_obj.DisplacementVectors))
         x_min, y_min, z_min = map(min, zip(*res_obj.DisplacementVectors))
+    if res_obj.DisplacementLengths:
         a_min = min(res_obj.DisplacementLengths)
         a_max = max(res_obj.DisplacementLengths)
     if res_obj.vonMises:
