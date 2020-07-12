@@ -5394,22 +5394,18 @@ void DocumentObjectItem::displayStatusInfo()
 {
     App::DocumentObject* Obj = object()->getObject();
 
-    QString objName = QString::fromLatin1(Obj->getNameInDocument());
-    QString status = objName;
-
     std::ostringstream ss;
-    App::DocumentObject *parent = nullptr;
-    getSubName(ss, parent);
-    if(parent) 
-        status += QString::fromLatin1(", (%1.%2%3.)").arg(
-                QLatin1String(parent->getFullName().c_str()),
-                QLatin1String(ss.str().c_str()), objName);
+    App::DocumentObject *parent = 0;
+    this->getSubName(ss,parent);
+    if(!parent)
+        parent = Obj;
+    else if(!Obj->redirectSubName(ss,parent,0))
+        ss << Obj->getNameInDocument() << '.';
 
-    if ( (Obj->isTouched() || Obj->mustExecute() == 1) && !Obj->isError()) {
-        status += QString::fromLatin1(", ");
-        status += QObject::tr("Touched");
-    }
+    QString status = Selection().format(parent, ss.str().c_str(), 0.f, 0.f, 0.f, false);
 
+    if ( (Obj->isTouched() || Obj->mustExecute() == 1) && !Obj->isError())
+        status = QObject::tr("Touched, ") + status;
     getMainWindow()->showMessage(status);
 
     if (!Obj->isError()) {

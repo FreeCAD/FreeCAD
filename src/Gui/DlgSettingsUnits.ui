@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>484</width>
-    <height>388</height>
+    <height>472</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,48 +33,6 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Number of decimals:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="spinBoxDecimals">
-          <property name="toolTip">
-           <string>Number of decimals that should be shown for numbers and dimensions</string>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>12</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="0" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Unit system:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="comboBox_ViewSystem">
-          <property name="toolTip">
-           <string>Unit system that should be used for all parts the application</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
       <item row="3" column="0">
        <widget class="QTableWidget" name="tableWidget">
         <property name="sizePolicy">
@@ -98,16 +56,50 @@
         </column>
        </widget>
       </item>
-      <item row="2" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="spinBoxDecimals">
+          <property name="toolTip">
+           <string>Number of decimals that should be shown for numbers and dimensions</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>12</number>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Unit system:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="comboBox_ViewSystem">
+          <property name="toolTip">
+           <string>Unit system that should be used for all parts the application</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Number of decimals:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
            <string>Minimum fractional inch:</string>
           </property>
          </widget>
         </item>
-        <item>
+        <item row="3" column="1">
          <widget class="QComboBox" name="comboBox_FracInch">
           <property name="toolTip">
            <string>Minimum fractional inch to be displayed</string>
@@ -147,6 +139,27 @@
             <string>1/128&quot;</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="toolTip">
+           <string>Number of decimals when showing coordinates in preselection message.
+Set to -1 to use the same setting of the above 'Number of decimals'.</string>
+          </property>
+          <property name="text">
+           <string>Decimals in pre-selection:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="spinBoxPreSel">
+          <property name="minimum">
+           <number>-1</number>
+          </property>
+          <property name="value">
+           <number>-1</number>
+          </property>
          </widget>
         </item>
        </layout>

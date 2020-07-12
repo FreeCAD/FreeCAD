@@ -107,10 +107,6 @@ FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true)
 
 using namespace Gui;
 
-namespace Gui {
-std::array<std::pair<double, std::string>,3 > schemaTranslatePoint(double x, double y, double z, double precision);
-}
-
 // *************************************************************************
 
 SO_NODE_SOURCE(SoFCUnifiedSelection)
@@ -687,32 +683,7 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
         const char *objname = vpd->getObject()->getNameInDocument();
 
         this->preSelection = 1;
-        char buf[513];
-
-        size_t offset = 0;
-        auto sobj = vpd->getObject()->getSubObject(subname);
-        const char *element = nullptr;
-        if (sobj) {
-            element = Data::ComplexGeoData::findElementName(subname);
-            offset = snprintf(buf,sizeof(buf)-1,"%s%s%s%s",
-                    sobj->Label.getValue(),
-                    element[0] ? " (" : "",
-                    element,
-                    element[0] ? ") " : "");
-        }
-        if(offset <= sizeof(buf)) {
-            auto pts = schemaTranslatePoint(x, y, z, 1e-7);
-            snprintf(buf+offset, sizeof(buf)-offset-1, "[%f %s, %f %s, %f %s] %s#%s.%s"
-                    ,pts[0].first,pts[0].second.c_str()
-                    ,pts[1].first,pts[1].second.c_str()
-                    ,pts[2].first,pts[2].second.c_str()
-                    ,docname, objname, subname);
-        }
-
-        getMainWindow()->showMessage(QString::fromUtf8(buf));
-
-
-        int ret = Gui::Selection().setPreselect(docname,objname,subname,x,y,z);
+        int ret = Gui::Selection().setPreselect(docname,objname,subname,x,y,z,0,true);
         if(ret<0 && hasHighlight())
             return true;
 

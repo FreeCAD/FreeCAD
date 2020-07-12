@@ -394,9 +394,18 @@ public:
 
     const char *getSelectedElement(App::DocumentObject*, const char* pSubName) const;
 
+    /// Format selection message
+    QString format(App::DocumentObject *obj, const char *subname,
+                   float x=0.f, float y=0.f, float z=0.f, bool show=false);
+
+    QString format(const char *docname=0,
+                   const char *objname=0,
+                   const char *subname=0,
+                   float x=0.f, float y=0.f, float z=0.f, bool show=false);
+
     /// set the preselected object (mostly by the 3D view)
-    int setPreselect(const char* pDocName, const char* pObjectName, 
-            const char* pSubName, float x=0, float y=0, float z=0, int signal=0);
+    int setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName,
+                     float x=0.f, float y=0.f, float z=0.f, int signal=0, bool msg=false);
     /// remove the present preselection
     void rmvPreselect();
     /// sets different coords for the preselection

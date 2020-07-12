@@ -64,6 +64,7 @@ DlgSettingsUnitsImp::DlgSettingsUnitsImp(QWidget* parent)
 {
     ui->setupUi(this);
     ui->spinBoxDecimals->setMaximum(std::numeric_limits<double>::digits10 + 1);
+    ui->spinBoxPreSel->setMaximum(std::numeric_limits<double>::digits10 + 1);
 
     int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
     for (int i = 0; i < num; i++) {
@@ -121,6 +122,7 @@ void DlgSettingsUnitsImp::saveSettings()
         ("User parameter:BaseApp/Preferences/Units");
     hGrp->SetInt("UserSchema", ui->comboBox_ViewSystem->currentIndex());
     hGrp->SetInt("Decimals", ui->spinBoxDecimals->value());
+    hGrp->SetInt("DecimalsPreSel", ui->spinBoxPreSel->value());
 
     // Set actual value
     Base::UnitsApi::setDecimals(ui->spinBoxDecimals->value());
@@ -151,6 +153,7 @@ void DlgSettingsUnitsImp::loadSettings()
         ("User parameter:BaseApp/Preferences/Units");
     ui->comboBox_ViewSystem->setCurrentIndex(hGrp->GetInt("UserSchema",0));
     ui->spinBoxDecimals->setValue(hGrp->GetInt("Decimals",Base::UnitsApi::getDecimals()));
+    ui->spinBoxPreSel->setValue(hGrp->GetInt("DecimalsPreSel",-1));
 
     // Get the current user setting for the minimum fractional inch
     FracInch = hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator());

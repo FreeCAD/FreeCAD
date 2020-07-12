@@ -30,6 +30,7 @@
 # include <QApplication>
 # include <QString>
 # include <QStatusBar>
+# include <QTextStream>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -768,7 +769,8 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
     }
 }
 
-int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName, float x, float y, float z, int signal)
+int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName,
+                                     float x, float y, float z, int signal, bool msg)
 {
     if(!pDocName || !pObjectName) {
         rmvPreselect();
@@ -777,18 +779,22 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
     if(!pSubName) pSubName = "";
 
     if(DocName==pDocName && FeatName==pObjectName && SubName==pSubName) {
-        // MovePreselect is likely going to slow down large scene rendering.
-        // Disable it for now.
-#if 0
         if(hx!=x || hy!=y || hz!=z) {
             hx = x;
             hy = y;
             hz = z;
+
+            if (msg)
+                format(0,0,0,x,y,z,true);
+
+            // MovePreselect is likely going to slow down large scene rendering.
+            // Disable it for now.
+#if 0
             SelectionChanges Chng(SelectionChanges::MovePreselect,
                     DocName,FeatName,SubName,std::string(),x,y,z);
             notify(Chng);
-        }
 #endif
+        }
         return -1;
     }
 
@@ -850,6 +856,10 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
             DocName,FeatName,SubName,std::string(),x,y,z,signal);
 
     CurrentPreselection = Chng;
+
+    if (msg)
+        format(0,0,0,x,y,z,true);
+
     FC_TRACE("preselect "<<DocName<<'#'<<FeatName<<'.'<<SubName);
     notify(Chng);
 
@@ -857,38 +867,8 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
     return DocName.empty()?0:1;
 }
 
-namespace Gui {
-std::array<std::pair<double, std::string>, 3> schemaTranslatePoint(double x, double y, double z, double precision)
-{
-    Base::Quantity mmx(Base::Quantity::MilliMetre);
-    mmx.setValue(fabs(x) > precision ? x : 0.0);
-    Base::Quantity mmy(Base::Quantity::MilliMetre);
-    mmy.setValue(fabs(y) > precision ? y : 0.0);
-    Base::Quantity mmz(Base::Quantity::MilliMetre);
-    mmz.setValue(fabs(z) > precision ? z : 0.0);
-
-    double xfactor, yfactor, zfactor;
-    QString xunit, yunit, zunit;
-
-    Base::UnitsApi::schemaTranslate(mmx, xfactor, xunit);
-    Base::UnitsApi::schemaTranslate(mmy, yfactor, yunit);
-    Base::UnitsApi::schemaTranslate(mmz, zfactor, zunit);
-
-    double xuser = fabs(x) > precision ? x / xfactor : 0.0;
-    double yuser = fabs(y) > precision ? y / yfactor : 0.0;
-    double zuser = fabs(z) > precision ? z / zfactor : 0.0;
-
-    std::array<std::pair<double, std::string>, 3> ret = {std::make_pair(xuser, xunit.toUtf8().constBegin()),
-                                                         std::make_pair(yuser, yunit.toUtf8().constBegin()),
-                                                         std::make_pair(zuser, zunit.toUtf8().constBegin())};
-    return ret;
-}
-}
-
 void SelectionSingleton::setPreselectCoord( float x, float y, float z)
 {
-    static char buf[513];
-
     // if nothing is in preselect ignore
     if(CurrentPreselection.Object.getObjectName().empty()) return;
 
@@ -896,17 +876,76 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
     CurrentPreselection.y = y;
     CurrentPreselection.z = z;
 
-    auto pts = schemaTranslatePoint(x, y, z, 0.0);
-    snprintf(buf,512,"Preselected: %s.%s.%s (%f %s,%f %s,%f %s)"
-                    ,CurrentPreselection.pDocName
-                    ,CurrentPreselection.pObjectName
-                    ,CurrentPreselection.pSubName
-                    ,pts[0].first, pts[0].second.c_str()
-                    ,pts[1].first, pts[1].second.c_str()
-                    ,pts[2].first, pts[2].second.c_str());
+    format(0,0,0,x,y,z,true);
+}
 
-    if (getMainWindow())
-        getMainWindow()->showMessage(QString::fromUtf8(buf));
+QString SelectionSingleton::format(App::DocumentObject *obj,
+                                   const char *subname, 
+                                   float x, float y, float z,
+                                   bool show)
+{
+    if (!obj || !obj->getNameInDocument())
+        return QString();
+    return format(obj->getDocument()->getName(), obj->getNameInDocument(), subname, x, y, z, show);
+}
+
+QString SelectionSingleton::format(const char *docname,
+                                   const char *objname,
+                                   const char *subname, 
+                                   float x, float y, float z,
+                                   bool show)
+{
+    App::SubObjectT objT(docname?docname:DocName.c_str(),
+                         objname?objname:FeatName.c_str(),
+                         subname?subname:SubName.c_str());
+
+    QString text;
+    QTextStream ts(&text);
+
+    auto sobj = objT.getSubObject();
+    if (sobj) {
+        int index = -1;
+        std::string element = objT.getOldElementName(&index);
+        ts << sobj->getNameInDocument();
+        if (index > 0)
+            ts << "." << element.c_str() << index;
+        ts << " | ";
+        if (sobj->Label.getStrValue() != sobj->getNameInDocument())
+            ts << QString::fromUtf8(sobj->Label.getValue()) << " | ";
+    }
+    if(x != 0. || y != 0. || z != 0.) {
+        Base::Quantity q(x, Base::Quantity::MilliMetre.getUnit());
+        double factor;
+        QString unit;
+        Base::UnitsApi::schemaTranslate(q, factor, unit);
+
+        QLocale Lc;
+        const Base::QuantityFormat& format = q.getFormat();
+        if (format.option != Base::QuantityFormat::None) {
+            uint opt = static_cast<uint>(format.option);
+            Lc.setNumberOptions(static_cast<QLocale::NumberOptions>(opt));
+        }
+        static ParameterGrp::handle hGrp;
+        if (!hGrp)
+            hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
+        int decimal = hGrp->GetInt("DecimalsPreSel",-1);
+        if (decimal < 0)
+            decimal = format.precision;
+        char fmt = format.toFormat();
+        ts << Lc.toString(x/factor, fmt, decimal) << "; "
+           << Lc.toString(y/factor, fmt, decimal) << "; "
+           << Lc.toString(z/factor, fmt, decimal) << " "
+           << unit << " | ";
+    }
+
+    ts << objT.getDocumentName().c_str() << "#" 
+       << objT.getObjectName().c_str() << "."
+       << objT.getSubName().c_str();
+
+    if (show && getMainWindow())
+        getMainWindow()->showMessage(text);
+
+    return text;
 }
 
 void SelectionSingleton::rmvPreselect()

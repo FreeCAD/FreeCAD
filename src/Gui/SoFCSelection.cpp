@@ -74,10 +74,6 @@
 
 using namespace Gui;
 
-namespace Gui {
-std::array<std::pair<double, std::string>,3 > schemaTranslatePoint(double x, double y, double z, double precision);
-}
-
 struct SoFCSelection::SelContext: Gui::SoFCSelectionContext {
     SoColorPacker packer;
     SoColorPacker packer2;
@@ -398,7 +394,9 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                            ,subElementName.getValue().getString()
                                            ,pp->getPoint()[0]
                                            ,pp->getPoint()[1]
-                                           ,pp->getPoint()[2])){
+                                           ,pp->getPoint()[2],
+                                           0, true))
+                    {
                         SoFCSelection::turnoffcurrent(action);
                         SoFCSelection::currenthighlight = (SoFullPath*)action->getCurPath()->copy();
                         SoFCSelection::currenthighlight->ref();
@@ -407,19 +405,6 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                         this->redrawHighlighted(action, true);
                     }
                 }
-                
-                const auto &pt = pp->getPoint();
-                
-                auto pts = schemaTranslatePoint(pt[0], pt[1], pt[2], 1e-7);
-                snprintf(buf,512,"Preselected: %s.%s.%s (%f %s, %f %s, %f %s)"
-                                ,documentName.getValue().getString()
-                                ,objectName.getValue().getString()
-                                ,subElementName.getValue().getString()
-                                ,pts[0].first, pts[0].second.c_str()
-                                ,pts[1].first, pts[1].second.c_str()
-                                ,pts[2].first, pts[2].second.c_str());
-                
-                getMainWindow()->showMessage(QString::fromUtf8(buf));
             }
             else { // picked point
                 if (highlighted) {

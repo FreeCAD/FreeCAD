@@ -739,7 +739,7 @@ void SelectionMenu::onHover(QAction *action) {
 
     auto &sel = (*pSelList)[idx-1];
     Gui::Selection().setPreselect(sel.getDocumentName().c_str(),
-            sel.getObjectName().c_str(), sel.getSubName().c_str(),0,0,0,2);
+            sel.getObjectName().c_str(), sel.getSubName().c_str(),0,0,0,2, true);
     timer.start(500);
     tooltipIndex = idx;
 }
@@ -800,7 +800,7 @@ void SelectionMenu::onSubMenu() {
     std::string subname(sel.getSubName().c_str(),element);
 
     Gui::Selection().setPreselect(sel.getDocumentName().c_str(),
-            sel.getObjectName().c_str(), subname.c_str(),0,0,0,2);
+            sel.getObjectName().c_str(), subname.c_str(),0,0,0,2,true);
 
     timer.start(500);
     tooltipIndex = -idx;
@@ -876,7 +876,7 @@ void SelUpMenu::onHovered(QAction *action)
     if (!obj)
         return;
     Selection().setPreselect(objT.getDocumentName().c_str(),
-            objT.getObjectName().c_str(), objT.getSubName().c_str(), 0,0,0,2);
+            objT.getObjectName().c_str(), objT.getSubName().c_str(), 0,0,0,2,true);
 
     QString status;
     status = QString::fromLatin1("%1 (%2#%3.%4)%5").arg(
