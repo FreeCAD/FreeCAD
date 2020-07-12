@@ -944,9 +944,11 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
         if (opening_not_closing) {
             QString code = QString::fromLatin1(
                 "import Show\n"
+                "from Show.Containers import isAContainer\n"
                 "_tv_%4 = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
                 "tvObj = %1\n"
                 "dep_features = _tv_%4.get_all_dependent(%2, '%3')\n"
+                "dep_features = [o for o in dep_features if not isAContainer(o)]\n"
                 "if tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
                 "\tvisible_features = [feat for feat in tvObj.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
                 "\tdep_features = [feat for feat in dep_features if feat not in visible_features]\n"
