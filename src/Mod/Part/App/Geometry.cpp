@@ -4510,8 +4510,14 @@ bool GeomElementarySurface::isSame(const Geometry &_other, double tol, double at
     auto &other = static_cast<const GeomElementarySurface &>(_other);
     return Base::DistanceP2(getLocation(), other.getLocation()) <= tol*tol
         && getDir().GetAngle(other.getDir()) <= atol
-        && getXDir().GetAngle(other.getXDir()) <= atol
-        && getYDir().GetAngle(other.getYDir()) <= atol;
+        && ((getXDir().GetAngle(other.getXDir()) <= atol
+                && getYDir().GetAngle(other.getYDir()) <= atol)
+            // It seems that OCC may change some surface Position (gp_Ax3) to
+            // right hand coordinate. The following checks is to detect such cases.
+            || (getXDir().GetAngle(other.getYDir()) <= atol
+                && getYDir().GetAngle(-other.getXDir()) <= atol)
+            || (getYDir().GetAngle(other.getXDir()) <= atol
+                && getXDir().GetAngle(-other.getYDir()) <= atol));
 }
 
 // -------------------------------------------------
