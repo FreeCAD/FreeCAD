@@ -115,7 +115,8 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         self.propertiesReady = True
 
-    def opPropertyDefinitions(self):
+    @classmethod
+    def opPropertyDefinitions(cls):
         '''opPropertyDefinitions() ... return list of tuples containing operation specific properties'''
         return [
             ("App::PropertyBool", "ShowTempObjects", "Debug",
@@ -1817,7 +1818,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
 def SetupProperties():
     ''' SetupProperties() ... Return list of properties required for operation.'''
-    return [tup[1] for tup in ObjectWaterline.opPropertyDefinitions(False)]
+    return [tup[1] for tup in ObjectWaterline.opPropertyDefinitions()]
 
 
 def Create(name, obj=None):

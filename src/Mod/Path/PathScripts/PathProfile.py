@@ -94,8 +94,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         self.propertiesReady = True
 
-    def areaOpProperties(self):
-        '''areaOpProperties(obj) ... returns a tuples.
+    @classmethod
+    def areaOpProperties(cls):
+        '''areaOpProperties() ... returns a tuples.
         Each tuple contains property declaration information in the
         form of (prototype, name, section, tooltip).'''
         return [
@@ -1599,7 +1600,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
 def SetupProperties():
     setup = PathAreaOp.SetupProperties()
-    setup.extend([tup[1] for tup in ObjectProfile.areaOpProperties(False)])
+    setup.extend([tup[1] for tup in ObjectProfile.areaOpProperties()])
     return setup
 
 
