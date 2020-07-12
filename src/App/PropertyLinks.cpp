@@ -81,6 +81,11 @@ void PropertyLinkBase::setAllowExternal(bool allow) {
     setFlag(LinkAllowExternal,allow);
 }
 
+void PropertyLinkBase::setReturnNewElement(bool enable)
+{ 
+    setFlag(LinkNewElement, enable);
+}
+
 void PropertyLinkBase::hasSetValue() {
     auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
     if(owner)
@@ -1285,8 +1290,9 @@ PyObject *PropertyLinkSub::getPyObject(void)
     if (_pcLinkSub) {
         _pcLinkSub->getPyObject();
         tup[0] = Py::asObject(_pcLinkSub->getPyObject());
-        for(unsigned int i = 0;i<_cSubList.size(); i++)
-            list[i] = Py::String(_cSubList[i]);
+        int i = 0;
+        for (auto &sub : getSubValues(testFlag(LinkNewElement)))
+            list[i++] = Py::String(sub);
         tup[1] = list;
         return Py::new_reference_to(tup);
     }
@@ -2200,7 +2206,7 @@ std::vector<PropertyLinkSubList::SubSet> PropertyLinkSubList::getSubListValues(b
 PyObject *PropertyLinkSubList::getPyObject(void)
 {
 #if 1
-    std::vector<SubSet> subLists = getSubListValues();
+    std::vector<SubSet> subLists = getSubListValues(testFlag(LinkNewElement));
     std::size_t count = subLists.size();
 #if 0//FIXME: Should switch to tuple
     Py::Tuple sequence(count);
@@ -3158,6 +3164,7 @@ PropertyXLink::PropertyXLink(bool _allowPartial, PropertyLinkBase *parent)
     setAllowPartial(_allowPartial);
     setAllowExternal(true);
     setSyncSubObject(true);
+    setReturnNewElement(true);
     if(parent)
         setContainer(parent->getContainer());
 }
@@ -3852,7 +3859,7 @@ PyObject *PropertyXLink::getPyObject(void)
 {
     if(!_pcLink)
         Py_Return;
-    const auto &subs = getSubValues(false);
+    const auto &subs = getSubValues(testFlag(LinkNewElement));
     if(subs.empty())
         return _pcLink->getPyObject();
     Py::Tuple ret(2);
@@ -4019,7 +4026,7 @@ PyObject *PropertyXLinkSub::getPyObject(void)
         Py_Return;
     Py::Tuple ret(2);
     ret.setItem(0,Py::Object(_pcLink->getPyObject(),true));
-    const auto &subs = getSubValues(false);
+    const auto &subs = getSubValues(testFlag(LinkNewElement));
     Py::List list(subs.size());
     int i = 0;
     PropertyString propString;
@@ -4044,6 +4051,7 @@ TYPESYSTEM_SOURCE(App::PropertyXLinkSubList , App::PropertyLinkBase)
 PropertyXLinkSubList::PropertyXLinkSubList()
 {
     _pcScope = LinkScope::Global;
+    setReturnNewElement(true);
     setSyncSubObject(true);
 }
 
@@ -4280,7 +4288,7 @@ PyObject *PropertyXLinkSubList::getPyObject(void)
         Py::Tuple tup(2);
         tup[0] = Py::asObject(obj->getPyObject());
 
-        const auto &subs = link.getSubValues();
+        const auto &subs = link.getSubValues(testFlag(LinkNewElement));
         Py::Tuple items(subs.size());
         for (std::size_t j = 0; j < subs.size(); j++) {
             items[j] = Py::String(subs[j]);

@@ -258,6 +258,10 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
                     auto linkProp = static_cast<PropertyLinkBase*>(prop);
                     linkProp->setAllowPartial(value);
                     continue;
+                } else if(v == "ReturnNewElement" && prop->isDerivedFrom(PropertyLinkBase::getClassTypeId())) {
+                    auto linkProp = static_cast<PropertyLinkBase*>(prop);
+                    linkProp->setReturnNewElement(value);
+                    continue;
                 } else if (v == "NoPersistEnums" && prop->isDerivedFrom(PropertyEnumeration::getClassTypeId())) {
                     auto enumProp = static_cast<PropertyEnumeration*>(prop);
                     enumProp->setPersistEnums(!value);
@@ -298,14 +302,17 @@ PyObject*  PropertyContainerPy::getPropertyStatus(PyObject *args)
         for(auto &v : statusMap)
             ret.append(Py::String(v.first.c_str()));
         ret.append(Py::String("AllowPartial"));
+        ret.append(Py::String("ReturnNewElement"));
         ret.append(Py::String("NoPersistEnums"));
     }else{
         App::Property* prop = getPropertyContainerPtr()->getPropertyByName(name);
         if (prop) {
             if (prop->isDerivedFrom(PropertyLinkBase::getClassTypeId())) {
                 auto linkProp = static_cast<PropertyLinkBase*>(prop);
-                if(linkProp && linkProp->testFlag(PropertyLinkBase::LinkAllowPartial))
+                if(linkProp->testFlag(PropertyLinkBase::LinkAllowPartial))
                     ret.append(Py::String("AllowPartial"));
+                if(linkProp->testFlag(PropertyLinkBase::LinkNewElement))
+                    ret.append(Py::String("ReturnNewElement"));
             } else if (prop->isDerivedFrom(PropertyEnumeration::getClassTypeId())) {
                 auto enumProp = static_cast<PropertyEnumeration*>(prop);
                 if (!enumProp->getPersistEnums())

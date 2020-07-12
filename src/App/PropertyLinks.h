@@ -552,12 +552,15 @@ public:
         LinkAllowPartial,
         LinkRestoreLabel,
         LinkSyncSubObject, // used by DlgPropertyLink
+        LinkNewElement, // return new element name in getPyObject
     };
     inline bool testFlag(int flag) const {
         return _Flags.test((std::size_t)flag);
     }
 
     virtual void setAllowPartial(bool enable) { (void)enable; }
+
+    void setReturnNewElement(bool enable);
 
 protected:
     virtual void hasSetValue() override;
