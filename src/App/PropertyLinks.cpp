@@ -2464,6 +2464,19 @@ public:
             const char *filename, App::Document *pDoc, bool relative, QString *fullPath = 0) 
     {
         bool absolute;
+       // The path could be an URI, in that case
+       // TODO: build a far much more resilient approach to test for an URI
+       std::string prefix("https://");
+       std::string FileName(filename);
+       auto res = std::mismatch(prefix.begin(), prefix.end(), FileName.begin());
+       if ( res.first == prefix.end() )
+       {
+               // We do have an URI
+               QString path = QString::fromUtf8(filename);
+               if ( fullPath )
+                       *fullPath = path;
+               return std::string(filename);
+       }
         // make sure the filename is aboluste path
         QString path = QDir::cleanPath(QString::fromUtf8(filename));
         if((absolute=QFileInfo(path).isAbsolute())) {
@@ -2535,12 +2548,28 @@ public:
     }
 
     static QString getFullPath(const char *p) {
-        if(!p) return QString();
-        return QFileInfo(QString::fromUtf8(p)).canonicalFilePath();
-    }
+       QString path = QString::fromUtf8(p);;
+       std::string prefix("https://");
+       std::string Path(path.toStdString());
+       auto res = std::mismatch(prefix.begin(), prefix.end(), Path.begin());
+       if ( res.first == prefix.end() )
+		return(path);
+	else
+	{
+        	if(!p) return QString();
+ 	   	return QFileInfo(QString::fromUtf8(p)).canonicalFilePath();
+	}
+     }
 
     QString getFullPath() const {
-        return QFileInfo(myPos->first).canonicalFilePath();
+       QString path = myPos->first;
+       std::string prefix("https://");
+       std::string Path(path.toStdString());
+       auto res = std::mismatch(prefix.begin(), prefix.end(), Path.begin());
+       if ( res.first == prefix.end() )
+		return(path);
+       else
+		return QFileInfo(myPos->first).canonicalFilePath();
     }
 
     const char *filePath() const {
@@ -2985,6 +3014,7 @@ void PropertyXLink::setValue(std::string &&filename, std::string &&name,
     DocumentObject *pObject=0;
     DocInfoPtr info;
     if(filename.size()) {
+        owner->getDocument()->signalLinkXsetValue(filename);
         info = DocInfo::get(filename.c_str(),owner->getDocument(),this,name.c_str());
         if(info->pcDoc) 
             pObject = info->pcDoc->getObject(name.c_str());

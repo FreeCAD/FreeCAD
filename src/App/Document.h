@@ -178,6 +178,7 @@ public:
     boost::signals2::signal<void (const App::DocumentObject&)> signalFinishRestoreObject;
     boost::signals2::signal<void (const App::Document&,const App::Property&)> signalChangePropertyEditor;
     //@}
+    boost::signals2::signal<void (std::string)> signalLinkXsetValue;
 
 
     void clearDocument();
