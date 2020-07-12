@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="312"/>
       <source>Mesh</source>
-      <translation>siatka</translation>
+      <translation>Siatka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="313"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh</source>
-      <translation>siatka</translation>
+      <translation>Siatka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="60"/>
@@ -60,12 +60,12 @@
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation>siatka</translation>
+      <translation>Siatka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
       <source>Create section from mesh and plane</source>
-      <translation>Utwórz sekcje z siatki i planu</translation>
+      <translation>Utwórz przekrój z siatki i płaszczyzny</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Mesh</source>
-      <translation>siatka</translation>
+      <translation>Siatka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
@@ -155,7 +155,7 @@
       <translation type="unfinished">Connect edges if distance less than</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="344"/>
+      <location filename="../../CrossSections.cpp" line="345"/>
       <source>Failure</source>
       <translation type="unfinished">Failure</translation>
     </message>
@@ -516,12 +516,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Below</source>
-      <translation type="unfinished">Below</translation>
+      <translation>Poniżej</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Above</source>
-      <translation type="unfinished">Above</translation>
+      <translation>Ponad</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>

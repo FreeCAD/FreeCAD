@@ -2521,7 +2521,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="328"/>
       <source>Flip sides</source>
-      <translation>側面を反転</translation>
+      <translation>面を反転</translation>
     </message>
   </context>
   <context>
@@ -3479,7 +3479,7 @@ Please check one or more edge entities first.</source>
       <location filename="../../DlgPrimitives.ui" line="168"/>
       <location filename="../../DlgPrimitives.cpp" line="664"/>
       <source>Regular polygon</source>
-      <translation>多角形</translation>
+      <translation>正多角形</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="180"/>
@@ -4404,7 +4404,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskAttacher.ui" line="328"/>
       <source>Flip sides</source>
-      <translation>側面を反転</translation>
+      <translation>面を反転</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="302"/>

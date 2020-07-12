@@ -418,7 +418,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Collection</source>
-      <translation type="unfinished">Collection</translation>
+      <translation>Коллекция</translation>
     </message>
   </context>
   <context>
@@ -609,16 +609,28 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Название</translation>
     </message>
     <message>
-      <source>Document</source>
-      <translation>Документ</translation>
+      <source>Verbose description of the new property.</source>
+      <translation>Подробное описание нового свойства.</translation>
     </message>
     <message>
-      <source>Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</source>
-      <translation>Добавить имя группы перед именем свойства в виде 'группа'_'имя', чтобы избежать конфликтов с существующим свойством. Название группы будет автоматически обрезано, когда будет показано в редакторе свойств.</translation>
+      <source>Documentation</source>
+      <translation>Документация</translation>
     </message>
     <message>
-      <source>Append group name</source>
-      <translation>Добавить имя группы</translation>
+      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
+      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+    </message>
+    <message>
+      <source>Prefix group name</source>
+      <translation>Название префикса группы</translation>
     </message>
   </context>
   <context>
@@ -1005,6 +1017,10 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Global</source>
       <translation>Глобальный</translation>
     </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation>%1 модуль не загружен</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -1298,6 +1314,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Font family to be used for selected code type</source>
       <translation>Семейство шрифтов, которые будут использоваться для выбранного типа кода</translation>
+    </message>
+    <message>
+      <source>Color:</source>
+      <translation>Цвет:</translation>
     </message>
   </context>
   <context>
@@ -1617,41 +1637,41 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Guided Walkthrough</source>
-      <translation type="unfinished">Guided Walkthrough</translation>
+      <translation>Интерактивный тур</translation>
     </message>
     <message>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
 
 Note: your changes will be applied when you next switch workbenches
 </source>
-      <translation type="unfinished">This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
+      <translation>Это руководство поможет вам при настройке этого макроса в пользовательской глобальной панели инструментов. Инструкции будут в красном тексте диалога.
 
-Note: your changes will be applied when you next switch workbenches
+Примечание: ваши изменения будут применены при следующем запуске
 </translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 2</translation>
+      <translation>Пошаговое руководство, диалоговое окно 1 из 2</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
-      <translation type="unfinished">Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</translation>
+      <translation>Пошаговые инструкции: заполните пропущенные поля (необязательно), затем нажмите «Добавить», затем «Закрыть»</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 1</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 1</translation>
+      <translation>Пошаговое руководство, диалоговое окно 1 из 1</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 2 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 2 of 2</translation>
+      <translation>Пошаговое руководство, диалоговое окно 2 из 2</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click right arrow button (-&gt;), then Close.</translation>
+      <translation>Пошаговые инструкции: Нажмите на кнопку со стрелкой вправо (-&gt;), затем закройте.</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</translation>
+      <translation>Пошаговые инструкции: Нажмите новый, затем на кнопку со стрелкой вправо (-&gt;), затем закройте.</translation>
     </message>
   </context>
   <context>
@@ -1817,15 +1837,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Quick search</source>
-      <translation type="unfinished">Quick search</translation>
+      <translation>Быстрый поиск</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
-      <translation type="unfinished">Type in a group name to find it</translation>
+      <translation>Введите имя группы для её поиска</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Поиск группы</translation>
     </message>
   </context>
   <context>
@@ -1907,7 +1927,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Поиск группы</translation>
     </message>
   </context>
   <context>
@@ -2002,6 +2022,10 @@ Specify another directory, please.</source>
       <source>Open in browser</source>
       <translation>Открыть в браузере</translation>
     </message>
+    <message>
+      <source>Program version:</source>
+      <translation>Версия программы:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
@@ -2078,7 +2102,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be sychronize with full object hierarchy.</translation>
+      <translation>Если включено, то выбор вида 3D будет синхронизироваться с полной иерархией объектов.</translation>
     </message>
     <message>
       <source>Sync sub-object selection</source>
@@ -2171,27 +2195,27 @@ on-screen while displaying the error</source>
     </message>
     <message>
       <source>Show report view on error</source>
-      <translation type="unfinished">Show report view on error</translation>
+      <translation>Показать отчёт в случае ошибки</translation>
     </message>
     <message>
       <source>When a warning has occurred, the Report View dialog becomes visible
 on-screen while displaying the warning</source>
-      <translation type="unfinished">When a warning has occurred, the Report View dialog becomes visible
-on-screen while displaying the warning</translation>
+      <translation>При появления предупреждения становится видимым диалоговое окно "Просмотр отчета"
+на экране при отображении предупреждения</translation>
     </message>
     <message>
       <source>Show report view on warning</source>
-      <translation type="unfinished">Show report view on warning</translation>
+      <translation>Показать отчёт о предупреждении</translation>
     </message>
     <message>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation type="unfinished">When a normal message has occurred, the Report View dialog becomes visible
-on-screen while displaying the message</translation>
+      <translation>При возникновении ошибки на экране становится видимым
+ диалог Просмотр Отчёта при отображении ошибки</translation>
     </message>
     <message>
       <source>Show report view on normal message</source>
-      <translation type="unfinished">Show report view on normal message</translation>
+      <translation>Показывать отчёт в обычном сообщении</translation>
     </message>
     <message>
       <source>When a log message has occurred, the Report View dialog becomes visible
@@ -2201,7 +2225,7 @@ on-screen while displaying the log message</translation>
     </message>
     <message>
       <source>Show report view on log message</source>
-      <translation type="unfinished">Show report view on log message</translation>
+      <translation>Показать отчет в журнале</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
@@ -2230,6 +2254,14 @@ from Python console to Report view panel</source>
 from Python console to Report view panel</source>
       <translation>Внутренние сообщения об ошибках Python будут перенаправлены
 с консоли Python на панель просмотра отчета</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each report</source>
+      <translation>Включить код времени для каждого отчёта</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each entry</source>
+      <translation>Включить код времени для каждой записи</translation>
     </message>
   </context>
   <context>
@@ -2355,7 +2387,7 @@ will be shown at the lower left corner in opened files</translation>
     </message>
     <message>
       <source>Rendering</source>
-      <translation type="unfinished">Rendering</translation>
+      <translation>Отрисовка</translation>
     </message>
     <message>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
@@ -2421,19 +2453,19 @@ but slower response to any scene changes.</source>
     </message>
     <message>
       <source>Transparent objects:</source>
-      <translation type="unfinished">Transparent objects:</translation>
+      <translation>Прозрачные объекты:</translation>
     </message>
     <message>
       <source>Render types of transparent objects</source>
-      <translation type="unfinished">Render types of transparent objects</translation>
+      <translation>Отображение типов прозрачных объектов</translation>
     </message>
     <message>
       <source>One pass</source>
-      <translation type="unfinished">One pass</translation>
+      <translation>Один проход</translation>
     </message>
     <message>
       <source>Backface pass</source>
-      <translation type="unfinished">Backface pass</translation>
+      <translation>Проход фона</translation>
     </message>
     <message>
       <source>Size of vertices in the Sketcher workbench</source>
@@ -2441,15 +2473,15 @@ but slower response to any scene changes.</source>
     </message>
     <message>
       <source>Eye to eye distance for stereo modes</source>
-      <translation type="unfinished">Eye to eye distance for stereo modes</translation>
+      <translation>Расстояние между глаз для стерео режима</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed. </source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </translation>
+      <translation>Межцентровое расстояние глаз используется для стерео проекций.
+Указанное значение — это множитель, который будет умножаться на размер ограничительной рамки 
+отображаемого в трехмерного объекта. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2461,19 +2493,29 @@ bounding box size of the 3D object that is currently displayed. </translation>
     </message>
     <message>
       <source>Intensity</source>
-      <translation type="unfinished">Intensity</translation>
+      <translation>Интенсивность</translation>
     </message>
     <message>
       <source>Intensity of the backlight</source>
-      <translation type="unfinished">Intensity of the backlight</translation>
+      <translation>Интенсивность подсветки</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
-      <translation type="unfinished">Objects will be projected in orthographic projection</translation>
+      <translation>Объекты будут отображаться в ортографической проекции</translation>
     </message>
     <message>
       <source>Objects will appear in a perspective projection</source>
-      <translation type="unfinished">Objects will appear in a perspective projection</translation>
+      <translation>Объекты будут отображаться в перспективе</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation>Перекрестие осей будет показано по умолчанию
+при открытии или создании файла</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation>Показывать перекрестие осей по умолчанию</translation>
     </message>
   </context>
   <context>
@@ -2736,7 +2778,7 @@ bounding box size of the 3D object that is currently displayed. </translation>
     </message>
     <message>
       <source>All changes in documents are stored so that they can be undone/redone</source>
-      <translation type="unfinished">All changes in documents are stored so that they can be undone/redone</translation>
+      <translation>Все изменения в документах хранятся, чтобы они могли быть отменены или восстановлены</translation>
     </message>
     <message>
       <source>How many Undo/Redo steps should be recorded</source>
@@ -2755,12 +2797,12 @@ This feature may slightly increase recomputation time.</source>
     <message>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
-      <translation type="unfinished">If there is a recovery file available the application will
-automatically run a file recovery when it is started.</translation>
+      <translation>Если файл восстановления доступен приложение 
+автоматически выполнит восстановление при его запуске.</translation>
     </message>
     <message>
       <source>How often a recovery file is written</source>
-      <translation type="unfinished">How often a recovery file is written</translation>
+      <translation>Как часто записывается файл восстановления</translation>
     </message>
     <message>
       <source>A thumbnail will be stored when document is saved</source>
@@ -2773,8 +2815,8 @@ automatically run a file recovery when it is started.</translation>
     <message>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512</source>
-      <translation type="unfinished">Sets the size of the thumbnail that is stored in the document.
-Common sizes are 128, 256 and 512</translation>
+      <translation>Устанавливает размер миниатюры в документе.
+Общие размеры 128, 256 и 512</translation>
     </message>
     <message>
       <source>The program logo will be added to the thumbnail</source>
@@ -2782,13 +2824,13 @@ Common sizes are 128, 256 and 512</translation>
     </message>
     <message>
       <source>How many backup files will be kept when saving document</source>
-      <translation type="unfinished">How many backup files will be kept when saving document</translation>
+      <translation>Количество файлов резервных копий создаваемое при сохранении документа</translation>
     </message>
     <message>
       <source>Backup files will get extension '.FCbak' and file names
 get date suffix according to the specified format</source>
-      <translation type="unfinished">Backup files will get extension '.FCbak' and file names
-get date suffix according to the specified format</translation>
+      <translation>Файлы резервного копирования получат расширение '.FCbak' и имена файлов
+получат суффикс даты в соответствии с указанным форматом</translation>
     </message>
     <message>
       <source>Use date and FCBak extension</source>
@@ -2808,11 +2850,9 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation type="unfinished">Enable partial loading of external linked documents.
-Then only referenced objects and their dependencies will be loaded
-when a linked document is auto-opened together with the main document.
-A partially loaded document cannot be edited. Double click the document
-icon in the tree view to fully reload it.</translation>
+      <translation>Позволяет частичную загрузку внешних связанных документов.
+Затем будут загружены только ссылающиеся объекты и их зависимости при автооткрытии связанного документа вместе с основным документом.
+Частично загруженный документ не может быть изменён. Дважды щёлкните на иконке документа в виде дерева, чтобы полностью перезагрузить его.</translation>
     </message>
     <message>
       <source>Disable partial loading of external linked objects</source>
@@ -2822,9 +2862,15 @@ icon in the tree view to fully reload it.</translation>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
-      <translation type="unfinished">All documents that will be created will get the specified author name.
-Keep blank for anonymous.
-You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
+      <translation>Windows can include 3 types of components: panels, frames and louvres. Panels and louvres are made from one closed wire, which gets extruded, while frames are made from 2 or more closed wire, where each one is extruded, then the smaller ones are subtracted from the biggest one. You can access, create, modify and delete components of a window in edit mode (double-click the window in the Tree view). The components have the following properties:
+
+Name: A name for the component
+Type: The type of component. Can be "Frame", "Glass panel", "Solid panel" or "Louvres"
+Wires: A comma-separated list of wires the component is based on
+Thickness: The extrusion thickness of the component
+Z Offset: The distance between the component and its base 2D wire(s)
+Hinge: This allows you to select an edge from the base 2D object, then set that edge as a hinge for this component and the next ones in the list
+Opening mode: If you defined a hinge in this component or any other earlier in the list, setting the opening mode will allow the window to appear open or to display 2D opening symbols in plan or elevation</translation>
     </message>
     <message>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
@@ -3174,7 +3220,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Navigation cube</source>
-      <translation type="unfinished">Navigation cube</translation>
+      <translation>Куб навигации</translation>
     </message>
     <message>
       <source>Steps by turn</source>
@@ -3248,7 +3294,7 @@ Turntable: the part will be rotated around the z-axis.</source>
     </message>
     <message>
       <source>New document camera orientation</source>
-      <translation type="unfinished">New document camera orientation</translation>
+      <translation>Ориентации камеры нового документа</translation>
     </message>
     <message>
       <source>Camera orientation for new documents</source>
@@ -3528,11 +3574,11 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Background color for the model view</source>
-      <translation type="unfinished">Background color for the model view</translation>
+      <translation>Цвет фона для представления модели</translation>
     </message>
     <message>
       <source>Background will have selected color</source>
-      <translation type="unfinished">Background will have selected color</translation>
+      <translation>Фон будет иметь выбранный цвет</translation>
     </message>
     <message>
       <source>Color gradient will get selected color as middle color</source>
@@ -3540,15 +3586,15 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Bottom color</source>
-      <translation type="unfinished">Bottom color</translation>
+      <translation>Нижний цвет</translation>
     </message>
     <message>
       <source>Background will have selected color gradient</source>
-      <translation type="unfinished">Background will have selected color gradient</translation>
+      <translation>Фон будет иметь выбранный градиент цвета</translation>
     </message>
     <message>
       <source>Top color</source>
-      <translation type="unfinished">Top color</translation>
+      <translation>Верхний цвет</translation>
     </message>
     <message>
       <source>Tree view</source>
@@ -4039,7 +4085,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Do you really want to remove this parameter group?</source>
-      <translation type="unfinished">Do you really want to remove this parameter group?</translation>
+      <translation>Вы действительно хотите удалить эту группу параметров?</translation>
     </message>
   </context>
   <context>
@@ -4185,15 +4231,15 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <translation>Вокруг оси y:</translation>
     </message>
     <message>
       <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <translation>Вокруг оси z:</translation>
     </message>
     <message>
       <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <translation>Вокруг оси x:</translation>
     </message>
     <message>
       <source>Rotation around the x-axis</source>
@@ -4338,11 +4384,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::DlgObjectSelection</name>
     <message>
       <source>Object selection</source>
-      <translation type="unfinished">Object selection</translation>
+      <translation>Выбор объекта</translation>
     </message>
     <message>
       <source>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</source>
-      <translation type="unfinished">The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</translation>
+      <translation>Выбранные объекты содержат другие зависимости. Пожалуйста, выберите объекты, которые нужно экспортировать. Все зависимости автоматически выбираются по умолчанию.</translation>
     </message>
     <message>
       <source>Dependency</source>
@@ -4358,7 +4404,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>State</source>
-      <translation type="unfinished">State</translation>
+      <translation>Состояние</translation>
     </message>
     <message>
       <source>Hierarchy</source>
@@ -4548,7 +4594,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Picked object list</source>
-      <translation type="unfinished">Picked object list</translation>
+      <translation>Список выбранных объектов</translation>
     </message>
   </context>
   <context>
@@ -4878,13 +4924,13 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation type="unfinished">The exported object contains external link. Please save the documentat least once before exporting.</translation>
+      <translation>Экспортированный объект содержит внешнюю ссылку. Пожалуйста, сохраните документ хотя бы один раз перед экспортом.</translation>
     </message>
     <message>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
-      <translation type="unfinished">To link to external objects, the document must be saved at least once.
-Do you want to save the document now?</translation>
+      <translation>Для ссылки на внешние объекты документ необходимо сохранить хотя бы один раз.
+Хотите сохранить документ сейчас?</translation>
     </message>
   </context>
   <context>
@@ -5091,7 +5137,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>property</source>
-      <translation type="unfinished">property</translation>
+      <translation>свойства</translation>
     </message>
     <message>
       <source>Show all</source>
@@ -5421,7 +5467,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>On-top when selected</source>
-      <translation type="unfinished">On-top when selected</translation>
+      <translation>Наверх при выделении</translation>
     </message>
   </context>
   <context>
@@ -5646,19 +5692,19 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Galician</source>
-      <translation type="unfinished">Galician</translation>
+      <translation>Галисийский</translation>
     </message>
     <message>
       <source>Kabyle</source>
-      <translation type="unfinished">Kabyle</translation>
+      <translation>Кабильский</translation>
     </message>
     <message>
       <source>Filipino</source>
-      <translation type="unfinished">Filipino</translation>
+      <translation>Филиппинский</translation>
     </message>
     <message>
       <source>Indonesian</source>
-      <translation type="unfinished">Indonesian</translation>
+      <translation>Индонезийский</translation>
     </message>
     <message>
       <source>Lithuanian</source>
@@ -5666,7 +5712,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Valencian</source>
-      <translation type="unfinished">Valencian</translation>
+      <translation>Валенсианский</translation>
     </message>
     <message>
       <source>Arabic</source>
@@ -5771,7 +5817,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Show hidden items</source>
-      <translation type="unfinished">Show hidden items</translation>
+      <translation>Показать скрытые элементы</translation>
     </message>
     <message>
       <source>Show hidden tree view items</source>
@@ -5816,6 +5862,25 @@ Do you want to specify another directory?</source>
     <message>
       <source>Recompute the selected object</source>
       <translation>Пересчитать выбранный объект</translation>
+    </message>
+    <message>
+      <source> (but must be executed)</source>
+      <translation> (но должно быть выполнено)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+      <source>Vectors</source>
+      <translation>Векторы</translation>
+    </message>
+    <message>
+      <source>Table</source>
+      <translation>Таблица</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -6402,7 +6467,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation type="unfinished">The exported object contains external link. Please save the documentat least once before exporting.</translation>
+      <translation>Экспортированный объект содержит внешнюю ссылку. Пожалуйста, сохраните документ хотя бы один раз перед экспортом.</translation>
     </message>
     <message>
       <source>Delete failed</source>
@@ -6518,7 +6583,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
-      <translation type="unfinished">Documents contains cyclic dependencies. Do you still want to save them?</translation>
+      <translation>Документы содержат циклические зависимости. Вы уверены, что хотите сохранить их?</translation>
     </message>
     <message>
       <source>Undo</source>
@@ -6812,6 +6877,21 @@ Choose 'Abort' to abort</source>
     </message>
   </context>
   <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+      <source>Tools</source>
+      <translation>Инструменты</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Граф зависимостей...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Показать граф зависимостей объектов в активном документе</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
@@ -6926,6 +7006,10 @@ Choose 'Abort' to abort</source>
       <source>Draw style</source>
       <translation>Стиль представления</translation>
     </message>
+    <message>
+      <source>Change the draw style of the objects</source>
+      <translation>Изменить стиль отрисовки объектов</translation>
+    </message>
   </context>
   <context>
     <name>StdCmdDuplicateSelection</name>
@@ -6982,21 +7066,6 @@ Choose 'Abort' to abort</source>
     <message>
       <source>Please select first the objects you want to export.</source>
       <translation>Пожалуйста, сначала выберите объекты, которые вы хотите экспортировать.</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdExportGraphviz</name>
-    <message>
-      <source>Tools</source>
-      <translation>Инструменты</translation>
-    </message>
-    <message>
-      <source>Dependency graph...</source>
-      <translation>Граф зависимостей...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Показать граф зависимостей объектов в активном документе</translation>
     </message>
   </context>
   <context>
@@ -9054,6 +9123,13 @@ Are you sure you want to continue?
     </message>
   </context>
   <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Граф зависимостей</translation>
+    </message>
+  </context>
+  <context>
     <name>Std_DrawStyle</name>
     <message>
       <source>As is</source>
@@ -9121,15 +9197,8 @@ Are you sure you want to continue?
     <message>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
-      <translation type="unfinished">To link to external objects, the document must be saved at least once.
-Do you want to save the document now?</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-      <source>Dependency graph</source>
-      <translation>Граф зависимостей</translation>
+      <translation>Для ссылки на внешние объекты документ необходимо сохранить хотя бы один раз.
+Хотите сохранить документ сейчас?</translation>
     </message>
   </context>
   <context>

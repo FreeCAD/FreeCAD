@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
+      <translation>Aquesta secció conté materials per a desenvolupadors: com compilar FreeCAD, com està estructurat el codi font de FreeCAD + com navegar per ell, i com desenvolupar nous bancs de treball, i/o incrustar FreeCAD en la vostra pròpia aplicació.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -86,17 +86,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
-      <translation type="unfinished">The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</translation>
+      <translation>El manual de FreeCAD és una altra forma més lineal de presentar la informació continguda en aquest wiki. Està fet per a ser llegit com un llibre i us introduirà gradualment en moltes altres pàgines dels centres d'activitat anteriors. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;versions de llibres anteriors&lt;/a&gt; també estan disponibles.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>Workbenches documentation</source>
-      <translation type="unfinished">Workbenches documentation</translation>
+      <translation>Documentació dels bancs de treballs</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>These are the help pages of all the workbenches currently installed on this computer.</source>
-      <translation type="unfinished">These are the help pages of all the workbenches currently installed on this computer.</translation>
+      <translation>Aquestes són les pàgines d'ajuda de tots els bancs de treball instal·lats actualment en aquest ordinador.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
@@ -106,17 +106,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>El &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD fòrum&lt;/a&gt; és un lloc excel·lent per a obtenir ajuda d'altres usuaris i desenvolupadors de FreeCAD. El fòrum té moltes seccions per a diferents tipus de problemes i temes de discussió. En cas de dubte, publiqueu en la secció &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Secció d'ajuda sobre l'ús de FreeCAD&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation type="unfinished">If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</translation>
+      <translation>Si és la primera vegada que publiqueu en aquest fòrum, assegureu-vos de &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;llegir les pautes&lt;/a&gt; primer!</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation type="unfinished">FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</translation>
+      <translation>FreeCAD també manté un&lt;a href="https://www.freecadweb.org/tracker"&gt;sistema públic de seguiment d'errors&lt;/a&gt;on qualsevol persona pot enviar errors i proposar noves funcionalitats. Per a evitar generar treball extra i tindre la millor oportunitat per a resoldre el vostre error, assegureu-vos de llegir la&lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;guia d'enviament d'errors&lt;/a&gt;abans de publicar.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
@@ -126,37 +126,37 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation type="unfinished">Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</translation>
+      <translation>A continuació es mostren una llista de bancs de treballs addicionals disponibles que es poden afegir a la vostra instal·lació de FreeCAD. Examineu-los i instal·leu-los des del menú Eines-&gt; Administrador de complements. Pot obtenir més informació sobre qualsevol d'ells fent clic en els enllaços següents.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
-      <translation type="unfinished">If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</translation>
+      <translation>Si no està inclòs en la seva versió de FreeCAD, instal·li el paquet de documentació de FreeCAD per a obtenir els centres de documentació, l'ajuda del banc de treball i la documentació d'ordres individuals sense connexió a Internet.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
-      <translation type="unfinished">Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</translation>
+      <translation>No es pot obtindre informació de GitHub. &lt;a href="EnableDownload.py"&gt;Autoritzi FreeCAD a accedir a Internet&lt;/a&gt; i torni a carregar la pàgina d'inici.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
       <source>Recent commits</source>
-      <translation type="unfinished">Recent commits</translation>
+      <translation>Últimes confirmacions</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation type="unfinished">Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</translation>
+      <translation>A continuació es mostren els últims canvis afegits al&lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;codi font de FreeCAD&lt;/a&gt;. És possible que aquests canvis encara no es reflecteixin en la versió de FreeCAD que esteu executant actualment. Verifiqueu les &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;opcions disponibles &lt;/a&gt; si desitgeu obtindre una versió de desenvolupament.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>See all commits on github</source>
-      <translation type="unfinished">See all commits on github</translation>
+      <translation>Mostra tots els canvis de github</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
+      <translation>Podeu configurar una carpeta personalitzada per a mostrar aquí al menú Edita-&gt; Preferències-&gt; Inici-&gt; Mostra carpeta addicional</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -186,12 +186,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
       <source>The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation type="unfinished">The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</translation>
+      <translation>Les últimes publicacions al&lt;a href="https://forum.freecadweb.org"&gt; fòrum de FreeCAD&lt;/a&gt;:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
       <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
-      <translation type="unfinished">To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</translation>
+      <translation>Per a obrir qualsevol dels enllaços anteriors en el seu navegador d'escriptori, feu clic amb el botó dret del ratolí -&gt; Obri en el navegador extern</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
@@ -251,7 +251,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation type="unfinished">An optional HTML template that will be used instead of the default start page.</translation>
+      <translation>Una plantilla HTML opcional que s'utilitzarà en lloc de la pàgina d'inici predeterminada.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
@@ -266,7 +266,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
       <source>Show examples folder contents</source>
-      <translation type="unfinished">Show examples folder contents</translation>
+      <translation>Mostra el contingut de la carpeta d'exemples</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="62"/>
@@ -276,17 +276,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>
       <source>If you want the examples to show on the first page</source>
-      <translation type="unfinished">If you want the examples to show on the first page</translation>
+      <translation>Si desitgeu que es mostrin els exemples en la primera pàgina</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation type="unfinished">If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</translation>
+      <translation>Si està marcat, es mostraran les últimes entrades del fòrum FreeCAD en la pestanya Activitat</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="110"/>
       <source>An optional custom folder to be displayed at the bottom of the first page</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page</translation>
+      <translation>Una carpeta personalitzada opcional que es mostrarà en la part inferior de la primera pàgina</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="126"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</source>
-      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</translation>
+      <translation>Mostra un bloc de notes al costat de les miniatures del fitxers, on podeu desar notes entre sessions de FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="155"/>
@@ -306,7 +306,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="167"/>
       <source>The background of the main start page area</source>
-      <translation type="unfinished">The background of the main start page area</translation>
+      <translation>El fons de l'àrea principal de la pàgina pàgina d'inici</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="187"/>
@@ -326,7 +326,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="236"/>
       <source>Background color gradient down</source>
-      <translation type="unfinished">Background color gradient down</translation>
+      <translation>Color de fons degradat</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="249"/>
@@ -341,12 +341,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="276"/>
       <source>An optional image to display as background</source>
-      <translation type="unfinished">An optional image to display as background</translation>
+      <translation>Una imatge opcional per a mostrar com a fons</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="289"/>
       <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation type="unfinished">If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation>Si està seleccionat, i si s'especifica un full d'estil en preferències Generals, aquest s'utilitzarà i s'anul·laran els colors de sota</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="308"/>
@@ -386,12 +386,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="420"/>
       <source>The background color behind the panels</source>
-      <translation type="unfinished">The background color behind the panels</translation>
+      <translation>El color de fons darrere dels panells</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="449"/>
       <source>The down gradient for the background color (currently unsupported)</source>
-      <translation type="unfinished">The down gradient for the background color (currently unsupported)</translation>
+      <translation>El degradat del color del fons (actualment incompatible)</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="472"/>
@@ -416,7 +416,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="502"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
-      <translation type="unfinished">The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</translation>
+      <translation>La família de tipus de lletra de la pàgina d'inici. Pot ser el nom d'un tipus de lletra o una sèrie de tipus de lletra alternatives separades per comes</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="508"/>
@@ -426,7 +426,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="521"/>
       <source>The base font size to use for all texts of the Start page</source>
-      <translation type="unfinished">The base font size to use for all texts of the Start page</translation>
+      <translation>La mida del tipus de lletra base per a tots els textos de la pàgina d'inici</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="524"/>
@@ -436,7 +436,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="542"/>
       <source>Use gradient for New File icon</source>
-      <translation type="unfinished">Use gradient for New File icon</translation>
+      <translation>Utilitza un degradat per a la icona de Fitxer nou</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="568"/>
@@ -466,7 +466,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="617"/>
       <source>If FreeCAD is started by opening a file, apply the two settings above</source>
-      <translation type="unfinished">If FreeCAD is started by opening a file, apply the two settings above</translation>
+      <translation>Si FreeCAD comença amb l'obertura d'un fitxer, aplica els dos paràmetres anteriors</translation>
     </message>
   </context>
 </TS>

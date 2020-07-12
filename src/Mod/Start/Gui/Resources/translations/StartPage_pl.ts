@@ -26,17 +26,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
       <source>Recent files</source>
-      <translation>Ostatnie pliki</translation>
+      <translation>Ostatnio używane pliki</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
       <source>Tip</source>
-      <translation>Wskazówka</translation>
+      <translation>Podpowiedź</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Dostosuj liczbę wyświetlanych tutaj ostatnich plików w menu Edycja -&gt; Preferencje -&gt; Ogólne -&gt; Rozmiar listy ostatnich plików</translation>
+      <translation>Dostosuj liczbę wyświetlanych nazw plików w menu Edycja -&gt; Preferencje -&gt; Ogólne -&gt; Rozmiar listy ostatnio otwartych plików</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
@@ -46,27 +46,27 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
       <source>General documentation</source>
-      <translation>Ogólna dokumentacja</translation>
+      <translation>Dokumentacja podstawowa</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
       <source>User hub</source>
-      <translation>Centrum użytkowników</translation>
+      <translation>Centrum użytkownika</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation>Ta sekcja zawiera dokumentację przydatną dla użytkowników FreeCAD: listę wszystkich środowisk, szczegółowe instrukcje dotyczące instalacji i korzystania z aplikacji FreeCAD, samouczki i wszystko, czego potrzebujesz, aby rozpocząć.</translation>
+      <translation>Ta sekcja zawiera dokumentację ogólną przydatną dla użytkowników programu FreeCAD. Listę wszystkich Środowisk pracy, szczegółowe instrukcje dotyczące instalacji i użytkowania aplikacji FreeCAD, poradniki i wszystko, co jest potrzebne do rozpoczęcia pracy.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
       <source>Power users hub</source>
-      <translation>Centrum zaawansowanych użytkowników</translation>
+      <translation>Centrum Power użytkowników</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation>Ta sekcja gromadzi dokumentację dla zaawansowanych użytkowników i osób zainteresowanych pisaniem skryptów Pythona. Znajdziesz tam również repozytorium makr, instrukcje instalacji i używania oraz dodatkowe informacje o dostosowywaniu FreeCADa do twoich potrzeb.</translation>
+      <translation>Ta sekcja gromadzi dokumentację dla zaawansowanych użytkowników i osób zainteresowanych pisaniem skryptów w środowisku Python. Znajdziesz tam również repozytorium makrodefinicji, instrukcje instalacji i używania oraz dodatkowe informacje o dostosowywaniu programu FreeCAD do swoich potrzeb.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>Sekcja zawiera materiały dla programistów: Jak skompilować samodzielnie FreeCAD, jaka jest struktura kodu FreeCAD + jak się po nim poruszać, jak rozwijać nowe środowiska lub jak osadzać FreeCAD we własnej aplikacji.</translation>
+      <translation>Ta sekcja zawiera materiał dla programistów: jak samemu skompilować FreeCAD, jak zbudowany jest kod źródłowy FreeCAD i jak po nim się poruszać, jak tworzyć nowe środowiska lub osadzać FreeCAD we własnej aplikacji.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -86,27 +86,27 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
-      <translation>Podręcznik FreeCAD jest kolejnym, bardziej liniowym sposobem prezentacji informacji zawartych na tej stronie wiki. Jest stworzony tak by można go było czytać jak książkę oraz by wstępnie wprowadzić Cie do treści innych stron z powyższej listy. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;Wersja w postaci e-booka&lt;/a&gt; jest również dostępna.</translation>
+      <translation>Podręcznik FreeCAD jest kolejnym, bardziej zwięzłym sposobem na zaprezentowanie informacji zawartych w tej stronie Wiki. Jest stworzony tak by można go było czytać jak książkę i delikatnie wprowadzi Cię na wiele innych stron z podanych poniżej centrów. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;Dostępna jest równiez&lt;/a&gt; wersja w postaci e-book.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>Workbenches documentation</source>
-      <translation>Dokumentacja środowisk</translation>
+      <translation>Dokumentacja Środowisk pracy</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>These are the help pages of all the workbenches currently installed on this computer.</source>
-      <translation>Są to strony pomocy wszystkich środowiska aktualnie zainstalowanych na tym komputerze.</translation>
+      <translation>Są to strony pomocy dla wszystkich Środowisk pracy aktualnie zainstalowanych na tym komputerze.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
       <source>Getting help from the community</source>
-      <translation>Uzyskaj pomoc od społeczności</translation>
+      <translation>Uzyskaj pomoc społeczności</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>&lt;a href="http://forum.freecadweb.org"&gt; Forum &lt;/a&gt; FreeCAD jest miejscem w którym możesz uzyskać pomoc od twórców i innych użytkowników FreeCAD. Forum ma dużo kategorii pasujących do różnych tematów i częstych problemów. W razie problemów z wyborem kategorii umieść post w ogólnej tematyce &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Pomoc w użytkowaniu FreeCAD sekcja &lt;/a&gt;.</translation>
+      <translation>&lt;a href="http://forum.freecadweb.org"&gt; Forum FreeCAD &lt;/a&gt; jest doskonałym miejscem do uzyskania pomocy od innych użytkowników i programistów tej aplikacji. Posiada ono wiele sekcji poświęconych różnym rodzajom zagadnień i tematów dyskusji. W razie wątpliwości opublikuj wiadomość w sekcji ogólnej &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Pomoc w użytkowaniu FreeCAD&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation>FreeCAD posiada również publiczny &lt;a href="https://www.freecadweb.org/tracker"&gt; katalog błędów&lt;/a&gt; w którym każdy może zgłosić błąd lub zaproponować nowe funkcje. Aby zwiększyć szanse na naprawienie błędu i uniknąć powtarzania już istniejących zgłoszeń, przeczytaj &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;poradnik zgłaszania błędów&lt;/a&gt; przed umieszczeniem zgłoszenia.</translation>
+      <translation>FreeCAD posiada również publiczny &lt;a href="https://www.freecadweb.org/tracker"&gt; katalog błędów&lt;/a&gt; w którym każdy może zgłosić błąd lub zaproponować nowe funkcje. Aby zwiększyć szanse na naprawienie błędu i uniknąć powtarzania już istniejących zgłoszeń, przed zamieszczeniem zgłoszenia przeczytaj &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;poradnik zgłaszania błędów&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
@@ -126,37 +126,37 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Poniżej znajduje się lista dostępnych dodatkowych środowisk, które mogą być dodane do twojej instalacji FreeCAD-a. Możesz je przeglądać i instalować z menu Narzędzia-&gt; Menedżer dodatków. Dowiesz się więcej o każdym z nich klikając na linki poniżej.</translation>
+      <translation>Poniżej znajduje się lista dodatkowych środowisk pracy, które mogą być dodane do Twojej instalacji programu FreeCAD. Przeglądaj i instaluj je z menu Narzędzia-&gt; Menedżer dodatków. Dowiesz się więcej o każdym z nich klikając na linki poniżej.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
-      <translation type="unfinished">If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</translation>
+      <translation>Jeśli nie jest dołączony do Twojej wersji programu zainstaluj pakiet dokumentacji FreeCAD, aby uzyskać centra dokumentacji, pomoc dla środowiska pracy i indywidualną dokumentację poleceń, bez dostępu do Internetu.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
-      <translation>Nie można pobrać informacji z GitHub. &lt;a href="EnableDownload.py"&gt;Udziel FreeCAD dostępu do internetu&lt;/a&gt; i odśwież stronę początkową.</translation>
+      <translation>Nie mogę odebrać informacji z GitHuba. &lt;a href="EnableDownload.py" &gt;Zezwól programowi FreeCAD na dostęp do Internetu&lt;/a&gt; i ponownie załaduj stronę startową.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
       <source>Recent commits</source>
-      <translation>Najnowsze zmiany</translation>
+      <translation>Najnowsze zobowiązania</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation>Poniżej znajduje się lista ostatnich zmian wprowadzonych do &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;kodu źródłowego FreeCAD&lt;/a&gt;. Zmiany mogą nie być widoczne w wersji z której teraz korzystasz. Zobacz &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;dostępne opcje&lt;/a&gt; jeśli chcesz uzyskać wersje dla programistów.</translation>
+      <translation>Poniżej znajduje się lista najnowszych zmian wprowadzonych do &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;kodu źródłowego FreeCAD&lt;/a&gt;. Zmiany mogą nie być widoczne w wersji z której teraz korzystasz. Sprawdź &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;dostępne opcje&lt;/a&gt; jeśli chcesz uzyskać wersję dla programistów.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>See all commits on github</source>
-      <translation>Przejrzyj wszystkie zmiany na github</translation>
+      <translation>Zobacz wszystkie zobowiązania na Github</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation>Możesz ustawić nowy folder aby wyświetlić go w tym menu Edytuj -&gt; Ustawienia -&gt; Start -&gt; Pokaż dodatkowy folder</translation>
+      <translation>Możesz skonfigurować niestandardowy folder do wyświetlenia w menu Edycja -&gt; Preferencje -&gt; Start -&gt; Pokaż dodatkowy folder</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -166,17 +166,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>build</source>
-      <translation>wersja</translation>
+      <translation>numer rewizji</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
       <source>Create new...</source>
-      <translation>Stwórz nowy...</translation>
+      <translation>Utwórz nowy...</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
       <source>Unknown</source>
-      <translation>Nieznana</translation>
+      <translation>Nieznany</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
       <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
-      <translation>Aby otworzyć link w przeglądarce, kliknij prawym przyciskiem myszy -&gt; Otwórz w zewnętrznej przeglądarce</translation>
+      <translation>Aby otworzyć link w przeglądarce, kliknij prawym przyciskiem myszki -&gt; Otwórz w zewnętrznej przeglądarce</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
@@ -241,17 +241,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="14"/>
       <source>Start page options</source>
-      <translation>Opcje strony startowej</translation>
+      <translation>Opcje dla strony startowej</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Start page template</source>
-      <translation>Szablon strony startowej</translation>
+      <translation>Szablon dla strony startowej</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation>Opcjonalny szablon HTML który będzie używany w zamian za domyślną stronę startową.</translation>
+      <translation>Opcjonalny szablon HTML, który zostanie użyty do wyświetlenia, w zamian domyślnej strony startowej.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
@@ -266,7 +266,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
       <source>Show examples folder contents</source>
-      <translation>Pokaż folder przykładów zawartości</translation>
+      <translation>Pokaż zawartość folderu z przykładami</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="62"/>
@@ -276,17 +276,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>
       <source>If you want the examples to show on the first page</source>
-      <translation>Jeśli chcesz przykłady do wyświetlenia na pierwszej stronie</translation>
+      <translation>Jeśli chcesz, aby przykłady pokazywały się na pierwszej stronie</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation type="unfinished">If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</translation>
+      <translation>Jeśli to pole jest zaznaczone, najnowsze posty z forum FreeCAD będą wyświetlane na karcie Aktywność</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="110"/>
       <source>An optional custom folder to be displayed at the bottom of the first page</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page</translation>
+      <translation>Opcjonalny folder wyświetlany u dołu pierwszej strony</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="126"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</source>
-      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</translation>
+      <translation>Wyświetla notatnik obok miniaturek plików, w którym można przechowywać notatki pomiędzy sesjami FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="155"/>
@@ -306,7 +306,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="167"/>
       <source>The background of the main start page area</source>
-      <translation type="unfinished">The background of the main start page area</translation>
+      <translation>Tło obszaru głównej strony startowej</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="187"/>
@@ -321,17 +321,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="218"/>
       <source>In external browser</source>
-      <translation>W zewnętrznej przeglądarce</translation>
+      <translation>W przeglądarce zewnętrznej</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="236"/>
       <source>Background color gradient down</source>
-      <translation type="unfinished">Background color gradient down</translation>
+      <translation>Kolor gradientu tła u dołu</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="249"/>
       <source>The color of the version text</source>
-      <translation>Kolor tekstu wersji</translation>
+      <translation>Kolor tekstu dla wersji</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="269"/>
@@ -341,17 +341,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="276"/>
       <source>An optional image to display as background</source>
-      <translation>Opcjonalny obraz do wyświetlania w tle</translation>
+      <translation>Obraz opcjonalny do wyświetlania jako tlo</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="289"/>
       <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation type="unfinished">If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation>Jeśli ta opcja jest zaznaczona, i arkusz stylów jest określony w Preferencjach ogólnych, zostanie on użyty i zastąpi poniższe kolory</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="308"/>
       <source>Page background color</source>
-      <translation>Kolor tła strony</translation>
+      <translation>Kolor tła dla strony</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="321"/>
@@ -361,37 +361,37 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="341"/>
       <source>Background image</source>
-      <translation>Obraz tła</translation>
+      <translation>Obraz w tle</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="348"/>
       <source>Page text color</source>
-      <translation>Kolor czcionki na stronie</translation>
+      <translation>Kolor tekstu na stronie</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="361"/>
       <source>The color of the links</source>
-      <translation>Kolor linków</translation>
+      <translation>Kolor odnośników</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="387"/>
       <source>The background color of the boxes inside the pages</source>
-      <translation type="unfinished">The background color of the boxes inside the pages</translation>
+      <translation>Kolor tła pola zaznaczenia na stronach</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="407"/>
       <source>Box background color</source>
-      <translation>Kolor tła strony</translation>
+      <translation>Kolor tła dla zaznaczenia</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="420"/>
       <source>The background color behind the panels</source>
-      <translation>Kolor tła za panelami</translation>
+      <translation>Kolor tła pod panelami</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="449"/>
       <source>The down gradient for the background color (currently unsupported)</source>
-      <translation type="unfinished">The down gradient for the background color (currently unsupported)</translation>
+      <translation>Kolor gradientu tła u dołu (obecnie nieobsługiwany)</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="472"/>
@@ -401,32 +401,32 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="479"/>
       <source>Background text color</source>
-      <translation>Kolor tekstu tła</translation>
+      <translation>Kolor tła dla tekstu</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="486"/>
       <source>Use FreeCAD style sheet</source>
-      <translation>Użyj styl strony FreeCAD</translation>
+      <translation>Użyj arkusza stylów FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="493"/>
       <source>Font family</source>
-      <translation>Rodzina czcionek</translation>
+      <translation>Krój pisma</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="502"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
-      <translation type="unfinished">The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</translation>
+      <translation>Krój pisma którego należy użyć na stronie startowej. Może to być nazwa czcionki lub seria nazw czcionek zapasowych oddzielonych przecinkami</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="508"/>
       <source>Arial,Helvetica,sans</source>
-      <translation>Arial,Helvetica,bezszeryfowa</translation>
+      <translation>Arial,Helvetica,sans</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="521"/>
       <source>The base font size to use for all texts of the Start page</source>
-      <translation type="unfinished">The base font size to use for all texts of the Start page</translation>
+      <translation>Rozmiar czcionki podstawowej dla wszystkich tekstów na stronie startowej</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="524"/>
@@ -436,7 +436,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="542"/>
       <source>Use gradient for New File icon</source>
-      <translation>Użyj gradientu dla ikony Nowy Plik</translation>
+      <translation>Użyj gradientu dla ikonki Nowy plik</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="568"/>
@@ -446,12 +446,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="577"/>
       <source>Should the start page be closed after loading?</source>
-      <translation>Czy strona startowa ma być zamknięta po załadowaniu?</translation>
+      <translation>Czy strona startowa ma zostać zamknięta po załadowaniu?</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="596"/>
       <source>Switch workbench after loading</source>
-      <translation type="unfinished">Switch workbench after loading</translation>
+      <translation>Uaktywnij Środowisko pracy po uruchomieniu programu</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="603"/>
@@ -461,12 +461,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="610"/>
       <source>Close &amp; switch on file open</source>
-      <translation type="unfinished">Close &amp; switch on file open</translation>
+      <translation>Zamknij i włącz ponownie otwarty plik</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="617"/>
       <source>If FreeCAD is started by opening a file, apply the two settings above</source>
-      <translation type="unfinished">If FreeCAD is started by opening a file, apply the two settings above</translation>
+      <translation>Jeśli FreeCAD zostanie uruchomiony poprzez otwarcie pliku, zastosuj dwa powyższe ustawienia</translation>
     </message>
   </context>
 </TS>

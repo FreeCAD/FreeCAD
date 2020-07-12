@@ -408,7 +408,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="436"/>
       <source>Scale</source>
-      <translation type="unfinished">Scale</translation>
+      <translation>크기</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="468"/>
@@ -519,7 +519,7 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.ui" line="715"/>
       <location filename="../../TaskOrthoViews.ui" line="738"/>
       <source>Flip</source>
-      <translation type="unfinished">Flip</translation>
+      <translation>뒤집기</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="728"/>
@@ -739,20 +739,20 @@ Do you want to continue?</source>
       <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="53"/>
-      <location filename="../../TaskOrthoViews.cpp" line="981"/>
+      <location filename="../../TaskOrthoViews.cpp" line="54"/>
+      <location filename="../../TaskOrthoViews.cpp" line="982"/>
       <source>Make axonometric...</source>
       <translation type="unfinished">Make axonometric...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="54"/>
-      <location filename="../../TaskOrthoViews.cpp" line="982"/>
+      <location filename="../../TaskOrthoViews.cpp" line="55"/>
+      <location filename="../../TaskOrthoViews.cpp" line="983"/>
       <source>Edit axonometric settings...</source>
       <translation type="unfinished">Edit axonometric settings...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="55"/>
-      <location filename="../../TaskOrthoViews.cpp" line="983"/>
+      <location filename="../../TaskOrthoViews.cpp" line="56"/>
+      <location filename="../../TaskOrthoViews.cpp" line="984"/>
       <source>Make orthographic</source>
       <translation type="unfinished">Make orthographic</translation>
     </message>

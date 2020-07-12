@@ -609,16 +609,28 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>名称</translation>
     </message>
     <message>
-      <source>Document</source>
+      <source>Verbose description of the new property.</source>
+      <translation type="unfinished">Verbose description of the new property.</translation>
+    </message>
+    <message>
+      <source>Documentation</source>
       <translation>文档</translation>
     </message>
     <message>
-      <source>Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</source>
-      <translation>在属性名称前面按照'group'_'name'的形式附加组名以避免与现有属性冲突。 在属性编辑器中显示的预定组名将被自动隐藏。</translation>
+      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
+      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
     </message>
     <message>
-      <source>Append group name</source>
-      <translation>追加组名</translation>
+      <source>Prefix group name</source>
+      <translation type="unfinished">Prefix group name</translation>
     </message>
   </context>
   <context>
@@ -1005,6 +1017,10 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Global</source>
       <translation>全局</translation>
     </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation type="unfinished">%1 module not loaded</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -1298,6 +1314,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Font family to be used for selected code type</source>
       <translation>用于选定代码类型的字体</translation>
+    </message>
+    <message>
+      <source>Color:</source>
+      <translation>颜色:</translation>
     </message>
   </context>
   <context>
@@ -1812,11 +1832,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Quick search</source>
-      <translation type="unfinished">Quick search</translation>
+      <translation>快速搜索</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
-      <translation type="unfinished">Type in a group name to find it</translation>
+      <translation>键入组名以找到它</translation>
     </message>
     <message>
       <source>Search Group</source>
@@ -1909,7 +1929,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
       <source>Preferences</source>
-      <translation>偏好设置</translation>
+      <translation>首选项</translation>
     </message>
     <message>
       <source/>
@@ -1996,6 +2016,10 @@ Specify another directory, please.</source>
     <message>
       <source>Open in browser</source>
       <translation>在浏览器中打开</translation>
+    </message>
+    <message>
+      <source>Program version:</source>
+      <translation type="unfinished">Program version:</translation>
     </message>
   </context>
   <context>
@@ -2225,6 +2249,14 @@ from Python console to Report view panel</source>
       <translation type="unfinished">Internal Python error messages will be redirected
 from Python console to Report view panel</translation>
     </message>
+    <message>
+      <source>Include a timecode for each report</source>
+      <translation type="unfinished">Include a timecode for each report</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each entry</source>
+      <translation type="unfinished">Include a timecode for each entry</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgRunExternal</name>
@@ -2349,7 +2381,7 @@ will be shown at the lower left corner in opened files</translation>
     </message>
     <message>
       <source>Rendering</source>
-      <translation type="unfinished">Rendering</translation>
+      <translation>正在渲染</translation>
     </message>
     <message>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
@@ -2379,7 +2411,7 @@ report this setting as enabled when seeking support on the FreeCAD forums</trans
     </message>
     <message>
       <source>Render cache</source>
-      <translation type="unfinished">Render cache</translation>
+      <translation>渲染缓存</translation>
     </message>
     <message>
       <source>'Render Caching' is another way to say 'Rendering Acceleration'.
@@ -2403,11 +2435,11 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Distributed</source>
-      <translation type="unfinished">Distributed</translation>
+      <translation>分布</translation>
     </message>
     <message>
       <source>Centralized</source>
-      <translation type="unfinished">Centralized</translation>
+      <translation>居中</translation>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used </source>
@@ -2415,11 +2447,11 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Transparent objects:</source>
-      <translation type="unfinished">Transparent objects:</translation>
+      <translation>透明对象：</translation>
     </message>
     <message>
       <source>Render types of transparent objects</source>
-      <translation type="unfinished">Render types of transparent objects</translation>
+      <translation>透明对象的渲染类型</translation>
     </message>
     <message>
       <source>One pass</source>
@@ -2468,6 +2500,16 @@ bounding box size of the 3D object that is currently displayed. </translation>
     <message>
       <source>Objects will appear in a perspective projection</source>
       <translation type="unfinished">Objects will appear in a perspective projection</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation type="unfinished">Axis cross will be shown by default at file
+opening or creation</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation type="unfinished">Show axis cross by default</translation>
     </message>
   </context>
   <context>
@@ -2742,7 +2784,7 @@ This feature may slightly increase recomputation time.</translation>
     </message>
     <message>
       <source>Allow aborting recomputation</source>
-      <translation type="unfinished">Allow aborting recomputation</translation>
+      <translation>允许中止重新计算</translation>
     </message>
     <message>
       <source>If there is a recovery file available the application will
@@ -2752,11 +2794,11 @@ automatically run a file recovery when it is started.</translation>
     </message>
     <message>
       <source>How often a recovery file is written</source>
-      <translation type="unfinished">How often a recovery file is written</translation>
+      <translation>恢复文件写入频率</translation>
     </message>
     <message>
       <source>A thumbnail will be stored when document is saved</source>
-      <translation type="unfinished">A thumbnail will be stored when document is saved</translation>
+      <translation>保存文档时将存储缩略图</translation>
     </message>
     <message>
       <source>Size</source>
@@ -2765,16 +2807,16 @@ automatically run a file recovery when it is started.</translation>
     <message>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512</source>
-      <translation type="unfinished">Sets the size of the thumbnail that is stored in the document.
-Common sizes are 128, 256 and 512</translation>
+      <translation>设置文档中存储的缩略图的大小。
+常见大小为128、256和512</translation>
     </message>
     <message>
       <source>The program logo will be added to the thumbnail</source>
-      <translation type="unfinished">The program logo will be added to the thumbnail</translation>
+      <translation>程序徽标将被添加到缩略图</translation>
     </message>
     <message>
       <source>How many backup files will be kept when saving document</source>
-      <translation type="unfinished">How many backup files will be kept when saving document</translation>
+      <translation>保存文档时将保留多少备份文件</translation>
     </message>
     <message>
       <source>Backup files will get extension '.FCbak' and file names
@@ -2784,15 +2826,15 @@ get date suffix according to the specified format</translation>
     </message>
     <message>
       <source>Use date and FCBak extension</source>
-      <translation type="unfinished">Use date and FCBak extension</translation>
+      <translation>使用日期和 FCBak 扩展名</translation>
     </message>
     <message>
       <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
+      <translation>日期格式</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
-      <translation type="unfinished">Allow objects to have same label/name</translation>
+      <translation>允许对象具有相同的标签/名称</translation>
     </message>
     <message>
       <source>Enable partial loading of external linked documents.
@@ -2828,7 +2870,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Default license for new documents</source>
-      <translation type="unfinished">Default license for new documents</translation>
+      <translation>新文档的默认许可证</translation>
     </message>
     <message>
       <source>Creative Commons Attribution</source>
@@ -2871,7 +2913,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>格式</translation>
     </message>
   </context>
   <context>
@@ -3076,15 +3118,15 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Framebuffer (custom)</source>
-      <translation type="unfinished">Framebuffer (custom)</translation>
+      <translation>帧缓存(自定义)</translation>
     </message>
     <message>
       <source>Framebuffer (as is)</source>
-      <translation type="unfinished">Framebuffer (as is)</translation>
+      <translation>帧缓存(当前)</translation>
     </message>
     <message>
       <source>Pixel buffer</source>
-      <translation type="unfinished">Pixel buffer</translation>
+      <translation>像素缓存</translation>
     </message>
   </context>
   <context>
@@ -3166,11 +3208,11 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Navigation cube</source>
-      <translation type="unfinished">Navigation cube</translation>
+      <translation>导航立方体</translation>
     </message>
     <message>
       <source>Steps by turn</source>
-      <translation type="unfinished">Steps by turn</translation>
+      <translation>转动步数</translation>
     </message>
     <message>
       <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
@@ -3182,7 +3224,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Corner where navigation cube is shown</source>
-      <translation type="unfinished">Corner where navigation cube is shown</translation>
+      <translation>显示导航立方体的角落</translation>
     </message>
     <message>
       <source>Top left</source>
@@ -3262,7 +3304,7 @@ The value is the diameter of the sphere to fit on the screen.</translation>
     </message>
     <message>
       <source>Enable animated rotations</source>
-      <translation type="unfinished">Enable animated rotations</translation>
+      <translation>启用动画旋转</translation>
     </message>
     <message>
       <source>Enable animation</source>
@@ -3312,7 +3354,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Rotate at cursor</source>
-      <translation type="unfinished">Rotate at cursor</translation>
+      <translation>在光标处旋转</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -3598,7 +3640,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Result</source>
-      <translation type="unfinished">Result</translation>
+      <translation>结果</translation>
     </message>
     <message>
       <source>List of last used calculations 
@@ -3608,7 +3650,7 @@ To add a calculation press Return in the value input field</translation>
     </message>
     <message>
       <source>Quantity</source>
-      <translation type="unfinished">Quantity</translation>
+      <translation>数量</translation>
     </message>
     <message>
       <source>Unit system:</source>
@@ -3617,8 +3659,8 @@ To add a calculation press Return in the value input field</translation>
     <message>
       <source>Unit system to be used for the Quantity
 The preference system is the one set in the general preferences.</source>
-      <translation type="unfinished">Unit system to be used for the Quantity
-The preference system is the one set in the general preferences.</translation>
+      <translation>用于数量的单位系统
+偏好的单位系统是在偏好设置中设定的。</translation>
     </message>
     <message>
       <source>Decimals:</source>
@@ -5806,6 +5848,25 @@ Do you want to specify another directory?</source>
       <source>Recompute the selected object</source>
       <translation type="unfinished">Recompute the selected object</translation>
     </message>
+    <message>
+      <source> (but must be executed)</source>
+      <translation type="unfinished"> (but must be executed)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+      <source>Vectors</source>
+      <translation type="unfinished">Vectors</translation>
+    </message>
+    <message>
+      <source>Table</source>
+      <translation type="unfinished">Table</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::View3DInventor</name>
@@ -5853,7 +5914,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Preferences...</source>
-      <translation>偏好设定…</translation>
+      <translation>首选项…</translation>
     </message>
     <message>
       <source>Quit %1</source>
@@ -6803,6 +6864,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+      <source>Tools</source>
+      <translation>工具</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>依赖关系图...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>在活动文档中显示对象的依赖关系图</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
@@ -6885,11 +6961,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>&amp;Preferences ...</source>
-      <translation>偏好设定(&amp;P)...</translation>
+      <translation>首选项(&amp;P)...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the preferences</source>
-      <translation>打开偏好设定窗口</translation>
+      <translation>打开首选项窗口</translation>
     </message>
   </context>
   <context>
@@ -6916,6 +6992,10 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Draw style</source>
       <translation>绘制样式</translation>
+    </message>
+    <message>
+      <source>Change the draw style of the objects</source>
+      <translation type="unfinished">Change the draw style of the objects</translation>
     </message>
   </context>
   <context>
@@ -6973,21 +7053,6 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Please select first the objects you want to export.</source>
       <translation>请先选择要导出的对象.</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdExportGraphviz</name>
-    <message>
-      <source>Tools</source>
-      <translation>工具</translation>
-    </message>
-    <message>
-      <source>Dependency graph...</source>
-      <translation>依赖关系图...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>在活动文档中显示对象的依赖关系图</translation>
     </message>
   </context>
   <context>
@@ -9045,6 +9110,13 @@ Are you sure you want to continue?
     </message>
   </context>
   <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>依赖关系图</translation>
+    </message>
+  </context>
+  <context>
     <name>Std_DrawStyle</name>
     <message>
       <source>As is</source>
@@ -9114,13 +9186,6 @@ Are you sure you want to continue?
 Do you want to save the document now?</source>
       <translation type="unfinished">To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-      <source>Dependency graph</source>
-      <translation>依赖关系图</translation>
     </message>
   </context>
   <context>

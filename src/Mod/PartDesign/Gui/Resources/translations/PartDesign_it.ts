@@ -376,7 +376,7 @@
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create a new sketch</source>
-      <translation>Crea un nuovo sketch</translation>
+      <translation>Crea un nuovo schizzo</translation>
     </message>
   </context>
   <context>
