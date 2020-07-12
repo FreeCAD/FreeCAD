@@ -25,7 +25,9 @@
 #define APP_PROPERTYLINKS_H
 
 // Std. configurations
-
+#ifdef BUILD_CLOUD
+#include <boost/signals2.hpp>
+#endif
 
 #include <vector>
 #include <map>
@@ -67,7 +69,7 @@ enum class LinkScope {
 /**
  * @brief Enables scope handling for links
  * This class is a base for all link properties and enables them to handle scopes of the linked objects.
- * The possible scopes are defined by LinkScope enum class. The default value is Local. 
+ et The possible scopes are defined by LinkScope enum class. The default value is Local. 
  * The scope of a property is not saved in the document. It is a value that needs to be fixed when
  * the object holding the property is loaded. That is possible with two methods: 
  * 1. Set the scope value in the constructor of the link property

@@ -2464,6 +2464,21 @@ public:
             const char *filename, App::Document *pDoc, bool relative, QString *fullPath = 0) 
     {
         bool absolute;
+#ifdef BUILD_CLOUD
+	// The path could be an URI, in that case
+	// TODO: build a far much more resilient approach to test for an URI
+	std::string prefix("https://");
+	std::string FileName(filename);
+	auto res = std::mismatch(prefix.begin(), prefix.end(), FileName.begin());
+	if ( res.first == prefix.end() ) 
+	{
+		// We do have an URI 
+		QString path = QString::fromUtf8(filename);
+		if ( fullPath ) 
+			*fullPath = path;
+		return std::string(filename);
+	}
+#endif
         // make sure the filename is aboluste path
         QString path = QDir::cleanPath(QString::fromUtf8(filename));
         if((absolute=QFileInfo(path).isAbsolute())) {
@@ -2495,9 +2510,7 @@ public:
     {
         QString path;
         l->filePath = getDocPath(filename,pDoc,true,&path);
-
         FC_LOG("finding doc " << filename);
-
         auto it = _DocInfoMap.find(path);
         DocInfoPtr info;
         if(it != _DocInfoMap.end()) {
@@ -2535,11 +2548,19 @@ public:
     }
 
     static QString getFullPath(const char *p) {
+#ifdef BUILD_CLOUD
+        QString path = QString::fromUtf8(p);;
+        return(path);
+#endif
         if(!p) return QString();
         return QFileInfo(QString::fromUtf8(p)).canonicalFilePath();
     }
 
     QString getFullPath() const {
+#ifdef BUILD_CLOUD
+	QString path = myPos->first;	
+	return(path);
+#endif
         return QFileInfo(myPos->first).canonicalFilePath();
     }
 
@@ -2985,6 +3006,9 @@ void PropertyXLink::setValue(std::string &&filename, std::string &&name,
     DocumentObject *pObject=0;
     DocInfoPtr info;
     if(filename.size()) {
+#ifdef BUILD_CLOUD
+	owner->getDocument()->signalLinkXsetValue(filename);
+#endif
         info = DocInfo::get(filename.c_str(),owner->getDocument(),this,name.c_str());
         if(info->pcDoc) 
             pObject = info->pcDoc->getObject(name.c_str());

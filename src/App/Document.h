@@ -177,6 +177,9 @@ public:
     boost::signals2::signal<void (const App::Document&, const std::vector<App::DocumentObject*>&)> signalSkipRecompute;
     boost::signals2::signal<void (const App::DocumentObject&)> signalFinishRestoreObject;
     boost::signals2::signal<void (const App::Document&,const App::Property&)> signalChangePropertyEditor;
+#ifdef BUILD_CLOUD
+    boost::signals2::signal<void (std::string)> signalLinkXsetValue;
+#endif
     //@}
 
 
