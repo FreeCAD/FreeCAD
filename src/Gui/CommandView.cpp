@@ -3846,14 +3846,13 @@ VIEW_CMD_DEF(SelOnTop, ShowSelectionOnTop)
 //======================================================================
 // Std_SelHierarchyAscend
 //======================================================================
-VIEW_CMD_DEF(SelHierarchyAscend, SelectHierarchyAscend)
+VIEW_CMD_DEF(SelHierarchyAscend, HierarchyAscend)
 {
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("Hierarchy selection");
-  sToolTipText  = ViewParams::docSelectHierarchyAscend();
-  sWhatsThis    = "Std_SelOnTop";
+  sToolTipText  = ViewParams::docHierarchyAscend();
+  sWhatsThis    = "Std_SelHierarhcyAscend";
   sStatusTip    = sToolTipText;
-  sAccel        = "V, H";
   eType         = NoDefaultAction;
 }
 

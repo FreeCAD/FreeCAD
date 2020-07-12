@@ -721,9 +721,6 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
 bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, 
         bool ctrlDown, bool shiftDown, bool altDown) 
 {
-    (void)altDown;
-    (void)shiftDown;
-
     if(infos.empty() || !infos[0].vpd) return false;
 
     std::vector<SelectionSingleton::SelObj> sels;
@@ -823,8 +820,9 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
     FC_TRACE("select " << (subSelected?subSelected:"'null'") << ", " << 
             objectName << ", " << subName);
     std::string newElement;
-    if(subSelected && ((ViewParams::getSelectHierarchyAscend() && !ctrlDown && !shiftDown)
-                        || Data::ComplexGeoData::hasElementName(subSelected)))
+    if(subSelected
+        && ((ViewParams::getHierarchyAscend() && !ctrlDown && !shiftDown && !altDown)
+             || Data::ComplexGeoData::hasElementName(subSelected)))
     {
         newElement = Data::ComplexGeoData::newElementName(subSelected);
         subSelected = newElement.c_str();
