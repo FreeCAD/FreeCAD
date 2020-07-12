@@ -5221,7 +5221,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
             (linked && linked->getDocument()!=obj->getDocument());
 
     int currentStatus =
-        ((external?0:1)<<4) |
+        ((external?1:0)<<4) |
         ((object()->showInTree() ? 0 : 1) << 3) |
         ((pObject->isError()          ? 1 : 0) << 2) |
         ((pObject->isTouched()||pObject->mustExecute()== 1 ? 1 : 0) << 1) |
