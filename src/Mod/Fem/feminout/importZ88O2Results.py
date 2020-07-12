@@ -111,6 +111,7 @@ def import_z88_disp(
             res_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
             res_obj.Mesh = result_mesh_object
             res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
+            res_obj = resulttools.add_disp_apps(res_obj)  # fill DisplacementLengths
             res_obj = resulttools.fill_femresult_stats(res_obj)  # fill Stats
 
             if analysis:
