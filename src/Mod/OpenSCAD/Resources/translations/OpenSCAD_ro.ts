@@ -142,12 +142,12 @@
       <translation>Selectati mai intai 3 obiecte</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1207"/>
+      <location filename="../../importCSG.py" line="1224"/>
       <source>Unsupported Function</source>
       <translation>Functia nu este suportata</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1207"/>
+      <location filename="../../importCSG.py" line="1224"/>
       <source>Press OK</source>
       <translation>Apasati Ok</translation>
     </message>

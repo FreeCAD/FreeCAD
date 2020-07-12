@@ -142,12 +142,12 @@
       <translation>Por favor, escolme primeiro 3 obxectos</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1207"/>
+      <location filename="../../importCSG.py" line="1224"/>
       <source>Unsupported Function</source>
       <translation>Función non soportada</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1207"/>
+      <location filename="../../importCSG.py" line="1224"/>
       <source>Press OK</source>
       <translation>Prema OK</translation>
     </message>

@@ -16,7 +16,8 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Za dodavanje referenci: odaberite ih u 3D prikazu i kliknite "Dodaj".
+</translation>
     </message>
   </context>
   <context>
@@ -100,17 +101,17 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
       <source>Select Solids</source>
-      <translation>Odaberite čvrsto tijelo</translation>
+      <translation>Odaberite kruto tijelo</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
       <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
-      <translation>Odaberite elemente tijela koji će biti dodani na popis. Nakon toga pritisnite "Dodaj".</translation>
+      <translation>Odaberite elemente, dijelove krutog tijela koji će biti dodani na popis. Da nakon toga dodate kruto tijelo  pritisnite "Dodaj".</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+      <translation>Odaberite elemente, dijelove krutog tijela koji će se dodati popisu. Da biste dodali kruto tijelo, kliknite "Dodaj".</translation>
     </message>
   </context>
   <context>
@@ -638,7 +639,7 @@
     <message>
       <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Kreiranje FEM mreže čvrstog tijela ili oblikovanje površine uz pomoć Netgenovog internog kreatora mreža</translation>
+      <translation>Kreiranje FEM mreže krutog tijela ili oblikovanje površine uz pomoć Netgenovog internog kreatora mreža</translation>
     </message>
   </context>
   <context>
@@ -832,7 +833,7 @@
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="42"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Kreiranje FEM mreže čvrstog tijela ili oblikovanje površine uz pomoć Netgenovog internog kreatora mreža</translation>
+      <translation>Kreiranje FEM mreže krutog tijela ili oblikovanje površine uz pomoć Netgenovog internog kreatora mreža</translation>
     </message>
   </context>
   <context>

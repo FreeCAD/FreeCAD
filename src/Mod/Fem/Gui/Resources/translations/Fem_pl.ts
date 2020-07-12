@@ -123,7 +123,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -2344,7 +2344,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="66"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>

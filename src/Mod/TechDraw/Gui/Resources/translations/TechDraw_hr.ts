@@ -6,7 +6,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="641"/>
       <source>Add Centerline between 2 Lines</source>
-      <translation type="unfinished">Add Centerline between 2 Lines</translation>
+      <translation>Dodajte središnju liniju između dvije linije</translation>
     </message>
   </context>
   <context>
@@ -14,7 +14,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="645"/>
       <source>Add Centerline between 2 Points</source>
-      <translation type="unfinished">Add Centerline between 2 Points</translation>
+      <translation>Dodajte središnju liniju između dvije točke</translation>
     </message>
   </context>
   <context>
@@ -22,7 +22,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="287"/>
       <source>Add Midpoint Vertices</source>
-      <translation type="unfinished">Add Midpoint Vertices</translation>
+      <translation>Dodajte pomoćne točke na sredinu ruba</translation>
     </message>
   </context>
   <context>
@@ -30,7 +30,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="291"/>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>Dodajte kvadrantne pomoćne točke na rubove</translation>
     </message>
   </context>
   <context>
@@ -43,7 +43,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="777"/>
       <source>Add Centerline between 2 Lines</source>
-      <translation type="unfinished">Add Centerline between 2 Lines</translation>
+      <translation>Dodajte središnju liniju između dvije linije</translation>
     </message>
   </context>
   <context>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="854"/>
       <source>Add Centerline between 2 Points</source>
-      <translation type="unfinished">Add Centerline between 2 Points</translation>
+      <translation>Dodajte središnju liniju između dvije točke</translation>
     </message>
   </context>
   <context>
@@ -69,20 +69,20 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="920"/>
       <source>Insert 3-Point Angle Dimension</source>
-      <translation type="unfinished">Insert 3-Point Angle Dimension</translation>
+      <translation>Umetnite novu dimenziju kuta sa 3 točke</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="402"/>
+      <location filename="../../Command.cpp" line="403"/>
       <source>Insert Active View (3D View)</source>
-      <translation type="unfinished">Insert Active View (3D View)</translation>
+      <translation>Umetnite aktivni (3D) pogled</translation>
     </message>
   </context>
   <context>
@@ -95,7 +95,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="832"/>
       <source>Insert Angle Dimension</source>
-      <translation type="unfinished">Insert Angle Dimension</translation>
+      <translation>Umetnite novu dimenziju kuta</translation>
     </message>
   </context>
   <context>
@@ -114,32 +114,32 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1125"/>
+      <location filename="../../Command.cpp" line="1129"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1126"/>
+      <location filename="../../Command.cpp" line="1130"/>
       <source>Insert Arch Workbench Object</source>
-      <translation type="unfinished">Insert Arch Workbench Object</translation>
+      <translation>Umetni objekt radne površine Luk</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1127"/>
+      <location filename="../../Command.cpp" line="1131"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
-      <translation type="unfinished">Insert a View of a Section Plane from Arch Workbench</translation>
+      <translation>Umetni pogled na dio ravni Arhitekt radne površine</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="757"/>
+      <location filename="../../Command.cpp" line="758"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="758"/>
+      <location filename="../../Command.cpp" line="759"/>
       <source>Insert Balloon Annotation</source>
-      <translation type="unfinished">Insert Balloon Annotation</translation>
+      <translation>Umetni Oblačić komentar</translation>
     </message>
   </context>
   <context>
@@ -152,51 +152,51 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="564"/>
       <source>Insert Center Line</source>
-      <translation type="unfinished">Insert Center Line</translation>
+      <translation>Umetnite središnju liniju</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="637"/>
       <source>Add Centerline to Faces</source>
-      <translation type="unfinished">Add Centerline to Faces</translation>
+      <translation>Dodaj simetralu na lice(a)</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="806"/>
+      <location filename="../../Command.cpp" line="807"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="807"/>
+      <location filename="../../Command.cpp" line="808"/>
       <source>Insert Clip Group</source>
-      <translation type="unfinished">Insert Clip Group</translation>
+      <translation>Umetni grupu Isječak</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="845"/>
+      <location filename="../../Command.cpp" line="846"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="846"/>
+      <location filename="../../Command.cpp" line="847"/>
       <source>Add View to Clip Group</source>
-      <translation type="unfinished">Add View to Clip Group</translation>
+      <translation>Dodaj pogled u grupi Isječak</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="928"/>
+      <location filename="../../Command.cpp" line="929"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="929"/>
+      <location filename="../../Command.cpp" line="930"/>
       <source>Remove View from Clip Group</source>
-      <translation type="unfinished">Remove View from Clip Group</translation>
+      <translation>Obriši pogled iz grupe Isječak</translation>
     </message>
   </context>
   <context>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="966"/>
       <source>Remove Cosmetic Object</source>
-      <translation type="unfinished">Remove Cosmetic Object</translation>
+      <translation>Ukloni pomoćni objekt</translation>
     </message>
   </context>
   <context>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="387"/>
       <source>Add Cosmetic Vertex</source>
-      <translation type="unfinished">Add Cosmetic Vertex</translation>
+      <translation>Dodaj pomoćnu tjemenu točku</translation>
     </message>
   </context>
   <context>
@@ -235,12 +235,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="210"/>
       <source>Insert Cosmetic Vertex</source>
-      <translation type="unfinished">Insert Cosmetic Vertex</translation>
+      <translation>Umetni pomoćnu tjemenu točku</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="283"/>
       <source>Add Cosmetic Vertex</source>
-      <translation type="unfinished">Add Cosmetic Vertex</translation>
+      <translation>Dodaj pomoćnu tjemenu točku</translation>
     </message>
   </context>
   <context>
@@ -253,20 +253,20 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1093"/>
       <source>Change Appearance of Lines</source>
-      <translation type="unfinished">Change Appearance of Lines</translation>
+      <translation>Promijenite izgled linija</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="485"/>
+      <location filename="../../Command.cpp" line="486"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="487"/>
       <source>Insert Detail View</source>
-      <translation type="unfinished">Insert Detail View</translation>
+      <translation>Umetanje detaljnog pogleda</translation>
     </message>
   </context>
   <context>
@@ -279,7 +279,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="373"/>
       <source>Insert Diameter Dimension</source>
-      <translation type="unfinished">Insert Diameter Dimension</translation>
+      <translation>Umetnite dimenziju promjera</translation>
     </message>
   </context>
   <context>
@@ -292,23 +292,23 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="124"/>
       <source>Insert Dimension</source>
-      <translation type="unfinished">Insert Dimension</translation>
+      <translation>Umetnite dimenziju</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1062"/>
+      <location filename="../../Command.cpp" line="1063"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1063"/>
+      <location filename="../../Command.cpp" line="1064"/>
       <source>Insert Draft Workbench Object</source>
-      <translation type="unfinished">Insert Draft Workbench Object</translation>
+      <translation>Umetni objekt radne površine Nacrt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1064"/>
+      <location filename="../../Command.cpp" line="1065"/>
       <source>Insert a View of a Draft Workbench object</source>
       <translation>Umetni pogled na objekt Radne površine Nacrt</translation>
     </message>
@@ -316,22 +316,22 @@
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1293"/>
+      <location filename="../../Command.cpp" line="1297"/>
       <source>File</source>
       <translation>Datoteka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1294"/>
+      <location filename="../../Command.cpp" line="1298"/>
       <source>Export Page as DXF</source>
-      <translation type="unfinished">Export Page as DXF</translation>
+      <translation>Izvezi stranicu kao DXF</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1327"/>
+      <location filename="../../Command.cpp" line="1331"/>
       <source>Save Dxf File </source>
       <translation>Spremi Dxf Datoteku </translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1329"/>
+      <location filename="../../Command.cpp" line="1333"/>
       <source>Dxf (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
@@ -339,14 +339,14 @@
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1249"/>
+      <location filename="../../Command.cpp" line="1253"/>
       <source>File</source>
       <translation>Datoteka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1250"/>
+      <location filename="../../Command.cpp" line="1254"/>
       <source>Export Page as SVG</source>
-      <translation type="unfinished">Export Page as SVG</translation>
+      <translation>Izvezi stranicu kao SVG</translation>
     </message>
   </context>
   <context>
@@ -359,17 +359,17 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1090"/>
       <source>Insert Extent Dimension</source>
-      <translation type="unfinished">Insert Extent Dimension</translation>
+      <translation>Umetnite dimenziju do granice</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1156"/>
       <source>Horizontal Extent</source>
-      <translation type="unfinished">Horizontal Extent</translation>
+      <translation>Vodoravno do granice</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1160"/>
       <source>Vertical Extent</source>
-      <translation type="unfinished">Vertical Extent</translation>
+      <translation>Okomito do granice</translation>
     </message>
   </context>
   <context>
@@ -382,33 +382,33 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="667"/>
       <source>Add Centerline to Faces</source>
-      <translation type="unfinished">Add Centerline to Faces</translation>
+      <translation>Dodaj simetralu na lice(a)</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawGeometricHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="314"/>
+      <location filename="../../CommandDecorate.cpp" line="326"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="315"/>
+      <location filename="../../CommandDecorate.cpp" line="327"/>
       <source>Apply Geometric Hatch to a Face</source>
-      <translation type="unfinished">Apply Geometric Hatch to a Face</translation>
+      <translation>Dodaj šrafuru na naličje</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="203"/>
+      <location filename="../../CommandDecorate.cpp" line="205"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="204"/>
+      <location filename="../../CommandDecorate.cpp" line="206"/>
       <source>Hatch a Face using Image File</source>
-      <translation type="unfinished">Hatch a Face using Image File</translation>
+      <translation>Šrafiraj naličje koristeći datoteku slike</translation>
     </message>
   </context>
   <context>
@@ -421,7 +421,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="607"/>
       <source>Insert Horizontal Dimension</source>
-      <translation type="unfinished">Insert Horizontal Dimension</translation>
+      <translation>Umetnite vodoravnu dimenziju</translation>
     </message>
   </context>
   <context>
@@ -434,34 +434,34 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1183"/>
       <source>Insert Horizontal Extent Dimension</source>
-      <translation type="unfinished">Insert Horizontal Extent Dimension</translation>
+      <translation>Umetnite vodoravnu dimenziju do granice</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawImage</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="384"/>
+      <location filename="../../CommandDecorate.cpp" line="395"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="385"/>
+      <location filename="../../CommandDecorate.cpp" line="396"/>
       <source>Insert Bitmap Image</source>
-      <translation type="unfinished">Insert Bitmap Image</translation>
+      <translation>Umetni Bitmap sliku</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="386"/>
-      <location filename="../../CommandDecorate.cpp" line="388"/>
+      <location filename="../../CommandDecorate.cpp" line="397"/>
+      <location filename="../../CommandDecorate.cpp" line="399"/>
       <source>Insert Bitmap from a file into a page</source>
-      <translation type="unfinished">Insert Bitmap from a file into a page</translation>
+      <translation>Umeće bitmapu iz datoteke u stranicu</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="403"/>
+      <location filename="../../CommandDecorate.cpp" line="414"/>
       <source>Select an Image File</source>
       <translation>Odaberite slikovnu datoteku</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="405"/>
+      <location filename="../../CommandDecorate.cpp" line="416"/>
       <source>Image (*.png *.jpg *.jpeg)</source>
       <translation>Slika (*.png *.jpg *.jpeg)</translation>
     </message>
@@ -476,7 +476,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1353"/>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
-      <translation type="unfinished">Insert Landmark Dimension - EXPERIMENTAL</translation>
+      <translation>Umetni Landmark Dimension - EXPERIMENTAL</translation>
     </message>
   </context>
   <context>
@@ -489,7 +489,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="100"/>
       <source>Add Leaderline to View</source>
-      <translation type="unfinished">Add Leaderline to View</translation>
+      <translation>Dodaj liniju oznake u Pogled</translation>
     </message>
   </context>
   <context>
@@ -502,7 +502,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="494"/>
       <source>Insert Length Dimension</source>
-      <translation type="unfinished">Insert Length Dimension</translation>
+      <translation>Umetnite dužnu dimenziju</translation>
     </message>
   </context>
   <context>
@@ -515,7 +515,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1012"/>
       <source>Link Dimension to 3D Geometry</source>
-      <translation type="unfinished">Link Dimension to 3D Geometry</translation>
+      <translation>Poveži dimenziju na 3D geometriju</translation>
     </message>
   </context>
   <context>
@@ -528,7 +528,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="446"/>
       <source>Add Midpoint Vertices</source>
-      <translation type="unfinished">Add Midpoint Vertices</translation>
+      <translation>Dodajte pomoćne točke na sredinu ruba</translation>
     </message>
   </context>
   <context>
@@ -541,7 +541,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Insert Default Page</source>
-      <translation type="unfinished">Insert Default Page</translation>
+      <translation>Umetnite novu zadanu stranicu</translation>
     </message>
   </context>
   <context>
@@ -554,35 +554,35 @@
     <message>
       <location filename="../../Command.cpp" line="166"/>
       <source>Insert Page using Template</source>
-      <translation type="unfinished">Insert Page using Template</translation>
+      <translation>Umetni novu stranicu pomoću predloška</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="178"/>
       <source>Select a Template File</source>
-      <translation type="unfinished">Select a Template File</translation>
+      <translation>Odaberite datoteku predloška</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="180"/>
       <source>Template (*.svg *.dxf)</source>
-      <translation type="unfinished">Template (*.svg *.dxf)</translation>
+      <translation>Predložak (*.svg *.dxf)</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="534"/>
+      <location filename="../../Command.cpp" line="535"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="535"/>
+      <location filename="../../Command.cpp" line="536"/>
       <source>Insert Projection Group</source>
-      <translation type="unfinished">Insert Projection Group</translation>
+      <translation>Umetanje Projekcijske Grupe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="536"/>
+      <location filename="../../Command.cpp" line="537"/>
       <source>Insert multiple linked views of drawable object(s)</source>
-      <translation type="unfinished">Insert multiple linked views of drawable object(s)</translation>
+      <translation>Umetanje više povezanih prikaza od crtajućih objekata</translation>
     </message>
   </context>
   <context>
@@ -595,7 +595,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="485"/>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>Dodajte kvadrantne pomoćne točke na rubove</translation>
     </message>
   </context>
   <context>
@@ -608,7 +608,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="251"/>
       <source>Insert Radius Dimension</source>
-      <translation type="unfinished">Insert Radius Dimension</translation>
+      <translation>Umetni dimenziju polumjera</translation>
     </message>
   </context>
   <context>
@@ -621,7 +621,7 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Redraw Page</source>
-      <translation type="unfinished">Redraw Page</translation>
+      <translation>Ponovno iscrtavanje stranice</translation>
     </message>
   </context>
   <context>
@@ -634,20 +634,20 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="160"/>
       <source>Insert Rich Text Annotation</source>
-      <translation type="unfinished">Insert Rich Text Annotation</translation>
+      <translation>Umetni Rich Text napomenu</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="436"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Insert Section View</source>
-      <translation type="unfinished">Insert Section View</translation>
+      <translation>Umetni pogled na odjeljak</translation>
     </message>
   </context>
   <context>
@@ -660,55 +660,55 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1170"/>
       <source>Show/Hide Invisible Edges</source>
-      <translation type="unfinished">Show/Hide Invisible Edges</translation>
+      <translation>Prikaži / sakrij nevidljive rubove</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1190"/>
+      <location filename="../../Command.cpp" line="1194"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1191"/>
+      <location filename="../../Command.cpp" line="1195"/>
       <source>Insert Spreadsheet View</source>
-      <translation type="unfinished">Insert Spreadsheet View</translation>
+      <translation>Umetanje tablice pregleda</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1192"/>
+      <location filename="../../Command.cpp" line="1196"/>
       <source>Insert View to a spreadsheet</source>
-      <translation type="unfinished">Insert View to a spreadsheet</translation>
+      <translation>Umetni Pogled u proračunsku tablicu</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1003"/>
+      <location filename="../../Command.cpp" line="1004"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1004"/>
+      <location filename="../../Command.cpp" line="1005"/>
       <source>Insert SVG Symbol</source>
       <translation>Umetanje SVG simbola</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1005"/>
+      <location filename="../../Command.cpp" line="1006"/>
       <source>Insert symbol from a SVG file</source>
-      <translation type="unfinished">Insert symbol from a SVG file</translation>
+      <translation>Umetanje simbola iz SVG datoteke</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="435"/>
+      <location filename="../../CommandDecorate.cpp" line="446"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="436"/>
-      <location filename="../../CommandDecorate.cpp" line="437"/>
+      <location filename="../../CommandDecorate.cpp" line="447"/>
+      <location filename="../../CommandDecorate.cpp" line="448"/>
       <source>Turn View Frames On/Off</source>
       <translation>Prebacuj Okvire Pogled Uključeno/Isključeno</translation>
     </message>
@@ -723,7 +723,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="720"/>
       <source>Insert Vertical Dimension</source>
-      <translation type="unfinished">Insert Vertical Dimension</translation>
+      <translation>Umetnite okomitu dimenziju</translation>
     </message>
   </context>
   <context>
@@ -736,7 +736,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1270"/>
       <source>Insert Vertical Extent Dimension</source>
-      <translation type="unfinished">Insert Vertical Extent Dimension</translation>
+      <translation>Umetnite okomitu dimenziju do granice</translation>
     </message>
   </context>
   <context>
@@ -749,12 +749,12 @@
     <message>
       <location filename="../../Command.cpp" line="280"/>
       <source>Insert View</source>
-      <translation type="unfinished">Insert View</translation>
+      <translation>Umetni pogled</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Insert a View</source>
-      <translation type="unfinished">Insert a View</translation>
+      <translation>Umeće pogled</translation>
     </message>
   </context>
   <context>
@@ -767,7 +767,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1235"/>
       <source>Add Welding Information to Leaderline</source>
-      <translation type="unfinished">Add Welding Information to Leaderline</translation>
+      <translation>Dodaj informaciju zavarivanja na liniju oznake</translation>
     </message>
   </context>
   <context>
@@ -935,77 +935,77 @@
       <translation>Više funkcija</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="95"/>
+      <location filename="../../mrichtextedit.cpp" line="99"/>
       <source>Standard</source>
       <translation>Standard</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="96"/>
+      <location filename="../../mrichtextedit.cpp" line="100"/>
       <source>Heading 1</source>
       <translation>Zaglavlje 1</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="97"/>
+      <location filename="../../mrichtextedit.cpp" line="101"/>
       <source>Heading 2</source>
       <translation>Zaglavlje 2</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="98"/>
+      <location filename="../../mrichtextedit.cpp" line="102"/>
       <source>Heading 3</source>
       <translation>Zaglavlje 3</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="99"/>
+      <location filename="../../mrichtextedit.cpp" line="103"/>
       <source>Heading 4</source>
       <translation>Zaglavlje 4</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="100"/>
+      <location filename="../../mrichtextedit.cpp" line="104"/>
       <source>Monospace</source>
       <translation>Monospace</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="101"/>
+      <location filename="../../mrichtextedit.cpp" line="105"/>
       <source> </source>
       <translation type="unfinished"> </translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="160"/>
+      <location filename="../../mrichtextedit.cpp" line="164"/>
       <source>Remove character formatting</source>
       <translation>Ukloni format znakova</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="165"/>
+      <location filename="../../mrichtextedit.cpp" line="169"/>
       <source>Remove all formatting</source>
       <translation>Ukloni sva formatiranja</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="169"/>
+      <location filename="../../mrichtextedit.cpp" line="173"/>
       <source>Edit document source</source>
       <translation>Uredi izvor dokumenta</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="257"/>
+      <location filename="../../mrichtextedit.cpp" line="261"/>
       <source>Document source</source>
       <translation>Izvor dokumenta</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="351"/>
+      <location filename="../../mrichtextedit.cpp" line="355"/>
       <source>Create a link</source>
       <translation>Stvorite poveznicu</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="352"/>
+      <location filename="../../mrichtextedit.cpp" line="356"/>
       <source>Link URL:</source>
       <translation>URL poveznice:</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="670"/>
+      <location filename="../../mrichtextedit.cpp" line="674"/>
       <source>Select an image</source>
       <translation>Odaberite sliku</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="672"/>
+      <location filename="../../mrichtextedit.cpp" line="676"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
       <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; Sve (*)</translation>
     </message>
@@ -1014,20 +1014,20 @@
     <name>QObject</name>
     <message>
       <location filename="../../Command.cpp" line="340"/>
-      <location filename="../../Command.cpp" line="453"/>
-      <location filename="../../Command.cpp" line="504"/>
-      <location filename="../../Command.cpp" line="594"/>
-      <location filename="../../Command.cpp" line="858"/>
-      <location filename="../../Command.cpp" line="874"/>
-      <location filename="../../Command.cpp" line="879"/>
-      <location filename="../../Command.cpp" line="888"/>
-      <location filename="../../Command.cpp" line="942"/>
-      <location filename="../../Command.cpp" line="962"/>
-      <location filename="../../Command.cpp" line="1083"/>
-      <location filename="../../Command.cpp" line="1105"/>
-      <location filename="../../Command.cpp" line="1154"/>
-      <location filename="../../Command.cpp" line="1160"/>
-      <location filename="../../Command.cpp" line="1203"/>
+      <location filename="../../Command.cpp" line="454"/>
+      <location filename="../../Command.cpp" line="505"/>
+      <location filename="../../Command.cpp" line="595"/>
+      <location filename="../../Command.cpp" line="859"/>
+      <location filename="../../Command.cpp" line="875"/>
+      <location filename="../../Command.cpp" line="880"/>
+      <location filename="../../Command.cpp" line="889"/>
+      <location filename="../../Command.cpp" line="943"/>
+      <location filename="../../Command.cpp" line="963"/>
+      <location filename="../../Command.cpp" line="1084"/>
+      <location filename="../../Command.cpp" line="1109"/>
+      <location filename="../../Command.cpp" line="1158"/>
+      <location filename="../../Command.cpp" line="1164"/>
+      <location filename="../../Command.cpp" line="1207"/>
       <location filename="../../CommandAnnotate.cpp" line="319"/>
       <location filename="../../CommandAnnotate.cpp" line="412"/>
       <location filename="../../CommandAnnotate.cpp" line="991"/>
@@ -1043,103 +1043,104 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="341"/>
-      <location filename="../../Command.cpp" line="595"/>
+      <location filename="../../Command.cpp" line="596"/>
       <source>No Shapes, Groups or Links in this selection</source>
-      <translation type="unfinished">No Shapes, Groups or Links in this selection</translation>
+      <translation>U ovom odabiru nema oblika, grupa ili poveznica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
-      <location filename="../../Command.cpp" line="505"/>
+      <location filename="../../Command.cpp" line="455"/>
+      <location filename="../../Command.cpp" line="506"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
       <translation>Odaberite najmanje 1 DrawViewPart objekt kao bazu.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="859"/>
+      <location filename="../../Command.cpp" line="860"/>
       <source>Select one Clip group and one View.</source>
       <translation>Odaberite 1 grupu Isječak i 1 Pogled.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="875"/>
+      <location filename="../../Command.cpp" line="876"/>
       <source>Select exactly one View to add to group.</source>
       <translation>Odaberite točno jedan Pogled za dodavanje u grupu.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="880"/>
+      <location filename="../../Command.cpp" line="881"/>
       <source>Select exactly one Clip group.</source>
       <translation>Odaberite točno jednu isječak grupu.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="889"/>
+      <location filename="../../Command.cpp" line="890"/>
       <source>Clip and View must be from same Page.</source>
       <translation>Isječak i prikaz moraju biti s iste stranice.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="943"/>
+      <location filename="../../Command.cpp" line="944"/>
       <source>Select exactly one View to remove from Group.</source>
       <translation>Odaberite točno jedan Pogled za uklanjanje iz grupe.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="963"/>
+      <location filename="../../Command.cpp" line="964"/>
       <source>View does not belong to a Clip</source>
       <translation>Prikaz ne pripada isječku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1022"/>
+      <location filename="../../Command.cpp" line="1023"/>
       <source>Choose an SVG file to open</source>
       <translation>Odaberite SVG datoteku za otvaranje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1024"/>
+      <location filename="../../Command.cpp" line="1025"/>
       <source>Scalable Vector Graphic</source>
       <translation>Skalabilna vektorska grafika</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1025"/>
+      <location filename="../../Command.cpp" line="1026"/>
       <source>All Files</source>
       <translation>Sve datoteke</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1084"/>
+      <location filename="../../Command.cpp" line="1085"/>
       <source>Select at least one object.</source>
       <translation>Odaberite barem jedan objekt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1106"/>
+      <location filename="../../Command.cpp" line="1110"/>
       <source>There were no DraftWB objects in the selection.</source>
-      <translation type="unfinished">There were no DraftWB objects in the selection.</translation>
+      <translation>U odabiru nema DraftWB objekta.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1155"/>
+      <location filename="../../Command.cpp" line="1159"/>
       <source>Please select only 1 Arch Section.</source>
-      <translation type="unfinished">Please select only 1 Arch Section.</translation>
+      <translation>Molimo odaberite samo 1 odjeljak Luka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1161"/>
+      <location filename="../../Command.cpp" line="1165"/>
       <source>No Arch Sections in selection.</source>
-      <translation type="unfinished">No Arch Sections in selection.</translation>
+      <translation>Nema odjeljka Luka u odabiru</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1313"/>
+      <location filename="../../Command.cpp" line="1317"/>
       <source>Can not export selection</source>
-      <translation type="unfinished">Can not export selection</translation>
+      <translation>Odabir se ne može izvesti</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1314"/>
+      <location filename="../../Command.cpp" line="1318"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
-      <translation type="unfinished">Page contains DrawViewArch which will not be exported. Continue?</translation>
+      <translation>Stranica sadrži DrawViewArch koji se neće izvoziti. Nastaviti?
+</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1204"/>
+      <location filename="../../Command.cpp" line="1208"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Odaberite točno jedan objekt tablice.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1273"/>
+      <location filename="../../Command.cpp" line="1277"/>
       <source>No Drawing View</source>
       <translation>Nema pogleda crteža</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1274"/>
+      <location filename="../../Command.cpp" line="1278"/>
       <source>Open Drawing View before attempting export to SVG.</source>
       <translation>Otvori prikaz prije izvoza u SVG.</translation>
     </message>
@@ -1154,8 +1155,8 @@
       <location filename="../../CommandCreateDims.cpp" line="965"/>
       <location filename="../../CommandCreateDims.cpp" line="1050"/>
       <location filename="../../CommandCreateDims.cpp" line="1056"/>
-      <location filename="../../CommandDecorate.cpp" line="513"/>
-      <location filename="../../CommandDecorate.cpp" line="519"/>
+      <location filename="../../CommandDecorate.cpp" line="524"/>
+      <location filename="../../CommandDecorate.cpp" line="530"/>
       <source>Incorrect Selection</source>
       <translation>Netočan odabir</translation>
     </message>
@@ -1224,54 +1225,54 @@
       <location filename="../../CommandCreateDims.cpp" line="1229"/>
       <location filename="../../CommandCreateDims.cpp" line="1316"/>
       <source>Please select a View [and Edges].</source>
-      <translation type="unfinished">Please select a View [and Edges].</translation>
+      <translation>Odaberite Pogled [i rubove].</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1371"/>
       <source>Select 2 point objects and 1 View. (1)</source>
-      <translation type="unfinished">Select 2 point objects and 1 View. (1)</translation>
+      <translation>Odaberite 2 objekta Točke i 1 Pogled.(1)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1379"/>
       <source>Select 2 point objects and 1 View. (2)</source>
-      <translation type="unfinished">Select 2 point objects and 1 View. (2)</translation>
+      <translation>Odaberite 2 objekta Točke i 1 Pogled.(2)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
-      <location filename="../../Command.cpp" line="725"/>
-      <location filename="../../Command.cpp" line="732"/>
-      <location filename="../../Command.cpp" line="744"/>
+      <location filename="../../Command.cpp" line="719"/>
+      <location filename="../../Command.cpp" line="726"/>
+      <location filename="../../Command.cpp" line="733"/>
+      <location filename="../../Command.cpp" line="745"/>
       <location filename="../../CommandCreateDims.cpp" line="1468"/>
       <location filename="../../CommandCreateDims.cpp" line="1475"/>
       <location filename="../../CommandCreateDims.cpp" line="1482"/>
       <location filename="../../CommandCreateDims.cpp" line="1494"/>
       <location filename="../../CommandCreateDims.cpp" line="1511"/>
-      <location filename="../../CommandDecorate.cpp" line="492"/>
-      <location filename="../../CommandDecorate.cpp" line="499"/>
-      <location filename="../../CommandDecorate.cpp" line="506"/>
+      <location filename="../../CommandDecorate.cpp" line="503"/>
+      <location filename="../../CommandDecorate.cpp" line="510"/>
+      <location filename="../../CommandDecorate.cpp" line="517"/>
       <source>Incorrect selection</source>
       <translation>Netočan odabir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="719"/>
+      <location filename="../../Command.cpp" line="720"/>
       <location filename="../../CommandCreateDims.cpp" line="1469"/>
       <source>Select an object first</source>
       <translation>Najprije odaberite objekt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="726"/>
+      <location filename="../../Command.cpp" line="727"/>
       <location filename="../../CommandCreateDims.cpp" line="1476"/>
       <source>Too many objects selected</source>
       <translation>Previše objekata odabrano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="733"/>
+      <location filename="../../Command.cpp" line="734"/>
       <location filename="../../CommandCreateDims.cpp" line="1483"/>
       <source>Create a page first.</source>
       <translation>Najprije napravite stranicu.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="745"/>
+      <location filename="../../Command.cpp" line="746"/>
       <location filename="../../CommandCreateDims.cpp" line="1495"/>
       <source>No View of a Part in selection.</source>
       <translation>Ne postoji Pogled na Dio u odabiru.</translation>
@@ -1351,7 +1352,7 @@
       <location filename="../../CommandAnnotate.cpp" line="1332"/>
       <location filename="../../CommandAnnotate.cpp" line="1346"/>
       <source>Wrong Selection</source>
-      <translation type="unfinished">Wrong Selection</translation>
+      <translation>Pogrešan odabir</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="129"/>
@@ -1382,54 +1383,55 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="740"/>
       <source>You must select Faces or an existing CenterLine.</source>
-      <translation type="unfinished">You must select Faces or an existing CenterLine.</translation>
+      <translation>Morate odabrati Lica ili postojeću Srednju liniju.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="750"/>
       <source>No CenterLine in selection.</source>
-      <translation type="unfinished">No CenterLine in selection.</translation>
+      <translation>Nema Srednje linije u odabiru.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="756"/>
       <location filename="../../CommandAnnotate.cpp" line="828"/>
       <location filename="../../CommandAnnotate.cpp" line="939"/>
       <source>Selection is not a CenterLine.</source>
-      <translation type="unfinished">Selection is not a CenterLine.</translation>
+      <translation>Odabir nije Srednja linija.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="838"/>
       <source>Selection not understood.</source>
-      <translation type="unfinished">Selection not understood.</translation>
+      <translation>Odabir nije razumljiv.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="927"/>
       <source>You must select 2 Vertexes or an existing CenterLine.</source>
-      <translation type="unfinished">You must select 2 Vertexes or an existing CenterLine.</translation>
+      <translation>Morate odabrati 2 tjemene točke ili postojeću Srednju liniju.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="949"/>
       <source>Need 2 Vertices or 1 CenterLine.</source>
-      <translation type="unfinished">Need 2 Vertices or 1 CenterLine.</translation>
+      <translation>Potrebna su 2 Vrha ili 1 Srednja linija</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1122"/>
       <source>No View in Selection.</source>
-      <translation type="unfinished">No View in Selection.</translation>
+      <translation>Nema pogleda u odabiru.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1127"/>
       <source>You must select a View and/or lines.</source>
-      <translation type="unfinished">You must select a View and/or lines.</translation>
+      <translation>Morate odabrati jedan Pogled i / ili linije.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1198"/>
       <source>No Part Views in this selection</source>
-      <translation type="unfinished">No Part Views in this selection</translation>
+      <translation>Nema Pogleda djelova u ovom odabiru
+</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1267"/>
       <source>Select exactly one Leader line or one Weld symbol.</source>
-      <translation type="unfinished">Select exactly one Leader line or one Weld symbol.</translation>
+      <translation>Odaberite samo jednu liniju oznake ili simbol zavarivanja.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="992"/>
@@ -1448,43 +1450,43 @@
       <translation>Nepoznata vrsta objekta u izboru</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="238"/>
+      <location filename="../../CommandDecorate.cpp" line="240"/>
       <source>Replace Hatch?</source>
-      <translation type="unfinished">Replace Hatch?</translation>
+      <translation>Zamijeni šrafiranje?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="239"/>
+      <location filename="../../CommandDecorate.cpp" line="241"/>
       <source>Some Faces in selection are already hatched.  Replace?</source>
-      <translation type="unfinished">Some Faces in selection are already hatched.  Replace?</translation>
+      <translation>Neka su lica u odabiru već šrafirana. Zamijeniti?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="459"/>
+      <location filename="../../CommandDecorate.cpp" line="470"/>
       <source>No TechDraw Page</source>
       <translation>Nema stranice za tehničko crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="460"/>
+      <location filename="../../CommandDecorate.cpp" line="471"/>
       <source>Need a TechDraw Page for this command</source>
       <translation>Potreban je stranicu tehničko crtanje za ovu naredbu</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="493"/>
+      <location filename="../../CommandDecorate.cpp" line="504"/>
       <source>Select a Face first</source>
       <translation>Odaberite prvo naličje</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="500"/>
+      <location filename="../../CommandDecorate.cpp" line="511"/>
       <source>No TechDraw object in selection</source>
       <translation>Nema objekta tehničkog crtanja u odabiru</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="507"/>
+      <location filename="../../CommandDecorate.cpp" line="518"/>
       <source>Create a page to insert.</source>
       <translation>Stvaranje stranica za umetanje.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="514"/>
-      <location filename="../../CommandDecorate.cpp" line="520"/>
+      <location filename="../../CommandDecorate.cpp" line="525"/>
+      <location filename="../../CommandDecorate.cpp" line="531"/>
       <source>No Faces to hatch in this selection</source>
       <translation>Nema lica za šrafiranje u ovom odabiru</translation>
     </message>
@@ -1496,7 +1498,7 @@
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="117"/>
       <source>No Drawing Pages in document.</source>
-      <translation type="unfinished">No Drawing Pages in document.</translation>
+      <translation>U dokumentu nema Stranica za crtanje.</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="130"/>
@@ -1511,7 +1513,7 @@
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="140"/>
       <source>Select only 1 page.</source>
-      <translation type="unfinished">Select only 1 page.</translation>
+      <translation>Odaberite samo 1 stranicu.</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="131"/>
@@ -1519,38 +1521,38 @@
       <translation>Nije moguće odrediti točnu stranicu.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="642"/>
+      <location filename="../../MDIViewPage.cpp" line="643"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="643"/>
-      <location filename="../../MDIViewPage.cpp" line="896"/>
+      <location filename="../../MDIViewPage.cpp" line="644"/>
+      <location filename="../../MDIViewPage.cpp" line="899"/>
       <source>All Files (*.*)</source>
       <translation>Sve datoteke (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="644"/>
+      <location filename="../../MDIViewPage.cpp" line="645"/>
       <source>Export Page As PDF</source>
       <translation>Izvoz Stranice u PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="895"/>
+      <location filename="../../MDIViewPage.cpp" line="898"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="897"/>
+      <location filename="../../MDIViewPage.cpp" line="900"/>
       <source>Export page as SVG</source>
       <translation>Izvoz Stranice u SVG</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="246"/>
+      <location filename="../../ViewProviderPage.cpp" line="247"/>
       <source>Show drawing</source>
       <translation>Prikaži crtež</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="248"/>
+      <location filename="../../ViewProviderPage.cpp" line="249"/>
       <source>Toggle KeepUpdated</source>
       <translation>Uključivanje/isključivanje KeepUpdated</translation>
     </message>
@@ -1562,12 +1564,12 @@
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="252"/>
       <source>New Leader Line</source>
-      <translation>Nova linija vodilice</translation>
+      <translation>Nova linija oznake</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="295"/>
       <source>Edit Leader Line</source>
-      <translation>Uređivanje linije vodilice</translation>
+      <translation>Uređivanje linije oznake</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="178"/>
@@ -1588,63 +1590,63 @@
     <message>
       <location filename="../../SymbolChooser.cpp" line="62"/>
       <source>Select a symbol</source>
-      <translation type="unfinished">Select a symbol</translation>
+      <translation>Odaberite simbol</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="110"/>
       <source>ActiveView to TD View</source>
-      <translation type="unfinished">ActiveView to TD View</translation>
+      <translation>Aktivni Pogled prebaci na TD Pogled</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="166"/>
       <source>Create Center Line</source>
-      <translation type="unfinished">Create Center Line</translation>
+      <translation>Stvori Srednju liniju</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="206"/>
       <source>Edit Center Line</source>
-      <translation type="unfinished">Edit Center Line</translation>
+      <translation>Uređivanje simetrale</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="115"/>
       <source>New Detail</source>
-      <translation type="unfinished">New Detail</translation>
+      <translation>Novi detaljni pogled</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="188"/>
+      <location filename="../../TaskDetail.cpp" line="192"/>
       <source>Edit Detail</source>
-      <translation type="unfinished">Edit Detail</translation>
+      <translation>Uredite detaljni pogled</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="157"/>
       <source>Create Section View</source>
-      <translation type="unfinished">Create Section View</translation>
+      <translation>Izradi prikaz presjeka</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="176"/>
-      <location filename="../../TaskSectionView.cpp" line="357"/>
+      <location filename="../../TaskSectionView.cpp" line="359"/>
       <source>Select at first an orientation</source>
-      <translation type="unfinished">Select at first an orientation</translation>
+      <translation>Prvo odaberite orijentaciju</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="191"/>
+      <location filename="../../TaskSectionView.cpp" line="192"/>
       <source>Edit Section View</source>
-      <translation type="unfinished">Edit Section View</translation>
+      <translation>Uređivanje pogled presjeka</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="473"/>
+      <location filename="../../TaskSectionView.cpp" line="475"/>
       <source>Operation Failed</source>
-      <translation type="unfinished">Operation Failed</translation>
+      <translation>Operacija nije uspjela</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="199"/>
       <source>Create Welding Symbol</source>
-      <translation type="unfinished">Create Welding Symbol</translation>
+      <translation>Stvorite simbol zavarivanja</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="218"/>
       <source>Edit Welding Symbol</source>
-      <translation type="unfinished">Edit Welding Symbol</translation>
+      <translation>Uredite simbol zavarivanja</translation>
     </message>
   </context>
   <context>
@@ -1653,12 +1655,13 @@
       <location filename="../../ViewProviderLeader.cpp" line="253"/>
       <source>You cannot delete this leader line because
  it has a weld symbol that would become broken.</source>
-      <translation type="unfinished">You cannot delete this leader line because
- it has a weld symbol that would become broken.</translation>
+      <translation>Ne možete izbrisati ovu linija oznake jer je pridružena
+simbolu zavarivanja koji bi postao neupotrebljiv.
+</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLeader.cpp" line="256"/>
-      <location filename="../../ViewProviderPage.cpp" line="229"/>
+      <location filename="../../ViewProviderPage.cpp" line="230"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="200"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="215"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
@@ -1666,24 +1669,24 @@
       <location filename="../../ViewProviderProjGroupItem.cpp" line="196"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="204"/>
       <location filename="../../ViewProviderTemplate.cpp" line="204"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="356"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="364"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="372"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="355"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="363"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="371"/>
       <location filename="../../ViewProviderWeld.cpp" line="197"/>
       <source>Object dependencies</source>
       <translation>Zavisnosti objekta</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="222"/>
+      <location filename="../../ViewProviderPage.cpp" line="223"/>
       <source>The page is not empty, therefore the
  following referencing objects might be lost.
 
 Are you sure you want to continue?
 </source>
-      <translation type="unfinished">The page is not empty, therefore the
- following referencing objects might be lost.
+      <translation>Stranica nije prazna, stoga
+  sljedeći objekti mogu se izgubiti.
 
-Are you sure you want to continue?
+Jeste li sigurni da želite nastaviti?
 </translation>
     </message>
     <message>
@@ -1691,8 +1694,8 @@ Are you sure you want to continue?
       <source>The group cannot be deleted because its items have the following
  section or detail views, or leader lines that would get broken:
 </source>
-      <translation type="unfinished">The group cannot be deleted because its items have the following
- section or detail views, or leader lines that would get broken:
+      <translation>Grupu nije moguće izbrisati jer njezine stavke imaju sljedeće
+ odjeljke ili detaljne poglede, ili linije oznake  koje će postati neupotrebljive:
 </translation>
     </message>
     <message>
@@ -1702,34 +1705,36 @@ Are you sure you want to continue?
 
 Are you sure you want to continue?
 </source>
-      <translation type="unfinished">The projection group is not empty, therefore
- the following referencing objects might be lost.
+      <translation>Projekcijska skupina nije prazna
+  sljedeći objekti koji se odnose na referencu mogu se izgubiti.
 
-Are you sure you want to continue?
+Jeste li sigurni da želite nastaviti?
 </translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
       <source>You cannot delete the anchor view of a projection group.</source>
-      <translation type="unfinished">You cannot delete the anchor view of a projection group.</translation>
+      <translation>Ne možete izbrisati sidreni prikaz projicirane grupe.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="185"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="353"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="352"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
-      <translation type="unfinished">You cannot delete this view because it has a section view that would become broken.</translation>
+      <translation>Ne možete izbrisati ovaj pogled jer ima prikaz presjeka koji bi se slomio.
+</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="193"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="361"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="360"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
-      <translation type="unfinished">You cannot delete this view because it has a detail view that would become broken.</translation>
+      <translation>Ne možete izbrisati ovaj pogled jer ima detaljan prikaz koji bi se slomio.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="201"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="369"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="368"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
-      <translation type="unfinished">You cannot delete this view because it has a leader line that would become broken.</translation>
+      <translation>Ne možete izbrisati ovaj prikaz jer on sadrži liniju oznake koja bi postala neupotrebljiva.
+</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTemplate.cpp" line="197"/>
@@ -1737,9 +1742,9 @@ Are you sure you want to continue?
 
 Are you sure you want to continue?
 </source>
-      <translation type="unfinished">The following referencing objects might break.
+      <translation>Sljedeći se referentni objekti mogu slomiti.
 
-Are you sure you want to continue?
+Jeste li sigurni da želite nastaviti?
 </translation>
     </message>
     <message>
@@ -1755,7 +1760,7 @@ Are you sure you want to continue?
     <message>
       <location filename="../../TaskActiveView.ui" line="26"/>
       <source>ActiveView to TD View</source>
-      <translation type="unfinished">ActiveView to TD View</translation>
+      <translation>Aktivni Pogled prebaci na TD Pogled</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="38"/>
@@ -1765,7 +1770,7 @@ Are you sure you want to continue?
     <message>
       <location filename="../../TaskActiveView.ui" line="51"/>
       <source>Width of generated view</source>
-      <translation type="unfinished">Width of generated view</translation>
+      <translation>Širina stvorenog Pogleda</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="70"/>
@@ -1775,24 +1780,25 @@ Are you sure you want to continue?
     <message>
       <location filename="../../TaskActiveView.ui" line="83"/>
       <source>Height of generated view</source>
-      <translation type="unfinished">Height of generated view</translation>
+      <translation>Visina stvorenog pogleda</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="102"/>
       <source>Border</source>
-      <translation type="unfinished">Border</translation>
+      <translation>Obrub</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="115"/>
       <source>Minimal distance of the object from
 the top and left view border</source>
-      <translation type="unfinished">Minimal distance of the object from
-the top and left view border</translation>
+      <translation>Minimalna udaljenost objekta od
+gornje i lijeve granice pogleda
+</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="132"/>
       <source>Paint background yes/no</source>
-      <translation type="unfinished">Paint background yes/no</translation>
+      <translation>Obojajte pozadinu Da/Ne</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="135"/>
@@ -1807,17 +1813,17 @@ the top and left view border</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="171"/>
       <source>Line Width</source>
-      <translation type="unfinished">Line Width</translation>
+      <translation>Širina linije</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="184"/>
       <source>Width of lines in generated view</source>
-      <translation type="unfinished">Width of lines in generated view</translation>
+      <translation>Širina linija u generiranom pogledu</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="206"/>
       <source>Render Mode</source>
-      <translation type="unfinished">Render Mode</translation>
+      <translation>Način Iscrtavanja</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="213"/>
@@ -1826,33 +1832,33 @@ the top and left view border</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="217"/>
-      <source>AS_IS</source>
-      <translation type="unfinished">AS_IS</translation>
+      <source>As is</source>
+      <translation>Kao što je</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="222"/>
-      <source>WIREFRAME</source>
-      <translation type="unfinished">WIREFRAME</translation>
+      <source>Wireframe</source>
+      <translation>Žičana mreža</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="227"/>
-      <source>POINTS</source>
-      <translation type="unfinished">POINTS</translation>
+      <source>Points</source>
+      <translation>Točke</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="232"/>
-      <source>WIREFRAME_OVERLAY</source>
-      <translation type="unfinished">WIREFRAME_OVERLAY</translation>
+      <source>Wireframe overlay</source>
+      <translation type="unfinished">Wireframe overlay</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="237"/>
-      <source>HIDDEN_LINE</source>
-      <translation type="unfinished">HIDDEN_LINE</translation>
+      <source>Hidden Line</source>
+      <translation>Skrivena linija</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="242"/>
-      <source>BOUNDING_BOX</source>
-      <translation type="unfinished">BOUNDING_BOX</translation>
+      <source>Bounding box</source>
+      <translation type="unfinished">Bounding box</translation>
     </message>
   </context>
   <context>
@@ -1865,12 +1871,12 @@ the top and left view border</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="42"/>
       <source>Text before arrow side symbol</source>
-      <translation type="unfinished">Text before arrow side symbol</translation>
+      <translation>Tekst ispred simbola sa strelicom</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="49"/>
       <source>Text after arrow side symbol</source>
-      <translation type="unfinished">Text after arrow side symbol</translation>
+      <translation>Tekst iza simbola sa strelicom</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="74"/>
@@ -1881,7 +1887,7 @@ the top and left view border</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="80"/>
       <location filename="../../TaskWeldingSymbol.ui" line="121"/>
       <source>Symbol</source>
-      <translation type="unfinished">Symbol</translation>
+      <translation>Simbol</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="90"/>
@@ -1906,12 +1912,12 @@ the top and left view border</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="166"/>
       <source>Flips the sides</source>
-      <translation type="unfinished">Flips the sides</translation>
+      <translation>Prebaci strane</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="169"/>
       <source>Flip Sides</source>
-      <translation type="unfinished">Flip Sides</translation>
+      <translation>Prebaci strane</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="176"/>
@@ -1932,8 +1938,8 @@ the top and left view border</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="232"/>
       <source>Adds the &apos;Field Weld&apos; symbol (flag)
 at the kink in the leader line</source>
-      <translation type="unfinished">Adds the &apos;Field Weld&apos; symbol (flag)
-at the kink in the leader line</translation>
+      <translation>Dodaje  &apos;Polje vara &apos;simbol (zastavica)
+na prijelom u liniji oznake</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="236"/>
@@ -1944,13 +1950,13 @@ at the kink in the leader line</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="243"/>
       <source>Adds the &apos;All Around&apos; symbol (circle)
 at the kink in the leader line</source>
-      <translation type="unfinished">Adds the &apos;All Around&apos; symbol (circle)
-at the kink in the leader line</translation>
+      <translation>Dodaje  &apos;Uokolo &apos;simbol (krug)
+na prijelom u liniji oznake</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="247"/>
       <source>All Around</source>
-      <translation type="unfinished">All Around</translation>
+      <translation>U krug</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="254"/>
@@ -1960,34 +1966,35 @@ at the kink in the leader line</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="257"/>
       <source>Alternating</source>
-      <translation type="unfinished">Alternating</translation>
+      <translation>Izmjenjujuće</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="268"/>
       <source>Directory to welding symbols.
 This directory will be used for the symbol selection.</source>
-      <translation type="unfinished">Directory to welding symbols.
-This directory will be used for the symbol selection.</translation>
+      <translation>Imenik za simbole zavarivanja.
+Taj će se direktorij koristiti za odabir simbola.
+</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="275"/>
       <source>*.svg</source>
-      <translation type="unfinished">*.svg</translation>
+      <translation>*.svg</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="288"/>
       <source>Text at end of symbol</source>
-      <translation type="unfinished">Text at end of symbol</translation>
+      <translation>Tekst na kraju simbola zavarivanja</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="295"/>
       <source>Symbol Directory</source>
-      <translation type="unfinished">Symbol Directory</translation>
+      <translation>Direktorij simbola</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="302"/>
       <source>Tail Text</source>
-      <translation type="unfinished">Tail Text</translation>
+      <translation>Tekst repa</translation>
     </message>
   </context>
   <context>
@@ -1996,7 +2003,7 @@ This directory will be used for the symbol selection.</translation>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="14"/>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="38"/>
       <source>Advanced</source>
-      <translation type="unfinished">Advanced</translation>
+      <translation>Napredno</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="63"/>
@@ -2008,7 +2015,7 @@ Only change unless you know what you are doing!</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="74"/>
       <source>Round</source>
-      <translation type="unfinished">Round</translation>
+      <translation>Okruglo</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="79"/>
@@ -2025,9 +2032,10 @@ Only change unless you know what you are doing!</translation>
       <source>Limit of 64x64 pixel SVG tiles used to hatch a single face.
 For large scalings you might get an error about to many SVG tiles.
 Then you need to increase the tile limit.</source>
-      <translation type="unfinished">Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings you might get an error about to many SVG tiles.
-Then you need to increase the tile limit.</translation>
+      <translation>SVG pločice veličine 64 x 64 piksela koriste se za izvlačenje jednog lica.
+Za velika skaliranja možda ćete dobiti pogrešku u vezi s previše SVG pločica.
+Zatim morate povećati broj ograničenje pločica.
+</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="140"/>
@@ -2077,14 +2085,15 @@ Then you need to increase the tile limit.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="251"/>
       <source>Show Section Edges</source>
-      <translation type="unfinished">Show Section Edges</translation>
+      <translation>Prikaži rubove odjeljka</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="270"/>
       <source>Maximum hatch line segments to use
 when hatching a face with a PAT pattern</source>
-      <translation type="unfinished">Maximum hatch line segments to use
-when hatching a face with a PAT pattern</translation>
+      <translation>Maksimalni segmenti linija šrafiranja koji se koriste
+kad se šrafira lice s PAT uzorkom
+</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="304"/>
@@ -2097,15 +2106,16 @@ when hatching a face with a PAT pattern</translation>
 line segments returned by the hidden line removal algorithm.
 Faces must be detected in order to use hatching, but there
 can be a performance penalty in complex models.</source>
-      <translation type="unfinished">If checked, TechDraw will attempt to build faces using the
-line segments returned by the hidden line removal algorithm.
-Faces must be detected in order to use hatching, but there
-can be a performance penalty in complex models.</translation>
+      <translation>Ako je označeno, Tehničko crtanje će pokušati izgraditi lica pomoću
+linijskih segmenata korištenjem algoritma za uklanjanje skrivenih linija.
+Lica se moraju otkriti kako bi se šrafirala, ali to
+može smanjiti performanse u složenim modelima.
+</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="323"/>
       <source>Detect Faces</source>
-      <translation type="unfinished">Detect Faces</translation>
+      <translation>Otkri naličja</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="358"/>
@@ -2115,32 +2125,32 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="361"/>
       <source>Allow Crazy Edges</source>
-      <translation type="unfinished">Allow Crazy Edges</translation>
+      <translation>Odobri neobične rubove</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="374"/>
       <source>Max SVG Hatch Tiles</source>
-      <translation type="unfinished">Max SVG Hatch Tiles</translation>
+      <translation>Maksimalni broj pločica SVG šrafure</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="381"/>
       <source>Max PAT Hatch Segments</source>
-      <translation type="unfinished">Max PAT Hatch Segments</translation>
+      <translation>Maksimalni broj PAT segmenata šrafure</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="393"/>
       <source>Dimension Format</source>
-      <translation type="unfinished">Dimension Format</translation>
+      <translation>Format Dimenzije</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="406"/>
       <source>Override automatic dimension format</source>
-      <translation type="unfinished">Override automatic dimension format</translation>
+      <translation>Mijenja automatski format Dimenzije</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="436"/>
-      <source>Items in italics are default values for new objects.  They have no effect on existing objects.</source>
-      <translation type="unfinished">Items in italics are default values for new objects.  They have no effect on existing objects.</translation>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="433"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -2154,19 +2164,19 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="45"/>
       <source>Center Line Style</source>
-      <translation type="unfinished">Center Line Style</translation>
+      <translation>Stil linije centra</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="64"/>
       <source>Style for section lines</source>
-      <translation type="unfinished">Style for section lines</translation>
+      <translation>Stil linija dijeljenja</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="77"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="287"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="780"/>
       <source>NeverShow</source>
-      <translation type="unfinished">NeverShow</translation>
+      <translation>Nemoj prikazati</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="86"/>
@@ -2206,62 +2216,63 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="139"/>
       <source>Section Line Standard</source>
-      <translation type="unfinished">Section Line Standard</translation>
+      <translation>Standard linije dijeljenja</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="151"/>
       <source>Section Cut Surface</source>
-      <translation type="unfinished">Section Cut Surface</translation>
+      <translation>Odjeljak rezane površine</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="164"/>
       <source>Default appearance of cut surface in section view</source>
-      <translation type="unfinished">Default appearance of cut surface in section view</translation>
+      <translation>Zadani izgled rezane površine u prikazu presjeka
+</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="177"/>
       <source>Hide</source>
-      <translation type="unfinished">Hide</translation>
+      <translation>Sakrij</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="182"/>
       <source>Solid Color</source>
-      <translation type="unfinished">Solid Color</translation>
+      <translation>Boja čvrstog tijela</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="187"/>
       <source>SVG Hatch</source>
-      <translation type="unfinished">SVG Hatch</translation>
+      <translation>SVG Šrafura</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="192"/>
       <source>PAT Hatch</source>
-      <translation type="unfinished">PAT Hatch</translation>
+      <translation>PAT Šrafura</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="212"/>
       <source>Forces last leader line segment to be horizontal</source>
-      <translation type="unfinished">Forces last leader line segment to be horizontal</translation>
+      <translation>Prisiljava zadnji segment linije oznake da bude vodoravan</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="215"/>
       <source>Leader Line Auto Horizontal</source>
-      <translation type="unfinished">Leader Line Auto Horizontal</translation>
+      <translation>Linija oznake automatski vodoravno</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="243"/>
       <source>Length of balloon leader line kink</source>
-      <translation type="unfinished">Length of balloon leader line kink</translation>
+      <translation>Dužina prijeloma linije oznake</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="274"/>
       <source>Type for centerlines</source>
-      <translation type="unfinished">Type for centerlines</translation>
+      <translation>Vrsta srednje linije</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="356"/>
       <source>Shape of balloon annotations</source>
-      <translation type="unfinished">Shape of balloon annotations</translation>
+      <translation>Oblik oblačić komentara</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="366"/>
@@ -2302,27 +2313,27 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="437"/>
       <source>Balloon Leader End</source>
-      <translation type="unfinished">Balloon Leader End</translation>
+      <translation>Kraj linije oblačića</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="456"/>
       <source>Standard to be used to draw section lines</source>
-      <translation type="unfinished">Standard to be used to draw section lines</translation>
+      <translation>Standard za crtanje linija odjeljka</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="469"/>
       <source>ANSI</source>
-      <translation type="unfinished">ANSI</translation>
+      <translation>ANSI</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="474"/>
       <source>ISO</source>
-      <translation type="unfinished">ISO</translation>
+      <translation>ISO</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="507"/>
       <source>Outline shape for detail views</source>
-      <translation type="unfinished">Outline shape for detail views</translation>
+      <translation>Oblik vanjske linije detaljnih pogleda</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="517"/>
@@ -2357,12 +2368,12 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="638"/>
       <source>Style for balloon leader line ends</source>
-      <translation type="unfinished">Style for balloon leader line ends</translation>
+      <translation>Stil kraja linije oznake oblačića</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="656"/>
       <source>Length of horizontal portion of Balloon leader</source>
-      <translation type="unfinished">Length of horizontal portion of Balloon leader</translation>
+      <translation>Dužina vodoravnog udjela linije oblačića</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="659"/>
@@ -2377,17 +2388,17 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="681"/>
       <source>Balloon Orthogonal Triangle</source>
-      <translation type="unfinished">Balloon Orthogonal Triangle</translation>
+      <translation>Oblačić Ortogonalni trokut </translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="702"/>
       <source>Line Group Name</source>
-      <translation type="unfinished">Line Group Name</translation>
+      <translation>Naziv grupe linija</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="714"/>
       <source>Balloon Shape</source>
-      <translation type="unfinished">Balloon Shape</translation>
+      <translation>Oblik Oblačića</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="733"/>
@@ -2410,173 +2421,173 @@ can be a performance penalty in complex models.</translation>
       <translation type="unfinished">Detail Highlight Style</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="851"/>
-      <source>Items in italics are default values for new objects.  They have no effect on existing objects.</source>
-      <translation type="unfinished">Items in italics are default values for new objects.  They have no effect on existing objects.</translation>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="848"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::DlgPrefsTechDrawColorsImp</name>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="26"/>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="53"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="20"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="47"/>
       <source>Colors</source>
       <translation>Boje</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="66"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="60"/>
       <source>Normal</source>
       <translation>Normalno</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="73"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="67"/>
       <source>Normal line color</source>
-      <translation type="unfinished">Normal line color</translation>
+      <translation>Boja normalne linije</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="111"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="105"/>
       <source>Hidden Line</source>
-      <translation type="unfinished">Hidden Line</translation>
+      <translation>Skrivena linija</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="118"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="112"/>
       <source>Hidden line color</source>
-      <translation type="unfinished">Hidden line color</translation>
+      <translation>Skrivena linija, boja</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="143"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="137"/>
       <source>Preselected</source>
-      <translation type="unfinished">Preselected</translation>
+      <translation>Predodabrano</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="150"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="144"/>
       <source>Preselection color</source>
-      <translation type="unfinished">Preselection color</translation>
+      <translation>Boja predodabira</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="175"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="169"/>
       <source>Section Face</source>
-      <translation type="unfinished">Section Face</translation>
+      <translation>Odjeljak presjeka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="182"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="176"/>
       <source>Section face color</source>
-      <translation type="unfinished">Section face color</translation>
+      <translation>Boja linije presjeka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="207"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="201"/>
       <source>Selected</source>
       <translation>Odabrano</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="214"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="208"/>
       <source>Selected item color</source>
-      <translation type="unfinished">Selected item color</translation>
+      <translation>Odabrana boja stavke</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="234"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="228"/>
       <source>Section Line</source>
-      <translation type="unfinished">Section Line</translation>
+      <translation>Odjeljak presjeka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="241"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="235"/>
       <source>Section line color</source>
-      <translation type="unfinished">Section line color</translation>
+      <translation>Boja linije presjeka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="266"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
       <source>Background</source>
       <translation>Pozadina</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="273"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="267"/>
       <source>Background color around pages</source>
-      <translation type="unfinished">Background color around pages</translation>
+      <translation>Boja pozadine uokolo stranica</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="298"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="292"/>
       <source>Hatch</source>
-      <translation type="unfinished">Hatch</translation>
+      <translation>Šrafura</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="305"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="299"/>
       <source>Hatch image color</source>
-      <translation type="unfinished">Hatch image color</translation>
+      <translation>Boja slike šrafure</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="325"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="319"/>
       <source>Dimension</source>
       <translation>Dimenzija</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="332"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="326"/>
       <source>Color of dimension lines and text.</source>
       <translation type="unfinished">Color of dimension lines and text.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="357"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="351"/>
       <source>Geometric Hatch</source>
-      <translation type="unfinished">Geometric Hatch</translation>
+      <translation>Geometrijska šrafura</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="364"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="358"/>
       <source>Geometric hatch pattern color</source>
-      <translation type="unfinished">Geometric hatch pattern color</translation>
+      <translation>Boja uzorka šrafure geometrije</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="384"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="378"/>
       <source>Centerline</source>
-      <translation type="unfinished">Centerline</translation>
+      <translation>Srednja linija</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="391"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="385"/>
       <source>Centerline color</source>
-      <translation type="unfinished">Centerline color</translation>
+      <translation>Boja srednje linije</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="411"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="405"/>
       <source>Vertex</source>
       <translation>Vrh</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="418"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="412"/>
       <source>Color of vertices in views</source>
-      <translation type="unfinished">Color of vertices in views</translation>
+      <translation>Boja vrhova u pogledima</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="449"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="443"/>
       <source>Object faces will be transparent</source>
       <translation type="unfinished">Object faces will be transparent</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="452"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="446"/>
       <source>Transparent Faces</source>
-      <translation type="unfinished">Transparent Faces</translation>
+      <translation>Prozirna lica</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="465"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="459"/>
       <source>Face color (if not transparent)</source>
-      <translation type="unfinished">Face color (if not transparent)</translation>
+      <translation>Boja lica (ako nije prozirno)</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="490"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="484"/>
       <source>Detail Highlight</source>
-      <translation type="unfinished">Detail Highlight</translation>
+      <translation>Istaknuti detalji</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="502"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="496"/>
       <source>Leaderline</source>
-      <translation type="unfinished">Leaderline</translation>
+      <translation>Linija oznake</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="509"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="503"/>
       <source>Default color for leader lines </source>
-      <translation type="unfinished">Default color for leader lines </translation>
+      <translation>Zadana boja linije oznake</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="560"/>
-      <source>Items in italics are default values for new objects.  They have no effect on existing objects.</source>
-      <translation type="unfinished">Items in italics are default values for new objects.  They have no effect on existing objects.</translation>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="551"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -2590,52 +2601,52 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="58"/>
       <source>Standard and Style</source>
-      <translation type="unfinished">Standard and Style</translation>
+      <translation>Standard i Stil</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="77"/>
       <source>Standard to be used for dimensional values</source>
-      <translation type="unfinished">Standard to be used for dimensional values</translation>
+      <translation>Standard koji se koristi za vrijednosti dimenzije</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="87"/>
       <source>ISO Oriented</source>
-      <translation type="unfinished">ISO Oriented</translation>
+      <translation>ISO Oriented</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="92"/>
       <source>ISO Referencing</source>
-      <translation type="unfinished">ISO Referencing</translation>
+      <translation>ISO Referencing</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="97"/>
       <source>ASME Inlined</source>
-      <translation type="unfinished">ASME Inlined</translation>
+      <translation>ASME Inlined</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="102"/>
       <source>ASME Referencing</source>
-      <translation type="unfinished">ASME Referencing</translation>
+      <translation>ASME Referencing</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="116"/>
       <source>Use system setting for number of decimals</source>
-      <translation type="unfinished">Use system setting for number of decimals</translation>
+      <translation>Koristite postavke sustava za broj decimala</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="119"/>
       <source>Use Global Decimals</source>
-      <translation type="unfinished">Use Global Decimals</translation>
+      <translation>Korištenje Globalnih decimala</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="147"/>
       <source>Append unit to dimension values</source>
-      <translation type="unfinished">Append unit to dimension values</translation>
+      <translation>Dodajte mjerne jedinice u vrijednosti dimenzije</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="150"/>
       <source>Show Units</source>
-      <translation type="unfinished">Show Units</translation>
+      <translation>Prikaži mjerne jedinice</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="163"/>
@@ -2650,7 +2661,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="209"/>
       <source>Font Size</source>
-      <translation type="unfinished">Font Size</translation>
+      <translation>Veličina Pisma</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="241"/>
@@ -2660,7 +2671,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="260"/>
       <source>Diameter Symbol</source>
-      <translation type="unfinished">Diameter Symbol</translation>
+      <translation>Simbol promjera</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="284"/>
@@ -2670,12 +2681,12 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="287"/>
       <source>⌀</source>
-      <translation type="unfinished">⌀</translation>
+      <translation>⌀</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="308"/>
       <source>Arrow Style</source>
-      <translation type="unfinished">Arrow Style</translation>
+      <translation>Stil strelice</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="327"/>
@@ -2685,17 +2696,17 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="348"/>
       <source>Arrow Size</source>
-      <translation type="unfinished">Arrow Size</translation>
+      <translation>Veličina strelice</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="367"/>
       <source>Arrowhead size</source>
-      <translation type="unfinished">Arrowhead size</translation>
+      <translation>Veličina glave strelice</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="415"/>
       <source>Conventions</source>
-      <translation type="unfinished">Conventions</translation>
+      <translation>Konvencije</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="436"/>
@@ -2710,12 +2721,12 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="465"/>
       <source>First</source>
-      <translation type="unfinished">First</translation>
+      <translation>Prvi</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="470"/>
       <source>Third</source>
-      <translation type="unfinished">Third</translation>
+      <translation>Treći</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="475"/>
@@ -2730,7 +2741,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="502"/>
       <source>Style for hidden lines</source>
-      <translation type="unfinished">Style for hidden lines</translation>
+      <translation>Stil za skrivene linije</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="512"/>
@@ -2743,510 +2754,512 @@ can be a performance penalty in complex models.</translation>
       <translation>Iscrtkano</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="547"/>
-      <source>Items in italics are default values for new objects.  They have no effect on existing objects.</source>
-      <translation type="unfinished">Items in italics are default values for new objects.  They have no effect on existing objects.</translation>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="544"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::DlgPrefsTechDrawGeneralImp</name>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="26"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="20"/>
       <source>General</source>
       <translation>Općenito</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="53"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="47"/>
       <source>Drawing Update</source>
-      <translation type="unfinished">Drawing Update</translation>
+      <translation>Ažuriranje crteža</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="67"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="61"/>
       <source>Whether or not pages are updated every time the 3D model is changed</source>
-      <translation type="unfinished">Whether or not pages are updated every time the 3D model is changed</translation>
+      <translation>Hoće li  ili ne stranice biti ažurirane pri svakoj promjeni 3D modela</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="70"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="64"/>
       <source>Update With 3D (global policy)</source>
       <translation type="unfinished">Update With 3D (global policy)</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="98"/>
-      <source>Whether or not a page&apos;s &apos;Keep Update&apos; property
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="92"/>
+      <source>Whether or not a page&apos;s &apos;Keep Updated&apos; property
 can override the global &apos;Update With 3D&apos; parameter</source>
-      <translation type="unfinished">Whether or not a page&apos;s &apos;Keep Update&apos; property
+      <translation type="unfinished">Whether or not a page&apos;s &apos;Keep Updated&apos; property
 can override the global &apos;Update With 3D&apos; parameter</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="102"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="96"/>
       <source>Allow Page Override (global policy)</source>
       <translation type="unfinished">Allow Page Override (global policy)</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="129"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="123"/>
       <source>Keep drawing pages in sync with changes of 3D model in real time.
 This can slow down the response time.</source>
       <translation type="unfinished">Keep drawing pages in sync with changes of 3D model in real time.
 This can slow down the response time.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="133"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="127"/>
       <source>Keep Page Up To Date</source>
       <translation type="unfinished">Keep Page Up To Date</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="166"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="160"/>
       <source>Automatically distribute secondary views
 for ProjectionGroups</source>
       <translation type="unfinished">Automatically distribute secondary views
 for ProjectionGroups</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="170"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="164"/>
       <source>Auto-distribute Secondary Views</source>
-      <translation type="unfinished">Auto-distribute Secondary Views</translation>
+      <translation>Automatski razdijeli sporedne poglede</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="203"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="197"/>
       <source>Labels</source>
-      <translation type="unfinished">Labels</translation>
+      <translation>Oznake</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="239"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="233"/>
       <source>Label Font</source>
-      <translation type="unfinished">Label Font</translation>
+      <translation>Pismo oznake</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="246"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="240"/>
       <source>Label Size</source>
-      <translation type="unfinished">Label Size</translation>
+      <translation>Veličina oznake</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="277"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="271"/>
       <source>Font for labels</source>
-      <translation type="unfinished">Font for labels</translation>
+      <translation>Pismo za oznake</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="315"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="308"/>
       <source>Label size</source>
-      <translation type="unfinished">Label size</translation>
+      <translation>Veličina oznake</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="351"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="344"/>
       <source>Files</source>
-      <translation type="unfinished">Files</translation>
+      <translation>Datoteke</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="365"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="358"/>
       <source>Default Template</source>
-      <translation type="unfinished">Default Template</translation>
+      <translation>Zadani predložak</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="384"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="377"/>
       <source>Default template file for new pages</source>
-      <translation type="unfinished">Default template file for new pages</translation>
+      <translation>Zadana datoteka predloška za nove stranice</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="403"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="396"/>
       <source>Template Directory</source>
-      <translation type="unfinished">Template Directory</translation>
+      <translation>Imenik predložaka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="429"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="422"/>
       <source>Starting directory for menu &apos;Insert Page using Template&apos;</source>
       <translation type="unfinished">Starting directory for menu &apos;Insert Page using Template&apos;</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="453"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="449"/>
       <source>Hatch Pattern File</source>
-      <translation type="unfinished">Hatch Pattern File</translation>
+      <translation>Datoteka uzorka šrafiranja</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="466"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="462"/>
       <source>Default SVG or bitmap file for hatching</source>
-      <translation type="unfinished">Default SVG or bitmap file for hatching</translation>
+      <translation>Zadana SVG ili bitmap datoteka za šrafiranje
+</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="490"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="486"/>
       <source>Line Group File</source>
-      <translation type="unfinished">Line Group File</translation>
+      <translation>Datoteka grupe linija</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="503"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="499"/>
       <source>Alternate file for personal LineGroup definition</source>
       <translation type="unfinished">Alternate file for personal LineGroup definition</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="527"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="523"/>
       <source>Welding Directory</source>
-      <translation type="unfinished">Welding Directory</translation>
+      <translation>Imenik zavarivanja</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="540"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="536"/>
       <source>Default directory for welding symbols</source>
-      <translation type="unfinished">Default directory for welding symbols</translation>
+      <translation>Zadani direktorij za simbole zavarivanja</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="564"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="563"/>
       <source>PAT File</source>
-      <translation type="unfinished">PAT File</translation>
+      <translation>PAT datoteka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="577"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="576"/>
       <source>Default PAT pattern definition file for geometric hatching</source>
-      <translation type="unfinished">Default PAT pattern definition file for geometric hatching</translation>
+      <translation>Zadana datoteka definicije PAT uzorka za geometrijsko šrafiranje
+</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="601"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="600"/>
       <source>Pattern Name</source>
       <translation>Naziv uzorka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="620"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="619"/>
       <source>Name of the default PAT pattern</source>
       <translation type="unfinished">Name of the default PAT pattern</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="623"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="622"/>
       <source>Diamond</source>
       <translation>Dijamant</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="653"/>
-      <source>Items in italics are default values for new objects.  They have no effect on existing objects.</source>
-      <translation type="unfinished">Items in italics are default values for new objects.  They have no effect on existing objects.</translation>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="649"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::DlgPrefsTechDrawHLRImp</name>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="26"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="20"/>
       <source>HLR</source>
-      <translation type="unfinished">HLR</translation>
+      <translation>HLR</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="53"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="47"/>
       <source>Hidden Line Removal</source>
       <translation type="unfinished">Hidden Line Removal</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="72"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="66"/>
       <source>Show seam lines</source>
       <translation type="unfinished">Show seam lines</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="75"/>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="256"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="69"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="250"/>
       <source>Show Seam Lines</source>
       <translation type="unfinished">Show Seam Lines</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="102"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="96"/>
       <source>Show smooth lines</source>
       <translation>Prikaži glatke linije</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="105"/>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="229"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="99"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="223"/>
       <source>Show Smooth Lines</source>
       <translation type="unfinished">Show Smooth Lines</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="138"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="132"/>
       <source>Show hard and outline edges (always shown)</source>
       <translation type="unfinished">Show hard and outline edges (always shown)</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="141"/>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="324"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="135"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="318"/>
       <source>Show Hard Lines</source>
       <translation type="unfinished">Show Hard Lines</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="171"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="165"/>
       <source>Use an approximation to find hidden lines.
 Fast, but result is a collection of short straight lines.</source>
       <translation type="unfinished">Use an approximation to find hidden lines.
 Fast, but result is a collection of short straight lines.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="175"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="169"/>
       <source>Use Polygon Approximation</source>
       <translation type="unfinished">Use Polygon Approximation</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="199"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="193"/>
       <source>Make lines of equal parameterization</source>
       <translation type="unfinished">Make lines of equal parameterization</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="202"/>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="283"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="196"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="277"/>
       <source>Show UV ISO Lines</source>
       <translation type="unfinished">Show UV ISO Lines</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="226"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="220"/>
       <source>Show hidden smooth edges</source>
       <translation type="unfinished">Show hidden smooth edges</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="253"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="247"/>
       <source>Show hidden seam lines</source>
       <translation type="unfinished">Show hidden seam lines</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="280"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="274"/>
       <source>Show hidden equal parameterization lines</source>
       <translation type="unfinished">Show hidden equal parameterization lines</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="296"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="290"/>
       <source>Visible</source>
-      <translation type="unfinished">Visible</translation>
+      <translation>Vidljiv</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="303"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="297"/>
       <source>Hidden</source>
-      <translation type="unfinished">Hidden</translation>
+      <translation>Skriveno</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="321"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="315"/>
       <source>Show hidden hard and outline edges</source>
       <translation type="unfinished">Show hidden hard and outline edges</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="348"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="342"/>
       <source>ISO Count</source>
       <translation type="unfinished">ISO Count</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="367"/>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="361"/>
       <source>Number of ISO lines per face edge</source>
       <translation type="unfinished">Number of ISO lines per face edge</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawHLR.ui" line="397"/>
-      <source>Items in italics are default values for new objects.  They have no effect on existing objects.</source>
-      <translation type="unfinished">Items in italics are default values for new objects.  They have no effect on existing objects.</translation>
+      <location filename="../../DlgPrefsTechDrawHLR.ui" line="388"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::DlgPrefsTechDrawScaleImp</name>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="26"/>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="53"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="20"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="47"/>
       <source>Scale</source>
       <translation>Skaliraj</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="66"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="60"/>
       <source>Page Scale</source>
       <translation type="unfinished">Page Scale</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="85"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="79"/>
       <source>Default scale for new pages</source>
       <translation type="unfinished">Default scale for new pages</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="112"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="106"/>
       <source>View Scale Type</source>
       <translation type="unfinished">View Scale Type</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="134"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="128"/>
       <source>Default scale for new views</source>
       <translation type="unfinished">Default scale for new views</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="144"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="138"/>
       <source>Page</source>
       <translation>Stranica</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="149"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="143"/>
       <source>Auto</source>
       <translation>Automatski</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="154"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="148"/>
       <source>Custom</source>
       <translation>Prilagođeno</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="167"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="161"/>
       <source>View Custom Scale</source>
       <translation type="unfinished">View Custom Scale</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="202"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="196"/>
       <source>Default scale for views if &apos;View Scale Type&apos; is &apos;Custom&apos;</source>
       <translation type="unfinished">Default scale for views if &apos;View Scale Type&apos; is &apos;Custom&apos;</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="250"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="244"/>
       <source>Selection</source>
       <translation>Izbor</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="289"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="283"/>
       <source>Selection area around center marks
 Each unit is approx. 0.1 mm wide</source>
       <translation type="unfinished">Selection area around center marks
 Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="330"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="324"/>
       <source>Size of selection area around edges
 Each unit is approx. 0.1 mm wide</source>
       <translation type="unfinished">Size of selection area around edges
 Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="359"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="353"/>
       <source>Mark Fuzz</source>
       <translation type="unfinished">Mark Fuzz</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="378"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="372"/>
       <source>Edge Fuzz</source>
       <translation type="unfinished">Edge Fuzz</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="402"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="396"/>
       <source>Size Adjustments</source>
-      <translation type="unfinished">Size Adjustments</translation>
+      <translation>Podešavanja veličine</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="428"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="422"/>
       <source>Tolerance font size adjustment. Multiplier of dimension font size.</source>
       <translation type="unfinished">Tolerance font size adjustment. Multiplier of dimension font size.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="462"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="456"/>
       <source>Size of template field click handles</source>
       <translation type="unfinished">Size of template field click handles</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="481"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="475"/>
       <source>Vertex Scale</source>
       <translation type="unfinished">Vertex Scale</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="513"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="507"/>
       <source>Size of center marks. Multiplier of vertex size.</source>
       <translation type="unfinished">Size of center marks. Multiplier of vertex size.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="547"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="541"/>
       <source>Scale of vertex dots. Multiplier of line width.</source>
       <translation type="unfinished">Scale of vertex dots. Multiplier of line width.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="574"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="568"/>
       <source>Center Mark Scale</source>
       <translation type="unfinished">Center Mark Scale</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="598"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="592"/>
       <source>Tolerance Text Scale</source>
       <translation type="unfinished">Tolerance Text Scale</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="605"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="599"/>
       <source>Template Edit Mark</source>
       <translation type="unfinished">Template Edit Mark</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="612"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="606"/>
       <source>Welding Symbol Scale</source>
       <translation type="unfinished">Welding Symbol Scale</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="619"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="613"/>
       <source>Multiplier for size of welding symbols</source>
       <translation type="unfinished">Multiplier for size of welding symbols</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="652"/>
-      <source>Items in italics are default values for new objects.  They have no effect on existing objects.</source>
-      <translation type="unfinished">Items in italics are default values for new objects.  They have no effect on existing objects.</translation>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="643"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="138"/>
+      <location filename="../../MDIViewPage.cpp" line="139"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;izvoz SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="132"/>
+      <location filename="../../MDIViewPage.cpp" line="133"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Uključivanje/isključivanje &amp; Držati Obnovljeno</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="135"/>
+      <location filename="../../MDIViewPage.cpp" line="136"/>
       <source>Toggle &amp;Frames</source>
       <translation>Uključivanje/isključivanje &amp; Okviri</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="141"/>
+      <location filename="../../MDIViewPage.cpp" line="142"/>
       <source>Export DXF</source>
       <translation>Izvoz DFX</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="144"/>
+      <location filename="../../MDIViewPage.cpp" line="145"/>
       <source>Export PDF</source>
       <translation>Izvoz PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="727"/>
+      <location filename="../../MDIViewPage.cpp" line="730"/>
       <source>Different orientation</source>
       <translation>Drugačija orijentacija</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="728"/>
+      <location filename="../../MDIViewPage.cpp" line="731"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Pisač koristi drugu orijentaciju ispisa nego što je u crtežu. Želite li nastaviti?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="735"/>
-      <location filename="../../MDIViewPage.cpp" line="743"/>
+      <location filename="../../MDIViewPage.cpp" line="738"/>
+      <location filename="../../MDIViewPage.cpp" line="746"/>
       <source>Different paper size</source>
       <translation>Drugačija veličina papira</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="736"/>
-      <location filename="../../MDIViewPage.cpp" line="744"/>
+      <location filename="../../MDIViewPage.cpp" line="739"/>
+      <location filename="../../MDIViewPage.cpp" line="747"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Pisač koristi drugu veličinu papra nego što je u crtežu. Želite li nastaviti?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="755"/>
+      <location filename="../../MDIViewPage.cpp" line="758"/>
       <source>Opening file failed</source>
       <translation>Otvaranje dokumenta nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="756"/>
+      <location filename="../../MDIViewPage.cpp" line="759"/>
       <source>Can not open file %1 for writing.</source>
       <translation>Ne mogu otvoriti dokument %1 za ispis.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="921"/>
+      <location filename="../../MDIViewPage.cpp" line="924"/>
       <source>Save Dxf File </source>
       <translation>Spremi Dxf Datoteku </translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="923"/>
+      <location filename="../../MDIViewPage.cpp" line="926"/>
       <source>Dxf (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1412"/>
+      <location filename="../../MDIViewPage.cpp" line="1415"/>
       <source>Selected:</source>
       <translation>Odabrane:</translation>
     </message>
@@ -3279,47 +3292,47 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="14"/>
       <source>Balloon</source>
-      <translation>Balončić sa riječima</translation>
+      <translation>Oblačić sa riječima</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="22"/>
       <source>Text:</source>
-      <translation type="unfinished">Text:</translation>
+      <translation>Tekst:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="29"/>
       <source>Text to be displayed</source>
-      <translation type="unfinished">Text to be displayed</translation>
+      <translation>Tekst za prikaz</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="36"/>
       <source>Text Color:</source>
-      <translation type="unfinished">Text Color:</translation>
+      <translation>Boja teksta:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="43"/>
       <source>Color for &apos;Text&apos;</source>
-      <translation type="unfinished">Color for &apos;Text&apos;</translation>
+      <translation>Boja za &apos;Text&apos;</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="57"/>
       <source>Fontsize:</source>
-      <translation type="unfinished">Fontsize:</translation>
+      <translation>Veličina pisma:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="76"/>
       <source>Fontsize for &apos;Text&apos;</source>
-      <translation type="unfinished">Fontsize for &apos;Text&apos;</translation>
+      <translation>Veličina pisma za &apos;Text&apos;</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="95"/>
       <source>Shape:</source>
-      <translation type="unfinished">Shape:</translation>
+      <translation>Oblik:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
       <source>Shape of the balloon bubble</source>
-      <translation type="unfinished">Shape of the balloon bubble</translation>
+      <translation>Oblik oblačića</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="106"/>
@@ -3359,42 +3372,42 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="172"/>
       <source>Shape Scale:</source>
-      <translation type="unfinished">Shape Scale:</translation>
+      <translation>Razmjer Oblika</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="185"/>
       <source>Scale factor for the &apos;Shape&apos;</source>
-      <translation type="unfinished">Scale factor for the &apos;Shape&apos;</translation>
+      <translation>Faktor razmjera za &apos;Oblik&apos;</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="204"/>
       <source>End Symbol:</source>
-      <translation type="unfinished">End Symbol:</translation>
+      <translation>Krajnji simbol:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="211"/>
       <source>End symbol for the balloon line</source>
-      <translation type="unfinished">End symbol for the balloon line</translation>
+      <translation>Krajnji simbol linije oblačića</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="218"/>
       <source>Line Width:</source>
-      <translation type="unfinished">Line Width:</translation>
+      <translation>Širina linije:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="237"/>
       <source>Leader line width</source>
-      <translation type="unfinished">Leader line width</translation>
+      <translation>Širina linije oznake</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="256"/>
       <source>Leader Kink Length:</source>
-      <translation type="unfinished">Leader Kink Length:</translation>
+      <translation>Dužina prijeloma vodilice:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="275"/>
       <source>Length of balloon leader line kink</source>
-      <translation type="unfinished">Length of balloon leader line kink</translation>
+      <translation>Dužina prijeloma linije oznake</translation>
     </message>
   </context>
   <context>
@@ -3621,7 +3634,7 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="61"/>
       <source>Detail View</source>
-      <translation type="unfinished">Detail View</translation>
+      <translation>Detaljni pogled</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="92"/>
@@ -3634,37 +3647,83 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
       <translation type="unfinished">Drag Highlight</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="126"/>
+      <location filename="../../TaskDetail.ui" line="168"/>
+      <source>scale factor for detail view</source>
+      <translation type="unfinished">scale factor for detail view</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="197"/>
       <source>size of detail view</source>
       <translation type="unfinished">size of detail view</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="142"/>
+      <location filename="../../TaskDetail.ui" line="263"/>
+      <source>Page: scale factor of page is used
+Automatic: if the detail view is larger than the page,
+                   it will be scaled down to fit into the page
+Custom: custom scale factor is used</source>
+      <translation type="unfinished">Page: scale factor of page is used
+Automatic: if the detail view is larger than the page,
+                   it will be scaled down to fit into the page
+Custom: custom scale factor is used</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="270"/>
+      <source>Page</source>
+      <translation>Stranica</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="275"/>
+      <source>Automatic</source>
+      <translation>Automatsko</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="280"/>
+      <source>Custom</source>
+      <translation>Prilagođeno</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="288"/>
+      <source>Scale Type</source>
+      <translation type="unfinished">Scale Type</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="190"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="162"/>
+      <location filename="../../TaskDetail.ui" line="216"/>
+      <source>Scale Factor</source>
+      <translation type="unfinished">Scale Factor</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="223"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="176"/>
+      <location filename="../../TaskDetail.ui" line="146"/>
       <source>x position of detail highlight within view</source>
       <translation type="unfinished">x position of detail highlight within view</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="192"/>
+      <location filename="../../TaskDetail.ui" line="237"/>
+      <source>reference label</source>
+      <translation type="unfinished">reference label</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="247"/>
       <source>y position of detail highlight within view</source>
       <translation type="unfinished">y position of detail highlight within view</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="205"/>
+      <location filename="../../TaskDetail.ui" line="230"/>
       <source>Radius</source>
       <translation>Radijus</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="212"/>
+      <location filename="../../TaskDetail.ui" line="126"/>
       <source>Reference</source>
       <translation>Referenca</translation>
     </message>
@@ -3735,9 +3794,52 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
       <translation>Povećava/smanjuje uzorak</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomHatch.ui" line="165"/>
+      <location filename="../../TaskGeomHatch.ui" line="171"/>
       <source>Thickness of lines within the pattern</source>
       <translation>Debljina linije unutar uzorka</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskHatch</name>
+    <message>
+      <location filename="../../TaskHatch.ui" line="26"/>
+      <source>Apply Hatch to Face</source>
+      <translation type="unfinished">Apply Hatch to Face</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHatch.ui" line="38"/>
+      <source>Define your pattern</source>
+      <translation>Definirajte vaš uzorak</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHatch.ui" line="52"/>
+      <source>The PAT file containing your pattern</source>
+      <translation>PAT datoteka koja sadrži vaš uzorak</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHatch.ui" line="59"/>
+      <source>Pattern File</source>
+      <translation>Datoteka Uzorka</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHatch.ui" line="76"/>
+      <source>Color of pattern lines</source>
+      <translation>Boja linije uzorka</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHatch.ui" line="83"/>
+      <source>Line Color</source>
+      <translation>Boja Linije</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHatch.ui" line="96"/>
+      <source>Enlarges/shrinks the pattern</source>
+      <translation>Povećava/smanjuje uzorak</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHatch.ui" line="131"/>
+      <source>Pattern Scale</source>
+      <translation>Skaliranje Uzorka</translation>
     </message>
   </context>
   <context>
@@ -3745,7 +3847,7 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="26"/>
       <source>Leader Line</source>
-      <translation>Linija vodilice</translation>
+      <translation>Linija oznake</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="38"/>
@@ -3762,9 +3864,10 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
       <source>First pick the start pint of the line,
 then at least a second point.
 You can pick further points to get line segments.</source>
-      <translation type="unfinished">First pick the start pint of the line,
-then at least a second point.
-You can pick further points to get line segments.</translation>
+      <translation>Prvo odaberite početnu točku linije,
+onda barem drugu točku linije.
+Možete odabrati dodatne točke za dobivanje segmenata linije.
+</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="118"/>
@@ -3845,12 +3948,12 @@ You can pick further points to get line segments.</translation>
       <location filename="../../TaskLeaderLine.cpp" line="529"/>
       <location filename="../../TaskLeaderLine.cpp" line="573"/>
       <source>Pick a starting point for leader line</source>
-      <translation>Odaberite početnu točku za vodeću liniju</translation>
+      <translation>Odaberite početnu točku za liniju oznake</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="556"/>
       <source>Click and drag markers to adjust leader line</source>
-      <translation>Kliknite i povucite markere da biste prilagodili vodeću liniju</translation>
+      <translation>Kliknite i povucite markere da biste prilagodili liniju oznake</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="606"/>
@@ -3883,7 +3986,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="57"/>
       <source>Lines</source>
-      <translation type="unfinished">Lines</translation>
+      <translation>Linije</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="78"/>
@@ -3933,7 +4036,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="171"/>
       <source>Visible</source>
-      <translation type="unfinished">Visible</translation>
+      <translation>Vidljiv</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="191"/>
@@ -4002,165 +4105,197 @@ You can pick further points to get line segments.</translation>
       <translation>Grupa Projekcije</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="54"/>
+      <location filename="../../TaskProjGroup.ui" line="34"/>
       <source>Projection</source>
       <translation>Projekcija</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="61"/>
+      <location filename="../../TaskProjGroup.ui" line="41"/>
       <source>First or Third Angle</source>
       <translation>Prvi ili treći kut</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="75"/>
-      <location filename="../../TaskProjGroup.ui" line="98"/>
+      <location filename="../../TaskProjGroup.ui" line="55"/>
+      <location filename="../../TaskProjGroup.ui" line="78"/>
       <source>Page</source>
       <translation>Stranica</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="65"/>
+      <location filename="../../TaskProjGroup.ui" line="45"/>
       <source>First Angle</source>
       <translation>Prvi kut</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="70"/>
+      <location filename="../../TaskProjGroup.ui" line="50"/>
       <source>Third Angle</source>
       <translation>Treći kut</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="87"/>
+      <location filename="../../TaskProjGroup.ui" line="67"/>
       <source>Scale</source>
       <translation>Skaliraj</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="94"/>
+      <location filename="../../TaskProjGroup.ui" line="74"/>
       <source>Scale Page/Auto/Custom</source>
       <translation>Skalirati stranicu /Automatski /Prilagođeno</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="103"/>
+      <location filename="../../TaskProjGroup.ui" line="83"/>
       <source>Automatic</source>
       <translation>Automatsko</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="108"/>
+      <location filename="../../TaskProjGroup.ui" line="88"/>
       <source>Custom</source>
       <translation>Prilagođeno</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="120"/>
+      <location filename="../../TaskProjGroup.ui" line="100"/>
       <source>Custom Scale</source>
       <translation>Prilagođeno skaliranje</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="140"/>
+      <location filename="../../TaskProjGroup.ui" line="120"/>
       <source>Scale Numerator</source>
       <translation>Brojnik Skale</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="153"/>
+      <location filename="../../TaskProjGroup.ui" line="136"/>
       <source>:</source>
       <translation>:</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="160"/>
+      <location filename="../../TaskProjGroup.ui" line="143"/>
       <source>Scale Denominator</source>
       <translation>Nazivnik skale</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="193"/>
+      <location filename="../../TaskProjGroup.ui" line="179"/>
       <source>Adjust Primary Direction</source>
       <translation>Podesite primarni smjer</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="227"/>
+      <location filename="../../TaskProjGroup.ui" line="213"/>
       <source>Current primary view direction</source>
       <translation>Trenutni smjer primarnog pogleda</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="240"/>
+      <location filename="../../TaskProjGroup.ui" line="226"/>
       <source>Rotate right</source>
       <translation>Rotiraj udesno</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="267"/>
+      <location filename="../../TaskProjGroup.ui" line="253"/>
       <source>Rotate up</source>
       <translation>Rotiraj prema gore</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="288"/>
+      <location filename="../../TaskProjGroup.ui" line="274"/>
       <source>Rotate left</source>
       <translation>Rotiraj ulijevo</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="309"/>
+      <location filename="../../TaskProjGroup.ui" line="295"/>
       <source>Rotate down</source>
       <translation>Rotirajte prema dolje</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="367"/>
+      <location filename="../../TaskProjGroup.ui" line="353"/>
       <source>Secondary Projections</source>
       <translation>Sporedna Projekcija</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="384"/>
+      <location filename="../../TaskProjGroup.ui" line="370"/>
       <source>Bottom</source>
       <translation>Ispod</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="417"/>
+      <location filename="../../TaskProjGroup.ui" line="403"/>
       <source>Primary</source>
       <translation>Primarno</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="437"/>
+      <location filename="../../TaskProjGroup.ui" line="423"/>
       <source>Right</source>
       <translation>Desno</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="467"/>
+      <location filename="../../TaskProjGroup.ui" line="453"/>
       <source>Left</source>
       <translation>Lijevo</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="484"/>
+      <location filename="../../TaskProjGroup.ui" line="470"/>
       <source>LeftFrontBottom</source>
       <translation>Lijevo Naprijed Dolje</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="501"/>
+      <location filename="../../TaskProjGroup.ui" line="487"/>
       <source>Top</source>
       <translation>Gore</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="518"/>
+      <location filename="../../TaskProjGroup.ui" line="504"/>
       <source>RightFrontBottom</source>
       <translation>Desno Naprijed Dolje</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="535"/>
+      <location filename="../../TaskProjGroup.ui" line="521"/>
       <source>RightFrontTop</source>
       <translation>Desno Naprijed Gore</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="552"/>
+      <location filename="../../TaskProjGroup.ui" line="538"/>
       <source>Rear</source>
       <translation>Iza</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="569"/>
+      <location filename="../../TaskProjGroup.ui" line="555"/>
       <source>LeftFrontTop</source>
       <translation>Lijevo Naprijed Gore</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="609"/>
+      <location filename="../../TaskProjGroup.ui" line="595"/>
       <source>Spin CW</source>
       <translation>Vrti CW</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="637"/>
+      <location filename="../../TaskProjGroup.ui" line="623"/>
       <source>Spin CCW</source>
       <translation>Vrti CCW</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.ui" line="653"/>
+      <source>Distributes projections automatically
+using the given X/Y Spacing</source>
+      <translation type="unfinished">Distributes projections automatically
+using the given X/Y Spacing</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.ui" line="657"/>
+      <source>Auto Distribute</source>
+      <translation type="unfinished">Auto Distribute</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.ui" line="691"/>
+      <source>Horizontal space between border of projections</source>
+      <translation type="unfinished">Horizontal space between border of projections</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.ui" line="719"/>
+      <source>X Spacing</source>
+      <translation type="unfinished">X Spacing</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.ui" line="738"/>
+      <source>Y Spacing</source>
+      <translation type="unfinished">Y Spacing</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.ui" line="757"/>
+      <source>Vertical space between border of projections</source>
+      <translation type="unfinished">Vertical space between border of projections</translation>
     </message>
   </context>
   <context>
@@ -4183,12 +4318,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="36"/>
       <source>CenterLine</source>
-      <translation type="unfinished">CenterLine</translation>
+      <translation>Srednja linija</translation>
     </message>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="43"/>
       <source>Cosmetic</source>
-      <translation type="unfinished">Cosmetic</translation>
+      <translation>Dekoracije</translation>
     </message>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="50"/>
@@ -4305,17 +4440,17 @@ You can pick further points to get line segments.</translation>
       <translation>Identifikator za ovaj dio</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.ui" line="184"/>
+      <location filename="../../TaskSectionView.ui" line="187"/>
       <source>Looking down</source>
       <translation>Gleda dolje</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.ui" line="244"/>
+      <location filename="../../TaskSectionView.ui" line="247"/>
       <source>Looking right</source>
       <translation>Gleda desno</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.ui" line="214"/>
+      <location filename="../../TaskSectionView.ui" line="217"/>
       <source>Looking left</source>
       <translation>Gleda lijevo</translation>
     </message>
@@ -4332,7 +4467,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="61"/>
       <source>Identifier</source>
-      <translation type="unfinished">Identifier</translation>
+      <translation>Identifikator</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="81"/>
@@ -4345,37 +4480,37 @@ You can pick further points to get line segments.</translation>
       <translation type="unfinished">Scale factor for the section view</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.ui" line="134"/>
+      <location filename="../../TaskSectionView.ui" line="137"/>
       <source>Section Orientation</source>
       <translation type="unfinished">Section Orientation</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.ui" line="148"/>
+      <location filename="../../TaskSectionView.ui" line="151"/>
       <source>Looking up</source>
       <translation>Gleda gore</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.ui" line="280"/>
+      <location filename="../../TaskSectionView.ui" line="283"/>
       <source>Position from the 3D origin of the object in the view</source>
       <translation type="unfinished">Position from the 3D origin of the object in the view</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.ui" line="283"/>
+      <location filename="../../TaskSectionView.ui" line="286"/>
       <source>Section Plane Location</source>
       <translation type="unfinished">Section Plane Location</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.ui" line="303"/>
+      <location filename="../../TaskSectionView.ui" line="306"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.ui" line="354"/>
+      <location filename="../../TaskSectionView.ui" line="360"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.ui" line="392"/>
+      <location filename="../../TaskSectionView.ui" line="401"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -4386,12 +4521,12 @@ You can pick further points to get line segments.</translation>
       <translation type="unfinished">TaskSectionView - bad parameters.  Can not proceed.</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="333"/>
+      <location filename="../../TaskSectionView.cpp" line="335"/>
       <source>Nothing to apply. No section direction picked yet</source>
       <translation type="unfinished">Nothing to apply. No section direction picked yet</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="472"/>
+      <location filename="../../TaskSectionView.cpp" line="474"/>
       <source>Can not continue. Object * %1 * not found.</source>
       <translation type="unfinished">Can not continue. Object * %1 * not found.</translation>
     </message>
@@ -4404,21 +4539,21 @@ You can pick further points to get line segments.</translation>
       <location filename="../../TaskWeldingSymbol.cpp" line="327"/>
       <location filename="../../TaskWeldingSymbol.cpp" line="339"/>
       <source>Symbol</source>
-      <translation type="unfinished">Symbol</translation>
+      <translation>Simbol</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="278"/>
       <location filename="../../TaskWeldingSymbol.cpp" line="288"/>
       <location filename="../../TaskWeldingSymbol.cpp" line="428"/>
       <source>arrow</source>
-      <translation type="unfinished">arrow</translation>
+      <translation>strelica</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="301"/>
       <location filename="../../TaskWeldingSymbol.cpp" line="311"/>
       <location filename="../../TaskWeldingSymbol.cpp" line="429"/>
       <source>other</source>
-      <translation type="unfinished">other</translation>
+      <translation>drugo</translation>
     </message>
   </context>
   <context>
@@ -4481,7 +4616,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1157"/>
       <source>Insert Horizontal Extent Dimension</source>
-      <translation type="unfinished">Insert Horizontal Extent Dimension</translation>
+      <translation>Umetnite vodoravnu dimenziju do granice</translation>
     </message>
   </context>
   <context>
@@ -4505,7 +4640,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1161"/>
       <source>Insert Vertical Extent Dimension</source>
-      <translation type="unfinished">Insert Vertical Extent Dimension</translation>
+      <translation>Umetnite okomitu dimenziju do granice</translation>
     </message>
   </context>
 </TS>

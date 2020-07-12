@@ -1774,7 +1774,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation>fixiert</translation>
+      <translation>Fixiert</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>

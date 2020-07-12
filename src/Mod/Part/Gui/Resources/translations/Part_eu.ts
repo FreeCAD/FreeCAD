@@ -4266,7 +4266,7 @@ Markatu ertz-entitate bat edo gehiago.</translation>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <location filename="../../TaskSweep.cpp" line="422"/>
       <source>Sweep path</source>
-      <translation>Ekortu bidea</translation>
+      <translation>Ekortze-bidea</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
@@ -4703,7 +4703,7 @@ Markatu ertz-entitate bat edo gehiago.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
       <source>Sweep Path</source>
-      <translation>Ekortu bidea</translation>
+      <translation>Ekortze-bidea</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="50"/>

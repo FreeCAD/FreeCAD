@@ -1121,7 +1121,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -1162,7 +1162,7 @@
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="87"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -1268,7 +1268,7 @@
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="100"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -1389,7 +1389,7 @@
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="87"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -1480,7 +1480,7 @@
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="114"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="328"/>
@@ -1538,7 +1538,7 @@
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="80"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -1576,7 +1576,7 @@
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="111"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="245"/>
@@ -1614,7 +1614,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="76"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="82"/>
@@ -1649,7 +1649,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="106"/>
       <source>Move up</source>
-      <translation>Przesuń w górę</translation>
+      <translation>Przenieś wyżej</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="110"/>
@@ -2081,7 +2081,7 @@
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="112"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="318"/>
@@ -2201,7 +2201,7 @@
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="98"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -2305,7 +2305,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="98"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>

@@ -418,7 +418,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Collection</source>
-      <translation type="unfinished">Collection</translation>
+      <translation>Bilduma</translation>
     </message>
   </context>
   <context>
@@ -609,16 +609,28 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Izena</translation>
     </message>
     <message>
-      <source>Document</source>
-      <translation>Dokumentua</translation>
+      <source>Verbose description of the new property.</source>
+      <translation type="unfinished">Verbose description of the new property.</translation>
     </message>
     <message>
-      <source>Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</source>
-      <translation>Erantsi taldearen izena propietate-izenaren aurrean 'taldea'_'izena' eran, lehendik dauden propietateekin gatazkak saihesteko. Aurrizkia duen talde-izena automatikoki moztuko da propietateen editorean erakustean.</translation>
+      <source>Documentation</source>
+      <translation>Dokumentazioa</translation>
     </message>
     <message>
-      <source>Append group name</source>
-      <translation>Erantsi taldearen izena</translation>
+      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
+      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+    </message>
+    <message>
+      <source>Prefix group name</source>
+      <translation type="unfinished">Prefix group name</translation>
     </message>
   </context>
   <context>
@@ -1005,6 +1017,10 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Global</source>
       <translation>Globala</translation>
     </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation type="unfinished">%1 module not loaded</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -1298,6 +1314,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Font family to be used for selected code type</source>
       <translation>Hautatutako kode motarako erabiliko den letra-familia</translation>
+    </message>
+    <message>
+      <source>Color:</source>
+      <translation>Kolorea:</translation>
     </message>
   </context>
   <context>
@@ -1818,15 +1838,15 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Quick search</source>
-      <translation type="unfinished">Quick search</translation>
+      <translation>Bilaketa azkarra</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
-      <translation type="unfinished">Type in a group name to find it</translation>
+      <translation>Idatzi talde-izen bat hura aurkitzeko</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Bilatu taldea</translation>
     </message>
   </context>
   <context>
@@ -1908,7 +1928,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Bilatu taldea</translation>
     </message>
   </context>
   <context>
@@ -2003,6 +2023,10 @@ Zehaztu beste direktorio, mesedez.</translation>
       <source>Open in browser</source>
       <translation>Ireki nabigatzailean</translation>
     </message>
+    <message>
+      <source>Program version:</source>
+      <translation type="unfinished">Program version:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
@@ -2079,7 +2103,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be sychronize with full object hierarchy.</translation>
+      <translation>Aktiboa badago, 3D bistaren hautapena objektuaren hierarkia osoarekin sinkronizatuko da.</translation>
     </message>
     <message>
       <source>Sync sub-object selection</source>
@@ -2172,37 +2196,37 @@ pantailan errorea erakusten den bitartean</translation>
     </message>
     <message>
       <source>Show report view on error</source>
-      <translation type="unfinished">Show report view on error</translation>
+      <translation>Erakutsi txosten-bista errorean</translation>
     </message>
     <message>
       <source>When a warning has occurred, the Report View dialog becomes visible
 on-screen while displaying the warning</source>
-      <translation type="unfinished">When a warning has occurred, the Report View dialog becomes visible
-on-screen while displaying the warning</translation>
+      <translation>Abisu bat gertatzen denean, txosten-bistaren elkarrizketa-koadroa agertuko da
+pantailan abisua erakusten den bitartean</translation>
     </message>
     <message>
       <source>Show report view on warning</source>
-      <translation type="unfinished">Show report view on warning</translation>
+      <translation>Erakutsi txosten-bista abisuan</translation>
     </message>
     <message>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation type="unfinished">When a normal message has occurred, the Report View dialog becomes visible
-on-screen while displaying the message</translation>
+      <translation>Mezu normal bat gertatzen denean, txosten-bistaren elkarrizketa-koadroa agertuko da
+pantailan mezua erakusten den bitartean</translation>
     </message>
     <message>
       <source>Show report view on normal message</source>
-      <translation type="unfinished">Show report view on normal message</translation>
+      <translation>Erakutsi txosten-bista mezu normalean</translation>
     </message>
     <message>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation type="unfinished">When a log message has occurred, the Report View dialog becomes visible
-on-screen while displaying the log message</translation>
+      <translation>Egunkari-mezu bat gertatzen denean, txosten-bistaren elkarrizketa-koadroa agertuko da
+pantailan egunkari-mezua erakusten den bitartean</translation>
     </message>
     <message>
       <source>Show report view on log message</source>
-      <translation type="unfinished">Show report view on log message</translation>
+      <translation>Erakutsi txosten-bista egunkari-mezuan</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
@@ -2231,6 +2255,14 @@ txosten-bistaren panelera birzuzenduko da</translation>
 from Python console to Report view panel</source>
       <translation>Pythonen barneko errore-mezuak Python kontsolatik
 txosten-bistaren panelera birzuzenduko da</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each report</source>
+      <translation type="unfinished">Include a timecode for each report</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each entry</source>
+      <translation type="unfinished">Include a timecode for each entry</translation>
     </message>
   </context>
   <context>
@@ -2356,7 +2388,7 @@ irekitako fitxategien beheko ezkerreko izkinan erakutsiko dira</translation>
     </message>
     <message>
       <source>Rendering</source>
-      <translation type="unfinished">Rendering</translation>
+      <translation>Errendatzea</translation>
     </message>
     <message>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
@@ -2423,15 +2455,15 @@ azkarrena eskaintzen du, baina erantzun motelagoa eszena-aldaketetan.</translati
     </message>
     <message>
       <source>Transparent objects:</source>
-      <translation type="unfinished">Transparent objects:</translation>
+      <translation>Objektu gardenak:</translation>
     </message>
     <message>
       <source>Render types of transparent objects</source>
-      <translation type="unfinished">Render types of transparent objects</translation>
+      <translation>Objektu gardenen errendatze motak</translation>
     </message>
     <message>
       <source>One pass</source>
-      <translation type="unfinished">One pass</translation>
+      <translation>Pasaera bat</translation>
     </message>
     <message>
       <source>Backface pass</source>
@@ -2443,7 +2475,7 @@ azkarrena eskaintzen du, baina erantzun motelagoa eszena-aldaketetan.</translati
     </message>
     <message>
       <source>Eye to eye distance for stereo modes</source>
-      <translation type="unfinished">Eye to eye distance for stereo modes</translation>
+      <translation>Begien arteko distantzia modu estereoetarako</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
@@ -2463,7 +2495,7 @@ muga-koadroaren tamainarekin biderkatuko den faktore bat da. </translation>
     </message>
     <message>
       <source>Intensity</source>
-      <translation type="unfinished">Intensity</translation>
+      <translation>Intentsitatea</translation>
     </message>
     <message>
       <source>Intensity of the backlight</source>
@@ -2476,6 +2508,16 @@ muga-koadroaren tamainarekin biderkatuko den faktore bat da. </translation>
     <message>
       <source>Objects will appear in a perspective projection</source>
       <translation>Objektuak perspektibako proiekzio baten agertuko dira</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation type="unfinished">Axis cross will be shown by default at file
+opening or creation</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation type="unfinished">Show axis cross by default</translation>
     </message>
   </context>
   <context>
@@ -2774,8 +2816,8 @@ automatikoki exekutatuko du berreskuratzea abioan.</translation>
     <message>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512</source>
-      <translation type="unfinished">Sets the size of the thumbnail that is stored in the document.
-Common sizes are 128, 256 and 512</translation>
+      <translation>Dokumentuan biltegiratzen den miniaturaren tamaina ezartzen du.
+Tamaina arruntenak 128, 256 eta 512 dira.</translation>
     </message>
     <message>
       <source>The program logo will be added to the thumbnail</source>
@@ -3175,7 +3217,7 @@ Honako forma ere erabili dezakezu: Jon Inor &lt;jon@inor.com&gt;</translation>
     </message>
     <message>
       <source>Navigation cube</source>
-      <translation type="unfinished">Navigation cube</translation>
+      <translation>Nabigazio-kuboa</translation>
     </message>
     <message>
       <source>Steps by turn</source>
@@ -3249,7 +3291,7 @@ Tornua: pieza Z ardatzaren inguruan biratuko da.</translation>
     </message>
     <message>
       <source>New document camera orientation</source>
-      <translation type="unfinished">New document camera orientation</translation>
+      <translation>Dokumentuko kameraren orientazio berria</translation>
     </message>
     <message>
       <source>Camera orientation for new documents</source>
@@ -3529,11 +3571,11 @@ Balio handiagoak elementuak aukeratzea errazten du, baina elementu txikiak hauta
     </message>
     <message>
       <source>Background color for the model view</source>
-      <translation type="unfinished">Background color for the model view</translation>
+      <translation>Eredu-bistaren atzeko planoaren kolorea</translation>
     </message>
     <message>
       <source>Background will have selected color</source>
-      <translation type="unfinished">Background will have selected color</translation>
+      <translation>Atzeko planoak hautatutako kolorea izango du</translation>
     </message>
     <message>
       <source>Color gradient will get selected color as middle color</source>
@@ -3541,15 +3583,15 @@ Balio handiagoak elementuak aukeratzea errazten du, baina elementu txikiak hauta
     </message>
     <message>
       <source>Bottom color</source>
-      <translation type="unfinished">Bottom color</translation>
+      <translation>Beheko kolorea</translation>
     </message>
     <message>
       <source>Background will have selected color gradient</source>
-      <translation type="unfinished">Background will have selected color gradient</translation>
+      <translation>Atzeko planoak hautatutako kolore-gradientea izango du</translation>
     </message>
     <message>
       <source>Top color</source>
-      <translation type="unfinished">Top color</translation>
+      <translation>Goiko kolorea</translation>
     </message>
     <message>
       <source>Tree view</source>
@@ -5822,6 +5864,25 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
       <source>Recompute the selected object</source>
       <translation>Birkalkulatu hautatutako objektua</translation>
     </message>
+    <message>
+      <source> (but must be executed)</source>
+      <translation type="unfinished"> (but must be executed)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+      <source>Vectors</source>
+      <translation type="unfinished">Vectors</translation>
+    </message>
+    <message>
+      <source>Table</source>
+      <translation type="unfinished">Table</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::View3DInventor</name>
@@ -6528,7 +6589,7 @@ eduki ditzakete eta ez dira digitu batekin hasi behar.</translation>
     </message>
     <message>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
-      <translation type="unfinished">Documents contains cyclic dependencies. Do you still want to save them?</translation>
+      <translation>Dokumentuek mendekotasun ziklikoak dituzte. Gorde nahi dituzu ala ere?</translation>
     </message>
     <message>
       <source>Undo</source>
@@ -6822,6 +6883,21 @@ Aukeratu 'Abortatu' abortatzeko.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+      <source>Tools</source>
+      <translation>Tresnak</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Mendekotasun-grafikoa...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Erakutsi dokumentu aktiboko objektuen mendekotasun-grafoa</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
@@ -6936,6 +7012,10 @@ Aukeratu 'Abortatu' abortatzeko.</translation>
       <source>Draw style</source>
       <translation>Marrazte-estiloa</translation>
     </message>
+    <message>
+      <source>Change the draw style of the objects</source>
+      <translation type="unfinished">Change the draw style of the objects</translation>
+    </message>
   </context>
   <context>
     <name>StdCmdDuplicateSelection</name>
@@ -6992,21 +7072,6 @@ Aukeratu 'Abortatu' abortatzeko.</translation>
     <message>
       <source>Please select first the objects you want to export.</source>
       <translation>Lehenengo, hautatu esportatu nahi dituzun objektuak.</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdExportGraphviz</name>
-    <message>
-      <source>Tools</source>
-      <translation>Tresnak</translation>
-    </message>
-    <message>
-      <source>Dependency graph...</source>
-      <translation>Mendekotasun-grafikoa...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Erakutsi dokumentu aktiboko objektuen mendekotasun-grafoa</translation>
     </message>
   </context>
   <context>
@@ -9064,6 +9129,13 @@ Ziur zaude jarraitu nahi duzula?
     </message>
   </context>
   <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Mendekotasun-grafikoa</translation>
+    </message>
+  </context>
+  <context>
     <name>Std_DrawStyle</name>
     <message>
       <source>As is</source>
@@ -9133,13 +9205,6 @@ Ziur zaude jarraitu nahi duzula?
 Do you want to save the document now?</source>
       <translation>Kanpoko objektuekin estekatzeko, dokumentua gutxienez behin gorde behar da.
 Dokumentua gorde nahi al duzu?</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-      <source>Dependency graph</source>
-      <translation>Mendekotasun-grafikoa</translation>
     </message>
   </context>
   <context>

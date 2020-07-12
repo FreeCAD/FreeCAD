@@ -406,7 +406,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="486"/>
       <source>Use FreeCAD style sheet</source>
-      <translation>Gebruik het FreeCAD opmaakmodel</translation>
+      <translation>Gebruik het FreeCAD-stijlblad</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="493"/>

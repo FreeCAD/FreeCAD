@@ -155,7 +155,7 @@
       <translation>Sujungti briaunas, jei atstumas yra mažesnis, nei</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="344"/>
+      <location filename="../../CrossSections.cpp" line="345"/>
       <source>Failure</source>
       <translation>Triktys</translation>
     </message>

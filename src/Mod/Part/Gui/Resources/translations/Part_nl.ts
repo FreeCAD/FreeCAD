@@ -5196,7 +5196,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskDimension.cpp" line="1340"/>
       <source>Reset Dialog</source>
-      <translation>Dialoog opnieuw instellen</translation>
+      <translation>Herstel dialoog</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1344"/>

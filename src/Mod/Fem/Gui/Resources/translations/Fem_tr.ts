@@ -110,7 +110,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+      <translation>Listeye eklenecek atı maddenin parçalarından element seç. Katı madde eklemek için "Ekle"ye bas.</translation>
     </message>
   </context>
   <context>

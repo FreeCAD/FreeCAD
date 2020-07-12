@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
+      <translation>Wyrównaj pionowo do środka zawartość wybranych komórek</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation type="unfinished">Merge selected cells</translation>
+      <translation>Scal wybrane komórki</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation type="unfinished">Split previously merged cells</translation>
+      <translation>Podziel uprzednio scalone komórki</translation>
     </message>
   </context>
   <context>
@@ -364,6 +364,16 @@ Please select one cell only.</translation>
       <source>Copy &amp; Paste failed</source>
       <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation type="unfinished">Alias contains invalid characters!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation type="unfinished">Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -447,20 +457,18 @@ Please select one cell only.</translation>
       <translation>Formularz</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Zawartość</translation>
+      <source>&amp;Content:</source>
+      <translation type="unfinished">&amp;Content:</translation>
     </message>
     <message>
-      <source>&amp;Alias</source>
-      <translation type="unfinished">&amp;Alias</translation>
+      <source>&amp;Alias:</source>
+      <translation type="unfinished">&amp;Alias:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </source>
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </translation>
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
   </context>
   <context>

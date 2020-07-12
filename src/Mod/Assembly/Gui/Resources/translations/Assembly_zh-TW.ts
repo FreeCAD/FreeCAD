@@ -4,7 +4,7 @@
   <context>
     <name>AssemblyGui::TaskAssemblyConstraints</name>
     <message>
-      <location filename="../../TaskAssemblyConstraints.cpp" line="53"/>
+      <location filename="../../TaskAssemblyConstraints.cpp" line="52"/>
       <source>Constraints</source>
       <translation type="unfinished">Constraints</translation>
     </message>

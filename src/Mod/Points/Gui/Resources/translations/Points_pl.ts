@@ -11,13 +11,13 @@
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Convert to points...</source>
-      <translation>Przekształć do punktów...</translation>
+      <translation>Konwertuj na punkty...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
       <location filename="../../Command.cpp" line="193"/>
       <source>Convert to points</source>
-      <translation>Przekształć do punktów</translation>
+      <translation>Konwertuj na punkty</translation>
     </message>
   </context>
   <context>
@@ -106,13 +106,13 @@
     <message>
       <location filename="../../Command.cpp" line="362"/>
       <source>Structured point cloud</source>
-      <translation type="unfinished">Structured point cloud</translation>
+      <translation>Uporządkowany punkt chmury</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>
       <location filename="../../Command.cpp" line="365"/>
       <source>Convert points to structured point cloud</source>
-      <translation type="unfinished">Convert points to structured point cloud</translation>
+      <translation>Konwertuj punkty do uporządkowanej chmury punktów</translation>
     </message>
   </context>
   <context>
