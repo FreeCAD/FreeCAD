@@ -363,6 +363,15 @@ Please select one cell only.</source>
         <source>Copy &amp; Paste failed</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Alias contains invalid characters!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -446,17 +455,16 @@ Please select one cell only.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Contents</source>
+        <source>&amp;Content:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Alias</source>
+        <source>&amp;Alias:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </source>
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
