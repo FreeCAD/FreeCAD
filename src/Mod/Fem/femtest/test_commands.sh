@@ -17,6 +17,7 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_open
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88
 
 
 # classes
@@ -34,6 +35,7 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_open.TestObjectOpen
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88.TestSolverZ88
 
 
 # methods
@@ -94,6 +96,7 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.t
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_faceload
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_nodeload
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_prescribeddisplacement
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88.TestSolverZ88.test_solver_z88
 
 
 # methods in FreeCAD
@@ -381,4 +384,9 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
     'femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_prescribeddisplacement'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_z88.TestSolverZ88.test_solver_z88'
 ))
