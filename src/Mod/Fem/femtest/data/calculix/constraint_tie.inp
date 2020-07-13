@@ -18671,10 +18671,26 @@ RF
 **   analysis name --> Analysis
 **
 **
+***********************************************************
+**  About units:
+**  See ccx manual, ccx does not know about any unit.
+**  Golden rule: The user must make sure that the numbers he provides have consistent units.
+**  The user is the FreeCAD calculix writer module ;-)
 **
-**   Units
+**  The unit system which is used at Guido Dhodts company: mm, N, s, K
+**  Since Length and Mass are connected by Force, if Length is mm the Mass is in t to get N
+**  The following units are used to write to inp file:
 **
-**   Geometry (mesh data)        --> mm
-**   Materials (Young's modulus) --> N/mm2 = MPa
-**   Loads (nodal loads)         --> N
+**  Length: mm (this includes the mesh geometry)
+**  Mass: t
+**  TimeSpan: s
+**  Temperature: K
+**
+**  This leads to:
+**  Force: N
+**  Pressure: N/mm^2
+**  Density: t/mm^2
+**  Gravity: mm/s^2
+**  Thermal conductivity: t*mm/K*s^3
+**  Specific Heat: kJ/t/K = mm^2/s^2/K
 **
