@@ -570,7 +570,7 @@ void setupMenuStyle(QMenu *menu)
     if(_Stylesheet.isEmpty())
         _Stylesheet = _DefaultStyle;
 
-    if (menu->stylesheet() == _Stylesheet)
+    if (menu->styleSheet() == _Stylesheet)
         return;
 
     menu->setStyleSheet(_Stylesheet);
