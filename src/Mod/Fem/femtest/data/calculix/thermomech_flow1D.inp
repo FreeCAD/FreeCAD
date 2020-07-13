@@ -134,7 +134,7 @@ Eedges
 ** written by write_constraints_selfweight function
 ** ConstraintSelfWeight
 *DLOAD
-Eall,GRAV,9820,0.0,0.0,-1.0
+Eall,GRAV,9806,0.0,0.0,-1.0
 
 
 ***********************************************************
