@@ -3336,7 +3336,7 @@ StdCmdSelUp::StdCmdSelUp()
   sStatusTip    = sToolTipText;
   sPixmap       = "sel-up";
   sAccel        = "U, U";
-  eType         = NoTransaction | AlterSelection;
+  eType         = NoTransaction | AlterSelection | NoHistory;
 }
 
 bool StdCmdSelUp::isActive(void)
@@ -3440,7 +3440,7 @@ StdCmdPickGeometry::StdCmdPickGeometry()
   sStatusTip    = sToolTipText;
   // sPixmap       = "sel-geo";
   sAccel        = "G, G";
-  eType         = NoTransaction | AlterSelection | NoDefaultAction;
+  eType         = NoTransaction | AlterSelection | NoDefaultAction | NoHistory;
 }
 
 void StdCmdPickGeometry::activated(int iMsg)
@@ -3939,7 +3939,6 @@ public:
         addCommand(new StdCmdSelHierarchyAscend());
         addCommand();
         addCommand(new StdCmdMapChildrenPlacement());
-        addCommand(new StdCmdPickGeometry());
     };
     virtual const char* className() const {return "StdCmdSelOptions";}
 };
@@ -4383,6 +4382,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdSelUp());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
     rcCmdMgr.addCommand(new StdCmdBindViewCamera());
+    rcCmdMgr.addCommand(new StdCmdPickGeometry());
 
 #ifdef FC_HAS_DOCK_OVERLAY
     rcCmdMgr.addCommand(new StdCmdDockOverlay());

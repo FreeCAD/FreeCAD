@@ -392,6 +392,9 @@ void Command::onInvoke(int index) {
 
 void Command::invoke(int i, TriggerSource trigger)
 {
+    if (trigger != TriggerNone && !(eType & NoHistory))
+        CmdHistoryAction::onInvokeCommand(getName());
+
     CommandTrigger cmdTrigger(_trigger,trigger);
 
     onInvoke(i);
@@ -1293,6 +1296,10 @@ PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const cha
             type += int(ForEdit);
         if (cmdType.find("NoTransaction") != std::string::npos)
             type += int(NoTransaction);
+        if (cmdType.find("NoDefaultAction") != std::string::npos)
+            type += int(NoDefaultAction);
+        if (cmdType.find("NoHistory") != std::string::npos)
+            type += int(NoHistory);
         eType = type;
     }
 }

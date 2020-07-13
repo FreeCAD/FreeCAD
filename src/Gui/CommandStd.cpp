@@ -82,7 +82,7 @@ StdCmdWorkbench::StdCmdWorkbench()
     sWhatsThis    = "Std_Workbench";
     sStatusTip    = QT_TR_NOOP("Switch between workbenches");
     sPixmap       = "freecad";
-    eType         = 0;
+    eType         = NoTransaction | NoHistory;
 }
 
 void StdCmdWorkbench::activated(int i)
@@ -751,6 +751,46 @@ void StdCmdUnitsCalculator::activated(int iMsg)
     dlg->show();
 }
 
+//===========================================================================
+// Std_CmdHistory
+//===========================================================================
+
+DEF_STD_CMD_AC(StdCmdHistory)
+
+StdCmdHistory::StdCmdHistory()
+  :Command("Std_CmdHistory")
+{
+  sGroup        = QT_TR_NOOP("Tools");
+  sMenuText     = QT_TR_NOOP("Command history");
+  sToolTipText  = QT_TR_NOOP("List of recently used commands");
+  sWhatsThis    = "Std_CmdHistory";
+  sStatusTip    = sToolTipText;
+  sAccel        = "R, R";
+  eType         = NoTransaction | NoHistory;
+}
+
+bool StdCmdHistory::isActive(void)
+{
+    return true;
+}
+
+void StdCmdHistory::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    if (_pcAction)
+        static_cast<CmdHistoryAction*>(_pcAction)->popup(QCursor::pos());
+}
+
+Action * StdCmdHistory::createAction(void)
+{
+    Action *pcAction;
+    pcAction = new CmdHistoryAction(this, getMainWindow());
+    // pcAction->setIcon(BitmapFactory().iconFromTheme(sPixmap));
+    pcAction->setShortcut(QString::fromLatin1(sAccel));
+    applyCommandData(this->className(), pcAction);
+    return pcAction;
+}
+
 namespace Gui {
 
 void CreateStdCommands(void)
@@ -778,6 +818,7 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdPythonWebsite());
     rcCmdMgr.addCommand(new StdCmdTextDocument());
     rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
+    rcCmdMgr.addCommand(new StdCmdHistory());
     //rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     //rcCmdMgr.addCommand(new StdCmdDescription());

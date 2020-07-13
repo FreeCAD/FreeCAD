@@ -38,6 +38,7 @@
 #include "PrefWidgets.h"
 #include "PythonConsole.h"
 #include "Tree.h"
+#include "ViewParams.h"
 #include "Language/Translator.h"
 
 using namespace Gui::Dialog;
@@ -86,6 +87,7 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
 
     ui->treeIconSize->setValue(TreeParams::IconSize());
     ui->treeFontSize->setValue(TreeParams::FontSize());
+    ui->CmdHistorySize->setValue(ViewParams::getCommandHistorySize());
 }
 
 /** 
@@ -188,6 +190,7 @@ void DlgGeneralImp::saveSettings()
 
     TreeParams::setIconSize(ui->treeIconSize->value());
     TreeParams::setFontSize(ui->treeFontSize->value());
+    ViewParams::setCommandHistorySize(ui->CmdHistorySize->value());
 }
 
 void DlgGeneralImp::loadSettings()
@@ -321,6 +324,7 @@ void DlgGeneralImp::loadSettings()
 
     ui->treeIconSize->setValue(TreeParams::IconSize());
     ui->treeFontSize->setValue(TreeParams::FontSize());
+    ui->CmdHistorySize->setValue(ViewParams::getCommandHistorySize());
 }
 
 void DlgGeneralImp::changeEvent(QEvent *e)

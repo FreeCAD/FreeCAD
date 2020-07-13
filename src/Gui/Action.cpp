@@ -57,6 +57,7 @@
 #include "View3DInventor.h"
 #include "Document.h"
 #include "SelectionView.h"
+#include "ViewParams.h"
 
 #include <Base/Exception.h>
 #include <App/Application.h>
@@ -1025,6 +1026,7 @@ void ViewCameraBindingAction::addTo ( QWidget * w )
 {
     if (!_menu) {
         _menu = new QMenu();
+        setupMenuStyle(_menu);
         _action->setMenu(_menu);
         connect(_menu, SIGNAL(aboutToShow()), this, SLOT(onShowMenu()));
         connect(_menu, SIGNAL(triggered(QAction*)), this, SLOT(onTriggered(QAction*)));
@@ -1035,6 +1037,7 @@ void ViewCameraBindingAction::addTo ( QWidget * w )
 void ViewCameraBindingAction::onShowMenu()
 {
     _menu->clear();
+    setupMenuStyle(_menu);
 
     auto activeView = Base::freecad_dynamic_cast<View3DInventor>(
             Application::Instance->activeView());
@@ -1135,10 +1138,90 @@ void SelUpAction::addTo ( QWidget * w )
 void SelUpAction::onShowMenu()
 {
     _menu->clear();
+    setupMenuStyle(_menu);
     TreeWidget::populateSelUpMenu(_menu);
 }
 
 void SelUpAction::popup(const QPoint &pt)
+{
+    _menu->exec(pt);
+}
+
+// --------------------------------------------------------------------
+
+CmdHistoryAction::CmdHistoryAction ( Command* pcCmd, QObject * parent )
+  : Action(pcCmd, parent), _menu(0)
+{
+    qApp->installEventFilter(this);
+}
+
+CmdHistoryAction::~CmdHistoryAction()
+{
+    delete _menu;
+}
+
+
+void CmdHistoryAction::addTo ( QWidget * w )
+{
+    if (!_menu) {
+        _menu = new QMenu;
+        setupMenuStyle(_menu);
+        _action->setMenu(_menu);
+        connect(_menu, SIGNAL(aboutToShow()), this, SLOT(onShowMenu()));
+    }
+
+    w->addAction(_action);
+}
+
+static long _RecentCommandID;
+static std::map<long, const char *> _RecentCommands;
+static std::unordered_map<std::string, long> _RecentCommandMap;
+static long _RecentCommandPopulated;
+static QElapsedTimer _ButtonTime;
+
+bool CmdHistoryAction::eventFilter(QObject *, QEvent *ev)
+{
+    if (ev->type() == QEvent::MouseButtonPress) {
+        auto e = static_cast<QMouseEvent*>(ev);
+        if (e->button() == Qt::LeftButton)
+            _ButtonTime.start();
+    }
+    return false;
+}
+
+void CmdHistoryAction::onInvokeCommand(const char *name)
+{
+    if(!_ButtonTime.isValid() || _ButtonTime.elapsed() > 500)
+        return;
+
+    _ButtonTime.invalidate();
+
+    auto res = _RecentCommandMap.insert(std::make_pair(name, 0));
+    if (!res.second)
+        _RecentCommands.erase(res.first->second);
+    res.first->second = ++_RecentCommandID;
+    _RecentCommands[_RecentCommandID] = res.first->first.c_str();
+    if (ViewParams::getCommandHistorySize() < (int)_RecentCommandMap.size()) {
+        _RecentCommandMap.erase(_RecentCommands.begin()->second);
+        _RecentCommands.erase(_RecentCommands.begin());
+    }
+}
+
+void CmdHistoryAction::onShowMenu()
+{
+    setupMenuStyle(_menu);
+
+    if (_RecentCommandPopulated == _RecentCommandID)
+        return;
+
+    _RecentCommandPopulated = _RecentCommandID;
+    _menu->clear();
+    auto &manager = Application::Instance->commandManager();
+    for (auto &v : _RecentCommands)
+        manager.addTo(v.second, _menu);
+}
+
+void CmdHistoryAction::popup(const QPoint &pt)
 {
     _menu->exec(pt);
 }

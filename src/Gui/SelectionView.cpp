@@ -539,7 +539,8 @@ static QLatin1String _DefaultStyle(
 static QLatin1String _DefaultStyle("QMenu {menu-scrollable:1}");
 #endif
 
-static void setupMenuStyle(QMenu *menu)
+namespace Gui {
+void setupMenuStyle(QMenu *menu)
 {
 #if QT_VERSION  >= 0x050000
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -568,6 +569,10 @@ static void setupMenuStyle(QMenu *menu)
     }
     if(_Stylesheet.isEmpty())
         _Stylesheet = _DefaultStyle;
+
+    if (menu->stylesheet() == _Stylesheet)
+        return;
+
     menu->setStyleSheet(_Stylesheet);
     menu->setWindowFlags(menu->windowFlags() | Qt::FramelessWindowHint);
     menu->setAttribute(Qt::WA_NoSystemBackground, true);
@@ -575,6 +580,7 @@ static void setupMenuStyle(QMenu *menu)
 #else
     menu->setStyleSheet(QLatin1String(_DefaultStyle));
 #endif
+}
 }
 
 SelectionMenu::SelectionMenu(QWidget *parent)

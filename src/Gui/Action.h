@@ -359,6 +359,29 @@ private:
     QMenu* _menu;
 };
 
+/**
+ * Special action for Std_CmdHistory command.
+ */
+class GuiExport CmdHistoryAction : public Action
+{
+    Q_OBJECT
+
+public:
+    CmdHistoryAction (Command* pcCmd, QObject * parent = 0);
+    virtual ~CmdHistoryAction();
+    void addTo (QWidget * w);
+    void popup(const QPoint &pt);
+    static void onInvokeCommand(const char *);
+
+    bool eventFilter(QObject *, QEvent *ev);
+
+protected Q_SLOTS:
+    void onShowMenu();
+
+private:
+    QMenu* _menu;
+};
+
 } // namespace Gui
 
 #endif // GUI_ACTION_H

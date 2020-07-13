@@ -210,6 +210,8 @@ public:
     FC_VIEW_PARAM(HierarchyAscend, bool, Bool, false, \
         QT_TRANSLATE_NOOP("ViewParams","Enable selection of upper hierarhcy by repeatedly click some already\n"\
                                        "selected sub-element."))\
+    FC_VIEW_PARAM(CommandHistorySize, int, Int, 20, \
+        QT_TRANSLATE_NOOP("ViewParams","Maximum number of commands saved in history"))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
