@@ -84,15 +84,15 @@ def getIndices(obj,shape,offsetv,offsetvn):
                         break
             except: # unimplemented curve type
                 if obj.isDerivedFrom("App::Link"):
-                  if obj.Shape:
-                      myshape = obj.Shape.copy(False)
-                      myshape.Placement=obj.LinkPlacement
-                  else:
-                      myshape = obj.Shape.copy(False)
-                      myshape.Placement=obj.getGlobalPlacement()
-                mesh = MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
-                FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
-                break
+                    if obj.Shape:
+                        myshape = obj.Shape.copy(False)
+                        myshape.Placement=obj.LinkPlacement
+                    else:
+                        myshape = obj.Shape.copy(False)
+                        myshape.Placement=obj.getGlobalPlacement()
+                    mesh = MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
+                    FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
+                    break
     elif isinstance(shape,Mesh.Mesh):
         mesh = shape
         curves = shape.Topology
