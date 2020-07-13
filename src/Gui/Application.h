@@ -303,6 +303,8 @@ public:
     static PyObject* sAddDocObserver           (PyObject *self,PyObject *args);
     static PyObject* sRemoveDocObserver        (PyObject *self,PyObject *args);
 
+    static PyObject* sSetExecFile              (PyObject *self,PyObject *args);
+
     static PyMethodDef    Methods[];
 
 private:

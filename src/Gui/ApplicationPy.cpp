@@ -66,6 +66,8 @@
 #include <CXX/Objects.hxx>
 #include <Inventor/MarkerBitmaps.h>
 
+FC_LOG_LEVEL_INIT("Gui", true, true)
+
 using namespace Gui;
 
 // FCApplication Methods						// Methods structure
@@ -233,6 +235,9 @@ PyMethodDef Application::Methods[] = {
 
   {"coinRemoveAllChildren",     (PyCFunction) Application::sCoinRemoveAllChildren, METH_VARARGS,
    "Remove all children from a group node"},
+
+  {"_setExecFile", (PyCFunction) Application::sSetExecFile, METH_VARARGS,
+   "Internal use to inform the file used for exec()"},
 
   {NULL, NULL, 0, NULL}		/* Sentinel */
 };
@@ -1138,6 +1143,8 @@ PyObject* Application::sIsIconCached(PyObject * /*self*/, PyObject *args)
     return Py::new_reference_to(Py::Boolean(BitmapFactory().findPixmapInCache(iconName, icon)));
 }
 
+static std::string _ExecFile;
+
 PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
 {
     char*       pName;
@@ -1171,24 +1178,34 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
         Py::Tuple info = list.getItem(0);
         file = info.getItem(1).as_string();
 #endif
+
+        if (file == "<string>")
+            file = _ExecFile;
+
         Base::FileInfo fi(file);
         // convert backslashes to slashes
-        file = fi.filePath();
-        module = fi.fileNamePure();
+        group = fi.fileNamePure();
 
-        // for the group name get the directory name after 'Mod'
-        boost::regex rx("/Mod/(\\w+)/");
-        boost::smatch what;
-        if (boost::regex_search(file, what, rx)) {
-            group = what[1];
-        }
-        else {
-            boost::regex rx("/Ext/freecad/(\\w+)/");
-            if (boost::regex_search(file, what, rx))
-                group = what[1];
-            else
-                group = module;
-        }
+        std::string lastName;
+        std::string path = fi.dirPath();
+
+        do {
+            Base::FileInfo info(path);
+            std::string name = info.fileName();
+            if (name == "Mod") {
+                group = lastName;
+                break;
+            } else if (name == "freecad") {
+                group = "freecad.";
+                group += lastName;
+                break;
+            }
+            lastName = std::move(name);
+            path = info.dirPath();
+        } while (path.size());
+
+        FC_TRACE("Add command " << pName << ", " << group << ", " << fi.filePath());
+
     }
     catch (Py::Exception& e) {
         e.clear();
@@ -1623,5 +1640,19 @@ PyObject* Application::sCoinRemoveAllChildren(PyObject * /*self*/, PyObject *arg
         coinRemoveAllChildren(reinterpret_cast<SoGroup*>(ptr));
         Py_Return;
     }PY_CATCH;
+}
+
+PyObject* Application::sSetExecFile(PyObject * /*self*/, PyObject *args)
+{
+    const char *file = 0;
+    if (!PyArg_ParseTuple(args, "|s", &file))
+        return NULL;
+
+    Base::PyGILStateLocker lock;
+    if (!file)
+        _ExecFile.clear();
+    else
+        _ExecFile = file;
+    Py_Return;
 }
 

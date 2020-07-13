@@ -119,6 +119,7 @@ def InitApplications():
         if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
             InstallFile = os.path.join(Dir,"InitGui.py")
             if (os.path.exists(InstallFile)):
+                Gui._setExecFile(InstallFile)
                 try:
                     # XXX: This looks scary securitywise...
                     with open(InstallFile) as f:
@@ -132,6 +133,7 @@ def InitApplications():
                     Err('Please look into the log file for further information\n')
                 else:
                     Log('Init:      Initializing ' + Dir + '... done\n')
+                Gui._setExecFile()
             else:
                 Log('Init:      Initializing ' + Dir + '(InitGui.py not found)... ignore\n')
 
