@@ -37,7 +37,7 @@ from femtest.app.test_result import TestResult as FemTest10
 from femtest.app.test_ccxtools import TestCcxTools as FemTest11
 from femtest.app.test_solver_calculix import TestSolverCalculix as FemTest12
 from femtest.app.test_solver_elmer import TestSolverElmer as FemTest13
-from femtest.app.test_solver_z88 import TestSolverZ88 as FemTest14
+# from femtest.app.test_solver_z88 import TestSolverZ88 as FemTest14
 
 # dummy usage to get flake8 and lgtm quiet
 False if FemTest01.__name__ else True
@@ -53,4 +53,4 @@ False if FemTest10.__name__ else True
 False if FemTest11.__name__ else True
 False if FemTest12.__name__ else True
 False if FemTest13.__name__ else True
-False if FemTest14.__name__ else True
+# False if FemTest14.__name__ else True
