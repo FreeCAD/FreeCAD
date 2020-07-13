@@ -29,6 +29,8 @@
 #include <QComboBox>
 #include <QKeySequence>
 
+#include <memory>
+
 namespace Gui 
 {
 class Command;
@@ -381,6 +383,36 @@ protected Q_SLOTS:
 private:
     QMenu* _menu;
 };
+
+/**
+ * Special action for Std_CmdToolbarMenus command.
+ */
+class GuiExport ToolbarMenuAction : public Action
+{
+    Q_OBJECT
+
+public:
+    ToolbarMenuAction (Command* pcCmd, QObject * parent = 0);
+    virtual ~ToolbarMenuAction();
+    void addTo (QWidget * w);
+    void popup(const QPoint &pt);
+
+    static void populate();
+
+protected Q_SLOTS:
+    virtual void onShowMenu();
+
+protected:
+    virtual void update();
+
+protected:
+    QMenu* _menu;
+    class Private;
+    friend class Private;
+    std::unique_ptr<Private> _pimpl;
+};
+
+GuiExport void setupMenuStyle(QMenu *);
 
 } // namespace Gui
 

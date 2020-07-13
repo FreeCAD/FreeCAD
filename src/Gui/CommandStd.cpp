@@ -791,6 +791,41 @@ Action * StdCmdHistory::createAction(void)
     return pcAction;
 }
 
+//===========================================================================
+// Std_CmdToolbarMenus
+//===========================================================================
+
+DEF_STD_CMD_AC(StdCmdToolbarMenus)
+
+StdCmdToolbarMenus::StdCmdToolbarMenus()
+  :Command("Std_CmdToolbarMenus")
+{
+  sGroup        = QT_TR_NOOP("Tools");
+  sMenuText     = QT_TR_NOOP("Toolbar menus");
+  sToolTipText  = QT_TR_NOOP("Collection of user defined toolbars");
+  sWhatsThis    = "Std_CmdToolbarMenus";
+  sStatusTip    = sToolTipText;
+  eType         = NoTransaction | NoHistory;
+}
+
+bool StdCmdToolbarMenus::isActive(void)
+{
+    return true;
+}
+
+void StdCmdToolbarMenus::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+}
+
+Action * StdCmdToolbarMenus::createAction(void)
+{
+    Action *pcAction;
+    pcAction = new ToolbarMenuAction(this, getMainWindow());
+    applyCommandData(this->className(), pcAction);
+    return pcAction;
+}
+
 namespace Gui {
 
 void CreateStdCommands(void)
@@ -819,6 +854,7 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdTextDocument());
     rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
     rcCmdMgr.addCommand(new StdCmdHistory());
+    rcCmdMgr.addCommand(new StdCmdToolbarMenus());
     //rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     //rcCmdMgr.addCommand(new StdCmdDescription());

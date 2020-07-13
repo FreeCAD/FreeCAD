@@ -35,13 +35,17 @@
 # include <QTimer>
 # include <QToolBar>
 # include <QToolButton>
+# include <QElapsedTimer>
 #endif
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 # include <QScreen>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Tools.h>
+#include <Base/Parameter.h>
 #include <App/DocumentObserver.h>
 #include "Action.h"
 #include "Application.h"
@@ -1222,6 +1226,200 @@ void CmdHistoryAction::onShowMenu()
 }
 
 void CmdHistoryAction::popup(const QPoint &pt)
+{
+    _menu->exec(pt);
+}
+
+// --------------------------------------------------------------------
+
+class ToolbarMenuAction::Private: public ParameterGrp::ObserverType
+{
+public:
+    Private(ToolbarMenuAction *master, const char *path):master(master)
+    {
+        handle = App::GetApplication().GetParameterGroupByPath(path);
+    }
+
+    void OnChange(Base::Subject<const char*> &, const char *)
+    {
+        master->update();
+    }
+
+public:
+    ToolbarMenuAction *master;
+    ParameterGrp::handle handle;
+    std::set<std::string> cmds;
+};
+
+// --------------------------------------------------------------------
+
+class GuiExport ToolbarMenuSubAction : public ToolbarMenuAction
+{
+public:
+    ToolbarMenuSubAction (Command* pcCmd, ParameterGrp::handle hGrp, QObject * parent = 0)
+        : ToolbarMenuAction(pcCmd, parent)
+    {
+        _pimpl->handle = hGrp;
+        _pimpl->handle->Attach(_pimpl.get());
+    }
+
+    ~ToolbarMenuSubAction() {
+        _pimpl->handle->Detach(_pimpl.get());
+    }
+
+protected:
+    virtual void onShowMenu() {
+        setupMenuStyle(_menu);
+
+        auto &manager = Application::Instance->commandManager();
+        if (revision == manager.getRevision())
+            return;
+        _menu->clear();
+        for (auto &v : _pimpl->handle->GetASCIIMap()) {
+            if (v.first == "Name")
+                setText(QString::fromUtf8(v.second.c_str()));
+            else if (v.first == "Shortcut")
+                setShortcut(QString::fromLatin1(v.second.c_str()));
+            else if (boost::starts_with(v.first, "Separator"))
+                _menu->addSeparator();
+            else
+                manager.addTo(v.first.c_str(), _menu);
+        }
+        revision = manager.getRevision();
+    }
+
+    virtual void update()
+    {
+        revision = 0;
+
+        std::string shortcut = _pimpl->handle->GetASCII("Shortcut", "");
+        this->setShortcut(QString::fromLatin1(shortcut.c_str()));
+
+        std::string text = _pimpl->handle->GetASCII("Name", "");
+        this->setText(QString::fromUtf8(text.c_str()));
+    }
+
+private:
+    int revision = 0;
+};
+
+// --------------------------------------------------------------------
+
+class StdCmdToolbarSubMenu : public Gui::Command
+{
+public:
+    StdCmdToolbarSubMenu(const char *name, const char *_shortcut, ParameterGrp::handle hGrp)
+        :Command(name), shortcut(_shortcut)
+    {
+        menuText      = hGrp->GetASCII("Name", "Custom");
+        sGroup        = QT_TR_NOOP("Tools");
+        sMenuText     = menuText.c_str();
+        sAccel        = shortcut.c_str();
+        sWhatsThis    = "Std_CmdToolbarSubMenu";
+        eType         = NoTransaction | NoHistory;
+
+        _pcAction = new ToolbarMenuSubAction(this, hGrp, getMainWindow());
+        applyCommandData(this->className(), _pcAction);
+    }
+
+    virtual ~StdCmdToolbarSubMenu() {}
+
+    virtual const char* className() const
+    { return "StdCmdToolbarSubMenu"; }
+
+protected:
+    virtual void activated(int) {
+        if (_pcAction)
+            static_cast<ToolbarMenuSubAction*>(_pcAction)->popup(QCursor::pos());
+    }
+    virtual bool isActive(void) { return true;}
+
+    virtual Gui::Action * createAction(void) {
+        assert(false);
+        return nullptr;
+    }
+
+private:
+    std::string menuText;
+    std::string shortcut;
+};
+
+// --------------------------------------------------------------------
+
+ToolbarMenuAction::ToolbarMenuAction ( Command* pcCmd, QObject * parent )
+  : Action(pcCmd, parent), _menu(0)
+  , _pimpl(new Private(this, "User parameter:BaseApp/Workbench/Global/Toolbar"))
+{
+}
+
+ToolbarMenuAction::~ToolbarMenuAction()
+{
+    delete _menu;
+}
+
+void ToolbarMenuAction::addTo ( QWidget * w )
+{
+    if (!_menu) {
+        _menu = new QMenu;
+        setupMenuStyle(_menu);
+        _action->setMenu(_menu);
+        update();
+        connect(_menu, SIGNAL(aboutToShow()), this, SLOT(onShowMenu()));
+    }
+    w->addAction(_action);
+}
+
+void ToolbarMenuAction::onShowMenu()
+{
+    setupMenuStyle(_menu);
+}
+
+void ToolbarMenuAction::populate()
+{
+    auto &manager = Application::Instance->commandManager();
+    auto cmd = manager.getCommandByName("Std_CmdToolbarMenus");
+    if (!cmd)
+        return;
+    auto action = qobject_cast<ToolbarMenuAction*>(cmd->getAction());
+    if (action)
+        action->update();
+}
+
+void ToolbarMenuAction::update()
+{
+    auto &manager = Application::Instance->commandManager();
+    _menu->clear();
+    std::set<std::string> cmds;
+    for (auto &hGrp : _pimpl->handle->GetGroups()) {
+        std::string shortcut = hGrp->GetASCII("Shortcut", "");
+        if (shortcut.empty())
+            continue;
+        std::string name = std::string("Std_ToolbarMenu_") + hGrp->GetGroupName();
+        if (!cmds.insert(name).second)
+            continue;
+
+        auto res = _pimpl->cmds.insert(name);
+        Command *cmd = manager.getCommandByName(name.c_str());
+        if (!cmd) {
+            cmd = new StdCmdToolbarSubMenu(res.first->c_str(), shortcut.c_str(), hGrp);
+            manager.addCommand(cmd);
+        }
+        cmd->addTo(_menu);
+    }
+
+    for (auto it=_pimpl->cmds.begin(); it!=_pimpl->cmds.end();) {
+        if (cmds.count(*it)) {
+            ++it;
+            continue;
+        }
+        Command *cmd = manager.getCommandByName(it->c_str());
+        if (cmd)
+            manager.removeCommand(cmd);
+        it = _pimpl->cmds.erase(it);
+    }
+}
+
+void ToolbarMenuAction::popup(const QPoint &pt)
 {
     _menu->exec(pt);
 }

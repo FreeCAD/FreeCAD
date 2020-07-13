@@ -1831,6 +1831,7 @@ CommandManager::~CommandManager()
 
 void CommandManager::addCommand(Command* pCom)
 {
+    ++_revision;
     _sCommands[pCom->getName()] = pCom;// pCom->Init();
 }
 
@@ -1838,6 +1839,7 @@ void CommandManager::removeCommand(Command* pCom)
 {
     std::map <std::string,Command*>::iterator It = _sCommands.find(pCom->getName());
     if (It != _sCommands.end()) {
+        ++_revision;
         delete It->second;
         _sCommands.erase(It);
     }
@@ -1848,6 +1850,7 @@ void CommandManager::clearCommands()
     for ( std::map<std::string,Command*>::iterator it = _sCommands.begin(); it != _sCommands.end(); ++it )
         delete it->second;
     _sCommands.clear();
+    ++_revision;
 }
 
 bool CommandManager::addTo(const char* Name, QWidget *pcWidget)
@@ -1937,6 +1940,7 @@ void CommandManager::updateCommands(const char* sContext, int mode)
             Command* cmd = getCommandByName(jt->c_str());
             if (cmd) {
                 cmd->updateAction(mode);
+                ++_revision;
             }
         }
     }

@@ -27,6 +27,8 @@
 #include "PropertyPage.h"
 #include <memory>
 
+class QTreeWidgetItem;
+
 namespace Gui {
 namespace Dialog {
 class Ui_DlgCustomToolbars;
@@ -59,6 +61,10 @@ protected Q_SLOTS:
     void on_newButton_clicked();
     void on_renameButton_clicked();
     void on_deleteButton_clicked();
+    void on_assignButton_clicked();
+    void on_resetButton_clicked();
+    void on_toolbarTreeWidget_currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *);
+    void on_editShortcut_textChanged(const QString& sc);
     void onAddMacroAction(const QByteArray&);
     void onRemoveMacroAction(const QByteArray&);
     void onModifyMacroAction(const QByteArray&);

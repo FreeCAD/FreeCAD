@@ -877,11 +877,15 @@ public:
     void addCommandMode(const char* sContext, const char* sName);
     void updateCommands(const char* sContext, int mode);
 
+    /// Return a revision number to check for any changes in commands
+    int getRevision() { return _revision; }
+
 private:
     /// Destroys all commands in the manager and empties the list.
     void clearCommands();
     std::map<std::string, Command*> _sCommands;
     std::map<std::string, std::list<std::string> > _sCommandModes;
+    int _revision = 0;
 };
 
 } // namespace Gui
