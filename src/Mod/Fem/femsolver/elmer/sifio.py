@@ -407,7 +407,12 @@ class _Writer(object):
 
     def _preprocess(self, data, dataType):
         if issubclass(dataType, Section):
-            return str(self._idMgr.getId(data))
+            # return str(self._idMgr.getId(data))
+            _data = self._idMgr.getId(data)
+            if isinstance(_data, float):
+                return "{:.1f}".format(_data)
+            elif isinstance(_data, int):
+                return "{:d}".format(_data)
         # use six to be sure to be Python 2.7 and 3.x compatible
         if issubclass(dataType, six.string_types):
             return '"%s"' % data
