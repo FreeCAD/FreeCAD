@@ -105,7 +105,7 @@ class TestSolverElmer(unittest.TestCase):
         param.SetInt("UserSchema", new_unit_schema)
 
     # ********************************************************************************************
-    def test_box_static_mm(
+    def test_box_static_0_mm(
         self
     ):
         fcc_print("")
@@ -161,7 +161,7 @@ class TestSolverElmer(unittest.TestCase):
         self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
 
     # ********************************************************************************************
-    def test_ccxcantilever_faceload_mm(
+    def test_ccxcantilever_faceload_0_mm(
         self
     ):
         fcc_print("")
@@ -181,7 +181,7 @@ class TestSolverElmer(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_ccxcantilever_nodeload_mm(
+    def test_ccxcantilever_nodeload_0_mm(
         self
     ):
         fcc_print("")
@@ -191,7 +191,7 @@ class TestSolverElmer(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_ccxcantilever_prescribeddisplacement_mm(
+    def test_ccxcantilever_prescribeddisplacement_0_mm(
         self
     ):
         fcc_print("")

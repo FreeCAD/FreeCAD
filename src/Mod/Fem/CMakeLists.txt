@@ -263,11 +263,11 @@ SET(FemTestsCcx_SRCS
 
 SET(FemTestsElmer_SRCS
     femtest/data/elmer/__init__.py
-    femtest/data/elmer/box_static_mm.sif
-    femtest/data/elmer/ccxcantilever_faceload_mm.sif
+    femtest/data/elmer/box_static_0_mm.sif
+    femtest/data/elmer/ccxcantilever_faceload_0_mm.sif
     femtest/data/elmer/ccxcantilever_faceload_1_si.sif
-    femtest/data/elmer/ccxcantilever_nodeload_mm.sif
-    femtest/data/elmer/ccxcantilever_prescribeddisplacement_mm.sif
+    femtest/data/elmer/ccxcantilever_nodeload_0_mm.sif
+    femtest/data/elmer/ccxcantilever_prescribeddisplacement_0_mm.sif
     femtest/data/elmer/group_mesh.geo
     femtest/data/elmer/ELMERSOLVER_STARTINFO
 )
