@@ -287,7 +287,11 @@ SET(FemTestsOpen_SRCS
     femtest/data/open/all_objects_de9b3fb438.FCStd
 )
 
-SET(FemTestsZ88_SRCS
+SET(FemTestsZ88Main_SRCS
+    femtest/data/z88/__init__.py
+)
+
+SET(FemTestsZ88Ccxcantifl_SRCS
     femtest/data/z88/__init__.py
     femtest/data/z88/ccxcantilever_faceload/51.txt
     femtest/data/z88/ccxcantilever_faceload/z88.dyn
@@ -335,7 +339,8 @@ SET(FemAllScripts
     ${FemTestsElmer_SRCS}
     ${FemTestsMesh_SRCS}
     ${FemTestsOpen_SRCS}
-    ${FemTestsZ88_SRCS}
+    ${FemTestsZ88Main_SRCS}
+    ${FemTestsZ88Ccxcantifl_SRCS}
     ${FemTools_SRCS}
 )
 
@@ -368,7 +373,8 @@ INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/data/calculix)
 INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/data/elmer)
 INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
 INSTALL(FILES ${FemTestsOpen_SRCS} DESTINATION Mod/Fem/femtest/data/open)
-INSTALL(FILES ${FemTestsZ88_SRCS} DESTINATION Mod/Fem/femtest/data/z88)
+INSTALL(FILES ${FemTestsZ88Main_SRCS} DESTINATION Mod/Fem/femtest/data/z88)
+INSTALL(FILES ${FemTestsZ88Ccxcantifl_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccxcantilever_faceload)
 INSTALL(FILES ${FemTools_SRCS} DESTINATION Mod/Fem/femtools)
 
 

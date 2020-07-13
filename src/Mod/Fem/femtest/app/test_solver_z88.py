@@ -110,9 +110,13 @@ class TestSolverZ88(unittest.TestCase):
         machine.start()
         machine.join()  # wait for the machine to finish
 
-        # compare input file with the given one
+        # compare created input files with the given input files
         test_path = join(testtools.get_fem_test_home_dir(), "z88", base_name)
         test_files = [f for f in listdir(test_path)]
+        # fcc_print(sorted(test_files))
+        not_files = ["__init__.py"]
+        test_files = [f for f in test_files if f not in not_files]
+        fcc_print((test_files))
         for test_file in test_files:
             inpfile_given = join(
                 test_path,
