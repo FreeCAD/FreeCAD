@@ -38,7 +38,7 @@ def gravity():
 
 
 def stefan_boltzmann():
-    # https://en.wikipedia.org/wiki/Stefan–Boltzmann_constant
+    # https://en.wikipedia.org/wiki/Stefan-Boltzmann_constant
     return "5.67037e-8 W/(m^2*K^4)"
 
 
