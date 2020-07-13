@@ -609,15 +609,23 @@ while doing a left or right click and move the mouse up or down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Document</source>
+        <source>Verbose description of the new property.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Append the group name in front of the property name in the form of &apos;group&apos;_&apos;name&apos; to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</source>
+        <source>Documentation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Append group name</source>
+        <source>Prefix the property name with the group name in the form &apos;Group_Name&apos; to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like &apos;obj.Group_Name&apos;.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like &apos;obj.Name&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prefix group name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1005,6 +1013,10 @@ while doing a left or right click and move the mouse up or down</source>
         <source>Global</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>%1 module not loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -1297,6 +1309,10 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Font family to be used for selected code type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1985,6 +2001,10 @@ Specify another directory, please.</source>
         <source>Open in browser</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Program version:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
@@ -2206,6 +2226,14 @@ from Python console to Report view panel</source>
     <message>
         <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Include a timecode for each report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Include a timecode for each entry</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2431,6 +2459,15 @@ bounding box size of the 3D object that is currently displayed. </source>
     </message>
     <message>
         <source>Objects will appear in a perspective projection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Axis cross will be shown by default at file
+opening or creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show axis cross by default</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5743,6 +5780,25 @@ Do you want to specify another directory?</source>
         <source>Recompute the selected object</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source> (but must be executed)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+        <source>Vectors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::View3DInventor</name>
@@ -6733,6 +6789,21 @@ Choose &apos;Abort&apos; to abort</source>
     </message>
 </context>
 <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+        <source>Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dependency graph...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show the dependency graph of the objects in the active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdDlgCustomize</name>
     <message>
         <source>Tools</source>
@@ -6847,6 +6918,10 @@ Choose &apos;Abort&apos; to abort</source>
         <source>Draw style</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Change the draw style of the objects</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>StdCmdDuplicateSelection</name>
@@ -6902,21 +6977,6 @@ Choose &apos;Abort&apos; to abort</source>
     </message>
     <message>
         <source>Please select first the objects you want to export.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>StdCmdExportGraphviz</name>
-    <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Dependency graph...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show the dependency graph of the objects in the active document</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8970,6 +9030,13 @@ Are you sure you want to continue?
     </message>
 </context>
 <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+        <source>Dependency graph</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Std_DrawStyle</name>
     <message>
         <source>As is</source>
@@ -9037,13 +9104,6 @@ Are you sure you want to continue?
     <message>
         <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-        <source>Dependency graph</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
