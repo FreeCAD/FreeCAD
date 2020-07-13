@@ -53,57 +53,11 @@ _ELMERGRID_IFORMAT = "8"
 _ELMERGRID_OFORMAT = "2"
 _SOLID_PREFIX = "Solid"
 
-param = ParamGet("User parameter:BaseApp/Preferences/Units")
-unitsschema = param.GetInt("UserSchema")
 
-if unitsschema == 1:
-    Console.PrintMessage(
-        "The unit schema m/kg/s is used. So export and "
-        "import is done in ISO units (SI-units).\n"
-    )
-    UNITS = {
-        "L": "m",
-        "M": "kg",
-        "T": "s",
-        "I": "A",
-        "O": "K",
-        "N": "mol",
-        "J": "cd",
-    }
-else:
-    Console.PrintMessage(
-        "The unit schema mm/kg/s is used. So export and "
-        "import is done in standard FreeCAD units.\n"
-    )
-    UNITS = {
-        "L": "mm",
-        "M": "kg",
-        "T": "s",
-        "I": "A",
-        "O": "K",
-        "N": "mol",
-        "J": "cd",
-    }
-
-
-CONSTS_DEF = {
-    "Gravity": constants.gravity(),
-    "StefanBoltzmann": constants.stefan_boltzmann(),
-    "PermittivityOfVacuum": constants.vacuum_permittivity(),
-    "BoltzmannConstant": constants.boltzmann_constant(),
-}
-
-
-def getFromUi(value, unit, outputDim):
-    quantity = Units.Quantity(str(value) + str(unit))
-    return convert(quantity, outputDim)
-
-
-def convert(quantityStr, unit):
-    quantity = Units.Quantity(quantityStr)
-    for key, setting in UNITS.items():
-        unit = unit.replace(key, setting)
-    return float(quantity.getValueAs(unit))
+# TODO constants and units
+# should be only one system for all solver and not in each solver
+# https://forum.freecadweb.org/viewtopic.php?t=47895
+# https://forum.freecadweb.org/viewtopic.php?t=48451
 
 
 def _getAllSubObjects(obj):
@@ -112,17 +66,6 @@ def _getAllSubObjects(obj):
     s.extend(("Edge" + str(i + 1) for i in range(len(obj.Shape.Edges))))
     s.extend(("Vertex" + str(i + 1) for i in range(len(obj.Shape.Vertexes))))
     return s
-
-
-def getConstant(name, unit_dimension):
-    return convert(CONSTS_DEF[name], unit_dimension)
-
-
-def setConstant(name, quantityStr):
-    if name == "PermittivityOfVacuum":
-        theUnit = "s^4*A^2 / (m^3*kg)"
-        CONSTS_DEF[name] = "{} {}".format(convert(quantityStr, theUnit), theUnit)
-    return True
 
 
 class Writer(object):
@@ -135,12 +78,14 @@ class Writer(object):
         self._usedVarNames = set()
         self._builder = sifio.Builder()
         self._handledObjects = set()
+        self._handleUnits()
+        self._handleConstants()
 
     def getHandledConstraints(self):
         return self._handledObjects
 
     def write(self):
-        self._handleConstants()
+        self._handleRedifinedConstants()
         self._handleSimulation()
         self._handleHeat()
         self._handleElasticity()
@@ -153,6 +98,75 @@ class Writer(object):
         self._writeSif()
         self._writeMesh()
         self._writeStartinfo()
+
+    def _handleUnits(self):
+        self.unit_schema = 0
+        self.unit_system = {  # standard FreeCAD Base units = unit schema 0
+            "L": "mm",
+            "M": "kg",
+            "T": "s",
+            "I": "A",
+            "O": "K",
+            "N": "mol",
+            "J": "cd",
+        }
+        param = ParamGet("User parameter:BaseApp/Preferences/Units")
+        self.unit_schema = param.GetInt("UserSchema", 0)
+        if self.unit_schema == 0:
+            Console.PrintMessage(
+                "The FreeCAD standard unit schema mm/kg/s is used. "
+                "Elmer sif-file writing is done in Standard FreeCAD units.\n"
+            )
+        elif self.unit_schema == 1:
+            Console.PrintMessage(
+                "The SI unit schema m/kg/s is used. "
+                "Elmer sif-file writing is done in SI-units.\n"
+            )
+            self.unit_system = {
+                "L": "m",
+                "M": "kg",
+                "T": "s",
+                "I": "A",
+                "O": "K",
+                "N": "mol",
+                "J": "cd",
+            }
+        elif self.unit_schema > 1:
+            Console.PrintMessage(
+                "Unit schema: {} not supported by Elmer writer. "
+                "The FreeCAD standard unit schema mm/kg/s is used. "
+                "Elmer sif-file writing is done in Standard FreeCAD units.\n"
+                .format(self.unit_schema)
+            )
+
+    def _getFromUi(self, value, unit, outputDim):
+        quantity = Units.Quantity(str(value) + str(unit))
+        return self._convert(quantity, outputDim)
+
+    def _convert(self, quantityStr, unit):
+        quantity = Units.Quantity(quantityStr)
+        for key, setting in self.unit_system.items():
+            unit = unit.replace(key, setting)
+        return float(quantity.getValueAs(unit))
+
+    def _handleConstants(self):
+        self.constsdef = {
+            "Gravity": constants.gravity(),
+            "StefanBoltzmann": constants.stefan_boltzmann(),
+            "PermittivityOfVacuum": constants.vacuum_permittivity(),
+            "BoltzmannConstant": constants.boltzmann_constant(),
+        }
+
+    def _getConstant(self, name, unit_dimension):
+        # TODO without method directly use self.constsdef[name]
+        return self._convert(self.constsdef[name], unit_dimension)
+
+    def _setConstant(self, name, quantityStr):
+        # TODO without method directly use self.constsdef[name]
+        if name == "PermittivityOfVacuum":
+            theUnit = "s^4*A^2 / (m^3*kg)"
+            self.constsdef[name] = "{} {}".format(self._convert(quantityStr, theUnit), theUnit)
+        return True
 
     def _writeMesh(self):
         mesh = self._getSingleMember("Fem::FemMeshObject")
@@ -222,14 +236,14 @@ class Writer(object):
         os.remove(geoPath)
         os.remove(unvGmshPath)
 
-    def _handleConstants(self):
+    def _handleRedifinedConstants(self):
         """
-        redefine constants in CONSTS_DEF according constant redefine objects
+        redefine constants in self.constsdef according constant redefine objects
         """
         permittivity_objs = self._getMember("Fem::ConstantVacuumPermittivity")
         if len(permittivity_objs) == 1:
             Console.PrintLog("Constand permittivity overwriting.\n")
-            setConstant("PermittivityOfVacuum", permittivity_objs[0].VacuumPermittivity)
+            self._setConstant("PermittivityOfVacuum", permittivity_objs[0].VacuumPermittivity)
         elif len(permittivity_objs) > 1:
             Console.PrintError(
                 "More than one permittivity constant overwriting objects ({} objs). "
@@ -240,7 +254,7 @@ class Writer(object):
     def _handleSimulation(self):
         self._simulation("Coordinate System", "Cartesian 3D")
         self._simulation("Coordinate Mapping", (1, 2, 3))
-        if unitsschema == 1:
+        if self.unit_schema == 1:
             self._simulation("Coordinate Scaling", 0.001)
             Console.PrintMessage(
                 "'Coordinate Scaling = Real 0.001' was inserted into the solver input file.\n"
@@ -290,29 +304,29 @@ class Writer(object):
     def _handleHeatConstants(self):
         self._constant(
             "Stefan Boltzmann",
-            getConstant("StefanBoltzmann", "M/(O^4*T^3)"))
+            self._getConstant("StefanBoltzmann", "M/(O^4*T^3)"))
 
     def _handleHeatBndConditions(self):
         for obj in self._getMember("Fem::ConstraintTemperature"):
             if obj.References:
                 for name in obj.References[0][1]:
                     if obj.ConstraintType == "Temperature":
-                        temp = getFromUi(obj.Temperature, "K", "O")
+                        temp = self._getFromUi(obj.Temperature, "K", "O")
                         self._boundary(name, "Temperature", temp)
                     elif obj.ConstraintType == "CFlux":
-                        flux = getFromUi(obj.CFlux, "kg*mm^2*s^-3", "M*L^2*T^-3")
+                        flux = self._getFromUi(obj.CFlux, "kg*mm^2*s^-3", "M*L^2*T^-3")
                         self._boundary(name, "Temperature Load", flux)
                 self._handled(obj)
         for obj in self._getMember("Fem::ConstraintHeatflux"):
             if obj.References:
                 for name in obj.References[0][1]:
                     if obj.ConstraintType == "Convection":
-                        film = getFromUi(obj.FilmCoef, "W/(m^2*K)", "M/(T^3*O)")
-                        temp = getFromUi(obj.AmbientTemp, "K", "O")
+                        film = self._getFromUi(obj.FilmCoef, "W/(m^2*K)", "M/(T^3*O)")
+                        temp = self._getFromUi(obj.AmbientTemp, "K", "O")
                         self._boundary(name, "Heat Transfer Coefficient", film)
                         self._boundary(name, "External Temperature", temp)
                     elif obj.ConstraintType == "DFlux":
-                        flux = getFromUi(obj.DFlux, "W/m^2", "M*T^-3")
+                        flux = self._getFromUi(obj.DFlux, "W/m^2", "M*T^-3")
                         self._boundary(name, "Heat Flux BC", True)
                         self._boundary(name, "Heat Flux", flux)
                 self._handled(obj)
@@ -321,7 +335,7 @@ class Writer(object):
         obj = self._getSingleMember("Fem::ConstraintInitialTemperature")
         if obj is not None:
             for name in bodies:
-                temp = getFromUi(obj.initialTemperature, "K", "O")
+                temp = self._getFromUi(obj.initialTemperature, "K", "O")
                 self._initial(name, "Temperature", temp)
             self._handled(obj)
 
@@ -329,7 +343,7 @@ class Writer(object):
         obj = self._getSingleMember("Fem::ConstraintBodyHeatSource")
         if obj is not None:
             for name in bodies:
-                heatSource = getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
+                heatSource = self._getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
                 # according Elmer forum W/kg is correct
                 # http://www.elmerfem.org/forum/viewtopic.php?f=7&t=1765
                 # 1 watt = kg * m2 / s3 ... W/kg = m2 / s3
@@ -339,7 +353,7 @@ class Writer(object):
     def _handleHeatMaterial(self, bodies):
         tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")
         if tempObj is not None:
-            refTemp = getFromUi(tempObj.initialTemperature, "K", "O")
+            refTemp = self._getFromUi(tempObj.initialTemperature, "K", "O")
             for name in bodies:
                 self._material(name, "Reference Temperature", refTemp)
         for obj in self._getMember("App::MaterialObject"):
@@ -354,10 +368,10 @@ class Writer(object):
                     self._getDensity(m))
                 self._material(
                     name, "Heat Conductivity",
-                    convert(m["ThermalConductivity"], "M*L/(T^3*O)"))
+                    self._convert(m["ThermalConductivity"], "M*L/(T^3*O)"))
                 self._material(
                     name, "Heat Capacity",
-                    convert(m["SpecificHeat"], "L^2/(T^2*O)"))
+                    self._convert(m["SpecificHeat"], "L^2/(T^2*O)"))
 
     def _handleElectrostatic(self):
         activeIn = []
@@ -398,7 +412,7 @@ class Writer(object):
     def _handleElectrostaticConstants(self):
         self._constant(
             "Permittivity Of Vacuum",
-            getConstant("PermittivityOfVacuum", "T^4*I^2/(L^3*M)")
+            self._getConstant("PermittivityOfVacuum", "T^4*I^2/(L^3*M)")
         )
         # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
 
@@ -423,7 +437,7 @@ class Writer(object):
                     # https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=10#p369454  ff
                     if obj.PotentialEnabled:
                         if hasattr(obj, "Potential"):
-                            potential = getFromUi(obj.Potential, "V", "M*L^2/(T^3 * I)")
+                            potential = self._getFromUi(obj.Potential, "V", "M*L^2/(T^3 * I)")
                             self._boundary(name, "Potential", potential)
                     if obj.PotentialConstant:
                         self._boundary(name, "Potential Constant", True)
@@ -519,7 +533,7 @@ class Writer(object):
         for obj in self._getMember("Fem::ConstraintPressure"):
             if obj.References:
                 for name in obj.References[0][1]:
-                    pressure = getFromUi(obj.Pressure, "MPa", "M/(L*T^2)")
+                    pressure = self._getFromUi(obj.Pressure, "MPa", "M/(L*T^2)")
                     if not obj.Reversed:
                         pressure *= -1
                     self._boundary(name, "Normal Force", pressure)
@@ -534,7 +548,7 @@ class Writer(object):
         for obj in self._getMember("Fem::ConstraintForce"):
             if obj.References:
                 for name in obj.References[0][1]:
-                    force = getFromUi(obj.Force, "N", "M*L*T^-2")
+                    force = self._getFromUi(obj.Force, "N", "M*L*T^-2")
                     self._boundary(name, "Force 1", obj.DirectionVector.x * force)
                     self._boundary(name, "Force 2", obj.DirectionVector.y * force)
                     self._boundary(name, "Force 3", obj.DirectionVector.z * force)
@@ -569,7 +583,7 @@ class Writer(object):
         obj = self._getSingleMember("Fem::ConstraintSelfWeight")
         if obj is not None:
             for name in bodies:
-                gravity = getConstant("Gravity", "L/T^2")
+                gravity = self._getConstant("Gravity", "L/T^2")
                 m = self._getBodyMaterial(name).Material
 
                 densityQuantity = Units.Quantity(m["Density"])
@@ -581,7 +595,7 @@ class Writer(object):
                     if density:
                         density.Unit = Units.Unit(-2, 1)
                     dimension = "M/L^2"
-                density = convert(densityQuantity, dimension)
+                density = self._convert(densityQuantity, dimension)
 
                 force1 = gravity * obj.Gravity_x * density
                 force2 = gravity * obj.Gravity_y * density
@@ -601,7 +615,7 @@ class Writer(object):
         gravObj = self._getSingleMember("Fem::ConstraintSelfWeight")
         tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")
         if tempObj is not None:
-            refTemp = getFromUi(tempObj.initialTemperature, "K", "O")
+            refTemp = self._getFromUi(tempObj.initialTemperature, "K", "O")
             for name in bodies:
                 self._material(name, "Reference Temperature", refTemp)
         for obj in self._getMember("App::MaterialObject"):
@@ -628,17 +642,17 @@ class Writer(object):
                 if tempObj:
                     self._material(
                         name, "Heat expansion Coefficient",
-                        convert(m["ThermalExpansionCoefficient"], "O^-1")
+                        self._convert(m["ThermalExpansionCoefficient"], "O^-1")
                     )
 
     def _getDensity(self, m):
-        density = convert(m["Density"], "M/L^3")
+        density = self._convert(m["Density"], "M/L^3")
         if self._getMeshDimension() == 2:
             density *= 1e3
         return density
 
     def _getYoungsModulus(self, m):
-        youngsModulus = convert(m["YoungsModulus"], "M/(L*T^2)")
+        youngsModulus = self._convert(m["YoungsModulus"], "M/(L*T^2)")
         if self._getMeshDimension() == 2:
             youngsModulus *= 1e3
         return youngsModulus
@@ -675,13 +689,13 @@ class Writer(object):
         return s
 
     def _handleFlowConstants(self):
-        gravity = getConstant("Gravity", "L/T^2")
+        gravity = self._getConstant("Gravity", "L/T^2")
         self._constant("Gravity", (0.0, -1.0, 0.0, gravity))
 
     def _handleFlowMaterial(self, bodies):
         tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")
         if tempObj is not None:
-            refTemp = getFromUi(tempObj.initialTemperature, "K", "O")
+            refTemp = self._getFromUi(tempObj.initialTemperature, "K", "O")
             for name in bodies:
                 self._material(name, "Reference Temperature", refTemp)
         for obj in self._getMember("App::MaterialObject"):
@@ -699,20 +713,20 @@ class Writer(object):
                 if "ThermalConductivity" in m:
                     self._material(
                         name, "Heat Conductivity",
-                        convert(m["ThermalConductivity"], "M*L/(T^3*O)")
+                        self._convert(m["ThermalConductivity"], "M*L/(T^3*O)")
                     )
                 if "KinematicViscosity" in m:
                     density = self._getDensity(m)
-                    kViscosity = convert(m["KinematicViscosity"], "L^2/T")
+                    kViscosity = self._convert(m["KinematicViscosity"], "L^2/T")
                     self._material(
                         name, "Viscosity", kViscosity * density)
                 if "ThermalExpansionCoefficient" in m:
-                    value = convert(m["ThermalExpansionCoefficient"], "O^-1")
+                    value = self._convert(m["ThermalExpansionCoefficient"], "O^-1")
                     if value > 0:
                         self._material(
                             name, "Heat expansion Coefficient", value)
                 if "ReferencePressure" in m:
-                    pressure = convert(m["ReferencePressure"], "M/(L*T^2)")
+                    pressure = self._convert(m["ReferencePressure"], "M/(L*T^2)")
                     self._material(name, "Reference Pressure", pressure)
                 if "SpecificHeatRatio" in m:
                     self._material(
@@ -729,13 +743,13 @@ class Writer(object):
         if obj is not None:
             for name in bodies:
                 if obj.VelocityXEnabled:
-                    velocity = getFromUi(obj.VelocityX, "m/s", "L/T")
+                    velocity = self._getFromUi(obj.VelocityX, "m/s", "L/T")
                     self._initial(name, "Velocity 1", velocity)
                 if obj.VelocityYEnabled:
-                    velocity = getFromUi(obj.VelocityY, "m/s", "L/T")
+                    velocity = self._getFromUi(obj.VelocityY, "m/s", "L/T")
                     self._initial(name, "Velocity 2", velocity)
                 if obj.VelocityZEnabled:
-                    velocity = getFromUi(obj.VelocityZ, "m/s", "L/T")
+                    velocity = self._getFromUi(obj.VelocityZ, "m/s", "L/T")
                     self._initial(name, "Velocity 3", velocity)
             self._handled(obj)
 
@@ -744,13 +758,13 @@ class Writer(object):
             if obj.References:
                 for name in obj.References[0][1]:
                     if obj.VelocityXEnabled:
-                        velocity = getFromUi(obj.VelocityX, "m/s", "L/T")
+                        velocity = self._getFromUi(obj.VelocityX, "m/s", "L/T")
                         self._boundary(name, "Velocity 1", velocity)
                     if obj.VelocityYEnabled:
-                        velocity = getFromUi(obj.VelocityY, "m/s", "L/T")
+                        velocity = self._getFromUi(obj.VelocityY, "m/s", "L/T")
                         self._boundary(name, "Velocity 2", velocity)
                     if obj.VelocityZEnabled:
-                        velocity = getFromUi(obj.VelocityZ, "m/s", "L/T")
+                        velocity = self._getFromUi(obj.VelocityZ, "m/s", "L/T")
                         self._boundary(name, "Velocity 3", velocity)
                     if obj.NormalToBoundary:
                         self._boundary(name, "Normal-Tangential Velocity", True)
@@ -846,7 +860,7 @@ class Writer(object):
         s["Procedure"] = sifio.FileAttr("ResultOutputSolve/ResultOutputSolver")
         s["Output File Name"] = sifio.FileAttr("case")
         s["Vtu Format"] = True
-        if unitsschema == 1:
+        if self.unit_schema == 1:
             s["Coordinate Scaling Revert"] = True
             Console.PrintMessage(
                 "'Coordinate Scaling Revert = Logical True' was "
