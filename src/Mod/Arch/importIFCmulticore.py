@@ -34,9 +34,13 @@ import importIFCHelper
 from FreeCAD import Base
 import ArchIFC
 
+# global dicts to store ifc object/freecad object relationships
+
 layers = {} # ifcid : Draft_Layer
 materials = {} #ifcid : Arch_Material
 objects = {} #ifcid : Arch_Component
+subs = {} #host_ifcid: [child_ifcid,...]
+adds = {} #host_ifcid: [child_ifcid,...]
 
 
 def open(filename):
@@ -57,9 +61,13 @@ def insert(filename,docname=None,preferences=None):
     global layers
     global materials
     global objects
+    global adds
+    global subs
     layers = {}
     materials = {}
     objects = {}
+    adds = {}
+    subs = {}
 
     # statistics
     starttime = time.time() # in seconds
@@ -110,6 +118,7 @@ def insert(filename,docname=None,preferences=None):
             break
 
     # finished
+    processRelationships()
     progressbar.stop()
     FreeCAD.ActiveDocument.recompute()
     endtime = round(time.time()-starttime,1)
@@ -161,6 +170,7 @@ def createProduct(ifcproduct,brep):
     createLayer(obj,ifcproduct)
     createMaterial(obj,ifcproduct)
     createModelStructure(obj,ifcproduct)
+    setRelationships(obj,ifcproduct)
     return obj
 
 
@@ -251,4 +261,33 @@ def createModelStructure(obj,ifcobj):
             objects[parent.id()] = parentobj
         if hasattr(objects[parent.id()].Proxy,"addObject"):
             objects[parent.id()].Proxy.addObject(objects[parent.id()],obj)
+
+
+def setRelationships(obj,ifcobj):
+
+    """sets additions/subtractions"""
+
+    global adds
+    global subs
+
+    if hasattr(ifcobj,"HasOpenings") and ifcobj.HasOpenings:
+        for rel in ifcobj.HasOpenings:
+            subs.setdefault(ifcobj.id(),[]).append(rel.RelatedOpeningElement)
+
+    # TODO: assemblies & booleans
+
+
+def processRelationships():
+
+    """process all stored relationships"""
+
+    for dom in ((subs,"Subtractions"),(adds,"Additions")):
+        for key,vals in dom[0]:
+            if key in objects:
+                for val in vals:
+                    if val in objects:
+                        if hasattr(objects[key],dom[1]):
+                            g = getattr(objects[key],dom[1])
+                            g.append(val)
+                            setattr(objects[key],dom[1],g)
 
