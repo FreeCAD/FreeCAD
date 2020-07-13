@@ -29,15 +29,14 @@
 import math
 
 import FreeCAD as App
-
 import DraftVecUtils
 
-import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
+import draftutils.groups as groups
+import draftutils.gui_utils as gui_utils
 
-from draftmake.make_line import make_line
 from draftfunctions.join import join_wires
-
+from draftmake.make_line import make_line
 from draftmake.make_copy import make_copy
 
 
@@ -70,11 +69,14 @@ def rotate(objectslist, angle, center=App.Vector(0,0,0),
     """
     import Part
     utils.type_check([(copy,bool)], "rotate")
-    if not isinstance(objectslist,list): objectslist = [objectslist]
-    objectslist.extend(utils.get_movable_children(objectslist))
+    if not isinstance(objectslist,list):
+        objectslist = [objectslist]
+
+    objectslist.extend(groups.get_movable_children(objectslist))
     newobjlist = []
     newgroups = {}
     objectslist = utils.filter_objects_for_modifiers(objectslist, copy)
+
     for obj in objectslist:
         newobj = None
         # real_center and real_axis are introduced to take into account
@@ -143,7 +145,8 @@ def rotate(objectslist, angle, center=App.Vector(0,0,0),
                     break
 
     gui_utils.select(newobjlist)
-    if len(newobjlist) == 1: return newobjlist[0]
+    if len(newobjlist) == 1:
+        return newobjlist[0]
     return newobjlist
 
 

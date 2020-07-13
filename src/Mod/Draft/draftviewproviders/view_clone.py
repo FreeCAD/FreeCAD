@@ -26,7 +26,7 @@
 # \ingroup DRAFT
 # \brief This module provides the view provider code for the Draft Clone object.
 
-import draftutils.utils as utils
+import draftutils.groups as groups
 
 
 class ViewProviderClone:
@@ -53,7 +53,7 @@ class ViewProviderClone:
 
     def resetColors(self, vobj):
         colors = []
-        for o in utils.get_group_contents(vobj.Object.Objects):
+        for o in groups.get_group_contents(vobj.Object.Objects):
             if o.isDerivedFrom("Part::Feature"):
                 if len(o.ViewObject.DiffuseColor) > 1:
                     colors.extend(o.ViewObject.DiffuseColor)

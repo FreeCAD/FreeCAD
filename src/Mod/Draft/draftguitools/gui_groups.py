@@ -39,6 +39,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 import draftutils.utils as utils
+import draftutils.groups as groups
 import draftguitools.gui_base as gui_base
 from draftutils.translate import _tr, translate
 
@@ -79,7 +80,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
         super(AddToGroup, self).Activated()
 
         self.groups = [self.ungroup]
-        self.groups.extend(utils.get_group_names())
+        self.groups.extend(groups.get_group_names())
 
         self.labels = [self.ungroup]
         for group in self.groups:
@@ -115,7 +116,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
         if labelname == self.ungroup:
             for obj in Gui.Selection.getSelection():
                 try:
-                    utils.ungroup(obj)
+                    groups.ungroup(obj)
                 except Exception:
                     pass
         else:
@@ -193,7 +194,7 @@ class SelectGroup(gui_base.GuiCommandNeedsSelection):
         sel = Gui.Selection.getSelection()
         if len(sel) == 1:
             if sel[0].isDerivedFrom("App::DocumentObjectGroup"):
-                cts = utils.get_group_contents(Gui.Selection.getSelection())
+                cts = groups.get_group_contents(Gui.Selection.getSelection())
                 for o in cts:
                     Gui.Selection.addSelection(o)
                 return
@@ -281,7 +282,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
         self.groups = ["None"]
         gn = [o.Name for o in self.doc.Objects if utils.get_type(o) == "Layer"]
         if App.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool("AutogroupAddGroups", False):
-            gn.extend(utils.get_group_names())
+            gn.extend(groups.get_group_names())
         if gn:
             self.groups.extend(gn)
             self.labels = [translate("draft", "None")]

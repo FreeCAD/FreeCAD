@@ -3599,7 +3599,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
     if dxfLibrary:
         global exportList
         exportList = objectslist
-        exportList = Draft.getGroupContents(exportList)
+        exportList = Draft.get_group_contents(exportList)
 
         nlist = []
         exportLayers = []

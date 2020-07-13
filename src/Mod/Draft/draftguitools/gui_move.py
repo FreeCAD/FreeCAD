@@ -33,12 +33,15 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 import DraftVecUtils
-import draftutils.utils as utils
+
+import draftutils.groups as groups
 import draftutils.todo as todo
+
 import draftguitools.gui_base_original as gui_base_original
-from draftguitools.gui_subelements import SubelementHighlight
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+
+from draftguitools.gui_subelements import SubelementHighlight
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate
 
@@ -90,10 +93,11 @@ class Move(gui_base_original.Modifier):
         if self.call:
             self.view.removeEventCallback("SoEvent", self.call)
         self.selected_objects = Gui.Selection.getSelection()
-        self.selected_objects = utils.getGroupContents(self.selected_objects,
-                                                       addgroups=True,
-                                                       spaces=True,
-                                                       noarchchild=True)
+        self.selected_objects = \
+            groups.get_group_contents(self.selected_objects,
+                                      addgroups=True,
+                                      spaces=True,
+                                      noarchchild=True)
         self.selected_subelements = Gui.Selection.getSelectionEx()
         self.ui.lineUi(self.name)
         self.ui.modUi()

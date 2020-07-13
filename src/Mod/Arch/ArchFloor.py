@@ -244,7 +244,8 @@ class _Floor(ArchIFC.IfcProduct):
             self.Object = obj
         if (prop == "Group") and hasattr(obj,"Area"):
             a = 0
-            for o in Draft.getObjectsOfType(Draft.getGroupContents(obj.Group,addgroups=True),"Space"):
+            for o in Draft.getObjectsOfType(Draft.get_group_contents(obj.Group, addgroups=True),
+                                            "Space"):
                 if hasattr(o,"Area"):
                     if hasattr(o.Area,"Value"):
                         a += o.Area.Value

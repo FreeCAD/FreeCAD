@@ -818,7 +818,7 @@ class _Structure(ArchComponent.Component):
                         extrusion = obj.Tool.Shape.copy()
             else:
                 if obj.Normal.Length:
-                    normal = Vector(obj.Normal)
+                    normal = Vector(obj.Normal).normalize()
                     if isinstance(placement,list):
                         normal = placement[0].inverse().Rotation.multVec(normal)
                     else:

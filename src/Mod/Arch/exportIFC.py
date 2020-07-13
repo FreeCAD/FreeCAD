@@ -210,7 +210,8 @@ def export(exportList,filename,colors=None,preferences=None):
     ifcfile = ifcopenshell.open(templatefile)
     ifcfile = exportIFCHelper.writeUnits(ifcfile,preferences["IFC_UNIT"])
     history = ifcfile.by_type("IfcOwnerHistory")[0]
-    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    objectslist = Draft.get_group_contents(exportList, walls=True,
+                                           addgroups=True)
     annotations = []
     for obj in objectslist:
         if obj.isDerivedFrom("Part::Part2DObject"):
@@ -892,9 +893,9 @@ def export(exportList,filename,colors=None,preferences=None):
 
     for floor in Draft.getObjectsOfType(objectslist,"Floor")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
         if (Draft.getType(floor) == "Floor") or (hasattr(floor,"IfcType") and floor.IfcType == "Building Storey"):
-            objs = Draft.getGroupContents(floor,walls=True,addgroups=True)
+            objs = Draft.get_group_contents(floor, walls=True, addgroups=True)
             objs = Arch.pruneIncluded(objs)
-            objs.remove(floor) # getGroupContents + addgroups will include the floor itself
+            objs.remove(floor) # get_group_contents + addgroups will include the floor itself
             buildingelements, spaces = [], []
             for c in objs:
                 if c.Name in products and c.Name not in treated:
@@ -930,13 +931,14 @@ def export(exportList,filename,colors=None,preferences=None):
 
     for building in Draft.getObjectsOfType(objectslist,"Building")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
         if (Draft.getType(building) == "Building") or (hasattr(building,"IfcType") and building.IfcType == "Building"):
-            objs = Draft.getGroupContents(building,walls=True,addgroups=True)
+            objs = Draft.get_group_contents(building, walls=True,
+                                            addgroups=True)
             objs = Arch.pruneIncluded(objs)
             children = []
             childfloors = []
             for c in objs:
                 if not (c.Name in treated):
-                    if c.Name != building.Name: # getGroupContents + addgroups will include the building itself
+                    if c.Name != building.Name: # get_group_contents + addgroups will include the building itself
                         if c.Name in products.keys():
                             if Draft.getType(c) in ["Floor","BuildingPart","Space"]:
                                 childfloors.append(products[c.Name])
@@ -970,12 +972,12 @@ def export(exportList,filename,colors=None,preferences=None):
     # sites
 
     for site in exportIFCHelper.getObjectsOfIfcType(objectslist, "Site"):
-        objs = Draft.getGroupContents(site,walls=True,addgroups=True)
+        objs = Draft.get_group_contents(site, walls=True, addgroups=True)
         objs = Arch.pruneIncluded(objs)
         children = []
         childbuildings = []
         for c in objs:
-            if c.Name != site.Name: # getGroupContents + addgroups will include the building itself
+            if c.Name != site.Name: # get_group_contents + addgroups will include the building itself
                 if c.Name in products.keys():
                     if not (c.Name in treated):
                         if Draft.getType(c) == "Building":

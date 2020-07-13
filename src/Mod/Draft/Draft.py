@@ -45,19 +45,9 @@ defined in `DraftTools.py`.
 #
 #  @{
 
-import math
-import sys
-from PySide.QtCore import QT_TRANSLATE_NOOP
+import FreeCAD as App
 
-import FreeCAD
-from FreeCAD import Vector
-
-import DraftVecUtils
-import WorkingPlane
-from draftutils.translate import translate
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
+if App.GuiUp:
     import Draft_rc
     gui = True
     # To prevent complaints from code checkers (flake8)
@@ -70,129 +60,87 @@ __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Daniel Falck")
 __url__ = "https://www.freecadweb.org"
 
-
 # ---------------------------------------------------------------------------
-# Backwards compatibility
-# ---------------------------------------------------------------------------
-from DraftLayer import Layer as _VisGroup
-from DraftLayer import ViewProviderLayer as _ViewProviderVisGroup
-from DraftLayer import makeLayer
-
-from draftutils.utils import convert_draft_texts
-from draftutils.utils import convertDraftTexts
-
-# ---------------------------------------------------------------------------
-# General functions
+# Utility functions
 # ---------------------------------------------------------------------------
 from draftutils.utils import ARROW_TYPES as arrowtypes
 
-from draftutils.utils import stringencodecoin
-from draftutils.utils import string_encode_coin
+from draftutils.utils import (type_check,
+                              typecheck,
+                              get_param_type,
+                              getParamType,
+                              get_param,
+                              getParam,
+                              set_param,
+                              setParam,
+                              precision,
+                              tolerance,
+                              epsilon)
 
-from draftutils.utils import typecheck
-from draftutils.utils import type_check
+from draftutils.utils import (get_real_name,
+                              getRealName,
+                              get_type,
+                              getType,
+                              get_objects_of_type,
+                              getObjectsOfType,
+                              is_clone,
+                              isClone,
+                              get_clone_base,
+                              getCloneBase,
+                              print_shape,
+                              printShape,
+                              compare_objects,
+                              compareObjects,
+                              shapify,
+                              filter_objects_for_modifiers,
+                              filterObjectsForModifiers,
+                              is_closed_edge,
+                              isClosedEdge)
 
-from draftutils.utils import getParamType
-from draftutils.utils import get_param_type
+from draftutils.utils import (string_encode_coin,
+                              stringencodecoin,
+                              load_svg_patterns,
+                              loadSvgPatterns,
+                              svg_patterns,
+                              svgpatterns,
+                              get_rgb,
+                              getrgb,
+                              get_DXF,
+                              getDXF)
 
-from draftutils.utils import getParam
-from draftutils.utils import get_param
+from getSVG import getSVG
 
-from draftutils.utils import setParam
-from draftutils.utils import set_param
+from draftutils.gui_utils import (get3DView,
+                                  get_3d_view,
+                                  autogroup,
+                                  removeHidden,
+                                  remove_hidden,
+                                  formatObject,
+                                  format_object,
+                                  getSelection,
+                                  get_selection,
+                                  getSelectionEx,
+                                  get_selection_ex,
+                                  select,
+                                  loadTexture,
+                                  load_texture)
 
-from draftutils.utils import precision
-from draftutils.utils import tolerance
-from draftutils.utils import epsilon
+from draftutils.gui_utils import (dim_symbol,
+                                  dimSymbol,
+                                  dim_dash,
+                                  dimDash)
 
-from draftutils.utils import getRealName
-from draftutils.utils import get_real_name
+from draftutils.groups import (get_group_names,
+                               getGroupNames,
+                               ungroup,
+                               get_group_contents,
+                               getGroupContents,
+                               get_movable_children,
+                               getMovableChildren)
 
-from draftutils.utils import getType
-from draftutils.utils import get_type
-
-from draftutils.utils import getObjectsOfType
-from draftutils.utils import get_objects_of_type
-
-from draftutils.utils import isClone
-from draftutils.utils import is_clone
-
-from draftutils.utils import getCloneBase
-from draftutils.utils import get_clone_base
-
-from draftutils.utils import getGroupNames
-from draftutils.utils import get_group_names
-
-from draftutils.utils import ungroup
-
-from draftutils.utils import getGroupContents
-from draftutils.utils import get_group_contents
-
-from draftutils.utils import printShape
-from draftutils.utils import print_shape
-
-from draftutils.utils import compareObjects
-from draftutils.utils import compare_objects
-
-from draftutils.utils import shapify
-
-from draftutils.utils import loadSvgPatterns
-from draftutils.utils import load_svg_patterns
-
-from draftutils.utils import svgpatterns
-from draftutils.utils import svg_patterns
-
-from draftutils.utils import getMovableChildren
-from draftutils.utils import get_movable_children
-
-from draftutils.utils import filter_objects_for_modifiers
-from draftutils.utils import filterObjectsForModifiers
-
-from draftutils.utils import is_closed_edge
-from draftutils.utils import isClosedEdge
-
-from draftutils.utils import get_rgb
-from draftutils.utils import getrgb
-
-from draftutils.utils import get_DXF
-from draftutils.utils import getDXF
-
-import getSVG as svg
-getSVG = svg.getSVG
-
-from draftutils.gui_utils import get3DView
-from draftutils.gui_utils import get_3d_view
-
-from draftutils.gui_utils import autogroup
-
-from draftutils.gui_utils import dimSymbol
-from draftutils.gui_utils import dim_symbol
-
-from draftutils.gui_utils import dimDash
-from draftutils.gui_utils import dim_dash
-
-from draftutils.gui_utils import removeHidden
-from draftutils.gui_utils import remove_hidden
-
-from draftutils.gui_utils import formatObject
-from draftutils.gui_utils import format_object
-
-from draftutils.gui_utils import getSelection
-from draftutils.gui_utils import get_selection
-
-from draftutils.gui_utils import getSelectionEx
-from draftutils.gui_utils import get_selection_ex
-
-from draftutils.gui_utils import select
-
-from draftutils.gui_utils import loadTexture
-from draftutils.gui_utils import load_texture
-
-
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Draft functions
-#---------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 from draftfunctions.array import array
 
 from draftfunctions.cut import cut
@@ -207,25 +155,34 @@ from draftfunctions.fuse import fuse
 
 from draftfunctions.heal import heal
 
-from draftfunctions.move import move
-from draftfunctions.move import move_vertex, moveVertex
-from draftfunctions.move import move_edge, moveEdge
-from draftfunctions.move import copy_moved_edges, copyMovedEdges
+from draftfunctions.move import (move,
+                                 move_vertex,
+                                 moveVertex,
+                                 move_edge,
+                                 moveEdge,
+                                 copy_moved_edges,
+                                 copyMovedEdges)
 
-from draftfunctions.rotate import rotate
-from draftfunctions.rotate import rotate_vertex, rotateVertex
-from draftfunctions.rotate import rotate_edge, rotateEdge
-from draftfunctions.rotate import copy_rotated_edges, copyRotatedEdges
+from draftfunctions.rotate import (rotate,
+                                   rotate_vertex,
+                                   rotateVertex,
+                                   rotate_edge,
+                                   rotateEdge,
+                                   copy_rotated_edges,
+                                   copyRotatedEdges)
 
-from draftfunctions.scale import scale
-from draftfunctions.scale import scale_vertex, scaleVertex
-from draftfunctions.scale import scale_edge, scaleEdge
-from draftfunctions.scale import copy_scaled_edges, copyScaledEdges
+from draftfunctions.scale import (scale,
+                                  scale_vertex,
+                                  scaleVertex,
+                                  scale_edge,
+                                  scaleEdge,
+                                  copy_scaled_edges,
+                                  copyScaledEdges)
 
-from draftfunctions.join import join_wires
-from draftfunctions.join import join_wires as joinWires
-from draftfunctions.join import join_two_wires
-from draftfunctions.join import join_two_wires as joinTwoWires
+from draftfunctions.join import (join_wires,
+                                 joinWires,
+                                 join_two_wires,
+                                 joinTwoWires)
 
 from draftfunctions.split import split
 
@@ -236,158 +193,204 @@ from draftfunctions.mirror import mirror
 from draftfunctions.upgrade import upgrade
 
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Draft objects
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # base object
-from draftobjects.base import DraftObject
-from draftobjects.base import _DraftObject
+from draftobjects.base import (DraftObject,
+                               _DraftObject)
 
 # base viewprovider
-from draftviewproviders.view_base import ViewProviderDraft
-from draftviewproviders.view_base import _ViewProviderDraft
-from draftviewproviders.view_base import ViewProviderDraftAlt
-from draftviewproviders.view_base import _ViewProviderDraftAlt
-from draftviewproviders.view_base import ViewProviderDraftPart
-from draftviewproviders.view_base import _ViewProviderDraftPart
+from draftviewproviders.view_base import (ViewProviderDraft,
+                                          _ViewProviderDraft,
+                                          ViewProviderDraftAlt,
+                                          _ViewProviderDraftAlt,
+                                          ViewProviderDraftPart,
+                                          _ViewProviderDraftPart)
 
-# App::Link support
-from draftobjects.draftlink import DraftLink
-from draftobjects.draftlink import _DraftLink
-from draftviewproviders.view_draftlink import ViewProviderDraftLink
-from draftviewproviders.view_draftlink import _ViewProviderDraftLink
+# App::Link support, used by the arrays
+from draftobjects.draftlink import (DraftLink,
+                                    _DraftLink)
+from draftviewproviders.view_draftlink import (ViewProviderDraftLink,
+                                               _ViewProviderDraftLink)
 
 # circle
-from draftmake.make_circle import make_circle, makeCircle
-from draftobjects.circle import Circle, _Circle
-
-# drawing: view NOTE: Obsolete since Drawing was substituted bu TechDraw
-from draftmake.make_drawingview import make_drawing_view, makeDrawingView
-from draftobjects.drawingview import DrawingView, _DrawingView
+from draftobjects.circle import (Circle,
+                                 _Circle)
+from draftmake.make_circle import (make_circle,
+                                   makeCircle)
 
 # arcs
 from draftmake.make_arc_3points import make_arc_3points
 
+# drawing: obsolete since Drawing was replaced by TechDraw
+from draftobjects.drawingview import (DrawingView,
+                                      _DrawingView)
+from draftmake.make_drawingview import (make_drawing_view,
+                                        makeDrawingView)
+
 # ellipse
-from draftmake.make_ellipse import make_ellipse, makeEllipse
-from draftobjects.ellipse import Ellipse, _Ellipse
+from draftobjects.ellipse import (Ellipse,
+                                  _Ellipse)
+from draftmake.make_ellipse import (make_ellipse,
+                                    makeEllipse)
 
 # rectangle
-from draftmake.make_rectangle import make_rectangle, makeRectangle
-from draftobjects.rectangle import Rectangle, _Rectangle
-if FreeCAD.GuiUp:
-    from draftviewproviders.view_rectangle import ViewProviderRectangle
-    from draftviewproviders.view_rectangle import _ViewProviderRectangle
+from draftobjects.rectangle import (Rectangle,
+                                    _Rectangle)
+from draftmake.make_rectangle import (make_rectangle,
+                                      makeRectangle)
+
+if App.GuiUp:
+    from draftviewproviders.view_rectangle import (ViewProviderRectangle,
+                                                   _ViewProviderRectangle)
 
 # polygon
-from draftmake.make_polygon import make_polygon, makePolygon
-from draftobjects.polygon import Polygon, _Polygon
+from draftobjects.polygon import (Polygon,
+                                  _Polygon)
+from draftmake.make_polygon import (make_polygon,
+                                    makePolygon)
 
 # wire and line
-from draftmake.make_line import make_line, makeLine
-from draftmake.make_wire import make_wire, makeWire
-from draftobjects.wire import Wire, _Wire
-if FreeCAD.GuiUp:
-    from draftviewproviders.view_wire import ViewProviderWire
-    from draftviewproviders.view_wire import _ViewProviderWire
+from draftobjects.wire import (Wire,
+                               _Wire)
+
+from draftmake.make_line import (make_line,
+                                 makeLine)
+from draftmake.make_wire import (make_wire,
+                                 makeWire)
+
+if App.GuiUp:
+    from draftviewproviders.view_wire import (ViewProviderWire,
+                                              _ViewProviderWire)
 
 # bspline
-from draftmake.make_bspline import make_bspline, makeBSpline
-from draftobjects.bspline import BSpline, _BSpline
-if FreeCAD.GuiUp:
-    from draftviewproviders.view_bspline import ViewProviderBSpline
-    from draftviewproviders.view_bspline import _ViewProviderBSpline
+from draftobjects.bspline import (BSpline,
+                                  _BSpline)
+from draftmake.make_bspline import (make_bspline,
+                                    makeBSpline)
+
+if App.GuiUp:
+    from draftviewproviders.view_bspline import (ViewProviderBSpline,
+                                                 _ViewProviderBSpline)
 
 # bezcurve
-from draftmake.make_bezcurve import make_bezcurve, makeBezCurve
-from draftobjects.bezcurve import BezCurve, _BezCurve
-if FreeCAD.GuiUp:
-    from draftviewproviders.view_bezcurve import ViewProviderBezCurve
-    from draftviewproviders.view_bezcurve import _ViewProviderBezCurve
+from draftobjects.bezcurve import (BezCurve,
+                                   _BezCurve)
+from draftmake.make_bezcurve import (make_bezcurve,
+                                     makeBezCurve)
+
+if App.GuiUp:
+    from draftviewproviders.view_bezcurve import (ViewProviderBezCurve,
+                                                  _ViewProviderBezCurve)
 
 # copy
 from draftmake.make_copy import make_copy
 from draftmake.make_copy import make_copy as makeCopy
 
 # clone
-from draftmake.make_clone import make_clone, clone
-from draftobjects.clone import Clone, _Clone
-if FreeCAD.GuiUp:
-    from draftviewproviders.view_clone import ViewProviderClone
-    from draftviewproviders.view_clone import _ViewProviderClone
+from draftobjects.clone import (Clone,
+                                _Clone)
+from draftmake.make_clone import (make_clone,
+                                  clone)
+
+if App.GuiUp:
+    from draftviewproviders.view_clone import (ViewProviderClone,
+                                               _ViewProviderClone)
 
 # point
-from draftmake.make_point import make_point, makePoint
-from draftobjects.point import Point, _Point
-if FreeCAD.GuiUp:
-    from draftviewproviders.view_point import ViewProviderPoint
-    from draftviewproviders.view_point import _ViewProviderPoint
+from draftobjects.point import (Point,
+                                _Point)
+from draftmake.make_point import (make_point,
+                                  makePoint)
+
+if App.GuiUp:
+    from draftviewproviders.view_point import (ViewProviderPoint,
+                                               _ViewProviderPoint)
 
 # arrays
-from draftmake.make_patharray import make_path_array, makePathArray
-from draftobjects.patharray import PathArray, _PathArray
-
-from draftmake.make_pointarray import make_point_array, makePointArray
-from draftobjects.pointarray import PointArray, _PointArray
-
-from draftmake.make_array import make_array, makeArray
-from draftobjects.array import Array, _Array
-
-if FreeCAD.GuiUp:
-    from draftviewproviders.view_array import ViewProviderDraftArray
-    from draftviewproviders.view_array import _ViewProviderDraftArray
-
-from draftmake.make_circulararray import make_circular_array
-from draftmake.make_orthoarray import make_ortho_array
-from draftmake.make_orthoarray import make_ortho_array2d
-from draftmake.make_orthoarray import make_rect_array
-from draftmake.make_orthoarray import make_rect_array2d
+from draftobjects.array import (Array,
+                                _Array)
+from draftmake.make_array import (make_array,
+                                  makeArray)
+from draftmake.make_orthoarray import (make_ortho_array,
+                                       make_ortho_array2d,
+                                       make_rect_array,
+                                       make_rect_array2d)
 from draftmake.make_polararray import make_polar_array
+from draftmake.make_circulararray import make_circular_array
+
+from draftobjects.patharray import (PathArray,
+                                    _PathArray)
+from draftmake.make_patharray import (make_path_array,
+                                      makePathArray)
+
+from draftobjects.pointarray import (PointArray,
+                                     _PointArray)
+from draftmake.make_pointarray import (make_point_array,
+                                       makePointArray)
+
+if App.GuiUp:
+    from draftviewproviders.view_array import (ViewProviderDraftArray,
+                                               _ViewProviderDraftArray)
 
 # facebinder
-from draftmake.make_facebinder import make_facebinder, makeFacebinder
-from draftobjects.facebinder import Facebinder, _Facebinder
-if FreeCAD.GuiUp:
-    from draftviewproviders.view_facebinder import ViewProviderFacebinder
-    from draftviewproviders.view_facebinder import _ViewProviderFacebinder
+from draftobjects.facebinder import (Facebinder,
+                                     _Facebinder)
+from draftmake.make_facebinder import (make_facebinder,
+                                       makeFacebinder)
+
+if App.GuiUp:
+    from draftviewproviders.view_facebinder import (ViewProviderFacebinder,
+                                                    _ViewProviderFacebinder)
 
 # shapestring
-from draftmake.make_block import make_block, makeBlock
-from draftobjects.block import Block, _Block
+from draftobjects.block import (Block,
+                                _Block)
+from draftmake.make_block import (make_block,
+                                  makeBlock)
 
 # shapestring
-from draftmake.make_shapestring import make_shapestring, makeShapeString
-from draftobjects.shapestring import ShapeString, _ShapeString
+from draftobjects.shapestring import (ShapeString,
+                                      _ShapeString)
+from draftmake.make_shapestring import (make_shapestring,
+                                        makeShapeString)
 
 # shape 2d view
-from draftmake.make_shape2dview import make_shape2dview, makeShape2DView
-from draftobjects.shape2dview import Shape2DView, _Shape2DView
+from draftobjects.shape2dview import (Shape2DView,
+                                      _Shape2DView)
+from draftmake.make_shape2dview import (make_shape2dview,
+                                        makeShape2DView)
 
 # sketch
-from draftmake.make_sketch import make_sketch, makeSketch
+from draftmake.make_sketch import (make_sketch,
+                                   makeSketch)
 
 # working plane proxy
-from draftmake.make_wpproxy import make_workingplaneproxy
-from draftmake.make_wpproxy import makeWorkingPlaneProxy
 from draftobjects.wpproxy import WorkingPlaneProxy
-if FreeCAD.GuiUp:
+from draftmake.make_wpproxy import (make_workingplaneproxy,
+                                    makeWorkingPlaneProxy)
+
+if App.GuiUp:
     from draftviewproviders.view_wpproxy import ViewProviderWorkingPlaneProxy
 
-from draftmake.make_fillet import make_fillet
 from draftobjects.fillet import Fillet
-if FreeCAD.GuiUp:
+from draftmake.make_fillet import make_fillet
+
+if App.GuiUp:
     from draftviewproviders.view_fillet import ViewProviderFillet
 
-#---------------------------------------------------------------------------
-# Draft annotation objects
-#---------------------------------------------------------------------------
+# Layers
+from DraftLayer import Layer as _VisGroup
+from DraftLayer import ViewProviderLayer as _ViewProviderVisGroup
+from DraftLayer import makeLayer
 
+# Annotation objects
 from draftobjects.dimension import (LinearDimension,
                                     _Dimension,
                                     AngularDimension,
                                     _AngularDimension)
-
 from draftmake.make_dimension import (make_dimension,
                                       makeDimension,
                                       make_linear_dimension,
@@ -396,29 +399,30 @@ from draftmake.make_dimension import (make_dimension,
                                       make_angular_dimension,
                                       makeAngularDimension)
 
-if FreeCAD.GuiUp:
-    from draftviewproviders.view_dimension import (ViewProviderLinearDimension,
-                                                   _ViewProviderDimension,
-                                                   ViewProviderAngularDimension,
-                                                   _ViewProviderAngularDimension)
+if App.GuiUp:
+    from draftviewproviders.view_dimension \
+        import (ViewProviderLinearDimension,
+                _ViewProviderDimension,
+                ViewProviderAngularDimension,
+                _ViewProviderAngularDimension)
 
 from draftobjects.label import (Label,
                                 DraftLabel)
-
 from draftmake.make_label import (make_label,
                                   makeLabel)
 
-if FreeCAD.GuiUp:
+if App.GuiUp:
     from draftviewproviders.view_label import (ViewProviderLabel,
                                                ViewProviderDraftLabel)
 
 from draftobjects.text import (Text,
                                DraftText)
-
 from draftmake.make_text import (make_text,
-                                 makeText)
+                                 makeText,
+                                 convert_draft_texts,
+                                 convertDraftTexts)
 
-if FreeCAD.GuiUp:
+if App.GuiUp:
     from draftviewproviders.view_text import (ViewProviderText,
                                               ViewProviderDraftText)
 

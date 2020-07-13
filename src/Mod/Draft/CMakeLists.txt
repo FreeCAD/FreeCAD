@@ -68,6 +68,7 @@ SET(Draft_tests
 
 SET(Draft_utilities
     draftutils/__init__.py
+    draftutils/groups.py
     draftutils/init_tools.py
     draftutils/init_draft_statusbar.py
     draftutils/units.py
