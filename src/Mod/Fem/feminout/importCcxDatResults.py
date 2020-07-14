@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "importCcxDatResults"
+__title__ = "Result import for Calculix dat file format"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 

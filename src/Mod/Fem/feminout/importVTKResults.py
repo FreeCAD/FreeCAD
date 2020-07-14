@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD Result import and export VTK file library"
+__title__ = "Result import and export for VTK file format"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 

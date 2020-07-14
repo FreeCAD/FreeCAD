@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD .inp file reader"
+__title__ = "Mesh import for Abacus/CalculiX inp file format"
 __author__ = "Frantisek Loeffelmann, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 __date__ = "04/08/2016"
