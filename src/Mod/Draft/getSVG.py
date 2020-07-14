@@ -1,3 +1,10 @@
+"""Provides functions to return the SVG representation of various shapes."""
+## @defgroup getSVG getSVG
+#  \ingroup DRAFT
+#  \brief Provides functions to return the SVG representation of shapes.
+
+## \addtogroup getSVG
+# @{
 import six
 
 import FreeCAD, math, os, DraftVecUtils, WorkingPlane
@@ -865,3 +872,5 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
     if techdraw:
         svg = '<g transform ="scale(1,-1)">\n    '+svg+'</g>\n'
     return svg
+
+## @}
