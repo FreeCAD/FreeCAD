@@ -31,8 +31,10 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD Result import and export VTK file library
 
 import os
+
 import FreeCAD
 from FreeCAD import Console
+
 import Fem
 
 

@@ -31,9 +31,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD Calculix FRD Reader for FEM workbench
 
+import os
+
 import FreeCAD
 from FreeCAD import Console
-import os
 
 
 # ********* generic FreeCAD import and export methods *********
@@ -70,8 +71,8 @@ def importFrd(
     analysis=None,
     result_name_prefix=""
 ):
-    from . import importToolsFem
     import ObjectsFem
+    from . import importToolsFem
 
     if analysis:
         doc = analysis.Document

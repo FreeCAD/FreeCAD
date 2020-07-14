@@ -31,9 +31,10 @@ __date__ = "04/08/2016"
 #  \ingroup FEM
 #  \brief FreeCAD INP file reader for FEM workbench
 
+import os
+
 import FreeCAD
 from FreeCAD import Console
-import os
 
 
 # ********* generic FreeCAD import and export methods *********

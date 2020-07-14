@@ -29,9 +29,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD Z88 Disp Reader for FEM workbench
 
+import os
+
 import FreeCAD
 from FreeCAD import Console
-import os
 
 
 # ********* generic FreeCAD import and export methods *********
