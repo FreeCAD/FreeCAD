@@ -45,6 +45,17 @@ macro(CompilerChecksAndSetups)
         endif()
     endif(FREECAD_VERSION VERSION_GREATER 0.16)
 
+    # Escape the two plus chars as otherwise cmake complains about invalid regex
+    if(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+20")
+        set(CMAKE_CXX_STANDARD 20)
+    elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+17")
+        set(CMAKE_CXX_STANDARD 17)
+    elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+14")
+        set(CMAKE_CXX_STANDARD 14)
+    elseif (${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+11")
+        set(CMAKE_CXX_STANDARD 11)
+    endif()
+
     # Log the compiler and version
     message(STATUS "Compiler: ${CMAKE_CXX_COMPILER_ID}, version: ${CMAKE_CXX_COMPILER_VERSION}")
 
@@ -52,17 +63,6 @@ macro(CompilerChecksAndSetups)
         include(${CMAKE_SOURCE_DIR}/cMake/ConfigureChecks.cmake)
         configure_file(${CMAKE_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
         add_definitions(-DHAVE_CONFIG_H)
-
-        # Escape the two plus chars as otherwise cmake complains about invalid regex
-        if(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+20")
-            set(CMAKE_CXX_STANDARD 20)
-        elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+17")
-            set(CMAKE_CXX_STANDARD 17)
-        elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+14")
-            set(CMAKE_CXX_STANDARD 14)
-        elseif (${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+11")
-            set(CMAKE_CXX_STANDARD 11)
-        endif()
 
         # For now only set pedantic option for clang
         if(CMAKE_COMPILER_IS_CLANGXX)
