@@ -42,8 +42,11 @@ class Proxy(equationbase.BaseProxy):
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyInteger", "Priority",
-            "Base", "Select type of solver for linear system")
+            "App::PropertyInteger",
+            "Priority",
+            "Base",
+            "Select type of solver for linear system"
+        )
 
 
 class ViewProxy(equationbase.BaseViewProxy):

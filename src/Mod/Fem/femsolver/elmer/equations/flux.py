@@ -46,32 +46,56 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyBool", "CalculateFlux",
-            "Flux", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "CalculateFlux",
+            "Flux",
+            "Select type of solver for linear system"
+        )
         obj.addProperty(
-            "App::PropertyString", "FluxVariable",
-            "Flux", "Insert variable name for flux calculation")
-        """
-        #obj.addProperty(
-            #"App::PropertyBool", "CalculateFluxAbs",
-            #"Flux", "Select calculation of abs of flux")
-        #obj.addProperty(
-            #"App::PropertyBool", "CalculateFluxMagnitude",
-            #"Flux", "Select calculation of magnitude of flux")
+            "App::PropertyString",
+            "FluxVariable",
+            "Flux",
+            "Insert variable name for flux calculation"
+        )
         """
         obj.addProperty(
-            "App::PropertyBool", "CalculateGrad",
-            "Flux", "Select  calculation of gradient")
+            "App::PropertyBool",
+            "CalculateFluxAbs",
+            "Flux",
+            "Select calculation of abs of flux"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "CalculateFluxMagnitude",
+            "Flux",
+            "Select calculation of magnitude of flux"
+        )
         """
-        #obj.addProperty(
-            #"App::PropertyBool", "CalculateGradAbs",
-            #"Flux", "Select calculation of abs of gradient")
-        #obj.addProperty(
-            #"App::PropertyBool", "CalculateGradMagnitude",
-            #"Flux", "Select calculation of magnitude of gradient")
-        #obj.addProperty(
-            #"App::PropertyBool", "EnforcePositiveMagnitude",
-            #"Flux", "Select calculation of positive magnitude")
+        obj.addProperty(
+            "App::PropertyBool",
+            "CalculateGrad",
+            "Flux",
+            "Select calculation of gradient"
+        )
+        """
+        obj.addProperty(
+            "App::PropertyBool",
+            "CalculateGradAbs",
+            "Flux",
+            "Select calculation of abs of gradient"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "CalculateGradMagnitude",
+            "Flux",
+            "Select calculation of magnitude of gradient"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "EnforcePositiveMagnitude",
+            "Flux",
+            "Select calculation of positive magnitude"
+        )
         """
         obj.Priority = 5
 

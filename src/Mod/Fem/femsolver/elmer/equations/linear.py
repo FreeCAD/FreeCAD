@@ -63,46 +63,76 @@ class Proxy(equation.Proxy):
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyEnumeration", "LinearSolverType",
-            "Linear System", "Select type of solver for linear system")
+            "App::PropertyEnumeration",
+            "LinearSolverType",
+            "Linear System",
+            "Select type of solver for linear system"
+        )
         obj.LinearSolverType = LINEAR_SOLVER
         obj.LinearSolverType = "Iterative"
         obj.addProperty(
-            "App::PropertyEnumeration", "LinearDirectMethod",
-            "Linear System", "Select type of solver for linear system")
+            "App::PropertyEnumeration",
+            "LinearDirectMethod",
+            "Linear System",
+            "Select type of solver for linear system"
+        )
         obj.LinearDirectMethod = LINEAR_DIRECT
         obj.addProperty(
-            "App::PropertyEnumeration", "LinearIterativeMethod",
-            "Linear System", "Select type of solver for linear system")
+            "App::PropertyEnumeration",
+            "LinearIterativeMethod",
+            "Linear System",
+            "Select type of solver for linear system"
+        )
         obj.LinearIterativeMethod = LINEAR_ITERATIVE
         obj.LinearIterativeMethod = "BiCGStab"
         obj.addProperty(
-            "App::PropertyInteger", "BiCGstablDegree",
-            "Linear System", "Select type of solver for linear system")
+            "App::PropertyInteger",
+            "BiCGstablDegree",
+            "Linear System",
+            "Select type of solver for linear system"
+        )
         obj.addProperty(
-            "App::PropertyEnumeration", "LinearPreconditioning",
-            "Linear System", "Select type of solver for linear system")
+            "App::PropertyEnumeration",
+            "LinearPreconditioning",
+            "Linear System",
+            "Select type of solver for linear system"
+        )
         obj.LinearPreconditioning = LINEAR_PRECONDITIONING
         obj.LinearPreconditioning = "ILU0"
         obj.addProperty(
-            "App::PropertyFloat", "LinearTolerance",
-            "Linear System", "Select type of solver for linear system")
+            "App::PropertyFloat",
+            "LinearTolerance",
+            "Linear System",
+            "Select type of solver for linear system"
+        )
         obj.LinearTolerance = 1e-8
         obj.addProperty(
-            "App::PropertyInteger", "LinearIterations",
-            "Linear System", "Select type of solver for linear system")
+            "App::PropertyInteger",
+            "LinearIterations",
+            "Linear System",
+            "Select type of solver for linear system"
+        )
         obj.LinearIterations = 500
         obj.addProperty(
-            "App::PropertyFloat", "SteadyStateTolerance",
-            "Steady State", "Select type of solver for linear system")
+            "App::PropertyFloat",
+            "SteadyStateTolerance",
+            "Steady State",
+            "Select type of solver for linear system"
+        )
         obj.SteadyStateTolerance = 1e-5
         obj.addProperty(
-            "App::PropertyBool", "Stabilize",
-            "Base", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "Stabilize",
+            "Base",
+            "Select type of solver for linear system"
+        )
         obj.Stabilize = True
         obj.addProperty(
-            "App::PropertyBool", "Bubbles",
-            "Base", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "Bubbles",
+            "Base",
+            "Select type of solver for linear system"
+        )
         obj.Bubbles = False
 
 

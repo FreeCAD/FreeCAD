@@ -41,20 +41,35 @@ class Proxy(linear.Proxy):
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyFloat", "NonlinearTolerance",
-            "Nonlinear System", "Select type of solver for linear system")
+            "App::PropertyFloat",
+            "NonlinearTolerance",
+            "Nonlinear System",
+            "Select type of solver for linear system"
+        )
         obj.addProperty(
-            "App::PropertyInteger", "NonlinearIterations",
-            "Nonlinear System", "Select type of solver for linear system")
+            "App::PropertyInteger",
+            "NonlinearIterations",
+            "Nonlinear System",
+            "Select type of solver for linear system"
+        )
         obj.addProperty(
-            "App::PropertyFloat", "RelaxationFactor",
-            "Nonlinear System", "Select type of solver for linear system")
+            "App::PropertyFloat",
+            "RelaxationFactor",
+            "Nonlinear System",
+            "Select type of solver for linear system"
+        )
         obj.addProperty(
-            "App::PropertyInteger", "NonlinearNewtonAfterIterations",
-            "Nonlinear System", "Select type of solver for linear system")
+            "App::PropertyInteger",
+            "NonlinearNewtonAfterIterations",
+            "Nonlinear System",
+            "Select type of solver for linear system"
+        )
         obj.addProperty(
-            "App::PropertyFloat", "NonlinearNewtonAfterTolerance",
-            "Nonlinear System", "Select type of solver for linear system")
+            "App::PropertyFloat",
+            "NonlinearNewtonAfterTolerance",
+            "Nonlinear System",
+            "Select type of solver for linear system"
+        )
         obj.NonlinearTolerance = 1e-8
         obj.NonlinearIterations = 500
         obj.RelaxationFactor = 1
