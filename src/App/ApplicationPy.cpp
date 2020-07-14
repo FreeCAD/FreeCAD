@@ -119,7 +119,7 @@ PyMethodDef Application::Methods[] = {
 //   "saveDocument(string) -- Save the document to a file."},
 //  {"saveDocumentAs", (PyCFunction) Application::sSaveDocumentAs, METH_VARARGS},
     {"newDocument",    reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( Application::sNewDocument )), METH_VARARGS|METH_KEYWORDS,
-     "newDocument(name, label=None, hidden=False, tmp=False) -> object\n"
+     "newDocument(name, label=None, hidden=False, temp=False) -> object\n"
      "Create a new document with a given name.\n\n"
      "name: unique document name which is checked automatically.\n"
      "label: optional user changeable label for the document.\n"
@@ -273,7 +273,7 @@ PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args, PyObjec
     PyObject *temp = Py_False;
     static char *kwlist[] = {"name","label","hidden","temp",0};
     if (!PyArg_ParseTupleAndKeywords(args, kwd, "|etetOO", kwlist,
-                "utf-8", &docName, "utf-8", &usrName, &hidden))
+                "utf-8", &docName, "utf-8", &usrName, &hidden, &temp))
         return NULL;
 
     PY_TRY {
