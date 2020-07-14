@@ -28,6 +28,11 @@ setup()
 
 """
 
+# cantilever under self weight made from steel grad 235
+# l = 32 yields just from self weight 
+# https://forum.freecadweb.org/viewtopic.php?f=18&t=48513
+# max deformation = 576.8 mm
+
 import FreeCAD
 
 import Fem
@@ -44,14 +49,15 @@ def init_doc(doc=None):
 
 
 def get_information():
-    info = {"name": "Constraint Self Weight Cantilever",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed", "self weight"],
-            "solvers": ["calculix", "elmer"],
-            "material": "solid",
-            "equation": "mechanical"
-            }
+    info = {
+        "name": "Constraint Self Weight Cantilever",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": ["fixed", "self weight"],
+        "solvers": ["calculix", "elmer"],
+        "material": "solid",
+        "equation": "mechanical"
+    }
     return info
 
 
