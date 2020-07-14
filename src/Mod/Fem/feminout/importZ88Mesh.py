@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD Z88 Mesh reader and writer"
+__title__ = "Mesh import and export for Z88 mesh file format"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 

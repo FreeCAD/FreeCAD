@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD Z88 Disp Reader"
+__title__ = "Result import for Z88 displacements format"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
