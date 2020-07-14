@@ -526,7 +526,7 @@ void SelectionView::onEnablePickList() {
 ////////////////////////////////////////////////////////////////////////
 
 #if QT_VERSION  >= 0x050000
-static QLatin1String _DefaultStyle(
+static QString _DefaultStyle = QLatin1String(
 "*{ background-color: transparent;"
    "border: none;}"
 "QMenu { background-color: rgba(255,255,255,130); menu-scrollable:1; }"
@@ -536,7 +536,7 @@ static QLatin1String _DefaultStyle(
   "background-color: rgba(0,0,130,130);}"
 "QMenu::item:disabled { color: palette(mid); }");
 #else
-static QLatin1String _DefaultStyle("QMenu {menu-scrollable:1}");
+static QString _DefaultStyle = QLatin1String("QMenu {menu-scrollable:1}");
 #endif
 
 namespace Gui {
@@ -578,7 +578,8 @@ void setupMenuStyle(QMenu *menu)
     menu->setAttribute(Qt::WA_NoSystemBackground, true);
     menu->setAttribute(Qt::WA_TranslucentBackground, true);
 #else
-    menu->setStyleSheet(QLatin1String(_DefaultStyle));
+    if (menu->styleSheet() != _DefaultStyle)
+        menu->setStyleSheet(_DefaultStyle);
 #endif
 }
 }
