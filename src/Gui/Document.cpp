@@ -2204,13 +2204,18 @@ void Document::undo(int iSteps)
 {
     Base::FlagToggler<> flag(d->_isTransacting);
 
-    if(!checkTransactionID(true,iSteps))
-        return;
+    Gui::Selection().clearCompleteSelection();
 
-    for (int i=0;i<iSteps;i++) {
-        getDocument()->undo();
+    {
+        App::TransactionGuard guard(true);
+
+        if(!checkTransactionID(true,iSteps))
+            return;
+
+        for (int i=0;i<iSteps;i++) {
+            getDocument()->undo();
+        }
     }
-    App::GetApplication().signalUndo();
 }
 
 /// Will REDO one or more steps
@@ -2218,14 +2223,18 @@ void Document::redo(int iSteps)
 {
     Base::FlagToggler<> flag(d->_isTransacting);
 
-    if(!checkTransactionID(false,iSteps))
-        return;
+    Gui::Selection().clearCompleteSelection();
 
-    for (int i=0;i<iSteps;i++) {
-        getDocument()->redo();
+    {
+        App::TransactionGuard guard(false);
+
+        if(!checkTransactionID(false,iSteps))
+            return;
+
+        for (int i=0;i<iSteps;i++) {
+            getDocument()->redo();
+        }
     }
-    App::GetApplication().signalRedo();
-
     for (auto it : d->_redoViewProviders)
         handleChildren3D(it);
     d->_redoViewProviders.clear();

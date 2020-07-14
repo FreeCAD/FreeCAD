@@ -42,6 +42,7 @@ class Property;
 class PropertyContainer;
 class DocumentObject;
 class Extension;
+class Document;
 
 enum PropertyType 
 {
@@ -160,6 +161,10 @@ public:
 
   virtual std::string getFullName() const {return std::string();}
 
+  /// Return owner document of this container
+  virtual App::Document *getOwnerDocument() const 
+    {return nullptr;}
+
   /// find a property by its name
   virtual Property *getPropertyByName(const char* name) const;
   /// get the name of a property
@@ -224,6 +229,7 @@ public:
   }
 
   friend class Property;
+  friend class TransactionObject;
   friend class DynamicProperty;
 
 
@@ -239,6 +245,10 @@ protected:
 
   virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
   virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop);
+
+  virtual bool isOnChangeBlocked() const {
+      return false;
+  }
 
 private:
   // forbidden
