@@ -590,7 +590,6 @@ public:
     };
     friend class LogDisabler;
 
-protected:
     enum CmdType {
         AlterDoc       = 1,  /**< Command change the Document */
         Alter3DView    = 2,  /**< Command change the Gui */
@@ -601,6 +600,7 @@ protected:
         NoHistory      = 64, /**< Do not record usage history of this command */
     };
 
+protected:
     /** @name Attributes 
      *  Set by the inherited constructor to set up the most important properties 
      *  of the command. In the Command constructor are set default values! 

@@ -392,7 +392,7 @@ void Command::onInvoke(int index) {
 
 void Command::invoke(int i, TriggerSource trigger)
 {
-    if (trigger != TriggerNone && !(eType & NoHistory))
+    if (trigger != TriggerNone)
         CmdHistoryAction::onInvokeCommand(getName());
 
     CommandTrigger cmdTrigger(_trigger,trigger);

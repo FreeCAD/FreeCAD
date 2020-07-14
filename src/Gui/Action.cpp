@@ -38,6 +38,8 @@
 # include <QElapsedTimer>
 #endif
 
+#include <QWidgetAction>
+
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 # include <QScreen>
 #endif
@@ -62,6 +64,7 @@
 #include "Document.h"
 #include "SelectionView.h"
 #include "ViewParams.h"
+#include "BitmapFactory.h"
 
 #include <Base/Exception.h>
 #include <App/Application.h>
@@ -1153,8 +1156,116 @@ void SelUpAction::popup(const QPoint &pt)
 
 // --------------------------------------------------------------------
 
+class CommandModel : public QAbstractItemModel
+{
+public:
+    struct CmdInfo {
+        QString text;
+        Command *cmd;
+    };
+    std::vector<CmdInfo> cmds;
+    int revision;
+
+public:
+    CommandModel(QObject* parent)
+        : QAbstractItemModel(parent)
+    {
+        revision = 0;
+        update();
+    }
+
+    void update()
+    {
+        auto &manager = Application::Instance->commandManager();
+        if (revision == manager.getRevision())
+            return;
+        beginResetModel();
+        revision = manager.getRevision();
+        cmds.clear();
+        for (auto &v : manager.getCommands()) {
+            cmds.emplace_back();
+            auto &info = cmds.back();
+            info.cmd = v.second;
+#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
+            info.text = QString::fromLatin1("%2 (%1)").arg(
+                    QString::fromLatin1(info.name.c_str()),
+                    qApp->translate(info.cmd->className(), info.cmd->getMenuText()));
+#else
+            info.text = qApp->translate(info.cmd->className(), info.cmd->getMenuText());
+#endif
+        }
+        endResetModel();
+    }
+
+    virtual QModelIndex parent(const QModelIndex &) const
+    {
+        return QModelIndex();
+    }
+
+    virtual QVariant data(const QModelIndex & index, int role) const
+    {
+        if (index.row() < 0 || index.row() >= (int)cmds.size())
+            return QVariant();
+
+        auto &info = cmds[index.row()];
+
+        switch(role) {
+        case Qt::DisplayRole:
+        case Qt::EditRole:
+            return info.text;
+        case Qt::DecorationRole:
+            return BitmapFactory().iconFromTheme(info.cmd->getPixmap());
+        case Qt::ToolTipRole:
+            return qApp->translate(info.cmd->className(), info.cmd->getToolTipText());
+        case Qt::UserRole:
+            return QByteArray(info.cmd->getName());
+        default:
+            return QVariant();
+        }
+    }
+
+    virtual QModelIndex index(int row, int, const QModelIndex &) const
+    {
+        return this->createIndex(row, 0);
+    }
+
+    virtual int rowCount(const QModelIndex &) const
+    {
+        return (int)(cmds.size());
+    }
+
+    virtual int columnCount(const QModelIndex &) const
+    {
+        return 1;
+    }
+};
+
+class CmdHistoryMenu: public QMenu
+{
+public:
+    CmdHistoryMenu(QWidget *focus)
+        :focusWidget(focus)
+    {}
+
+    void keyPressEvent(QKeyEvent *e)
+    {
+        QMenu::keyPressEvent(e);
+        if (e->isAccepted())
+            return;
+        if (isVisible() && !e->text().isEmpty()) {
+            focusWidget->setFocus();
+            QKeyEvent ke(e->type(), e->key(), e->modifiers(), e->text(), e->isAutoRepeat(), e->count());
+            qApp->sendEvent(focusWidget, &ke);
+        }
+    }
+
+public:
+    QWidget *focusWidget;
+};
+
+// --------------------------------------------------------------------
 CmdHistoryAction::CmdHistoryAction ( Command* pcCmd, QObject * parent )
-  : Action(pcCmd, parent), _menu(0)
+  : Action(pcCmd, parent)
 {
     qApp->installEventFilter(this);
 }
@@ -1164,11 +1275,26 @@ CmdHistoryAction::~CmdHistoryAction()
     delete _menu;
 }
 
-
 void CmdHistoryAction::addTo ( QWidget * w )
 {
     if (!_menu) {
-        _menu = new QMenu;
+        _lineedit = new QLineEdit;
+        _lineedit->setPlaceholderText(tr("Type to search..."));
+        _widgetAction = new QWidgetAction(this);
+        _widgetAction->setDefaultWidget(_lineedit);
+        _completer = new QCompleter(this);
+        _completer->setModel(new CommandModel(_completer));
+#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
+        _completer->setFilterMode(Qt::MatchContains);
+#endif
+        _completer->setCaseSensitivity(Qt::CaseInsensitive);
+        _completer->setCompletionMode(QCompleter::PopupCompletion);
+        _completer->setWidget(_lineedit);
+        connect(_lineedit, SIGNAL(textEdited(QString)), this, SLOT(onTextChanged(QString)));
+        connect(_completer, SIGNAL(activated(QModelIndex)), this, SLOT(onCommandActivated(QModelIndex)));
+        connect(_completer, SIGNAL(highlighted(QString)), _lineedit, SLOT(setText(QString)));
+
+        _menu = new CmdHistoryMenu(_lineedit);
         setupMenuStyle(_menu);
         _action->setMenu(_menu);
         connect(_menu, SIGNAL(aboutToShow()), this, SLOT(onShowMenu()));
@@ -1178,27 +1304,64 @@ void CmdHistoryAction::addTo ( QWidget * w )
 }
 
 static long _RecentCommandID;
-static std::map<long, const char *> _RecentCommands;
+static std::map<long, const char *, std::greater<long> > _RecentCommands;
 static std::unordered_map<std::string, long> _RecentCommandMap;
 static long _RecentCommandPopulated;
 static QElapsedTimer _ButtonTime;
 
-bool CmdHistoryAction::eventFilter(QObject *, QEvent *ev)
+bool CmdHistoryAction::eventFilter(QObject *o, QEvent *ev)
 {
-    if (ev->type() == QEvent::MouseButtonPress) {
+    switch(ev->type()) {
+    case QEvent::MouseButtonPress: {
         auto e = static_cast<QMouseEvent*>(ev);
         if (e->button() == Qt::LeftButton)
             _ButtonTime.start();
+        break;
+    }
+    case QEvent::KeyPress: {
+        QKeyEvent * ke = static_cast<QKeyEvent*>(ev);
+        switch(ke->key()) {
+        case Qt::Key_Tab: {
+            if (_completer && o == _completer->popup()) {
+                QKeyEvent kevent(ke->type(),Qt::Key_Down,0);
+                qApp->sendEvent(_completer->popup(), &kevent);
+                return true;
+            }
+            break;
+        }
+        case Qt::Key_Backtab: {
+            if (_completer && o == _completer->popup()) {
+                QKeyEvent kevent(ke->type(),Qt::Key_Up,0);
+                qApp->sendEvent(_completer->popup(), &kevent);
+                return true;
+            }
+            break;
+        }
+        default:
+            break;
+        }
+        break;
+    }
+    default:
+        break;
     }
     return false;
 }
 
-void CmdHistoryAction::onInvokeCommand(const char *name)
+void CmdHistoryAction::onInvokeCommand(const char *name, bool force)
 {
-    if(!_ButtonTime.isValid() || _ButtonTime.elapsed() > 500)
+    if(!force && (!_ButtonTime.isValid() || _ButtonTime.elapsed() > 1000))
         return;
 
     _ButtonTime.invalidate();
+
+    auto &manager = Application::Instance->commandManager();
+    Command *cmd = manager.getCommandByName(name);
+    if (!cmd || qobject_cast<CmdHistoryAction*>(cmd->getAction()))
+        return;
+    
+    if (!force && (cmd->getType() & Command::NoHistory) && !_RecentCommandMap.count(name))
+        return;
 
     auto res = _RecentCommandMap.insert(std::make_pair(name, 0));
     if (!res.second)
@@ -1215,14 +1378,44 @@ void CmdHistoryAction::onShowMenu()
 {
     setupMenuStyle(_menu);
 
+    _menu->setFocus(Qt::PopupFocusReason);
+    _lineedit->setText(QString());
+    static_cast<CommandModel*>(_completer->model())->update();
+
     if (_RecentCommandPopulated == _RecentCommandID)
         return;
 
     _RecentCommandPopulated = _RecentCommandID;
     _menu->clear();
+    _menu->addAction(_widgetAction);
+    _menu->addSeparator();
     auto &manager = Application::Instance->commandManager();
     for (auto &v : _RecentCommands)
         manager.addTo(v.second, _menu);
+}
+
+void CmdHistoryAction::onCommandActivated(const QModelIndex &index)
+{
+    _menu->hide();
+
+    QByteArray name = _completer->completionModel()->data(index, Qt::UserRole).toByteArray();
+    auto &manager = Application::Instance->commandManager();
+    if (name.size()) {
+        manager.runCommandByName(name.constData());
+        onInvokeCommand(name.constData(), true);
+    }
+}
+
+void CmdHistoryAction::onTextChanged(const QString &txt)
+{
+    if (txt.size() < 3)
+        return;
+
+    _completer->setCompletionPrefix(txt);
+    QRect rect = _lineedit->rect();
+    if (rect.width() < 300)
+        rect.setWidth(300);
+    _completer->complete(rect);
 }
 
 void CmdHistoryAction::popup(const QPoint &pt)
@@ -1422,6 +1615,7 @@ void ToolbarMenuAction::update()
 void ToolbarMenuAction::popup(const QPoint &pt)
 {
     _menu->exec(pt);
+    _menu->setActiveAction(0);
 }
 
 #include "moc_Action.cpp"

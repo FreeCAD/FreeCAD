@@ -31,6 +31,10 @@
 
 #include <memory>
 
+class QCompleter;
+class QLineEdit;
+class QWidgetAction;
+
 namespace Gui 
 {
 class Command;
@@ -373,15 +377,21 @@ public:
     virtual ~CmdHistoryAction();
     void addTo (QWidget * w);
     void popup(const QPoint &pt);
-    static void onInvokeCommand(const char *);
+    static void onInvokeCommand(const char *, bool force=false);
 
+protected:
     bool eventFilter(QObject *, QEvent *ev);
 
 protected Q_SLOTS:
     void onShowMenu();
+    void onTextChanged(const QString &);
+    void onCommandActivated(const QModelIndex &);
 
 private:
-    QMenu* _menu;
+    QMenu *_menu = nullptr;
+    QWidgetAction *_widgetAction = nullptr;
+    QLineEdit *_lineedit = nullptr;
+    QCompleter *_completer = nullptr;
 };
 
 /**
