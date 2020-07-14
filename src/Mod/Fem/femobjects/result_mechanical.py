@@ -114,6 +114,8 @@ class ResultMechanical(base_fempythonobject.BaseFemPythonObject):
             "Reinforcement ratio z-direction",
             True
         )
+        # these three principal vectors are used only if there is a reinforced mat obj
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p416006
         obj.addProperty(
             "App::PropertyVectorList",
             "PS1Vector",

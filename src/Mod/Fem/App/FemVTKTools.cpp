@@ -660,7 +660,9 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
     // App::PropertyVectorList will be a list of vectors in vtk
     std::map<std::string, std::string> resFCVecProp;
     resFCVecProp["DisplacementVectors"] = "Displacement";
+    // the following three are filled only if there is a reinforced mat object
     // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=70#p296317
+    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p412800
     resFCVecProp["PS1Vector"] = "Major Principal Stress";
     resFCVecProp["PS2Vector"] = "Intermediate Principal Stress";
     resFCVecProp["PS3Vector"] = "Minor Principal Stress";
@@ -690,10 +692,17 @@ std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     resFCScalProp["NodeStrainXZ"] = "Strain xz component";
     resFCScalProp["NodeStrainYZ"] = "Strain yz component";
     resFCScalProp["Peeq"] = "Equivalent Plastic Strain";
+    // the following three are filled in all cases
     // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=70#p296317
-    // resFCScalProp["PrincipalMax"] = "Major Principal Stress";  // can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
-    // resFCScalProp["PrincipalMed"] = "Intermediate Principal Stress";  // can be plotted in Paraview as THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE
-    // resFCScalProp["PrincipalMin"] = "Minor Principal Stress";  // can be plotted in Paraview as THE MINOR PRINCIPAL STRESS MAGNITUDE
+    // it might be these can be generated in paraview from stress tensor values as
+    // THE MAJOR PRINCIPAL STRESS MAGNITUDE, THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE, THE MINOR PRINCIPAL STRESS MAGNITUDE
+    // but I do not know how (Bernd), for some help see paraview tutorial on FreeCAD wiki
+    // thus TODO they might not be exported to external file format (first I need to know how to generate them in paraview)
+    // but there are needed anyway because the pipline in FreeCAD needs the principal stress values
+    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p412800
+    resFCScalProp["PrincipalMax"] = "Major Principal Stress";
+    resFCScalProp["PrincipalMed"] = "Intermediate Principal Stress";
+    resFCScalProp["PrincipalMin"] = "Minor Principal Stress";
     resFCScalProp["vonMises"] = "von Mises Stress";
     resFCScalProp["Temperature"] = "Temperature";
     resFCScalProp["MohrCoulomb"] = "MohrCoulomb";

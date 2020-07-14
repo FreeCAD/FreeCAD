@@ -374,6 +374,10 @@ def add_von_mises(res_obj):
 
 
 def add_principal_stress_std(res_obj):
+    # saved into PrincipalMax, PrincipalMed, PrincipalMin
+    # TODO may be use only one container for principal stresses in result object
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p416006
+    # but which one is better
     prinstress1 = []
     prinstress2 = []
     prinstress3 = []
@@ -396,7 +400,7 @@ def add_principal_stress_std(res_obj):
     res_obj.PrincipalMed = prinstress2
     res_obj.PrincipalMin = prinstress3
     res_obj.MaxShear = shearstress
-    FreeCAD.Console.PrintLog("Added principal stress and max shear values.\n")
+    FreeCAD.Console.PrintLog("Added standard principal stresses and max shear values.\n")
     return res_obj
 
 
@@ -455,6 +459,10 @@ def add_principal_stress_reinforced(res_obj):
     #
     # calculate principal and max Shear and fill them in res_obj
     #
+    # saved into PS1Vector, PS2Vector, PS3Vector
+    # TODO may be use only one container for principal stresses in result object
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p416006
+    # but which one is better
     prinstress1 = []
     prinstress2 = []
     prinstress3 = []
@@ -552,9 +560,9 @@ def add_principal_stress_reinforced(res_obj):
     res_obj.PS2Vector = ps2v
     res_obj.PS3Vector = ps3v
 
-    FreeCAD.Console.PrintMessage(
-        "Added principal stress and max shear values as well as"
-        "reinforcment rations, Mohr Coloumb values.\n"
+    FreeCAD.Console.PrintLog(
+        "Added reinforcement principal stresses and max shear values as well as "
+        "reinforcment ratios, Mohr Coloumb values.\n"
     )
     return res_obj
 
