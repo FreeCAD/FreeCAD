@@ -28,9 +28,11 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import os
 import os.path
 import subprocess
 import sys
+from platform import system
 
 import FreeCAD
 
@@ -103,6 +105,15 @@ class Solve(run.Solve):
         self.pushStatus("Executing solver...\n")
         binary = settings.get_binary("ElmerSolver")
         if binary is not None:
+            # if ELMER_HOME is not set, set it.
+            # Needed if elmer is compiled but not installed on Linux
+            # http://www.elmerfem.org/forum/viewtopic.php?f=2&t=7119
+            # https://stackoverflow.com/questions/1506010/how-to-use-export-with-python-on-linux
+            if system() == "Linux" and "ELMER_HOME" not in os.environ:
+                solvpath = os.path.split(binary)[0]
+                if os.path.isdir(solvpath):
+                    os.environ["ELMER_HOME"] = solvpath
+                    os.environ["LD_LIBRARY_PATH"] = "$LD_LIBRARY_PATH:{}/modules".format(solvpath)
             self._process = subprocess.Popen(
                 [binary], cwd=self.directory,
                 stdout=subprocess.PIPE,
