@@ -62,6 +62,7 @@ protected Q_SLOTS:
     void onAddMacroAction(const QByteArray&);
     void onRemoveMacroAction(const QByteArray&);
     void onModifyMacroAction(const QByteArray&);
+    void onCommandActivated(const QByteArray&);
 
 protected:
     void changeEvent(QEvent *e);

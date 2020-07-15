@@ -1156,35 +1156,35 @@ void SelUpAction::popup(const QPoint &pt)
 
 // --------------------------------------------------------------------
 
+struct CmdInfo {
+    QString text;
+    Command *cmd;
+};
+static std::vector<CmdInfo> _Commands;
+static int _CommandRevision;
+
 class CommandModel : public QAbstractItemModel
 {
 public:
-    struct CmdInfo {
-        QString text;
-        Command *cmd;
-    };
-    std::vector<CmdInfo> cmds;
-    int revision;
 
 public:
     CommandModel(QObject* parent)
         : QAbstractItemModel(parent)
     {
-        revision = 0;
         update();
     }
 
     void update()
     {
         auto &manager = Application::Instance->commandManager();
-        if (revision == manager.getRevision())
+        if (_CommandRevision == manager.getRevision())
             return;
         beginResetModel();
-        revision = manager.getRevision();
-        cmds.clear();
+        _CommandRevision = manager.getRevision();
+        _Commands.clear();
         for (auto &v : manager.getCommands()) {
-            cmds.emplace_back();
-            auto &info = cmds.back();
+            _Commands.emplace_back();
+            auto &info = _Commands.back();
             info.cmd = v.second;
 #if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
             info.text = QString::fromLatin1("%2 (%1)").arg(
@@ -1204,10 +1204,10 @@ public:
 
     virtual QVariant data(const QModelIndex & index, int role) const
     {
-        if (index.row() < 0 || index.row() >= (int)cmds.size())
+        if (index.row() < 0 || index.row() >= (int)_Commands.size())
             return QVariant();
 
-        auto &info = cmds[index.row()];
+        auto &info = _Commands[index.row()];
 
         switch(role) {
         case Qt::DisplayRole:
@@ -1218,7 +1218,9 @@ public:
                 return BitmapFactory().iconFromTheme(info.cmd->getPixmap());
             return QVariant();
         case Qt::ToolTipRole:
-            return qApp->translate(info.cmd->className(), info.cmd->getToolTipText());
+            return QString::fromLatin1("%1\n%2").arg(
+                    QString::fromLatin1(info.cmd->getName()),
+                    qApp->translate(info.cmd->className(), info.cmd->getToolTipText()));
         case Qt::UserRole:
             return QByteArray(info.cmd->getName());
         default:
@@ -1233,7 +1235,7 @@ public:
 
     virtual int rowCount(const QModelIndex &) const
     {
-        return (int)(cmds.size());
+        return (int)(_Commands.size());
     }
 
     virtual int columnCount(const QModelIndex &) const
@@ -1241,6 +1243,83 @@ public:
         return 1;
     }
 };
+
+
+// --------------------------------------------------------------------
+
+CommandCompleter::CommandCompleter(QLineEdit *lineedit, QObject *parent)
+    : QCompleter(parent)
+{
+    this->setModel(new CommandModel(this));
+#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
+    this->setFilterMode(Qt::MatchContains);
+#endif
+    this->setCaseSensitivity(Qt::CaseInsensitive);
+    this->setCompletionMode(QCompleter::PopupCompletion);
+    this->setWidget(lineedit);
+    connect(lineedit, SIGNAL(textEdited(QString)), this, SLOT(onTextChanged(QString)));
+    connect(this, SIGNAL(activated(QModelIndex)), this, SLOT(onCommandActivated(QModelIndex)));
+    connect(this, SIGNAL(highlighted(QString)), lineedit, SLOT(setText(QString)));
+}
+
+bool CommandCompleter::eventFilter(QObject *o, QEvent *ev)
+{
+    if (ev->type() == QEvent::KeyPress
+            && (o == this->widget() || o == this->popup()))
+    {
+        QKeyEvent * ke = static_cast<QKeyEvent*>(ev);
+        switch(ke->key()) {
+        case Qt::Key_Escape: {
+            auto edit = qobject_cast<QLineEdit*>(this->widget());
+            if (edit)
+                edit->setText(QString());
+            popup()->hide();
+            return true;
+        }
+        case Qt::Key_Tab: {
+            if (this->popup()->isVisible()) {
+                QKeyEvent kevent(ke->type(),Qt::Key_Down,0);
+                qApp->sendEvent(this->popup(), &kevent);
+                return true;
+            }
+            break;
+        }
+        case Qt::Key_Backtab: {
+            if (this->popup()->isVisible()) {
+                QKeyEvent kevent(ke->type(),Qt::Key_Up,0);
+                qApp->sendEvent(this->popup(), &kevent);
+                return true;
+            }
+            break;
+        }
+        default:
+            break;
+        }
+    }
+    return QCompleter::eventFilter(o, ev);
+}
+
+void CommandCompleter::onCommandActivated(const QModelIndex &index)
+{
+    QByteArray name = completionModel()->data(index, Qt::UserRole).toByteArray();
+    Q_EMIT commandActivated(name);
+}
+
+void CommandCompleter::onTextChanged(const QString &txt)
+{
+    if (txt.size() < 3 || !widget())
+        return;
+
+    static_cast<CommandModel*>(this->model())->update();
+
+    this->setCompletionPrefix(txt);
+    QRect rect = widget()->rect();
+    if (rect.width() < 300)
+        rect.setWidth(300);
+    this->complete(rect);
+}
+
+// --------------------------------------------------------------------
 
 class CmdHistoryMenu: public QMenu
 {
@@ -1284,17 +1363,8 @@ void CmdHistoryAction::addTo ( QWidget * w )
         _lineedit->setPlaceholderText(tr("Type to search..."));
         _widgetAction = new QWidgetAction(this);
         _widgetAction->setDefaultWidget(_lineedit);
-        _completer = new QCompleter(this);
-        _completer->setModel(new CommandModel(_completer));
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
-        _completer->setFilterMode(Qt::MatchContains);
-#endif
-        _completer->setCaseSensitivity(Qt::CaseInsensitive);
-        _completer->setCompletionMode(QCompleter::PopupCompletion);
-        _completer->setWidget(_lineedit);
-        connect(_lineedit, SIGNAL(textEdited(QString)), this, SLOT(onTextChanged(QString)));
-        connect(_completer, SIGNAL(activated(QModelIndex)), this, SLOT(onCommandActivated(QModelIndex)));
-        connect(_completer, SIGNAL(highlighted(QString)), _lineedit, SLOT(setText(QString)));
+        _completer = new CommandCompleter(_lineedit, this);
+        connect(_completer, SIGNAL(commandActivated(QByteArray)), this, SLOT(onCommandActivated(QByteArray)));
 
         _newAction = new QAction(tr("Add toolbar..."), this);
         connect(_newAction, SIGNAL(triggered(bool)), this, SLOT(onNewAction()));
@@ -1332,37 +1402,13 @@ void CmdHistoryAction::onNewAction()
     Application::Instance->commandManager().runCommandByName("Std_DlgCustomize", 1);
 }
 
-bool CmdHistoryAction::eventFilter(QObject *o, QEvent *ev)
+bool CmdHistoryAction::eventFilter(QObject *, QEvent *ev)
 {
     switch(ev->type()) {
     case QEvent::MouseButtonPress: {
         auto e = static_cast<QMouseEvent*>(ev);
         if (e->button() == Qt::LeftButton)
             _ButtonTime.start();
-        break;
-    }
-    case QEvent::KeyPress: {
-        QKeyEvent * ke = static_cast<QKeyEvent*>(ev);
-        switch(ke->key()) {
-        case Qt::Key_Tab: {
-            if (_completer && o == _completer->popup()) {
-                QKeyEvent kevent(ke->type(),Qt::Key_Down,0);
-                qApp->sendEvent(_completer->popup(), &kevent);
-                return true;
-            }
-            break;
-        }
-        case Qt::Key_Backtab: {
-            if (_completer && o == _completer->popup()) {
-                QKeyEvent kevent(ke->type(),Qt::Key_Up,0);
-                qApp->sendEvent(_completer->popup(), &kevent);
-                return true;
-            }
-            break;
-        }
-        default:
-            break;
-        }
         break;
     }
     default:
@@ -1404,7 +1450,6 @@ void CmdHistoryAction::onShowMenu()
 
     _menu->setFocus(Qt::PopupFocusReason);
     _lineedit->setText(QString());
-    static_cast<CommandModel*>(_completer->model())->update();
 
     if (_RecentCommandPopulated == _RecentCommandID)
         return;
@@ -1419,28 +1464,15 @@ void CmdHistoryAction::onShowMenu()
         manager.addTo(v.second, _menu);
 }
 
-void CmdHistoryAction::onCommandActivated(const QModelIndex &index)
+void CmdHistoryAction::onCommandActivated(const QByteArray &name)
 {
     _menu->hide();
 
-    QByteArray name = _completer->completionModel()->data(index, Qt::UserRole).toByteArray();
     auto &manager = Application::Instance->commandManager();
     if (name.size()) {
         manager.runCommandByName(name.constData());
         onInvokeCommand(name.constData(), true);
     }
-}
-
-void CmdHistoryAction::onTextChanged(const QString &txt)
-{
-    if (txt.size() < 3)
-        return;
-
-    _completer->setCompletionPrefix(txt);
-    QRect rect = _lineedit->rect();
-    if (rect.width() < 300)
-        rect.setWidth(300);
-    _completer->complete(rect);
 }
 
 void CmdHistoryAction::popup(const QPoint &pt)

@@ -82,6 +82,10 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     ui->moveActionDownButton->setIcon(BitmapFactory().iconFromTheme("button_down"));
     ui->moveActionUpButton->setIcon(BitmapFactory().iconFromTheme("button_up"));
 
+    ui->editCommand->setPlaceholderText(tr("Type to search..."));
+    auto completer = new CommandCompleter(ui->editCommand, this);
+    connect(completer, SIGNAL(commandActivated(QByteArray)), this, SLOT(onCommandActivated(QByteArray)));
+
     on_toolbarTreeWidget_currentItemChanged(nullptr, nullptr);
 
     CommandManager & cCmdMgr = Application::Instance->commandManager();
@@ -174,6 +178,34 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
 /** Destroys the object and frees any allocated resources */
 DlgCustomToolbars::~DlgCustomToolbars()
 {
+}
+
+void DlgCustomToolbars::onCommandActivated(const QByteArray &name)
+{
+    CommandManager & cCmdMgr = Application::Instance->commandManager();
+    Command *cmd = cCmdMgr.getCommandByName(name.constData());
+    if (!cmd)
+        return;
+
+    QTreeWidgetItem* current = ui->toolbarTreeWidget->currentItem();
+    if (!current)
+        current = ui->toolbarTreeWidget->topLevelItem(0);
+    else if (current->parent())
+        current = current->parent();
+    if (current && !current->parent()) {
+        current->setExpanded(true);
+        QTreeWidgetItem* item = new QTreeWidgetItem(current);
+        item->setText(0, qApp->translate(cmd->className(), cmd->getMenuText()));
+        if (cmd->getPixmap())
+            item->setIcon(0, BitmapFactory().iconFromTheme(cmd->getPixmap()));
+        item->setData(0, Qt::UserRole, name);
+        ui->toolbarTreeWidget->scrollToItem(item);
+        addCustomCommand(current->data(0, Qt::UserRole).toString(), name);
+    }
+
+    QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
+    QString workbench = data.toString();
+    exportCustomToolbars(workbench.toLatin1());
 }
 
 void DlgCustomToolbars::addCustomToolbar(QString, const QString&)
@@ -449,11 +481,13 @@ void DlgCustomToolbars::on_moveActionRightButton_clicked()
         else if (current->parent())
             current = current->parent();
         if (current && !current->parent()) {
+            current->setExpanded(true);
             QTreeWidgetItem* copy = new QTreeWidgetItem(current);
             copy->setText(0, item->text(1));
             copy->setIcon(0, item->icon(0));
             QByteArray data = item->data(1, Qt::UserRole).toByteArray();
             copy->setData(0, Qt::UserRole, data);
+            ui->toolbarTreeWidget->scrollToItem(copy);
             addCustomCommand(current->data(0, Qt::UserRole).toString(), data);
         }
     }
@@ -605,6 +639,7 @@ void DlgCustomToolbars::on_newButton_clicked()
         item->setExpanded(true);
         item->setSelected(true);
         ui->toolbarTreeWidget->setCurrentItem(item);
+        ui->toolbarTreeWidget->scrollToItem(item);
 
         QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
         QString workbench = data.toString();

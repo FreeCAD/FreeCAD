@@ -71,6 +71,10 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
 {
     ui->setupUi(this);
 
+    ui->editCommand->setPlaceholderText(tr("Type to search..."));
+    auto completer = new CommandCompleter(ui->editCommand, this);
+    connect(completer, SIGNAL(commandActivated(QByteArray)), this, SLOT(onCommandActivated(QByteArray)));
+
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     std::map<std::string,Command*> sCommands = cCmdMgr.getCommands();
 
@@ -132,6 +136,31 @@ void DlgCustomKeyboardImp::showEvent(QShowEvent* e)
     if (firstShow) {
         on_categoryBox_activated(ui->categoryBox->currentIndex());
         firstShow = false;
+    }
+}
+
+void DlgCustomKeyboardImp::onCommandActivated(const QByteArray &name)
+{
+    CommandManager & cCmdMgr = Application::Instance->commandManager();
+    Command *cmd = cCmdMgr.getCommandByName(name.constData());
+    if (!cmd)
+        return;
+
+    QString group = QString::fromLatin1(cmd->getGroupName());
+    int index = ui->categoryBox->findText(group);
+    if (index < 0)
+        return;
+    if (index != ui->categoryBox->currentIndex()) {
+        ui->categoryBox->setCurrentIndex(index);
+        on_categoryBox_activated(index);
+    }
+    for (int i=0 ; i<ui->commandTreeWidget->topLevelItemCount(); ++i) {
+        QTreeWidgetItem *item = ui->commandTreeWidget->topLevelItem(i);
+        if (item->data(1, Qt::UserRole).toByteArray() == name) {
+            item->setSelected(true);
+            ui->commandTreeWidget->scrollToItem(item);
+            break;
+        }
     }
 }
 

@@ -28,10 +28,10 @@
 #include <QMenu>
 #include <QComboBox>
 #include <QKeySequence>
+#include <QCompleter>
 
 #include <memory>
 
-class QCompleter;
 class QLineEdit;
 class QWidgetAction;
 
@@ -366,6 +366,26 @@ private:
 };
 
 /**
+ * Command name completer.
+ */
+class GuiExport CommandCompleter : public QCompleter
+{
+    Q_OBJECT
+public:
+    CommandCompleter(QLineEdit *edit, QObject *parent = nullptr);
+
+Q_SIGNALS:
+    void commandActivated(const QByteArray &name);
+
+protected Q_SLOTS:
+    void onTextChanged(const QString &);
+    void onCommandActivated(const QModelIndex &);
+
+protected:
+    bool eventFilter(QObject *, QEvent *ev);
+};
+
+/**
  * Special action for Std_CmdHistory command.
  */
 class GuiExport CmdHistoryAction : public Action
@@ -385,8 +405,7 @@ protected:
 
 protected Q_SLOTS:
     void onShowMenu();
-    void onTextChanged(const QString &);
-    void onCommandActivated(const QModelIndex &);
+    void onCommandActivated(const QByteArray &);
     void onNewAction();
 
 private:

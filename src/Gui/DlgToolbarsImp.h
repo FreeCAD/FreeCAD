@@ -87,6 +87,9 @@ private:
     void importCustomToolbars(const QByteArray&);
     void exportCustomToolbars(const QByteArray&);
 
+protected Q_SLOTS:
+    void onCommandActivated(const QByteArray &);
+
 protected:
     std::unique_ptr<Ui_DlgCustomToolbars> ui;
 private:

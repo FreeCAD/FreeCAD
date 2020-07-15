@@ -25,7 +25,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout">
        <property name="spacing">
         <number>6</number>
@@ -47,6 +47,9 @@
           </property>
          </column>
         </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="editCommand"/>
        </item>
       </layout>
      </widget>
