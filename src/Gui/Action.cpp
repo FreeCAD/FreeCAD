@@ -1157,8 +1157,11 @@ void SelUpAction::popup(const QPoint &pt)
 // --------------------------------------------------------------------
 
 struct CmdInfo {
+    Command *cmd = nullptr;
     QString text;
-    Command *cmd;
+    QString tooltip;
+    QIcon icon;
+    bool iconChecked = false;
 };
 static std::vector<CmdInfo> _Commands;
 static int _CommandRevision;
@@ -1186,13 +1189,6 @@ public:
             _Commands.emplace_back();
             auto &info = _Commands.back();
             info.cmd = v.second;
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
-            info.text = QString::fromLatin1("%2 (%1)").arg(
-                    QString::fromLatin1(info.cmd->getName()),
-                    qApp->translate(info.cmd->className(), info.cmd->getMenuText()));
-#else
-            info.text = qApp->translate(info.cmd->className(), info.cmd->getMenuText());
-#endif
         }
         endResetModel();
     }
@@ -1212,17 +1208,42 @@ public:
         switch(role) {
         case Qt::DisplayRole:
         case Qt::EditRole:
+            if (info.text.isEmpty()) {
+#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
+                info.text = QString::fromLatin1("%2 (%1)").arg(
+                        QString::fromLatin1(info.cmd->getName()),
+                        qApp->translate(info.cmd->className(), info.cmd->getMenuText()));
+#else
+                info.text = qApp->translate(info.cmd->className(), info.cmd->getMenuText());
+#endif
+                info.text.replace(QLatin1Char('&'), QString());
+                if (info.text.isEmpty())
+                    info.text = QString::fromLatin1(info.cmd->getName());
+            }
             return info.text;
+
         case Qt::DecorationRole:
-            if (info.cmd->getPixmap())
-                return BitmapFactory().iconFromTheme(info.cmd->getPixmap());
-            return QVariant();
+            if (!info.iconChecked) {
+                info.iconChecked = true;
+                if(info.cmd->getPixmap())
+                    info.icon = BitmapFactory().iconFromTheme(info.cmd->getPixmap());
+            }
+            return info.icon;
+
         case Qt::ToolTipRole:
-            return QString::fromLatin1("%1\n%2").arg(
-                    QString::fromLatin1(info.cmd->getName()),
-                    qApp->translate(info.cmd->className(), info.cmd->getToolTipText()));
+            if (info.tooltip.isEmpty()) {
+                info.tooltip = QString::fromLatin1("%1: %2").arg(
+                        QString::fromLatin1(info.cmd->getName()),
+                        qApp->translate(info.cmd->className(), info.cmd->getMenuText()));
+                QString tooltip = qApp->translate(info.cmd->className(), info.cmd->getToolTipText());
+                if (tooltip.size())
+                    info.tooltip += QString::fromLatin1("\n\n") + tooltip;
+            }
+            return info.tooltip;
+
         case Qt::UserRole:
             return QByteArray(info.cmd->getName());
+
         default:
             return QVariant();
         }
@@ -1271,10 +1292,15 @@ bool CommandCompleter::eventFilter(QObject *o, QEvent *ev)
         switch(ke->key()) {
         case Qt::Key_Escape: {
             auto edit = qobject_cast<QLineEdit*>(this->widget());
-            if (edit)
+            if (edit && edit->text().size()) {
                 edit->setText(QString());
-            popup()->hide();
-            return true;
+                popup()->hide();
+                return true;
+            } else if (popup()->isVisible()) {
+                popup()->hide();
+                return true;
+            }
+            break;
         }
         case Qt::Key_Tab: {
             if (this->popup()->isVisible()) {
@@ -1330,6 +1356,15 @@ public:
 
     void keyPressEvent(QKeyEvent *e)
     {
+        if (!isVisible()) {
+            QMenu::keyPressEvent(e);
+            return;
+        }
+        if (e->key() == Qt::Key_Space) {
+            focusWidget->setFocus();
+            e->accept();
+            return;
+        }
         QMenu::keyPressEvent(e);
         if (e->isAccepted())
             return;
@@ -1371,6 +1406,8 @@ void CmdHistoryAction::addTo ( QWidget * w )
 
         _menu = new CmdHistoryMenu(_lineedit);
         setupMenuStyle(_menu);
+        _menu->addAction(_widgetAction);
+        _menu->addAction(_newAction);
         _action->setMenu(_menu);
         connect(_menu, SIGNAL(aboutToShow()), this, SLOT(onShowMenu()));
     }
