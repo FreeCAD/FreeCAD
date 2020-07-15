@@ -421,7 +421,7 @@ else()
 endif(WIN32)
 IF(NOT NETGEN_VERSION_C LESS NETGEN_VERSION_62) # Version >= 6.2
     set_target_properties(NETGENPlugin PROPERTIES CXX_STANDARD_REQUIRED ON)
-    set_target_properties(NETGENPlugin PROPERTIES CXX_STANDARD 14) # Standard std=c++1y could work aswell
+    set_target_properties(NETGENPlugin PROPERTIES CXX_STANDARD 17) # Standard std=c++1y could work aswell
 ENDIF()
 
 endif (BUILD_FEM_NETGEN)
