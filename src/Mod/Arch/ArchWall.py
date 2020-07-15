@@ -1262,11 +1262,23 @@ class _Wall(ArchComponent.Component):
                         normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))
 
                     else:
-                        # self.basewires = obj.Base.Shape.Wires
-                        self.basewires = []
-                        for cluster in Part.getSortedClusters(obj.Base.Shape.Edges):
-                            for c in Part.sortEdges(cluster):
-                                self.basewires.append(Part.Wire(c))
+                        self.basewires = obj.Base.Shape.Wires
+
+                        # Found case that after sorting below, direction of 
+                        # edges sorted are not as 'expected' thus resulted in
+                        # bug - e.g. a Dwire with edges/vertexes in clockwise 
+                        # order, 1st vertex is Forward as expected.  After 
+                        # sorting below, edges sorted still in clockwise order 
+                        # - no problem, vertexes still in clocwise order - no 
+                        # problem, but 1st vertex of each edge become Reverse 
+                        # rather than Forward.
+                        # See FC discussion - 
+                        # https://forum.freecadweb.org/viewtopic.php?f=23&t=48275&p=413745#p413745
+
+                        #self.basewires = []
+                        #for cluster in Part.getSortedClusters(obj.Base.Shape.Edges):
+                        #    for c in Part.sortEdges(cluster):
+                        #        self.basewires.append(Part.Wire(c))
                         # if not sketch, e.g. Dwire, can have wire which is 3d
                         # so not on the placement's working plane - below
                         # applied to Sketch not applicable here
@@ -1449,7 +1461,6 @@ class _Wall(ArchComponent.Component):
                                     continue
 
                                 sh.fix(0.1,0,1) # fixes self-intersecting wires
-
                                 f = Part.Face(sh)
                                 if baseface:
 
