@@ -186,6 +186,7 @@ private:
     class Data;
     Data* d;
     bool gotoEnd;
+    bool blockStart;
     ReportHighlighter* reportHl; /**< Syntax highlighter */
     int messageSize;
     ParameterGrp::handle _prefs; 
