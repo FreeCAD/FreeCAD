@@ -52,18 +52,20 @@ protected:
     virtual ~DlgCustomToolbars();
 
 protected Q_SLOTS:
-    void on_categoryBox_activated(int index);
-    void on_workbenchBox_activated(int index);
+    void on_categoryBox_currentIndexChanged(int index);
+    void on_workbenchBox_currentIndexChanged(int index);
     void on_moveActionRightButton_clicked();
     void on_moveActionLeftButton_clicked();
     void on_moveActionUpButton_clicked();
     void on_moveActionDownButton_clicked();
     void on_newButton_clicked();
+    void on_recentButton_clicked();
     void on_renameButton_clicked();
     void on_deleteButton_clicked();
     void on_assignButton_clicked();
     void on_resetButton_clicked();
     void on_toolbarTreeWidget_currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *);
+    void on_toolbarTreeWidget_itemChanged(QTreeWidgetItem *, int);
     void on_editShortcut_textChanged(const QString& sc);
     void onAddMacroAction(const QByteArray&);
     void onRemoveMacroAction(const QByteArray&);
@@ -72,13 +74,14 @@ protected Q_SLOTS:
 protected:
     void changeEvent(QEvent *e);
     void hideEvent(QHideEvent * event);
-    virtual void addCustomToolbar(const QString&);
-    virtual void removeCustomToolbar(const QString&);
-    virtual void renameCustomToolbar(const QString&, const QString&);
-    virtual void addCustomCommand(const QString&, const QByteArray&);
-    virtual void removeCustomCommand(const QString&, const QByteArray&);
-    virtual void moveUpCustomCommand(const QString&, const QByteArray&);
-    virtual void moveDownCustomCommand(const QString&, const QByteArray&);
+    bool checkWorkbench(QString *id=nullptr) const;
+    virtual void addCustomToolbar(QString, const QString&);
+    virtual void removeCustomToolbar(QString);
+    virtual void renameCustomToolbar(QString, const QString&);
+    virtual void addCustomCommand(QString, const QByteArray&);
+    virtual void removeCustomCommand(QString, const QByteArray&);
+    virtual void moveUpCustomCommand(QString, const QByteArray&);
+    virtual void moveDownCustomCommand(QString, const QByteArray&);
 
 private:
     void importCustomToolbars(const QByteArray&);
@@ -103,15 +106,17 @@ public:
     DlgCustomToolbarsImp(QWidget* parent = 0);
     ~DlgCustomToolbarsImp();
 
+    void createRecentToolbar();
+
 protected:
     void changeEvent(QEvent *e);
-    virtual void addCustomToolbar(const QString&);
-    virtual void removeCustomToolbar(const QString&);
-    virtual void renameCustomToolbar(const QString&, const QString&);
-    virtual void addCustomCommand(const QString&, const QByteArray&);
-    virtual void removeCustomCommand(const QString&, const QByteArray&);
-    virtual void moveUpCustomCommand(const QString&, const QByteArray&);
-    virtual void moveDownCustomCommand(const QString&, const QByteArray&);
+    virtual void addCustomToolbar(QString, const QString&);
+    virtual void removeCustomToolbar(QString);
+    virtual void renameCustomToolbar(QString, const QString&);
+    virtual void addCustomCommand(QString, const QByteArray&);
+    virtual void removeCustomCommand(QString, const QByteArray&);
+    virtual void moveUpCustomCommand(QString, const QByteArray&);
+    virtual void moveDownCustomCommand(QString, const QByteArray&);
 
 private:
     QList<QAction*> getActionGroup(QAction*);

@@ -54,6 +54,7 @@
 #include "DlgParameterImp.h"
 #include "DlgPreferencesImp.h"
 #include "DlgCustomizeImp.h"
+#include "DlgToolbarsImp.h"
 #include "Widgets.h"
 #include "OnlineDocumentation.h"
 #include "GuiConsole.h"
@@ -371,6 +372,12 @@ void StdCmdDlgCustomize::activated(int iMsg)
         dlg = new Gui::Dialog::DlgCustomizeImp(getMainWindow());
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->show();
+
+    if (iMsg == 1) {
+        auto tdlg = dlg->findChild<Gui::Dialog::DlgCustomToolbarsImp*>();
+        if (tdlg)
+            tdlg->createRecentToolbar();
+    }
 }
 
 //===========================================================================

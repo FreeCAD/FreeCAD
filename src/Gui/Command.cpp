@@ -1912,12 +1912,12 @@ Command* CommandManager::getCommandByName(const char* sName) const
     return ( it != _sCommands.end() ) ? it->second : 0;
 }
 
-void CommandManager::runCommandByName (const char* sName) const
+void CommandManager::runCommandByName (const char* sName, int iMsg) const
 {
     Command* pCmd = getCommandByName(sName);
 
     if (pCmd)
-        pCmd->invoke(0);
+        pCmd->invoke(iMsg);
 }
 
 void CommandManager::testActive(void)

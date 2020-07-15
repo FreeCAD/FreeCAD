@@ -378,6 +378,7 @@ public:
     void addTo (QWidget * w);
     void popup(const QPoint &pt);
     static void onInvokeCommand(const char *, bool force=false);
+    static std::vector<Command*> recentCommands();
 
 protected:
     bool eventFilter(QObject *, QEvent *ev);
@@ -386,12 +387,14 @@ protected Q_SLOTS:
     void onShowMenu();
     void onTextChanged(const QString &);
     void onCommandActivated(const QModelIndex &);
+    void onNewAction();
 
 private:
     QMenu *_menu = nullptr;
     QWidgetAction *_widgetAction = nullptr;
     QLineEdit *_lineedit = nullptr;
     QCompleter *_completer = nullptr;
+    QAction *_newAction = nullptr;
 };
 
 /**
@@ -408,6 +411,7 @@ public:
     void popup(const QPoint &pt);
 
     static void populate();
+    static std::string commandName(const char *name);
 
 protected Q_SLOTS:
     virtual void onShowMenu();

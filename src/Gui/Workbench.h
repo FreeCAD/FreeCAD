@@ -122,7 +122,7 @@ private:
      * a ToolBarItem tree structure.
      */
     void setupCustomToolbars(ToolBarItem* root, const char* toolbar) const;
-    void setupCustomToolbars(ToolBarItem* root, const Base::Reference<ParameterGrp>& hGrp) const;
+    void setupCustomToolbars(ToolBarItem* root, const char* group, const Base::Reference<ParameterGrp>& hGrp) const;
     void setupCustomShortcuts() const;
 
 private:

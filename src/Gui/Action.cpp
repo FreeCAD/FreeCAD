@@ -1188,7 +1188,7 @@ public:
             info.cmd = v.second;
 #if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
             info.text = QString::fromLatin1("%2 (%1)").arg(
-                    QString::fromLatin1(info.name.c_str()),
+                    QString::fromLatin1(info.cmd->getName()),
                     qApp->translate(info.cmd->className(), info.cmd->getMenuText()));
 #else
             info.text = qApp->translate(info.cmd->className(), info.cmd->getMenuText());
@@ -1214,7 +1214,9 @@ public:
         case Qt::EditRole:
             return info.text;
         case Qt::DecorationRole:
-            return BitmapFactory().iconFromTheme(info.cmd->getPixmap());
+            if (info.cmd->getPixmap())
+                return BitmapFactory().iconFromTheme(info.cmd->getPixmap());
+            return QVariant();
         case Qt::ToolTipRole:
             return qApp->translate(info.cmd->className(), info.cmd->getToolTipText());
         case Qt::UserRole:
@@ -1294,6 +1296,9 @@ void CmdHistoryAction::addTo ( QWidget * w )
         connect(_completer, SIGNAL(activated(QModelIndex)), this, SLOT(onCommandActivated(QModelIndex)));
         connect(_completer, SIGNAL(highlighted(QString)), _lineedit, SLOT(setText(QString)));
 
+        _newAction = new QAction(tr("Add toolbar..."), this);
+        connect(_newAction, SIGNAL(triggered(bool)), this, SLOT(onNewAction()));
+
         _menu = new CmdHistoryMenu(_lineedit);
         setupMenuStyle(_menu);
         _action->setMenu(_menu);
@@ -1308,6 +1313,24 @@ static std::map<long, const char *, std::greater<long> > _RecentCommands;
 static std::unordered_map<std::string, long> _RecentCommandMap;
 static long _RecentCommandPopulated;
 static QElapsedTimer _ButtonTime;
+
+std::vector<Command*> CmdHistoryAction::recentCommands()
+{
+    auto &manager = Application::Instance->commandManager();
+    std::vector<Command*> cmds;
+    cmds.reserve(_RecentCommands.size());
+    for (auto &v : _RecentCommands) {
+        auto cmd = manager.getCommandByName(v.second);
+        if (cmd)
+            cmds.push_back(cmd);
+    }
+    return cmds;
+}
+
+void CmdHistoryAction::onNewAction()
+{
+    Application::Instance->commandManager().runCommandByName("Std_DlgCustomize", 1);
+}
 
 bool CmdHistoryAction::eventFilter(QObject *o, QEvent *ev)
 {
@@ -1357,7 +1380,8 @@ void CmdHistoryAction::onInvokeCommand(const char *name, bool force)
 
     auto &manager = Application::Instance->commandManager();
     Command *cmd = manager.getCommandByName(name);
-    if (!cmd || qobject_cast<CmdHistoryAction*>(cmd->getAction()))
+    if (!cmd || qobject_cast<CmdHistoryAction*>(cmd->getAction())
+             || qobject_cast<ToolbarMenuAction*>(cmd->getAction()))
         return;
     
     if (!force && (cmd->getType() & Command::NoHistory) && !_RecentCommandMap.count(name))
@@ -1388,6 +1412,7 @@ void CmdHistoryAction::onShowMenu()
     _RecentCommandPopulated = _RecentCommandID;
     _menu->clear();
     _menu->addAction(_widgetAction);
+    _menu->addAction(_newAction);
     _menu->addSeparator();
     auto &manager = Application::Instance->commandManager();
     for (auto &v : _RecentCommands)
@@ -1441,6 +1466,7 @@ public:
 public:
     ToolbarMenuAction *master;
     ParameterGrp::handle handle;
+    ParameterGrp::handle hShortcut;
     std::set<std::string> cmds;
 };
 
@@ -1471,8 +1497,6 @@ protected:
         for (auto &v : _pimpl->handle->GetASCIIMap()) {
             if (v.first == "Name")
                 setText(QString::fromUtf8(v.second.c_str()));
-            else if (v.first == "Shortcut")
-                setShortcut(QString::fromLatin1(v.second.c_str()));
             else if (boost::starts_with(v.first, "Separator"))
                 _menu->addSeparator();
             else
@@ -1484,10 +1508,6 @@ protected:
     virtual void update()
     {
         revision = 0;
-
-        std::string shortcut = _pimpl->handle->GetASCII("Shortcut", "");
-        this->setShortcut(QString::fromLatin1(shortcut.c_str()));
-
         std::string text = _pimpl->handle->GetASCII("Name", "");
         this->setText(QString::fromUtf8(text.c_str()));
     }
@@ -1501,13 +1521,12 @@ private:
 class StdCmdToolbarSubMenu : public Gui::Command
 {
 public:
-    StdCmdToolbarSubMenu(const char *name, const char *_shortcut, ParameterGrp::handle hGrp)
-        :Command(name), shortcut(_shortcut)
+    StdCmdToolbarSubMenu(const char *name, ParameterGrp::handle hGrp)
+        :Command(name)
     {
         menuText      = hGrp->GetASCII("Name", "Custom");
         sGroup        = QT_TR_NOOP("Tools");
         sMenuText     = menuText.c_str();
-        sAccel        = shortcut.c_str();
         sWhatsThis    = "Std_CmdToolbarSubMenu";
         eType         = NoTransaction | NoHistory;
 
@@ -1534,7 +1553,6 @@ protected:
 
 private:
     std::string menuText;
-    std::string shortcut;
 };
 
 // --------------------------------------------------------------------
@@ -1543,10 +1561,13 @@ ToolbarMenuAction::ToolbarMenuAction ( Command* pcCmd, QObject * parent )
   : Action(pcCmd, parent), _menu(0)
   , _pimpl(new Private(this, "User parameter:BaseApp/Workbench/Global/Toolbar"))
 {
+    _pimpl->hShortcut = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
+    _pimpl->hShortcut->Attach(_pimpl.get());
 }
 
 ToolbarMenuAction::~ToolbarMenuAction()
 {
+    _pimpl->hShortcut->Detach(_pimpl.get());
     delete _menu;
 }
 
@@ -1578,25 +1599,37 @@ void ToolbarMenuAction::populate()
         action->update();
 }
 
+std::string ToolbarMenuAction::commandName(const char *name)
+{
+    return std::string("Std_ToolbarMenu_") + name;
+}
+
 void ToolbarMenuAction::update()
 {
     auto &manager = Application::Instance->commandManager();
     _menu->clear();
     std::set<std::string> cmds;
     for (auto &hGrp : _pimpl->handle->GetGroups()) {
-        std::string shortcut = hGrp->GetASCII("Shortcut", "");
-        if (shortcut.empty())
+
+        if(hGrp->GetASCII("Name","").empty())
             continue;
-        std::string name = std::string("Std_ToolbarMenu_") + hGrp->GetGroupName();
+
+        std::string name = commandName(hGrp->GetGroupName());
+        QString shortcut = QString::fromLatin1(_pimpl->hShortcut->GetASCII(name.c_str()).c_str());
+        if (shortcut.isEmpty())
+            continue;
+
         if (!cmds.insert(name).second)
             continue;
 
         auto res = _pimpl->cmds.insert(name);
         Command *cmd = manager.getCommandByName(name.c_str());
         if (!cmd) {
-            cmd = new StdCmdToolbarSubMenu(res.first->c_str(), shortcut.c_str(), hGrp);
+            cmd = new StdCmdToolbarSubMenu(res.first->c_str(), hGrp);
             manager.addCommand(cmd);
         }
+        if (cmd->getAction() && cmd->getAction()->shortcut() != shortcut)
+            cmd->getAction()->setShortcut(shortcut);
         cmd->addTo(_menu);
     }
 
@@ -1608,6 +1641,7 @@ void ToolbarMenuAction::update()
         Command *cmd = manager.getCommandByName(it->c_str());
         if (cmd)
             manager.removeCommand(cmd);
+        _pimpl->hShortcut->RemoveASCII(it->c_str());
         it = _pimpl->cmds.erase(it);
     }
 }

@@ -56,9 +56,19 @@ void ToolBarItem::setCommand(const std::string& name)
     _name = name;
 }
 
-std::string ToolBarItem::command() const
+const std::string & ToolBarItem::command() const
 {
     return _name;
+}
+
+void ToolBarItem::setID(const std::string& name)
+{
+    _id = name;
+}
+
+const std::string & ToolBarItem::id() const
+{
+    return _id;
 }
 
 bool ToolBarItem::hasItems() const
@@ -85,6 +95,7 @@ ToolBarItem* ToolBarItem::copy() const
 {
     ToolBarItem* root = new ToolBarItem;
     root->setCommand( command() );
+    root->setID( id() );
 
     QList<ToolBarItem*> items = getItems();
     for ( QList<ToolBarItem*>::ConstIterator it = items.begin(); it != items.end(); ++it ) {
@@ -188,13 +199,26 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
                                ->GetGroup("MainWindow")->GetGroup("Toolbars");
     QList<ToolBarItem*> items = toolBarItems->getItems();
     QList<QToolBar*> toolbars = toolBars();
-    for (QList<ToolBarItem*>::ConstIterator it = items.begin(); it != items.end(); ++it) {
+    for (auto item : items) {
         // search for the toolbar
-        QString name = QString::fromUtf8((*it)->command().c_str());
+        QString name;
+        if (item->id().size())
+            name = QString::fromLatin1("Custom_%1").arg(QString::fromLatin1(item->id().c_str()));
+        else
+            name = QString::fromUtf8(item->command().c_str());
         this->toolbarNames << name;
         QToolBar* toolbar = findToolBar(toolbars, name);
-        std::string toolbarName = (*it)->command();
+        std::string toolbarName = item->command();
+
         bool visible = hPref->GetBool(toolbarName.c_str(), true);
+        if (item->id().size()) {
+            // Migrate to use toolbar ID instead title for identification to
+            // avoid name conflict when using custom toolbar
+            bool v = hPref->GetBool(item->id().c_str(), true);
+            if (v == hPref->GetBool(item->id().c_str(), false))
+                visible = v;
+        }
+
         bool toolbar_added = false;
 
         if (!toolbar) {
@@ -213,7 +237,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
         }
 
         // setup the toolbar
-        setup(*it, toolbar);
+        setup(item, toolbar);
 
         // try to add some breaks to avoid to have all toolbars in one line
         if (toolbar_added) {
@@ -320,6 +344,8 @@ void ToolBarManager::retranslate() const
 {
     QList<QToolBar*> toolbars = toolBars();
     for (QList<QToolBar*>::Iterator it = toolbars.begin(); it != toolbars.end(); ++it) {
+        if ((*it)->objectName().startsWith(QLatin1String("Custom_")))
+            continue;
         QByteArray toolbarName = (*it)->objectName().toUtf8();
         (*it)->setWindowTitle(
             QApplication::translate("Workbench",

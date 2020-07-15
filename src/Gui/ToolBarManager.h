@@ -40,7 +40,10 @@ public:
     ~ToolBarItem();
 
     void setCommand(const std::string&);
-    std::string command() const;
+    const std::string & command() const;
+
+    void setID(const std::string&);
+    const std::string & id() const;
 
     bool hasItems() const;
     ToolBarItem* findItem(const std::string&);
@@ -58,6 +61,7 @@ public:
 
 private:
     std::string _name;
+    std::string _id;
     QList<ToolBarItem*> _items;
 };
 

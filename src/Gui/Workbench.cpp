@@ -233,7 +233,7 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const char* toolbar) cons
         hGrp = hGrp->GetGroup(name.c_str());
         if (hGrp->HasGroup(toolbar)) {
             hGrp = hGrp->GetGroup(toolbar);
-            setupCustomToolbars(root, hGrp);
+            setupCustomToolbars(root, name.c_str(), hGrp);
         }
     }
 
@@ -248,12 +248,12 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const char* toolbar) cons
         hGrp = hGrp->GetGroup("Global");
         if (hGrp->HasGroup(toolbar)) {
             hGrp = hGrp->GetGroup(toolbar);
-            setupCustomToolbars(root, hGrp);
+            setupCustomToolbars(root, "Global", hGrp);
         }
     }
 }
 
-void Workbench::setupCustomToolbars(ToolBarItem* root, const Base::Reference<ParameterGrp>& hGrp) const
+void Workbench::setupCustomToolbars(ToolBarItem* root, const char *group, const Base::Reference<ParameterGrp>& hGrp) const
 {
     std::vector<Base::Reference<ParameterGrp> > hGrps = hGrp->GetGroups();
     CommandManager& rMgr = Application::Instance->commandManager();
@@ -264,6 +264,11 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const Base::Reference<Par
             continue;
         ToolBarItem* bar = new ToolBarItem(root);
         bar->setCommand("Custom");
+
+        int dummy;
+        // Check for new custom toolbar name
+        if (sscanf((*it)->GetGroupName(), "Custom%d", &dummy)==1)
+            bar->setID(std::string(group) + "_" + (*it)->GetGroupName());
 
         // get the elements of the subgroups
         std::vector<std::pair<std::string,std::string> > items = hGrp->GetGroup((*it)->GetGroupName())->GetASCIIMap();

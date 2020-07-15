@@ -867,7 +867,7 @@ public:
     /**
      * Runs the command
      */
-    void runCommandByName (const char* sName) const;
+    void runCommandByName (const char* sName, int iMsg=0) const;
 
     /// method is OBSOLETE use GetModuleCommands() or GetAllCommands()
     const std::map<std::string, Command*>& getCommands() const { return _sCommands; }
