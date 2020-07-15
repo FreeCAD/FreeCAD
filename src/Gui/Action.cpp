@@ -1529,7 +1529,10 @@ public:
 
     void OnChange(Base::Subject<const char*> &, const char *)
     {
-        master->update();
+        if (!updating) {
+            Base::StateLocker guard(updating);
+            master->update();
+        }
     }
 
 public:
@@ -1537,6 +1540,7 @@ public:
     ParameterGrp::handle handle;
     ParameterGrp::handle hShortcut;
     std::set<std::string> cmds;
+    bool updating = false;
 };
 
 // --------------------------------------------------------------------
@@ -1675,6 +1679,10 @@ std::string ToolbarMenuAction::commandName(const char *name)
 
 void ToolbarMenuAction::update()
 {
+    if (_pimpl->updating)
+        return;
+    Base::StateLocker guard(_pimpl->updating);
+
     auto &manager = Application::Instance->commandManager();
     _menu->clear();
     std::set<std::string> cmds;
