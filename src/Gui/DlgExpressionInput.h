@@ -63,6 +63,9 @@ public:
 
     bool eventFilter(QObject *obj, QEvent *event);
 
+public Q_SLOTS:
+    void show();
+
 protected:
     void showEvent(QShowEvent*);
     void mouseReleaseEvent(QMouseEvent*);
