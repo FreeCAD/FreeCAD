@@ -74,6 +74,7 @@ class Check(run.Check):
 class Prepare(run.Prepare):
 
     def run(self):
+        # TODO print working dir to report console
         self.pushStatus("Preparing input files...\n")
         if self.testmode:
             # test mode: neither gmsh, nor elmergrid nor elmersolver binaries needed
@@ -102,6 +103,9 @@ class Prepare(run.Prepare):
 class Solve(run.Solve):
 
     def run(self):
+        # on rerun the result file will not deleted before starting the solver
+        # if the solver fails, the existing result from a former run file will be loaded
+        # TODO: delete result file (may be delete all files which will be recreated)
         self.pushStatus("Executing solver...\n")
         binary = settings.get_binary("ElmerSolver")
         if binary is not None:
