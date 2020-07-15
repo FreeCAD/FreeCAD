@@ -482,8 +482,7 @@ void QGIViewPart::drawViewPart()
             if (fGeom) {
                 const std::vector<std::string> &sourceNames = fGeom->Source.getSubValues();
                 if (!sourceNames.empty()) {
-                    int fdx = TechDraw::DrawUtil::getIndexFromName(sourceNames.at(0));
-                    std::vector<LineSet> lineSets = fGeom->getTrimmedLines(fdx);
+                    std::vector<LineSet> lineSets = fGeom->getTrimmedLines(i);
                     if (!lineSets.empty()) {
                         newFace->clearLineSets();
                         for (auto& ls: lineSets) {
@@ -1148,7 +1147,6 @@ TechDraw::DrawHatch* QGIViewPart::faceIsHatched(int i,std::vector<TechDraw::Draw
     for (auto& h:hatchObjs) {
         const std::vector<std::string> &sourceNames = h->Source.getSubValues();
         for (auto& s: sourceNames) {
-//        int fdx = TechDraw::DrawUtil::getIndexFromName(sourceNames.at(0));   //this sb a loop through all subs
             int fdx = TechDraw::DrawUtil::getIndexFromName(s);
             if (fdx == i) {
                 result = h;
@@ -1166,12 +1164,19 @@ TechDraw::DrawHatch* QGIViewPart::faceIsHatched(int i,std::vector<TechDraw::Draw
 TechDraw::DrawGeomHatch* QGIViewPart::faceIsGeomHatched(int i,std::vector<TechDraw::DrawGeomHatch*> geomObjs) const
 {
     TechDraw::DrawGeomHatch* result = nullptr;
+    bool found = false;
     for (auto& h:geomObjs) {
         const std::vector<std::string> &sourceNames = h->Source.getSubValues();
-        int fdx = TechDraw::DrawUtil::getIndexFromName(sourceNames.at(0));
-        if (fdx == i) {
-            result = h;
-            break;
+        for (auto& sn: sourceNames) {
+            int fdx = TechDraw::DrawUtil::getIndexFromName(sn);
+            if (fdx == i) {
+                result = h;
+                found = true;
+                break;
+            }
+            if (found) {
+                break;
+            }
         }
     }
     return result;
