@@ -2991,7 +2991,7 @@ Range RangeExpression::getRange() const
 {
     auto c1 = stringToAddress(begin.c_str(),true);
     auto c2 = stringToAddress(end.c_str(),true);
-    if(c1.isValid() && c1.isValid())
+    if(c1.isValid() && c2.isValid())
         return Range(c1,c2);
 
     Base::PyGILStateLocker lock;
