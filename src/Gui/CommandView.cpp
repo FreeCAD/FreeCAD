@@ -1116,6 +1116,34 @@ bool StdCmdSetAppearance::isActive(void)
 }
 
 //===========================================================================
+// Std_ViewHome
+//===========================================================================
+DEF_3DV_CMD(StdCmdViewHome)
+
+StdCmdViewHome::StdCmdViewHome()
+  : Command("Std_ViewHome")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Home");
+    sToolTipText  = QT_TR_NOOP("Set to default home view");
+    sWhatsThis    = "Std_ViewHome";
+    sStatusTip    = QT_TR_NOOP("Set to default home view");
+    //sPixmap       = "view-home";
+    sAccel        = "Home";
+    eType         = Alter3DView;
+}
+
+void StdCmdViewHome::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    std::string default_view = hGrp->GetASCII("NewDocumentCameraOrientation","Top");
+    doCommand(Command::Gui,"Gui.activeDocument().activeView().viewDefaultOrientation('%s',0)",default_view.c_str());
+    doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"ViewFit\")");
+}
+
+//===========================================================================
 // Std_ViewBottom
 //===========================================================================
 DEF_3DV_CMD(StdCmdViewBottom)
@@ -3474,6 +3502,7 @@ void CreateViewStdCommands(void)
 
     // views
     rcCmdMgr.addCommand(new StdCmdViewBottom());
+    rcCmdMgr.addCommand(new StdCmdViewHome());
     rcCmdMgr.addCommand(new StdCmdViewFront());
     rcCmdMgr.addCommand(new StdCmdViewLeft());
     rcCmdMgr.addCommand(new StdCmdViewRear());
