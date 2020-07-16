@@ -1476,8 +1476,10 @@ void CmdHistoryAction::onInvokeCommand(const char *name, bool force)
     res.first->second = ++_RecentCommandID;
     _RecentCommands[_RecentCommandID] = res.first->first.c_str();
     if (ViewParams::getCommandHistorySize() < (int)_RecentCommandMap.size()) {
-        _RecentCommandMap.erase(_RecentCommands.begin()->second);
-        _RecentCommands.erase(_RecentCommands.begin());
+        auto it = _RecentCommands.end();
+        --it;
+        _RecentCommandMap.erase(it->second);
+        _RecentCommands.erase(it);
     }
 }
 
