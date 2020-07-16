@@ -51,7 +51,7 @@
 using namespace TechDrawGui;
 
 QGCustomText::QGCustomText(QGraphicsItem* parent) :
-    QGraphicsTextItem(parent)
+    QGraphicsTextItem(parent), isHighlighted(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);

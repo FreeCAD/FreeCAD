@@ -115,6 +115,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner,
     , documentNameSet(false)
     , documentObjectNameSet(false)
     , localProperty(false)
+    , _hash(0)
 {
     if (_owner) {
         const DocumentObject * docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
@@ -134,7 +135,11 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner,
 }
 
 ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, bool localProperty)
-    :localProperty(localProperty)
+    : owner(0)
+    , documentNameSet(false)
+    , documentObjectNameSet(false)
+    , localProperty(localProperty)
+    , _hash(0)
 {
     if (_owner) {
         const DocumentObject * docObj = freecad_dynamic_cast<const DocumentObject>(_owner);

@@ -488,7 +488,8 @@ public:
   std::string string;
   std::pair<FunctionExpression::Function,std::string> func;
   ObjectIdentifier::String string_or_identifier;
-  semantic_type() : expr(0), ivalue(0), fvalue(0), func({FunctionExpression::NONE, std::string()}) {}
+  semantic_type() : component(0), expr(0), ivalue(0), fvalue(0)
+                  , func({FunctionExpression::NONE, std::string()}) {}
 };
 
 #define YYSTYPE semantic_type

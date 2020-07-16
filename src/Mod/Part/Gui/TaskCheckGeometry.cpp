@@ -947,7 +947,8 @@ void PartGui::goSetupResultUnorientableShapeFace(ResultEntry *entry)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-TaskCheckGeometryDialog::TaskCheckGeometryDialog() : widget(0), contentLabel(0)
+TaskCheckGeometryDialog::TaskCheckGeometryDialog()
+    : widget(0), contentLabel(0), okBtn(0), settingsBtn(0), resultsBtn(0)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");

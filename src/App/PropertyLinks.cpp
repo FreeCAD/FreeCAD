@@ -898,11 +898,10 @@ TYPESYSTEM_SOURCE(App::PropertyLinkSubHidden, App::PropertyLinkSub)
 
 
 PropertyLinkSub::PropertyLinkSub()
-:_pcLinkSub(0)
+  : _pcLinkSub(0), _restoreLabel(false)
 {
 
 }
-
 
 PropertyLinkSub::~PropertyLinkSub()
 {

@@ -129,7 +129,7 @@ private:
 class incidenceItem
 {
 public:
-    incidenceItem() {}
+    incidenceItem() {iEdge = 0; angle = 0.0;}
     incidenceItem(int idx, double a, edge_t ed)  {iEdge = idx; angle = a; eDesc = ed;}
     ~incidenceItem() {}
     static bool iiCompare(const incidenceItem& i1, const incidenceItem& i2);

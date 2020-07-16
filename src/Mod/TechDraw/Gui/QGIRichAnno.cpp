@@ -88,7 +88,7 @@ using namespace TechDrawGui;
 //**************************************************************
 QGIRichAnno::QGIRichAnno(QGraphicsItem* myParent,
                          TechDraw::DrawRichAnno* anno) :
-    m_isExporting(false)
+    m_isExporting(false), m_hasHover(false)
 {
     setHandlesChildEvents(false);
     setAcceptHoverEvents(false);
