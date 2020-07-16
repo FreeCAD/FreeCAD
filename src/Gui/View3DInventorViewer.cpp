@@ -2224,7 +2224,7 @@ NaviCube* View3DInventorViewer::getNavigationCube() const
 
 void View3DInventorViewer::setAxisCross(bool on)
 {
-    SoNode* scene = getSceneGraph();
+    SoNode* scene = getSoRenderManager()->getSceneGraph();
     SoSeparator* sep = static_cast<SoSeparator*>(scene);
 
     if (on) {
