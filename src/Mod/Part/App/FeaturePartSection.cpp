@@ -55,13 +55,13 @@ BRepAlgoAPI_BooleanOperation* Section::makeOperation(const TopoDS_Shape& base, c
     return new BRepAlgoAPI_Section(base, tool);
 #else
     bool approx = Approximation.getValue();
-    BRepAlgoAPI_Section* mkSection = new BRepAlgoAPI_Section();
+    std::unique_ptr<BRepAlgoAPI_Section> mkSection(new BRepAlgoAPI_Section());
     mkSection->Init1(base);
     mkSection->Init2(tool);
     mkSection->Approximation(approx);
     mkSection->Build();
     if (!mkSection->IsDone())
         throw Base::RuntimeError("Section failed");
-    return mkSection;
+    return mkSection.release();
 #endif
 }
