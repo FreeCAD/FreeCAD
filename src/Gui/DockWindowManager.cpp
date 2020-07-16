@@ -957,12 +957,8 @@ public:
         if(onStyleSheet.isEmpty()) {
             onStyleSheet = activeStyleSheet;
             hideTab = false;
-            hideScrollBar = false;
-            hideHeader = false;
         } else {
             hideTab = (onStyleSheet.indexOf(QLatin1String("QTabBar")) < 0);
-            hideScrollBar = (onStyleSheet.indexOf(QLatin1String("QAbstractScrollArea")) < 0);
-            hideHeader = (onStyleSheet.indexOf(QLatin1String("QHeaderView")) < 0);
         }
     }
 
@@ -971,8 +967,6 @@ public:
     QString offStyleSheet;
     QString activeStyleSheet;
     bool hideTab = false;
-    bool hideHeader = false;
-    bool hideScrollBar = false;
 };
 
 void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
@@ -1012,24 +1006,6 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
     }
     widget->setAttribute(Qt::WA_NoSystemBackground, enable!=0);
     widget->setAttribute(Qt::WA_TranslucentBackground, enable!=0);
-
-    auto scrollarea = qobject_cast<QAbstractScrollArea*>(widget);
-    if(scrollarea) {
-        if(enable>0 && OverlayStyleSheet::instance()->hideScrollBar) {
-            scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-            scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        } else {
-            scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-            scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-        }
-    }
-
-    auto treeview = qobject_cast<QTreeView*>(widget);
-    if(treeview) {
-        if(treeview->header()) 
-            treeview->header()->setVisible(
-                    !OverlayStyleSheet::instance()->hideScrollBar || enable<=0);
-    }
 }
 
 void OverlayTabWidget::setOverlayMode(QWidget *widget, int enable)

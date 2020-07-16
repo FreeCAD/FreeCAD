@@ -128,6 +128,26 @@ Gui--PropertyEditor--PropertyEditor {
   qproperty-itemBackground: rgba(0, 0, 0, 0.01);
 }
 
+Gui--PropertyEditor--PropertyEditor QHeaderView:section {
+  height: 0px;
+  background-color: transparent;
+  padding: 0px;
+}
+
+Gui--PropertyEditor--PropertyEditor QScrollBar:vertical {
+  width: 0px;
+}
+
+Gui--TreeWidget QScrollBar:vertical {
+  width: 0px;
+}
+
+Gui--TreeWidget QHeaderView:section {
+  height: 0px;
+  background-color: transparent;
+  padding: 0px;
+}
+
 Gui--CallTipsList::item {
   background-color: rgba(200, 200, 200, 200);
 }
