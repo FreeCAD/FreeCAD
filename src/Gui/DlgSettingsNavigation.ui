@@ -234,7 +234,7 @@ Turntable: the part will be rotated around the z-axis.</string>
         <item row="2" column="0">
          <widget class="QLabel" name="newDocViewLabel">
           <property name="text">
-           <string>New document camera orientation</string>
+           <string>New document camera orientation / Home view</string>
           </property>
          </widget>
         </item>
@@ -253,7 +253,7 @@ Turntable: the part will be rotated around the z-axis.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Camera orientation for new documents</string>
+           <string>Camera orientation for new documents and Home view</string>
           </property>
          </widget>
         </item>
