@@ -166,7 +166,10 @@ void Property::getPaths(std::vector<ObjectIdentifier> &paths) const
 
 ObjectIdentifier Property::canonicalPath(const ObjectIdentifier &p) const
 {
-    return p;
+    ObjectIdentifier res(*this);
+    for(auto &component : p.getPropertyComponents(1))
+        res.addComponent(std::move(component));
+    return res;
 }
 
 namespace App {

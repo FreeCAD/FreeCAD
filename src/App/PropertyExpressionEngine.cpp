@@ -419,7 +419,7 @@ ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier 
     if (!prop)
         throw Base::RuntimeError(p.resolveErrorString().c_str());
 
-    if(ptype || prop->getContainer()!=getContainer())
+    if(ptype)
         return p;
 
     // In case someone calls this with p pointing to a PropertyExpressionEngine for some reason
