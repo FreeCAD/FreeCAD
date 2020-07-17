@@ -399,8 +399,7 @@ private:
         char* Name;
         const char* DocName=0;
         const char* optionSource = nullptr;
-        char* defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
-        char* useOptionSource = nullptr;
+        std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
         bool IgnoreErrors=true;
         if (!PyArg_ParseTuple(args.ptr(), "et|sbs","utf-8",&Name,&DocName,&IgnoreErrors,&optionSource))
             throw Py::Exception();
@@ -412,6 +411,8 @@ private:
         if (!file.exists())
             throw Py::RuntimeError("File doesn't exist");
 
+        if (optionSource)
+            defaultOptions = optionSource;
 
         App::Document *pcDoc;
         if (DocName)
@@ -421,16 +422,10 @@ private:
         if (!pcDoc) 
             pcDoc = App::GetApplication().newDocument(DocName);
 
-        if (optionSource) {
-            strcpy(useOptionSource,optionSource);
-        } else {
-            useOptionSource = defaultOptions;
-        }
-
         try {
             // read the DXF file
             ImpExpDxfRead dxf_file(EncodedName,pcDoc);
-            dxf_file.setOptionSource(useOptionSource);
+            dxf_file.setOptionSource(defaultOptions);
             dxf_file.setOptions();
             dxf_file.DoRead(IgnoreErrors);
             pcDoc->recompute();
