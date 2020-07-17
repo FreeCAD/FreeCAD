@@ -3218,9 +3218,9 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
 {
     // read my element
     reader.readElement("XLink");
-    std::string stamp,file;
+    std::string stampAttr,file;
     if(reader.hasAttribute("stamp"))
-        stamp = reader.getAttribute("stamp");
+        stampAttr = reader.getAttribute("stamp");
     if(reader.hasAttribute("file"))
         file = reader.getAttribute("file");
     setFlag(LinkAllowPartial, 
@@ -3293,7 +3293,7 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
     }
 
     if(file.size() || (!object && name.size())) {
-        this->stamp = stamp;
+        this->stamp = stampAttr;
         setValue(std::move(file),std::move(name),std::move(subs),std::move(shadows));
     }else
         setValue(object,std::move(subs),std::move(shadows));
