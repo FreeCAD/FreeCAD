@@ -230,12 +230,12 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 
     //can't do anything until Source has geometry
     if (!getViewPart()->hasGeometry()) {                              //happens when loading saved document
-        if (isRestoring() ||
-            getDocument()->testStatus(App::Document::Status::Restoring)) {
+        //if (isRestoring() ||
+        //    getDocument()->testStatus(App::Document::Status::Restoring)) {
             return App::DocumentObject::StdReturn;
-        } else {
-            return App::DocumentObject::StdReturn;
-        }
+        //} else {
+        //    return App::DocumentObject::StdReturn;
+        //}
     }
 
     //now we can check if Reference2ds have valid targets.
@@ -584,7 +584,6 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
         }
     } else if ((unitSystem == Base::UnitSystem::ImperialCivil) &&
                 angularMeasure) {
-        multiValueSchema = true;
         QString dispMinute = QString::fromUtf8("\'");
         QString dispSecond = QString::fromUtf8("\"");
         QString schemeMinute = QString::fromUtf8("M");
