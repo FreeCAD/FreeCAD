@@ -1425,12 +1425,10 @@ int SketchObject::addConstraints(const std::vector<Constraint *> &ConstraintList
 
     //test if tangent constraints have been added; AutoLockTangency.
     for(std::size_t i = newVals.size()-ConstraintList.size(); i<newVals.size(); i++){
-        if( newVals[i]->Type == Tangent || newVals[i]->Type == Perpendicular ){
-            Constraint *constNew = newVals[i]->clone();
-            if( constNew->Type == Tangent || constNew->Type == Perpendicular )
-                AutoLockTangencyAndPerpty(constNew);
-            newVals[i] = constNew;
-        }
+        Constraint *constNew = newVals[i]->clone();
+        if( constNew->Type == Tangent || constNew->Type == Perpendicular )
+            AutoLockTangencyAndPerpty(constNew);
+        newVals[i] = constNew;
     }
 
     this->Constraints.setValues(std::move(newVals));
