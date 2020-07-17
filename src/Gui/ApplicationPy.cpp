@@ -1321,8 +1321,6 @@ PyObject* Application::sSetCommandShortcut(PyObject * /*self*/, PyObject *args)
         action->setShortcut(nativeText);
         ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
         hGrp->SetASCII(pName, pShortcut);
-//        cmd->setAccel(pShortcut);
-//        getMainWindow()->updateActions();
         return Py::new_reference_to(Py::Boolean(true));
     }
     else {
