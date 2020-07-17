@@ -701,7 +701,7 @@ bool ParameterValue::edit ( const QModelIndex & index, EditTrigger trigger, QEve
 void ParameterValue::contextMenuEvent ( QContextMenuEvent* event )
 {
     QTreeWidgetItem* item = currentItem();
-    if (item->isSelected())
+    if (item && item->isSelected())
         menuEdit->popup(event->globalPos());
     else
         menuNew->popup(event->globalPos());
