@@ -97,12 +97,9 @@ using namespace Gui;
 
 namespace WebGui {
 enum WebAction {
-    OpenLink = 0xff,
-#ifdef QTWEBENGINE
-    ViewSource = QWebEnginePage::ViewSource
-#else
-    ViewSource = 200 // QWebView doesn't have a ViewSource option
-#endif
+    OpenLink = 0,
+    OpenLinkInNewWindow = 1,
+    ViewSource = 2 // QWebView doesn't have a ViewSource option
 };
 
 #ifdef QTWEBENGINE
@@ -297,7 +294,6 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
 #endif
     if (!r.linkUrl().isEmpty()) {
         QMenu menu(this);
-        QWEBPAGE::WebAction openLink = static_cast<QWEBPAGE::WebAction>(WebAction::OpenLink);
 
         // building a custom signal for external browser action
         QSignalMapper* signalMapper = new QSignalMapper (&menu);
@@ -307,11 +303,11 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
 
         QAction* extAction = menu.addAction(tr("Open in External Browser"));
         connect (extAction, SIGNAL(triggered()), signalMapper, SLOT(map()));
-        signalMapper->setMapping(extAction, openLink);
+        signalMapper->setMapping(extAction, WebAction::OpenLink);
 
         QAction* newAction = menu.addAction(tr("Open in new window"));
         connect (newAction, SIGNAL(triggered()), signalMapper, SLOT(map()));
-        signalMapper->setMapping(newAction, QWEBPAGE::OpenLinkInNewWindow);
+        signalMapper->setMapping(newAction, WebAction::OpenLinkInNewWindow);
 
         menu.addAction(pageAction(QWEBPAGE::DownloadLinkToDisk));
         menu.addAction(pageAction(QWEBPAGE::CopyLinkToClipboard));
@@ -364,7 +360,7 @@ void WebView::triggerContextMenuAction(int id)
     case WebAction::OpenLink:
         openLinkInExternalBrowser(url);
         break;
-    case QWEBPAGE::OpenLinkInNewWindow:
+    case WebAction::OpenLinkInNewWindow:
         openLinkInNewWindow(url);
         break;
     case WebAction::ViewSource:
