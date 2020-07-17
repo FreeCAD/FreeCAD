@@ -129,12 +129,6 @@ Gui--PropertyEditor--PropertyEditor {
   qproperty-itemBackground: rgba(0, 0, 0, 0.01);
 }
 
-Gui--PropertyEditor--PropertyEditor QHeaderView:section {
-  height: 0px;
-  background-color: transparent;
-  padding: 0px;
-}
-
 Gui--PropertyEditor--PropertyEditor QScrollBar:vertical {
   width: 0px;
 }
