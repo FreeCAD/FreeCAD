@@ -197,13 +197,24 @@ QModelIndex PropertyModel::propertyIndexFromPath(const QStringList& path) const
     if (it == groupItems.end())
         return QModelIndex();
 
-    const QString &propName = path[1];
-    for (int i=0, c = it->second.groupItem->childCount(); i<c; ++i) {
-        auto item = it->second.groupItem->child(i);
-        if (item->propertyName() == propName)
-            return index(i, 1, index(it->second.groupItem->row(), 0, QModelIndex()));
+    PropertyItem *item = it->second.groupItem;
+    QModelIndex index = this->index(item->row(), 0, QModelIndex());
+
+    for (int j=1; j<path.size(); ++j) {
+        bool found = false;
+        for (int i=0, c = item->childCount(); i<c; ++i) {
+            auto child = item->child(i);
+            if (child->propertyName() == path[j]) {
+                index = this->index(i, 1, index);
+                item = child;
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            return j==1?QModelIndex():index;
     }
-    return QModelIndex();
+    return index;
 }
 
 static void setPropertyItemName(PropertyItem *item, const char *propName, QString groupName) {
