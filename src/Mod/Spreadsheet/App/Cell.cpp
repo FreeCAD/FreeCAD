@@ -297,14 +297,16 @@ void Cell::setContent(const char * value)
                 setParseException(e.what());
             }
         }
-        else if (*value == '\'')
+        else if (*value == '\'') {
             expr = new App::StringExpression(owner->sheet(), value + 1);
+        }
         else if (*value != '\0') {
             char * end;
             errno = 0;
             double float_value = strtod(value, &end);
-            if (!*end && errno == 0)
+            if (!*end && errno == 0) {
                 expr = new App::NumberExpression(owner->sheet(), Quantity(float_value));
+            }
             else {
                 try {
                     expr = ExpressionParser::parse(owner->sheet(), value);
@@ -321,15 +323,15 @@ void Cell::setContent(const char * value)
     try {
         setExpression(App::ExpressionPtr(expr));
         signaller.tryInvoke();
-    } catch (Base::Exception &e) {
-        if(value) {
-            std::string _value;
-            if(*value != '=') {
-                _value = "=";
-                _value += value;
-                value = _value.c_str();
+    }
+    catch (Base::Exception &e) {
+        if (value) {
+            std::string _value = value;
+            if (_value[0] != '=') {
+                _value.insert (0, 1, '=');
             }
-            setExpression(App::ExpressionPtr(new App::StringExpression(owner->sheet(), value)));
+
+            setExpression(App::ExpressionPtr(new App::StringExpression(owner->sheet(), _value)));
             setParseException(e.what());
         }
     }
