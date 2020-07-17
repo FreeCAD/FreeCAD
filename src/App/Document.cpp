@@ -1383,7 +1383,8 @@ int Document::getAvailableUndos(int id) const
                 return i;
         }
         auto rit = mUndoTransactions.rbegin();
-        for(;rit!=mUndoTransactions.rend()&&*rit!=it->second;++rit,++i);
+        for(;rit!=mUndoTransactions.rend()&&*rit!=it->second;++rit)
+            ++i;
         assert(rit!=mUndoTransactions.rend());
         return i+1;
     }
@@ -1400,7 +1401,8 @@ int Document::getAvailableRedos(int id) const
         if(it == mRedoMap.end())
             return 0;
         int i = 0;
-        for(auto rit=mRedoTransactions.rbegin();*rit!=it->second;++rit,++i);
+        for(auto rit=mRedoTransactions.rbegin();*rit!=it->second;++rit)
+            ++i;
         assert(i<(int)mRedoTransactions.size());
         return i+1;
     }
