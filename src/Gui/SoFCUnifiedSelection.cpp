@@ -129,6 +129,10 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0)
     SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, OFF);
     SO_NODE_SET_SF_ENUM_TYPE (highlightMode, HighlightModes);
 
+    // Documentation of SoFullPath:
+    // Since the SoFullPath is derived from SoPath and contains no private data, you can cast SoPath instances to the SoFullPath type.
+    // This will allow you to examine hidden children. Actually, you are not supposed to allocate instances of this class at all.
+    // It is only available as an "extended interface" into the superclass SoPath.
     detailPath = static_cast<SoFullPath*>(new SoPath(20));
     detailPath->ref();
 
