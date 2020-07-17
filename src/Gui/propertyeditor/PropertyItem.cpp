@@ -344,46 +344,54 @@ QVariant PropertyItem::decoration(const QVariant&) const
 
 QVariant PropertyItem::toString(const QVariant& prop) const
 {
-    if(prop != QVariant() || propertyItems.size()!=1)
+    if (prop != QVariant() || propertyItems.size()!=1)
         return prop;
+
     Base::PyGILStateLocker lock;
-    Py::Object pyobj(propertyItems[0]->getPyObject(),true);
+    Py::Object pyobj(propertyItems[0]->getPyObject(), true);
     std::ostringstream ss;
-    if(pyobj.isNone()) 
+    if (pyobj.isNone()) {
         ss << "<None>";
+    }
     else if(pyobj.isSequence()) {
         ss << '[';
         Py::Sequence seq(pyobj);
         bool first = true;
         size_t i=0;
-        for(i=0;i<2 && i<seq.size(); ++i) {
-            if(first)
+        for (i=0; i<2 && i < seq.size(); ++i) {
+            if (first)
                 first = false;
             else
                 ss << ", ";
             ss << Py::Object(seq[i]).as_string();
         }
-        if(i<seq.size())
+
+        if (i < seq.size())
             ss << "...";
         ss << ']';
-    }else if(pyobj.isMapping()) {
+    }
+    else if (pyobj.isMapping()) {
         ss << '{';
         Py::Mapping map(pyobj);
         bool first = true;
         auto it = map.begin();
-        for(int i=0;i<2 && it!=map.end(); ++it) {
-            if(first)
+        for(int i=0; i<2 && it != map.end(); ++it, ++i) {
+            if (first)
                 first = false;
             else
                 ss << ", ";
             const auto &v = *it;
             ss << Py::Object(v.first).as_string() << ':' << Py::Object(v.second).as_string();
         }
-        if(it!=map.end())
+
+        if (it != map.end())
             ss << "...";
         ss << '}';
-    }else
+    }
+    else {
         ss << pyobj.as_string();
+    }
+
     return QVariant(QString::fromUtf8(ss.str().c_str()));
 }
 
