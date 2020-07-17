@@ -1,4 +1,3 @@
-add_compile_options("-DBUILD_CLOUD")
 #----------------------------- Control certificate validation ------------
 option(ALLOW_SELF_SIGNED_CERTIFICATE "Allow self signed certificate" OFF)
 if (ALLOW_SELF_SIGNED_CERTIFICATE)
