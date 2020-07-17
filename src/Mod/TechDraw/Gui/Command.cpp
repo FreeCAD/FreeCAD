@@ -806,7 +806,7 @@ CmdTechDrawClipGroup::CmdTechDrawClipGroup()
     // setting the
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Insert Clip Group");
-    sToolTipText  = sToolTipText;
+    sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ClipGroup";
     sStatusTip    = sToolTipText;
     sPixmap       = "actions/techdraw-ClipGroup";
