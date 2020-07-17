@@ -606,11 +606,12 @@ int SketchObject::setDatum(int ConstrId, double Datum)
 
     // copy the list
     std::vector<Constraint *> newVals(vals);
+    std::map<int, double> oldVals;
 
     for(size_t i=0; i<newVals.size(); i++) {
-        newVals[i] = newVals[i]->clone();
-
         if((int)i == ConstrId) {
+            oldVals[i] = newVals[i]->getValue();
+            newVals[i] = newVals[i]->clone();
             newVals[i]->setValue(Datum);
         }
     }
@@ -619,8 +620,11 @@ int SketchObject::setDatum(int ConstrId, double Datum)
 
     int err = solve();
 
-    if (err)
-        this->Constraints.setValues(vals);
+    if (err) {
+        const std::vector<Constraint *> &vals = this->Constraints.getValues();
+        for (auto &v : oldVals)
+            vals[v.first]->setValue(v.second);
+    }
 
     return err;
 }
@@ -641,9 +645,8 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
 
     // clone the changed Constraint
     for(size_t i=0; i<newVals.size(); i++) {
-        newVals[i] = newVals[i]->clone();
-
         if((int)i == ConstrId) {
+            newVals[i] = newVals[i]->clone();
             newVals[i]->isDriving = isdriving;
         }
     }
@@ -1217,9 +1220,12 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     }
 
     const std::vector< Constraint * > &constraints = this->Constraints.getValues();
-    std::vector< Constraint * > newConstraints(constraints);
-    for (auto &cstr : newConstraints) {
-        if (cstr->First != GeoId && cstr->Second != GeoId && cstr->Third != GeoId) {
+    std::vector< Constraint * > newConstraints;
+    newConstraints.reserve(constraints.size());
+    for (auto cstr : constraints) {
+        if (cstr->First == GeoId || cstr->Second == GeoId || cstr->Third == GeoId)
+            continue;
+        if (cstr->First > GeoId || cstr->Second > GeoId || cstr->Third > GeoId) {
             cstr = cstr->clone();
             if (cstr->First > GeoId)
                 cstr->First -= 1;
@@ -1228,6 +1234,7 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
             if (cstr->Third > GeoId)
                 cstr->Third -= 1;
         }
+        newConstraints.push_back(cstr);
     }
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
@@ -1503,7 +1510,7 @@ int SketchObject::delConstraint(int ConstrId)
 
     std::vector< Constraint * > newVals(vals);
     newVals.erase(newVals.begin()+ConstrId);
-    this->Constraints.setValues(newVals);
+    this->Constraints.setValues(std::move(newVals));
 
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
         solve();
@@ -1527,7 +1534,7 @@ int SketchObject::delConstraints(std::vector<int> ConstrIds, bool updategeometry
     for(auto rit = ConstrIds.rbegin(); rit!=ConstrIds.rend(); rit++)
         newVals.erase(newVals.begin()+*rit);
 
-    this->Constraints.setValues(newVals);
+    this->Constraints.setValues(std::move(newVals));
 
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
         solve(updategeometry);
@@ -1651,7 +1658,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
         newVals.push_back(*it);
     }
     if (newVals.size() < vals.size()) {
-        this->Constraints.setValues(newVals);
+        this->Constraints.setValues(std::move(newVals));
 
         return 0;
     }
@@ -1665,11 +1672,20 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
 
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
     std::vector<Constraint *> newVals(vals);
-    std::vector<Constraint *> changed;
+    bool changed = false;
     for (int i=0; i < int(newVals.size()); i++) {
         if (vals[i]->First == fromGeoId && vals[i]->FirstPos == fromPosId &&
             !(vals[i]->Second == toGeoId && vals[i]->SecondPos == toPosId) &&
             !(toGeoId < 0 && vals[i]->Second <0) ) {
+            // With respect to angle constraints, if it is a DeepSOIC style angle constraint (segment+segment+point),
+            // then no problem arises as the segments are PosId=none. In this case there is no call to this function.
+            //
+            // However, other angle constraints are problematic because they are created on segments, but internally
+            // operate on vertices, PosId=start
+            // Such constraint may not be successfully transferred on deletion of the segments.
+            if(vals[i]->Type == Sketcher::Angle)
+                continue;
+
             // Nothing guarantees that a tangent can be freely transferred to another coincident point, as
             // the transfer destination edge most likely won't be intended to be tangent. However, if it is
             // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
@@ -1680,22 +1696,16 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular){
                 constNew->Type = Sketcher::Coincident;
             }
-            // With respect to angle constraints, if it is a DeepSOIC style angle constraint (segment+segment+point),
-            // then no problem arises as the segments are PosId=none. In this case there is no call to this function.
-            //
-            // However, other angle constraints are problematic because they are created on segments, but internally
-            // operate on vertices, PosId=start
-            // Such constraint may not be successfully transferred on deletion of the segments.
-            else if(vals[i]->Type == Sketcher::Angle) {
-                continue;
-            }
-
             newVals[i] = constNew;
-            changed.push_back(constNew);
+            changed = true;
         }
         else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId &&
                  !(vals[i]->First == toGeoId && vals[i]->FirstPos == toPosId) &&
                  !(toGeoId < 0 && vals[i]->First< 0)) {
+
+            if(vals[i]->Type == Sketcher::Angle) {
+                continue;
+            }
 
             Constraint *constNew = newVals[i]->clone();
             constNew->Second = toGeoId;
@@ -1706,21 +1716,15 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular) {
                 constNew->Type = Sketcher::Coincident;
             }
-            else if(vals[i]->Type == Sketcher::Angle) {
-                continue;
-            }
 
             newVals[i] = constNew;
-            changed.push_back(constNew);
+            changed = true;
         }
     }
 
     // assign the new values only if something has changed
-    if (!changed.empty()) {
-        this->Constraints.setValues(newVals);
-        // free memory
-        for (Constraint* it : changed)
-            delete it;
+    if (changed) {
+        this->Constraints.setValues(std::move(newVals));
     }
     return 0;
 }
@@ -5860,20 +5864,32 @@ void SketchObject::delExternalPrivate(const std::set<long> &ids, bool removeRef)
            (cstr->Second==Constraint::GeoUndef || !geoIds.count(cstr->Second)) &&
            (cstr->Third==Constraint::GeoUndef || !geoIds.count(cstr->Third)))
         {
-            cstr = cstr->clone();
+            bool cloned = false;
             int offset = 0;
             for(auto GeoId : geoIds) {
                 GeoId += offset++;
                 bool done = true;
                 if (cstr->First < GeoId && cstr->First != Constraint::GeoUndef) {
+                    if (!cloned) {
+                        cloned = true;
+                        cstr = cstr->clone();
+                    }
                     cstr->First += 1;
                     done = false;
                 }
                 if (cstr->Second < GeoId && cstr->Second != Constraint::GeoUndef) {
+                    if (!cloned) {
+                        cloned = true;
+                        cstr = cstr->clone();
+                    }
                     cstr->Second += 1;
                     done = false;
                 }
                 if (cstr->Third < GeoId && cstr->Third != Constraint::GeoUndef) {
+                    if (!cloned) {
+                        cloned = true;
+                        cstr = cstr->clone();
+                    }
                     cstr->Third += 1;
                     done = false;
                 }
@@ -7407,6 +7423,7 @@ void SketchObject::validateConstraints()
     const std::vector<Sketcher::Constraint *>& constraints = Constraints.getValuesForce();
 
     std::vector<Sketcher::Constraint *> newConstraints;
+    newConstraints.reserve(constraints.size());
     std::vector<Sketcher::Constraint *>::const_iterator it;
     for (it = constraints.begin(); it != constraints.end(); ++it) {
         bool valid = evaluateConstraint(*it);
@@ -7415,7 +7432,7 @@ void SketchObject::validateConstraints()
     }
 
     if (newConstraints.size() != constraints.size()) {
-        Constraints.setValues(newConstraints);
+        Constraints.setValues(std::move(newConstraints));
         acceptGeometry();
     }
     else if (!Constraints.scanGeometry(geometry)) {
@@ -7994,8 +8011,6 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
 
     std::vector< Constraint * > newVals(vals);//modifiable copy of pointers array
 
-    std::vector< Constraint * > tbd;//list of temporary Constraint copies that need to be deleted later
-
     for(std::size_t ic = 0; ic<newVals.size(); ic++){//ic = index of constraint
         bool affected=false;
         Constraint *constNew = 0;
@@ -8038,7 +8053,6 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
         }
         if (affected){
             cntToBeAffected++;
-            tbd.push_back(constNew);
             newVals[ic] = constNew;
             Base::Console().Log("Constraint%i will be affected\n",
                                 ic+1);
@@ -8046,16 +8060,10 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
     }
 
     if(!justAnalyze){
-        this->Constraints.setValues(newVals);
+        this->Constraints.setValues(std::move(newVals));
         Base::Console().Log("Swapped start/end of reversed external arcs in %i constraints\n",
                             cntToBeAffected);
     }
-
-    //clean up - delete temporary copies of constraints that were made to affect the constraints
-    for(std::size_t i=0; i<tbd.size(); i++){
-        delete (tbd[i]);
-    }
-
 
     return cntToBeAffected;
 }
