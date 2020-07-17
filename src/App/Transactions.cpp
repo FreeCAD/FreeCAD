@@ -225,6 +225,7 @@ TransactionGuard::~TransactionGuard()
             try {
                 FC_LOG("transaction touch " << prop->getFullName());
                 prop->touch();
+                errMsg.clear();
             }catch(Base::Exception &e) {
                 e.ReportException();
                 errMsg = e.what();
@@ -245,7 +246,21 @@ TransactionGuard::~TransactionGuard()
     for (auto doc : docs) {
         for(auto obj : doc->getObjects()) {
             if(obj->testStatus(ObjectStatus::PendingTransactionUpdate)) {
-                obj->onUndoRedoFinished();
+                try {
+                    obj->onUndoRedoFinished();
+                    errMsg.clear();
+                }catch(Base::Exception &e) {
+                    e.ReportException();
+                    errMsg = e.what();
+                }catch(std::exception &e) {
+                    errMsg = e.what();
+                }catch(...) {
+                    errMsg = "Unknown exception";
+                }
+                if(errMsg.size()) {
+                    FC_ERR("Exception on finishing transaction " << errMsg);
+                    errMsg.clear();
+                }
                 obj->setStatus(ObjectStatus::PendingTransactionUpdate,false);
             }
         }
