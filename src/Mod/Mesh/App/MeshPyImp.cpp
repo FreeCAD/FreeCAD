@@ -1911,7 +1911,7 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
 #else
         int num = (int)Py::Int(t[4]);
 #endif
-        segm.emplace_back(new MeshCore::MeshCurvatureFreeformSegment(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
+        segm.emplace_back(std::make_shared<MeshCore::MeshCurvatureFreeformSegment>(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
     }
 
     finder.FindSegments(segm);

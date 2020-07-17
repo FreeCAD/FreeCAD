@@ -145,7 +145,7 @@ static void findGeometry(int minFaces, double tolerance,
                 MeshCore::MeshSegmentAlgorithm finder(kernel);
 
                 std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
-                segm.emplace_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
+                segm.emplace_back(std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>
                     (surfFit, kernel, minFaces, tolerance));
                 finder.FindSegments(segm);
 
