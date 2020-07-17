@@ -449,10 +449,12 @@ void ViewProviderPage::setTemplateMarkers(bool state)
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(templateFeat->getDocument());
     Gui::ViewProvider* vp = guiDoc->getViewProvider(templateFeat);
     ViewProviderTemplate* vpt = dynamic_cast<ViewProviderTemplate*>(vp);
-    vpt->setMarkers(state);
-    QGITemplate* t = vpt->getQTemplate();
-    if (t != nullptr) {
-        t->updateView(true);
+    if (vpt) {
+        vpt->setMarkers(state);
+        QGITemplate* t = vpt->getQTemplate();
+        if (t != nullptr) {
+            t->updateView(true);
+        }
     }
 }
 

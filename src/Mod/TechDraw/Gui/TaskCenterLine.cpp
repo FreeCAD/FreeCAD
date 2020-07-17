@@ -426,7 +426,7 @@ double TaskCenterLine::getCenterWidth()
     delete lg; 
     Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
     auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
-    if ( vp != nullptr ) {
+    if ( partVP != nullptr ) {
         width = partVP->IsoWidth.getValue();
     }
     return width;

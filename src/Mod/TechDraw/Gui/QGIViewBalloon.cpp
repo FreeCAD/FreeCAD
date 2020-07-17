@@ -368,7 +368,8 @@ void QGIViewBalloon::setViewPartFeature(TechDraw::DrawViewBalloon *balloon)
     App::DocumentObject* docObj = balloon->SourceView.getValue();
     if (docObj == nullptr) {
         balloonParent = dynamic_cast<DrawView*>(docObj);
-        scale = balloonParent->getScale();
+        if (balloonParent)
+            scale = balloonParent->getScale();
     }
 
     float x = Rez::guiX(balloon->X.getValue() * scale) ;
@@ -509,12 +510,9 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
         return;
     }
 
-    DrawView* balloonParent = nullptr;
-    App::DocumentObject* docObj = balloon->SourceView.getValue();
-    if (docObj == nullptr) {
+    DrawView* balloonParent = dynamic_cast<DrawView*>(balloon->SourceView.getValue());
+    if (balloonParent == nullptr) {
         return;
-    } else {
-        balloonParent = dynamic_cast<DrawView*>(docObj);
     }
     
     auto featPage = balloonParent->findParentPage();

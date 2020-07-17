@@ -463,7 +463,7 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
     std::vector<Base::Vector3d> points;
     if (m_baseFeat != nullptr) {
         if (m_baseFeat->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
-            TechDraw::DrawLeaderLine* dll = dynamic_cast<TechDraw::DrawLeaderLine*>(m_baseFeat);
+            TechDraw::DrawLeaderLine* dll = static_cast<TechDraw::DrawLeaderLine*>(m_baseFeat);
             points = dll->WayPoints.getValues();
         } else {
 //            Base::Console().Message("TRA::calcTextPos - m_baseFeat is not Leader\n");
