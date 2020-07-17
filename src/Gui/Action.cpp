@@ -1356,23 +1356,13 @@ public:
 
     void keyPressEvent(QKeyEvent *e)
     {
-        if (!isVisible()) {
-            QMenu::keyPressEvent(e);
-            return;
-        }
-        if (e->key() == Qt::Key_Space) {
+        if (isVisible() && e->key() == Qt::Key_Space) {
             focusWidget->setFocus();
             e->accept();
             return;
         }
         QMenu::keyPressEvent(e);
-        if (e->isAccepted())
-            return;
-        if (isVisible() && !e->text().isEmpty()) {
-            focusWidget->setFocus();
-            QKeyEvent ke(e->type(), e->key(), e->modifiers(), e->text(), e->isAutoRepeat(), e->count());
-            qApp->sendEvent(focusWidget, &ke);
-        }
+        return;
     }
 
 public:
@@ -1395,13 +1385,13 @@ void CmdHistoryAction::addTo ( QWidget * w )
 {
     if (!_menu) {
         _lineedit = new QLineEdit;
-        _lineedit->setPlaceholderText(tr("Type to search..."));
+        _lineedit->setPlaceholderText(tr("Press SPACE to search"));
         _widgetAction = new QWidgetAction(this);
         _widgetAction->setDefaultWidget(_lineedit);
         _completer = new CommandCompleter(_lineedit, this);
         connect(_completer, SIGNAL(commandActivated(QByteArray)), this, SLOT(onCommandActivated(QByteArray)));
 
-        _newAction = new QAction(tr("Add toolbar..."), this);
+        _newAction = new QAction(tr("Add toolbar or menu"), this);
         connect(_newAction, SIGNAL(triggered(bool)), this, SLOT(onNewAction()));
 
         _menu = new CmdHistoryMenu(_lineedit);
