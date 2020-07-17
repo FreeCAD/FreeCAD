@@ -602,7 +602,15 @@ ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p
         }
         return p;
     }
-    else if (c1.isSimple() || c1.isMap() || c1.isLabel()) {
+    else if (c1.isSimple()) {
+        // Do not return 'p' in case we are referenced through an App::Link. we
+        // shall return a resolved object path.
+        //
+        // return p;
+
+        return ObjectIdentifier(*this) << c1;
+    }
+    else if (c1.isMap() || c1.isLabel()) {
         const std::string &name = c1.getName();
         if (boost::regex_match(name.c_str(), cm, re)) {
             return ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent(name);
