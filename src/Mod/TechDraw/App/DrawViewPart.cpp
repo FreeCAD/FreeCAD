@@ -1195,6 +1195,7 @@ int DrawViewPart::add1CVToGV(std::string tag)
     TechDraw::CosmeticVertex* cv = getCosmeticVertex(tag);
     if (cv == nullptr) {
         Base::Console().Message("DVP::add1CVToGV 2 - cv %s not found\n", tag.c_str());
+        return 0;
     }
     int iGV = geometryObject->addCosmeticVertex(cv->scaled(getScale()),
                                                 cv->getTagAsString());
