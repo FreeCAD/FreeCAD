@@ -108,6 +108,8 @@ public:
 
     const Cell * getValueFromAlias(const std::string &alias) const;
 
+    Cell * getValueFromAlias(const std::string &alias);
+
     bool isValidAlias(const std::string &candidate);
 
     std::set<App::CellAddress> getUsedCells() const;
@@ -167,6 +169,9 @@ public:
     void deletedDocumentObject(const App::DocumentObject *docObj);
 
     void documentSet();
+
+    App::CellAddress getCellAddress(const char *addr, bool silent=false) const;
+    App::Range getRange(const char *range, bool silent=false) const;
 
     std::string getRow(int offset=0) const;
 

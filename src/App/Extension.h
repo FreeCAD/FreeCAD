@@ -257,6 +257,8 @@ public:
     virtual void extensionGetPropertyMap(std::map<std::string,Property*> &Map) const;
     /// get all properties of the class (including properties of the parent)
     virtual void extensionGetPropertyList(std::vector<Property*> &List) const;
+    /// get all properties with their names
+    virtual void extensionGetPropertyNamedList(std::vector<std::pair<const char *,Property*> > &List) const;
 
     /// get the Type of a Property
     virtual short extensionGetPropertyType(const Property* prop) const;

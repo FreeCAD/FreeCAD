@@ -37,7 +37,7 @@ namespace Gui {
 class CallTip
 {
 public:
-    enum Type {Unknown, Module, Class, Method, Member, Property};
+    enum Type {Unknown, Module, Class, Method, Member, Property, EnumMax};
     CallTip():type(Unknown) {}
     QString name;
     QString description;
@@ -62,6 +62,12 @@ public:
     void showTips(const QString&);
     void validateCursor();
 
+    static QMap<QString, CallTip> extractTips(Py::Object pyObj, bool *isValid=nullptr);
+    static void extractTipsFromObject(Py::Object&, Py::List&, QMap<QString, CallTip>&);
+    static void extractTipsFromProperties(Py::Object&, QMap<QString, CallTip>&);
+
+    static QIcon iconOfType(CallTip::Type type, bool isValid=true);
+
 protected:
     bool eventFilter(QObject *, QEvent *);
     void showEvent(QShowEvent*);
@@ -72,15 +78,13 @@ private Q_SLOTS:
 
 private:
     QString extractContext(const QString&) const;
+    static QString stripWhiteSpace(const QString&);
     QMap<QString, CallTip> extractTips(const QString&) const;
-    void extractTipsFromObject(Py::Object&, Py::List&, QMap<QString, CallTip>&) const;
-    void extractTipsFromProperties(Py::Object&, QMap<QString, CallTip>&) const;
-    QString stripWhiteSpace(const QString&) const;
 
 private:
     QPlainTextEdit* textEdit;
     int cursorPos;
-    bool validObject;
+    mutable bool validObject;
     bool doCallCompletion;
     QList<int> hideKeys;
     QList<int> compKeys;

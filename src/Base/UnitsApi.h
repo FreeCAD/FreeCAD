@@ -107,6 +107,8 @@ protected: // the python API wrapper methods
     static PyObject *sGetSchema       (PyObject *self,PyObject *args);
     static PyObject *sSetSchema       (PyObject *self,PyObject *args);
     static PyObject *sSchemaTranslate (PyObject *self,PyObject *args);
+    static PyObject *sListPredefinedUnits(PyObject *self,PyObject *args);
+    static PyObject *sListUnitTypes   (PyObject *self,PyObject *args);
 };
 
 } // namespace Base

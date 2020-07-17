@@ -167,6 +167,11 @@ void Extension::extensionGetPropertyList(std::vector< Property* >& List) const {
     extensionGetPropertyData().getPropertyList(this, List);
 }
 
+void Extension::extensionGetPropertyNamedList(std::vector<std::pair<const char*, Property*> >& List) const {
+    
+    extensionGetPropertyData().getPropertyNamedList(this, List);
+}
+
 void Extension::extensionGetPropertyMap(std::map< std::string, Property* >& Map) const {
 
     extensionGetPropertyData().getPropertyMap(this, Map);

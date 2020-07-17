@@ -71,7 +71,10 @@ struct AppExport Expression::Component {
 class  AppExport UnitExpression : public Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    UnitExpression(const App::DocumentObject *_owner = 0, const Base::Quantity & _quantity = Base::Quantity(), const std::string & _unitStr = std::string());
+
+    static UnitExpression *create(const App::DocumentObject *_owner, const char *unit);
+
+    UnitExpression(const App::DocumentObject *_owner = 0, const Base::Quantity & _quantity = Base::Quantity());
 
     ~UnitExpression();
 
@@ -87,11 +90,13 @@ public:
 
     const Base::Quantity & getQuantity() const { return quantity; }
 
-    const std::string getUnitString() const { return unitStr; }
+    const char *getUnitString() const { return unitStr; }
 
     double getScaler() const { return quantity.getValue(); }
 
 protected:
+    UnitExpression(const App::DocumentObject *_owner, const Base::Quantity & _quantity, const char *unit);
+
     virtual Expression * _copy() const override;
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
     virtual Py::Object _getPyValue() const override;
@@ -101,7 +106,7 @@ protected:
 
 private:
     Base::Quantity quantity;
-    std::string unitStr; /**< The unit string from the original parsed string */
+    const char *unitStr; /**< The unit string from the original parsed string */
 };
 
 /**
@@ -167,6 +172,7 @@ public:
         LTE,
         GTE,
         UNIT,
+        UNIT_ADD,
         NEG,
         POS
     };
@@ -298,6 +304,13 @@ public:
 
     static Py::Object evaluate(const Expression *owner, int type, const std::vector<Expression*> &args);
 
+    struct FunctionInfo {
+        Function type;
+        const char *name;
+        const char *description;
+    };
+    static const std::vector<FunctionInfo> &getFunctions();
+
 protected:
     static Py::Object evalAggregate(const Expression *owner, int type, const std::vector<Expression*> &args);
     virtual Py::Object _getPyValue() const override;
@@ -321,7 +334,8 @@ protected:
 class AppExport VariableExpression : public UnitExpression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    VariableExpression(const App::DocumentObject *_owner = 0, ObjectIdentifier _var = ObjectIdentifier());
+    VariableExpression(const App::DocumentObject *_owner = 0,
+            ObjectIdentifier &&_var = ObjectIdentifier());
 
     ~VariableExpression();
 
@@ -336,6 +350,11 @@ public:
     void setPath(const ObjectIdentifier & path);
 
     const App::Property *getProperty() const;
+
+    std::vector<std::string> getStringList() const;
+
+    // strip out given number of component
+    void popComponents(int count=1);
 
     virtual void addComponent(Component* component) override;
 
@@ -451,7 +470,12 @@ AppExport UnitExpression * parseUnit(const App::DocumentObject *owner, const cha
 AppExport ObjectIdentifier parsePath(const App::DocumentObject *owner, const char* buffer);
 AppExport bool isTokenAnIndentifier(const std::string & str);
 AppExport bool isTokenAUnit(const std::string & str);
-AppExport std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string & str);
+
+AppExport std::vector<boost::tuple<int, int, std::string> > tokenize(const char *str);
+
+inline std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string & str) {
+    return tokenize(str.c_str());
+}
 
 /// Convenient class to mark begin of importing
 class AppExport ExpressionImporter {

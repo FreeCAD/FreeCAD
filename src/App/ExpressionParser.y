@@ -27,10 +27,9 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %token EQ NEQ LT GT GTE LTE
      %token STRING MINUSSIGN PROPERTY_REF
      %token DOCUMENT OBJECT
-     %token EXPONENT
      %type <arguments> args
-     %type <expr> input exp unit_exp cond indexable
-     %type <quantity> UNIT
+     %type <expr> input exp uexp unit unit_exp cond indexable
+     %type <string> UNIT
      %type <string> id_or_cell STRING IDENTIFIER CELLADDRESS
      %type <ivalue> INTEGER
      %type <string> PROPERTY_REF
@@ -50,13 +49,12 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %left '?' ':'
      %left MINUSSIGN '+'
      %left '*' '/' '%'
-     %precedence NUM_AND_UNIT
-     %left '^'    /* exponentiation */
-     %left EXPONENT
      %left NEG     /* negation--unary minus */
      %left POS     /* unary plus */
+     %precedence NUM_AND_UNIT
+     %left '^'    /* exponentiation */
 
-%destructor { delete $$; } num range exp cond unit_exp indexable
+%destructor { delete $$; } num range uexp exp cond unit unit_exp indexable
 %destructor { delete $$; } <component>
 %destructor { std::vector<Expression*>::const_iterator i = $$.begin(); while (i != $$.end()) { delete *i; ++i; } } args
 
@@ -65,22 +63,28 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
 %%
 
 input:     exp                			{ ScanResult = $1; valueExpression = true;                                        }
-     |     unit_exp                     { ScanResult = $1; unitExpression = true;                                         }
      ;
 
+uexp    
+ : num unit_exp  %prec NUM_AND_UNIT     { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  }
+ | uexp num unit_exp %prec NUM_AND_UNIT { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT_ADD, 
+                                                                        new OperatorExpression(DocumentObject, $2,
+                                                                                               OperatorExpression::UNIT, $3));
+                                        }
+
 exp:      num                			{ $$ = $1;                                                                        }
-        | num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  }
-        | STRING                                { $$ = new StringExpression(DocumentObject, $1);                                  }
-        | identifier                            { $$ = new VariableExpression(DocumentObject, $1);                                }
-        | MINUSSIGN exp %prec NEG               { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))); }
-        | '+' exp %prec POS                     { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::POS, new NumberExpression(DocumentObject, Quantity(1))); }
+        | uexp %prec NUM_AND_UNIT       { $$ = $1;                                                                        }
+        | STRING                        { $$ = new StringExpression(DocumentObject, $1);                                  }
+        | identifier                    { $$ = new VariableExpression(DocumentObject, std::move($1));                                }
+        | MINUSSIGN exp %prec NEG       { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))); }
+        | '+' exp %prec POS             { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::POS, new NumberExpression(DocumentObject, Quantity(1))); }
         | exp '+' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::ADD, $3);   }
-        | exp MINUSSIGN exp                     { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::SUB, $3);   }
+        | exp MINUSSIGN exp             { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::SUB, $3);   }
         | exp '*' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
         | exp '/' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | exp '%' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MOD, $3);   }
-        | exp '/' unit_exp                      { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
-        | exp '^' exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
+        | exp '/' unit                  { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
+        | exp '^' exp                   { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
         | indexable       			    { $$ = $1;                                                                        }
         | FUNC  args ')'  		        { $$ = new FunctionExpression(DocumentObject, $1.first, std::move($1.second), $2);        }
         | cond '?' exp ':' exp                  { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
@@ -110,12 +114,17 @@ cond: exp EQ exp                                { $$ = new OperatorExpression(Do
     | exp LTE exp                               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::LTE, $3);   }
     ;
 
-unit_exp: UNIT                                  { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
+unit: UNIT                                      { $$ = UnitExpression::create(DocumentObject, $1.c_str() ); if (!$$) YYERROR; }
+    ;
+
+unit_exp: unit                                  { $$ = $1; }
+        | IDENTIFIER                            { $$ = UnitExpression::create(DocumentObject, $1.c_str() ); if (!$$) YYERROR; }
         | unit_exp '/' unit_exp                 { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | unit_exp '*' unit_exp                 { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
         | unit_exp '^' integer                  { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new NumberExpression(DocumentObject, Quantity((double)$3)));   }
-        | unit_exp '^' MINUSSIGN integer        { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new OperatorExpression(DocumentObject, new NumberExpression(DocumentObject, Quantity((double)$4)), OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))));   }
+        | unit_exp '^' MINUSSIGN integer        { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new NumberExpression(DocumentObject, Quantity(-(double)$4)));   }
         | '(' unit_exp ')'                      { $$ = $2;                                                                        }
+        | '(' num '/' unit_exp ')'              { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::DIV, $4);   }
         ;
 
 integer: INTEGER { $$ = $1; }
@@ -128,49 +137,45 @@ id_or_cell
     ;
 
 identifier
-    : id_or_cell                            { $$ = ObjectIdentifier(DocumentObject); $$ << ObjectIdentifier::SimpleComponent($1); }
-    | iden                                  { $$ = std::move($1); }
+    : id_or_cell                            { $$ = ObjectIdentifier(DocumentObject); $$ << ObjectIdentifier::SimpleComponent(std::move($1)); }
+    | iden                                  { $$ = std::move($1); $$.resolveAmbiguity(); }
     ;
 
 iden
-    :  '.' STRING '.' id_or_cell            { /* Path to property of a sub-object of the current object*/
+    :  '.' STRING                           {
                                                 $$ = ObjectIdentifier(DocumentObject,true);
-                                                $$.setDocumentObjectName(DocumentObject,false,ObjectIdentifier::String(std::move($2),true),true);
-                                                $$.addComponent(ObjectIdentifier::SimpleComponent($4));
+                                                $$.addComponent(ObjectIdentifier::LabelComponent(std::move($2)));
                                             }
-    | '.' id_or_cell                        { /* Path to property of the current document object */
+    | '.' id_or_cell                        {
                                                 $$ = ObjectIdentifier(DocumentObject,true);
-                                                $$.setDocumentObjectName(DocumentObject);
-                                                $$.addComponent(ObjectIdentifier::SimpleComponent($2));
+                                                $$.addComponent(ObjectIdentifier::SimpleComponent(std::move($2)));
                                             }
-    | object '.' STRING '.' id_or_cell      { /* Path to property of a sub-object */
+    | object '.' STRING                     {
                                                 $$ = ObjectIdentifier(DocumentObject);
                                                 $$.setDocumentObjectName(std::move($1), true, ObjectIdentifier::String(std::move($3),true),true);
-                                                $$.addComponent(ObjectIdentifier::SimpleComponent($5));
-                                                $$.resolveAmbiguity();
                                             }
-    | object '.' id_or_cell                 { /* Path to property of a given document object */
+    | object '.' id_or_cell                 {
                                                 $$ = ObjectIdentifier(DocumentObject);
                                                 $1.checkImport(DocumentObject);
-                                                $$.addComponent(ObjectIdentifier::SimpleComponent($1));
-                                                $$.addComponent(ObjectIdentifier::SimpleComponent($3));
-                                                $$.resolveAmbiguity();
+                                                if($1.isRealString())
+                                                    $$.addComponent(ObjectIdentifier::LabelComponent(std::move($1.getString())));
+                                                else
+                                                    $$.addComponent(ObjectIdentifier::SimpleComponent(std::move($1.getString())));
+                                                $$.addComponent(ObjectIdentifier::SimpleComponent(std::move($3)));
                                             }
-    | document '#' object '.' id_or_cell    { /* Path to property from an external document, within a named document object */
+    | document '#' object                   {
                                                 $$ = ObjectIdentifier(DocumentObject);
                                                 $$.setDocumentName(std::move($1), true);
                                                 $$.setDocumentObjectName(std::move($3), true);
-                                                $$.addComponent(ObjectIdentifier::SimpleComponent($5));
-                                                $$.resolveAmbiguity();
                                             }
-    | document '#' object '.' STRING '.' id_or_cell
-                                            {   $$ = ObjectIdentifier(DocumentObject);
-                                                $$.setDocumentName(std::move($1), true);
-                                                $$.setDocumentObjectName(std::move($3), true, ObjectIdentifier::String(std::move($5),true));
-                                                $$.addComponent(ObjectIdentifier::SimpleComponent($7));
-                                                $$.resolveAmbiguity();
+    | iden '.' STRING                       {
+                                                $$ = std::move($1);
+                                                $$.addComponent(ObjectIdentifier::LabelComponent(std::move($3)));
                                             }
-    | iden '.' IDENTIFIER                   { $$= std::move($1); $$.addComponent(ObjectIdentifier::SimpleComponent($3)); }
+    | iden '.' id_or_cell                   {
+                                                $$ = std::move($1);
+                                                $$.addComponent(ObjectIdentifier::SimpleComponent(std::move($3)));
+                                            }
     ;
 
 indexer
@@ -186,7 +191,7 @@ indexer
 
 indexable
     : '(' exp ')'                           { $$ = $2; }
-    | identifier indexer                    { $$ = new VariableExpression(DocumentObject,$1); $$->addComponent($2); }
+    | identifier indexer                    { $$ = new VariableExpression(DocumentObject,std::move($1)); $$->addComponent($2); }
     | indexable indexer                     { $1->addComponent(std::move($2)); $$ = $1; }
     | indexable '.' IDENTIFIER              { $1->addComponent(Expression::createComponent($3)); $$ = $1; }
     ;

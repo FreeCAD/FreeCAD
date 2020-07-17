@@ -33,6 +33,7 @@
 #include "UnitsApi.h"
 #include "Quantity.h"
 #include "QuantityPy.h" 
+#include "UnitPy.h" 
 
 
 
@@ -91,6 +92,14 @@ PyMethodDef UnitsApi::Methods[] = {
     {"schemaTranslate",  (PyCFunction) UnitsApi::sSchemaTranslate, METH_VARARGS,
      "schemaTranslate(Quantity, int) -> tuple\n\n"
      "Translate a quantity to a given schema"
+    },
+    {"listPredefinedUnits", (PyCFunction) UnitsApi::sListPredefinedUnits, METH_VARARGS,
+     "listPredefinedUnits() -> list(tuple(name, quantity))\n\n"
+     "Return a list of predefined units of quantities."
+    },
+    {"listUnitTypes", (PyCFunction) UnitsApi::sListUnitTypes, METH_VARARGS,
+     "listUnitTypes() -> list(tuple(name, unit))\n\n"
+     "Return a list of types of units."
     },
 
     {NULL, NULL, 0, NULL}		/* Sentinel */
@@ -243,4 +252,30 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject * /*self*/, PyObject *args)
     res[2] = Py::String(uus.toUtf8(),"utf-8");
 
     return Py::new_reference_to(res);
+}
+
+PyObject* UnitsApi::sListPredefinedUnits(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    Py::List list;
+    for(auto &info : Quantity::unitInfo()) {
+        list.append(Py::TupleN(Py::String(info.name), Py::asObject(
+                        new QuantityPy(new Quantity(info.quantity)))));
+    }
+    return Py::new_reference_to(list);
+}
+
+PyObject* UnitsApi::sListUnitTypes(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    Py::List list;
+    for(auto &info : Unit::unitTypes()) {
+        list.append(Py::TupleN(Py::String(info.second), Py::asObject(
+                        new UnitPy(new Unit(info.first)))));
+    }
+    return Py::new_reference_to(list);
 }

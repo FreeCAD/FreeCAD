@@ -35,8 +35,6 @@
             |  num                          { QuantResult = $1     ;            }
             |  unit                         { QuantResult = $1     ;            }
             |  quantity                     { QuantResult = $1     ;            }
-            |  quantity quantity            { QuantResult = $1 + $2;            }
-            |  quantity quantity quantity   { QuantResult = $1 + $2 + $3;       }
  ;
      num:      NUM                			{ $$ = $1;         	}
              | ONE                			{ $$ = $1;         	}
@@ -69,9 +67,14 @@
             |   unit '^' num        	    { $$ = $1.pow ($3);                 }
             |   '(' unit ')'                { $$ = $2;                          }
 ;
-    quantity:   num unit                    { $$ = $1*$2;    	                }
-            |   num '/' unit                { $$ = Quantity($1)/$3;  	        }
+
+    uexp:       num unit                    { $$ = $1 * $2;    	            }
+            |   num '/' unit                { $$ = $1 / $3;  	            }
+
+    quantity:   uexp                        { $$ = $1;                      }
+            |   quantity uexp               { $$ = $1.concat($2);           }
 ;
+
 
 
 %%
