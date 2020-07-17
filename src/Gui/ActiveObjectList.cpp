@@ -80,7 +80,7 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::Docu
         return info;
     if(subname) {
         info.obj = obj;
-        if(subname) info.subname = subname;
+        info.subname = subname;
     }else{
         // If the input object is not from this document, it must be brought in
         // by some link type object of this document. We only accept the object

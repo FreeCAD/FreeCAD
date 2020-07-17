@@ -1511,44 +1511,42 @@ void SelectionSingleton::clearSelection(const char* pDocName, bool clearPreSelec
     // Because the introduction of external editing, it is best to make
     // clearSelection(0) behave as clearCompleteSelection(), which is the same
     // behavior of python Selection.clearSelection(None)
-    if(!pDocName || !pDocName[0] || strcmp(pDocName,"*")==0) {
+    if (!pDocName || !pDocName[0] || strcmp(pDocName,"*")==0) {
         clearCompleteSelection(clearPreSelect);
         return;
     }
 
-    if(_PickedList.size()) {
+    if (_PickedList.size()) {
         _PickedList.clear();
         notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
     App::Document* pDoc;
     pDoc = getDocument(pDocName);
-    if(pDoc) {
-        std::string docName;
-        if (pDocName)
-            docName = pDocName;
-        else
-            docName = pDoc->getName(); // active document
-
-        if(clearPreSelect && DocName == docName)
+    if (pDoc) {
+        std::string docName = pDocName;
+        if (clearPreSelect && DocName == docName)
             rmvPreselect();
 
         bool touched = false;
-        for(auto it=_SelList.begin();it!=_SelList.end();) {
-            if(it->DocName == docName) {
+        for (auto it=_SelList.begin();it!=_SelList.end();) {
+            if (it->DocName == docName) {
                 touched = true;
                 it = _SelList.erase(it);
-            }else
+            }
+            else {
                 ++it;
+            }
         }
-        if(!touched)
+
+        if (!touched)
             return;
 
-        if(!logDisabled) {
+        if (!logDisabled) {
             std::ostringstream ss;
             ss << "Gui.Selection.clearSelection('" << docName << "'";
-            if(!clearPreSelect)
-                ss << ",False";
+            if (!clearPreSelect)
+                ss << ", False";
             ss << ')';
             Application::Instance->macroManager()->addLine(MacroManager::Cmt,ss.str().c_str());
         }
