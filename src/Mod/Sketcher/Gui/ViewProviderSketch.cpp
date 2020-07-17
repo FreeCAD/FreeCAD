@@ -1863,7 +1863,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
             Gui::Selection().setPreselect(SEL_PARAMS
                                          ,Point->getPoint()[0]
                                          ,Point->getPoint()[1]
-                                         ,Point->getPoint()[2]);
+                                         ,Point->getPoint()[2]) != 0;
             edit->blockedPreselection = !accepted;
             if (accepted) {
                 setPreselectPoint(PtIndex);
@@ -1884,7 +1884,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
             Gui::Selection().setPreselect(SEL_PARAMS
                                          ,Point->getPoint()[0]
                                          ,Point->getPoint()[1]
-                                         ,Point->getPoint()[2]);
+                                         ,Point->getPoint()[2]) != 0;
             edit->blockedPreselection = !accepted;
             if (accepted) {
                 resetPreselectPoint();
@@ -1906,7 +1906,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
             Gui::Selection().setPreselect(SEL_PARAMS
                                          ,Point->getPoint()[0]
                                          ,Point->getPoint()[1]
-                                         ,Point->getPoint()[2]);
+                                         ,Point->getPoint()[2]) != 0;
             edit->blockedPreselection = !accepted;
             if (accepted) {
                 if (CrossIndex == 0)
@@ -1930,7 +1930,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
                 Gui::Selection().setPreselect(SEL_PARAMS
                                              ,Point->getPoint()[0]
                                              ,Point->getPoint()[1]
-                                             ,Point->getPoint()[2]);
+                                             ,Point->getPoint()[2]) != 0;
 
                 edit->blockedPreselection = !accepted;
                 //TODO: Should we clear preselections that went through, if one fails?
