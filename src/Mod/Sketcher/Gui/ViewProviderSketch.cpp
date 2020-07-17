@@ -396,9 +396,13 @@ void ViewProviderSketch::slotRedoDocument(const Gui::Document& /*doc*/)
 
 void ViewProviderSketch::forceUpdateData()
 {
+    // See comments in updateData() for why recomputation is bad during
+    // undo/redo.
+#if 0
     if(!getSketchObject()->noRecomputes) { // the sketch was already solved in SketchObject in onUndoRedoFinished
         Gui::Command::updateActive();
     }
+#endif
 }
 
 // handler management ***************************************************************
@@ -5597,9 +5601,21 @@ void ViewProviderSketch::updateData(const App::Property *prop)
     ViewProvider2DObject::updateData(prop);
 
     // In the case of an undo/redo transaction, updateData is triggered by SketchObject::onUndoRedoFinished() in the solve()
-    // In the case of an internal transaction, touching the geometry results in a call to updateData.
+    //
+    // (Amendment: class App::TransactionGuard makes sure to only notify
+    // property changes after all changes (to all affect propertied of all
+    // objects) have been applied. So there will be no intermediate state to
+    // watch for. On the other hand, performing a recomputation (done in
+    // onUndoRedoFinished()) is not a good idea, as it may affects multiple
+    // objects and causing an inconsistent undo/redo state, which is why
+    // recomputation is now forbiden during udno/redo by the core.)
+#if 0
     if (edit && !getSketchObject()->getDocument()->isPerformingTransaction()
              && !getSketchObject()->isPerformingInternalTransaction()
+#else
+    // In the case of an internal transaction, touching the geometry results in a call to updateData.
+    if (edit && !getSketchObject()->isPerformingInternalTransaction()
+#endif
              && (prop == &(getSketchObject()->Geometry) ||
                  prop == &(getSketchObject()->ExternalGeo) ||
                  prop == &(getSketchObject()->Constraints))) {
