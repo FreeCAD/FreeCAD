@@ -25,12 +25,13 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPCOLORS_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPCOLORS_H
 
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDrawColors.h>
 #include <Gui/PropertyPage.h>
+#include <memory>
 
 namespace TechDrawGui {
+class Ui_DlgPrefsTechDrawColorsImp;
 
-class DlgPrefsTechDrawColorsImp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDrawColorsImp
+class DlgPrefsTechDrawColorsImp : public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -42,6 +43,9 @@ protected:
     void saveSettings();
     void loadSettings();
     void changeEvent(QEvent *e);
+
+private:
+    std::unique_ptr<Ui_DlgPrefsTechDrawColorsImp> ui;
 };
 
 } // namespace TechDrawGui

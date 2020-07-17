@@ -26,14 +26,16 @@
 #include "PreCompiled.h"
 
 #include "DlgPrefsTechDrawHLRImp.h"
+#include "ui_DlgPrefsTechDrawHLR.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace TechDrawGui;
 
 DlgPrefsTechDrawHLRImp::DlgPrefsTechDrawHLRImp( QWidget* parent )
   : PreferencePage( parent )
+  , ui(new Ui_DlgPrefsTechDrawHLRImp)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 }
 
 DlgPrefsTechDrawHLRImp::~DlgPrefsTechDrawHLRImp()
@@ -43,30 +45,30 @@ DlgPrefsTechDrawHLRImp::~DlgPrefsTechDrawHLRImp()
 
 void DlgPrefsTechDrawHLRImp::saveSettings()
 {
-    pcbSeamViz->onSave();
-    pcbSmoothViz->onSave();
-    pcbHardViz->onSave();
-    pcbPolygon->onSave();
-    pcbIsoViz->onSave();
-    pcbSmoothHid->onSave();
-    pcbSeamHid->onSave();
-    pcbIsoHid->onSave();
-    psbIsoCount->onSave();
-    pcbHardHid->onSave();
+    ui->pcbSeamViz->onSave();
+    ui->pcbSmoothViz->onSave();
+    ui->pcbHardViz->onSave();
+    ui->pcbPolygon->onSave();
+    ui->pcbIsoViz->onSave();
+    ui->pcbSmoothHid->onSave();
+    ui->pcbSeamHid->onSave();
+    ui->pcbIsoHid->onSave();
+    ui->psbIsoCount->onSave();
+    ui->pcbHardHid->onSave();
 }
 
 void DlgPrefsTechDrawHLRImp::loadSettings()
 {
-    pcbSeamViz->onRestore();
-    pcbSmoothViz->onRestore();
-    pcbHardViz->onRestore();
-    pcbPolygon->onRestore();
-    pcbIsoViz->onRestore();
-    pcbSmoothHid->onRestore();
-    pcbSeamHid->onRestore();
-    pcbIsoHid->onRestore();
-    psbIsoCount->onRestore();
-    pcbHardHid->onRestore();
+    ui->pcbSeamViz->onRestore();
+    ui->pcbSmoothViz->onRestore();
+    ui->pcbHardViz->onRestore();
+    ui->pcbPolygon->onRestore();
+    ui->pcbIsoViz->onRestore();
+    ui->pcbSmoothHid->onRestore();
+    ui->pcbSeamHid->onRestore();
+    ui->pcbIsoHid->onRestore();
+    ui->psbIsoCount->onRestore();
+    ui->pcbHardHid->onRestore();
 }
 
 /**
@@ -76,7 +78,7 @@ void DlgPrefsTechDrawHLRImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         saveSettings();
-        retranslateUi(this);
+        ui->retranslateUi(this);
         loadSettings();
     }
     else {

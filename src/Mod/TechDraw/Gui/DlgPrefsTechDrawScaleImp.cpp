@@ -26,19 +26,21 @@
 #include "PreCompiled.h"
 
 #include "DlgPrefsTechDrawScaleImp.h"
+#include "ui_DlgPrefsTechDrawScale.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace TechDrawGui;
 
 DlgPrefsTechDrawScaleImp::DlgPrefsTechDrawScaleImp( QWidget* parent )
   : PreferencePage( parent )
+  , ui(new Ui_DlgPrefsTechDrawScaleImp)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 
-    this->pdsbTemplateMark->setUnit(Base::Unit::Length);
-    this->pdsbTemplateMark->setMinimum(0);
+    ui->pdsbTemplateMark->setUnit(Base::Unit::Length);
+    ui->pdsbTemplateMark->setMinimum(0);
 
-    connect(this->cbViewScaleType, SIGNAL(currentIndexChanged(int)),
+    connect(ui->cbViewScaleType, SIGNAL(currentIndexChanged(int)),
         this, SLOT(onScaleTypeChanged(int)));
 }
 
@@ -52,41 +54,41 @@ void DlgPrefsTechDrawScaleImp::onScaleTypeChanged(int index)
     // disable custom scale if the scale type is not custom
 
     if (index == 2) // if custom
-        this->pdsbViewScale->setEnabled(true);
+        ui->pdsbViewScale->setEnabled(true);
     else
-        this->pdsbViewScale->setEnabled(false);
+        ui->pdsbViewScale->setEnabled(false);
 }
 
 void DlgPrefsTechDrawScaleImp::saveSettings()
 {
-    pdsbToleranceScale->onSave();
-    pdsbTemplateMark->onSave();
-    pdsbVertexScale->onSave();
-    pdsbCenterScale->onSave();
-    pdsbPageScale->onSave();
-    cbViewScaleType->onSave();
-    pdsbViewScale->onSave();
-    pdsbEdgeFuzz->onSave();
-    pdsbMarkFuzz->onSave();
-    pdsbTemplateMark->onSave();
-    pdsbSymbolScale->onSave();
+    ui->pdsbToleranceScale->onSave();
+    ui->pdsbTemplateMark->onSave();
+    ui->pdsbVertexScale->onSave();
+    ui->pdsbCenterScale->onSave();
+    ui->pdsbPageScale->onSave();
+    ui->cbViewScaleType->onSave();
+    ui->pdsbViewScale->onSave();
+    ui->pdsbEdgeFuzz->onSave();
+    ui->pdsbMarkFuzz->onSave();
+    ui->pdsbTemplateMark->onSave();
+    ui->pdsbSymbolScale->onSave();
 }
 
 void DlgPrefsTechDrawScaleImp::loadSettings()
 {
     double markDefault = 3.0;
-    pdsbTemplateMark->setValue(markDefault);
-    pdsbToleranceScale->onRestore();
-    pdsbTemplateMark->onRestore();
-    pdsbVertexScale->onRestore();
-    pdsbCenterScale->onRestore();
-    pdsbPageScale->onRestore();
-    cbViewScaleType->onRestore();
-    pdsbViewScale->onRestore();
-    pdsbEdgeFuzz->onRestore();
-    pdsbMarkFuzz->onRestore();
-    pdsbTemplateMark->onRestore();
-    pdsbSymbolScale->onRestore();
+    ui->pdsbTemplateMark->setValue(markDefault);
+    ui->pdsbToleranceScale->onRestore();
+    ui->pdsbTemplateMark->onRestore();
+    ui->pdsbVertexScale->onRestore();
+    ui->pdsbCenterScale->onRestore();
+    ui->pdsbPageScale->onRestore();
+    ui->cbViewScaleType->onRestore();
+    ui->pdsbViewScale->onRestore();
+    ui->pdsbEdgeFuzz->onRestore();
+    ui->pdsbMarkFuzz->onRestore();
+    ui->pdsbTemplateMark->onRestore();
+    ui->pdsbSymbolScale->onRestore();
 }
 
 /**
@@ -96,7 +98,7 @@ void DlgPrefsTechDrawScaleImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         saveSettings();
-        retranslateUi(this);
+        ui->retranslateUi(this);
         loadSettings();
     }
     else {

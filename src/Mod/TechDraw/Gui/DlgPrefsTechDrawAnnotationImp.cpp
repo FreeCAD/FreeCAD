@@ -33,6 +33,7 @@
 #include "DrawGuiUtil.h"
 #include "PreferencesGui.h"
 #include "DlgPrefsTechDrawAnnotationImp.h"
+#include "ui_DlgPrefsTechDrawAnnotation.h"
 
 
 using namespace TechDrawGui;
@@ -41,10 +42,11 @@ using namespace TechDraw;
 
 DlgPrefsTechDrawAnnotationImp::DlgPrefsTechDrawAnnotationImp( QWidget* parent )
   : PreferencePage( parent )
+  , ui(new Ui_DlgPrefsTechDrawAnnotationImp)
 {
-    this->setupUi(this);
-    pdsbBalloonKink->setUnit(Base::Unit::Length);
-    pdsbBalloonKink->setMinimum(0);
+    ui->setupUi(this);
+    ui->pdsbBalloonKink->setUnit(Base::Unit::Length);
+    ui->pdsbBalloonKink->setMinimum(0);
 }
 
 DlgPrefsTechDrawAnnotationImp::~DlgPrefsTechDrawAnnotationImp()
@@ -54,20 +56,20 @@ DlgPrefsTechDrawAnnotationImp::~DlgPrefsTechDrawAnnotationImp()
 
 void DlgPrefsTechDrawAnnotationImp::saveSettings()
 {
-    cbAutoHoriz->onSave();
-    cbPrintCenterMarks->onSave();
-    cbPyramidOrtho->onSave();
-    cbSectionLineStd->onSave();
-    cbShowCenterMarks->onSave();
-    leLineGroup->onSave();
-    pcbBalloonArrow->onSave();
-    pcbBalloonShape->onSave();
-    pcbCenterStyle->onSave();
-    pcbMatting->onSave();
-    pcbSectionStyle->onSave();
-    pdsbBalloonKink->onSave();
-    cbCutSurface->onSave();
-    pcbHighlightStyle->onSave();
+    ui->cbAutoHoriz->onSave();
+    ui->cbPrintCenterMarks->onSave();
+    ui->cbPyramidOrtho->onSave();
+    ui->cbSectionLineStd->onSave();
+    ui->cbShowCenterMarks->onSave();
+    ui->leLineGroup->onSave();
+    ui->pcbBalloonArrow->onSave();
+    ui->pcbBalloonShape->onSave();
+    ui->pcbCenterStyle->onSave();
+    ui->pcbMatting->onSave();
+    ui->pcbSectionStyle->onSave();
+    ui->pdsbBalloonKink->onSave();
+    ui->cbCutSurface->onSave();
+    ui->pcbHighlightStyle->onSave();
 }
 
 void DlgPrefsTechDrawAnnotationImp::loadSettings()
@@ -76,25 +78,25 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     //Quantity widgets do not use preset value since they are based on
     //QAbstractSpinBox
     double kinkDefault = 5.0;
-    pdsbBalloonKink->setValue(kinkDefault);
+    ui->pdsbBalloonKink->setValue(kinkDefault);
 
-    cbAutoHoriz->onRestore();
-    cbPrintCenterMarks->onRestore();
-    cbPyramidOrtho->onRestore();
-    cbSectionLineStd->onRestore();
-    cbShowCenterMarks->onRestore();
-    leLineGroup->onRestore();
-    pcbBalloonArrow->onRestore();
-    pcbBalloonShape->onRestore();
-    pcbCenterStyle->onRestore();
-    pcbMatting->onRestore();
-    pcbSectionStyle->onRestore();
-    pdsbBalloonKink->onRestore();
-    cbCutSurface->onRestore();
-    pcbHighlightStyle->onRestore();
+    ui->cbAutoHoriz->onRestore();
+    ui->cbPrintCenterMarks->onRestore();
+    ui->cbPyramidOrtho->onRestore();
+    ui->cbSectionLineStd->onRestore();
+    ui->cbShowCenterMarks->onRestore();
+    ui->leLineGroup->onRestore();
+    ui->pcbBalloonArrow->onRestore();
+    ui->pcbBalloonShape->onRestore();
+    ui->pcbCenterStyle->onRestore();
+    ui->pcbMatting->onRestore();
+    ui->pcbSectionStyle->onRestore();
+    ui->pdsbBalloonKink->onRestore();
+    ui->cbCutSurface->onRestore();
+    ui->pcbHighlightStyle->onRestore();
 
-    DrawGuiUtil::loadArrowBox(pcbBalloonArrow);
-    pcbBalloonArrow->setCurrentIndex(prefBalloonArrow());
+    DrawGuiUtil::loadArrowBox(ui->pcbBalloonArrow);
+    ui->pcbBalloonArrow->setCurrentIndex(prefBalloonArrow());
 }
 
 /**
@@ -104,7 +106,7 @@ void DlgPrefsTechDrawAnnotationImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         saveSettings();
-        retranslateUi(this);
+        ui->retranslateUi(this);
         loadSettings();
     }
     else {
