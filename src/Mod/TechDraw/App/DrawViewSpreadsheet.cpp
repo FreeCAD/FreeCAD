@@ -259,7 +259,7 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
             // get the text
             App::Property* prop = sheet->getPropertyByName(address.toString().c_str());
             std::stringstream field;
-            if (prop != 0) {
+            if (prop && cell) {
                 if (prop->isDerivedFrom((App::PropertyQuantity::getClassTypeId()))) {
                     field << cell->getFormattedQuantity();
                 } else if (prop->isDerivedFrom((App::PropertyFloat::getClassTypeId()))) {

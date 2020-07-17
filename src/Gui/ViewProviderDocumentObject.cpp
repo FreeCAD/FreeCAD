@@ -196,7 +196,8 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             if (!testStatus(Gui::ViewStatus::TouchDocument)) {
                 bool mod = pcDocument->isModified();
                 getObject()->Visibility.setValue(Visibility.getValue());
-                pcDocument->setModified(mod);
+                if (pcDocument)
+                    pcDocument->setModified(mod);
             }
             else {
                 getObject()->Visibility.setValue(Visibility.getValue());
