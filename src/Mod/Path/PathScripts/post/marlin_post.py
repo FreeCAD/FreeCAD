@@ -74,20 +74,29 @@ PRECISION = 4
 
 RAPID_MOVES = ['G0', 'G00']
 
+G0XY_FEEDRATE = 2000
+G0Z_UP_FEEDRATE = 300
+G0Z_DOWN_FEEDRATE = 250
+
 #Preamble text will appear at the beginning of the GCODE output file.
 PREAMBLE = '''G90
 G92 X0 Y0 Z0
 '''
 
 #Postamble text will appear following the last operation.
-POSTAMBLE = '''M5
+POSTAMBLE = '''
 G0 Z20
 G0 X0 Y0
+G0 Z5
 ; M2
 '''
+#Marlin is primarily for 3d printing, the output from freeCAD for cnc router work is rather limited
+#Add more as support exists, tool changes maybe
+
+ALLOWED_COMMANDS = ['G0', 'G1', 'G2', 'G3', 'G5', 'G20', 'G21', 'G81', 'G90', 'G91', 'G92']
 
 # These commands are ignored by commenting them out
-SUPPRESS_COMMANDS = [ 'G98', 'G80' ]
+# SUPPRESS_COMMANDS = [ 'G98', 'G80' ]
 
 #Pre operation text will be inserted before every operation
 PRE_OPERATION = ''''''
@@ -98,6 +107,7 @@ POST_OPERATION = ''''''
 #Tool Change commands will be inserted before a tool change
 TOOL_CHANGE = ''''''
 SUPPRESS_TOOL_CHANGE=0
+
 
 
 # to distinguish python built-in open function from the one declared below
@@ -308,11 +318,14 @@ def emuldrill(c):
     return iter(cmdlist)
 
 class Commands:
-
-    def __init__(self, pathobj = None):
+    lastz = 100
+     
+    def __init__(self, pathobj = None, calc = False):
         self.paths = iter(pathobj.Path.Commands)
         self.epath = None
         self.tobe = {'G81': emuldrill}
+        self.calc = calc
+        print ("created class")
 
     def __iter__(self):
         return self
@@ -327,14 +340,25 @@ class Commands:
             self.epath = None
             item = next(self.paths)
             command = item.Name
-            #print(command)
-            res = [command, item.Parameters]
-
+            params = item.Parameters
+            
             if command in self.tobe:
                 func = self.tobe[command]
                 self.epath = func(item)
-                res = [';(' + command + ')', item.Parameters]
-                
+                res = [';(' + command + ')', params]
+            elif self.calc:
+                 if command == 'G0':
+                     if 'Z' in params:
+                         params['F'] =  (G0Z_UP_FEEDRATE if params['Z'] > Commands.lastz else G0Z_DOWN_FEEDRATE) / 60.0
+                         print ('lastz ' + format(Commands.lastz, '0.2f') + ' currentZ ' + format(params['Z'], '0.2f') + ' G0 ' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
+                     else:
+                         params['F'] = G0XY_FEEDRATE / 60.0
+                         print ('G0 F' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
+ 	
+            if self.calc and 'Z' in params: Commands.lastz = params['Z'] 
+            
+            res = [command, params]
+            
         return res
 
 def parse(pathobj, data_stats, checkbounds):
@@ -357,8 +381,10 @@ def parse(pathobj, data_stats, checkbounds):
             return out
 
         if OUTPUT_COMMENTS: out += linenumber() + ";(Path: " + pathobj.Label + ")\n"
-	
-        for command, Parameters in Commands(pathobj):
+
+        stuff = Commands(pathobj, not checkbounds)
+        
+        for command, Parameters in stuff:
             outstring = []
             
             if not checkbounds: 
@@ -374,17 +400,16 @@ def parse(pathobj, data_stats, checkbounds):
             for param in params:
                 if param in Parameters:
                     if param == 'F':
-                        if command not in RAPID_MOVES:
-                            outstring.append(param + format(Parameters['F'] * 60, '.2f'))
+                        if not checkbounds:
+                            outstring.append(param + format(Parameters[param] * 60, '.2f'))
                     elif param == 'T':
                         outstring.append(param + str(int(Parameters['T'])))
                     else:
                         value = Parameters[param]
                         if param in ['X', 'Y', 'Z']:
                             value = boxlimits(data_stats, command, param, value, checkbounds)
-                    
                         outstring.append(param.upper() + format(value, precision_string))
- 		    
+
             # store the latest command
             lastcommand = command
 
@@ -405,7 +430,7 @@ def parse(pathobj, data_stats, checkbounds):
                 else:
                     outstring.pop(0) #remove the command
 
-            if command in SUPPRESS_COMMANDS:
+            if not command in ALLOWED_COMMANDS:
                 outstring.insert(0, ";")
 
             #prepend a line number and append a newline
@@ -422,4 +447,3 @@ def parse(pathobj, data_stats, checkbounds):
 
 
 print(__name__ + " gcode postprocessor loaded.")
-
