@@ -3912,7 +3912,7 @@ void LinkLabel::onEditClicked ()
     if(!dlg) {
         dlg = new PropertyLinkEditor(this);
         dlg->getProxy()->init(objProp,true);
-        connect(dlg, SIGNAL(accepted()), this, SLOT(onLinkChanged()));
+        connect(dlg, SIGNAL(finished(int)), this, SLOT(onLinkChanged()));
     } else
         dlg->getProxy()->init(objProp,false);
     dlg->show();
