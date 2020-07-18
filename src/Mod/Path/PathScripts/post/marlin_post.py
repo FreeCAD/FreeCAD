@@ -93,7 +93,7 @@ G0 Z5
 #Marlin is primarily for 3d printing, the output from freeCAD for cnc router work is rather limited
 #Add more as support exists, tool changes maybe
 
-ALLOWED_COMMANDS = ['G0', 'G1', 'G2', 'G3', 'G5', 'G20', 'G21', 'G81', 'G90', 'G91', 'G92']
+ALLOWED_COMMANDS = ['G0', 'G1', 'G2', 'G3', 'G5', 'G20', 'G21', 'G90', 'G91', 'G92']
 
 # These commands are ignored by commenting them out
 # SUPPRESS_COMMANDS = [ 'G98', 'G80' ]
@@ -192,15 +192,15 @@ def export(objectslist,filename,argstring):
 
     # write header
     if OUTPUT_HEADER:
-        gcode += linenumber() + ";(Exported by FreeCAD)\n"
-        gcode += linenumber() + ";(Post Processor: " + __name__ +")\n"
-        gcode += linenumber() + ";(Output Time:"+str(now)+")\n"
+        gcode += linenumber() + ";Exported by FreeCAD\n"
+        gcode += linenumber() + ";Post Processor: " + __name__ +"\n"
+        gcode += linenumber() + ";Output Time:"+str(now)+"\n"
 
     #Write the preamble
-    if OUTPUT_COMMENTS: gcode += linenumber() + ";(begin preamble)\n"
+    if OUTPUT_COMMENTS: gcode += linenumber() + ";Begin preamble\n"
     for line in PREAMBLE.splitlines(True):
         gcode += linenumber() + line
-    gcode += linenumber() + UNITS + "\n;(end preamble)\n\n"
+    gcode += linenumber() + UNITS + "\n;end preamble\n\n"
     
     data_stats = {"Xmin":10000, "Xmax":0, 
                   "Ymin":10000, "Ymax":0, 
@@ -217,14 +217,14 @@ def export(objectslist,filename,argstring):
     for obj in objectslist:
 
         #do the pre_op
-        if OUTPUT_COMMENTS: gcodebody += linenumber() + ";(begin operation: " + obj.Label + ")\n"
+        if OUTPUT_COMMENTS: gcodebody += linenumber() + ";begin operation: " + obj.Label + "\n"
         for line in PRE_OPERATION.splitlines(True):
             gcodebody += linenumber() + line
 
         gcodebody += parse(obj, data_stats, False)
 
         #do the post_op
-        if OUTPUT_COMMENTS: gcodebody += linenumber() + ";(finish operation: " + obj.Label + ")\n"
+        if OUTPUT_COMMENTS: gcodebody += linenumber() + ";finish operation: " + obj.Label + "\n"
         
         for line in POST_OPERATION.splitlines(True):
             gcodebody += linenumber() + line
@@ -233,15 +233,15 @@ def export(objectslist,filename,argstring):
      
     for key in data_stats: 
     	if len(key) == 4:
-    	    gcode += ";(" + key + " is " +  format(data_stats[key], precision_string) + " ==> " + format(data_stats[key+"'"], precision_string) + ")\n"
+    	    gcode += ";" + key + " is " +  format(data_stats[key], precision_string) + " ==> " + format(data_stats[key+"'"], precision_string) + "\n"
     	else:
     	    break
     	       
-    gcode += "\n;(GCode Commands detected:)\n\n"
+    gcode += "\n;GCode Commands detected:\n\n"
     
     for key in data_stats:
     	if len(key) < 4:
-            gcode += ";(" + key + " detected, count is " +  str(data_stats[key]) + ")\n"
+            gcode += ";" + key + " detected, count is " +  str(data_stats[key]) + "\n"
     
     gcode +="\n"
     gcode += gcodebody
@@ -249,7 +249,7 @@ def export(objectslist,filename,argstring):
     	
     #do the post_amble
 
-    if OUTPUT_COMMENTS: gcode += ";(begin postamble)\n"
+    if OUTPUT_COMMENTS: gcode += ";begin postamble\n"
     for line in POSTAMBLE.splitlines(True):
         gcode += linenumber() + line
 
@@ -313,19 +313,19 @@ def emuldrill(c):
                 ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 0}],
                 ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'Z' : c.Parameters['Z']}],
                 ["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5}],
+                ["end", {}] # new requirement, because of behavior of iterable prematurely ending loop if last element is reached
     ]
     
     return iter(cmdlist)
 
 class Commands:
     lastz = 100
-     
+    tobe = {'G81': emuldrill}
+             
     def __init__(self, pathobj = None, calc = False):
         self.paths = iter(pathobj.Path.Commands)
-        self.epath = None
-        self.tobe = {'G81': emuldrill}
         self.calc = calc
-        print ("created class")
+        self.epath = None
 
     def __iter__(self):
         return self
@@ -335,25 +335,30 @@ class Commands:
         
         if self.epath != None:
             res = next(self.epath)
+            #print ("macro line " + res[0])
+            
+            if (res[0] == "end"):
+                self.epath = None
+                res = None
 
         if res == None:
-            self.epath = None
             item = next(self.paths)
             command = item.Name
             params = item.Parameters
+            #print (command)
             
-            if command in self.tobe:
-                func = self.tobe[command]
+            if command in Commands.tobe:
+                func = Commands.tobe[command]
                 self.epath = func(item)
-                res = [';(' + command + ')', params]
+                command = ';' + command 
             elif self.calc:
                  if command == 'G0':
                      if 'Z' in params:
                          params['F'] =  (G0Z_UP_FEEDRATE if params['Z'] > Commands.lastz else G0Z_DOWN_FEEDRATE) / 60.0
-                         print ('lastz ' + format(Commands.lastz, '0.2f') + ' currentZ ' + format(params['Z'], '0.2f') + ' G0 ' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
+                         #print ('lastz ' + format(Commands.lastz, '0.2f') + ' currentZ ' + format(params['Z'], '0.2f') + ' G0 ' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
                      else:
                          params['F'] = G0XY_FEEDRATE / 60.0
-                         print ('G0 F' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
+                         #print ('G0 F' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
  	
             if self.calc and 'Z' in params: Commands.lastz = params['Z'] 
             
@@ -371,7 +376,7 @@ def parse(pathobj, data_stats, checkbounds):
     params = ['X','Y','Z','z','A','B','I','J','F','S','T','Q','R','L'] #linuxcnc doesn't want K properties on XY plane  Arcs need work.
 
     if hasattr(pathobj,"Group"): #We have a compound or project.
-        if OUTPUT_COMMENTS: out += linenumber() + ";(compound: " + pathobj.Label + ")\n"
+        if OUTPUT_COMMENTS: out += linenumber() + ";compound: " + pathobj.Label + "\n"
         for p in pathobj.Group:
             out += parse(p, data_stats, checkbounds)
         return out
@@ -380,11 +385,9 @@ def parse(pathobj, data_stats, checkbounds):
         if not hasattr(pathobj,"Path"): #groups might contain non-path things like stock.
             return out
 
-        if OUTPUT_COMMENTS: out += linenumber() + ";(Path: " + pathobj.Label + ")\n"
-
-        stuff = Commands(pathobj, not checkbounds)
+        if OUTPUT_COMMENTS: out += linenumber() + ";Path: " + pathobj.Label + "\n"
         
-        for command, Parameters in stuff:
+        for command, Parameters in Commands(pathobj, not checkbounds):
             outstring = []
             
             if not checkbounds: 
@@ -416,7 +419,7 @@ def parse(pathobj, data_stats, checkbounds):
             # Check for Tool Change:
             if command == 'M6':
                 if OUTPUT_COMMENTS:
-                    out += linenumber() + ";(begin toolchange)\n"
+                    out += linenumber() + ";begin toolchange\n"
                 if not OUTPUT_TOOL_CHANGE or SUPPRESS_TOOL_CHANGE > 0:
                     outstring.insert(0, ";")
                     SUPPRESS_TOOL_CHANGE = SUPPRESS_TOOL_CHANGE - 1
