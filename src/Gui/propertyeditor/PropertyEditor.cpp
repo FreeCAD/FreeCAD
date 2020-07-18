@@ -342,8 +342,12 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
     // If we are not removing rows, then QTreeView::closeEditor() does
     // nothing because we are using persistent editor, so we have to do it
     // by ourselves.
-    if(editor)
+    if(editor) {
+        // Must call close() here, or else Qt 5.9 crash (triggered by focus
+        // change handling), but not Qt 4 or Qt 5.12
+        editor->close();
         editor->deleteLater();
+    }
 
     closeTransaction();
 
