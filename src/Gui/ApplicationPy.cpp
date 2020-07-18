@@ -1319,9 +1319,21 @@ PyObject* Application::sSetCommandShortcut(PyObject * /*self*/, PyObject *args)
             QKeySequence shortcut = QString::fromLatin1(pShortcut);
             QString nativeText = shortcut.toString(QKeySequence::NativeText);
             action->setShortcut(nativeText);
+            bool success = action->shortcut() == nativeText;
+            /**
+             * avoid cluttering parameters unnecessarily by saving only
+             * when new shortcut is not the default shortcut
+             * remove spaces to handle cases such as shortcut = "C,L" or "C, L"
+             */
+            QString default_shortcut = QString::fromLatin1(cmd->getAccel());
+            QString spc = QString::fromLatin1(" ");
             ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
-            hGrp->SetASCII(pName, pShortcut);
-            return Py::new_reference_to(Py::Boolean(true));
+            if (success && default_shortcut.remove(spc).toUpper() != nativeText.remove(spc).toUpper()){
+                hGrp->SetASCII(pName, pShortcut);
+            } else {
+                hGrp->RemoveASCII(pName);
+            }
+            return Py::new_reference_to(Py::Boolean(success));
         } else {
             return Py::new_reference_to(Py::Boolean(false));
         }
