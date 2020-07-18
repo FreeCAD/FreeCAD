@@ -1347,7 +1347,7 @@ PyObject* Application::sGetCommandInfo(PyObject * /*self*/, PyObject *args)
         std::string shortcutTxt = action->shortcut().toString().toStdString();
 
 #if PY_MAJOR_VERSION >= 3
-	PyObject* strMenuTxt = PyUnicode_FromString(menuTxt ? menuTxt : "");
+        PyObject* strMenuTxt = PyUnicode_FromString(menuTxt ? menuTxt : "");
         PyObject* strTooltipTxt = PyUnicode_FromString(tooltipTxt ? tooltipTxt : "");
         PyObject* strWhatsThisTxt = PyUnicode_FromString(whatsThisTxt ? whatsThisTxt : "");
         PyObject* strStatustipTxt = PyUnicode_FromString(statustipTxt ? statustipTxt : "");
