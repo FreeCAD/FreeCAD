@@ -178,6 +178,13 @@ If there is no such constraint an exception is raised.
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getGeoVertexIndex" Const="true">
+      <Documentation>
+        <UserDocu>
+          (geoId, posId) = getGeoVertexIndex(index) - retrieve the GeoId and PosId of a point in the sketch
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getAxis" Const="true">
       <Documentation>
         <UserDocu>
