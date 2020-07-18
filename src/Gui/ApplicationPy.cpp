@@ -1346,21 +1346,21 @@ PyObject* Application::sGetCommandInfo(PyObject * /*self*/, PyObject *args)
         const char* pixMapTxt = cmd->getPixmap();
         std::string shortcutTxt = action->shortcut().toString().toStdString();
 
-        #if PY_MAJOR_VERSION >= 3
-            PyObject* strMenuTxt = PyUnicode_FromString(menuTxt ? menuTxt : "");
-            PyObject* strTooltipTxt = PyUnicode_FromString(tooltipTxt ? tooltipTxt : "");
-            PyObject* strWhatsThisTxt = PyUnicode_FromString(whatsThisTxt ? whatsThisTxt : "");
-            PyObject* strStatustipTxt = PyUnicode_FromString(statustipTxt ? statustipTxt : "");
-            PyObject* strPixMapTxt = PyUnicode_FromString(pixMapTxt ? pixMapTxt : "");
-            PyObject* strShortcutTxt = PyUnicode_FromString(!shortcutTxt.empty() ? shortcutTxt.c_str() : "");
-        #else
-            PyObject* strMenuTxt = PyString_FromString(menuTxt ? menuTxt : "");
-            PyObject* strTooltipTxt = PyString_FromString(tooltipTxt ? tooltipTxt : "");
-            PyObject* strWhatsThisTxt = PyString_FromString(whatsThisTxt ? whatsThisTxt : "");
-            PyObject* strStatustipTxt = PyString_FromString(statustipTxt ? statustipTxt : "");
-            PyObject* strPixMapTxt = PyString_FromString(pixMapTxt ? pixMapTxt : "");
-            PyObject* strShortcutTxt = PyString_FromString(!shortcutTxt.empty() ? shortcutTxt.c_str() : "");
-        #endif
+#if PY_MAJOR_VERSION >= 3
+	PyObject* strMenuTxt = PyUnicode_FromString(menuTxt ? menuTxt : "");
+        PyObject* strTooltipTxt = PyUnicode_FromString(tooltipTxt ? tooltipTxt : "");
+        PyObject* strWhatsThisTxt = PyUnicode_FromString(whatsThisTxt ? whatsThisTxt : "");
+        PyObject* strStatustipTxt = PyUnicode_FromString(statustipTxt ? statustipTxt : "");
+        PyObject* strPixMapTxt = PyUnicode_FromString(pixMapTxt ? pixMapTxt : "");
+        PyObject* strShortcutTxt = PyUnicode_FromString(!shortcutTxt.empty() ? shortcutTxt.c_str() : "")
+#else
+        PyObject* strMenuTxt = PyString_FromString(menuTxt ? menuTxt : "");
+        PyObject* strTooltipTxt = PyString_FromString(tooltipTxt ? tooltipTxt : "");
+        PyObject* strWhatsThisTxt = PyString_FromString(whatsThisTxt ? whatsThisTxt : "");
+        PyObject* strStatustipTxt = PyString_FromString(statustipTxt ? statustipTxt : "");
+        PyObject* strPixMapTxt = PyString_FromString(pixMapTxt ? pixMapTxt : "");
+        PyObject* strShortcutTxt = PyString_FromString(!shortcutTxt.empty() ? shortcutTxt.c_str() : "");
+#endif
         PyList_SetItem(pyList, 0, strMenuTxt);
         PyList_SetItem(pyList, 1, strTooltipTxt);
         PyList_SetItem(pyList, 2, strWhatsThisTxt);
