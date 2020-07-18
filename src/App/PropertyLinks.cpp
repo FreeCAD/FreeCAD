@@ -3543,7 +3543,6 @@ void PropertyXLink::getLinks(std::vector<App::DocumentObject *> &objs,
 {
     if((all||_pcScope!=LinkScope::Hidden) && _pcLink && _pcLink->getNameInDocument()) {
         objs.push_back(_pcLink);
-        if(subs)
         if(subs && _SubList.size()==_ShadowSubList.size())
             *subs = getSubValues(newStyle);
     }
