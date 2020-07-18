@@ -1293,7 +1293,6 @@ PyObject* Application::sGetCommandShortcut(PyObject * /*self*/, PyObject *args)
     if (cmd) {
 
 #if PY_MAJOR_VERSION >= 3
-        //PyObject* str = PyUnicode_FromString(cmd->getAccel() ? cmd->getAccel() : "");
         PyObject* str = PyUnicode_FromString(cmd->getAction() ? cmd->getAction()->shortcut().toString().toStdString().c_str() : "");
 #else
         PyObject* str = PyString_FromString(cmd->getAction() ? cmd->getAction()->shortcut().toString().toStdString().c_str() : "");
@@ -1314,14 +1313,18 @@ PyObject* Application::sSetCommandShortcut(PyObject * /*self*/, PyObject *args)
         return NULL;
 
     Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
-    if (cmd && cmd->getAction()) {
+    if (cmd) {
         Action* action = cmd->getAction();
-        QKeySequence shortcut = QString::fromLatin1(pShortcut);
-        QString nativeText = shortcut.toString(QKeySequence::NativeText);
-        action->setShortcut(nativeText);
-        ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
-        hGrp->SetASCII(pName, pShortcut);
-        return Py::new_reference_to(Py::Boolean(true));
+        if (action){
+            QKeySequence shortcut = QString::fromLatin1(pShortcut);
+            QString nativeText = shortcut.toString(QKeySequence::NativeText);
+            action->setShortcut(nativeText);
+            ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
+            hGrp->SetASCII(pName, pShortcut);
+            return Py::new_reference_to(Py::Boolean(true));
+        } else {
+            return Py::new_reference_to(Py::Boolean(false));
+        }
     }
     else {
         PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
@@ -1336,7 +1339,7 @@ PyObject* Application::sGetCommandInfo(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &pName))
         return NULL;
     Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
-    if (cmd && cmd->getAction()) {
+    if (cmd) {
         Action* action = cmd->getAction();
         PyObject* pyList = PyList_New(6);
         const char* menuTxt = cmd->getMenuText();
@@ -1344,7 +1347,9 @@ PyObject* Application::sGetCommandInfo(PyObject * /*self*/, PyObject *args)
         const char* whatsThisTxt = cmd->getWhatsThis();
         const char* statustipTxt = cmd->getStatusTip();
         const char* pixMapTxt = cmd->getPixmap();
-        std::string shortcutTxt = action->shortcut().toString().toStdString();
+        std::string shortcutTxt = "";
+        if(action)
+            shortcutTxt = action->shortcut().toString().toStdString();
 
 #if PY_MAJOR_VERSION >= 3
         PyObject* strMenuTxt = PyUnicode_FromString(menuTxt ? menuTxt : "");
@@ -1352,7 +1357,7 @@ PyObject* Application::sGetCommandInfo(PyObject * /*self*/, PyObject *args)
         PyObject* strWhatsThisTxt = PyUnicode_FromString(whatsThisTxt ? whatsThisTxt : "");
         PyObject* strStatustipTxt = PyUnicode_FromString(statustipTxt ? statustipTxt : "");
         PyObject* strPixMapTxt = PyUnicode_FromString(pixMapTxt ? pixMapTxt : "");
-        PyObject* strShortcutTxt = PyUnicode_FromString(!shortcutTxt.empty() ? shortcutTxt.c_str() : "")
+        PyObject* strShortcutTxt = PyUnicode_FromString(!shortcutTxt.empty() ? shortcutTxt.c_str() : "");
 #else
         PyObject* strMenuTxt = PyString_FromString(menuTxt ? menuTxt : "");
         PyObject* strTooltipTxt = PyString_FromString(tooltipTxt ? tooltipTxt : "");
