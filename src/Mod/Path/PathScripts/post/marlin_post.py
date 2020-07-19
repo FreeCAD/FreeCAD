@@ -78,7 +78,7 @@ G0XY_FEEDRATE = 2000
 G0Z_UP_FEEDRATE = 300
 G0Z_DOWN_FEEDRATE = 250
 
-#Preamble text will appear at the beginning of the GCODE output file.
+#Preamble text will appear at the Beginning of the GCODE output file.
 PREAMBLE = '''G90
 G92 X0 Y0 Z0
 '''
@@ -93,7 +93,7 @@ G0 Z5
 #Marlin is primarily for 3d printing, the output from freeCAD for cnc router work is rather limited
 #Add more as support exists, tool changes maybe
 
-ALLOWED_COMMANDS = ['G0', 'G1', 'G2', 'G3', 'G5', 'G20', 'G21', 'G90', 'G91', 'G92']
+ALLOWED_COMMANDS = ['G0', 'G1', 'G2', 'G3', 'G5', 'G20', 'G21', 'G90', 'G91', 'G92', 'M0']
 
 # These commands are ignored by commenting them out
 # SUPPRESS_COMMANDS = [ 'G98', 'G80' ]
@@ -107,8 +107,8 @@ POST_OPERATION = ''''''
 #Tool Change commands will be inserted before a tool change
 TOOL_CHANGE = ''''''
 SUPPRESS_TOOL_CHANGE=0
-
-
+ASSUME_FIRST_TOOL = True
+notoolyet = True
 
 # to distinguish python built-in open function from the one declared below
 if open.__module__ in ['__builtin__','io']:
@@ -200,7 +200,7 @@ def export(objectslist,filename,argstring):
     if OUTPUT_COMMENTS: gcode += linenumber() + ";Begin preamble\n"
     for line in PREAMBLE.splitlines(True):
         gcode += linenumber() + line
-    gcode += linenumber() + UNITS + "\n;end preamble\n\n"
+    gcode += linenumber() + UNITS + "\n;End preamble\n\n"
     
     data_stats = {"Xmin":10000, "Xmax":0, 
                   "Ymin":10000, "Ymax":0, 
@@ -217,7 +217,7 @@ def export(objectslist,filename,argstring):
     for obj in objectslist:
 
         #do the pre_op
-        if OUTPUT_COMMENTS: gcodebody += linenumber() + ";begin operation: " + obj.Label + "\n"
+        if OUTPUT_COMMENTS: gcodebody += linenumber() + ";Begin operation: " + obj.Label + "\n"
         for line in PRE_OPERATION.splitlines(True):
             gcodebody += linenumber() + line
 
@@ -231,17 +231,19 @@ def export(objectslist,filename,argstring):
     
     precision_string = '.' + str(PRECISION) +'f'
      
-    for key in data_stats: 
-    	if len(key) == 4:
-    	    gcode += ";" + key + " is " +  format(data_stats[key], precision_string) + " ==> " + format(data_stats[key+"'"], precision_string) + "\n"
-    	else:
-    	    break
+    if OUTPUT_COMMENTS:
+        for key in data_stats: 
+    	    if len(key) == 4:
+    	        gcode += ";" + key + " is " +  format(data_stats[key], precision_string) + " ==> " + format(data_stats[key+"'"], precision_string) + "\n"
+    	    else:
+    	        break
     	       
-    gcode += "\n;GCode Commands detected:\n\n"
+    if OUTPUT_COMMENTS: gcode += "\n;GCode Commands detected:\n\n"
     
-    for key in data_stats:
-    	if len(key) < 4:
-            gcode += ";" + key + " detected, count is " +  str(data_stats[key]) + "\n"
+    if OUTPUT_COMMENTS: 
+        for key in data_stats:
+    	    if len(key) < 4:
+                gcode += ";" + key + " detected, count is " +  str(data_stats[key]) + "\n"
     
     gcode +="\n"
     gcode += gcodebody
@@ -249,7 +251,7 @@ def export(objectslist,filename,argstring):
     	
     #do the post_amble
 
-    if OUTPUT_COMMENTS: gcode += ";begin postamble\n"
+    if OUTPUT_COMMENTS: gcode += ";Begin postamble\n"
     for line in POSTAMBLE.splitlines(True):
         gcode += linenumber() + line
 
@@ -306,7 +308,7 @@ def boxlimits(data_stats, cmd, param, value, checkbounds):
     
     return value
 
-def emuldrill(c):
+def emuldrill(c, state): #G81
     
     cmdlist =  [["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5}],
                 ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : -5}],
@@ -317,14 +319,33 @@ def emuldrill(c):
     ]
     
     return iter(cmdlist)
-
+    
+def emultoolchange(c, state): #M6 T?
+    print(state['notoolyet'])
+    if ASSUME_FIRST_TOOL and state['notoolyet'] and state['output']:
+        state['notoolyet'] = False
+        cmdlist =  [
+                    ["end", {}] # new requirement, because of behavior of iterable prematurely ending loop if last element is reached
+        ]
+    else:
+        cmdlist =  [["G0", {'z' : 20, 'F': G0Z_UP_FEEDRATE / 60.0}],
+                    ["G0", {'x' : 0, 'y' : 0, 'F' : G0XY_FEEDRATE / 60.0}],
+                    ["M0", {'T': c.Parameters['T']}], # Pause and wait for click, turn off spindle, swap bit, home it, turn on spindle
+                    ["G92", {'z' : 0}],
+                    ["G0", {'z' : 20, 'F': G0Z_UP_FEEDRATE / 60.0}],
+                    ["G0", {'x' : state['lastx'], 'y': state['lasty'], 'F': G0XY_FEEDRATE / 60.0}],
+                    ["end", {}] # new requirement, because of behavior of iterable prematurely ending loop if last element is reached
+        ]
+    
+    return iter(cmdlist)
+    
 class Commands:
-    lastz = 100
-    tobe = {'G81': emuldrill}
+    tobe = {'G81': emuldrill, 'M6' : emultoolchange}
+    state = {'output': False, 'notoolyet': True, 'lastz' : 100, 'lastx' : 0, 'lasty' : 0}
              
-    def __init__(self, pathobj = None, calc = False):
+    def __init__(self, pathobj = None, output = False):
         self.paths = iter(pathobj.Path.Commands)
-        self.calc = calc
+        Commands.state['output'] = output
         self.epath = None
 
     def __iter__(self):
@@ -349,19 +370,20 @@ class Commands:
             
             if command in Commands.tobe:
                 func = Commands.tobe[command]
-                self.epath = func(item)
-                command = ';' + command 
-            elif self.calc:
-                 if command == 'G0':
-                     if 'Z' in params:
-                         params['F'] =  (G0Z_UP_FEEDRATE if params['Z'] > Commands.lastz else G0Z_DOWN_FEEDRATE) / 60.0
-                         #print ('lastz ' + format(Commands.lastz, '0.2f') + ' currentZ ' + format(params['Z'], '0.2f') + ' G0 ' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
-                     else:
-                         params['F'] = G0XY_FEEDRATE / 60.0
-                         #print ('G0 F' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
+                self.epath = func(item, Commands.state)
+            elif Commands.state['output']:
+                if command == 'G0':
+                    if 'Z' in params:
+                        params['F'] =  (G0Z_UP_FEEDRATE if params['Z'] > Commands.state['lastz'] else G0Z_DOWN_FEEDRATE) / 60.0
+                        #print ('lastz ' + format(Commands.state['lastz'], '0.2f') + ' currentZ ' + format(params['Z'], '0.2f') + ' G0 ' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
+                    else:
+                        params['F'] = G0XY_FEEDRATE / 60.0
+                        #print ('G0 F' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
  	
-            if self.calc and 'Z' in params: Commands.lastz = params['Z'] 
-            
+                if 'X' in params: Commands.state['lastx'] = params['X'] 
+                if 'Y' in params: Commands.state['lasty'] = params['Y'] 
+                if 'Z' in params: Commands.state['lastz'] = params['Z'] 
+                
             res = [command, params]
             
         return res
@@ -373,7 +395,7 @@ def parse(pathobj, data_stats, checkbounds):
     global SUPPRESS_TOOL_CHANGE
 
     #params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control the order of parameters
-    params = ['X','Y','Z','z','A','B','I','J','F','S','T','Q','R','L'] #linuxcnc doesn't want K properties on XY plane  Arcs need work.
+    params = ['X', 'x', 'Y', 'y', 'Z','z','A','B','I','J','F','S','T','Q','R','L'] #linuxcnc doesn't want K properties on XY plane  Arcs need work.
 
     if hasattr(pathobj,"Group"): #We have a compound or project.
         if OUTPUT_COMMENTS: out += linenumber() + ";compound: " + pathobj.Label + "\n"
@@ -419,7 +441,7 @@ def parse(pathobj, data_stats, checkbounds):
             # Check for Tool Change:
             if command == 'M6':
                 if OUTPUT_COMMENTS:
-                    out += linenumber() + ";begin toolchange\n"
+                    out += linenumber() + ";Begin toolchange\n"
                 if not OUTPUT_TOOL_CHANGE or SUPPRESS_TOOL_CHANGE > 0:
                     outstring.insert(0, ";")
                     SUPPRESS_TOOL_CHANGE = SUPPRESS_TOOL_CHANGE - 1
@@ -436,7 +458,7 @@ def parse(pathobj, data_stats, checkbounds):
             if not command in ALLOWED_COMMANDS:
                 outstring.insert(0, ";")
 
-            #prepend a line number and append a newline
+            #prepEnd a line number and append a newline
             if len(outstring) >= 1:
                 if OUTPUT_LINE_NUMBERS:
                     outstring.insert(0,(linenumber()))
