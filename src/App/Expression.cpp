@@ -1812,6 +1812,7 @@ bool FunctionExpression::isTouched() const
 class Collector {
 public:
     Collector() : first(true) { }
+    virtual ~Collector() {}
     virtual void collect(Quantity value) {
         if (first)
             q.setUnit(value.getUnit());
