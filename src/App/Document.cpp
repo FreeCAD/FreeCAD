@@ -4394,7 +4394,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
 
     // True object move without copy is only safe when undo is off on both
     // documents.
-    if(!recursive && !d->iUndoMode && !that->d->iUndoMode) {
+    if(!recursive && !d->iUndoMode && !that->d->iUndoMode && !that->d->rollback) {
         // all object of the other document that refer to this object must be nullified
         that->breakDependency(obj, false);
         std::string objname = getUniqueObjectName(obj->getNameInDocument());
