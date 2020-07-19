@@ -309,7 +309,7 @@ def mirror(msh):
         mi = callopenscadmeshstring('%s{%s}' % (param,''.join(poly)))
         mi.flipNormals()
         return mi
-    return msh
+    return None
 
 
 def angneg(d):

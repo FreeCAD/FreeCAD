@@ -1,5 +1,5 @@
 <RCC>
-    <qresource>
+    <qresource prefix="/">
         <file>icons/preferences-openscad.svg</file>
         <file>icons/OpenSCAD_AddOpenSCADElement.svg</file>
         <file>icons/OpenSCAD_ColorCodeShape.svg</file>
@@ -50,5 +50,6 @@
         <file>translations/OpenSCAD_val-ES.qm</file>
         <file>translations/OpenSCAD_ar.qm</file>
         <file>translations/OpenSCAD_vi.qm</file>
+        <file>icons/OpenSCAD_MirrorMeshFeature.svg</file>
     </qresource>
 </RCC>
