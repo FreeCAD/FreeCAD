@@ -1243,8 +1243,10 @@ class _Wall(ArchComponent.Component):
                         skPlacement = obj.Base.Placement  # Get Sketch's placement to restore later
                         for i in skGeom:
                             if not i.Construction:
-                                skGeomEdgesI = i.toShape()
-                                skGeomEdges.append(skGeomEdgesI)
+                                # support Line, Arc, Circle for Sketch as Base at the moment
+                                if isinstance(i, (Part.LineSegment, Part.Circle, Part.ArcOfCircle)):
+                                    skGeomEdgesI = i.toShape()
+                                    skGeomEdges.append(skGeomEdgesI)
                         for cluster in Part.getSortedClusters(skGeomEdges):
                             clusterTransformed = []
                             for edge in cluster:
@@ -1269,9 +1271,9 @@ class _Wall(ArchComponent.Component):
                         # bug - e.g. a Dwire with edges/vertexes in clockwise 
                         # order, 1st vertex is Forward as expected.  After 
                         # sorting below, edges sorted still in clockwise order 
-                        # - no problem, vertexes still in clocwise order - no 
-                        # problem, but 1st vertex of each edge become Reverse 
-                        # rather than Forward.
+                        # - no problem, but 1st vertex of each edge become 
+                        # Reverse rather than Forward.
+
                         # See FC discussion - 
                         # https://forum.freecadweb.org/viewtopic.php?f=23&t=48275&p=413745#p413745
 
