@@ -298,6 +298,19 @@ def vec2householder(nv):
                       nv.z*nv.x*l,nv.z*nv.y*l,nv.z*nv.z*l,0,0,0,0,0)
     return FreeCAD.Matrix()-hh
 
+def mirror(msh):
+    from exportCSG import mesh2polyhedron
+    from PySide import QtGui
+    items=["[1,0,0]","[0,1,0]","[0,0,1]","[1,1,0]","[0,1,1]","[1,0,1]","[1,1,1]"]
+    item, ok = QtGui.QInputDialog.getItem(QtGui.QApplication.activeWindow(),u'Mirror about which Axis?',u'Select Axis (or enter custom value)?',items,editable=True)
+    if ok:
+        param = 'mirror('+item+')'
+        poly = mesh2polyhedron(msh)
+        mi = callopenscadmeshstring('%s{%s}' % (param,''.join(poly)))
+        mi.flipNormals()
+        return mi
+    return msh
+
 
 def angneg(d):
     return d if (d <= 180.0) else (d-360)
