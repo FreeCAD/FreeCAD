@@ -3573,6 +3573,9 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     int GeoId = 0;
 
     int stdcountsegments = hGrp->GetInt("SegmentsPerGeometry", 50);
+    // value cannot be smaller than 3
+    if (stdcountsegments < 3)
+        stdcountsegments = 3;
 
     // RootPoint
     Points.emplace_back(0.,0.,0.);
