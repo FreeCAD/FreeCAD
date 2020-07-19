@@ -168,8 +168,12 @@ class MirrorMeshFeature:
             newobj=selobj.Document.addObject("Mesh::Feature",'mirror')
             newobj.Label='mirror_%s' % selobj.Object.Label
             msh=selobj.Object.Mesh
-            newobj.Mesh=OpenSCADUtils.mirror(msh)
-            selobj.Object.ViewObject.hide()
+            newmesh=OpenSCADUtils.mirror(msh)
+            if not newmesh:
+                selobj.Document.removeObject(newobj.Name)
+            else:
+                newobj.Mesh=newmesh
+                selobj.Object.ViewObject.hide()
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_MirrorMeshFeature',
