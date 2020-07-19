@@ -2467,7 +2467,7 @@ void FunctionExpression::_visit(ExpressionVisitor &v)
 
 TYPESYSTEM_SOURCE(App::VariableExpression, App::UnitExpression)
 
-VariableExpression::VariableExpression(const DocumentObject *_owner, ObjectIdentifier _var)
+VariableExpression::VariableExpression(const DocumentObject *_owner, const ObjectIdentifier& _var)
     : UnitExpression(_owner)
     , var(_var)
 {

@@ -321,7 +321,7 @@ protected:
 class AppExport VariableExpression : public UnitExpression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    VariableExpression(const App::DocumentObject *_owner = 0, ObjectIdentifier _var = ObjectIdentifier());
+    VariableExpression(const App::DocumentObject *_owner = 0, const ObjectIdentifier& _var = ObjectIdentifier());
 
     ~VariableExpression();
 
