@@ -172,8 +172,17 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     }
     this->pressed = false;
 
-    parentEditor->activeEditor = editor;
-    parentEditor->editingIndex = index;
+    if (editor) {
+        for (auto w : editor->findChildren<QWidget*>()) {
+            if (qobject_cast<QAbstractButton*>(w)
+                    || qobject_cast<QLabel*>(w))
+            {
+                w->installEventFilter(const_cast<PropertyItemDelegate*>(this));
+            }
+        }
+        parentEditor->activeEditor = editor;
+        parentEditor->editingIndex = index;
+    }
 
     return editor;
 }

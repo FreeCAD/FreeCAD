@@ -339,35 +339,23 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
         QTreeView::closeEditor(editor, hint);
         return;
     }
-    // If we are not removing rows, then QTreeView::closeEditor() does
-    // nothing because we are using persistent editor, so we have to do it
-    // by ourselves.
-    if(editor) {
-        // Must call close() here, or else Qt 5.9 crash (triggered by focus
-        // change handling), but not Qt 4 or Qt 5.12
-        editor->close();
-        editor->deleteLater();
-    }
 
     closeTransaction();
 
-    editingIndex = QPersistentModelIndex();
-    activeEditor = nullptr;
+    // If we are not removing rows, then QTreeView::closeEditor() does nothing
+    // because we are using persistent editor, so we have to call our own
+    // version of closeEditor()
+    this->closeEditor();
 
     QModelIndex indexSaved = currentIndex();
-
-    // Prevent reentry, which may be caused by the call of setFocus() below
-    // that cause the editor to lose focus.
-    Base::StateLocker guard(closingEditor);
 
     if (indexSaved.column() == 0) {
         // Calling setCurrentIndex() to make sure we focus on column 1 instead of 0.
         setCurrentIndex(propertyModel->buddy(indexSaved));
     }
-    // grab focus from the editor
-    setFocus();
 
-    QModelIndex lastIndex;
+    QModelIndex lastIndex = indexSaved;
+    bool wrapped = false;
     do {
         QModelIndex index;
         if (hint == QAbstractItemDelegate::EditNextItem) {
@@ -376,13 +364,30 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
             index = moveCursor(MoveUp,Qt::NoModifier);
         } else
             break;
-        if (!index.isValid() || index==lastIndex) {
-            setCurrentIndex(propertyModel->buddy(indexSaved));
-            break;
+        if (!index.isValid() || index == lastIndex) {
+            if (wrapped) {
+                setCurrentIndex(propertyModel->buddy(indexSaved));
+                break;
+            }
+            wrapped = true;
+            if (hint == QAbstractItemDelegate::EditNextItem)
+                index = moveCursor(MoveHome, Qt::NoModifier);
+            else
+                index = moveCursor(MoveEnd, Qt::NoModifier);
+            if (!index.isValid() || index == indexSaved)
+                break;
         }
         lastIndex = index;
         setCurrentIndex(propertyModel->buddy(index));
+
+        PropertyItem *item = static_cast<PropertyItem*>(index.internalPointer());
+        // Skip readonly item, because the editor will be disabled and hence
+        // does not accept focus, and in turn break Tab/Backtab navigation.
+        if (item && item->isReadOnly())
+            continue;
+
         openEditor(index);
+
     } while (!editingIndex.isValid());
 }
 

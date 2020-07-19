@@ -3847,6 +3847,9 @@ LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
 #endif
     editButton->setToolTip(tr("Change the linked object"));
     layout->addWidget(editButton);
+
+    this->setFocusPolicy(Qt::StrongFocus);
+    this->setFocusProxy(label);
     
     // setLayout(layout);
     
