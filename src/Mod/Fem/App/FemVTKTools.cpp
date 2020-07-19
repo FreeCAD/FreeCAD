@@ -576,13 +576,14 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
 
     vtkSmartPointer<vtkDataSet> dataset = ds;
     App::DocumentObject* result = NULL;
-    if(!res)
-        result = res;
-    else
+
+    if (res)
     {
         Base::Console().Message("FemResultObject pointer is NULL, trying to get the active object\n");
         if(obj->getTypeId() == Base::Type::fromName("Fem::FemResultObjectPython"))
+        {
             result = obj;
+        }
         else
         {
             Base::Console().Message("the active object is not the correct type, do nothing\n");
@@ -594,11 +595,17 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     std::unique_ptr<FemMesh> fmesh(new FemMesh());
     importVTKMesh(dataset, fmesh.get());
     static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->setValuePtr(fmesh.release());
-    static_cast<App::PropertyLink*>(result->getPropertyByName("Mesh"))->setValue(mesh);
-    // PropertyLink is the property type to store DocumentObject pointer
 
-    //vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
-    importFreeCADResult(dataset, result);
+    if (result)
+    {
+        // PropertyLink is the property type to store DocumentObject pointer
+        App::PropertyLink* link = dynamic_cast<App::PropertyLink*>(result->getPropertyByName("Mesh"));
+        if (link)
+            link->setValue(mesh);
+
+        //vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
+        importFreeCADResult(dataset, result);
+    }
 
     pcDoc->recompute();
     Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
@@ -866,6 +873,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             field = static_cast<App::PropertyFloatList*>(res->getPropertyByName(it->first.c_str()));
         else
             Base::Console().Error("PropertyFloatList %s not found \n", it->first.c_str());
+
         if (field && field->getSize() > 0) {
             //if (nPoints != field->getSize())
             //    Base::Console().Error("Size of PropertyFloatList = %d, not equal to vtk mesh node count %d \n", field->getSize(), nPoints);
@@ -890,9 +898,10 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
 
             grid->GetPointData()->AddArray(data);
             Base::Console().Log("    The PropertyFloatList %s was exported to VTK scalar list: %s\n", it->first.c_str(), it->second.c_str());
-       }
-        else
+        }
+        else if (field) {
             Base::Console().Log("    PropertyFloatList NOT exported to vtk: %s size is: %i\n", it->first.c_str(), field->getSize());
+        }
     }
 
     Base::Console().Log("End: Create VTK result data from FreeCAD result data.\n");

@@ -97,8 +97,10 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     if (m_cl == nullptr) {         //checked by CommandAnnotate.  Should never happen.
         Base::Console().Message("TCL::TCL() - no centerline found\n");
     }
-    m_type = m_cl->m_type;
-    m_mode = m_cl->m_mode;
+    else {
+        m_type = m_cl->m_type;
+        m_mode = m_cl->m_mode;
+    }
 
     setUiEdit();
 }

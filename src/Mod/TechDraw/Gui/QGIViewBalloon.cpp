@@ -366,7 +366,7 @@ void QGIViewBalloon::setViewPartFeature(TechDraw::DrawViewBalloon *balloon)
     DrawView* balloonParent = nullptr;
     double scale = 1.0;
     App::DocumentObject* docObj = balloon->SourceView.getValue();
-    if (docObj == nullptr) {
+    if (docObj) {
         balloonParent = dynamic_cast<DrawView*>(docObj);
         if (balloonParent)
             scale = balloonParent->getScale();

@@ -95,6 +95,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     m_basePage = m_baseFeat->findParentPage();
     if (m_basePage == nullptr) {
         Base::Console().Error("TaskDetail - bad parameters - base page.  Can not proceed.\n");
+        return;
     }
 
     m_baseName = m_baseFeat->getNameInDocument();

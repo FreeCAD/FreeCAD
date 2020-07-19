@@ -613,7 +613,7 @@ void PropertyLinkList::setSize(int newSize)
 {
     for(int i=newSize;i<(int)_lValueList.size();++i) {
         auto obj = _lValueList[i];
-        if(!obj && !obj->getNameInDocument())
+        if (!obj || !obj->getNameInDocument())
             continue;
         _nameMap.erase(obj->getNameInDocument());
 #ifndef USE_OLD_DAG

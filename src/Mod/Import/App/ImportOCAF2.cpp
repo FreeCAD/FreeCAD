@@ -1129,7 +1129,8 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     App::DocumentObject *obj;
     auto shape = Part::Feature::getTopoShape(parentObj,sub,false,0,&obj,false,!sub);
     if(!obj || shape.isNull()) {
-        FC_WARN(obj->getFullName() << " has null shape");
+        if (obj)
+            FC_WARN(obj->getFullName() << " has null shape");
         return TDF_Label();
     }
 

@@ -2210,16 +2210,18 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "sss",&sub,&mapped,&element))
             throw Py::Exception();
         std::string subname(sub);
-        if(subname.size() && subname[subname.size()-1]!='.')
+        if (subname.size() && subname[subname.size()-1]!='.')
             subname += '.';
-        if(mapped && mapped[0]) {
-            if(!Data::ComplexGeoData::isMappedElement(mapped))
+        if (mapped && mapped[0]) {
+            if (!Data::ComplexGeoData::isMappedElement(mapped))
                 subname += Data::ComplexGeoData::elementMapPrefix();
             subname += mapped;
-            if(element && element[0] && subname[subname.size()-1]!='.')
-                subname += '.';
         }
-        subname += element;
+        if (element && element[0]) {
+            if (subname.size() && subname[subname.size()-1]!='.')
+                subname += '.';
+            subname += element;
+        }
         return Py::String(subname);
     }
 };

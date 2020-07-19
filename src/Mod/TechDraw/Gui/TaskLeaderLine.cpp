@@ -421,7 +421,9 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
     if (m_basePage != nullptr) {
         m_basePage->touch();
     }
-    m_lineFeat->requestPaint();
+    if (m_lineFeat != nullptr) {
+        m_lineFeat->requestPaint();
+    }
 }
 
 void TaskLeaderLine::updateLeaderFeature(void)
