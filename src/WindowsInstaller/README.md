@@ -18,13 +18,16 @@ To build the installer you can do the following:
    Copy the file ~\nsprocess\Plugins\x86-unicode\nsProcess.dll to the folder</br>
    \Plugins\x86-unicode of NSIS's installation folder.
    (You can alternatively get nsProcess from https://nsis.sourceforge.io/NsProcess_plugin)
-7. Copy all FreeCAD files to the folder "~\FreeCAD"
+7. Copy the file ~\FindProc\FindProcDLL.dll to the folder</br>
+   \Plugins\x86-unicode of NSIS's installation folder.
+   (You can alternatively get nsProcess from https://nsis.sourceforge.io/FindProcDLL_plug-in)
+8. Copy all FreeCAD files to the folder "~\FreeCAD"
    e.g. "C:\FreeCAD\Installer\FreeCAD"
-8. If you use a version of FreeCAD that was compiled using another MSVC version than MSVC 2017,
+9. If you use a version of FreeCAD that was compiled using another MSVC version than MSVC 2017,
    copy its distributable DLLs to the folder FILES_DEPS (see step 3).
-9. Right-click on the file FreeCAD-installer.nsi and choose "Compile NSIS script"
+10. Right-click on the file FreeCAD-installer.nsi and choose "Compile NSIS script"
    to compile the installer.
-10. The folder ~\MSVCRedist contains already all MSVC 2017 x64 redistributable DLLs necessary
+11. The folder ~\MSVCRedist contains already all MSVC 2017 x64 redistributable DLLs necessary
    for FreeCAD 0.19dev. If another MSVC version was used to compile FreeCAD, replace the DLLs by
    the ones of the used MSVC. (They are usually available in the folder
    C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC)
