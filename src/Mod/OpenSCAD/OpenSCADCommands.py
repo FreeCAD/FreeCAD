@@ -168,16 +168,24 @@ class MirrorMeshFeature:
             newobj=selobj.Document.addObject("Mesh::Feature",'mirror')
             newobj.Label='mirror_%s' % selobj.Object.Label
             msh=selobj.Object.Mesh
-            newmesh=OpenSCADUtils.mirror(msh)
-            if not newmesh:
-                selobj.Document.removeObject(newobj.Name)
-            else:
+            items=["[1,0,0]","[0,1,0]","[0,0,1]","[1,1,0]","[0,1,1]","[1,0,1]","[1,1,1]"]
+            item, ok = QtGui.QInputDialog.getItem(QtGui.QApplication.activeWindow(),u'Mirror about which Axis?',u'Select Axis (or enter custom value)?',items,editable=True)
+            if ok:
+                splits = list(item)
+                x = float(splits[1])
+                y = float(splits[3])
+                z = float(splits[5])
+                vec = FreeCAD.Base.Vector(x,y,z)
+                newmesh=OpenSCADUtils.mirror(msh, vec)
                 newobj.Mesh=newmesh
                 selobj.Object.ViewObject.hide()
+            else:
+                selobj.Document.removeObject(newobj.Name)
+
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_MirrorMeshFeature',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MirrorMeshFeature', 'Mirror Mesh Feature'),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MirrorMeshFeature', 'Mirror Mesh Feature...'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MirrorMeshFeature', 'Create Mirror Mesh Feature')}
 
 
