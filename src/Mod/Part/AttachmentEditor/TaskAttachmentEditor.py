@@ -187,8 +187,8 @@ class AttachmentEditorTaskPanel(FrozenClass):
         self.callback_Apply     = callback_Apply
 
         self.obj = obj_to_attach
-        if not self.obj.hasExtension('App::AttachExtension'):
-            self.obj.addExtension('App::AttachExtensionPython')
+        if not self.obj.hasExtension('Part::AttachExtension'):
+            self.obj.addExtension('Part::AttachExtensionPython', None)
 
         if hasattr(obj_to_attach,'Attacher'):
             self.attacher = obj_to_attach.Attacher
