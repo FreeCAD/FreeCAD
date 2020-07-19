@@ -246,10 +246,10 @@ class _Axis:
             obj.Shape = sh
             obj.Placement = pl
 
-    #def onChanged(self,obj,prop):
+    def onChanged(self,obj,prop):
 
-    #    if prop in ["Angles","Distances","Placement"]:
-    #        self.execute(obj)
+        if prop in ["Angles","Distances","Placement"]:
+            obj.touch()
 
     def __getstate__(self):
 
