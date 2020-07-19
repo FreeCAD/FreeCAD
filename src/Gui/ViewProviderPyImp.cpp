@@ -414,10 +414,8 @@ PyObject* ViewProviderPy::partialRender(PyObject* args)
 #endif
             else {
                 std::string error = std::string("type must be str or unicode");
-                if (item) {
-                    error += " not, ";
-                    error += item->ob_type->tp_name;
-                }
+                error += " not, ";
+                error += item->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
         }
