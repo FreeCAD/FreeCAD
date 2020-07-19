@@ -810,8 +810,11 @@ private:
         }
         //TODO: errors for all the type checks
         if (PyObject_TypeCheck(pDvp, &(TechDraw::DrawViewPartPy::Type))) {
-                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
-                dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
+            dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+        }
+        else {
+            throw Py::TypeError("expected (DrawViewPart, dimType, from, to");
         }
 #if PY_MAJOR_VERSION >= 3
         if (PyUnicode_Check(pDimType) ) {
@@ -855,8 +858,11 @@ private:
         }
         //TODO: errors for all the type checks
         if (PyObject_TypeCheck(pDvp, &(TechDraw::DrawViewPartPy::Type))) {
-                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
-                dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
+            dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+        }
+        else {
+            throw Py::TypeError("expected (DrawViewPart, dimType, from, to");
         }
 #if PY_MAJOR_VERSION >= 3
         if (PyUnicode_Check(pDimType)) {
