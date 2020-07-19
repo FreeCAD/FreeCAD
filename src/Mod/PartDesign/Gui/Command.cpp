@@ -441,6 +441,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         }
         Gui::Selection().addSelection(binder->getDocument()->getName(),
                                       binder->getNameInDocument());
+        Gui::Selection().selStackPush();
     }catch(Base::Exception &e) {
         e.ReportException();
         QMessageBox::critical(Gui::getMainWindow(), 

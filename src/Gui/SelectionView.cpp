@@ -727,6 +727,7 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
             }
             Gui::Selection().addSelection(sel.getDocumentName().c_str(),
                     sel.getObjectName().c_str(), sel.getSubName().c_str());
+            Gui::Selection().selStackPush();
         }
     }
     pSelList = 0;
