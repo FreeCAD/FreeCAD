@@ -273,7 +273,8 @@ class RefineShape:
 
     def execute(self, fp):
         if fp.Base and fp.Base.Shape.isValid():
-            import freecad.OpenSCAD.OpenSCADUtils
+            #import freecad.OpenSCAD.OpenSCADUtils
+            import OpenSCADUtils
             sh=fp.Base.Shape.removeSplitter()
             fp.Shape=freecad.OpenSCAD.OpenSCADUtils.applyPlacement(sh)
 
