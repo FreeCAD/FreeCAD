@@ -1220,6 +1220,8 @@ int SketchObject::delConstraint(int ConstrId)
 int SketchObject::delConstraints(std::vector<int> ConstrIds, bool updategeometry)
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+    if (ConstrIds.empty())
+        return 0;
 
     const std::vector< Constraint * > &vals = this->Constraints.getValues();
 
@@ -1227,7 +1229,7 @@ int SketchObject::delConstraints(std::vector<int> ConstrIds, bool updategeometry
 
     std::sort(ConstrIds.begin(),ConstrIds.end());
 
-    if (*ConstrIds.begin() < 0 || *std::prev(ConstrIds.end()) >= int(vals.size()))
+    if (ConstrIds.front() < 0 || ConstrIds.back() >= int(vals.size()))
         return -1;
 
     for(auto rit = ConstrIds.rbegin(); rit!=ConstrIds.rend(); rit++)
