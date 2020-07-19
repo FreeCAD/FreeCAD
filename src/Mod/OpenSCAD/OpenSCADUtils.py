@@ -298,7 +298,8 @@ def vec2householder(nv):
                       nv.z*nv.x*l,nv.z*nv.y*l,nv.z*nv.z*l,0,0,0,0,0)
     return FreeCAD.Matrix()-hh
 
-def mirror(msh,vec):
+def mirrormesh(msh,vec):
+    """mirrormesh(mesh,vector) where mesh is a mesh object and vector is a Base.Vector"""
     from exportCSG import mesh2polyhedron
     from PySide import QtGui
     poly = mesh2polyhedron(msh)

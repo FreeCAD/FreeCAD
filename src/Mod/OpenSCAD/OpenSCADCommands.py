@@ -176,7 +176,7 @@ class MirrorMeshFeature:
                 y = float(splits[3])
                 z = float(splits[5])
                 vec = FreeCAD.Base.Vector(x,y,z)
-                newmesh=OpenSCADUtils.mirror(msh, vec)
+                newmesh=OpenSCADUtils.mirrormesh(msh, vec)
                 newobj.Mesh=newmesh
                 selobj.Object.ViewObject.hide()
             else:
