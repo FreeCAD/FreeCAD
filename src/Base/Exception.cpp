@@ -125,7 +125,7 @@ PyObject * Exception::getPyObject(void)
 
 void Exception::setPyObject( PyObject * pydict)
 {
-    if (pydict!=NULL) {
+    if (pydict && Py::_Dict_Check(pydict)) {
         Py::Dict edict(pydict);
         if (edict.hasKey("sfile"))
             _file = static_cast<std::string>(Py::String(edict.getItem("sfile")));
