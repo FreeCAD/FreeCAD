@@ -433,7 +433,12 @@ BrowserView::BrowserView(QWidget* parent)
     profile->setCachePath(basePath + QLatin1String("cache"));
 
     interceptLinks = new WebEngineUrlRequestInterceptor(this);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0))
+    profile->setUrlRequestInterceptor(interceptLinks);
+#else
     profile->setRequestInterceptor(interceptLinks);
+#endif
 
     view->settings()->setAttribute(QWebEngineSettings::AutoLoadIconsForPage, true);
 
