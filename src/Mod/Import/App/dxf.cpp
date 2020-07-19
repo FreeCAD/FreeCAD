@@ -3155,7 +3155,7 @@ void CDxfRead::get_line()
 
 void CDxfRead::put_line(const char *value)
 {
-    strcpy( m_unused_line, value );
+    strncpy( m_unused_line, value, sizeof(m_unused_line) );
 }
 
 
