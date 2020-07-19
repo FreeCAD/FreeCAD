@@ -3822,6 +3822,7 @@ void LinkSelection::select()
     Gui::Selection().addSelection(link.getDocumentName().c_str(),
                                   link.getObjectName().c_str(),
                                   link.getSubName().c_str());
+    Gui::Selection().selStackPush();
     this->deleteLater();
 }
 
@@ -3861,6 +3862,28 @@ LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
 
 LinkLabel::~LinkLabel()
 {
+}
+
+void LinkLabel::returnPressed()
+{
+    auto prop = Base::freecad_dynamic_cast<App::PropertyLinkBase>(objProp.getProperty());
+    auto links = DlgPropertyLink::getLinksFromProperty(prop);
+    for (auto it=links.begin(); it!=links.end(); ) {
+        auto &link = *it;
+        if (!link.getSubObject())
+            it = links.erase(it);
+        else
+            ++it;
+    }
+    if (links.empty())
+        close();
+
+    Gui::Selection().selStackPush();
+    Gui::Selection().clearCompleteSelection();
+    for (auto &link : links)
+        Gui::Selection().addSelection(link.getDocumentName().c_str(),
+                link.getObjectName().c_str(), link.getSubName().c_str());
+    Gui::Selection().selStackPush();
 }
 
 void LinkLabel::updatePropertyLink()

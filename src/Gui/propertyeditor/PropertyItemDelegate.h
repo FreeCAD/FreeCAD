@@ -44,6 +44,9 @@ public:
     virtual QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const;
     virtual bool editorEvent (QEvent *event, QAbstractItemModel *model,
                               const QStyleOptionViewItem& option, const QModelIndex& index);
+protected:
+    bool eventFilter(QObject *, QEvent *);
+
 public Q_SLOTS:
     void valueChanged();
 

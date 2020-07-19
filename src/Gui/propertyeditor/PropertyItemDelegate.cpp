@@ -134,6 +134,22 @@ bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* mode
     return QItemDelegate::editorEvent(event, model, option, index);
 }
 
+bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
+{
+    if (ev->type() == QEvent::KeyPress) {
+        QKeyEvent *ke = static_cast<QKeyEvent*>(ev);
+        if (ke->key() == Qt::Key_Return) {
+            auto label = qobject_cast<QLabel*>(o);
+            if (label && qobject_cast<LinkLabel*>(label->parentWidget())) {
+                LinkLabel *ll = static_cast<LinkLabel*>(label->parentWidget());
+                QMetaObject::invokeMethod(ll, "returnPressed", Qt::QueuedConnection);
+                return true;
+            }
+        }
+    }
+    return QItemDelegate::eventFilter(o, ev);
+}
+
 QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOptionViewItem & /*option*/, 
                                               const QModelIndex & index ) const
 {

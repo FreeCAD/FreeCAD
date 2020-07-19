@@ -1041,6 +1041,7 @@ protected Q_SLOTS:
     void onLinkActivated(const QString&);
     void onEditClicked();
     void onLinkChanged();
+    void returnPressed();
 
 Q_SIGNALS:
     void linkChanged(const QVariant&);
