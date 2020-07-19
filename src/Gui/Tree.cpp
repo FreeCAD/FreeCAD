@@ -1823,8 +1823,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 std::string dropName;
                 ss.str("");
                 if(da == Qt::LinkAction) {
-                    if(targetItemObj->getParentItem()) {
-                        auto parentItem = targetItemObj->getParentItem();
+                    auto parentItem = targetItemObj->getParentItem();
+                    if (parentItem) {
                         ss << Command::getObjectCmd(
                                 parentItem->object()->getObject(),0,".replaceObject(",true)
                             << Command::getObjectCmd(targetObj) << ","

@@ -389,7 +389,9 @@ void TaskRichAnno::createAnnoFeature()
     if (m_basePage != nullptr) {
         m_basePage->touch();
     }
-    m_annoFeat->requestPaint();
+    if (m_annoFeat != nullptr) {
+        m_annoFeat->requestPaint();
+    }
 }
 
 void TaskRichAnno::updateAnnoFeature()
