@@ -331,6 +331,7 @@ class GuiExport ToolTip : public QObject
 {
 public:
     static void showText(const QPoint & pos, const QString & text, QWidget * w = 0);
+    static void hideText();
 
 protected:
     static ToolTip* instance();

@@ -993,9 +993,15 @@ void ToolTip::showText(const QPoint & pos, const QString & text, QWidget * w)
         tip->displayTime.start();
     }
     else {
-        // do immediately
-        QToolTip::showText(pos, text, w);
+        hideText();
     }
+}
+
+void ToolTip::hideText()
+{
+    instance()->removeEventFilter();
+    instance()->tooltipTimer.stop();
+    QToolTip::hideText();
 }
 
 void ToolTip::timerEvent(QTimerEvent *e)

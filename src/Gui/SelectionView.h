@@ -143,7 +143,7 @@ protected:
     void mousePressEvent(QMouseEvent *e);
     bool event(QEvent *);
 
-protected Q_SLOTS:
+public Q_SLOTS:
     void onTriggered(QAction *action);
     void onHovered(QAction *action);
 };

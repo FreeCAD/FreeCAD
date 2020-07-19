@@ -53,6 +53,7 @@
 #include "BitmapFactory.h"
 #include "MetaTypes.h"
 #include "MainWindow.h"
+#include "Widgets.h"
 
 FC_LOG_LEVEL_INIT("Selection",true,true,true)
 
@@ -713,7 +714,7 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
     QAction* picked = exec(QCursor::pos());
 
     timer.stop();
-    QToolTip::hideText();
+    ToolTip::hideText();
 
     if(picked) {
         int idx = picked->data().toInt();
@@ -743,7 +744,7 @@ void SelectionMenu::onHover(QAction *action) {
         return;
 
     timer.stop();
-    QToolTip::hideText();
+    ToolTip::hideText();
 
     auto &sel = (*pSelList)[idx-1];
     Gui::Selection().setPreselect(sel.getDocumentName().c_str(),
@@ -754,7 +755,7 @@ void SelectionMenu::onHover(QAction *action) {
 
 void SelectionMenu::leaveEvent(QEvent *event) {
     timer.stop();
-    QToolTip::hideText();
+    ToolTip::hideText();
     QMenu::leaveEvent(event);
 }
 
@@ -785,7 +786,7 @@ void SelectionMenu::onTimer() {
                         QString::fromLatin1(sel.getObjectName().c_str()),
                         QString::fromLatin1(sel.getSubNameNoElement().c_str()),
                         element);
-    QToolTip::showText(QCursor::pos(), tooltip);
+    QToolTip::showText(QCursor::pos(), tooltip, this);
 }
 
 void SelectionMenu::onSubMenu() {
@@ -800,7 +801,7 @@ void SelectionMenu::onSubMenu() {
         return;
 
     timer.stop();
-    QToolTip::hideText();
+    ToolTip::hideText();
 
     auto &sel = (*pSelList)[idx-1];
 
@@ -827,25 +828,7 @@ SelUpMenu::SelUpMenu(QWidget *parent, bool trigger)
 
 bool SelUpMenu::event(QEvent *e)
 {
-    switch (e->type()) {
-    case QEvent::ToolTip:
-        if(QApplication::queryKeyboardModifiers() == Qt::ShiftModifier) {
-            const QHelpEvent *ev = static_cast<const QHelpEvent*>(e);
-            if (const QAction *action = actionAt(ev->pos())) {
-                if (action) {
-                    const QString &toolTip = action->toolTip();
-                    if (!toolTip.isEmpty()) {
-                        QToolTip::showText(ev->globalPos(), toolTip, this);
-                        return true;
-                    }
-                }
-            }
-        }
-        QToolTip::hideText();
-        return true;
-    default:
-        return QMenu::event(e);
-    }
+    return QMenu::event(e);
 }
 
 void SelUpMenu::mouseReleaseEvent(QMouseEvent *e)
@@ -879,27 +862,37 @@ void SelUpMenu::onTriggered(QAction *action)
 
 void SelUpMenu::onHovered(QAction *action)
 {
+    ToolTip::hideText();
+
     App::SubObjectT objT = qvariant_cast<App::SubObjectT>(action->data());
     auto obj = objT.getSubObject();
-    if (!obj)
-        return;
-    Selection().setPreselect(objT.getDocumentName().c_str(),
-            objT.getObjectName().c_str(), objT.getSubName().c_str(), 0,0,0,2,true);
+    if (!obj) {
+        getMainWindow()->showMessage(QString());
+        Selection().rmvPreselect();
+    } else {
+        Selection().setPreselect(objT.getDocumentName().c_str(),
+                objT.getObjectName().c_str(), objT.getSubName().c_str(), 0,0,0,2,true);
 
-    QString status;
-    status = QString::fromLatin1("%1 (%2#%3.%4)%5").arg(
-            QString::fromLatin1(obj->getNameInDocument()),
-            QString::fromLatin1(objT.getDocumentName().c_str()),
-            QString::fromLatin1(objT.getObjectName().c_str()),
-            QString::fromLatin1(objT.getSubName().c_str()),
-            status);
+        QString status;
+        status = QString::fromLatin1("%1 (%2#%3.%4)%5").arg(
+                QString::fromLatin1(obj->getNameInDocument()),
+                QString::fromLatin1(objT.getDocumentName().c_str()),
+                QString::fromLatin1(objT.getObjectName().c_str()),
+                QString::fromLatin1(objT.getSubName().c_str()),
+                status);
 
-    if ( (obj->isTouched() || obj->mustExecute() == 1) && !obj->isError()) {
-        status += QString::fromLatin1(", ");
-        status += tr("Touched");
+        if ( (obj->isTouched() || obj->mustExecute() == 1) && !obj->isError()) {
+            status += QString::fromLatin1(", ");
+            status += tr("Touched");
+        }
+
+        getMainWindow()->showMessage(status);
     }
 
-    getMainWindow()->showMessage(status);
+    if(QApplication::queryKeyboardModifiers() == Qt::ShiftModifier) {
+        const QString &toolTip = action->toolTip();
+        ToolTip::showText(QCursor::pos(), toolTip, this);
+    }
 }
 
 #include "moc_SelectionView.cpp"

@@ -40,6 +40,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Widgets.h>
 #include <boost_bind_bind.hpp>
 #include "../App/Utils.h"
 #include "../App/Cell.h"
@@ -957,11 +958,11 @@ bool SheetTableView::eventFilter(QObject *o, QEvent *ev) {
         if (act) {
             QString tooltip = act->toolTip();
             if (tooltip.size()) {
-                QToolTip::showText(he->globalPos(), act->toolTip(), menu);
+                Gui::ToolTip::showText(he->globalPos(), act->toolTip(), menu);
                 return false;
             }
         }
-        QToolTip::hideText();
+        Gui::ToolTip::hideText();
         break;
     }
 #endif
