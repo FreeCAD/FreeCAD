@@ -136,7 +136,10 @@ def read_inp(file_name):
             read_node = False
             elm_category = []
             number_of_nodes = 0
+            elm_type = ""
             elm_2nd_line = False
+            error_seg3 = False
+            error_not_supported_elemtype = False
 
         # reading nodes
         if (line[:5].upper() == "*NODE") and (model_definition is True):
