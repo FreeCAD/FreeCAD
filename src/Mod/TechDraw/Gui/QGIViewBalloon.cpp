@@ -463,6 +463,9 @@ void QGIViewBalloon::balloonLabelDragged(bool ctrl)
 //    Base::Console().Message("QGIVB::bLabelDragged(%d)\n", ctrl);
     m_ctrl = ctrl;
     auto dvb( dynamic_cast<TechDraw::DrawViewBalloon *>(getViewObject()) );
+    if (dvb == nullptr)
+        return;
+
     if (!m_dragInProgress) {           //first drag movement
         m_dragInProgress = true;
         if (ctrl) {             //moving whole thing, remember Origin offset from Bubble

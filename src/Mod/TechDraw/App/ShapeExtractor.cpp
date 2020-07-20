@@ -177,7 +177,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
 //            }
             Base::Placement childPlm;
             if (l->getTypeId().isDerivedFrom(App::LinkElement::getClassTypeId())) {
-                App::LinkElement* cLinkElem = dynamic_cast<App::LinkElement*>(l);
+                App::LinkElement* cLinkElem = static_cast<App::LinkElement*>(l);
                 if (cLinkElem->hasPlacement()) {
                     childPlm = cLinkElem->getLinkPlacementProperty()->getValue();
                 }

@@ -293,6 +293,9 @@ void QGILeaderLine::startPathEdit(void)
 {
     saveState();
     auto featLeader( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
+    if (featLeader == nullptr) {
+        return;
+    }
 
     double scale = featLeader->getScale();
     m_editPath->setScale(scale);
