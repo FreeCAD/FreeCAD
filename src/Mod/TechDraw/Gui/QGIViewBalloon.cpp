@@ -97,7 +97,9 @@ QGIBalloonLabel::QGIBalloonLabel()
     m_labelText = new QGCustomText();
     m_labelText->setParentItem(this);
 
+    verticalSep = false;
     hasHover = false;
+    parent = nullptr;
 }
 
 QVariant QGIBalloonLabel::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -249,8 +251,12 @@ void QGIBalloonLabel::setColor(QColor c)
 
 //**************************************************************
 QGIViewBalloon::QGIViewBalloon() :
+    dvBalloon(nullptr),
     hasHover(false),
-    m_lineWidth(0.0)
+    m_lineWidth(0.0),
+    m_obtuse(false),
+    parent(nullptr),
+    m_dragInProgress(false)
 {
     m_ctrl = false;
 

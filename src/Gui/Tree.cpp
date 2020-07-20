@@ -2268,7 +2268,7 @@ struct UpdateDisabler {
     // Note! DO NOT block signal here, or else
     // QTreeWidgetItem::setChildIndicatorPolicy() does not work
     UpdateDisabler(QWidget &w, int &blocked)
-        :widget(w),blocked(blocked)
+        : widget(w), blocked(blocked), visible(false), focus(false)
     {
         if(++blocked > 1)
             return;

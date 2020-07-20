@@ -76,7 +76,9 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     ui(new Ui_TaskSectionView),
     m_base(base),
     m_section(nullptr),
+    m_saveScale(0.0),
     m_dirName(""),
+    m_doc(nullptr),
     m_createMode(true),
     m_saved(false),
     m_abort(false)
@@ -110,6 +112,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     ui(new Ui_TaskSectionView),
     m_base(nullptr),
     m_section(section),
+    m_saveScale(0.0),
+    m_doc(nullptr),
     m_createMode(false),
     m_saved(false),
     m_abort(false)

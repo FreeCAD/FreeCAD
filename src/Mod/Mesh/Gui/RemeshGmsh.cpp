@@ -51,6 +51,7 @@ public:
     Private(QWidget* parent)
       : gmsh(parent)
     {
+        /* coverity[uninit_ctor] Members of ui are set in setupUI() */
     }
 
     void appendText(const QString& text, bool error) {

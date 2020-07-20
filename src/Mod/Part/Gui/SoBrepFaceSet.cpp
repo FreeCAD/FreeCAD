@@ -177,6 +177,7 @@ SoBrepFaceSet::SoBrepFaceSet()
 
     selContext = std::make_shared<SelContext>();
     selContext2 = std::make_shared<SelContext>();
+    packedColor = 0;
 
     pimpl.reset(new VBO);
 }

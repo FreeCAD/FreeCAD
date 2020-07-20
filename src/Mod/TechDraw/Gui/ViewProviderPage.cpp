@@ -87,7 +87,8 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 ViewProviderPage::ViewProviderPage()
   : m_mdiView(0),
     m_docReady(true),
-    m_pageName("")
+    m_pageName(""),
+    m_graphicsView(nullptr)
 {
     sPixmap = "TechDraw_Tree_Page";
     static const char *group = "Base";

@@ -95,6 +95,7 @@ enum SnapMode{
 
 QGIDatumLabel::QGIDatumLabel()
 {
+    verticalSep = false;
     posX = 0;
     posY = 0;
 

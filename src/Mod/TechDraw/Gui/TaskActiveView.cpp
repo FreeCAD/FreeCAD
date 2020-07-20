@@ -68,7 +68,9 @@ using namespace TechDrawGui;
 TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat) :
     ui(new Ui_TaskActiveView),
     m_pageFeat(pageFeat),
-    m_symbolFeat(nullptr)
+    m_symbolFeat(nullptr),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr)
 {
 //    Base::Console().Message("TAV::TAV() - create mode\n");
     if  (m_pageFeat == nullptr)  {

@@ -81,7 +81,11 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     m_partFeat(partFeat),
     m_basePage(page),
     m_createMode(false),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_edgeName(edgeName),
+    m_extendBy(0.0),
+    m_clIdx(0),
     m_type(0),          //0 - Face, 1 - 2 Lines, 2 - 2 points
     m_mode(0),           //0 - vertical, 1 - horizontal, 2 - aligned
     m_editMode(editMode)
@@ -114,7 +118,13 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     m_partFeat(partFeat),
     m_basePage(page),
     m_createMode(true),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_subNames(subNames),
+    m_extendBy(0.0),
+    m_geomIndex(0),
+    m_cl(nullptr),
+    m_clIdx(0),
     m_type(0),          //0 - Face, 1 - 2 Lines, 2 - 2 points
     m_mode(0),           //0 - vertical, 1 - horizontal, 2 - aligned
     m_editMode(editMode)
