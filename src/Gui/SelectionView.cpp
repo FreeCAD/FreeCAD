@@ -656,6 +656,7 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
     for(auto &v : menus) {
         auto &info = v.second;
         info.menu = addMenu(QLatin1String(v.first.c_str()));
+        info.menu->installEventFilter(this);
 
         bool groupMenu = false;
         if(info.items.size() > 20)
@@ -691,6 +692,7 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
                 }
                 if(!elementInfo.menu) {
                     elementInfo.menu = info.menu->addMenu(elementInfo.icon, QString::fromUtf8(label.c_str()));
+                    elementInfo.menu->installEventFilter(this);
                     connect(elementInfo.menu, SIGNAL(aboutToShow()),this,SLOT(onSubMenu()));
                 }
                 for(int idx : elementInfo.indices) {
@@ -720,15 +722,18 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
         int idx = picked->data().toInt();
         if(idx>0 && idx<=(int)sels.size()) {
             auto &sel = sels[idx-1];
-
-            bool ctrl = (QApplication::queryKeyboardModifiers() == Qt::ControlModifier);
-            if(!ctrl) {
+            auto modifier = QApplication::queryKeyboardModifiers();
+            if (modifier == Qt::ShiftModifier) {
+                TreeWidget::selectUp(sel);
+            } else {
+                if (modifier == Qt::ControlModifier) {
+                    Gui::Selection().selStackPush();
+                    Gui::Selection().clearSelection();
+                }
+                Gui::Selection().addSelection(sel.getDocumentName().c_str(),
+                        sel.getObjectName().c_str(), sel.getSubName().c_str());
                 Gui::Selection().selStackPush();
-                Gui::Selection().clearSelection();
             }
-            Gui::Selection().addSelection(sel.getDocumentName().c_str(),
-                    sel.getObjectName().c_str(), sel.getSubName().c_str());
-            Gui::Selection().selStackPush();
         }
     }
     pSelList = 0;
@@ -815,6 +820,48 @@ void SelectionMenu::onSubMenu() {
     tooltipIndex = -idx;
 }
 
+bool SelectionMenu::eventFilter(QObject *o, QEvent *ev)
+{
+    if(tooltipIndex <= 0 || tooltipIndex > (int)pSelList->size())
+        return QMenu::eventFilter(o, ev);
+
+    switch(ev->type()) {
+    case QEvent::MouseButtonRelease: {
+        auto me = static_cast<QMouseEvent*>(ev);
+        if (me->button() == Qt::RightButton) {
+            activeMenu = qobject_cast<QMenu*>(o);
+            if (activeMenu) {
+                QMetaObject::invokeMethod(this, "onSelUpMenu", Qt::QueuedConnection);
+                return true;
+            }
+        }
+        break;
+    }
+    default:
+        break;
+    }
+    return QMenu::eventFilter(o, ev);
+}
+
+void SelectionMenu::onSelUpMenu()
+{
+    if(!activeMenu || tooltipIndex <= 0 || tooltipIndex > (int)pSelList->size())
+        return;
+
+    auto &sel = (*pSelList)[std::abs(tooltipIndex)-1];
+    auto sobj = sel.getSubObject();
+    if (!sobj)
+        return;
+
+    if(QApplication::queryKeyboardModifiers() == Qt::ShiftModifier) {
+        TreeWidget::selectUp(sel, this);
+        return;
+    }
+    SelUpMenu menu(activeMenu);
+    TreeWidget::populateSelUpMenu(&menu, &sel);
+    TreeWidget::execSelUpMenu(&menu, QCursor::pos());
+}
+
 // --------------------------------------------------------------------
 
 SelUpMenu::SelUpMenu(QWidget *parent, bool trigger)
@@ -845,7 +892,7 @@ void SelUpMenu::mouseReleaseEvent(QMouseEvent *e)
 
 void SelUpMenu::mousePressEvent(QMouseEvent *e)
 {
-	for (auto w = this; w; w = qobject_cast<SelUpMenu*>(w->parentWidget())) {
+	for (QWidget *w = this; w; w = qobject_cast<QMenu*>(w->parentWidget())) {
         if (w->rect().contains(w->mapFromGlobal(e->globalPos()))) {
             if (w == this)
                 QMenu::mousePressEvent(e);

@@ -28,6 +28,7 @@
 
 #include <QMenu>
 #include <QTimer>
+#include <QPointer>
 #include "DockWindow.h"
 #include "Selection.h"
 
@@ -124,11 +125,16 @@ public Q_SLOTS:
     void onTimer();
     void leaveEvent(QEvent *e);
     void beforeShow();
+    void onSelUpMenu();
+
+protected:
+    bool eventFilter(QObject *, QEvent *);
 
 private:
     const std::vector<App::SubObjectT> *pSelList;
     QTimer timer;
     int tooltipIndex;
+    QPointer<QMenu> activeMenu;
 };
 
 

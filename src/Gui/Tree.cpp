@@ -3746,7 +3746,7 @@ static QString getItemStatus(App::DocumentObject *obj)
     return status;
 }
 
-void TreeWidget::populateSelUpMenu(QMenu *menu)
+void TreeWidget::populateSelUpMenu(QMenu *menu, const App::SubObjectT *pObjT)
 {
     auto tree = instance();
     if (!tree)
@@ -3759,28 +3759,41 @@ void TreeWidget::populateSelUpMenu(QMenu *menu)
     QTreeWidgetItem *currentItem = nullptr;
     DocumentItem *docItem = nullptr;
 
-    QPoint pos = QCursor::pos();
-    QWidget *widget = qApp->widgetAt(pos);
-    if (widget)
-        widget = widget->parentWidget();
-    auto viewer = qobject_cast<View3DInventorViewer*>(widget);
-    // First try to find the time cooresponding to the object under the mouse
-    // cursor in 3D view
-    if (viewer) {
-        auto selList = viewer->getPickedList(true);
-        if (selList.size()) {
-            const auto &objT = selList.front();
-            docItem = tree->getDocumentItem(Application::Instance->getDocument(
-                        objT.getDocumentName().c_str()));
-            if (docItem)
-                currentItem = docItem->findItemByObject(
-                        false, objT.getObject(), objT.getSubName().c_str());
-        }
+    if (pObjT) {
+        docItem = tree->getDocumentItem(Application::Instance->getDocument(
+                    pObjT->getDocumentName().c_str()));
+        if (!docItem)
+            return;
+        currentItem = docItem->findItemByObject(
+                true, pObjT->getObject(), pObjT->getSubName().c_str());
+        if (!currentItem)
+            return;
     }
 
-    // Then try to find any tree item under cursor
-    if (!currentItem)
-        currentItem = tree->itemAt(tree->viewport()->mapFromGlobal(pos));
+    if (currentItem == nullptr) {
+        QPoint pos = QCursor::pos();
+        QWidget *widget = qApp->widgetAt(pos);
+        if (widget)
+            widget = widget->parentWidget();
+        auto viewer = qobject_cast<View3DInventorViewer*>(widget);
+        // First try to find the time cooresponding to the object under the mouse
+        // cursor in 3D view
+        if (viewer) {
+            auto selList = viewer->getPickedList(true);
+            if (selList.size()) {
+                const auto &objT = selList.front();
+                docItem = tree->getDocumentItem(Application::Instance->getDocument(
+                            objT.getDocumentName().c_str()));
+                if (docItem)
+                    currentItem = docItem->findItemByObject(
+                            true, objT.getObject(), objT.getSubName().c_str());
+            }
+        }
+
+        // Then try to find any tree item under cursor
+        if (!currentItem)
+            currentItem = tree->itemAt(tree->viewport()->mapFromGlobal(pos));
+    }
 
     if (!currentItem) {
         auto sels = tree->selectedItems();
@@ -3970,7 +3983,17 @@ QTreeWidgetItem *TreeWidget::selectUp(QAction *action, QMenu *parentMenu, bool s
         return nullptr;
     }
 
-    App::SubObjectT objT = qvariant_cast<App::SubObjectT>(action->data());
+    return selectUp(qvariant_cast<App::SubObjectT>(action->data()), parentMenu, select);
+}
+
+QTreeWidgetItem *TreeWidget::selectUp(const App::SubObjectT &objT,
+                                      QMenu *parentMenu,
+                                      bool select)
+{
+    auto tree = instance();
+    if (!tree)
+        return nullptr;
+
     App::DocumentObject *sobj = objT.getSubObject();
     if (!sobj)
         return nullptr;
@@ -4070,7 +4093,7 @@ void TreeWidget::execSelUpMenu(SelUpMenu *menu, const QPoint &pos)
     SelUpMenuGuard guard(menu);
     if(menu->exec(pos)) {
         for(QWidget *w=menu->parentWidget(); w; w=w->parentWidget()) {
-            if(!qobject_cast<SelUpMenu*>(w))
+            if(!qobject_cast<QMenu*>(w))
                 break;
             w->hide();
         }
