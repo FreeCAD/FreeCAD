@@ -61,6 +61,7 @@ SET(FemExamples_SRCS
     femexamples/material_nl_platewithhole.py
     femexamples/rc_wall_2d.py
     femexamples/square_pipe_end_twisted_edgeforces.py
+    femexamples/square_pipe_end_twisted_nodeforces.py
     femexamples/thermomech_bimetall.py
     femexamples/thermomech_flow1d.py
     femexamples/thermomech_spine.py
