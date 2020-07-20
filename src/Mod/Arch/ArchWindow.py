@@ -60,7 +60,7 @@ WindowOpeningModes = ["None","Arc 90","Arc 90 inv","Arc 45","Arc 45 inv","Arc 18
 WindowPresets = ArchWindowPresets.WindowPresets
 
 
-def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
+def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
 
     '''makeWindow(baseobj,[width,height,parts,name]): creates a window based on the
     given base 2D object (sketch or draft).'''
@@ -75,7 +75,10 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Window")
     _Window(obj)
-    obj.Label = translate("Arch","Window")
+    if name:
+        obj.Label = name
+    else:
+        obj.Label = translate("Arch","Window")
     if FreeCAD.GuiUp:
         _ViewProviderWindow(obj.ViewObject)
         #obj.ViewObject.Transparency=p.GetInt("WindowTransparency",85)
@@ -671,7 +674,8 @@ class _Window(ArchComponent.Component):
                         if proj.Length > 0:
                             #chord = p.sub(ev1.add(proj))
                             #p = v1.add(chord)
-                            p = p.add(proj.negative())
+                            p = p.sub(proj)
+                            chord = p.sub(ev1)
                         # calculate symbols
                         v4 = p.add(DraftVecUtils.scale(enorm,0.5))
                         if omode == 1: # Arc 90
