@@ -709,13 +709,9 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
 
     Gui::Selection().rmvPreselect();
 
-    timer.setSingleShot(true);
-    connect(&timer, SIGNAL(timeout()), this, SLOT(onTimer()));
-
     connect(this, SIGNAL(hovered(QAction*)), this, SLOT(onHover(QAction*)));
     QAction* picked = exec(QCursor::pos());
 
-    timer.stop();
     ToolTip::hideText();
 
     if(picked) {
@@ -742,29 +738,29 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
 }
 
 void SelectionMenu::onHover(QAction *action) {
-    if(!pSelList)
+    if(!pSelList) {
+        ToolTip::hideText();
         return;
+    }
     int idx = action->data().toInt();
-    if(idx<=0 || idx>(int)pSelList->size())
+    if(idx<=0 || idx>(int)pSelList->size()) {
+        ToolTip::hideText();
         return;
-
-    timer.stop();
-    ToolTip::hideText();
+    }
 
     auto &sel = (*pSelList)[idx-1];
     Gui::Selection().setPreselect(sel.getDocumentName().c_str(),
             sel.getObjectName().c_str(), sel.getSubName().c_str(),0,0,0,2, true);
-    timer.start(500);
     tooltipIndex = idx;
+    showToolTip();
 }
 
 void SelectionMenu::leaveEvent(QEvent *event) {
-    timer.stop();
     ToolTip::hideText();
     QMenu::leaveEvent(event);
 }
 
-void SelectionMenu::onTimer() {
+void SelectionMenu::showToolTip() {
     bool needElement = tooltipIndex > 0;
     if(!needElement)
         tooltipIndex = -tooltipIndex;
@@ -791,7 +787,7 @@ void SelectionMenu::onTimer() {
                         QString::fromLatin1(sel.getObjectName().c_str()),
                         QString::fromLatin1(sel.getSubNameNoElement().c_str()),
                         element);
-    QToolTip::showText(QCursor::pos(), tooltip, this);
+    ToolTip::showText(QCursor::pos(), tooltip, this);
 }
 
 void SelectionMenu::onSubMenu() {
@@ -805,7 +801,6 @@ void SelectionMenu::onSubMenu() {
     if(idx<=0 || idx>(int)pSelList->size())
         return;
 
-    timer.stop();
     ToolTip::hideText();
 
     auto &sel = (*pSelList)[idx-1];
@@ -816,8 +811,8 @@ void SelectionMenu::onSubMenu() {
     Gui::Selection().setPreselect(sel.getDocumentName().c_str(),
             sel.getObjectName().c_str(), subname.c_str(),0,0,0,2,true);
 
-    timer.start(500);
     tooltipIndex = -idx;
+    showToolTip();
 }
 
 bool SelectionMenu::eventFilter(QObject *o, QEvent *ev)
@@ -845,10 +840,11 @@ bool SelectionMenu::eventFilter(QObject *o, QEvent *ev)
 
 void SelectionMenu::onSelUpMenu()
 {
-    if(!activeMenu || tooltipIndex <= 0 || tooltipIndex > (int)pSelList->size())
+    int idx = std::abs(tooltipIndex);
+    if(!activeMenu || idx <= 0 || idx > (int)pSelList->size())
         return;
 
-    auto &sel = (*pSelList)[std::abs(tooltipIndex)-1];
+    auto &sel = (*pSelList)[idx-1];
     auto sobj = sel.getSubObject();
     if (!sobj)
         return;

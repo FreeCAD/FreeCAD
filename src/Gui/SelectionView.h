@@ -122,17 +122,16 @@ public:
 public Q_SLOTS:
     void onHover(QAction *);
     void onSubMenu();
-    void onTimer();
     void leaveEvent(QEvent *e);
     void beforeShow();
     void onSelUpMenu();
 
 protected:
     bool eventFilter(QObject *, QEvent *);
+    void showToolTip();
 
 private:
     const std::vector<App::SubObjectT> *pSelList;
-    QTimer timer;
     int tooltipIndex;
     QPointer<QMenu> activeMenu;
 };
