@@ -182,7 +182,7 @@ void ViewProviderFemPostObject::attach(App::DocumentObject *pcObj)
     addDisplayMaskMode(m_seperator, "Default");
     setDisplayMaskMode("Default");
 
-    setupPipeline();
+    (void)setupPipeline();
 }
 
 SoSeparator* ViewProviderFemPostObject::getFrontRoot(void) const {
