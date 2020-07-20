@@ -1699,6 +1699,7 @@ def get_contact_obj_faces(
             "or not supported reference shape elements, contact face combination "
             "(example: multiple element faces per master or slave\n"
         )
+        return [[], []]
 
     FreeCAD.Console.PrintLog("    Slave: {}, {}\n".format(slave_ref[0].Name, slave_ref))
     FreeCAD.Console.PrintLog("    Master: {}, {}\n".format(master_ref[0].Name, master_ref))
@@ -1790,6 +1791,7 @@ def get_tie_obj_faces(
             "or not supported reference shape elements, contact face combination "
             "(example: multiple element faces per master or slave\n"
         )
+        return [[], []]
 
     FreeCAD.Console.PrintLog("Slave: {}, {}\n".format(slave_ref[0].Name, slave_ref))
     FreeCAD.Console.PrintLog("Master: {}, {}\n".format(master_ref[0].Name, master_ref))
