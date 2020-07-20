@@ -312,6 +312,32 @@ SET(FemTestsZ88Ccxcantifl_SRCS
     femtest/data/z88/ccxcantilever_faceload/z88mat.txt
 )
 
+SET(FemTestsZ88Ccxcantihex_SRCS
+    femtest/data/z88/__init__.py
+    femtest/data/z88/ccxcantilever_hexa20/51.txt
+    femtest/data/z88/ccxcantilever_hexa20/z88.dyn
+    femtest/data/z88/ccxcantilever_hexa20/z88elp.txt
+    femtest/data/z88/ccxcantilever_hexa20/z88i1.txt
+    femtest/data/z88/ccxcantilever_hexa20/z88i2.txt
+    femtest/data/z88/ccxcantilever_hexa20/z88i5.txt
+    femtest/data/z88/ccxcantilever_hexa20/z88int.txt
+    femtest/data/z88/ccxcantilever_hexa20/z88man.txt
+    femtest/data/z88/ccxcantilever_hexa20/z88mat.txt
+)
+
+SET(FemTestsZ88Ccxcantinl_SRCS
+    femtest/data/z88/__init__.py
+    femtest/data/z88/ccxcantilever_nodeload/51.txt
+    femtest/data/z88/ccxcantilever_nodeload/z88.dyn
+    femtest/data/z88/ccxcantilever_nodeload/z88elp.txt
+    femtest/data/z88/ccxcantilever_nodeload/z88i1.txt
+    femtest/data/z88/ccxcantilever_nodeload/z88i2.txt
+    femtest/data/z88/ccxcantilever_nodeload/z88i5.txt
+    femtest/data/z88/ccxcantilever_nodeload/z88int.txt
+    femtest/data/z88/ccxcantilever_nodeload/z88man.txt
+    femtest/data/z88/ccxcantilever_nodeload/z88mat.txt
+)
+
 SET(FemTools_SRCS
     femtools/__init__.py
     femtools/ccxtools.py
@@ -349,6 +375,8 @@ SET(FemAllScripts
     ${FemTestsOpen_SRCS}
     ${FemTestsZ88Main_SRCS}
     ${FemTestsZ88Ccxcantifl_SRCS}
+    ${FemTestsZ88Ccxcantihex_SRCS}
+    ${FemTestsZ88Ccxcantinl_SRCS}
     ${FemTools_SRCS}
 )
 

@@ -36,6 +36,7 @@ import FreeCAD
 import femsolver.run
 from . import support_utils as testtools
 from .support_utils import fcc_print
+from .support_utils import get_namefromdef
 
 
 class TestSolverZ88(unittest.TestCase):
@@ -74,15 +75,31 @@ class TestSolverZ88(unittest.TestCase):
         ))
 
     # ********************************************************************************************
-    def test_solver_z88(
+    def test_ccxcantilever_faceload(
         self
     ):
         from femexamples.ccx_cantilever_faceload import setup
         setup(self.document, "z88")
-        self.z88_inputfile_writing_test("ccxcantilever_faceload")
+        self.inputfile_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def z88_inputfile_writing_test(
+    def test_ccxcantilever_hexa20(
+        self
+    ):
+        from femexamples.ccx_cantilever_hexa20faceload import setup
+        setup(self.document, "z88")
+        self.inputfile_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccxcantilever_nodeload(
+        self
+    ):
+        from femexamples.ccx_cantilever_nodeload import setup
+        setup(self.document, "z88")
+        self.inputfile_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def inputfile_writing_test(
         self,
         base_name
     ):
