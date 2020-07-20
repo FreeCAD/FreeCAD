@@ -1151,7 +1151,7 @@ void SelUpAction::onShowMenu()
 
 void SelUpAction::popup(const QPoint &pt)
 {
-    _menu->exec(pt);
+    TreeWidget::execSelUpMenu(qobject_cast<SelUpMenu*>(_menu), pt);
 }
 
 // --------------------------------------------------------------------

@@ -99,7 +99,20 @@ const int TreeWidget::ObjectType = 1001;
 static bool _DragEventFilter;
 static bool _DraggingActive;
 static Qt::DropActions _DropActions;
+static std::vector<SelUpMenu*> _SelUpMenus;
 
+struct SelUpMenuGuard
+{
+    SelUpMenuGuard(SelUpMenu *menu)
+    {
+        _SelUpMenus.push_back(menu);
+    }
+
+    ~SelUpMenuGuard()
+    {
+        _SelUpMenus.pop_back();
+    }
+};
 
 TreeParams::TreeParams() {
     handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
@@ -837,6 +850,33 @@ void TreeWidget::_updateStatus(bool delay) {
     statusTimer->start(timeout);
 }
 
+void TreeWidget::_setupDocumentMenu(DocumentItem *docitem, QMenu &menu)
+{
+    App::Document* doc = docitem->document()->getDocument();
+    App::GetApplication().setActiveDocument(doc);
+    showHiddenAction->setChecked(docitem->showHidden());
+    menu.addAction(this->showHiddenAction);
+    menu.addAction(this->searchObjectsAction);
+    menu.addAction(this->closeDocAction);
+    if(doc->testStatus(App::Document::PartialDoc))
+        menu.addAction(this->reloadDocAction);
+    else {
+        for(auto d : doc->getDependentDocuments()) {
+            if(d->testStatus(App::Document::PartialDoc)) {
+                menu.addAction(this->reloadDocAction);
+                break;
+            }
+        }
+        this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
+        menu.addAction(this->skipRecomputeAction);
+        this->allowPartialRecomputeAction->setChecked(doc->testStatus(App::Document::AllowPartialRecompute));
+        if(doc->testStatus(App::Document::SkipRecompute))
+            menu.addAction(this->allowPartialRecomputeAction);
+        menu.addAction(this->markRecomputeAction);
+        menu.addAction(this->createGroupAction);
+    }
+}
+
 void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
 {
     // ask workbenches and view provider, ...
@@ -854,8 +894,6 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
 
 #if QT_VERSION >= 0x050100
     contextMenu.setToolTipsVisible(true);
-#else
-    contextMenu.installEventFilter(this);
 #endif
     QActionGroup subMenuGroup(&subMenu);
     subMenuGroup.setExclusive(true);
@@ -868,29 +906,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
 
     if (this->contextItem && this->contextItem->type() == DocumentType) {
         DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
-        App::Document* doc = docitem->document()->getDocument();
-        App::GetApplication().setActiveDocument(doc);
-        showHiddenAction->setChecked(docitem->showHidden());
-        contextMenu.addAction(this->showHiddenAction);
-        contextMenu.addAction(this->searchObjectsAction);
-        contextMenu.addAction(this->closeDocAction);
-        if(doc->testStatus(App::Document::PartialDoc))
-            contextMenu.addAction(this->reloadDocAction);
-        else {
-            for(auto d : doc->getDependentDocuments()) {
-                if(d->testStatus(App::Document::PartialDoc)) {
-                    contextMenu.addAction(this->reloadDocAction);
-                    break;
-                }
-            }
-            this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
-            contextMenu.addAction(this->skipRecomputeAction);
-            this->allowPartialRecomputeAction->setChecked(doc->testStatus(App::Document::AllowPartialRecompute));
-            if(doc->testStatus(App::Document::SkipRecompute))
-                contextMenu.addAction(this->allowPartialRecomputeAction);
-            contextMenu.addAction(this->markRecomputeAction);
-            contextMenu.addAction(this->createGroupAction);
-        }
+        _setupDocumentMenu(docitem, contextMenu);
         contextMenu.addSeparator();
     }
     else if (this->contextItem && this->contextItem->type() == ObjectType) {
@@ -1433,24 +1449,6 @@ bool TreeWidget::event(QEvent *e)
 bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
     (void)o;
     switch (ev->type()) {
-#if QT_VERSION < 0x050100
-    case QEvent::ToolTip: {
-        auto menu = qobject_cast<QMenu*>(o);
-        if(!menu)
-            break;
-        QHelpEvent* he = static_cast<QHelpEvent*>(ev);
-        QAction* act = menu->actionAt(he->pos());
-        if (act) {
-            QString tooltip = act->toolTip();
-            if (tooltip.size()) {
-                QToolTip::showText(he->globalPos(), act->toolTip(), menu);
-                return false;
-            }
-        }
-        QToolTip::hideText();
-        break;
-    }
-#endif
     case QEvent::KeyPress:
     case QEvent::KeyRelease: {
         QKeyEvent *ke = static_cast<QKeyEvent *>(ev);
@@ -1493,6 +1491,10 @@ bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
     case QEvent::MouseMove: {
         if(_DraggingActive) {
             QMouseEvent *me = static_cast<QMouseEvent*>(ev);
+            if (_SelUpMenus.size()) {
+                mouseMoveEvent(me);
+                return true;
+            }
             for(auto tree : Instances) {
                 QPoint pos = tree->mapFromGlobal(me->globalPos());
                 if(pos.x() >= 0 && pos.y() >= 0
@@ -1513,6 +1515,15 @@ bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
             qApp->restoreOverrideCursor();
 
             if(me->button() == Qt::LeftButton) {
+                if (_SelUpMenus.size()) {
+                    auto pos = viewport()->mapFromGlobal(me->globalPos());
+                    QDragMoveEvent de(pos, _DropActions, nullptr, me->buttons(), me->modifiers());
+                    dropEvent(&de);
+                    for (auto menu : _SelUpMenus)
+                        menu->hide();
+                    return true;
+                }
+
                 for(auto tree : Instances) {
                     QPoint pos = tree->mapFromGlobal(me->globalPos());
                     if(pos.x() < 0 || pos.y() < 0
@@ -1753,7 +1764,21 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 void TreeWidget::_dragMoveEvent(QDragMoveEvent *event)
 {
     auto modifier = QApplication::queryKeyboardModifiers();
-    QTreeWidgetItem* targetItem = itemAt(event->pos());
+    QTreeWidgetItem* targetItem = nullptr;
+    QAction *action = nullptr;
+    if (_DraggingActive && _SelUpMenus.size()) {
+        QPoint pos = viewport()->mapToGlobal(event->pos());
+        auto menu = _SelUpMenus.back();
+        action = menu->actionAt(menu->mapFromGlobal(pos));
+        if (action) {
+            targetItem = selectUp(action, nullptr, false);
+            if (targetItem)
+                menu->onHovered(action);
+        }
+    }
+    if (!targetItem)
+        targetItem = itemAt(event->pos());
+
     event->setDropAction(Qt::MoveAction);
     event->accept();
     if (!targetItem || this->isItemSelected(targetItem)) {
@@ -1770,7 +1795,8 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event)
             event->setDropAction(Qt::MoveAction);
     }
     else if (targetItem->type() == TreeWidget::ObjectType) {
-        onItemEntered(targetItem);
+        if (!action)
+            onItemEntered(targetItem);
 
         DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetItem);
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
@@ -1904,7 +1930,18 @@ void TreeWidget::dropEvent(QDropEvent *event)
     //FIXME: This should actually be done inside dropMimeData
 
     bool touched = false;
-    QTreeWidgetItem* targetItem = itemAt(event->pos());
+
+    QTreeWidgetItem* targetItem = nullptr;
+    if (_SelUpMenus.size()) {
+        QPoint pos = viewport()->mapToGlobal(event->pos());
+        auto menu = _SelUpMenus.back();
+        auto action = menu->actionAt(menu->mapFromGlobal(pos));
+        if (action)
+            targetItem = selectUp(action, nullptr, false);
+    }
+    if (!targetItem)
+        targetItem = itemAt(event->pos());
+
     // not dropped onto an item
     if (!targetItem)
         return;
@@ -3598,6 +3635,12 @@ void TreeWidget::populateSelUpMenu(QMenu *menu)
         }
     }
 
+    if (!items.isEmpty() && Gui::Selection().hasSelection()) {
+        Application::Instance->commandManager().addTo("Std_TreeDrag", menu);
+        menu->actions().back()->setShortcutContext(Qt::ApplicationShortcut);
+        menu->addSeparator();
+    }
+
     QAction *action = menu->addAction(tree->documentPixmap, docItem->text(0));
     action->setData(QByteArray(lastItemNames.back().c_str()));
     // The first item is a document item.
@@ -3632,25 +3675,25 @@ void TreeWidget::populateSelUpMenu(QMenu *menu)
     return;
 }
 
-void TreeWidget::selectUp(QAction *action, QMenu *parentMenu)
+QTreeWidgetItem *TreeWidget::selectUp(QAction *action, QMenu *parentMenu, bool select)
 {
     auto tree = instance();
     if (!tree)
-        return;
+        return nullptr;
 
     if (!action) {
         auto sels = tree->selectedItems();
         if (sels.size() != 1)
-            return;
+            return nullptr;
         QTreeWidgetItem *parentItem = sels.front()->parent();
-        if (parentItem) {
+        if (select && parentItem) {
             Gui::Selection().selStackPush();
             Gui::Selection().clearCompleteSelection();
             tree->onSelectTimer();
             parentItem->setSelected(true);
             tree->scrollToItem(parentItem);
         }
-        return;
+        return parentItem;
     }
 
     QVariant data = action->data();
@@ -3659,22 +3702,32 @@ void TreeWidget::selectUp(QAction *action, QMenu *parentMenu)
         auto it = tree->DocumentMap.find(
                 Application::Instance->getDocument(docname.constData()));
         if (it != tree->DocumentMap.end()) {
-            Gui::Selection().selStackPush();
-            Gui::Selection().clearCompleteSelection();
-            tree->onSelectTimer();
-            it->second->setSelected(true);
-            tree->scrollToItem(it->second);
+            if (!select)
+                return it->second;
+
+            auto modifier = QApplication::queryKeyboardModifiers();
+            if (parentMenu) {
+                tree->_setupSelUpSubMenu(parentMenu, it->second);
+            } else {
+                Gui::Selection().selStackPush();
+                Gui::Selection().clearCompleteSelection();
+                tree->onSelectTimer();
+                it->second->setSelected(true);
+                tree->scrollToItem(it->second);
+                if (modifier == Qt::ShiftModifier)
+                    tree->onDoubleClickItem(it->second);
+            }
         }
-        return;
+        return nullptr;
     }
 
     App::SubObjectT objT = qvariant_cast<App::SubObjectT>(action->data());
     App::DocumentObject *sobj = objT.getSubObject();
     if (!sobj)
-        return;
+        return nullptr;
     auto it = tree->DocumentMap.find(Application::Instance->getDocument(objT.getDocument()));
     if (it == tree->DocumentMap.end())
-        return;
+        return nullptr;
 
     DocumentItem *docItem = it->second;
     QTreeWidgetItem *item = docItem;
@@ -3693,11 +3746,11 @@ void TreeWidget::selectUp(QAction *action, QMenu *parentMenu)
             }
         }
         if (!found)
-            return;
+            return nullptr;
     }
 
-    if (item->type() != ObjectType)
-        return;
+    if (!select || item->type() != ObjectType)
+        return item;
 
     if (!parentMenu) {
         auto modifier = QApplication::queryKeyboardModifiers();
@@ -3712,15 +3765,30 @@ void TreeWidget::selectUp(QAction *action, QMenu *parentMenu)
 
         if(modifier == Qt::ShiftModifier)
             tree->onDoubleClickItem(item);
-        return;
+        return nullptr;
     }
 
+    tree->_setupSelUpSubMenu(parentMenu, docItem, item, &objT);
+    return nullptr;
+}
+
+void TreeWidget::_setupSelUpSubMenu(QMenu *parentMenu,
+                                    DocumentItem *docItem,
+                                    QTreeWidgetItem *item,
+                                    const App::SubObjectT *objT)
+{
     SelUpMenu menu(parentMenu);
 
     if(QApplication::queryKeyboardModifiers() == Qt::ShiftModifier) {
-        setupObjectMenu(menu, &objT);
+        if (item && item->type() == ObjectType)
+            _setupObjectMenu(static_cast<DocumentObjectItem*>(item), menu);
+        else
+            _setupDocumentMenu(docItem, menu);
     } else {
-        docItem->forcePopulateItem(item);
+        if (item)
+            docItem->forcePopulateItem(item);
+        else
+            item = docItem;
         if (!item->childCount())
             return;
         int iconsize = QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
@@ -3730,17 +3798,29 @@ void TreeWidget::selectUp(QAction *action, QMenu *parentMenu)
             if (child->type() != ObjectType)
                 continue;
             auto citem = static_cast<DocumentObjectItem*>(child);
-            App::SubObjectT sobjT = objT;
-            sobjT.setSubName(sobjT.getSubName()
-                    + citem->object()->getObject()->getNameInDocument() + ".");
+            App::SubObjectT sobjT;
+            if (objT) {
+                sobjT = *objT;
+                sobjT.setSubName(sobjT.getSubName()
+                        + citem->object()->getObject()->getNameInDocument() + ".");
+            } else
+                sobjT = App::SubObjectT(citem->object()->getObject(), "");
             QAction *action = menu.addAction(getItemIcon(doc, citem->object(), iconsize), citem->text(0));
             action->setData(QVariant::fromValue(sobjT));
             action->setToolTip(getItemStatus(citem->object()->getObject()));
         }
     }
 
-    if(menu.exec(QCursor::pos())) {
-        for(QWidget *w=parentMenu; w; w=w->parentWidget()) {
+    execSelUpMenu(&menu, QCursor::pos());
+}
+
+void TreeWidget::execSelUpMenu(SelUpMenu *menu, const QPoint &pos)
+{
+    if (!menu)
+        return;
+    SelUpMenuGuard guard(menu);
+    if(menu->exec(pos)) {
+        for(QWidget *w=menu->parentWidget(); w; w=w->parentWidget()) {
             if(!qobject_cast<SelUpMenu*>(w))
                 break;
             w->hide();
@@ -5409,7 +5489,7 @@ void DocumentObjectItem::displayStatusInfo()
     getMainWindow()->showMessage(status);
 
     if (!Obj->isError()) {
-        QToolTip::hideText();
+        ToolTip::hideText();
     } else {
         // getMainWindow()->showStatus(MainWindow::Err,status);
         QTreeWidget* tree = this->treeWidget();
@@ -5424,7 +5504,7 @@ void DocumentObjectItem::displayStatusInfo()
 #else
         QString info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString(), 0, QApplication::UnicodeUTF8);
 #endif
-        QToolTip::showText(tree->viewport()->mapToGlobal(pos), info);
+        ToolTip::showText(tree->viewport()->mapToGlobal(pos), info, getTree());
     }
 }
 

@@ -45,6 +45,7 @@ class SubObjectT;
 
 namespace Gui {
 
+class SelUpMenu;
 class TreeParams;
 class ViewProviderDocumentObject;
 class DocumentObjectItem;
@@ -95,7 +96,8 @@ public:
     static void selectLinkedObject(App::DocumentObject *linked); 
     static void selectAllLinks(App::DocumentObject *obj); 
     static void populateSelUpMenu(QMenu *menu); 
-    static void selectUp(QAction *action=nullptr, QMenu *parentMenu=nullptr); 
+    static void execSelUpMenu(SelUpMenu *menu, const QPoint &pt);
+    static QTreeWidgetItem *selectUp(QAction *action=nullptr, QMenu *parentMenu=nullptr, bool select=true);
     static void expandSelectedItems(TreeItemMode mode);
     static bool setupObjectMenu(QMenu &menu, const App::SubObjectT *sobj=nullptr);
     static bool isDragging();
@@ -153,6 +155,9 @@ protected:
     void _selectAllLinks(App::DocumentObject *obj); 
     void _expandSelectedItems(TreeItemMode mode);
     bool _setupObjectMenu(DocumentObjectItem *item, QMenu &menu);
+    void _setupDocumentMenu(DocumentItem *item, QMenu &menu);
+    void _setupSelUpSubMenu(QMenu *parentMenu, DocumentItem *docitem,
+            QTreeWidgetItem *item=nullptr, const App::SubObjectT *objT=nullptr);
 
     /// Observer message from the Selection
     void onSelectionChanged(const SelectionChanges& msg) override;
