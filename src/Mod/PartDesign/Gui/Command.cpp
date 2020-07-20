@@ -1122,8 +1122,9 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
         Gui::Selection().clearSelection();
         pickDlg = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, sketch_worker);
-        if (!bNoSketchWasSelected && extReference)
-            pickDlg->showExternal(true);
+        // Logically dead code because 'bNoSketchWasSelected' must be true
+        //if (!bNoSketchWasSelected && extReference)
+        //    pickDlg->showExternal(true);
 
         Gui::Control().showDialog(pickDlg);
     }

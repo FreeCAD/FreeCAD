@@ -487,9 +487,6 @@ PyObject* GeometrySurfacePy::projectPoint(PyObject *args, PyObject* kwds)
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return nullptr;
     }
-
-    PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
-    return nullptr;
 }
 
 PyObject* GeometrySurfacePy::isUmbillic(PyObject *args)

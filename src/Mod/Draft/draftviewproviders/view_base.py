@@ -459,7 +459,6 @@ class ViewProviderDraft(object):
             return ":/icons/Draft_ShapeString_tree.svg"
         else:
             return ":/icons/Draft_Draft.svg"
-        return ":/icons/Draft_Draft.svg"
 
     def claimChildren(self):
         """Return objects that will be placed under it in the tree view.
