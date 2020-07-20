@@ -1,4 +1,5 @@
 * {
+  color: palette(text);
   background-color: transparent;
   border: none;
 }
@@ -9,7 +10,6 @@ QMenu {
 }
 
 QMenu::item {
-  color: palette(text);
   background-color: transparent;
 }
 
@@ -25,3 +25,10 @@ QMenu::item:selected, QMenu::item:pressed {
 QMenu::item:disabled {
   color: palette(mid);
 }
+
+QToolTip {
+  background-color: rgba(250,250,250,180);
+  border: 1px solid rgb(80,80,80);
+  border-radius:2px;
+}
+
