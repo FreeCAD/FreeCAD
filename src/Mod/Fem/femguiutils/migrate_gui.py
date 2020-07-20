@@ -415,7 +415,7 @@ module="femguiobjects._ViewProviderFemSolverCalculix"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit
-https://github.com/berndhahnebach/FreeCAD_bhb/tree/07ae0e56c4/src/Mod/Fem/PyGui
+https://github.com/FreeCAD/FreeCAD/tree/07ae0e56c4/src/Mod/Fem/PyGui
 module="PyGui._ViewProviderFemConstraintBodyHeatSource"
 module="PyGui._ViewProviderFemConstraintElectrostaticPotential"
 module="PyGui._ViewProviderFemConstraintFlowVelocity"
@@ -442,7 +442,7 @@ module="PyGui._ViewProviderFemShellThickness"
 
 second big moveing
 into PyObjects, following the parent commit
-https://github.com/berndhahnebach/FreeCAD_bhb/tree/7f884e8bff/src/Mod/Fem
+https://github.com/FreeCAD/FreeCAD/tree/7f884e8bff/src/Mod/Fem
 module="_ViewProviderFemBeamSection"
 module="_ViewProviderFemConstraintSelfWeight"
 module="_ViewProviderFemMaterial"
@@ -464,7 +464,7 @@ first big moving
 split modules from one module into make, obj class, vp class, command
 new obj class module names had a _
 following the parent commit of the first split commit
-https://github.com/berndhahnebach/FreeCAD_bhb/tree/c3328d6b4e/src/Mod/Fem
+https://github.com/FreeCAD/FreeCAD/tree/c3328d6b4e/src/Mod/Fem
 in this modules there where object class and viewprovider class together
 # see migrate App
 module="FemBeamSection"
