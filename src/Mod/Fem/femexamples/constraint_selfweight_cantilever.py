@@ -95,7 +95,8 @@ def setup(doc=None, solvertype="ccxtools"):
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverElmer(doc, "SolverElmer")
         )[0]
-        ObjectsFem.makeEquationElasticity(doc, solver_object)
+        eq_obj = ObjectsFem.makeEquationElasticity(doc, solver_object)
+        eq_obj.LinearSolverType = "Direct"
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "
