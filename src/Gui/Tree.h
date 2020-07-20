@@ -25,6 +25,7 @@
 #define GUI_TREE_H
 
 #include <unordered_map>
+#include <memory>
 #include <QTreeWidget>
 #include <QTime>
 #include <QStyledItemDelegate>
@@ -239,6 +240,9 @@ private:
     void setupText();
 
 private:
+    class Private;
+    std::unique_ptr<Private> pimpl;
+
     QAction* createGroupAction;
     QAction* relabelObjectAction;
     QAction* finishEditingAction;

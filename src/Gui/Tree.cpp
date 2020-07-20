@@ -114,6 +114,248 @@ struct SelUpMenuGuard
     }
 };
 
+//--------------------------------------------------------------------------
+
+// Default cursor shapes copied from Qt4. Qt5 no longer uses these, but
+// obtain the shape from style plugin, and offers no way for extracting the
+// pixmap.
+
+static const char * const move_xpm[] = {
+"11 20 3 1",
+".        c None",
+#if defined(Q_WS_WIN)
+"a        c #000000",
+"X        c #FFFFFF", // Windows cursor is traditionally white
+#else
+"a        c #FFFFFF",
+"X        c #000000", // X11 cursor is traditionally black
+#endif
+"aa.........",
+"aXa........",
+"aXXa.......",
+"aXXXa......",
+"aXXXXa.....",
+"aXXXXXa....",
+"aXXXXXXa...",
+"aXXXXXXXa..",
+"aXXXXXXXXa.",
+"aXXXXXXXXXa",
+"aXXXXXXaaaa",
+"aXXXaXXa...",
+"aXXaaXXa...",
+"aXa..aXXa..",
+"aa...aXXa..",
+"a.....aXXa.",
+"......aXXa.",
+".......aXXa",
+".......aXXa",
+"........aa."};
+
+/* XPM */
+static const char * const copy_xpm[] = {
+"24 30 3 1",
+".        c None",
+"a        c #000000",
+"X        c #FFFFFF",
+#if defined(Q_WS_WIN) // Windows cursor is traditionally white
+"aa......................",
+"aXa.....................",
+"aXXa....................",
+"aXXXa...................",
+"aXXXXa..................",
+"aXXXXXa.................",
+"aXXXXXXa................",
+"aXXXXXXXa...............",
+"aXXXXXXXXa..............",
+"aXXXXXXXXXa.............",
+"aXXXXXXaaaa.............",
+"aXXXaXXa................",
+"aXXaaXXa................",
+"aXa..aXXa...............",
+"aa...aXXa...............",
+"a.....aXXa..............",
+"......aXXa..............",
+".......aXXa.............",
+".......aXXa.............",
+"........aa...aaaaaaaaaaa",
+#else
+"XX......................",
+"XaX.....................",
+"XaaX....................",
+"XaaaX...................",
+"XaaaaX..................",
+"XaaaaaX.................",
+"XaaaaaaX................",
+"XaaaaaaaX...............",
+"XaaaaaaaaX..............",
+"XaaaaaaaaaX.............",
+"XaaaaaaXXXX.............",
+"XaaaXaaX................",
+"XaaXXaaX................",
+"XaX..XaaX...............",
+"XX...XaaX...............",
+"X.....XaaX..............",
+"......XaaX..............",
+".......XaaX.............",
+".......XaaX.............",
+"........XX...aaaaaaaaaaa",
+#endif
+".............aXXXXXXXXXa",
+".............aXXXXXXXXXa",
+".............aXXXXaXXXXa",
+".............aXXXXaXXXXa",
+".............aXXaaaaaXXa",
+".............aXXXXaXXXXa",
+".............aXXXXaXXXXa",
+".............aXXXXXXXXXa",
+".............aXXXXXXXXXa",
+".............aaaaaaaaaaa"};
+
+/* XPM */
+static const char * const link_xpm[] = {
+"24 30 3 1",
+".        c None",
+"a        c #000000",
+"X        c #FFFFFF",
+#if defined(Q_WS_WIN) // Windows cursor is traditionally white
+"aa......................",
+"aXa.....................",
+"aXXa....................",
+"aXXXa...................",
+"aXXXXa..................",
+"aXXXXXa.................",
+"aXXXXXXa................",
+"aXXXXXXXa...............",
+"aXXXXXXXXa..............",
+"aXXXXXXXXXa.............",
+"aXXXXXXaaaa.............",
+"aXXXaXXa................",
+"aXXaaXXa................",
+"aXa..aXXa...............",
+"aa...aXXa...............",
+"a.....aXXa..............",
+"......aXXa..............",
+".......aXXa.............",
+".......aXXa.............",
+"........aa...aaaaaaaaaaa",
+#else
+"XX......................",
+"XaX.....................",
+"XaaX....................",
+"XaaaX...................",
+"XaaaaX..................",
+"XaaaaaX.................",
+"XaaaaaaX................",
+"XaaaaaaaX...............",
+"XaaaaaaaaX..............",
+"XaaaaaaaaaX.............",
+"XaaaaaaXXXX.............",
+"XaaaXaaX................",
+"XaaXXaaX................",
+"XaX..XaaX...............",
+"XX...XaaX...............",
+"X.....XaaX..............",
+"......XaaX..............",
+".......XaaX.............",
+".......XaaX.............",
+"........XX...aaaaaaaaaaa",
+#endif
+".............aXXXXXXXXXa",
+".............aXXXaaaaXXa",
+".............aXXXXaaaXXa",
+".............aXXXaaaaXXa",
+".............aXXaaaXaXXa",
+".............aXXaaXXXXXa",
+".............aXXaXXXXXXa",
+".............aXXXaXXXXXa",
+".............aXXXXXXXXXa",
+".............aaaaaaaaaaa"};
+
+//--------------------------------------------------------------------------
+
+class TreeWidget::Private
+{
+public:
+    void setOverrideCursor(Qt::CursorShape shape)
+    {
+        if (!_DraggingActive) {
+            QPixmap pxObj, pxObj2;
+            int count = 0;
+            for (auto &sel : Gui::Selection().getCompleteSelection()) {
+                auto vp = Application::Instance->getViewProvider(sel.pObject);
+                if (!vp)
+                    continue;
+                if (count == 0)
+                    pxObj = vp->getIcon().pixmap(24,24);
+                else {
+                    pxObj2 = vp->getIcon().pixmap(24,24);
+                    break;
+                }
+            }
+
+            pxMove = QPixmap();
+            pxCopy = QPixmap();
+            pxLink = QPixmap();
+
+            if (!pxObj.isNull()) {
+                if (!pxObj2.isNull()) {
+                    QPixmap px(30,30);
+                    px.fill(Qt::transparent);
+                    px = BitmapFactory().merge(px, pxObj2, BitmapFactoryInst::TopLeft);
+                    px = BitmapFactory().merge(px, pxObj, BitmapFactoryInst::BottomRight);
+                    pxObj = px;
+                }
+
+                QPixmap pxCursor(32,32);
+                pxCursor.fill(Qt::transparent);
+                pxCursor = BitmapFactory().merge(pxCursor, pxObj, BitmapFactoryInst::BottomRight);
+                pxCursor = BitmapFactory().merge(pxCursor, QPixmap(move_xpm), BitmapFactoryInst::TopLeft);
+                pxMove = pxCursor;
+
+                pxCursor = QPixmap(32,32);
+                pxCursor.fill(Qt::transparent);
+                pxCursor = BitmapFactory().merge(pxCursor, pxObj, BitmapFactoryInst::BottomRight);
+                pxCursor = BitmapFactory().merge(pxCursor, QPixmap(copy_xpm), BitmapFactoryInst::TopLeft);
+                pxCopy = pxCursor;
+
+                pxCursor = QPixmap(32,32);
+                pxCursor.fill(Qt::transparent);
+                pxCursor = BitmapFactory().merge(pxCursor, pxObj, BitmapFactoryInst::BottomRight);
+                pxCursor = BitmapFactory().merge(pxCursor, QPixmap(link_xpm), BitmapFactoryInst::TopLeft);
+                pxLink = pxCursor;
+            }
+        }
+
+        QCursor cursor(shape);
+        switch(shape) {
+        case Qt::DragMoveCursor:
+            if (!pxMove.isNull())
+                cursor = QCursor(pxMove,0,0);
+            break;
+        case Qt::DragCopyCursor:
+            if (!pxCopy.isNull())
+                cursor = QCursor(pxCopy,0,0);
+            break;
+        case Qt::DragLinkCursor:
+            if (!pxLink.isNull())
+                cursor = QCursor(pxLink,0,0);
+            break;
+        default:
+            break;
+        }
+        if (_DraggingActive)
+            qApp->changeOverrideCursor(cursor);
+        else
+            qApp->setOverrideCursor(cursor);
+    }
+
+    QPixmap pxMove;
+    QPixmap pxCopy;
+    QPixmap pxLink;
+};
+
+//--------------------------------------------------------------------------
+
 TreeParams::TreeParams() {
     handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
     handle->Attach(this);
@@ -425,6 +667,8 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     , editingItem(0), hiddenItem(0), currentDocItem(0)
     , myName(name)
 {
+    pimpl.reset(new Private);
+
     Instances.insert(this);
 
     this->setIconSize(QSize(iconSize(), iconSize()));
@@ -1460,6 +1704,16 @@ bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
                 qApp->restoreOverrideCursor();
                 return true;
             }
+        } else if(_DraggingActive && _SelUpMenus.size()) {
+            auto tree = instance();
+            if (tree) {
+                QMouseEvent me(QEvent::MouseMove, 
+                        tree->mapFromGlobal(cpos), cpos,
+                        Qt::NoButton, QApplication::mouseButtons(),
+                        QApplication::queryKeyboardModifiers());
+                tree->mouseMoveEvent(&me);
+            }
+            return true;
         } else {
             for(auto tree : Instances) {
                 QPoint pos = tree->mapFromGlobal(cpos);
@@ -1467,18 +1721,14 @@ bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
                         || pos.x() >= tree->width()
                         || pos.y() >= tree->height())
                     continue;
+
                 // Qt 5 only recheck key modifier on mouse move, so generate a fake
                 // event to trigger drag cursor change
-                QMouseEvent *mouseEvent = new QMouseEvent(QEvent::MouseMove, 
+                QMouseEvent me(QEvent::MouseMove, 
                         tree->mapFromGlobal(cpos), cpos,
                         Qt::NoButton, QApplication::mouseButtons(),
                         QApplication::queryKeyboardModifiers());
-                if(_DraggingActive) {
-                    tree->mouseMoveEvent(mouseEvent);
-                    delete mouseEvent;
-                    return true;
-                } else
-                    QApplication::postEvent(tree,mouseEvent);
+                qApp->sendEvent(tree, &me);
                 break;
             }
         }
@@ -1502,7 +1752,7 @@ bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
                         && pos.y() < tree->height())
                     return false;
             }
-            qApp->changeOverrideCursor(QCursor(Qt::ForbiddenCursor));
+            pimpl->setOverrideCursor(Qt::ForbiddenCursor);
             return true;
         }
         break;
@@ -1658,7 +1908,7 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
                 break;
             }
         }
-        qApp->changeOverrideCursor(QCursor(cursor));
+        pimpl->setOverrideCursor(cursor);
         return;
     }
     QTreeWidget::mouseMoveEvent(event);
@@ -1673,12 +1923,11 @@ void TreeWidget::startDragging() {
         return;
     if(selectedItems().empty())
         return;
-
 #if 1
     _DropActions = model()->supportedDragActions();
-    _DraggingActive = true;
     qApp->installEventFilter(this);
-    qApp->setOverrideCursor(QCursor(Qt::DragMoveCursor));
+    pimpl->setOverrideCursor(Qt::DragMoveCursor);
+    _DraggingActive = true;
 #else
     setState(DraggingState);
     startDrag(model()->supportedDragActions());
