@@ -131,14 +131,16 @@ bool SelectionObserver::isConnectionAttached() const
 void SelectionObserver::attachSelection()
 {
     if (!connectSelection.connected()) {
-        auto &signal = resolve>1?Selection().signalSelectionChanged3:(
-                resolve?Selection().signalSelectionChanged2:
-                Selection().signalSelectionChanged);
+        auto &signal = resolve > 1 ? Selection().signalSelectionChanged3 :
+                       resolve     ? Selection().signalSelectionChanged2 :
+                                     Selection().signalSelectionChanged  ;
         connectSelection = signal.connect(boost::bind
             (&SelectionObserver::_onSelectionChanged, this, bp::_1));
-        if(filterDocName.size())
+
+        if (filterDocName.size()) {
             Selection().addSelectionGate(
                     new SelectionGateFilterExternal(filterDocName.c_str(),filterObjName.c_str()));
+        }
     }
 }
 
@@ -596,7 +598,13 @@ void SelectionSingleton::notify(SelectionChanges &&Chng) {
         }
         if(notify) {
             Notify(msg);
-            signalSelectionChanged(msg);
+            try {
+                signalSelectionChanged(msg);
+            }
+            catch (const boost::exception&) {
+                // reported by code analyzers
+                Base::Console().Warning("notify: Unexpected boost exception\n");
+            }
         }
         NotificationQueue.pop_front();
     }
@@ -732,16 +740,28 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
                 newElementName.size()?newElementName.c_str():oldElementName.c_str(),
                 pObject->getTypeId().getName(), msg.x,msg.y,msg.z);
 
-        msg2.pOriginalMsg = &msg;
-        signalSelectionChanged3(msg2);
+        try {
+            msg2.pOriginalMsg = &msg;
+            signalSelectionChanged3(msg2);
 
-        msg2.Object.setSubName(oldElementName.c_str());
-        msg2.pSubName = msg2.Object.getSubName().c_str();
-        signalSelectionChanged2(msg2);
-
-    }else {
-        signalSelectionChanged3(msg);
-        signalSelectionChanged2(msg);
+            msg2.Object.setSubName(oldElementName.c_str());
+            msg2.pSubName = msg2.Object.getSubName().c_str();
+            signalSelectionChanged2(msg2);
+        }
+        catch (const boost::exception&) {
+            // reported by code analyzers
+            Base::Console().Warning("slotSelectionChanged: Unexpected boost exception\n");
+        }
+    }
+    else {
+        try {
+            signalSelectionChanged3(msg);
+            signalSelectionChanged2(msg);
+        }
+        catch (const boost::exception&) {
+            // reported by code analyzers
+            Base::Console().Warning("slotSelectionChanged: Unexpected boost exception\n");
+        }
     }
 }
 

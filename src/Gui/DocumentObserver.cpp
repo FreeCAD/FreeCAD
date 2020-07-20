@@ -251,15 +251,20 @@ Gui::Document* DocumentWeakPtrT::operator->() noexcept
 class ViewProviderWeakPtrT::Private {
 public:
     Private(ViewProviderDocumentObject* obj) : object(obj), indocument(false) {
-        if (obj) {
-            indocument = true;
-            Gui::Document* doc = obj->getDocument();
-            connectApplicationDeletedDocument = doc->signalDeleteDocument.connect(boost::bind
-                (&Private::deletedDocument, this, bp::_1));
-            connectDocumentCreatedObject = doc->signalNewObject.connect(boost::bind
-                (&Private::createdObject, this, bp::_1));
-            connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
-                (&Private::deletedObject, this, bp::_1));
+        try {
+            if (obj) {
+                Gui::Document* doc = obj->getDocument();
+                indocument = true;
+                connectApplicationDeletedDocument = doc->signalDeleteDocument.connect(boost::bind
+                    (&Private::deletedDocument, this, bp::_1));
+                connectDocumentCreatedObject = doc->signalNewObject.connect(boost::bind
+                    (&Private::createdObject, this, bp::_1));
+                connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
+                    (&Private::deletedObject, this, bp::_1));
+            }
+        }
+        catch (const Base::RuntimeError&) {
+            // getDocument() may raise an exception
         }
     }
     void deletedDocument(const Gui::Document& doc) {

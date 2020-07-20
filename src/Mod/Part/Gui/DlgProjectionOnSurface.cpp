@@ -593,7 +593,7 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
 {
   if (!iCurrentObject) return;
   auto partenShape = iCurrentObject->Shape.getShape().getShape();
-  auto subShape = iCurrentObject->Shape.getShape().getSubShape(iShapeName.c_str());
+  auto subShape = iCurrentObject->Shape.getShape().getSubShape(iShapeName.c_str(), true);
 
   TopoDS_Shape currentShape = subShape;
   if (subShape.IsNull()) currentShape = partenShape;
