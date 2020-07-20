@@ -500,7 +500,7 @@
         <item row="6" column="4">
          <widget class="Gui::PrefColorButton" name="pcbMarkup">
           <property name="toolTip">
-           <string>Default color for leader lines </string>
+           <string>Default color for leader lines</string>
           </property>
           <property name="color">
            <color>

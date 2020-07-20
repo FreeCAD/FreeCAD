@@ -251,7 +251,7 @@ bool ViewProviderLeader::onDelete(const std::vector<std::string> &)
         QString bodyMessage;
         QTextStream bodyMessageStream(&bodyMessage); 
         bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this leader line because\n it has a weld symbol that would become broken.");
+            "You cannot delete this leader line because\nit has a weld symbol that would become broken.");
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
             QMessageBox::Ok);
