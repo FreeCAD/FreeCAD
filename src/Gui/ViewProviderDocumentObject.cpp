@@ -69,8 +69,8 @@ using namespace Gui;
 PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
 ViewProviderDocumentObject::ViewProviderDocumentObject()
-  : pcObject(0)
-  , pcDocument(0)
+  : pcObject(nullptr)
+  , pcDocument(nullptr)
 {
     ADD_PROPERTY(DisplayMode,((long)0));
     ADD_PROPERTY(Visibility,(true));
@@ -194,7 +194,9 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             // this is undesired behaviour. So, if this change marks the document as
             // modified then it must be be reversed.
             if (!testStatus(Gui::ViewStatus::TouchDocument)) {
-                bool mod = pcDocument->isModified();
+                bool mod = false;
+                if (pcDocument)
+                    mod = pcDocument->isModified();
                 getObject()->Visibility.setValue(Visibility.getValue());
                 if (pcDocument)
                     pcDocument->setModified(mod);
@@ -333,8 +335,13 @@ Gui::Document* ViewProviderDocumentObject::getDocument() const
 {
     if(!pcObject)
         throw Base::RuntimeError("View provider detached");
-    App::Document* pAppDoc = pcObject->getDocument();
-    return Gui::Application::Instance->getDocument(pAppDoc);
+    if (pcDocument) {
+        return pcDocument;
+    }
+    else {
+        App::Document* pAppDoc = pcObject->getDocument();
+        return Gui::Application::Instance->getDocument(pAppDoc);
+    }
 }
 
 Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
