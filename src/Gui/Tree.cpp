@@ -2979,7 +2979,10 @@ struct UpdateDisabler {
 
 void TreeWidget::onUpdateStatus(void)
 {
-    if(updateBlocked || this->state()==DraggingState || App::GetApplication().isRestoring()) {
+    if(updateBlocked || _DraggingActive
+                     || this->state()==DraggingState
+                     || App::GetApplication().isRestoring())
+    {
         _updateStatus();
         return;
     }
@@ -3544,10 +3547,11 @@ void TreeWidget::onItemSelectionChanged ()
 
 void TreeWidget::onSelectTimer() {
 
-    _updateStatus(false);
-
     bool syncSelect = instance()==this && TreeParams::Instance()->SyncSelection();
     bool locked = this->blockConnection(true);
+
+    _updateStatus(false);
+
     if(Selection().hasSelection()) {
         for(auto &v : DocumentMap) {
             v.second->setSelected(false);
