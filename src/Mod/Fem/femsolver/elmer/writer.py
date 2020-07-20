@@ -590,11 +590,9 @@ class Writer(object):
                 densityQuantity = Units.Quantity(m["Density"])
                 dimension = "M/L^3"
                 if name.startswith("Edge"):
-                    # not tested, but it seems needed
-                    # because density does not exist (IMHO, bernd)
-                    density = None
-                    if density:
-                        density.Unit = Units.Unit(-2, 1)
+                    # not tested, bernd
+                    # TODO: test
+                    densityQuantity.Unit = Units.Unit(-2, 1)
                     dimension = "M/L^2"
                 density = self._convert(densityQuantity, dimension)
 
