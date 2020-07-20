@@ -113,13 +113,14 @@ class Solve(run.Solve):
             # Needed if elmer is compiled but not installed on Linux
             # http://www.elmerfem.org/forum/viewtopic.php?f=2&t=7119
             # https://stackoverflow.com/questions/1506010/how-to-use-export-with-python-on-linux
-            """
-            if system() == "Linux" and "ELMER_HOME" not in os.environ:
+            # TODO move retrieving the param to solver settings module
+            elparams = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Elmer")
+            elmer_env = elparams.GetBool("SetElmerEnvVariables", False)
+            if elmer_env is True and system() == "Linux" and "ELMER_HOME" not in os.environ:
                 solvpath = os.path.split(binary)[0]
                 if os.path.isdir(solvpath):
                     os.environ["ELMER_HOME"] = solvpath
                     os.environ["LD_LIBRARY_PATH"] = "$LD_LIBRARY_PATH:{}/modules".format(solvpath)
-            """
             self._process = subprocess.Popen(
                 [binary], cwd=self.directory,
                 stdout=subprocess.PIPE,
