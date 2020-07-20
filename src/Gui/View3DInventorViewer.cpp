@@ -3654,6 +3654,9 @@ std::vector<App::SubObjectT>
 View3DInventorViewer::getPickedList(bool singlePick) const {
     auto p = this->mapFromGlobal(QCursor::pos());
     SbVec2s pos(p.x(), this->height() - p.y() - 1);
+#if QT_VERSION >= 0x050000
+    pos *= this->devicePixelRatio();
+#endif
     return this->getPickedList(pos, singlePick);
 }
 
