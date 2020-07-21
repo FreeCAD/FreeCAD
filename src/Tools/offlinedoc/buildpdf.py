@@ -419,7 +419,7 @@ def fetch_resources(uri, rel):
 def createpdf_pisa(pagename):
     "creates a pdf file from a saved page using pisa (python module)"
     import ho.pisa as pisa
-    if (not exists(pagename+".pdf",image=True)) or OVERWRTIE:
+    if (not exists(pagename+".pdf",image=True)) or OVERWRITE:
         infile = open(FOLDER + os.sep + pagename+'.html','ro')
         outfile = open(FOLDER + os.sep + pagename+'.pdf','wb')
         if VERBOSE: print("Converting " + pagename + " to pdf...")
