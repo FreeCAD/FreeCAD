@@ -411,6 +411,8 @@ INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
 INSTALL(FILES ${FemTestsOpen_SRCS} DESTINATION Mod/Fem/femtest/data/open)
 INSTALL(FILES ${FemTestsZ88Main_SRCS} DESTINATION Mod/Fem/femtest/data/z88)
 INSTALL(FILES ${FemTestsZ88Ccxcantifl_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccxcantilever_faceload)
+INSTALL(FILES ${FemTestsZ88Ccxcantihex_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccxcantilever_hexa20)
+INSTALL(FILES ${FemTestsZ88Ccxcantinl_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccxcantilever_nodeload)
 INSTALL(FILES ${FemTools_SRCS} DESTINATION Mod/Fem/femtools)
 
 
