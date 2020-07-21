@@ -1273,7 +1273,7 @@ def insert(srcfile,docname,skip=[],only=[],root=None,preferences=None):
     if preferences['DEBUG'] and layers: print("Creating layers...", end="")
     # print(layers)
     for layer_name, layer_objects in layers.items():
-        lay = Draft.makeLayer(layer_name)
+        lay = Draft.make_layer(layer_name)
         lay_grp = []
         for lobj_id in layer_objects:
             if lobj_id in objects:
