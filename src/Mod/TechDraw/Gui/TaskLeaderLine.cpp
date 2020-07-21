@@ -134,8 +134,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     }
 
     //TODO: when/if leaders are allowed to be parented to Page, check for m_baseFeat will be removed
-    if ( (m_lineFeat == nullptr) ||
-         (m_baseFeat == nullptr) ||
+    if ( (m_baseFeat == nullptr) ||
          (m_basePage == nullptr) ) {
         Base::Console().Error("TaskLeaderLine - bad parameters (2).  Can not proceed.\n");
         return;
@@ -442,9 +441,9 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
     if (m_baseFeat != nullptr) {
         m_baseFeat->touch();
     }
-    if (m_basePage != nullptr) {
-        m_basePage->touch();
-    }
+
+    m_basePage->touch();
+
     if (m_lineFeat != nullptr) {
         m_lineFeat->requestPaint();
     }

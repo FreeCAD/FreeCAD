@@ -403,9 +403,9 @@ void TaskRichAnno::createAnnoFeature()
     if (m_baseFeat != nullptr) {
         m_baseFeat->touch();
     }
-    if (m_basePage != nullptr) {
-        m_basePage->touch();
-    }
+
+    m_basePage->touch();
+
     if (m_annoFeat != nullptr) {
         m_annoFeat->requestPaint();
     }
