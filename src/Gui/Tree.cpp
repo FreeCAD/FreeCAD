@@ -1096,6 +1096,7 @@ void TreeWidget::_updateStatus(bool delay) {
 
 void TreeWidget::_setupDocumentMenu(DocumentItem *docitem, QMenu &menu)
 {
+    this->contextItem = docitem;
     App::Document* doc = docitem->document()->getDocument();
     App::GetApplication().setActiveDocument(doc);
     showHiddenAction->setChecked(docitem->showHidden());
@@ -1262,6 +1263,9 @@ void TreeWidget::showEvent(QShowEvent *ev) {
 
 void TreeWidget::onCreateGroup()
 {
+    if (!this->contextItem)
+        return;
+
     QString name = tr("Group");
     App::AutoTransaction trans("Create group");
     if (this->contextItem->type() == DocumentType) {
