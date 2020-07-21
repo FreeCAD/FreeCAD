@@ -320,11 +320,11 @@ def handle():
                     f = QtCore.QFile(path)
                     if f.open(QtCore.QIODevice.ReadOnly | QtCore.QFile.Text):
                         ALTCSS = encode(QtCore.QTextStream(f).readAll())
+                        HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
                 else:
                     with open(path, 'r') as f:
                         ALTCSS = encode(f.read())
-
-                HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
+                        HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
 
     # turn tips off if needed
 
