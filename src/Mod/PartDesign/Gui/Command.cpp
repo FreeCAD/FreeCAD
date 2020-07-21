@@ -728,11 +728,8 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                     if ( ( geoGroup && geoGroup->hasObject ( plane, true ) ) ||
                            !App::GeoFeatureGroupExtension::getGroupOfObject ( plane ) ) {
                         status.push_back ( PartDesignGui::TaskFeaturePick::otherPart );
-                    } else if (pcActiveBody) {
+                    } else {
                         status.push_back ( PartDesignGui::TaskFeaturePick::notInBody );
-                    } else { // if we are outside a body count it as valid
-                        validPlaneCount++;
-                        status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
                     }
                 }
             }
