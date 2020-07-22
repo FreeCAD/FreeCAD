@@ -137,7 +137,6 @@ void ViewProviderPartExt::getNormals(const TopoDS_Face&  theFace,
                                      const Handle(Poly_Triangulation)& aPolyTri,
                                      TColgp_Array1OfDir& theNormals)
 {
-    Poly_Connect thePolyConnect(aPolyTri);
     const TColgp_Array1OfPnt& aNodes = aPolyTri->Nodes();
 
     if(aPolyTri->HasNormals())
@@ -167,6 +166,7 @@ void ViewProviderPartExt::getNormals(const TopoDS_Face&  theFace,
     }
 
     // take in face the surface location
+    Poly_Connect thePolyConnect(aPolyTri);
     const TopoDS_Face      aZeroFace = TopoDS::Face(theFace.Located(TopLoc_Location()));
     Handle(Geom_Surface)   aSurf     = BRep_Tool::Surface(aZeroFace);
     const Standard_Real    aTol      = Precision::Confusion();
