@@ -86,7 +86,7 @@ namespace nglib {
 
 namespace netgen {
 #if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2)
-  DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&);
+  extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&);
 #elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&, int, int);
 #elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0)
@@ -95,7 +95,9 @@ namespace netgen {
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
 #endif
   DLL_HEADER extern MeshingParameters mparam;
+#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2)
   DLL_HEADER extern void OCCSetLocalMeshSize(OCCGeometry & geom, Mesh & mesh);
+#endif
 }
 
 using namespace std;
@@ -314,15 +316,29 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
       netgen::mparam.minh = aMesher.GetDefaultMinSize( aShape, netgen::mparam.maxh );
     }
     // set local size depending on curvature and NOT closeness of EDGEs
+#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2)
+    // https://github.com/NGSolve/netgen/commit/073e215bb6bc97d8712990cba9cc6e9e1e4d8b2a
+    netgen::mparam.closeedgefac = std::nullopt;
+#else
     netgen::occparam.resthcloseedgeenable = false;
+#endif
     //netgen::occparam.resthcloseedgefac = 1.0 + netgen::mparam.grading;
     occgeoComm.face_maxh = netgen::mparam.maxh;
+#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2)
+    // https://github.com/NGSolve/netgen/commit/bee097b153b43d9346819789534536cd1b773428
+    occgeoComm.Analyse(*ngMeshes[0], netgen::mparam);
+#else
     netgen::OCCSetLocalMeshSize( occgeoComm, *ngMeshes[0] );
+#endif
     occgeoComm.emap.Clear();
     occgeoComm.vmap.Clear();
 
     // set local size according to size of existing segments
+#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2)
+    const double factor = netgen::mparam.closeedgefac.value();
+#else
     const double factor = netgen::occparam.resthcloseedgefac;
+#endif
     TopTools_IndexedMapOfShape edgeMap;
     TopExp::MapShapes( aMesh.GetShapeToMesh(), TopAbs_EDGE, edgeMap );
     for ( int iE = 1; iE <= edgeMap.Extent(); ++iE )

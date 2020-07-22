@@ -96,7 +96,7 @@ namespace nglib {
 }
 namespace netgen {
 #if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2)
-  DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&);
+  extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&);
 #elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&, int, int);
 #elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0)

@@ -101,7 +101,14 @@ namespace nglib {
 
 namespace netgen {
 #if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2)
-  DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&);
+  typedef Refinement OCCRefinementSurfaces;
+  // https://github.com/NGSolve/netgen/commit/bee097b153b43d9346819789534536cd1b773428
+  int OCCGenerateMesh(OCCGeometry& geo, shared_ptr<Mesh>& mesh, MeshingParameters& params)
+  {
+      //geo.SetOCCParameters(occparam);
+      auto result = geo.GenerateMesh(mesh, params);
+      return result;
+  }
 #elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&, int, int);
 #elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0)
