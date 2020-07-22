@@ -108,7 +108,6 @@ POST_OPERATION = ''''''
 TOOL_CHANGE = ''''''
 SUPPRESS_TOOL_CHANGE=0
 ASSUME_FIRST_TOOL = True
-notoolyet = True
 
 # to distinguish python built-in open function from the one declared below
 if open.__module__ in ['__builtin__','io']:
@@ -314,8 +313,7 @@ def emuldrill(c, state): #G81
                 ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : -5}],
                 ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 0}],
                 ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'Z' : c.Parameters['Z']}],
-                ["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5}],
-                ["end", {}] # new requirement, because of behavior of iterable prematurely ending loop if last element is reached
+                ["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5}]
     ]
     
     return iter(cmdlist)
@@ -325,7 +323,7 @@ def emultoolchange(c, state): #M6 T?
     if ASSUME_FIRST_TOOL and state['notoolyet'] and state['output']:
         state['notoolyet'] = False
         cmdlist =  [
-                    ["end", {}] # new requirement, because of behavior of iterable prematurely ending loop if last element is reached
+                    [";assumed starting tool", {'T' : c.Parameters['T']}] 
         ]
     else:
         cmdlist =  [["G0", {'z' : 20, 'F': G0Z_UP_FEEDRATE / 60.0}],
@@ -333,8 +331,7 @@ def emultoolchange(c, state): #M6 T?
                     ["M0", {'T': c.Parameters['T']}], # Pause and wait for click, turn off spindle, swap bit, home it, turn on spindle
                     ["G92", {'z' : 0}],
                     ["G0", {'z' : 20, 'F': G0Z_UP_FEEDRATE / 60.0}],
-                    ["G0", {'x' : state['lastx'], 'y': state['lasty'], 'F': G0XY_FEEDRATE / 60.0}],
-                    ["end", {}] # new requirement, because of behavior of iterable prematurely ending loop if last element is reached
+                    ["G0", {'x' : state['lastx'], 'y': state['lasty'], 'F': G0XY_FEEDRATE / 60.0}]
         ]
     
     return iter(cmdlist)
@@ -355,10 +352,11 @@ class Commands:
         res = None
         
         if self.epath != None:
-            res = next(self.epath)
-            #print ("macro line " + res[0])
+            try:
+                res = next(self.epath)
+                #print ("macro line " + res[0])
             
-            if (res[0] == "end"):
+            except:
                 self.epath = None
                 res = None
 
