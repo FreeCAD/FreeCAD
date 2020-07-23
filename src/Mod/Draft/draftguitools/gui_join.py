@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for joining lines with the Draft Workbench.
+"""Provides GUI tools to join lines and wires.
 
 It occasionally fails to join lines even if the lines
 visually share a point. This is due to the underlying `joinWires` method
@@ -36,15 +36,18 @@ Test properly using `DraftVecUtils.equals` because then it will consider
 the precision set in the Draft preferences.
 """
 ## @package gui_join
-# \ingroup DRAFT
-# \brief Provides tools for joining lines with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to join lines and wires.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
 import Draft_rc
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
+
 from draftutils.messages import _msg
 from draftutils.translate import translate, _tr
 
@@ -113,3 +116,5 @@ class Join(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Join', Join())
+
+## @}

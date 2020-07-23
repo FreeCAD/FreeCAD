@@ -22,14 +22,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating B-Splines with the Draft Workbench.
+"""Provides GUI tools to create BSpline objects.
 
 See https://en.wikipedia.org/wiki/B-spline
 """
 ## @package gui_splines
-# \ingroup DRAFT
-# \brief Provides tools for creating B-Splines with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create BSpline objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -39,6 +41,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_lines as gui_lines
 import draftguitools.gui_trackers as trackers
+
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate
 
@@ -196,3 +199,5 @@ class BSpline(gui_lines.Line):
 
 
 Gui.addCommand('Draft_BSpline', BSpline())
+
+## @}

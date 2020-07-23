@@ -235,11 +235,11 @@ DrawPage* DrawView::findParentPage() const
     std::vector<App::DocumentObject*> parent = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-            page = dynamic_cast<TechDraw::DrawPage *>(*it);
+            page = static_cast<TechDraw::DrawPage *>(*it);
         }
 
         if ((*it)->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
-            collection = dynamic_cast<TechDraw::DrawViewCollection *>(*it);
+            collection = static_cast<TechDraw::DrawViewCollection *>(*it);
             page = collection->findParentPage();
         }
 

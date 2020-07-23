@@ -356,7 +356,9 @@ void SketchAnalysis::makeMissingPointOnPointCoincident(bool onebyone)
         c->SecondPos = it->SecondPos;
 
         if(onebyone) {
+            // addConstraint() creates a clone
             sketch->addConstraint(c);
+            delete c;
 
             solvesketch(status,dofs,true);
 
@@ -435,7 +437,9 @@ void SketchAnalysis::makeMissingVerticalHorizontal(bool onebyone)
         c->SecondPos = it->SecondPos;
 
         if(onebyone) {
+            // addConstraint() creates a clone
             sketch->addConstraint(c);
+            delete c;
 
             solvesketch(status,dofs,true);
 
@@ -630,7 +634,9 @@ void SketchAnalysis::makeMissingEquality(bool onebyone)
         c->SecondPos = it->SecondPos;
 
         if(onebyone) {
+            // addConstraint() creates a clone
             sketch->addConstraint(c);
+            delete c;
 
             solvesketch(status,dofs,true);
 

@@ -90,11 +90,14 @@ def run_example(example, solver=None, base_name=None):
 
     from importlib import import_module
     module = import_module("femexamples." + example)
-    if hasattr(module, "setup"):
-        if solver is None:
-            doc = getattr(module, "setup")()
-        else:
-            doc = getattr(module, "setup")(solvertype=solver)
+    if not hasattr(module, "setup"):
+        FreeCAD.Console.PrintError("Setup method not found in {}\n".format(example))
+        return None
+
+    if solver is None:
+        doc = getattr(module, "setup")()
+    else:
+        doc = getattr(module, "setup")(solvertype=solver)
 
     if base_name is None:
         base_name = example

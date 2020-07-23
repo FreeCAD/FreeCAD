@@ -44,31 +44,31 @@ class Proxy(linear.Proxy):
             "App::PropertyFloat",
             "NonlinearTolerance",
             "Nonlinear System",
-            "Select type of solver for linear system"
+            ""
         )
         obj.addProperty(
             "App::PropertyInteger",
             "NonlinearIterations",
             "Nonlinear System",
-            "Select type of solver for linear system"
+            ""
         )
         obj.addProperty(
             "App::PropertyFloat",
             "RelaxationFactor",
             "Nonlinear System",
-            "Select type of solver for linear system"
+            ""
         )
         obj.addProperty(
             "App::PropertyInteger",
             "NonlinearNewtonAfterIterations",
             "Nonlinear System",
-            "Select type of solver for linear system"
+            ""
         )
         obj.addProperty(
             "App::PropertyFloat",
             "NonlinearNewtonAfterTolerance",
             "Nonlinear System",
-            "Select type of solver for linear system"
+            ""
         )
         obj.NonlinearTolerance = 1e-8
         obj.NonlinearIterations = 500

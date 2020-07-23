@@ -688,9 +688,11 @@ protected:
         std::string FeatName;
         std::string SubName;
         std::string TypeName;
-        App::Document* pDoc;
-        App::DocumentObject* pObject;
-        float x,y,z;
+        App::Document* pDoc = 0;
+        App::DocumentObject* pObject = 0;
+        float x = 0.0f;
+        float y = 0.0f;
+        float z = 0.0f;
         bool logged = false;
 
         std::pair<std::string,std::string> elementName;

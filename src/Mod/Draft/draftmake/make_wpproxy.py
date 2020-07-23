@@ -20,12 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_workingplaneproxy function.
-"""
+"""Provides functions to create WorkingPlaneProxy objects."""
 ## @package make_wpproxy
-# \ingroup DRAFT
-# \brief This module provides the code for Draft makeworkingplane_proxy function.
+# \ingroup draftmake
+# \brief Provides functions to create WorkingPlaneProxy objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 from draftobjects.wpproxy import WorkingPlaneProxy
@@ -56,3 +57,5 @@ def make_workingplaneproxy(placement):
 
 
 makeWorkingPlaneProxy = make_workingplaneproxy
+
+## @}

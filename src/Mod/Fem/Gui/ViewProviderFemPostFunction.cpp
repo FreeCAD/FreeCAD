@@ -137,7 +137,8 @@ void ViewProviderFemPostFunctionProvider::updateSize() {
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostFunction, Gui::ViewProviderDocumentObject)
 
-ViewProviderFemPostFunction::ViewProviderFemPostFunction() : m_autoscale(false), m_isDragging(false)
+ViewProviderFemPostFunction::ViewProviderFemPostFunction()
+    : m_manip(nullptr), m_autoscale(false), m_isDragging(false), m_autoRecompute(false)
 {
 
     ADD_PROPERTY_TYPE(AutoScaleFactorX, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");

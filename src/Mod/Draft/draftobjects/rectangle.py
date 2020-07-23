@@ -20,20 +20,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Rectangle.
-"""
+"""Provides the object code for the Rectangle object."""
 ## @package rectangle
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Rectangle.
+# \ingroup draftobjects
+# \brief Provides the object code for the Rectangle object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 import DraftGeomUtils
 
 from draftutils.utils import get_param
-
 from draftobjects.base import DraftObject
 
 
@@ -169,4 +168,7 @@ class Rectangle(DraftObject):
         obj.positionBySupport()
 
 
+# Alias for compatibility with v0.18 and earlier
 _Rectangle = Rectangle
+
+## @}

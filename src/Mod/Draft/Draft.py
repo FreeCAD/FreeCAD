@@ -30,19 +30,6 @@ These functions can be used as the backend for the graphical commands
 defined in `DraftTools.py`.
 """
 ## \addtogroup DRAFT
-#  \brief Create and manipulate basic 2D objects
-#
-#  This module offers tools to create and manipulate basic 2D objects
-#
-#  The module allows to create 2D geometric objects such as line, rectangle,
-#  circle, etc., modify these objects by moving, scaling or rotating them,
-#  and offers a couple of other utilities to manipulate further these objects,
-#  such as decompose them (downgrade) into smaller elements.
-#
-#  The functionality of the module is divided into GUI tools, usable from the
-#  visual interface, and corresponding python functions, that can perform
-#  the same operation programmatically.
-#
 #  @{
 
 import FreeCAD as App
@@ -381,10 +368,15 @@ from draftmake.make_fillet import make_fillet
 if App.GuiUp:
     from draftviewproviders.view_fillet import ViewProviderFillet
 
-# Layers
-from DraftLayer import Layer as _VisGroup
-from DraftLayer import ViewProviderLayer as _ViewProviderVisGroup
-from DraftLayer import makeLayer
+from draftobjects.layer import (Layer,
+                                _VisGroup)
+
+from draftmake.make_layer import (make_layer,
+                                  makeLayer)
+
+if App.GuiUp:
+    from draftviewproviders.view_layer import (ViewProviderLayer,
+                                               _ViewProviderVisGroup)
 
 # Annotation objects
 from draftobjects.dimension import (LinearDimension,

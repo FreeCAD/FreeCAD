@@ -20,17 +20,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating fillets between two lines.
+"""Provides GUI tools to create Fillet objects between two lines.
 
 TODO: Currently this tool uses the DraftGui widgets. We want to avoid using
 this big module because it creates manually the interface.
 Instead we should provide its own .ui file and task panel,
-similar to the Ortho Array tool.
+similar to the OrthoArray tool.
 """
 ## @package gui_fillet
-# \ingroup DRAFT
-# \brief Provides tools for creating fillets between two lines.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create Fillet objects between two lines.
 
+## \addtogroup draftguitools
+# @{
 import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -40,7 +42,7 @@ import Draft_rc
 import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
-# import draftguitools.gui_trackers as trackers
+
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate, _tr
 
@@ -202,3 +204,5 @@ class Fillet(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_Fillet', Fillet())
+
+## @}

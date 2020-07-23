@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for stretching objects with the Draft Workbench.
+"""Provides GUI tools to stretch Draft objects.
 
 It works with rectangles, wires, b-splines, bezier curves, and sketches.
 It essentially moves the points that are located within a selection area,
@@ -30,9 +30,11 @@ while keeping other points intact. This means the lines tied by the points
 that were moved are 'stretched'.
 """
 ## @package gui_stretch
-# \ingroup DRAFT
-# \brief Provides tools for stretching objects with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to stretch Draft objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -43,6 +45,7 @@ import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+
 from draftutils.messages import _msg
 from draftutils.translate import translate, _tr
 
@@ -483,3 +486,5 @@ class Stretch(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Stretch', Stretch())
+
+## @}

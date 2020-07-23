@@ -100,8 +100,8 @@ void DrawWeldSymbol::onSettingDocument()
     DrawTileWeld* tile2 = dynamic_cast<DrawTileWeld*>(tile2Obj);
     if (tile2 != nullptr) {
         tile2->TileParent.setValue(this);
+        tile2->TileRow.setValue(-1);   //other side is row -1
     }
-    tile2->TileRow.setValue(-1);   //other side is row -1
 
     DrawView::onSettingDocument();
 }

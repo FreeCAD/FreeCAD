@@ -120,19 +120,24 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
 
 TaskPipeParameters::~TaskPipeParameters()
 {
-    if (vp) {
-        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-        Gui::Document* doc = vp->getDocument();
+    try {
+        if (vp) {
+            PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+            Gui::Document* doc = vp->getDocument();
 
-        //make sure the user sees all important things: the
-        //spine/auxiliary spine he already selected
-        if (pipe->Spine.getValue()) {
-            auto* svp = doc->getViewProvider(pipe->Spine.getValue());
-            svp->setVisible(spineShow);
-            spineShow = false;
+            //make sure the user sees all important things: the
+            //spine/auxiliary spine he already selected
+            if (pipe->Spine.getValue()) {
+                auto* svp = doc->getViewProvider(pipe->Spine.getValue());
+                svp->setVisible(spineShow);
+                spineShow = false;
+            }
+
+            static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, false);
         }
-
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, false);
+    }
+    catch (const Base::RuntimeError&) {
+        // getDocument() may raise an exception
     }
 
     delete ui;
@@ -420,19 +425,24 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
 
 TaskPipeOrientation::~TaskPipeOrientation()
 {
-    if (vp) {
-        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-        Gui::Document* doc = vp->getDocument();
+    try {
+        if (vp) {
+            PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+            Gui::Document* doc = vp->getDocument();
 
-        //make sure the user sees al important things: the base feature to select edges and the
-        //spine/auxiliary spine he already selected
-        if (pipe->AuxillerySpine.getValue()) {
-            auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
-            svp->setVisible(auxSpineShow);
-            auxSpineShow = false;
+            //make sure the user sees al important things: the base feature to select edges and the
+            //spine/auxiliary spine he already selected
+            if (pipe->AuxillerySpine.getValue()) {
+                auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
+                svp->setVisible(auxSpineShow);
+                auxSpineShow = false;
+            }
+
+            static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, true);
         }
-
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, true);
+    }
+    catch (const Base::RuntimeError&) {
+        // getDocument() may raise an exception
     }
 }
 

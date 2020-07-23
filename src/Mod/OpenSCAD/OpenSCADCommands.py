@@ -157,6 +157,38 @@ class RefineShapeFeature:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RefineShapeFeature', 'Refine Shape Feature'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RefineShapeFeature', 'Create Refine Shape Feature')}
 
+class MirrorMeshFeature:
+    def IsActive(self):
+        return FreeCADGui.Selection.countObjectsOfType('Mesh::Feature') > 0
+
+    def Activated(self):
+        import Part,OpenSCADFeatures,OpenSCADUtils
+        selection=FreeCADGui.Selection.getSelectionEx()
+        for selobj in selection:
+            newobj=selobj.Document.addObject("Mesh::Feature",'mirror')
+            newobj.Label='mirror_%s' % selobj.Object.Label
+            msh=selobj.Object.Mesh
+            items=["[1,0,0]","[0,1,0]","[0,0,1]","[1,1,0]","[0,1,1]","[1,0,1]","[1,1,1]"]
+            item, ok = QtGui.QInputDialog.getItem(QtGui.QApplication.activeWindow(),u'Mirror about which Axis?',u'Select Axis (or enter custom value)?',items,editable=True)
+            if ok:
+                splits = list(item)
+                x = float(splits[1])
+                y = float(splits[3])
+                z = float(splits[5])
+                vec = FreeCAD.Base.Vector(x,y,z)
+                newmesh=OpenSCADUtils.mirrormesh(msh, vec)
+                newobj.Mesh=newmesh
+                selobj.Object.ViewObject.hide()
+            else:
+                selobj.Document.removeObject(newobj.Name)
+
+        FreeCAD.ActiveDocument.recompute()
+    def GetResources(self):
+        return {'Pixmap'  : 'OpenSCAD_MirrorMeshFeature',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MirrorMeshFeature', 'Mirror Mesh Feature...'),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MirrorMeshFeature', 'Create Mirror Mesh Feature')}
+
+
 class IncreaseToleranceFeature:
     def IsActive(self):
         return FreeCADGui.Selection.countObjectsOfType('Part::Feature') > 0
@@ -422,6 +454,7 @@ FreeCADGui.addCommand('OpenSCAD_ColorCodeShape',ColorCodeShape())
 FreeCADGui.addCommand('OpenSCAD_ExplodeGroup',ExplodeGroup())
 FreeCADGui.addCommand('OpenSCAD_Edgestofaces',Edgestofaces())
 FreeCADGui.addCommand('OpenSCAD_RefineShapeFeature',RefineShapeFeature())
+FreeCADGui.addCommand('OpenSCAD_MirrorMeshFeature',MirrorMeshFeature())
 FreeCADGui.addCommand('OpenSCAD_IncreaseToleranceFeature',IncreaseToleranceFeature())
 FreeCADGui.addCommand('OpenSCAD_ExpandPlacements',ExpandPlacements())
 FreeCADGui.addCommand('OpenSCAD_ReplaceObject',ReplaceObject())

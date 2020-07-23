@@ -22,16 +22,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating facebinders with the Draft Workbench.
+"""Provides GUI tools to create Facebinder objects.
 
 A facebinder is a surface or shell created from the face of a solid object.
 This tool allows extracting such faces to be used for other purposes
 including extruding solids from faces.
 """
 ## @package gui_facebinders
-# \ingroup DRAFT
-# \brief Provides tools for creating facebinders with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create Facebinder objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -39,6 +41,7 @@ import FreeCADGui as Gui
 import Draft_rc
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
+
 from draftutils.messages import _msg
 from draftutils.translate import translate, _tr
 
@@ -91,3 +94,5 @@ class Facebinder(gui_base_original.Creator):
 
 Draft_Facebinder = Facebinder
 Gui.addCommand('Draft_Facebinder', Facebinder())
+
+## @}

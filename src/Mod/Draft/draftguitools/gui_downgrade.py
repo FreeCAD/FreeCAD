@@ -22,16 +22,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for downgrading objects with the Draft Workbench.
+"""Provides GUI tools to downgrade objects.
 
 Downgrades 2D objects to simpler objects until it reaches
 simple Edge primitives. For example, a Draft Line to wire, and then
 to a series of edges.
 """
 ## @package gui_downgrade
-# \ingroup DRAFT
-# \brief Provides tools for downgrading objects with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to downgrade objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -95,3 +97,5 @@ class Downgrade(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Downgrade', Downgrade())
+
+## @}

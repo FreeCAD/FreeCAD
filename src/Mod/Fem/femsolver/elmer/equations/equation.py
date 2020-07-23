@@ -45,7 +45,7 @@ class Proxy(equationbase.BaseProxy):
             "App::PropertyInteger",
             "Priority",
             "Base",
-            "Select type of solver for linear system"
+            ""
         )
 
 

@@ -20,17 +20,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_shape2dview function.
-"""
+"""Provides functions to create Shape2DView objects."""
 ## @package make_shape2dview
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_shape2dview function.
+# \ingroup draftmake
+# \brief Provides functions to create Shape2DView objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
-from draftutils.gui_utils import select
+import draftutils.gui_utils as gui_utils
 
 from draftobjects.shape2dview import Shape2DView
+
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraftAlt
 
@@ -63,9 +64,11 @@ def make_shape2dview(baseobj,projectionVector=None,facenumbers=[]):
         obj.Projection = projectionVector
     if facenumbers:
         obj.FaceNumbers = facenumbers
-    select(obj)
+    gui_utils.select(obj)
 
     return obj
 
 
 makeShape2DView = make_shape2dview
+
+## @}

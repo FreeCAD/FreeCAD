@@ -18,16 +18,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the view provider code for Fillet objects.
+"""Provides the viewprovider code for the Fillet object.
 
 At the moment this view provider subclasses the Wire view provider,
 and behaves the same as it. In the future this could change
 if another behavior is desired.
 """
 ## @package view_fillet
-# \ingroup DRAFT
-# \brief Provides the view provider code for Fillet objects.
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for the Fillet object.
 
+## \addtogroup draftviewproviders
+# @{
 from draftviewproviders.view_wire import ViewProviderWire
 
 
@@ -36,3 +38,5 @@ class ViewProviderFillet(ViewProviderWire):
 
     def __init__(self, vobj):
         super(ViewProviderFillet, self).__init__(vobj)
+
+## @}

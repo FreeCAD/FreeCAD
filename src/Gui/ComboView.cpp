@@ -76,6 +76,10 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
         splitter->addWidget(prop);
         modelIndex = tabs->addTab(splitter,tr("Model"));
     }
+    else {
+        tree = nullptr;
+        prop = nullptr;
+    }
 
     // task panel
     taskPanel = new Gui::TaskView::TaskView(this);

@@ -135,7 +135,11 @@ def read_inp(file_name):
                 continue
             read_node = False
             elm_category = []
+            number_of_nodes = 0
+            elm_type = ""
             elm_2nd_line = False
+            error_seg3 = False
+            error_not_supported_elemtype = False
 
         # reading nodes
         if (line[:5].upper() == "*NODE") and (model_definition is True):
@@ -194,8 +198,10 @@ def read_inp(file_name):
                 elm_category = elements.seg3
                 number_of_nodes = 3
                 error_seg3 = True  # to print "not supported"
+            else:
+                error_not_supported_elemtype = True
 
-        elif elm_category != []:
+        elif elm_category != [] and number_of_nodes > 0:
             line_list = line.split(",")
             if elm_2nd_line is False:
                 number = int(line_list[0])
@@ -216,6 +222,8 @@ def read_inp(file_name):
             model_definition = False
     if error_seg3 is True:  # to print "not supported"
         Console.PrintError("Error: seg3 (3-node beam element type) not supported, yet.\n")
+    elif error_not_supported_elemtype is True:
+        Console.PrintError("Error: {} not supported.\n".format(elm_type))
     f.close()
 
     # switch from the CalculiX node numbering to the FreeCAD node numbering

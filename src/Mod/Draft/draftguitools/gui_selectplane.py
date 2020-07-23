@@ -18,14 +18,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the Draft SelectPlane tool."""
+"""Provides GUI tools to set up the working plane and its grid."""
 ## @package gui_selectplane
-# \ingroup DRAFT
-# \brief This module provides the Draft SelectPlane tool.
+# \ingroup draftguitools
+# \brief Provides GUI tools to set up the working plane and its grid.
 
+## \addtogroup draftguitools
+# @{
 import math
-from pivy import coin
-from PySide import QtGui
+import pivy.coin as coin
+import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD
@@ -34,6 +36,7 @@ import Draft
 import Draft_rc
 import DraftVecUtils
 import drafttaskpanels.task_selectplane as task_selectplane
+
 from draftutils.todo import todo
 from draftutils.messages import _msg
 from draftutils.translate import translate
@@ -521,3 +524,5 @@ class Draft_SelectPlane:
 
 
 FreeCADGui.addCommand('Draft_SelectPlane', Draft_SelectPlane())
+
+## @}

@@ -263,7 +263,7 @@ void Cloud::CloudWriter::createBucket()
                 }
                 else
                 {
-                        chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestDatav4);
+                        chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TokenAuth, RequestDatav4);
                         delete RequestDatav4;
                 }
 
@@ -533,7 +533,7 @@ char *Cloud::MD5Sum(const char *ptr, long size)
         return(output);
 }
 
-struct curl_slist *Cloud::BuildHeaderAmzS3v4(const char *URL, const char *TCPPort, const char *PublicKey, struct Cloud::AmzDatav4 *Data)
+struct curl_slist *Cloud::BuildHeaderAmzS3v4(const char *URL, const char *PublicKey, struct Cloud::AmzDatav4 *Data)
 {
         char header_data[1024];
         struct curl_slist *chunk = NULL;
@@ -671,7 +671,7 @@ Cloud::CloudWriter::CloudWriter(const char* URL, const char* TokenAuth, const ch
                 }
                 else
                 {
-                        chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestDatav4);
+                        chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TokenAuth, RequestDatav4);
                         delete RequestDatav4;
                 }
 
@@ -887,7 +887,7 @@ Cloud::CloudReader::CloudReader(const char* URL, const char* TokenAuth, const ch
                         else
                         {
                                 RequestDatav4 = Cloud::ComputeDigestAmzS3v4("GET", strURL.c_str(),"application/xml", path, this->TokenSecret, NULL, 0, (char *)&parameters[0], this->Region);
-                                chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestDatav4);
+                                chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TokenAuth, RequestDatav4);
                                 delete RequestDatav4;
                         }
                         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
@@ -982,7 +982,7 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
                 }
                 else
                 {
-                        chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestDatav4);
+                        chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TokenAuth, RequestDatav4);
                         delete RequestDatav4;
                 }
 
@@ -1110,7 +1110,7 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
                 }
                 else
                 {
-                        chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestDatav4);
+                        chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TokenAuth, RequestDatav4);
                         delete RequestDatav4;
                 }
 
@@ -1265,6 +1265,40 @@ void readFiles(Cloud::CloudReader reader, Base::XMLReader *xmlreader)
     }
 }
 
+void Cloud::Module::LinkXSetValue(std::string filename)
+{
+       // Need to check if the document exist
+       // if not we have to create a new one
+       // and Restore the associated Document
+        //
+       std::vector<Document*> Documents;
+       Documents = App::GetApplication().getDocuments();
+       for (std::vector<Document*>::iterator it = Documents.begin() ; it != Documents.end(); it++)
+       {
+               if ( (*it)->FileName.getValue() == filename )
+               {
+                       // The document exist
+                       // we can exit
+                       return;
+               }
+       }
+
+       size_t header = filename.find_first_of(":");
+       string protocol=filename.substr(0,header);
+       string url_new=filename.substr(header+3); //url_new is the url excluding the http part
+       size_t part2 = url_new.find_first_of("/");
+       string path =url_new.substr(part2+1);
+       // Starting from here the Document doesn't exist we must create it
+       // and make it the active Document before Restoring
+       App::Document* newDoc;
+       string newName;
+       Document* currentDoc = GetApplication().getActiveDocument();
+       newName = GetApplication().getUniqueDocumentName("unnamed");
+       newDoc = GetApplication().newDocument(newName.c_str(), (const char*)path.c_str(), true);
+       GetApplication().setActiveDocument(newDoc);
+       this->cloudRestore((const char*)path.c_str());
+       GetApplication().setActiveDocument(currentDoc);
+}
 
 bool Cloud::Module::cloudRestore (const char *BucketName)
 {
@@ -1272,6 +1306,7 @@ bool Cloud::Module::cloudRestore (const char *BucketName)
     Document* doc = GetApplication().getActiveDocument();
     // clean up if the document is not empty
     // !TODO: mind exceptions while restoring!
+    doc->signalLinkXsetValue.connect(boost::bind(&Cloud::Module::LinkXSetValue,this,_1));
 
     doc->clearUndos();
 
@@ -1296,7 +1331,7 @@ bool Cloud::Module::cloudRestore (const char *BucketName)
 
     GetApplication().signalStartRestoreDocument(*doc);
     doc->setStatus(Document::Restoring, true);
-    
+
     try {
         // Document::Restore(reader);
         doc->Restore(reader);
@@ -1320,6 +1355,12 @@ bool Cloud::Module::cloudRestore (const char *BucketName)
 
     GetApplication().signalFinishRestoreDocument(*doc);
     doc->setStatus(Document::Restoring, false);
+    doc->Label.setValue(BucketName);
+    // The FileName shall be an URI format
+    string uri;
+    uri = this->URL.getStrValue()+":"+this->TCPPort.getStrValue()+"/"+string(BucketName);
+    doc->FileName.setValue(uri);
+    doc->signalLinkXsetValue.disconnect(boost::bind(&Cloud::Module::LinkXSetValue,this,_1));
     return(true);
 
 }

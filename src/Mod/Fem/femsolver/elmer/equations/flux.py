@@ -49,7 +49,7 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
             "App::PropertyBool",
             "CalculateFlux",
             "Flux",
-            "Select type of solver for linear system"
+            ""
         )
         obj.addProperty(
             "App::PropertyString",

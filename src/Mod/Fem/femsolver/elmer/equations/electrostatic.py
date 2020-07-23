@@ -48,38 +48,38 @@ class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
             "App::PropertyBool",
             "CalculateElectricField",
             "Electrostatic",
-            "Select type of solver for linear system"
+            ""
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateElectricFlux",
             "Electrostatic",
-            "Select type of solver for linear system"
+            ""
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateElectricEnergy",
             "Electrostatic",
-            "Select type of solver for linear system"
+            ""
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateSurfaceCharge",
             "Electrostatic",
-            "Select type of solver for linear system"
+            ""
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateCapacitanceMatrix",
             "Electrostatic",
-            "Select type of solver for linear system"
+            ""
         )
         """
         obj.addProperty(
             "App::PropertyInteger",
             "CapacitanceBodies",
             "Electrostatic",
-            "Select type of solver for linear system"
+            ""
         )
         """
 

@@ -1236,8 +1236,10 @@ void PartGui::DimensionAngular::setupDimension()
 
   //text
   SoSeparator *textSep = static_cast<SoSeparator *>(getPart("textSep", true));
-  if (textSep)
-    textSep->addChild(material);
+  if (!textSep)
+      return;
+
+  textSep->addChild(material);
 
   SoCalculator *textVecCalc = new SoCalculator();
   textVecCalc->a.connectFrom(&angle);

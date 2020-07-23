@@ -19,22 +19,20 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_wire function.
-"""
+"""Provides functions to create multipoint Wire objects."""
 ## @package make_wire
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_wire function.
+# \ingroup draftmake
+# \brief Provides functions to create multipoint Wire objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
 import DraftGeomUtils
-
-from draftutils.gui_utils import format_object
-from draftutils.gui_utils import select
-
-from draftutils.utils import type_check
+import draftutils.utils as utils
+import draftutils.gui_utils as gui_utils
 
 from draftobjects.wire import Wire
+
 if App.GuiUp:
     from draftviewproviders.view_wire import ViewProviderWire
 
@@ -90,7 +88,7 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
     #print(closed)
     
     if placement:
-        type_check([(placement, App.Placement)], "make_wire")
+        utils.type_check([(placement, App.Placement)], "make_wire")
         ipl = placement.inverse()
         if not bs2wire:
             pointslist = [ipl.multVec(p) for p in pointslist]
@@ -114,10 +112,12 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
 
     if App.GuiUp:
         ViewProviderWire(obj.ViewObject)
-        format_object(obj)
-        select(obj)
+        gui_utils.format_object(obj)
+        gui_utils.select(obj)
 
     return obj
 
 
 makeWire = make_wire
+
+## @}

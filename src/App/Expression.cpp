@@ -31,6 +31,7 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/io/ios_state.hpp>
 
 #include <Base/Console.h>
 #include "Base/Exception.h"
@@ -830,18 +831,21 @@ void Expression::Component::set(const Expression *owner, Py::Object &pyobj, cons
 
 void Expression::Component::del(const Expression *owner, Py::Object &pyobj) const {
     try {
-        if(!e1 && !e2 && !e3) {
+        if (!e1 && !e2 && !e3) {
             comp.del(pyobj);
-        } if(!comp.isRange() && !e2 && !e3) {
+        }
+        else if (!comp.isRange() && !e2 && !e3) {
             auto index = e1->getPyValue();
-            if(pyobj.isMapping())
+            if (pyobj.isMapping()) {
                 Py::Mapping(pyobj).delItem(index);
+            }
             else {
                 Py_ssize_t i = PyNumber_AsSsize_t(pyobj.ptr(), PyExc_IndexError);
-                if(PyErr_Occurred() || PySequence_DelItem(pyobj.ptr(),i)==-1)
+                if (PyErr_Occurred() || PySequence_DelItem(pyobj.ptr(),i)==-1)
                     throw Py::Exception();
             }
-        }else{
+        }
+        else {
             Py::Object v1,v2,v3;
             if(e1) v1 = e1->getPyValue();
             if(e2) v2 = e2->getPyValue();
@@ -849,13 +853,14 @@ void Expression::Component::del(const Expression *owner, Py::Object &pyobj) cons
             PyObject *s = PySlice_New(e1?v1.ptr():nullptr,
                                       e2?v2.ptr():nullptr,
                                       e3?v3.ptr():nullptr);
-            if(!s)
+            if (!s)
                 throw Py::Exception();
             Py::Object slice(s,true);
-            if(PyObject_DelItem(pyobj.ptr(),slice.ptr())<0)
+            if (PyObject_DelItem(pyobj.ptr(),slice.ptr())<0)
                 throw Py::Exception();
         }
-    }catch(Py::Exception &) {
+    }
+    catch(Py::Exception &) {
         EXPR_PY_THROW(owner);
     }
 }
@@ -1358,6 +1363,7 @@ void NumberExpression::_toString(std::ostream &ss, bool,int) const
     // https://en.cppreference.com/w/cpp/types/numeric_limits/digits10
     // https://en.cppreference.com/w/cpp/types/numeric_limits/max_digits10
     // https://www.boost.org/doc/libs/1_63_0/libs/multiprecision/doc/html/boost_multiprecision/tut/limits/constants.html
+    boost::io::ios_flags_saver ifs(ss);
     ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << getValue();
 
     /* Trim of any extra spaces */
@@ -1808,6 +1814,7 @@ bool FunctionExpression::isTouched() const
 class Collector {
 public:
     Collector() : first(true) { }
+    virtual ~Collector() {}
     virtual void collect(Quantity value) {
         if (first)
             q.setUnit(value.getUnit());
@@ -2463,7 +2470,7 @@ void FunctionExpression::_visit(ExpressionVisitor &v)
 
 TYPESYSTEM_SOURCE(App::VariableExpression, App::UnitExpression)
 
-VariableExpression::VariableExpression(const DocumentObject *_owner, ObjectIdentifier _var)
+VariableExpression::VariableExpression(const DocumentObject *_owner, const ObjectIdentifier& _var)
     : UnitExpression(_owner)
     , var(_var)
 {
@@ -2991,7 +2998,7 @@ Range RangeExpression::getRange() const
 {
     auto c1 = stringToAddress(begin.c_str(),true);
     auto c2 = stringToAddress(end.c_str(),true);
-    if(c1.isValid() && c1.isValid())
+    if(c1.isValid() && c2.isValid())
         return Range(c1,c2);
 
     Base::PyGILStateLocker lock;

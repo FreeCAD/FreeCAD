@@ -599,7 +599,13 @@ public:
     ~DocOpenGuard() {
         if(flag) {
             flag = false;
-            signal();
+            try {
+                signal();
+            }
+            catch (const boost::exception&) {
+                // reported by code analyzers
+                Base::Console().Warning("~DocOpenGuard: Unexpected boost exception\n");
+            }
         }
     }
 };
@@ -926,7 +932,13 @@ Application::TransactionSignaller::TransactionSignaller(bool abort, bool signal)
 Application::TransactionSignaller::~TransactionSignaller() {
     if(--_TransSignalCount == 0 && _TransSignalled) {
         _TransSignalled = false;
-        GetApplication().signalCloseTransaction(abort);
+        try {
+            GetApplication().signalCloseTransaction(abort);
+        }
+        catch (const boost::exception&) {
+            // reported by code analyzers
+            Base::Console().Warning("~TransactionSignaller: Unexpected boost exception\n");
+        }
     }
 }
 

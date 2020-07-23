@@ -22,15 +22,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for applying styles to objects in the Draft Workbench."""
+"""Provides GUI tools to apply styles to objects."""
 ## @package gui_styles
-# \ingroup DRAFT
-# \brief Provides tools for applying styles to objects in the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to apply styles to objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
 import draftguitools.gui_base_original as gui_base_original
+
 from draftutils.translate import translate, _tr
 
 
@@ -94,3 +97,5 @@ class ApplyStyle(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_ApplyStyle', ApplyStyle())
+
+## @}

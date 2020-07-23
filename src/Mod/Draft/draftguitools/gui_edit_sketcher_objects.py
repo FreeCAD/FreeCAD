@@ -20,18 +20,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the support functions to Draft_Edit for Arch objects."""
-## @package gui_edit_arch_objects
-# \ingroup DRAFT
-# \brief Provide the support functions to Draft_Edit for Arch objects.
+"""Provides support functions to edit Sketch objects."""
+## @package gui_edit_sketcher_objects
+# \ingroup draftguitools
+# \brief Provides support functions to edit Sketch objects.
 
 __title__ = "FreeCAD Draft Edit Tool"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Carlo Pavan")
 __url__ = "https://www.freecadweb.org"
 
-
-import math
+## \addtogroup draftguitools
+# @{
 import FreeCAD as App
 
 from draftutils.translate import translate
@@ -75,3 +75,5 @@ def updateSketch(obj, nodeIndex, v):
     elif nodeIndex == 1:
         obj.movePoint(0, 2, v)
     obj.recompute()
+
+## @}

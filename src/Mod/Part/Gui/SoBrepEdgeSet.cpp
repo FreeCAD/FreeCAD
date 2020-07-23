@@ -77,8 +77,9 @@ void SoBrepEdgeSet::initClass()
 }
 
 SoBrepEdgeSet::SoBrepEdgeSet()
-    :selContext(std::make_shared<SelContext>())
-    ,selContext2(std::make_shared<SelContext>())
+    : selContext(std::make_shared<SelContext>())
+    , selContext2(std::make_shared<SelContext>())
+    , packedColor(0)
 {
     SO_NODE_CONSTRUCTOR(SoBrepEdgeSet);
 }

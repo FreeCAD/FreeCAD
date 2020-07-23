@@ -203,6 +203,22 @@ class TestSolverCalculix(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
+    def test_square_pipe_end_twisted_edgeforces(
+        self
+    ):
+        from femexamples.square_pipe_end_twisted_edgeforces import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_square_pipe_end_twisted_nodeforces(
+        self
+    ):
+        from femexamples.square_pipe_end_twisted_nodeforces import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
     def test_thermomech_bimetall(
         self
     ):

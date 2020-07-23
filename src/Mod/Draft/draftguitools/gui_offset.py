@@ -22,15 +22,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for offsetting objects with the Draft Workbench.
+"""Provides GUI tools to create offsets from objects.
 
 It mostly works on lines, polylines, and similar objects with
 regular geometrical shapes, like rectangles.
 """
 ## @package gui_offset
-# \ingroup DRAFT
-# \brief Provides tools for offsetting objects with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create offsets from objects.
 
+## \addtogroup draftguitools
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -42,6 +44,7 @@ import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+
 from draftutils.messages import _msg, _wrn, _err
 from draftutils.translate import translate, _tr
 
@@ -315,3 +318,5 @@ class Offset(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Offset', Offset())
+
+## @}

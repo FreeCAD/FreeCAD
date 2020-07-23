@@ -20,19 +20,29 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for the Draft DrawingView object.
-This module is obsolete, since Drawing was substituted by TechDraw.
+"""Provides the object code for the DrawingView object (OBSOLETE).
+
+This module is obsolete, since the Drawing Workbench stopped
+being developed in v0.17.
+The TechDraw Workbench replaces Drawing, and it no longer requires
+a `DrawingView` object to display objects in a drawing sheet.
+
+This module is still provided in order to be able to open older files
+that use this `DrawingView` object. However, a GUI tool to create
+this object should no longer be available.
 """
 ## @package drawingview
-# \ingroup DRAFT
-# \brief This module provides the object code for the Draft DrawingView object.
+# \ingroup draftobjects
+# \brief Provides the object code for the DrawingView object (OBSOLETE).
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import getSVG
-
 import draftutils.utils as utils
 import draftutils.groups as groups
+
 from draftobjects.base import DraftObject
 
 
@@ -124,4 +134,7 @@ class DrawingView(DraftObject):
         return utils.getDXF(obj)
 
 
+# Alias for compatibility with v0.18 and earlier
 _DrawingView = DrawingView
+
+## @}

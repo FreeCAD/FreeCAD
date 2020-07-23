@@ -20,12 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the view provider code for the Draft Array objects.
-"""
+"""Provides the viewprovider code for the Array object."""
 ## @package view_array
-# \ingroup DRAFT
-# \brief Provides the view provider code for the Draft Array objects.
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for the Array object.
 
+## \addtogroup draftviewproviders
+# @{
 from draftviewproviders.view_base import ViewProviderDraft
 
 
@@ -72,4 +73,7 @@ class ViewProviderDraftArray(ViewProviderDraft):
             vobj.DiffuseColor = colors
 
 
+# Alias for compatibility with v0.18 and earlier
 _ViewProviderDraftArray = ViewProviderDraftArray
+
+## @}

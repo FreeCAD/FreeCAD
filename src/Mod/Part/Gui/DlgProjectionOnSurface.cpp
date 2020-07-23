@@ -593,7 +593,7 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
 {
   if (!iCurrentObject) return;
   auto partenShape = iCurrentObject->Shape.getShape().getShape();
-  auto subShape = iCurrentObject->Shape.getShape().getSubShape(iShapeName.c_str());
+  auto subShape = iCurrentObject->Shape.getShape().getSubShape(iShapeName.c_str(), true);
 
   TopoDS_Shape currentShape = subShape;
   if (subShape.IsNull()) currentShape = partenShape;
@@ -784,8 +784,8 @@ TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(const std::vecto
   {
     auto aShape = TopoDS::Wire(aWireWireHandle->Value(it));
     ShapeFix_Wire aWireRepair(aShape, iFaceToProject, 0.0001);
-    aWireRepair.FixAddCurve3dMode();
-    aWireRepair.FixAddPCurveMode();
+    aWireRepair.FixAddCurve3dMode() = 1;
+    aWireRepair.FixAddPCurveMode() = 1;
     aWireRepair.Perform();
     //return aWireRepair.Wire();
     ShapeFix_Wireframe aWireFramFix(aWireRepair.Wire());

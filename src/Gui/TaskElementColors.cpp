@@ -106,7 +106,12 @@ public:
     }
 
     ~Private() {
-        vpParent->OnTopWhenSelected.setValue(onTopMode);
+        try {
+            vpParent->OnTopWhenSelected.setValue(onTopMode);
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
     }
 
     bool allow(App::Document *doc, App::DocumentObject *obj, const char *subname) {

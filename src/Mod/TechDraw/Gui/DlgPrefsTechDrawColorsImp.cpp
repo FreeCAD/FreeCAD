@@ -26,14 +26,16 @@
 #include "PreCompiled.h"
 
 #include "DlgPrefsTechDrawColorsImp.h"
+#include "ui_DlgPrefsTechDrawColors.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace TechDrawGui;
 
 DlgPrefsTechDrawColorsImp::DlgPrefsTechDrawColorsImp( QWidget* parent )
   : PreferencePage( parent )
+  , ui(new Ui_DlgPrefsTechDrawColorsImp)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 }
 
 DlgPrefsTechDrawColorsImp::~DlgPrefsTechDrawColorsImp()
@@ -43,42 +45,42 @@ DlgPrefsTechDrawColorsImp::~DlgPrefsTechDrawColorsImp()
 
 void DlgPrefsTechDrawColorsImp::saveSettings()
 {
-    pcbDimColor->onSave();
-    pcb_Hatch->onSave();
-    pcb_Background->onSave();
-    pcb_PreSelect->onSave();
-    pcb_Hidden->onSave();
-    pcb_Select->onSave();
-    pcb_Normal->onSave();
-    pcb_Surface->onSave();
-    pcb_GeomHatch->onSave();
-    pcb_Face->onSave();
-    pcb_PaintFaces->onSave();
-    pcbSectionLine->onSave();
-    pcbCenterColor->onSave();
-    pcbVertexColor->onSave();
-    pcbMarkup->onSave();
-    pcbHighlight->onSave();
+    ui->pcbDimColor->onSave();
+    ui->pcb_Hatch->onSave();
+    ui->pcb_Background->onSave();
+    ui->pcb_PreSelect->onSave();
+    ui->pcb_Hidden->onSave();
+    ui->pcb_Select->onSave();
+    ui->pcb_Normal->onSave();
+    ui->pcb_Surface->onSave();
+    ui->pcb_GeomHatch->onSave();
+    ui->pcb_Face->onSave();
+    ui->pcb_PaintFaces->onSave();
+    ui->pcbSectionLine->onSave();
+    ui->pcbCenterColor->onSave();
+    ui->pcbVertexColor->onSave();
+    ui->pcbMarkup->onSave();
+    ui->pcbHighlight->onSave();
 }
 
 void DlgPrefsTechDrawColorsImp::loadSettings()
 {
-    pcbDimColor->onRestore();
-    pcb_Hatch->onRestore();
-    pcb_Background->onRestore();
-    pcb_PreSelect->onRestore();
-    pcb_Hidden->onRestore();
-    pcb_Select->onRestore();
-    pcb_Normal->onRestore();
-    pcb_Surface->onRestore();
-    pcb_GeomHatch->onRestore();
-    pcb_Face->onRestore();
-    pcb_PaintFaces->onRestore();
-    pcbSectionLine->onRestore();
-    pcbCenterColor->onRestore();
-    pcbVertexColor->onRestore();
-    pcbMarkup->onRestore();
-    pcbHighlight->onRestore();
+    ui->pcbDimColor->onRestore();
+    ui->pcb_Hatch->onRestore();
+    ui->pcb_Background->onRestore();
+    ui->pcb_PreSelect->onRestore();
+    ui->pcb_Hidden->onRestore();
+    ui->pcb_Select->onRestore();
+    ui->pcb_Normal->onRestore();
+    ui->pcb_Surface->onRestore();
+    ui->pcb_GeomHatch->onRestore();
+    ui->pcb_Face->onRestore();
+    ui->pcb_PaintFaces->onRestore();
+    ui->pcbSectionLine->onRestore();
+    ui->pcbCenterColor->onRestore();
+    ui->pcbVertexColor->onRestore();
+    ui->pcbMarkup->onRestore();
+    ui->pcbHighlight->onRestore();
 }
 
 /**
@@ -88,7 +90,7 @@ void DlgPrefsTechDrawColorsImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         saveSettings();
-        retranslateUi(this);
+        ui->retranslateUi(this);
         loadSettings();
     }
     else {

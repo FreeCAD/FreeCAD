@@ -99,8 +99,13 @@ namespace nglib {
 # pragma clang diagnostic pop
 #endif
 
+//#define NETGEN_VERSION_6_2_1909
+
 namespace netgen {
 #if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2)
+#ifdef NETGEN_VERSION_6_2_1909
+  typedef Refinement OCCRefinementSurfaces;
+#endif
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&);
 #elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&, int, int);

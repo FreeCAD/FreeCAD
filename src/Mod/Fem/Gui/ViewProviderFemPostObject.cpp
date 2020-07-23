@@ -182,7 +182,7 @@ void ViewProviderFemPostObject::attach(App::DocumentObject *pcObj)
     addDisplayMaskMode(m_seperator, "Default");
     setDisplayMaskMode("Default");
 
-    setupPipeline();
+    (void)setupPipeline();
 }
 
 SoSeparator* ViewProviderFemPostObject::getFrontRoot(void) const {
@@ -208,7 +208,7 @@ void ViewProviderFemPostObject::setDisplayMode(const char* ModeName)
     else if (strcmp("Nodes (surface only)",ModeName)==0)
         m_currentAlgorithm = m_pointsSurface;
 
-    update();
+    updateVtk();
 
     ViewProviderDocumentObject::setDisplayMode( ModeName );
 }
@@ -226,7 +226,7 @@ std::vector<std::string> ViewProviderFemPostObject::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderFemPostObject::update() {
+void ViewProviderFemPostObject::updateVtk() {
 
     if(!setupPipeline())
         return;
@@ -505,7 +505,7 @@ void ViewProviderFemPostObject::WriteTransparency() {
 void ViewProviderFemPostObject::updateData(const App::Property* p) {
 
     if( strcmp(p->getName(), "Data") == 0 ) {
-        update();
+        updateVtk();
     }
 }
 

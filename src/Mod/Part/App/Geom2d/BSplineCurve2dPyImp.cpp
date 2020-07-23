@@ -738,7 +738,7 @@ Py::Object BSplineCurve2dPy::getLastUKnotIndex(void) const
 #if PY_MAJOR_VERSION >= 3
     return Py::Long(curve->LastUKnotIndex()); 
 #else
-    return Py::Int(curve->FirstUKnotIndex()); 
+    return Py::Int(curve->LastUKnotIndex());
 #endif
 }
 

@@ -22,16 +22,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating labels with the Draft Workbench.
+"""Provides GUI tools to create Label objects.
 
 Labels are similar to text annotations but include a leader line
 and an arrow in order to point to an object and indicate some of its
 properties.
 """
 ## @package gui_labels
-# \ingroup DRAFT
-# \brief Provides tools for creating labels with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create Label objects.
 
+## \addtogroup draftguitools
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -247,3 +249,5 @@ class Label(gui_base_original.Creator):
 
 Draft_Label = Label
 Gui.addCommand('Draft_Label', Label())
+
+## @}

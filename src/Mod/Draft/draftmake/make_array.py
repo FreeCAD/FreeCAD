@@ -20,11 +20,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the code for the Draft make_array function."""
-## @package make_array
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_array function.
+"""Provides functions to create Array objects.
 
+This includes orthogonal arrays, polar arrays, and circular arrays.
+"""
+## @package make_array
+# \ingroup draftmake
+# \brief Provides functions to create Array objects.
+
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
@@ -148,3 +153,5 @@ def makeArray(baseobject,
     return make_array(baseobject,
                       arg1, arg2, arg3,
                       arg4, arg5, arg6, use_link)
+
+## @}

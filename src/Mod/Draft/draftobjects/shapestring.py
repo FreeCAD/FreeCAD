@@ -20,22 +20,20 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Shapestring.
-"""
+"""Provides the object code for the ShapeString object."""
 ## @package shapestring
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Shapestring.
+# \ingroup draftobjects
+# \brief Provides the object code for the ShapeString object.
 
+## \addtogroup draftobjects
+# @{
 import sys
-
-import FreeCAD as App
-
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-from draftutils.utils import epsilon
+import FreeCAD as App
+import draftutils.utils as utils
 
 from draftutils.translate import translate
-
 from draftobjects.base import DraftObject
 
 
@@ -174,7 +172,7 @@ class ShapeString(DraftObject):
             bcfA = biggest.common(face).Area
             fA = face.Area
             difA = abs(bcfA - fA)
-            eps = epsilon()
+            eps = utils.epsilon()
             # if biggest.common(face).Area == face.Area:
             if difA <= eps:                              # close enough to zero
                 # biggest completely overlaps current face ==> cut
@@ -196,4 +194,7 @@ class ShapeString(DraftObject):
         return ret
 
 
+# Alias for compatibility with v0.18 and earlier
 _ShapeString = ShapeString
+
+## @}

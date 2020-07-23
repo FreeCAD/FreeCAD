@@ -97,7 +97,9 @@ QGIBalloonLabel::QGIBalloonLabel()
     m_labelText = new QGCustomText();
     m_labelText->setParentItem(this);
 
+    verticalSep = false;
     hasHover = false;
+    parent = nullptr;
 }
 
 QVariant QGIBalloonLabel::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -249,8 +251,12 @@ void QGIBalloonLabel::setColor(QColor c)
 
 //**************************************************************
 QGIViewBalloon::QGIViewBalloon() :
+    dvBalloon(nullptr),
     hasHover(false),
-    m_lineWidth(0.0)
+    m_lineWidth(0.0),
+    m_obtuse(false),
+    parent(nullptr),
+    m_dragInProgress(false)
 {
     m_ctrl = false;
 
@@ -366,9 +372,10 @@ void QGIViewBalloon::setViewPartFeature(TechDraw::DrawViewBalloon *balloon)
     DrawView* balloonParent = nullptr;
     double scale = 1.0;
     App::DocumentObject* docObj = balloon->SourceView.getValue();
-    if (docObj == nullptr) {
+    if (docObj) {
         balloonParent = dynamic_cast<DrawView*>(docObj);
-        scale = balloonParent->getScale();
+        if (balloonParent)
+            scale = balloonParent->getScale();
     }
 
     float x = Rez::guiX(balloon->X.getValue() * scale) ;
@@ -462,6 +469,9 @@ void QGIViewBalloon::balloonLabelDragged(bool ctrl)
 //    Base::Console().Message("QGIVB::bLabelDragged(%d)\n", ctrl);
     m_ctrl = ctrl;
     auto dvb( dynamic_cast<TechDraw::DrawViewBalloon *>(getViewObject()) );
+    if (dvb == nullptr)
+        return;
+
     if (!m_dragInProgress) {           //first drag movement
         m_dragInProgress = true;
         if (ctrl) {             //moving whole thing, remember Origin offset from Bubble
@@ -509,12 +519,9 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
         return;
     }
 
-    DrawView* balloonParent = nullptr;
-    App::DocumentObject* docObj = balloon->SourceView.getValue();
-    if (docObj == nullptr) {
+    DrawView* balloonParent = dynamic_cast<DrawView*>(balloon->SourceView.getValue());
+    if (balloonParent == nullptr) {
         return;
-    } else {
-        balloonParent = dynamic_cast<DrawView*>(docObj);
     }
     
     auto featPage = balloonParent->findParentPage();

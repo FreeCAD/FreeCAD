@@ -29,9 +29,9 @@ setup()
 """
 
 # cantilever under self weight made from steel grad 235
-# l = 32 yields just from self weight 
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=48513
+# l = 32 m, yields just from self weight, means max sigma around 235 n/mm2
 # max deformation = 576.8 mm
+# https://forum.freecadweb.org/viewtopic.php?f=18&t=48513
 
 import FreeCAD
 
@@ -95,7 +95,8 @@ def setup(doc=None, solvertype="ccxtools"):
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverElmer(doc, "SolverElmer")
         )[0]
-        ObjectsFem.makeEquationElasticity(doc, solver_object)
+        eq_obj = ObjectsFem.makeEquationElasticity(doc, solver_object)
+        eq_obj.LinearSolverType = "Direct"
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "

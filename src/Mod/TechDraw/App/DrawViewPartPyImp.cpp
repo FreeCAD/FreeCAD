@@ -659,6 +659,9 @@ PyObject* DrawViewPartPy::getEdgeByIndex(PyObject *args)
     //this is scaled and +Yup
     //need unscaled and +Ydown
     TechDraw::BaseGeom* geom = dvp->getGeomByIndex(edgeIndex);
+    if (geom == nullptr) {
+        throw Py::ValueError("wrong edgeIndex");
+    }
 
     TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->occEdge,
                                       Base::Vector3d(0.0, 0.0, 0.0),
@@ -679,6 +682,9 @@ PyObject* DrawViewPartPy::getVertexByIndex(PyObject *args)
     //this is scaled and +Yup
     //need unscaled and +Ydown
     TechDraw::Vertex* vert = dvp->getProjVertexByIndex(vertexIndex);
+    if (vert == nullptr) {
+        throw Py::ValueError("wrong vertIndex");
+    }
     Base::Vector3d point = DrawUtil::invertY(vert->point()) / dvp->getScale();
 
     gp_Pnt gPoint(point.x, point.y, point.z);

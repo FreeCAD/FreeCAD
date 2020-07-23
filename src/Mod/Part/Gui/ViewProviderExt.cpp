@@ -137,7 +137,6 @@ void ViewProviderPartExt::getNormals(const TopoDS_Face&  theFace,
                                      const Handle(Poly_Triangulation)& aPolyTri,
                                      TColgp_Array1OfDir& theNormals)
 {
-    Poly_Connect thePolyConnect(aPolyTri);
     const TColgp_Array1OfPnt& aNodes = aPolyTri->Nodes();
 
     if(aPolyTri->HasNormals())
@@ -167,6 +166,7 @@ void ViewProviderPartExt::getNormals(const TopoDS_Face&  theFace,
     }
 
     // take in face the surface location
+    Poly_Connect thePolyConnect(aPolyTri);
     const TopoDS_Face      aZeroFace = TopoDS::Face(theFace.Located(TopLoc_Location()));
     Handle(Geom_Surface)   aSurf     = BRep_Tool::Surface(aZeroFace);
     const Standard_Real    aTol      = Precision::Confusion();
@@ -929,11 +929,10 @@ void ViewProviderPartExt::reload()
 
 void ViewProviderPartExt::updateData(const App::Property* prop)
 {
-    const char *propName = prop?prop->getName():"";
-    if(propName  && (strcmp(propName,"Shape")==0 || strstr(propName,"Touched")!=0))
-    {
+    const char *propName = prop->getName();
+    if (propName && (strcmp(propName, "Shape") == 0 || strstr(propName, "Touched") != nullptr)) {
         // calculate the visual only if visible
-        if (isUpdateForced()||Visibility.getValue())
+        if (isUpdateForced() || Visibility.getValue())
             updateVisual();
         else 
             VisualTouched = true;

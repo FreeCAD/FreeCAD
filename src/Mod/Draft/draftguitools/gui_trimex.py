@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for trimming and extending lines with the Draft Workbench.
+"""Provides GUI tools to trim and extend lines.
 
 It also extends closed faces to create solids, that is, it can be used
 to extrude a closed profile.
@@ -32,9 +32,11 @@ the direction of a line, and up to the distance specified
 by the snapping point.
 """
 ## @package gui_trimex
-# \ingroup DRAFT
-# \brief Provides tools for trimming and extending lines.
+# \ingroup draftguitools
+# \brief Provides GUI tools to trim and extend lines.
 
+## \addtogroup draftguitools
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -48,6 +50,7 @@ import draftutils.gui_utils as gui_utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate, _tr
 
@@ -569,3 +572,5 @@ class Trimex(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Trimex', Trimex())
+
+## @}

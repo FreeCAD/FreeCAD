@@ -1539,6 +1539,10 @@ class StdCmdExpression : public Gui::Command
 {
 public:
     StdCmdExpression() : Command("Std_Expressions")
+                       , pcActionCopyAll(nullptr)
+                       , pcActionCopySel(nullptr)
+                       , pcActionCopyActive(nullptr)
+                       , pcActionPaste(nullptr)
     {
         sGroup        = QT_TR_NOOP("Edit");
         sMenuText     = QT_TR_NOOP("Expression actions");

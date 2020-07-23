@@ -39,3 +39,6 @@ on how to write unit tests.
         def test_new_tool(self):
             pass
 """
+## \defgroup drafttests drafttests
+# \ingroup DRAFT
+# \brief Modules that define classes used for unit testing the workbench.

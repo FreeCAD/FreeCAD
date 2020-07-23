@@ -93,7 +93,7 @@ namespace Gui {
 class NS::Event : public sc::event<NS::Event>
 {
 public:
-    Event():flags(new Flags){}
+    Event():inventor_event(nullptr), flags(new Flags){}
     virtual ~Event(){}
 
     void log() const {

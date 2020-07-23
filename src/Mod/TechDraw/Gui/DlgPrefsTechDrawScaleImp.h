@@ -25,12 +25,13 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPSCALE_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPSCALE_H
 
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDrawScale.h>
 #include <Gui/PropertyPage.h>
+#include <memory>
 
 namespace TechDrawGui {
+class Ui_DlgPrefsTechDrawScaleImp;
 
-class DlgPrefsTechDrawScaleImp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDrawScaleImp
+class DlgPrefsTechDrawScaleImp : public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -45,6 +46,9 @@ protected:
     void saveSettings();
     void loadSettings();
     void changeEvent(QEvent *e);
+
+private:
+    std::unique_ptr<Ui_DlgPrefsTechDrawScaleImp> ui;
 };
 
 } // namespace TechDrawGui

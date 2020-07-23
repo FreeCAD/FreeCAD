@@ -48,37 +48,37 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
             "App::PropertyBool",
             "DoFrequencyAnalysis",
             "Elasticity",
-            "Select type of solver for linear system"
+            ""
         )
         obj.addProperty(
             "App::PropertyInteger",
             "EigenmodesCount",
             "Elasticity",
-            "Select type of solver for linear system"
+            ""
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateStrains",
             "Elasticity",
-            "Select type of solver for linear system"
+            ""
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateStresses",
             "Elasticity",
-            "Select type of solver for linear system"
+            ""
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculatePrincipal",
             "Elasticity",
-            "Select type of solver for linear system"
+            ""
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculatePangle",
             "Elasticity",
-            "Select type of solver for linear system"
+            ""
         )
         obj.EigenmodesCount = 5
         obj.Priority = 10

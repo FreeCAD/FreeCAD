@@ -342,6 +342,7 @@ TYPESYSTEM_SOURCE(TechDraw::CosmeticEdge,Base::Persistence)
 CosmeticEdge::CosmeticEdge()
 {
 //    Base::Console().Message("CE::CE()\n");
+    permaRadius = 0.0;
     m_geometry = new TechDraw::BaseGeom();
     initialize();
 }

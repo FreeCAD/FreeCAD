@@ -22,11 +22,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the make function to create Draft Text objects."""
+"""Provides functions to create Text objects."""
 ## @package make_text
-# \ingroup DRAFT
-# \brief Provides the make function to create Draft Text objects.
+# \ingroup draftmake
+# \brief Provides functions to create Text objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
@@ -216,5 +218,6 @@ def convert_draft_texts(textslist=None):
 def convertDraftTexts(textslist=[]):
     """Convert Text. DEPRECATED. Use 'convert_draft_texts'."""
     utils.use_instead("convert_draft_texts")
-
     return convert_draft_texts(textslist)
+
+## @}

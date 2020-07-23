@@ -1380,7 +1380,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
         return;
     }
 
-    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(views.front());
+    TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(views.front());
 
     std::vector<App::DocumentObject*> refs2d;
 

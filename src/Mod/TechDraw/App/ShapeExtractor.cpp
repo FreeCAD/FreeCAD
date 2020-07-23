@@ -177,7 +177,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
 //            }
             Base::Placement childPlm;
             if (l->getTypeId().isDerivedFrom(App::LinkElement::getClassTypeId())) {
-                App::LinkElement* cLinkElem = dynamic_cast<App::LinkElement*>(l);
+                App::LinkElement* cLinkElem = static_cast<App::LinkElement*>(l);
                 if (cLinkElem->hasPlacement()) {
                     childPlm = cLinkElem->getLinkPlacementProperty()->getValue();
                 }
@@ -401,10 +401,9 @@ bool ShapeExtractor::isDraftPoint(App::DocumentObject* obj)
 //    Base::Console().Message("SE::isDraftPoint()\n");
     bool result = false;
     //if the docObj doesn't have a Proxy property, it definitely isn't a Draft point
-    App::Property* proxy = obj->getPropertyByName("Proxy");
+    App::PropertyPythonObject* proxy = dynamic_cast<App::PropertyPythonObject*>(obj->getPropertyByName("Proxy"));
     if (proxy != nullptr) {
-        App::PropertyPythonObject* proxyPy = dynamic_cast<App::PropertyPythonObject*>(proxy);
-        std::string  pp = proxyPy->toString();
+        std::string  pp = proxy->toString();
 //        Base::Console().Message("SE::isDraftPoint - pp: %s\n", pp.c_str());
         if (pp.find("Point") != std::string::npos) {
             result = true;

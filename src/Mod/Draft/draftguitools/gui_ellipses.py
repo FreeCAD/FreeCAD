@@ -22,11 +22,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating ellipses with the Draft Workbench."""
+"""Provides GUI tools to create Ellipse objects."""
 ## @package gui_ellipses
-# \ingroup DRAFT
-# \brief Provides tools for creating ellipses with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create Ellipse objects.
 
+## \addtogroup draftguitools
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -38,6 +40,7 @@ import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+
 from draftutils.translate import translate
 from draftutils.messages import _msg, _err
 
@@ -202,3 +205,5 @@ class Ellipse(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_Ellipse', Ellipse())
+
+## @}

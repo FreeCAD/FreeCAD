@@ -1383,7 +1383,8 @@ int Document::getAvailableUndos(int id) const
                 return i;
         }
         auto rit = mUndoTransactions.rbegin();
-        for(;rit!=mUndoTransactions.rend()&&*rit!=it->second;++rit,++i);
+        for(;rit!=mUndoTransactions.rend()&&*rit!=it->second;++rit)
+            ++i;
         assert(rit!=mUndoTransactions.rend());
         return i+1;
     }
@@ -1400,7 +1401,8 @@ int Document::getAvailableRedos(int id) const
         if(it == mRedoMap.end())
             return 0;
         int i = 0;
-        for(auto rit=mRedoTransactions.rbegin();*rit!=it->second;++rit,++i);
+        for(auto rit=mRedoTransactions.rbegin();*rit!=it->second;++rit)
+            ++i;
         assert(i<(int)mRedoTransactions.size());
         return i+1;
     }
@@ -4392,7 +4394,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
 
     // True object move without copy is only safe when undo is off on both
     // documents.
-    if(!recursive && !d->iUndoMode && !that->d->iUndoMode) {
+    if(!recursive && !d->iUndoMode && !that->d->iUndoMode && !that->d->rollback) {
         // all object of the other document that refer to this object must be nullified
         that->breakDependency(obj, false);
         std::string objname = getUniqueObjectName(obj->getNameInDocument());

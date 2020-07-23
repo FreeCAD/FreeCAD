@@ -21,10 +21,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides various functions for working with fillets."""
+"""Provides various functions to work with fillets."""
 ## @package fillets
-# \ingroup DRAFTGEOUTILS
-# \brief Provides various functions for working with fillets.
+# \ingroup draftgeoutils
+# \brief Provides various functions to work with fillets.
 
 import math
 import lazy_loader.lazy_loader as lz
@@ -37,6 +37,9 @@ from draftgeoutils.wires import isReallyClosed
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftgeoutils
+# @{
 
 
 def fillet(lEdges, r, chamfer=False):
@@ -393,3 +396,5 @@ def filletWire(aWire, r, chamfer=False):
             filEdges[0] = result[2]
 
     return Part.Wire(filEdges)
+
+## @}

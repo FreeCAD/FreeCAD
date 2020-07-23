@@ -87,7 +87,8 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 ViewProviderPage::ViewProviderPage()
   : m_mdiView(0),
     m_docReady(true),
-    m_pageName("")
+    m_pageName(""),
+    m_graphicsView(nullptr)
 {
     sPixmap = "TechDraw_Tree_Page";
     static const char *group = "Base";
@@ -221,7 +222,7 @@ bool ViewProviderPage::onDelete(const std::vector<std::string> &)
         QString bodyMessage;
         QTextStream bodyMessageStream(&bodyMessage);
         bodyMessageStream << qApp->translate("Std_Delete",
-            "The page is not empty, therefore the\n following referencing objects might be lost.\n\n"
+            "The page is not empty, therefore the\nfollowing referencing objects might be lost.\n\n"
             "Are you sure you want to continue?\n");
         for (auto ObjIterator : objs)
             bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
@@ -449,10 +450,12 @@ void ViewProviderPage::setTemplateMarkers(bool state)
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(templateFeat->getDocument());
     Gui::ViewProvider* vp = guiDoc->getViewProvider(templateFeat);
     ViewProviderTemplate* vpt = dynamic_cast<ViewProviderTemplate*>(vp);
-    vpt->setMarkers(state);
-    QGITemplate* t = vpt->getQTemplate();
-    if (t != nullptr) {
-        t->updateView(true);
+    if (vpt) {
+        vpt->setMarkers(state);
+        QGITemplate* t = vpt->getQTemplate();
+        if (t != nullptr) {
+            t->updateView(true);
+        }
     }
 }
 

@@ -18,11 +18,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the Draft WorkingPlaneProxy tool."""
+"""Provides GUI tools to create WorkingPlaneProxy objects."""
 ## @package gui_planeproxy
-# \ingroup DRAFT
-# \brief This module provides the Draft WorkingPlaneProxy tool.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create WorkingPlaneProxy objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -77,3 +79,5 @@ class Draft_WorkingPlaneProxy:
 
 
 Gui.addCommand('Draft_WorkingPlaneProxy', Draft_WorkingPlaneProxy())
+
+## @}

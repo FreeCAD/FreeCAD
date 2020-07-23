@@ -136,7 +136,7 @@ public:
                 const int32_t *texindices,
                 const int nbind,
                 const int mbind,
-                const int texture);
+                SbBool texture);
 
     static void context_destruction_cb(uint32_t context, void * userdata)
     {
@@ -177,6 +177,7 @@ SoBrepFaceSet::SoBrepFaceSet()
 
     selContext = std::make_shared<SelContext>();
     selContext2 = std::make_shared<SelContext>();
+    packedColor = 0;
 
     pimpl.reset(new VBO);
 }
@@ -1285,7 +1286,7 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
         doTextures = false;
 
         renderShape(action, false, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
-            &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
+            &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
     }
     state->pop();
 
@@ -1384,7 +1385,7 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
         renderShape(action, false, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
             &(pindices[id]), numparts, normals_s, nindices_s, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
     }
-    if(push) {
+    if (push) {
         state->pop();
         // SoCacheElement::invalidate(state);
     }
@@ -1407,7 +1408,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                                 const int32_t *texindices,
                                 const int nbind,
                                 const int mbind,
-                                const int texture)
+                                SbBool texture)
 {
     (void)texcoords; (void)texindices; (void)texture;
     const SbVec3f * coords3d = NULL;
@@ -1736,7 +1737,7 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
                                 const int32_t *texindices,
                                 const int nbind,
                                 const int mbind,
-                                const int texture)
+                                SbBool texture)
 {
     // Can we use vertex buffer objects?
     if (hasVBO) {

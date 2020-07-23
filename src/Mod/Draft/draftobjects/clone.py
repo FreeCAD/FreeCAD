@@ -20,16 +20,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Clone.
-"""
+"""Provides the object code for the Clone object."""
 ## @package clone
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Clone.
+# \ingroup draftobjects
+# \brief Provides the object code for the Clone object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 import DraftVecUtils
 
 from draftobjects.base import DraftObject
@@ -131,4 +131,7 @@ class Clone(DraftObject):
         return None
 
 
+# Alias for compatibility with v0.18 and earlier
 _Clone = Clone
+
+## @}

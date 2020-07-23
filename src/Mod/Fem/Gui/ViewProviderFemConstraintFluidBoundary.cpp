@@ -109,7 +109,7 @@ bool ViewProviderFemConstraintFluidBoundary::setEdit(int ModNum)
 
 //Rendering: Combination of ConstraintFixed and ConstraintForce
 #define ARROWLENGTH (4)
-#define ARROWHEADRADIUS (ARROWLENGTH/3)
+#define ARROWHEADRADIUS (ARROWLENGTH/3.0f)
 #define WIDTH (2)
 #define HEIGHT (1)
 //#define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing - so disable

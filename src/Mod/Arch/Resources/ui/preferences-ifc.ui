@@ -104,7 +104,7 @@ One object is the base object, the others are clones.</string>
         <item>
          <widget class="Gui::PrefSpinBox" name="spinBox">
           <property name="toolTip">
-           <string>EXPERIMENTAL - The number of cores to use in multicore mode. Keep 0 to disable multicore mode, or 1 to use multicore mode in single-core mode (safer if you get crashes). Max value should be your number of cores - 1, ex: 3 if you have a quad-core CPU.</string>
+           <string>EXPERIMENTAL - The number of cores to use in multicore mode. Keep 0 to disable multicore mode, or 1 to use multicore mode in single-core mode (safer if you get crashes). Max value should be your number of cores subtracted by 1, ex: 3 if you have a quad-core CPU.</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcMulticore</cstring>

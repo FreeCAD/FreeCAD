@@ -22,14 +22,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating regular polygons with the Draft Workbench.
+"""Provides GUI tools to create regular Polygon objects.
 
 Minimum number of sides is three (equilateral triangles).
 """
 ## @package gui_polygons
-# \ingroup DRAFT
-# \brief Provides tools for creating regular polygons with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create regular Polygon objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -39,6 +41,7 @@ import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+
 from draftutils.messages import _msg
 from draftutils.translate import translate
 
@@ -291,3 +294,5 @@ class Polygon(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_Polygon', Polygon())
+
+## @}

@@ -182,6 +182,7 @@ protected:
 private:
 
     PropertySheet(const PropertySheet & other);
+    PropertySheet& operator= (const PropertySheet&);
 
     /* friends */
 

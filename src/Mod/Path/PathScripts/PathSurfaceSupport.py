@@ -2094,6 +2094,8 @@ class FindUnifiedRegions:
             holds = list()
             if idxCnt == 0:
                 cont = False
+            if safety == 0:
+                cont = False
         # Ewhile
 
         numLoops = len(LOOPS)
@@ -2179,6 +2181,7 @@ class FindUnifiedRegions:
                 hold.extend(Ids)
                 Ids = hold
                 hold = list()
+                idsCnt = len(Ids)
                 if len(Ids) == 0:
                     cont = False
             # Ewhile

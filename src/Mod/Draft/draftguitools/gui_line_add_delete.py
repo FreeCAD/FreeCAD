@@ -22,14 +22,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides certain add and remove line operations of the Draft Workbench.
+"""Provides GUI tools to do certain add and remove line operations.
 
 These GuiCommands aren't really used anymore, as the same actions
 are implemented directly in the Draft_Edit command.
 """
 ## @package gui_line_add_delete
-# \ingroup DRAFT
-# \brief Provides certain add and remove line operations.
+# \ingroup draftguitools
+# \brief Provides GUI tools to do certain add and remove line operations.
+
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -107,3 +110,5 @@ class DelPoint(DraftTools.Modifier):
 
 
 Gui.addCommand('Draft_DelPoint', DelPoint())
+
+## @}

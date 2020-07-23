@@ -143,7 +143,7 @@ void TaskLineDecor::getDefaults(void)
                 } else {
                     Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
                     auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
-                    if ( vp != nullptr ) {
+                    if ( partVP != nullptr ) {
                         m_weight = partVP->LineWidth.getValue();
                         m_style = Qt::SolidLine;                  // = 1
                         m_color = LineFormat::getDefEdgeColor();

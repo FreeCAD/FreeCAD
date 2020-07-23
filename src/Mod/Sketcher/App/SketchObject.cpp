@@ -1220,6 +1220,8 @@ int SketchObject::delConstraint(int ConstrId)
 int SketchObject::delConstraints(std::vector<int> ConstrIds, bool updategeometry)
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+    if (ConstrIds.empty())
+        return 0;
 
     const std::vector< Constraint * > &vals = this->Constraints.getValues();
 
@@ -1227,7 +1229,7 @@ int SketchObject::delConstraints(std::vector<int> ConstrIds, bool updategeometry
 
     std::sort(ConstrIds.begin(),ConstrIds.end());
 
-    if (*ConstrIds.begin() < 0 || *std::prev(ConstrIds.end()) >= int(vals.size()))
+    if (ConstrIds.front() < 0 || ConstrIds.back() >= int(vals.size()))
         return -1;
 
     for(auto rit = ConstrIds.rbegin(); rit!=ConstrIds.rend(); rit++)
@@ -1379,7 +1381,7 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             // Nothing guarantees that a tangent can be freely transferred to another coincident point, as
             // the transfer destination edge most likely won't be intended to be tangent. However, if it is
             // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
-            Constraint *constNew = newVals[i]->clone();
+            std::unique_ptr<Constraint> constNew(newVals[i]->clone());
             constNew->First = toGeoId;
             constNew->FirstPos = toPosId;
 
@@ -1396,14 +1398,15 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
                 continue;
             }
 
-            newVals[i] = constNew;
-            changed.push_back(constNew);
+            Constraint* constPtr = constNew.release();
+            newVals[i] = constPtr;
+            changed.push_back(constPtr);
         }
         else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId &&
                  !(vals[i]->First == toGeoId && vals[i]->FirstPos == toPosId) &&
                  !(toGeoId < 0 && vals[i]->First< 0)) {
 
-            Constraint *constNew = newVals[i]->clone();
+            std::unique_ptr<Constraint> constNew(newVals[i]->clone());
             constNew->Second = toGeoId;
             constNew->SecondPos = toPosId;
             // Nothing guarantees that a tangent can be freely transferred to another coincident point, as
@@ -1416,8 +1419,9 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
                 continue;
             }
 
-            newVals[i] = constNew;
-            changed.push_back(constNew);
+            Constraint* constPtr = constNew.release();
+            newVals[i] = constPtr;
+            changed.push_back(constPtr);
         }
     }
 

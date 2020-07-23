@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for converting Draft objects to Sketches and back.
+"""Provides GUI tools to convert Draft objects to Sketches and back.
 
 Many Draft objects will be converted to a single non-contrainted Sketch.
 
@@ -30,9 +30,11 @@ However, a single sketch with disconnected traces will be converted
 into several individual Draft objects.
 """
 ## @package gui_draft2sketch
-# \ingroup DRAFT
-# \brief Provides tools for converting Draft objects to Sketches and back.
+# \ingroup draftguitools
+# \brief Provides GUI tools to convert Draft objects to Sketches and back.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -153,3 +155,5 @@ class Draft2Sketch(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Draft2Sketch', Draft2Sketch())
+
+## @}

@@ -20,13 +20,16 @@
 # ***************************************************************************
 """Provides the object code for the Fillet object."""
 ## @package fillet
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief Provides the object code for the Fillet object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import draftobjects.base as base
+
 from draftutils.messages import _msg
 
 
@@ -121,3 +124,5 @@ class Fillet(base.DraftObject):
         """
         if prop in "FilletRadius":
             self._update_radius(obj, obj.FilletRadius)
+
+## @}

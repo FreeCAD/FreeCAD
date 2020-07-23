@@ -20,13 +20,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides provides the code for Draft cut function."""
+"""Provides functions to create a cut object from two objects."""
 ## @package cut
-# \ingroup DRAFT
-# \brief Provides provides the code for Draft cut function.
+# \ingroup draftfuctions
+# \brief Provides functions to create a cut object from two objects.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils
+
 from draftutils.translate import _tr
 from draftutils.messages import _err
 
@@ -65,3 +68,5 @@ def cut(object1, object2):
         object2.ViewObject.Visibility = False
 
     return obj
+
+## @}
