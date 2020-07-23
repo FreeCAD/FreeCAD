@@ -198,6 +198,13 @@ class _Rebar(ArchComponent.Component):
         if not "TotalLength" in pl:
             obj.addProperty("App::PropertyDistance", "TotalLength", "Rebar", QT_TRANSLATE_NOOP("App::Property","Total length of all rebars"))
             obj.setEditorMode("TotalLength", 1)
+        if not "Mark" in pl:
+            obj.addProperty(
+                "App::PropertyString",
+                "Mark",
+                "Rebar",
+                QT_TRANSLATE_NOOP("App::Property", "The rebar mark"),
+            )
         self.Type = "Rebar"
 
     def onDocumentRestored(self,obj):
