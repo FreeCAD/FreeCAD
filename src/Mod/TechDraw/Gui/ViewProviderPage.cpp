@@ -223,7 +223,7 @@ bool ViewProviderPage::onDelete(const std::vector<std::string> &)
         QTextStream bodyMessageStream(&bodyMessage);
         bodyMessageStream << qApp->translate("Std_Delete",
             "The page is not empty, therefore the\nfollowing referencing objects might be lost.\n\n"
-            "Are you sure you want to continue?\n");
+            "Are you sure you want to continue?");
         for (auto ObjIterator : objs)
             bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
         // show and evaluate the dialog
