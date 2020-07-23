@@ -122,7 +122,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
 
     createDetail();
     setUiFromFeat();
-    setWindowTitle(QObject::tr("New Detail"));
+    setWindowTitle(QObject::tr("New Detail View"));
 
     connect(ui->pbDragger, SIGNAL(clicked(bool)),
             this, SLOT(onDraggerClicked(bool)));
@@ -208,7 +208,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 
     saveDetailState();
     setUiFromFeat();
-    setWindowTitle(QObject::tr("Edit Detail"));
+    setWindowTitle(QObject::tr("Edit Detail View"));
 
     connect(ui->pbDragger, SIGNAL(clicked(bool)),
             this, SLOT(onDraggerClicked(bool)));
@@ -470,7 +470,7 @@ void TaskDetail::enableTaskButtons(bool b)
 void TaskDetail::createDetail()
 {
 //    Base::Console().Message("TD::createDetail()\n");
-    Gui::Command::openCommand("Create Detail");
+    Gui::Command::openCommand("Create Detail View");
 
     m_detailName = m_doc->getUniqueObjectName("Detail");
 
@@ -479,7 +479,7 @@ void TaskDetail::createDetail()
     App::DocumentObject *docObj = m_doc->getObject(m_detailName.c_str());
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail *>(docObj);
     if (!dvd) {
-        throw Base::TypeError("TaskDetail - new detail not found\n");
+        throw Base::TypeError("TaskDetail - new detail view not found\n");
     }
     m_detailFeat = dvd;
 
