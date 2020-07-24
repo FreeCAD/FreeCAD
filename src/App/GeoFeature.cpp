@@ -246,3 +246,13 @@ GeoFeature::searchElementCache(const std::string &element,
     (void)atol;
     return none;
 }
+
+const std::vector<const char *>&
+GeoFeature::getElementTypes(bool /*all*/) const
+{
+    static std::vector<const char *> nil;
+    auto prop = getPropertyOfGeometry();
+    if (!prop)
+        return nil;
+    return prop->getComplexData()->getElementTypes();
+}

@@ -57,9 +57,9 @@ PointKernel::PointKernel(const PointKernel& pts)
 
 }
 
-std::vector<const char*> PointKernel::getElementTypes(void) const
+const std::vector<const char*>& PointKernel::getElementTypes(void) const
 {
-    std::vector<const char*> temp;
+    static std::vector<const char*> temp;
     //temp.push_back("Segment");
 
     return temp;

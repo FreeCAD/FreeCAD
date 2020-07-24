@@ -816,6 +816,25 @@ const App::PropertyComplexGeoData* Feature::getPropertyOfGeometry() const
     return &Shape;
 }
 
+const std::vector<const char *>& Feature::getElementTypes(bool all) const
+{
+    if (!all)
+        return App::GeoFeature::getElementTypes();
+    static std::vector<const char *> res;
+    if (res.empty()) {
+        res.reserve(8);
+        res.push_back(TopoShape::shapeName(TopAbs_VERTEX).c_str());
+        res.push_back(TopoShape::shapeName(TopAbs_EDGE).c_str());
+        res.push_back(TopoShape::shapeName(TopAbs_WIRE).c_str());
+        res.push_back(TopoShape::shapeName(TopAbs_FACE).c_str());
+        res.push_back(TopoShape::shapeName(TopAbs_SHELL).c_str());
+        res.push_back(TopoShape::shapeName(TopAbs_SOLID).c_str());
+        res.push_back(TopoShape::shapeName(TopAbs_COMPSOLID).c_str());
+        res.push_back(TopoShape::shapeName(TopAbs_COMPOUND).c_str());
+    }
+    return res;
+}
+
 // ---------------------------------------------------------
 
 PROPERTY_SOURCE(Part::FilletBase, Part::Feature)

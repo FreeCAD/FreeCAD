@@ -367,7 +367,7 @@ void CmdPartCommon::activated(int iMsg)
         numShapes = 1; //to be updated later in code, if
         Gui::SelectionObject selobj = Sel[0];
         TopoDS_Shape sh = Part::Feature::getShape(selobj.getObject());
-        if (sh.ShapeType() == TopAbs_COMPOUND) {
+        if (!sh.IsNull() && sh.ShapeType() == TopAbs_COMPOUND) {
             numShapes = 0;
             TopoDS_Iterator it(sh);
             for (; it.More(); it.Next()) {

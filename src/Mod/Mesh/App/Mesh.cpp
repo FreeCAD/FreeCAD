@@ -101,11 +101,12 @@ bool MeshObject::isSame(const Data::ComplexGeoData &_other) const
         && other._segments == _segments;
 }
 
-std::vector<const char*> MeshObject::getElementTypes(void) const
+const std::vector<const char*>& MeshObject::getElementTypes(void) const
 {
-    std::vector<const char*> temp;
-    temp.push_back("Face"); // that's the mesh itself
-    temp.push_back("Segment");
+    static std::vector<const char*> temp = {
+        "Face", // that's the mesh itself
+        "Segment"
+    };
 
     return temp;
 }

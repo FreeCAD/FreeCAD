@@ -133,6 +133,8 @@ public:
                                                                double tol = 1e-7,
                                                                double atol = 1e-10) const override;
 
+    virtual const std::vector<const char*>& getElementTypes(bool all=false) const override;
+
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute() override;

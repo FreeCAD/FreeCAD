@@ -161,6 +161,8 @@ public:
     virtual DocumentObject *getElementOwner(const char * /*element*/) const
     {return nullptr;}
 
+    virtual const std::vector<const char *>& getElementTypes(bool all=true) const;
+
 protected:
     virtual void onChanged(const Property* prop);
     virtual void onDocumentRestored();

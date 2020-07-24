@@ -334,7 +334,7 @@ TopoShape::TopoShape(const TopoShape& shape)
     _Cache = shape._Cache;
 }
 
-std::vector<const char*> TopoShape::getElementTypes(void) const
+const std::vector<const char*>& TopoShape::getElementTypes(void) const
 {
     static const std::vector<const char*> temp = {"Face","Edge","Vertex"};
     return temp;
