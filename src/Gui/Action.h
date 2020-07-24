@@ -445,7 +445,7 @@ protected:
     std::unique_ptr<Private> _pimpl;
 };
 
-GuiExport void setupMenuStyle(QMenu *);
+GuiExport void setupMenuStyle(QWidget *);
 
 } // namespace Gui
 

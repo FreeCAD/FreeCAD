@@ -1,0 +1,820 @@
+/****************************************************************************
+ *   Copyright (c) 2020 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *                                                                          *
+ *   This file is part of the FreeCAD CAx development system.               *
+ *                                                                          *
+ *   This library is free software; you can redistribute it and/or          *
+ *   modify it under the terms of the GNU Library General Public            *
+ *   License as published by the Free Software Foundation; either           *
+ *   version 2 of the License, or (at your option) any later version.       *
+ *                                                                          *
+ *   This library  is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *   GNU Library General Public License for more details.                   *
+ *                                                                          *
+ *   You should have received a copy of the GNU Library General Public      *
+ *   License along with this library; see the file COPYING.LIB. If not,     *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,          *
+ *   Suite 330, Boston, MA  02111-1307, USA                                 *
+ *                                                                          *
+ ****************************************************************************/
+
+#include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QToolButton>
+# include <QMenu>
+# include <QToolTip>
+# include <QPainter>
+# include <QTimer>
+# include <QElapsedTimer>
+#endif
+
+#include <QGraphicsOpacityEffect>
+#include <QPropertyAnimation>
+#include <QWidgetAction>
+#include <cmath>
+
+/// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <Base/Console.h>
+#include <App/Document.h>
+#include <App/DocumentObserver.h>
+#include "PieMenu.h"
+#include "Application.h"
+#include "Document.h"
+#include "BitmapFactory.h"
+#include "MetaTypes.h"
+#include "MainWindow.h"
+#include "Widgets.h"
+#include "Action.h"
+#include "ViewParams.h"
+
+#ifndef M_PI
+#define M_PI       3.14159265358979323846
+#endif
+
+using namespace Gui;
+
+FC_LOG_LEVEL_INIT("Pie", true, true)
+
+/* TRANSLATOR Gui::PieMenu */
+
+class PieMenu::Private
+{
+public:
+    PieMenu &master;
+    std::vector<PieButton*> buttons;
+    std::vector<QGraphicsOpacityEffect*> effects;
+    int hoverIndex = -1;
+
+    bool forwardKeyPress = false;
+
+    qreal offset = 0.;
+    int iconSize;
+    int fontSize;
+    int radius;
+    int triggerRadius;
+    int duration;
+
+    QTimer timer;
+    QMenu *menu;
+    QAction *action = nullptr;
+    ParameterGrp::handle hGrp;
+    std::string param;
+
+    QPropertyAnimation *animator=nullptr;
+    bool animating = false;
+
+    QEventLoop *eventLoop = nullptr;
+    QPointer<QMenu> activeMenu;
+
+    bool dragging = false;
+    QPoint lastPressPos;
+    qreal dragOffset = 0;
+
+    Private(PieMenu &master, QMenu *menu, const char *_param)
+        :master(master), menu(menu), param(_param?_param:"")
+    {
+        fontSize = ViewParams::getPieMenuFontSize();
+        iconSize = ViewParams::getPieMenuIconSize();
+        radius = ViewParams::getPieMenuRadius();
+        duration = ViewParams::getPieMenuAnimationDuration();
+        triggerRadius = radius - ViewParams::getPieMenuTriggerRadius();
+        if (triggerRadius < 0)
+            triggerRadius = 0;
+        else
+            triggerRadius *= triggerRadius;
+    }
+
+    void init()
+    {
+        QAction *first = nullptr;
+        for(QAction *action : menu->actions()) {
+            if (action->isSeparator())
+                continue;
+            if (qobject_cast<QWidgetAction*>(action))
+                continue;
+            if (!first)
+                first = action;
+            auto button = addButton(action->text(), action->icon());
+            if (action->menu())
+                button->setMenu(action->menu());
+            else
+                button->setDefaultAction(action);
+            connect(button, SIGNAL(triggered(QAction*)), &master, SLOT(onTriggered(QAction*)));
+        }
+
+        animator = new QPropertyAnimation(&master, "offset", &master);
+        connect(animator, SIGNAL(stateChanged(QAbstractAnimation::State, 
+                                              QAbstractAnimation::State)),
+                &master, SLOT(onStateChanged()));
+
+        if (param.size()) {
+            hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/PieMenu");
+            offset = checkOffset(hGrp->GetInt(param.c_str(), 0));
+        }
+
+        updateGeometries();
+
+        timer.setSingleShot(true);
+        connect(&timer, SIGNAL(timeout()), &master, SLOT(onTimer()));
+    }
+
+    virtual ~Private()
+    {
+        if (eventLoop) {
+            eventLoop->exit();
+            eventLoop = nullptr;
+        }
+    }
+
+    qreal checkOffset(qreal ofs)
+    {
+        if (ofs < 0)
+            return 0;
+        int lastPage = buttons.size() / 8 * 8;
+        if (lastPage && buttons.size() % 8 == 0)
+            lastPage -= 8;
+        if (ofs > lastPage)
+            ofs = lastPage;
+        return ofs;
+    }
+
+    void onTimer()
+    {
+        if (hoverIndex < 0 || hoverIndex >= (int)buttons.size())
+            return;
+
+        activeMenu = buttons[hoverIndex]->menu();
+        if (activeMenu) {
+            activeMenu->installEventFilter(&master);
+            auto btn = buttons[hoverIndex];
+            setHoverIndex(-1);
+            btn->click();
+            if (activeMenu)
+                activeMenu->removeEventFilter(&master);
+            activeMenu = nullptr;
+        } else if (ViewParams::getPieMenuTriggerAction())
+            buttons[hoverIndex]->animateClick();
+    }
+
+    bool eventFilter(QObject *, QEvent *ev)
+    {
+        if (ev->type() == QEvent::MouseMove && activeMenu) {
+            auto me = static_cast<QMouseEvent*>(ev);
+            auto pos = me->globalPos();
+            int index = hitTest(master.mapFromGlobal(pos));
+            if (index != hoverIndex) {
+                QPoint p = activeMenu->mapFromGlobal(pos);
+                if (!activeMenu->rect().contains(p)) {
+                    activeMenu->hide();
+                    ToolTip::hideText();
+                }
+            }
+        }
+        return false;
+    }
+
+    void enablePieMenu(bool enable=true)
+    {
+        if (hGrp) {
+            if (!enable)
+                hGrp->SetInt(param.c_str(), -1);
+            else
+                hGrp->SetInt(param.c_str(), (int)offset);
+        }
+    }
+
+    bool isPieMenuEnabled()
+    {
+        return !hGrp || hGrp->GetInt(param.c_str(), 0) >= 0;
+    }
+
+    PieButton *addButton(const QString &title, const QIcon &icon)
+    {
+        static QPixmap generic;
+        auto button = new PieButton(&master);
+        button->setText(title);
+        button->setIconSize(QSize(iconSize, iconSize));
+        if (icon.isNull()) {
+            if (generic.isNull()) {
+                generic = QPixmap(1, 32);
+                generic.fill(Qt::transparent);
+            }
+            button->setIcon(generic);
+        } else
+            button->setIcon(icon);
+        button->setPopupMode(QToolButton::InstantPopup);
+        button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+
+        int fs = this->fontSize;
+        if (fs <= 0)
+            fs = getMainWindow()->font().pointSize();
+        QFont font = master.font();
+        font.setPointSize(fs);
+        button->setFont(font);
+
+        auto effect = new QGraphicsOpacityEffect(&master);
+        button->setGraphicsEffect(effect);
+        effects.push_back(effect);
+
+        this->buttons.push_back(button);
+        return button;
+    }
+
+    void updateVisual(qreal ofs, qreal t, const QPoint &center, int index)
+    {
+        (void)ofs;
+        auto button = buttons[index];
+
+        if (index < offset || (int)std::trunc(index-offset) > 7) {
+            button->hide();
+            return;
+        }
+
+        button->show();
+
+        int findex = (int)std::ceil(index - offset);
+        if (findex < 0) {
+            findex = 0;
+            effects[index]->setOpacity(1.0 - t);
+        } else if (findex > 7) {
+            findex = 0;
+            effects[index]->setOpacity(t);
+        } else
+            effects[index]->setOpacity(1.0);
+
+        QPointF pt;
+        qreal angle = M_PI * 0.25 * (findex - t);
+        pt.ry() = -radius * std::cos(angle);
+        pt.rx() = radius * std::sin(angle);
+
+        qreal w = button->width();
+        qreal h = button->height();
+
+        switch(findex) {
+        case 0:
+            pt.rx() += -w * 0.5 * (1.0 + t);
+            pt.ry() += -h * 0.5 * (2.0 - t);
+            break;
+        case 1:
+            pt.rx() += -w * 0.5 * t;
+            pt.ry() += -h * 0.5 * (1.0 + t);
+            break;
+        case 2:
+        case 3:
+            pt.ry() += -h * 0.5;
+            break;
+        case 4:
+            pt.rx() += -w * 0.5 * (1.0 - t);
+            pt.ry() += -h * 0.5 * t;
+            break;
+        case 5:
+            pt.rx() += -w * 0.5 * (2.0 - t);
+            pt.ry() += -h * 0.5 * (1.0 - t);
+            break;
+        case 6:
+        case 7:
+            pt.rx() += -w;
+            pt.ry() += -h * 0.5;
+            break;
+        }
+        button->move(center + pt.toPoint());
+    }
+
+    void updateGeometries()
+    {
+        int w = 0, h = 0;
+        for (auto btn : buttons) {
+            QSize size = btn->sizeHint();
+            w = std::max(w, size.width());
+            h = std::max(h, size.height());
+        }
+        w = w*2 + 2*radius + 2;
+        h = h*2 + 2*radius + 2;
+        if (w != master.width() || h != master.height()) {
+            QRect rect = master.geometry();
+            rect.setLeft((rect.width() - w)/2);
+            rect.setTop((rect.height() - h)/2);
+            rect.setWidth(w);
+            rect.setHeight(h);
+            master.setGeometry(rect);
+        }
+        updateVisuals();
+    }
+
+    void updateVisuals()
+    {
+        ToolTip::hideText();
+        QPoint center(master.width()/2, master.height()/2);
+        qreal ofs, t;
+        t = std::modf(offset, &ofs);
+        for (std::size_t i=0; i<buttons.size(); ++i)
+            updateVisual(ofs, t, center, i);
+        master.repaint();
+    }
+
+    void wheelEvent(QWheelEvent *ev)
+    {
+        if (ev->modifiers() == Qt::ControlModifier)
+            animate(ev->delta()<0 ? -1 : 1);
+        else
+            animate(ev->delta()<0 ? -8 : 8);
+    }
+
+    void animate(qreal step)
+    {
+        if (step <= 1)
+            animator->setDuration(duration);
+        else
+            animator->setDuration(duration * 3 / 2);
+
+        animator->stop();
+        qreal endOffset = offset;
+        endOffset += step;
+        endOffset = checkOffset(endOffset);
+
+        if (endOffset == offset)
+            return;
+
+        if (hGrp)
+            hGrp->SetInt(param.c_str(), (int)endOffset);
+
+        if (std::abs(offset-endOffset) < 0.01 ||  duration <= 0) {
+            offset = endOffset;
+            updateVisuals();
+        }
+        animator->setEasingCurve(QEasingCurve::OutBounce);
+        animator->setStartValue(offset);
+        animator->setEndValue(endOffset);
+        animator->start();
+    }
+
+    void setHoverIndex(int index)
+    {
+        if (index == hoverIndex || activeMenu)
+            return;
+
+        if (index == -2 && buttons.size() > 8)
+            master.setCursor(Qt::OpenHandCursor);
+        else
+            master.setCursor(QCursor());
+
+        hoverIndex = index;
+        master.update(master.width()/2-radius, master.height()/2-radius, radius*2, radius*2);
+
+        if (ViewParams::getPieMenuTriggerDelay() > 0) {
+            if (hoverIndex < 0)
+                timer.stop();
+            else
+                timer.start(ViewParams::getPieMenuTriggerDelay());
+        }
+    }
+
+    bool isAnimating()
+    {
+        return animator->state() == QAbstractAnimation::Running;
+    }
+
+    bool hitAngle(QPoint pos, int hitRadius, qreal &angle)
+    {
+        QPoint center(master.width()/2, master.height()/2);
+        pos -= center;
+        int length = pos.x()*pos.x() + pos.y()*pos.y();
+        if (!length || length < hitRadius)
+            return false;
+
+        angle = std::acos(pos.x()/std::sqrt(length));
+        if (pos.y() > 0)
+            angle += M_PI * 0.5;
+        else if (angle < M_PI * 0.5)
+            angle = M_PI * 0.5 - angle;
+        else
+            angle = M_PI * 2.5 - angle;
+        angle += M_PI * 0.125;
+        if (angle > M_PI * 2.0)
+            angle = M_PI * 2.0 - angle;
+
+        return true;
+    }
+
+    int hitTest(QPoint pos)
+    {
+        if (isAnimating()
+                || pos.x() < 0
+                || pos.y() < 0
+                || pos.x() > master.width()
+                || pos.y() > master.height())
+            return -1;
+
+        qreal angle;
+        if (!hitAngle(pos, triggerRadius, angle))
+            return -2;
+
+        int index = (int)(angle / (M_PI * 0.25) + offset);
+        if (index >= (int)buttons.size())
+            return -1;
+
+        return index;
+    }
+
+    int squareDistance(const QPoint &p1, const QPoint &p2)
+    {
+        int x = p1.x()-p2.x();
+        int y = p1.y()-p2.y();
+        return x*x + y*y;
+    }
+
+    void mouseMoveEvent(QMouseEvent *ev)
+    {
+        if (!dragging) {
+            if (ev->buttons().testFlag(Qt::LeftButton) && 
+                    squareDistance(ev->pos(), lastPressPos) > 25)
+                startDragging();
+        } else if (!ev->buttons().testFlag(Qt::LeftButton)) {
+            endDragging();
+        }
+
+        if (dragging) {
+            qreal angle;
+            if (!hitAngle(ev->pos(), 1, angle))
+                return;
+            angle -= M_PI * (2.0 - 0.25 * dragOffset);
+            qreal ofs = checkOffset(dragOffset - angle*4/M_PI);
+            if (fabs(ofs-offset) > 0.01) {
+                offset = ofs;
+                updateVisuals();
+            }
+            return;
+        }
+
+        setHoverIndex(hitTest(ev->pos()));
+    }
+
+    void mousePressEvent(QMouseEvent *ev)
+    {
+        if (ev->button() == Qt::RightButton) {
+            this->action = menu->exec(ev->globalPos());
+            if (this->action) {
+                enablePieMenu(false);
+                master.hide();
+            }
+            return;
+        }
+
+        if (ev->button() != Qt::LeftButton) {
+            master.hide();
+            return;
+        }
+
+        lastPressPos = ev->pos();
+        setHoverIndex(hitTest(ev->pos()));
+    }
+
+    void mouseReleaseEvent(QMouseEvent *ev)
+    {
+        if (ev->button() == Qt::LeftButton) {
+            if (dragging)
+                endDragging();
+            else {
+                int index = hitTest(ev->pos());
+                setHoverIndex(index);
+                if (index >= 0 && index < (int)buttons.size())
+                    buttons[index]->animateClick();
+                else 
+                    master.hide();
+            }
+        }
+    }
+
+    void startDragging()
+    {
+        if (dragging)
+            return;
+        master.setCursor(Qt::ClosedHandCursor);
+        timer.stop();
+        dragOffset = offset;
+        dragging = true;
+    }
+
+    void endDragging()
+    {
+        if (!dragging)
+            return;
+
+        dragging = false;
+        master.setCursor(QCursor());
+
+        animate(std::round(offset) - offset);
+    }
+
+    void keyPressEvent(QKeyEvent *ev)
+    {
+        int trigger = 0;
+        int step = 0;
+        switch(ev->key()) {
+        case Qt::Key_PageDown:
+        case Qt::Key_Q:
+            step = 8;
+            break;
+        case Qt::Key_PageUp:
+        case Qt::Key_W:
+            step = -8;
+            break;
+        case Qt::Key_1:
+            trigger = 1;
+            break;
+        case Qt::Key_2:
+            trigger = 2;
+            break;
+        case Qt::Key_3:
+            trigger = 3;
+            break;
+        case Qt::Key_4:
+            trigger = 4;
+            break;
+        case Qt::Key_5:
+            trigger = 5;
+            break;
+        case Qt::Key_6:
+            trigger = 6;
+            break;
+        case Qt::Key_7:
+            trigger = 7;
+            break;
+        case Qt::Key_8:
+            trigger = 8;
+            break;
+        default:
+            if (forwardKeyPress) {
+                QKeyEvent ke(ev->type(),ev->key(),ev->modifiers(),
+                        ev->text(),ev->isAutoRepeat(),ev->count());
+                qApp->sendEvent(menu, &ke);
+                return;
+            } else if (ev->key() == Qt::Key_Space) {
+                action = menu->exec(QCursor::pos());
+                if (action) {
+                    enablePieMenu(false);
+                    master.hide();
+                }
+                return;
+            }
+        }
+        if (trigger && !isAnimating()) {
+            trigger += (int)std::round(offset) - 1;
+            if (trigger < (int)buttons.size())
+                buttons[trigger]->animateClick();
+        }
+        if (step)
+            animate(step);
+    }
+
+    void drawIndicator(QPainter &painter, qreal index, bool reverse)
+    {
+        qreal findex = std::fmod(index, 8.0);
+        qreal angle = M_PI * 0.25 * findex;
+        QPointF pt;
+        pt.ry() = -(radius-10) * std::cos(angle) + master.height() * 0.5;
+        pt.rx() = (reverse?-1:1)*(radius-10) * std::sin(angle) + master.width() * 0.5;
+        qreal size = 20.0;
+        QRectF rect(pt.x()-size*0.5, pt.y()-size*0.5, size, size);
+
+        angle = ((reverse?1:-1)*std::fmod(45.0 * findex, 360.0) -135) * 16.0;
+        painter.drawPie(rect, (int)angle, 90*16);
+    }
+
+    void paint(QPaintEvent *)
+    {
+        QPainter painter(&master);
+        painter.setOpacity(0.7);
+        painter.setRenderHint(QPainter::Antialiasing, true);
+
+        if (buttons.size() > 8) {
+            painter.setPen(Qt::transparent);
+            painter.setBrush(Qt::black);
+            drawIndicator(painter, offset, true);
+        }
+
+        if (!isAnimating() && hoverIndex >= 0) {
+            painter.setPen(QPen(QColor(0x5e, 0x90, 0xfa), 4));
+            painter.setBrush(QBrush());
+            drawIndicator(painter, hoverIndex - offset, false);
+            return;
+        }
+    }
+};
+
+PieMenu::PieMenu(QMenu *menu, const char *param, QWidget *parent)
+  : QWidget(parent)
+{
+    this->setMouseTracking(true);
+    this->setAttribute(Qt::WA_NoSystemBackground, true);
+    this->setAttribute(Qt::WA_TranslucentBackground, true);
+#if QT_VERSION  >= 0x050000
+    this->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+    setStyleSheet(qApp->styleSheet());
+#else
+    this->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint);
+#endif
+    pimpl.reset(new Private(*this, menu, param));
+    pimpl->init();
+}
+    
+PieMenu::~PieMenu()
+{
+}
+
+void PieMenu::leaveEvent(QEvent *)
+{
+    pimpl->setHoverIndex(-1);
+}
+
+void PieMenu::mousePressEvent(QMouseEvent *ev)
+{
+    pimpl->mousePressEvent(ev);
+}
+
+void PieMenu::mouseReleaseEvent(QMouseEvent *ev)
+{
+    pimpl->mouseReleaseEvent(ev);
+}
+
+void PieMenu::hideEvent(QHideEvent *)
+{
+    if (pimpl->eventLoop)
+        pimpl->eventLoop->exit();
+}
+
+void PieMenu::mouseMoveEvent(QMouseEvent *ev)
+{
+    pimpl->mouseMoveEvent(ev);
+}
+
+void PieMenu::wheelEvent(QWheelEvent *ev)
+{
+    pimpl->wheelEvent(ev);
+}
+
+void PieMenu::onTriggered(QAction *action)
+{
+    pimpl->action = action;
+    hide();
+}
+
+QAction *PieMenu::exec(QMenu *menu, const QPoint &pt, const char *name, bool forwardKeyPress)
+{
+    menu->aboutToShow();
+    PieMenu pmenu(menu, name, getMainWindow());
+    pmenu.pimpl->forwardKeyPress = forwardKeyPress;
+    if (pmenu.pimpl->buttons.empty())
+        return nullptr;
+
+    if (!pmenu.pimpl->isPieMenuEnabled()) {
+        QAction *actionPie = new QAction(tr("Show pie menu"), menu);
+        const auto &actions = menu->actions();
+        if (actions.isEmpty())
+            return nullptr;
+        menu->insertAction(actions.front(), actionPie);
+
+        QAction *action = menu->exec(pt);
+        menu->removeAction(actionPie);
+        delete actionPie;
+        if (action && action == actionPie)
+            pmenu.pimpl->enablePieMenu();
+        else
+            return action;
+    }
+
+    setupMenuStyle(&pmenu);
+    pmenu.createWinId();
+    pmenu.move(pt - QPoint(pmenu.width()/2, pmenu.height()/2));
+    pmenu.show();
+    QEventLoop eventLoop;
+    pmenu.pimpl->eventLoop = &eventLoop;
+    eventLoop.exec();
+    pmenu.pimpl->eventLoop = nullptr;
+    return pmenu.pimpl->action;
+}
+
+int PieMenu::radius() const
+{
+    return pimpl->radius;
+}
+
+void PieMenu::setRadius(int radius) const
+{
+    pimpl->radius = radius;
+    pimpl->updateGeometries();
+}
+
+int PieMenu::animateDuration() const
+{
+    return pimpl->duration;
+}
+
+void PieMenu::setAnimateDuration(int duration)
+{
+    pimpl->duration = duration;
+}
+
+int PieMenu::fontSize() const
+{
+    return pimpl->fontSize;
+}
+
+void PieMenu::setFontSize(int size)
+{
+    if (size <= 0)
+        size = getMainWindow()->font().pointSize();
+    if (size == pimpl->fontSize)
+        return;
+    pimpl->fontSize = size;
+    QFont font = this->font();
+    font.setPointSize(size);
+    for (auto btn : pimpl->buttons)
+        btn->setFont(font);
+    pimpl->updateGeometries();
+}
+
+qreal PieMenu::offset() const
+{
+    return pimpl->offset;
+}
+
+void PieMenu::setOffset(qreal offset)
+{
+    offset = pimpl->checkOffset(offset);
+    if (pimpl->offset != offset) {
+        pimpl->offset = offset;
+        pimpl->updateVisuals();
+    }
+}
+
+void PieMenu::keyPressEvent(QKeyEvent *ev)
+{
+    if (ev->key() == Qt::Key_Escape)
+        QWidget::keyPressEvent(ev);
+    else
+        pimpl->keyPressEvent(ev);
+}
+
+void PieMenu::onStateChanged()
+{
+    if (!pimpl->isAnimating())
+        setOffset(pimpl->animator->endValue().toReal());
+}
+
+void PieMenu::paintEvent(QPaintEvent *ev)
+{
+    pimpl->paint(ev);
+}
+
+void PieMenu::onTimer()
+{
+    pimpl->onTimer();
+}
+
+bool PieMenu::eventFilter(QObject *o, QEvent *ev)
+{
+    return pimpl->eventFilter(o, ev);
+}
+
+// ----------------------------------------------------------------------------
+
+PieButton::PieButton(QWidget *parent)
+    : QToolButton(parent)
+{
+}
+
+PieButton::~PieButton()
+{
+}
+
+bool PieButton::event(QEvent *ev)
+{
+    return QToolButton::event(ev);
+        
+}
+
+#include "moc_PieMenu.cpp"

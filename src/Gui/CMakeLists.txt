@@ -315,6 +315,7 @@ set(Gui_MOC_HDRS
     DlgSettingsNavigation.h
     DlgSettingsViewColor.h
     DlgSettingsDrawStyles.h
+    DlgSettingsPieMenu.h
     DlgSettingsColorGradientImp.h
     DlgSettingsDocumentImp.h
     DlgSettingsImageImp.h
@@ -361,6 +362,7 @@ set(Gui_MOC_HDRS
     ReportView.h
     SceneInspector.h
     SelectionView.h
+    PieMenu.h
     SpinBox.h
     Splashscreen.h
     TextEdit.h
@@ -674,6 +676,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgSettingsUnitsImp.cpp
     DlgSettingsViewColor.cpp
     DlgSettingsDrawStyles.cpp
+    DlgSettingsPieMenu.cpp
     DlgSettingsColorGradientImp.cpp
     DlgSettingsDocumentImp.cpp
     DlgSettingsImageImp.cpp
@@ -690,6 +693,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgSettingsUnitsImp.h
     DlgSettingsViewColor.h
     DlgSettingsDrawStyles.h
+    DlgSettingsPieMenu.h
     DlgSettingsColorGradientImp.h
     DlgSettingsDocumentImp.h
     DlgSettingsImageImp.h
@@ -722,6 +726,7 @@ SET(Dock_Windows_CPP_SRCS
     PropertyView.cpp
     ReportView.cpp
     SelectionView.cpp
+    PieMenu.cpp
     ToolBox.cpp
     Tree.cpp
     TreeView.cpp
@@ -738,6 +743,7 @@ SET(Dock_Windows_HPP_SRCS
     PropertyView.h
     ReportView.h
     SelectionView.h
+    PieMenu.h
     ToolBox.h
     Tree.h
     TreeView.h

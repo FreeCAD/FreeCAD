@@ -54,6 +54,7 @@
 #include "MetaTypes.h"
 #include "MainWindow.h"
 #include "Widgets.h"
+#include "PieMenu.h"
 
 FC_LOG_LEVEL_INIT("Selection",true,true,true)
 
@@ -541,7 +542,7 @@ static QString _DefaultStyle = QLatin1String("QMenu {menu-scrollable:1}");
 #endif
 
 namespace Gui {
-void setupMenuStyle(QMenu *menu)
+void setupMenuStyle(QWidget *menu)
 {
 #if QT_VERSION  >= 0x050000
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -651,10 +652,23 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
         auto &elementInfo = menus[element].items[sobj->Label.getStrValue()][key];
         elementInfo.icon = icon;
         elementInfo.indices.push_back(i);
+
+        auto geoFeature = Base::freecad_dynamic_cast<App::GeoFeature>(
+                sobj->getLinkedObject(true));
+        if (geoFeature) {
+            for(auto element : geoFeature->getElementTypes(true))
+                menus[element];
+        }
     }
 
     for(auto &v : menus) {
         auto &info = v.second;
+        if (info.items.empty()) {
+            QAction *action = addAction(QLatin1String(v.first.c_str()));
+            action->setDisabled(true);
+            continue;
+        }
+
         info.menu = addMenu(QLatin1String(v.first.c_str()));
         info.menu->installEventFilter(this);
 
@@ -687,6 +701,7 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
                         ss << label << " (" << sels[idx].getOldElementName() << ")";
                         QAction *action = info.menu->addAction(elementInfo.icon, QString::fromUtf8(ss.str().c_str()));
                         action->setData(idx+1);
+                        connect(info.menu, SIGNAL(hovered(QAction*)), this, SLOT(onHover(QAction*)));
                     }
                     continue;
                 }
@@ -694,6 +709,7 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
                     elementInfo.menu = info.menu->addMenu(elementInfo.icon, QString::fromUtf8(label.c_str()));
                     elementInfo.menu->installEventFilter(this);
                     connect(elementInfo.menu, SIGNAL(aboutToShow()),this,SLOT(onSubMenu()));
+                    connect(elementInfo.menu, SIGNAL(hovered(QAction*)), this, SLOT(onHover(QAction*)));
                 }
                 for(int idx : elementInfo.indices) {
                     QAction *action = elementInfo.menu->addAction(
@@ -709,8 +725,7 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
 
     Gui::Selection().rmvPreselect();
 
-    connect(this, SIGNAL(hovered(QAction*)), this, SLOT(onHover(QAction*)));
-    QAction* picked = exec(QCursor::pos());
+    QAction* picked = PieMenu::exec(this, QCursor::pos(), "Std_PickGeometry");
 
     ToolTip::hideText();
 
@@ -761,6 +776,11 @@ void SelectionMenu::leaveEvent(QEvent *event) {
 }
 
 void SelectionMenu::showToolTip() {
+    if(QApplication::queryKeyboardModifiers() != Qt::ShiftModifier) {
+        ToolTip::hideText();
+        return;
+    }
+
     bool needElement = tooltipIndex > 0;
     if(!needElement)
         tooltipIndex = -tooltipIndex;

@@ -65,6 +65,7 @@
 #include "SelectionView.h"
 #include "ViewParams.h"
 #include "BitmapFactory.h"
+#include "PieMenu.h"
 
 #include <Base/Exception.h>
 #include <App/Application.h>
@@ -1146,6 +1147,10 @@ void SelUpAction::onShowMenu()
 {
     _menu->clear();
     setupMenuStyle(_menu);
+    if (_menu->actions().isEmpty()) {
+        auto action = _menu->addAction(tr("<None>"));
+        action->setDisabled(true);
+    }
     TreeWidget::populateSelUpMenu(_menu);
 }
 
@@ -1353,20 +1358,35 @@ public:
     CmdHistoryMenu(QWidget *focus)
         :focusWidget(focus)
     {}
-
+protected:
     void keyPressEvent(QKeyEvent *e)
     {
-        if (isVisible() && e->key() == Qt::Key_Space) {
-            focusWidget->setFocus();
-            e->accept();
+        if (e->key() == Qt::Key_Space) {
+            if (!isVisible()) {
+                keyFocus = true;
+                exec(QCursor::pos());
+            } else {
+                focusWidget->setFocus();
+                e->accept();
+            }
             return;
         }
         QMenu::keyPressEvent(e);
         return;
     }
 
+    void showEvent(QShowEvent *ev)
+    {
+        QMenu::showEvent(ev);
+        if (keyFocus) {
+            keyFocus = false;
+            focusWidget->setFocus();
+        }
+    }
+
 public:
     QWidget *focusWidget;
+    bool keyFocus = false;
 };
 
 // --------------------------------------------------------------------
@@ -1506,7 +1526,7 @@ void CmdHistoryAction::onCommandActivated(const QByteArray &name)
 
 void CmdHistoryAction::popup(const QPoint &pt)
 {
-    _menu->exec(pt);
+    PieMenu::exec(_menu, pt, _pcCmd->getName(), true);
 }
 
 // --------------------------------------------------------------------
@@ -1717,7 +1737,7 @@ void ToolbarMenuAction::update()
 
 void ToolbarMenuAction::popup(const QPoint &pt)
 {
-    _menu->exec(pt);
+    PieMenu::exec(_menu, pt, _pcCmd->getName());
     _menu->setActiveAction(0);
 }
 

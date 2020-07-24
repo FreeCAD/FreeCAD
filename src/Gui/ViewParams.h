@@ -212,6 +212,20 @@ public:
                                        "selected sub-element."))\
     FC_VIEW_PARAM(CommandHistorySize, int, Int, 20, \
         QT_TRANSLATE_NOOP("ViewParams","Maximum number of commands saved in history"))\
+    FC_VIEW_PARAM(PieMenuIconSize, int, Int, 24, \
+        QT_TRANSLATE_NOOP("ViewParams","Pie menu icon size"))\
+    FC_VIEW_PARAM(PieMenuRadius, int, Int, 100, \
+        QT_TRANSLATE_NOOP("ViewParams","Pie menu radius"))\
+    FC_VIEW_PARAM(PieMenuTriggerRadius, int, Int, 60, \
+        QT_TRANSLATE_NOOP("ViewParams","Pie menu hover trigger radius"))\
+    FC_VIEW_PARAM(PieMenuFontSize, int, Int, 0, \
+        QT_TRANSLATE_NOOP("ViewParams","Pie menu font size"))\
+    FC_VIEW_PARAM(PieMenuTriggerDelay, int, Int, 200, \
+        QT_TRANSLATE_NOOP("ViewParams","Pie menu sub-menu hover trigger delay (0 to disable)"))\
+    FC_VIEW_PARAM(PieMenuTriggerAction, bool, Bool, false, \
+        QT_TRANSLATE_NOOP("ViewParams","Pie menu action trigger on hover"))\
+    FC_VIEW_PARAM(PieMenuAnimationDuration, int, Int, 250, \
+        QT_TRANSLATE_NOOP("ViewParams","Pie menu animation duration"))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

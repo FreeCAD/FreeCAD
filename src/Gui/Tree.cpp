@@ -422,7 +422,7 @@ void TreeParams::onIconSizeChanged() {
 void TreeParams::onFontSizeChanged() {
     int fontSize = TreeParams::FontSize();
     if (fontSize <= 0)
-        fontSize = 10;
+        fontSize = getMainWindow()->font().pointSize();
     for(auto tree : TreeWidget::Instances) {
         QFont font = tree->font();
         font.setPointSize(fontSize);
@@ -2025,8 +2025,10 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event)
         action = menu->actionAt(menu->mapFromGlobal(pos));
         if (action) {
             targetItem = selectUp(action, nullptr, false);
-            if (targetItem)
+            if (targetItem) {
+                menu->setActiveAction(action);
                 menu->onHovered(action);
+            }
         }
     }
     if (!targetItem)
