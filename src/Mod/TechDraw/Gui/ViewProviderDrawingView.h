@@ -22,8 +22,8 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERVIEW_H
-#define DRAWINGGUI_VIEWPROVIDERVIEW_H
+#ifndef TECHDRAWGUI_VIEWPROVIDERVIEW_H
+#define TECHDRAWGUI_VIEWPROVIDERVIEW_H
 
 #include <boost/signals2.hpp> 
 
@@ -93,4 +93,4 @@ private:
 } // namespace TechDrawGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERVIEW_H
+#endif // TECHDRAWGUI_VIEWPROVIDERVIEW_H

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKWELDINGSYMBOL_H
-#define TECHDRAWGUI_TASKWELDINGSYMBOL_H
+#ifndef TECHDRAWGUI_TASKACTIVEVIEW_H
+#define TECHDRAWGUI_TASKACTIVEVIEW_H
 
 #include <QPushButton>
 
@@ -126,4 +126,4 @@ private:
 
 } //namespace TechDrawGui
 
-#endif // #ifndef TECHDRAWGUI_TASKWELDINGSYMBOL_H
+#endif // #ifndef TECHDRAWGUI_TASKACTIVEVIEW_H

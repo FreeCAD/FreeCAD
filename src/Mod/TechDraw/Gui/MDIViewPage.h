@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DRAWINGVIEW_H
-#define DRAWINGGUI_DRAWINGVIEW_H
+#ifndef TECHDRAWGUI_MDIVIEWPAGE_H
+#define TECHDRAWGUI_MDIVIEWPAGE_H
 
 #include <Gui/MDIView.h>
 #include <Gui/Selection.h>
@@ -170,4 +170,4 @@ private:
 
 } // namespace MDIViewPageGui
 
-#endif // DRAWINGGUI_DRAWINGVIEW_H
+#endif // TECHDRAWGUI_MDIVIEWPAGE_H
