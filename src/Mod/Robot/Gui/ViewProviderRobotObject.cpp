@@ -202,10 +202,8 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
 		path = searchAction.getPath();
 		if(path){
 			SoNode* node = path->getTail();
-			if (!node || node->getTypeId() != SoVRMLTransform::getClassTypeId())
-				throw; // should not happen
-			std::string typeName = (const char*)node->getTypeId().getName();
-			Axis1Node = static_cast<SoVRMLTransform *>(node);
+			if (node && node->getTypeId() == SoVRMLTransform::getClassTypeId())
+				Axis1Node = static_cast<SoVRMLTransform *>(node);
 		}
 		// Axis 2
 		searchAction.setName("FREECAD_AXIS2");
@@ -215,10 +213,8 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
 		path = searchAction.getPath();
 		if(path){
 			SoNode* node = path->getTail();
-			if (!node || node->getTypeId() != SoVRMLTransform::getClassTypeId())
-				throw; // should not happen
-			std::string typeName = (const char*)node->getTypeId().getName();
-			Axis2Node = static_cast<SoVRMLTransform *>(node);
+			if (node && node->getTypeId() == SoVRMLTransform::getClassTypeId())
+				Axis2Node = static_cast<SoVRMLTransform *>(node);
 		}
 		// Axis 3
 		searchAction.setName("FREECAD_AXIS3");
@@ -228,10 +224,8 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
 		path = searchAction.getPath();
 		if(path){
 			SoNode* node = path->getTail();
-			if (!node || node->getTypeId() != SoVRMLTransform::getClassTypeId())
-				throw; // should not happen
-			std::string typeName = (const char*)node->getTypeId().getName();
-			Axis3Node = static_cast<SoVRMLTransform *>(node);
+			if (node && node->getTypeId() == SoVRMLTransform::getClassTypeId())
+				Axis3Node = static_cast<SoVRMLTransform *>(node);
 		}
 		// Axis 4
 		searchAction.setName("FREECAD_AXIS4");
@@ -241,10 +235,8 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
 		path = searchAction.getPath();
 		if(path){
 			SoNode* node = path->getTail();
-			if (!node || node->getTypeId() != SoVRMLTransform::getClassTypeId())
-				throw; // should not happen
-			std::string typeName = (const char*)node->getTypeId().getName();
-			Axis4Node = static_cast<SoVRMLTransform *>(node);
+			if (node && node->getTypeId() == SoVRMLTransform::getClassTypeId())
+				Axis4Node = static_cast<SoVRMLTransform *>(node);
 		}
 		// Axis 5
 		searchAction.setName("FREECAD_AXIS5");
@@ -254,10 +246,8 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
 		path = searchAction.getPath();
 		if(path){
 			SoNode* node = path->getTail();
-			if (!node || node->getTypeId() != SoVRMLTransform::getClassTypeId())
-				throw; // should not happen
-			std::string typeName = (const char*)node->getTypeId().getName();
-			Axis5Node = static_cast<SoVRMLTransform *>(node);
+			if (node && node->getTypeId() == SoVRMLTransform::getClassTypeId())
+				Axis5Node = static_cast<SoVRMLTransform *>(node);
 		}
 		// Axis 6
 		searchAction.setName("FREECAD_AXIS6");
@@ -267,10 +257,8 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
 		path = searchAction.getPath();
 		if(path){
 			SoNode* node = path->getTail();
-			if (!node || node->getTypeId() != SoVRMLTransform::getClassTypeId())
-				throw; // should not happen
-			std::string typeName = (const char*)node->getTypeId().getName();
-			Axis6Node = static_cast<SoVRMLTransform *>(node);
+			if (node && node->getTypeId() == SoVRMLTransform::getClassTypeId())
+				Axis6Node = static_cast<SoVRMLTransform *>(node);
 		}
 		if(Axis1Node)
 			Axis1Node->rotation.setValue(SbVec3f(0.0,1.0,0.0),robObj->Axis1.getValue()*(M_PI/180));
