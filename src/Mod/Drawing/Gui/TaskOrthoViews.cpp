@@ -230,7 +230,7 @@ void orthoview::smooth(bool state)
     this_view->ShowSmoothLines.setValue(state);
 }
 
-void orthoview::set_projection(gp_Ax2 cs)
+void orthoview::set_projection(const gp_Ax2& cs)
 {
     gp_Ax2  actual_cs;
     gp_Dir  actual_X;

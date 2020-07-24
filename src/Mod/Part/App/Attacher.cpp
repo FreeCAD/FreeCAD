@@ -977,7 +977,7 @@ AttachEngine3D* AttachEngine3D::copy() const
     return p;
 }
 
-Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement& origPlacement) const
 {
     const eMapMode mmode = this->mapMode;
     if (mmode == mmDeactivated)
@@ -1627,7 +1627,7 @@ AttachEnginePlane *AttachEnginePlane::copy() const
     return p;
 }
 
-Base::Placement AttachEnginePlane::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEnginePlane::calculateAttachedPlacement(const Base::Placement& origPlacement) const
 {
     //re-use Attacher3d
     Base::Placement plm;
@@ -1691,7 +1691,7 @@ AttachEngineLine *AttachEngineLine::copy() const
     return p;
 }
 
-Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placement& origPlacement) const
 {
     eMapMode mmode = this->mapMode;
 
@@ -1960,7 +1960,7 @@ AttachEnginePoint *AttachEnginePoint::copy() const
     return p;
 }
 
-Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEnginePoint::calculateAttachedPlacement(const Base::Placement& origPlacement) const
 {
     eMapMode mmode = this->mapMode;
 

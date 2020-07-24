@@ -439,7 +439,7 @@ bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)
 }
 
 //!convert fromPoint in coordinate system fromSystem to reference coordinate system
-Base::Vector3d DrawUtil::toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint)
+Base::Vector3d DrawUtil::toR3(const gp_Ax2& fromSystem, const Base::Vector3d& fromPoint)
 {
     gp_Pnt gFromPoint(fromPoint.x,fromPoint.y,fromPoint.z);
     gp_Pnt gToPoint;
@@ -1247,7 +1247,7 @@ QString DrawUtil::qbaToDebug(const QByteArray & line)
 }
 
 void DrawUtil::dumpCS(const char* text,
-                      gp_Ax2 CS)
+                      const gp_Ax2& CS)
 {
     gp_Dir baseAxis = CS.Direction();
     gp_Dir baseX    = CS.XDirection();
@@ -1261,7 +1261,7 @@ void DrawUtil::dumpCS(const char* text,
 }
 
 void DrawUtil::dumpCS3(const char* text,
-                       gp_Ax3 CS)
+                       const gp_Ax3& CS)
 {
     gp_Dir baseAxis = CS.Direction();
     gp_Dir baseX    = CS.XDirection();

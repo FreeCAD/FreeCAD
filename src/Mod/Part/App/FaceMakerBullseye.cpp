@@ -144,7 +144,7 @@ void FaceMakerBullseye::Build_Essence()
 }
 
 
-FaceMakerBullseye::FaceDriller::FaceDriller(gp_Pln plane, TopoDS_Wire outerWire)
+FaceMakerBullseye::FaceDriller::FaceDriller(const gp_Pln& plane, TopoDS_Wire outerWire)
 {
     this->myPlane = plane;
     this->myFace = TopoDS_Face();
@@ -159,7 +159,7 @@ FaceMakerBullseye::FaceDriller::FaceDriller(gp_Pln plane, TopoDS_Wire outerWire)
     builder.Add(this->myFace, outerWire);
 }
 
-bool FaceMakerBullseye::FaceDriller::hitTest(gp_Pnt point) const
+bool FaceMakerBullseye::FaceDriller::hitTest(const gp_Pnt& point) const
 {
     double u,v;
     GeomAPI_ProjectPointOnSurf(point, myHPlane).LowerDistanceParameters(u,v);
