@@ -607,8 +607,14 @@ public:
     void paint(QPaintEvent *)
     {
         QPainter painter(&master);
-        painter.setOpacity(0.7);
+        painter.setOpacity(0.6);
         painter.setRenderHint(QPainter::Antialiasing, true);
+
+        if (ViewParams::getPieMenuCenterRadius()) {
+            painter.setPen(QPen(Qt::black, 4));
+            qreal r = ViewParams::getPieMenuCenterRadius();
+            painter.drawEllipse(QPointF(master.width()*0.5, master.height()*0.5), r, r);
+        }
 
         if (buttons.size() > 8) {
             painter.setPen(Qt::transparent);
@@ -631,10 +637,48 @@ PieMenu::PieMenu(QMenu *menu, const char *param, QWidget *parent)
     this->setMouseTracking(true);
     this->setAttribute(Qt::WA_NoSystemBackground, true);
     this->setAttribute(Qt::WA_TranslucentBackground, true);
+
 #if QT_VERSION  >= 0x050000
     this->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
-    setStyleSheet(qApp->styleSheet());
-#else
+
+    QString stylesheet = qApp->styleSheet();
+    if (stylesheet.isEmpty() || stylesheet.indexOf(QLatin1String("Gui--PieButton")) < 0) {
+        QLatin1String key("background-color: #");
+        int index = stylesheet.indexOf(key);
+        QString color;
+        if (index >= 0) {
+            bool ok = false;
+            ulong c = stylesheet.midRef(index+key.size()).toUInt(&ok, 16);
+            if (ok) color = QString::fromLatin1("#%1").arg(c, 0, 16);
+        }
+        if (color.isEmpty()) {
+            auto hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/MainWindow");
+            if (hGrp->GetASCII("StyleSheet", "").find("Dark") != std::string::npos)
+                color = QString::fromLatin1("#6e6e6e");
+            else
+                color = QString::fromLatin1("palette(window)");
+        }
+        stylesheet = QString::fromLatin1(
+                "Gui--PieButton {"
+                    "color: %3;"
+                    "background-color: %1;"
+                    "border: 1px solid %2;"
+                    "border-radius: 4px; }"
+                "Gui--PieButton:pressed {"
+                    "border: 1px inset %2; }"
+                "Gui--PieButton:focus {"
+                    "color: palette(highlighted-text);"
+                    "background-color: palette(highlight); }"
+                "Gui--PieButton:disabled {"
+                    "color: palette(mid);}")
+            .arg(color)
+            .arg(QLatin1String(color>0xa0a0a0?"palette(mid)":"palette(shadow)"))
+            .arg(QLatin1String(color>0xa0a0a0?"palette(bright-text)":"palette(text)"));
+
+        setStyleSheet(stylesheet);
+    }
+#else // qt4
     this->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint);
 #endif
     pimpl.reset(new Private(*this, menu, param));
@@ -706,7 +750,6 @@ QAction *PieMenu::exec(QMenu *menu, const QPoint &pt, const char *name, bool for
             return action;
     }
 
-    setupMenuStyle(&pmenu);
     pmenu.createWinId();
     pmenu.move(pt - QPoint(pmenu.width()/2, pmenu.height()/2));
     pmenu.show();

@@ -221,11 +221,13 @@ public:
     FC_VIEW_PARAM(PieMenuFontSize, int, Int, 0, \
         QT_TRANSLATE_NOOP("ViewParams","Pie menu font size"))\
     FC_VIEW_PARAM(PieMenuTriggerDelay, int, Int, 200, \
-        QT_TRANSLATE_NOOP("ViewParams","Pie menu sub-menu hover trigger delay (0 to disable)"))\
+        QT_TRANSLATE_NOOP("ViewParams","Pie menu sub-menu hover trigger delay, 0 to disable"))\
     FC_VIEW_PARAM(PieMenuTriggerAction, bool, Bool, false, \
         QT_TRANSLATE_NOOP("ViewParams","Pie menu action trigger on hover"))\
     FC_VIEW_PARAM(PieMenuAnimationDuration, int, Int, 250, \
-        QT_TRANSLATE_NOOP("ViewParams","Pie menu animation duration"))\
+        QT_TRANSLATE_NOOP("ViewParams","Pie menu animation duration, 0 to disable"))\
+    FC_VIEW_PARAM(PieMenuCenterRadius, int, Int, 10, \
+        QT_TRANSLATE_NOOP("ViewParams","Pie menu center circle radius, 0 to disable"))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

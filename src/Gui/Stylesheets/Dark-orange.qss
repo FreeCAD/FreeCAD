@@ -1519,7 +1519,6 @@ QDialog QToolButton {
     border-radius: 4px;
 }
 
-Gui--PieButton:hover,
 Gui--PieButton:focus,
 QDialog QToolButton:hover,
 QDialog QToolButton:focus {

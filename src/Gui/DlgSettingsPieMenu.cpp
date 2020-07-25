@@ -46,6 +46,7 @@ public:
     FC_PIEMENU_PARAM2(PieMenuIconSize, "Icon size", QSpinBox, 0, 64, 1, value, setValue) \
     FC_PIEMENU_PARAM2(PieMenuRadius, "Radius", QSpinBox, 10, 500, 10, value, setValue) \
     FC_PIEMENU_PARAM2(PieMenuTriggerRadius, "Trigger radius", QSpinBox, 10, 500, 10, value, setValue) \
+    FC_PIEMENU_PARAM2(PieMenuCenterRadius, "Center radius", QSpinBox, 0, 250, 1, value, setValue) \
     FC_PIEMENU_PARAM2(PieMenuFontSize, "Font size", QSpinBox, 0, 32, 1, value, setValue) \
     FC_PIEMENU_PARAM2(PieMenuTriggerDelay, "Trigger delay (ms)", QSpinBox, 0, 10000, 100, value, setValue) \
     FC_PIEMENU_PARAM(PieMenuTriggerAction, "Trigger action", QCheckBox, isChecked, setChecked) \
