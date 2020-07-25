@@ -238,11 +238,24 @@ std::vector<LineSet>  DrawGeomHatch::getTrimmedLinesSection(DrawViewSection* sou
                                                             double scale )
 {
     std::vector<LineSet> result;
-    TopoDS_Face tFace = f;
-    tFace = TopoDS::Face(GeometryObject::invertGeometry(tFace));
+    gp_Pln p;
+    Base::Vector3d vfc = DrawUtil::getFaceCenter(f);
+    gp_Pnt fc(vfc.x, vfc.y, vfc.z); 
+    double dir = -1.0;
+    if (fc.Z() < 0.0) {
+        dir = -dir;
+    }
+    Base::Vector3d stdZ(0.0, 0.0, 1.0);
+    Base::Vector3d offset = stdZ * p.Distance(fc) * dir;
+
+    //f may be above or below paper plane and must be moved so Common operation in 
+    //getTrimmedLines succeeds
+    TopoDS_Shape moved = TechDraw::moveShape(f,
+                                              offset);
+    TopoDS_Face fMoved = TopoDS::Face(GeometryObject::invertGeometry(moved));
     result = getTrimmedLines(source,
                              lineSets,
-                             tFace,
+                             fMoved,
                              scale );
     return result;
 }
