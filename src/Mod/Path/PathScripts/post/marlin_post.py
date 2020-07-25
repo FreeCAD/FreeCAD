@@ -52,7 +52,7 @@ parser.add_argument('--precision', default='4', help='number of digits of precis
 parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
 parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\n; M2"')
 parser.add_argument('--tool-change', help='0 ... suppress all tool change commands\n1 ... insert M6 for all tool changes\n2 ... insert M6 for all tool changes except the initial tool')
-
+parser.add_argument('--centerorigin', action='store_true', help='center all xy coords around mid point, default is bottom left')
 TOOLTIP_ARGS=parser.format_help()
 
 #These globals set common customization preferences
@@ -109,6 +109,8 @@ TOOL_CHANGE = ''''''
 SUPPRESS_TOOL_CHANGE=0
 ASSUME_FIRST_TOOL = True
 
+CENTER_ORIGIN = False
+
 # to distinguish python built-in open function from the one declared below
 if open.__module__ in ['__builtin__','io']:
     pythonopen = open
@@ -124,6 +126,7 @@ def processArguments(argstring):
     global PREAMBLE
     global POSTAMBLE
     global SUPPRESS_TOOL_CHANGE
+    global CENTER_ORIGIN
 
     try:
         args = parser.parse_args(shlex.split(argstring))
@@ -152,6 +155,9 @@ def processArguments(argstring):
         if not args.tool_change is None:
             OUTPUT_TOOL_CHANGE = int(args.tool_change) > 0
             SUPPRESS_TOOL_CHANGE = min(1, int(args.tool_change) - 1)
+        if args.centerorigin:
+            CENTER_ORIGIN = True
+
     except Exception as e:
         traceback.print_exc(e)
         return False
@@ -231,22 +237,31 @@ def export(objectslist,filename,argstring):
     precision_string = '.' + str(PRECISION) +'f'
      
     if OUTPUT_COMMENTS:
+        wassup = 'Origin: ' + ('Bottom Left' if not CENTER_ORIGIN else 'Centered')
+        print(wassup);
+        
+        gcode += ';' + wassup + '\n'
+        
         for key in data_stats: 
     	    if len(key) == 4:
-    	        gcode += ";" + key + " is " +  format(data_stats[key], precision_string) + " ==> " + format(data_stats[key+"'"], precision_string) + "\n"
+                wassup = key + ' is ' +  format(data_stats[key], precision_string) + ' ==> ' + format(data_stats[key+"'"], precision_string)
+                print(wassup)
+                gcode += ";" + wassup + '\n'
     	    else:
     	        break
     	       
-    if OUTPUT_COMMENTS: gcode += "\n;GCode Commands detected:\n\n"
+    if OUTPUT_COMMENTS: gcode += '\n;GCode Commands detected:\n\n'
     
     if OUTPUT_COMMENTS: 
         for key in data_stats:
     	    if len(key) < 4:
-                gcode += ";" + key + " detected, count is " +  str(data_stats[key]) + "\n"
+                nottoolate = key + ' detected, count is ' +  str(data_stats[key]) 
+                print(nottoolate)
+                gcode += ";" + nottoolate + "\n"
     
-    gcode +="\n"
+    gcode += '\n'
     gcode += gcodebody
-    gcodebody = ""
+    gcodebody = ''
     	
     #do the post_amble
 
@@ -298,8 +313,11 @@ def boxlimits(data_stats, cmd, param, value, checkbounds):
         if param == 'Z':
            value -= (data_stats[param + "max"] - 5)
         else:
-            value += -data_stats[param + "min"]
-
+            if CENTER_ORIGIN:
+                value -=  ((data_stats[param + "max"] + data_stats[param + "min"]) / 2.0)
+            else:
+                value -= data_stats[param + "min"]
+        
         if data_stats[param + "min'"] > value:
             data_stats[param + "min'"] = value 
         if data_stats[param + "max'"] < value:
@@ -319,7 +337,7 @@ def emuldrill(c, state): #G81
     return iter(cmdlist)
     
 def emultoolchange(c, state): #M6 T?
-    print(state['notoolyet'])
+    #print(state['notoolyet'])
     if ASSUME_FIRST_TOOL and state['notoolyet'] and state['output']:
         state['notoolyet'] = False
         cmdlist =  [
