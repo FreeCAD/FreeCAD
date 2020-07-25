@@ -7,17 +7,17 @@
     <x>0</x>
     <y>0</y>
     <width>476</width>
-    <height>336</height>
+    <height>378</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Part colors</string>
+   <string>Shape appearance</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBoxDefaultColors">
      <property name="title">
-      <string>Default Part colors</string>
+      <string>Default Shape view properties</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
