@@ -774,6 +774,22 @@ bool  DrawUtil::isCrazy(TopoDS_Edge e)
     return result;
 } 
 
+//get 3d position of a face's center
+Base::Vector3d DrawUtil::getFaceCenter(TopoDS_Face f)
+{
+    BRepAdaptor_Surface adapt(f);
+    double u1 = adapt.FirstUParameter();
+    double u2 = adapt.LastUParameter();
+    double mu = (u1 + u2) / 2.0;
+    double v1 = adapt.FirstVParameter();
+    double v2 = adapt.LastVParameter();
+    double mv = (v1 + v2) / 2.0;
+    BRepLProp_SLProps prop(adapt,mu,mv,0,Precision::Confusion());
+    const gp_Pnt gv = prop.Value();
+    Base::Vector3d v(gv.X(), gv.Y(), gv.Z());
+    return v;
+}
+
 // Supplementary mathematical functions
 // ====================================
 
