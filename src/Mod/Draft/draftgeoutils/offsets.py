@@ -200,9 +200,10 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     - 'dvec' to be obsolete in future?
     """
     if isinstance(wire, Part.Wire) or isinstance(wire, Part.Face):
-        # Seems has repeatedly sortEdges, remark out here
-        #edges = Part.__sortEdges__(wire.Edges)
-        edges = wire.Edges
+        # Found Draft GuiOffset directly offset Sketch.Shape(wire) would fails
+        # thus need to sort its edges same order 
+        edges = Part.__sortEdges__(wire.Edges)
+        #edges = wire.Edges
     elif isinstance(wire, list):
         if isinstance(wire[0], Part.Edge):
             edges = wire.copy()
