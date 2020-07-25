@@ -88,6 +88,11 @@ protected:
     void paintEvent(QPaintEvent *);
     bool eventFilter(QObject *, QEvent *);
 
+#if QT_VERSION  < 0x050000
+Q_SIGNALS:
+    void initMenu();
+#endif
+
 protected Q_SLOTS:
     void onTriggered(QAction *);
     void onStateChanged();

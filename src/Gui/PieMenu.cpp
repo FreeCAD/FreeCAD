@@ -77,7 +77,7 @@ public:
     int duration;
 
     QTimer timer;
-    QMenu *menu;
+    QMenu *menu = nullptr;
     QAction *action = nullptr;
     ParameterGrp::handle hGrp;
     std::string param;
@@ -108,6 +108,13 @@ public:
 
     void init()
     {
+#if QT_VERSION  >= 0x050000
+        menu->aboutToShow();
+#else
+        // work around qt4 protected signal
+        connect(&master, SIGNAL(initMenu()), menu, SIGNAL(aboutToShow()));
+        master.initMenu();
+#endif
         QAction *first = nullptr;
         for(QAction *action : menu->actions()) {
             if (action->isSeparator())
@@ -728,7 +735,6 @@ void PieMenu::onTriggered(QAction *action)
 
 QAction *PieMenu::exec(QMenu *menu, const QPoint &pt, const char *name, bool forwardKeyPress)
 {
-    menu->aboutToShow();
     PieMenu pmenu(menu, name, getMainWindow());
     pmenu.pimpl->forwardKeyPress = forwardKeyPress;
     if (pmenu.pimpl->buttons.empty())
