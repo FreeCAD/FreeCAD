@@ -32,34 +32,39 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/io/ios_state.hpp>
+#include <boost/math/special_functions/round.hpp>
+#include <boost/math/special_functions/trunc.hpp>
 
-#include <Base/Console.h>
-#include "Base/Exception.h"
-#include <Base/Interpreter.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentPy.h>
 #include <App/DocumentObject.h>
+#include <App/ObjectIdentifier.h>
 #include <App/PropertyUnits.h>
-#include <Base/QuantityPy.h>
+
+#include <Base/Console.h>
+#include "Base/Exception.h"
+#include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
+#include <Base/QuantityPy.h>
 #include <Base/RotationPy.h>
+#include <Base/Unit.h>
+#include <Base/UnitsApi.h>
 #include <Base/VectorPy.h>
+
+#include <QLocale>
 #include <QStringList>
-#include <string>
-#include <sstream>
+
+#include <algorithm>
+#include <deque>
 #include <math.h>
+#include <sstream>
 #include <stdio.h>
 #include <stack>
-#include <deque>
-#include <algorithm>
+#include <string>
+
 #include "ExpressionParser.h"
-#include <Base/Unit.h>
-#include <App/PropertyUnits.h>
-#include <App/ObjectIdentifier.h>
-#include <boost/math/special_functions/round.hpp>
-#include <boost/math/special_functions/trunc.hpp>
 
 /** \defgroup Expression Expressions framework
     \ingroup APP
@@ -1364,7 +1369,7 @@ void NumberExpression::_toString(std::ostream &ss, bool,int) const
     // https://en.cppreference.com/w/cpp/types/numeric_limits/max_digits10
     // https://www.boost.org/doc/libs/1_63_0/libs/multiprecision/doc/html/boost_multiprecision/tut/limits/constants.html
     boost::io::ios_flags_saver ifs(ss);
-    ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << getValue();
+    ss << QLocale().toString(getValue(), 'f', Base::UnitsApi::getDecimals()).toStdString();
 
     /* Trim of any extra spaces */
     //while (s.size() > 0 && s[s.size() - 1] == ' ')
