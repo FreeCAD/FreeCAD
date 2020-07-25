@@ -269,7 +269,7 @@ bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event)
                     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
             ReportHighlighter::Paragraph msgType = cr->messageType();
             if (msgType == ReportHighlighter::Warning){
-                if (group->GetBool("checkShowReportViewOnWarning", true)) {
+                if (group->GetBool("checkShowReportViewOnWarning", false)) {
                     showReportView();
                 }
             } else if (msgType == ReportHighlighter::Error){
@@ -563,7 +563,7 @@ void ReportOutput::onToggleError()
 }
 
 void ReportOutput::onToggleShowReportViewOnWarning(){
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnWarning", true);
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnWarning", false);
     getWindowParameter()->SetBool("checkShowReportViewOnWarning", !show);
 }
 
@@ -573,12 +573,12 @@ void ReportOutput::onToggleShowReportViewOnError(){
 }
 
 void ReportOutput::onToggleShowReportViewOnNormalMessage(){
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnNormalMessage", true);
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnNormalMessage", false);
     getWindowParameter()->SetBool("checkShowReportViewOnNormalMessage", !show);
 }
 
 void ReportOutput::onToggleShowReportViewOnLogMessage(){
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnLogMessage", true);
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnLogMessage", false);
     getWindowParameter()->SetBool("checkShowReportViewOnLogMessage", !show);
 }
 
