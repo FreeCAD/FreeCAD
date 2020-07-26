@@ -240,6 +240,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     // create an untransformed copy of the support shape
     Part::TopoShape supportShape(supportTopShape);
+
+    gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
+
     supportShape.setTransform(Base::Matrix4D());
     TopoDS_Shape support = supportShape.getShape();
 
@@ -264,6 +267,11 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             feature->getAddSubShape(fuseShape, cutShape);
             if (fuseShape.isNull() && cutShape.isNull())
                 return new App::DocumentObjectExecReturn("Shape of addsub feature is empty");
+            gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
+            if (!fuseShape.isNull())
+                fuseShape = fuseShape.makETransform(trsf);
+            if (!cutShape.isNull())
+                cutShape = cutShape.makETransform(trsf);
         } 
         else {
             return new App::DocumentObjectExecReturn("Only additive and subtractive features can be transformed");
