@@ -953,6 +953,7 @@ bool ProfileBased::isEqualGeometry(const TopoDS_Shape& s1, const TopoDS_Shape& s
         }
     }
     else if (s1.ShapeType() == TopAbs_EDGE && s2.ShapeType() == TopAbs_EDGE) {
+        // Do nothing here
     }
     else if (s1.ShapeType() == TopAbs_VERTEX && s2.ShapeType() == TopAbs_VERTEX) {
         gp_Pnt p1 = BRep_Tool::Pnt(TopoDS::Vertex(s1));

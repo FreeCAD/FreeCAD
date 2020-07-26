@@ -213,6 +213,7 @@ void SoFCColorBar::eventCallback(void * /*userdata*/, SoEventCallback * node)
         const SoMouseButtonEvent*  e = static_cast<const SoMouseButtonEvent*>(event);
         if ((e->getButton() == SoMouseButtonEvent::BUTTON2)) {
             if (e->getState() == SoButtonEvent::UP) {
+                // do nothing here
             }
         }
     }

@@ -332,7 +332,7 @@ PyObject*  DocumentPy::importLinks(PyObject *args)
         return NULL;    // NULL triggers exception
 
     std::vector<App::DocumentObject*> objs;
-    if(PySequence_Check(obj)) {
+    if (PySequence_Check(obj)) {
         Py::Sequence seq(obj);
         for(size_t i=0;i<seq.size();++i) {
             if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
@@ -341,13 +341,18 @@ PyObject*  DocumentPy::importLinks(PyObject *args)
             }
             objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
         }
-    }else if(obj == Py_None) {
-    }else if(!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {
+    }
+    else if(obj == Py_None) {
+        // do nothing here
+    }
+    else if(!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {
         PyErr_SetString(PyExc_TypeError, 
             "Expect first argument to be either a document object or sequence of document objects");
         return 0;
-    }else
+    }
+    else {
         objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+    }
     
     if(objs.empty())
         objs = getDocumentPtr()->getObjects();

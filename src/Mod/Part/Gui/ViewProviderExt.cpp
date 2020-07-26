@@ -978,6 +978,7 @@ bool ViewProviderPartExt::setEdit(int ModNum)
 void ViewProviderPartExt::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Color) {
+        // Do nothing here
     }
     else {
         Gui::ViewProviderGeometryObject::unsetEdit(ModNum);

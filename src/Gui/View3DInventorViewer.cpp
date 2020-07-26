@@ -3555,6 +3555,7 @@ void View3DInventorViewer::selectCB(void* viewer, SoPath* path)
 {
     ViewProvider* vp = static_cast<View3DInventorViewer*>(viewer)->getViewProviderByPath(path);
     if (vp && vp->useNewSelectionModel()) {
+        // do nothing here
     }
 }
 
@@ -3562,6 +3563,7 @@ void View3DInventorViewer::deselectCB(void* viewer, SoPath* path)
 {
     ViewProvider* vp = static_cast<View3DInventorViewer*>(viewer)->getViewProviderByPath(path);
     if (vp && vp->useNewSelectionModel()) {
+        // do nothing here
     }
 }
 

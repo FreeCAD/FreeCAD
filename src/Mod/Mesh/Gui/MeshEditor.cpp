@@ -686,9 +686,7 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
     else if (ev->getTypeId() == SoMouseButtonEvent::getClassTypeId()) {
         n->setHandled();
         const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ev);
-        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
-        }
-        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
             if (self->myNumPoints > 1)
                 return;
             SoRayPickAction rp(view->getSoRenderManager()->getViewportRegion());
