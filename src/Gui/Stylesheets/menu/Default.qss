@@ -1,0 +1,3 @@
+QMenu {
+  menu-scrollable:1;
+}

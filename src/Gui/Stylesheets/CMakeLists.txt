@@ -20,6 +20,7 @@ SET(Overlay_Stylesheets_Files
 )
 
 SET(Menu_Stylesheets_Files
+    "menu/Default.qss"
     "menu/Dark.qss"
     "menu/Light.qss"
 )

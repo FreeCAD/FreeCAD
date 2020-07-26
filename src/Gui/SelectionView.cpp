@@ -554,8 +554,10 @@ void setupMenuStyle(QWidget *menu)
         QString mainstyle = QString::fromUtf8(hGrp->GetASCII("StyleSheet").c_str());
         if(mainstyle.indexOf(QLatin1String("dark"),0,Qt::CaseInsensitive)>=0)
             name = QString::fromLatin1("qssm:Dark.qss");
-        else
+        else if(mainstyle.indexOf(QLatin1String("light"),0,Qt::CaseInsensitive)>=0)
             name = QString::fromLatin1("qssm:Light.qss");
+        else
+            name = QString::fromLatin1("qssm:Default.qss");
     } else if (!QFile::exists(name))
         name = QString::fromLatin1("qssm:%1").arg(name);
     if(_Name != name) {
