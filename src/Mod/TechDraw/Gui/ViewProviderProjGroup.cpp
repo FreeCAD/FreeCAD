@@ -240,7 +240,7 @@ std::vector<App::DocumentObject*> ViewProviderProjGroup::claimChildren(void) con
     std::vector<App::DocumentObject*> temp;
     const std::vector<App::DocumentObject *> &views = getObject()->Views.getValues();
     try {
-      for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
+      for (std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
           temp.push_back(*it);
       }
       return temp;
