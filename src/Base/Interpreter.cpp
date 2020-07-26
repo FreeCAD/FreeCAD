@@ -299,6 +299,45 @@ std::string InterpreterSingleton::runString(const char *sCmd)
     }
 }
 
+/** runStringWithKey(psCmd, key, key_initial_value)
+ * psCmd is python script to run
+ * key is the name of a python string variable the script will have read/write
+ * access to during script execution.  It will be our return value.
+ * key_initial_value is the initial value c++ will set before calling the script
+ * To check for runtime errors during script execution compare the return value
+ * of runStringWithKey() to the inital value set.  If they are the same then
+ * there was a runtime error (presuming the script is written to change the key).
+ *
+ * example: runStringWithKey("_key = 'new string'", "_key", "old string")
+ * If the return value of runStringWithKey() = "old string" then there was an error
+ * Enable logging and copy/paste the script to the console or to a macro to debug.
+ */
+
+std::string InterpreterSingleton::runStringWithKey(const char *psCmd, const char *key, const char *key_initial_value){
+
+    PyGILStateLocker locker;
+    PyObject* main = PP_Load_Module("__main__");
+    if (main == NULL)
+        throw PyException();
+    PyObject* globalDictionary = PyModule_GetDict(main);
+    if (globalDictionary == NULL)
+        throw PyException();
+    PyObject* localDictionary = PyDict_New();
+    if (localDictionary == NULL)
+        throw PyException();
+    PyObject* initial_value = PyUnicode_FromString(key_initial_value);
+    PyDict_SetItemString(localDictionary, key, initial_value);
+    PyRun_String(psCmd, Py_file_input, globalDictionary, localDictionary);
+    PyObject* key_return_value = PyDict_GetItemString(localDictionary, key);
+#if PY_MAJOR_VERSION >= 3
+    PyObject* str = PyUnicode_AsEncodedString(key_return_value, "utf-8", "~E~");
+#else
+    PyObject* str = PyString_FromString(key_return_value, "utf-8", "~E~");
+#endif
+    const char* result = PyBytes_AS_STRING(str);
+    return result;
+}
+
 Py::Object InterpreterSingleton::runStringObject(const char *sCmd)
 {
     PyObject *module, *dict, *presult;          /* "exec code in d, d" */
