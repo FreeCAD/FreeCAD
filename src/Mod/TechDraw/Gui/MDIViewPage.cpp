@@ -1260,31 +1260,6 @@ void MDIViewPage::setTreeToSceneSelect(void)
                 continue;
             }
 
-            QGIDatumLabel *dimLabel = dynamic_cast<QGIDatumLabel*>(*it);
-            if(dimLabel) {
-                QGraphicsItem*dimParent = dimLabel->QGraphicsItem::parentItem();
-                if(!dimParent)
-                    continue;
-
-                QGIView *dimItem = dynamic_cast<QGIView *>(dimParent);
-
-                if(!dimItem)
-                  continue;
-
-                TechDraw::DrawView *dimObj = dimItem->getViewObject();
-                if (!dimObj) {
-                    continue;
-                }
-                const char* name = dimObj->getNameInDocument();
-                if (!name) {                                   //can happen during undo/redo if Dim is selected???
-                    //Base::Console().Log("INFO - MDIVP::sceneSelectionChanged - dimObj name is null!\n");
-                    continue;
-                }
-
-                //bool accepted =
-                static_cast<void> (Gui::Selection().addSelection(dimObj->getDocument()->getName(),dimObj->getNameInDocument()));
-            }
-            
             QGMText *mText = dynamic_cast<QGMText*>(*it);
             if(mText) {
 //                Base::Console().Message("MDIVP::setTreeToScene - mTextSelected!\n");
