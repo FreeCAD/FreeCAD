@@ -27,6 +27,7 @@
 # include <QHeaderView>
 # include <QTextEdit>
 # include <QCheckBox>
+# include <QScrollBar>
 # include <QTextStream>
 # include <QThread>
 # include <QTreeWidget>
@@ -63,6 +64,7 @@
 #endif //_PreComp_
 
 #include "../App/PartFeature.h"
+#include <Base/Interpreter.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Selection.h>
 #include <Gui/Document.h>
@@ -565,16 +567,101 @@ void TaskCheckGeometryResults::checkSub(const BRepCheck_Analyzer &shapeCheck, co
 
 void TaskCheckGeometryResults::buildShapeContent(const QString &baseName, const TopoDS_Shape &shape)
 {
-  std::ostringstream stream;
-  if (!shapeContentString.empty())
-    stream << std::endl << std::endl;
-  stream << baseName.toLatin1().data() << ":" << std::endl;
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+            GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Units");
+    int decimals = group->GetInt("Decimals", 2);
+    group = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
+    bool logging = group->GetBool("checkLogging", true);
+    group = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
+    bool advancedShapeContent = group->GetBool("AdvancedShapeContent", true);
+    std::ostringstream stream;
+    if (!shapeContentString.empty())
+        stream << std::endl << std::endl;
+    stream << "CHECKED OBJECT: ";
+    std::ostringstream cmdstream;
+    cmdstream << "_basename = '" << baseName.toStdString().c_str() << "'" << std::endl;
+    cmdstream << "_obj = _basename[_basename.index('.')+1:]" << std::endl;
+    cmdstream << "_doc = _basename[:_basename.index(_obj)-1]" << std::endl;
+    cmdstream << "_shp = App.ActiveDocument.getObject(_obj).Shape" << std::endl;
+    cmdstream << "_type = str(_shp.ShapeType)" << std::endl;
+    cmdstream << "_result = _doc+'.'+App.ActiveDocument.getObject(_obj).Label+' ('+_obj+'):\\n'" << std::endl;
+    cmdstream << "_result += 'SHAPE_TYPE:  '+_type+'\\n'" << std::endl;
+    cmdstream << "_result += 'VERTEX:  '+str(len(_shp.Vertexes))+'\\n'" << std::endl;
+    cmdstream << "_result += 'EDGE:  '+str(len(_shp.Edges))+'\\n'" << std::endl;
+    cmdstream << "_result += 'WIRE:  '+str(len(_shp.Wires))+'\\n'" << std::endl;
+    cmdstream << "_result += 'FACE:  '+str(len(_shp.Faces))+'\\n'" << std::endl;
+    cmdstream << "_result += 'SHELL:  '+str(len(_shp.Shells))+'\\n'" << std::endl;
+    cmdstream << "_result += 'SOLID:  '+str(len(_shp.Solids))+'\\n'" << std::endl;
+    cmdstream << "_result += 'COMPSOLID:  '+str(len(_shp.CompSolids))+'\\n'" << std::endl;
+    cmdstream << "_result += 'COMPOUND:  '+str(len(_shp.Compounds))+'\\n'" << std::endl;
+    cmdstream << "_result += 'SHAPE:  '+str(len(_shp.Vertexes+_shp.Edges+_shp.Wires+_shp.Faces+_shp.Shells+_shp.Solids+_shp.CompSolids+_shp.Compounds))+'\\n'" << std::endl;
+    if (advancedShapeContent){
+        cmdstream << "_result += '----------\\n'" << std::endl;
+        cmdstream << "if hasattr(_shp,'Area') and not 'Wire' in _type and not 'Edge' in _type and not 'Vertex' in _type:" << std::endl;
+        cmdstream << "    _result += 'AREA:  '+str(round(_shp.Area, " << decimals << "))+'\\n'" << std::endl;
+        cmdstream << "if hasattr(_shp,'Volume') and not 'Wire' in _type and not 'Edge' in _type and not 'Vertex' in _type and not 'Face' in _type:" << std::endl;
+        cmdstream << "    _result += 'VOLUME:  '+str(round(_shp.Volume, " << decimals << "))+'\\n'" << std::endl;
+        cmdstream << "if hasattr(_shp,'Mass'):" << std::endl;
+        cmdstream << "    _result += 'MASS:  '+str(round(_shp.Mass, " << decimals << "))+'\\n'" << std::endl;
+        cmdstream << "if hasattr(_shp,'Length'):" << std::endl;
+        cmdstream << "    _result += 'LENGTH:  '+str(round(_shp.Length, " << decimals << "))+'\\n'" << std::endl;
+        cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Radius'):" << std::endl;
+        cmdstream << "    _result += 'RADIUS:  '+str(round(_shp.Curve.Radius, " << decimals << "))+'\\n'" << std::endl;
+        cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Center'):" << std::endl;
+        cmdstream << "    _result += 'CENTER_OF_CURVE:  '+str([round(vv," << decimals << ") for vv in _shp.Curve.Center])+'\\n'" << std::endl;
+        cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Continuity'):" << std::endl;
+        cmdstream << "    _result += 'CONTINUITY:  '+str(_shp.Curve.Continuity)+'\\n'" << std::endl;
+        cmdstream << "if hasattr(_shp,'CenterOfMass'):" << std::endl;
+        cmdstream << "    _result += 'CENTER_OF_MASS:  '+str([round(vv," << decimals << ") for vv in _shp.CenterOfMass])+'\\n'" << std::endl;
+        cmdstream << "if hasattr(_shp,'normalAt'):" << std::endl;
+        cmdstream << "    try:" << std::endl;
+        cmdstream << "        _result += 'NORMAL_AT(0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0)]) +'\\n'" << std::endl;
+        cmdstream << "    except:" << std::endl;
+        cmdstream << "        try:" << std::endl;
+        cmdstream << "            _result += 'NORMAL_AT(0,0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0,0)]) +'\\n'" << std::endl;
+        cmdstream << "        except:" << std::endl;
+        cmdstream << "            pass" << std::endl;
+        cmdstream << "if hasattr(_shp, 'isClosed') and ('Wire' in _type or 'Edge' in _type):" << std::endl;
+        cmdstream << "    _result += 'IS_CLOSED?:  '+str(_shp.isClosed())+'\\n'" << std::endl;
+        cmdstream << "if hasattr(_shp, 'Orientation'):" << std::endl;
+        cmdstream << "    _result += 'ORIENTATION:  '+str(_shp.Orientation)+'\\n'" << std::endl;
+        cmdstream << "if hasattr(_shp, 'PrincipalProperties'):" << std::endl;
+        cmdstream << "    _props = _shp.PrincipalProperties" << std::endl;
+        cmdstream << "    for _p in _props:" << std::endl;
+        cmdstream << "        if 'Base.Vector' in str(type(_props[_p])) or 'tuple' in str(type(_props[_p])):" << std::endl;
+        cmdstream << "            _result += str(_p)+':  '+str([round(vv," << decimals << ") for vv in _props[_p]]) +'\\n'" << std::endl;
+        cmdstream << "        else:" << std::endl;
+        cmdstream << "            _result += str(_p)+':  '+str(_props[_p])+'\\n'" << std::endl;
+    }
 
-  BRepTools_ShapeSet set;
-  set.Add(shape);
-  set.DumpExtent(stream);
-
-  shapeContentString += stream.str();
+    std::string cmd = cmdstream.str();
+    /** debugging can be a challenge if there is a runtime python error
+     *  so log to report view so we can copy/paste into a macro to
+     *  debug the script if it is failing
+     */
+    if(logging){
+        std::clog << "Building check geometry shape content using: " << std::endl
+                  << cmd << std::endl;
+    }
+    std::string key_default = "script error";
+    /** call runStringWithKey() with the key (_result) set to an error message
+     *  if the script succeeds without error the key holds value set in the script
+     *  if the script fails the key value remains unchanged
+     *  so we check this to see if the script failed, so we can
+     *  fallback on the old way of letting OCCT build the shape content
+     */
+    std::string result = Base::Interpreter().runStringWithKey(cmd.c_str(),"_result",key_default.c_str());
+    if (result.compare(key_default) != 0){ //success
+        stream << result;
+    } else { //use OCCT
+        stream << baseName.toLatin1().data() << std::endl;
+        BRepTools_ShapeSet set;
+        set.Add(shape);
+        set.DumpExtent(stream);
+    }
+    shapeContentString += stream.str();
 }
 
 QString TaskCheckGeometryResults::getShapeContentString()
@@ -1026,6 +1113,16 @@ the check geometry tool.  Default: false"));
             this, SLOT(on_expandShapeContentCheckBox_toggled(bool)));
     settingsBox->groupLayout()->addWidget(expandShapeContentCheckBox);
 
+    advancedShapeContentCheckBox = new QCheckBox();
+    advancedShapeContentCheckBox->setText(tr("Advanced shape content"));
+    advancedShapeContentCheckBox->setToolTip(tr("\
+Show advanced shape content.  Changes will take effect next time you use \n\
+the check geometry tool.  Default: false"));
+    advancedShapeContentCheckBox->setChecked(group->GetBool("AdvancedShapeContent", true));
+    connect(advancedShapeContentCheckBox, SIGNAL(toggled(bool)),
+            this, SLOT(on_advancedShapeContentCheckBox_toggled(bool)));
+    settingsBox->groupLayout()->addWidget(advancedShapeContentCheckBox);
+
     settingsBox->groupLayout()->addWidget(new QLabel(tr("\nIndividual BOP Checks:")));
 
     argumentTypeModeCheckBox = new QCheckBox();
@@ -1116,7 +1213,11 @@ bool TaskCheckGeometryDialog::accept()
     shapeContentBox->show();
     taskbox->show();
     widget->goCheck();
+    QScrollBar *v = contentLabel->verticalScrollBar();
+    v->setValue(v->maximum()); //scroll to bottom
+    int curval = v->value(); //save position
     contentLabel->setText(widget->getShapeContentString());
+    v->setValue(curval+(v->maximum()-curval)/5);
     return false;
 }
 
@@ -1204,6 +1305,13 @@ void TaskCheckGeometryDialog::on_expandShapeContentCheckBox_toggled(bool isOn)
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("ExpandShapeContent", isOn);
+}
+
+void TaskCheckGeometryDialog::on_advancedShapeContentCheckBox_toggled(bool isOn)
+{
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
+    group->SetBool("AdvancedShapeContent", isOn);
 }
 
 void TaskCheckGeometryDialog::on_selfInterModeCheckBox_toggled(bool isOn)
