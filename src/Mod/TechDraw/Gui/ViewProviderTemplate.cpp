@@ -195,9 +195,9 @@ bool ViewProviderTemplate::onDelete(const std::vector<std::string> &)
     QString bodyMessage;
     QTextStream bodyMessageStream(&bodyMessage);
     bodyMessageStream << qApp->translate("Std_Delete",
-        "The following referencing objects might break:");
+        "The following referencing object might break:");
     bodyMessageStream << "\n\n" << QString::fromUtf8(page->Label.getValue());
-    bodyMessageStream << "\n\nAre you sure you want to continue?";
+    bodyMessageStream << QObject::tr("\n\nAre you sure you want to continue?");
 
     // show and evaluate dialog
     int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
