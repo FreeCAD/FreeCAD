@@ -211,7 +211,7 @@ bool ViewProviderProjGroup::onDelete(const std::vector<std::string> &)
         bodyMessageStream << '\n';
         for (auto ObjIterator : objs)
             bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
-        bodyMessageStream << "\n\nAre you sure you want to continue?";
+        bodyMessageStream << QObject::tr("\n\nAre you sure you want to continue?");
         // show and evaluate dialog
         int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
