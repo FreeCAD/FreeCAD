@@ -72,11 +72,14 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="spinLength" native="true">
+      <widget class="Gui::QuantitySpinBox" name="spinLength">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
        </property>
-       <property name="value" stdset="0">
+       <property name="value">
         <double>100.000000000000000</double>
        </property>
       </widget>
@@ -93,7 +96,7 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::UIntSpinBox" name="spinOccurrences" native="true"/>
+      <widget class="Gui::UIntSpinBox" name="spinOccurrences"/>
      </item>
     </layout>
    </item>
@@ -141,11 +144,44 @@
   </customwidget>
   <customwidget>
    <class>Gui::UIntSpinBox</class>
-   <extends>QWidget</extends>
-   <header location="global">Gui/SpinBox.h</header>
+   <extends>QSpinBox</extends>
+   <header>Gui/SpinBox.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonAddFeature</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>buttonRemoveFeature</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>70</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>198</x>
+     <y>21</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonRemoveFeature</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>buttonAddFeature</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>198</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>70</x>
+     <y>21</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
