@@ -222,10 +222,11 @@ bool ViewProviderPage::onDelete(const std::vector<std::string> &)
         QString bodyMessage;
         QTextStream bodyMessageStream(&bodyMessage);
         bodyMessageStream << qApp->translate("Std_Delete",
-            "The page is not empty, therefore the\nfollowing referencing objects might be lost.\n\n"
-            "Are you sure you want to continue?");
+            "The page is not empty, therefore the\nfollowing referencing objects might be lost:");
+        bodyMessageStream << '\n';
         for (auto ObjIterator : objs)
             bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
+        bodyMessageStream << "\n\nAre you sure you want to continue?";
         // show and evaluate the dialog
         int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
