@@ -310,7 +310,7 @@ std::string InterpreterSingleton::runString(const char *sCmd)
  *
  * example: runStringWithKey("_key = 'new string'", "_key", "old string")
  * If the return value of runStringWithKey() = "old string" then there was an error
- * Enable logging and copy/paste the script to the console or to a macro to debug.
+ * copy/paste the script to the console or to a macro to debug.
  */
 
 std::string InterpreterSingleton::runStringWithKey(const char *psCmd, const char *key, const char *key_initial_value){
