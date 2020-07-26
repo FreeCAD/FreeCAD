@@ -92,5 +92,38 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonAddFeature</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>buttonRemoveFeature</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>66</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>186</x>
+     <y>21</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonRemoveFeature</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>buttonAddFeature</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>186</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>66</x>
+     <y>21</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
