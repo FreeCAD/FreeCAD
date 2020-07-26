@@ -91,8 +91,6 @@ QGIFace::QGIFace(int index) :
     m_image = new QGCustomImage();
     m_image->setParentItem(this);
 
-    m_svg = new QGCustomSvg();
-
     m_rect = new QGCustomRect();
     m_rect->setParentItem(this);
 
@@ -230,14 +228,10 @@ void QGIFace::loadSvgHatch(std::string fileSpec)
     QByteArray pattern("stroke:");
     QByteArrayMatcher matcher(pattern);
     int pos = 0;
-    if (matcher.indexIn(m_svgXML, pos) != -1)
+    if (matcher.indexIn(m_svgXML, pos) != -1) {
         SVGCOLPREFIX = "stroke:"; // declaration part of a style="" statement
-    else
+    } else {
         SVGCOLPREFIX = "stroke=\""; // declaration of its own
-
-    if (!m_svg->load(&m_svgXML)) {
-        Base::Console().Error("Error - Could not load hatch into SVG renderer for %s\n", fileSpec.c_str());
-        return;
     }
 }
 
