@@ -1,3 +1,5 @@
+#ifndef FREECAD_BIND_BIND_HPP_WORKAROUND
+#define FREECAD_BIND_BIND_HPP_WORKAROUND
 
 // Workaround for boost older than 1.60
 #ifndef BOOST_BIND_BIND_HPP_INCLUDED
@@ -19,3 +21,4 @@ namespace boost { namespace placeholders {
 }};
 #endif
 
+#endif // #ifndef FREECAD_BIND_BIND_HPP_WORKAROUND
