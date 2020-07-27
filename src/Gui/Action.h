@@ -430,7 +430,7 @@ public:
     void popup(const QPoint &pt);
 
     static void populate();
-    static std::string commandName(const char *name);
+    static std::string paramName(const char *name, const char *workbench=nullptr);
 
 protected Q_SLOTS:
     virtual void onShowMenu();

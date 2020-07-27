@@ -212,7 +212,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
 
         bool visible = hPref->GetBool(toolbarName.c_str(), true);
         if (item->id().size()) {
-            // Migrate to use toolbar ID instead title for identification to
+            // Migrate to use toolbar ID instead of title for identification to
             // avoid name conflict when using custom toolbar
             bool v = hPref->GetBool(item->id().c_str(), true);
             if (v == hPref->GetBool(item->id().c_str(), false))

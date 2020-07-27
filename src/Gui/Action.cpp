@@ -1412,6 +1412,9 @@ void CmdHistoryAction::addTo ( QWidget * w )
         connect(_completer, SIGNAL(commandActivated(QByteArray)), this, SLOT(onCommandActivated(QByteArray)));
 
         _newAction = new QAction(tr("Add toolbar or menu"), this);
+        _newAction->setToolTip(tr("Create a Global customized toolbar or menu.\n"
+                                  "Or, hold SHIFT key to create a toolbar/menu\n"
+                                  "for the current workbench."));
         connect(_newAction, SIGNAL(triggered(bool)), this, SLOT(onNewAction()));
 
         _menu = new CmdHistoryMenu(_lineedit);
@@ -1648,6 +1651,11 @@ ToolbarMenuAction::ToolbarMenuAction ( Command* pcCmd, QObject * parent )
 {
     _pimpl->hShortcut = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
     _pimpl->hShortcut->Attach(_pimpl.get());
+
+    Application::Instance->signalActivateWorkbench.connect(
+        [](const char*) {
+            ToolbarMenuAction::populate();
+        });
 }
 
 ToolbarMenuAction::~ToolbarMenuAction()
@@ -1684,9 +1692,19 @@ void ToolbarMenuAction::populate()
         action->update();
 }
 
-std::string ToolbarMenuAction::commandName(const char *name)
+std::string ToolbarMenuAction::paramName(const char *name, const char *workbench)
 {
-    return std::string("Std_ToolbarMenu_") + name;
+    if (!name)
+        name = "";
+
+    if (!workbench || strcmp(workbench, "Global")==0)
+        return std::string("Std_ToolbarMenu_") + name;
+
+    std::string res("Std_WBMenu_");
+    res += workbench;
+    if (name[0])
+        res += "_";
+    return res + name;
 }
 
 void ToolbarMenuAction::update()
@@ -1698,18 +1716,15 @@ void ToolbarMenuAction::update()
     auto &manager = Application::Instance->commandManager();
     _menu->clear();
     std::set<std::string> cmds;
-    for (auto &hGrp : _pimpl->handle->GetGroups()) {
 
-        if(hGrp->GetASCII("Name","").empty())
-            continue;
-
-        std::string name = commandName(hGrp->GetGroupName());
+    auto addCommand = [&](ParameterGrp::handle hGrp, const char *workbench) {
+        std::string name = paramName(hGrp->GetGroupName(), workbench);
         QString shortcut = QString::fromLatin1(_pimpl->hShortcut->GetASCII(name.c_str()).c_str());
         if (shortcut.isEmpty())
-            continue;
+            return;
 
         if (!cmds.insert(name).second)
-            continue;
+            return;
 
         auto res = _pimpl->cmds.insert(name);
         Command *cmd = manager.getCommandByName(name.c_str());
@@ -1720,6 +1735,28 @@ void ToolbarMenuAction::update()
         if (cmd->getAction() && cmd->getAction()->shortcut() != shortcut)
             cmd->getAction()->setShortcut(shortcut);
         cmd->addTo(_menu);
+    };
+
+    for (auto &hGrp : _pimpl->handle->GetGroups()) {
+        if(hGrp->GetASCII("Name","").empty())
+            continue;
+        addCommand(hGrp, nullptr);
+    }
+
+    auto wb = WorkbenchManager::instance()->active();
+    if (wb) {
+        auto hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Workbench");
+        if (hGrp->HasGroup(wb->name().c_str())) {
+            hGrp = hGrp->GetGroup(wb->name().c_str());
+            if (hGrp->HasGroup("Toolbar")) {
+                for (auto h : hGrp->GetGroup("Toolbar")->GetGroups()) {
+                    if(h->GetASCII("Name","").empty())
+                        continue;
+                    addCommand(h, wb->name().c_str());
+                }
+            }
+        }
     }
 
     for (auto it=_pimpl->cmds.begin(); it!=_pimpl->cmds.end();) {
@@ -1730,7 +1767,6 @@ void ToolbarMenuAction::update()
         Command *cmd = manager.getCommandByName(it->c_str());
         if (cmd)
             manager.removeCommand(cmd);
-        _pimpl->hShortcut->RemoveASCII(it->c_str());
         it = _pimpl->cmds.erase(it);
     }
 }
