@@ -289,6 +289,7 @@ public:
     static PyObject* sActivateView             (PyObject *self,PyObject *args);
     static PyObject* sGetDocument              (PyObject *self,PyObject *args);
     static PyObject* sEditDocument             (PyObject *self,PyObject *args);
+    static PyObject* sResetEdit                (PyObject *self,PyObject *args);
 
     static PyObject* sDoCommand                (PyObject *self,PyObject *args);
     static PyObject* sDoCommandGui             (PyObject *self,PyObject *args);

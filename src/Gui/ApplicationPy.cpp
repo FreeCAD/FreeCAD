@@ -190,6 +190,9 @@ PyMethodDef Application::Methods[] = {
   {"editDocument", (PyCFunction)Application::sEditDocument, METH_VARARGS,
    "editDocument() -> object or None\n\n"
    "Return the current editing document or None if no one exists" },
+  {"resetEdit", (PyCFunction)Application::sResetEdit, METH_VARARGS,
+   "resetEdit()\n\n"
+   "Reset current editing document if there is one" },
   {"getDocument",             (PyCFunction) Application::sGetDocument, METH_VARARGS,
    "getDocument(string) -> object\n\n"
    "Get a document by its name"},
@@ -254,6 +257,17 @@ PyObject* Gui::Application::sEditDocument(PyObject * /*self*/, PyObject *args)
 	else {
 		Py_Return;
 	}
+}
+
+PyObject* Gui::Application::sResetEdit(PyObject * /*self*/, PyObject *args)
+{
+	if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+		return NULL;                       // NULL triggers exception 
+
+    PY_TRY {
+        Instance->setEditDocument(nullptr);
+	    Py_Return;
+    } PY_CATCH
 }
 
 PyObject* Gui::Application::sActiveDocument(PyObject * /*self*/, PyObject *args)
