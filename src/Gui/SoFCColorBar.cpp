@@ -280,15 +280,15 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
 
                 menu.addSeparator();
                 QAction* option = menu.addAction(QObject::tr("Options..."));
-                QAction* action = menu.exec(QCursor::pos());
+                QAction* select = menu.exec(QCursor::pos());
 
-                if (action == option) {
+                if (select == option) {
                     QApplication::postEvent(
                         new SoFCColorBarProxyObject(this),
                         new QEvent(QEvent::User));
                 }
-                else if (action) {
-                    int id = action->data().toInt();
+                else if (select) {
+                    int id = select->data().toInt();
                     pColorMode->whichChild = id;
                 }
             }

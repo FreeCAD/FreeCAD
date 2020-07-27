@@ -202,16 +202,16 @@ void ViewProviderInspection::updateData(const App::Property* prop)
             // set the Distance property to the correct size to sync size of material node with number
             // of vertices/points of the referenced geometry
             if (object->getTypeId().isDerivedFrom(meshId)) {
-                App::Property* prop = object->getPropertyByName("Mesh");
-                if (prop && prop->getTypeId().isDerivedFrom(propId)) {
-                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
+                App::Property* propM = object->getPropertyByName("Mesh");
+                if (propM && propM->getTypeId().isDerivedFrom(propId)) {
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(propM)->getComplexData();
                     data->getFaces(points, faces, accuracy);
                 }
             }
             else if (object->getTypeId().isDerivedFrom(shapeId)) {
-                App::Property* prop = object->getPropertyByName("Shape");
-                if (prop && prop->getTypeId().isDerivedFrom(propId)) {
-                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
+                App::Property* propS = object->getPropertyByName("Shape");
+                if (propS && propS->getTypeId().isDerivedFrom(propId)) {
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(propS)->getComplexData();
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
                         ("User parameter:BaseApp/Preferences/Mod/Part");
                     float deviation = hGrp->GetFloat("MeshDeviation",0.2);
@@ -222,9 +222,9 @@ void ViewProviderInspection::updateData(const App::Property* prop)
                 }
             }
             else if (object->getTypeId().isDerivedFrom(pointId)) {
-                App::Property* prop = object->getPropertyByName("Points");
-                if (prop && prop->getTypeId().isDerivedFrom(propId)) {
-                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
+                App::Property* propP = object->getPropertyByName("Points");
+                if (propP && propP->getTypeId().isDerivedFrom(propId)) {
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(propP)->getComplexData();
                     std::vector<Base::Vector3d> normals;
                     data->getPoints(points, normals, accuracy);
                 }

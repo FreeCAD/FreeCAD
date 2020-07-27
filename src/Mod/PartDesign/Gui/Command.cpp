@@ -1960,8 +1960,8 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
         return;
     }
     else {
-        PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
-        if (pcActiveBody != PartDesignGui::getBodyFor(features[0], false)) {
+        PartDesign::Body *activeBody = PartDesignGui::getBody(true);
+        if (activeBody != PartDesignGui::getBodyFor(features[0], false)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
                 QObject::tr("Please select only one feature in an active body."));
             return;

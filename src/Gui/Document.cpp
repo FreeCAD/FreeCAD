@@ -1475,15 +1475,15 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base:
     std::map<const App::DocumentObject*,ViewProvider*>::const_iterator jt;
     for (jt = views.begin(); jt != views.end(); ++jt) {
         const App::DocumentObject* doc = jt->first;
-        ViewProvider* obj = jt->second;
+        ViewProvider* vp = jt->second;
         writer.Stream() << writer.ind() << "<ViewProvider name=\""
                         << doc->getExportName() << "\" "
                         << "expanded=\"" << (doc->testStatus(App::Expand) ? 1:0) << "\"";
-        if (obj->hasExtensions())
+        if (vp->hasExtensions())
             writer.Stream() << " Extensions=\"True\"";
 
         writer.Stream() << ">" << std::endl;
-        obj->Save(writer);
+        vp->Save(writer);
         writer.Stream() << writer.ind() << "</ViewProvider>" << std::endl;
     }
     writer.setForceXML(xml);
