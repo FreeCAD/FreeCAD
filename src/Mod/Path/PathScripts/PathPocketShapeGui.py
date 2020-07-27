@@ -261,7 +261,11 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         if extendCorners:
             def edgesMatchShape(e0, e1):
-                return PathGeom.edgesMatch(e0, e1) or PathGeom.edgesMatch(e0, PathGeom.flipEdge(e1))
+                flipped = PathGeom.flipEdge(e1)
+                if flipped:
+                    return PathGeom.edgesMatch(e0, e1) or PathGeom.edgesMatch(e0, flipped)
+                else:
+                    return PathGeom.edgesMatch(e0, e1)
 
             self.extensionEdges = extensionEdges # pylint: disable=attribute-defined-outside-init
             for edgeList in Part.sortEdges(list(extensionEdges.keys())):
