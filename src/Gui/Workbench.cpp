@@ -213,7 +213,7 @@ Workbench::~Workbench()
 {
 }
 
-std::string Workbench::name() const
+const std::string &Workbench::name() const
 {
     return _name;
 }

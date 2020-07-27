@@ -885,6 +885,7 @@ private:
     void clearCommands();
     std::map<std::string, Command*> _sCommands;
     std::map<std::string, std::list<std::string> > _sCommandModes;
+    mutable std::set<std::string> _sPendingWorkbench;
     int _revision = 0;
 };
 

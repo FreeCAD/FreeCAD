@@ -181,6 +181,7 @@ struct ApplicationP
     bool startingUp;
     /// Handles all commands
     CommandManager commandManager;
+    std::string initWorkbench;
 };
 
 static PyObject *
@@ -1299,6 +1300,101 @@ void Application::tryClose(QCloseEvent * e)
     }
 }
 
+bool Application::initializeWorkbench(const char *name)
+{
+    Workbench* oldWb = WorkbenchManager::instance()->active();
+    if (oldWb && oldWb->name() == name)
+        return false; // already active
+
+    Base::PyGILStateLocker lock;
+    PyObject* pcWorkbench = 0;
+    pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, name);
+    if (!pcWorkbench)
+        return false;
+
+    try {
+        initializeWorkbench(name, Py::Object(pcWorkbench));
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        return false;
+    }
+    return true;
+}
+
+struct ExecFileGuard
+{
+    ExecFileGuard(std::string &s, std::string *wb=nullptr, const char *initWb=nullptr)
+        :execFile(s), saved(s), wb(wb)
+    {
+        if (wb) *wb = initWb;
+    }
+
+    ~ExecFileGuard()
+    {
+        execFile = saved;
+        if (wb) wb->clear();
+    }
+
+    std::string &execFile;
+    std::string saved;
+    std::string *wb;
+};
+
+const char *Application::initializingWorkbench() const
+{
+    return d->initWorkbench.size()?d->initWorkbench.c_str():nullptr;
+}
+
+std::string Application::initializeWorkbench(const char *name, Py::Object handler)
+{
+    ExecFileGuard guard(_ExecFile, &d->initWorkbench, name);
+    try {
+        std::string type;
+        if (!handler.hasAttr(std::string("__Workbench__"))) {
+            WaitCursor wc;
+
+            // call its GetClassName method if possible
+            Py::Callable method(handler.getAttr(std::string("GetClassName")));
+            Py::Tuple args;
+            Py::String result(method.apply(args));
+            type = result.as_std_string("ascii");
+            if (Base::Type::fromName(type.c_str()).isDerivedFrom(Gui::PythonBaseWorkbench::getClassTypeId())) {
+                Workbench* wb = WorkbenchManager::instance()->createWorkbench(name, type);
+                if (!wb)
+                    throw Py::RuntimeError("Failed to instantiate workbench of type " + type);
+                handler.setAttr(std::string("__Workbench__"), Py::Object(wb->getPyObject(), true));
+            }
+
+            auto iter = _workbenchPaths.find(name);
+            if (iter == _workbenchPaths.end())
+                _ExecFile.clear();
+            else
+                _ExecFile = iter->second;
+
+            // import the matching module first
+            Py::Callable activate(handler.getAttr(std::string("Initialize")));
+            activate.apply(args);
+
+            // Dependent on the implementation of a workbench handler the type
+            // can be defined after the call of Initialize()
+            if (type.empty()) {
+                Py::String result(method.apply(args));
+                type = result.as_std_string("ascii");
+            }
+        }
+
+        return type;
+    }
+    catch (Py::Exception&) {
+        Base::PyException e;
+        if (!d->startingUp)
+            Base::Console().Error("%s\n", e.getStackTrace().c_str());
+        else
+            Base::Console().Log("%s\n", e.getStackTrace().c_str());
+        throw e;
+    }
+}
+
 /**
  * Activate the matching workbench to the registered workbench handler with name \a name.
  * The handler must be an instance of a class written in Python.
@@ -1311,7 +1407,6 @@ void Application::tryClose(QCloseEvent * e)
 bool Application::activateWorkbench(const char* name)
 {
     bool ok = false;
-    WaitCursor wc;
     Workbench* oldWb = WorkbenchManager::instance()->active();
     if (oldWb && oldWb->name() == name)
         return false; // already active
@@ -1331,33 +1426,13 @@ bool Application::activateWorkbench(const char* name)
     if (!pcWorkbench)
         return false;
 
+    std::string errMsg;
+
     try {
-        std::string type;
         Py::Object handler(pcWorkbench);
-        if (!handler.hasAttr(std::string("__Workbench__"))) {
-            // call its GetClassName method if possible
-            Py::Callable method(handler.getAttr(std::string("GetClassName")));
-            Py::Tuple args;
-            Py::String result(method.apply(args));
-            type = result.as_std_string("ascii");
-            if (Base::Type::fromName(type.c_str()).isDerivedFrom(Gui::PythonBaseWorkbench::getClassTypeId())) {
-                Workbench* wb = WorkbenchManager::instance()->createWorkbench(name, type);
-                if (!wb)
-                    throw Py::RuntimeError("Failed to instantiate workbench of type " + type);
-                handler.setAttr(std::string("__Workbench__"), Py::Object(wb->getPyObject(), true));
-            }
+        std::string type = initializeWorkbench(name, handler);
 
-            // import the matching module first
-            Py::Callable activate(handler.getAttr(std::string("Initialize")));
-            activate.apply(args);
-
-            // Dependent on the implementation of a workbench handler the type
-            // can be defined after the call of Initialize()
-            if (type.empty()) {
-                Py::String result(method.apply(args));
-                type = result.as_std_string("ascii");
-            }
-        }
+        WaitCursor wc;
 
         // does the Python workbench handler have changed the workbench?
         Workbench* curWb = WorkbenchManager::instance()->active();
@@ -1376,6 +1451,7 @@ bool Application::activateWorkbench(const char* name)
             Workbench* wb = WorkbenchManager::instance()->getWorkbench(name);
             if (wb) handler.setAttr(std::string("__Workbench__"), Py::Object(wb->getPyObject(), true));
         }
+
 
         // If the method Deactivate is available we call it
         if (pcOldWorkbench) {
@@ -1416,7 +1492,18 @@ bool Application::activateWorkbench(const char* name)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        QString msg = QString::fromUtf8(e.what());
+        if (!d->startingUp)
+            Base::Console().Error("%s\n", e.getStackTrace().c_str());
+        else
+            Base::Console().Log("%s\n", e.getStackTrace().c_str());
+        errMsg = e.what();
+    }
+    catch (Base::Exception &e) {
+        errMsg = e.what();
+    }
+
+    if (errMsg.size()) {
+        QString msg = QString::fromUtf8(errMsg.c_str());
         QRegExp rx;
         // ignore '<type 'exceptions.ImportError'>' prefixes
         rx.setPattern(QLatin1String("^\\s*<type 'exceptions.ImportError'>:\\s*"));
@@ -1427,19 +1514,12 @@ bool Application::activateWorkbench(const char* name)
         }
 
         Base::Console().Error("%s\n", (const char*)msg.toUtf8());
-        if (!d->startingUp)
-            Base::Console().Error("%s\n", e.getStackTrace().c_str());
-        else
-            Base::Console().Log("%s\n", e.getStackTrace().c_str());
 
         if (!d->startingUp) {
-            wc.restoreCursor();
             QMessageBox::critical(getMainWindow(), QObject::tr("Workbench failure"),
                 QObject::tr("%1").arg(msg));
-            wc.setWaitCursor();
         }
     }
-
     return ok;
 }
 

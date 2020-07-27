@@ -60,7 +60,7 @@ public:
     /**
      * Returns the name of the workbench object.
      */
-    std::string name() const;
+    const std::string &name() const;
     /**
      * Set the name to the workbench object.
      */

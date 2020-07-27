@@ -154,6 +154,7 @@ protected:
     void slotActivatedObject(const ViewProvider&);
     void slotInEdit(const Gui::ViewProviderDocumentObject&);
     void slotResetEdit(const Gui::ViewProviderDocumentObject&);
+    std::string initializeWorkbench(const char *name, Py::Object);
 
 public:
     /// message when a GuiDocument is about to vanish
@@ -197,6 +198,8 @@ public:
     //@{
     /// Activate a named workbench
     bool activateWorkbench(const char* name);
+    bool initializeWorkbench(const char *name);
+    const char *initializingWorkbench() const;
     QPixmap workbenchIcon(const QString&) const;
     QString workbenchToolTip(const QString&) const;
     QString workbenchMenuText(const QString&) const;
@@ -312,6 +315,8 @@ private:
     struct ApplicationP* d;
     /// workbench python dictionary
     PyObject*             _pcWorkbenchDictionary;
+    std::map<std::string, std::string> _workbenchPaths;
+    std::string _ExecFile;
 };
 
 } //namespace Gui

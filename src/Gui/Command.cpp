@@ -1832,7 +1832,23 @@ CommandManager::~CommandManager()
 void CommandManager::addCommand(Command* pCom)
 {
     ++_revision;
-    _sCommands[pCom->getName()] = pCom;// pCom->Init();
+    auto &cmd = _sCommands[pCom->getName()];
+    if (cmd) {
+        if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_ERR("duplicate command " << pCom->getName());
+        return;
+    }
+    cmd = pCom;
+
+    const char *workbench = Application::Instance->initializingWorkbench();
+    static ParameterGrp::handle hGrp;
+    if (!hGrp)
+        hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Commands");
+    if (workbench)
+        hGrp->SetASCII(pCom->getName(), workbench);
+    else
+        hGrp->RemoveASCII(pCom->getName());
 }
 
 void CommandManager::removeCommand(Command* pCom)
@@ -1855,7 +1871,8 @@ void CommandManager::clearCommands()
 
 bool CommandManager::addTo(const char* Name, QWidget *pcWidget)
 {
-    if (_sCommands.find(Name) == _sCommands.end()) {
+    Command *cmd = getCommandByName(Name);
+    if (!cmd) {
         // Print in release mode only a log message instead of an error message to avoid to annoy the user
 #ifdef FC_DEBUG
         Base::Console().Error("CommandManager::addTo() try to add an unknown command (%s) to a widget!\n",Name);
@@ -1864,11 +1881,9 @@ bool CommandManager::addTo(const char* Name, QWidget *pcWidget)
 #endif
         return false;
     }
-    else {
-        Command* pCom = _sCommands[Name];
-        pCom->addTo(pcWidget);
-        return true;
-    }
+
+    cmd->addTo(pcWidget);
+    return true;
 }
 
 std::vector <Command*> CommandManager::getModuleCommands(const char *sModName) const
@@ -1909,7 +1924,28 @@ std::vector <Command*> CommandManager::getGroupCommands(const char *sGrpName) co
 Command* CommandManager::getCommandByName(const char* sName) const
 {
     std::map<std::string,Command*>::const_iterator it = _sCommands.find( sName );
-    return ( it != _sCommands.end() ) ? it->second : 0;
+    if ( it == _sCommands.end() ) {
+        static ParameterGrp::handle hGrp;
+        if (!hGrp)
+            hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/Commands");
+        auto workbench = hGrp->GetASCII(sName);
+        if (workbench.empty())
+            return nullptr;
+        if (!_sPendingWorkbench.insert(workbench).second) {
+            FC_LOG("Recursive loading of command '" << sName << "' from workbench " << workbench);
+            return nullptr;
+        }
+        FC_LOG("Initializing workbench " << workbench << " due to command " << sName);
+        Application::Instance->initializeWorkbench(workbench.c_str());
+        _sPendingWorkbench.erase(workbench);
+        it = _sCommands.find(sName);
+        if (it == _sCommands.end()) {
+            hGrp->RemoveASCII(sName);
+            return nullptr;
+        }
+    }
+    return it->second;
 }
 
 void CommandManager::runCommandByName (const char* sName, int iMsg) const

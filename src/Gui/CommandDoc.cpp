@@ -417,6 +417,7 @@ StdCmdNew::StdCmdNew()
     sStatusTip    = QT_TR_NOOP("Create a new empty document");
     sPixmap       = "document-new";
     sAccel        = keySequenceToAccel(QKeySequence::New);
+    eType         = NoTransaction;
 }
 
 void StdCmdNew::activated(int iMsg)

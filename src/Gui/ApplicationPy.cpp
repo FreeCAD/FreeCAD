@@ -915,6 +915,34 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
     }
 }
 
+static std::string _getCurrentPythonFile(const std::string &execFile)
+{
+    Py::Module mod(PyImport_ImportModule("inspect"), true);
+    if (mod.isNull()) {
+        PyErr_SetString(PyExc_ImportError, "Cannot load inspect module");
+        return std::string();
+    }
+    Py::Callable inspect(mod.getAttr("stack"));
+    Py::List list(inspect.apply());
+
+    std::string file;
+    // usually this is the file name of the calling script
+#if (PY_MAJOR_VERSION > 3 || (PY_MAJOR_VERSION==3 && PY_MINOR_VERSION>=5))
+    Py::Object info = list.getItem(0);
+    PyObject *pyfile = PyStructSequence_GET_ITEM(*info,1);
+    if(!pyfile)
+        throw Py::Exception();
+    file = Py::Object(pyfile).as_string();
+#else
+    Py::Tuple info = list.getItem(0);
+    file = info.getItem(1).as_string();
+#endif
+
+    if (file == "<string>" && execFile.size())
+        return execFile;
+    return file;
+}
+
 PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
 {
     PyObject*   pcObject;
@@ -962,6 +990,8 @@ PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
             return NULL;
         }
 
+        Instance->_workbenchPaths[item] = _getCurrentPythonFile(Instance->_ExecFile);
+
         PyDict_SetItemString(Instance->_pcWorkbenchDictionary,item.c_str(),object.ptr());
         Instance->signalAddWorkbench(item.c_str());
     }
@@ -988,6 +1018,7 @@ PyObject* Application::sRemoveWorkbenchHandler(PyObject * /*self*/, PyObject *ar
     Instance->signalRemoveWorkbench(psKey);
     WorkbenchManager::instance()->removeWorkbench(psKey);
     PyDict_DelItemString(Instance->_pcWorkbenchDictionary,psKey);
+    Instance->_workbenchPaths.erase(psKey);
 
     Py_INCREF(Py_None);
     return Py_None;
@@ -1157,8 +1188,6 @@ PyObject* Application::sIsIconCached(PyObject * /*self*/, PyObject *args)
     return Py::new_reference_to(Py::Boolean(BitmapFactory().findPixmapInCache(iconName, icon)));
 }
 
-static std::string _ExecFile;
-
 PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
 {
     char*       pName;
@@ -1172,29 +1201,8 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
     std::string module, group;
     try {
         Base::PyGILStateLocker lock;
-        Py::Module mod(PyImport_ImportModule("inspect"), true);
-        if (mod.isNull()) {
-            PyErr_SetString(PyExc_ImportError, "Cannot load inspect module");
-            return 0;
-        }
-        Py::Callable inspect(mod.getAttr("stack"));
-        Py::List list(inspect.apply());
 
-        std::string file;
-        // usually this is the file name of the calling script
-#if (PY_MAJOR_VERSION > 3 || (PY_MAJOR_VERSION==3 && PY_MINOR_VERSION>=5))
-        Py::Object info = list.getItem(0);
-        PyObject *pyfile = PyStructSequence_GET_ITEM(*info,1);
-        if(!pyfile)
-            throw Py::Exception();
-        file = Py::Object(pyfile).as_string();
-#else
-        Py::Tuple info = list.getItem(0);
-        file = info.getItem(1).as_string();
-#endif
-
-        if (file == "<string>")
-            file = _ExecFile;
+        std::string file = _getCurrentPythonFile(Instance->_ExecFile);
 
         Base::FileInfo fi(file);
         // convert backslashes to slashes
@@ -1215,11 +1223,12 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
                 break;
             }
             lastName = std::move(name);
+            if (path.find('/') == std::string::npos)
+                break;
             path = info.dirPath();
         } while (path.size());
 
         FC_TRACE("Add command " << pName << ", " << group << ", " << fi.filePath());
-
     }
     catch (Py::Exception& e) {
         e.clear();
@@ -1664,9 +1673,9 @@ PyObject* Application::sSetExecFile(PyObject * /*self*/, PyObject *args)
 
     Base::PyGILStateLocker lock;
     if (!file)
-        _ExecFile.clear();
+        Instance->_ExecFile.clear();
     else
-        _ExecFile = file;
+        Instance->_ExecFile = file;
     Py_Return;
 }
 
