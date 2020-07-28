@@ -481,40 +481,69 @@ void ReportOutput::changeEvent(QEvent *ev)
 
 void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
 {
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("OutputWindow");
+    bool bShowOnLog = hGrp->GetBool("checkShowReportViewOnLogMessage",false);
+    bool bShowOnNormal = hGrp->GetBool("checkShowReportViewOnNormalMessage",false);
+    bool bShowOnWarn = hGrp->GetBool("checkShowReportViewOnWarning",true);
+    bool bShowOnError = hGrp->GetBool("checkShowReportViewOnError",true);
+
     QMenu* menu = createStandardContextMenu();
     QAction* first = menu->actions().front();
+    QMenu* optionMenu = new QMenu( menu );
+    optionMenu->setTitle(tr("Options"));
+    menu->insertMenu(first, optionMenu);
+    menu->insertSeparator(first);
 
-    QMenu* submenu = new QMenu( menu );
-    QAction* logAct = submenu->addAction(tr("Logging"), this, SLOT(onToggleLogging()));
+    QMenu* displayMenu = new QMenu(optionMenu);
+    displayMenu->setTitle(tr("Display message types"));
+    optionMenu->addMenu(displayMenu);
+
+    QAction* logAct = displayMenu->addAction(tr("Log messages"), this, SLOT(onToggleLogging()));
     logAct->setCheckable(true);
     logAct->setChecked(bLog);
 
-    QAction* wrnAct = submenu->addAction(tr("Warning"), this, SLOT(onToggleWarning()));
+    QAction* wrnAct = displayMenu->addAction(tr("Warnings"), this, SLOT(onToggleWarning()));
     wrnAct->setCheckable(true);
     wrnAct->setChecked(bWrn);
 
-    QAction* errAct = submenu->addAction(tr("Error"), this, SLOT(onToggleError()));
+    QAction* errAct = displayMenu->addAction(tr("Errors"), this, SLOT(onToggleError()));
     errAct->setCheckable(true);
     errAct->setChecked(bErr);
 
-    submenu->addSeparator();
+    QMenu* showOnMenu = new QMenu (optionMenu);
+    showOnMenu->setTitle(tr("Show report view on"));
+    optionMenu->insertMenu(optionMenu->actions().front(), showOnMenu);
 
-    QAction* stdoutAct = submenu->addAction(tr("Redirect Python output"), this, SLOT(onToggleRedirectPythonStdout()));
+    QAction* showNormAct = showOnMenu->addAction(tr("Normal messages"), this, SLOT(onToggleShowReportViewOnNormalMessage()));
+    showNormAct->setCheckable(true);
+    showNormAct->setChecked(bShowOnNormal);
+
+    QAction* showLogAct = showOnMenu->addAction(tr("Log messages"), this, SLOT(onToggleShowReportViewOnLogMessage()));
+    showLogAct->setCheckable(true);
+    showLogAct->setChecked(bShowOnLog);
+
+    QAction* showWrnAct = showOnMenu->addAction(tr("Warnings"), this, SLOT(onToggleShowReportViewOnWarning()));
+    showWrnAct->setCheckable(true);
+    showWrnAct->setChecked(bShowOnWarn);
+
+    QAction* showErrAct = showOnMenu->addAction(tr("Errors"), this, SLOT(onToggleShowReportViewOnError()));
+    showErrAct->setCheckable(true);
+    showErrAct->setChecked(bShowOnError);
+
+    optionMenu->addSeparator();
+
+    QAction* stdoutAct = optionMenu->addAction(tr("Redirect Python output"), this, SLOT(onToggleRedirectPythonStdout()));
     stdoutAct->setCheckable(true);
     stdoutAct->setChecked(d->redirected_stdout);
 
-    QAction* stderrAct = submenu->addAction(tr("Redirect Python errors"), this, SLOT(onToggleRedirectPythonStderr()));
+    QAction* stderrAct = optionMenu->addAction(tr("Redirect Python errors"), this, SLOT(onToggleRedirectPythonStderr()));
     stderrAct->setCheckable(true);
     stderrAct->setChecked(d->redirected_stderr);
 
-    submenu->addSeparator();
-    QAction* botAct = submenu->addAction(tr("Go to end"), this, SLOT(onToggleGoToEnd()));
+    optionMenu->addSeparator();
+    QAction* botAct = optionMenu->addAction(tr("Go to end"), this, SLOT(onToggleGoToEnd()));
     botAct->setCheckable(true);
     botAct->setChecked(gotoEnd);
-
-    submenu->setTitle(tr("Options"));
-    menu->insertMenu(first, submenu);
-    menu->insertSeparator(first);
 
     menu->addAction(tr("Clear"), this, SLOT(clear()));
     menu->addSeparator();
