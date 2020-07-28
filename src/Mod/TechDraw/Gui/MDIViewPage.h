@@ -163,7 +163,7 @@ private:
     QPrinter::PaperSize m_paperSize;
     ViewProviderPage *m_vpPage;
 
-    QList<QGraphicsItem*> qgSceneSelected;
+    QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
     QList<QGIView *> deleteItems;
 };
 
