@@ -734,8 +734,6 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
         }
     }
 
-    if(subname)
-        *subname += element;
     return linked;
 }
 
@@ -784,14 +782,20 @@ bool StdCmdLinkSelectLinkedFinal::isActive() {
 }
 
 void StdCmdLinkSelectLinkedFinal::activated(int) {
-    auto linked = getSelectedLink(true);
+    std::string subname;
+    auto linked = getSelectedLink(true, &subname);
     if(!linked){
         FC_WARN("invalid selection");
         return;
     }
     Selection().selStackPush();
     Selection().clearCompleteSelection();
-    TreeWidget::selectLinkedObject(linked);
+    if(subname.size()) {
+        Selection().addSelection(linked->getDocument()->getName(),linked->getNameInDocument(),subname.c_str());
+        TreeWidget::scrollItemToTop();
+    } else {
+        TreeWidget::selectLinkedObject(linked);
+    }
     Selection().selStackPush();
 }
 
