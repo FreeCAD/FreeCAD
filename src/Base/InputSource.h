@@ -24,7 +24,7 @@
 #define BASE_IINPUTSOURCE_H
 
 
-#include <iostream>
+#include <iosfwd>
 
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/util/BinInputStream.hpp>
