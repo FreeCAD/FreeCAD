@@ -25,9 +25,6 @@
 #ifndef _TechDraw_LINEGROUP_H_
 #define _TechDraw_LINEGROUP_H_
 
-#include <iostream>
-#include <sstream>
-#include <fstream>
 #include <string>
 
 namespace TechDraw
