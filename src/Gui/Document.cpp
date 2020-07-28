@@ -1912,6 +1912,7 @@ void Document::attachView(Gui::BaseView* pcView, bool bPassiv)
         d->baseViews.push_back(pcView);
     else
         d->passiveViews.push_back(pcView);
+    signalAttachView(pcView, bPassiv);
 }
 
 void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
@@ -1919,12 +1920,18 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
     if (bPassiv) {
         if (find(d->passiveViews.begin(),d->passiveViews.end(),pcView)
             != d->passiveViews.end())
-        d->passiveViews.remove(pcView);
+        {
+            signalDetachView(pcView, true);
+            d->passiveViews.remove(pcView);
+        }
     }
     else {
         if (find(d->baseViews.begin(),d->baseViews.end(),pcView)
             != d->baseViews.end())
-        d->baseViews.remove(pcView);
+        {
+            signalDetachView(pcView, false);
+            d->baseViews.remove(pcView);
+        }
 
         // last view?
         if (d->baseViews.size() == 0) {

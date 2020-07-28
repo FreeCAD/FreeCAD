@@ -137,6 +137,10 @@ public:
     mutable boost::signals2::signal<void (const Gui::Document& doc)> signalDeleteDocument;
     /// signal on change of document's modified status
     mutable boost::signals2::signal<void (const Gui::Document& doc)> signalChangedModified;
+    /// signal on attaching new view
+    mutable boost::signals2::signal<void (BaseView *, bool passive)> signalAttachView;
+    /// signal on detaching view
+    mutable boost::signals2::signal<void (BaseView *, bool passive)> signalDetachView;
     //@}
 
     /** @name I/O of the document */

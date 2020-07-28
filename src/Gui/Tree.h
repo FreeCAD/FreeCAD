@@ -414,6 +414,7 @@ private:
     Connection connectRecomputed;
     Connection connectRecomputedObj;
     Connection connectChangedModified;
+    Connection connectDetachView;
 
     friend class TreeWidget;
     friend class DocumentObjectData;

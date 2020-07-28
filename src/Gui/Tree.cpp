@@ -1103,6 +1103,7 @@ void TreeWidget::_setupDocumentMenu(DocumentItem *docitem, QMenu &menu)
     menu.addAction(this->showHiddenAction);
     menu.addAction(this->searchObjectsAction);
     menu.addAction(this->closeDocAction);
+    Application::Instance->commandManager().addTo("Std_CloseLinkedView", &menu);
     if(doc->testStatus(App::Document::PartialDoc))
         menu.addAction(this->reloadDocAction);
     else {
@@ -4182,6 +4183,12 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
             boost::bind(&DocumentItem::slotRecomputedObject, this, bp::_1));
     connectChangedModified = doc->signalChangedModified.connect([this](const Document &) { setDocumentLabel(); });
 
+    connectDetachView = doc->signalDetachView.connect(
+        [this](BaseView *, bool passive) {
+            if (!passive && document()->getMDIViews().empty())
+                this->setExpanded(false);
+        });
+
     setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable/*|Qt::ItemIsEditable*/);
 
     treeName = getTree()->getTreeName();
@@ -4204,6 +4211,7 @@ DocumentItem::~DocumentItem()
     connectRecomputed.disconnect();
     connectRecomputedObj.disconnect();
     connectChangedModified.disconnect();
+    connectDetachView.disconnect();
 }
 
 TreeWidget *DocumentItem::getTree() const{

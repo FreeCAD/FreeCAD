@@ -4302,6 +4302,44 @@ Action * StdCmdBindViewCamera::createAction(void)
 }
 
 //===========================================================================
+// Std_CloseLinkedView
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdCloseLinkedView)
+
+StdCmdCloseLinkedView::StdCmdCloseLinkedView()
+  :Command("Std_CloseLinkedView")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Close all linked view");
+  sToolTipText  = QT_TR_NOOP("Close all views of the linked documents.\n"
+                             "The linked documents stayed open.");
+  sWhatsThis    = "Std_CloseLinkedView";
+  sStatusTip    = sToolTipText;
+  eType         = Alter3DView;
+}
+
+void StdCmdCloseLinkedView::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    App::Document *activeDoc = App::GetApplication().getActiveDocument();
+    if (!activeDoc)
+        return;
+    for(auto doc : activeDoc->getDependentDocuments()) {
+        if (doc == activeDoc) continue;
+        Gui::Document *gdoc = Application::Instance->getDocument(doc);
+        if (!gdoc) continue;
+        for(auto view : gdoc->getMDIViews())
+            getMainWindow()->removeWindow(view);
+    }
+}
+
+bool StdCmdCloseLinkedView::isActive(void)
+{
+  return App::GetApplication().getActiveDocument() != nullptr;
+}
+
+//===========================================================================
 // Instantiation
 //===========================================================================
 
@@ -4383,6 +4421,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
     rcCmdMgr.addCommand(new StdCmdBindViewCamera());
     rcCmdMgr.addCommand(new StdCmdPickGeometry());
+    rcCmdMgr.addCommand(new StdCmdCloseLinkedView());
 
 #ifdef FC_HAS_DOCK_OVERLAY
     rcCmdMgr.addCommand(new StdCmdDockOverlay());
