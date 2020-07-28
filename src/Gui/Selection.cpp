@@ -1444,27 +1444,30 @@ void SelectionSingleton::setVisible(VisibleState vis) {
         App::DocumentObject *parent = 0;
         std::string elementName;
         obj = obj->resolve(sel.SubName.c_str(),&parent,&elementName);
-        if(!obj || !obj->getNameInDocument() || (parent && !parent->getNameInDocument()))
+        if (!obj || !obj->getNameInDocument() || (parent && !parent->getNameInDocument()))
             continue;
         // try call parent object's setElementVisible
-        if(parent) {
+        if (parent) {
             // prevent setting the same object visibility more than once
-            if(!filter.insert(std::make_pair(obj,parent)).second)
+            if (!filter.insert(std::make_pair(obj,parent)).second)
                 continue;
-            int vis = parent->isElementVisible(elementName.c_str());
-            if(vis>=0) {
-                if(vis>0) vis = 1;
-                if(visible>=0) {
-                    if(vis == visible)
+            int visElement = parent->isElementVisible(elementName.c_str());
+            if (visElement >= 0) {
+                if (visElement > 0)
+                    visElement = 1;
+                if (visible >= 0) {
+                    if (visElement == visible)
                         continue;
-                    vis = visible;
-                }else
-                    vis = !vis;
+                    visElement = visible;
+                }
+                else {
+                    visElement = !visElement;
+                }
 
-                if(!vis)
+                if (!visElement)
                     updateSelection(false,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
-                parent->setElementVisible(elementName.c_str(),vis?true:false);
-                if(vis)
+                parent->setElementVisible(elementName.c_str(), visElement ? true : false);
+                if (visElement)
                     updateSelection(true,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
                 continue;
             }
@@ -1478,17 +1481,17 @@ void SelectionSingleton::setVisible(VisibleState vis) {
         auto vp = Application::Instance->getViewProvider(obj);
 
         if(vp) {
-            int vis;
+            bool visObject;
             if(visible>=0)
-                vis = visible;
+                visObject = visible ? true : false;
             else
-                vis = !vp->isShow();
+                visObject = !vp->isShow();
 
-            if(vis) {
+            if(visObject) {
                 vp->show();
-                updateSelection(vis,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+                updateSelection(visObject,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
             } else {
-                updateSelection(vis,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+                updateSelection(visObject,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
                 vp->hide();
             }
         }

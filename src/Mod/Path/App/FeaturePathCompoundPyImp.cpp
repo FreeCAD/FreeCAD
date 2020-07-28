@@ -71,9 +71,9 @@ PyObject*  FeaturePathCompoundPy::addObject(PyObject *args)
                 Py::Callable method(vp.getAttr(std::string("addObject")));
                 // check to which method this belongs to avoid an infinite recursion
                 if (method.getAttr(std::string("__self__")) != Py::Object(this)) {
-                    Py::Tuple args(1);
-                    args[0] = Py::Object(object);
-                    method.apply(args);
+                    Py::Tuple arg(1);
+                    arg[0] = Py::Object(object);
+                    method.apply(arg);
                     Py_Return;
                 }
             }
@@ -112,9 +112,9 @@ PyObject*  FeaturePathCompoundPy::removeObject(PyObject *args)
                 Py::Callable method(vp.getAttr(std::string("removeObject")));
                 // check to which method this belongs to avoid an infinite recursion
                 if (method.getAttr(std::string("__self__")) != Py::Object(this)) {
-                    Py::Tuple args(1);
-                    args[0] = Py::Object(object);
-                    method.apply(args);
+                    Py::Tuple arg(1);
+                    arg[0] = Py::Object(object);
+                    method.apply(arg);
                     Py_Return;
                 }
             }

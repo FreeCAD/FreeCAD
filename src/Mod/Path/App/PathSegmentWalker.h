@@ -21,6 +21,10 @@
  *                                                                         *
  ***************************************************************************
  */
+
+#ifndef PATHSEGMENTWALKER_H
+#define PATHSEGMENTWALKER_H
+
 #include <Base/Vector3D.h>
 #include <Mod/Path/App/Path.h>
 
@@ -67,3 +71,5 @@ private:
 
 
 }
+
+#endif // PATHSEGMENTWALKER_H

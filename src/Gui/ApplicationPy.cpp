@@ -920,9 +920,9 @@ PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
         if (PyObject_IsSubclass(object.ptr(), baseclass.ptr()) == 1) {
             // create an instance of this class
             name = object.getAttr(std::string("__name__"));
-            Py::Tuple args;
+            Py::Tuple arg;
             Py::Callable creation(object);
-            object = creation.apply(args);
+            object = creation.apply(arg);
         }
         else if (PyObject_IsInstance(object.ptr(), baseclass.ptr()) == 1) {
             // extract the class name of the instance

@@ -104,7 +104,6 @@ QGIDatumLabel::QGIDatumLabel()
     setFlag(ItemIsMovable, true);
     setFlag(ItemIsSelectable, true);
     setAcceptHoverEvents(true);
-    setFiltersChildEvents(true);
 
     m_dimText = new QGCustomText();
     m_dimText->setParentItem(this);
@@ -125,8 +124,10 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant &va
 {
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
+            Q_EMIT selected(true);
             setPrettySel();
         } else {
+            Q_EMIT selected(false);
             setPrettyNormal();
         }
         update();
@@ -433,8 +434,6 @@ QGIViewDimension::QGIViewDimension() :
 {
     setHandlesChildEvents(false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
-    setFlag(QGraphicsItem::ItemIsSelectable, false);
-    setAcceptHoverEvents(false);
     setCacheMode(QGraphicsItem::NoCache);
 
     datumLabel = new QGIDatumLabel();
@@ -456,9 +455,6 @@ QGIViewDimension::QGIViewDimension() :
     aHead2->setZValue(ZVALUE::DIMENSION);
     dimLines->setZValue(ZVALUE::DIMENSION);
     dimLines->setStyle(Qt::SolidLine);
-
-    //centerMark = new QGICMark();
-    //addToGroup(centerMark);
 
     // connecting the needed slots and signals
     QObject::connect(
@@ -489,7 +485,6 @@ QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant 
 {
    if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
-            setSelected(false);
             datumLabel->setSelected(true);
         } else {
             datumLabel->setSelected(false);
@@ -512,13 +507,8 @@ void QGIViewDimension::setGroupSelection(bool b)
 
 void QGIViewDimension::select(bool state)
 {
-//    Base::Console().Message("QGIVD::select(%d)\n", state);
-    if (state) {
-//        setPrettySel();
-    } else {
-//        setPrettyNormal();
-    }
-//    draw();
+    setSelected(state);
+    draw();
 }
 
 //surrogate for hover enter (true), hover leave (false) events
@@ -671,7 +661,6 @@ QString QGIViewDimension::getLabelText(void)
 {
     QString result;
     QString first = datumLabel->getDimText()->toPlainText();
-//    QString second = datumLabel->getTolText()->toPlainText();
     QString second = datumLabel->getTolTextOver()->toPlainText();
     QString third = datumLabel->getTolTextUnder()->toPlainText();
     if (second.length() > third.length()) {
@@ -680,7 +669,6 @@ QString QGIViewDimension::getLabelText(void)
         result = first + third;
     }
 
-//    result = first + second;
     return result;
 }
 

@@ -208,12 +208,6 @@ SystemExitException::SystemExitException()
     _exitCode = errCode;
 }
 
-SystemExitException::SystemExitException(const SystemExitException &inst)
-  : Exception(inst), _exitCode(inst._exitCode)
-{
-}
-
-
 // ---------------------------------------------------------
 
 // Fixes #0000831: python print causes File descriptor error on windows

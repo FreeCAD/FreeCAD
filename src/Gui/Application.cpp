@@ -1354,9 +1354,9 @@ bool Application::activateWorkbench(const char* name)
         Workbench* newWb = WorkbenchManager::instance()->active();
         if (newWb) {
             if (!Instance->d->startingUp) {
-                std::string name = newWb->name();
+                std::string nameWb = newWb->name();
                 App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                                      SetASCII("LastModule", name.c_str());
+                                      SetASCII("LastModule", nameWb.c_str());
             }
             newWb->activated();
         }

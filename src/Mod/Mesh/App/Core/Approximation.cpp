@@ -938,20 +938,20 @@ struct LMCylinderFunctor
     Eigen::MatrixXd measuredValues;
 
     // Compute 'm' errors, one for each data point, for the given parameter values in 'x'
-    int operator()(const Eigen::VectorXd &x, Eigen::VectorXd &fvec) const
+    int operator()(const Eigen::VectorXd &xvec, Eigen::VectorXd &fvec) const
     {
-        // 'x' has dimensions n x 1
+        // 'xvec' has dimensions n x 1
         // It contains the current estimates for the parameters.
 
         // 'fvec' has dimensions m x 1
         // It will contain the error for each data point.
-        double aParam = x(0); // dir_x
-        double bParam = x(1); // dir_y
-        double cParam = x(2); // dir_z
-        double dParam = x(3); // cnt_x
-        double eParam = x(4); // cnt_y
-        double fParam = x(5); // cnt_z
-        double gParam = x(6); // radius
+        double aParam = xvec(0); // dir_x
+        double bParam = xvec(1); // dir_y
+        double cParam = xvec(2); // dir_z
+        double dParam = xvec(3); // cnt_x
+        double eParam = xvec(4); // cnt_y
+        double fParam = xvec(5); // cnt_z
+        double gParam = xvec(6); // radius
 
         // use distance functions (fvec(i)) for cylinders as defined in the paper:
         // Least-Squares Fitting Algorithms of the NIST Algorithm Testing System

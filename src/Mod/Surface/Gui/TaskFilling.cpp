@@ -287,9 +287,9 @@ FillingPanel::~FillingPanel()
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
-void FillingPanel::setEditedObject(Surface::Filling* obj)
+void FillingPanel::setEditedObject(Surface::Filling* fea)
 {
-    editedObject = obj;
+    editedObject = fea;
 
     // get the link to the initial surface if set
     App::DocumentObject* initFace = editedObject->InitialFace.getValue();

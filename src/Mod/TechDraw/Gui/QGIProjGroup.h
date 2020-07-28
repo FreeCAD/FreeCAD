@@ -68,7 +68,6 @@ private:
     /// Convenience function
     TechDraw::DrawProjGroup * getDrawView(void) const;
 
-    QGraphicsRectItem *m_groupBackground;
     QGraphicsItem* m_origin;
     QPoint mousePos;
 };

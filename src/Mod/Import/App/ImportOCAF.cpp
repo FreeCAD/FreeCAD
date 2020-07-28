@@ -679,9 +679,9 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
             TCollection_ExtendedString extstr = name->Get();
             char* str = new char[extstr.LengthOfCString()+1];
             extstr.ToUTF8CString(str);
-            std::string label(str);
-            if (!label.empty())
-                myNameMap[aShape.HashCode(INT_MAX)] = label;
+            std::string labelName(str);
+            if (!labelName.empty())
+                myNameMap[aShape.HashCode(INT_MAX)] = labelName;
             delete [] str;
         }
 

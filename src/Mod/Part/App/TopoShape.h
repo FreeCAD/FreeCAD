@@ -52,8 +52,6 @@ public:
    NullShapeException();
    NullShapeException(const char * sMessage);
    NullShapeException(const std::string& sMessage);
-   /// Construction
-   NullShapeException(const NullShapeException &inst);
    /// Destruction
    virtual ~NullShapeException() throw() {}
 };
@@ -67,8 +65,6 @@ public:
    BooleanException();
    BooleanException(const char * sMessage);
    BooleanException(const std::string& sMessage);
-   /// Construction
-   BooleanException(const BooleanException &inst);
    /// Destruction
    virtual ~BooleanException() throw() {}
 };

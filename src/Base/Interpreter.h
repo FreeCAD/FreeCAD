@@ -145,7 +145,6 @@ class BaseExport SystemExitException : public Exception
 {
 public:
     SystemExitException(void);
-    SystemExitException(const SystemExitException &inst);
     virtual ~SystemExitException() throw() {}
     long getExitCode(void) const { return _exitCode;}
 

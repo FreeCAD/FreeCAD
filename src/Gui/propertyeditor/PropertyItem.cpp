@@ -2094,8 +2094,8 @@ void PlacementEditor::updateValue(const QVariant& v, bool incr, bool data)
             QVariant u = value();
             const Base::Placement& plm = u.value<Base::Placement>();
             const Base::Placement& rel = v.value<Base::Placement>();
-            Base::Placement data = rel * plm;
-            setValue(QVariant::fromValue<Base::Placement>(data));
+            Base::Placement newp = rel * plm;
+            setValue(QVariant::fromValue<Base::Placement>(newp));
         }
         else {
             setValue(v);
