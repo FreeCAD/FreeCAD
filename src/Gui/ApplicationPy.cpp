@@ -151,9 +151,15 @@ PyMethodDef Application::Methods[] = {
   {"getCommandShortcut",               (PyCFunction) Application::sGetCommandShortcut, METH_VARARGS,
    "getCommandShortcut(string) -> string\n\n"
    "Returns string representing shortcut key accelerator for command."},
-    {"setCommandShortcut",              (PyCFunction) Application::sSetCommandShortcut, METH_VARARGS,
-    "setCommandShortcut(string,string) > bool\n\n"
-    "Sets shortcut for given command, returns bool True for success"},
+  {"getCommandDefaultShortcut",              (PyCFunction) Application::sGetCommandDefaultShortcut, METH_VARARGS,
+   "getCommandDefaultShortcut(string) -> string\n\n"
+   "Returns string representing the default shortcut key accelerator for command."},
+  {"setCommandShortcut",              (PyCFunction) Application::sSetCommandShortcut, METH_VARARGS,
+   "setCommandShortcut(string,string) > bool\n\n"
+   "Sets shortcut for given command, returns bool True for success"},
+  {"resetCommandShortcut",              (PyCFunction) Application::sResetCommandShortcut, METH_VARARGS,
+   "resetCommandShortcut(string) > bool\n\n"
+   "Resets shortcut for given command back to default value, returns bool True for success"},
   {"updateCommands",        (PyCFunction) Application::sUpdateCommands, METH_VARARGS,
    "updateCommands\n\n"
    "Update all command active status"},
@@ -1304,6 +1310,66 @@ PyObject* Application::sGetCommandShortcut(PyObject * /*self*/, PyObject *args)
         return 0;
     }
 }
+
+PyObject* Application::sGetCommandDefaultShortcut(PyObject * /*self*/, PyObject *args)
+{
+    char* pName;
+    if (!PyArg_ParseTuple(args, "s", &pName))
+        return NULL;
+
+    Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
+    if (cmd) {
+        Action* action = cmd->getAction();
+        if (action){
+            QString default_shortcut = QString::fromLatin1(cmd->getAccel());
+#if PY_MAJOR_VERSION >= 3
+            PyObject* str = PyUnicode_FromString(default_shortcut.toStdString().c_str());
+#else
+            PyObject* str = PyString_FromString(default_shortcut.toStdString().c_str());
+#endif
+            return str;
+        } else {
+            PyErr_Format(Base::BaseExceptionFreeCADError, "No such action for command '%s'", pName);
+            return 0;
+        }
+    } else {
+        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
+        return 0;
+    }
+}
+
+PyObject* Application::sResetCommandShortcut(PyObject * /*self*/, PyObject *args)
+{
+    char* pName;
+    if (!PyArg_ParseTuple(args, "s", &pName))
+        return NULL;
+
+    Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
+    if (cmd) {
+        Action* action = cmd->getAction();
+        if (action){
+            QString default_shortcut = QString::fromLatin1(cmd->getAccel());
+            action->setShortcut(default_shortcut);
+            ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
+            hGrp->RemoveASCII(pName);
+            /** test to see if we successfully reset the shortcut by loading it back and comparing */
+            QString spc = QString::fromLatin1(" ");
+            QString new_shortcut = action->shortcut().toString();
+            if (default_shortcut.remove(spc).toUpper() == new_shortcut.remove(spc).toUpper()){
+                return Py::new_reference_to(Py::Boolean(true));
+            } else {
+                return Py::new_reference_to(Py::Boolean(false));
+            }
+        } else {
+            return Py::new_reference_to(Py::Boolean(false));
+        }
+
+    } else {
+        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
+        return NULL;
+    }
+}
+
 
 PyObject* Application::sSetCommandShortcut(PyObject * /*self*/, PyObject *args)
 {

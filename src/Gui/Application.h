@@ -261,7 +261,9 @@ public:
     static PyObject* sGetCommandInfo           (PyObject *self,PyObject *args);
     static PyObject* sListCommands             (PyObject *self,PyObject *args);
     static PyObject* sGetCommandShortcut       (PyObject *self,PyObject *args);
+    static PyObject* sGetCommandDefaultShortcut(PyObject *self,PyObject *args);
     static PyObject* sSetCommandShortcut       (PyObject *self,PyObject *args);
+    static PyObject* sResetCommandShortcut     (PyObject *self,PyObject *args); //back to default value
     static PyObject* sIsCommandActive          (PyObject *self,PyObject *args);
     static PyObject* sUpdateCommands           (PyObject *self,PyObject *args);
 
