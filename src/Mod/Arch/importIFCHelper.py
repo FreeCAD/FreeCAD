@@ -502,6 +502,12 @@ def getIfcProperties(ifcfile, pid, psets, d):
     return d
 
 
+def getIfcPsetPoperties(ifcfile, pid):
+    """ directly build the property table from pid and ifcfile for FreeCAD"""
+
+    return getIfcProperties(ifcfile, pid, getIfcPropertySets(ifcfile, pid), {})
+
+
 # ************************************************************************************************
 def getScaling(ifcfile):
     """returns a scaling factor from file units to mm"""
