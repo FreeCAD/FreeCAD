@@ -102,7 +102,10 @@ def extendWire(feature, wire, length):
     '''extendWire(wire, length) ... return a closed Wire which extends wire by length'''
     PathLog.track(length)
     if length and length != 0:
-        off2D = wire.makeOffset2D(length)
+        try:
+            off2D = wire.makeOffset2D(length)
+        except FreeCAD.Base.FreeCADError:
+            return None
         endPts = endPoints(wire)
         if endPts:
             edges = [e for e in off2D.Edges if Part.Circle != type(e.Curve) or not includesPoint(e.Curve.Center, endPts)]

@@ -76,7 +76,10 @@ class _Extension(object):
         hnt = coin.SoShapeHints()
 
         if not ext is None:
-            wire =  ext.getWire()
+            try:
+                wire =  ext.getWire()
+            except FreeCAD.Base.FreeCADError:
+                wire = None
             if wire:
                 if isinstance(wire, (list, tuple)):
                     p0 = [p for p in wire[0].discretize(Deflection=0.02)]
