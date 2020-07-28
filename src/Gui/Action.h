@@ -363,6 +363,7 @@ protected Q_SLOTS:
 
 private:
     QMenu* _menu;
+    QAction *_emptyAction;
 };
 
 /**

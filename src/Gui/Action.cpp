@@ -1124,7 +1124,7 @@ void ViewCameraBindingAction::onTriggered(QAction *action)
 // --------------------------------------------------------------------
 
 SelUpAction::SelUpAction ( Command* pcCmd, QObject * parent )
-  : Action(pcCmd, parent), _menu(0)
+  : Action(pcCmd, parent), _menu(nullptr), _emptyAction(nullptr)
 {
 }
 
@@ -1147,15 +1147,18 @@ void SelUpAction::onShowMenu()
 {
     _menu->clear();
     setupMenuStyle(_menu);
-    if (_menu->actions().isEmpty()) {
-        auto action = _menu->addAction(tr("<None>"));
-        action->setDisabled(true);
-    }
     TreeWidget::populateSelUpMenu(_menu);
 }
 
 void SelUpAction::popup(const QPoint &pt)
 {
+    if(_menu->actions().isEmpty()) {
+        if (!_emptyAction) {
+            _emptyAction = new QAction(tr("<None>"), this);
+            _emptyAction->setDisabled(true);
+        }
+        _menu->addAction(_emptyAction);
+    }
     TreeWidget::execSelUpMenu(qobject_cast<SelUpMenu*>(_menu), pt);
 }
 
