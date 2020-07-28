@@ -912,7 +912,8 @@ std::vector<std::pair<App::DocumentObject *,std::string> > DocumentObject::getPa
         if(!parent->getSubObject(name.c_str()))
             continue;
 
-        auto links = GetApplication().getLinksTo(parent,App::GetLinkRecursive);
+        auto links = GetApplication().getLinksTo(parent,
+                App::GetLinkRecursive | App::GetLinkArrayElement);
         links.insert(parent);
         for(auto parent : links) {
             auto parents = parent->getParents(depth+1);
