@@ -162,6 +162,7 @@ bool DocumentObject::isTouched() const
 
 void DocumentObject::purgeTouched()
 {
+    FC_LOG("purgeTouched " << getFullName());
     StatusBits.reset(ObjectStatus::Enforce);
     setPropertyStatus(Property::Touched, false);
     if(StatusBits.test(ObjectStatus::Touch)) {
