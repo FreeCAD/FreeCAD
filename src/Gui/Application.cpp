@@ -784,13 +784,8 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     pDoc->signalResetEdit.connect(boost::bind(&Gui::Application::slotResetEdit, this, bp::_1));
 
     signalNewDocument(*pDoc, isMainDoc);
-    if(isMainDoc)
+    if (isMainDoc)
         pDoc->createView(View3DInventor::getClassTypeId());
-    // FIXME: Do we really need this further? Calling processEvents() mixes up order of execution in an
-    // unpredictable way. At least it seems that with Qt5 we don't need this any more.
-#if QT_VERSION < 0x050000
-    // qApp->processEvents(); // make sure to show the window stuff on the right place
-#endif
 }
 
 void Application::slotDeleteDocument(const App::Document& Doc)
