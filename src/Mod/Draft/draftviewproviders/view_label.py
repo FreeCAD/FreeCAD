@@ -271,7 +271,10 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             text = self.text3d
         else:
             text = self.text2d
-        v = Gui.ActiveDocument.ActiveView.getViewer().getSoRenderManager().getViewportRegion()
+        try:
+            v = Gui.ActiveDocument.ActiveView.getViewer().getSoRenderManager().getViewportRegion()
+        except Exception:
+            v = coin.SbViewportRegion()
         b = coin.SoGetBoundingBoxAction(v)
         text.getBoundingBox(b)
         return b.getBoundingBox().getSize().getValue()

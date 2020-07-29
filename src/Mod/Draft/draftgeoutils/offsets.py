@@ -324,8 +324,9 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         # Consider individual edge width
         if widthList:  # ArchWall should now always provide widthList
             try:
-                if widthList[i] > 0:
-                    delta = DraftVecUtils.scaleTo(delta, widthList[i])
+                width = float(widthList[i])
+                if width > 0:
+                    delta = DraftVecUtils.scaleTo(delta, width)
                 elif dvec:
                     delta = DraftVecUtils.scaleTo(delta, dvec.Length)
                 else:
