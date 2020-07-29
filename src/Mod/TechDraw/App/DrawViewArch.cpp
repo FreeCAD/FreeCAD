@@ -104,38 +104,39 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
     }
 
     App::DocumentObject* sourceObj = Source.getValue();
-    //if (sourceObj is not ArchSection) return
-    App::Property* proxy = sourceObj->getPropertyByName("Proxy");
-    if (proxy == nullptr) {
-        Base::Console().Error("DVA::execute - %s is not an ArchSection\n", sourceObj->Label.getValue());
-        //this is definitely not an ArchSection
-        return DrawView::execute();
-    }
-
     if (sourceObj) {
-        std::stringstream cmd;
-        cmd << "import ArchSectionPlane\n"
-            << "App.getDocument('" << getDocument()->getName() << "').getObject('"
-            << getNameInDocument() << "').Symbol = '" << getSVGHead() << "' + "
-                << "ArchSelectionPlane.getSVG(App.getDocument('"
-                    << sourceObj->getDocument()->getName() << "').getObject('" 
-                    << sourceObj->getNameInDocument() << "')"
-                    << ",allOn=" << (AllOn.getValue() ? "True" : "False")
-                    << ",renderMode=" << RenderMode.getValue()
-                    << ",showHidden=" << (ShowHidden.getValue() ? "True" : "False")
-                    << ",showFill=" << (ShowFill.getValue() ? "True" : "False")
-                    << ",scale=" << getScale()
-                    << ",linewidth=" << LineWidth.getValue()
-                    << ",fontsize=" << FontSize.getValue()
-                    << ",techdraw=True"
-                    << ",rotation=" << Rotation.getValue()
-                    << ",fillSpaces=" << (FillSpaces.getValue() ? "True" : "False")
-                    << ",cutlinewidth=" << CutLineWidth.getValue()
-                    << ",joinArch=" << (JoinArch.getValue() ? "True" : "False")
-                    << ")"
-                << " + '" << getSVGTail() << "'";
+        //if (sourceObj is not ArchSection) return
+        App::Property* proxy = sourceObj->getPropertyByName("Proxy");
+        if (proxy == nullptr) {
+            Base::Console().Error("DVA::execute - %s is not an ArchSection\n", sourceObj->Label.getValue());
+            //this is definitely not an ArchSection
+            return DrawView::execute();
+        }
 
-        Base::Interpreter().runString(cmd.str().c_str());
+      //std::string svgFrag;
+        std::string svgHead = getSVGHead();
+        std::string svgTail = getSVGTail();
+        // ArchSectionPlane.getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=False,scale=1,linewidth=1,fontsize=1):
+
+        std::stringstream paramStr;
+        paramStr << ",allOn=" << (AllOn.getValue() ? "True" : "False")
+                 << ",renderMode=" << RenderMode.getValue()
+                 << ",showHidden=" << (ShowHidden.getValue() ? "True" : "False")
+                 << ",showFill=" << (ShowFill.getValue() ? "True" : "False")
+                 << ",scale=" << getScale()
+                 << ",linewidth=" << LineWidth.getValue()
+                 << ",fontsize=" << FontSize.getValue()
+                 << ",techdraw=True"
+                 << ",rotation=" << Rotation.getValue()
+                 << ",fillSpaces=" << (FillSpaces.getValue() ? "True" : "False")
+                 << ",cutlinewidth=" << CutLineWidth.getValue()
+                 << ",joinArch=" << (JoinArch.getValue() ? "True" : "False");
+
+        Base::Interpreter().runString("import ArchSectionPlane");
+        Base::Interpreter().runStringArg("svgBody = ArchSectionPlane.getSVG(%s %s)",
+                                         sourceObj->getFullName(true).c_str(),paramStr.str().c_str());
+        Base::Interpreter().runStringArg("%s.Symbol = '%s' + svgBody + '%s'",
+                                         this->getFullName(true).c_str(),svgHead.c_str(),svgTail.c_str());
     }
 //    requestPaint();
     return DrawView::execute();
