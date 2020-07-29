@@ -42,6 +42,9 @@ import Arch
 import DraftVecUtils
 import ArchIFCSchema
 import importIFCHelper
+import importIFCmulticore
+
+from draftutils.messages import _err
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -231,21 +234,24 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     if preferences is None:
         preferences = getPreferences()
 
-    if preferences["MULTICORE"] and (not hasattr(srcfile,"by_guid")):
-        import importIFCmulticore
-        return importIFCmulticore.insert(srcfile,docname,preferences)
+    if preferences["MULTICORE"] and not hasattr(srcfile, "by_guid"):
+        return importIFCmulticore.insert(srcfile, docname, preferences)
 
     try:
         import ifcopenshell
-    except:
-        FreeCAD.Console.PrintError("IfcOpenShell was not found on this system. IFC support is disabled\n")
-        FreeCAD.Console.PrintMessage("Visit https://www.freecadweb.org/wiki/Arch_IFC to learn how to install it\n")
+        import ifcopenshell.geom
+    except ModuleNotFoundError:
+        _err("IfcOpenShell was not found on this system. "
+             "IFC support is disabled.\n"
+             "Visit https://wiki.freecadweb.org/IfcOpenShell "
+             "to learn about installing it.")
         return
 
     try:
         doc = FreeCAD.getDocument(docname)
-    except:
+    except NameError:
         doc = FreeCAD.newDocument(docname)
+
     FreeCAD.ActiveDocument = doc
     if preferences['DEBUG']: print("done.")
 
@@ -264,8 +270,8 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         filename = None
     else:
         if preferences['DEBUG']: print("Opening ",srcfile,"...",end="")
-        filename = importIFCHelper.decode(srcfile,utf=True)
-        filesize = os.path.getsize(filename) * 0.000001 # in megabytes
+        filename = importIFCHelper.decode(srcfile, utf=True)
+        filesize = os.path.getsize(filename) * 0.000001  # in megabytes
         ifcfile = ifcopenshell.open(filename)
 
     # get file scale
@@ -279,18 +285,17 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     #         ctx.Precision = ctx.Precision/100
 
     # set default ifcopenshell options to work in brep mode
-    from ifcopenshell import geom
     settings = ifcopenshell.geom.settings()
-    settings.set(settings.USE_BREP_DATA,True)
-    settings.set(settings.SEW_SHELLS,True)
-    settings.set(settings.USE_WORLD_COORDS,True)
+    settings.set(settings.USE_BREP_DATA, True)
+    settings.set(settings.SEW_SHELLS, True)
+    settings.set(settings.USE_WORLD_COORDS, True)
     if preferences['SEPARATE_OPENINGS']:
-        settings.set(settings.DISABLE_OPENING_SUBTRACTIONS,True)
-    if preferences['SPLIT_LAYERS'] and hasattr(settings,"APPLY_LAYERSETS"):
-        settings.set(settings.APPLY_LAYERSETS,True)
+        settings.set(settings.DISABLE_OPENING_SUBTRACTIONS, True)
+    if preferences['SPLIT_LAYERS'] and hasattr(settings, "APPLY_LAYERSETS"):
+        settings.set(settings.APPLY_LAYERSETS, True)
 
     # build all needed tables
-    if preferences['DEBUG']: print("Building types and relationships table...",end="")
+    if preferences['DEBUG']: print("Building types and relationships table...", end="")
     # type tables
     sites = ifcfile.by_type("IfcSite")
     buildings = ifcfile.by_type("IfcBuilding")
@@ -298,24 +303,29 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     openings = ifcfile.by_type("IfcOpeningElement")
     materials = ifcfile.by_type("IfcMaterial")
     products, annotations = importIFCHelper.buildRelProductsAnnotations(ifcfile, preferences['ROOT_ELEMENT'])
+
     # empty relation tables
     objects = {}  # { id:object, ... }
     shapes = {}  # { id:shaoe } only used for merge mode
     structshapes = {}  # { id:shaoe } only used for merge mode
     sharedobjects = {}  # { representationmapid:object }
-    parametrics = []  # a list of imported objects whose parametric relationships need processing after all objects have been created
-    profiles = {}  # to store reused extrusion profiles {ifcid:fcobj,...}
+    parametrics = []  # a list of imported objects whose parametric
+                      # relationships need processing after all objects
+                      # have been created
+    profiles = {}  # to store reused extrusion profiles {ifcid:fcobj, ...}
     layers = {}  # { layer_name, [ids] }
     # filled relation tables
-    # TODO for the following tables might be better use inverse attributes, done for properties
-    # see https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
+
+    # TODO for the following tables might be better use inverse attributes,
+    # done for properties
+    # See https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
     prodrepr = importIFCHelper.buildRelProductRepresentation(ifcfile)
     additions = importIFCHelper.buildRelAdditions(ifcfile)
     groups = importIFCHelper.buildRelGroups(ifcfile)
     subtractions = importIFCHelper.buildRelSubtractions(ifcfile)
     mattable = importIFCHelper.buildRelMattable(ifcfile)
     colors = importIFCHelper.buildRelProductColors(ifcfile, prodrepr)
-    colordict = {} # { objname:color tuple } for non-GUI use
+    colordict = {}  # { objname:color tuple } for non-GUI use
     if preferences['DEBUG']: print("done.")
 
     # only import a list of IDs and their children, if defined
