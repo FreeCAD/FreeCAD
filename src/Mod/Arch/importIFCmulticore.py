@@ -18,14 +18,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""FreeCAD IFC importer - Multicore version"""
 
 from __future__ import print_function
-
-"""FreeCAD IFC importer - Multicore version"""
 
 import sys
 import time
 import os
+
 import FreeCAD
 import Draft
 import Arch
