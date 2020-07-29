@@ -100,7 +100,7 @@ boost::shared_ptr<FaceUnwrapper> FaceUnwrapper_mesh(const py::object& points,
         ColMat<double, 3> coords;
         coords.resize(l1.size(), 3);
         int row = 0;
-        for (Py::Sequence::iterator it = l1.begin(); it != l1.end(); ++it) {
+        for (Py::Sequence::iterator it = l1.begin(); it != l1.end(); ++it, ++row) {
             Py::Sequence c(*it);
             int col = 0;
             for (Py::Sequence::iterator jt = c.begin(); jt != c.end(); ++jt, ++col) {
@@ -112,7 +112,8 @@ boost::shared_ptr<FaceUnwrapper> FaceUnwrapper_mesh(const py::object& points,
         Py::Sequence l2(facets.ptr());
         ColMat<long, 3> triangles;
         triangles.resize(l2.size(), 3);
-        for (Py::Sequence::iterator it = l2.begin(); it != l2.end(); ++it) {
+        row = 0;
+        for (Py::Sequence::iterator it = l2.begin(); it != l2.end(); ++it, ++row) {
             Py::Sequence c(*it);
             int col = 0;
             for (Py::Sequence::iterator jt = c.begin(); jt != c.end(); ++jt, ++col) {
