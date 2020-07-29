@@ -801,7 +801,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     t4 = getText(c,fontsize,n,a,getProj(p1, plane).add(ofs),t2,linespacing,j,flip=True)
                     svg += t4
 
-    elif obj.isDerivedFrom('Part::Feature'):
+    elif hasattr(obj, 'Shape'):
         if obj.Shape.isNull():
             return ''
         # setting fill
