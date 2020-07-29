@@ -99,6 +99,7 @@ protected:
     std::vector<TopoDS_Wire> myWires; //wires from mySourceShapes
     std::vector<TopoDS_Compound> myCompounds; //compounds, for recursive processing
     std::vector<TopoDS_Shape> myShapesToReturn;
+    std::vector<TopoDS_Shape> myInputFaces;
     TopoShape myTopoShape;
 
     /**

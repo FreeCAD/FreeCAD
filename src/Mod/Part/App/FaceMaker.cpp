@@ -66,6 +66,9 @@ void Part::FaceMaker::addTopoShape(const TopoShape& shape) {
         case TopAbs_EDGE:
             this->myWires.push_back(BRepBuilderAPI_MakeWire(TopoDS::Edge(sh)).Wire());
         break;
+        case TopAbs_FACE:
+            this->myInputFaces.push_back(sh);
+        break;
         default:
             throw Base::TypeError("Shape must be a wire, edge or compound. Something else was supplied.");
         break;
@@ -109,7 +112,7 @@ const Part::TopoShape &Part::FaceMaker::getTopoShape() const{
 void Part::FaceMaker::Build()
 {
     this->NotDone();
-    this->myShapesToReturn.clear();
+    this->myShapesToReturn = this->myInputFaces;
     this->myGenerated.Clear();
 
     this->Build_Essence();//adds stuff to myShapesToReturn

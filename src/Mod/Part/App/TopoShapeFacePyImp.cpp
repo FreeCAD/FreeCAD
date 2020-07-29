@@ -307,10 +307,10 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         } _PY_CATCH_OCC(return(-1))
     }
 
-    char* className = 0;
+    char* className = "Part::FaceMakerBullseye";
     PyObject* pcPyShapeOrList = nullptr;
     PyErr_Clear();
-    if (PyArg_ParseTuple(args, "Os", &pcPyShapeOrList, &className)) {
+    if (PyArg_ParseTuple(args, "O|s", &pcPyShapeOrList, &className)) {
         PY_TRY {
 #ifndef FC_NO_ELEMENT_MAP
             getTopoShapePtr()->makEFace(getPyShapes(pcPyShapeOrList),0,className);
