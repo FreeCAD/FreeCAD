@@ -662,18 +662,14 @@ void MDIViewPage::printPdf(std::string file)
     QString filename = QString::fromUtf8(file.data(),file.size());
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(filename);
-//    printer.setOrientation(m_orientation);
     if (m_paperSize == QPrinter::Ledger)  {
         printer.setOrientation((QPrinter::Orientation) (1 - m_orientation));  //reverse 0/1
     } else {
         printer.setOrientation(m_orientation);
     }
     printer.setPaperSize(m_paperSize);
-    m_view->setExporting(true);
     print(&printer);
-    m_view->setExporting(false);
 }
 
 void MDIViewPage::print()
