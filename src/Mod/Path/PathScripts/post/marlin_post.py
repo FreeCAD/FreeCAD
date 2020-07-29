@@ -53,6 +53,7 @@ parser.add_argument('--preamble', help='set commands to be issued before the fir
 parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\n; M2"')
 parser.add_argument('--tool-change', help='0 ... suppress all tool change commands\n1 ... insert M6 for all tool changes\n2 ... insert M6 for all tool changes except the initial tool')
 parser.add_argument('--centerorigin', action='store_true', help='center all xy coords around mid point, default is bottom left')
+parser.add_argument('--spindlecontrol', action='store_true', help='Allow M3 / M5 for Marlin compiled with spindle support')
 TOOLTIP_ARGS=parser.format_help()
 
 #These globals set common customization preferences
@@ -127,6 +128,7 @@ def processArguments(argstring):
     global POSTAMBLE
     global SUPPRESS_TOOL_CHANGE
     global CENTER_ORIGIN
+    global SPINDLE_CONTROL
 
     try:
         args = parser.parse_args(shlex.split(argstring))
@@ -157,7 +159,9 @@ def processArguments(argstring):
             SUPPRESS_TOOL_CHANGE = min(1, int(args.tool_change) - 1)
         if args.centerorigin:
             CENTER_ORIGIN = True
-
+        if args.spindlecontrol:
+            SPINDLE_CONTROL = True
+            
     except Exception as e:
         traceback.print_exc(e)
         return False
@@ -174,7 +178,10 @@ def export(objectslist,filename,argstring):
         if not hasattr(obj,"Path"):
             print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
             return
-
+            
+    if SPINDLE_CONTROL:
+       ALLOWED_COMMANDS.extend(['M3', 'M4', 'M5'])
+       
     print("postprocessing...")
     gcode = ""
 
@@ -328,10 +335,10 @@ def boxlimits(data_stats, cmd, param, value, checkbounds):
 def emuldrill(c, state): #G81
     
     cmdlist =  [["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5}],
-                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : -5}],
-                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 0}],
-                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'Z' : c.Parameters['Z']}],
-                ["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5}]
+                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : -5, 'F' : G0Z_DOWN_FEEDRATE}],
+                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 0, 'F' : G0Z_UP_FEEDRATE}],
+                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'Z' : c.Parameters['Z'], 'F' : G0Z_DOWN_FEEDRATE}],
+                ["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5,  'F' : G0Z_UP_FEEDRATE}]
     ]
     
     return iter(cmdlist)
@@ -346,17 +353,19 @@ def emultoolchange(c, state): #M6 T?
     else:
         cmdlist =  [["G0", {'z' : 20, 'F': G0Z_UP_FEEDRATE / 60.0}],
                     ["G0", {'x' : 0, 'y' : 0, 'F' : G0XY_FEEDRATE / 60.0}],
+                    ["M5" if SPINDLE_CONTROL else ";M5", {}],
                     ["M0", {'T': c.Parameters['T']}], # Pause and wait for click, turn off spindle, swap bit, home it, turn on spindle
                     ["G92", {'z' : 0}],
                     ["G0", {'z' : 20, 'F': G0Z_UP_FEEDRATE / 60.0}],
-                    ["G0", {'x' : state['lastx'], 'y': state['lasty'], 'F': G0XY_FEEDRATE / 60.0}]
+                    ["G0", {'x' : state['lastx'], 'y': state['lasty'], 'F': G0XY_FEEDRATE / 60.0}],
+                    ["M3" if SPINDLE_CONTROL else ";M3", {'S' : state['lasts']}]
         ]
     
     return iter(cmdlist)
     
 class Commands:
     tobe = {'G81': emuldrill, 'M6' : emultoolchange}
-    state = {'output': False, 'notoolyet': True, 'lastz' : 100, 'lastx' : 0, 'lasty' : 0}
+    state = {'output': False, 'notoolyet': True, 'lastz' : 100, 'lastx' : 0, 'lasty' : 0, 'lastf' : G0Z_DOWN_FEEDRATE, 'lasts' : 0}
              
     def __init__(self, pathobj = None, output = False):
         self.paths = iter(pathobj.Path.Commands)
@@ -399,6 +408,8 @@ class Commands:
                 if 'X' in params: Commands.state['lastx'] = params['X'] 
                 if 'Y' in params: Commands.state['lasty'] = params['Y'] 
                 if 'Z' in params: Commands.state['lastz'] = params['Z'] 
+                if 'F' in params: Commands.state['lastf'] = params['F'] 
+                if 'S' in params: Commands.state['lasts'] = params['S'] 
                 
             res = [command, params]
             
