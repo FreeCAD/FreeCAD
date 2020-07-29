@@ -321,14 +321,34 @@ std::string InterpreterSingleton::runStringWithKey(const char *psCmd, const char
         throw PyException();
     PyObject* initial_value = PyUnicode_FromString(key_initial_value);
     PyDict_SetItemString(localDictionary, key, initial_value);
-    PyRun_String(psCmd, Py_file_input, globalDictionary, localDictionary);
+    PyObject* presult = PyRun_String(psCmd, Py_file_input, globalDictionary, localDictionary);
+    if (!presult) {
+        if (PyErr_ExceptionMatches(PyExc_SystemExit))
+            throw SystemExitException();
+        else {
+            PyException::ThrowException();
+            return std::string(); // just to quieten code analyzers
+            //throw PyException();
+        }
+    }
+    Py_DECREF(presult);
+
+    if(initial_value){
+        Py_DECREF(initial_value);
+    }
     PyObject* key_return_value = PyDict_GetItemString(localDictionary, key);
 #if PY_MAJOR_VERSION >= 3
     PyObject* str = PyUnicode_AsEncodedString(key_return_value, "utf-8", "~E~");
 #else
     PyObject* str = PyObject_Str(key_return_value);
 #endif
+    if(key_return_value){
+        Py_DECREF(key_return_value);
+    }
     const char* result = PyBytes_AS_STRING(str);
+    if(str){
+        Py_DECREF(str);
+    }
     return result;
 }
 
