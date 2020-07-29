@@ -332,7 +332,7 @@ std::string InterpreterSingleton::runStringWithKey(const char *psCmd, const char
 #if PY_MAJOR_VERSION >= 3
     PyObject* str = PyUnicode_AsEncodedString(key_return_value, "utf-8", "~E~");
 #else
-    PyObject* str = PyString_FromString(key_return_value, "utf-8", "~E~");
+    PyObject* str = PyString_FromString(key_return_value);
 #endif
     const char* result = PyBytes_AS_STRING(str);
     return result;
