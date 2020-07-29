@@ -41,6 +41,7 @@
 
 class QDockWidget;
 class QSplitter;
+class QPropertyAnimation;
 
 namespace Gui {
 
@@ -178,6 +179,7 @@ class OverlayTabWidget: public QTabWidget
     Q_PROPERTY(qreal effectOffsetY READ effectOffsetY WRITE setEffectOffsetY DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(qreal effectBlurRadius READ effectBlurRadius WRITE setEffectBlurRadius DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(bool enableEffect READ effectEnabled WRITE setEffectEnabled DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(qreal animation READ animation WRITE setAnimation DESIGNABLE true SCRIPTABLE true)
 
 public:
     OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos);
@@ -251,10 +253,15 @@ public:
     void setEffectBlurRadius(qreal);
     bool effectEnabled() const;
     void setEffectEnabled(bool);
+    qreal animation() const {return _animation;}
+    void setAnimation(qreal);
 
     void scheduleRepaint();
 
     int testAlpha(const QPoint &);
+
+    void startShow();
+    void startHide();
 
 protected:
     void leaveEvent(QEvent*);
@@ -274,6 +281,7 @@ protected Q_SLOTS:
     void onSplitterMoved();
     void setupLayout();
     void onRepaint();
+    void onAnimationStateChanged();
 
 private:
     QSize offset;
@@ -305,6 +313,9 @@ private:
 
     QImage _image;
     qreal _imageScale;
+
+    qreal _animation = 0;
+    QPropertyAnimation *_animator = nullptr;
 };
 
 class OverlayToolButton: public QToolButton
@@ -321,6 +332,7 @@ public:
     OverlayProxyWidget(OverlayTabWidget *);
 
     OverlayTabWidget *getOwner() const {return owner;}
+    bool hitTest(QPoint);
 
 protected:
     void enterEvent(QEvent*);
@@ -331,7 +343,7 @@ protected:
 
 private:
     OverlayTabWidget* owner;
-    bool drawLine = false;
+    int drawLine = false;
     int pos;
 };
 

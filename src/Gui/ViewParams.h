@@ -125,6 +125,10 @@ public:
     FC_VIEW_PARAM(DockOverlayAutoMouseThrough,bool,Bool,true, "") \
     FC_VIEW_PARAM(DockOverlayAlphaRadius,int,Int,2, "Dock overlay auto mouse through alpha test radius") \
     FC_VIEW_PARAM2(DockOverlayCheckNaviCube,bool,Bool,true, "") \
+    FC_VIEW_PARAM(DockOverlayHintTriggerSize,int,Int,20, "Dock overlay auto hide visual hint trigger size") \
+    FC_VIEW_PARAM(DockOverlayHintSize,int,Int,8, "Dock overlay auto hide visual hint drawing size") \
+    FC_VIEW_PARAM(DockOverlayAnimationDuration,int,Int,200, "Dock overlay auto hide animation duration") \
+    FC_VIEW_PARAM(DockOverlayAnimationType,int,Int,7, "Dock overlay auto hide animation type") \
     FC_VIEW_PARAM(EditingTransparency,double,Float,0.5, \
        QT_TRANSLATE_NOOP("ViewParams", "Automatically make all object transparent except the one in edit"))\
     FC_VIEW_PARAM(EditingAutoTransparent,bool,Bool,true, "") \
@@ -226,6 +230,8 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Pie menu action trigger on hover"))\
     FC_VIEW_PARAM(PieMenuAnimationDuration, int, Int, 250, \
         QT_TRANSLATE_NOOP("ViewParams","Pie menu animation duration, 0 to disable"))\
+    FC_VIEW_PARAM(PieMenuAnimationType, int, Int, 38, \
+        QT_TRANSLATE_NOOP("ViewParams","Pie menu animation type"))\
     FC_VIEW_PARAM(PieMenuCenterRadius, int, Int, 10, \
         QT_TRANSLATE_NOOP("ViewParams","Pie menu center circle radius, 0 to disable"))\
 
