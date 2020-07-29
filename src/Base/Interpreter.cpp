@@ -298,13 +298,9 @@ std::string InterpreterSingleton::runString(const char *sCmd)
  * key is the name of a python string variable the script will have read/write
  * access to during script execution.  It will be our return value.
  * key_initial_value is the initial value c++ will set before calling the script
- * To check for runtime errors during script execution compare the return value
- * of runStringWithKey() to the inital value set.  If they are the same then
- * there was a runtime error (presuming the script is written to change the key).
- *
- * example: runStringWithKey("_key = 'new string'", "_key", "old string")
- * If the return value of runStringWithKey() = "old string" then there was an error
- * copy/paste the script to the console or to a macro to debug.
+ * If the script runs successfully it will be able to change the value of key as
+ * the return value, but if there is a runtime error key will not be changed even
+ * if the error occurs after changing it inside the script.
  */
 
 std::string InterpreterSingleton::runStringWithKey(const char *psCmd, const char *key, const char *key_initial_value){
@@ -326,6 +322,8 @@ std::string InterpreterSingleton::runStringWithKey(const char *psCmd, const char
         if (PyErr_ExceptionMatches(PyExc_SystemExit))
             throw SystemExitException();
         else {
+            Base::Console().Error("Python exception within Base::Interpreter().runStringWithKey()\nScript:\n");
+            Base::Console().Error(psCmd);
             PyException::ThrowException();
             return std::string(); // just to quieten code analyzers
             //throw PyException();
@@ -333,18 +331,12 @@ std::string InterpreterSingleton::runStringWithKey(const char *psCmd, const char
     }
     Py_DECREF(presult);
 
-    if(initial_value){
-        Py_DECREF(initial_value);
-    }
     PyObject* key_return_value = PyDict_GetItemString(localDictionary, key);
 #if PY_MAJOR_VERSION >= 3
     PyObject* str = PyUnicode_AsEncodedString(key_return_value, "utf-8", "~E~");
 #else
     PyObject* str = PyObject_Str(key_return_value);
 #endif
-    if(key_return_value){
-        Py_DECREF(key_return_value);
-    }
     const char* result = PyBytes_AS_STRING(str);
     if(str){
         Py_DECREF(str);
