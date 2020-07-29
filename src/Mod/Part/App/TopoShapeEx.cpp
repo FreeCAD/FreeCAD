@@ -830,9 +830,6 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const c
     _Shape.Nullify();
     resetElementMap();
 
-    if(shapes.empty()) 
-        HANDLE_NULL_SHAPE;
-
     if(!force && shapes.size()==1) {
         *this = shapes[0];
         return *this;
@@ -841,6 +838,12 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const c
     BRep_Builder builder;
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
+
+    if(shapes.empty()) {
+        _Shape = comp;
+        return *this;
+    }
+
     int count = 0;
     for(auto &s : shapes) {
         if(s.isNull()) {
