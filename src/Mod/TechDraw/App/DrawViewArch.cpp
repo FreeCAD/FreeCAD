@@ -119,7 +119,7 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
             << getNameInDocument() << "').Symbol = '" << getSVGHead() << "' + "
                 << "ArchSelectionPlane.getSVG(App.getDocument('"
                     << sourceObj->getDocument()->getName() << "').getObject('" 
-                    << sourceObj->getNameInDocument() << "'),"
+                    << sourceObj->getNameInDocument() << "')"
                     << ",allOn=" << (AllOn.getValue() ? "True" : "False")
                     << ",renderMode=" << RenderMode.getValue()
                     << ",showHidden=" << (ShowHidden.getValue() ? "True" : "False")
