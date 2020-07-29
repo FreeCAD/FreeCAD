@@ -571,15 +571,12 @@ void TaskCheckGeometryResults::buildShapeContent(const QString &baseName, const 
             GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Units");
     int decimals = group->GetInt("Decimals", 2);
     group = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
-    bool logging = group->GetBool("checkLogging", true);
-    group = App::GetApplication().GetUserParameter().
         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     bool advancedShapeContent = group->GetBool("AdvancedShapeContent", true);
     std::ostringstream stream;
     if (!shapeContentString.empty())
         stream << std::endl << std::endl;
-    stream << "CHECKED OBJECT: ";
+    stream << "Checked object: ";
     std::ostringstream cmdstream;
     cmdstream << "_basename = '" << baseName.toStdString().c_str() << "'" << std::endl;
     cmdstream << "_obj = _basename[_basename.index('.')+1:]" << std::endl;
@@ -587,46 +584,46 @@ void TaskCheckGeometryResults::buildShapeContent(const QString &baseName, const 
     cmdstream << "_shp = App.ActiveDocument.getObject(_obj).Shape" << std::endl;
     cmdstream << "_type = str(_shp.ShapeType)" << std::endl;
     cmdstream << "_result = _doc+'.'+App.ActiveDocument.getObject(_obj).Label+' ('+_obj+'):\\n'" << std::endl;
-    cmdstream << "_result += 'SHAPE_TYPE:  '+_type+'\\n'" << std::endl;
-    cmdstream << "_result += 'VERTEX:  '+str(len(_shp.Vertexes))+'\\n'" << std::endl;
-    cmdstream << "_result += 'EDGE:  '+str(len(_shp.Edges))+'\\n'" << std::endl;
-    cmdstream << "_result += 'WIRE:  '+str(len(_shp.Wires))+'\\n'" << std::endl;
-    cmdstream << "_result += 'FACE:  '+str(len(_shp.Faces))+'\\n'" << std::endl;
-    cmdstream << "_result += 'SHELL:  '+str(len(_shp.Shells))+'\\n'" << std::endl;
-    cmdstream << "_result += 'SOLID:  '+str(len(_shp.Solids))+'\\n'" << std::endl;
-    cmdstream << "_result += 'COMPSOLID:  '+str(len(_shp.CompSolids))+'\\n'" << std::endl;
-    cmdstream << "_result += 'COMPOUND:  '+str(len(_shp.Compounds))+'\\n'" << std::endl;
-    cmdstream << "_result += 'SHAPE:  '+str(len(_shp.Vertexes+_shp.Edges+_shp.Wires+_shp.Faces+_shp.Shells+_shp.Solids+_shp.CompSolids+_shp.Compounds))+'\\n'" << std::endl;
+    cmdstream << "_result += 'Shape type:  '+_type+'\\n'" << std::endl;
+    cmdstream << "_result += 'Vertices:  '+str(len(_shp.Vertexes))+'\\n'" << std::endl;
+    cmdstream << "_result += 'Edges:  '+str(len(_shp.Edges))+'\\n'" << std::endl;
+    cmdstream << "_result += 'Wires:  '+str(len(_shp.Wires))+'\\n'" << std::endl;
+    cmdstream << "_result += 'Faces:  '+str(len(_shp.Faces))+'\\n'" << std::endl;
+    cmdstream << "_result += 'Shells:  '+str(len(_shp.Shells))+'\\n'" << std::endl;
+    cmdstream << "_result += 'Solids:  '+str(len(_shp.Solids))+'\\n'" << std::endl;
+    cmdstream << "_result += 'CompSolids:  '+str(len(_shp.CompSolids))+'\\n'" << std::endl;
+    cmdstream << "_result += 'Compounds:  '+str(len(_shp.Compounds))+'\\n'" << std::endl;
+    cmdstream << "_result += 'Shapes:  '+str(len(_shp.Vertexes+_shp.Edges+_shp.Wires+_shp.Faces+_shp.Shells+_shp.Solids+_shp.CompSolids+_shp.Compounds))+'\\n'" << std::endl;
     if (advancedShapeContent){
         cmdstream << "_result += '----------\\n'" << std::endl;
         cmdstream << "if hasattr(_shp,'Area') and not 'Wire' in _type and not 'Edge' in _type and not 'Vertex' in _type:" << std::endl;
-        cmdstream << "    _result += 'AREA:  '+str(round(_shp.Area, " << decimals << "))+'\\n'" << std::endl;
+        cmdstream << "    _result += 'Area:  '+str(round(_shp.Area, " << decimals << "))+'\\n'" << std::endl;
         cmdstream << "if hasattr(_shp,'Volume') and not 'Wire' in _type and not 'Edge' in _type and not 'Vertex' in _type and not 'Face' in _type:" << std::endl;
-        cmdstream << "    _result += 'VOLUME:  '+str(round(_shp.Volume, " << decimals << "))+'\\n'" << std::endl;
+        cmdstream << "    _result += 'Volume:  '+str(round(_shp.Volume, " << decimals << "))+'\\n'" << std::endl;
         cmdstream << "if hasattr(_shp,'Mass'):" << std::endl;
-        cmdstream << "    _result += 'MASS:  '+str(round(_shp.Mass, " << decimals << "))+'\\n'" << std::endl;
+        cmdstream << "    _result += 'Mass:  '+str(round(_shp.Mass, " << decimals << "))+'\\n'" << std::endl;
         cmdstream << "if hasattr(_shp,'Length'):" << std::endl;
-        cmdstream << "    _result += 'LENGTH:  '+str(round(_shp.Length, " << decimals << "))+'\\n'" << std::endl;
+        cmdstream << "    _result += 'Length:  '+str(round(_shp.Length, " << decimals << "))+'\\n'" << std::endl;
         cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Radius'):" << std::endl;
-        cmdstream << "    _result += 'RADIUS:  '+str(round(_shp.Curve.Radius, " << decimals << "))+'\\n'" << std::endl;
+        cmdstream << "    _result += 'Radius:  '+str(round(_shp.Curve.Radius, " << decimals << "))+'\\n'" << std::endl;
         cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Center'):" << std::endl;
-        cmdstream << "    _result += 'CENTER_OF_CURVE:  '+str([round(vv," << decimals << ") for vv in _shp.Curve.Center])+'\\n'" << std::endl;
+        cmdstream << "    _result += 'Curve center:  '+str([round(vv," << decimals << ") for vv in _shp.Curve.Center])+'\\n'" << std::endl;
         cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Continuity'):" << std::endl;
-        cmdstream << "    _result += 'CONTINUITY:  '+str(_shp.Curve.Continuity)+'\\n'" << std::endl;
+        cmdstream << "    _result += 'Continuity:  '+str(_shp.Curve.Continuity)+'\\n'" << std::endl;
         cmdstream << "if hasattr(_shp,'CenterOfMass'):" << std::endl;
-        cmdstream << "    _result += 'CENTER_OF_MASS:  '+str([round(vv," << decimals << ") for vv in _shp.CenterOfMass])+'\\n'" << std::endl;
+        cmdstream << "    _result += 'CenterOfMass:  '+str([round(vv," << decimals << ") for vv in _shp.CenterOfMass])+'\\n'" << std::endl;
         cmdstream << "if hasattr(_shp,'normalAt'):" << std::endl;
         cmdstream << "    try:" << std::endl;
-        cmdstream << "        _result += 'NORMAL_AT(0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0)]) +'\\n'" << std::endl;
+        cmdstream << "        _result += 'normalAt(0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0)]) +'\\n'" << std::endl;
         cmdstream << "    except:" << std::endl;
         cmdstream << "        try:" << std::endl;
-        cmdstream << "            _result += 'NORMAL_AT(0,0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0,0)]) +'\\n'" << std::endl;
+        cmdstream << "            _result += 'normalAt(0,0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0,0)]) +'\\n'" << std::endl;
         cmdstream << "        except:" << std::endl;
         cmdstream << "            pass" << std::endl;
         cmdstream << "if hasattr(_shp, 'isClosed') and ('Wire' in _type or 'Edge' in _type):" << std::endl;
-        cmdstream << "    _result += 'IS_CLOSED?:  '+str(_shp.isClosed())+'\\n'" << std::endl;
+        cmdstream << "    _result += 'isClosed:  '+str(_shp.isClosed())+'\\n'" << std::endl;
         cmdstream << "if hasattr(_shp, 'Orientation'):" << std::endl;
-        cmdstream << "    _result += 'ORIENTATION:  '+str(_shp.Orientation)+'\\n'" << std::endl;
+        cmdstream << "    _result += 'Orientation:  '+str(_shp.Orientation)+'\\n'" << std::endl;
         cmdstream << "if hasattr(_shp, 'PrincipalProperties'):" << std::endl;
         cmdstream << "    _props = _shp.PrincipalProperties" << std::endl;
         cmdstream << "    for _p in _props:" << std::endl;
@@ -637,25 +634,12 @@ void TaskCheckGeometryResults::buildShapeContent(const QString &baseName, const 
     }
 
     std::string cmd = cmdstream.str();
-    /** debugging can be a challenge if there is a runtime python error
-     *  so log to report view so we can copy/paste into a macro to
-     *  debug the script if it is failing
-     */
-    if(logging){
-        std::clog << "Building check geometry shape content using: " << std::endl
-                  << cmd << std::endl;
-    }
-    std::string key_default = "script error";
-    /** call runStringWithKey() with the key (_result) set to an error message
-     *  if the script succeeds without error the key holds value set in the script
-     *  if the script fails the key value remains unchanged
-     *  so we check this to see if the script failed, so we can
-     *  fallback on the old way of letting OCCT build the shape content
-     */
-    std::string result = Base::Interpreter().runStringWithKey(cmd.c_str(),"_result",key_default.c_str());
-    if (result.compare(key_default) != 0){ //success
+
+    try {
+        std::string result = Base::Interpreter().runStringWithKey(cmd.c_str(),"_result");
         stream << result;
-    } else { //use OCCT
+    }
+    catch (Base::PyException&) { //script had runtime error so fall back on OCCT method
         stream << baseName.toLatin1().data() << std::endl;
         BRepTools_ShapeSet set;
         set.Add(shape);
