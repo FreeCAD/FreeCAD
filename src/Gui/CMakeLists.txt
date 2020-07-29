@@ -315,7 +315,7 @@ set(Gui_MOC_HDRS
     DlgSettingsNavigation.h
     DlgSettingsViewColor.h
     DlgSettingsDrawStyles.h
-    DlgSettingsPieMenu.h
+    DlgSettingsUI.h
     DlgSettingsColorGradientImp.h
     DlgSettingsDocumentImp.h
     DlgSettingsImageImp.h
@@ -676,7 +676,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgSettingsUnitsImp.cpp
     DlgSettingsViewColor.cpp
     DlgSettingsDrawStyles.cpp
-    DlgSettingsPieMenu.cpp
+    DlgSettingsUI.cpp
     DlgSettingsColorGradientImp.cpp
     DlgSettingsDocumentImp.cpp
     DlgSettingsImageImp.cpp
@@ -693,7 +693,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgSettingsUnitsImp.h
     DlgSettingsViewColor.h
     DlgSettingsDrawStyles.h
-    DlgSettingsPieMenu.h
+    DlgSettingsUI.h
     DlgSettingsColorGradientImp.h
     DlgSettingsDocumentImp.h
     DlgSettingsImageImp.h

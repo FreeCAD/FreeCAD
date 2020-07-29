@@ -31,7 +31,7 @@
 //
 #include "DlgPreferencesImp.h"
 #include "DlgSettings3DViewImp.h"
-#include "DlgSettingsPieMenu.h"
+#include "DlgSettingsUI.h"
 #include "DlgSettingsNavigation.h"
 #include "DlgSettingsViewColor.h"
 #include "DlgSettingsDrawStyles.h"
@@ -73,7 +73,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new PrefPageProducer<DlgSettingsMacroImp>   ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsUnitsImp>   ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettings3DViewImp>  ( QT_TRANSLATE_NOOP("QObject","Display") );
-    new PrefPageProducer<DlgSettingsPieMenu>    ( QT_TRANSLATE_NOOP("QObject","Display") );
+    new PrefPageProducer<DlgSettingsUI>         ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsNavigation> ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsViewColor>  ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsDrawStyles> ( QT_TRANSLATE_NOOP("QObject","Display") );

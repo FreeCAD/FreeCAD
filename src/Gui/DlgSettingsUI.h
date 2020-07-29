@@ -20,8 +20,8 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_DIALOG_DLGSETTINGSPIEMENU_H
-#define GUI_DIALOG_DLGSETTINGSPIEMENU_H
+#ifndef GUI_DIALOG_DLGSETTINGSUI_H
+#define GUI_DIALOG_DLGSETTINGSUI_H
 
 #include "PropertyPage.h"
 #include <memory>
@@ -33,19 +33,31 @@ namespace Dialog {
  * The DlgSettingsPie class implements a preference page to change settings
  * of Pie Menu.
  */
-class DlgSettingsPieMenu : public PreferencePage
+class DlgSettingsUI : public PreferencePage
 { 
   Q_OBJECT
+  Q_PROPERTY(qreal offset1 READ offset1 WRITE setOffset1 DESIGNABLE true SCRIPTABLE true)
+  Q_PROPERTY(qreal offset2 READ offset2 WRITE setOffset2 DESIGNABLE true SCRIPTABLE true)
 
 public:
-  DlgSettingsPieMenu(QWidget* parent = 0);
-  ~DlgSettingsPieMenu();
+  DlgSettingsUI(QWidget* parent = 0);
+  ~DlgSettingsUI();
 
   void saveSettings();
   void loadSettings();
 
+  qreal offset1() const;
+  void setOffset1(qreal);
+  qreal offset2() const;
+  void setOffset2(qreal);
+
 protected:
   void changeEvent(QEvent *e);
+
+protected Q_SLOTS:
+  void onStateChanged();
+  void onCurrentChanged(int);
+  void onTimer();
 
 private:
   class Private;
@@ -55,4 +67,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSPIEMENU_H
+#endif // GUI_DIALOG_DLGSETTINGSUI_H

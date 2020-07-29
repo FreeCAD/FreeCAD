@@ -372,7 +372,7 @@ public:
             offset = endOffset;
             updateVisuals();
         }
-        animator->setEasingCurve(QEasingCurve::OutBounce);
+        animator->setEasingCurve((QEasingCurve::Type)ViewParams::getPieMenuAnimationCurve());
         animator->setStartValue(offset);
         animator->setEndValue(endOffset);
         animator->start();

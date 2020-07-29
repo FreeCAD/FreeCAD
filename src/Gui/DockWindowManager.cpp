@@ -462,7 +462,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
 void OverlayTabWidget::onAnimationStateChanged()
 {
     if (_animator->state() != QAbstractAnimation::Running) {
-        if (_animator->direction() == QAbstractAnimation::Forward)
+        if (_animator->startValue().toReal() == 0.0)
             hide();
         setAnimation(0);
     }
@@ -482,9 +482,10 @@ void OverlayTabWidget::startShow()
         return;
     int duration = ViewParams::getDockOverlayAnimationDuration();
     if (duration) {
-        _animator->setDirection(QAbstractAnimation::Backward);
+        _animator->setStartValue(1.0);
+        _animator->setEndValue(0.0);
         _animator->setDuration(duration);
-        _animator->setEasingCurve((QEasingCurve::Type)ViewParams::getDockOverlayAnimationType());
+        _animator->setEasingCurve((QEasingCurve::Type)ViewParams::getDockOverlayAnimationCurve());
         _animator->start();
     }
     show();
@@ -493,15 +494,16 @@ void OverlayTabWidget::startShow()
 void OverlayTabWidget::startHide()
 {
     if (!isVisible() || (_animator->state() == QAbstractAnimation::Running
-                && _animator->direction() == QAbstractAnimation::Forward))
+                && _animator->startValue().toReal() == 0.0))
         return;
     int duration = ViewParams::getDockOverlayAnimationDuration();
     if (!duration)
         hide();
     else {
-        _animator->setDirection(QAbstractAnimation::Forward);
+        _animator->setStartValue(0.0);
+        _animator->setEndValue(1.0);
         _animator->setDuration(duration);
-        _animator->setEasingCurve((QEasingCurve::Type)ViewParams::getDockOverlayAnimationType());
+        _animator->setEasingCurve((QEasingCurve::Type)ViewParams::getDockOverlayAnimationCurve());
         _animator->start();
     }
 }
@@ -2724,7 +2726,7 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
 {
     switch(ev->type()) {
     case QEvent::Resize: {
-        if(o == getMainWindow()->getMdiArea())
+        if(getMainWindow() && o == getMainWindow()->getMdiArea())
             refreshOverlay();
         return false;
     }
@@ -2796,7 +2798,13 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
             hit = true;
         } else if (ev->type() != QEvent::Wheel) {
             for(auto widget=qApp->widgetAt(pos); widget ; widget=widget->parentWidget()) {
-                if (widget->windowType() != Qt::Widget)
+                int type = widget->windowType();
+                if (type == Qt::SubWindow) {
+                    for (auto &o : d->_overlays)
+                        o->tabWidget->getProxyWidget()->hitTest(pos);
+                    break;
+                }
+                if (type != Qt::Widget)
                     break;
                 auto tabWidget = qobject_cast<OverlayTabWidget*>(widget);
                 if (tabWidget) {
@@ -2806,10 +2814,6 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
                     }
                     break;
                 }
-            }
-            if (!hit) {
-                for (auto &o : d->_overlays)
-                    o->tabWidget->getProxyWidget()->hitTest(pos);
             }
         }
         if (!hit) {
