@@ -39,7 +39,11 @@
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidgetFeatures"/>
+    <widget class="QListWidget" name="listWidgetFeatures">
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::InternalMove</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
