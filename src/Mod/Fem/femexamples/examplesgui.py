@@ -172,7 +172,7 @@ class FemExamples(QtGui.QWidget):
         item = self.view.selectedItems()[0]
         name = item.text(0)
         example = self.files_name[name]
-        solver = "ccxtools"
+        solver = None
         parent = item.parent()
         if parent is not None:
             grand_parent = parent.parent()
@@ -182,7 +182,10 @@ class FemExamples(QtGui.QWidget):
                     solver = parent.text(0)
         # if done this way the Python commands are printed in Python console
         FreeCADGui.doCommand("from femexamples.{}  import setup".format(str(example)))
-        FreeCADGui.doCommand("setup(solvertype=\"{}\")".format(str(solver)))
+        if solver is not None:
+            FreeCADGui.doCommand("setup(solvertype=\"{}\")".format(str(solver)))
+        else:
+            FreeCADGui.doCommand("setup()")
 
     def reject(self):
         self.close()
@@ -196,7 +199,7 @@ class FemExamples(QtGui.QWidget):
         item = self.view.selectedItems()[0]
         name = item.text(0)
         example = self.files_name[name]
-        solver = "ccxtools"
+        solver = None
         parent = item.parent()
         if parent is not None:
             grand_parent = parent.parent()
@@ -206,7 +209,11 @@ class FemExamples(QtGui.QWidget):
                     solver = parent.text(0)
         # if done this way the Python commands are printed in Python console
         FreeCADGui.doCommand("from femexamples.manager import run_example")
-        FreeCADGui.doCommand("run_example(\"{}\", solver=\"{}\")".format(str(example), str(solver)))
+        if solver is not None:
+            FreeCADGui.doCommand("run_example(\"{}\", solver=\"{}\")"
+                                 .format(str(example), str(solver)))
+        else:
+            FreeCADGui.doCommand("run_example(\"{}\")".format(str(example)))
 
     def enable_buttons(self):
         # only enable buttons if a example is selected
