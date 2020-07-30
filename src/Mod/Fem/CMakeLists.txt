@@ -56,6 +56,7 @@ SET(FemExamples_SRCS
     femexamples/constraint_transform_beam_hinged.py
     femexamples/examplesgui.py
     femexamples/equation_electrostatics_capacitance_two_balls.py
+    femexamples/equation_electrostatics_electricforce_elmer_nongui6.py
     femexamples/manager.py
     femexamples/material_multiple_bendingbeam_fiveboxes.py
     femexamples/material_multiple_bendingbeam_fivefaces.py
@@ -79,6 +80,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_constraint_tie_tetra10.py
     femexamples/meshes/mesh_contact_box_halfcylinder_tetra10.py
     femexamples/meshes/mesh_contact_tube_tube_tria3.py
+    femexamples/meshes/mesh_electricforce_elmer_nongui6_tetra10.py
     femexamples/meshes/mesh_multibodybeam_tetra10.py
     femexamples/meshes/mesh_multibodybeam_tria6.py
     femexamples/meshes/mesh_platewithhole_tetra10.py
