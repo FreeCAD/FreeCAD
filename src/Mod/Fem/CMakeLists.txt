@@ -53,6 +53,7 @@ SET(FemExamples_SRCS
     femexamples/constraint_section_print.py
     femexamples/constraint_selfweight_cantilever.py
     femexamples/constraint_tie.py
+    femexamples/constraint_transform_beam_hinged.py
     femexamples/examplesgui.py
     femexamples/manager.py
     femexamples/material_multiple_bendingbeam_fiveboxes.py
@@ -86,6 +87,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_thermomech_bimetall_tetra10.py
     femexamples/meshes/mesh_thermomech_flow1d_seg3.py
     femexamples/meshes/mesh_thermomech_spine_tetra10.py
+    femexamples/meshes/mesh_transform_beam_hinged_tetra10.py
 )
 
 SET(FemInOut_SRCS
