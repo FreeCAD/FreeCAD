@@ -227,13 +227,23 @@ bool Origin::OriginExtension::extensionGetSubObject(DocumentObject *&ret, const 
     }
 }
 
-void Origin::Save(Base::Writer& writer) const
+bool Origin::canSaveExtension(Extension *ext) const
 {
-    // Skip ExtensionContainer::Save() to NOT save the private extension
-    App::PropertyContainer::Save(writer);
+    if (ext)
+        return ext!=&extension;
+    return foreachExtension<Extension>(
+                [this](Extension *ext) {
+                    return ext != &this->extension;
+                });
 }
 
-void Origin::Restore(Base::XMLReader& reader)
+void Origin::Restore(Base::XMLReader &reader)
 {
-    App::PropertyContainer::Restore(reader);
+    // Disabled for now, as a mistake has been made several weeks ago causing
+    // restore error. If it is really necessary to enable extension saving on
+    // Origin, uncomment the following line.
+    //
+    // return App::ExtensionContainer::Restore(reader);
+
+    return App::PropertyContainer::Restore(reader);
 }

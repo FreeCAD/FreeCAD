@@ -251,6 +251,12 @@ public:
     //done by the default Save/Restore methods.
     void saveExtensions(Base::Writer& writer) const;
     void restoreExtensions(Base::XMLReader& reader);
+
+    /** Check if (any) extension need to be saved
+     *
+     * @param ext: the extension to check. If null, then return if any extensions need to be saved
+     */
+    virtual bool canSaveExtension(Extension *ext=nullptr) const;
     
 private:
     //stored extensions

@@ -137,7 +137,7 @@ protected:
     /// Removes all planes and axis if they are still linked to the document
     virtual void unsetupObject ();
 
-    virtual void Save(Base::Writer& writer) const;
+    virtual bool canSaveExtension(Extension *) const;
     virtual void Restore(Base::XMLReader& reader);
 
 private:

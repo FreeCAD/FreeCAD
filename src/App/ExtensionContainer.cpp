@@ -316,16 +316,22 @@ void ExtensionContainer::Restore(Base::XMLReader& reader) {
 
 void ExtensionContainer::saveExtensions(Base::Writer& writer) const {
         
+    int count = 0;
+    for(auto entry : _extensions) {
+        if (canSaveExtension(entry.second))
+            ++count;
+    }
     //we don't save anything if there are no dynamic extensions
-    if(!hasExtensions())
+    if (!count)
         return;
      
     //save dynamic extensions
     writer.incInd(); // indentation for 'Extensions'
-    writer.Stream() << writer.ind() << "<Extensions Count=\"" << _extensions.size() << "\">\n";
+    writer.Stream() << writer.ind() << "<Extensions Count=\"" << count << "\">\n";
     for(auto entry : _extensions) {
-        
         auto ext = entry.second;
+        if (!canSaveExtension(ext))
+            continue;
         writer.incInd(); // indentation for 'Extension name'
         writer.Stream() << writer.ind() << "<Extension"
         << " type=\"" << ext->getExtensionTypeId().getName() <<"\""
@@ -369,7 +375,7 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader) {
         return;
      
     reader.readElement("Extensions");
-    int Cnt = reader.getAttributeAsInteger("Count");
+    int Cnt = reader.getAttributeAsInteger("Count", "0");
 
     for (int i=0 ;i<Cnt ;i++) {
         reader.readElement("Extension");
@@ -421,5 +427,12 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader) {
 
         reader.readEndElement("Extension");
     }
-    reader.readEndElement("Extensions");
+    // reader.readEndElement("Extensions");
+}
+
+bool ExtensionContainer::canSaveExtension(Extension *ext) const
+{
+    if (!ext)
+        return !_extensions.empty();
+    return true;
 }

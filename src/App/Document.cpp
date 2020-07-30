@@ -2051,7 +2051,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
 void Document::writeObject(Base::Writer &writer, DocumentObject *obj) const 
 {
     writer.Stream() << writer.ind() << "<Object name=\"" << obj->getExportName() << "\"";
-    if(obj->hasExtensions())
+    if(obj->canSaveExtension())
         writer.Stream() << " Extensions=\"True\"";
 
     writer.Stream() << ">\n";

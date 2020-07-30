@@ -1512,7 +1512,7 @@ void Document::writeObject(Base::Writer &writer,
         << doc->getNameInDocument() << "\" expanded=\"" 
         << (doc->testStatus(App::Expand) ? 1:0) << "\"";
 
-    if (obj->hasExtensions())
+    if (obj->canSaveExtension())
         writer.Stream() << " Extensions=\"True\"";
 
     writer.Stream() << ">\n";
