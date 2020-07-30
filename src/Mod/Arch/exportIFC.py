@@ -136,9 +136,13 @@ def getPreferences():
         'SERIALIZE': p.GetBool("ifcSerialize",False),
         'EXPORT_2D': p.GetBool("ifcExport2D",True),
         'FULL_PARAMETRIC': p.GetBool("IfcExportFreeCADProperties",False),
-        'ADD_DEFAULT_SITE': p.GetBool("IfcAddDefaultSite",False),
-        'ADD_DEFAULT_STOREY': p.GetBool("IfcAddDefaultStorey",False),
+        'ADD_DEFAULT_SITE': p.GetBool("IfcAddDefaultSite",True),
         'ADD_DEFAULT_BUILDING': p.GetBool("IfcAddDefaultBuilding",True),
+        'ADD_DEFAULT_STOREY': p.GetBool("IfcAddDefaultStorey",True),
+        # Be careful with turning one of the three above off.
+        # The spatial structure may no longer be fully connected to the IfcProject.
+        # This would result in unreferenced objects not belonging to the IfcProject.
+        # Some applications do not import unreferenced objects.
         'IFC_UNIT': u,
         'SCALE_FACTOR': f,
         'GET_STANDARD': p.GetBool("getStandardType",False),
