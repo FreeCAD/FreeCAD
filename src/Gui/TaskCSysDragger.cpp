@@ -142,11 +142,13 @@ bool TaskCSysDragger::accept()
 
   App::DocumentObject* dObject = vpObject.getObject();
   if (dObject) {
-    Gui::Document* document = Gui::Application::Instance->getDocument(dObject->getDocument());
-    assert(document);
-    document->commitCommand();
-    document->resetEdit();
-    document->getDocument()->recompute();
+    Gui::Document* document = Gui::Application::Instance->editDocument();
+    if (document) {
+        if (!App::GetApplication().getActiveTransaction())
+            App::GetApplication().setActiveTransaction("Recompute");
+        document->getDocument()->recompute();
+        document->resetEdit();
+    }
   }
   return Gui::TaskView::TaskDialog::accept();
 }
