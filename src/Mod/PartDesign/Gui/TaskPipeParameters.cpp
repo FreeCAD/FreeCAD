@@ -112,7 +112,9 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     std::vector<std::string> strings = pipe->Spine.getSubValues();
     for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it)
         ui->listWidgetReferences->addItem(QString::fromStdString(*it));
-
+    if(strings.size()>0){
+        static_cast<ViewProviderPipe*>(vp)->makeTemporaryVisible(true);
+    }
     ui->comboBoxTransition->setCurrentIndex(pipe->Transition.getValue());
 
     updateUI();
@@ -132,7 +134,9 @@ TaskPipeParameters::~TaskPipeParameters()
                 svp->setVisible(spineShow);
                 spineShow = false;
             }
-
+            //setting visibility to true is needed when preselecting profile and path prior to invoking sweep
+            std::string pipeName = pipe->getNameInDocument();
+            Gui::Command::doCommand(Gui::Command::Gui,"App.ActiveDocument.%s.ViewObject.Visibility=True",pipeName.c_str());
             static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, false);
         }
     }
