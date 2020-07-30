@@ -45,6 +45,7 @@
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
 # include <QtGlobal>
 #endif
 
@@ -96,7 +97,7 @@ void FaceMakerBullseye::Build_Essence()
         TopoDS_Compound comp;
         builder.MakeCompound(comp);
         for(TopoDS_Wire &w : myWires){
-            builder.Add(comp, w);
+            builder.Add(comp, BRepBuilderAPI_Copy(w).Shape());
         }
         BRepLib_FindSurface planeFinder(comp,-1, /*OnlyPlane=*/Standard_True);
         if (!planeFinder.Found())
