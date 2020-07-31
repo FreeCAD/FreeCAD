@@ -498,7 +498,11 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     displayMenu->setTitle(tr("Display message types"));
     optionMenu->addMenu(displayMenu);
 
-    QAction* logAct = displayMenu->addAction(tr("Log messages"), this, SLOT(onToggleLogging()));
+    QAction* logMsg = displayMenu->addAction(tr("Normal messages"), this, SLOT(onToggleNormalMessage()));
+    logMsg->setCheckable(true);
+    logMsg->setChecked(bMsg);
+
+    QAction* logAct = displayMenu->addAction(tr("Log messages"), this, SLOT(onToggleLogMessage()));
     logAct->setCheckable(true);
     logAct->setChecked(bLog);
 
@@ -512,7 +516,7 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
 
     QMenu* showOnMenu = new QMenu (optionMenu);
     showOnMenu->setTitle(tr("Show report view on"));
-    optionMenu->insertMenu(optionMenu->actions().front(), showOnMenu);
+    optionMenu->addMenu(showOnMenu);
 
     QAction* showNormAct = showOnMenu->addAction(tr("Normal messages"), this, SLOT(onToggleShowReportViewOnNormalMessage()));
     showNormAct->setCheckable(true);
@@ -580,9 +584,14 @@ bool ReportOutput::isWarning() const
     return bWrn;
 }
 
-bool ReportOutput::isLogging() const
+bool ReportOutput::isLogMessage() const
 {
     return bLog;
+}
+
+bool ReportOutput::isNormalMessage() const
+{
+    return bMsg;
 }
 
 void ReportOutput::onToggleError()
@@ -591,36 +600,46 @@ void ReportOutput::onToggleError()
     getWindowParameter()->SetBool( "checkError", bErr );
 }
 
-void ReportOutput::onToggleShowReportViewOnWarning(){
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnWarning", true);
-    getWindowParameter()->SetBool("checkShowReportViewOnWarning", !show);
-}
-
-void ReportOutput::onToggleShowReportViewOnError(){
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnError", true);
-    getWindowParameter()->SetBool("checkShowReportViewOnError", !show);
-}
-
-void ReportOutput::onToggleShowReportViewOnNormalMessage(){
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnNormalMessage", true);
-    getWindowParameter()->SetBool("checkShowReportViewOnNormalMessage", !show);
-}
-
-void ReportOutput::onToggleShowReportViewOnLogMessage(){
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnLogMessage", true);
-    getWindowParameter()->SetBool("checkShowReportViewOnLogMessage", !show);
-}
-
 void ReportOutput::onToggleWarning()
 {
     bWrn = bWrn ? false : true;
     getWindowParameter()->SetBool( "checkWarning", bWrn );
 }
 
-void ReportOutput::onToggleLogging()
+void ReportOutput::onToggleLogMessage()
 {
     bLog = bLog ? false : true;
     getWindowParameter()->SetBool( "checkLogging", bLog );
+}
+
+void ReportOutput::onToggleNormalMessage()
+{
+    bMsg = bMsg ? false : true;
+    getWindowParameter()->SetBool( "checkMessage", bMsg );
+}
+
+void ReportOutput::onToggleShowReportViewOnWarning()
+{
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnWarning", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnWarning", !show);
+}
+
+void ReportOutput::onToggleShowReportViewOnError()
+{
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnError", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnError", !show);
+}
+
+void ReportOutput::onToggleShowReportViewOnNormalMessage()
+{
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnNormalMessage", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnNormalMessage", !show);
+}
+
+void ReportOutput::onToggleShowReportViewOnLogMessage()
+{
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnLogMessage", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnLogMessage", !show);
 }
 
 void ReportOutput::onToggleRedirectPythonStdout()
