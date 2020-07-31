@@ -62,7 +62,6 @@ public:
     virtual void apply();
 
 private Q_SLOTS:
-    void indexesMoved();
     void onPlaneChanged(int num);
     virtual void onUpdateView(bool);
     virtual void onFeatureDeleted(void);

@@ -60,7 +60,6 @@ public:
     virtual void apply();
 
 private Q_SLOTS:
-    void indexesMoved();
     void onUpdateViewTimer();
     void onDirectionChanged(int num);
     void onCheckReverse(const bool on);

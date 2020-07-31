@@ -68,7 +68,6 @@ public:
     virtual void apply();
 
 private Q_SLOTS:
-    void indexesMoved();
     void onTransformDelete();
     void onTransformEdit();
     void onTransformActivated(const QModelIndex& index);

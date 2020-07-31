@@ -186,22 +186,6 @@ void TaskMirroredParameters::updateUI()
     blockUpdate = false;
 }
 
-void TaskMirroredParameters::indexesMoved()
-{
-    PartDesign::Transformed* pcTransformed = getObject();
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    // the number of items has not been changed, they have just been reordered
-    // so we read every list item to recreate the originals vector
-    std::string name;
-    for (unsigned i = 0; i < ui->listWidgetFeatures->count(); i++) {
-        name = ui->listWidgetFeatures->item(i)->data(Qt::UserRole).toByteArray().constData();
-        originals[i] = pcTransformed->getDocument()->getObject(name.c_str());
-    }
-    setupTransaction();
-    pcTransformed->Originals.setValues(originals);
-    recomputeFeature();
-}
-
 void TaskMirroredParameters::addObject(App::DocumentObject* obj)
 {
     QString label = QString::fromUtf8(obj->Label.getValue());

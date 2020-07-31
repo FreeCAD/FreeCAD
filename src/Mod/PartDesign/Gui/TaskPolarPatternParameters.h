@@ -58,8 +58,8 @@ public:
     virtual ~TaskPolarPatternParameters();
 
     void apply();
+
 private Q_SLOTS:
-    void indexesMoved();
     void onUpdateViewTimer();
     void onAxisChanged(int num);
     void onCheckReverse(const bool on);

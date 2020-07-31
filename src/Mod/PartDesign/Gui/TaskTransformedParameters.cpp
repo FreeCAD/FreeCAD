@@ -400,6 +400,28 @@ void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face, 
     Gui::Selection().addSelectionGate(new CombineSelectionFilterGates(gateRefPtr, gateDepPtr));
 }
 
+void TaskTransformedParameters::indexesMoved()
+{
+    QAbstractItemModel* model = qobject_cast<QAbstractItemModel*>(sender());
+    if (!model)
+        return;
+
+    PartDesign::Transformed* pcTransformed = getObject();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+
+    QByteArray name;
+    int rows = model->rowCount();
+    for (int i = 0; i < rows; i++) {
+        QModelIndex index = model->index(i, 0);
+        name = index.data(Qt::UserRole).toByteArray().constData();
+        originals[i] = pcTransformed->getDocument()->getObject(name.constData());
+    }
+
+    setupTransaction();
+    pcTransformed->Originals.setValues(originals);
+    recomputeFeature();
+}
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
