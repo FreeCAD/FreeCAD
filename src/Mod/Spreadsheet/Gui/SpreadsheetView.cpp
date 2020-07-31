@@ -52,6 +52,7 @@
 #include "qtcolorpicker.h"
 
 #include "SpreadsheetView.h"
+#include "SpreadsheetViewPy.h"
 #include "SpreadsheetDelegate.h"
 #include "ui_Sheet.h"
 
@@ -444,7 +445,11 @@ QModelIndex SheetView::currentIndex() const
 
 PyObject *SheetView::getPyObject()
 {
-    return Gui::MDIView::getPyObject();
+    if (!pythonObject)
+        pythonObject = new SpreadsheetViewPy(this);
+
+    Py_INCREF(pythonObject);
+    return pythonObject;
 }
 
 void SheetView::deleteSelf()
