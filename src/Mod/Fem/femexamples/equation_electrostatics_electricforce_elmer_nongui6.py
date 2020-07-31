@@ -169,7 +169,7 @@ def setup(doc=None, solvertype="elmer"):
     mat["Name"] = "Air-Generic"
     mat["Density"] = "1.20 kg/m^3"
     mat["KinematicViscosity"] = "15.11 mm^2/s"
-    mat["VolumetricThermalExpansionCoefficient"] = "0.00 µm/m/K"
+    mat["VolumetricThermalExpansionCoefficient"] = "0.00 mm/m/K"
     mat["ThermalConductivity"] = "0.03 W/m/K"
     mat["ThermalExpansionCoefficient"] = "0.0034/K"
     mat["SpecificHeat"] = "1.00 J/kg/K"
