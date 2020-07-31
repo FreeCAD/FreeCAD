@@ -119,13 +119,15 @@ void TaskPolarPatternParameters::setupUI()
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(ui->listWidgetFeatures->model(),
+        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
     updateViewTimer->setInterval(getUpdateViewTimeout());
-
     connect(updateViewTimer, SIGNAL(timeout()),
             this, SLOT(onUpdateViewTimer()));
+    
     connect(ui->comboAxis, SIGNAL(activated(int)),
             this, SLOT(onAxisChanged(int)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
@@ -213,6 +215,22 @@ void TaskPolarPatternParameters::updateUI()
     ui->spinOccurrences->setValue(occurrences);
 
     blockUpdate = false;
+}
+
+void TaskPolarPatternParameters::indexesMoved()
+{
+    PartDesign::Transformed* pcTransformed = getObject();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+    // the number of items has not been changed, they have just been reordered
+    // so we read every list item to recreate the originals vector
+    std::string name;
+    for (unsigned i = 0; i < ui->listWidgetFeatures->count(); i++) {
+        name = ui->listWidgetFeatures->item(i)->data(Qt::UserRole).toByteArray().constData();
+        originals[i] = pcTransformed->getDocument()->getObject(name.c_str());
+    }
+    setupTransaction();
+    pcTransformed->Originals.setValues(originals);
+    recomputeFeature(); 
 }
 
 void TaskPolarPatternParameters::onUpdateViewTimer()
