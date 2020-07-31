@@ -83,6 +83,8 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(ui->listWidgetFeatures->model(),
+        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
     // Create a context menu for the listview of transformation features
     action = new QAction(tr("Edit"), ui->listTransformFeatures);
@@ -158,6 +160,22 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
         }
     }
     // ---------------------
+}
+
+void TaskMultiTransformParameters::indexesMoved()
+{
+    PartDesign::Transformed* pcTransformed = getObject();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+    // the number of items has not been changed, they have just been reordered
+    // so we read every list item to recreate the originals vector
+    std::string name;
+    for (unsigned i = 0; i < ui->listWidgetFeatures->count(); i++) {
+        name = ui->listWidgetFeatures->item(i)->data(Qt::UserRole).toByteArray().constData();
+        originals[i] = pcTransformed->getDocument()->getObject(name.c_str());
+    }
+    setupTransaction();
+    pcTransformed->Originals.setValues(originals);
+    recomputeFeature();
 }
 
 void TaskMultiTransformParameters::addObject(App::DocumentObject* obj)
