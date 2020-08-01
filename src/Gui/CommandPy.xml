@@ -37,6 +37,15 @@ Returns the name of all commands.
 </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="listByShortcut" Static='true'>
+      <Documentation>
+          <UserDocu>listByShortcut(string, bool bUseRegExp=False) -> list of strings
+
+Returns a list of all commands, filtered by shortcut.
+Shortcuts are converted to uppercase and spaces removed prior to comparison.
+</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="run">
       <Documentation>
           <UserDocu>run() -> None

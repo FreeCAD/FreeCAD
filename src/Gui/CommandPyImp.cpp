@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <sstream>
+#endif
 
 #include "Command.h"
 #include "Action.h"
@@ -77,6 +80,52 @@ PyObject* CommandPy::listAll(PyObject *args)
         PyObject* str = PyUnicode_FromString((*it)->getName());
 #else
         PyObject* str = PyString_FromString((*it)->getName());
+#endif
+        PyList_SetItem(pyList, i++, str);
+    }
+    return pyList;
+}
+
+PyObject* CommandPy::listByShortcut(PyObject *args)
+{
+    char* shortcut_to_find;
+    bool bIsRegularExp = false;
+    if (!PyArg_ParseTuple(args, "s|b", &shortcut_to_find, &bIsRegularExp))
+        return nullptr;
+
+    std::vector <Command*> cmds = Application::Instance->commandManager().getAllCommands();
+    std::vector <std::string> matches;
+    for (Command* c : cmds){
+        Action* action = c->getAction();
+        if (action){
+            QString spc = QString::fromLatin1(" ");
+            if(bIsRegularExp){
+               QRegExp re = QRegExp(QString::fromLatin1(shortcut_to_find));
+               re.setCaseSensitivity(Qt::CaseInsensitive);
+               if (!re.isValid()){
+                   std::stringstream str;
+                   str << "Invalid regular expression: " << shortcut_to_find;
+                   throw Py::RuntimeError(str.str());
+               }
+
+               if (re.indexIn(action->shortcut().toString().remove(spc).toUpper()) != -1){
+                   matches.push_back(c->getName());
+               }
+            }
+            else if (action->shortcut().toString().remove(spc).toUpper() ==
+                     QString::fromLatin1(shortcut_to_find).remove(spc).toUpper()) {
+                matches.push_back(c->getName());
+            }
+        }
+    }
+
+    PyObject* pyList = PyList_New(matches.size());
+    int i=0;
+    for (std::string match : matches) {
+#if PY_MAJOR_VERSION >= 3
+        PyObject* str = PyUnicode_FromString(match.c_str());
+#else
+        PyObject* str = PyString_FromString(match.c_str());
 #endif
         PyList_SetItem(pyList, i++, str);
     }
