@@ -36,6 +36,9 @@
 using namespace Part;
 using namespace Attacher;
 
+//usually would be 0.0 to 1.0, but allow greater just in case someone has a use for it
+App::PropertyFloatConstraint::Constraints mapRange = {-FLT_MAX, FLT_MAX, 0.05};
+
 EXTENSION_PROPERTY_SOURCE(Part::AttachExtension, App::DocumentObjectExtension)
 
 AttachExtension::AttachExtension()
@@ -55,6 +58,7 @@ AttachExtension::AttachExtension()
     EXTENSION_ADD_PROPERTY_TYPE(MapReversed, (false), "Attachment", App::Prop_None, "Reverse Z direction (flip sketch upside down)");
 
     EXTENSION_ADD_PROPERTY_TYPE(MapPathParameter, (0.0), "Attachment", App::Prop_None, "Sets point of curve to map the sketch to. 0..1 = start..end");
+    MapPathParameter.setConstraints(&mapRange);
 
     EXTENSION_ADD_PROPERTY_TYPE(AttachmentOffset, (Base::Placement()), "Attachment", App::Prop_None, "Extra placement to apply in addition to attachment (in local coordinates)");
 

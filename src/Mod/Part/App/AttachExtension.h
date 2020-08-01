@@ -99,7 +99,7 @@ public:
       * sketch will be mapped normal to a curve at point specified by parameter
       * (from 0.0 to 1.0, from start to end) )
       */
-    App::PropertyFloat MapPathParameter;
+    App::PropertyFloatConstraint MapPathParameter;
 
     /** calculate and update the Placement property based on the Support, and
       * mode. Can throw FreeCAD and OCC exceptions. Returns true if attached,
