@@ -206,8 +206,7 @@ bool OverlayProxyWidget::hitTest(QPoint pt, bool delay)
                 timer.start(ViewParams::getDockOverlayHintDelay());
         } else {
             timer.stop();
-            if (ViewParams::getDockOverlayHintTabBar())
-                owner->setState(OverlayTabWidget::State_Hint);
+            owner->setState(OverlayTabWidget::State_Hint);
             drawLine = true;
             update();
         }
@@ -648,6 +647,9 @@ int OverlayTabWidget::testAlpha(const QPoint &_pos)
     if (tabBar()->isVisible() && tabBar()->tabAt(tabBar()->mapFromGlobal(_pos))>=0)
         return -1;
 
+    if (titleBar->isVisible() && titleBar->rect().contains(titleBar->mapFromGlobal(_pos)))
+        return -1;
+
     if (!splitter->isVisible())
         return 0;
 
@@ -657,8 +659,6 @@ int OverlayTabWidget::testAlpha(const QPoint &_pos)
             || pos.x() >= size.width()
             || pos.y() >= size.height())
     {
-        // Assuming we've filtered QAbstractButton (titleBar), and the rest of
-        // background is transparent.
         if (this->rect().contains(this->mapFromGlobal(_pos)))
             return 0;
         return -1;
@@ -973,18 +973,20 @@ void OverlayTabWidget::setState(State state)
         if (_state == State_HintHidden)
             break;
         _state = state;
-        tabBar()->show();
-        titleBar->hide();
-        splitter->hide();
-        _graphicsEffectTab->setEnabled(true);
-        show();
-        raise();
-        proxyWidget->raise();
-        if (dockArea == Qt::RightDockWidgetArea)
-            setTabPosition(West);
-        else if (dockArea == Qt::BottomDockWidgetArea)
-            setTabPosition(North);
-        DockWindowManager::instance()->refreshOverlay(this);
+        if (ViewParams::getDockOverlayHintTabBar()) {
+            tabBar()->show();
+            titleBar->hide();
+            splitter->hide();
+            _graphicsEffectTab->setEnabled(true);
+            show();
+            raise();
+            proxyWidget->raise();
+            if (dockArea == Qt::RightDockWidgetArea)
+                setTabPosition(West);
+            else if (dockArea == Qt::BottomDockWidgetArea)
+                setTabPosition(North);
+            DockWindowManager::instance()->refreshOverlay(this);
+        }
         break;
     case State_HintHidden:
         _state = state;
@@ -1396,7 +1398,7 @@ void OverlayTabWidget::setOverlayMode(bool enable)
 
     _graphicsEffect->setEnabled(effectEnabled() && (enable || isTransparent()));
 
-    if (_state == State_Hint) {
+    if (_state == State_Hint && ViewParams::getDockOverlayHintTabBar()) {
         tabBar()->show();
     } else if(count() == 1) {
         tabBar()->hide();
@@ -1418,15 +1420,20 @@ bool OverlayTabWidget::getAutoHideRect(QRect &rect) const
     switch(dockArea) {
     case Qt::RightDockWidgetArea:
         rect.setLeft(rect.left() + std::max(rect.width()-hintWidth,0));
+        rect.setTop(_TopOverlay->adjustSize(rect.top()));
         break;
     case Qt::LeftDockWidgetArea:
         rect.setRight(rect.right() - std::max(rect.width()-hintWidth,0));
+        rect.setTop(_TopOverlay->adjustSize(rect.top()));
         break;
     case Qt::TopDockWidgetArea:
         rect.setBottom(rect.bottom() - std::max(rect.height()-hintWidth,0));
+        rect.setLeft(_LeftOverlay->adjustSize(rect.left()));
         break;
     case Qt::BottomDockWidgetArea:
         rect.setTop(rect.top() + std::max(rect.height()-hintWidth,0));
+        rect.setLeft(_LeftOverlay->adjustSize(rect.left()));
+        rect.setRight(rect.right() - _RightOverlay->adjustSize(0));
         break;
     default:
         break;
@@ -1469,11 +1476,10 @@ void OverlayTabWidget::setRect(QRect rect)
         QRect rectHint = rect;
         if (_state != State_Hint)
             startHide();
-        else if (count()) {
+        else if (count() && ViewParams::getDockOverlayHintTabBar()) {
             switch(dockArea) {
             case Qt::LeftDockWidgetArea: 
             case Qt::RightDockWidgetArea: 
-                rect.setTop(_TopOverlay->adjustSize(rect.top()));
                 rectHint.setBottom(rect.bottom());
                 if (dockArea == Qt::LeftDockWidgetArea)
                     rect.setWidth(tabBar()->width());
@@ -1483,10 +1489,7 @@ void OverlayTabWidget::setRect(QRect rect)
                             tabBar()->y() + tabBar()->sizeHint().height() + 5));
                 break;
             case Qt::BottomDockWidgetArea: 
-                rect.setRight(rect.right() - _RightOverlay->adjustSize(0));
-                // fall through
             case Qt::TopDockWidgetArea: 
-                rect.setLeft(_LeftOverlay->adjustSize(rect.left()));
                 rectHint.setRight(rect.right());
                 if (dockArea == Qt::TopDockWidgetArea)
                     rect.setHeight(tabBar()->height());
@@ -3025,7 +3028,7 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
         if(TreeWidget::isDragging())
             return false;
 
-        bool hit = false;
+        int hit = 0;
         QPoint pos = QCursor::pos();
         if ((ViewParams::getDockOverlayAutoMouseThrough()
                     && ev->type() != QEvent::Wheel
@@ -3033,15 +3036,17 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
                 || (ViewParams::getDockOverlayMouseThrough()
                     && (QApplication::queryKeyboardModifiers() & Qt::AltModifier)))
         {
-            hit = true;
+            hit = 1;
         } else if (ev->type() != QEvent::Wheel) {
             for(auto widget=qApp->widgetAt(pos); widget ; widget=widget->parentWidget()) {
                 int type = widget->windowType();
-                if ((type != Qt::Widget && type != Qt::Window)
-                        || qobject_cast<QAbstractButton*>(widget))
-                {
+                if (type != Qt::Widget && type != Qt::Window) {
+                    if (type != Qt::SubWindow)
+                        hit = -1;
                     break;
                 }
+                if (qobject_cast<QAbstractButton*>(widget))
+                    break;
                 auto tabWidget = qobject_cast<OverlayTabWidget*>(widget);
                 if (tabWidget) {
                     if (tabWidget->testAlpha(pos) == 0) {
@@ -3052,10 +3057,11 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
                 }
             }
         }
-        if (!hit) {
+        if (hit == 0) {
             for (auto &o : d->_overlays)
                 o->tabWidget->getProxyWidget()->hitTest(pos);
-
+        }
+        if (hit <= 0) {
             d->_lastPos.setX(INT_MAX);
             d->_3dviews.clear();
             return false;
