@@ -124,11 +124,9 @@ public:
         QT_TRANSLATE_NOOP("ViewParams", "Show auto hidden dock overlay on mouse over.\n"\
                                         "If disabled, then show on mouse click."))\
     FC_VIEW_PARAM(DockOverlayMouseThrough,bool,Bool,true, \
-        QT_TRANSLATE_NOOP("ViewParams", "Enable mouse click through dock overlay"))\
+        QT_TRANSLATE_NOOP("ViewParams", "Enable mouse pass through dock overlay when holding 'ALT' key."))\
     FC_VIEW_PARAM(DockOverlayAutoMouseThrough,bool,Bool,true, \
-        QT_TRANSLATE_NOOP("ViewParams", "Auto mouse click through transparent part of dock overlay.\n" \
-                                        "Or, you can hold 'ALT' key to force click through any part\n" \
-                                        "of the overlay region."))\
+        QT_TRANSLATE_NOOP("ViewParams", "Auto mouse click through transparent part of dock overlay."))\
     FC_VIEW_PARAM(DockOverlayAlphaRadius,int,Int,2, \
         QT_TRANSLATE_NOOP("ViewParams", "If auto mouse click through is enabled, then this radius\n" \
                                         "defines a region of alpha test under the mouse cursor.\n" \
@@ -136,10 +134,14 @@ public:
                                         "the region are non-opaque."))\
     FC_VIEW_PARAM2(DockOverlayCheckNaviCube,bool,Bool,true, \
         QT_TRANSLATE_NOOP("ViewParams", "Leave space for Navigation Cube in dock overlay"))\
-    FC_VIEW_PARAM(DockOverlayHintTriggerSize,int,Int,20, \
+    FC_VIEW_PARAM(DockOverlayHintTriggerSize,int,Int,30, \
         QT_TRANSLATE_NOOP("ViewParams", "Auto hide hint visual display triggering width"))\
     FC_VIEW_PARAM(DockOverlayHintSize,int,Int,8, \
         QT_TRANSLATE_NOOP("ViewParams", "Auto hide hint visual display size"))\
+    FC_VIEW_PARAM(DockOverlayHintTabBar,bool,Bool,false, \
+        QT_TRANSLATE_NOOP("ViewParams", "Show tab bar on mouse over when auto hide"))\
+    FC_VIEW_PARAM(DockOverlayHintDelay,int,Int,200, \
+        QT_TRANSLATE_NOOP("ViewParams", "Delay before show hint visual"))\
     FC_VIEW_PARAM(DockOverlayAnimationDuration,int,Int,200, \
         QT_TRANSLATE_NOOP("ViewParams", "Auto hide animation duration, 0 to disable"))\
     FC_VIEW_PARAM(DockOverlayAnimationCurve,int,Int,7, \

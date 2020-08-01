@@ -60,13 +60,15 @@ public:
 
 #define FC_OVERLAY_PARAMS \
     FC_UI_CHECKBOX(DockOverlayAutoView, "Auto hide in non 3D view") \
-    FC_UI_CHECKBOX(DockOverlayActivateOnHover,"Show on hover") \
-    FC_UI_CHECKBOX(DockOverlayMouseThrough, "Allow mouse pass through") \
+    FC_UI_CHECKBOX(DockOverlayMouseThrough, "Enable ALT + Mouse pass through") \
     FC_UI_CHECKBOX(DockOverlayAutoMouseThrough, "Auto mouse pass through") \
     FC_UI_SPINBOX(DockOverlayAlphaRadius, "Alpha test radius", 1, 100, 1) \
     FC_UI_CHECKBOX(DockOverlayCheckNaviCube, "Check Navigation Cube") \
     FC_UI_SPINBOX(DockOverlayHintTriggerSize, "Hint trigger size", 1, 100, 1) \
     FC_UI_SPINBOX(DockOverlayHintSize, "Hint width", 1, 100, 1) \
+    FC_UI_CHECKBOX(DockOverlayHintTabBar, "Hint show tab bar") \
+    FC_UI_SPINBOX(DockOverlayHintDelay, "Hint delay (ms)", 0, 1000, 100) \
+    FC_UI_CHECKBOX(DockOverlayActivateOnHover,"Activate on hover") \
     FC_UI_SPINBOX(DockOverlayAnimationDuration, "Animation duration (ms)", 0, 5000, 100) \
     FC_UI_COMBOBOX(DockOverlayAnimationCurve, "Animation curve type") \
 

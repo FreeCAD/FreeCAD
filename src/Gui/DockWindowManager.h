@@ -206,7 +206,6 @@ public:
     bool isTouched() const {return touched;}
 
     void setRect(QRect rect);
-    void setAutoHideOffset(int offset);
 
     const QRect &getRect();
     bool isOverlayed() const {return overlayed;}
@@ -230,6 +229,7 @@ public:
     void setTitleBar(QWidget *);
 
     QSplitter *getSplitter() const {return splitter;}
+    QWidget *getTitleBar() const {return titleBar;}
 
     Qt::DockWidgetArea getDockArea() const {return dockArea;}
 
@@ -263,6 +263,16 @@ public:
     void startShow();
     void startHide();
 
+    enum State {
+        State_Normal,
+        State_Hint,
+        State_HintHidden,
+    };
+    void setState(State);
+    State getState() const {return _state;}
+
+    int adjustSize(int size) const;
+
 protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
@@ -279,15 +289,16 @@ protected Q_SLOTS:
     void onCurrentChanged(int index);
     void onTabMoved(int from, int to);
     void onSplitterMoved();
-    void setupLayout();
     void onRepaint();
     void onAnimationStateChanged();
+    void setupLayout();
 
 private:
+    friend class OverlayProxyWidget;
+
     QSize offset;
     int sizeDelta = 0;
     QRect rectOverlay;
-    int autoHideOffset = 0;
     OverlayProxyWidget *proxyWidget;
     QSplitter *splitter = nullptr;
     QWidget *titleBar = nullptr;
@@ -309,6 +320,7 @@ private:
     ParameterGrp::handle hGrp;
 
     OverlayGraphicsEffect *_graphicsEffect = nullptr;
+    OverlayGraphicsEffect *_graphicsEffectTab = nullptr;
     bool _effectEnabled = false;
 
     QImage _image;
@@ -316,6 +328,8 @@ private:
 
     qreal _animation = 0;
     QPropertyAnimation *_animator = nullptr;
+
+    State _state = State_Normal;
 };
 
 class OverlayToolButton: public QToolButton
@@ -332,7 +346,8 @@ public:
     OverlayProxyWidget(OverlayTabWidget *);
 
     OverlayTabWidget *getOwner() const {return owner;}
-    bool hitTest(QPoint);
+    bool hitTest(QPoint, bool delay=true);
+    bool isActivated() const;
 
 protected:
     void enterEvent(QEvent*);
@@ -341,10 +356,14 @@ protected:
     void paintEvent(QPaintEvent*);
     void mousePressEvent(QMouseEvent *);
 
+protected Q_SLOTS:
+    void onTimer();
+
 private:
     OverlayTabWidget* owner;
     int drawLine = false;
-    int pos;
+    int dockArea;
+    QTimer timer;
 };
 
 
