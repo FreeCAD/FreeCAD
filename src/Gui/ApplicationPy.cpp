@@ -24,10 +24,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Base/Interpreter.h>
 # include <QApplication>
 # include <qfileinfo.h>
 # include <qdir.h>
 # include <QPrinter>
+# include <QRegExp>
 # include <QFileInfo>
 # include <Inventor/SoInput.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -145,6 +147,10 @@ PyMethodDef Application::Methods[] = {
   {"listCommands",               (PyCFunction) Application::sListCommands, METH_VARARGS,
    "listCommands() -> list of strings\n\n"
    "Returns a list of all commands known to FreeCAD."},
+  {"listCommandsByShortcut",     (PyCFunction) Application::sListCommandsByShortcut, METH_VARARGS,
+   "listCommandsByShortcut(string,bool bUseRegExp=False) -> list of strings\n\n"
+   "Returns a list of all commands, filtered by shortcut.\n"
+   "Shortcuts are converted to uppercase and spaces removed prior to comparison."},
   {"getCommandInfo",               (PyCFunction) Application::sGetCommandInfo, METH_VARARGS,
   "getCommandInfo(string) -> list of strings\n\n"
   "Usage: menuText,tooltipText,whatsThisText,statustipText,pixmapText,shortcutText = getCommandInfo(string)"},
@@ -1391,6 +1397,53 @@ PyObject* Application::sGetCommandInfo(PyObject * /*self*/, PyObject *args)
         return 0;
     }
 }
+
+PyObject* Application::sListCommandsByShortcut(PyObject * /*self*/, PyObject *args)
+{
+    char* shortcut_to_find;
+    bool bIsRegularExp = false;
+    if (!PyArg_ParseTuple(args, "s|b", &shortcut_to_find, &bIsRegularExp))
+        return NULL;
+
+    std::vector <Command*> cmds = Application::Instance->commandManager().getAllCommands();
+    std::vector <std::string> matches;
+    for (Command* c : cmds){
+        Action* action = c->getAction();
+        if (action){
+            QString spc = QString::fromLatin1(" ");
+            if(bIsRegularExp){
+               QRegExp re = QRegExp(QString::fromLatin1(shortcut_to_find));
+               re.setCaseSensitivity(Qt::CaseInsensitive);
+               if (!re.isValid()){
+                   Base::Console().Error("Gui.listCommandsByShortcut() Error: Invalid regular expression: %s\n",shortcut_to_find);
+                   throw Py::RuntimeError("Invalid regular expression");
+                   return NULL;
+               }
+               if (re.indexIn(action->shortcut().toString().remove(spc).toUpper()) != -1){
+                   matches.push_back(c->getName());
+               }
+            } else {
+                if (action->shortcut().toString().remove(spc).toUpper()
+                        == QString::fromLatin1(shortcut_to_find).remove(spc).toUpper()){
+                    matches.push_back(c->getName());
+                }
+            }
+        }
+    }
+
+    PyObject* pyList = PyList_New(matches.size());
+    int i=0;
+    for (std::string match : matches) {
+#if PY_MAJOR_VERSION >= 3
+        PyObject* str = PyUnicode_FromString(match.c_str());
+#else
+        PyObject* str = PyString_FromString(match.c_str());
+#endif
+        PyList_SetItem(pyList, i++, str);
+    }
+    return pyList;
+}
+
 
 PyObject* Application::sListCommands(PyObject * /*self*/, PyObject *args)
 {
