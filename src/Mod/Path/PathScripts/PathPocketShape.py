@@ -299,13 +299,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             self.setEditorProperties(obj)
 
     def setEditorProperties(self, obj):
+        obj.setEditorMode('ReverseDirection', 2)
         if obj.EnableRotation == 'Off':
-            obj.setEditorMode('ReverseDirection', 2)
             obj.setEditorMode('InverseAngle', 2)
             obj.setEditorMode('AttemptInverseAngle', 2)
             obj.setEditorMode('LimitDepthToFace', 2)
         else:
-            obj.setEditorMode('ReverseDirection', 0)
+            # obj.setEditorMode('ReverseDirection', 0)
             obj.setEditorMode('InverseAngle', 0)
             obj.setEditorMode('AttemptInverseAngle', 0)
             obj.setEditorMode('LimitDepthToFace', 0)
@@ -446,6 +446,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 for (base, subList) in obj.Base:
                     baseSubsTuples.append((base, subList, 0.0, 'X', stock))
             else:
+                PathLog.debug('Rotation is active...')
                 for p in range(0, len(obj.Base)):
                     (base, subsList) = obj.Base[p]
                     isLoop = False
@@ -478,8 +479,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                         break
 
                             if rtn is False:
-                                PathLog.debug(translate("Path", "Face appears misaligned after initial rotation."))
-                                if obj.InverseAngle is False:
+                                PathLog.debug(translate("Path", "Face appears misaligned after initial rotation.") + ' 1')
+                                if obj.InverseAngle:
+                                    (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
+                                else:
                                     if obj.AttemptInverseAngle is True:
                                         (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
                                     else:
@@ -543,8 +546,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                             angle -= 180.0
 
                                     if rtn is True:
-                                        PathLog.debug(translate("Path", "Face appears misaligned after initial rotation."))
-                                        if obj.InverseAngle is False:
+                                        PathLog.debug(translate("Path", "Face appears misaligned after initial rotation.") + ' 2')
+                                        if obj.InverseAngle:
+                                            (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
+                                            if self.isFaceUp(clnBase, faceIA) is False:
+                                                PathLog.debug('isFaceUp is False')
+                                                angle += 180.0
+                                        else:
                                             if obj.AttemptInverseAngle is True:
                                                 (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
                                             else:
