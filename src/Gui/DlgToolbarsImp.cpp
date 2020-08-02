@@ -43,6 +43,7 @@
 #include "ToolBarManager.h"
 #include "MainWindow.h"
 #include "Widgets.h"
+#include "PieMenu.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
 #include "Action.h"
@@ -152,8 +153,8 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     ui->commandTreeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
 #endif
 
-    labels.clear(); labels << tr("Name") << tr("Shortcut");
-    ui->toolbarTreeWidget->setColumnCount(2);
+    labels.clear(); labels << tr("Name") << tr("Shortcut") << tr("Pie Menu");
+    ui->toolbarTreeWidget->setColumnCount(3);
     ui->toolbarTreeWidget->setHeaderLabels(labels);
     ui->toolbarTreeWidget->header()->show();
     ui->toolbarTreeWidget->header()->setStretchLastSection(false);
@@ -379,8 +380,10 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
             active = toolbar->toggleViewAction()->isVisible();
         toplevel->setCheckState(0, (active ? Qt::Checked : Qt::Unchecked));
 
-        std::string shortcut = hShortcut->GetASCII(
-                ToolbarMenuAction::paramName(h->GetGroupName(), name.constData()).c_str());
+        std::string paramName = ToolbarMenuAction::paramName(h->GetGroupName(), name.constData());
+        toplevel->setCheckState(2, (PieMenu::isEnabled(paramName.c_str()) ? Qt::Checked : Qt::Unchecked));
+
+        std::string shortcut = hShortcut->GetASCII(paramName.c_str());
         toplevel->setText(1, QString::fromLatin1(shortcut.c_str()));
         // get the elements of the subgroups
         std::vector<std::pair<std::string,std::string> > items = h->GetASCIIMap();
@@ -418,7 +421,7 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
     }
 }
 
-void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
+void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench, QTreeWidgetItem *item)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Workbench");
     const char* subgroup = (type == Toolbar ? "Toolbar" : "Toolboxbar");
@@ -430,6 +433,8 @@ void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
     CommandManager& rMgr = Application::Instance->commandManager();
     for (int i=0; i<ui->toolbarTreeWidget->topLevelItemCount(); i++) {
         QTreeWidgetItem* toplevel = ui->toolbarTreeWidget->topLevelItem(i);
+        if (item && toplevel != item)
+            continue;
         QString groupName = toplevel->data(0, Qt::UserRole).toString();
         QString toolbarName = toplevel->text(0);
 
@@ -441,6 +446,7 @@ void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
         QString shortcut = toplevel->text(1);
         std::string cmdName = ToolbarMenuAction::paramName(
                 groupName.toLatin1().constData(), workbench.constData());
+        PieMenu::setEnabled(cmdName.c_str(), toplevel->checkState(2)==Qt::Checked);
         if (shortcut.isEmpty())
             hShortcut->RemoveASCII(cmdName.c_str());
         else
@@ -471,7 +477,8 @@ void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
         }
     }
 
-    ToolbarMenuAction::populate();
+    if (!item)
+        ToolbarMenuAction::populate();
 }
 
 /** Adds a new action */
@@ -640,6 +647,7 @@ void DlgCustomToolbars::on_newButton_clicked()
         item->setText(0, text);
         item->setData(0, Qt::UserRole, id);
         item->setCheckState(0, Qt::Checked);
+        item->setCheckState(2, Qt::Checked);
         item->setExpanded(true);
         item->setSelected(true);
         ui->toolbarTreeWidget->setCurrentItem(item);
@@ -713,6 +721,10 @@ void DlgCustomToolbars::on_editShortcut_textChanged(const QString& sc)
 
 void DlgCustomToolbars::on_toolbarTreeWidget_itemChanged(QTreeWidgetItem *item, int)
 {
+    if (item && !item->parent()) {
+        QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
+        exportCustomToolbars(data.toString().toLatin1(), item);
+    }
     QString id = item->data(0, Qt::UserRole).toString();
     if (!checkWorkbench(&id))
         return;

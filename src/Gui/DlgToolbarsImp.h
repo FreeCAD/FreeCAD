@@ -85,7 +85,7 @@ protected:
 
 private:
     void importCustomToolbars(const QByteArray&);
-    void exportCustomToolbars(const QByteArray&);
+    void exportCustomToolbars(const QByteArray&, QTreeWidgetItem *item=nullptr);
 
 protected Q_SLOTS:
     void onCommandActivated(const QByteArray &);

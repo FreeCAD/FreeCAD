@@ -65,6 +65,9 @@ public:
     static QAction *exec(QMenu *menu, const QPoint &pt,
             const char *param=0, bool forwardKeyPress=false);
 
+    static bool isEnabled(const char *name);
+    static void setEnabled(const char *name, bool enabled=true);
+
     int radius() const;
     void setRadius(int radius) const;
 

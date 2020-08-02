@@ -79,7 +79,6 @@ public:
     QTimer timer;
     QMenu *menu = nullptr;
     QAction *action = nullptr;
-    ParameterGrp::handle hGrp;
     std::string param;
 
     QPropertyAnimation *animator=nullptr;
@@ -104,6 +103,15 @@ public:
             triggerRadius = 0;
         else
             triggerRadius *= triggerRadius;
+    }
+
+    static ParameterGrp::handle getParameterGroup()
+    {
+        static ParameterGrp::handle hGrp;
+        if (!hGrp)
+            hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/PieMenu");
+        return hGrp;
     }
 
     void init()
@@ -137,9 +145,7 @@ public:
                 &master, SLOT(onStateChanged()));
 
         if (param.size()) {
-            hGrp = App::GetApplication().GetParameterGroupByPath(
-                    "User parameter:BaseApp/Preferences/PieMenu");
-            offset = checkOffset(hGrp->GetInt(param.c_str(), 0));
+            offset = checkOffset(getParameterGroup()->GetInt(param.c_str(), 0));
         }
 
         updateGeometries();
@@ -205,17 +211,12 @@ public:
 
     void enablePieMenu(bool enable=true)
     {
-        if (hGrp) {
+        if (param.size()) {
             if (!enable)
-                hGrp->SetInt(param.c_str(), -1);
+                getParameterGroup()->SetInt(param.c_str(), -1);
             else
-                hGrp->SetInt(param.c_str(), (int)offset);
+                getParameterGroup()->SetInt(param.c_str(), (int)offset);
         }
-    }
-
-    bool isPieMenuEnabled()
-    {
-        return !hGrp || hGrp->GetInt(param.c_str(), 0) >= 0;
     }
 
     PieButton *addButton(const QString &title, const QIcon &icon)
@@ -365,8 +366,8 @@ public:
         if (endOffset == offset)
             return;
 
-        if (hGrp)
-            hGrp->SetInt(param.c_str(), (int)endOffset);
+        if (param.size())
+            getParameterGroup()->SetInt(param.c_str(), (int)endOffset);
 
         if (std::abs(offset-endOffset) < 0.01 ||  duration <= 0) {
             offset = endOffset;
@@ -733,6 +734,24 @@ void PieMenu::onTriggered(QAction *action)
     hide();
 }
 
+bool PieMenu::isEnabled(const char *name)
+{
+    if (!name || !name[0])
+        return false;
+    return Private::getParameterGroup()->GetInt(name, 0) >= 0;
+}
+
+void PieMenu::setEnabled(const char *name, bool enabled)
+{
+    if (!name || !name[0])
+        return;
+    int val = Private::getParameterGroup()->GetInt(name, 0);
+    if (enabled && val < 0)
+        Private::getParameterGroup()->RemoveInt(name);
+    else if (!enabled && val >= 0)
+        Private::getParameterGroup()->SetInt(name, -1);
+}
+
 QAction *PieMenu::exec(QMenu *menu, const QPoint &pt, const char *name, bool forwardKeyPress)
 {
     PieMenu pmenu(menu, name, getMainWindow());
@@ -740,7 +759,7 @@ QAction *PieMenu::exec(QMenu *menu, const QPoint &pt, const char *name, bool for
     if (pmenu.pimpl->buttons.empty())
         return nullptr;
 
-    if (!pmenu.pimpl->isPieMenuEnabled()) {
+    if (!isEnabled(pmenu.pimpl->param.c_str())) {
         QAction *actionPie = new QAction(tr("Show pie menu"), menu);
         const auto &actions = menu->actions();
         if (actions.isEmpty())
