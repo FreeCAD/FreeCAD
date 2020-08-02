@@ -111,6 +111,7 @@ SUPPRESS_TOOL_CHANGE=0
 ASSUME_FIRST_TOOL = True
 
 CENTER_ORIGIN = False
+SPINDLE_CONTROL = False
 
 # to distinguish python built-in open function from the one declared below
 if open.__module__ in ['__builtin__','io']:
