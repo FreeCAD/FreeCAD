@@ -39,6 +39,11 @@
       <translation>Distance maximale avant le troncature de la jointure à onglet</translation>
     </message>
     <message>
+      <location filename="PathProfileEdges.py" line="56"/>
+      <source>The base geometry of this toolpath</source>
+      <translation>La géométrie de base du parcours de l'outil</translation>
+    </message>
+    <message>
       <location filename="PathProfileEdges.py" line="98"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
       <translation>Surépaisseur par rapport au profil final - valable pour une ébauche</translation>
@@ -237,11 +242,6 @@
       <location filename="PathPocketBase.py" line="61"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
       <translation>Décalage supplémentaire à appliquer à l’opération. Direction est opération dépendante.</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="55"/>
-      <source>The library to use to generate the path</source>
-      <translation>La bibliothèque à utiliser pour générer la trajectoire</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="78"/>
@@ -669,9 +669,9 @@
       <translation type="unfinished">The output location for the probe data to be written</translation>
     </message>
     <message>
-      <location filename="PathProfileEdges.py" line="56"/>
-      <source>The base geometry of this toolpath</source>
-      <translation>La géométrie de base du parcours de l'outil</translation>
+      <location filename="PathPocket.py" line="55"/>
+      <source>The library to use to generate the path</source>
+      <translation>La bibliothèque à utiliser pour générer la trajectoire</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="47"/>
@@ -1198,14 +1198,14 @@
       <translation>Angle d'arête de coupe invalide %.2f, doit être &gt;0° et &lt;=180°</translation>
     </message>
     <message>
-      <location filename="PathUtils.py" line="767"/>
-      <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
-      <translation>Angle d'arrête tranchante (%.2f) cause une longueur négative de la pointe de l'outil</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathUtils.py" line="808"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
       <translation>Angle de coupe non valable Angle %.2f, doit être &gt;0 ° et &lt;=180 °</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="767"/>
+      <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
+      <translation>Angle d'arrête tranchante (%.2f) cause une longueur négative de la pointe de l'outil</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="153"/>
@@ -1413,16 +1413,6 @@
   <context>
     <name>PathFace</name>
     <message>
-      <location filename="PathMillFace.py" line="350"/>
-      <source>Face</source>
-      <translation>Face</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathMillFaceGui.py" line="44"/>
-      <source>Create a Facing Operation from a model or face</source>
-      <translation>Créer une opération de dressage à partir d’un modèle ou d'une face</translation>
-    </message>
-    <message>
       <location filename="PathMillFace.py" line="171"/>
       <source>Generating toolpath with libarea offsets.
 </source>
@@ -1433,6 +1423,16 @@
       <location filename="PathMillFace.py" line="305"/>
       <source>Pick Start Point</source>
       <translation>Sélectionner le point de départ</translation>
+    </message>
+    <message>
+      <location filename="PathMillFace.py" line="350"/>
+      <source>Face</source>
+      <translation>Face</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathMillFaceGui.py" line="44"/>
+      <source>Create a Facing Operation from a model or face</source>
+      <translation>Créer une opération de dressage à partir d’un modèle ou d'une face</translation>
     </message>
   </context>
   <context>
@@ -1499,11 +1499,6 @@
       <translation>Direction des coupes circulaires, Sens des aiguilles d’une montre (CW), ou Sens inverse des aiguille d’une montre (CCW)</translation>
     </message>
     <message>
-      <location filename="PathHelix.py" line="52"/>
-      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
-      <translation>La direction des découpes circulaires, dans le sens horaire (CW), ou anti horaire (CCW)</translation>
-    </message>
-    <message>
       <location filename="PathHelix.py" line="55"/>
       <source>Start cutting from the inside or outside</source>
       <translation>Commencer l'usinage de l’intérieur ou l’extérieur</translation>
@@ -1527,6 +1522,11 @@
       <location filename="PathHelixGui.py" line="83"/>
       <source>Creates a Path Helix object from a features of a base object</source>
       <translation>Crée un objet percours Helix à partir d'une fonction de l'objet de base</translation>
+    </message>
+    <message>
+      <location filename="PathHelix.py" line="52"/>
+      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
+      <translation>La direction des découpes circulaires, dans le sens horaire (CW), ou anti horaire (CCW)</translation>
     </message>
   </context>
   <context>
@@ -1951,12 +1951,12 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="46"/>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
       <source>Profile</source>
       <translation>Profil</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="46"/>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
       <translation type="unfinished">Profile entire model, selected face(s) or selected edge(s)</translation>
     </message>
@@ -2021,6 +2021,11 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <translation type="unfinished">For open edges, verify Final Depth for this operation.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
+      <source>Profile based on face or faces</source>
+      <translation>Profil basé sur une ou des faces</translation>
+    </message>
+    <message>
       <location filename="PathProfileEdges.py" line="415"/>
       <source>Edge Profile</source>
       <translation>Profil d'arête</translation>
@@ -2039,11 +2044,6 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <location filename="PathProfile.py" line="429"/>
       <source>Face Profile</source>
       <translation>Contour de face</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
-      <source>Profile based on face or faces</source>
-      <translation>Profil basé sur une ou des faces</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="289"/>
@@ -2434,14 +2434,6 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
     </message>
   </context>
   <context>
-    <name>PathSuface</name>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="839"/>
-      <source>No scan data to convert to Gcode.</source>
-      <translation type="unfinished">No scan data to convert to Gcode.</translation>
-    </message>
-  </context>
-  <context>
     <name>PathSurface</name>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2625"/>
@@ -2562,6 +2554,11 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <location filename="../../../PathScripts/PathSurface.py" line="819"/>
       <source>No clearing path geometry returned.</source>
       <translation type="unfinished">No clearing path geometry returned.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="839"/>
+      <source>No scan data to convert to Gcode.</source>
+      <translation type="unfinished">No scan data to convert to Gcode.</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="257"/>
@@ -3043,6 +3040,16 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
   <context>
     <name>Path_Dressup</name>
     <message>
+      <location filename="PathDressup.py" line="98"/>
+      <source>Dress-up</source>
+      <translation>Trajectoire additionnelle</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="100"/>
+      <source>Creates a Path Dess-up object from a selected path</source>
+      <translation>Crée un objet trajectoire additionnel à partir d'un parcours sélectionné</translation>
+    </message>
+    <message>
       <location filename="PathDressup.py" line="110"/>
       <source>Please select one path object
 </source>
@@ -3060,16 +3067,6 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="325"/>
       <source>Please select a Path object</source>
       <translation>Veuillez sélectionner un object parcours</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="98"/>
-      <source>Dress-up</source>
-      <translation>Trajectoire additionnelle</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="100"/>
-      <source>Creates a Path Dess-up object from a selected path</source>
-      <translation>Crée un objet trajectoire additionnel à partir d'un parcours sélectionné</translation>
     </message>
   </context>
   <context>
@@ -3659,6 +3656,13 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
   <context>
     <name>Path_Sanity</name>
     <message>
+      <location filename="PathSanity.py" line="50"/>
+      <source>It appears the machine limits haven't been set.  Not able to check path extents.
+</source>
+      <translation>Il semble que les limites de la machine n’aient pas été fixées.  Impossible  de vérifier les extensions du parcours.
+</translation>
+    </message>
+    <message>
       <location filename="PathSanity.py" line="79"/>
       <source>Check the Path project for common errors</source>
       <translation>Vérifier le projet de parcours pour les erreurs courantes</translation>
@@ -3698,13 +3702,6 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <source>No issues detected, {} has passed basic sanity check.</source>
       <translation>Aucun problème détecté, {} a passé une vérification basique.</translation>
     </message>
-    <message>
-      <location filename="PathSanity.py" line="50"/>
-      <source>It appears the machine limits haven't been set.  Not able to check path extents.
-</source>
-      <translation>Il semble que les limites de la machine n’aient pas été fixées.  Impossible  de vérifier les extensions du parcours.
-</translation>
-    </message>
   </context>
   <context>
     <name>Path_SelectLoop</name>
@@ -3740,13 +3737,6 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
   <context>
     <name>Path_SimpleCopy</name>
     <message>
-      <location filename="PathSimpleCopy.py" line="59"/>
-      <source>Please select exactly one path object
-</source>
-      <translation>Veuillez sélectionner seulement un parcours
-</translation>
-    </message>
-    <message>
       <location filename="PathSimpleCopy.py" line="62"/>
       <source>Simple Copy</source>
       <translation>Copie simple</translation>
@@ -3760,6 +3750,13 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <location filename="../../../PathScripts/PathSimpleCopy.py" line="61"/>
       <source>Please select exactly one path object</source>
       <translation>Veuillez sélectionner exactement un objet trajectoire</translation>
+    </message>
+    <message>
+      <location filename="PathSimpleCopy.py" line="59"/>
+      <source>Please select exactly one path object
+</source>
+      <translation>Veuillez sélectionner seulement un parcours
+</translation>
     </message>
   </context>
   <context>
@@ -3791,11 +3788,6 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
   <context>
     <name>Path_ToolController</name>
     <message>
-      <location filename="PathToolController.py" line="132"/>
-      <source>Tool Number to Load</source>
-      <translation>Numéro d'outil à charger</translation>
-    </message>
-    <message>
       <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
       <translation>Ajouter un contrôleur d’outil à la tâche</translation>
@@ -3804,6 +3796,11 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <location filename="../../../PathScripts/PathToolControllerGui.py" line="123"/>
       <source>Add Tool Controller</source>
       <translation>Ajouter un contrôleur d'outil</translation>
+    </message>
+    <message>
+      <location filename="PathToolController.py" line="132"/>
+      <source>Tool Number to Load</source>
+      <translation>Numéro d'outil à charger</translation>
     </message>
   </context>
   <context>
@@ -3876,44 +3873,9 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <translation type="unfinished">Save toolbit library</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
-      <source>Tooltable JSON (*.json)</source>
-      <translation>Table d'outils JSON (*.json)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
-      <source>HeeksCAD tooltable (*.tooltable)</source>
-      <translation>Table d'outils HeeksCAD (*.tooltable)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
-      <source>LinuxCNC tooltable (*.tbl)</source>
-      <translation>Table d'outils LinuxCNC (*.tbl)</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
       <source>Open tooltable</source>
       <translation>Ouvre la table des outils</translation>
-    </message>
-    <message>
-      <location filename="TooltableEditor.py" line="610"/>
-      <source>Save tooltable</source>
-      <translation>Enregistrer la table d'outils</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
-      <source>Add New Tool Table</source>
-      <translation>Ajouter une nouvelle table d'outils</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
-      <source>Delete Selected Tool Table</source>
-      <translation>Supprimer la table des outils sélectionnée</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
-      <source>Rename Selected Tool Table</source>
-      <translation>Renommer la table des outils sélectionnée</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="388"/>
@@ -4127,6 +4089,11 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
     </message>
     <message>
       <location filename="TooltableEditor.py" line="610"/>
+      <source>Save tooltable</source>
+      <translation>Enregistrer la table d'outils</translation>
+    </message>
+    <message>
+      <location filename="TooltableEditor.py" line="610"/>
       <source>Tooltable XML (*.xml)</source>
       <translation>Table d'outils XML (*.xml)</translation>
     </message>
@@ -4139,6 +4106,36 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <location filename="TooltableEditor.py" line="653"/>
       <source>Object doesn't have a tooltable property</source>
       <translation>L'objet ne possède pas de propriété d'outil pour être mis dans la table</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
+      <source>Add New Tool Table</source>
+      <translation>Ajouter une nouvelle table d'outils</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
+      <source>Delete Selected Tool Table</source>
+      <translation>Supprimer la table des outils sélectionnée</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
+      <source>Rename Selected Tool Table</source>
+      <translation>Renommer la table des outils sélectionnée</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
+      <source>Tooltable JSON (*.json)</source>
+      <translation>Table d'outils JSON (*.json)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
+      <source>HeeksCAD tooltable (*.tooltable)</source>
+      <translation>Table d'outils HeeksCAD (*.tooltable)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
+      <source>LinuxCNC tooltable (*.tbl)</source>
+      <translation>Table d'outils LinuxCNC (*.tbl)</translation>
     </message>
     <message>
       <location filename="PathToolLibraryManager.py" line="514"/>
@@ -4157,6 +4154,14 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <location filename="../../../PathScripts/PathWaterlineGui.py" line="143"/>
       <source>Create a Waterline Operation from a model</source>
       <translation type="unfinished">Create a Waterline Operation from a model</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathSuface</name>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="839"/>
+      <source>No scan data to convert to Gcode.</source>
+      <translation type="unfinished">No scan data to convert to Gcode.</translation>
     </message>
   </context>
   <context>

@@ -1455,48 +1455,48 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="97"/>
+      <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
       <translation>Automàtica</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Adaptive</source>
       <translation>Adaptable</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="100"/>
+      <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Frontal</source>
       <translation>Frontal</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="102"/>
+      <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal Quad</source>
       <translation>Quadrilàter frontal</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Parallelograms</source>
       <translation>Paral·lelograms</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="174"/>
-      <location filename="../../RemeshGmsh.cpp" line="230"/>
+      <location filename="../../RemeshGmsh.cpp" line="175"/>
+      <location filename="../../RemeshGmsh.cpp" line="231"/>
       <source>Time:</source>
       <translation>Temps:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="219"/>
+      <location filename="../../RemeshGmsh.cpp" line="220"/>
       <source>Running gmsh...</source>
       <translation>S'està executant gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="241"/>
+      <location filename="../../RemeshGmsh.cpp" line="242"/>
       <source>Failed to start</source>
       <translation>No s'ha pogut iniciar</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="248"/>
+      <location filename="../../RemeshGmsh.cpp" line="249"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
@@ -1527,7 +1527,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="731"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>Finalitza</translation>
     </message>

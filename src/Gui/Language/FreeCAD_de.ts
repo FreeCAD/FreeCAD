@@ -2256,6 +2256,14 @@ von der Python-Konsole in das Berichtsfenster umgeleitet</translation>
       <source>Include a timecode for each entry</source>
       <translation>Zeitcode für jeden Eintrag einfügen</translation>
     </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation>Protokollmeldungen werden aufgezeichnet</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation type="unfinished">Record normal messages</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgRunExternal</name>
@@ -3275,14 +3283,6 @@ Drehteller: das Teil wird um die z-Achse gedreht.</translation>
       <translation>Trackball</translation>
     </message>
     <message>
-      <source>New document camera orientation</source>
-      <translation>Kameraausrichtung für neue Dokumente</translation>
-    </message>
-    <message>
-      <source>Camera orientation for new documents</source>
-      <translation>Kameraausrichtung für neue Dokumente</translation>
-    </message>
-    <message>
       <source>New document scale</source>
       <translation>Neue Dokumentskala</translation>
     </message>
@@ -3389,6 +3389,14 @@ Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation
     <message>
       <source>Custom</source>
       <translation>Benutzerdefiniert</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation>Standard-Kameraausrichtung</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation>Standard-Kameraorientierung für neue Dokumente oder bei Auswahl der Home-Ansicht</translation>
     </message>
   </context>
   <context>
@@ -4439,18 +4447,6 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <source>Logging</source>
-      <translation>Protokoll-Meldungen</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Warnung</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Fehlermeldungen</translation>
-    </message>
-    <message>
       <source>Options</source>
       <translation>Optionen</translation>
     </message>
@@ -4481,6 +4477,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Plain Text Files</source>
       <translation>Reine Textdateien</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation type="unfinished">Display message types</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation type="unfinished">Normal messages</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation type="unfinished">Log messages</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation type="unfinished">Warnings</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation type="unfinished">Errors</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation type="unfinished">Show report view on</translation>
     </message>
   </context>
   <context>
@@ -8502,6 +8522,21 @@ Wählen Sie 'Abbrechen' um abzubrechen</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardansicht</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation>Home</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation>Als Standardansicht festlegen</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Standard-View</source>
@@ -9098,16 +9133,12 @@ Sind Sie sicher, dass Sie fortfahren möchten?
 </translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Diese Elemente sind zum Löschen ausgewählt, aber nicht im aktiven Dokument. 
-
-</translation>
-    </message>
-    <message>
       <source>Object dependencies</source>
       <translation>Objektabhängigkeiten</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>Diese Elemente sind zum Löschen ausgewählt, aber nicht im aktiven Dokument vorhanden.</translation>
     </message>
   </context>
   <context>

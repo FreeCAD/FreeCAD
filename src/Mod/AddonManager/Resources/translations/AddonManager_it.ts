@@ -239,12 +239,12 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="285"/>
       <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
-      <translation>Qualcosa è andato storto con il Git Macro Retrieval, forse l'eseguibile Git non è nel percorso o tracciato</translation>
+      <translation>Qualcosa è andato storto con il recupero della macro da Git, forse l'eseguibile Git non è nel percorso</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="455"/>
       <source>This addon is marked as Python 2 Only</source>
-      <translation>Questo componente aggiuntivo è contrassegnato come solo Python 2</translation>
+      <translation>Questo componente aggiuntivo è contrassegnato come solo con Python 2</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="456"/>
@@ -254,7 +254,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="625"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
-      <translation>L'utente ha richiesto l'aggiornamento di un banco di lavoro Python 2 su un sistema con Python 3 - </translation>
+      <translation>L'utente ha richiesto l'aggiornamento di un ambiente di lavoro in Python 2 su un sistema che esegue Python 3 - </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="653"/>
@@ -264,7 +264,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="659"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested installing a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>L'utente ha richiesto l'installazione di un ambiente di lavoro in Python 2 su un sistema che esegue Python 3 - </translation>
     </message>
   </context>
   <context>
@@ -364,13 +364,6 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
       <translation>Controlla automaticamente gli aggiornamenti all'avvio (richiede GitPython)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="42"/>
-      <source>You can use this window to specify additional addon repositories
-sto be scanned for available addons</source>
-      <translation>È possibile utilizzare questa finestra per specificare ulteriori repository addon
-da scansionare per gli addons disponibili</translation>
-    </message>
-    <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
       <translation>Proxy </translation>
@@ -399,6 +392,13 @@ da scansionare per gli addons disponibili</translation>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the Addon Manager</source>
       <translation>Chiude Addon manager</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="42"/>
+      <source>You can use this window to specify additional addon repositories
+to be scanned for available addons</source>
+      <translation>È possibile utilizzare questa finestra per specificare ulteriori repository di addon
+da scansionare per gli addons disponibili</translation>
     </message>
   </context>
   <context>

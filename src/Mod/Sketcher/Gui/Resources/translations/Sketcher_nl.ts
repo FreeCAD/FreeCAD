@@ -1290,17 +1290,17 @@
   <context>
     <name>CmdSketcherDeleteAllConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1999"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1997"/>
       <source>Sketcher</source>
       <translation>Schetsen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2000"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1998"/>
       <source>Delete All Constraints</source>
       <translation>Verwijder alle beperkingen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2001"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1999"/>
       <source>Deletes all the constraints</source>
       <translation>Verwijdert alle beperkingen</translation>
     </message>
@@ -1308,17 +1308,17 @@
   <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1936"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1934"/>
       <source>Sketcher</source>
       <translation>Schetsen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1937"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1935"/>
       <source>Delete All Geometry</source>
       <translation>Verwijder alle geometrie</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1938"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1936"/>
       <source>Deletes all the geometry and constraints but external geometry</source>
       <translation>Verwijdert alle geometrie en beperkingen behalve de externe geometrie</translation>
     </message>
@@ -1541,17 +1541,17 @@
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1797"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1795"/>
       <source>Sketcher</source>
       <translation>Schetsen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1796"/>
       <source>Rectangular Array</source>
       <translation>Rechthoekige reeks</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1799"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1797"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
       <translation>Maakt een rechthoekig reekspatroon van de geometrie met als referentie het laatst geselecteerde punt</translation>
     </message>
@@ -1917,82 +1917,82 @@
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="370"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="372"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
       <translation>Autoconstrain error: Defecte schets tijdens aanleggen van coincident constraint.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="449"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="453"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
       <translation>Autoconstrain error: Defecte schets tijdens aanleggen van vertikaal/horizontaal constraint.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="644"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="650"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
       <translation>Autoconstrain error: Defecte schets tijdens aanleggen van gelijkheids-constraint.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="698"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="704"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
       <translation>Autoconstrain error: Defecte schets zonder constraints.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="735"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="741"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
       <translation>Autoconstrain error: Defecte schets tijdens aanleggen van vertikaal/horizontaal constraints.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="757"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="763"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
       <translation>Autoconstrain error: Defecte schets tijdens aanleggen van punt-op-punt constraints.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="785"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="791"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
       <translation>Autoconstrain error: Defecte schets tijdens aanleggen van gelijkheids-constraint.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1690"/>
+      <location filename="../../../App/SketchObject.cpp" line="1694"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Niet in staat om het snijpunt van de bochten te raden. Probeer een samenvallende beperking toe te voegen tussen de vertexen van de curven die u wilt afronden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5192"/>
+      <location filename="../../../App/SketchObject.cpp" line="5205"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
       <translation>Deze versie van OCE/OCC ondersteunt de knoopbewerking niet. U hebt 6.9.0 of hoger nodig.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5196"/>
+      <location filename="../../../App/SketchObject.cpp" line="5209"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-spline Geometrie Index (GeoID) buiten bereik.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5199"/>
+      <location filename="../../../App/SketchObject.cpp" line="5212"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>U vraagt geen verandering in de knobbelmultipliciteit.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5204"/>
+      <location filename="../../../App/SketchObject.cpp" line="5217"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>De Geometrie Index (Geold) aangeleverd is geen B-spline lijn.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5211"/>
+      <location filename="../../../App/SketchObject.cpp" line="5224"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>De knoop-index is buiten de grenzen. Merk op dat volgens de OCC-notatie de eerste knoop index 1 heeft en niet nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5218"/>
+      <location filename="../../../App/SketchObject.cpp" line="5231"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>De veelvouds-getal mag niet groter zijn dan het aantal graden van de B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5221"/>
+      <location filename="../../../App/SketchObject.cpp" line="5234"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>De multipliciteit kan niet lager zijn dan nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5234"/>
+      <location filename="../../../App/SketchObject.cpp" line="5247"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC is niet in staat om de multipliciteit binnen de maximale tolerantie te verlagen.</translation>
     </message>
@@ -2185,9 +2185,9 @@
       <location filename="../../CommandSketcherTools.cpp" line="1285"/>
       <location filename="../../CommandSketcherTools.cpp" line="1293"/>
       <location filename="../../CommandSketcherTools.cpp" line="1352"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1816"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1824"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1886"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1814"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1822"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1884"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="129"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="153"/>
@@ -2876,8 +2876,8 @@ Geaccepteerde combinaties: twee curven; een eindpunt en een curve; twee eindpunt
       <location filename="../../CommandSketcherTools.cpp" line="939"/>
       <location filename="../../CommandSketcherTools.cpp" line="1286"/>
       <location filename="../../CommandSketcherTools.cpp" line="1294"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1817"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1825"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1815"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1823"/>
       <source>Select elements from a single sketch.</source>
       <translation>Selecteer elementen uit één schets.</translation>
     </message>
@@ -2903,27 +2903,27 @@ Geaccepteerde combinaties: twee curven; een eindpunt en een curve; twee eindpunt
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1353"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1887"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1885"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Een kopie vereist minstens één geselecteerd niet-extern geometrisch element</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1950"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1948"/>
       <source>Delete All Geometry</source>
       <translation>Verwijder alle geometrie</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1951"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1949"/>
       <source>Are you really sure you want to delete all the geometry and constraints?</source>
       <translation>Weet u zeker dat u alle geometrie en beperkingen wilt verwijderen?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2013"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2011"/>
       <source>Delete All Constraints</source>
       <translation>Verwijder alle beperkingen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2014"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2012"/>
       <source>Are you really sure you want to delete all the constraints?</source>
       <translation>Weet u zeker dat u alle beperkingen wilt verwijderen?</translation>
     </message>
@@ -4221,7 +4221,7 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="145"/>
       <source>Rendering order (global) :</source>
-      <translation type="unfinished">Rendering order (global) :</translation>
+      <translation>Rendering volgorde (globaal):</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="164"/>
@@ -4329,104 +4329,104 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5611"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5615"/>
       <source>Edit sketch</source>
       <translation>Schets bewerken</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5625"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5629"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Een dialoog is al geopend in het taakvenster</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5626"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5630"/>
       <source>Do you want to close this dialog?</source>
       <translation>Wilt u dit dialoogvenster sluiten?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5640"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5644"/>
       <source>Invalid sketch</source>
       <translation>Ongeldige schets</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5641"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5645"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Wilt u het schetsvalidatiegereedschap openen?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5642"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5646"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>De schets is ongeldig en kan niet worden bewerkt.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5824"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5828"/>
       <source>Please remove the following constraint:</source>
       <translation>Gelieve de volgende beperking te verwijderen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5826"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5830"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Gelieve minstens één van de volgende beperkingen te verwijderen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5842"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5846"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Gelieve de volgende overbodige beperking te verwijderen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5844"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5848"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Gelieve de volgende overbodige beperkingen te verwijderen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5863"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5867"/>
       <source>Empty sketch</source>
       <translation>Lege schets</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5870"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5874"/>
       <source>Over-constrained sketch </source>
       <translation>Overbeperkte schets </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5871"/>
-      <location filename="../../ViewProviderSketch.cpp" line="5878"/>
-      <location filename="../../ViewProviderSketch.cpp" line="5886"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5875"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5882"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5890"/>
       <source>(click to select)</source>
       <translation>(Klik om te selecteren)</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5877"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5881"/>
       <source>Sketch contains conflicting constraints </source>
       <translation>Schets bevat conflicterende beperkingen </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5885"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5889"/>
       <source>Sketch contains redundant constraints </source>
       <translation>Schets bevat overbodige beperkingen </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5896"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5900"/>
       <source>Fully constrained sketch</source>
       <translation>Volledig beperkte schets</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5901"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5905"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom</source>
       <translation>Onderbeperkte schets met &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 graad&lt;/span&gt;&lt;/a&gt; van vrijheid</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5903"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5907"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom</source>
       <translation>Onderbeperkte schets met &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 graad&lt;/span&gt;&lt;/a&gt; van vrijheid</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5906"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5910"/>
       <source>Solved in %1 sec</source>
       <translation>Opgelost in %1 s</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5909"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5913"/>
       <source>Unsolved (%1 sec)</source>
       <translation>Onopgelost (%1 s)</translation>
     </message>
@@ -4488,8 +4488,8 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1609"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1610"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1607"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1608"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Maakt een kloon van de geometrie en neemt als referentie het laatst geselecteerde punt</translation>
     </message>
@@ -4497,17 +4497,17 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
   <context>
     <name>Sketcher_CompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1608"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1606"/>
       <source>Clone</source>
       <translation>Kopieer</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1612"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1610"/>
       <source>Copy</source>
       <translation>Kopie</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1616"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1614"/>
       <source>Move</source>
       <translation>Verplaatsen</translation>
     </message>
@@ -4533,8 +4533,8 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1613"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1614"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1611"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1612"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Maakt een eenvoudige kopie van de geometrie met als referentie het laatst geselecteerde punt</translation>
     </message>
@@ -4776,8 +4776,8 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
   <context>
     <name>Sketcher_Move</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1617"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1618"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1615"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1616"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Verplaatst de geometrie met als referentie het laatst gekozen punt</translation>
     </message>

@@ -2253,6 +2253,14 @@ from Python console to Report view panel</translation>
       <source>Include a timecode for each entry</source>
       <translation type="unfinished">Include a timecode for each entry</translation>
     </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation type="unfinished">Normal messages will be recorded</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation type="unfinished">Record normal messages</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgRunExternal</name>
@@ -3277,14 +3285,6 @@ Turntable: the part will be rotated around the z-axis.</translation>
       <translation>Trackball</translation>
     </message>
     <message>
-      <source>New document camera orientation</source>
-      <translation type="unfinished">New document camera orientation</translation>
-    </message>
-    <message>
-      <source>Camera orientation for new documents</source>
-      <translation type="unfinished">Camera orientation for new documents</translation>
-    </message>
-    <message>
       <source>New document scale</source>
       <translation type="unfinished">New document scale</translation>
     </message>
@@ -3391,6 +3391,14 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Custom</source>
       <translation>Egyéni</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation type="unfinished">Default camera orientation</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
     </message>
   </context>
   <context>
@@ -4441,18 +4449,6 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <source>Logging</source>
-      <translation>Naplózás</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Riasztás</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Hiba</translation>
-    </message>
-    <message>
       <source>Options</source>
       <translation>Beállítások</translation>
     </message>
@@ -4483,6 +4479,30 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <message>
       <source>Plain Text Files</source>
       <translation>Egyszerű szöveges fájlok</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation type="unfinished">Display message types</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation type="unfinished">Normal messages</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation type="unfinished">Log messages</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation type="unfinished">Warnings</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation type="unfinished">Errors</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation type="unfinished">Show report view on</translation>
     </message>
   </context>
   <context>
@@ -8504,6 +8524,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standard-nézet</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation type="unfinished">Home</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation type="unfinished">Set to default home view</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Standard-View</source>
@@ -9100,16 +9135,12 @@ Are you sure you want to continue?
 </translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document. 
-
-</translation>
-    </message>
-    <message>
       <source>Object dependencies</source>
       <translation>Objektumfüggőségek</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
   </context>
   <context>

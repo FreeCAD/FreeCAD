@@ -2,44 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="pl" sourcelanguage="en">
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="110"/>
-      <source>The objects that are part of this layer</source>
-      <translation>Obiekty na tej warstwie</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="147"/>
-      <source>If on, the child objects of this layer will match its visual aspects</source>
-      <translation>Jeśli włączone, obiekty podrzędne tej warstwy będą dopasowane do jej aspektów wizualnych</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="156"/>
-      <source>The line color of the children of this layer</source>
-      <translation type="unfinished">The line color of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="162"/>
-      <source>The shape color of the children of this layer</source>
-      <translation>Kolor kształtu dzieci tej warstwy</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="168"/>
-      <source>The line width of the children of this layer</source>
-      <translation type="unfinished">The line width of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="174"/>
-      <source>The draw style of the children of this layer</source>
-      <translation type="unfinished">The draw style of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="180"/>
-      <source>The transparency of the children of this layer</source>
-      <translation type="unfinished">The transparency of the children of this layer</translation>
-    </message>
-  </context>
-  <context>
     <name>Dialog</name>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
@@ -134,7 +96,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="284"/>
       <source>Line width</source>
-      <translation>Szerekość linii</translation>
+      <translation type="unfinished">Line width</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="294"/>
@@ -219,7 +181,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation type="unfinished">A multiplier factor that affects the size of texts and markers</translation>
+      <translation>Mnożnik mający wpływ na rozmiar tekstów i znaczników</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="249"/>
@@ -229,22 +191,22 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="242"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation type="unfinished">Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</translation>
+      <translation>Określ poprawną jednostkę długości, taką jak: mm, m, cal, stopa, aby wyświetlić wartość wymiaru w tej jednostce</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="259"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation type="unfinished">If it is checked it will show the unit next to the dimension value</translation>
+      <translation>Jeśli jest zaznaczone, to pokaże jednostkę obok wartości wymiaru</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
       <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
-      <translation type="unfinished">The distance that the extension lines are additionally extended beyond the dimension line</translation>
+      <translation>Odległość, którą linie przedłużenia są dodatkowo rozszerzone poza linię wymiarową</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
       <source>The size of the dimension arrows or markers in system units</source>
-      <translation type="unfinished">The size of the dimension arrows or markers in system units</translation>
+      <translation>Rozmiar strzałek lub znaczników wymiaru w jednostkach systemowych</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="361"/>
@@ -259,7 +221,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
       <source>The length of the extension lines</source>
-      <translation type="unfinished">The length of the extension lines</translation>
+      <translation>Długość linii przedłużenia</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="404"/>
@@ -394,7 +356,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="161"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Szyk liniowy</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="186"/>
@@ -514,7 +476,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="152"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Szyk liniowy</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="177"/>
@@ -577,7 +539,7 @@ The number must be at least 1 in each direction.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
       <source>Polar array</source>
-      <translation type="unfinished">Polar array</translation>
+      <translation>Szyk biegunowy</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="57"/>
@@ -638,7 +600,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="161"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Szyk liniowy</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="187"/>
@@ -733,19 +695,6 @@ It must be at least 2.</translation>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
       <translation>Zresetuj punkt</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="83"/>
-      <source>Layer</source>
-      <translation>Warstwa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="84"/>
-      <source>Adds a layer</source>
-      <translation>Dodaj warstwę</translation>
     </message>
   </context>
   <context>
@@ -863,7 +812,7 @@ will be moved to the center of the view</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="152"/>
       <source>Move working plane</source>
-      <translation type="unfinished">Move working plane</translation>
+      <translation>Przesuń płaszczyznę roboczą</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="171"/>
@@ -960,7 +909,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="67"/>
       <source>None</source>
-      <translation>Żaden</translation>
+      <translation>Brak</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="72"/>
@@ -2309,7 +2258,7 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../../DraftGui.py" line="680"/>
       <source>Toggle construction mode</source>
-      <translation>Przełącz tryb budowlany</translation>
+      <translation>Przełącz tryb konstrukcyjny</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="681"/>
@@ -2349,7 +2298,7 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../../DraftGui.py" line="908"/>
       <source>None</source>
-      <translation>Żaden</translation>
+      <translation>Brak</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="598"/>
@@ -2842,12 +2791,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../WorkingPlane.py" line="738"/>
       <source>Top</source>
-      <translation>Góra</translation>
+      <translation>Od góry</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="749"/>
       <source>Front</source>
-      <translation>Przód</translation>
+      <translation>Od przodu</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="760"/>
@@ -2863,21 +2812,6 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <location filename="../../DraftGui.py" line="618"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe. Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe. Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="43"/>
-      <source>No active document. Aborting</source>
-      <translation>Brak aktywnego dokumentu. Przerwanie</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="50"/>
-      <source>Layer</source>
-      <translation>Warstwa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="71"/>
-      <source>Layers</source>
-      <translation>Warstwy</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>
@@ -2923,16 +2857,6 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <location filename="../../DraftGui.py" line="949"/>
       <source>Trim distance</source>
       <translation type="unfinished">Trim distance</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="334"/>
-      <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="341"/>
-      <source>Select contents</source>
-      <translation type="unfinished">Select contents</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>

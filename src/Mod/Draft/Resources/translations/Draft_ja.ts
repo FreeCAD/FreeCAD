@@ -2,44 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="ja" sourcelanguage="en">
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="110"/>
-      <source>The objects that are part of this layer</source>
-      <translation>このレイヤーの一部であるオブジェクト</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="147"/>
-      <source>If on, the child objects of this layer will match its visual aspects</source>
-      <translation>有効になっている場合、このレイヤーの子オブジェクトはその視覚的状態と一致します。</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="156"/>
-      <source>The line color of the children of this layer</source>
-      <translation>このレイヤーの子要素の線の色</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="162"/>
-      <source>The shape color of the children of this layer</source>
-      <translation>このレイヤーの子要素の形状の色</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="168"/>
-      <source>The line width of the children of this layer</source>
-      <translation>このレイヤーの子要素の線の幅</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="174"/>
-      <source>The draw style of the children of this layer</source>
-      <translation>このレイヤーの子要素の描画スタイル</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="180"/>
-      <source>The transparency of the children of this layer</source>
-      <translation>このレイヤーの子要素の透明度</translation>
-    </message>
-  </context>
-  <context>
     <name>Dialog</name>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
@@ -114,7 +76,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
       <source>Decimals</source>
-      <translation type="unfinished">Decimals</translation>
+      <translation>小数点以下の桁数</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="212"/>
@@ -139,7 +101,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="294"/>
       <source>Extension overshoot</source>
-      <translation type="unfinished">Extension overshoot</translation>
+      <translation>寸法補助線の超過量</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="304"/>
@@ -204,67 +166,67 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="26"/>
       <source>The name of your style. Existing style names can be edited.</source>
-      <translation type="unfinished">The name of your style. Existing style names can be edited.</translation>
+      <translation>スタイルの名前です。既存のスタイル名は編集できます。</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="163"/>
       <source>Font size in the system units</source>
-      <translation type="unfinished">Font size in the system units</translation>
+      <translation>システム単位のフォントサイズ</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="136"/>
       <source>Line spacing in system units</source>
-      <translation type="unfinished">Line spacing in system units</translation>
+      <translation>システム単位の行間隔</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation type="unfinished">A multiplier factor that affects the size of texts and markers</translation>
+      <translation>テキストとマーカーのサイズに影響を与える乗算係数</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="249"/>
       <source>The number of decimals to show for dimension values</source>
-      <translation type="unfinished">The number of decimals to show for dimension values</translation>
+      <translation>寸法の値に表示する小数点以下の桁数</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="242"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation type="unfinished">Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</translation>
+      <translation>mm、m、in、ftのような有効な長さの単位を指定して、この単位で寸法値を強制的に表示します。</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="259"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation type="unfinished">If it is checked it will show the unit next to the dimension value</translation>
+      <translation>これにチェックが入っている場合、寸法の値に続いて単位が表示されます。</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
       <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
-      <translation type="unfinished">The distance that the extension lines are additionally extended beyond the dimension line</translation>
+      <translation>寸法補助線が寸法線を超えて延長される距離</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
       <source>The size of the dimension arrows or markers in system units</source>
-      <translation type="unfinished">The size of the dimension arrows or markers in system units</translation>
+      <translation>システム単位における寸法矢印やマーカーのサイズ</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="361"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation type="unfinished">If it is checked it will display the dimension line</translation>
+      <translation>ここにチェックが入っている場合に、寸法線が表示されます</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
       <source>The distance that the dimension line is additionally extended</source>
-      <translation type="unfinished">The distance that the dimension line is additionally extended</translation>
+      <translation>寸法線がさらに延長される距離</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
       <source>The length of the extension lines</source>
-      <translation type="unfinished">The length of the extension lines</translation>
+      <translation>寸法補助線の長さ</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="404"/>
       <source>The type of arrows or markers to use at the end of dimension lines</source>
-      <translation type="unfinished">The type of arrows or markers to use at the end of dimension lines</translation>
+      <translation>寸法線の端点で用いる矢印やマーカーの種類</translation>
     </message>
   </context>
   <context>
@@ -339,8 +301,8 @@ from menu Tools -&gt; Addon Manager</source>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="57"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation type="unfinished">The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</translation>
+      <translation>回転軸が通過する点の座標。
+プロパティ・エディターより軸自身の方向を変更できます。</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="61"/>
@@ -370,7 +332,7 @@ Change the direction of the axis itself in the property editor.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="134"/>
       <source>Reset point</source>
-      <translation type="unfinished">Reset point</translation>
+      <translation>ポイントをリセット</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="146"/>
@@ -443,7 +405,7 @@ It must be at least 2.</source>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="273"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(アイコンのプレースホルダ)</translation>
     </message>
   </context>
   <context>
@@ -519,7 +481,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="177"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(アイコンのプレースホルダ)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="184"/>
@@ -583,8 +545,8 @@ The number must be at least 1 in each direction.</source>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="57"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation type="unfinished">The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</translation>
+      <translation>回転軸が通過する点の座標。
+プロパティ・エディターより軸自身の方向を変更できます。</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="61"/>
@@ -614,7 +576,7 @@ Change the direction of the axis itself in the property editor.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="134"/>
       <source>Reset point</source>
-      <translation type="unfinished">Reset point</translation>
+      <translation>ポイントをリセット</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="146"/>
@@ -669,7 +631,7 @@ It must be at least 2.</source>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="235"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(アイコンのプレースホルダ)</translation>
     </message>
   </context>
   <context>
@@ -733,19 +695,6 @@ It must be at least 2.</source>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
       <translation>ポイントリセット</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="83"/>
-      <source>Layer</source>
-      <translation>レイヤー</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="84"/>
-      <source>Adds a layer</source>
-      <translation>レイヤーを追加</translation>
     </message>
   </context>
   <context>
@@ -818,9 +767,8 @@ view each time a command is started</source>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation type="unfinished">An optional offset to give to the working plane
-above its base position. Use this together with one
-of the buttons above</translation>
+      <translation>基本位置の上に作業平面に与える任意のオフセット。
+上方にあるボタンの1つと一緒にこれを使用します</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="99"/>
@@ -832,9 +780,7 @@ of the buttons above</translation>
       <source>If this is selected, the working plane will be
 centered on the current view when pressing one
 of the buttons above</source>
-      <translation type="unfinished">If this is selected, the working plane will be
-centered on the current view when pressing one
-of the buttons above</translation>
+      <translation>これが選択されている場合、上のボタンから何れかを押したときに、作業平面が現在のビューの中央に配置されます</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="111"/>
@@ -911,7 +857,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="231"/>
       <source>Resets the working plane to its previous position</source>
-      <translation type="unfinished">Resets the working plane to its previous position</translation>
+      <translation>作業平面を以前の位置にリセット</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="234"/>
@@ -1127,7 +1073,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="395"/>
       <source>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</source>
-      <translation>寸法が縦になったときの寸法テキストの向き.デフォルトは左（ISO標準）</translation>
+      <translation>寸法が縦になったときの寸法テキストの向き。デフォルトは左（ISO標準）</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="405"/>
@@ -1959,12 +1905,12 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draft.ui" line="194"/>
       <source>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</source>
-      <translation type="unfinished">If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</translation>
+      <translation>このオプションにチェックが入っている場合、レイヤーのドロップダウンリストにもグループが表示され、自動的にオブジェクトをグループに追加することもできます。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="197"/>
       <source>Show groups in layers list drop-down button</source>
-      <translation type="unfinished">Show groups in layers list drop-down button</translation>
+      <translation>ドロップダウンボタンのレイヤーリストでグループを表示</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="216"/>
@@ -1975,13 +1921,13 @@ Values with differences below this value will be treated as same. This value wil
       <location filename="../ui/preferences-draft.ui" line="230"/>
       <source>When drawing lines, set focus on Length instead of X coordinate.
 This allows to point the direction and type the distance.</source>
-      <translation type="unfinished">When drawing lines, set focus on Length instead of X coordinate.
-This allows to point the direction and type the distance.</translation>
+      <translation>線を描画する場合に、X座標の代わりに長さにフォーカスを設定します。
+これにより、方向を指定して距離を入力できます。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="234"/>
       <source>Set focus on Length instead of X coordinate</source>
-      <translation type="unfinished">Set focus on Length instead of X coordinate</translation>
+      <translation>X座標の代わりに、長さにフォーカスを設定</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="250"/>
@@ -2005,15 +1951,14 @@ If this option is checked, the base objects will be selected instead.</source>
       <location filename="../ui/preferences-draft.ui" line="300"/>
       <source>If this is checked, copy mode will be kept across command,
 otherwise commands will always start in no-copy mode</source>
-      <translation type="unfinished">If this is checked, copy mode will be kept across command,
-otherwise commands will always start in no-copy mode</translation>
+      <translation>チェックされている場合、別コマンドでもコピーモードが継続します。それ以外の場合、コマンドは常に非コピーモードで開始します。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="320"/>
       <source>Force Draft Tools to create Part primitives instead of Draft objects.
 Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</source>
-      <translation type="unfinished">Force Draft Tools to create Part primitives instead of Draft objects.
-Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</translation>
+      <translation>ドラフトツールがオブジェクトの代わりに部品プリミティブを強制的に作成します。
+これは完全にはサポートされておらず、多くのオブジェクトはドラフトモディファイアでは編集できないことに注意してください。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="14"/>
@@ -2033,7 +1978,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="907"/>
       <source>Enable snap statusbar widget</source>
-      <translation type="unfinished">Enable snap statusbar widget</translation>
+      <translation>ステータスバー・ウィンジェットのスナップを有効にする</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="910"/>
@@ -2137,17 +2082,17 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="214"/>
       <source>Only standard Part objects will be created (fastest)</source>
-      <translation type="unfinished">Only standard Part objects will be created (fastest)</translation>
+      <translation>標準のPartオブジェクトだけが作成されます(最も高速)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="233"/>
       <source>Parametric Draft objects will be created whenever possible</source>
-      <translation type="unfinished">Parametric Draft objects will be created whenever possible</translation>
+      <translation>できる限りパラメトリックなドラフト・オブジェクトが作成されます</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="249"/>
       <source>Sketches will be created whenever possible</source>
-      <translation type="unfinished">Sketches will be created whenever possible</translation>
+      <translation>できる限りスケッチが作成します</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="292"/>
@@ -2164,22 +2109,19 @@ Example: for files in millimeters: 1, in centimeters: 10,
       <location filename="../ui/preferences-dxf.ui" line="321"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
-      <translation type="unfinished">Colors will be retrieved from the DXF objects whenever possible.
-Otherwise default colors will be applied. </translation>
+      <translation>色は可能な限りDXFオブジェクトから読み出されます。それ以外の場合、デフォルトの色が適用されます。 </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
-      <translation type="unfinished">FreeCAD will try to join coincident objects into wires.
-Note that this can take a while!</translation>
+      <translation>FreeCADは一致するオブジェクトをワイヤーに結合しようとします。これには時間がかかる場合があります。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="363"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
-      <translation type="unfinished">Objects from the same layers will be joined into Draft Blocks,
-turning the display faster, but making them less easily editable </translation>
+      <translation>同じレイヤーのオブジェクトがドラフトブロックとして連結されて表示が高速になりますが、編集は難しくなります。 </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="384"/>
@@ -2190,7 +2132,7 @@ instead of the size they have in the DXF document</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="405"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation type="unfinished">If this is checked, DXF layers will be imported as Draft Layers</translation>
+      <translation>ここがチェックされている場合、DXFレイヤーはドラフトレイヤーとしてインポートされます</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="408"/>
@@ -2206,8 +2148,7 @@ instead of the size they have in the DXF document</source>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
-      <translation type="unfinished">If polylines have a width defined, they will be rendered
-as closed wires with correct width</translation>
+      <translation>ポリラインに幅が定義されている場合、正適切な幅の閉じたワイヤーとしてレンダリングされます</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="511"/>
@@ -2219,24 +2160,24 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="550"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
-      <translation type="unfinished">All objects containing faces will be exported as 3D polyfaces</translation>
+      <translation>面を含むすべてのオブジェクトは 3D ポリフェースとしてエクスポートされます</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
       <source>Drawing Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
-      <translation type="unfinished">Drawing Views will be exported as blocks.
-This might fail for post DXF R12 templates.</translation>
+      <translation>ドローイング・ビューはブロックとしてエクスポートされます。
+DXF R12 後のテンプレートでは失敗する可能性があります。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="594"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
-      <translation type="unfinished">Exported objects will be projected to reflect the current view direction</translation>
+      <translation>エクスポートされたオブジェクトは現在のビュー方向を反映するように投影されます</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
       <source>Method chosen for importing SVG object color to FreeCAD</source>
-      <translation type="unfinished">Method chosen for importing SVG object color to FreeCAD</translation>
+      <translation>SVGオブジェクトの色をFreeCADにインポートするために選択されたメソッド</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="82"/>
@@ -2267,12 +2208,12 @@ This value is the maximum segment length. </source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="310"/>
       <source>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</source>
-      <translation type="unfinished">If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</translation>
+      <translation>ここにチェックが入っている場合に、追加の境界線がグリッド周りに表示され、左下境界線で主な正方形を表示します</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="313"/>
       <source>Show grid border</source>
-      <translation type="unfinished">Show grid border</translation>
+      <translation>グリッド線を表示</translation>
     </message>
   </context>
   <context>
@@ -2863,21 +2804,6 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation>オブジェクトを塗りつぶして表示する場合にはチェックしてください。チェックしない場合はワイヤーフレーム表示になります。ドラフトのユーザー設定で「プリミティブ部品を使用」が有効になっている場合には利用できません。</translation>
     </message>
     <message>
-      <location filename="../../DraftLayer.py" line="43"/>
-      <source>No active document. Aborting</source>
-      <translation>アクティブなドキュメントがありません。中止しています。</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="50"/>
-      <source>Layer</source>
-      <translation>レイヤー</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="71"/>
-      <source>Layers</source>
-      <translation>レイヤー</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Polyline</source>
       <translation>ポリライン</translation>
@@ -2923,16 +2849,6 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
       <translation type="unfinished">Trim distance</translation>
     </message>
     <message>
-      <location filename="../../DraftLayer.py" line="334"/>
-      <source>Activate this layer</source>
-      <translation>このレイヤーを有効にする</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="341"/>
-      <source>Select contents</source>
-      <translation type="unfinished">Select contents</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Wire</source>
       <translation>ワイヤー</translation>
@@ -2943,7 +2859,7 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
     <message>
       <location filename="../../importOCA.py" line="359"/>
       <source>OCA error: couldn't determine character encoding</source>
-      <translation type="unfinished">OCA error: couldn't determine character encoding</translation>
+      <translation>OCA エラー: 文字エンコーディングが判別できませんでした</translation>
     </message>
     <message>
       <location filename="../../importOCA.py" line="445"/>

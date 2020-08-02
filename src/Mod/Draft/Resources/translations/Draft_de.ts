@@ -2,44 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="de" sourcelanguage="en">
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="110"/>
-      <source>The objects that are part of this layer</source>
-      <translation>Die Objekte, die Teil dieser Ebene sind</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="147"/>
-      <source>If on, the child objects of this layer will match its visual aspects</source>
-      <translation>Sofern aktiviert, werden die Unterobjekte dieser Ebene ihren visuellen Eigenschaften entsprechen</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="156"/>
-      <source>The line color of the children of this layer</source>
-      <translation>Die Linienfarbe der Unterobjekte dieser Ebene</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="162"/>
-      <source>The shape color of the children of this layer</source>
-      <translation>Die Füllfarbe der Unterobjekte dieser Ebene</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="168"/>
-      <source>The line width of the children of this layer</source>
-      <translation>Die Linienbreite der Unterobjekte dieser Ebene</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="174"/>
-      <source>The draw style of the children of this layer</source>
-      <translation>Der Zeichenstil der Unterobjekte dieser Ebene</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="180"/>
-      <source>The transparency of the children of this layer</source>
-      <translation>Die Transparenz der Unterobjekte dieser Ebene</translation>
-    </message>
-  </context>
-  <context>
     <name>Dialog</name>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
@@ -139,7 +101,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="294"/>
       <source>Extension overshoot</source>
-      <translation>Erweiterung überlauf</translation>
+      <translation>Maßhilfslinien Überstand</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="304"/>
@@ -154,12 +116,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="324"/>
       <source>Dimension overshoot</source>
-      <translation>Dimension überschreiten</translation>
+      <translation>Maßlinie-Überstand</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="334"/>
       <source>Extension lines</source>
-      <translation>Erweiterungslinien</translation>
+      <translation>Maßhilfslinie</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="344"/>
@@ -209,7 +171,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="163"/>
       <source>Font size in the system units</source>
-      <translation>Schrifthöhe in Systemeinheiten</translation>
+      <translation>Schriftartgröße in Systemeinheiten</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="136"/>
@@ -732,19 +694,6 @@ Es muss mindestens 2 sein.</translation>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
       <translation>Punkt zurücksetzen</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="83"/>
-      <source>Layer</source>
-      <translation>Ebene</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="84"/>
-      <source>Adds a layer</source>
-      <translation>Fügt eine Ebene hinzu</translation>
     </message>
   </context>
   <context>
@@ -1664,12 +1613,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="237"/>
       <source>Extension line overshoot</source>
-      <translation>Hilfslinien Verlängerung</translation>
+      <translation>Maßhilfslinien Überstand</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="244"/>
       <source>The default length of extension line above dimension line</source>
-      <translation>Länge, um die die Hilfslinien über die Maßlinie hinaus verlängert wird</translation>
+      <translation>Standardlänge, um die die Maßhilfslinien über die Maßlinie hinaus verlängert wird</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="273"/>
@@ -1679,7 +1628,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="280"/>
       <source>The default distance the dimension line is extended past extension lines</source>
-      <translation>Länge, um die die Maßlinie über die Hilfslinien hinaus verlängert wird</translation>
+      <translation>Länge, um die die Maßlinie über die Maßhilfslinien hinaus verlängert wird</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="338"/>
@@ -2859,21 +2808,6 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
       <translation>Dies auswählen um das Objekt als gefüllt erscheinen zu lassen, andernfalls wird es als Drahtgitter dargestellt. Ist nicht verfügbar, wenn die Skizzen-Einstellung 'Verwende primitive Teile' aktiviert ist</translation>
     </message>
     <message>
-      <location filename="../../DraftLayer.py" line="43"/>
-      <source>No active document. Aborting</source>
-      <translation>Kein aktives Dokument. Abbruch</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="50"/>
-      <source>Layer</source>
-      <translation>Ebene</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="71"/>
-      <source>Layers</source>
-      <translation>Ebenen</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Polyline</source>
       <translation>Linienzug</translation>
@@ -2917,16 +2851,6 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
       <location filename="../../DraftGui.py" line="949"/>
       <source>Trim distance</source>
       <translation>Abstand trimmen</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="334"/>
-      <source>Activate this layer</source>
-      <translation>Diese Ebene aktivieren</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="341"/>
-      <source>Select contents</source>
-      <translation>Inhalt auswählen</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>

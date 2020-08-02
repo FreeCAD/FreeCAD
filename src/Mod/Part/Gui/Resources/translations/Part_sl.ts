@@ -3546,7 +3546,7 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="631"/>
       <source>V parameters:</source>
-      <translation>Spremenljivke V:</translation>
+      <translation>Določilke V:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="768"/>
@@ -5265,7 +5265,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>&amp;Parametric</source>
-      <translation>&amp;Parametričen</translation>
+      <translation>&amp;Določilovni</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>

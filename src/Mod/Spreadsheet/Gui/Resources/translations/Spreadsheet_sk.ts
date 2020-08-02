@@ -366,13 +366,13 @@ Prosím vyberte len jednu bunku.</translation>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>Adresa obsahuje neplatné znaky.</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Odkazovať na bunku jej pomenovaním, napríklad
+Spreadsheet.moje_pomenovanie namiesto Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -458,17 +458,17 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>&amp;Obsah:</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>&amp;Pomenovanie:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Odkazovať na bunku jej pomenovaním, napríklad
+Spreadsheet.moje_pomenovanie namiesto Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
