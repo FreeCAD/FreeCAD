@@ -2151,5 +2151,5 @@ class FacebinderTaskPanel:
 ##            FreeCAD.Console.PrintMessage(msg)
 
 if not hasattr(FreeCADGui,"draftToolBar"):
-    FreeCADGui.draftToolBar = DraftToolBar()
+    FreeCADGui.draftToolBar = DraftToolBar() # type: ignore
 #----End of Python Features Definitions----#

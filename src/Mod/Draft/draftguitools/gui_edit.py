@@ -53,7 +53,7 @@ import draftguitools.gui_edit_sketcher_objects as edit_sketcher
 from draftutils.translate import translate
 
 COLORS = {
-    "default": Gui.draftToolBar.getDefaultColor("snap"),
+    "default": Gui.draftToolBar.getDefaultColor("snap") if Gui.draftToolBar else (0., 0., 0.),
     "black":  (0., 0., 0.),
     "white":  (1., 1., 1.),
     "grey":   (.5, .5, .5),

@@ -34,7 +34,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Draft_rc
+import Draft_rc # type: ignore
 import DraftVecUtils
 import draftutils.groups as groups
 import draftutils.todo as todo

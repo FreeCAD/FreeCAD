@@ -29,9 +29,9 @@ if FreeCAD.GuiUp:
     import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt,txt): # type: ignore
         return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
+    def QT_TRANSLATE_NOOP(ctxt,txt): # type: ignore
         return txt
     # \endcond
 

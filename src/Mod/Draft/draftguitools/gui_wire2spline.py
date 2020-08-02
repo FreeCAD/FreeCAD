@@ -39,7 +39,7 @@ depending on the desired result.
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
-import Draft_rc
+import Draft_rc # type: ignore
 import Draft
 import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original

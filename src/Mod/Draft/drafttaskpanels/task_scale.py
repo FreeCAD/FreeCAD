@@ -34,7 +34,7 @@ import PySide.QtGui as QtGui
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
-import Draft_rc
+import Draft_rc # type: ignore
 
 from draftutils.translate import translate
 

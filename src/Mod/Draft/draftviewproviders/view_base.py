@@ -40,7 +40,7 @@ import draftutils.gui_utils as gui_utils
 if App.GuiUp:
     from pivy import coin
     import FreeCADGui as Gui
-    import Draft_rc
+    import Draft_rc # type: ignore
     # The module is used to prevent complaints from code checkers (flake8)
     bool(Draft_rc.__name__)
 

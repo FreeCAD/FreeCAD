@@ -47,7 +47,7 @@ import FreeCADGui
 from FreeCAD import Vector
 
 import Draft
-import Draft_rc
+import Draft_rc # type: ignore
 import DraftGui  # Initializes the DraftToolBar class
 import DraftVecUtils
 import WorkingPlane

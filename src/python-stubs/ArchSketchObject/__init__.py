@@ -1,0 +1,3 @@
+from typing import List
+
+def sortSketchWidth(sketch, edgeAlignList: List) -> List[int]: ...

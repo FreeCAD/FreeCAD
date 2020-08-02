@@ -391,6 +391,7 @@ class bsplineTracker(Tracker):
 
     def recompute(self):
         """Recompute the tracker."""
+        import Part
         if len(self.points) >= 2:
             if self.bspline:
                 self.sep.removeChild(self.bspline)

@@ -639,7 +639,7 @@ def getrgb(color):
     return "#" + r + g + b
 
 
-class svgHandler(xml.sax.ContentHandler):
+class svgHandler(xml.sax.handler.ContentHandler):
     """Parse SVG files and create FreeCAD objects."""
 
     def __init__(self):

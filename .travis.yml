@@ -68,66 +68,67 @@ jobs:
           - CMAKE_ARGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - CACHE_NAME=JOB1
 
-      - os: linux
-        dist: bionic
-        language: cpp
-        compiler: gcc-10
-        cache: ccache
-        addons:
-          apt:
-            sources:
-              - sourceline: 'ppa:ubuntu-toolchain-r/test'
-            packages:
-              - gcc-10
-              - g++-10
-        env:
-          - CC=gcc-10
-          - CXX=g++-10
-          - CC_FOR_BUILD=gcc-10
-          - CXX_FOR_BUILD=g++-10
-          - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc -DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
-          - CACHE_NAME=JOB2
+#      - os: linux
+#        dist: bionic
+#        language: cpp
+#        compiler: gcc-10
+#        cache: ccache
+#        addons:
+#          apt:
+#            sources:
+#              - sourceline: 'ppa:ubuntu-toolchain-r/test'
+#            packages:
+#              - gcc-10
+#              - g++-10
+#        env:
+#          - CC=gcc-10
+#          - CXX=g++-10
+#          - CC_FOR_BUILD=gcc-10
+#          - CXX_FOR_BUILD=g++-10
+#          - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc -DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
+#          - CACHE_NAME=JOB2
+#
+#      - os: linux
+#        dist: bionic
+#        language: cpp
+#        compiler: gcc-7
+#        cache: ccache
+#        env:
+#          - CC=gcc-7
+#          - CXX=g++-7
+#          - CC_FOR_BUILD=gcc-7
+#          - CXX_FOR_BUILD=g++-7
+#          - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc"
+#          - CACHE_NAME=JOB3
+#
+#      - os: windows
+#        language: cpp
+#        env:
+#          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -DFREECAD_RELEASE_PDB=OFF -DFREECAD_RELEASE_SEH=OFF"
+#          - GENERATOR="Visual Studio 15 2017 Win64"
+#          - PYTHON_MAJOR_VERSION=3
+#          - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
+#          - TEST_PATH="C:\Users\travis\build\FreeCAD\FreeCAD\build\bin"
+#          - CLCACHE_PATH="C:\Users\travis\build\FreeCAD\FreeCAD"
+#          - VS15=true
+#          - CCACHE_TEMPDIR=/tmp/.ccache-temp
+#          - CCACHE_COMPRESS=1
+#          - CCACHE_DIR=$HOME/.ccache
+#          - CACHE_NAME=JOB5
+#          # enable this if clcache extended log is needed
+#          #- CLCACHE_LOG=1
+#        cache:
+#          directories:
+#            - $HOME/clcache
 
-      - os: linux
-        dist: bionic
-        language: cpp
-        compiler: gcc-7
-        cache: ccache
-        env:
-          - CC=gcc-7
-          - CXX=g++-7
-          - CC_FOR_BUILD=gcc-7
-          - CXX_FOR_BUILD=g++-7
-          - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc"
-          - CACHE_NAME=JOB3
-
-      - os: windows
-        language: cpp
-        env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -DFREECAD_RELEASE_PDB=OFF -DFREECAD_RELEASE_SEH=OFF"
-          - GENERATOR="Visual Studio 15 2017 Win64"
-          - PYTHON_MAJOR_VERSION=3
-          - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
-          - TEST_PATH="C:\Users\travis\build\FreeCAD\FreeCAD\build\bin"
-          - CLCACHE_PATH="C:\Users\travis\build\FreeCAD\FreeCAD"
-          - VS15=true
-          - CCACHE_TEMPDIR=/tmp/.ccache-temp
-          - CCACHE_COMPRESS=1
-          - CCACHE_DIR=$HOME/.ccache
-          - CACHE_NAME=JOB5
-          # enable this if clcache extended log is needed
-          #- CLCACHE_LOG=1
-        cache:
-          directories:
-            - $HOME/clcache
-
-#      - language: python
-#        python: 3.7
-#        dist: xenial  # required for Python >= 3.7 (travis-ci/travis-ci#9069)
-#        before_install: true
-#        install: python3 -m pip install flake8
-#        # fail the build if there are Python syntax errors or undefined names
-#        script: flake8 . --count --select=E901,E999,F821,F822,F823 --show-source --statistics
+      - language: python
+        python: 3.7
+        dist: xenial  # required for Python >= 3.7 (travis-ci/travis-ci#9069)
+        before_install: true
+        install: python3 -m pip install mypy flake8 pep8-naming flake8-pyi PySide2
+        # fail the build if there are Python syntax errors or undefined names
+        #script: flake8 . --count --select=E901,E999,F821,F822,F823 --show-source --statistics
+        script: bash -c 'MYPYPATH=`pwd`/src/python-stubs/:`pwd`/src/3rdParty/:`pwd`/src/Mod/Arch  mypy src/Mod/Draft/draftguitools/gui_snapper.py && flake8 --select=N801,N802,N803,N804,N805,N806,N807,N811,N812,N813,N814,N815,N816,N8017 src/python-stubs/ && flake8 --select=N801,N802,N803,N804,N805,N806,N807,N811,N812,N813,N814,N815,N816,N8017 src/Mod/Draft/draftguitools/gui_snapper.py'
 
 
 before_install:

@@ -43,7 +43,7 @@ Qtranslate = QtCore.QCoreApplication.translate
 # But if Python 2 is used with Qt5 (rare),
 # this assignment will fail.
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtGui.QApplication.UnicodeUTF8 # type: ignore
 except AttributeError:
     _encoding = None
 

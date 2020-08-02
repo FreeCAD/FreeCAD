@@ -33,7 +33,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Draft
-import Draft_rc
+import Draft_rc # type: ignore
 import DraftVecUtils
 import drafttaskpanels.task_selectplane as task_selectplane
 

@@ -29,7 +29,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Draft_rc
+import Draft_rc # type: ignore
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False

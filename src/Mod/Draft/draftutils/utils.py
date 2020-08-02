@@ -48,7 +48,7 @@ from draftutils.translate import _tr
 # in gui_utils
 if App.GuiUp:
     import FreeCADGui as Gui
-    import Draft_rc
+    import Draft_rc # type: ignore
 
     # The module is used to prevent complaints from code checkers (flake8)
     True if Draft_rc else False

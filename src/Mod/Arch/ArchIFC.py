@@ -7,7 +7,7 @@ import FreeCAD, os, json
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
-    def QT_TRANSLATE_NOOP(ctx,txt):
+    def QT_TRANSLATE_NOOP(ctx,txt): # type: ignore
         return txt
 
 import ArchIFCSchema

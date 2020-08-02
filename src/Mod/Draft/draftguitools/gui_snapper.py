@@ -41,7 +41,6 @@ import math
 import pivy.coin as coin
 import PySide.QtCore as QtCore
 import PySide.QtGui as QtGui
-
 import FreeCAD as App
 import FreeCADGui as Gui
 import Part

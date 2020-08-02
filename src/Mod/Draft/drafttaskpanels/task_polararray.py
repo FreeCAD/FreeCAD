@@ -32,7 +32,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Draft_rc  # include resources, icons, ui files
+import Draft_rc   # type: ignore # include resources, icons, ui files
 import DraftVecUtils
 import draftutils.utils as utils
 

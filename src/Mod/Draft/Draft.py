@@ -35,7 +35,7 @@ defined in `DraftTools.py`.
 import FreeCAD as App
 
 if App.GuiUp:
-    import Draft_rc
+    import Draft_rc # type: ignore
     gui = True
     # To prevent complaints from code checkers (flake8)
     True if Draft_rc.__name__ else False

@@ -44,7 +44,7 @@ the precision set in the Draft preferences.
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
-import Draft_rc
+import Draft_rc # type: ignore
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 

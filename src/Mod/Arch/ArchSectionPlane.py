@@ -41,9 +41,9 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt,txt): # type: ignore
         return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
+    def QT_TRANSLATE_NOOP(ctxt,txt): # type: ignore
         return txt
     # \endcond
 
@@ -983,7 +983,7 @@ class _ViewProviderSectionPlane:
 
     def getIcon(self):
 
-        import Arch_rc
+        import Arch_rc # type: ignore
         return ":/icons/Arch_SectionPlane_Tree.svg"
 
     def claimChildren(self):

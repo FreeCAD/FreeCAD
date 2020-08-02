@@ -112,9 +112,9 @@ class ToDo:
     a list of strings, each string an individual Python instruction.
     """
 
-    itinerary = []
-    commitlist = []
-    afteritinerary = []
+    itinerary = [] # type: ignore
+    commitlist = [] # type: ignore
+    afteritinerary = [] # type: ignore
 
     @staticmethod
     def doTasks():

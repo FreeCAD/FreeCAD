@@ -31,7 +31,7 @@ if FreeCAD.GuiUp:
     from draftutils.utils import utf8_decode
 else:
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt,txt): # type: ignore
         return txt
     # \endcond
 
@@ -668,7 +668,7 @@ def download(url,force=False):
     try:
         from urllib.request import urlopen
     except ImportError:
-        from urllib2 import urlopen
+        from urllib2 import urlopen # type: ignore
     import os
     name = url.split('/')[-1]
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
