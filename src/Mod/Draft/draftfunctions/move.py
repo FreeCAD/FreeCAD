@@ -215,4 +215,115 @@ def copy_moved_edge(object, edge_index, vector):
         vertex2 = object.Placement.multVec(object.Points[edge_index+1]).add(vector)
     return make_line.make_line(vertex1, vertex2)
 
-## @}
+
+# This part is higly experimental and used for moveSubElements function
+
+def parse_shape(shape, selected_vertexes, vector):
+    """ Parse the given shape and rebuild it according to its
+    original topological structure
+    """
+    import Part
+
+    if shape.ShapeType in ("Compound", "CompSolid", "Solid", "Shell", "Wire"):
+        # No geometry involved
+        new_sub_shapes = parse_sub_shapes(shape, selected_vertexes, vector)
+
+        if shape.ShapeType == "Compound":
+            new_shape = Part.Compound(new_sub_shapes)
+
+        elif shape.ShapeType == "CompSolid":
+            new_shape = Part.CompSolid(new_sub_shapes)
+
+        elif shape.ShapeType == "Solid":
+            if isinstance(new_sub_shapes, list) and len(new_sub_shapes) == 1:
+                # check if shell object is given inside a list
+                new_sub_shapes = new_sub_shapes[0]
+            new_shape = Part.Solid(new_sub_shapes)
+
+        elif shape.ShapeType == "Shell":
+            new_shape = Part.Shell(new_sub_shapes)
+
+        elif shape.ShapeType == "Wire":
+            new_shape = Part.Wire(new_sub_shapes)
+
+    elif shape.ShapeType == "Face":
+        # TODO: Add geometry check
+        new_sub_shapes = parse_sub_shapes(shape, selected_vertexes, vector)
+        new_shape = Part.Face(new_sub_shapes)
+
+    elif shape.ShapeType == "Edge":
+        # TODO: Add geometry check
+        new_sub_shapes = parse_sub_shapes(shape, selected_vertexes, vector)
+        new_shape = Part.makeLine(new_sub_shapes[0].Point, new_sub_shapes[1].Point)
+
+    elif shape.ShapeType == "Vertex":
+        # TODO: Add geometry check
+        for sv in selected_vertexes:
+            if shape.X == sv.X and shape.Y == sv.Y and shape.Z == sv.Z:
+                print(shape.ShapeType + " re-created.")
+                return Part.Vertex(App.Vector(shape.X + vector.x, shape.Y + vector.y, shape.Z + vector.z)) 
+        return shape
+
+    print(shape.ShapeType + " re-created.")
+    return new_shape
+
+
+    
+def parse_sub_shapes(shape, selected_vertexes, vector):
+    """ Parse the subshapes of the given shape in order to
+    find modified shapes and substitute them to the originals.
+    """
+    print('Shape is a ' + shape.ShapeType + '\n')
+    sub_shapes = []
+    if shape.SubShapes:
+        for sub_shape in shape.SubShapes:
+            sub_shapes.append(parse_shape(sub_shape, selected_vertexes, vector))
+            
+    return sub_shapes
+
+
+def moveSubElements(obj, sub_objects_names, vector):
+    """moveSubElements(obj, sub_objects_names, vector)
+    
+    Move the given object sub_objects according to a vector or crates an new one
+    if the object is not a Part::Feature.
+
+    Parameters
+    ----------
+    obj : the given object
+
+    sub_objects_names : list of subelement names
+        A list of subelement names to identify the subelements to move.
+
+    vector : Base.Vector
+        Delta Vector to move subobjects from the original position. 
+
+    Return
+    ----------
+    shape : Part.Shape
+        Return the new Shape or None.
+    """
+
+    import Part
+
+    if not isinstance(sub_objects_names, list):
+        sub_objects_names = [sub_objects_names]
+
+    shape = obj.Shape
+    new_shape = None
+
+    selected_vertexes = []
+    for sub_objects_name in sub_objects_names:
+        sub_object = obj.Shape.getElement(sub_objects_name)
+        selected_vertexes.extend(sub_object.Vertexes)
+
+    new_shape = parse_shape(shape, selected_vertexes, vector)
+    
+    if new_shape:
+        if hasattr(obj, 'TypeId') and obj.TypeId == 'Part::Feature':
+            obj.Shape = new_shape
+        else:
+            new_obj = App.ActiveDocument.addObject("Part::Feature", "Feature")
+            new_obj.Shape = new_shape
+        return new_shape
+    

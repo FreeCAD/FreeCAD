@@ -197,15 +197,39 @@ class Move(gui_base_original.Modifier):
 
     def move_subelements(self, is_copy):
         """Move the subelements."""
-        try:
-            if is_copy:
-                self.commit(translate("draft", "Copy"),
-                            self.build_copy_subelements_command())
-            else:
-                self.commit(translate("draft", "Move"),
-                            self.build_move_subelements_command())
-        except Exception:
-            _err(translate("draft", "Some subelements could not be moved."))
+        import Draft
+        #try:
+        if self.ui.isCopy.isChecked():
+            self.commit(translate("draft", "Copy"),
+                        self.build_copy_subelements_command())
+        else:
+            #self.commit(translate("draft", "Move"), # Moult implementation start
+            #            self.build_move_subelements_command()) # Moult implementation end
+
+            objects={}
+            
+            # create a dictionary with {'obj.Name' : 'list of selected SubObjects'}
+            for sel in self.selected_subelements:
+                if not sel.Object.Name in objects:
+                    objects[sel.Object.Name]=[]
+                if sel.SubObjects:
+                    objects[sel.Object.Name].extend(sel.SubElementNames)
+
+            App.ActiveDocument.openTransaction(translate("Draft","Move subelements"))
+
+            for name in objects: # for each object
+                # get the object and its shape
+                Gui.addModule("Draft")
+                Gui.doCommand('Draft.moveSubElements(' +
+                                'FreeCAD.ActiveDocument.' + name + ', ' +
+                                str(objects[name]) + ', ' +
+                                DraftVecUtils.toString(self.vector) +
+                                ')')
+
+            App.ActiveDocument.commitTransaction()
+
+        #except Exception:
+        #    _err(translate("draft", "Some subelements could not be moved."))
 
     def build_copy_subelements_command(self):
         """Build the string to commit to copy the subelements."""
