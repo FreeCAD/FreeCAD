@@ -39,6 +39,11 @@
       <translation>Maksimalna udaljenost prije nego je pridružena kosina odrezana</translation>
     </message>
     <message>
+      <location filename="PathProfileEdges.py" line="56"/>
+      <source>The base geometry of this toolpath</source>
+      <translation>Osnovna geometrija ove obrade staze</translation>
+    </message>
+    <message>
       <location filename="PathProfileEdges.py" line="98"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
       <translation>Dodatna vrijednost za izbjegavanje krajnjeg profila - dobro za hrapavost staza obrade</translation>
@@ -237,11 +242,6 @@
       <location filename="PathPocketBase.py" line="61"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
       <translation>Dodatni pomak koji se primjenjuje na operaciju. Smjer ovisi o operaciji.</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="55"/>
-      <source>The library to use to generate the path</source>
-      <translation>Biblioteka koja se koristiti za generiranje staze</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="78"/>
@@ -674,9 +674,9 @@
       <translation>Izlazno mjesto za podatke sonde da se napišu</translation>
     </message>
     <message>
-      <location filename="PathProfileEdges.py" line="56"/>
-      <source>The base geometry of this toolpath</source>
-      <translation>Osnovna geometrija ove obrade staze</translation>
+      <location filename="PathPocket.py" line="55"/>
+      <source>The library to use to generate the path</source>
+      <translation>Biblioteka koja se koristiti za generiranje staze</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="47"/>
@@ -1203,14 +1203,14 @@
       <translation type="unfinished">Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</translation>
     </message>
     <message>
-      <location filename="PathUtils.py" line="767"/>
-      <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
-      <translation>Kut rezanja ruba (%.2f) rezultira negativnom duljinom vrha alata</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathUtils.py" line="808"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
       <translation>Pogrešan kut rezanja ruba %.2f, mora biti &gt; = 0 ° i &lt;= 180 °</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="767"/>
+      <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
+      <translation>Kut rezanja ruba (%.2f) rezultira negativnom duljinom vrha alata</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="153"/>
@@ -1418,16 +1418,6 @@
   <context>
     <name>PathFace</name>
     <message>
-      <location filename="PathMillFace.py" line="350"/>
-      <source>Face</source>
-      <translation>Površina</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathMillFaceGui.py" line="44"/>
-      <source>Create a Facing Operation from a model or face</source>
-      <translation type="unfinished">Create a Facing Operation from a model or face</translation>
-    </message>
-    <message>
       <location filename="PathMillFace.py" line="171"/>
       <source>Generating toolpath with libarea offsets.
 </source>
@@ -1438,6 +1428,16 @@
       <location filename="PathMillFace.py" line="305"/>
       <source>Pick Start Point</source>
       <translation>Odaberite početnu točku</translation>
+    </message>
+    <message>
+      <location filename="PathMillFace.py" line="350"/>
+      <source>Face</source>
+      <translation>Površina</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathMillFaceGui.py" line="44"/>
+      <source>Create a Facing Operation from a model or face</source>
+      <translation type="unfinished">Create a Facing Operation from a model or face</translation>
     </message>
   </context>
   <context>
@@ -1504,11 +1504,6 @@
       <translation>Smjer kružnih rezova, (U smjeru kazaljke) ClockWise (CW) ili CounterClockWise (CCW)</translation>
     </message>
     <message>
-      <location filename="PathHelix.py" line="52"/>
-      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
-      <translation>Smjer kružnih rezova, clockwise (CW) [U smjeru kazaljke] ili counter clockwise (CCW) [Suprotno smjeru kazaljke]</translation>
-    </message>
-    <message>
       <location filename="PathHelix.py" line="55"/>
       <source>Start cutting from the inside or outside</source>
       <translation>Počinjem glodanje od iznutra prema vani</translation>
@@ -1532,6 +1527,11 @@
       <location filename="PathHelixGui.py" line="83"/>
       <source>Creates a Path Helix object from a features of a base object</source>
       <translation>Stvara objekt Staza Helix od svojstva osnovnog objekta</translation>
+    </message>
+    <message>
+      <location filename="PathHelix.py" line="52"/>
+      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
+      <translation>Smjer kružnih rezova, clockwise (CW) [U smjeru kazaljke] ili counter clockwise (CCW) [Suprotno smjeru kazaljke]</translation>
     </message>
   </context>
   <context>
@@ -1956,12 +1956,12 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="46"/>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
       <source>Profile</source>
       <translation>Profil</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="46"/>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
       <translation type="unfinished">Profile entire model, selected face(s) or selected edge(s)</translation>
     </message>
@@ -2026,6 +2026,11 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <translation type="unfinished">For open edges, verify Final Depth for this operation.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
+      <source>Profile based on face or faces</source>
+      <translation>Put baziran na licu ili licima</translation>
+    </message>
+    <message>
       <location filename="PathProfileEdges.py" line="415"/>
       <source>Edge Profile</source>
       <translation>Profil ruba</translation>
@@ -2044,11 +2049,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="PathProfile.py" line="429"/>
       <source>Face Profile</source>
       <translation>Profil naličjanaličja</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
-      <source>Profile based on face or faces</source>
-      <translation>Put baziran na licu ili licima</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="289"/>
@@ -2439,14 +2439,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     </message>
   </context>
   <context>
-    <name>PathSuface</name>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="839"/>
-      <source>No scan data to convert to Gcode.</source>
-      <translation type="unfinished">No scan data to convert to Gcode.</translation>
-    </message>
-  </context>
-  <context>
     <name>PathSurface</name>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2625"/>
@@ -2567,6 +2559,11 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="../../../PathScripts/PathSurface.py" line="819"/>
       <source>No clearing path geometry returned.</source>
       <translation type="unfinished">No clearing path geometry returned.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="839"/>
+      <source>No scan data to convert to Gcode.</source>
+      <translation type="unfinished">No scan data to convert to Gcode.</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="257"/>
@@ -3048,6 +3045,16 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
   <context>
     <name>Path_Dressup</name>
     <message>
+      <location filename="PathDressup.py" line="98"/>
+      <source>Dress-up</source>
+      <translation>Dress-up (Odjenuti)</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="100"/>
+      <source>Creates a Path Dess-up object from a selected path</source>
+      <translation>Stvara staza objekt Dress-up od odabrane staze</translation>
+    </message>
+    <message>
       <location filename="PathDressup.py" line="110"/>
       <source>Please select one path object
 </source>
@@ -3065,16 +3072,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="325"/>
       <source>Please select a Path object</source>
       <translation>Odaberite objekt staze</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="98"/>
-      <source>Dress-up</source>
-      <translation>Dress-up (Odjenuti)</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="100"/>
-      <source>Creates a Path Dess-up object from a selected path</source>
-      <translation>Stvara staza objekt Dress-up od odabrane staze</translation>
     </message>
   </context>
   <context>
@@ -3664,6 +3661,13 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
   <context>
     <name>Path_Sanity</name>
     <message>
+      <location filename="PathSanity.py" line="50"/>
+      <source>It appears the machine limits haven't been set.  Not able to check path extents.
+</source>
+      <translation>Čini se da ograničenja  stroja nisu postavljena. Ne mogu provjeriti proširenja staze.
+</translation>
+    </message>
+    <message>
       <location filename="PathSanity.py" line="79"/>
       <source>Check the Path project for common errors</source>
       <translation>Provjerite projekt Staza zbog uobičajenih pogrešaka</translation>
@@ -3703,13 +3707,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <source>No issues detected, {} has passed basic sanity check.</source>
       <translation type="unfinished">No issues detected, {} has passed basic sanity check.</translation>
     </message>
-    <message>
-      <location filename="PathSanity.py" line="50"/>
-      <source>It appears the machine limits haven't been set.  Not able to check path extents.
-</source>
-      <translation>Čini se da ograničenja  stroja nisu postavljena. Ne mogu provjeriti proširenja staze.
-</translation>
-    </message>
   </context>
   <context>
     <name>Path_SelectLoop</name>
@@ -3745,13 +3742,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
   <context>
     <name>Path_SimpleCopy</name>
     <message>
-      <location filename="PathSimpleCopy.py" line="59"/>
-      <source>Please select exactly one path object
-</source>
-      <translation>Odaberite samo jedan objekt staze
-</translation>
-    </message>
-    <message>
       <location filename="PathSimpleCopy.py" line="62"/>
       <source>Simple Copy</source>
       <translation>Jednostavno kopiranje</translation>
@@ -3765,6 +3755,13 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="../../../PathScripts/PathSimpleCopy.py" line="61"/>
       <source>Please select exactly one path object</source>
       <translation>Odaberite samo jedan objekt staze</translation>
+    </message>
+    <message>
+      <location filename="PathSimpleCopy.py" line="59"/>
+      <source>Please select exactly one path object
+</source>
+      <translation>Odaberite samo jedan objekt staze
+</translation>
     </message>
   </context>
   <context>
@@ -3796,11 +3793,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
   <context>
     <name>Path_ToolController</name>
     <message>
-      <location filename="PathToolController.py" line="132"/>
-      <source>Tool Number to Load</source>
-      <translation>Broj alata koji se koristi</translation>
-    </message>
-    <message>
       <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
       <translation>Zadatku dodajte kontroler alata</translation>
@@ -3809,6 +3801,11 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="../../../PathScripts/PathToolControllerGui.py" line="123"/>
       <source>Add Tool Controller</source>
       <translation>Dodajte kontroler alata</translation>
+    </message>
+    <message>
+      <location filename="PathToolController.py" line="132"/>
+      <source>Tool Number to Load</source>
+      <translation>Broj alata koji se koristi</translation>
     </message>
   </context>
   <context>
@@ -3881,44 +3878,9 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <translation type="unfinished">Save toolbit library</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
-      <source>Tooltable JSON (*.json)</source>
-      <translation>Tabela alata JSON (*.json)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
-      <source>HeeksCAD tooltable (*.tooltable)</source>
-      <translation>HeeksCAD Tabela alata (*.tooltable)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
-      <source>LinuxCNC tooltable (*.tbl)</source>
-      <translation>LinuxCNC Tabela alata (*.tbl)</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
       <source>Open tooltable</source>
       <translation>Otvori tabelu alata</translation>
-    </message>
-    <message>
-      <location filename="TooltableEditor.py" line="610"/>
-      <source>Save tooltable</source>
-      <translation>Spremi tabelu alata</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
-      <source>Add New Tool Table</source>
-      <translation>Dodajte novu tablicu alata</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
-      <source>Delete Selected Tool Table</source>
-      <translation>Izbriši odabranu tablicu alata</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
-      <source>Rename Selected Tool Table</source>
-      <translation>Preimenuj odabranu tablicu alata</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="388"/>
@@ -4132,6 +4094,11 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     </message>
     <message>
       <location filename="TooltableEditor.py" line="610"/>
+      <source>Save tooltable</source>
+      <translation>Spremi tabelu alata</translation>
+    </message>
+    <message>
+      <location filename="TooltableEditor.py" line="610"/>
       <source>Tooltable XML (*.xml)</source>
       <translation>Tabela alata XML (*.xml)</translation>
     </message>
@@ -4144,6 +4111,36 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="TooltableEditor.py" line="653"/>
       <source>Object doesn't have a tooltable property</source>
       <translation>Objekt nema svojstvo alata stola</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
+      <source>Add New Tool Table</source>
+      <translation>Dodajte novu tablicu alata</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
+      <source>Delete Selected Tool Table</source>
+      <translation>Izbriši odabranu tablicu alata</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
+      <source>Rename Selected Tool Table</source>
+      <translation>Preimenuj odabranu tablicu alata</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
+      <source>Tooltable JSON (*.json)</source>
+      <translation>Tabela alata JSON (*.json)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
+      <source>HeeksCAD tooltable (*.tooltable)</source>
+      <translation>HeeksCAD Tabela alata (*.tooltable)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
+      <source>LinuxCNC tooltable (*.tbl)</source>
+      <translation>LinuxCNC Tabela alata (*.tbl)</translation>
     </message>
     <message>
       <location filename="PathToolLibraryManager.py" line="514"/>
@@ -4162,6 +4159,14 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="../../../PathScripts/PathWaterlineGui.py" line="143"/>
       <source>Create a Waterline Operation from a model</source>
       <translation type="unfinished">Create a Waterline Operation from a model</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathSuface</name>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="839"/>
+      <source>No scan data to convert to Gcode.</source>
+      <translation type="unfinished">No scan data to convert to Gcode.</translation>
     </message>
   </context>
   <context>

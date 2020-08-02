@@ -2,44 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="es-ES" sourcelanguage="en">
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="110"/>
-      <source>The objects that are part of this layer</source>
-      <translation>Los objetos que forman parte de esta capa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="147"/>
-      <source>If on, the child objects of this layer will match its visual aspects</source>
-      <translation>Si está activado, los objetos hijo de esta capa coincidirán con sus propios aspectos visuales</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="156"/>
-      <source>The line color of the children of this layer</source>
-      <translation>El color de línea de los hijos de esta capa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="162"/>
-      <source>The shape color of the children of this layer</source>
-      <translation>El color de forma de los hijos de esta capa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="168"/>
-      <source>The line width of the children of this layer</source>
-      <translation>El ancho de línea de los hijos de esta capa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="174"/>
-      <source>The draw style of the children of this layer</source>
-      <translation>El estilo de dibujo de los hijos de esta capa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="180"/>
-      <source>The transparency of the children of this layer</source>
-      <translation>La transparencia de los hijos de esta capa</translation>
-    </message>
-  </context>
-  <context>
     <name>Dialog</name>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
@@ -733,19 +695,6 @@ It must be at least 2.</source>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
       <translation>Reiniciar puntos</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="83"/>
-      <source>Layer</source>
-      <translation>Capa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="84"/>
-      <source>Adds a layer</source>
-      <translation>Añade una capa</translation>
     </message>
   </context>
   <context>
@@ -2862,21 +2811,6 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Marque esto si el objeto debe aparecer como lleno, de lo contrario aparecerá como una estructura alámbrica. No está disponible si la opción de preferencia de Draft 'Usar primitivos de pieza' está habilitada</translation>
     </message>
     <message>
-      <location filename="../../DraftLayer.py" line="43"/>
-      <source>No active document. Aborting</source>
-      <translation>No hay documento activo. Abortando</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="50"/>
-      <source>Layer</source>
-      <translation>Capa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="71"/>
-      <source>Layers</source>
-      <translation>Capas</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Polyline</source>
       <translation>Polilínea</translation>
@@ -2920,16 +2854,6 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <location filename="../../DraftGui.py" line="949"/>
       <source>Trim distance</source>
       <translation>Recortar distancia</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="334"/>
-      <source>Activate this layer</source>
-      <translation>Activar esta capa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="341"/>
-      <source>Select contents</source>
-      <translation>Seleccionar contenido</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>

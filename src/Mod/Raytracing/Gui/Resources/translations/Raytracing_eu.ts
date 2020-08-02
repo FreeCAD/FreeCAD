@@ -496,17 +496,17 @@ Jarraitu nahi duzu?</translation>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location filename="../../ViewProvider.cpp" line="146"/>
+      <location filename="../../ViewProvider.cpp" line="147"/>
       <source>Edit Povray project</source>
       <translation>Editatu Povray proiektua</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="177"/>
+      <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Povray template</source>
       <translation>Povray txantiloia</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="177"/>
+      <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Select a Povray template</source>
       <translation>Hautatu Povray txantiloi bat</translation>
     </message>

@@ -2025,7 +2025,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>Programaren bertsioa:</translation>
     </message>
   </context>
   <context>
@@ -2258,11 +2258,19 @@ txosten-bistaren panelera birzuzenduko da</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>
-      <translation type="unfinished">Include a timecode for each report</translation>
+      <translation>Sartu denbora-kode bat txosten bakoitzerako</translation>
     </message>
     <message>
       <source>Include a timecode for each entry</source>
-      <translation type="unfinished">Include a timecode for each entry</translation>
+      <translation>Sartu denbora-kode bat sarrera bakoitzerako</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation type="unfinished">Normal messages will be recorded</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation type="unfinished">Record normal messages</translation>
     </message>
   </context>
   <context>
@@ -3290,14 +3298,6 @@ Tornua: pieza Z ardatzaren inguruan biratuko da.</translation>
       <translation>Trackball</translation>
     </message>
     <message>
-      <source>New document camera orientation</source>
-      <translation>Dokumentuko kameraren orientazio berria</translation>
-    </message>
-    <message>
-      <source>Camera orientation for new documents</source>
-      <translation>Kameraren orientazioa dokumentu berrietarako</translation>
-    </message>
-    <message>
       <source>New document scale</source>
       <translation>Dokumentu-eskala berria</translation>
     </message>
@@ -3404,6 +3404,14 @@ Ezarpen honek ez du desgaitzen sagu bidezko inklinazioa.</translation>
     <message>
       <source>Custom</source>
       <translation>Pertsonalizatua</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation type="unfinished">Default camera orientation</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
     </message>
   </context>
   <context>
@@ -4456,18 +4464,6 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <source>Logging</source>
-      <translation>Egunkaria</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Abisua</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Errorea</translation>
-    </message>
-    <message>
       <source>Options</source>
       <translation>Aukerak</translation>
     </message>
@@ -4498,6 +4494,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Plain Text Files</source>
       <translation>Testu lauko fitxategiak</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation type="unfinished">Display message types</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation type="unfinished">Normal messages</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation type="unfinished">Log messages</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation type="unfinished">Warnings</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation type="unfinished">Errors</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation type="unfinished">Show report view on</translation>
     </message>
   </context>
   <context>
@@ -5873,11 +5893,11 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     <name>Gui::VectorListEditor</name>
     <message>
       <source>Vectors</source>
-      <translation type="unfinished">Vectors</translation>
+      <translation>Bektoreak</translation>
     </message>
     <message>
       <source>Table</source>
-      <translation type="unfinished">Table</translation>
+      <translation>Taula</translation>
     </message>
     <message>
       <source>...</source>
@@ -7014,7 +7034,7 @@ Aukeratu 'Abortatu' abortatzeko.</translation>
     </message>
     <message>
       <source>Change the draw style of the objects</source>
-      <translation type="unfinished">Change the draw style of the objects</translation>
+      <translation>Aldatu objektuen marrazte-estiloa</translation>
     </message>
   </context>
   <context>
@@ -8520,6 +8540,21 @@ Aukeratu 'Abortatu' abortatzeko.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Bista estandarra</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation type="unfinished">Home</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation type="unfinished">Set to default home view</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Standard-View</source>
@@ -9116,16 +9151,12 @@ Ziur zaude jarraitu nahi duzula?
 </translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Elementu hauek ezabatzeko hautatu dira, baina ez daude dokumentu aktiboan.
-
-</translation>
-    </message>
-    <message>
       <source>Object dependencies</source>
       <translation>Objektuaren mendekotasunak</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
   </context>
   <context>

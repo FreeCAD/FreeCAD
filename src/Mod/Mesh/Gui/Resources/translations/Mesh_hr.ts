@@ -87,14 +87,14 @@
     <message>
       <location filename="../../Command.cpp" line="1448"/>
       <source>Decimation...</source>
-      <translation type="unfinished">Decimation...</translation>
+      <translation>Desetkovanje...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1449"/>
       <location filename="../../Command.cpp" line="1450"/>
       <location filename="../../Command.cpp" line="1451"/>
       <source>Decimates a mesh</source>
-      <translation type="unfinished">Decimates a mesh</translation>
+      <translation>Desetkuj mrežu</translation>
     </message>
   </context>
   <context>
@@ -721,12 +721,12 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
       <source>Decimating</source>
-      <translation type="unfinished">Decimating</translation>
+      <translation>Desetkovano</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
       <source>Reduction</source>
-      <translation type="unfinished">Reduction</translation>
+      <translation>Reduciranje</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
@@ -736,13 +736,13 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
       <source>Full</source>
-      <translation type="unfinished">Full</translation>
+      <translation>Pun</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
       <location filename="../../DlgDecimating.cpp" line="91"/>
       <source>Absolute number</source>
-      <translation type="unfinished">Absolute number</translation>
+      <translation>Apsolutni broj</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
@@ -752,7 +752,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="85"/>
       <source>Absolute number (Maximum: %1)</source>
-      <translation type="unfinished">Absolute number (Maximum: %1)</translation>
+      <translation>Apsolutni broj (Maksimalno: %1)</translation>
     </message>
   </context>
   <context>
@@ -1464,48 +1464,48 @@ vodi do uglađenijeg izgleda.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="97"/>
+      <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
       <translation>Automatsko</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Adaptive</source>
       <translation>Prilagodljiv</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="100"/>
+      <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Frontal</source>
       <translation>Čeoni</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="102"/>
-      <source>Frontal Quad</source>
-      <translation type="unfinished">Frontal Quad</translation>
-    </message>
-    <message>
       <location filename="../../RemeshGmsh.cpp" line="103"/>
-      <source>Parallelograms</source>
-      <translation type="unfinished">Parallelograms</translation>
+      <source>Frontal Quad</source>
+      <translation>Čeoni Četverokut</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="174"/>
-      <location filename="../../RemeshGmsh.cpp" line="230"/>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <source>Parallelograms</source>
+      <translation>Paralelogrami</translation>
+    </message>
+    <message>
+      <location filename="../../RemeshGmsh.cpp" line="175"/>
+      <location filename="../../RemeshGmsh.cpp" line="231"/>
       <source>Time:</source>
       <translation>Vrijeme:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="219"/>
+      <location filename="../../RemeshGmsh.cpp" line="220"/>
       <source>Running gmsh...</source>
-      <translation type="unfinished">Running gmsh...</translation>
+      <translation>Izvodi se gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="241"/>
+      <location filename="../../RemeshGmsh.cpp" line="242"/>
       <source>Failed to start</source>
       <translation>Neuspjelo pokretanje</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="248"/>
+      <location filename="../../RemeshGmsh.cpp" line="249"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
@@ -1536,7 +1536,7 @@ vodi do uglađenijeg izgleda.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="731"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>Završiti</translation>
     </message>
@@ -1594,17 +1594,17 @@ vodi do uglađenijeg izgleda.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by gmsh</source>
-      <translation type="unfinished">Remesh by gmsh</translation>
+      <translation>Ponovo umrežavanje sa gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
       <source>Remeshing Parameter</source>
-      <translation type="unfinished">Remeshing Parameter</translation>
+      <translation>Parametar ponovnog umrežavanja</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing:</source>
-      <translation type="unfinished">Meshing:</translation>
+      <translation>Putanje mreže:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>

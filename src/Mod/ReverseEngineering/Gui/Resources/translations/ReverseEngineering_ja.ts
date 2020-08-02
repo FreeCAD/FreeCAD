@@ -343,7 +343,7 @@
     <message>
       <location filename="../../Command.cpp" line="90"/>
       <source>Please select a point cloud or mesh.</source>
-      <translation type="unfinished">Please select a point cloud or mesh.</translation>
+      <translation>点群またはメッシュを選択してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="570"/>
@@ -473,7 +473,7 @@
       <location filename="../../SegmentationManual.ui" line="218"/>
       <location filename="../../SegmentationManual.ui" line="271"/>
       <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
+      <translation>検知</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -503,7 +503,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>セグメンテーション</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>

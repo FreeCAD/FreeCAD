@@ -364,13 +364,6 @@ addon yang terinstal akan diperiksa untuk pembaruan yang tersedia
       <translation>Secara otomatis memeriksa pembaruan di awal (memerlukan GitPython)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="42"/>
-      <source>You can use this window to specify additional addon repositories
-sto be scanned for available addons</source>
-      <translation>Anda dapat menggunakan jendela ini untuk menentukan ruang penyimpanan addon tambahan
-yang akan dipindai untuk addon yang tersedia</translation>
-    </message>
-    <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
       <translation>Proxy</translation>
@@ -399,6 +392,13 @@ yang akan dipindai untuk addon yang tersedia</translation>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the Addon Manager</source>
       <translation type="unfinished">Close the Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="42"/>
+      <source>You can use this window to specify additional addon repositories
+to be scanned for available addons</source>
+      <translation type="unfinished">You can use this window to specify additional addon repositories
+to be scanned for available addons</translation>
     </message>
   </context>
   <context>

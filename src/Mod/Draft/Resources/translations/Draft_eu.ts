@@ -2,44 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="eu" sourcelanguage="en">
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="110"/>
-      <source>The objects that are part of this layer</source>
-      <translation>Geruza hau osatzen duten objektuak</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="147"/>
-      <source>If on, the child objects of this layer will match its visual aspects</source>
-      <translation>Aktibatuta badago, geruza honetako objektu haurrak bere ikusizko alderdiekin bat etorriko dira</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="156"/>
-      <source>The line color of the children of this layer</source>
-      <translation>Geruza honetako haurren lerro-kolorea</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="162"/>
-      <source>The shape color of the children of this layer</source>
-      <translation>Geruza honetako haurren forma-kolorea</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="168"/>
-      <source>The line width of the children of this layer</source>
-      <translation>Geruza honetako haurren lerro-zabalera</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="174"/>
-      <source>The draw style of the children of this layer</source>
-      <translation>Geruza honetako haurren marrazte-estiloa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="180"/>
-      <source>The transparency of the children of this layer</source>
-      <translation>Geruza honetako haurren gardentasuna</translation>
-    </message>
-  </context>
-  <context>
     <name>Dialog</name>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
@@ -229,12 +191,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="242"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation type="unfinished">Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</translation>
+      <translation>Adierazi luzera-unitate baliozko bat, adibidez milimetroak, metroak, hazbeteak edo oinak, kota-lerroa unitate horretan bistaratu dadin</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="259"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation type="unfinished">If it is checked it will show the unit next to the dimension value</translation>
+      <translation>Markatuta badago, unitatea kota-balioaren alboan erakutsiko du</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
@@ -733,19 +695,6 @@ Gutxienez 2 izan behar du.</translation>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
       <translation>Berrezarri puntua</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="83"/>
-      <source>Layer</source>
-      <translation>Geruza</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="84"/>
-      <source>Adds a layer</source>
-      <translation>Geruza bat gehitzen du</translation>
     </message>
   </context>
   <context>
@@ -2855,21 +2804,6 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <translation>Markatu hau objektuak beteta agertu behar badu, bestela alanbre-bilbe gisa agertuko da. Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta badago.</translation>
     </message>
     <message>
-      <location filename="../../DraftLayer.py" line="43"/>
-      <source>No active document. Aborting</source>
-      <translation>Ez dago dokumentu aktiborik. Abortatzen</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="50"/>
-      <source>Layer</source>
-      <translation>Geruza</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="71"/>
-      <source>Layers</source>
-      <translation>Geruzak</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Polyline</source>
       <translation>Polilerroa</translation>
@@ -2913,16 +2847,6 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
       <location filename="../../DraftGui.py" line="949"/>
       <source>Trim distance</source>
       <translation>Muxarratze-distantzia</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="334"/>
-      <source>Activate this layer</source>
-      <translation>Aktibatu geruza hau</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="341"/>
-      <source>Select contents</source>
-      <translation>Hautatu edukiak</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>
