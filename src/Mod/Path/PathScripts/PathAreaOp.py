@@ -492,6 +492,7 @@ class ObjectOp(PathOp.ObjectOp):
                 self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
         # Raise cutter to safe height and rotate back to original orientation
+        #    based on next rotational operation in job
         if self.rotateFlag is True:
             resetAxis = False
             lastJobOp = None
@@ -517,12 +518,12 @@ class ObjectOp(PathOp.ObjectOp):
                     PathLog.debug('Last Op, {}, has `EnableRotation` set to {}'.format(lastJobOp.Label, lastJobOp.EnableRotation))
                     if lastJobOp.EnableRotation != obj.EnableRotation:
                         resetAxis = True
-            if ns == numShapes - 1:  # If last shape, check next op EnableRotation setting
-                if nextJobOp is not None:
-                    if hasattr(nextJobOp, 'EnableRotation'):
-                        PathLog.debug('Next Op, {}, has `EnableRotation` set to {}'.format(nextJobOp.Label, nextJobOp.EnableRotation))
-                        if nextJobOp.EnableRotation != obj.EnableRotation:
-                            resetAxis = True
+            # if ns == numShapes - 1:  # If last shape, check next op EnableRotation setting
+            if nextJobOp is not None:
+                if hasattr(nextJobOp, 'EnableRotation'):
+                    PathLog.debug('Next Op, {}, has `EnableRotation` set to {}'.format(nextJobOp.Label, nextJobOp.EnableRotation))
+                    if nextJobOp.EnableRotation != obj.EnableRotation:
+                        resetAxis = True
 
             # Raise to safe height if rotation activated
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
@@ -747,8 +748,6 @@ class ObjectOp(PathOp.ObjectOp):
             praInfo += "\n - ... rotation triggered"
         else:
             praInfo += "\n - ... NO rotation triggered"
-
-        PathLog.debug("\n" + str(praInfo))
 
         return (rtn, angle, axis, praInfo)
 
@@ -1013,7 +1012,7 @@ class ObjectOp(PathOp.ObjectOp):
             final_depth=finDep,
             user_depths=None)
         return cdp
-
+# Eclass
 
 def SetupProperties():
     setup = ['EnableRotation']
