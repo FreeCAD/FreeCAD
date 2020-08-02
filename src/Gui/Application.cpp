@@ -125,6 +125,7 @@
 #include "ViewProviderLink.h"
 #include "LinkViewPy.h"
 #include "AxisOriginPy.h"
+#include "CommandPy.h"
 
 #include "Language/Translator.h"
 #include "TaskView/TaskView.h"
@@ -472,6 +473,7 @@ Application::Application(bool GUIenabled)
 
         Base::Interpreter().addType(&LinkViewPy::Type,module,"LinkView");
         Base::Interpreter().addType(&AxisOriginPy::Type,module,"AxisOrigin");
+        Base::Interpreter().addType(&CommandPy::Type,module, "Command");
     }
 
     Base::PyGILStateLocker lock;
