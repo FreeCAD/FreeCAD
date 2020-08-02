@@ -991,11 +991,13 @@ class ObjectOp(PathOp.ObjectOp):
         dwn = face.extrude(FreeCAD.Vector(0.0, 0.0, -5.0))
         upCmn = base.Shape.common(up)
         dwnCmn = base.Shape.common(dwn)
-        if upCmn.Volume == 0.0:
+        # Identify orientation based on volumes of common() results
+        if len(upCmn.Edges) > 0 and round(upCmn.Volume, 6) == 0.0:
             return True
-        elif dwnCmn.Volume == 0.0:
+        elif len(dwnCmn.Edges) > 0 and round(dwnCmn.Volume, 6) == 0.0:
             return False
-        if dwnCmn.Volume > upCmn.Volume:
+        if (len(upCmn.Edges) > 0 and len(dwnCmn.Edges) > 0 and
+                round(dwnCmn.Volume, 6) > round(upCmn.Volume, 6)):
             return True
         return False
 
