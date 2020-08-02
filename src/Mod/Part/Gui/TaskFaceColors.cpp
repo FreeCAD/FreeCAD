@@ -256,6 +256,7 @@ public:
             self->d->boxSelection = true;
             self->d->addFacesToSelection(view, proj, polygon, shape);
             self->d->boxSelection = false;
+            self->d->ui->boxSelection->setChecked(false);
             self->updatePanel();
             view->redraw();
         }
@@ -322,7 +323,16 @@ void FaceColors::slotDeleteObject(const Gui::ViewProvider& obj)
 void FaceColors::on_boxSelection_clicked()
 {
     Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
-    if (view) {
+    // toggle the button state and feature
+    if (d->boxSelection) {
+        d->boxSelection = false;
+        d->ui->boxSelection->setChecked(false);
+    }
+    else {
+        d->boxSelection = true;
+        d->ui->boxSelection->setChecked(true);
+    }
+    if (view && d->boxSelection) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
             viewer->startSelection(Gui::View3DInventorViewer::Rubberband);
@@ -433,17 +443,10 @@ bool FaceColors::accept()
 
 bool FaceColors::reject()
 {
-    int ret = QMessageBox::question(this, tr("Face colors"), tr("Do you really want to cancel?"),
-        QMessageBox::Yes, QMessageBox::No|QMessageBox::Default|QMessageBox::Escape);
-    if (ret == QMessageBox::Yes) {
-        Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
-        doc->abortCommand();
-        doc->resetEdit();
-        return true;
-    }
-    else {
-        return false;
-    }
+    Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
+    doc->abortCommand();
+    doc->resetEdit();
+    return true;
 }
 
 void FaceColors::changeEvent(QEvent *e)
