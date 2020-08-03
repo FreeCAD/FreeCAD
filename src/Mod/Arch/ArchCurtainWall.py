@@ -130,7 +130,7 @@ class CommandArchCurtainWall:
             if hasattr(FreeCAD,"DraftWorkingPlane"):
                 FreeCAD.DraftWorkingPlane.setup()
             if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.getPoint(callback=self.getPoint)
+                FreeCADGui.Snapper.get_point(callback=self.getPoint)
 
     def getPoint(self,point=None,obj=None):
 
@@ -141,7 +141,7 @@ class CommandArchCurtainWall:
             return
         self.points.append(point)
         if len(self.points) == 1:
-            FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint)
+            FreeCADGui.Snapper.get_point(last=self.points[0],callback=self.getPoint)
         elif len(self.points) == 2:
             FreeCADGui.Control.closeDialog()
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Curtain Wall"))

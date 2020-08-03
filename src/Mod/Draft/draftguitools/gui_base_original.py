@@ -151,7 +151,7 @@ class DraftTool:
         if utils.get_param("showPlaneTracker", False):
             self.planetrack = trackers.PlaneTracker()
         if hasattr(Gui, "Snapper"):
-            Gui.Snapper.setTrackers()
+            Gui.Snapper.set_trackers()
 
         _log("GuiCommand: {}".format(self.featureName))
         _msg("{}".format(16*"-"))

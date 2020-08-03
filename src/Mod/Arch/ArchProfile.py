@@ -131,7 +131,7 @@ class Arch_Profile:
         for pre in self.Presets:
             if pre[1] not in self.Categories:
                 self.Categories.append(pre[1])
-        FreeCADGui.Snapper.getPoint(callback=self.getPoint,extradlg=[self.taskbox()],title=translate("Arch","Create profile"))
+        FreeCADGui.Snapper.get_point(callback=self.getPoint,extradlg=[self.taskbox()],title=translate("Arch","Create profile"))
 
     def taskbox(self):
 

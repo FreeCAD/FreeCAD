@@ -389,7 +389,7 @@ class Dimension(gui_base_original.Creator):
                     self.altdown = True
                     self.ui.switchUi(True)
                     if hasattr(Gui, "Snapper"):
-                        Gui.Snapper.setSelectMode(True)
+                        Gui.Snapper.set_select_mode(True)
                 snapped = self.view.getObjectInfo((arg["Position"][0],
                                                    arg["Position"][1]))
                 if snapped:
@@ -422,7 +422,7 @@ class Dimension(gui_base_original.Creator):
                     self.altdown = False
                     self.ui.switchUi(False)
                     if hasattr(Gui, "Snapper"):
-                        Gui.Snapper.setSelectMode(False)
+                        Gui.Snapper.set_select_mode(False)
                 if self.dir:
                     _p = DraftVecUtils.project(self.point.sub(self.node[0]),
                                                self.dir)

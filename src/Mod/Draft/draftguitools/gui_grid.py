@@ -69,7 +69,7 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
         super(ToggleGrid, self).Activated()
 
         if hasattr(Gui, "Snapper"):
-            Gui.Snapper.setTrackers()
+            Gui.Snapper.set_trackers()
             if Gui.Snapper.grid:
                 if Gui.Snapper.grid.Visible:
                     Gui.Snapper.grid.off()

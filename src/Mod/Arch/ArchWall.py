@@ -331,7 +331,7 @@ class _CommandWall:
             self.tracker = DraftTrackers.boxTracker()
             if hasattr(FreeCAD,"DraftWorkingPlane"):
                 FreeCAD.DraftWorkingPlane.setup()
-            FreeCADGui.Snapper.getPoint(callback=self.getPoint,
+            FreeCADGui.Snapper.get_point(callback=self.getPoint,
                                         extradlg=self.taskbox(),
                                         title=translate("Arch","First point of wall")+":")
 
@@ -361,7 +361,7 @@ class _CommandWall:
             self.tracker.width(self.Width)
             self.tracker.height(self.Height)
             self.tracker.on()
-            FreeCADGui.Snapper.getPoint(last=self.points[0],
+            FreeCADGui.Snapper.get_point(last=self.points[0],
                                         callback=self.getPoint,
                                         movecallback=self.update,
                                         extradlg=self.taskbox(),

@@ -93,7 +93,7 @@ class DraftBaseWidget(QtGui.QWidget):
     def eventFilter(self, widget, event):
         if event.type() == QtCore.QEvent.KeyPress and event.text().upper()==inCommandShortcuts["CycleSnap"][0]:
             if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.cycleSnapObject()
+                FreeCADGui.Snapper.cycle_snap_object()
             return True
         return QtGui.QWidget.eventFilter(self, widget, event)
 
@@ -1487,7 +1487,7 @@ class DraftToolBar:
             spec = True
         elif txt.upper().startswith(inCommandShortcuts["AddHold"][0]):
             if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.addHoldPoint()
+                FreeCADGui.Snapper.add_hold_point()
             spec = True
         elif txt.upper().startswith(inCommandShortcuts["RestrictX"][0]):
             self.constrain("x")
@@ -1910,14 +1910,14 @@ class DraftToolBar:
         self.yValue.setText(displayExternal(v.y,None,'Length'))
         self.zValue.setText(displayExternal(v.z,None,'Length'))
         if self.angleLock.isChecked():
-            FreeCADGui.Snapper.setAngle(self.angle)
+            FreeCADGui.Snapper.set_angle(self.angle)
 
     def toggleAngle(self,b):
         self.alock = self.angleLock.isChecked()
         if b:
-            FreeCADGui.Snapper.setAngle(self.angle)
+            FreeCADGui.Snapper.set_angle(self.angle)
         else:
-            FreeCADGui.Snapper.setAngle()
+            FreeCADGui.Snapper.set_angle()
             self.angle = None
 
 

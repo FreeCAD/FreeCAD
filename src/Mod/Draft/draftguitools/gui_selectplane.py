@@ -454,7 +454,7 @@ class Draft_SelectPlane:
             p.v = s[1]
             p.axis = s[2]
             p.position = s[3]
-            FreeCADGui.Snapper.setGrid()
+            FreeCADGui.Snapper.set_grid()
             self.finish()
 
     def onSetGridSize(self, text):
@@ -466,14 +466,14 @@ class Draft_SelectPlane:
         else:
             self.param.SetFloat("gridSpacing", q.Value)
             if hasattr(FreeCADGui, "Snapper"):
-                FreeCADGui.Snapper.setGrid()
+                FreeCADGui.Snapper.set_grid()
 
     def onSetMainline(self, i):
         """Execute when setting main line grid spacing."""
         if i > 1:
             self.param.SetInt("gridEvery", i)
             if hasattr(FreeCADGui, "Snapper"):
-                FreeCADGui.Snapper.setGrid()
+                FreeCADGui.Snapper.set_grid()
 
     def onSetSnapRadius(self, i):
         """Execute when setting the snap radius."""

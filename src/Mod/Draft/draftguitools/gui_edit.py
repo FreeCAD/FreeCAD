@@ -297,7 +297,7 @@ class Edit(gui_base_original.Modifier):
 
         # start object editing
         Gui.Selection.clearSelection()
-        Gui.Snapper.setSelectMode(True)
+        Gui.Snapper.set_select_mode(True)
 
         self.ui.editUi()
 
@@ -329,7 +329,7 @@ class Edit(gui_base_original.Modifier):
         self.unregister_editing_callbacks()
         self.editing = None
         self.finalizeGhost()
-        Gui.Snapper.setSelectMode(False)
+        Gui.Snapper.set_select_mode(False)
         if self.obj and closed:
             if "Closed" in self.obj.PropertiesList:
                 if not self.obj.Closed:
@@ -492,7 +492,7 @@ class Edit(gui_base_original.Modifier):
         self.finalizeGhost()
         self.ghost = self.initGhost(self.obj)
         self.node.append(self.trackers[self.obj.Name][self.editing].get())
-        Gui.Snapper.setSelectMode(False)
+        Gui.Snapper.set_select_mode(False)
         self.hideTrackers()
 
     def updateTrackerAndGhost(self, event):
@@ -511,7 +511,7 @@ class Edit(gui_base_original.Modifier):
         """Terminate editing and start object updating process."""
         self.finalizeGhost()
         self.trackers[obj.Name][nodeIndex].on()
-        Gui.Snapper.setSelectMode(True)
+        Gui.Snapper.set_select_mode(True)
         if v is None:
             # endEditing is called by mousePressed
             v = self.trackers[obj.Name][nodeIndex].get()
