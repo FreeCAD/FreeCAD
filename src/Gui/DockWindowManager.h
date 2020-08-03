@@ -342,12 +342,18 @@ public:
 class OverlayProxyWidget: public QWidget
 {
     Q_OBJECT
+
+    Q_PROPERTY(QBrush hintColor READ hintColor WRITE setHintColor DESIGNABLE true SCRIPTABLE true)
+
 public:
     OverlayProxyWidget(OverlayTabWidget *);
 
     OverlayTabWidget *getOwner() const {return owner;}
     bool hitTest(QPoint, bool delay=true);
     bool isActivated() const;
+
+    QBrush hintColor() const;
+    void setHintColor(const QBrush &);
 
 protected:
     void enterEvent(QEvent*);
@@ -364,6 +370,7 @@ private:
     int drawLine = false;
     int dockArea;
     QTimer timer;
+    QBrush _hintColor;
 };
 
 

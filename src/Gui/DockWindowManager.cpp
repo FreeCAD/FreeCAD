@@ -151,7 +151,7 @@ static const char *_PixmapOverlay[]={
 // -----------------------------------------------------------
 
 OverlayProxyWidget::OverlayProxyWidget(OverlayTabWidget *tabOverlay)
-    :QWidget(tabOverlay->parentWidget()), owner(tabOverlay)
+    :QWidget(tabOverlay->parentWidget()), owner(tabOverlay), _hintColor(QColor(50,50,50,150))
 {
     dockArea = owner->getDockArea();
     timer.setSingleShot(true);
@@ -285,14 +285,24 @@ void OverlayProxyWidget::mousePressEvent(QMouseEvent *ev)
     DockWindowManager::instance()->refreshOverlay(this);
 }
 
+QBrush OverlayProxyWidget::hintColor() const
+{
+    return _hintColor;
+}
+
+void OverlayProxyWidget::setHintColor(const QBrush &brush)
+{
+    _hintColor = brush;
+}
+
 void OverlayProxyWidget::paintEvent(QPaintEvent *)
 {
     if(!drawLine)
         return;
     QPainter painter(this);
-    painter.setOpacity(0.6);
+    painter.setOpacity(_hintColor.color().alphaF());
     painter.setPen(Qt::transparent);
-    painter.setBrush(QColor(50,50,50));
+    painter.setBrush(_hintColor);
 
     QRect rect = this->rect();
     if (owner->isVisible() && owner->tabBar()->isVisible()) {
@@ -1382,16 +1392,21 @@ void OverlayTabWidget::setOverlayMode(bool enable)
 
     if(!enable && isTransparent())
     {
+        proxyWidget->setStyleSheet(OverlayStyleSheet::instance()->activeStyleSheet);
         setStyleSheet(OverlayStyleSheet::instance()->activeStyleSheet);
         setOverlayMode(this, -1);
     } else if (enable && !isTransparent() && (isEditShow() || isAutoHide())) {
+        proxyWidget->setStyleSheet(OverlayStyleSheet::instance()->offStyleSheet);
         setStyleSheet(OverlayStyleSheet::instance()->offStyleSheet);
         setOverlayMode(this, 0);
     } else {
-        if(enable)
+        if(enable) {
+            proxyWidget->setStyleSheet(OverlayStyleSheet::instance()->onStyleSheet);
             setStyleSheet(OverlayStyleSheet::instance()->onStyleSheet);
-        else
+        } else {
+            proxyWidget->setStyleSheet(OverlayStyleSheet::instance()->offStyleSheet);
             setStyleSheet(OverlayStyleSheet::instance()->offStyleSheet);
+        }
 
         setOverlayMode(this, enable?1:0);
     }

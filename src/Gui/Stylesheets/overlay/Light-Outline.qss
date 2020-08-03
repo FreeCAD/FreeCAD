@@ -1,6 +1,7 @@
 * {
   color: palette(text);
   alternate-background-color: rgba(250,250,250,120);
+  border: transparent;
 }
 
 QComboBox,
@@ -32,6 +33,24 @@ QTabWidget::pane {
   border: transparent;
 }
 
+QTabBar {
+  border : none;
+}
+
+QTabBar::tab {
+  color: palette(text);
+  background-color: rgba(100,100,100,50);
+  padding: 5px;
+}
+
+QTabBar::tab:selected {
+  background-color: rgba(250,250,250,80);
+}
+
+QTabBar::tab:hover {
+  background-color: rgba(250,250,250,200);
+}
+
 /* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
 To customize for each overlay docking site, use the following selector
 
@@ -52,28 +71,22 @@ Gui--OverlayTabWidget::pane {
   background-color: transparent
 }
 
-QTabBar {
-  border : none;
+Gui--OverlayTabWidget::tab-bar:top,
+Gui--OverlayTabWidget::tab-bar:bottom {
+    left: 10px;
+    alignment: left;
 }
 
-QTabBar::tab {
-  color: palette(text);
-  background-color: rgba(100,100,100,50);
-  padding: 5px;
-}
-
-QTabBar::tab:selected {
-  background-color: rgba(250,250,250,80);
-}
-
-QTabBar::tab:hover {
-  background-color: rgba(250,250,250,200);
+Gui--OverlayTabWidget::tab-bar:left,
+Gui--OverlayTabWidget::tab-bar:right {
+    top: 10px;
+    alignment: top;
 }
 
 QHeaderView::section {
   color: rgb(80, 80, 80);
   background-color: rgba(250,250,250,50);
-  border: 1px solid palette(dark);
+  border: 1px solid rgb(100,100,100);
   padding: 2px;
 }
 
@@ -81,6 +94,10 @@ QToolTip {
   background-color: rgba(250,250,250,180);
   border: 1px solid rgb(80,80,80);
   border-radius:2px;
+}
+
+Gui--OverlayProxyWidget {
+  qproperty-hintColor: rgba(250, 250, 250, 0.6);
 }
 
 Gui--OverlayToolButton {
@@ -140,6 +157,7 @@ Gui--TreeWidget QHeaderView:section {
   height: 0px;
   background-color: transparent;
   padding: 0px;
+  border: transparent;
 }
 
 Gui--CallTipsList::item {
