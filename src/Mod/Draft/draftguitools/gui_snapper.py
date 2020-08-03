@@ -435,7 +435,7 @@ class Snapper:
                         snaps.append(self.snapToVertex(self.snapInfo, active=True))
                     else:
                         # all other cases (face, etc...) default to passive snap
-                        snapArray = [self.snapToVertex(self.snapInfo)]
+                        snaps = [self.snapToVertex(self.snapInfo)]
 
             elif Draft.getType(obj) == "Dimension":
                 # for dimensions we snap to their 2 points:
