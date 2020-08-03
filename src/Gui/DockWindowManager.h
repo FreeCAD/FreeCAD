@@ -133,6 +133,9 @@ public:
 
     void changeOverlaySize(int changes);
 
+    void setOverlayMouseTransparent(bool enabled);
+    bool isOverlayMouseTransparent() const;
+
     bool isUnderOverlay() const;
 
 protected:

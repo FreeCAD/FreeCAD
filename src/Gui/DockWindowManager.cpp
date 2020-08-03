@@ -52,6 +52,7 @@
 
 #include <Base/Tools.h>
 #include <Base/Console.h>
+#include "BitmapFactory.h"
 #include "DockWindowManager.h"
 #include "MainWindow.h"
 #include "ViewParams.h"
@@ -2010,6 +2011,8 @@ struct DockWindowManagerP
     DockWindowItems _dockWindowItems;
     QTimer _timer;
 
+    bool mouseTransparent = false;
+
 #ifdef FC_HAS_DOCK_OVERLAY
     QMap<QDockWidget*, OverlayInfo*> _overlays;
     OverlayInfo _left;
@@ -2017,6 +2020,7 @@ struct DockWindowManagerP
     OverlayInfo _top;
     OverlayInfo _bottom;
     std::array<OverlayInfo*,4> _overlayInfos;
+    QCursor _cursor;
 
     QPoint _lastPos;
 
@@ -2099,6 +2103,24 @@ struct DockWindowManagerP
             }
             o->tabWidget->setTitleBar(createTitleBar(o->tabWidget));
         }
+
+        QIcon px = BitmapFactory().pixmap("cursor-through");
+        _cursor = QCursor(px.pixmap(32,32), 10, 9);
+    }
+
+    void setMouseTransparent(bool enabled)
+    {
+        if (mouseTransparent == enabled)
+            return;
+        mouseTransparent = enabled;
+        for (auto &o : _overlays) {
+            o->tabWidget->getProxyWidget()->setAttribute(Qt::WA_TransparentForMouseEvents, enabled);
+            o->tabWidget->setAttribute(Qt::WA_TransparentForMouseEvents, enabled);
+        }
+        if(!enabled)
+            qApp->setOverrideCursor(QCursor());
+        else
+            qApp->setOverrideCursor(_cursor);
     }
 
     bool toggleOverlay(QDockWidget *dock, OverlayToggleMode toggle,
@@ -2603,6 +2625,7 @@ struct DockWindowManagerP
 
     DockWindowManagerP(DockWindowManager *, QWidget *) {}
     void refreshOverlay(QWidget *, bool) {}
+    void setMouseTransparent(bool) {}
     void saveOverlay() {}
     void restoreOverlay() {}
     void onTimer() {}
@@ -2974,10 +2997,15 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
         QKeyEvent *ke = static_cast<QKeyEvent*>(ev);
         bool accepted = false;
         if (ke->modifiers() == Qt::NoModifier && ke->key() == Qt::Key_Escape) {
-            for (auto &o : d->_overlays) {
-                if (o->tabWidget->getState() == OverlayTabWidget::State_Hint) {
-                    o->tabWidget->setState(OverlayTabWidget::State_HintHidden);
-                    accepted = true;
+            if (d->mouseTransparent) {
+                d->setMouseTransparent(false);
+                accepted = true;
+            } else {
+                for (auto &o : d->_overlays) {
+                    if (o->tabWidget->getState() == OverlayTabWidget::State_Hint) {
+                        o->tabWidget->setState(OverlayTabWidget::State_HintHidden);
+                        accepted = true;
+                    }
                 }
             }
         }
@@ -3008,6 +3036,8 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
     case QEvent::MouseMove:
     case QEvent::Wheel:
     case QEvent::ContextMenu: {
+        if (d->mouseTransparent)
+            return false;
         if (d->_trackingView >= 0) {
             View3DInventorViewer *view = nullptr;
             if(!TreeWidget::isDragging() && d->_trackingView < d->_3dviews.size())
@@ -3154,6 +3184,16 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
 void DockWindowManager::refreshOverlay(QWidget *widget, bool refreshStyle)
 {
     d->refreshOverlay(widget, refreshStyle);
+}
+
+void DockWindowManager::setOverlayMouseTransparent(bool enabled)
+{
+    d->setMouseTransparent(enabled);
+}
+
+bool DockWindowManager::isOverlayMouseTransparent() const
+{
+    return d->mouseTransparent;
 }
 
 bool DockWindowManager::isUnderOverlay() const

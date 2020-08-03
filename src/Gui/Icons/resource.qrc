@@ -211,6 +211,7 @@
         <file>Std_DatumPlane.svg</file>
         <file>Std_DatumCS.svg</file>
         <file>Std_SubShapeBinder.svg</file>
+        <file>cursor-through.svg</file>
     </qresource>
     <!-- Demonstrating support for an embedded icon theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->

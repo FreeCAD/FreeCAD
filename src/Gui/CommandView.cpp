@@ -4183,20 +4183,6 @@ VIEW_CMD_DEF(DockOverlayActivateOnHover, DockOverlayActivateOnHover)
 }
 
 //===========================================================================
-// Std_DockOverlayMouseThrough
-//===========================================================================
-
-VIEW_CMD_DEF(DockOverlayMouseThrough, DockOverlayMouseThrough)
-{
-    sGroup        = QT_TR_NOOP("Standard-View");
-    sMenuText     = QT_TR_NOOP("Mouse event pass through");
-    sToolTipText  = QT_TR_NOOP("Allow mouse event to pass through transparent overlay when holding 'ALT' key");
-    sWhatsThis    = "Std_DockOverlayMouseThrough";
-    sStatusTip    = sToolTipText;
-    eType         = 0;
-}
-
-//===========================================================================
 // Std_DockOverlayAutoMouseThrough
 //===========================================================================
 
@@ -4227,6 +4213,50 @@ VIEW_CMD_DEF(DockOverlayCheckNaviCube, DockOverlayCheckNaviCube)
     eType         = 0;
 }
 
+//===========================================================================
+// Std_DockOverlayMouseTransparent
+//===========================================================================
+
+DEF_STD_CMD_AC(StdCmdDockOverlayMouseTransparent)
+
+StdCmdDockOverlayMouseTransparent::StdCmdDockOverlayMouseTransparent()
+  :Command("Std_DockOverlayMouseTransparent")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Bypass mouse event in dock overlay");
+  sToolTipText  = QT_TR_NOOP("Bypass all mouse event in dock overlay");
+  sWhatsThis    = "Std_DockOverlayMouseTransparent";
+  sStatusTip    = sToolTipText;
+  sAccel        = "T, T";
+  eType         = NoTransaction;
+}
+
+void StdCmdDockOverlayMouseTransparent::activated(int iMsg)
+{
+    auto checked = !!iMsg;
+    DockWindowManager::instance()->setOverlayMouseTransparent(checked);
+    if(_pcAction)
+        _pcAction->setChecked(checked,true);
+}
+
+Action * StdCmdDockOverlayMouseTransparent::createAction(void) {
+    Action *pcAction = Command::createAction();
+    pcAction->setCheckable(true);
+    pcAction->setIcon(QIcon());
+    _pcAction = pcAction;
+    isActive();
+    return pcAction;
+}
+
+bool StdCmdDockOverlayMouseTransparent::isActive() {
+    bool checked = DockWindowManager::instance()->isOverlayMouseTransparent();
+    if(_pcAction && _pcAction->isChecked()!=checked)
+        _pcAction->setChecked(checked,true);
+    return true;
+}
+
+// ============================================================================
+
 class StdCmdDockOverlay : public GroupCommand
 {
 public:
@@ -4255,9 +4285,10 @@ public:
         addCommand(new StdCmdDockOverlayAutoView());
         addCommand(new StdCmdDockOverlayExtraState());
         addCommand(new StdCmdDockOverlayActivateOnHover());
-        addCommand(new StdCmdDockOverlayMouseThrough());
         addCommand(new StdCmdDockOverlayAutoMouseThrough());
         addCommand(new StdCmdDockOverlayCheckNaviCube());
+        addCommand();
+        addCommand(new StdCmdDockOverlayMouseTransparent());
     };
     virtual const char* className() const {return "StdCmdDockOverlay";}
 };
