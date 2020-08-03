@@ -311,6 +311,8 @@ def moveSubElements(obj, sub_objects_names, vector):
 
     shape = obj.Shape
     new_shape = None
+    if not shape.isValid():
+        return
 
     selected_vertexes = []
     for sub_objects_name in sub_objects_names:
@@ -319,6 +321,10 @@ def moveSubElements(obj, sub_objects_names, vector):
 
     new_shape = parse_shape(shape, selected_vertexes, vector)
     
+    if not new_shape.isValid():
+        # Ask 
+        new_shape.fix(0.001,0.001,0.001)
+
     if new_shape:
         if hasattr(obj, 'TypeId') and obj.TypeId == 'Part::Feature':
             obj.Shape = new_shape
