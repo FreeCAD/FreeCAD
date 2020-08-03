@@ -34,6 +34,8 @@ import FreeCAD, FreeCADGui
 
 # shortcuts
 Gui = FreeCADGui
+# this is to keep old code working
+Gui.listCommands = Gui.Command.listAll
 
 # Important definitions
 class Workbench:

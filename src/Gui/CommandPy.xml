@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="PyObjectBase"
+      Name="CommandPy" 
+      Twin="Command"
+      TwinPointer="Command"
+      Include="Gui/Command.h"
+      FatherInclude="Base/PyObjectBase.h"
+      Namespace="Gui"
+      FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
+      <UserDocu>FreeCAD Python wrapper of Command functions</UserDocu>
+    </Documentation>
+    <Methode Name="get" Static='true'>
+      <Documentation>
+          <UserDocu>get(string) -> Command
+
+Get a given command by name or None if it doesn't exist.
+</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="update" Static='true'>
+      <Documentation>
+          <UserDocu>update() -> None
+
+Update active status of all commands.
+</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="listAll" Static='true'>
+      <Documentation>
+          <UserDocu>listAll() -> list of strings
+
+Returns the name of all commands.
+</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="listByShortcut" Static='true'>
+      <Documentation>
+          <UserDocu>listByShortcut(string, bool bUseRegExp=False) -> list of strings
+
+Returns a list of all commands, filtered by shortcut.
+Shortcuts are converted to uppercase and spaces removed prior to comparison.
+</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="run">
+      <Documentation>
+          <UserDocu>run() -> None
+
+Runs the given command.
+</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isActive" Const="true">
+      <Documentation>
+          <UserDocu>isActive() -> bool
+
+Returns True if the command is active, False otherwise.
+</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getShortcut">
+      <Documentation>
+          <UserDocu>getShortcut() -> string
+
+Returns string representing shortcut key accelerator for command.
+</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setShortcut">
+      <Documentation>
+          <UserDocu>setShortcut(string) -> bool
+
+Sets shortcut for given command, returns bool True for success.
+</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getInfo">
+      <Documentation>
+          <UserDocu>getInfo() -> list of strings
+
+Usage: menuText, tooltipText, whatsThisText, statustipText, pixmapText, shortcutText.
+</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>
