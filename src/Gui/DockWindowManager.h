@@ -133,6 +133,8 @@ public:
 
     void changeOverlaySize(int changes);
 
+    bool isUnderOverlay() const;
+
 protected:
     bool eventFilter(QObject *, QEvent *ev);
 

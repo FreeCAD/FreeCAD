@@ -3156,6 +3156,16 @@ void DockWindowManager::refreshOverlay(QWidget *widget, bool refreshStyle)
     d->refreshOverlay(widget, refreshStyle);
 }
 
+bool DockWindowManager::isUnderOverlay() const
+{
+#ifdef FC_HAS_DOCK_OVERLAY
+    return ViewParams::getDockOverlayAutoMouseThrough()
+        && findTabWidget(qApp->widgetAt(QCursor::pos()), true);
+#else
+    return false;
+#endif
+}
+
 void DockWindowManager::saveOverlay()
 {
     d->saveOverlay();
