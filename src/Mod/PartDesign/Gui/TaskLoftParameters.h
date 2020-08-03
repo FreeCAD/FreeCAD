@@ -27,6 +27,10 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <QTextEdit>
+#include <QListWidget>
+#include <QPushButton>
+#include <QCheckBox>
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderLoft.h"
@@ -43,7 +47,6 @@ class ViewProvider;
 }
 
 namespace PartDesignGui {
-
 
 class TaskLoftParameters : public TaskSketchBasedParameters
 {
@@ -80,6 +83,61 @@ private:
     selectionModes selectionMode = none;
 };
 
+////////////////////////////////////////////////////////////////
+
+class TaskLoftWireOrders : public TaskSketchBasedParameters
+{
+    Q_OBJECT
+
+public:
+    TaskLoftWireOrders(ViewProviderLoft *LoftView,bool newObj=false,QWidget *parent = 0);
+    ~TaskLoftWireOrders();
+
+private Q_SLOTS:
+    void onUpButton();
+    void onDownButton();
+    void onSwapButton();
+    void onPreviewCheckBoxToggled(bool);
+    void onEnabledCheckBoxToggled(bool);
+    void onSketchBoxRowChanged(int currentRow);
+    void onWireBoxSelectionChanged();
+    void unFlashSelected();
+    void onSketchBoxItemDoubleClicked(QListWidgetItem* item);
+
+protected:
+    void changeEvent(QEvent *e);
+
+private:
+    void blockSignals(bool blocked);
+    void setupUI();
+    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void updateUI(int sketchindex, int wireindex, bool bFlash=true);
+    bool referenceSelected(const Gui::SelectionChanges& msg) const;
+    void flashSelected();
+    void slotChangedObject(const App::DocumentObject&, const App::Property&);
+    boost::signals2::connection connectModObject;
+    void openTransaction(const char *);
+    void commitTransaction();
+    App::Color getColor(int which_color);
+    QColor getQColor(int which_color);
+
+    PartGui::ViewProviderPart* svp;
+    App::Color oldProfileFlashColor;
+    QListWidget* sketchBox;
+    QListWidget* legendBox;
+    QListWidget* wireBox;
+    QLabel* sketchLabel;
+    QLabel* wiresLabel;
+    QPushButton* upButton;
+    QPushButton* downButton;
+    QPushButton* swapButton;
+    QCheckBox* enabledCheckBox;
+    QCheckBox* previewCheckBox;
+
+};
+
+//////////////////////////////////////////////////////////////////
+
 /// simulation dialog for the TaskView
 class TaskDlgLoftParameters : public TaskDlgSketchBasedParameters
 {
@@ -94,10 +152,22 @@ public:
 
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
+    virtual bool reject();
 
 protected:
     TaskLoftParameters  *parameter;
+    TaskLoftWireOrders *wireorder;
+    std::vector<std::vector<int> > oldOrders; //to restore line colors on accept or reject
+
+
 };
+///////////////////////////
+
+
+
+
+
+
 
 } //namespace PartDesignGui
 

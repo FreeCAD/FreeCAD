@@ -45,6 +45,8 @@ public:
 
     virtual bool onDelete(const std::vector<std::string> &);
     void highlightReferences(const bool on, bool auxiliary);
+    void highlightWire(const bool on, Part::Feature* sketch, int which_wire, App::Color which_color=App::Color(1.0,0.0,1.0));
+    void cleanup();
     
 protected:
     virtual bool setEdit(int ModNum);
@@ -54,7 +56,8 @@ protected:
     virtual QIcon getIcon(void) const;
     
 private:
-    std::vector<App::Color> originalLineColors;
+    std::map<Part::Feature*, std::vector<App::Color>> originalLineColors;
+    std::vector<std::pair<Part::Feature*, int>> undoQueue;
 };
 
 
