@@ -467,6 +467,39 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part Design");
+
+    // datums
+    Gui::MenuItem* datums = new Gui::MenuItem;
+    datums->setCommand("Create a datum");
+    *datums << "PartDesign_Point" << "PartDesign_Line"
+        << "PartDesign_Plane";
+
+    // additives
+    Gui::MenuItem* additives = new Gui::MenuItem;
+    additives->setCommand("Create an additive feature");
+    *additives << "PartDesign_Pad" << "PartDesign_Revolution"
+        << "PartDesign_AdditiveLoft" << "PartDesign_AdditivePipe";
+
+    // subtractives
+    Gui::MenuItem* subtractives = new Gui::MenuItem;
+    subtractives->setCommand("Create a subtractive feature");
+    *subtractives << "PartDesign_Pocket" << "PartDesign_Hole"
+        << "PartDesign_Groove" << "PartDesign_SubtractiveLoft"
+        << "PartDesign_SubtractivePipe";
+
+    // transformations
+    Gui::MenuItem* transformations = new Gui::MenuItem;
+    transformations->setCommand("Perform a transformation");
+    *transformations << "PartDesign_Mirrored" << "PartDesign_LinearPattern"
+        << "PartDesign_PolarPattern" << "PartDesign_MultiTransform";
+        //<< "PartDesign_Scaled"
+
+    // dressups
+    Gui::MenuItem* dressups = new Gui::MenuItem;
+    dressups->setCommand("Apply a dress-up feature");
+    *dressups << "PartDesign_Fillet" << "PartDesign_Chamfer"
+        << "PartDesign_Draft" << "PartDesign_Thickness";
+
     *part << "PartDesign_Body"
           << "PartDesign_NewSketch"
           << "Sketcher_LeaveSketch"
@@ -475,37 +508,21 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Sketcher_ReorientSketch"
           << "Sketcher_ValidateSketch"
           << "Separator"
-          << "PartDesign_Point"
-          << "PartDesign_Line"
-          << "PartDesign_Plane"
+          << datums
           << "PartDesign_CoordinateSystem"
           << "PartDesign_ShapeBinder"
           << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone"
           << "Separator"
-          << "PartDesign_Pad"
-          << "PartDesign_Revolution"
-          << "PartDesign_AdditiveLoft"
-          << "PartDesign_AdditivePipe"
+          << additives
           << "PartDesign_CompPrimitiveAdditive"
           << "Separator"
-          << "PartDesign_Pocket"
-          << "PartDesign_Hole"
-          << "PartDesign_Groove"
-          << "PartDesign_SubtractiveLoft"
-          << "PartDesign_SubtractivePipe"
+          << subtractives
           << "PartDesign_CompPrimitiveSubtractive"
           << "Separator"
-          << "PartDesign_Mirrored"
-          << "PartDesign_LinearPattern"
-          << "PartDesign_PolarPattern"
-//          << "PartDesign_Scaled"
-          << "PartDesign_MultiTransform"
+          << transformations
           << "Separator"
-          << "PartDesign_Fillet"
-          << "PartDesign_Chamfer"
-          << "PartDesign_Draft"
-          << "PartDesign_Thickness"
+          << dressups
           << "Separator"
           << "PartDesign_Boolean"
           << "Separator"
