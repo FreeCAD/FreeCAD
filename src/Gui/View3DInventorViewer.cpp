@@ -3381,8 +3381,10 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
 
         switch (ke->getKey()) {
         case SoKeyboardEvent::ESCAPE:
-            if (Gui::Selection().hasSelection())
-                Gui::Selection().clearSelection();
+            if (Selection().hasPreselection())
+                Selection().rmvPreselect();
+            else if (Selection().hasSelection())
+                Selection().clearSelection();
             else
                 toggleShadowLightManip(0);
             //fall through
