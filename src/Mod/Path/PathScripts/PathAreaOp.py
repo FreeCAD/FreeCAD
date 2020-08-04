@@ -487,7 +487,7 @@ class ObjectOp(PathOp.ObjectOp):
                 sims.append(sim)
             # Eif
 
-            if self.areaOpRetractTool(obj) and self.endVector is not None:
+            if self.areaOpRetractTool(obj) and self.endVector is not None and len(self.commandlist) > 1:
                 self.endVector[2] = obj.ClearanceHeight.Value
                 self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
