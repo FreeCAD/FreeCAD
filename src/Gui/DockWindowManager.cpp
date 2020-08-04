@@ -951,17 +951,6 @@ void OverlayTabWidget::onAction(QAction *action)
     DockWindowManager::instance()->refreshOverlay(this);
 }
 
-int OverlayTabWidget::adjustSize(int size) const
-{
-    if (_state != State_Normal || !isVisible())
-        return size;
-    if (dockArea == Qt::LeftDockWidgetArea
-            || dockArea == Qt::RightDockWidgetArea)
-        return std::max(size, rectOverlay.width()+offset.width());
-    else
-        return std::max(size, rectOverlay.height()+offset.width());
-}
-
 void OverlayTabWidget::setState(State state)
 {
     if (_state == state)
@@ -1434,22 +1423,26 @@ bool OverlayTabWidget::getAutoHideRect(QRect &rect) const
     rect = rectOverlay;
     int hintWidth = ViewParams::getDockOverlayHintSize();
     switch(dockArea) {
-    case Qt::RightDockWidgetArea:
-        rect.setLeft(rect.left() + std::max(rect.width()-hintWidth,0));
-        rect.setTop(_TopOverlay->adjustSize(rect.top()));
-        break;
     case Qt::LeftDockWidgetArea:
-        rect.setRight(rect.right() - std::max(rect.width()-hintWidth,0));
-        rect.setTop(_TopOverlay->adjustSize(rect.top()));
+    case Qt::RightDockWidgetArea:
+        if (_TopOverlay->isVisible())
+            rect.setTop(std::max(rect.top(), _TopOverlay->geometry().bottom()));
+        if (dockArea == Qt::RightDockWidgetArea)
+            rect.setLeft(rect.left() + std::max(rect.width()-hintWidth,0));
+        else
+            rect.setRight(rect.right() - std::max(rect.width()-hintWidth,0));
         break;
     case Qt::TopDockWidgetArea:
-        rect.setBottom(rect.bottom() - std::max(rect.height()-hintWidth,0));
-        rect.setLeft(_LeftOverlay->adjustSize(rect.left()));
-        break;
     case Qt::BottomDockWidgetArea:
-        rect.setTop(rect.top() + std::max(rect.height()-hintWidth,0));
-        rect.setLeft(_LeftOverlay->adjustSize(rect.left()));
-        rect.setRight(rect.right() - _RightOverlay->adjustSize(0));
+        if (_LeftOverlay->isVisible())
+            rect.setLeft(std::max(rect.left(),_LeftOverlay->geometry().right()));
+        if (dockArea == Qt::TopDockWidgetArea)
+            rect.setBottom(rect.bottom() - std::max(rect.height()-hintWidth,0));
+        else {
+            rect.setTop(rect.top() + std::max(rect.height()-hintWidth,0));
+            if (_RightOverlay->isVisible())
+                rect.setRight(std::min(rect.right(), _RightOverlay->x()));
+        }
         break;
     default:
         break;

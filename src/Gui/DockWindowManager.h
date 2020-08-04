@@ -276,8 +276,6 @@ public:
     void setState(State);
     State getState() const {return _state;}
 
-    int adjustSize(int size) const;
-
 protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
