@@ -602,7 +602,8 @@ def find(vector, vlist):
     return None
 
 
-def closest(vector, vlist):
+def closest(vector, vlist, returnLength=False):
+
     """Find the closest point to one point in a list of points (vectors).
 
     The scalar distance between the original point and one point in the list
@@ -615,11 +616,14 @@ def closest(vector, vlist):
         The tested point (or vector).
     vlist : list
         A list of points (or vectors).
+    returnLength : True / False
 
     Returns
     -------
     int
         The index of the list where the closest point is found.
+    dist
+        The distance (no unit) of the tested point from the found closest point.
     """
     typecheck([(vector, Vector), (vlist, list)], "closest")
 
@@ -632,7 +636,11 @@ def closest(vector, vlist):
         if d < dist:
             dist = d
             index = i
-    return index
+
+    if returnLength:
+        return (index, dist)
+    else:
+        return index
 
 
 def isColinear(vlist):
