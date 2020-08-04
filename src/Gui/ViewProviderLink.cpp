@@ -922,9 +922,9 @@ public:
             linkInfo->remove(this);
             linkInfo.reset();
         }
-        if(pcSwitch)
+        if(pcSwitch && isGroup>0) {
             coinRemoveAllChildren(pcRoot);
-        else
+        } else
             pcRoot.reset();
         isGroup = 0;
     }
