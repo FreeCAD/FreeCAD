@@ -285,7 +285,7 @@ public:
                 auto vp = Application::Instance->getViewProvider(sel.pObject);
                 if (!vp)
                     continue;
-                if (count == 0)
+                if (count++ == 0)
                     pxObj = vp->getIcon().pixmap(24,24);
                 else {
                     pxObj2 = vp->getIcon().pixmap(24,24);
@@ -301,8 +301,8 @@ public:
                 if (!pxObj2.isNull()) {
                     QPixmap px(30,30);
                     px.fill(Qt::transparent);
-                    px = BitmapFactory().merge(px, pxObj2, BitmapFactoryInst::TopLeft);
-                    px = BitmapFactory().merge(px, pxObj, BitmapFactoryInst::BottomRight);
+                    px = BitmapFactory().merge(px, pxObj2, BitmapFactoryInst::BottomRight);
+                    px = BitmapFactory().merge(px, pxObj, BitmapFactoryInst::TopLeft);
                     pxObj = px;
                 }
 
