@@ -511,7 +511,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     }
 
     if (shadowRendering) {
-        renderShape(action, ctx2, true, true);
+        renderShape(action, nullptr, ctx2, true, true);
         return;
     }
 
@@ -613,11 +613,11 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         // available for performance reason.
         Gui::FCDepthFunc guard(GL_LEQUAL);
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-        renderShape(action,ctx2,false);
+        renderShape(action,nullptr,ctx2,false);
         glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
     }
 
-    renderShape(action,ctx2,true);
+    renderShape(action,ctx,ctx2,true);
 
     if(pushed) {
         SbBool notify = enableNotify(FALSE);
@@ -686,13 +686,16 @@ static FC_COIN_THREAD_LOCAL std::vector<int> RenderIndices;
 struct PartDist {
     int index;
     float dist;
-    PartDist(int i, float d)
-        :index(i),dist(d)
+    int type;
+    PartDist(int i, float d, int type=0)
+        :index(i),dist(d),type(type)
     {}
 };
 static FC_COIN_THREAD_LOCAL std::vector<PartDist> SortedParts;
 
-void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bool checkTransp, bool shadow) 
+void SoBrepFaceSet::renderShape(SoGLRenderAction *action,
+                                SelContextPtr ctx, SelContextPtr ctx2,
+                                bool checkTransp, bool shadow) 
 {
     SoState *state = action->getState();
 
@@ -760,7 +763,7 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bo
             // We perform our own "per part" face sorting to avoid artifacts in
             // transparent face rendering, where some triangle inside a part is
             // mis-sorted.
-            sortParts(state, ctx2, trans, numtrans, shadow);
+            sortParts(state, ctx, ctx2, trans, numtrans, shadow);
 
             RenderIndices.clear();
             for(auto &v : SortedParts)
@@ -1170,7 +1173,7 @@ void SoBrepFaceSet::buildPartBBoxes(SoState *state) {
     }
 }
 
-void SoBrepFaceSet::sortParts(SoState *state, SelContextPtr ctx2,
+void SoBrepFaceSet::sortParts(SoState *state, SelContextPtr ctx, SelContextPtr ctx2,
                               const float *trans, int numtrans, bool shadow)
 {
     SortedParts.clear();
@@ -1192,6 +1195,15 @@ void SoBrepFaceSet::sortParts(SoState *state, SelContextPtr ctx2,
             SbVec3f center;
             SoModelMatrixElement::get(state).multVecMatrix(partBBoxes[id].getCenter(), center);
             float dist = -SoViewVolumeElement::get(state).getPlane(0.0f).getDistance(center);
+            if(ctx) {
+                if (ctx->highlightIndex.count(id)) {
+                    SortedParts.emplace_back(id, dist, 2);
+                    continue;
+                } else if (ctx->selectionIndex.count(id)) {
+                    SortedParts.emplace_back(id, dist, 1);
+                    continue;
+                }
+            }
             SortedParts.emplace_back(id,dist);
         }
     } else {
@@ -1203,6 +1215,15 @@ void SoBrepFaceSet::sortParts(SoState *state, SelContextPtr ctx2,
             SbVec3f center;
             SoModelMatrixElement::get(state).multVecMatrix(bbox.getCenter(), center);
             float dist = -SoViewVolumeElement::get(state).getPlane(0.0f).getDistance(center);
+            if(ctx) {
+                if (ctx->highlightIndex.count(id)) {
+                    SortedParts.emplace_back(id, dist, 2);
+                    continue;
+                } else if (ctx->selectionIndex.count(id)) {
+                    SortedParts.emplace_back(id, dist, 1);
+                    continue;
+                }
+            }
             SortedParts.emplace_back(id,dist);
         }
     }
@@ -1210,6 +1231,10 @@ void SoBrepFaceSet::sortParts(SoState *state, SelContextPtr ctx2,
     if (!shadow) {
         std::sort(SortedParts.begin(),SortedParts.end(),
             [](const PartDist &a, const PartDist &b) {
+                if (a.type < b.type)
+                    return true;
+                else if (a.type > b.type)
+                    return false;
                 return a.dist > b.dist;
             }
         );
