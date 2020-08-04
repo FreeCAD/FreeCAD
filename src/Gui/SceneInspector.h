@@ -35,6 +35,7 @@ class Document;
 namespace Dialog {
 
 class Ui_SceneInspector;
+class DlgInspector;
 
 /// Stores data representing scenegraph nodes.
 class SceneModel : public QAbstractItemModel
@@ -65,6 +66,8 @@ public:
 
 private:
 
+    friend class DlgInspector;
+
     struct Item {
         QModelIndex parent;
         CoinPtr<SoNode> node;
@@ -74,6 +77,7 @@ private:
     Item rootItem;
 
     QHash<SoNode*, QString> nodeNames;
+    bool autoExpanding = false;
 };
 
 /// Dialog window to display scenegraph model as a tree

@@ -83,6 +83,21 @@ using namespace Base;
 
 typedef boost::iterator_range<const char*> CharRange;
 
+static std::unordered_map<SoNode*, std::pair<App::Document*, App::DocumentObject*> > _LinkNodeMap;
+
+static inline void _registerLinkNode(SoNode *node, const App::DocumentObject *obj=nullptr)
+{
+    if (!obj)
+        _LinkNodeMap.erase(node);
+    else
+        _LinkNodeMap[node] = std::make_pair(obj->getDocument(), const_cast<App::DocumentObject*>(obj));
+}
+
+static inline void _registerLinkNode(SoNode *node, const ViewProviderDocumentObject *vp)
+{
+    _registerLinkNode(node, vp?vp->getObject():nullptr);
+}
+
 ////////////////////////////////////////////////////////////////////////////
 
 static inline bool appendPathSafe(SoPath *path, SoNode *node) {
@@ -258,6 +273,7 @@ public:
         for(auto &node : pcSnapshots) {
             if(node) {
                 coinRemoveAllChildren(node);
+                _registerLinkNode(node);
                 node.reset();
             }
         }
@@ -396,12 +412,7 @@ public:
                 pcSnapshot->boundingBoxCaching = SoSeparator::OFF;
                 pcSnapshot->renderCaching = SoSeparator::OFF;
             }
-#ifdef FC_LINK_SET_NODE_NAME
-            std::ostringstream ss;
-            ss << pcLinked->getObject()->getNameInDocument() 
-                << "(" << type << ')';
-            pcSnapshot->setName(ss.str().c_str());
-#endif
+            _registerLinkNode(pcSnapshot, pcLinked);
             pcModeSwitch = new SoFCSwitch;
         }
 
@@ -477,6 +488,7 @@ public:
             }
         }
         updateSwitch(pcUpdateSwitch);
+
         return pcSnapshot;
     }
 
@@ -606,7 +618,7 @@ public:
         if(type == LinkView::SnapshotMax)
             return pcLinked->getDetailPath(subname,path,true,det);
 
-        if(pcSnapshots[type]->findChild(pcSwitches[type]) < 0) {
+        if(!pcSnapshots[type] || pcSnapshots[type]->findChild(pcSwitches[type]) < 0) {
             if(path) {
                 if(!appendPathSafe(path,pcSnapshots[type]))
                     return false;
@@ -885,6 +897,7 @@ public:
     int nodeType;
     int groupIndex = -1;
     int isGroup = 0;
+    bool registered = false;
 
     friend LinkView;
 
@@ -918,6 +931,10 @@ public:
 
     virtual void unlink(LinkInfoPtr info=LinkInfoPtr()) override{
         (void)info;
+        if (registered) {
+            _registerLinkNode(pcRoot);
+            registered =false;
+        }
         if(linkInfo) {
             linkInfo->remove(this);
             linkInfo.reset();
@@ -960,9 +977,8 @@ public:
                 pcRoot = new SoFCSelectionRoot(true);
             else
                 coinRemoveAllChildren(pcRoot);
-#ifdef FC_LINK_SET_NODE_NAME
-            pcRoot->setName(obj->getFullName().c_str());
-#endif
+            registered = true;
+            _registerLinkNode(pcRoot, obj);
         }
         pcSwitch->addChild(pcRoot);
         pcSwitch->whichChild = 0;
@@ -1759,6 +1775,7 @@ void LinkView::unlink(LinkInfoPtr info) {
         linkInfo->remove(this);
         linkInfo.reset();
     }
+    _registerLinkNode(pcLinkRoot);
     pcLinkRoot->resetContext();
     if(pcLinkedRoot) {
         if(nodeArray.empty())
@@ -1844,15 +1861,27 @@ ViewProviderLink::~ViewProviderLink()
     linkView->setInvalid();
 }
 
+App::DocumentObject *ViewProviderLink::linkedObjectByNode(SoNode *node)
+{
+    auto it = _LinkNodeMap.find(node);
+    if (it == _LinkNodeMap.end())
+        return nullptr;
+    Document *gdoc = Application::Instance->getDocument(it->second.first);
+    // make sure the object still exists
+    if (gdoc && gdoc->getViewProvider(it->second.second))
+        return it->second.second;
+    return nullptr;
+}
+
 bool ViewProviderLink::isSelectable() const {
     return !pcDragger && Selectable.getValue();
 }
 
 void ViewProviderLink::attach(App::DocumentObject *pcObj) {
     SoNode *node = linkView->getLinkRoot();
-#ifdef FC_LINK_SET_NODE_NAME
-    node->setName(pcObj->getFullName().c_str());
-#endif
+
+    // _registerLinkNode(node, pcObj);
+
     addDisplayMaskMode(node,"Link");
     if(childVp) {
         childVpLink = LinkInfo::get(childVp,0);

@@ -218,6 +218,8 @@ public:
     void attach(App::DocumentObject *pcObj) override;
     void reattach(App::DocumentObject *pcObj) override;
 
+    static App::DocumentObject *linkedObjectByNode(SoNode *);
+
     bool isSelectable(void) const override;
 
     bool useNewSelectionModel(void) const override {return true;}

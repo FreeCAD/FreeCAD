@@ -29,6 +29,8 @@
 # include <QTextStream>
 #endif
 
+#include <Base/Tools.h>
+#include <App/Document.h>
 #include "SceneInspector.h"
 #include "ui_SceneInspector.h"
 #include "View3DInventor.h"
@@ -37,7 +39,7 @@
 #include "SoFCUnifiedSelection.h"
 #include "Document.h"
 #include "Application.h"
-#include <App/Document.h>
+#include "ViewProviderLink.h"
 
 using namespace Gui::Dialog;
 
@@ -119,6 +121,19 @@ QVariant SceneModel::data(const QModelIndex & index, int role) const
         auto shape = static_cast<SoIndexedShape*>(node);
         stream << shape->coordIndex.getNum() << ", ";
     }
+
+    auto obj = ViewProviderLink::linkedObjectByNode(node);
+    if (obj) {
+        stream << QLatin1String(" -> ");
+        if (obj->getDocument() != App::GetApplication().getActiveDocument())
+            stream << QString::fromLatin1(obj->getFullName().c_str());
+        else
+            stream << QString::fromLatin1(obj->getNameInDocument());
+        if (obj->Label.getStrValue() != obj->getNameInDocument())
+            stream << QString::fromLatin1(" (%1)").arg(QString::fromUtf8(obj->Label.getValue()));
+        stream << QLatin1String(", ");
+    }
+
     if (itName != nodeNames.end())
         stream << itName.value();
     else
@@ -146,8 +161,7 @@ QModelIndex SceneModel::index(int row, int column, const QModelIndex &parent) co
         item = &rootItem;
 
     SoNode *node = item->node;
-
-    if (!item->expand)
+    if (autoExpanding && !item->expand)
         return QModelIndex();
 
     QModelIndex index = createIndex(row, column, (void*)item);
@@ -193,9 +207,12 @@ int SceneModel::rowCount(const QModelIndex & parent) const
     if (node->isOfType(SoFCPathAnnotation::getClassTypeId())) {
         auto path = static_cast<SoFCPathAnnotation*>(node)->getPath();
         return path ? path->getLength() : 0;
-    } else if (node->isOfType(SoGroup::getClassTypeId()))
-        return static_cast<SoGroup*>(node)->getNumChildren();
-
+    } else if (node->isOfType(SoGroup::getClassTypeId())) {
+        int count = static_cast<SoGroup*>(node)->getNumChildren();
+        if (count==1 && !item->expand)
+            return 0;
+        return count;
+    }
     return 0;
 }
 
@@ -236,6 +253,8 @@ void DlgInspector::setDocument(Gui::Document* doc)
     if (view) {
         View3DInventorViewer* viewer = view->getViewer();
         setNode(viewer->getSoRenderManager()->getSceneGraph());
+        SceneModel* model = static_cast<SceneModel*>(ui->treeView->model());
+        Base::StateLocker lock(model->autoExpanding);
         ui->treeView->expandToDepth(4);
     }
 }
