@@ -327,6 +327,9 @@ void FaceColors::on_boxSelection_clicked()
     if (d->boxSelection) {
         d->boxSelection = false;
         d->ui->boxSelection->setChecked(false);
+        // end box selection mode
+        if (view)
+            view->getViewer()->stopSelection();
     }
     else {
         d->boxSelection = true;
