@@ -422,7 +422,7 @@ public:
     int getGeoHistoryLevel() const {return geoHistoryLevel;}
 
     virtual std::pair<std::string,std::string> getElementName(
-            const char *name, ElementNameType type) const;
+            const char *name, ElementNameType type) const override;
 
     bool isPerformingInternalTransaction() const {return internaltransaction;};
 public:
