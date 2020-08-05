@@ -78,6 +78,14 @@ Sets shortcut for given command, returns bool True for success.
 </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="resetShortcut">
+      <Documentation>
+          <UserDocu>resetShortcut() -> bool
+
+Resets shortcut for given command back to the default, returns bool True for success.
+</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getInfo">
       <Documentation>
           <UserDocu>getInfo() -> list of strings

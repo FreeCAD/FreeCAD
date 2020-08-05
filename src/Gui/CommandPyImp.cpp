@@ -232,6 +232,38 @@ PyObject* CommandPy::setShortcut(PyObject *args)
     }
 }
 
+PyObject* CommandPy::resetShortcut(PyObject *args)
+{
+
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Command* cmd = this->getCommandPtr();
+    if (cmd) {
+        Action* action = cmd->getAction();
+        if (action){
+            QString default_shortcut = QString::fromLatin1(cmd->getAccel());
+            action->setShortcut(default_shortcut);
+            ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
+            hGrp->RemoveASCII(cmd->getName());
+            /** test to see if we successfully reset the shortcut by loading it back and comparing */
+            QString spc = QString::fromLatin1(" ");
+            QString new_shortcut = action->shortcut().toString();
+            if (default_shortcut.remove(spc).toUpper() == new_shortcut.remove(spc).toUpper()){
+                return Py::new_reference_to(Py::Boolean(true));
+            } else {
+                return Py::new_reference_to(Py::Boolean(false));
+            }
+        } else {
+            return Py::new_reference_to(Py::Boolean(false));
+        }
+
+    } else {
+        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        return nullptr;
+    }
+}
+
 PyObject* CommandPy::getInfo(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
