@@ -693,6 +693,57 @@ PyObject* DrawViewPartPy::getVertexByIndex(PyObject *args)
     return new Part::TopoShapeVertexPy(new Part::TopoShape(outVertex));
 }
 
+PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
+{
+    int edgeIndex = 0;
+    char* selName;           //Selection routine name - "Edge0"
+    if (!PyArg_ParseTuple(args, "s", &selName)) {
+        throw Py::TypeError("expected (string)");
+    }
+
+    edgeIndex = DrawUtil::getIndexFromName(std::string(selName));
+    DrawViewPart* dvp = getDrawViewPartPtr();
+
+    //this is scaled and +Yup
+    //need unscaled and +Ydown
+    TechDraw::BaseGeom* geom = dvp->getGeomByIndex(edgeIndex);
+    if (geom == nullptr) {
+        throw Py::ValueError("wrong edgeIndex");
+    }
+
+    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->occEdge,
+                                      Base::Vector3d(0.0, 0.0, 0.0),
+                                      1.0 / dvp->getScale());
+
+    TopoDS_Edge outEdge = TopoDS::Edge(temp);
+    return new Part::TopoShapeEdgePy(new Part::TopoShape(outEdge));
+}
+
+PyObject* DrawViewPartPy::getVertexBySelection(PyObject *args)
+{
+    int vertexIndex = 0;
+    char* selName;           //Selection routine name - "Vertex0"
+    if (!PyArg_ParseTuple(args, "s", &selName)) {
+        throw Py::TypeError("expected (string)");
+    }
+
+    vertexIndex = DrawUtil::getIndexFromName(std::string(selName));
+    DrawViewPart* dvp = getDrawViewPartPtr();
+
+    //this is scaled and +Yup
+    //need unscaled and +Ydown
+    TechDraw::Vertex* vert = dvp->getProjVertexByIndex(vertexIndex);
+    if (vert == nullptr) {
+        throw Py::ValueError("wrong vertIndex");
+    }
+    Base::Vector3d point = DrawUtil::invertY(vert->point()) / dvp->getScale();
+
+    gp_Pnt gPoint(point.x, point.y, point.z);
+    BRepBuilderAPI_MakeVertex mkVertex(gPoint);
+    TopoDS_Vertex outVertex = mkVertex.Vertex();
+    return new Part::TopoShapeVertexPy(new Part::TopoShape(outVertex));
+}
+
 
 //==============================================================================
 PyObject *DrawViewPartPy::getCustomAttributes(const char* /*attr*/) const

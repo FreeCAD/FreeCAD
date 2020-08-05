@@ -138,14 +138,24 @@
         <UserDocu>formatGeometricEdge(index, style, weight, color, visible). Returns None.</UserDocu>
       </Documentation>
     </Methode>
-        <Methode Name="getEdgeByIndex">
+    <Methode Name="getEdgeByIndex">
       <Documentation>
         <UserDocu>getEdgeByIndex(edgeIndex). Returns Part.TopoShape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getEdgeBySelection">
+      <Documentation>
+        <UserDocu>getEdgeBySelection(edgeName). Returns Part.TopoShape.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getVertexByIndex">
       <Documentation>
         <UserDocu>getVertexByIndex(vertexIndex). Returns Part.TopoShape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getVertexBySelection">
+      <Documentation>
+        <UserDocu>getVertexBySelection(vertexName). Returns Part.TopoShape.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="requestPaint">
