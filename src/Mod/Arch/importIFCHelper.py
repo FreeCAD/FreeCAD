@@ -18,16 +18,29 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Helper functions that are used by IFC importer and exporters."""
-import six
+"""Helper functions that are used by IFC importer and exporter."""
 import sys
 import math
+import six
 
 import FreeCAD
 import Arch
 import ArchIFC
 
-from draftutils.messages import _wrn
+from draftutils.messages import _msg, _wrn
+
+PREDEFINED_RGB = {"black": (0, 0, 0),
+                  "red": (1.0, 0, 0),
+                  "green": (0, 1.0, 0),
+                  "blue": (0, 0, 1.0),
+                  "yellow": (1.0, 1.0, 0),
+                  "magenta": (1.0, 0, 1.0),
+                  "cyan": (0, 1.0, 1.0),
+                  "white": (1.0, 1.0, 1.0)}
+
+
+DEBUG_prod_repr = False
+DEBUG_prod_colors = False
 
 
 def decode(filename, utf=False):
@@ -164,10 +177,19 @@ def buildRelProductsAnnotations(ifcfile, root_element='IfcProduct'):
 
 def buildRelProductRepresentation(ifcfile):
     """Build the product/representations relation table."""
-    prodrepr = {}  # product/representations table
+    if DEBUG_prod_repr:
+        _msg(32 * "-")
+        _msg("Product-representation table")
 
+    prodrepr = dict()
+
+    i = 1
     for p in ifcfile.by_type("IfcProduct"):
         if hasattr(p, "Representation") and p.Representation:
+            if DEBUG_prod_repr:
+                _msg("{}: {}, {}, '{}'".format(i, p.id(),
+                                               p.is_a(), p.Name))
+
             for it in p.Representation.Representations:
                 for it1 in it.Items:
                     prodrepr.setdefault(p.id(), []).append(it1.id())
@@ -178,6 +200,7 @@ def buildRelProductRepresentation(ifcfile):
                         if it1.MappingSource.MappedRepresentation.is_a("IfcShapeRepresentation"):
                             for it2 in it1.MappingSource.MappedRepresentation.Items:
                                 prodrepr.setdefault(p.id(), []).append(it2.id())
+            i += 1
     return prodrepr
 
 
@@ -231,29 +254,36 @@ def buildRelMattable(ifcfile):
     return mattable
 
 
-# ************************************************************************************************
-# color relation tables
-# products can have a color and materials can have a color and products can have a material
-# colors for material assigned to a product and product color can be different
+# Color relation tables.
+# Products can have a color, materials can have a color,
+# and products can have a material.
+# Colors for material assigned to a product, and color of the product itself
+# can be different
 def buildRelColors(ifcfile, prodrepr):
-    """build the colors relation table and"""
+    """Build the colors relation table.
 
-    # returns all IfcStyledItem colors, material and product colors
+    Returns all IfcStyledItem colors, material and product colors.
+
+    Returns
+    -------
+    dict
+        A dictionary with `{id: (r,g,b), ...}` values.
+    """
     colors = {}  # { id:(r,g,b) }
     style_material_id = {}  # { style_entity_id: material_id) }
 
-    # get style_color_rgb table
     style_color_rgb = {}  # { style_entity_id: (r,g,b) }
     for r in ifcfile.by_type("IfcStyledItem"):
-        if r.Styles:
-            if r.Styles[0].is_a("IfcPresentationStyleAssignment"):
-                for style1 in r.Styles[0].Styles:
-                    if style1.is_a("IfcSurfaceStyle"):
-                        for style2 in style1.Styles:
-                            if style2.is_a("IfcSurfaceStyleRendering"):
-                                if style2.SurfaceColour:
-                                    c = style2.SurfaceColour
-                                    style_color_rgb[r.id()] = (c.Red,c.Green,c.Blue)
+        if r.Styles and r.Styles[0].is_a("IfcPresentationStyleAssignment"):
+            for style1 in r.Styles[0].Styles:
+                if style1.is_a("IfcSurfaceStyle"):
+                    for style2 in style1.Styles:
+                        if style2.is_a("IfcSurfaceStyleRendering"):
+                            if style2.SurfaceColour:
+                                c = style2.SurfaceColour
+                                style_color_rgb[r.id()] = (c.Red,
+                                                           c.Green,
+                                                           c.Blue)
 
         # Nova
         # FIXME: style_entity_id = { style_entity_id: product_id } not material_id ???
@@ -269,7 +299,8 @@ def buildRelColors(ifcfile, prodrepr):
                     # print(p)
                     # print(ifcfile[p])  # product
         '''
-    # a much faster version for Nova style_material_id with product_ids
+
+    # A much faster version for Nova style_material_id with product_ids
     # no material colors, Nova ifc files often do not have materials at all
     for p in prodrepr.keys():
         # print("\n")
@@ -299,33 +330,51 @@ def buildRelColors(ifcfile, prodrepr):
 
 
 def buildRelProductColors(ifcfile, prodrepr):
+    """Build the colors relation table from a product.
 
-    # gets the colors for the products
-    colors = {}  # { id:(r,g,b) }
+    Returns
+    -------
+    dict
+        A dictionary with `{id: (r,g,b), ...}` values.
+    """
+    if DEBUG_prod_repr:
+        _msg(32 * "-")
+        _msg("Product-color table")
+
+    colors = dict()
+    i = 0
 
     for p in prodrepr.keys():
+        # Representation item, see `IfcRepresentationItem` documentation.
+        # All kinds of geometric or topological representation items
+        # `IfcExtrudedAreaSolid`, `IfcMappedItem`, `IfcFacetedBrep`,
+        # `IfcBooleanResult`, `IfcBooleanClippingResult`, etc.
+        _body = ifcfile[p].Representation.Representations[0]
+        repr_item = _body.Items[0]
 
-        # print(p)
+        if DEBUG_prod_colors:
+            _msg("{}: {}, {}, '{}', rep_item {}".format(i, ifcfile[p].id(),
+                                                        ifcfile[p].is_a(),
+                                                        ifcfile[p].Name,
+                                                        repr_item))
+        # Get the geometric representations which have a presentation style.
+        # All representation items have the inverse attribute `StyledByItem`
+        # for this.
+        # There will be geometric representations which do not have
+        # a presentation style so `StyledByItem` will be empty.
+        if repr_item.StyledByItem:
+            if DEBUG_prod_colors:
+                _msg("  StyledByItem -> {}".format(repr_item.StyledByItem))
+            # it has to be a `IfcStyledItem`, no check needed
+            styled_item = repr_item.StyledByItem[0]
 
-        # representation item, see docu IfcRepresentationItem
-        # all kind of geometric or topological representation items
-        # IfcExtrudedAreaSolid, IfcMappedItem, IfcFacetedBrep, IfcBooleanResult, etc
-        representation_item = ifcfile[p].Representation.Representations[0].Items[0]
-        # print(representation_item)
-
-        # get the geometric representations which have a presentation style
-        # all representation items have the inverse attribute StyledByItem for this
-        # there will be gemetric representations which do not have a presentation style
-        # the StyledByItem will be empty than
-        if representation_item.StyledByItem:
-
-            # it has to be a IfcStyledItem, no check needed
-            styled_item = representation_item.StyledByItem[0]
-
-            # write into colors table if a IfcStyledItem exists for this product
-            # write None if something goes wrong or if the ifc file has errors and thus no valid color is returned
+            # Write into colors table if a `IfcStyledItem` exists
+            # for this product, write `None` if something goes wrong
+            # or if the ifc file has errors and thus no valid color
+            # is returned
             colors[p] = getColorFromStyledItem(styled_item)
 
+        i += 1
     return colors
 
 
@@ -346,65 +395,88 @@ def getColorFromMaterial(material):
 
 
 def getColorFromStyledItem(styled_item):
+    """Get color from the IfcStyledItem.
 
-    # styled_item should be a IfcStyledItem
-    if styled_item.is_a("IfcStyledRepresentation"):
-        styled_item = styled_item.Items[0]
-    
+    Returns
+    -------
+    float, float, float, int
+        A tuple with the red, green, blue, and transparency values.
+        If the `IfcStyledItem` is a `IfcDraughtingPreDefinedColour`
+        the transparency is set to 0.
+        The first three values range from 0 to 1.0, while the transparency
+        varies from 0 to 100.
+
+    None
+        Return `None` if `styled_item` is not of type `'IfcStyledItem'`
+        or if there is any other problem getting a color.
+    """
     if not styled_item.is_a("IfcStyledItem"):
         return None
 
+    if styled_item.is_a("IfcStyledRepresentation"):
+        styled_item = styled_item.Items[0]
+
     rgb_color = None
     transparency = None
+    col = None
 
-    # print(styled_item)
-    # The IfcStyledItem holds presentation style information for products,
-    # either explicitly for an IfcGeometricRepresentationItem being part of
-    # an IfcShapeRepresentation assigned to a product, or by assigning presentation
-    # information to IfcMaterial being assigned as other representation for a product.
+    # The `IfcStyledItem` holds presentation style information for products,
+    # either explicitly for an `IfcGeometricRepresentationItem` being part of
+    # an `IfcShapeRepresentation` assigned to a product, or by assigning
+    # presentation information to `IfcMaterial` being assigned
+    # as other representation for a product.
 
-    # In current IFC release (IFC2x3) only one presentation style assignment shall be assigned.
+    # In current IFC release (IFC2x3) only one presentation style
+    # assignment shall be assigned.
+    # TODO: check IFC4
 
     if len(styled_item.Styles) != 1:
-        if len(styled_item.Styles) == 0:
-            pass
-            # ca 100x in 210_King_Merged.ifc
-            # empty styles, #4952778=IfcStyledItem(#4952779,(),$)
-            # this is an error in the ifc file IMHO
-            # print(ifcfile[p])
-            # print(styled_item)
-            # print(styled_item.Styles)
-        else:
-            pass
-            # never seen an ifc with more than one Styles in IfcStyledItem
+        # Normally, only one element in `Styles` should be available.
+        _wrn("More than one 'Style' in 'IfcStyleItem', do nothing.")
+
+        # These two cases do nothing so we just comment them out.
+        # if len(styled_item.Styles) == 0:
+        #     # ca 100x in 210_King_Merged.ifc
+        #     # Empty styles, #4952778=IfcStyledItem(#4952779,(),$)
+        #     # this is an error in the IFC file in my opinion
+        #     # print(ifcfile[p])
+        #     # print(styled_item)
+        #     # print(styled_item.Styles)
+        #     pass
+        # else:
+        #     # Never seen an IFC with more than one element in `Styles`
+        #     pass
     else:
-        # get the IfcPresentationStyleAssignment, there should only be one, see above
+        # Get the `IfcPresentationStyleAssignment`, there should only be one,
         if styled_item.Styles[0].is_a('IfcPresentationStyleAssignment'):
             assign_style = styled_item.Styles[0]
         else:
-            # IfcPresentationStyleAssignment is deprecated in IFC4.
+            # `IfcPresentationStyleAssignment` is deprecated in IFC4,
+            # in favor of `IfcStyleAssignmentSelect`
             assign_style = styled_item
         # print(assign_style)  # IfcPresentationStyleAssignment
 
-        # IfcPresentationStyleAssignment can hold various kinde and count of styles
-        # see IfcPresentationStyleSelect
+        # `IfcPresentationStyleAssignment` can hold various kinds and counts
+        # of styles, see `IfcPresentationStyleSelect`
         if assign_style.Styles[0].is_a("IfcSurfaceStyle"):
+            _style = assign_style.Styles[0]
             # Schependomlaan and Nova and others
-            # print(assign_style.Styles[0].Styles[0])  # IfcSurfaceStyleRendering
-            rgb_color = assign_style.Styles[0].Styles[0].SurfaceColour  # IfcColourRgb
+            # `IfcSurfaceStyleRendering`
+            # print(_style.Styles[0])
+            # `IfcColourRgb`
+            rgb_color = _style.Styles[0].SurfaceColour
             # print(rgb_color)
-            if assign_style.Styles[0].Styles[0].is_a('IfcSurfaceStyleShading') \
-                    and hasattr(assign_style.Styles[0].Styles[0], 'Transparency') \
-                    and assign_style.Styles[0].Styles[0].Transparency:
-                transparency = assign_style.Styles[0].Styles[0].Transparency * 100
+            if (_style.Styles[0].is_a('IfcSurfaceStyleShading')
+                    and hasattr(_style.Styles[0], 'Transparency')
+                    and _style.Styles[0].Transparency):
+                transparency = _style.Styles[0].Transparency * 100
         elif assign_style.Styles[0].is_a("IfcCurveStyle"):
-            if (
-                len(assign_style.Styles) == 2
-                and assign_style.Styles[1].is_a("IfcSurfaceStyle")
-            ):
+            if (len(assign_style.Styles) == 2
+                    and assign_style.Styles[1].is_a("IfcSurfaceStyle")):
                 # Allplan, new IFC export started in 2017
-                # print(assign_style.Styles[0].CurveColour)  # IfcDraughtingPreDefinedColour
-                # on index 1 ist das was wir brauchen !!!
+                # `IfcDraughtingPreDefinedColour`
+                # print(assign_style.Styles[0].CurveColour)
+                # TODO: check this; on index 1, is this what we need?!
                 rgb_color = assign_style.Styles[1].Styles[0].SurfaceColour
                 # print(rgb_color)
             else:
@@ -414,16 +486,45 @@ def getColorFromStyledItem(styled_item):
                 # print(assign_style.Styles[0].CurveColour)
                 rgb_color = assign_style.Styles[0].CurveColour
 
-    if rgb_color is not None:
-        col = [rgb_color.Red, rgb_color.Green, rgb_color.Blue]
-        col.append(int(transparency) if transparency else 0)
-        col = tuple(col)
-        # print(col)
+    if rgb_color:
+        if rgb_color.is_a('IfcDraughtingPreDefinedColour'):
+            if DEBUG_prod_colors:
+                _msg("  '{}'= ".format(rgb_color.Name))
+
+            col = predefined_to_rgb(rgb_color)
+
+            if col:
+                col = col + (0, )
+        else:
+            col = (rgb_color.Red,
+                   rgb_color.Green,
+                   rgb_color.Blue,
+                   int(transparency) if transparency else 0)
     else:
         col = None
 
+    if DEBUG_prod_colors:
+        _msg("  {}".format(col))
+
     return col
 
+
+def predefined_to_rgb(rgb_color):
+    """Transform a predefined color name to its [r, g, b] representation.
+
+    TODO: at the moment it doesn't handle 'by layer'.
+    See: `IfcDraughtingPreDefinedColour` and `IfcPresentationLayerWithStyle`.
+    """
+    name = rgb_color.Name.lower()
+    if name not in PREDEFINED_RGB:
+        _wrn("Color name not in 'IfcDraughtingPreDefinedColour'.")
+
+        if name == 'by layer':
+            _wrn("'IfcDraughtingPreDefinedColour' set 'by layer'; "
+                 "currently not handled, set to 'None'.")
+        return None
+
+    return PREDEFINED_RGB[name]
 
 # ************************************************************************************************
 # property related methods
