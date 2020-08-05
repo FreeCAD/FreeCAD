@@ -47,7 +47,7 @@ import importIFCmulticore
 from draftutils.messages import _msg, _err
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
+    import FreeCADGui as Gui
 
 __title__ = "FreeCAD IFC importer - Enhanced ifcopenshell-only version"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
@@ -156,7 +156,7 @@ def getPreferences():
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
 
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog", False):
-        FreeCADGui.showPreferences("Import-Export", 0)
+        Gui.showPreferences("Import-Export", 0)
 
     preferences = {
         'DEBUG': p.GetBool("ifcDebug", False),
@@ -265,7 +265,6 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         doc = FreeCAD.newDocument(docname)
 
     FreeCAD.ActiveDocument = doc
-    if preferences['DEBUG']: print("done.")
 
     global parametrics
 
@@ -283,10 +282,14 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         filesize = None
         filename = None
     else:
-        if preferences['DEBUG']: print("Opening ", srcfile, "...", end="")
+        if preferences['DEBUG']:
+            _msg("Opening '{}'... ".format(srcfile), end="")
         filename = importIFCHelper.decode(srcfile, utf=True)
         filesize = os.path.getsize(filename) * 1E-6  # in megabytes
         ifcfile = ifcopenshell.open(filename)
+
+    if preferences['DEBUG']:
+        _msg("done.")
 
     # Get file scale
     ifcscale = importIFCHelper.getScaling(ifcfile)
@@ -309,7 +312,9 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         settings.set(settings.APPLY_LAYERSETS, True)
 
     # build all needed tables
-    if preferences['DEBUG']: print("Building types and relationships table...", end="")
+    if preferences['DEBUG']:
+        _msg("Building types and relationships table...")
+
     # type tables
     sites = ifcfile.by_type("IfcSite")
     buildings = ifcfile.by_type("IfcBuilding")
@@ -345,7 +350,8 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     mattable = importIFCHelper.buildRelMattable(ifcfile)
     colors = importIFCHelper.buildRelProductColors(ifcfile, prodrepr)
     colordict = {}  # { objname:color tuple } for non-GUI use
-    if preferences['DEBUG']: print("done.")
+    if preferences['DEBUG']:
+        _msg("done.")
 
     # only import a list of IDs and their children, if defined
     if only:
@@ -361,14 +367,14 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     count = 0
     from FreeCAD import Base
     progressbar = Base.ProgressIndicator()
-    progressbar.start("Importing IFC objects...",len(products))
-    if preferences['DEBUG']: print("Parsing",len(products),"BIM objects...")
+    progressbar.start("Importing IFC objects...", len(products))
+    if preferences['DEBUG']:
+        _msg("Parsing {} BIM objects...".format(len(products)))
 
     # Prepare the 3D view if applicable
     if preferences['FITVIEW_ONIMPORT'] and FreeCAD.GuiUp:
         overallboundbox = None
-        import FreeCADGui
-        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        Gui.ActiveDocument.activeView().viewAxonometric()
 
     # Create the base project object
     if not preferences['REPLACE_PROJECT']:
@@ -531,7 +537,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                         if not overallboundbox:
                             overallboundbox = bb
                         if not overallboundbox.isInside(bb):
-                            FreeCADGui.SendMsgToActiveView("ViewFit")
+                            Gui.SendMsgToActiveView("ViewFit")
                         overallboundbox.add(bb)
 
                 if (preferences['MERGE_MODE_ARCH'] > 0 and archobj) or structobj:
@@ -1347,9 +1353,8 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
 
     FreeCAD.ActiveDocument.recompute()
 
-    if ZOOMOUT and FreeCAD.GuiUp:
-        import FreeCADGui
-        FreeCADGui.SendMsgToActiveView("ViewFit")
+    if FreeCAD.GuiUp and ZOOMOUT:
+        Gui.SendMsgToActiveView("ViewFit")
 
     endtime = time.time()-starttime
 
