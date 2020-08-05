@@ -622,8 +622,12 @@ def closest(vector, vlist, returnLength=False):
     -------
     int
         The index of the list where the closest point is found.
-    dist
-        The distance (no unit) of the tested point from the found closest point.
+
+    int, dist
+        The index,
+        and the distance to the closest point (numeric value only, no unit)
+        if returnLength is True.
+
     """
     typecheck([(vector, Vector), (vlist, list)], "closest")
 
