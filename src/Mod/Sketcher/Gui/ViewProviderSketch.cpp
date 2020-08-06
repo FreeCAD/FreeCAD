@@ -315,6 +315,7 @@ ViewProviderSketch::ViewProviderSketch()
         this->GridSnap.setValue(hGrp->GetBool("GridSnap", false));
         this->Autoconstraints.setValue(hGrp->GetBool("AutoConstraints", true));
         this->AvoidRedundant.setValue(hGrp->GetBool("AvoidRedundantAutoconstraints", true));
+        this->GridAutoSize.setValue(false); //Grid size is managed by this class
     }
 
     sPixmap = "Sketcher_Sketch";

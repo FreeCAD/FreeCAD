@@ -70,6 +70,7 @@ ViewProvider2DObject::ViewProvider2DObject()
     ADD_PROPERTY_TYPE(GridStyle,((long)0),"Grid",(App::PropertyType)(App::Prop_None),"Appearance style of the grid");
     ADD_PROPERTY_TYPE(TightGrid,(true),"Grid",(App::PropertyType)(App::Prop_None),"Switch the tight grid mode on/off");
     ADD_PROPERTY_TYPE(GridSnap,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid snap on/off");
+    ADD_PROPERTY_TYPE(GridAutoSize,(true),"Grid",(App::PropertyType)(App::Prop_Hidden),"Autosize grid based on shape boundbox");
     ADD_PROPERTY_TYPE(maxNumberOfLines,(10000),"Grid",(App::PropertyType)(App::Prop_None),"Maximum Number of Lines in grid");
 
     GridRoot = new SoAnnotation();
@@ -245,17 +246,19 @@ void ViewProvider2DObject::updateData(const App::Property* prop)
     ViewProviderPart::updateData(prop);
 
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
-        Base::BoundBox3d bbox = static_cast<const Part::PropertyPartShape*>(prop)->getBoundingBox();
-        if (!bbox.IsValid()) return;
-        Gui::coinRemoveAllChildren(GridRoot);
-        Base::Placement place = static_cast<const Part::PropertyPartShape*>(prop)->getComplexData()->getPlacement();
-        place.invert();
-        Base::ViewProjMatrix proj(place.toMatrix());
-        Base::BoundBox2d bbox2d = bbox.ProjectBox(&proj);
-        this->MinX = bbox2d.MinX;
-        this->MaxX = bbox2d.MaxX;
-        this->MinY = bbox2d.MinY;
-        this->MaxY = bbox2d.MaxY;
+        if(GridAutoSize.getValue()) {
+            Base::BoundBox3d bbox = static_cast<const Part::PropertyPartShape*>(prop)->getBoundingBox();
+            if (!bbox.IsValid()) return;
+            Gui::coinRemoveAllChildren(GridRoot);
+            Base::Placement place = static_cast<const Part::PropertyPartShape*>(prop)->getComplexData()->getPlacement();
+            place.invert();
+            Base::ViewProjMatrix proj(place.toMatrix());
+            Base::BoundBox2d bbox2d = bbox.ProjectBox(&proj);
+            this->MinX = bbox2d.MinX;
+            this->MaxX = bbox2d.MaxX;
+            this->MinY = bbox2d.MinY;
+            this->MaxY = bbox2d.MaxY;
+        }
         if (ShowGrid.getValue() && !(ShowOnlyInEditMode.getValue() && !this->isEditing()) ) {
             createGrid();
         }
