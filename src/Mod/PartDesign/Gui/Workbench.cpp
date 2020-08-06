@@ -50,6 +50,11 @@ namespace bp = boost::placeholders;
 
 #if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Part Design");
+    qApp->translate("Workbench", "Create a datum");
+    qApp->translate("Workbench", "Create an additive feature");
+    qApp->translate("Workbench", "Create a subtractive feature");
+    qApp->translate("Workbench", "Apply a pattern");
+    qApp->translate("Workbench", "Apply a dress-up feature");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Face tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Sketch tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
@@ -489,7 +494,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // transformations
     Gui::MenuItem* transformations = new Gui::MenuItem;
-    transformations->setCommand("Perform a transformation");
+    transformations->setCommand("Apply a pattern");
     *transformations << "PartDesign_Mirrored" << "PartDesign_LinearPattern"
         << "PartDesign_PolarPattern" << "PartDesign_MultiTransform";
         //<< "PartDesign_Scaled"
