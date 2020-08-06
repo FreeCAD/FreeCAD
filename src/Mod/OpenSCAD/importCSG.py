@@ -1034,7 +1034,7 @@ def p_circle_action(p) :
     n = int(p[3]['$fn'])
     fnmax = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetInt('useMaxFN',50)
+        GetInt('useMaxFN',16)
     # Alter Max polygon to control if polygons are circles or polygons
     # in the modules preferences
     import Draft
