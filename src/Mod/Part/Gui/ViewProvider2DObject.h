@@ -54,6 +54,7 @@ public:
     App::PropertyEnumeration GridStyle;
     App::PropertyBool TightGrid;
     App::PropertyBool GridSnap;
+    App::PropertyBool GridAutoSize;
     App::PropertyInteger maxNumberOfLines;
 
     virtual void attach(App::DocumentObject *);
