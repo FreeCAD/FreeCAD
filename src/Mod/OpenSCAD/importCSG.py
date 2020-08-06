@@ -925,7 +925,7 @@ def p_cylinder_action(p):
     n = int(round(float(p[3]['$fn'])))
     fnmax = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetInt('useMaxFN')
+        GetInt('useMaxFN', 16)
     if printverbose: print(p[3])
     if h > 0:
         if ( r1 == r2 and r1 > 0):
