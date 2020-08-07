@@ -914,28 +914,23 @@ QString SelectionSingleton::format(const char *docname,
             ts << QString::fromUtf8(sobj->Label.getValue()) << " | ";
     }
     if(x != 0. || y != 0. || z != 0.) {
-        Base::Quantity q(x, Base::Quantity::MilliMetre.getUnit());
-        double factor;
-        QString unit;
-        Base::UnitsApi::schemaTranslate(q, factor, unit);
-
-        QLocale Lc;
-        const Base::QuantityFormat& format = q.getFormat();
-        if (format.option != Base::QuantityFormat::None) {
-            uint opt = static_cast<uint>(format.option);
-            Lc.setNumberOptions(static_cast<QLocale::NumberOptions>(opt));
-        }
-        static ParameterGrp::handle hGrp;
-        if (!hGrp)
-            hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-        int decimal = hGrp->GetInt("DecimalsPreSel",-1);
-        if (decimal < 0)
-            decimal = format.precision;
-        char fmt = format.toFormat();
-        ts << Lc.toString(x/factor, fmt, decimal) << "; "
-           << Lc.toString(y/factor, fmt, decimal) << "; "
-           << Lc.toString(z/factor, fmt, decimal) << " "
-           << unit << " | ";
+        auto fmt = [this](double v) -> QString {
+            Base::Quantity q(v, Base::Quantity::MilliMetre.getUnit());
+            double factor;
+            QString unit;
+            Base::UnitsApi::schemaTranslate(q, factor, unit);
+            QLocale Lc;
+            const Base::QuantityFormat& format = q.getFormat();
+            if (format.option != Base::QuantityFormat::None) {
+                uint opt = static_cast<uint>(format.option);
+                Lc.setNumberOptions(static_cast<QLocale::NumberOptions>(opt));
+            }
+            return QString::fromLatin1("%1 %2").arg(
+                        Lc.toString(v/factor, format.toFormat(),
+                                    fmtDecimal<0 ? format.precision : fmtDecimal),
+                        unit);
+        };
+        ts << fmt(x) << "; " << fmt(y) << "; " << fmt(z) << QLatin1String(" | ");
     }
 
     ts << objT.getDocumentName().c_str() << "#" 
@@ -946,6 +941,11 @@ QString SelectionSingleton::format(const char *docname,
         getMainWindow()->showMessage(text);
 
     return text;
+}
+
+void SelectionSingleton::setFormatDecimal(int d)
+{
+    fmtDecimal = d;
 }
 
 void SelectionSingleton::rmvPreselect()
@@ -1812,6 +1812,10 @@ SelectionSingleton::SelectionSingleton()
     gateResolve = 1;
     App::GetApplication().signalDeletedObject.connect(boost::bind(&Gui::SelectionSingleton::slotDeletedObject, this, bp::_1));
     signalSelectionChanged.connect(boost::bind(&Gui::SelectionSingleton::slotSelectionChanged, this, bp::_1));
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Units");
+    fmtDecimal = hGrp->GetInt("DecimalsPreSel",-1);
 }
 
 /**

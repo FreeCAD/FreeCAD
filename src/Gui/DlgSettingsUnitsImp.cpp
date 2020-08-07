@@ -34,6 +34,7 @@
 #include "DlgSettingsUnitsImp.h"
 #include "NavigationStyle.h"
 #include "PrefWidgets.h"
+#include "Selection.h"
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
@@ -123,6 +124,7 @@ void DlgSettingsUnitsImp::saveSettings()
     hGrp->SetInt("UserSchema", ui->comboBox_ViewSystem->currentIndex());
     hGrp->SetInt("Decimals", ui->spinBoxDecimals->value());
     hGrp->SetInt("DecimalsPreSel", ui->spinBoxPreSel->value());
+    Selection().setFormatDecimal(ui->spinBoxPreSel->value());
 
     // Set actual value
     Base::UnitsApi::setDecimals(ui->spinBoxDecimals->value());

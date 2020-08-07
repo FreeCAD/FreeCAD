@@ -403,6 +403,8 @@ public:
                    const char *subname=0,
                    float x=0.f, float y=0.f, float z=0.f, bool show=false);
 
+    void setFormatDecimal(int);
+
     /// set the preselected object (mostly by the 3D view)
     int setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName,
                      float x=0.f, float y=0.f, float z=0.f, int signal=0, bool msg=false);
@@ -752,6 +754,8 @@ protected:
 
     int logDisabled = 0;
     bool logHasSelection = false;
+
+    int fmtDecimal = -1;
 };
 
 /**
