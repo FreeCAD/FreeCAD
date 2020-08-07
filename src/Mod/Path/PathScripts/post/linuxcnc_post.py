@@ -55,6 +55,7 @@ parser.add_argument('--inches', action='store_true', help='Convert output for US
 parser.add_argument('--modal', action='store_true', help='Output the Same G-command Name USE NonModal Mode')
 parser.add_argument('--axis-modal', action='store_true', help='Output the Same Axis Value Mode')
 parser.add_argument('--no-tlo', action='store_true', help='suppress tool length offset (G43) following tool changes')
+parser.add_argument('--tolerance', help='Path blending tolerance for linuxcnc')
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -140,15 +141,25 @@ def processArguments(argstring):
             UNIT_SPEED_FORMAT = 'in/min'
             UNIT_FORMAT = 'in'
             PRECISION = 4
+        print(args.tolerance)
+        if args.tolerance is not None:
+            tolstring = "G64 P" + args.tolerance
+        else:
+            if args.inches:
+                tolstring = "G64 P0.001"
+            else:
+                tolstring = "G64 P0.025"
+        PREAMBLE += tolstring
+
         if args.modal:
             MODAL = True
         if args.no_tlo:
             USE_TLO = False
         if args.axis_modal:
-            print ('here')
             OUTPUT_DOUBLES = False
 
-    except Exception: # pylint: disable=broad-except
+    except Exception as e: # pylint: disable=broad-except
+        print(str(e))
         return False
 
     return True
