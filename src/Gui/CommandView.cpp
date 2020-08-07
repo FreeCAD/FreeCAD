@@ -2653,152 +2653,15 @@ StdBoxSelection::StdBoxSelection()
     eType         = AlterSelection;
 }
 
-typedef enum { CENTER, INTERSECT } SelectionMode;
-
-static std::vector<std::string> getBoxSelection(const Base::Vector3d *dir,
-        ViewProviderDocumentObject *vp, SelectionMode mode, bool selectElement,
-        const Base::ViewProjMethod &proj, const Base::Polygon2d &polygon,
-        const Base::Matrix4D &mat, bool transform=true, int depth=0)
-{
-    std::vector<std::string> ret;
-    auto obj = vp->getObject();
-    if(!obj || !obj->getNameInDocument())
-        return ret;
-
-    // DO NOT check this view object Visibility, let the caller do this. Because
-    // we may be called by upper object hierarchy that manages our visibility.
-
-    auto bbox3 = vp->getBoundingBox(0,&mat,transform);
-    if(!bbox3.IsValid())
-        return ret;
-
-    auto bbox = bbox3.ProjectBox(&proj);
-
-    // check if both two boundary points are inside polygon, only
-    // valid since we know the given polygon is a box.
-    if(!selectElement 
-            && polygon.Contains(Base::Vector2d(bbox.MinX,bbox.MinY))
-            && polygon.Contains(Base::Vector2d(bbox.MaxX,bbox.MaxY))) 
-    {
-        ret.emplace_back("");
-        return ret;
-    }
-
-    if(!bbox.Intersect(polygon)) 
-        return ret;
-
-    const auto &subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
-    if(subs.empty()) {
-        if(!selectElement) {
-            if(mode==INTERSECT || polygon.Contains(bbox.GetCenter()))
-                ret.emplace_back("");
-            return ret;
-        }
-        Base::PyGILStateLocker lock;
-        PyObject *pyobj = 0;
-        Base::Matrix4D matCopy(mat);
-        obj->getSubObject(0,&pyobj,&matCopy,transform,depth);
-        if(!pyobj)
-            return ret;
-        Py::Object pyobject(pyobj,true);
-        if(!PyObject_TypeCheck(pyobj,&Data::ComplexGeoDataPy::Type))
-            return ret;
-        auto data = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
-        for(auto type : data->getElementTypes()) {
-            size_t count = data->countSubElements(type);
-            if(!count)
-                continue;
-            for(size_t i=1;i<=count;++i) {
-                std::string element(type);
-                element += std::to_string(i);
-                std::unique_ptr<Data::Segment> segment(data->getSubElementByName(element.c_str()));
-                if(!segment)
-                    continue;
-                std::vector<Base::Vector3d> points;
-                std::vector<Data::ComplexGeoData::Line> lines;
-
-                std::vector<Base::Vector3d> pointNormals; // not used
-                std::vector<Data::ComplexGeoData::Facet> faces;
-
-                // Call getFacesFromSubelement to obtain the triangulation of
-                // the segment.
-                data->getFacesFromSubelement(segment.get(),points,pointNormals,faces);
-                if(faces.empty())
-                    continue;
-
-                Base::Polygon2d loop;
-                bool hit = false;
-                for(auto &facet : faces) {
-                    // back face cull
-                    if (dir) {
-                        Base::Vector3d normal = (points[facet.I2] - points[facet.I1])
-                            % (points[facet.I3] - points[facet.I1]);
-                        normal.Normalize();
-                        if (normal.Dot(*dir) < 0.0f)
-                            continue;
-                    }
-                    auto v = proj(points[facet.I1]);
-                    loop.Add(Base::Vector2d(v.x, v.y));
-                    v = proj(points[facet.I2]);
-                    loop.Add(Base::Vector2d(v.x, v.y));
-                    v = proj(points[facet.I3]);
-                    loop.Add(Base::Vector2d(v.x, v.y));
-                    if (mode != CENTER) {
-                        if(polygon.Intersect(loop)) {
-                            hit = true;
-                            break;
-                        }
-                        loop.DeleteAll();
-                    }
-                }
-                if (mode==CENTER
-                        && loop.GetCtVectors()
-                        && polygon.Contains(loop.CalcBoundBox().GetCenter()))
-                    hit = true;
-                if (hit)
-                    ret.push_back(element);
-            }
-        }
-        return ret;
-    }
-
-    size_t count = 0;
-    for(auto &sub : subs) {
-        App::DocumentObject *parent = 0;
-        std::string childName;
-        Base::Matrix4D smat(mat);
-        auto sobj = obj->resolve(sub.c_str(),&parent,&childName,0,0,&smat,transform,depth+1);
-        if(!sobj) 
-            continue;
-        int vis;
-        if(!parent || (vis=parent->isElementVisibleEx(childName.c_str(),App::DocumentObject::GS_SELECT))<0)
-            vis = sobj->Visibility.getValue()?1:0;
-
-        if(!vis)
-            continue;
-
-        auto svp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(sobj));
-        if(!svp)
-            continue;
-
-        const auto &sels = getBoxSelection(dir,svp,mode,selectElement,proj,polygon,smat,false,depth+1);
-        if(sels.size()==1 && sels[0] == "")
-            ++count;
-        for(auto &sel : sels)
-            ret.emplace_back(sub+sel);
-    }
-    if(count==subs.size()) {
-        ret.resize(1);
-        ret[0].clear();
-    }
-    return ret;
-}
-
 static void selectionCallback(void * ud, SoEventCallback * cb)
 {
     const SoEvent* ev = cb->getEvent();
     cb->setHandled();
     Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+
+    bool unselect = false;
+    bool backFaceCull = true;
+
     if(ev) {
         if(ev->isOfType(SoKeyboardEvent::getClassTypeId())) {
             if(static_cast<const SoKeyboardEvent*>(ev)->getKey() == SoKeyboardEvent::ESCAPE) {
@@ -2810,6 +2673,16 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
             return;
         } else if (!ev->isOfType(SoMouseButtonEvent::getClassTypeId()))
             return;
+
+        if(ev->wasShiftDown())
+            unselect = true;
+        else if(!ev->wasCtrlDown()) {
+            App::Document *doc = App::GetApplication().getActiveDocument();
+            if (doc)
+                Gui::Selection().clearSelection(doc->getName());
+        }
+        if(ev->wasAltDown())
+            backFaceCull = false;
     }
 
     bool selectElement = ud?true:false;
@@ -2817,83 +2690,24 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
     view->setEditing(false);
     view->setSelectionEnabled(true);
 
-    SelectionMode selectionMode = CENTER;
-
-    SbVec3f pnt, dir;
-    view->getNearPlane(pnt, dir);
-    Base::Vector3d vdir(dir[0],dir[1],dir[2]);
-
-    std::vector<SbVec2f> picked = view->getGLPolygon();
-    SoCamera* cam = view->getSoRenderManager()->getCamera();
-    SbViewVolume vv = cam->getViewVolume();
-    Gui::ViewVolumeProjection proj(vv);
-    Base::Polygon2d polygon;
-    if (picked.size() == 2) {
-        SbVec2f pt1 = picked[0];
-        SbVec2f pt2 = picked[1];
-        polygon.Add(Base::Vector2d(pt1[0], pt1[1]));
-        polygon.Add(Base::Vector2d(pt1[0], pt2[1]));
-        polygon.Add(Base::Vector2d(pt2[0], pt2[1]));
-        polygon.Add(Base::Vector2d(pt2[0], pt1[1]));
-
+    bool center = true;
+    auto points = view->getGLPolygon();
+    if (points.size() == 2) {
         // when selecting from right to left then select by intersection
         // otherwise if the center is inside the rectangle
-        if (picked[0][0] > picked[1][0])
-            selectionMode = INTERSECT;
-    }
-    else {
-        for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it)
-            polygon.Add(Base::Vector2d((*it)[0],(*it)[1]));
+        if (points[0][0] > points[1][0])
+            center = false;
     }
 
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    if (doc) {
-        Base::Vector3d *pdir = &vdir;
+    bool currentSelection = (ViewParams::instance()->getShowSelectionOnTop() && selectElement);
 
-        std::vector<App::SubObjectT> sels; 
-        if(ViewParams::instance()->getShowSelectionOnTop() && selectElement)
-            sels = Gui::Selection().getSelectionT(doc->getName(),0);
-
-        if (ev) {
-            if(!ev->wasCtrlDown())
-                Gui::Selection().clearSelection(doc->getName());
-            if(ev->wasAltDown())
-                pdir = 0;
-        }
-
-        if(sels.size()) {
-            std::set<std::pair<App::DocumentObject*,std::string> > selSet;
-            for(auto &sel : sels) {
-                auto info = std::make_pair(sel.getObject(),sel.getSubNameNoElement());
-                if(!info.first || !selSet.insert(info).second)
-                    continue;
-
-                Base::Matrix4D mat;
-                auto sobj = info.first->getSubObject(info.second.c_str(),0,&mat);
-                auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
-                        Application::Instance->getViewProvider(sobj));
-                if(!vp)
-                    continue;
-                for(auto &sub : getBoxSelection(pdir,vp,selectionMode,selectElement,proj,polygon,mat,false)) 
-                    Gui::Selection().addSelection(doc->getName(), 
-                            info.first->getNameInDocument(), (info.second+sub).c_str());
-            }
-
-        } else {
-            for(auto obj : doc->getObjects()) {
-                if(App::GeoFeatureGroupExtension::isNonGeoGroup(obj)
-                        || App::GeoFeatureGroupExtension::getGroupOfObject(obj))
-                    continue;
-
-                auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
-                if (!vp || !vp->isVisible() || !vp->isShowable())
-                    continue;
-
-                Base::Matrix4D mat;
-                for(auto &sub : getBoxSelection(pdir,vp,selectionMode,selectElement,proj,polygon,mat)) 
-                    Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument(), sub.c_str());
-            }
-        }
+    auto picked = view->getPickedList(points, center, selectElement, backFaceCull,
+                                      currentSelection, unselect, false);
+    for (auto &objT : picked) {
+        if (unselect)
+            Selection().rmvSelection(objT);
+        else
+            Selection().addSelection(objT);
     }
 }
 

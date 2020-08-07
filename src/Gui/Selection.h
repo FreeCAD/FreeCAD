@@ -370,6 +370,12 @@ public:
     {
         return addSelection(pDocName,pObjectName,pSubName,x,y,z,pickedList,false);
     }
+    bool addSelection(const App::SubObjectT &objT, bool clearPreselect=true)
+    {
+        return addSelection(objT.getDocumentName().c_str(),
+                            objT.getObjectName().c_str(),
+                            objT.getSubName().c_str(),0,0,0,nullptr,clearPreselect);
+    }
 
     /// Add to selection
     bool addSelection(const SelectionObject&, bool clearPreSelect=true);
@@ -377,9 +383,16 @@ public:
     bool addSelections(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames);
     /// Update a selection 
     bool updateSelection(bool show, const char* pDocName, const char* pObjectName=0, const char* pSubName=0);
-    /// Remove from selection (for internal use)
+    /// Remove from selection
     void rmvSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
             const std::vector<SelObj> *pickedList = 0);
+    /// Remove from selection
+    void rmvSelection(const App::SubObjectT &objT)
+    {
+        return rmvSelection(objT.getDocumentName().c_str(),
+                            objT.getObjectName().c_str(),
+                            objT.getSubName().c_str());
+    }
     /// Set the selection for a document
     void setSelection(const char* pDocName, const std::vector<App::DocumentObject*>&);
     /// Clear the selection of document \a pDocName. If the document name is not given the selection of the active document is cleared.

@@ -97,6 +97,39 @@ void View3DInventorViewerPy::init_type()
     add_varargs_method("setNaviCubeCorner", &View3DInventorViewerPy::setNaviCubeCorner,
         "setNaviCubeCorner(int): sets the corner where to show the navi cube:\n"
         "0=top left, 1=top right, 2=bottom left, 3=bottom right");
+    add_keyword_method("getPickedList", &View3DInventorViewerPy::getPickedList,
+        "getPickedList(pos=None, singlePick=Flase, center=False, pickElement=True,\n"
+        "\tbackFaceCull=True, currentSelection=False, unselect=False,\n"
+        "\tmapCoords=True, resolve=1) -> list(tuple(obj, subname))\n"
+        "\n"
+        "Return a list of objects picked by a given position, box, or polygon\n"
+        "\n"
+        "pos: pass a tuple(float, float) to specify the screen coordinate for picking.\n"
+        "\tOr pass a list of tuple(float, float) to specify a polygon. If two\n"
+        "\tpoints are given, then it is treated as a rectangle box. Pass None\n"
+        "\tto use the current mouse position for picking.\n"
+        "\n"
+        "singlePick: set to True to return if any object is picked, False to return all\n"
+        "\tpicked objects.\n"
+        "\n"
+        "center: only applicable for polygon picking. If True, then pick object if its\n"
+        "\tcenter is inside the polygon. If False, then pick on any intersection.\n"
+        "\n"
+        "pickElement: if True, then pick sub-element, or False to pick whole object\n"
+        "\n"
+        "backFaceCull: if True, ignore back face (relative to the current camera).\n"
+        "\n"
+        "currentSelection: if True, then only pick within currently selected objects.\n"
+        "\n"
+        "unselect: if True, then return picked elements/objects that are already selected.\n"
+        "\n"
+        "mapCoords: if True, map the point coordinate from Qt global screen coordinate to\n"
+        "\tthe local coodinate of this view.\n"
+        "\n"
+        "resolve: whether to resolve the subname references.\n"
+        "\t0: do not resolve,\n"
+        "\t1: resolve,\n"
+        "\t2: resolve with mapped element name.");
 }
 
 View3DInventorViewerPy::View3DInventorViewerPy(View3DInventorViewer *vi)
@@ -121,22 +154,20 @@ Py::Object View3DInventorViewerPy::repr()
     return Py::String(s_out.str());
 }
 
-View3DInventorViewerPy::method_varargs_handler View3DInventorViewerPy::pycxx_handler = 0;
-
-PyObject *View3DInventorViewerPy::method_varargs_ext_handler(PyObject *_self_and_name_tuple, PyObject *_args)
+static PyCFunction pycxx_handler;
+static PyObject *method_varargs_ext_handler(PyObject *_self_and_name_tuple, PyObject *_args)
 {
-    try {
+    PY_TRY {
         return pycxx_handler(_self_and_name_tuple, _args);
-    }
-    catch (const Base::Exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-    catch (const std::exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-    catch(...) {
-        throw Py::RuntimeError("Unknown C++ exception");
-    }
+    } PY_CATCH
+}
+
+static PyCFunctionWithKeywords pycxx_kwd_handler;
+static PyObject *method_keyword_ext_handler(PyObject *_self_and_name_tuple, PyObject *_args, PyObject *_keyword)
+{
+    PY_TRY {
+        return pycxx_kwd_handler(_self_and_name_tuple, _args, _keyword);
+    } PY_CATCH
 }
 
 Py::Object View3DInventorViewerPy::getattr(const char * attr)
@@ -151,9 +182,15 @@ Py::Object View3DInventorViewerPy::getattr(const char * attr)
         Py::Object obj = Py::PythonExtension<View3DInventorViewerPy>::getattr(attr);
         if (PyCFunction_Check(obj.ptr())) {
             PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
-            if (!pycxx_handler)
-                pycxx_handler = op->m_ml->ml_meth;
-            op->m_ml->ml_meth = method_varargs_ext_handler;
+            if (op->m_ml->ml_flags == METH_VARARGS) {
+                if (!pycxx_handler)
+                    pycxx_handler = op->m_ml->ml_meth;
+                op->m_ml->ml_meth = method_varargs_ext_handler;
+            } else if (op->m_ml->ml_flags == METH_KEYWORDS) {
+                if (!pycxx_kwd_handler)
+                    pycxx_kwd_handler = (PyCFunctionWithKeywords)op->m_ml->ml_meth;
+                op->m_ml->ml_meth = (PyCFunction)method_keyword_ext_handler;
+            }
         }
         return obj;
     }
@@ -493,4 +530,78 @@ Py::Object View3DInventorViewerPy::setNaviCubeCorner(const Py::Tuple& args)
         throw Py::IndexError("Value out of range");
     _viewer->setNaviCubeCorner(pos);
     return Py::None();
+}
+
+Py::Object View3DInventorViewerPy::getPickedList(const Py::Tuple &args, const Py::Dict &kwds)
+{
+    static char* keywords[] = {"pos", "singlePick", "center", "pickElement", "backFaceCull",
+        "currentSelection", "unselect", "mapCoords", "resolve", nullptr};
+    PyObject *pos = Py_None;
+    PyObject *singlePick = Py_False;
+    PyObject *center = Py_False;
+    PyObject *pickElement = Py_True;
+    PyObject *backFaceCull = Py_True;
+    PyObject *currentSelection = Py_False;
+    PyObject *mapCoords = Py_True;
+    PyObject *unselect = Py_False;
+    int resolve = 1;
+    if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "|OOOOOOOOi", keywords,
+                    &pos, &singlePick, &center, &pickElement, &backFaceCull,
+                    &currentSelection, &unselect, &mapCoords, &resolve))
+        throw Py::Exception();
+
+    std::vector<App::SubObjectT> res;
+    double x,y;
+    std::vector<SbVec2f> points;
+    if (pos != Py_None) {
+        if (PyArg_ParseTuple(pos, "dd", &x, &y))
+            points.emplace_back(x, y);
+        else if (PySequence_Check(pos)) {
+            PyErr_Clear();
+            Py::Sequence seq(pos);
+            for (Py::Sequence::iterator it = seq.begin(); it != seq.end(); ++it) {
+                if (!PyArg_ParseTuple((*it).ptr(), "dd", &x, &y))
+                    break;
+                points.emplace_back(x, y);
+            }
+        }
+        if (PyErr_Occurred())
+            throw Py::TypeError("Expects the first argument 'pos' to be either None, "
+                    "tuple(float,float), or list of tuple(float,float).");
+    }
+    if (points.empty())
+        res = _viewer->getPickedList(PyObject_IsTrue(singlePick));
+    else if (points.size() == 1)
+        res = _viewer->getPickedList(SbVec2s(points[0][0], points[0][1]),
+                                     PyObject_IsTrue(singlePick),
+                                     PyObject_IsTrue(mapCoords));
+    else {
+        res = _viewer->getPickedList(points,
+                                     PyObject_IsTrue(center),
+                                     PyObject_IsTrue(pickElement),
+                                     PyObject_IsTrue(backFaceCull),
+                                     PyObject_IsTrue(currentSelection),
+                                     PyObject_IsTrue(unselect),
+                                     PyObject_IsTrue(mapCoords));
+        if (res.size() > 1 && PyObject_IsTrue(singlePick))
+            res.resize(1);
+    }
+
+    Py::List list;
+    for(auto &objT : res) {
+        auto obj = objT.getObject();
+        if (!obj)
+            continue;
+        if (resolve == 0) {
+            list.append(Py::TupleN(Py::asObject(obj->getPyObject()),
+                                Py::String(objT.getSubName())));
+            continue;
+        }
+        auto sobj = objT.getSubObject();
+        if (sobj) {
+            list.append(Py::TupleN(Py::asObject(sobj->getPyObject()),
+                        Py::String(resolve==1 ? objT.getOldElementName() : objT.getNewElementName())));
+        }
+    }
+    return list;
 }

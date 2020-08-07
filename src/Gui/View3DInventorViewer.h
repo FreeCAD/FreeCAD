@@ -295,8 +295,20 @@ public:
     SoPickedPoint* getPickedPoint(SoEventCallback * n) const;
     SbBool pubSeekToPoint(const SbVec2s& pos);
     void pubSeekToPoint(const SbVec3f& pos);
-    std::vector<App::SubObjectT> getPickedList(const SbVec2s &pos, bool singlePick=false) const;
+
     std::vector<App::SubObjectT> getPickedList(bool singlePick=false) const;
+
+    std::vector<App::SubObjectT> getPickedList(const SbVec2s &pos,
+                                               bool singlePick = false,
+                                               bool mapCoords = false) const;
+
+    std::vector<App::SubObjectT> getPickedList(const std::vector<SbVec2f> &points, 
+                                               bool center = false, 
+                                               bool pickElement = true,
+                                               bool backfaceCull = true,
+                                               bool currentSelection = false,
+                                               bool unselect = false,
+                                               bool mapCoords = true) const;
     //@}
 
     /**

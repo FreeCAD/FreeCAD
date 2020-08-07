@@ -257,22 +257,20 @@ Py::Object View3DInventorPy::repr()
     return Py::String(s_out.str());
 }
 
-View3DInventorPy::method_varargs_handler View3DInventorPy::pycxx_handler = 0;
-
-PyObject *View3DInventorPy::method_varargs_ext_handler(PyObject *_self_and_name_tuple, PyObject *_args)
+static PyCFunction pycxx_handler;
+static PyObject *method_varargs_ext_handler(PyObject *_self_and_name_tuple, PyObject *_args)
 {
-    try {
+    PY_TRY {
         return pycxx_handler(_self_and_name_tuple, _args);
-    }
-    catch (const Base::Exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-    catch (const std::exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-    catch(...) {
-        throw Py::RuntimeError("Unknown C++ exception");
-    }
+    } PY_CATCH
+}
+
+static PyCFunctionWithKeywords pycxx_kwd_handler;
+static PyObject *method_keyword_ext_handler(PyObject *_self_and_name_tuple, PyObject *_args, PyObject *_keyword)
+{
+    PY_TRY {
+        return pycxx_kwd_handler(_self_and_name_tuple, _args, _keyword);
+    } PY_CATCH
 }
 
 Py::Object View3DInventorPy::getattr(const char * attr)
@@ -289,6 +287,13 @@ Py::Object View3DInventorPy::getattr(const char * attr)
         if (docObj) {
             return Py::Object(docObj->getPyObject(),true);
         }
+        else if (Base::streq(attr, "Viewer"))
+            return getViewer(Py::Tuple());
+        else if (Base::streq(attr, "__dict__")) {
+            Py::Dict dict;
+            dict.setItem("Viewer", getViewer(Py::Tuple()));
+            return dict;
+        }
         else {
             // else looking for a method with the name and call it
             Py::Object obj = Py::PythonExtension<View3DInventorPy>::getattr(attr);
@@ -298,6 +303,10 @@ Py::Object View3DInventorPy::getattr(const char * attr)
                     if (!pycxx_handler)
                         pycxx_handler = op->m_ml->ml_meth;
                     op->m_ml->ml_meth = method_varargs_ext_handler;
+                } else if (op->m_ml->ml_flags == METH_KEYWORDS) {
+                    if (!pycxx_kwd_handler)
+                        pycxx_kwd_handler = (PyCFunctionWithKeywords)op->m_ml->ml_meth;
+                    op->m_ml->ml_meth = (PyCFunction)method_keyword_ext_handler;
                 }
             }
             return obj;

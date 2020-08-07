@@ -153,11 +153,6 @@ private:
     static void draggerCallback(void * ud, SoDragger* dragger);
 
 private:
-    typedef PyObject* (*method_varargs_handler)(PyObject *_self, PyObject *_args);
-    static method_varargs_handler pycxx_handler;
-    static PyObject *method_varargs_ext_handler(PyObject *_self, PyObject *_args);
-
-private:
     std::list<PyObject*> callbacks;
     View3DInventor* _view;
     friend class View3DInventor;

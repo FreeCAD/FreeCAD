@@ -3647,19 +3647,26 @@ SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) const
 }
 
 std::vector<App::SubObjectT>
-View3DInventorViewer::getPickedList(const SbVec2s &pos, bool singlePick) const {
+View3DInventorViewer::getPickedList(const SbVec2s &_pos, bool singlePick, bool mapCoords) const {
+    SbVec2s pos;
+    if (!mapCoords)
+        pos = _pos;
+    else {
+        QPoint p = this->mapFromGlobal(QPoint(_pos[0],_pos[1]));
+        pos[0] = p.x();
+        pos[1] = this->height() - p.y() - 1;
+#if QT_VERSION >= 0x050000
+        pos *= this->devicePixelRatio();
+#endif
+    }
     return selectionRoot->getPickedSelections(pos,
             getSoRenderManager()->getViewportRegion(), singlePick);
 }
 
 std::vector<App::SubObjectT>
 View3DInventorViewer::getPickedList(bool singlePick) const {
-    auto p = this->mapFromGlobal(QCursor::pos());
-    SbVec2s pos(p.x(), this->height() - p.y() - 1);
-#if QT_VERSION >= 0x050000
-    pos *= this->devicePixelRatio();
-#endif
-    return this->getPickedList(pos, singlePick);
+    auto pos = QCursor::pos();
+    return this->getPickedList(SbVec2s(pos.x(), pos.y()), singlePick, true);
 }
 
 SbBool View3DInventorViewer::pubSeekToPoint(const SbVec2s& pos)
@@ -5018,6 +5025,263 @@ void View3DInventorViewer::ShadowInfo::toggleDragger(int toggle)
         if (!bbox.isEmpty())
             owner->viewBoundBox(bbox);
     }
+}
+
+static std::vector<std::string> getBoxSelection(const Base::Vector3d *dir,
+        ViewProviderDocumentObject *vp, bool center, bool pickElement,
+        const Base::ViewProjMethod &proj, const Base::Polygon2d &polygon,
+        const Base::Matrix4D &mat, bool transform=true, int depth=0)
+{
+    std::vector<std::string> ret;
+    auto obj = vp->getObject();
+    if(!obj || !obj->getNameInDocument())
+        return ret;
+
+    // DO NOT check this view object Visibility, let the caller do this. Because
+    // we may be called by upper object hierarchy that manages our visibility.
+
+    auto bbox3 = vp->getBoundingBox(0,&mat,transform);
+    if(!bbox3.IsValid())
+        return ret;
+
+    auto bbox = bbox3.ProjectBox(&proj);
+
+    // check if both two boundary points are inside polygon, only
+    // valid since we know the given polygon is a box.
+    if(!pickElement 
+            && polygon.Contains(Base::Vector2d(bbox.MinX,bbox.MinY))
+            && polygon.Contains(Base::Vector2d(bbox.MaxX,bbox.MaxY))) 
+    {
+        ret.emplace_back("");
+        return ret;
+    }
+
+    if(!bbox.Intersect(polygon)) 
+        return ret;
+
+    const auto &subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
+    if(subs.empty()) {
+        if(!pickElement) {
+            if(!center || polygon.Contains(bbox.GetCenter()))
+                ret.emplace_back("");
+            return ret;
+        }
+        Base::PyGILStateLocker lock;
+        PyObject *pyobj = 0;
+        Base::Matrix4D matCopy(mat);
+        obj->getSubObject(0,&pyobj,&matCopy,transform,depth);
+        if(!pyobj)
+            return ret;
+        Py::Object pyobject(pyobj,true);
+        if(!PyObject_TypeCheck(pyobj,&Data::ComplexGeoDataPy::Type))
+            return ret;
+        auto data = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
+        for(auto type : data->getElementTypes()) {
+            size_t count = data->countSubElements(type);
+            if(!count)
+                continue;
+            for(size_t i=1;i<=count;++i) {
+                std::string element(type);
+                element += std::to_string(i);
+                std::unique_ptr<Data::Segment> segment(data->getSubElementByName(element.c_str()));
+                if(!segment)
+                    continue;
+                std::vector<Base::Vector3d> points;
+                std::vector<Data::ComplexGeoData::Line> lines;
+
+                std::vector<Base::Vector3d> pointNormals; // not used
+                std::vector<Data::ComplexGeoData::Facet> faces;
+
+                // Call getFacesFromSubelement to obtain the triangulation of
+                // the segment.
+                data->getFacesFromSubelement(segment.get(),points,pointNormals,faces);
+                if(faces.empty())
+                    continue;
+
+                Base::Polygon2d loop;
+                bool hit = false;
+                for(auto &facet : faces) {
+                    // back face cull
+                    if (dir) {
+                        Base::Vector3d normal = (points[facet.I2] - points[facet.I1])
+                            % (points[facet.I3] - points[facet.I1]);
+                        normal.Normalize();
+                        if (normal.Dot(*dir) < 0.0f)
+                            continue;
+                    }
+                    auto v = proj(points[facet.I1]);
+                    loop.Add(Base::Vector2d(v.x, v.y));
+                    v = proj(points[facet.I2]);
+                    loop.Add(Base::Vector2d(v.x, v.y));
+                    v = proj(points[facet.I3]);
+                    loop.Add(Base::Vector2d(v.x, v.y));
+                    if (!center) {
+                        if(polygon.Intersect(loop)) {
+                            hit = true;
+                            break;
+                        }
+                        loop.DeleteAll();
+                    }
+                }
+                if (center && loop.GetCtVectors()
+                           && polygon.Contains(loop.CalcBoundBox().GetCenter()))
+                    hit = true;
+                if (hit)
+                    ret.push_back(element);
+            }
+        }
+        return ret;
+    }
+
+    size_t count = 0;
+    for(auto &sub : subs) {
+        App::DocumentObject *parent = 0;
+        std::string childName;
+        Base::Matrix4D smat(mat);
+        auto sobj = obj->resolve(sub.c_str(),&parent,&childName,0,0,&smat,transform,depth+1);
+        if(!sobj) 
+            continue;
+        int vis;
+        if(!parent || (vis=parent->isElementVisibleEx(childName.c_str(),App::DocumentObject::GS_SELECT))<0)
+            vis = sobj->Visibility.getValue()?1:0;
+
+        if(!vis)
+            continue;
+
+        auto svp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(sobj));
+        if(!svp)
+            continue;
+
+        const auto &sels = getBoxSelection(dir,svp,center,pickElement,proj,polygon,smat,false,depth+1);
+        if(sels.size()==1 && sels[0] == "")
+            ++count;
+        for(auto &sel : sels)
+            ret.emplace_back(sub+sel);
+    }
+    if(count==subs.size()) {
+        ret.resize(1);
+        ret[0].clear();
+    }
+    return ret;
+}
+
+
+std::vector<App::SubObjectT>
+View3DInventorViewer::getPickedList(const std::vector<SbVec2f> &pts,
+                                    bool center, 
+                                    bool pickElement,
+                                    bool backfaceCull,
+                                    bool currentSelection,
+                                    bool unselect,
+                                    bool mapCoords) const
+{
+    std::vector<App::SubObjectT> res;
+
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (!doc)
+        return res;
+
+    auto getPt = [this,mapCoords](const SbVec2f &p) -> Base::Vector2d {
+        Base::Vector2d pt(p[0], p[1]);
+        if (mapCoords) {
+            pt.y = this->height() - pt.y - 1;
+            if (this->width())
+                pt.x /= this->width();
+            if (this->height())
+                pt.y /= this->height();
+        }
+        return pt;
+    };
+
+    Base::Polygon2d polygon;
+    if (pts.size() == 2) {
+        auto pt1 = getPt(pts[0]);
+        auto pt2 = getPt(pts[1]);
+        polygon.Add(Base::Vector2d(pt1.x, pt1.y));
+        polygon.Add(Base::Vector2d(pt1.x, pt2.y));
+        polygon.Add(Base::Vector2d(pt2.x, pt2.y));
+        polygon.Add(Base::Vector2d(pt2.x, pt1.y));
+    } else {
+        for (auto &pt : pts)
+            polygon.Add(getPt(pt));
+    }
+
+    Base::Vector3d vdir, *pdir = nullptr;
+    if (backfaceCull) {
+        SbVec3f pnt, dir;
+        this->getNearPlane(pnt, dir);
+        vdir = Base::Vector3d(dir[0],dir[1],dir[2]);
+        pdir = &vdir;
+    }
+
+    SoCamera* cam = this->getSoRenderManager()->getCamera();
+    SbViewVolume vv = cam->getViewVolume();
+    Gui::ViewVolumeProjection proj(vv);
+
+    std::set<App::SubObjectT> sels; 
+    std::map<App::SubObjectT, std::vector<const App::SubObjectT*> > selObjs; 
+    if(currentSelection || unselect) {
+        for (auto &sel : Gui::Selection().getSelectionT(doc->getName(),0)) {
+            auto r = sels.insert(sel);
+            const App::SubObjectT &objT = *r.first;
+            if (currentSelection || (unselect && !pickElement))
+                selObjs[App::SubObjectT(sel.getDocumentName().c_str(),
+                                        sel.getObjectName().c_str(),
+                                        sel.getSubNameNoElement().c_str())].push_back(&objT);
+        }
+    }
+
+    auto handler = [&](App::SubObjectT &&objT) {
+        if (!unselect) {
+            res.push_back(std::move(objT));
+            return;
+        }
+        if (pickElement) {
+            if (sels.count(objT))
+                res.push_back(std::move(objT));
+            return;
+        }
+        auto it = selObjs.find(objT);
+        if (it != selObjs.end()) {
+            for (auto selT : it->second)
+                res.push_back(*selT);
+        }
+    };
+
+    if(currentSelection && sels.size()) {
+        for(auto &v : selObjs) {
+            auto &sel = v.first;
+            App::DocumentObject *obj = sel.getObject();
+            if (!obj)
+                continue;
+            Base::Matrix4D mat;
+            App::DocumentObject *sobj = obj->getSubObject(sel.getSubName().c_str(),0,&mat);
+            auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                    Application::Instance->getViewProvider(sobj));
+            if(!vp)
+                continue;
+            for(auto &sub : getBoxSelection(pdir,vp,center,pickElement,proj,polygon,mat,false))
+                handler(App::SubObjectT(obj, (sel.getSubName()+sub).c_str()));
+        }
+
+    } else {
+        for(auto obj : doc->getObjects()) {
+            if(App::GeoFeatureGroupExtension::isNonGeoGroup(obj)
+                    || App::GeoFeatureGroupExtension::getGroupOfObject(obj))
+                continue;
+
+            auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                    Application::Instance->getViewProvider(obj));
+            if (!vp || !vp->isVisible() || !vp->isShowable())
+                continue;
+
+            Base::Matrix4D mat;
+            for(auto &sub : getBoxSelection(pdir,vp,center,pickElement,proj,polygon,mat))
+                handler(App::SubObjectT(obj, sub.c_str()));
+        }
+    }
+
+    return res;
 }
 
 #include "moc_View3DInventorViewer.cpp"

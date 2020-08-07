@@ -65,6 +65,8 @@ public:
     Py::Object getPickRadius(const Py::Tuple& args);
     Py::Object setPickRadius(const Py::Tuple& args);
 
+    Py::Object getPickedList(const Py::Tuple& args, const Py::Dict &);
+
     Py::Object setupEditingRoot(const Py::Tuple &args);
     Py::Object resetEditingRoot(const Py::Tuple &args);
 
@@ -76,12 +78,6 @@ public:
     Py::Object setEnabledNaviCube(const Py::Tuple& args);
     Py::Object isEnabledNaviCube(const Py::Tuple& args);
     Py::Object setNaviCubeCorner(const Py::Tuple& args);
-
-
-private:
-    typedef PyObject* (*method_varargs_handler)(PyObject *_self, PyObject *_args);
-    static method_varargs_handler pycxx_handler;
-    static PyObject *method_varargs_ext_handler(PyObject *_self, PyObject *_args);
 
 private:
     std::list<PyObject*> callbacks;
