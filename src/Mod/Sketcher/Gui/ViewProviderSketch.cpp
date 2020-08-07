@@ -1487,7 +1487,7 @@ bool ViewProviderSketch::isSelectable(void) const
     if (isEditing())
         return false;
     else
-        return PartGui::ViewProvider2DObject::isSelectable();
+        return PartGui::ViewProvider2DObjectGrid::isSelectable();
 }
 
 void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -5567,7 +5567,7 @@ void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
 
 void ViewProviderSketch::updateData(const App::Property *prop)
 {
-    ViewProvider2DObject::updateData(prop);
+    ViewProvider2DObjectGrid::updateData(prop);
 
     // In the case of an undo/redo transaction, updateData is triggered by SketchObject::onUndoRedoFinished() in the solve()
     // In the case of an internal transaction, touching the geometry results in a call to updateData.
@@ -5603,7 +5603,7 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 void ViewProviderSketch::onChanged(const App::Property *prop)
 {
     // call father
-    PartGui::ViewProvider2DObject::onChanged(prop);
+    PartGui::ViewProvider2DObjectGrid::onChanged(prop);
 }
 
 void ViewProviderSketch::attach(App::DocumentObject *pcFeat)
@@ -5720,7 +5720,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     TightGrid.setValue(false);
 
-    ViewProvider2DObject::setEdit(ModNum); // notify to handle grid according to edit mode property
+    ViewProvider2DObjectGrid::setEdit(ModNum); // notify to handle grid according to edit mode property
 
     float transparency;
 
@@ -6157,7 +6157,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         e.ReportException();
     }
 
-    ViewProvider2DObject::unsetEdit(ModNum); // notify grid that edit mode is being left
+    ViewProvider2DObjectGrid::unsetEdit(ModNum); // notify grid that edit mode is being left
 }
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
