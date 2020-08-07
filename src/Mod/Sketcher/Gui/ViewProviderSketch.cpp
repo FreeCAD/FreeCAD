@@ -281,7 +281,7 @@ const Part::Geometry* GeoById(const std::vector<Part::Geometry*> GeoList, int Id
 
 /* TRANSLATOR SketcherGui::ViewProviderSketch */
 
-PROPERTY_SOURCE(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObject)
+PROPERTY_SOURCE(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObjectGrid)
 
 
 ViewProviderSketch::ViewProviderSketch()
