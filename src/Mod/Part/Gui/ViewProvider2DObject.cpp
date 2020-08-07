@@ -252,7 +252,7 @@ void ViewProvider2DObject::updateData(const App::Property* prop)
             Gui::coinRemoveAllChildren(GridRoot);
             Base::Placement place = static_cast<const Part::PropertyPartShape*>(prop)->getComplexData()->getPlacement();
             place.invert();
-            Base::ViewProjMatrix proj(place.toMatrix());
+            Base::ViewOrthoProjMatrix proj(place.toMatrix());
             Base::BoundBox2d bbox2d = bbox.ProjectBox(&proj);
             this->MinX = bbox2d.MinX;
             this->MaxX = bbox2d.MaxX;
