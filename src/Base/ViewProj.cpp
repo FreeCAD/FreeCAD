@@ -191,3 +191,41 @@ Vector3d ViewProjMatrix::inverse (const Vector3d& src) const
 
     return dst;
 }
+
+// ----------------------------------------------------------------------------
+
+ViewOrthoProjMatrix::ViewOrthoProjMatrix (const Matrix4D &rclMtx)
+    : _clMtx(rclMtx)
+{
+    _clMtxInv = _clMtx;
+    _clMtxInv.inverse();
+}
+
+ViewOrthoProjMatrix::~ViewOrthoProjMatrix()
+{
+}
+
+Matrix4D ViewOrthoProjMatrix::getProjectionMatrix (void) const
+{
+    return _clMtx;
+}
+
+Vector3f ViewOrthoProjMatrix::operator()(const Vector3f &rclPt) const
+{
+    return Vector3f(_clMtx * rclPt);
+}
+
+Vector3d ViewOrthoProjMatrix::operator()(const Vector3d &rclPt) const
+{
+    return Vector3d(_clMtx * rclPt);
+}
+
+Vector3f ViewOrthoProjMatrix::inverse (const Vector3f &rclPt) const
+{
+    return Vector3f(_clMtxInv * rclPt);
+}
+
+Vector3d ViewOrthoProjMatrix::inverse (const Vector3d &rclPt) const
+{
+    return Vector3d(_clMtxInv * rclPt);
+}
