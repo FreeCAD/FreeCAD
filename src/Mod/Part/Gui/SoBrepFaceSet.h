@@ -143,7 +143,7 @@ private:
 
     void renderShape(SoGLRenderAction *action, SelContextPtr ctx, SelContextPtr ctx2,
                      bool checkTransp, bool shadowRendering=false);
-    void renderShape(SoGLRenderAction *action, bool check_override);
+    void renderShape(SoGLRenderAction *action);
 
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
