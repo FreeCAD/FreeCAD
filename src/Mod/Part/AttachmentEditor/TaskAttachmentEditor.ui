@@ -295,14 +295,11 @@ Note: The placement is expressed in local space of object being attached.</strin
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>-360.000000000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>360.000000000000000</double>
-        </property>
-        <property name="value" stdset="0">
-         <double>0.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -330,14 +327,11 @@ Note: The placement is expressed in local space of object being attached.</strin
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>-360.000000000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>360.000000000000000</double>
-        </property>
-        <property name="value" stdset="0">
-         <double>0.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -365,14 +359,11 @@ Note: The placement is expressed in local space of object being attached.</strin
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>-360.000000000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>360.000000000000000</double>
-        </property>
-        <property name="value" stdset="0">
-         <double>0.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -391,7 +382,7 @@ Note: The placement is expressed in local space of object being attached.</strin
  <customwidgets>
   <customwidget>
    <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
+   <extends></extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
