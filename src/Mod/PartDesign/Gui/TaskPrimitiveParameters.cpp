@@ -74,10 +74,13 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->boxWidth->bind(static_cast<PartDesign::Box*>(vp->getObject())->Width);
             ui->boxLength->setMinimum(0.0);
             ui->boxLength->setMaximum(INT_MAX);
+            ui->boxLength->setKeyboardTracking(false);
             ui->boxWidth->setMinimum(0.0);
             ui->boxWidth->setMaximum(INT_MAX);
+            ui->boxWidth->setKeyboardTracking(false);
             ui->boxHeight->setMinimum(0.0);
             ui->boxHeight->setMaximum(INT_MAX);
+            ui->boxHeight->setKeyboardTracking(false);
             break;
         case PartDesign::FeaturePrimitive::Cylinder:
             index = 2;
@@ -89,10 +92,13 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->cylinderRadius->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius);
             ui->cylinderAngle->setMaximum(360.0);
             ui->cylinderAngle->setMinimum(0.0);
+            ui->cylinderAngle->setKeyboardTracking(false);
             ui->cylinderHeight->setMaximum(INT_MAX);
             ui->cylinderHeight->setMinimum(0.0);
+            ui->cylinderHeight->setKeyboardTracking(false);
             ui->cylinderRadius->setMaximum(INT_MAX);
             ui->cylinderRadius->setMinimum(0.0);
+            ui->cylinderRadius->setKeyboardTracking(false);
             break;
         case PartDesign::FeaturePrimitive::Sphere:
             index = 4;
@@ -106,12 +112,16 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->sphereRadius->bind(static_cast<PartDesign::Sphere*>(vp->getObject())->Radius);
             ui->sphereAngle1->setMaximum(ui->sphereAngle2->rawValue()); // must geometrically be <= than sphereAngle2
             ui->sphereAngle1->setMinimum(-90.0);
+            ui->sphereAngle1->setKeyboardTracking(false);
             ui->sphereAngle2->setMaximum(90);
             ui->sphereAngle2->setMinimum(ui->sphereAngle1->rawValue());
+            ui->sphereAngle2->setKeyboardTracking(false);
             ui->sphereAngle3->setMaximum(360.0);
             ui->sphereAngle3->setMinimum(0.0);
+            ui->sphereAngle3->setKeyboardTracking(false);
             ui->sphereRadius->setMaximum(INT_MAX);
             ui->sphereRadius->setMinimum(0.0);
+            ui->sphereRadius->setKeyboardTracking(false);
             break;
         case PartDesign::FeaturePrimitive::Cone:
             index = 3;
@@ -125,12 +135,16 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->coneRadius2->bind(static_cast<PartDesign::Cone*>(vp->getObject())->Radius2);
             ui->coneAngle->setMaximum(360.0);
             ui->coneAngle->setMinimum(0.0);
+            ui->coneAngle->setKeyboardTracking(false);
             ui->coneHeight->setMaximum(INT_MAX);
             ui->coneHeight->setMinimum(0.0);
+            ui->coneHeight->setKeyboardTracking(false);
             ui->coneRadius1->setMaximum(INT_MAX);
             ui->coneRadius1->setMinimum(0.0);
+            ui->coneRadius1->setKeyboardTracking(false);
             ui->coneRadius2->setMaximum(INT_MAX);
             ui->coneRadius2->setMinimum(0.0);
+            ui->coneRadius2->setKeyboardTracking(false);
             break;
         case PartDesign::FeaturePrimitive::Ellipsoid:
             index = 5;
@@ -148,16 +162,22 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->ellipsoidRadius3->bind(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius3);
             ui->ellipsoidAngle1->setMaximum(ui->ellipsoidAngle2->rawValue()); // must geometrically be <= than sphereAngle2
             ui->ellipsoidAngle1->setMinimum(-90.0);
+            ui->ellipsoidAngle1->setKeyboardTracking(false);
             ui->ellipsoidAngle2->setMaximum(90);
             ui->ellipsoidAngle2->setMinimum(ui->ellipsoidAngle1->rawValue());
+            ui->ellipsoidAngle2->setKeyboardTracking(false);
             ui->ellipsoidAngle3->setMaximum(360.0);
             ui->ellipsoidAngle3->setMinimum(0.0);
+            ui->ellipsoidAngle3->setKeyboardTracking(false);
             ui->ellipsoidRadius1->setMinimum(0.0);
             ui->ellipsoidRadius1->setMaximum(INT_MAX);
+            ui->ellipsoidRadius1->setKeyboardTracking(false);
             ui->ellipsoidRadius2->setMinimum(0.0);
             ui->ellipsoidRadius2->setMaximum(INT_MAX);
+            ui->ellipsoidRadius2->setKeyboardTracking(false);
             ui->ellipsoidRadius3->setMinimum(0.0);
             ui->ellipsoidRadius3->setMaximum(INT_MAX);
+            ui->ellipsoidRadius3->setKeyboardTracking(false);
             break;
         case PartDesign::FeaturePrimitive::Torus:
             index = 6;
@@ -173,17 +193,22 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->torusRadius2->bind(static_cast<PartDesign::Torus*>(vp->getObject())->Radius2);
             ui->torusAngle1->setMaximum(ui->torusAngle2->rawValue()); // must geometrically be <= than sphereAngle2
             ui->torusAngle1->setMinimum(-180.0);
+            ui->torusAngle1->setKeyboardTracking(false);
             ui->torusAngle2->setMaximum(180);
             ui->torusAngle2->setMinimum(ui->torusAngle1->rawValue());
+            ui->torusAngle2->setKeyboardTracking(false);
             ui->torusAngle3->setMaximum(360.0);
             ui->torusAngle3->setMinimum(0.0);
+            ui->torusAngle3->setKeyboardTracking(false);
             // this is the outer radius that must not be smaller than the inner one
             // otherwise the geometry is impossible and we can even get a crash:
             // https://forum.freecadweb.org/viewtopic.php?f=3&t=44467
             ui->torusRadius1->setMaximum(INT_MAX);
             ui->torusRadius1->setMinimum(ui->torusRadius2->rawValue());
+            ui->torusRadius1->setKeyboardTracking(false);
             ui->torusRadius2->setMaximum(ui->torusRadius1->rawValue());
             ui->torusRadius2->setMinimum(0.0);
+            ui->torusRadius2->setKeyboardTracking(false);
             break;
         case PartDesign::FeaturePrimitive::Prism:
             index = 7;
@@ -194,8 +219,10 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->prismHeight->bind(static_cast<PartDesign::Prism*>(vp->getObject())->Height);
             ui->prismCircumradius->setMaximum(INT_MAX);
             ui->prismCircumradius->setMinimum(0.0);
+            ui->prismCircumradius->setKeyboardTracking(false);
             ui->prismHeight->setMaximum(INT_MAX);
             ui->prismHeight->setMinimum(0.0);
+            ui->prismHeight->setKeyboardTracking(false);
             break;
         case PartDesign::FeaturePrimitive::Wedge:
             index = 8;
@@ -221,24 +248,34 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->wedgeZ2min->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2min);
             ui->wedgeXmin->setMinimum(INT_MIN);
             ui->wedgeXmin->setMaximum(ui->wedgeXmax->rawValue()); // must be <= than wedgeXmax
+            ui->wedgeXmin->setKeyboardTracking(false);
             ui->wedgeYmin->setMinimum(INT_MIN);
             ui->wedgeYmin->setMaximum(ui->wedgeYmax->rawValue()); // must be <= than wedgeYmax
+            ui->wedgeYmin->setKeyboardTracking(false);
             ui->wedgeZmin->setMinimum(INT_MIN);
             ui->wedgeZmin->setMaximum(ui->wedgeZmax->rawValue()); // must be <= than wedgeZmax
+            ui->wedgeZmin->setKeyboardTracking(false);
             ui->wedgeX2min->setMinimum(INT_MIN);
             ui->wedgeX2min->setMaximum(ui->wedgeX2max->rawValue()); // must be <= than wedgeXmax
+            ui->wedgeX2min->setKeyboardTracking(false);
             ui->wedgeZ2min->setMinimum(INT_MIN);
             ui->wedgeZ2min->setMaximum(ui->wedgeZ2max->rawValue()); // must be <= than wedgeXmax
+            ui->wedgeZ2min->setKeyboardTracking(false);
             ui->wedgeXmax->setMinimum(ui->wedgeXmin->rawValue());
             ui->wedgeXmax->setMaximum(INT_MAX);
+            ui->wedgeXmax->setKeyboardTracking(false);
             ui->wedgeYmax->setMinimum(ui->wedgeYmin->rawValue());
             ui->wedgeYmax->setMaximum(INT_MAX);
+            ui->wedgeYmax->setKeyboardTracking(false);
             ui->wedgeZmax->setMinimum(ui->wedgeZmin->rawValue());
             ui->wedgeZmax->setMaximum(INT_MAX);
+            ui->wedgeZmax->setKeyboardTracking(false);
             ui->wedgeX2max->setMinimum(ui->wedgeX2min->rawValue());
             ui->wedgeX2max->setMaximum(INT_MAX);
+            ui->wedgeX2max->setKeyboardTracking(false);
             ui->wedgeZ2max->setMinimum(ui->wedgeZ2min->rawValue());
             ui->wedgeZ2max->setMaximum(INT_MAX);
+            ui->wedgeZ2max->setKeyboardTracking(false);
             break;
     }
 

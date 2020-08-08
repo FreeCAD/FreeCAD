@@ -210,6 +210,14 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     ui->attachmentOffsetPitch->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Rotation.Pitch")));
     ui->attachmentOffsetRoll->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Rotation.Roll")));
 
+    // disable keyboardTracking
+    ui->attachmentOffsetX->setKeyboardTracking(false);
+    ui->attachmentOffsetY->setKeyboardTracking(false);
+    ui->attachmentOffsetZ->setKeyboardTracking(false);
+    ui->attachmentOffsetYaw->setKeyboardTracking(false);
+    ui->attachmentOffsetPitch->setKeyboardTracking(false);
+    ui->attachmentOffsetRoll->setKeyboardTracking(false);
+
     visibilityAutomation(true);
     updateAttachmentOffsetUI();
     updateReferencesUI();

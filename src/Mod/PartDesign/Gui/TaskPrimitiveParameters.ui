@@ -1790,7 +1790,10 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="Gui::QuantitySpinBox" name="regularPolygonCircumradius" native="true">
+          <widget class="Gui::QuantitySpinBox" name="regularPolygonCircumradius">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
            <property name="unit" stdset="0">
             <string notr="true">mm</string>
            </property>
