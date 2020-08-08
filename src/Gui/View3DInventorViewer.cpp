@@ -2530,9 +2530,11 @@ void View3DInventorViewer::saveGraphic(int pagesize, const QColor& bgcolor, SoVe
     va->endPage();
 }
 
-void View3DInventorViewer::startSelection(View3DInventorViewer::SelectionMode mode)
+AbstractMouseSelection *
+View3DInventorViewer::startSelection(View3DInventorViewer::SelectionMode mode)
 {
     navigation->startSelection(NavigationStyle::SelectionMode(mode));
+    return navigation->currentSelection();
 }
 
 void View3DInventorViewer::stopSelection()
@@ -3381,12 +3383,8 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
 
         switch (ke->getKey()) {
         case SoKeyboardEvent::ESCAPE:
-            if (Selection().hasPreselection())
-                Selection().rmvPreselect();
-            else if (Selection().hasSelection())
-                Selection().clearSelection();
-            else
-                toggleShadowLightManip(0);
+            Selection().rmvPreselect();
+            toggleShadowLightManip(0);
             //fall through
         case SoKeyboardEvent::Q: // ignore 'Q' keys (to prevent app from being closed)
             return inherited::processSoEvent(ev);

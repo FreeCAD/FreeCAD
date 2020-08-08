@@ -88,7 +88,7 @@ class Document;
 class GLGraphicsItem;
 class SoShapeScale;
 class ViewerEventFilter;
-class LinkView;
+class AbstractMouseSelection;
 
 /** GUI view into a 3D scene provided by View3DInventor
  *
@@ -261,7 +261,7 @@ public:
 
     /** @name Selection methods */
     //@{
-    void startSelection(SelectionMode = Lasso);
+    AbstractMouseSelection *startSelection(SelectionMode = Lasso);
     void stopSelection();
     bool isSelecting() const;
     std::vector<SbVec2f> getGLPolygon(SelectionRole* role=0) const;

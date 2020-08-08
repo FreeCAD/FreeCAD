@@ -271,7 +271,7 @@ void PolyPickerSelection::initialize()
     polyline.setViewer(_pcView3D);
 
     _pcView3D->addGraphicsItem(&polyline);
-    _pcView3D->redraw(); // needed to get an up-to-date image
+    _pcView3D->redraw(true); // needed to get an up-to-date image
     _pcView3D->setRenderType(View3DInventorViewer::Image);
     _pcView3D->redraw();
 
@@ -282,7 +282,7 @@ void PolyPickerSelection::terminate()
 {
     _pcView3D->removeGraphicsItem(&polyline);
     _pcView3D->setRenderType(View3DInventorViewer::Native);
-    _pcView3D->redraw();
+    _pcView3D->redraw(true);
 }
 
 void PolyPickerSelection::draw()
@@ -663,6 +663,167 @@ RubberbandSelection::~RubberbandSelection()
 {
 }
 
+enum CursorState
+{
+    RubberbandCursorNone,
+    // waiting for the first keybord event, or else prevent cursor change on mouse move
+    RubberbandCursorPending, 
+    RubberbandCursorNormal,
+    RubberbandCursorAdd,
+    RubberbandCursorRemove,
+};
+
+void RubberbandSelection::changeCursorOnKeyPress(int enable)
+{
+    if (enable == 0)
+        setCursorType(RubberbandCursorNone);
+    else if (enable > 1)
+        setCursorType(RubberbandCursorNormal);
+    else
+        setCursorType(RubberbandCursorPending);
+}
+
+void RubberbandSelection::setCursorType(int type)
+{
+    if (type == cursorType || !_pcView3D)
+        return;
+    if (cursorType == RubberbandCursorNone)
+        oldCursor = _pcView3D->getWidget()->cursor();
+    cursorType = type;
+
+    /* XPM */
+    static const char * const box_xpm[] = {
+    "24 30 3 1",
+    ".        c None",
+    "a        c #000000",
+    "X        c #FFFFFF",
+    "XX......................",
+    "XaX.....................",
+    "XaaX....................",
+    "XaaaX...................",
+    "XaaaaX..................",
+    "XaaaaaX.................",
+    "XaaaaaaX................",
+    "XaaaaaaaX...............",
+    "XaaaaaaaaX..............",
+    "XaaaaaaaaaX.............",
+    "XaaaaaaXXXX.............",
+    "XaaaXaaX................",
+    "XaaXXaaX................",
+    "XaX..XaaX...............",
+    "XX...XaaX...............",
+    "X.....XaaX..............",
+    "......XaaX..............",
+    ".......XaaXaaaaaaaaaaaaa",
+    ".......XaaXaXXaXXaXXaXXa",
+    "........XX.aXaaaaaaaaaXa",
+    "...........aaa.......aaa",
+    "...........aXa.......aXa",
+    "...........aXa.......aXa",
+    "...........aaa.......aaa",
+    "...........aXa.......aXa",
+    "...........aXa.......aXa",
+    "...........aaa.......aaa",
+    "...........aXaaaaaaaaaXa",
+    "...........aXXaXXaXXaXXa",
+    "...........aaaaaaaaaaaaa"};
+
+    /* XPM */
+    static const char * const box_add_xpm[] = {
+    "24 30 3 1",
+    ".        c None",
+    "a        c #000000",
+    "X        c #FFFFFF",
+    "XX......................",
+    "XaX.............XXX.....",
+    "XaaX............XaX.....",
+    "XaaaX...........XaX.....",
+    "XaaaaX..........XaX.....",
+    "XaaaaaX.....XXXXXaXXXXX.",
+    "XaaaaaaX....XaaaaaaaaaX.",
+    "XaaaaaaaX...XXXXXaXXXXX.",
+    "XaaaaaaaaX......XaX.....",
+    "XaaaaaaaaaX.....XaX.....",
+    "XaaaaaaXXXX.....XaX.....",
+    "XaaaXaaX........XXX.....",
+    "XaaXXaaX................",
+    "XaX..XaaX...............",
+    "XX...XaaX...............",
+    "X.....XaaX..............",
+    "......XaaX..............",
+    ".......XaaXaaaaaaaaaaaaa",
+    ".......XaaXaXXaXXaXXaXXa",
+    "........XX.aXaaaaaaaaaXa",
+    "...........aaa.......aaa",
+    "...........aXa.......aXa",
+    "...........aXa.......aXa",
+    "...........aaa.......aaa",
+    "...........aXa.......aXa",
+    "...........aXa.......aXa",
+    "...........aaa.......aaa",
+    "...........aXaaaaaaaaaXa",
+    "...........aXXaXXaXXaXXa",
+    "...........aaaaaaaaaaaaa"};
+
+    /* XPM */
+    static const char * const box_rmv_xpm[] = {
+    "24 30 3 1",
+    ".        c None",
+    "a        c #000000",
+    "X        c #FFFFFF",
+    "XX......................",
+    "XaX.....................",
+    "XaaX....................",
+    "XaaaX...................",
+    "XaaaaX..................",
+    "XaaaaaX.....XXXXXXXXXXX.",
+    "XaaaaaaX....XaaaaaaaaaX.",
+    "XaaaaaaaX...XXXXXXXXXXX.",
+    "XaaaaaaaaX..............",
+    "XaaaaaaaaaX.............",
+    "XaaaaaaXXXX.............",
+    "XaaaXaaX................",
+    "XaaXXaaX................",
+    "XaX..XaaX...............",
+    "XX...XaaX...............",
+    "X.....XaaX..............",
+    "......XaaX..............",
+    ".......XaaXaaaaaaaaaaaaa",
+    ".......XaaXaXXaXXaXXaXXa",
+    "........XX.aXaaaaaaaaaXa",
+    "...........aaa.......aaa",
+    "...........aXa.......aXa",
+    "...........aXa.......aXa",
+    "...........aaa.......aaa",
+    "...........aXa.......aXa",
+    "...........aXa.......aXa",
+    "...........aaa.......aaa",
+    "...........aXaaaaaaaaaXa",
+    "...........aXXaXXaXXaXXa",
+    "...........aaaaaaaaaaaaa"};
+
+    static QCursor _cursor;
+    static QCursor _cursorAdd;
+    static QCursor _cursorRemove;
+    if (_cursor.pixmap().isNull()) {
+        _cursor = QCursor(QPixmap(box_xpm),0,0);
+        _cursorAdd = QCursor(QPixmap(box_add_xpm),0,0);
+        _cursorRemove = QCursor(QPixmap(box_rmv_xpm),0,0);
+    }
+    switch(type) {
+    case RubberbandCursorPending:
+    case RubberbandCursorNormal:
+        _pcView3D->setEditingCursor(_cursor);
+        break;
+    case RubberbandCursorAdd:
+        _pcView3D->setEditingCursor(_cursorAdd);
+        break;
+    case RubberbandCursorRemove:
+        _pcView3D->setEditingCursor(_cursorRemove);
+        break;
+    }
+}
+
 void RubberbandSelection::setColor(float r, float g, float b, float a)
 {
     rubberband.setColor(r,g,b,a);
@@ -674,6 +835,7 @@ void RubberbandSelection::initialize()
     rubberband.setWorking(false);
     _pcView3D->addGraphicsItem(&rubberband);
     if (QtGLFramebufferObject::hasOpenGLFramebufferObjects()) {
+        _pcView3D->redraw(true);
         _pcView3D->setRenderType(View3DInventorViewer::Image);
     }
     _pcView3D->redraw();
@@ -685,7 +847,7 @@ void RubberbandSelection::terminate()
     if (QtGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         _pcView3D->setRenderType(View3DInventorViewer::Native);
     }
-    _pcView3D->redraw();
+    _pcView3D->redraw(true);
 }
 
 void RubberbandSelection::draw()
@@ -736,8 +898,17 @@ int RubberbandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
     return ret;
 }
 
-int RubberbandSelection::locationEvent(const SoLocation2Event* const, const QPoint& pos)
+int RubberbandSelection::locationEvent(const SoLocation2Event* const ev, const QPoint& pos)
 {
+    if (cursorType >= RubberbandCursorNormal) {
+        if (ev->wasCtrlDown())
+            setCursorType(RubberbandCursorAdd);
+        else if (ev->wasShiftDown())
+            setCursorType(RubberbandCursorRemove);
+        else
+            setCursorType(RubberbandCursorNormal);
+    }
+                
     m_iXnew = pos.x();
     m_iYnew = pos.y();
     rubberband.setCoords(m_iXold, m_iYold, m_iXnew, m_iYnew);
@@ -745,8 +916,36 @@ int RubberbandSelection::locationEvent(const SoLocation2Event* const, const QPoi
     return Continue;
 }
 
-int RubberbandSelection::keyboardEvent(const SoKeyboardEvent* const)
+int RubberbandSelection::keyboardEvent(const SoKeyboardEvent* const ev)
 {
+    if (cursorType) {
+        switch (ev->getKey()) {
+        case SoKeyboardEvent::LEFT_CONTROL:
+        case SoKeyboardEvent::RIGHT_CONTROL:
+            if (ev->getState() == SoKeyboardEvent::DOWN)
+                setCursorType(RubberbandCursorAdd);
+            else if (cursorType != RubberbandCursorPending) {
+                if (ev->wasShiftDown())
+                    setCursorType(RubberbandCursorRemove);
+                else
+                    setCursorType(RubberbandCursorNormal);
+            }
+            break;
+        case SoKeyboardEvent::LEFT_SHIFT:
+        case SoKeyboardEvent::RIGHT_SHIFT:
+            if (ev->getState() == SoKeyboardEvent::DOWN)
+                setCursorType(RubberbandCursorRemove);
+            else if (cursorType != RubberbandCursorPending) {
+                if(ev->wasCtrlDown())
+                    setCursorType(RubberbandCursorAdd);
+                else
+                    setCursorType(RubberbandCursorNormal);
+            }
+            break;
+        default:
+            break;
+        }
+    }
     return Continue;
 }
 

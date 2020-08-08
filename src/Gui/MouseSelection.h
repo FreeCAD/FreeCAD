@@ -74,6 +74,8 @@ public:
         return m_selectedRole;
     }
 
+    virtual void changeCursorOnKeyPress(int /*enable*/) {}
+
     void redraw();
 
     /** @name Mouse events*/
@@ -215,16 +217,22 @@ public:
     virtual void initialize();
     virtual void terminate();
 
+    virtual void changeCursorOnKeyPress(int enable);
+
 protected:
     virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
     virtual int locationEvent(const SoLocation2Event*    const e, const QPoint& pos);
     virtual int keyboardEvent(const SoKeyboardEvent*     const e);
+
+    void setCursorType(int);
 
     /// draw the rectangle
     virtual void draw();
 
 protected:
     Gui::Rubberband rubberband;
+    int cursorType = 0;
+    QCursor oldCursor;
 };
 
 // -----------------------------------------------------------------------------------

@@ -180,7 +180,7 @@ public Q_SLOTS:
   virtual void viewAll(void);
   virtual void seek(void);
 
-  void redraw(void);
+  void redraw(bool force=false);
 
   void setRenderMode(RenderMode mode);
   void setStereoMode(StereoMode mode);

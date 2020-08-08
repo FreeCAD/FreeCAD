@@ -75,6 +75,7 @@
 #include "NavigationStyle.h"
 #include "DockWindowManager.h"
 #include "SelectionView.h"
+#include "MouseSelection.h"
 
 #include <Base/Console.h>
 #include <Base/Tools2D.h>
@@ -2661,6 +2662,7 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
 
     bool unselect = false;
     bool backFaceCull = true;
+    bool singleSelect = true;
 
     if(ev) {
         if(ev->isOfType(SoKeyboardEvent::getClassTypeId())) {
@@ -2674,40 +2676,57 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
         } else if (!ev->isOfType(SoMouseButtonEvent::getClassTypeId()))
             return;
 
-        if(ev->wasShiftDown())
+        if(ev->wasShiftDown())  {
             unselect = true;
-        else if(!ev->wasCtrlDown()) {
-            App::Document *doc = App::GetApplication().getActiveDocument();
-            if (doc)
-                Gui::Selection().clearSelection(doc->getName());
-        }
+            singleSelect = false;
+        } else if(ev->wasCtrlDown())
+            singleSelect = false;
         if(ev->wasAltDown())
             backFaceCull = false;
     }
 
     bool selectElement = ud?true:false;
-    view->removeEventCallback(SoEvent::getClassTypeId(), selectionCallback, ud);
-    view->setEditing(false);
-    view->setSelectionEnabled(true);
 
     bool center = true;
     auto points = view->getGLPolygon();
+    bool doSelect = true;
     if (points.size() == 2) {
+        if (points[0] == points[1]) {
+            doSelect = false;
+            singleSelect = true;
+        }
         // when selecting from right to left then select by intersection
         // otherwise if the center is inside the rectangle
-        if (points[0][0] > points[1][0])
+        else if (points[0][0] > points[1][0])
             center = false;
     }
 
-    bool currentSelection = (ViewParams::instance()->getShowSelectionOnTop() && selectElement);
+    if (doSelect) {
+        if (singleSelect) {
+            App::Document *doc = App::GetApplication().getActiveDocument();
+            if (doc)
+                Gui::Selection().clearSelection(doc->getName());
+        }
 
-    auto picked = view->getPickedList(points, center, selectElement, backFaceCull,
-                                      currentSelection, unselect, false);
-    for (auto &objT : picked) {
-        if (unselect)
-            Selection().rmvSelection(objT);
-        else
-            Selection().addSelection(objT);
+        bool currentSelection = (ViewParams::instance()->getShowSelectionOnTop() && selectElement);
+
+        auto picked = view->getPickedList(points, center, selectElement, backFaceCull,
+                                        currentSelection, unselect, false);
+        for (auto &objT : picked) {
+            if (unselect)
+                Selection().rmvSelection(objT);
+            else
+                Selection().addSelection(objT);
+        }
+    }
+
+    if (singleSelect) {
+        view->removeEventCallback(SoEvent::getClassTypeId(), selectionCallback, ud);
+        view->setEditing(false);
+        view->setSelectionEnabled(true);
+    } else {
+        AbstractMouseSelection *sel = view->startSelection(View3DInventorViewer::Rubberband);
+        if (sel) sel->changeCursorOnKeyPress(2);
     }
 }
 
@@ -2726,8 +2745,8 @@ void StdBoxSelection::activated(int iMsg)
                 viewer->navigationStyle()->processEvent(&ev);
             }
             viewer->setEditing(true);
-            viewer->setEditingCursor(QCursor(Qt::CrossCursor));
-            viewer->startSelection(View3DInventorViewer::Rubberband);
+            AbstractMouseSelection *sel = viewer->startSelection(View3DInventorViewer::Rubberband);
+            if (sel) sel->changeCursorOnKeyPress(1);
             viewer->addEventCallback(SoEvent::getClassTypeId(), selectionCallback);
             viewer->setSelectionEnabled(false);
         }
@@ -2769,8 +2788,8 @@ void StdBoxElementSelection::activated(int iMsg)
                 viewer->navigationStyle()->processEvent(&ev);
             }
             viewer->setEditing(true);
-            viewer->setEditingCursor(QCursor(Qt::CrossCursor));
-            viewer->startSelection(View3DInventorViewer::Rubberband);
+            AbstractMouseSelection *sel = viewer->startSelection(View3DInventorViewer::Rubberband);
+            if (sel) sel->changeCursorOnKeyPress(1);
             viewer->addEventCallback(SoEvent::getClassTypeId(), selectionCallback, this);
             viewer->setSelectionEnabled(false);
         }

@@ -1040,7 +1040,7 @@ bool QuarterWidget::viewportEvent(QEvent* event)
   render manager and render the scene by calling this method.
 */
 void
-QuarterWidget::redraw(void)
+QuarterWidget::redraw(bool force)
 {
   // we're triggering the next paintGL(). Set a flag to remember this
   // to avoid that we process the delay queue in paintGL()
@@ -1060,19 +1060,10 @@ QuarterWidget::redraw(void)
   // Note that, the recursive repaint is not infinite due to setting
   // 'processdelayqueue = false' above. However, it does cause annoying
   // flickering, and actually crash on Windows.
-#if 1
-  this->viewport()->update();
-#else
-
-// #if QT_VERSION >= 0x050500 && QT_VERSION < 0x050600
-#if 1
-  // With Qt 5.5.x there is a major performance problem
-  this->viewport()->update();
-#else
-  this->viewport()->repaint();
-#endif
-
-#endif
+  if (!force)
+    this->viewport()->update();
+  else
+    this->viewport()->repaint();
 }
 
 /*!

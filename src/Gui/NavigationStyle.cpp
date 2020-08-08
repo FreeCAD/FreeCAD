@@ -1306,6 +1306,11 @@ void NavigationStyle::startSelection(NavigationStyle::SelectionMode mode)
         mouseSelection->grabMouseModel(viewer);
 }
 
+AbstractMouseSelection *NavigationStyle::currentSelection()
+{
+    return mouseSelection;
+}
+
 void NavigationStyle::stopSelection()
 {
     pcPolygon.clear();

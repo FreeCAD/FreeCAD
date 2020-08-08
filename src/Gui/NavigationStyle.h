@@ -157,6 +157,7 @@ public:
     void startSelection(AbstractMouseSelection*);
     void startSelection(SelectionMode = Lasso);
     void stopSelection();
+    AbstractMouseSelection *currentSelection();
     SbBool isSelecting() const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role=0) const;
 
