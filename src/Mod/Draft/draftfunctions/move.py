@@ -247,9 +247,13 @@ def parse_shape(shape, selected_vertexes, vector):
             new_shape = Part.Wire(new_sub_shapes)
 
     elif shape.ShapeType == "Face":
-        # TODO: Add geometry check
-        new_sub_shapes = parse_sub_shapes(shape, selected_vertexes, vector)
-        new_shape = Part.Face(new_sub_shapes)
+        # TODO: Complete geometry check
+        if shape.Surface.TypeId == 'Part::GeomPlane':
+            new_sub_shapes = parse_sub_shapes(shape, selected_vertexes, vector)
+            new_shape = Part.Face(new_sub_shapes)
+            # TODO: handle the usecase when the Face is not planar anymore after modification
+        else:
+            print("Face geometry not supported")
 
     elif shape.ShapeType == "Edge":
         # TODO: Add geometry check
