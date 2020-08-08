@@ -42,8 +42,19 @@
 #include "MouseSelection.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "BitmapFactory.h"
 
 using namespace Gui;
+
+enum CursorType
+{
+    CursorNone,
+    // waiting for the first keybord event, or else prevent cursor change on mouse move
+    CursorPending, 
+    CursorNormal,
+    CursorAdd,
+    CursorRemove,
+};
 
 AbstractMouseSelection::AbstractMouseSelection() : _pcView3D(0)
 {
@@ -108,13 +119,69 @@ int AbstractMouseSelection::handleEvent(const SoEvent* const ev, const SbViewpor
         ret = locationEvent(static_cast<const SoLocation2Event*>(ev), QPoint(x,y));
     }
     else if (ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        ret = keyboardEvent(static_cast<const SoKeyboardEvent*>(ev));
+        auto kev = static_cast<const SoKeyboardEvent*>(ev);
+        if (cursorType) {
+            switch (kev->getKey()) {
+            case SoKeyboardEvent::LEFT_CONTROL:
+            case SoKeyboardEvent::RIGHT_CONTROL:
+                if (kev->getState() == SoKeyboardEvent::DOWN)
+                    setCursorType(CursorAdd);
+                else if (cursorType != CursorPending) {
+                    if (kev->wasShiftDown())
+                        setCursorType(CursorRemove);
+                    else
+                        setCursorType(CursorNormal);
+                }
+                break;
+            case SoKeyboardEvent::LEFT_SHIFT:
+            case SoKeyboardEvent::RIGHT_SHIFT:
+                if (kev->getState() == SoKeyboardEvent::DOWN)
+                    setCursorType(CursorRemove);
+                else if (cursorType != CursorPending) {
+                    if(kev->wasCtrlDown())
+                        setCursorType(CursorAdd);
+                    else
+                        setCursorType(CursorNormal);
+                }
+                break;
+            default:
+                break;
+            }
+        }
+        ret = keyboardEvent(kev);
     }
 
     if (ret == Restart)
         _clPoly.clear();
 
     return ret;
+}
+
+void AbstractMouseSelection::changeCursorOnKeyPress(int enable)
+{
+    if (enable == 0)
+        setCursorType(CursorNone);
+    else if (enable > 1)
+        setCursorType(CursorNormal);
+    else
+        setCursorType(CursorPending);
+}
+
+QCursor AbstractMouseSelection::getCursor(int)
+{
+    return QCursor();
+}
+
+
+void AbstractMouseSelection::setCursorType(int type)
+{
+    if (type == cursorType || !_pcView3D)
+        return;
+    if (cursorType == CursorNone)
+        oldCursor = _pcView3D->getWidget()->cursor();
+
+    cursorType = type;
+    _pcView3D->getWidget()->setCursor(getCursor(type));
 }
 
 // -----------------------------------------------------------------------------------
@@ -264,9 +331,11 @@ void PolyPickerSelection::setLineWidth(float l)
 
 void PolyPickerSelection::initialize()
 {
-    QPixmap p(cursor_cut_scissors);
-    QCursor cursor(p, 4, 4);
-    _pcView3D->getWidget()->setCursor(cursor);
+    if (!cursorType) {
+        QPixmap p(cursor_cut_scissors);
+        QCursor cursor(p, 4, 4);
+        _pcView3D->getWidget()->setCursor(cursor);
+    }
 
     polyline.setViewer(_pcView3D);
 
@@ -439,6 +508,117 @@ int PolyPickerSelection::keyboardEvent(const SoKeyboardEvent* const)
     return Continue;
 }
 
+/* XPM */
+static const char * const overlay_add_xpm[] = {
+"13 13 3 1",
+".        c None",
+"a        c #000000",
+"X        c #FFFFFF",
+".............",
+".....XXX.....",
+".....XaX.....",
+".....XaX.....",
+".....XaX.....",
+".XXXXXaXXXXX.",
+".XaaaaaaaaaX.",
+".XXXXXaXXXXX.",
+".....XaX.....",
+".....XaX.....",
+".....XaX.....",
+".....XXX.....",
+".............",
+};
+
+/* XPM */
+static const char * const overlay_rmv_xpm[] = {
+"13 13 3 1",
+".        c None",
+"a        c #000000",
+"X        c #FFFFFF",
+".............",
+".............",
+".............",
+".............",
+".............",
+".XXXXXXXXXXX.",
+".XaaaaaaaaaX.",
+".XXXXXXXXXXX.",
+".............",
+".............",
+".............",
+".............",
+".............",
+};
+
+QCursor PolyPickerSelection::getCursor(int type)
+{
+    /* XPM */
+    static const char * const xpm[] = {
+        "32 32 3 1",
+        ".        c None",
+        "a        c #000000",
+        "X        c #FFFFFF",
+        "XX..............................",
+        "XaX.............................",
+        "XaaX............................",
+        "XaaaX...........................",
+        "XaaaaX..........................",
+        "XaaaaaX.........................",
+        "XaaaaaaX........................",
+        "XaaaaaaaX.......................",
+        "XaaaaaaaaX......................",
+        "XaaaaaaaaaX.....................",
+        "XaaaaaaXXXX.....................",
+        "XaaaXaaX........................",
+        "XaaXXaaX.............X..........",
+        "XaX..XaaX...........XaX.........",
+        "XX...XaaX..........XaaX.........",
+        "X.....XaaX.........XaXaX........",
+        "......XaaX........XaXXaX........",
+        ".................XaX.XaX........",
+        ".................XaX..XaX.......",
+        "................XaX...XaX.......",
+        "..........X....XaX....XaX.......",
+        ".........XaXX..XaX.....XaX......",
+        "........XaXaaXXaX......XaX......",
+        ".......XaX.XXaaX.......XaX......",
+        "......XaX....XX.......XaX.......",
+        ".....XaX..............XaX.......",
+        "....XaX..............XaX........",
+        "...XaXXXX............XaX........",
+        "..XaaaaaaXXXXXX.....XaX.........",
+        ".XXXXXXXXaaaaaaXXXXXaX..........",
+        ".........XXXXXXaaaaaX...........",
+        "...............XXXXX............",
+    };
+
+    static QCursor _cursor;
+    static QCursor _cursorAdd;
+    static QCursor _cursorRemove;
+    if (_cursor.pixmap().isNull()) {
+        _cursor = QCursor(QPixmap(xpm),0,0);
+        QPixmap px = BitmapFactory().merge(_cursor.pixmap(),
+                QPixmap(overlay_add_xpm), BitmapFactoryInst::TopRight);
+        _cursorAdd = QCursor(px,0,0);
+        px = BitmapFactory().merge(_cursor.pixmap(),
+                QPixmap(overlay_rmv_xpm), BitmapFactoryInst::TopRight);
+        _cursorRemove = QCursor(px,0,0);
+    }
+    switch(type) {
+    case CursorPending:
+    case CursorNormal:
+        return _cursor;
+        break;
+    case CursorAdd:
+        return _cursorAdd;
+        break;
+    case CursorRemove:
+        return _cursorRemove;
+        break;
+    default:
+        return QCursor();
+    }
+}
 // -----------------------------------------------------------------------------------
 
 PolyClipSelection::PolyClipSelection()
@@ -663,164 +843,71 @@ RubberbandSelection::~RubberbandSelection()
 {
 }
 
-enum CursorState
+QCursor RubberbandSelection::getCursor(int type)
 {
-    RubberbandCursorNone,
-    // waiting for the first keybord event, or else prevent cursor change on mouse move
-    RubberbandCursorPending, 
-    RubberbandCursorNormal,
-    RubberbandCursorAdd,
-    RubberbandCursorRemove,
-};
-
-void RubberbandSelection::changeCursorOnKeyPress(int enable)
-{
-    if (enable == 0)
-        setCursorType(RubberbandCursorNone);
-    else if (enable > 1)
-        setCursorType(RubberbandCursorNormal);
-    else
-        setCursorType(RubberbandCursorPending);
-}
-
-void RubberbandSelection::setCursorType(int type)
-{
-    if (type == cursorType || !_pcView3D)
-        return;
-    if (cursorType == RubberbandCursorNone)
-        oldCursor = _pcView3D->getWidget()->cursor();
-    cursorType = type;
-
     /* XPM */
-    static const char * const box_xpm[] = {
-    "24 30 3 1",
-    ".        c None",
-    "a        c #000000",
-    "X        c #FFFFFF",
-    "XX......................",
-    "XaX.....................",
-    "XaaX....................",
-    "XaaaX...................",
-    "XaaaaX..................",
-    "XaaaaaX.................",
-    "XaaaaaaX................",
-    "XaaaaaaaX...............",
-    "XaaaaaaaaX..............",
-    "XaaaaaaaaaX.............",
-    "XaaaaaaXXXX.............",
-    "XaaaXaaX................",
-    "XaaXXaaX................",
-    "XaX..XaaX...............",
-    "XX...XaaX...............",
-    "X.....XaaX..............",
-    "......XaaX..............",
-    ".......XaaXaaaaaaaaaaaaa",
-    ".......XaaXaXXaXXaXXaXXa",
-    "........XX.aXaaaaaaaaaXa",
-    "...........aaa.......aaa",
-    "...........aXa.......aXa",
-    "...........aXa.......aXa",
-    "...........aaa.......aaa",
-    "...........aXa.......aXa",
-    "...........aXa.......aXa",
-    "...........aaa.......aaa",
-    "...........aXaaaaaaaaaXa",
-    "...........aXXaXXaXXaXXa",
-    "...........aaaaaaaaaaaaa"};
-
-    /* XPM */
-    static const char * const box_add_xpm[] = {
-    "24 30 3 1",
-    ".        c None",
-    "a        c #000000",
-    "X        c #FFFFFF",
-    "XX......................",
-    "XaX.............XXX.....",
-    "XaaX............XaX.....",
-    "XaaaX...........XaX.....",
-    "XaaaaX..........XaX.....",
-    "XaaaaaX.....XXXXXaXXXXX.",
-    "XaaaaaaX....XaaaaaaaaaX.",
-    "XaaaaaaaX...XXXXXaXXXXX.",
-    "XaaaaaaaaX......XaX.....",
-    "XaaaaaaaaaX.....XaX.....",
-    "XaaaaaaXXXX.....XaX.....",
-    "XaaaXaaX........XXX.....",
-    "XaaXXaaX................",
-    "XaX..XaaX...............",
-    "XX...XaaX...............",
-    "X.....XaaX..............",
-    "......XaaX..............",
-    ".......XaaXaaaaaaaaaaaaa",
-    ".......XaaXaXXaXXaXXaXXa",
-    "........XX.aXaaaaaaaaaXa",
-    "...........aaa.......aaa",
-    "...........aXa.......aXa",
-    "...........aXa.......aXa",
-    "...........aaa.......aaa",
-    "...........aXa.......aXa",
-    "...........aXa.......aXa",
-    "...........aaa.......aaa",
-    "...........aXaaaaaaaaaXa",
-    "...........aXXaXXaXXaXXa",
-    "...........aaaaaaaaaaaaa"};
-
-    /* XPM */
-    static const char * const box_rmv_xpm[] = {
-    "24 30 3 1",
-    ".        c None",
-    "a        c #000000",
-    "X        c #FFFFFF",
-    "XX......................",
-    "XaX.....................",
-    "XaaX....................",
-    "XaaaX...................",
-    "XaaaaX..................",
-    "XaaaaaX.....XXXXXXXXXXX.",
-    "XaaaaaaX....XaaaaaaaaaX.",
-    "XaaaaaaaX...XXXXXXXXXXX.",
-    "XaaaaaaaaX..............",
-    "XaaaaaaaaaX.............",
-    "XaaaaaaXXXX.............",
-    "XaaaXaaX................",
-    "XaaXXaaX................",
-    "XaX..XaaX...............",
-    "XX...XaaX...............",
-    "X.....XaaX..............",
-    "......XaaX..............",
-    ".......XaaXaaaaaaaaaaaaa",
-    ".......XaaXaXXaXXaXXaXXa",
-    "........XX.aXaaaaaaaaaXa",
-    "...........aaa.......aaa",
-    "...........aXa.......aXa",
-    "...........aXa.......aXa",
-    "...........aaa.......aaa",
-    "...........aXa.......aXa",
-    "...........aXa.......aXa",
-    "...........aaa.......aaa",
-    "...........aXaaaaaaaaaXa",
-    "...........aXXaXXaXXaXXa",
-    "...........aaaaaaaaaaaaa"};
+    static const char * const xpm[] = {
+        "24 30 3 1",
+        ".        c None",
+        "a        c #000000",
+        "X        c #FFFFFF",
+        "XX......................",
+        "XaX.....................",
+        "XaaX....................",
+        "XaaaX...................",
+        "XaaaaX..................",
+        "XaaaaaX.................",
+        "XaaaaaaX................",
+        "XaaaaaaaX...............",
+        "XaaaaaaaaX..............",
+        "XaaaaaaaaaX.............",
+        "XaaaaaaXXXX.............",
+        "XaaaXaaX................",
+        "XaaXXaaX................",
+        "XaX..XaaX...............",
+        "XX...XaaX...............",
+        "X.....XaaX..............",
+        "......XaaX..............",
+        ".......XaaXaaaaaaaaaaaaa",
+        ".......XaaXaXXaXXaXXaXXa",
+        "........XX.aXaaaaaaaaaXa",
+        "...........aaa.......aaa",
+        "...........aXa.......aXa",
+        "...........aXa.......aXa",
+        "...........aaa.......aaa",
+        "...........aXa.......aXa",
+        "...........aXa.......aXa",
+        "...........aaa.......aaa",
+        "...........aXaaaaaaaaaXa",
+        "...........aXXaXXaXXaXXa",
+        "...........aaaaaaaaaaaaa",
+    };
 
     static QCursor _cursor;
     static QCursor _cursorAdd;
     static QCursor _cursorRemove;
     if (_cursor.pixmap().isNull()) {
-        _cursor = QCursor(QPixmap(box_xpm),0,0);
-        _cursorAdd = QCursor(QPixmap(box_add_xpm),0,0);
-        _cursorRemove = QCursor(QPixmap(box_rmv_xpm),0,0);
+        _cursor = QCursor(QPixmap(xpm),0,0);
+        QPixmap px = BitmapFactory().merge(_cursor.pixmap(),
+                QPixmap(overlay_add_xpm), BitmapFactoryInst::TopRight);
+        _cursorAdd = QCursor(px,0,0);
+        px = BitmapFactory().merge(_cursor.pixmap(),
+                QPixmap(overlay_rmv_xpm), BitmapFactoryInst::TopRight);
+        _cursorRemove = QCursor(px,0,0);
     }
     switch(type) {
-    case RubberbandCursorPending:
-    case RubberbandCursorNormal:
-        _pcView3D->setEditingCursor(_cursor);
+    case CursorPending:
+    case CursorNormal:
+        return _cursor;
         break;
-    case RubberbandCursorAdd:
-        _pcView3D->setEditingCursor(_cursorAdd);
+    case CursorAdd:
+        return _cursorAdd;
         break;
-    case RubberbandCursorRemove:
-        _pcView3D->setEditingCursor(_cursorRemove);
+    case CursorRemove:
+        return _cursorRemove;
         break;
+    default:
+        return QCursor();
     }
 }
 
@@ -900,13 +987,13 @@ int RubberbandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
 
 int RubberbandSelection::locationEvent(const SoLocation2Event* const ev, const QPoint& pos)
 {
-    if (cursorType >= RubberbandCursorNormal) {
+    if (cursorType >= CursorNormal) {
         if (ev->wasCtrlDown())
-            setCursorType(RubberbandCursorAdd);
+            setCursorType(CursorAdd);
         else if (ev->wasShiftDown())
-            setCursorType(RubberbandCursorRemove);
+            setCursorType(CursorRemove);
         else
-            setCursorType(RubberbandCursorNormal);
+            setCursorType(CursorNormal);
     }
                 
     m_iXnew = pos.x();
@@ -916,36 +1003,8 @@ int RubberbandSelection::locationEvent(const SoLocation2Event* const ev, const Q
     return Continue;
 }
 
-int RubberbandSelection::keyboardEvent(const SoKeyboardEvent* const ev)
+int RubberbandSelection::keyboardEvent(const SoKeyboardEvent* const)
 {
-    if (cursorType) {
-        switch (ev->getKey()) {
-        case SoKeyboardEvent::LEFT_CONTROL:
-        case SoKeyboardEvent::RIGHT_CONTROL:
-            if (ev->getState() == SoKeyboardEvent::DOWN)
-                setCursorType(RubberbandCursorAdd);
-            else if (cursorType != RubberbandCursorPending) {
-                if (ev->wasShiftDown())
-                    setCursorType(RubberbandCursorRemove);
-                else
-                    setCursorType(RubberbandCursorNormal);
-            }
-            break;
-        case SoKeyboardEvent::LEFT_SHIFT:
-        case SoKeyboardEvent::RIGHT_SHIFT:
-            if (ev->getState() == SoKeyboardEvent::DOWN)
-                setCursorType(RubberbandCursorRemove);
-            else if (cursorType != RubberbandCursorPending) {
-                if(ev->wasCtrlDown())
-                    setCursorType(RubberbandCursorAdd);
-                else
-                    setCursorType(RubberbandCursorNormal);
-            }
-            break;
-        default:
-            break;
-        }
-    }
     return Continue;
 }
 

@@ -74,7 +74,7 @@ public:
         return m_selectedRole;
     }
 
-    virtual void changeCursorOnKeyPress(int /*enable*/) {}
+    void changeCursorOnKeyPress(int enable);
 
     void redraw();
 
@@ -94,6 +94,9 @@ protected:
         return 0;
     }
 
+    void setCursorType(int);
+    virtual QCursor getCursor(int);
+
     /// drawing stuff
     virtual void draw() {}
 
@@ -104,6 +107,9 @@ protected:
     int  m_iXnew, m_iYnew;
     SelectionRole m_selectedRole;
     std::vector<SbVec2s> _clPoly;
+
+    int cursorType = 0;
+    QCursor oldCursor;
 };
 
 // -----------------------------------------------------------------------------------
@@ -137,6 +143,8 @@ public:
 
     virtual void initialize();
     virtual void terminate();
+
+    virtual QCursor getCursor(int);
 
 protected:
     virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
@@ -217,22 +225,18 @@ public:
     virtual void initialize();
     virtual void terminate();
 
-    virtual void changeCursorOnKeyPress(int enable);
-
 protected:
     virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
     virtual int locationEvent(const SoLocation2Event*    const e, const QPoint& pos);
     virtual int keyboardEvent(const SoKeyboardEvent*     const e);
 
-    void setCursorType(int);
+    virtual QCursor getCursor(int);
 
     /// draw the rectangle
     virtual void draw();
 
 protected:
     Gui::Rubberband rubberband;
-    int cursorType = 0;
-    QCursor oldCursor;
 };
 
 // -----------------------------------------------------------------------------------

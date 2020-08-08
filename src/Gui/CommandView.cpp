@@ -2687,10 +2687,14 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
 
     bool selectElement = ud?true:false;
 
-    bool center = true;
+    bool center = false;
     auto points = view->getGLPolygon();
     bool doSelect = true;
-    if (points.size() == 2) {
+    if (points.size() <= 1) {
+        doSelect = false;
+        singleSelect = true;
+    } else if (points.size() == 2) {
+        center = true;
         if (points[0] == points[1]) {
             doSelect = false;
             singleSelect = true;
@@ -2699,6 +2703,12 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
         // otherwise if the center is inside the rectangle
         else if (points[0][0] > points[1][0])
             center = false;
+    } else {
+        double sum = 0;
+        for(size_t i=0, c=points.size()-1; i<c; ++i)
+            sum += (points[i+1][0] - points[i][0]) * (points[i+1][1] + points[i][1]);
+        // use polygon windings to choose intersection or center inclusion
+        center = sum>0;
     }
 
     if (doSelect) {
@@ -2796,6 +2806,48 @@ void StdBoxElementSelection::activated(int iMsg)
     }
 }
 
+//===========================================================================
+// Std_LassoElementSelection
+//===========================================================================
+DEF_3DV_CMD(StdLassoElementSelection)
+
+StdLassoElementSelection::StdLassoElementSelection()
+  : Command("Std_LassoElementSelection")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Lasso element selection");
+    sToolTipText  = QT_TR_NOOP("Lasso element selection");
+    sWhatsThis    = "Std_LassoElementSelection";
+    sStatusTip    = QT_TR_NOOP("Lasso element selection");
+#if QT_VERSION >= 0x040200
+    sPixmap       = "edit-element-select-lasso";
+#endif
+    sAccel        = "Shift+S";
+    eType         = AlterSelection;
+}
+
+void StdLassoElementSelection::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    if (view) {
+        View3DInventorViewer* viewer = view->getViewer();
+        if (!viewer->isSelecting()) {
+            // #0002931: Box select misbehaves with touchpad navigation style
+            // Notify the navigation style to cleanup internal states
+            int mode = viewer->navigationStyle()->getViewingMode();
+            if (mode != Gui::NavigationStyle::IDLE) {
+                SoKeyboardEvent ev;
+                viewer->navigationStyle()->processEvent(&ev);
+            }
+            viewer->setEditing(true);
+            AbstractMouseSelection *sel = viewer->startSelection(View3DInventorViewer::Lasso);
+            if (sel) sel->changeCursorOnKeyPress(1);
+            viewer->addEventCallback(SoEvent::getClassTypeId(), selectionCallback, this);
+            viewer->setSelectionEnabled(false);
+        }
+    }
+}
 
 //===========================================================================
 // Std_TreeSelection
@@ -4267,6 +4319,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdViewBoxZoom());
     rcCmdMgr.addCommand(new StdBoxSelection());
     rcCmdMgr.addCommand(new StdBoxElementSelection());
+    rcCmdMgr.addCommand(new StdLassoElementSelection());
     rcCmdMgr.addCommand(new StdCmdTreeExpand());
     rcCmdMgr.addCommand(new StdCmdTreeCollapse());
     rcCmdMgr.addCommand(new StdCmdTreeSelectAllInstances());
