@@ -69,7 +69,10 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="revolveAngle" native="true">
+      <widget class="Gui::QuantitySpinBox" name="revolveAngle">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true">deg</string>
        </property>
