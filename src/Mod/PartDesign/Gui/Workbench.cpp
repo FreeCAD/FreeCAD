@@ -50,6 +50,7 @@ namespace bp = boost::placeholders;
 
 #if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Part Design");
+    qApp->translate("Workbench", "Sketch");
     qApp->translate("Workbench", "Create a datum");
     qApp->translate("Workbench", "Create an additive feature");
     qApp->translate("Workbench", "Create a subtractive feature");
@@ -506,12 +507,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "PartDesign_Draft" << "PartDesign_Thickness";
 
     *part << "PartDesign_Body"
-          << "PartDesign_NewSketch"
-          << "Sketcher_LeaveSketch"
-          << "Sketcher_ViewSketch"
-          << "Sketcher_MapSketch"
-          << "Sketcher_ReorientSketch"
-          << "Sketcher_ValidateSketch"
           << "Separator"
           << datums
           << "PartDesign_CoordinateSystem"
@@ -551,6 +546,19 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     item = root->findItem("&Edit");
     Gui::MenuItem* dup = item->findItem("Std_DuplicateSelection");
     dup->setCommand("PartDesign_DuplicateSelection");
+
+    // add another top level menu right besides the Part Design menu for the Sketcher commands
+    Gui::MenuItem* itemSketch = root->findItem("&Windows");
+    Gui::MenuItem* partSketch = new Gui::MenuItem;
+    root->insertItem(itemSketch, partSketch);
+    partSketch->setCommand("&Sketch");
+
+    *partSketch << "PartDesign_NewSketch"
+        << "Sketcher_LeaveSketch"
+        << "Sketcher_ViewSketch"
+        << "Sketcher_MapSketch"
+        << "Sketcher_ReorientSketch"
+        << "Sketcher_ValidateSketch";
 
     return root;
 }
