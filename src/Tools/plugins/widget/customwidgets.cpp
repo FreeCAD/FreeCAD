@@ -658,6 +658,37 @@ void PrefUnitSpinBox::setParamGrpPath ( const QByteArray& name )
 
 // --------------------------------------------------------------------
 
+PrefQuantitySpinBox::PrefQuantitySpinBox(QWidget* parent)
+    : QuantitySpinBox(parent)
+{
+}
+
+PrefQuantitySpinBox::~PrefQuantitySpinBox()
+{
+}
+
+QByteArray PrefQuantitySpinBox::entryName() const
+{
+    return m_sPrefName;
+}
+
+QByteArray PrefQuantitySpinBox::paramGrpPath() const
+{
+    return m_sPrefGrp;
+}
+
+void PrefQuantitySpinBox::setEntryName(const QByteArray& name)
+{
+    m_sPrefName = name;
+}
+
+void PrefQuantitySpinBox::setParamGrpPath(const QByteArray& name)
+{
+    m_sPrefGrp = name;
+}
+
+// --------------------------------------------------------------------
+
 CommandIconView::CommandIconView ( QWidget * parent )
   : QListWidget(parent)
 {
