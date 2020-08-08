@@ -610,7 +610,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Verbose description of the new property.</source>
-      <translation type="unfinished">Verbose description of the new property.</translation>
+      <translation>Description détaillée de la nouvelle propriété.</translation>
     </message>
     <message>
       <source>Documentation</source>
@@ -1019,7 +1019,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
+      <translation>Module %1 non chargé</translation>
     </message>
   </context>
   <context>
@@ -2023,7 +2023,7 @@ Veuillez spécifier un autre répertoire.</translation>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>Version du programme :</translation>
     </message>
   </context>
   <context>
@@ -2261,6 +2261,14 @@ depuis la console Python vers la fenêtre Rapport</translation>
     <message>
       <source>Include a timecode for each entry</source>
       <translation type="unfinished">Include a timecode for each entry</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation type="unfinished">Normal messages will be recorded</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation type="unfinished">Record normal messages</translation>
     </message>
   </context>
   <context>
@@ -3286,14 +3294,6 @@ Tournable : la pièce sera pivotée autour de l'axe z.</translation>
       <translation>Trackball</translation>
     </message>
     <message>
-      <source>New document camera orientation</source>
-      <translation>Nouvelle orientation de la caméra du document</translation>
-    </message>
-    <message>
-      <source>Camera orientation for new documents</source>
-      <translation>Orientation de la caméra pour les nouveaux documents</translation>
-    </message>
-    <message>
       <source>New document scale</source>
       <translation>Echelle du nouveau document</translation>
     </message>
@@ -3398,6 +3398,14 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Custom</source>
       <translation>Personnalisée</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation>Orientation par défaut de la caméra</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation>Orientation par défaut de la caméra lors de la création d'un nouveau document ou de la sélection de la vue initiale</translation>
     </message>
   </context>
   <context>
@@ -4449,18 +4457,6 @@ La colonne « État » indique si le document peut être récupéré.</translati
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <source>Logging</source>
-      <translation>Enregistrement</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Alerte</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Erreur</translation>
-    </message>
-    <message>
       <source>Options</source>
       <translation>Options</translation>
     </message>
@@ -4491,6 +4487,30 @@ La colonne « État » indique si le document peut être récupéré.</translati
     <message>
       <source>Plain Text Files</source>
       <translation>Fichiers de texte brut</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation type="unfinished">Display message types</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation type="unfinished">Normal messages</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation type="unfinished">Log messages</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation type="unfinished">Warnings</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation type="unfinished">Errors</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation type="unfinished">Show report view on</translation>
     </message>
   </context>
   <context>
@@ -5854,18 +5874,18 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source> (but must be executed)</source>
-      <translation type="unfinished"> (but must be executed)</translation>
+      <translation> (mais doit être exécuté)</translation>
     </message>
   </context>
   <context>
     <name>Gui::VectorListEditor</name>
     <message>
       <source>Vectors</source>
-      <translation type="unfinished">Vectors</translation>
+      <translation>Vecteurs</translation>
     </message>
     <message>
       <source>Table</source>
-      <translation type="unfinished">Table</translation>
+      <translation>Tableau</translation>
     </message>
     <message>
       <source>...</source>
@@ -8505,6 +8525,21 @@ Choisissez "Abandonner" pour annuler</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vue standard</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation>Accueil</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation>Définir comme vue d'accueil par défaut</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Standard-View</source>
@@ -9101,16 +9136,12 @@ Are you sure you want to continue?
 </translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Ces éléments sont sélectionnés pour suppression mais ne sont pas dans le document actif.
-
-</translation>
-    </message>
-    <message>
       <source>Object dependencies</source>
       <translation>Dépendances des objets</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>Ces articles sont sélectionnés pour la suppression, mais ne sont pas dans le document actif.</translation>
     </message>
   </context>
   <context>

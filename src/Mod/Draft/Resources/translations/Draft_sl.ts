@@ -2,44 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="sl" sourcelanguage="en">
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="110"/>
-      <source>The objects that are part of this layer</source>
-      <translation>Predmeti, ki so zajeti v tej plasti</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="147"/>
-      <source>If on, the child objects of this layer will match its visual aspects</source>
-      <translation>Če je vključeno, bodo podrejeni predmeti te plasti prevzeli njegove videzne lastnosti</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="156"/>
-      <source>The line color of the children of this layer</source>
-      <translation>Barva črte podrejenikov te plasti</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="162"/>
-      <source>The shape color of the children of this layer</source>
-      <translation>Barva oblike podrejenika te plasti</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="168"/>
-      <source>The line width of the children of this layer</source>
-      <translation>Debelina črte podrejenika te plasti</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="174"/>
-      <source>The draw style of the children of this layer</source>
-      <translation>Slog risanja podrejenikov te plasti</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="180"/>
-      <source>The transparency of the children of this layer</source>
-      <translation>Prozornosti podrejenikov te plasti</translation>
-    </message>
-  </context>
-  <context>
     <name>Dialog</name>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
@@ -159,7 +121,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="334"/>
       <source>Extension lines</source>
-      <translation>Pomočne kotirne črte</translation>
+      <translation>Pomožne kotirne črte</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="344"/>
@@ -422,7 +384,7 @@ It cannot be zero.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="261"/>
       <source>The number of symmetry lines in the circular array.</source>
-      <translation type="unfinished">The number of symmetry lines in the circular array.</translation>
+      <translation>Število somernic pri krožni razpostavitvi.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="250"/>
@@ -439,7 +401,7 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="264"/>
       <source>Symmetry</source>
-      <translation>Simetrija</translation>
+      <translation>Somernost</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="273"/>
@@ -737,19 +699,6 @@ It must be at least 2.</translation>
     </message>
   </context>
   <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="83"/>
-      <source>Layer</source>
-      <translation>Plast</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="84"/>
-      <source>Adds a layer</source>
-      <translation>Doda plast</translation>
-    </message>
-  </context>
-  <context>
     <name>Form</name>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="14"/>
@@ -796,7 +745,7 @@ Or choose one of the options below</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="61"/>
       <source>Sets the working plane facing the current view</source>
-      <translation type="unfinished">Sets the working plane facing the current view</translation>
+      <translation>Nastavi delavno ravnino, obrnjeno proti trenutnemu pogledu</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="64"/>
@@ -1192,7 +1141,7 @@ stalno širno"), družina (npr. "Arial,Helvetica,sans") ali ime s slogom (npr.
     <message>
       <location filename="../ui/preferences-dxf.ui" line="452"/>
       <source>Render polylines with width</source>
-      <translation>Izriši lomljenke s širino</translation>
+      <translation>Izriši črtovje s širino</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="141"/>
@@ -1387,7 +1336,7 @@ stalno širno"), družina (npr. "Arial,Helvetica,sans") ali ime s slogom (npr.
     <message>
       <location filename="../ui/preferences-dxf.ui" line="472"/>
       <source>Treat ellipses and splines as polylines</source>
-      <translation>Obravnavaj elipse in zlepke kot lomljenke</translation>
+      <translation>Obravnavaj elipse in zlepke kot črtovje</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="121"/>
@@ -1727,7 +1676,7 @@ stalno širno"), družina (npr. "Arial,Helvetica,sans") ali ime s slogom (npr.
     <message>
       <location filename="../ui/preferences-dxf.ui" line="469"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
-      <translation>Izvoz elips je slabo podprt. Uporabite to, da jih izvozite kot lomljenke.</translation>
+      <translation>Izvoz elips je slabo podprt. Uporabite to, da jih izvozite kot črtovje.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="501"/>
@@ -2149,7 +2098,7 @@ from the Addon Manager.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="233"/>
       <source>Parametric Draft objects will be created whenever possible</source>
-      <translation type="unfinished">Parametric Draft objects will be created whenever possible</translation>
+      <translation>Če je to možno, bodo vedno ustvarjeni osnutki predmetov določilovni</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="249"/>
@@ -2162,10 +2111,10 @@ from the Addon Manager.</translation>
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
                              in meters: 1000, in inches: 25.4, in feet: 304.8</source>
-      <translation type="unfinished">Scale factor to apply to DXF files on import.
-The factor is the conversion between the unit of your DXF file and millimeters.
-Example: for files in millimeters: 1, in centimeters: 10,
-                             in meters: 1000, in inches: 25.4, in feet: 304.8</translation>
+      <translation>Količnik velikosti, ki naj se upošteva pri uvažanju datotek DXF.
+Količnik je pretvornik med enotami vaše datoteke DXF in milimetri.
+Npr.: za datoteke v milimetrih: 1, v centimetrih: 10,
+                             v metrih: 1000, v palcih: 25.4, v čevljih: 304.8</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="321"/>
@@ -2214,15 +2163,14 @@ instead of the size they have in the DXF document</translation>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
-      <translation type="unfinished">If polylines have a width defined, they will be rendered
-as closed wires with correct width</translation>
+      <translation>Če imajo črtovja določeno širino, bodo izrisana kot sklenjene žice s pravo širino</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="511"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
-      <translation type="unfinished">Maximum length of each of the polyline segments.
-If it is set to '0' the whole spline is treated as a straight segment.</translation>
+      <translation>Največja dolžina vsakega izmed odsekov črtovja.
+Če je nastavljena na "0", bo celoten zlepek obravnavan ko raven odsek.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="550"/>
@@ -2250,8 +2198,8 @@ This might fail for post DXF R12 templates.</translation>
       <location filename="../ui/preferences-svg.ui" line="82"/>
       <source>If checked, no units conversion will occur.
 One unit in the SVG file will translate as one millimeter. </source>
-      <translation type="unfinished">If checked, no units conversion will occur.
-One unit in the SVG file will translate as one millimeter. </translation>
+      <translation>Če je označeno, se enot ne bo pretvarjalo.
+Ena enota v datoteki SVG bo pretvorjena v en milimeter. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="128"/>
@@ -2871,24 +2819,9 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Označite, če se naj predmet prikaže kot poln, sicer bo videti kot žični model. Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike" vključena</translation>
     </message>
     <message>
-      <location filename="../../DraftLayer.py" line="43"/>
-      <source>No active document. Aborting</source>
-      <translation>Ni dejavnega dokumenta. Prekinjanje</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="50"/>
-      <source>Layer</source>
-      <translation>Plast</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="71"/>
-      <source>Layers</source>
-      <translation>Plasti</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Polyline</source>
-      <translation>Lomljenka</translation>
+      <translation>Črtovje</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="45"/>
@@ -2929,16 +2862,6 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <location filename="../../DraftGui.py" line="949"/>
       <source>Trim distance</source>
       <translation type="unfinished">Trim distance</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="334"/>
-      <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="341"/>
-      <source>Select contents</source>
-      <translation type="unfinished">Select contents</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>

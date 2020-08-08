@@ -34,6 +34,7 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <QFontMetrics>
 # include <QMessageBox>
+# include <QPointer>
 # include <QSet>
 # include <Python.h>
 # include <Inventor/SoPickedPoint.h>
@@ -97,7 +98,7 @@ class FaceColors::Private
 public:
     typedef boost::signals2::connection Connection;
     Ui_TaskFaceColors* ui;
-    Gui::View3DInventorViewer* view;
+    QPointer<Gui::View3DInventorViewer> view;
     ViewProviderPartExt* vp;
     App::DocumentObject* obj;
     Gui::Document* doc;

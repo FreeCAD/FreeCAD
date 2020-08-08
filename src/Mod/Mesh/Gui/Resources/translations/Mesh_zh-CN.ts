@@ -1461,48 +1461,48 @@ to a smoother appearance.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="97"/>
+      <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
       <translation>自动</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Adaptive</source>
       <translation>自适应</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="100"/>
+      <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Frontal</source>
       <translation>正面</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="102"/>
+      <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal Quad</source>
       <translation>正面四边形</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Parallelograms</source>
       <translation>平行四边形</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="174"/>
-      <location filename="../../RemeshGmsh.cpp" line="230"/>
+      <location filename="../../RemeshGmsh.cpp" line="175"/>
+      <location filename="../../RemeshGmsh.cpp" line="231"/>
       <source>Time:</source>
       <translation>时间：</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="219"/>
+      <location filename="../../RemeshGmsh.cpp" line="220"/>
       <source>Running gmsh...</source>
       <translation>正在运行 gmsh ...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="241"/>
+      <location filename="../../RemeshGmsh.cpp" line="242"/>
       <source>Failed to start</source>
       <translation>未能启动</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="248"/>
+      <location filename="../../RemeshGmsh.cpp" line="249"/>
       <source>Error</source>
       <translation>错误</translation>
     </message>
@@ -1533,7 +1533,7 @@ to a smoother appearance.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="731"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>完成</translation>
     </message>

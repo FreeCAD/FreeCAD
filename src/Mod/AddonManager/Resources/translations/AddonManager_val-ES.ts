@@ -362,12 +362,6 @@ installed addons will be checked for available updates
       <translation>Comprova automàticament si hi ha actualitzacions en iniciar (requereix GitPithon)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="42"/>
-      <source>You can use this window to specify additional addon repositories
-sto be scanned for available addons</source>
-      <translation>Podeu utilitzar aquesta finestra per a especificar repositoris de complements addicionals que s'hauran d'escanejar per als components disponibles</translation>
-    </message>
-    <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
       <translation>Servidor intermediari </translation>
@@ -396,6 +390,13 @@ sto be scanned for available addons</source>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the Addon Manager</source>
       <translation type="unfinished">Close the Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="42"/>
+      <source>You can use this window to specify additional addon repositories
+to be scanned for available addons</source>
+      <translation type="unfinished">You can use this window to specify additional addon repositories
+to be scanned for available addons</translation>
     </message>
   </context>
   <context>

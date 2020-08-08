@@ -42,6 +42,7 @@ enum class UnitSystem {
     ImperialBuilding = 5, /** All lengths in feet + inches + fractions */
     MmMin = 6, /** Lengths in mm, Speed in mm/min. Angle in degrees. Useful for small parts & CNC */
     ImperialCivil = 7, /** Lengths in ft, Speed in ft/sec. Used in Civil Eng in North America */
+    FemMilliMeterNewton = 8, /** Lengths in mm, Mass in t, TimeSpan in s, thus force is in N */
     NumUnitSystemTypes // must be the last item!
 };
 

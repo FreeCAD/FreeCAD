@@ -611,7 +611,7 @@ mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arr
     </message>
     <message>
       <source>Verbose description of the new property.</source>
-      <translation type="unfinished">Verbose description of the new property.</translation>
+      <translation>Descripción detallada de la nueva propiedad.</translation>
     </message>
     <message>
       <source>Documentation</source>
@@ -623,15 +623,15 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+      <translation>Prefija el nombre de la propiedad con el nombre del grupo en el formulario 'Group_Name' para evitar conflictos con una propiedad existente.
+En este caso el prefijo se recortará automáticamente cuando se muestre en el editor de propiedades.
+Sin embargo, la propiedad todavía se utiliza en un script con el nombre completo, como 'obj.Group_Name'.
 
-If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+Si esto no está marcado, entonces la propiedad debe ser nombrada de forma única, y se accede como 'obj.Name'.</translation>
     </message>
     <message>
       <source>Prefix group name</source>
-      <translation type="unfinished">Prefix group name</translation>
+      <translation>Nombre del grupo de prefijo</translation>
     </message>
   </context>
   <context>
@@ -1020,7 +1020,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
+      <translation>%1 módulo no cargado</translation>
     </message>
   </context>
   <context>
@@ -2027,7 +2027,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>Versión del programa:</translation>
     </message>
   </context>
   <context>
@@ -2256,11 +2256,19 @@ desde la consola de Python al panel de la vista de informe</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>
-      <translation type="unfinished">Include a timecode for each report</translation>
+      <translation>Incluye un código de tiempo para cada informe</translation>
     </message>
     <message>
       <source>Include a timecode for each entry</source>
-      <translation type="unfinished">Include a timecode for each entry</translation>
+      <translation>Incluye un código de tiempo para cada entrada</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation type="unfinished">Normal messages will be recorded</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation type="unfinished">Record normal messages</translation>
     </message>
   </context>
   <context>
@@ -2509,12 +2517,11 @@ del objeto 3D que se muestra actualmente. </translation>
     <message>
       <source>Axis cross will be shown by default at file
 opening or creation</source>
-      <translation type="unfinished">Axis cross will be shown by default at file
-opening or creation</translation>
+      <translation>La cruz de los ejes se mostrará por defecto al abrir o crear un archivo</translation>
     </message>
     <message>
       <source>Show axis cross by default</source>
-      <translation type="unfinished">Show axis cross by default</translation>
+      <translation>Mostrar la cruz de los ejes por defecto</translation>
     </message>
   </context>
   <context>
@@ -3286,14 +3293,6 @@ Turntable: la pieza se girará alrededor del eje Z.</translation>
       <translation>Trackball</translation>
     </message>
     <message>
-      <source>New document camera orientation</source>
-      <translation>Nueva orientación de la cámara en documento</translation>
-    </message>
-    <message>
-      <source>Camera orientation for new documents</source>
-      <translation>Orientación de la cámara para nuevos documentos</translation>
-    </message>
-    <message>
       <source>New document scale</source>
       <translation>Nueva escala de documento</translation>
     </message>
@@ -3398,6 +3397,14 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Custom</source>
       <translation>Personalizado</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation>Orientación de cámara por defecto</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation>Orientación de cámara por defecto al crear un nuevo documento o seleccionar la vista de inicio</translation>
     </message>
   </context>
   <context>
@@ -4450,18 +4457,6 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <source>Logging</source>
-      <translation>Registro</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Advertencia</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Error</translation>
-    </message>
-    <message>
       <source>Options</source>
       <translation>Opciones</translation>
     </message>
@@ -4492,6 +4487,30 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     <message>
       <source>Plain Text Files</source>
       <translation>Archivos de texto plano</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation type="unfinished">Display message types</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation type="unfinished">Normal messages</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation type="unfinished">Log messages</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation type="unfinished">Warnings</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation type="unfinished">Errors</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation type="unfinished">Show report view on</translation>
     </message>
   </context>
   <context>
@@ -5857,18 +5876,18 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source> (but must be executed)</source>
-      <translation type="unfinished"> (but must be executed)</translation>
+      <translation> (pero debe ser ejecutado)</translation>
     </message>
   </context>
   <context>
     <name>Gui::VectorListEditor</name>
     <message>
       <source>Vectors</source>
-      <translation type="unfinished">Vectors</translation>
+      <translation>Vectores</translation>
     </message>
     <message>
       <source>Table</source>
-      <translation type="unfinished">Table</translation>
+      <translation>Tabla</translation>
     </message>
     <message>
       <source>...</source>
@@ -7002,7 +7021,7 @@ Seleccione 'Abortar' para abortar</translation>
     </message>
     <message>
       <source>Change the draw style of the objects</source>
-      <translation type="unfinished">Change the draw style of the objects</translation>
+      <translation>Cambia el estilo de dibujo de los objetos</translation>
     </message>
   </context>
   <context>
@@ -8508,6 +8527,21 @@ Seleccione 'Abortar' para abortar</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation>Inicio</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation>Establecer como vista de inicio por defecto</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Standard-View</source>
@@ -9104,16 +9138,12 @@ Are you sure you want to continue?
 </translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Estos elementos están seleccionados para su borrado, pero no están en el documento activo. 
-
-</translation>
-    </message>
-    <message>
       <source>Object dependencies</source>
       <translation>Dependencias del objeto</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>Estos elementos están seleccionados para su borrado, pero no están en el documento activo.</translation>
     </message>
   </context>
   <context>

@@ -162,6 +162,7 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::ViewProviderExtrusion                  ::init();
     PartGui::ViewProvider2DObject                   ::init();
     PartGui::ViewProvider2DObjectPython             ::init();
+    PartGui::ViewProvider2DObjectGrid               ::init();
     PartGui::ViewProviderMirror                     ::init();
     PartGui::ViewProviderFillet                     ::init();
     PartGui::ViewProviderChamfer                    ::init();

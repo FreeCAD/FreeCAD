@@ -49,7 +49,7 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="309"/>
       <source>Run</source>
-      <translation type="unfinished">Run</translation>
+      <translation>Kjør</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="311"/>

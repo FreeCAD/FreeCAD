@@ -137,7 +137,7 @@
       <translation>Randen omzetten naar vlakken</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="211"/>
+      <location filename="../../OpenSCADCommands.py" line="243"/>
       <source>Please select 3 objects first</source>
       <translation>Selecteer eerst 3 objecten</translation>
     </message>
@@ -152,37 +152,37 @@
       <translation>Druk op OK</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="249"/>
+      <location filename="../../OpenSCADCommands.py" line="281"/>
       <source>Add</source>
       <translation>Toevoegen</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="250"/>
+      <location filename="../../OpenSCADCommands.py" line="282"/>
       <source>Clear</source>
       <translation>Wissen</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="251"/>
+      <location filename="../../OpenSCADCommands.py" line="283"/>
       <source>as Mesh</source>
       <translation>als net</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="252"/>
+      <location filename="../../OpenSCADCommands.py" line="284"/>
       <source>Add OpenSCAD Element</source>
       <translation>Een OpenSCAD element toevoegen</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="325"/>
+      <location filename="../../OpenSCADCommands.py" line="357"/>
       <source>Perform</source>
       <translation>Uitvoeren</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="326"/>
+      <location filename="../../OpenSCADCommands.py" line="358"/>
       <source>Mesh Boolean</source>
       <translation>Meshboolean</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="596"/>
+      <location filename="../../OpenSCADUtils.py" line="607"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>Fout alle vormen moeten ofwel 2D zijn of beide moeten 3D zijn</translation>
     </message>
@@ -195,12 +195,12 @@
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="366"/>
+      <location filename="../../OpenSCADCommands.py" line="398"/>
       <source>Add OpenSCAD Element...</source>
       <translation>OpenSCAD element toevoegen...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="367"/>
+      <location filename="../../OpenSCADCommands.py" line="399"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>Voeg een OpenSCAD-element toe door de OpenSCAD-code in te voeren en het OpenSCAD-binaire uit te voeren</translation>
     </message>
@@ -229,12 +229,12 @@
   <context>
     <name>OpenSCAD_ExpandPlacements</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="193"/>
+      <location filename="../../OpenSCADCommands.py" line="225"/>
       <source>Expand Placements</source>
       <translation>Plaatsingen uitvouwen</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="194"/>
+      <location filename="../../OpenSCADCommands.py" line="226"/>
       <source>Expand all placements downwards the FeatureTree</source>
       <translation>Vouw alle plaatsingen neerwaarts in de onderdelenstructuur uit</translation>
     </message>
@@ -255,12 +255,12 @@
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="399"/>
+      <location filename="../../OpenSCADCommands.py" line="431"/>
       <source>Hull</source>
       <translation>Romp</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="400"/>
+      <location filename="../../OpenSCADCommands.py" line="432"/>
       <source>Perform Hull</source>
       <translation>Voer romp uit</translation>
     </message>
@@ -268,12 +268,12 @@
   <context>
     <name>OpenSCAD_IncreaseToleranceFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="176"/>
+      <location filename="../../OpenSCADCommands.py" line="208"/>
       <source>Increase Tolerance Feature</source>
       <translation>Verhoog tolerantiefunctie</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="177"/>
+      <location filename="../../OpenSCADCommands.py" line="209"/>
       <source>Create Feature that allows to increase the tolerance</source>
       <translation>Maak functie die het mogelijk maakt om de tolerantie te verhogen</translation>
     </message>
@@ -281,12 +281,12 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="379"/>
+      <location filename="../../OpenSCADCommands.py" line="411"/>
       <source>Mesh Boolean...</source>
       <translation>Meshboolean...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="380"/>
+      <location filename="../../OpenSCADCommands.py" line="412"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation>Objecten als mazen exporteren en OpenSCAD gebruiken om een booleaanse bewerking uit te voeren</translation>
     </message>
@@ -294,14 +294,27 @@
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="418"/>
+      <location filename="../../OpenSCADCommands.py" line="450"/>
       <source>Minkowski</source>
       <translation>Minkowski</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="419"/>
+      <location filename="../../OpenSCADCommands.py" line="451"/>
       <source>Perform Minkowski</source>
       <translation>Voer Minkowski uit</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_MirrorMeshFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="188"/>
+      <source>Mirror Mesh Feature...</source>
+      <translation>Spiegel Draadframe Kenmerk...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="189"/>
+      <source>Create Mirror Mesh Feature</source>
+      <translation>Maak Spiegelbeeld Draadframe Kenmerk</translation>
     </message>
   </context>
   <context>
@@ -320,12 +333,12 @@
   <context>
     <name>OpenSCAD_RemoveSubtree</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="226"/>
+      <location filename="../../OpenSCADCommands.py" line="258"/>
       <source>Remove Objects and their Children</source>
       <translation>Objecten en hun kinderen verwijderen</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="227"/>
+      <location filename="../../OpenSCADCommands.py" line="259"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
       <translation>Verwijdert de geselecteerde objecten en alle kinderen die niet uit andere objecten worden vermeld</translation>
     </message>
@@ -333,12 +346,12 @@
   <context>
     <name>OpenSCAD_ReplaceObject</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="214"/>
+      <location filename="../../OpenSCADCommands.py" line="246"/>
       <source>Replace Object</source>
       <translation>Voorwerp vervangen</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="215"/>
+      <location filename="../../OpenSCADCommands.py" line="247"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
       <translation>Vervang een object in de onderdelenstructuur. Selecteer oud, nieuw en bovenliggende object</translation>
     </message>

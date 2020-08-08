@@ -1405,18 +1405,20 @@ bool ViewProviderPythonFeatureImp::getLinkedViewProvider(
         if(PyObject_TypeCheck(res.ptr(),&ViewProviderDocumentObjectPy::Type)) {
             vp = static_cast<ViewProviderDocumentObjectPy*>(
                     res.ptr())->getViewProviderDocumentObjectPtr();
+            return true;
         } else if (PySequence_Check(res.ptr()) && PySequence_Length(res.ptr())==2) {
             Py::Sequence seq(res);
             Py::Object item0(seq[0].ptr());
-            Py::Object item1(seq[0].ptr());
+            Py::Object item1(seq[1].ptr());
             if(PyObject_TypeCheck(item0.ptr(), &ViewProviderDocumentObjectPy::Type) && item1.isString()) {
                 if(subname)
                     *subname = Py::String(item1).as_std_string("utf-8");
                 vp = static_cast<ViewProviderDocumentObjectPy*>(
                         item0.ptr())->getViewProviderDocumentObjectPtr();
+                return true;
             }
-        } else 
-            FC_ERR("getLinkedViewProvider(): invalid return type, expects ViewObject or (ViewObject, subname)");
+        }
+        FC_ERR("getLinkedViewProvider(): invalid return type, expects ViewObject or (ViewObject, subname)");
         return true;
     }
     catch (Py::Exception&) {

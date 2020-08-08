@@ -17,6 +17,9 @@
 # rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
 %global bundled_smesh %{?_without_bundled_smesh: 0} %{?!_without_bundled_smesh: 1}
 
+# Prevent RPM from doing its magical 'build' directory for now
+%global __cmake_in_source_build 0
+
 # See FreeCAD-master/src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
 

@@ -2,44 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="fr" sourcelanguage="en">
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="110"/>
-      <source>The objects that are part of this layer</source>
-      <translation>Les objets qui font partie de ce calque</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="147"/>
-      <source>If on, the child objects of this layer will match its visual aspects</source>
-      <translation>Si activé, les objets enfants de ce calque correspondent à ses aspects visuels</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="156"/>
-      <source>The line color of the children of this layer</source>
-      <translation>La couleur de ligne des enfants de ce calque</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="162"/>
-      <source>The shape color of the children of this layer</source>
-      <translation>La couleur de forme des enfants de ce calque</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="168"/>
-      <source>The line width of the children of this layer</source>
-      <translation>La largeur de la ligne des enfants de ce calque</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="174"/>
-      <source>The draw style of the children of this layer</source>
-      <translation>Le style de dessin des enfants de ce calque</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="180"/>
-      <source>The transparency of the children of this layer</source>
-      <translation>La transparence des enfants de ce calque</translation>
-    </message>
-  </context>
-  <context>
     <name>Dialog</name>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
@@ -204,22 +166,22 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="26"/>
       <source>The name of your style. Existing style names can be edited.</source>
-      <translation type="unfinished">The name of your style. Existing style names can be edited.</translation>
+      <translation>Nom de votre style. Les noms de styles existants peuvent être modifiés.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="163"/>
       <source>Font size in the system units</source>
-      <translation type="unfinished">Font size in the system units</translation>
+      <translation>Taille de la police des unités système</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="136"/>
       <source>Line spacing in system units</source>
-      <translation type="unfinished">Line spacing in system units</translation>
+      <translation>Espacement des lignes dans les unités système</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation type="unfinished">A multiplier factor that affects the size of texts and markers</translation>
+      <translation>Un facteur multiplicateur qui affecte la taille des textes et des marqueurs</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="249"/>
@@ -732,19 +694,6 @@ Doit être d’au moins 2.</translation>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
       <translation>Réinitialiser le point</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="83"/>
-      <source>Layer</source>
-      <translation>Calque</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="84"/>
-      <source>Adds a layer</source>
-      <translation>Ajouter un calque</translation>
     </message>
   </context>
   <context>
@@ -2857,21 +2806,6 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Cochez ceci si l'objet doit apparaître comme rempli, sinon il apparaîtra comme filaire. Non disponible si l'option de préférence Draft 'Utiliser les Primitives de partie' est activée</translation>
     </message>
     <message>
-      <location filename="../../DraftLayer.py" line="43"/>
-      <source>No active document. Aborting</source>
-      <translation>Aucun document actif. Abandon</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="50"/>
-      <source>Layer</source>
-      <translation>Calque</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="71"/>
-      <source>Layers</source>
-      <translation>Calques</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Polyline</source>
       <translation>Ligne brisée</translation>
@@ -2915,16 +2849,6 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <location filename="../../DraftGui.py" line="949"/>
       <source>Trim distance</source>
       <translation>Distance de coupe</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="334"/>
-      <source>Activate this layer</source>
-      <translation>Activer ce calque</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="341"/>
-      <source>Select contents</source>
-      <translation>Sélectionner les contenus</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>

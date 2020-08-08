@@ -972,11 +972,14 @@ void SelectionSingleton::rmvSelectionGate(void)
 {
     if (ActiveGate) {
         delete ActiveGate;
-        ActiveGate=0;
+        ActiveGate = nullptr;
+
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
+            // if a document is about to be closed it has no MDI view any more
             Gui::MDIView* mdi = doc->getActiveView();
-            mdi->restoreOverrideCursor();
+            if (mdi)
+                mdi->restoreOverrideCursor();
         }
     }
 }

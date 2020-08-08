@@ -364,13 +364,6 @@ installed addons will be checked for available updates
       <translation>在启动时自动检查更新（需要 GitPython）</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="42"/>
-      <source>You can use this window to specify additional addon repositories
-sto be scanned for available addons</source>
-      <translation>您可以使用此窗口指定其他插件仓库
-扫描可用插件</translation>
-    </message>
-    <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
       <translation>代理 </translation>
@@ -399,6 +392,13 @@ sto be scanned for available addons</source>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the Addon Manager</source>
       <translation type="unfinished">Close the Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="42"/>
+      <source>You can use this window to specify additional addon repositories
+to be scanned for available addons</source>
+      <translation type="unfinished">You can use this window to specify additional addon repositories
+to be scanned for available addons</translation>
     </message>
   </context>
   <context>

@@ -726,7 +726,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
       <source>Reduction</source>
-      <translation type="unfinished">Reduction</translation>
+      <translation>Murrizketa</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
@@ -736,13 +736,13 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
       <source>Full</source>
-      <translation type="unfinished">Full</translation>
+      <translation>Beteta</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
       <location filename="../../DlgDecimating.cpp" line="91"/>
       <source>Absolute number</source>
-      <translation type="unfinished">Absolute number</translation>
+      <translation>Zenbaki absolutua</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
@@ -752,7 +752,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="85"/>
       <source>Absolute number (Maximum: %1)</source>
-      <translation type="unfinished">Absolute number (Maximum: %1)</translation>
+      <translation>Zenbaki absolutua (maximoa: %1)</translation>
     </message>
   </context>
   <context>
@@ -1463,48 +1463,48 @@ itxura leunagoa ematen du.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="97"/>
+      <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
       <translation>Automatikoa</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Adaptive</source>
       <translation>Moldakorra</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="100"/>
+      <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Frontal</source>
       <translation>Aurrekoa</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="102"/>
+      <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal Quad</source>
       <translation>Aurreko karratua</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Parallelograms</source>
       <translation>Paralelogramoak</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="174"/>
-      <location filename="../../RemeshGmsh.cpp" line="230"/>
+      <location filename="../../RemeshGmsh.cpp" line="175"/>
+      <location filename="../../RemeshGmsh.cpp" line="231"/>
       <source>Time:</source>
       <translation>Denbora:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="219"/>
+      <location filename="../../RemeshGmsh.cpp" line="220"/>
       <source>Running gmsh...</source>
       <translation>Gmsh exekutatzen...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="241"/>
+      <location filename="../../RemeshGmsh.cpp" line="242"/>
       <source>Failed to start</source>
       <translation>Hasierak huts egin du</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="248"/>
+      <location filename="../../RemeshGmsh.cpp" line="249"/>
       <source>Error</source>
       <translation>Errorea</translation>
     </message>
@@ -1535,7 +1535,7 @@ itxura leunagoa ematen du.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="731"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>Amaitu</translation>
     </message>

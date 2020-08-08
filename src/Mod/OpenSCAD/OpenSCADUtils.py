@@ -28,7 +28,7 @@ __url__ = ["https://www.freecadweb.org"]
 This Script includes various python helper functions that are shared across
 the module
 '''
-
+from exportCSG import mesh2polyhedron
 try:
     from PySide import QtGui
     _encoding = QtGui.QApplication.UnicodeUTF8
@@ -300,8 +300,6 @@ def vec2householder(nv):
 
 def mirrormesh(msh,vec):
     """mirrormesh(mesh,vector) where mesh is a mesh object and vector is a Base.Vector"""
-    from exportCSG import mesh2polyhedron
-    from PySide import QtGui
     poly = mesh2polyhedron(msh)
     vec_string = '['+str(vec.x)+','+str(vec.y)+','+str(vec.z)+']'
     param = 'mirror('+vec_string+')'
@@ -309,6 +307,23 @@ def mirrormesh(msh,vec):
     mi.flipNormals()
     return mi
 
+def scalemesh(msh,vec):
+    """scalemesh(mesh,vector) where mesh is a mesh object and vector is a Base.Vector"""
+    poly = mesh2polyhedron(msh)
+    vec_string = '['+str(vec.x)+','+str(vec.y)+','+str(vec.z)+']'
+    param = 'scale('+vec_string+')'
+    mi = callopenscadmeshstring('%s{%s}' % (param,''.join(poly)))
+    mi.flipNormals()
+    return mi
+
+def resizemesh(msh,vec):
+    """resizemesh(mesh,vector) where mesh is a mesh object and vector is a Base.Vector"""
+    poly = mesh2polyhedron(msh)
+    vec_string = '['+str(vec.x)+','+str(vec.y)+','+str(vec.z)+']'
+    param = 'resize('+vec_string+')'
+    mi = callopenscadmeshstring('%s{%s}' % (param,''.join(poly)))
+    mi.flipNormals()
+    return mi
 
 def angneg(d):
     return d if (d <= 180.0) else (d-360)

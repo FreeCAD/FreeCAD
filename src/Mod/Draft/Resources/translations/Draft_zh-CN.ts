@@ -2,44 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="zh-CN" sourcelanguage="en">
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="110"/>
-      <source>The objects that are part of this layer</source>
-      <translation>作为此图层一部分的对象</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="147"/>
-      <source>If on, the child objects of this layer will match its visual aspects</source>
-      <translation type="unfinished">If on, the child objects of this layer will match its visual aspects</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="156"/>
-      <source>The line color of the children of this layer</source>
-      <translation type="unfinished">The line color of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="162"/>
-      <source>The shape color of the children of this layer</source>
-      <translation type="unfinished">The shape color of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="168"/>
-      <source>The line width of the children of this layer</source>
-      <translation type="unfinished">The line width of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="174"/>
-      <source>The draw style of the children of this layer</source>
-      <translation type="unfinished">The draw style of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="180"/>
-      <source>The transparency of the children of this layer</source>
-      <translation type="unfinished">The transparency of the children of this layer</translation>
-    </message>
-  </context>
-  <context>
     <name>Dialog</name>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
@@ -49,17 +11,17 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
       <source>Style name</source>
-      <translation type="unfinished">Style name</translation>
+      <translation>样式名</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>Add new...</source>
-      <translation type="unfinished">Add new...</translation>
+      <translation>新增</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="61"/>
       <source>Renames the selected style</source>
-      <translation type="unfinished">Renames the selected style</translation>
+      <translation>重命名选中的样式</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="64"/>
@@ -69,7 +31,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="86"/>
       <source>Deletes the selected style</source>
-      <translation type="unfinished">Deletes the selected style</translation>
+      <translation>删除选中的样式</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="89"/>
@@ -89,7 +51,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="139"/>
       <source>Line spacing</source>
-      <translation type="unfinished">Line spacing</translation>
+      <translation>行距</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="149"/>
@@ -149,7 +111,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="314"/>
       <source>Show lines</source>
-      <translation type="unfinished">Show lines</translation>
+      <translation>显示线条</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="324"/>
@@ -159,7 +121,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="334"/>
       <source>Extension lines</source>
-      <translation type="unfinished">Extension lines</translation>
+      <translation>延伸线</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="344"/>
@@ -204,17 +166,17 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="26"/>
       <source>The name of your style. Existing style names can be edited.</source>
-      <translation type="unfinished">The name of your style. Existing style names can be edited.</translation>
+      <translation>样式的名称，现有的样式可以编辑名称。</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="163"/>
       <source>Font size in the system units</source>
-      <translation type="unfinished">Font size in the system units</translation>
+      <translation>系统单位的字体大小</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="136"/>
       <source>Line spacing in system units</source>
-      <translation type="unfinished">Line spacing in system units</translation>
+      <translation>系统单位的行间距</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
@@ -732,19 +694,6 @@ It must be at least 2.</source>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
       <translation type="unfinished">Reset Point</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="83"/>
-      <source>Layer</source>
-      <translation>图层</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="84"/>
-      <source>Adds a layer</source>
-      <translation>添加图层</translation>
     </message>
   </context>
   <context>
@@ -2864,21 +2813,6 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe. Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
     </message>
     <message>
-      <location filename="../../DraftLayer.py" line="43"/>
-      <source>No active document. Aborting</source>
-      <translation>没有活动文档。中止</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="50"/>
-      <source>Layer</source>
-      <translation>图层</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="71"/>
-      <source>Layers</source>
-      <translation>图层</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Polyline</source>
       <translation>折线</translation>
@@ -2922,16 +2856,6 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <location filename="../../DraftGui.py" line="949"/>
       <source>Trim distance</source>
       <translation type="unfinished">Trim distance</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="334"/>
-      <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="341"/>
-      <source>Select contents</source>
-      <translation>选择内容</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>

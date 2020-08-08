@@ -21,7 +21,7 @@
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="104"/>
       <source>Extend the profile clearing beyond the Extra Offset.</source>
-      <translation type="unfinished">Extend the profile clearing beyond the Extra Offset.</translation>
+      <translation>Breid het profiel schonen uit tot na de Extra Offset.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="170"/>
@@ -37,6 +37,11 @@
       <location filename="PathProfileBase.py" line="64"/>
       <source>Maximum distance before a miter join is truncated</source>
       <translation>Maximale afstand voordat een verstekverbinding wordt ingekort</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="56"/>
+      <source>The base geometry of this toolpath</source>
+      <translation>De basisgeometrie voor dit gereedschapspad</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="98"/>
@@ -111,12 +116,12 @@
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="118"/>
       <source>Enter custom start point for slot path.</source>
-      <translation type="unfinished">Enter custom start point for slot path.</translation>
+      <translation>Voer eigen startpunt in voor het pad van het slot.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="120"/>
       <source>Enter custom end point for slot path.</source>
-      <translation type="unfinished">Enter custom end point for slot path.</translation>
+      <translation>Voer eigen eindpunt voor het slotpad in.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="152"/>
@@ -126,12 +131,12 @@
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="124"/>
       <source>Positive extends the beginning of the path, negative shortens.</source>
-      <translation type="unfinished">Positive extends the beginning of the path, negative shortens.</translation>
+      <translation>Positief vergroot het begin van het pad, negatief verkleint het.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="126"/>
       <source>Positive extends the end of the path, negative shortens.</source>
-      <translation type="unfinished">Positive extends the end of the path, negative shortens.</translation>
+      <translation>Positief vergroot het eind van het pad, negatief verkort.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="162"/>
@@ -141,27 +146,27 @@
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="130"/>
       <source>Choose the path orientation with regard to the feature(s) selected.</source>
-      <translation type="unfinished">Choose the path orientation with regard to the feature(s) selected.</translation>
+      <translation>Kies de richting van het pad met betrekking tot de geselecteerde functie(s).</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="132"/>
       <source>Choose what point to use on the first selected feature.</source>
-      <translation type="unfinished">Choose what point to use on the first selected feature.</translation>
+      <translation>Kies welk punt je wilt gebruiken op de eerste geselecteerde functie.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="134"/>
       <source>Choose what point to use on the second selected feature.</source>
-      <translation type="unfinished">Choose what point to use on the second selected feature.</translation>
+      <translation>Kies welk punt je wilt gebruiken voor de tweede geselecteerde functie.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="136"/>
       <source>For arcs/circlular edges, offset the radius for the path.</source>
-      <translation type="unfinished">For arcs/circlular edges, offset the radius for the path.</translation>
+      <translation>Verander voor bogen/circlulaire randen de radius voor het pad.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="138"/>
       <source>Enable to reverse the cut direction of the slot path.</source>
-      <translation type="unfinished">Enable to reverse the cut direction of the slot path.</translation>
+      <translation>Inschakelen om de snijrichting van het slotpad om te keren.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="182"/>
@@ -237,11 +242,6 @@
       <location filename="PathPocketBase.py" line="61"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
       <translation>Extra verschuiving om toe te passen op de bewerking. Richting is afhankelijk van bewerking.</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="55"/>
-      <source>The library to use to generate the path</source>
-      <translation>De te bibliotheek gebruiken voor het genereren van het pad</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="78"/>
@@ -669,9 +669,9 @@
       <translation>De uitgangslocatie voor de te schrijven tastgegevens</translation>
     </message>
     <message>
-      <location filename="PathProfileEdges.py" line="56"/>
-      <source>The base geometry of this toolpath</source>
-      <translation>De basisgeometrie voor dit gereedschapspad</translation>
+      <location filename="PathPocket.py" line="55"/>
+      <source>The library to use to generate the path</source>
+      <translation>De te bibliotheek gebruiken voor het genereren van het pad</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="47"/>
@@ -889,7 +889,7 @@
     <message>
       <location filename="../../../PathScripts/PathCustomGui.py" line="80"/>
       <source>Create custom gcode snippet</source>
-      <translation type="unfinished">Create custom gcode snippet</translation>
+      <translation>Maak aangepaste gcode snippet</translation>
     </message>
   </context>
   <context>
@@ -1080,22 +1080,22 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="485"/>
       <source>No coolant property found. Please recreate operation.</source>
-      <translation type="unfinished">No coolant property found. Please recreate operation.</translation>
+      <translation>Geen koelmiddeleigenschap gevonden. Maak de bewerking opnieuw aan.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="490"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
-      <translation type="unfinished">No Tool Controller is selected. We need a tool to build a Path.</translation>
+      <translation>Er is geen Tool Controller geselecteerd. We hebben een tool nodig om een Pad te bouwen.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="499"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
-      <translation type="unfinished">No Tool found or diameter is zero. We need a tool to build a Path.</translation>
+      <translation>Geen Gereedschap gevonden of diameter is nul. We hebben een gereedschap nodig om een pad te maken.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="532"/>
       <source>No Tool Controller selected.</source>
-      <translation type="unfinished">No Tool Controller selected.</translation>
+      <translation>Geen Tool Controller geselecteerd.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="533"/>
@@ -1105,7 +1105,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="541"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
-      <translation type="unfinished">Tool Controller feedrates required to calculate the cycle time.</translation>
+      <translation>Tool Controller voersnelheid vereist om de cyclustijd te berekenen.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="542"/>
@@ -1115,7 +1115,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="545"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
-      <translation type="unfinished">Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</translation>
+      <translation>Voeg Tool Controller Hoge Snelheden toe op het InstelBlad voor nauwkeurigere cyclustijden.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="551"/>
@@ -1198,14 +1198,14 @@
       <translation>Ongeldige hoek van de snijrand %.2f, moet &gt;=0° en &lt;=180° zijn</translation>
     </message>
     <message>
-      <location filename="PathUtils.py" line="767"/>
-      <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
-      <translation>Snijhoek rand (%.2f) resulteert in negatieve tool tip lengte</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathUtils.py" line="808"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
       <translation>Ongeldige hoek van de snijrand %.2f, moet &gt;=0° en &lt;=180° zijn</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="767"/>
+      <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
+      <translation>Snijhoek rand (%.2f) resulteert in negatieve tool tip lengte</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="153"/>
@@ -1413,16 +1413,6 @@
   <context>
     <name>PathFace</name>
     <message>
-      <location filename="PathMillFace.py" line="350"/>
-      <source>Face</source>
-      <translation>Vlak</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathMillFaceGui.py" line="44"/>
-      <source>Create a Facing Operation from a model or face</source>
-      <translation>Maak een vlakbewerking van een model of vlak</translation>
-    </message>
-    <message>
       <location filename="PathMillFace.py" line="171"/>
       <source>Generating toolpath with libarea offsets.
 </source>
@@ -1433,6 +1423,16 @@
       <location filename="PathMillFace.py" line="305"/>
       <source>Pick Start Point</source>
       <translation>Kies het startpunt</translation>
+    </message>
+    <message>
+      <location filename="PathMillFace.py" line="350"/>
+      <source>Face</source>
+      <translation>Vlak</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathMillFaceGui.py" line="44"/>
+      <source>Create a Facing Operation from a model or face</source>
+      <translation>Maak een vlakbewerking van een model of vlak</translation>
     </message>
   </context>
   <context>
@@ -1499,11 +1499,6 @@
       <translation>De richting van de cirkelvormige sneden, rechtsom (CW), of linksom (CCW)</translation>
     </message>
     <message>
-      <location filename="PathHelix.py" line="52"/>
-      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
-      <translation>De richting van de cirkelvormige sneden, rechtsom (CW), of linksom (CCW)</translation>
-    </message>
-    <message>
       <location filename="PathHelix.py" line="55"/>
       <source>Start cutting from the inside or outside</source>
       <translation>Begin de insnijding van binnen of buiten</translation>
@@ -1527,6 +1522,11 @@
       <location filename="PathHelixGui.py" line="83"/>
       <source>Creates a Path Helix object from a features of a base object</source>
       <translation>Maakt een padhelixobject aan uit een eigenschap van een basisobject</translation>
+    </message>
+    <message>
+      <location filename="PathHelix.py" line="52"/>
+      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
+      <translation>De richting van de cirkelvormige sneden, rechtsom (CW), of linksom (CCW)</translation>
     </message>
   </context>
   <context>
@@ -1672,7 +1672,7 @@
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="108"/>
       <source>Job Cycle Time Estimation</source>
-      <translation type="unfinished">Job Cycle Time Estimation</translation>
+      <translation>Schatting van de Taak CyclusTijd</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="258"/>
@@ -1822,7 +1822,7 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
     <message>
       <location filename="../../../PathScripts/PathOpGui.py" line="597"/>
       <source>Mulitiple operations are labeled as</source>
-      <translation type="unfinished">Mulitiple operations are labeled as</translation>
+      <translation>Multi-activiteiten zijn gelabeld als</translation>
     </message>
   </context>
   <context>
@@ -1951,12 +1951,12 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="46"/>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
       <source>Profile</source>
       <translation>Profiel</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="46"/>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
       <translation type="unfinished">Profile entire model, selected face(s) or selected edge(s)</translation>
     </message>
@@ -2021,6 +2021,11 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <translation type="unfinished">For open edges, verify Final Depth for this operation.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
+      <source>Profile based on face or faces</source>
+      <translation>Profiel gebaseerd op één of meerdere vlakken</translation>
+    </message>
+    <message>
       <location filename="PathProfileEdges.py" line="415"/>
       <source>Edge Profile</source>
       <translation>Randprofiel</translation>
@@ -2039,11 +2044,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="PathProfile.py" line="429"/>
       <source>Face Profile</source>
       <translation>Vlakprofiel</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
-      <source>Profile based on face or faces</source>
-      <translation>Profiel gebaseerd op één of meerdere vlakken</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="289"/>
@@ -2282,42 +2282,42 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="762"/>
       <source>A single selected face must have four edges minimum.</source>
-      <translation type="unfinished">A single selected face must have four edges minimum.</translation>
+      <translation>Een enkel geselecteerd vlak moet minimaal vier randen hebben.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="811"/>
       <source>No parallel edges identified.</source>
-      <translation type="unfinished">No parallel edges identified.</translation>
+      <translation>Geen parallelle randen gevonden.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="824"/>
       <source>value error.</source>
-      <translation type="unfinished">value error.</translation>
+      <translation>onjuiste waarde.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="882"/>
       <source>Current tool larger than arc diameter.</source>
-      <translation type="unfinished">Current tool larger than arc diameter.</translation>
+      <translation>Huidige gereedschap groter dan boogdiameter.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="994"/>
       <source>Failed to determine point 1 from</source>
-      <translation type="unfinished">Failed to determine point 1 from</translation>
+      <translation>Fout bij het bepalen van punt 1 van</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="1005"/>
       <source>Failed to determine point 2 from</source>
-      <translation type="unfinished">Failed to determine point 2 from</translation>
+      <translation>Fout bij het bepalen van punt 2 van</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="1018"/>
       <source>Selected geometry not parallel.</source>
-      <translation type="unfinished">Selected geometry not parallel.</translation>
+      <translation>Geselecteerde geometrie is niet parallel.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="1128"/>
       <source>The selected face is not oriented vertically:</source>
-      <translation type="unfinished">The selected face is not oriented vertically:</translation>
+      <translation>Het geselecteerde vlak is niet verticaal georiënteerd:</translation>
     </message>
   </context>
   <context>
@@ -2434,14 +2434,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
     </message>
   </context>
   <context>
-    <name>PathSuface</name>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="839"/>
-      <source>No scan data to convert to Gcode.</source>
-      <translation type="unfinished">No scan data to convert to Gcode.</translation>
-    </message>
-  </context>
-  <context>
     <name>PathSurface</name>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2625"/>
@@ -2486,12 +2478,12 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="269"/>
       <source>The GeometryTolerance for this Job is 0.0.</source>
-      <translation type="unfinished">The GeometryTolerance for this Job is 0.0.</translation>
+      <translation>De GeometrieTolerantie voor deze Taak is 0,0.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="271"/>
       <source>Initializing LinearDeflection to 0.001 mm.</source>
-      <translation type="unfinished">Initializing LinearDeflection to 0.001 mm.</translation>
+      <translation>Initialiseren LineairDeflectie naar 0,001 mm.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="315"/>
@@ -2536,22 +2528,22 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="698"/>
       <source>operation time is</source>
-      <translation type="unfinished">operation time is</translation>
+      <translation>verwerkingstijd is</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="702"/>
       <source>Canceled 3D Surface operation.</source>
-      <translation type="unfinished">Canceled 3D Surface operation.</translation>
+      <translation>3d Oppervlakteverwerking afgebroken.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="791"/>
       <source>No profile geometry shape returned.</source>
-      <translation type="unfinished">No profile geometry shape returned.</translation>
+      <translation>Geen profielgeometrievorm teruggestuurd.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="798"/>
       <source>No profile path geometry returned.</source>
-      <translation type="unfinished">No profile path geometry returned.</translation>
+      <translation>Geen profielpadgeometrie teruggestuurd.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="813"/>
@@ -2562,6 +2554,11 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="../../../PathScripts/PathSurface.py" line="819"/>
       <source>No clearing path geometry returned.</source>
       <translation type="unfinished">No clearing path geometry returned.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="839"/>
+      <source>No scan data to convert to Gcode.</source>
+      <translation>Geen scangegevens om naar Gcode te converteren.</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="257"/>
@@ -2938,7 +2935,7 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="243"/>
       <source>The GeometryTolerance for this Job is 0.0.</source>
-      <translation type="unfinished">The GeometryTolerance for this Job is 0.0.</translation>
+      <translation>De GeometrieTolerantie voor deze Taak is 0,0.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="245"/>
@@ -2983,7 +2980,7 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="689"/>
       <source>operation time is</source>
-      <translation type="unfinished">operation time is</translation>
+      <translation>verwerkingstijd is</translation>
     </message>
   </context>
   <context>
@@ -3043,6 +3040,16 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
   <context>
     <name>Path_Dressup</name>
     <message>
+      <location filename="PathDressup.py" line="98"/>
+      <source>Dress-up</source>
+      <translation>Verkleding</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="100"/>
+      <source>Creates a Path Dess-up object from a selected path</source>
+      <translation>Maakt een padverkledingsobject uit een geselecteerd pad</translation>
+    </message>
+    <message>
       <location filename="PathDressup.py" line="110"/>
       <source>Please select one path object
 </source>
@@ -3060,16 +3067,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="325"/>
       <source>Please select a Path object</source>
       <translation>Gelieve een padobject te selecteren</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="98"/>
-      <source>Dress-up</source>
-      <translation>Verkleding</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="100"/>
-      <source>Creates a Path Dess-up object from a selected path</source>
-      <translation>Maakt een padverkledingsobject uit een geselecteerd pad</translation>
     </message>
   </context>
   <context>
@@ -3659,6 +3656,13 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
   <context>
     <name>Path_Sanity</name>
     <message>
+      <location filename="PathSanity.py" line="50"/>
+      <source>It appears the machine limits haven't been set.  Not able to check path extents.
+</source>
+      <translation>Het lijkt erop dat de limieten van de machine niet zijn ingesteld.  De padextensies kunnen niet gecontroleerd worden.
+</translation>
+    </message>
+    <message>
       <location filename="PathSanity.py" line="79"/>
       <source>Check the Path project for common errors</source>
       <translation>Controleer het padproject op veelvoorkomende fouten</translation>
@@ -3698,13 +3702,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <source>No issues detected, {} has passed basic sanity check.</source>
       <translation>Geen problemen ontdekt, {} is geslaagd voor de basisgezondheidscontrole.</translation>
     </message>
-    <message>
-      <location filename="PathSanity.py" line="50"/>
-      <source>It appears the machine limits haven't been set.  Not able to check path extents.
-</source>
-      <translation>Het lijkt erop dat de limieten van de machine niet zijn ingesteld.  De padextensies kunnen niet gecontroleerd worden.
-</translation>
-    </message>
   </context>
   <context>
     <name>Path_SelectLoop</name>
@@ -3740,13 +3737,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
   <context>
     <name>Path_SimpleCopy</name>
     <message>
-      <location filename="PathSimpleCopy.py" line="59"/>
-      <source>Please select exactly one path object
-</source>
-      <translation>Gelieve precies één padobject te selecteren
-</translation>
-    </message>
-    <message>
       <location filename="PathSimpleCopy.py" line="62"/>
       <source>Simple Copy</source>
       <translation>Eenvoudige kopie</translation>
@@ -3760,6 +3750,13 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="../../../PathScripts/PathSimpleCopy.py" line="61"/>
       <source>Please select exactly one path object</source>
       <translation>Gelieve precies één padobject te selecteren</translation>
+    </message>
+    <message>
+      <location filename="PathSimpleCopy.py" line="59"/>
+      <source>Please select exactly one path object
+</source>
+      <translation>Gelieve precies één padobject te selecteren
+</translation>
     </message>
   </context>
   <context>
@@ -3791,11 +3788,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
   <context>
     <name>Path_ToolController</name>
     <message>
-      <location filename="PathToolController.py" line="132"/>
-      <source>Tool Number to Load</source>
-      <translation>Te laden gereedschapsnummer</translation>
-    </message>
-    <message>
       <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
       <translation>Gereedschapsregelaar toevoegen aan de taak</translation>
@@ -3804,6 +3796,11 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="../../../PathScripts/PathToolControllerGui.py" line="123"/>
       <source>Add Tool Controller</source>
       <translation>Gereedschapsregelaar toevoegen</translation>
+    </message>
+    <message>
+      <location filename="PathToolController.py" line="132"/>
+      <source>Tool Number to Load</source>
+      <translation>Te laden gereedschapsnummer</translation>
     </message>
   </context>
   <context>
@@ -3876,44 +3873,9 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <translation>Toolbit-bibliotheek opslaan</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
-      <source>Tooltable JSON (*.json)</source>
-      <translation>Gereedschapstafel JSON (*.json)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
-      <source>HeeksCAD tooltable (*.tooltable)</source>
-      <translation>HeeksCAD-gereedschapstafel (*.tooltable)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
-      <source>LinuxCNC tooltable (*.tbl)</source>
-      <translation>LinuxCNC-gereedschapstafel (*.tbl)</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
       <source>Open tooltable</source>
       <translation>Open gereedschapstafel</translation>
-    </message>
-    <message>
-      <location filename="TooltableEditor.py" line="610"/>
-      <source>Save tooltable</source>
-      <translation>Gereedschapstafel opslaan</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
-      <source>Add New Tool Table</source>
-      <translation>Voeg nieuwe gereedschapstabel toe</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
-      <source>Delete Selected Tool Table</source>
-      <translation>Verwijder de geselecteerde gereedschapstabel</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
-      <source>Rename Selected Tool Table</source>
-      <translation>Hernoem de geselecteerde gereedschapstabel</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="388"/>
@@ -4127,6 +4089,11 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
     </message>
     <message>
       <location filename="TooltableEditor.py" line="610"/>
+      <source>Save tooltable</source>
+      <translation>Gereedschapstafel opslaan</translation>
+    </message>
+    <message>
+      <location filename="TooltableEditor.py" line="610"/>
       <source>Tooltable XML (*.xml)</source>
       <translation>Gereedschapstafel XML (*.xml)</translation>
     </message>
@@ -4139,6 +4106,36 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="TooltableEditor.py" line="653"/>
       <source>Object doesn't have a tooltable property</source>
       <translation>Object heeft geen gereedschapstafeleigenschap</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
+      <source>Add New Tool Table</source>
+      <translation>Voeg nieuwe gereedschapstabel toe</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
+      <source>Delete Selected Tool Table</source>
+      <translation>Verwijder de geselecteerde gereedschapstabel</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
+      <source>Rename Selected Tool Table</source>
+      <translation>Hernoem de geselecteerde gereedschapstabel</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
+      <source>Tooltable JSON (*.json)</source>
+      <translation>Gereedschapstafel JSON (*.json)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
+      <source>HeeksCAD tooltable (*.tooltable)</source>
+      <translation>HeeksCAD-gereedschapstafel (*.tooltable)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
+      <source>LinuxCNC tooltable (*.tbl)</source>
+      <translation>LinuxCNC-gereedschapstafel (*.tbl)</translation>
     </message>
     <message>
       <location filename="PathToolLibraryManager.py" line="514"/>
@@ -4157,6 +4154,14 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="../../../PathScripts/PathWaterlineGui.py" line="143"/>
       <source>Create a Waterline Operation from a model</source>
       <translation>Maak een waterlijnbewerking aan vanuit een model</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathSuface</name>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="839"/>
+      <source>No scan data to convert to Gcode.</source>
+      <translation>Geen scangegevens om naar Gcode te converteren.</translation>
     </message>
   </context>
   <context>
