@@ -24,50 +24,49 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
+# include <boost/signals2.hpp>
+# include <boost_bind_bind.hpp>
 # include <BRep_Tool.hxx>
 # include <BRepGProp.hxx>
 # include <GProp_GProps.hxx>
 # include <gp_Pnt.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <QFontMetrics>
-# include <QMessageBox>
-# include <QPointer>
-# include <QSet>
-# include <Python.h>
-# include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoRayPickAction.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <boost/signals2.hpp>
-# include <boost_bind_bind.hpp>
+# include <Inventor/SoPickedPoint.h>
+# include <Python.h>
+# include <QFontMetrics>
+# include <QMessageBox>
+# include <QPointer>
+# include <QSet>
+# include <sstream>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 #include "ui_TaskFaceColors.h"
+
+#include "SoBrepFaceSet.h"
 #include "TaskFaceColors.h"
 #include "ViewProviderExt.h"
-#include "SoBrepFaceSet.h"
 
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Tools.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/Tools.h>
-
-#include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <Mod/Part/App/PartFeature.h>
-
 
 using namespace PartGui;
 namespace bp = boost::placeholders;
@@ -321,22 +320,20 @@ void FaceColors::slotDeleteObject(const Gui::ViewProvider& obj)
         Gui::Control().closeDialog();
 }
 
-void FaceColors::on_boxSelection_clicked()
+void FaceColors::on_boxSelection_toggled(bool checked)
 {
     Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
     // toggle the button state and feature
-    if (d->boxSelection) {
+    if (!checked) {
         d->boxSelection = false;
-        d->ui->boxSelection->setChecked(false);
         // end box selection mode
         if (view)
             view->getViewer()->stopSelection();
     }
     else {
         d->boxSelection = true;
-        d->ui->boxSelection->setChecked(true);
     }
-    if (view && d->boxSelection) {
+    if (view && checked) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
             viewer->startSelection(Gui::View3DInventorViewer::Rubberband);
