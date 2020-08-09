@@ -1084,13 +1084,11 @@ void QuantitySpinBox::clearSchema()
 
 QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
 {
-    Q_D(const QuantitySpinBox);
     return val.getUserString(factor, unitString);
 }
 
 QString QuantitySpinBox::getUserString(const Base::Quantity& val) const
 {
-    Q_D(const QuantitySpinBox);
     return val.getUserString();
 }
 
