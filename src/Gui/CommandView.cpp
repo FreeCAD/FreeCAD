@@ -564,32 +564,126 @@ bool StdCmdToggleClipPlane::isActive(void)
 }
 
 //===========================================================================
+// StdCmdDrawStyleBase
+//===========================================================================
+
+class StdCmdDrawStyleBase : public Command 
+{
+public:
+    StdCmdDrawStyleBase(const char *name, const char *title, 
+                        const char *doc, const char *shortcut, const char *pixmap);
+
+    virtual const char* className() const;
+
+protected: 
+    bool isActive(void);
+    virtual void activated(int iMsg);
+};
+
+StdCmdDrawStyleBase::StdCmdDrawStyleBase(const char *name, const char *title, 
+                                         const char *doc, const char *shortcut,
+                                         const char *pixmap)
+    :Command(name)
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = title;
+    sToolTipText  = doc;
+    sStatusTip    = sToolTipText;
+    sWhatsThis    = name;
+    sPixmap       = pixmap;
+    sAccel        = shortcut;
+    eType         = Alter3DView;
+}
+
+const char* StdCmdDrawStyleBase::className() const
+{
+    return "StdCmdDrawStyleBase";
+}
+
+bool StdCmdDrawStyleBase::isActive(void)
+{
+    return Gui::Application::Instance->activeDocument();
+}
+
+void StdCmdDrawStyleBase::activated(int iMsg)
+{
+    (void)iMsg;
+
+    Gui::Document *doc = this->getActiveGuiDocument();
+    if (!doc) return;
+    auto activeView = doc->getActiveView();
+    bool applyAll = !activeView || QApplication::queryKeyboardModifiers() == Qt::ControlModifier;
+
+    doc->foreachView<View3DInventor>( [=](View3DInventor *view) {
+        if(applyAll || view == activeView) {
+            View3DInventorViewer *viewer = view->getViewer();
+            if (!viewer)
+                return;
+            if (!Base::streq(sMenuText, "Shadow")) {
+                viewer->setOverrideMode(sMenuText);
+                return;
+            }
+            if (viewer->getOverrideMode() == "Shadow")
+                viewer->toggleShadowLightManip();
+            else {
+                if (!doc->getDocument()->getPropertyByName("Shadow_ShowGround")) {
+                    // If it is the first time shadow is turned on, switch to isometric view
+                    viewer->setCameraOrientation(
+                            SbRotation(0.424708f, 0.17592f, 0.339851f, 0.820473f));
+                }
+                viewer->setOverrideMode("Shadow");
+            }
+        }
+    });
+}
+
+//===========================================================================
 // StdCmdDrawStyle
 //===========================================================================
-class StdCmdDrawStyle : public Gui::Command
+
+class StdCmdDrawStyle : public GroupCommand
 {
 public:
     StdCmdDrawStyle();
-    virtual ~StdCmdDrawStyle(){}
-    virtual void languageChange();
     virtual const char* className() const {return "StdCmdDrawStyle";}
-    void updateIcon(const Gui::MDIView* view);
-protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive(void);
-    virtual Gui::Action * createAction(void);
+    bool isActive(void);
+    void updateIcon(const MDIView *);
 };
 
 StdCmdDrawStyle::StdCmdDrawStyle()
-  : Command("Std_DrawStyle")
+  : GroupCommand("Std_DrawStyle")
 {
     sGroup        = QT_TR_NOOP("Standard-View");
     sMenuText     = QT_TR_NOOP("Draw style");
     sToolTipText  = QT_TR_NOOP("Change the draw style of the objects");
     sStatusTip    = QT_TR_NOOP("Change the draw style of the objects");
     sWhatsThis    = "Std_DrawStyle";
-    sPixmap       = "DrawStyleAsIs";
-    eType         = Alter3DView;
+    eType         = 0;
+    bCanLog       = false;
+
+#define DRAW_STYLE_CMD(_name, _title, _doc, _shortcut) \
+    addCommand(new StdCmdDrawStyleBase(\
+        "Std_DrawStyle" #_name, _title, _doc, _shortcut, "DrawStyle" #_name));
+
+    DRAW_STYLE_CMD(AsIs,"As Is",
+            "Draw style, normal display mode", "V,1")
+    DRAW_STYLE_CMD(Points, "Points",
+            "Draw style, show points only", "V,2")
+    DRAW_STYLE_CMD(WireFrame, "Wireframe",
+            "Draw style, show wire frame only", "V,3")
+    DRAW_STYLE_CMD(HiddenLine, "Hidden Line",
+            "Draw style, show hidden line by display object as transparent", "V,4")
+    DRAW_STYLE_CMD(NoShading, "No Shading",
+            "Draw style, shading forced off", "V,5")
+    DRAW_STYLE_CMD(Shaded, "Shaded",
+            "Draw style, shading force on", "V,6")
+    DRAW_STYLE_CMD(FlatLines, "Flat Lines",
+            "Draw style, show both wire frame and face with shading", "V,7")
+    DRAW_STYLE_CMD(Tessellation, "Tessellation",
+            "Draw style, show tessellation wire frame", "V,8")
+    DRAW_STYLE_CMD(Shadow, "Shadow",
+            "Draw style, drop shadows for the scene.\n"
+            "Click this button while in shadow mode to toggle light manipulator", "V,9");
 
     this->getGuiApplication()->signalActivateView.connect(boost::bind(&StdCmdDrawStyle::updateIcon, this, bp::_1));
     this->getGuiApplication()->signalViewModeChanged.connect(
@@ -599,133 +693,10 @@ StdCmdDrawStyle::StdCmdDrawStyle()
         });
 }
 
-Gui::Action * StdCmdDrawStyle::createAction(void)
-{
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
-    pcAction->setDropDownMenu(true);
-    applyCommandData(this->className(), pcAction);
-
-    QAction* a0 = pcAction->addAction(QString());
-    a0->setCheckable(true);
-    a0->setIcon(BitmapFactory().iconFromTheme("DrawStyleAsIs"));
-    a0->setChecked(true);
-    a0->setObjectName(QString::fromLatin1("Std_DrawStyleAsIs"));
-    a0->setShortcut(QKeySequence(QString::fromUtf8("V,1")));
-    a0->setWhatsThis(QString::fromLatin1(sWhatsThis));
-    QAction* a1 = pcAction->addAction(QString());
-    a1->setCheckable(true);
-    a1->setIcon(BitmapFactory().iconFromTheme("DrawStylePoints"));
-    a1->setObjectName(QString::fromLatin1("Std_DrawStylePoints"));
-    a1->setShortcut(QKeySequence(QString::fromUtf8("V,2")));    
-    a1->setWhatsThis(QString::fromLatin1(sWhatsThis));
-    QAction* a2 = pcAction->addAction(QString());
-    a2->setCheckable(true);
-    a2->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
-    a2->setObjectName(QString::fromLatin1("Std_DrawStyleWireframe"));
-    a2->setShortcut(QKeySequence(QString::fromUtf8("V,3")));
-    a2->setWhatsThis(QString::fromLatin1(sWhatsThis));
-    QAction* a3 = pcAction->addAction(QString());
-    a3->setCheckable(true);
-    a3->setIcon(BitmapFactory().iconFromTheme("DrawStyleHiddenLine"));
-    a3->setObjectName(QString::fromLatin1("Std_DrawStyleHiddenLine"));
-    a3->setShortcut(QKeySequence(QString::fromUtf8("V,4")));
-    a3->setWhatsThis(QString::fromLatin1(sWhatsThis));
-    QAction* a4 = pcAction->addAction(QString());
-    a4->setCheckable(true);
-    a4->setIcon(BitmapFactory().iconFromTheme("DrawStyleNoShading"));
-    a4->setObjectName(QString::fromLatin1("Std_DrawStyleNoShading"));
-    a4->setShortcut(QKeySequence(QString::fromUtf8("V,5")));
-    a4->setWhatsThis(QString::fromLatin1(sWhatsThis));
-    QAction* a5 = pcAction->addAction(QString());
-    a5->setCheckable(true);
-    a5->setIcon(BitmapFactory().iconFromTheme("DrawStyleShaded"));
-    a5->setObjectName(QString::fromLatin1("Std_DrawStyleShaded"));
-    a5->setShortcut(QKeySequence(QString::fromUtf8("V,6")));
-    a5->setWhatsThis(QString::fromLatin1(sWhatsThis));
-    QAction* a6 = pcAction->addAction(QString());
-    a6->setCheckable(true);
-    a6->setIcon(BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
-    a6->setObjectName(QString::fromLatin1("Std_DrawStyleFlatLines"));
-    a6->setShortcut(QKeySequence(QString::fromUtf8("V,7")));
-    a6->setWhatsThis(QString::fromLatin1(sWhatsThis));
-    QAction* a7 = pcAction->addAction(QString());
-    a7->setCheckable(true);
-    a7->setIcon(BitmapFactory().iconFromTheme("DrawStyleTessellation"));
-    a7->setObjectName(QString::fromLatin1("Std_DrawStyleTessellation"));
-    a7->setShortcut(QKeySequence(QString::fromUtf8("V,8")));
-    a7->setWhatsThis(QString::fromLatin1(sWhatsThis));
-    QAction* a8 = pcAction->addAction(QString());
-    a8->setCheckable(true);
-    a8->setIcon(BitmapFactory().iconFromTheme("DrawStyleShadow"));
-    a8->setObjectName(QString::fromLatin1("Std_DrawStyleShadow"));
-    a8->setShortcut(QKeySequence(QString::fromUtf8("V,9")));
-    a8->setWhatsThis(QString::fromLatin1(sWhatsThis));
-
-
-    pcAction->setIcon(a0->icon());
-
-    _pcAction = pcAction;
-    languageChange();
-    return pcAction;
-}
-
-void StdCmdDrawStyle::languageChange()
-{
-    Command::languageChange();
-
-    if (!_pcAction)
-        return;
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    a[0]->setText(QCoreApplication::translate(
-        "Std_DrawStyle", "As is"));
-    a[0]->setToolTip(QCoreApplication::translate(
-        "Std_DrawStyle", "Normal mode"));
-
-    a[1]->setText(QCoreApplication::translate(
-        "Std_DrawStyle", "Points"));
-    a[1]->setToolTip(QCoreApplication::translate(
-        "Std_DrawStyle", "Points mode"));
-
-    a[2]->setText(QCoreApplication::translate(
-        "Std_DrawStyle", "Wireframe"));
-    a[2]->setToolTip(QCoreApplication::translate(
-        "Std_DrawStyle", "Wireframe mode"));
-
-    a[3]->setText(QCoreApplication::translate(
-        "Std_DrawStyle", "Hidden line"));
-    a[3]->setToolTip(QCoreApplication::translate(
-        "Std_DrawStyle", "Hidden line mode"));
-
-    a[4]->setText(QCoreApplication::translate(
-        "Std_DrawStyle", "No shading"));
-    a[4]->setToolTip(QCoreApplication::translate(
-        "Std_DrawStyle", "No shading mode"));
-
-    a[5]->setText(QCoreApplication::translate(
-        "Std_DrawStyle", "Shaded"));
-    a[5]->setToolTip(QCoreApplication::translate(
-        "Std_DrawStyle", "Shaded mode"));
-
-    a[6]->setText(QCoreApplication::translate(
-        "Std_DrawStyle", "Flat lines"));
-    a[6]->setToolTip(QCoreApplication::translate(
-        "Std_DrawStyle", "Flat lines mode"));
-
-    a[7]->setText(QCoreApplication::translate(
-        "Std_DrawStyle", "Tessellation"));
-    a[7]->setToolTip(QCoreApplication::translate(
-        "Std_DrawStyle", "Show lines of tessellation"));
-
-    a[8]->setText(QCoreApplication::translate(
-        "Std_DrawStyle", "Shadow"));
-    a[8]->setToolTip(QCoreApplication::translate(
-        "Std_DrawStyle", "Drop shadows for the scene. Click this button while in shadow mode to toggle light manipulator"));
-}
-
 void StdCmdDrawStyle::updateIcon(const MDIView *view)
 {
+    if (!_pcAction)
+        return;
     const Gui::View3DInventor *view3d = dynamic_cast<const Gui::View3DInventor *>(view);
     if (!view3d)
         return;
@@ -737,108 +708,25 @@ void StdCmdDrawStyle::updateIcon(const MDIView *view)
     if (!actionGroup)
         return;
 
-    if (mode == "Point")
-    {
-        actionGroup->setCheckedAction(1);
-        return;
-    }
-    if (mode == "Wireframe")
-    {
-        actionGroup->setCheckedAction(2);
-        return;
-    }
-    if (mode == "Hidden Line")
-    {
-        actionGroup->setCheckedAction(3);
-        return;
-    }
-    if (mode == "No shading")
-    {
-        actionGroup->setCheckedAction(4);
-        return;
-    }
-    if (mode == "Shaded")
-    {
-        actionGroup->setCheckedAction(5);
-        return;
-    }    
-    if (mode == "Flat Lines")
-    {
-        actionGroup->setCheckedAction(6);
-        return;
-    }
-    if (mode == "Tessellation")
-    {
-        actionGroup->setCheckedAction(7);
-        return;
-    }
-    if (mode == "Shadow")
-    {
-        actionGroup->setCheckedAction(8);
-        return;
-    }
-    actionGroup->setCheckedAction(0);
-}
-
-void StdCmdDrawStyle::activated(int iMsg)
-{
-    Gui::Document *doc = this->getActiveGuiDocument();
-    std::list<MDIView*> views = doc->getMDIViews();
-    std::list<MDIView*>::iterator viewIt;
-
-    auto activeView = doc->getActiveView();
-    bool applyAll = !activeView || QApplication::queryKeyboardModifiers() == Qt::ControlModifier;
-
-    for (viewIt = views.begin(); viewIt != views.end(); ++viewIt)
-    {
-        View3DInventor* view = qobject_cast<View3DInventor*>(*viewIt);
-        if(applyAll || view == activeView) {
-            View3DInventorViewer* viewer;
-            viewer = view->getViewer();
-            if (viewer)
-            {
-                switch (iMsg)
-                {
-                case 1:
-                    viewer->setOverrideMode("Point");
-                    break;
-                case 2:
-                    viewer->setOverrideMode("Wireframe");
-                    break;
-                case 3:
-                    viewer->setOverrideMode("Hidden Line");
-                    break;
-                case 4:
-                    viewer->setOverrideMode("No Shading");
-                    break;
-                case 5:
-                    viewer->setOverrideMode("Shaded");
-                    break;
-                case 6:
-                    viewer->setOverrideMode("Flat Lines");
-                    break;
-                case 7:
-                    viewer->setOverrideMode("Tessellation");
-                    break;
-                case 8:
-                    if (viewer->getOverrideMode() == "Shadow")
-                        viewer->toggleShadowLightManip();
-                    else {
-                        if (!doc->getDocument()->getPropertyByName("Shadow_ShowGround")) {
-                            // If it is the first time shadow is turned on, switch to isometric view
-                            viewer->setCameraOrientation(
-                                    SbRotation(0.424708f, 0.17592f, 0.339851f, 0.820473f));
-                        }
-                        viewer->setOverrideMode("Shadow");
-                    }
-                    break;
-                default:
-                    viewer->setOverrideMode("As Is");
-                    break;
-                }
-            }
-        }
-    }
+    int index = 0;
+    if (mode == "Point") 
+        index = 1;
+    else if (mode == "Wireframe")
+        index = 2;
+    else if (mode == "Hidden Line")
+        index = 3;
+    else if (mode == "No shading")
+        index = 4;
+    else if (mode == "Shaded")
+        index = 5;
+    else if (mode == "Flat Lines")
+        index = 6;
+    else if (mode == "Tessellation")
+        index = 7;
+    else if (mode == "Shadow")
+        index = 8;
+    _pcAction->setProperty("defaultAction", QVariant(index));
+    setup(_pcAction);
 }
 
 bool StdCmdDrawStyle::isActive(void)
