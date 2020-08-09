@@ -1405,7 +1405,7 @@ void OverlayTabWidget::setOverlayMode(bool enable)
 
     if (_state == State_Hint && ViewParams::getDockOverlayHintTabBar()) {
         tabBar()->show();
-    } else if(count() == 1) {
+    } else if (ViewParams::getDockOverlayHideTabBar() || count()==1) {
         tabBar()->hide();
     } else
         tabBar()->setVisible(!enable || !OverlayStyleSheet::instance()->hideTab);

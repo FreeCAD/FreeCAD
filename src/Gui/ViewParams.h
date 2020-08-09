@@ -118,8 +118,9 @@ public:
     FC_VIEW_PARAM2(CornerNaviCube,int,Int,1, "") \
     FC_VIEW_PARAM2(DockOverlayAutoView,bool,Bool,true, "") \
     FC_VIEW_PARAM2(DockOverlayExtraState,bool,Bool,false, "") \
-    FC_VIEW_PARAM(DockOverlayDelay,int,Int,200, "") \
-    FC_VIEW_PARAM(DockOverlayRevealDelay,int,Int,2000, "") \
+    FC_VIEW_PARAM(DockOverlayDelay,int,Int,200, \
+        QT_TRANSLATE_NOOP("ViewParams", "Overlay dock (re)layout delay."))\
+    FC_VIEW_PARAM(DockOverlayRevealDelay,int,Int,2000, "")\
     FC_VIEW_PARAM(DockOverlayActivateOnHover,bool,Bool,true, \
         QT_TRANSLATE_NOOP("ViewParams", "Show auto hidden dock overlay on mouse over.\n"\
                                         "If disabled, then show on mouse click."))\
@@ -140,6 +141,8 @@ public:
         QT_TRANSLATE_NOOP("ViewParams", "Auto hide hint visual display size"))\
     FC_VIEW_PARAM(DockOverlayHintTabBar,bool,Bool,false, \
         QT_TRANSLATE_NOOP("ViewParams", "Show tab bar on mouse over when auto hide"))\
+    FC_VIEW_PARAM2(DockOverlayHideTabBar,bool,Bool,false, \
+        QT_TRANSLATE_NOOP("ViewParams", "Hide tab bar in dock overlay"))\
     FC_VIEW_PARAM(DockOverlayHintDelay,int,Int,200, \
         QT_TRANSLATE_NOOP("ViewParams", "Delay before show hint visual"))\
     FC_VIEW_PARAM(DockOverlayAnimationDuration,int,Int,200, \

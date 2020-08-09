@@ -59,6 +59,7 @@ public:
     FC_UI_COMBOBOX(PieMenuAnimationCurve, "Animation curve type") \
 
 #define FC_OVERLAY_PARAMS \
+    FC_UI_CHECKBOX(DockOverlayHideTabBar,"Hide tab bar") \
     FC_UI_CHECKBOX(DockOverlayAutoView, "Auto hide in non 3D view") \
     FC_UI_CHECKBOX(DockOverlayMouseThrough, "Enable ALT + Mouse pass through") \
     FC_UI_CHECKBOX(DockOverlayAutoMouseThrough, "Auto mouse pass through") \
@@ -69,6 +70,7 @@ public:
     FC_UI_CHECKBOX(DockOverlayHintTabBar, "Hint show tab bar") \
     FC_UI_SPINBOX(DockOverlayHintDelay, "Hint delay (ms)", 0, 1000, 100) \
     FC_UI_CHECKBOX(DockOverlayActivateOnHover,"Activate on hover") \
+    FC_UI_SPINBOX(DockOverlayDelay, "Layout delay (ms)", 0, 5000, 100) \
     FC_UI_SPINBOX(DockOverlayAnimationDuration, "Animation duration (ms)", 0, 5000, 100) \
     FC_UI_COMBOBOX(DockOverlayAnimationCurve, "Animation curve type") \
 

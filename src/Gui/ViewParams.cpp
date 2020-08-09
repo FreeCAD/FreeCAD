@@ -95,3 +95,8 @@ void ViewParams::onCornerNaviCubeChanged() {
 void ViewParams::onDockOverlayCheckNaviCubeChanged() {
     DockWindowManager::instance()->refreshOverlay();
 }
+
+void ViewParams::onDockOverlayHideTabBarChanged() {
+    DockWindowManager::instance()->refreshOverlay(nullptr, true);
+}
+
