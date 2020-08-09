@@ -640,7 +640,7 @@ void QuantitySpinBox::updateFromCache(bool notify)
     if (d->pendingEmit) {
         double factor;
         const Base::Quantity& res = d->cached;
-        getUserString(res, factor, d->unitStr);
+        QString text = getUserString(res, factor, d->unitStr);
         d->unitValue = res.getValue() / factor;
         d->quantity = res;
 
@@ -649,6 +649,7 @@ void QuantitySpinBox::updateFromCache(bool notify)
             d->pendingEmit = false;
             valueChanged(res);
             valueChanged(res.getValue());
+            textChanged(text);
         }
     }
 }
@@ -670,8 +671,12 @@ void QuantitySpinBox::setUnit(const Base::Unit &unit)
 
 void QuantitySpinBox::setUnitText(const QString& str)
 {
-    Base::Quantity quant = Base::Quantity::parse(str);
-    setUnit(quant.getUnit());
+    try {
+        Base::Quantity quant = Base::Quantity::parse(str);
+        setUnit(quant.getUnit());
+    }
+    catch (const Base::Exception&) {
+    }
 }
 
 QString QuantitySpinBox::unitText(void)
