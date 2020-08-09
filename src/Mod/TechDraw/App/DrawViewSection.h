@@ -120,6 +120,8 @@ public:
 
     std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds(void);
 
+    bool showSectionEdges(void);
+
 protected:
     TopoDS_Compound sectionFaces;    //tSectionFaces
 //    std::vector<TopoDS_Wire> sectionFaceWires;   //obs??? getSectionFaceWires
