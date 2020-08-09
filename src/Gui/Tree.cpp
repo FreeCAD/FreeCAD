@@ -430,6 +430,12 @@ void TreeParams::onFontSizeChanged() {
     }
 }
 
+void TreeParams::onItemSpacingChanged()
+{
+    for(auto tree : TreeWidget::Instances)
+        tree->update();
+}
+
 TreeParams *TreeParams::Instance() {
     static TreeParams *instance;
     if(!instance)
@@ -652,8 +658,9 @@ QWidget* TreeWidgetEditDelegate::createEditor(
 QSize TreeWidgetEditDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QSize size = QStyledItemDelegate::sizeHint(option, index);
+    int spacing = std::max(0,TreeParams::ItemSpacing());
     if (TreeParams::IconSize() > 16)
-        size.setHeight(TreeParams::IconSize() + 2);
+        size.setHeight(TreeParams::IconSize() + spacing);
     return size;
 }
 
@@ -1442,6 +1449,16 @@ void TreeWidget::_selectAllInstances(const ViewProviderDocumentObject &vpd) {
 
 void TreeWidget::onItemPressed() {
     _LastSelectedTreeWidget = this;
+}
+
+int TreeWidget::itemSpacing() const
+{
+    return TreeParams::ItemSpacing();
+}
+
+void TreeWidget::setItemSpacing(int spacing)
+{
+    TreeParams::setItemSpacing(spacing);
 }
 
 static int _TreeIconSize;

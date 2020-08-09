@@ -174,7 +174,7 @@ See the FreeCAD Wiki for details about the image.</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="1">
+           <item row="7" column="1">
             <widget class="QComboBox" name="treeMode">
              <property name="toolTip">
               <string>Customize how tree view is shown in the panel (restart required).
@@ -227,7 +227,7 @@ this according to your screen size or personal taste</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="0">
+           <item row="7" column="0">
             <widget class="QLabel" name="treeModeLabel">
              <property name="text">
               <string>Tree view mode:</string>
@@ -263,6 +263,16 @@ to use the system default size.</string>
               <string>Set tree view label font size</string>
              </property>
             </widget>
+           </item>
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Tree view item spacing:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QSpinBox" name="treeItemSpacing"/>
            </item>
           </layout>
          </item>

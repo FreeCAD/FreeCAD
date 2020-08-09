@@ -87,6 +87,7 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
 
     ui->treeIconSize->setValue(TreeParams::IconSize());
     ui->treeFontSize->setValue(TreeParams::FontSize());
+    ui->treeItemSpacing->setValue(TreeParams::ItemSpacing());
     ui->CmdHistorySize->setValue(ViewParams::getCommandHistorySize());
 }
 
@@ -190,6 +191,7 @@ void DlgGeneralImp::saveSettings()
 
     TreeParams::setIconSize(ui->treeIconSize->value());
     TreeParams::setFontSize(ui->treeFontSize->value());
+    TreeParams::setItemSpacing(ui->treeItemSpacing->value());
     ViewParams::setCommandHistorySize(ui->CmdHistorySize->value());
 }
 
@@ -324,6 +326,7 @@ void DlgGeneralImp::loadSettings()
 
     ui->treeIconSize->setValue(TreeParams::IconSize());
     ui->treeFontSize->setValue(TreeParams::FontSize());
+    ui->treeItemSpacing->setValue(TreeParams::ItemSpacing());
     ui->CmdHistorySize->setValue(ViewParams::getCommandHistorySize());
 }
 

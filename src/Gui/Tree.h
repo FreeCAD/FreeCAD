@@ -86,6 +86,7 @@ class TreeWidget : public QTreeWidget, public SelectionObserver
     Q_OBJECT
 
     Q_PROPERTY(int iconHeight READ iconHeight WRITE setIconHeight DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(int itemSpacing READ itemSpacing WRITE setItemSpacing DESIGNABLE true SCRIPTABLE true)
 
 public:
     TreeWidget(const char *name, QWidget* parent=0);
@@ -112,6 +113,9 @@ public:
 
     int iconHeight() const;
     void setIconHeight(int height);
+
+    int itemSpacing() const;
+    void setItemSpacing(int);
 
     bool eventFilter(QObject *, QEvent *ev) override;
 
@@ -578,6 +582,7 @@ public:
     FC_TREEPARAM_DEF(LabelExpression,bool,Bool,false) \
     FC_TREEPARAM_DEF2(IconSize,int,Int,0) \
     FC_TREEPARAM_DEF2(FontSize,int,Int,0) \
+    FC_TREEPARAM_DEF2(ItemSpacing,int,Int,2) \
 
 #undef FC_TREEPARAM_DEF
 #define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
