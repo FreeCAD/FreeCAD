@@ -24,30 +24,30 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
+# include <Precision.hxx>
+# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
-# include <QMessageBox>
-# include <Precision.hxx>
+# include <sstream>
 #endif
 
 #include "TaskPrimitiveParameters.h"
 #include "ui_TaskPrimitiveParameters.h"
 #include "ViewProviderDatumCS.h"
-#include <Mod/PartDesign/App/FeaturePrimitive.h>
-#include <Mod/PartDesign/App/DatumCS.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/Part/App/DatumFeature.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Command.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProviderOrigin.h>
-#include <Base/Interpreter.h>
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
-#include <App/Origin.h>
 
+#include <App/Origin.h>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/UnitsApi.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/ViewProviderOrigin.h>
+#include <Mod/Part/App/DatumFeature.h>
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/DatumCS.h>
+#include <Mod/PartDesign/App/FeaturePrimitive.h>
 
 using namespace PartDesignGui;
 
@@ -192,6 +192,10 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->prismCircumradius->bind(static_cast<PartDesign::Prism*>(vp->getObject())->Circumradius);
             ui->prismHeight->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Height.getValue());
             ui->prismHeight->bind(static_cast<PartDesign::Prism*>(vp->getObject())->Height);
+            ui->prismXSkew->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->FirstSkew.getValue());
+            ui->prismXSkew->bind(static_cast<PartDesign::Prism*>(vp->getObject())->FirstSkew);
+            ui->prismYSkew->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->SecondSkew.getValue());
+            ui->prismYSkew->bind(static_cast<PartDesign::Prism*>(vp->getObject())->SecondSkew);
             ui->prismCircumradius->setMaximum(INT_MAX);
             ui->prismCircumradius->setMinimum(0.0);
             ui->prismHeight->setMaximum(INT_MAX);
@@ -306,6 +310,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     //prism
     connect(ui->prismCircumradius, SIGNAL(valueChanged(double)), this, SLOT(onPrismCircumradiusChanged(double)));
     connect(ui->prismHeight, SIGNAL(valueChanged(double)), this, SLOT(onPrismHeightChanged(double)));
+    connect(ui->prismXSkew, SIGNAL(valueChanged(double)), this, SLOT(onPrismXSkewChanged(double)));
+    connect(ui->prismYSkew, SIGNAL(valueChanged(double)), this, SLOT(onPrismYSkewChanged(double)));
     connect(ui->prismPolygon, SIGNAL(valueChanged(int)), this, SLOT(onPrismPolygonChanged(int)));
 
     // wedge
@@ -520,6 +526,40 @@ void TaskBoxPrimitives::onPrismHeightChanged(double v) {
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
+void TaskBoxPrimitives::onPrismXSkewChanged(double v) {
+    PartDesign::Prism* sph = static_cast<PartDesign::Prism*>(vp->getObject());
+    // we must assure that if the user incremented from e.g. 85 degree with the
+    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    if ((v < 90.0) && (v > -90.0)) {
+        sph->FirstSkew.setValue(v);
+    }
+    else {
+        if (v == 90.0)
+            sph->FirstSkew.setValue(89.99999);
+        else if (v == -90.0)
+            sph->FirstSkew.setValue(-89.99999);
+        ui->prismXSkew->setValue(sph->FirstSkew.getQuantityValue());
+    }
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
+void TaskBoxPrimitives::onPrismYSkewChanged(double v) {
+    PartDesign::Prism* sph = static_cast<PartDesign::Prism*>(vp->getObject());
+    // we must assure that if the user incremented from e.g. 85 degree with the
+    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    if ((v < 90.0) && (v > -90.0)) {
+        sph->SecondSkew.setValue(v);
+    }
+    else {
+        if (v == 90.0)
+            sph->SecondSkew.setValue(89.99999);
+        else if (v == -90.0)
+            sph->SecondSkew.setValue(-89.99999);
+        ui->prismYSkew->setValue(sph->SecondSkew.getQuantityValue());
+    }
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
 void TaskBoxPrimitives::onPrismPolygonChanged(int v) {
     PartDesign::Prism* sph = static_cast<PartDesign::Prism*>(vp->getObject());
     sph->Polygon.setValue(v);
@@ -692,11 +732,15 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                 cmd = QString::fromLatin1(
                     "%1.Polygon=%2\n"
                     "%1.Circumradius=%3\n"
-                    "%1.Height=%4\n")
+                    "%1.Height=%4\n"
+                    "%1.FirstSkew=%5\n"
+                    "%1.SecondSkew=%6\n")
                     .arg(name)
                     .arg(ui->prismPolygon->value())
-                    .arg(ui->prismCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->prismHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(ui->prismCircumradius->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+                    .arg(ui->prismHeight->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+                    .arg(ui->prismXSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+                    .arg(ui->prismYSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals());
                 break;
             case 8:  // wedge
                 cmd = QString::fromLatin1(
