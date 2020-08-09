@@ -29,6 +29,7 @@
 # include <qdir.h>
 # include <QPrinter>
 # include <QFileInfo>
+# include <QMessageBox>
 # include <Inventor/SoInput.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/nodes/SoSeparator.h>
@@ -58,6 +59,7 @@
 #include "DownloadManager.h"
 #include "DlgPreferencesImp.h"
 #include "DocumentObserverPython.h"
+#include "Action.h"
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
@@ -943,6 +945,124 @@ static std::string _getCurrentPythonFile(const std::string &execFile)
     return file;
 }
 
+class StdCmdWorkbenchItem: public Command
+{
+public:
+    StdCmdWorkbenchItem(const char *wb, Py::Object pyObj)
+        :Command(wb)
+    {
+        sGroup = QT_TR_NOOP("Workbench");
+        _cmdName = cmdName(wb);
+        sName = _cmdName.c_str();
+        eType = NoTransaction;
+
+        std::ostringstream str;
+        str << static_cast<const void *>(pyObj.ptr()) << std::ends;
+        _pixmap = str.str();
+        sPixmap = _pixmap.c_str();
+
+        try {
+            Py::Object member = pyObj.getAttr(std::string("MenuText"));
+            if (member.isString()) {
+                _menuText = Py::String(member).as_std_string("utf-8");
+                sMenuText = _menuText.c_str();
+            }
+        } catch (Py::Exception &e) {
+            e.clear();
+        }
+        try {
+            Py::Object member = pyObj.getAttr(std::string("ToolTip"));
+            if (member.isString()) {
+                _toolTips = Py::String(member).as_std_string("utf-8");
+                sStatusTip = sToolTipText = _toolTips.c_str();
+            }
+        } catch (Py::Exception &e) {
+            e.clear();
+        }
+    }
+
+    const char *className() const {return "StdCmdWorkbenchItem";}
+
+    Action *createAction()
+    {
+        Action *pcAction = new Action(this, getMainWindow());
+        pcAction->setText(QString::fromUtf8(_menuText.c_str()));
+        QString toolTips = QString::fromUtf8(_toolTips.c_str());
+        pcAction->setToolTip(toolTips);
+        pcAction->setStatusTip(toolTips);
+        pcAction->setWhatsThis(QString::fromLatin1(_cmdName.c_str()));
+        pcAction->setIcon(BitmapFactory().pixmap(_pixmap.c_str()));
+        return pcAction;
+    }
+
+    bool isActive()
+    {
+        return true;
+    }
+
+    void activated(int)
+    {
+        try {
+            Workbench* w = WorkbenchManager::instance()->active();
+            if (w && w->name() == workbenchName())
+                return;
+            doCommand(Gui, "Gui.activateWorkbench(\"%s\")", workbenchName());
+        }
+        catch(const Base::Exception& e) {
+            e.ReportException();
+            QString msg(QLatin1String(e.what()));
+            // ignore '<type 'exceptions.*Error'>' prefixes
+            QRegExp rx;
+            rx.setPattern(QLatin1String("^\\s*<type 'exceptions.\\w*'>:\\s*"));
+            int pos = rx.indexIn(msg);
+            if (pos != -1)
+                msg = msg.mid(rx.matchedLength());
+            QMessageBox::critical(getMainWindow(), QObject::tr("Cannot load workbench"), msg); 
+        }
+        catch(...) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Cannot load workbench"), 
+                QObject::tr("A general error occurred while loading the workbench")); 
+        }
+    }
+
+    static std::string cmdName(const char *wb)
+    {
+        if (!wb || !wb[0])
+            return std::string();
+        return std::string("Std_Workbench_") + wb;
+    }
+
+    const char *workbenchName()
+    {
+        if (_cmdName.size() < 14)
+            return "";
+        return _cmdName.c_str() + 14;
+    }
+
+    static void add(const char *wb, const Py::Object &pyObj)
+    {
+        if (Base::streq(wb, "<none>"))
+            return;
+        auto &manager = Application::Instance->commandManager();
+        Command *cmd = manager.getCommandByName(cmdName(wb).c_str());
+        if (!cmd)
+            manager.addCommand(new StdCmdWorkbenchItem(wb, pyObj));
+    }
+
+    static void remove(const char *wb)
+    {
+        auto &manager = Application::Instance->commandManager();
+        Command *cmd = manager.getCommandByName(cmdName(wb).c_str());
+        if (cmd)
+            manager.removeCommand(cmd);
+    }
+
+    std::string _cmdName;
+    std::string _pixmap;
+    std::string _menuText;
+    std::string _toolTips;
+};
+
 PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
 {
     PyObject*   pcObject;
@@ -993,6 +1113,9 @@ PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
         Instance->_workbenchPaths[item] = _getCurrentPythonFile(Instance->_ExecFile);
 
         PyDict_SetItemString(Instance->_pcWorkbenchDictionary,item.c_str(),object.ptr());
+
+        StdCmdWorkbenchItem::add(item.c_str(), object);
+
         Instance->signalAddWorkbench(item.c_str());
     }
     catch (const Py::Exception&) {
@@ -1019,6 +1142,8 @@ PyObject* Application::sRemoveWorkbenchHandler(PyObject * /*self*/, PyObject *ar
     WorkbenchManager::instance()->removeWorkbench(psKey);
     PyDict_DelItemString(Instance->_pcWorkbenchDictionary,psKey);
     Instance->_workbenchPaths.erase(psKey);
+
+    StdCmdWorkbenchItem::remove(psKey);
 
     Py_INCREF(Py_None);
     return Py_None;
