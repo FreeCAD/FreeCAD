@@ -532,9 +532,14 @@ PROPERTY_SOURCE(PartDesign::Prism, PartDesign::FeaturePrimitive)
 
 Prism::Prism()
 {
-    ADD_PROPERTY_TYPE(Polygon,(6.0),"Prism",App::Prop_None,"Number of sides in the polygon, of the prism");
-    ADD_PROPERTY_TYPE(Circumradius,(2.0),"Prism",App::Prop_None,"Circumradius (centre to vertex) of the polygon, of the prism");
-    ADD_PROPERTY_TYPE(Height,(10.0f),"Prism",App::Prop_None,"The height of the prism");
+    ADD_PROPERTY_TYPE(Polygon, (6.0), "Prism", App::Prop_None, "Number of sides in the polygon, of the prism");
+    ADD_PROPERTY_TYPE(Circumradius, (2.0), "Prism", App::Prop_None, "Circumradius (centre to vertex) of the polygon, of the prism");
+    ADD_PROPERTY_TYPE(Height, (10.0f), "Prism", App::Prop_None, "The height of the prism");
+    ADD_PROPERTY_TYPE(XSkew, (10.0f), "Prism", App::Prop_None, "Angle in x-direction");
+    ADD_PROPERTY_TYPE(YSkew, (10.0f), "Prism", App::Prop_None, "Angle in y-direction");
+    static const App::PropertyQuantityConstraint::Constraints angleConstraint = { -89.99999, 89.99999, 1.0 };
+    XSkew.setConstraints(&angleConstraint);
+    YSkew.setConstraints(&angleConstraint);
 
     primitiveType = FeaturePrimitive::Prism;
 }
@@ -563,7 +568,11 @@ App::DocumentObjectExecReturn* Prism::execute(void)
         }
         mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
         BRepBuilderAPI_MakeFace mkFace(mkPoly.Wire());
-        BRepPrimAPI_MakePrism mkPrism(mkFace.Face(), gp_Vec(0,0,Height.getValue()));
+        // the direction vector for the prism is the height for z and the skew
+        BRepPrimAPI_MakePrism mkPrism(mkFace.Face(),
+            gp_Vec(tan(XSkew.getValue() * D_PI / 180) * Height.getValue(),
+                   tan(YSkew.getValue() * D_PI / 180) * Height.getValue(),
+                   Height.getValue()));
         return FeaturePrimitive::execute(mkPrism.Shape());
     }
     catch (Standard_Failure& e) {
@@ -581,6 +590,10 @@ short int Prism::mustExecute() const
     if (Circumradius.isTouched())
         return 1;
     if (Height.isTouched())
+        return 1;
+    if (XSkew.isTouched())
+        return 1;
+    if (YSkew.isTouched())
         return 1;
 
     return FeaturePrimitive::mustExecute();
