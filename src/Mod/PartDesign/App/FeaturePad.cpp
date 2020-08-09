@@ -25,36 +25,34 @@
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepFeat_MakePrism.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <Geom_Surface.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopExp_Explorer.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <Precision.hxx>
-# include <BRepPrimAPI_MakeHalfSpace.hxx>
 # include <BRepAlgoAPI_Common.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <gp_Pln.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepFeat_MakePrism.hxx>
 # include <BRepLProp_SLProps.hxx>
+# include <BRepPrimAPI_MakeHalfSpace.hxx>
+# include <Geom_Surface.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <GeomLib_IsPlanarSurface.hxx>
+# include <gp_Pln.hxx>
+# include <Precision.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Wire.hxx>
+# include <TopExp_Explorer.hxx>
 #endif
 
+#include <App/Document.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
-#include <Base/Console.h>
 #include <Base/Reader.h>
-#include <App/Document.h>
 
-//#include "Body.h"
 #include "FeaturePad.h"
-
 
 using namespace PartDesign;
 
@@ -66,14 +64,18 @@ Pad::Pad()
 {
     addSubType = FeatureAddSub::Additive;
 
-    ADD_PROPERTY_TYPE(Type,(0L),"Pad",App::Prop_None,"Pad type");
+    ADD_PROPERTY_TYPE(Type, (0L), "Pad", App::Prop_None, "Pad type");
     Type.setEnums(TypeEnums);
-    ADD_PROPERTY_TYPE(Length,(100.0),"Pad",App::Prop_None,"Pad length");
-    ADD_PROPERTY_TYPE(Length2,(100.0),"Pad",App::Prop_None,"Second Pad length");
-    ADD_PROPERTY_TYPE(UpToFace,(0),"Pad",App::Prop_None,"Face where pad will end");
-    ADD_PROPERTY_TYPE(Offset,(0.0),"Pad",App::Prop_None,"Offset from face in which pad will end");
+    ADD_PROPERTY_TYPE(Length, (100.0), "Pad", App::Prop_None,"Pad length");
+    ADD_PROPERTY_TYPE(Length2, (100.0), "Pad", App::Prop_None,"Second Pad length");
+    ADD_PROPERTY_TYPE(UseNormalVector, (1), "Pad", App::Prop_None, "Use normal vector of sketch plane");
+    ADD_PROPERTY_TYPE(XSkew, (1.0), "Pad", App::Prop_None, "X-component iof pad direction vector");
+    ADD_PROPERTY_TYPE(YSkew, (1.0), "Pad", App::Prop_None, "Y-component iof pad direction vector");
+    ADD_PROPERTY_TYPE(ZSkew, (1.0), "Pad", App::Prop_None, "Z-component iof pad direction vector");
+    ADD_PROPERTY_TYPE(UpToFace, (0), "Pad", App::Prop_None, "Face where pad will end");
+    ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
-    Offset.setConstraints ( &signedLengthConstraint );
+    Offset.setConstraints(&signedLengthConstraint);
 }
 
 short Pad::mustExecute() const
@@ -82,6 +84,10 @@ short Pad::mustExecute() const
         Type.isTouched() ||
         Length.isTouched() ||
         Length2.isTouched() ||
+        UseNormalVector.isTouched() ||
+        XSkew.isTouched() ||
+        YSkew.isTouched() ||
+        ZSkew.isTouched() ||
         Offset.isTouched() ||
         UpToFace.isTouched())
         return 1;
@@ -117,8 +123,10 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
 
     // get the Sketch plane
-    Base::Placement SketchPos    = obj->Placement.getValue();
-    Base::Vector3d  SketchVector = getProfileNormal();
+    Base::Placement SketchPos = obj->Placement.getValue();
+    // get the normal vector of the sketch
+    // its z component is the one for the pad direction
+    Base::Vector3d SketchVector = getProfileNormal();
 
     try {
         this->positionByPrevious();
@@ -126,7 +134,23 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
         base.Move(invObjLoc);
 
-        gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
+        Base::Vector3d paddingDirection;
+
+        // use the normal vector
+        //gp_Dir dir(SketchVector.x, SketchVector.y, SketchVector.z);
+        // use the given vector if necessary
+        if (UseNormalVector.getValue()) {
+            paddingDirection.x = SketchVector.x;
+            paddingDirection.y = SketchVector.y;
+            paddingDirection.z = SketchVector.z;
+        }
+        else {
+            paddingDirection.x = XSkew.getValue();
+            paddingDirection.y = YSkew.getValue();
+            paddingDirection.z = ZSkew.getValue();
+        }
+
+        gp_Dir dir(paddingDirection.x, paddingDirection.y, paddingDirection.z);
         dir.Transform(invObjLoc.Transformation());
 
         if (sketchshape.IsNull())
