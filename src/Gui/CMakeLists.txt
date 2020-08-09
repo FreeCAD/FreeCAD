@@ -1095,6 +1095,7 @@ SET(Inventor_CPP_SRCS
     SoAxisCrossKit.cpp
     SoTextLabel.cpp
     SoTouchEvents.cpp
+    SoMouseWheelEvent.cpp
     SoFCCSysDragger.cpp
 )
 SET(Inventor_SRCS
@@ -1121,6 +1122,7 @@ SET(Inventor_SRCS
     SoAxisCrossKit.h
     SoTextLabel.h
     SoTouchEvents.h
+    SoMouseWheelEvent.h
     SoFCCSysDragger.h
 )
 SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})
