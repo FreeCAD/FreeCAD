@@ -480,7 +480,7 @@ ParameterGroup::~ParameterGroup()
 void ParameterGroup::contextMenuEvent ( QContextMenuEvent* event )
 {
     QTreeWidgetItem* item = currentItem();
-    if (item->isSelected())
+    if (item && item->isSelected())
     {
         expandAct->setEnabled(item->childCount() > 0);
         // do not allow to import parameters from a non-empty parameter group
@@ -510,7 +510,7 @@ void ParameterGroup::keyPressEvent (QKeyEvent* event)
 void ParameterGroup::onDeleteSelectedItem()
 {
     QTreeWidgetItem* sel = currentItem();
-    if (sel->isSelected() && sel->parent())
+    if (sel && sel->isSelected() && sel->parent())
     {
         if ( QMessageBox::question(this, tr("Remove group"), tr("Do you really want to remove this parameter group?"),
                                QMessageBox::Yes, QMessageBox::No|QMessageBox::Default|QMessageBox::Escape) == 
@@ -534,7 +534,7 @@ void ParameterGroup::onDeleteSelectedItem()
 void ParameterGroup::onToggleSelectedItem()
 {
     QTreeWidgetItem* sel = currentItem();
-    if (sel->isSelected())
+    if (sel && sel->isSelected())
     {
         if (sel->isExpanded())
             sel->setExpanded(false);
@@ -552,7 +552,7 @@ void ParameterGroup::onCreateSubgroup()
     if (ok && Gui::validateInput(this, name))
     {
         QTreeWidgetItem* item = currentItem();
-        if (item->isSelected())
+        if (item && item->isSelected())
         {
             ParameterGroupItem* para = static_cast<ParameterGroupItem*>(item);
             Base::Reference<ParameterGrp> hGrp = para->_hcGrp;
@@ -578,7 +578,7 @@ void ParameterGroup::onExportToFile()
     if ( !file.isEmpty() )
     {
         QTreeWidgetItem* item = currentItem();
-        if (item->isSelected())
+        if (item && item->isSelected())
         {
             ParameterGroupItem* para = static_cast<ParameterGroupItem*>(item);
             Base::Reference<ParameterGrp> hGrp = para->_hcGrp;
@@ -594,7 +594,7 @@ void ParameterGroup::onImportFromFile()
     if ( !file.isEmpty() )
     {
         QTreeWidgetItem* item = currentItem();
-        if (item->isSelected())
+        if (item && item->isSelected())
         {
             ParameterGroupItem* para = static_cast<ParameterGroupItem*>(item);
             Base::Reference<ParameterGrp> hGrp = para->_hcGrp;
@@ -628,7 +628,7 @@ void ParameterGroup::onImportFromFile()
 void ParameterGroup::onRenameSelectedItem()
 {
     QTreeWidgetItem* sel = currentItem();
-    if (sel->isSelected())
+    if (sel && sel->isSelected())
     {
         editItem(sel, 0);
     }
@@ -698,7 +698,7 @@ bool ParameterValue::edit ( const QModelIndex & index, EditTrigger trigger, QEve
 void ParameterValue::contextMenuEvent ( QContextMenuEvent* event )
 {
     QTreeWidgetItem* item = currentItem();
-    if (item->isSelected())
+    if (item && item->isSelected())
         menuEdit->popup(event->globalPos());
     else
         menuNew->popup(event->globalPos());
@@ -733,7 +733,7 @@ void ParameterValue::resizeEvent(QResizeEvent* event)
 
 void ParameterValue::onChangeSelectedItem(QTreeWidgetItem* item, int col)
 {
-    if (item->isSelected() && col > 0)
+    if (item && item->isSelected() && col > 0)
     {
         static_cast<ParameterValueItem*>(item)->changeValue();
     }
@@ -747,7 +747,7 @@ void ParameterValue::onChangeSelectedItem()
 void ParameterValue::onDeleteSelectedItem()
 {
     QTreeWidgetItem* sel = currentItem();
-    if (sel->isSelected())
+    if (sel && sel->isSelected())
     {
         takeTopLevelItem(indexOfTopLevelItem(sel));
         static_cast<ParameterValueItem*>(sel)->removeFromGroup();
@@ -758,7 +758,7 @@ void ParameterValue::onDeleteSelectedItem()
 void ParameterValue::onRenameSelectedItem()
 {
     QTreeWidgetItem* sel = currentItem();
-    if (sel->isSelected())
+    if (sel && sel->isSelected())
     {
         editItem(sel, 0);
     }
