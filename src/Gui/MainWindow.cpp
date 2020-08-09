@@ -1196,6 +1196,7 @@ void MainWindow::onToolBarMenuAboutToShow()
             action->setToolTip(tr("Toggles this toolbar"));
             action->setStatusTip(tr("Toggles this toolbar"));
             action->setWhatsThis(tr("Toggles this toolbar"));
+            action->setVisible(true);
             menu->addAction(action);
         }
     }
