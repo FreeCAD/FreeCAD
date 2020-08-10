@@ -41,6 +41,8 @@
 #include <QWidget>
 
 namespace Base {
+    class Exception {
+    };
     class Unit{
     public:
         Unit();
@@ -368,8 +370,9 @@ class QuantitySpinBox : public QAbstractSpinBox
     Q_PROPERTY(double minimum READ minimum WRITE setMinimum)
     Q_PROPERTY(double maximum READ maximum WRITE setMaximum)
     Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep)
-    Q_PROPERTY(double rawValue READ rawValue WRITE setValue NOTIFY valueChanged)
-    Q_PROPERTY(Base::Quantity value READ value WRITE setValue NOTIFY valueChanged USER true)
+    Q_PROPERTY(double rawValue READ rawValue WRITE setValue NOTIFY valueChanged DESIGNABLE false)
+    Q_PROPERTY(double value READ rawValue WRITE setValue NOTIFY valueChanged USER true)
+  //Q_PROPERTY(Base::Quantity value READ value WRITE setValue NOTIFY valueChanged USER true)
 
 public:
     explicit QuantitySpinBox(QWidget *parent = 0);
@@ -473,6 +476,10 @@ Q_SIGNALS:
      *  like: minimum, maximum and/or the right Unit (if specified).
      */
     void valueChanged(double);
+    /**
+     * The new value is passed in \a text with unit.
+     */
+    void textChanged(const QString&);
     /** Gets emitted if formula dialog is about to be opened (true)
      *  or finished (false).
      */

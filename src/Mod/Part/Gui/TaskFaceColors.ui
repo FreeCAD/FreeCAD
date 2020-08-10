@@ -7,21 +7,21 @@
     <x>0</x>
     <y>0</y>
     <width>247</width>
-    <height>219</height>
+    <height>157</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Set color per face</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0" colspan="3">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Click on the faces in the 3d view to select them.</string>
+      <string>Click on the faces in the 3D view to select them</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="3">
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string notr="true">Group box</string>
@@ -40,45 +40,97 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="1" column="0" colspan="2">
+       <widget class="Gui::ColorButton" name="colorButton">
+        <property name="minimumSize">
+         <size>
+          <width>146</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>160</width>
+          <height>16777215</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="1" colspan="2">
        <widget class="QLabel" name="labelElement">
         <property name="text">
          <string notr="true">[]</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2">
-       <widget class="Gui::ColorButton" name="colorButton"/>
-      </item>
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QPushButton" name="defaultButton">
-     <property name="text">
-      <string>Set to default</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QPushButton" name="boxSelection">
-     <property name="text">
-      <string>Box selection</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>135</height>
-      </size>
-     </property>
-    </spacer>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="defaultButton">
+       <property name="toolTip">
+        <string>Resets color for all faces of the part</string>
+       </property>
+       <property name="text">
+        <string>Set to default</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="boxSelection">
+       <property name="toolTip">
+        <string>When checked, the you can select multiple faces
+by dragging a selection rectangle in the 3D view</string>
+       </property>
+       <property name="text">
+        <string>Box selection</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

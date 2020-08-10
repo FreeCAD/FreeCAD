@@ -174,6 +174,10 @@ Q_SIGNALS:
      *  like: minimum, maximum and/or the right Unit (if specified).
      */
     void valueChanged(double);
+    /**
+     * The new value is passed in \a text with unit.
+     */
+    void textChanged(const QString&);
     /** Gets emitted if formula dialog is about to be opened (true)
      *  or finished (false).
      */

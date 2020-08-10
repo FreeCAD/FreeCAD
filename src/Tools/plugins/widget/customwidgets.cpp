@@ -594,8 +594,8 @@ Quantity Quantity::parse(const QString& str)
     }
 
     double v = QLocale::system().toDouble(txt, &ok);
-    //if (!ok)
-    //    throw QString("Cannot convert to double");
+    //if (!ok && !txt.isEmpty())
+    //    throw Base::Exception();
     return Quantity(v, Unit(unit));
 }
 
@@ -801,7 +801,7 @@ public:
                 value = res.getValue();
                 ok = true;
             }
-            catch (...) {
+            catch (Base::Exception&) {
             }
 
             if (!ok) {
@@ -975,7 +975,7 @@ void QuantitySpinBox::updateFromCache(bool notify)
     if (d->pendingEmit) {
         double factor;
         const Base::Quantity& res = d->cached;
-        getUserString(res, factor, d->unitStr);
+        QString text = getUserString(res, factor, d->unitStr);
         d->unitValue = res.getValue() / factor;
         d->quantity = res;
 
@@ -984,6 +984,7 @@ void QuantitySpinBox::updateFromCache(bool notify)
             d->pendingEmit = false;
             valueChanged(res);
             valueChanged(res.getValue());
+            textChanged(text);
         }
     }
 }
@@ -1005,8 +1006,12 @@ void QuantitySpinBox::setUnit(const Base::Unit &unit)
 
 void QuantitySpinBox::setUnitText(const QString& str)
 {
-    Base::Quantity quant = Base::Quantity::parse(str);
-    setUnit(quant.getUnit());
+    try {
+        Base::Quantity quant = Base::Quantity::parse(str);
+        setUnit(quant.getUnit());
+    }
+    catch (const Base::Exception&) {
+    }
 }
 
 QString QuantitySpinBox::unitText(void)
@@ -1084,13 +1089,11 @@ void QuantitySpinBox::clearSchema()
 
 QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
 {
-    Q_D(const QuantitySpinBox);
     return val.getUserString(factor, unitString);
 }
 
 QString QuantitySpinBox::getUserString(const Base::Quantity& val) const
 {
-    Q_D(const QuantitySpinBox);
     return val.getUserString();
 }
 
