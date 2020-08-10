@@ -169,7 +169,6 @@ DrawViewPart::DrawViewPart(void) :
     ADD_PROPERTY_TYPE(IsoCount ,(prefIsoCount()),sgroup,App::Prop_None,"Number of iso parameters lines");
 
     geometryObject = nullptr;
-    getRunControl();
     //initialize bbox to non-garbage
     bbox = Base::BoundBox3d(Base::Vector3d(0.0, 0.0, 0.0), 0.0);
 }
@@ -951,22 +950,11 @@ const std::vector<TechDraw::BaseGeom  *> DrawViewPart::getVisibleFaceEdges() con
     return geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
 }
 
-void DrawViewPart::getRunControl()
+bool DrawViewPart::handleFaces(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    m_sectionEdges = hGrp->GetBool("ShowSectionEdges", 0l);
-    m_handleFaces = hGrp->GetBool("HandleFaces", 1l);
-}
-
-bool DrawViewPart::handleFaces(void)
-{
-    return m_handleFaces;
-}
-
-bool DrawViewPart::showSectionEdges(void)
-{
-    return m_sectionEdges;
+    return hGrp->GetBool("HandleFaces", 1l);
 }
 
 //! remove features that are useless without this DVP
