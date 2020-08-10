@@ -48,10 +48,10 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
+#include "TaskFaceColors.h"
 #include "ui_TaskFaceColors.h"
 
 #include "SoBrepFaceSet.h"
-#include "TaskFaceColors.h"
 #include "ViewProviderExt.h"
 
 #include <App/Document.h>
@@ -324,15 +324,13 @@ void FaceColors::on_boxSelection_toggled(bool checked)
 {
     Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
     // toggle the button state and feature
+    d->boxSelection = checked;
     if (!checked) {
-        d->boxSelection = false;
         // end box selection mode
         if (view)
             view->getViewer()->stopSelection();
     }
-    else {
-        d->boxSelection = true;
-    }
+
     if (view && checked) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
