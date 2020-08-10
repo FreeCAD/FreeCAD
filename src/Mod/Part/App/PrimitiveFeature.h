@@ -209,8 +209,8 @@ public:
     App::PropertyIntegerConstraint Polygon;
     App::PropertyLength Circumradius;
     App::PropertyLength Height;
-    App::PropertyAngle XSkew;
-    App::PropertyAngle YSkew;
+    App::PropertyAngle FirstSkew;
+    App::PropertyAngle SecondSkew;
 
     /** @name methods override feature */
     //@{

@@ -535,11 +535,11 @@ Prism::Prism()
     ADD_PROPERTY_TYPE(Polygon, (6.0), "Prism", App::Prop_None, "Number of sides in the polygon, of the prism");
     ADD_PROPERTY_TYPE(Circumradius, (2.0), "Prism", App::Prop_None, "Circumradius (centre to vertex) of the polygon, of the prism");
     ADD_PROPERTY_TYPE(Height, (10.0f), "Prism", App::Prop_None, "The height of the prism");
-    ADD_PROPERTY_TYPE(XSkew, (10.0f), "Prism", App::Prop_None, "Angle in x-direction");
-    ADD_PROPERTY_TYPE(YSkew, (10.0f), "Prism", App::Prop_None, "Angle in y-direction");
+    ADD_PROPERTY_TYPE(FirstSkew, (0.0f), "Prism", App::Prop_None, "Angle in first direction");
+    ADD_PROPERTY_TYPE(SecondSkew, (0.0f), "Prism", App::Prop_None, "Angle in second direction");
     static const App::PropertyQuantityConstraint::Constraints angleConstraint = { -89.99999, 89.99999, 1.0 };
-    XSkew.setConstraints(&angleConstraint);
-    YSkew.setConstraints(&angleConstraint);
+    FirstSkew.setConstraints(&angleConstraint);
+    SecondSkew.setConstraints(&angleConstraint);
 
     primitiveType = FeaturePrimitive::Prism;
 }
@@ -570,8 +570,8 @@ App::DocumentObjectExecReturn* Prism::execute(void)
         BRepBuilderAPI_MakeFace mkFace(mkPoly.Wire());
         // the direction vector for the prism is the height for z and the skew
         BRepPrimAPI_MakePrism mkPrism(mkFace.Face(),
-            gp_Vec(tan(XSkew.getValue() * D_PI / 180) * Height.getValue(),
-                   tan(YSkew.getValue() * D_PI / 180) * Height.getValue(),
+            gp_Vec(tan(FirstSkew.getValue() * D_PI / 180) * Height.getValue(),
+                   tan(SecondSkew.getValue() * D_PI / 180) * Height.getValue(),
                    Height.getValue()));
         return FeaturePrimitive::execute(mkPrism.Shape());
     }
@@ -591,9 +591,9 @@ short int Prism::mustExecute() const
         return 1;
     if (Height.isTouched())
         return 1;
-    if (XSkew.isTouched())
+    if (FirstSkew.isTouched())
         return 1;
-    if (YSkew.isTouched())
+    if (SecondSkew.isTouched())
         return 1;
 
     return FeaturePrimitive::mustExecute();

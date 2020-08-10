@@ -1294,14 +1294,14 @@
             <item row="3" column="0">
              <widget class="QLabel" name="labelPrismXSkew">
               <property name="text">
-               <string>Angle in x-direction:</string>
+               <string>Angle in first direction:</string>
               </property>
              </widget>
             </item>
             <item row="3" column="2">
              <widget class="Gui::QuantitySpinBox" name="prismXSkew">
               <property name="toolTip">
-               <string>Angle in x-direction</string>
+               <string>Angle in first direction</string>
               </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
@@ -1320,14 +1320,14 @@
             <item row="4" column="0">
              <widget class="QLabel" name="labelPrismYSkew">
               <property name="text">
-               <string>Angle in y-direction:</string>
+               <string>Angle in second direction:</string>
               </property>
              </widget>
             </item>
             <item row="4" column="2">
              <widget class="Gui::QuantitySpinBox" name="prismYSkew">
               <property name="toolTip">
-               <string>Angle in y-direction</string>
+               <string>Angle in second direction</string>
               </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>

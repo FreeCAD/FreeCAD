@@ -192,10 +192,10 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->prismCircumradius->bind(static_cast<PartDesign::Prism*>(vp->getObject())->Circumradius);
             ui->prismHeight->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Height.getValue());
             ui->prismHeight->bind(static_cast<PartDesign::Prism*>(vp->getObject())->Height);
-            ui->prismXSkew->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->XSkew.getValue());
-            ui->prismXSkew->bind(static_cast<PartDesign::Prism*>(vp->getObject())->XSkew);
-            ui->prismYSkew->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->YSkew.getValue());
-            ui->prismYSkew->bind(static_cast<PartDesign::Prism*>(vp->getObject())->YSkew);
+            ui->prismXSkew->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->FirstSkew.getValue());
+            ui->prismXSkew->bind(static_cast<PartDesign::Prism*>(vp->getObject())->FirstSkew);
+            ui->prismYSkew->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->SecondSkew.getValue());
+            ui->prismYSkew->bind(static_cast<PartDesign::Prism*>(vp->getObject())->SecondSkew);
             ui->prismCircumradius->setMaximum(INT_MAX);
             ui->prismCircumradius->setMinimum(0.0);
             ui->prismHeight->setMaximum(INT_MAX);
@@ -531,13 +531,13 @@ void TaskBoxPrimitives::onPrismXSkewChanged(double v) {
     // we must assure that if the user incremented from e.g. 85 degree with the
     // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
     if ((v < 90.0) && (v > -90.0))
-        sph->XSkew.setValue(v);
+        sph->FirstSkew.setValue(v);
     else {
         if (v == 90.0)
-            sph->XSkew.setValue(89.99999);
+            sph->FirstSkew.setValue(89.99999);
         else if (v == -90.0)
-            sph->XSkew.setValue(-89.99999);
-        ui->prismYSkew->setValue(sph->XSkew.getQuantityValue());
+            sph->FirstSkew.setValue(-89.99999);
+        ui->prismYSkew->setValue(sph->FirstSkew.getQuantityValue());
     }
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
@@ -547,13 +547,13 @@ void TaskBoxPrimitives::onPrismYSkewChanged(double v) {
     // we must assure that if the user incremented from e.g. 85 degree with the
     // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
     if ((v < 90.0) && (v > -90.0))
-        sph->YSkew.setValue(v);
+        sph->SecondSkew.setValue(v);
     else {
         if (v == 90.0)
-            sph->YSkew.setValue(89.99999);
+            sph->SecondSkew.setValue(89.99999);
         else if (v == -90.0)
-            sph->YSkew.setValue(-89.99999);
-        ui->prismYSkew->setValue(sph->YSkew.getQuantityValue());
+            sph->SecondSkew.setValue(-89.99999);
+        ui->prismYSkew->setValue(sph->SecondSkew.getQuantityValue());
     }
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
@@ -731,8 +731,8 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Polygon=%2\n"
                     "%1.Circumradius=%3\n"
                     "%1.Height=%4\n"
-                    "%1.XSkew=%5\n"
-                    "%1.YSkew=%6\n")
+                    "%1.FirstSkew=%5\n"
+                    "%1.SecondSkew=%6\n")
                     .arg(name)
                     .arg(ui->prismPolygon->value())
                     .arg(ui->prismCircumradius->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
