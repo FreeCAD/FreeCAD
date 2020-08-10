@@ -45,6 +45,7 @@
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <gp_Ax1.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
 #endif
 
 #include "DlgProjectionOnSurface.h"
@@ -452,16 +453,38 @@ void PartGui::DlgProjectionOnSurface::create_projection_wire(std::vector<SShapeS
         for (auto itWire : itCurrentShape.aWireVec)
         {
           BRepProj_Projection aProjection(itWire, itCurrentShape.surfaceToProject, itCurrentShape.aProjectionDir);
-          auto currentProjection = aProjection.Shape();
-          auto aWire = sort_and_heal_wire(currentProjection, itCurrentShape.surfaceToProject);
+          double minDistance = std::numeric_limits<double>::max();
+          TopoDS_Wire wireToTake;
+          for ( ; aProjection.More(); aProjection.Next() )
+          {
+            auto it = aProjection.Current();
+            BRepExtrema_DistShapeShape distanceMeasure(it, itCurrentShape.aFace);
+            distanceMeasure.Perform();
+            auto currentDistance = distanceMeasure.Value();
+            if ( currentDistance > minDistance ) continue;
+            wireToTake = it;
+            minDistance = currentDistance;
+          }
+          auto aWire = sort_and_heal_wire(wireToTake, itCurrentShape.surfaceToProject);
           itCurrentShape.aProjectedWireVec.push_back(aWire);
         }
       }
       else if (!itCurrentShape.aEdge.IsNull())
       {
         BRepProj_Projection aProjection(itCurrentShape.aEdge, itCurrentShape.surfaceToProject, itCurrentShape.aProjectionDir);
-        auto currentProjection = aProjection.Shape();
-        for (TopExp_Explorer aExplorer(currentProjection, TopAbs_EDGE); aExplorer.More(); aExplorer.Next())
+        double minDistance = std::numeric_limits<double>::max();
+        TopoDS_Wire wireToTake;
+        for (; aProjection.More(); aProjection.Next())
+        {
+          auto it = aProjection.Current();
+          BRepExtrema_DistShapeShape distanceMeasure(it, itCurrentShape.aEdge);
+          distanceMeasure.Perform();
+          auto currentDistance = distanceMeasure.Value();
+          if (currentDistance > minDistance) continue;
+          wireToTake = it;
+          minDistance = currentDistance;
+        }
+        for (TopExp_Explorer aExplorer(wireToTake, TopAbs_EDGE); aExplorer.More(); aExplorer.Next())
         {
           itCurrentShape.aProjectedEdgeVec.push_back(TopoDS::Edge(aExplorer.Current()));
         }
