@@ -589,7 +589,7 @@ void setupMenuStyle(QWidget *menu)
 }
 
 SelectionMenu::SelectionMenu(QWidget *parent)
-    :QMenu(parent),pSelList(0)
+    :QMenu(parent),pSelList(0),tooltipIndex(0)
 {
     connect(this, SIGNAL(aboutToShow()), this, SLOT(beforeShow()));
     setupMenuStyle(this);
@@ -839,7 +839,7 @@ void SelectionMenu::onSubMenu() {
 
 bool SelectionMenu::eventFilter(QObject *o, QEvent *ev)
 {
-    if(tooltipIndex <= 0 || tooltipIndex > (int)pSelList->size())
+    if(tooltipIndex == 0 || std::abs(tooltipIndex) > (int)pSelList->size())
         return QMenu::eventFilter(o, ev);
 
     switch(ev->type()) {
@@ -863,7 +863,7 @@ bool SelectionMenu::eventFilter(QObject *o, QEvent *ev)
 void SelectionMenu::onSelUpMenu()
 {
     int idx = std::abs(tooltipIndex);
-    if(!activeMenu || idx <= 0 || idx > (int)pSelList->size())
+    if(!activeMenu || idx == 0 || idx > (int)pSelList->size())
         return;
 
     auto &sel = (*pSelList)[idx-1];
