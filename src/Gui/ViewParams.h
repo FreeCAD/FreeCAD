@@ -82,6 +82,9 @@ public:
     FC_VIEW_PARAM(LinkChildrenDirect,bool,Bool,true, "") \
     FC_VIEW_PARAM2(ShowSelectionOnTop,bool,Bool,true, \
        QT_TRANSLATE_NOOP("ViewParams","Show selection always on top")) \
+    FC_VIEW_PARAM(SelectElementOnTop,bool,Bool,false, \
+       QT_TRANSLATE_NOOP("ViewParams","Do box/lasso element selection on already selected object(s)," \
+                                      "if SelectionOnTop is enabled.")) \
     FC_VIEW_PARAM(TransparencyOnTop,double,Float,0.5, \
        QT_TRANSLATE_NOOP("ViewParams","Transparency for the selected object when being shown on top."))\
     FC_VIEW_PARAM(PartialHighlightOnFullSelect,bool,Bool,false, \

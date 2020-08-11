@@ -114,6 +114,7 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
 #define FC_DRAW_STYLE_PARAMS \
     FC_DRAW_STYLE_PARAM(HiddenLineTransparency, value, setValue) \
     FC_DRAW_STYLE_PARAM(ShowSelectionOnTop, isChecked, setChecked) \
+    FC_DRAW_STYLE_PARAM(SelectElementOnTop, isChecked, setChecked) \
     FC_DRAW_STYLE_PARAM(HiddenLineShaded, isChecked, setChecked)\
     FC_DRAW_STYLE_PARAM(HiddenLineOverrideColor, isChecked, setChecked)\
     FC_DRAW_STYLE_PARAM(HiddenLineOverrideFaceColor, isChecked, setChecked)\

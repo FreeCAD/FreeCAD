@@ -2606,7 +2606,9 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
                 Gui::Selection().clearSelection(doc->getName());
         }
 
-        bool currentSelection = (ViewParams::instance()->getShowSelectionOnTop() && selectElement);
+        bool currentSelection = (ViewParams::getShowSelectionOnTop() 
+                                 && ViewParams::getSelectElementOnTop()
+                                 && selectElement);
 
         auto picked = view->getPickedList(points, center, selectElement, backFaceCull,
                                         currentSelection, unselect, false);

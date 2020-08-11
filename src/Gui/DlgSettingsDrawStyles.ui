@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>601</width>
-    <height>1105</height>
+    <height>1133</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,11 +21,11 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
-       <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0" columnstretch="0,0" rowminimumheight="0,0,0,0,0">
+       <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,0" columnstretch="0,0" rowminimumheight="0,0,0,0,0,0">
         <property name="horizontalSpacing">
          <number>6</number>
         </property>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
            <string>Selected hidden line pattern</string>
@@ -45,7 +45,7 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="QDoubleSpinBox" name="SelectionLineThicken">
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
@@ -67,7 +67,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <widget class="QDoubleSpinBox" name="SelectionHiddenLineWidth">
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
@@ -89,24 +89,14 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="labelSelectionLineThicken">
           <property name="text">
            <string>Line width multiplier</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="labelTransparencyOnTop">
-          <property name="text">
-           <string>Transparency</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QComboBox" name="comboLinePattern"/>
-        </item>
-        <item row="1" column="1">
+        <item row="2" column="1">
          <widget class="QDoubleSpinBox" name="TransparencyOnTop">
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
@@ -128,10 +118,27 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelTransparencyOnTop">
+          <property name="text">
+           <string>Transparency</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QComboBox" name="comboLinePattern"/>
+        </item>
+        <item row="5" column="0">
          <widget class="QLabel" name="labelSelectionHiddenLineWidth">
           <property name="text">
            <string>Selected hidden line width</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="SelectElementOnTop">
+          <property name="text">
+           <string>Element select on top</string>
           </property>
          </widget>
         </item>
