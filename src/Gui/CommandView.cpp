@@ -2623,7 +2623,12 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
         view->setEditing(false);
         view->setSelectionEnabled(true);
     } else {
-        AbstractMouseSelection *sel = view->startSelection(View3DInventorViewer::Rubberband);
+        Command *cmd = (Command*)ud;
+        AbstractMouseSelection *sel;
+        if (cmd && Base::streq(cmd->getName(), "Std_LassoElementSelection"))
+            sel = view->startSelection(View3DInventorViewer::Lasso);
+        else
+            sel = view->startSelection(View3DInventorViewer::Rubberband);
         if (sel) sel->changeCursorOnKeyPress(2);
     }
 }
