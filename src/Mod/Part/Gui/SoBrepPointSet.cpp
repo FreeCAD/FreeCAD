@@ -115,7 +115,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 
 void SoBrepPointSet::GLRenderInPath(SoGLRenderAction *action)
 {
-    glRender(action, true);
+    glRender(action, action->isRenderingDelayedPaths());
 }
 
 void SoBrepPointSet::glRender(SoGLRenderAction *action, bool inpath)

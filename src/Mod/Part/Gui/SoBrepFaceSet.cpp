@@ -422,7 +422,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
 void SoBrepFaceSet::GLRenderInPath(SoGLRenderAction *action)
 {
-    glRender(action, true);
+    glRender(action, action->isRenderingDelayedPaths());
 }
 
 void SoBrepFaceSet::glRender(SoGLRenderAction *action, bool inpath)

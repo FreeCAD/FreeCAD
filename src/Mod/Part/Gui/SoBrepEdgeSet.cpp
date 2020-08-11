@@ -130,7 +130,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
 
 void SoBrepEdgeSet::GLRenderInPath(SoGLRenderAction *action)
 {
-    glRender(action, true);
+    glRender(action, action->isRenderingDelayedPaths());
 }
 
 void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
