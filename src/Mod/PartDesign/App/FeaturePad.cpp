@@ -68,10 +68,10 @@ Pad::Pad()
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length, (100.0), "Pad", App::Prop_None,"Pad length");
     ADD_PROPERTY_TYPE(Length2, (100.0), "Pad", App::Prop_None,"Second Pad length");
-    ADD_PROPERTY_TYPE(UseNormalVector, (1), "Pad", App::Prop_None, "Use normal vector of sketch plane");
-    ADD_PROPERTY_TYPE(XSkew, (1.0), "Pad", App::Prop_None, "X-component iof pad direction vector");
-    ADD_PROPERTY_TYPE(YSkew, (1.0), "Pad", App::Prop_None, "Y-component iof pad direction vector");
-    ADD_PROPERTY_TYPE(ZSkew, (1.0), "Pad", App::Prop_None, "Z-component iof pad direction vector");
+    ADD_PROPERTY_TYPE(UseCustomVector, (0), "Pad", App::Prop_None, "Use custom vector for pad direction");
+    ADD_PROPERTY_TYPE(XSkew, (1.0), "Pad", App::Prop_None, "x-component of pad direction vector");
+    ADD_PROPERTY_TYPE(YSkew, (1.0), "Pad", App::Prop_None, "y-component of pad direction vector");
+    ADD_PROPERTY_TYPE(ZSkew, (1.0), "Pad", App::Prop_None, "z-component of pad direction vector");
     ADD_PROPERTY_TYPE(UpToFace, (0), "Pad", App::Prop_None, "Face where pad will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
@@ -84,7 +84,7 @@ short Pad::mustExecute() const
         Type.isTouched() ||
         Length.isTouched() ||
         Length2.isTouched() ||
-        UseNormalVector.isTouched() ||
+        UseCustomVector.isTouched() ||
         XSkew.isTouched() ||
         YSkew.isTouched() ||
         ZSkew.isTouched() ||
@@ -136,15 +136,19 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
         Base::Vector3d paddingDirection;
 
-        // use the normal vector
-        //gp_Dir dir(SketchVector.x, SketchVector.y, SketchVector.z);
         // use the given vector if necessary
-        if (UseNormalVector.getValue()) {
+        if (!UseCustomVector.getValue()) {
             paddingDirection.x = SketchVector.x;
             paddingDirection.y = SketchVector.y;
             paddingDirection.z = SketchVector.z;
         }
         else {
+            // check for null vector, if yes, set z to 1.0
+            if ((XSkew.getValue() == 0.0)
+                && (YSkew.getValue() == 0.0)
+                && (ZSkew.getValue() == 0.0)) {
+                ZSkew.setValue(1.0);
+            }
             paddingDirection.x = XSkew.getValue();
             paddingDirection.y = YSkew.getValue();
             paddingDirection.z = ZSkew.getValue();

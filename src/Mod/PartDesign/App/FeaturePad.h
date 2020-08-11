@@ -43,7 +43,7 @@ public:
     App::PropertyEnumeration    Type;
     App::PropertyLength         Length;
     App::PropertyLength         Length2;
-    App::PropertyBool           UseNormalVector;
+    App::PropertyBool           UseCustomVector;
     App::PropertyFloat          XSkew;
     App::PropertyFloat          YSkew;
     App::PropertyFloat          ZSkew;

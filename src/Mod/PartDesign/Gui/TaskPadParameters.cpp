@@ -74,7 +74,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     Base::Quantity l = pcPad->Length.getQuantityValue();
     Base::Quantity l2 = pcPad->Length2.getQuantityValue();
-    bool useNormal = pcPad->UseNormalVector.getValue();
+    bool useCustom = pcPad->UseCustomVector.getValue();
     double xs = pcPad->XSkew.getValue();
     double ys = pcPad->YSkew.getValue();
     double zs = pcPad->ZSkew.getValue();
@@ -95,19 +95,19 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     // Fill data into dialog elements
     ui->lengthEdit->setValue(l);
     ui->lengthEdit2->setValue(l2);
-    ui->checkBoxNormal->setChecked(useNormal);
+    ui->groupBoxDirection->setChecked(useCustom);
     ui->XSkewEdit->setValue(xs);
     ui->YSkewEdit->setValue(ys);
     ui->ZSkewEdit->setValue(zs);
-    ui->XSkewEdit->setDisabled(useNormal);
-    ui->YSkewEdit->setDisabled(useNormal);
-    ui->ZSkewEdit->setDisabled(useNormal);
     ui->offsetEdit->setValue(off);
 
     // Bind input fields to properties
     ui->lengthEdit->bind(pcPad->Length);
     ui->lengthEdit2->bind(pcPad->Length2);
-     ui->offsetEdit->bind(pcPad->Offset);
+    ui->XSkewEdit->bind(pcPad->XSkew);
+    ui->YSkewEdit->bind(pcPad->YSkew);
+    ui->ZSkewEdit->bind(pcPad->ZSkew);
+    ui->offsetEdit->bind(pcPad->Offset);
     ui->checkBoxMidplane->setChecked(midplane);
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
@@ -146,8 +146,8 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
             this, SLOT(onLengthChanged(double)));
     connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
             this, SLOT(onLength2Changed(double)));
-    connect(ui->checkBoxNormal, SIGNAL(toggled(bool)),
-        this, SLOT(onNormalChanged(bool)));
+    connect(ui->groupBoxDirection, SIGNAL(toggled(bool)),
+        this, SLOT(onGBDirectionChanged(bool)));
     connect(ui->XSkewEdit, SIGNAL(valueChanged(double)),
         this, SLOT(onXSkewEditChanged(double)));
     connect(ui->YSkewEdit, SIGNAL(valueChanged(double)),
@@ -292,19 +292,24 @@ void TaskPadParameters::onLength2Changed(double len)
     recomputeFeature();
 }
 
-void TaskPadParameters::onNormalChanged(bool on)
+void TaskPadParameters::onGBDirectionChanged(bool on)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
-    pcPad->UseNormalVector.setValue(on);
-    ui->XSkewEdit->setDisabled(on);
-    ui->YSkewEdit->setDisabled(on);
-    ui->ZSkewEdit->setDisabled(on);
+    pcPad->UseCustomVector.setValue(on);
     recomputeFeature();
 }
 
 void TaskPadParameters::onXSkewEditChanged(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    // in case of a null vector, set value 1.0 to avoid that
+    if ((pcPad->YSkew.getValue() == 0.0)
+        && (pcPad->ZSkew.getValue() == 0.0)
+        && (len == 0.0)) {
+        pcPad->XSkew.setValue(1.0);
+        ui->XSkewEdit->setValue(1.0);
+    }
+    else
     pcPad->XSkew.setValue(len);
     recomputeFeature();
 }
@@ -312,13 +317,29 @@ void TaskPadParameters::onXSkewEditChanged(double len)
 void TaskPadParameters::onYSkewEditChanged(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
-    pcPad->YSkew.setValue(len);
+    // in case of a null vector, set value 1.0 to avoid that
+    if ((pcPad->XSkew.getValue() == 0.0)
+        && (pcPad->ZSkew.getValue() == 0.0)
+        && (len == 0.0)) {
+        pcPad->YSkew.setValue(1.0);
+        ui->YSkewEdit->setValue(1.0);
+    }
+    else
+        pcPad->YSkew.setValue(len);
     recomputeFeature();
 }
 
 void TaskPadParameters::onZSkewEditChanged(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    // in case of a null vector, set value 1.0 to avoid that
+    if ((pcPad->XSkew.getValue() == 0.0)
+        && (pcPad->YSkew.getValue() == 0.0)
+        && (len == 0.0)) {
+        pcPad->ZSkew.setValue(1.0);
+        ui->ZSkewEdit->setValue(1.0);
+    }
+    else
     pcPad->ZSkew.setValue(len);
     recomputeFeature();
 }
@@ -411,24 +432,24 @@ double TaskPadParameters::getLength2(void) const
     return ui->lengthEdit2->value().getValue();
 }
 
-bool   TaskPadParameters::getNormal(void) const
+bool   TaskPadParameters::getCustom(void) const
 {
-    return ui->checkBoxNormal->isChecked();
+    return ui->groupBoxDirection->isChecked();
 }
 
 double TaskPadParameters::getXSkew(void) const
 {
-    return ui->XSkewEdit->value();
+    return ui->XSkewEdit->value().getValue();
 }
 
 double TaskPadParameters::getYSkew(void) const
 {
-    return ui->YSkewEdit->value();
+    return ui->YSkewEdit->value().getValue();
 }
 
 double TaskPadParameters::getZSkew(void) const
 {
-    return ui->ZSkewEdit->value();
+    return ui->ZSkewEdit->value().getValue();
 }
 
 double TaskPadParameters::getOffset(void) const
@@ -540,7 +561,7 @@ void TaskPadParameters::apply()
 
     ui->lengthEdit->apply();
     ui->lengthEdit2->apply();
-    FCMD_OBJ_CMD(obj, "UseNormalVector = " << (getNormal() ? 1 : 0));
+    FCMD_OBJ_CMD(obj, "UseCustomVector = " << (getCustom() ? 1 : 0));
     FCMD_OBJ_CMD(obj,"Type = " << getMode());
     QString facename = getFaceName();
     FCMD_OBJ_CMD(obj,"UpToFace = " << facename.toLatin1().data());

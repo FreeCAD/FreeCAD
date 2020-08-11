@@ -58,7 +58,7 @@ public:
 private Q_SLOTS:
     void onLengthChanged(double);
     void onLength2Changed(double);
-    void onNormalChanged(bool);
+    void onGBDirectionChanged(bool);
     void onXSkewEditChanged(double);
     void onYSkewEditChanged(double);
     void onZSkewEditChanged(double);
@@ -75,7 +75,7 @@ protected:
 private:
     double getLength(void) const;
     double getLength2(void) const;
-    bool   getNormal(void) const;
+    bool   getCustom(void) const;
     double getXSkew(void) const;
     double getYSkew(void) const;
     double getZSkew(void) const;
