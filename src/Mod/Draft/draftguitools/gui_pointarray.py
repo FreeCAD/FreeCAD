@@ -45,7 +45,7 @@ the point array.
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
-import Draft_rc
+import Draft_rc # type: ignore
 import draftguitools.gui_base_original as gui_base_original
 
 from draftutils.messages import _err

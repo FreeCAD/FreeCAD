@@ -35,7 +35,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
-import Draft_rc
+import Draft_rc # type: ignore
 import DraftVecUtils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_base as gui_base
@@ -510,7 +510,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
         if hasattr(App, "DraftWorkingPlane"):
             App.DraftWorkingPlane.setup()
 
-        Gui.Snapper.getPoint(callback=self.getPoint,
+        Gui.Snapper.get_point(callback=self.getPoint,
                              movecallback=self.drawArc)
 
     def getPoint(self, point, info):
@@ -548,7 +548,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
             # the arc tracker to show the preview of the final curve.
             if len(self.points) == 2:
                 self.tracker.on()
-            Gui.Snapper.getPoint(last=self.points[-1],
+            Gui.Snapper.get_point(last=self.points[-1],
                                  callback=self.getPoint,
                                  movecallback=self.drawArc)
         else:

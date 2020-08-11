@@ -1199,7 +1199,7 @@ class CommandSetStartPoint:
         obj.StartPoint.z = obj.ClearanceHeight.Value
 
     def Activated(self):
-        FreeCADGui.Snapper.getPoint(callback=self.setpoint)
+        FreeCADGui.Snapper.get_point(callback=self.setpoint)
 
 
 def Create(res):

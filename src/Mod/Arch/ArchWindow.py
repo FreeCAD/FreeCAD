@@ -234,7 +234,7 @@ class _CommandWindow:
         self.tracker.height(self.Height)
         self.tracker.on()
         FreeCAD.Console.PrintMessage(translate("Arch","Choose a face on an existing object or select a preset")+"\n")
-        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
+        FreeCADGui.Snapper.get_point(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
         #FreeCADGui.Snapper.setSelectMode(True)
 
     def getPoint(self,point=None,obj=None):
@@ -466,7 +466,7 @@ class _CommandWindow:
         else:
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetInt("WindowPreset",i)
         if i >= 0:
-            FreeCADGui.Snapper.setSelectMode(False)
+            FreeCADGui.Snapper.set_select_mode(False)
             self.tracker.length(self.Width)
             self.tracker.width(self.Thickness)
             self.tracker.height(self.Height)
@@ -513,7 +513,7 @@ class _CommandWindow:
             #for param in self.wparams:
             #    getattr(self,"val"+param).setEnabled(True)
         else:
-            FreeCADGui.Snapper.setSelectMode(True)
+            FreeCADGui.Snapper.set_select_mode(True)
             self.tracker.off()
             self.im.hide()
             for param in self.wparams:

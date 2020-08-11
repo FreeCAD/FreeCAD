@@ -42,9 +42,9 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt,txt): # type: ignore
         return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
+    def QT_TRANSLATE_NOOP(ctxt,txt): # type: ignore
         return txt
     # \endcond
 
@@ -131,7 +131,7 @@ class Arch_Profile:
         for pre in self.Presets:
             if pre[1] not in self.Categories:
                 self.Categories.append(pre[1])
-        FreeCADGui.Snapper.getPoint(callback=self.getPoint,extradlg=[self.taskbox()],title=translate("Arch","Create profile"))
+        FreeCADGui.Snapper.get_point(callback=self.getPoint,extradlg=[self.taskbox()],title=translate("Arch","Create profile"))
 
     def taskbox(self):
 
@@ -391,7 +391,7 @@ class ViewProviderProfile(Draft._ViewProviderDraft):
 
     def getIcon(self):
 
-        import Arch_rc
+        import Arch_rc # type: ignore
         return ":/icons/Arch_Profile.svg"
 
     def setEdit(self,vobj,mode):

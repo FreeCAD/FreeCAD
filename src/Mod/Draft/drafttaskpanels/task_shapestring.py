@@ -35,7 +35,7 @@ import PySide.QtGui as QtGui
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
-import Draft_rc
+import Draft_rc # type: ignore
 import DraftVecUtils
 import draftguitools.gui_tool_utils as gui_tool_utils
 

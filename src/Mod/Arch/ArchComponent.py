@@ -40,9 +40,9 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt,txt): # type: ignore
         return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
+    def QT_TRANSLATE_NOOP(ctxt,txt): # type: ignore
         return txt
     # \endcond
 
@@ -1223,7 +1223,7 @@ class ViewProviderComponent:
             Path to the appropriate icon .svg file.
         """
 
-        import Arch_rc
+        import Arch_rc # type: ignore
         if hasattr(self,"Object"):
             if hasattr(self.Object,"CloneOf"):
                 if self.Object.CloneOf:

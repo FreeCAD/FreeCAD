@@ -220,7 +220,7 @@ def get_point(target, args,
                                  lastpoint=last,
                                  active=amod,
                                  constrain=cmod,
-                                 noTracker=noTracker)
+                                 no_tracker=noTracker)
         info = Gui.Snapper.snapInfo
         mask = Gui.Snapper.affinity
     if not point:

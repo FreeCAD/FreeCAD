@@ -43,7 +43,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
-import Draft_rc
+import Draft_rc # type: ignore
 import DraftVecUtils
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
@@ -197,7 +197,7 @@ class Trimex(gui_base_original.Modifier):
             if self.extrudeMode:
                 arg["ShiftDown"] = False
             elif hasattr(Gui, "Snapper"):
-                Gui.Snapper.setSelectMode(not self.ctrl)
+                Gui.Snapper.set_select_mode(not self.ctrl)
             wp = not(self.extrudeMode and self.shift)
             self.point, cp, info = gui_tool_utils.getPoint(self, arg,
                                                            workingplane=wp)

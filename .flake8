@@ -1,0 +1,6 @@
+[flake8]
+application-import-names = FreeCAD,FreeCADGui,Draft,Part,draftutils, DraftGeomUtils, DraftVecUtils
+import-order-style = google
+select = N801,N802,N803,N804,N805,N806,N807,N811,N812,N813,N814,N815,N816,N8017,E303,I201,I202,I101,I100
+max-line-length = 160
+filename = */src/Mod/Draft/draftguitools/gui_snapper.py

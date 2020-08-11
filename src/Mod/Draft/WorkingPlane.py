@@ -733,7 +733,7 @@ class Plane:
             import FreeCADGui
             from draftutils.translate import translate
             if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.setGrid()
+                FreeCADGui.Snapper.set_grid()
             if hasattr(FreeCADGui,"draftToolBar"):
                 FreeCADGui.draftToolBar.wplabel.setText(translate("draft", "Top"))
 
@@ -744,7 +744,7 @@ class Plane:
             import FreeCADGui
             from draftutils.translate import translate
             if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.setGrid()
+                FreeCADGui.Snapper.set_grid()
             if hasattr(FreeCADGui,"draftToolBar"):
                 FreeCADGui.draftToolBar.wplabel.setText(translate("draft", "Front"))
 
@@ -755,7 +755,7 @@ class Plane:
             import FreeCADGui
             from draftutils.translate import translate
             if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.setGrid()
+                FreeCADGui.Snapper.set_grid()
             if hasattr(FreeCADGui,"draftToolBar"):
                 FreeCADGui.draftToolBar.wplabel.setText(translate("draft", "Side"))
 

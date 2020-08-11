@@ -33,9 +33,9 @@ if FreeCAD.GuiUp:
     import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt,txt, utf8_decode=False): # type: ignore
         return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
+    def QT_TRANSLATE_NOOP(ctxt,txt): # type: ignore
         return txt
     # \endcond
 
@@ -264,7 +264,7 @@ class _CommandStructure:
             title=translate("Arch","First point of the beam")+":"
         else:
             title=translate("Arch","Base point of column")+":"
-        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=title)
+        FreeCADGui.Snapper.get_point(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=title)
 
     def getPoint(self,point=None,obj=None):
 
@@ -276,7 +276,7 @@ class _CommandStructure:
             return
         if self.bmode and (self.bpoint is None):
             self.bpoint = point
-            FreeCADGui.Snapper.getPoint(last=point,callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=translate("Arch","Next point")+":",mode="line")
+            FreeCADGui.Snapper.get_point(last=point,callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=translate("Arch","Next point")+":",mode="line")
             return
         self.tracker.finalize()
         horiz = True # determines the type of rotation to apply to the final object
@@ -933,7 +933,7 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):
 
-        import Arch_rc
+        import Arch_rc # type: ignore
         if hasattr(self,"Object"):
             if hasattr(self.Object,"CloneOf"):
                 if self.Object.CloneOf:

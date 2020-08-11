@@ -138,7 +138,7 @@ class Line(gui_base_original.Creator):
         if self.oldWP:
             App.DraftWorkingPlane = self.oldWP
             if hasattr(Gui, "Snapper"):
-                Gui.Snapper.setGrid()
+                Gui.Snapper.set_grid()
                 Gui.Snapper.restack()
         self.oldWP = None
 
@@ -268,7 +268,7 @@ class Line(gui_base_original.Creator):
                     self.oldWP = App.DraftWorkingPlane.copy()
                 App.DraftWorkingPlane.alignToPointAndAxis(p, n, upvec=v)
                 if hasattr(Gui, "Snapper"):
-                    Gui.Snapper.setGrid()
+                    Gui.Snapper.set_grid()
                     Gui.Snapper.restack()
                 if self.planetrack:
                     self.planetrack.set(self.node[-1])

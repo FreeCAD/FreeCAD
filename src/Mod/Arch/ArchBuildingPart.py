@@ -842,7 +842,7 @@ class ViewProviderBuildingPart:
                 if autoclip:
                     self.Object.ViewObject.CutView = True
             if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.setGrid()
+                FreeCADGui.Snapper.set_grid()
             if hasattr(FreeCADGui,"draftToolBar"):
                 if restore and hasattr(self,"wptext"):
                     FreeCADGui.draftToolBar.wplabel.setText(self.wptext)

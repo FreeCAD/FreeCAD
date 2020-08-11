@@ -30,7 +30,7 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
-import Draft_rc
+import Draft_rc # type: ignore
 import draftguitools.gui_circulararray
 import draftguitools.gui_orthoarray
 import draftguitools.gui_patharray

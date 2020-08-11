@@ -29,9 +29,9 @@ if FreeCAD.GuiUp:
     import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt,txt): # type: ignore
         return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
+    def QT_TRANSLATE_NOOP(ctxt,txt): # type: ignore
         return txt
     # \endcond
 
@@ -188,7 +188,7 @@ class CommandPanel:
         self.tracker.height(self.Thickness)
         self.tracker.length(self.Length)
         self.tracker.on()
-        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
+        FreeCADGui.Snapper.get_point(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
 
     def getPoint(self,point=None,obj=None):
 

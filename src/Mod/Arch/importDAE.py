@@ -19,12 +19,13 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Mesh, os, numpy, MeshPart, Arch, Draft
+import numpy # type: ignore
+import FreeCAD, Mesh, os, MeshPart, Arch, Draft
 if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
     # \cond
-    def translate(context,text):
+    def translate(context,text): # type: ignore
         return text
     # \endcond
 
@@ -42,7 +43,7 @@ DEBUG = True
 
 try:
     # Python 2 forward compatibility
-    range = xrange
+    range = xrange # type: ignore
 except NameError:
     pass
 
@@ -53,7 +54,7 @@ def checkCollada():
     global collada
     COLLADA = None
     try:
-        import collada
+        import collada # type: ignore
     except ImportError:
         FreeCAD.Console.PrintError(translate("Arch","pycollada not found, collada support is disabled.")+"\n")
         return False
