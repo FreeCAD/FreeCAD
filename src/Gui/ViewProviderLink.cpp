@@ -3328,7 +3328,7 @@ void ViewProviderLink::applyColorsTo(ViewProviderDocumentObject &vp) {
     // reset color and visibility first
     SoFCSwitch::switchOverride(&action, SoFCSwitch::OverrideVisible);
     action.apply(node);
-    SoFCSwitch::switchOverride(&action, SoFCSwitch::OverrideDefault);
+    // SoFCSwitch::switchOverride(&action, SoFCSwitch::OverrideDefault);
 
     std::map<std::string, std::map<std::string,App::Color> > colorMap;
     std::set<std::string> hideList;
