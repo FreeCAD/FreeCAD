@@ -96,6 +96,7 @@ public:
 protected:
     virtual ~SoBrepFaceSet();
     virtual void GLRender(SoGLRenderAction *action);
+    virtual void GLRenderInPath(SoGLRenderAction *action);
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
     virtual void doAction(SoAction* action); 
     virtual SoDetail * createTriangleDetail(
@@ -140,6 +141,8 @@ private:
 
     typedef Gui::SoFCSelectionContextEx SelContext;
     typedef Gui::SoFCSelectionContextExPtr SelContextPtr;
+
+    void glRender(SoGLRenderAction *action, bool inpath);
 
     void renderShape(SoGLRenderAction *action, SelContextPtr ctx, SelContextPtr ctx2,
                      bool checkTransp, bool shadowRendering=false);

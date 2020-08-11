@@ -417,6 +417,16 @@ bool SoBrepFaceSet::isSelectAll(const SelContextPtr &ctx)
 
 void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 {
+    glRender(action, false);
+}
+
+void SoBrepFaceSet::GLRenderInPath(SoGLRenderAction *action)
+{
+    glRender(action, true);
+}
+
+void SoBrepFaceSet::glRender(SoGLRenderAction *action, bool inpath)
+{
     //SoBase::staticDataLock();
     static bool init = false;
     if (!init) {
@@ -431,39 +441,42 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
     auto state = action->getState();
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    // Copied from SoShape::shouldGLRender(). We are replacing it so that we
-    // can do our own transparency sorting.
-    const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
-    unsigned int shapestyleflags = shapestyle->getFlags();
-    if (shapestyleflags & SoShapeStyleElement::INVISIBLE)
-        return;
+    bool shadowRendering = false;
 
-    if (getBoundingBoxCache() && !state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
-        if (getBoundingBoxCache()->isValid(state)) {
-            if (SoCullElement::cullTest(state, getBoundingBoxCache()->getProjectedBox())) {
-                return;
+    if (!inpath) {
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        // Copied from SoShape::shouldGLRender(). We are replacing it so that we
+        // can do our own transparency sorting.
+        const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
+        unsigned int shapestyleflags = shapestyle->getFlags();
+        if (shapestyleflags & SoShapeStyleElement::INVISIBLE)
+            return;
+
+        if (getBoundingBoxCache() && !state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
+            if (getBoundingBoxCache()->isValid(state)) {
+                if (SoCullElement::cullTest(state, getBoundingBoxCache()->getProjectedBox())) {
+                    return;
+                }
             }
         }
-    }
 
-    bool shadowRendering = false;
-    if (shapestyleflags & SoShapeStyleElement::SHADOWMAP) {
-        // We will be rendering transparent shadow below
+        if (shapestyleflags & SoShapeStyleElement::SHADOWMAP) {
+            // We will be rendering transparent shadow below
 #if 0
-        SbBool transparent = (shapestyleflags & (SoShapeStyleElement::TRANSP_TEXTURE|
-                                                 SoShapeStyleElement::TRANSP_MATERIAL)) != 0;
-        if (transparent)
-            return;
+            SbBool transparent = (shapestyleflags & (SoShapeStyleElement::TRANSP_TEXTURE|
+                                                    SoShapeStyleElement::TRANSP_MATERIAL)) != 0;
+            if (transparent)
+                return;
 #endif
-        int style = SoShadowStyleElement::get(state);
-        if (!(style & SoShadowStyleElement::CASTS_SHADOW))
-            return;
-        shadowRendering = true;
-    }
-    //////////////////////////////////////////////////////////////////////////////////////////////
+            int style = SoShadowStyleElement::get(state);
+            if (!(style & SoShadowStyleElement::CASTS_SHADOW))
+                return;
+            shadowRendering = true;
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////////
 
-    selCounter.checkCache(state);
+        selCounter.checkCache(state);
+    }
 
     SelContextPtr ctx2;
     std::vector<SelContextPtr> ctxs;
@@ -534,9 +547,17 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         return;
     }
 
-    // override material binding to PER_PART_INDEX to achieve
-    // preselection/selection with transparency
-    int pushed = overrideMaterialBinding(action,selected,ctx,ctx2);
+    int pushed;
+    Gui::FCDepthFunc guard;
+
+    if (inpath) {
+        pushed = 0;
+        guard.set(GL_LEQUAL);
+    } else {
+        // override material binding to PER_PART_INDEX to achieve
+        // preselection/selection with transparency
+        pushed = overrideMaterialBinding(action,selected,ctx,ctx2);
+    }
 
     if(pushed <= 0) {
         // for non transparent cases, we still use the old selection rendering
@@ -564,6 +585,14 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         // Transparency complicates stuff even more, but not here. It will be
         // handled inside overrideMaterialBinding()
         //
+
+        if (!action->isRenderingDelayedPaths()
+                && ctx && (ctx->isSelected() || ctx->isHighlighted())) {
+            action->addDelayedPath(action->getCurPath()->copy());
+            if (isHighlightAll(ctx) || isSelectAll(ctx))
+                return;
+        }
+
         if(isHighlightAll(ctx)) {
             if(ctx2 && !ctx2->isSelectAll()) {
                 ctx2->selectionColor = ctx->highlightColor;
@@ -575,7 +604,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
             return;
         }
 
-        if(!action->isRenderingDelayedPaths())
+        if(inpath)
             renderHighlight(action,ctx);
         if(ctx && ctx->isSelected()) {
             if(isSelectAll(ctx)) {
@@ -590,12 +619,13 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
                     state->pop();
                 return;
             }
-            if(!action->isRenderingDelayedPaths())
+            if(inpath)
                 renderSelection(action,ctx); 
         }
         if(ctx2) {
-            renderSelection(action,ctx2,false);
-            if(action->isRenderingDelayedPaths()) {
+            if (!inpath)
+                renderSelection(action,ctx2,false);
+            else {
                 renderSelection(action,ctx); 
                 renderHighlight(action,ctx);
             }
@@ -611,7 +641,8 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
             && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()
             && (!ctx2 || ctx2->isSelectAll())
             && (!ctx || (!isHighlightAll(ctx) && (!isSelectAll(ctx)||!ctx->hasSelectionColor())))
-            && action->isRenderingDelayedPaths())
+            && action->isRenderingDelayedPaths()
+            && !inpath)
     {
         // Perform a depth buffer only rendering so that we can draw the
         // correct outline in SoBrepEdgeSet. But only do this if vbo is
@@ -628,14 +659,15 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
     }
 
-    renderShape(action,ctx,ctx2,true);
+    if (!inpath)
+        renderShape(action,ctx,ctx2,true);
 
     if(pushed) {
         SbBool notify = enableNotify(FALSE);
         materialIndex.setNum(0);
         if(notify) enableNotify(notify);
         state->pop();
-    }else if(action->isRenderingDelayedPaths()) {
+    }else if(inpath) {
         renderSelection(action,ctx); 
         renderHighlight(action,ctx);
     }

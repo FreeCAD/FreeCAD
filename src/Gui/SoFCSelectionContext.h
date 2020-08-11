@@ -42,6 +42,8 @@ struct GuiExport SoFCSelectionContextBase {
     virtual ~SoFCSelectionContextBase() {}
     typedef int MergeFunc(int status, SoFCSelectionContextBasePtr &output, 
             SoFCSelectionContextBasePtr input, SoFCSelectionRoot *node);
+
+    virtual bool isCounted() const = 0;
 };
 
 struct SoFCSelectionContext;
@@ -55,6 +57,10 @@ struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
     SbColor highlightColor;
 
     virtual ~SoFCSelectionContext();
+
+    virtual bool isCounted() const {
+        return isSelected();
+    }
 
     bool isSelected() const {
         return !selectionIndex.empty();
@@ -124,6 +130,10 @@ struct GuiExport SoFCSelectionContextEx : SoFCSelectionContext
     }
 
     static MergeFunc merge;
+
+    virtual bool isCounted() const {
+        return !colors.empty() || isSelected();
+    }
 };
 
 class SoHighlightElementAction;

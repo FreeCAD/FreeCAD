@@ -60,6 +60,7 @@ public:
 protected:
     virtual ~SoBrepPointSet() {};
     virtual void GLRender(SoGLRenderAction *action);
+    virtual void GLRenderInPath(SoGLRenderAction *action);
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
     virtual void doAction(SoAction* action); 
 
@@ -68,6 +69,7 @@ protected:
 private:
     typedef Gui::SoFCSelectionContextEx SelContext;
     typedef Gui::SoFCSelectionContextExPtr SelContextPtr;
+    void glRender(SoGLRenderAction *action, bool inpath);
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
     void _renderSelection(SoGLRenderAction *action, bool checkColor, SbColor color, bool push);

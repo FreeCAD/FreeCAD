@@ -611,6 +611,8 @@ protected:
         bool hlAll = false;
         bool hideAll = false;
         static MergeFunc merge;
+
+        virtual bool isCounted() const {return selAll || hideAll;}
     };
     typedef std::shared_ptr<SelContext> SelContextPtr;
     typedef std::vector<SbColor> ColorStack;

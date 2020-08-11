@@ -110,6 +110,16 @@ void SoBrepPointSet::setSiblings(std::vector<SoNode*> &&s) {
 
 void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 {
+    glRender(action, false);
+}
+
+void SoBrepPointSet::GLRenderInPath(SoGLRenderAction *action)
+{
+    glRender(action, true);
+}
+
+void SoBrepPointSet::glRender(SoGLRenderAction *action, bool inpath)
+{
     auto state = action->getState();
 
     const SoCoordinateElement* coords = SoCoordinateElement::getInstance(state);
@@ -119,23 +129,25 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
         return;
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    // Copied from SoShape::shouldGLRender(). Put here for early render skipping
-    const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
-    unsigned int shapestyleflags = shapestyle->getFlags();
-    if ((shapestyleflags & SoShapeStyleElement::INVISIBLE)
-            || (shapestyleflags & SoShapeStyleElement::SHADOWMAP))
-        return;
-    if (getBoundingBoxCache() && !state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
-        if (getBoundingBoxCache()->isValid(state)) {
-            if (SoCullElement::cullTest(state, getBoundingBoxCache()->getProjectedBox())) {
-                return;
+    if (inpath) {
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        // Copied from SoShape::shouldGLRender(). Put here for early render skipping
+        const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
+        unsigned int shapestyleflags = shapestyle->getFlags();
+        if ((shapestyleflags & SoShapeStyleElement::INVISIBLE)
+                || (shapestyleflags & SoShapeStyleElement::SHADOWMAP))
+            return;
+        if (getBoundingBoxCache() && !state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
+            if (getBoundingBoxCache()->isValid(state)) {
+                if (SoCullElement::cullTest(state, getBoundingBoxCache()->getProjectedBox())) {
+                    return;
+                }
             }
         }
-    }
-    //////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////
 
-    selCounter.checkCache(state);
+        selCounter.checkCache(state);
+    }
 
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,ctx2);
@@ -148,7 +160,14 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     }
 
     Gui::FCDepthFunc depthGuard;
-    if(!action->isRenderingDelayedPaths())
+    if(!action->isRenderingDelayedPaths()) {
+        if (ctx && (ctx->isSelected() || ctx->isHighlighted())) {
+            action->addDelayedPath(action->getCurPath()->copy());
+            if (ctx->isHighlightAll() || ctx->isSelectAll())
+                return;
+        }
+        depthGuard.set(GL_LEQUAL);
+    } else if (inpath)
         depthGuard.set(GL_LEQUAL);
 
     if(ctx && ctx->isHighlightAll()
@@ -193,9 +212,9 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
         }
     }
 
-    if(ctx2 && ctx2->isSelected())
+    if(!inpath && ctx2 && ctx2->isSelected())
         renderSelection(action,ctx2,false);
-    else {
+    else if (!inpath) {
         uint32_t color;
         SoColorPacker packer;
         float trans = 0.0;

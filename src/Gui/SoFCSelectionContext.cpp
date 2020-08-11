@@ -280,6 +280,13 @@ void SoFCSelectionCounter::checkAction(SoHighlightElementAction *hlaction) {
 void SoFCSelectionCounter::checkAction(SoSelectionElementAction *selaction, SoFCSelectionContextBasePtr ctx) {
     switch(selaction->getType()) {
     case SoSelectionElementAction::None:
+    case SoSelectionElementAction::Remove:
+        if(selaction->isSecondary()) {
+            if (ctx && ctx->counter && !ctx->isCounted()) {
+                *counter -= 1;
+                ctx->counter.reset();
+            }
+        }
         return;
     case SoSelectionElementAction::All:
     case SoSelectionElementAction::Append:
@@ -288,10 +295,8 @@ void SoFCSelectionCounter::checkAction(SoSelectionElementAction *selaction, SoFC
     default:
         break;
     }
-    if(selaction->isSecondary()) {
-        if(ctx && !ctx->counter) {
-            *counter += 1;
-            ctx->counter = counter;
-        }
+    if(selaction->isSecondary() && ctx && ctx->isCounted() && !ctx->counter) {
+        *counter += 1;
+        ctx->counter = counter;
     }
 }

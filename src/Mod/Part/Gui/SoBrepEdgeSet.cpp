@@ -123,27 +123,40 @@ void SoBrepEdgeSet::setSiblings(std::vector<SoNode*> &&s) {
     siblings = std::move(s);
 }
 
-void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
+void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
+{
+    glRender(action, false);
+}
 
+void SoBrepEdgeSet::GLRenderInPath(SoGLRenderAction *action)
+{
+    glRender(action, true);
+}
+
+void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
+{
     auto state = action->getState();
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    // Copied from SoShape::shouldGLRender(). Put here for early render skipping
-    const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
-    unsigned int shapestyleflags = shapestyle->getFlags();
-    if ((shapestyleflags & SoShapeStyleElement::INVISIBLE)
-            || (shapestyleflags & SoShapeStyleElement::SHADOWMAP))
-        return;
-    if (getBoundingBoxCache() && !state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
-        if (getBoundingBoxCache()->isValid(state)) {
-            if (SoCullElement::cullTest(state, getBoundingBoxCache()->getProjectedBox())) {
-                return;
+    if (!inpath) {
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        // Copied from SoShape::shouldGLRender(). Put here for early render skipping
+        const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
+        unsigned int shapestyleflags = shapestyle->getFlags();
+        if ((shapestyleflags & SoShapeStyleElement::INVISIBLE)
+                || (shapestyleflags & SoShapeStyleElement::SHADOWMAP))
+            return;
+        if (getBoundingBoxCache() && !state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
+            if (getBoundingBoxCache()->isValid(state)) {
+                if (SoCullElement::cullTest(state, getBoundingBoxCache()->getProjectedBox())) {
+                    return;
+                }
             }
         }
-    }
-    //////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////
 
-    selCounter.checkCache(state);
+        selCounter.checkCache(state);
+    }
+
 
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,ctx2);
@@ -156,7 +169,14 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
     }
 
     Gui::FCDepthFunc depthGuard;
-    if(!action->isRenderingDelayedPaths())
+    if(!action->isRenderingDelayedPaths()) {
+        if (ctx && (ctx->isSelected() || ctx->isHighlighted())) {
+            action->addDelayedPath(action->getCurPath()->copy());
+            if (ctx->isHighlightAll() || ctx->isSelectAll())
+                return;
+        }
+        depthGuard.set(GL_LEQUAL);
+    } else if (inpath)
         depthGuard.set(GL_LEQUAL);
 
     if(ctx && ctx->isHighlightAll()
@@ -188,9 +208,10 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
         //
         // The second pass renables depth test, and set depth function to
         // GL_LEQUAL to render the outline.
-        if(action->isRenderingDelayedPaths())
-            pass = 0;
-        else if (isSelected(ctx)) {
+        if(action->isRenderingDelayedPaths()) {
+            if (!inpath)
+                pass = 0;
+        } else if (isSelected(ctx)) {
             // If we are selected but not rendering inside the group on top.
             // Just skip the rendering
             return;
@@ -244,9 +265,9 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
                 continue;
             }
         }
-        if(ctx2 && ctx2->isSelected())
+        if(!inpath && ctx2 && ctx2->isSelected())
             renderSelection(action,ctx2,false);
-        else {
+        else if (!inpath) {
             uint32_t color;
             SoColorPacker packer;
             float trans = 0.0;
@@ -268,7 +289,6 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
                 inherited::GLRender(action);
                 state->pop();
             }
-
         }
 
         if(ctx && ctx->isSelected() && ctx->hasSelectionColor())
