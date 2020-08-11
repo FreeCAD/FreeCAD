@@ -2593,8 +2593,10 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
             center = false;
     } else {
         double sum = 0;
-        for(size_t i=0, c=points.size()-1; i<c; ++i)
-            sum += (points[i+1][0] - points[i][0]) * (points[i+1][1] + points[i][1]);
+        size_t i=0;
+        for(size_t c=points.size()-1; i<c; ++i)
+            sum += ((double)points[i+1][0] - points[i][0]) * ((double)points[i+1][1] + points[i][1]);
+        sum += ((double)points[0][0] - points[i][0]) * (points[0][1] + points[i][1]);
         // use polygon windings to choose intersection or center inclusion
         center = sum>0;
     }
