@@ -86,6 +86,7 @@
 # include <QStatusBar>
 # include <QBitmap>
 # include <QMimeData>
+# include <QApplication>
 #endif
 
 #include <Inventor/sensors/SoTimerSensor.h>
@@ -3379,8 +3380,12 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
 
         switch (ke->getKey()) {
         case SoKeyboardEvent::ESCAPE:
-            Selection().rmvPreselect();
-            toggleShadowLightManip(0);
+            if (QApplication::queryKeyboardModifiers() == Qt::ShiftModifier)
+                Selection().clearSelection();
+            else {
+                Selection().rmvPreselect();
+                toggleShadowLightManip(0);
+            }
             //fall through
         case SoKeyboardEvent::Q: // ignore 'Q' keys (to prevent app from being closed)
             return inherited::processSoEvent(ev);
