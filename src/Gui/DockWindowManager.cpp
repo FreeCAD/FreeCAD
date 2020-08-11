@@ -1426,7 +1426,7 @@ bool OverlayTabWidget::getAutoHideRect(QRect &rect) const
     case Qt::LeftDockWidgetArea:
     case Qt::RightDockWidgetArea:
         if (_TopOverlay->isVisible())
-            rect.setTop(std::max(rect.top(), _TopOverlay->geometry().bottom()));
+            rect.setTop(std::max(rect.top(), _TopOverlay->rectOverlay.bottom()));
         if (dockArea == Qt::RightDockWidgetArea)
             rect.setLeft(rect.left() + std::max(rect.width()-hintWidth,0));
         else
@@ -1435,7 +1435,7 @@ bool OverlayTabWidget::getAutoHideRect(QRect &rect) const
     case Qt::TopDockWidgetArea:
     case Qt::BottomDockWidgetArea:
         if (_LeftOverlay->isVisible())
-            rect.setLeft(std::max(rect.left(),_LeftOverlay->geometry().right()));
+            rect.setLeft(std::max(rect.left(),_LeftOverlay->rectOverlay.right()));
         if (dockArea == Qt::TopDockWidgetArea)
             rect.setBottom(rect.bottom() - std::max(rect.height()-hintWidth,0));
         else {
@@ -1948,27 +1948,6 @@ struct OverlayInfo {
         tabWidget->saveTabs();
     }
 
-    bool geometry(QRect &rect, QRect &rectHint) {
-        if(!tabWidget->count()) {
-            rect = rectHint = QRect(0,0,0,0);
-            return false;
-        }
-        rect = tabWidget->getRect();
-        if (!tabWidget->isVisible() 
-                || tabWidget->getState() != OverlayTabWidget::State_Normal)
-            rectHint = QRect(0,0,0,0);
-        else
-            rectHint = rect;
-        return true;
-    }
-
-    void setGeometry(int x, int y, int w, int h)
-    {
-        if(!tabWidget->count())
-            return;
-        tabWidget->setRect(QRect(x,y,w,h));
-    }
-
     void save()
     {
     }
@@ -2288,8 +2267,10 @@ struct DockWindowManagerP
             ViewParams::getCornerNaviCube() : -1;
 
         QRect rect;
-        QRect rectBottom;
-        if(_bottom.geometry(rect, rectBottom)) {
+        QRect rectBottom(0,0,0,0);
+        if(_bottom.tabWidget->count()) {
+            rect = _bottom.tabWidget->getRect();
+
             QSize ofs = _bottom.tabWidget->getOffset();
             int delta = _bottom.tabWidget->getSizeDelta();
             h -= ofs.height();
@@ -2300,13 +2281,21 @@ struct DockWindowManagerP
                 bw -= naviCubeSize;
             if(bw < 10)
                 bw = 10;
+
             // Bottom width is maintain the same to reduce QTextEdit re-layout
             // which may be expensive if there are lots of text, e.g. for
             // ReportView or PythonConsole.
-            _bottom.setGeometry(ofs.width(),h-rect.height(),bw,rect.height());
+            _bottom.tabWidget->setRect(QRect(ofs.width(),h-rect.height(),bw,rect.height()));
+
+            if (_bottom.tabWidget->isVisible() 
+                    && _bottom.tabWidget->getState() == OverlayTabWidget::State_Normal)
+                rectBottom = _bottom.tabWidget->getRect();
         }
-        QRect rectLeft;
-        if(_left.geometry(rect, rectLeft)) {
+
+        QRect rectLeft(0,0,0,0);
+        if(_left.tabWidget->count()) {
+            rect = _left.tabWidget->getRect();
+
             auto ofs = _left.tabWidget->getOffset();
             if(naviCorner == 0)
                 ofs.setWidth(ofs.width()+naviCubeSize);
@@ -2314,11 +2303,18 @@ struct DockWindowManagerP
             if(naviCorner == 2 && naviCubeSize > rectBottom.height())
                 delta += naviCubeSize - rectBottom.height();
             int lh = std::max(h-ofs.width()-delta, 10);
-            _left.setGeometry(ofs.height(),ofs.width(),rect.width(),lh);
+
+            _left.tabWidget->setRect(QRect(ofs.height(),ofs.width(),rect.width(),lh));
+
+            if (_left.tabWidget->isVisible() 
+                    && _left.tabWidget->getState() == OverlayTabWidget::State_Normal)
+                rectLeft = _left.tabWidget->getRect();
         }
 
         QRect rectRight(0,0,0,0);
-        if(_right.geometry(rect, rectRight)) {
+        if(_right.tabWidget->count()) {
+            rect = _right.tabWidget->getRect();
+
             auto ofs = _right.tabWidget->getOffset();
             if(naviCorner == 1)
                 ofs.setWidth(ofs.width()+naviCubeSize);
@@ -2327,10 +2323,17 @@ struct DockWindowManagerP
                 delta += naviCubeSize - rectBottom.height();
             int rh = std::max(h-ofs.width()-delta, 10);
             w -= ofs.height();
-            _right.setGeometry(w-rect.width(),ofs.width(),rect.width(),rh);
+
+            _right.tabWidget->setRect(QRect(w-rect.width(),ofs.width(),rect.width(),rh));
+
+            if (_right.tabWidget->isVisible() 
+                    && _right.tabWidget->getState() == OverlayTabWidget::State_Normal)
+                rectRight = _right.tabWidget->getRect();
         }
-        QRect rectTop;
-        if(_top.geometry(rect, rectTop)) {
+
+        if(_top.tabWidget->count()) {
+            rect = _top.tabWidget->getRect();
+
             auto ofs = _top.tabWidget->getOffset();
             int delta = _top.tabWidget->getSizeDelta();
             if(naviCorner == 0)
@@ -2338,7 +2341,8 @@ struct DockWindowManagerP
             else if(naviCorner == 1)
                 rectRight.setWidth(std::max(rectRight.width(), naviCubeSize));
             int tw = w-rectLeft.width()-rectRight.width()-ofs.width()-delta;
-            _top.setGeometry(rectLeft.width()-ofs.width(),ofs.height(),tw,rect.height());
+
+            _top.tabWidget->setRect(QRect(rectLeft.width()-ofs.width(),ofs.height(),tw,rect.height()));
         }
     }
 
