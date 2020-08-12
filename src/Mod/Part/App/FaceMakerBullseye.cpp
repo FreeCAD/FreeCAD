@@ -46,6 +46,8 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
+# include <GProp_GProps.hxx>
+# include <BRepGProp.hxx>
 # include <QtGlobal>
 #endif
 
@@ -114,7 +116,14 @@ void FaceMakerBullseye::Build_Essence()
     std::vector< std::unique_ptr<FaceDriller> > faces;
     for (int i = static_cast<int>(wires.size())-1; i >= 0; --i) {
         TopoDS_Wire &w = wires[i];
-
+        // Discard degenerated wires (Bug 4117)
+        const TopoDS_Shape& shape = static_cast<TopoDS_Shape>(w);
+        if (shape.IsNull())
+            throw Base::ValueError("Wire is null.");
+        GProp_GProps props;
+        BRepGProp::LinearProperties(shape, props);
+        if (props.Mass() < Precision::Confusion())
+            continue;
         //test if this wire is on any of existing faces (if yes, it's a hole;
         // if no, it's a beginning of a new face).
         //Since we are assuming the wires do not intersect, testing if one vertex of wire is in a face is enough.
