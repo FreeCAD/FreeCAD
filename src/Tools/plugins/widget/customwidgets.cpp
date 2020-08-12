@@ -1626,6 +1626,18 @@ void UIntSpinBox::updateValidator()
 
 // --------------------------------------------------------------------
 
+IntSpinBox::IntSpinBox(QWidget* parent)
+  : QSpinBox(parent)
+{
+}
+
+IntSpinBox::~IntSpinBox()
+{
+
+}
+
+// --------------------------------------------------------------------
+
 PrefSpinBox::PrefSpinBox ( QWidget * parent )
   : QSpinBox(parent)
 {
@@ -1653,6 +1665,17 @@ void PrefSpinBox::setEntryName ( const QByteArray& name )
 void PrefSpinBox::setParamGrpPath ( const QByteArray& name )
 {
     m_sPrefGrp = name;
+}
+
+// --------------------------------------------------------------------
+
+DoubleSpinBox::DoubleSpinBox(QWidget* parent)
+  : QDoubleSpinBox(parent)
+{
+}
+
+DoubleSpinBox::~DoubleSpinBox()
+{
 }
 
 // --------------------------------------------------------------------
