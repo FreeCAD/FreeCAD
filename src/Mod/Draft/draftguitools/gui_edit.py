@@ -882,6 +882,9 @@ class Edit(gui_base_original.Modifier):
                         actions = ["set last angle"]
                     elif ep == 3:  # user is over arc mid point
                         actions = ["set radius"]
+            elif utils.get_type(obj) == "Arch_Wall":
+                    if ep == 0 or ep == 1:  # user is a wall endpoint
+                        actions = ["reset end", "align"]
             else:
                 return
         else:
@@ -904,16 +907,22 @@ class Edit(gui_base_original.Modifier):
 
     def evaluate_menu_action(self, labelname):
         action_label = str(labelname.text())
-        # addPoint and deletePoint menu
-        if action_label == "delete point":
-            self.delPoint(self.event)
-        elif action_label == "add point":
-            self.addPoint(self.event)
-        # Bezier curve menu
-        elif action_label in ["make sharp", "make tangent", "make symmetric"]:
+
+        if self.overNode:
             doc = self.overNode.get_doc_name()
             obj = App.getDocument(doc).getObject(self.overNode.get_obj_name())
             idx = self.overNode.get_subelement_index()
+
+        # addPoint and deletePoint menu
+
+        if action_label == "delete point":
+            self.delPoint(self.event)
+
+        elif action_label == "add point":
+            self.addPoint(self.event)
+
+        # Bezier curve menu
+        elif action_label in ["make sharp", "make tangent", "make symmetric"]:
             if action_label == "make sharp":
                 edit_draft.smoothBezPoint(obj, idx, 'Sharp')
             elif action_label == "make tangent":
@@ -921,15 +930,27 @@ class Edit(gui_base_original.Modifier):
             elif action_label == "make symmetric":
                 edit_draft.smoothBezPoint(obj, idx, 'Symmetric')
             self.resetTrackers(obj)
+
         # arc tools
         elif action_label in ("move arc", "set radius",
                               "set first angle", "set last angle"):
             self.alt_edit_mode = 1
             self.startEditing(self.event)
+
         elif action_label == "invert arc":
             pos = self.event.getPosition()
             obj = self.get_selected_obj_at_position(pos)
             edit_draft.arcInvert(obj)
+
+        # experimental wall tools
+        elif action_label in ["reset end", "align"]:
+            if action_label == "reset end":
+                obj.Proxy.reset_end(obj, idx)
+                obj.recompute()
+            if action_label == "align":
+                self.alt_edit_mode = 1
+                self.startEditing(self.event)
+
         del self.event
 
 
@@ -945,6 +966,8 @@ class Edit(gui_base_original.Modifier):
         """
         eps = None
         objectType = utils.get_type(obj)
+
+        is_global = False # set to true if the editpoints are returned in global coordinates system
 
         if objectType in ["Wire", "BSpline"]:
             eps = edit_draft.getWirePts(obj)
@@ -975,7 +998,11 @@ class Edit(gui_base_original.Modifier):
                 for point in basepoints:
                     eps.append(obj.Placement.multVec(point)) #works ok except if App::Part is rotated... why?
             return eps
-        
+
+        elif objectType == "Arch_Wall":
+            eps = edit_arch.getArchWallPts(obj)
+            is_global = True
+
         elif objectType == "Window":
             eps = edit_arch.getWindowPts(obj)
 
@@ -1009,8 +1036,11 @@ class Edit(gui_base_original.Modifier):
         elif objectType == "Sketch":
             eps = edit_sketcher.getSketchPts(obj)
         
+        if not is_global:
+            eps = self.globalize_vectors(obj, eps)
+
         if eps:
-            return self.globalize_vectors(obj, eps)
+            return eps
         else:
             return None
 
@@ -1062,6 +1092,9 @@ class Edit(gui_base_original.Modifier):
                     if utils.get_type(obj.Base) in ["Wire", "Circle", "Rectangle",
                                                     "Polygon", "Sketch"]:
                         self.update(obj.Base, nodeIndex - 1, v)
+
+        elif objectType == "Arch_Wall":
+            eps = edit_arch.updateArchWall(obj, nodeIndex, v, self.alt_edit_mode)
 
         elif objectType == "Window":
             edit_arch.updateWindow(obj, nodeIndex, v)
