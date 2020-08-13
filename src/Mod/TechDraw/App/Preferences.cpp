@@ -33,6 +33,7 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
 
@@ -191,9 +192,12 @@ QString Preferences::defaultTemplate()
                                          GetGroup("Mod/TechDraw/Files");
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates/";
     std::string defaultFileName = defaultDir + "A4_LandscapeTD.svg";
-    QString templateFileName = QString::fromStdString(hGrp->GetASCII("TemplateFile",defaultFileName.c_str()));
-    if (templateFileName.isEmpty()) {
+    std::string prefFileName = hGrp->GetASCII("TemplateFile",defaultFileName.c_str());
+    QString templateFileName = QString::fromStdString(prefFileName);
+    Base::FileInfo fi(prefFileName);
+    if (!fi.isReadable()) {
         templateFileName = QString::fromStdString(defaultFileName);
+        Base::Console().Warning("Template File: %s is not readable\n", prefFileName.c_str());
     }
     return templateFileName;
 }
@@ -204,7 +208,13 @@ QString Preferences::defaultTemplateDir()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates";
-    QString templateDir = QString::fromStdString(hGrp->GetASCII("TemplateDir", defaultDir.c_str()));
+    std::string prefTemplateDir = hGrp->GetASCII("TemplateDir", defaultDir.c_str());
+    QString templateDir = QString::fromStdString(prefTemplateDir);
+    Base::FileInfo fi(prefTemplateDir);
+    if (!fi.isReadable()) {
+        templateDir = QString::fromStdString(defaultDir);
+        Base::Console().Warning("Template Directory: %s is not readable\n", prefTemplateDir.c_str());
+   }
     return templateDir;
 }
 
@@ -215,7 +225,11 @@ std::string Preferences::lineGroupFile()
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/LineGroup/";
     std::string defaultFileName = defaultDir + "LineGroup.csv";
-    
     std::string lgFileName = hGrp->GetASCII("LineGroupFile",defaultFileName.c_str());
+    Base::FileInfo fi(lgFileName);
+    if (!fi.isReadable()) {
+        lgFileName = defaultFileName;
+        Base::Console().Warning("Line Group File: %s is not readable\n", lgFileName.c_str());
+    }
     return lgFileName;
 }
