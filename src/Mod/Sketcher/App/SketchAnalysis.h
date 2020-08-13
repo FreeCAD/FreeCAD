@@ -104,6 +104,11 @@ public:
     /// Equality constraints simple routine Make step (see constructor)
     void makeMissingEquality(bool onebyone = true);
 
+    /// Detect degenerated geometries
+    int detectDegeneratedGeometries(double tolerance);
+    /// Remove degenerated geometries
+    int removeDegeneratedGeometries(double tolerance);
+
     // Complex routines (see constructor)
 
     /// Fully automated multi-constraint autoconstraining
