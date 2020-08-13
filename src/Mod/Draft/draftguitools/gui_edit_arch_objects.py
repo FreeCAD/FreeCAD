@@ -41,7 +41,7 @@ import draftutils.utils as utils
 
 
 def get_supported_arch_objects():
-    return ["Wall", "Window", "Structure", "Space", "PanelCut", "PanelSheet"]
+    return ["Arch_Wall", "Wall", "Window", "Structure", "Space", "PanelCut", "PanelSheet"]
 
 
 # WALL---------------------------------------------------------------------
@@ -63,6 +63,45 @@ def updateWall(obj, nodeIndex, v):
         vz = DraftVecUtils.project(v, App.Vector(0, 0, 1))
         if vz.Length > 0:
             obj.Height = vz.Length
+    obj.recompute()
+
+# Arch_Wall ---------------------------------------------------------------------
+# support for new experimental Arch_Wall
+
+def getArchWallPts(obj):
+    """Return the list of edipoints for the given Arch Wall object.
+    """
+    editpoints = []
+    # height of the wall
+    editpoints.append(obj.Proxy.get_first_point(obj))
+    editpoints.append(obj.Proxy.get_last_point(obj))
+    return editpoints
+
+
+def updateArchWall(obj, nodeIndex, v, alt_edit_mode):
+    if alt_edit_mode == 0:
+        # trim/extend endpoint
+        if nodeIndex == 0:
+            obj.Proxy.set_first_point(obj, v, local=True)
+        elif nodeIndex == 1:
+            obj.Proxy.set_last_point(obj, v, local=True)
+    elif alt_edit_mode == 1:
+        # rotate wall on the opposite endpoint (context menu "align")
+        import Draft
+        global_v = obj.getGlobalPlacement().multVec(v)
+        p1 = obj.Proxy.get_first_point(obj)
+        p2 = obj.Proxy.get_last_point(obj)
+        if nodeIndex == 0:
+            current_angle = DraftVecUtils.angle(App.Vector(1,0,0), p1.sub(p2))
+            new_angle = DraftVecUtils.angle(App.Vector(1,0,0), global_v.sub(p2))
+            Draft.rotate(obj, math.degrees(new_angle - current_angle), p2)
+            # obj.Proxy.set_first_point(obj, global_v) # this causes frequent hard crashes, probably to delay
+        elif nodeIndex == 1:
+            current_angle = DraftVecUtils.angle(App.Vector(1,0,0), p2.sub(p1))
+            new_angle = DraftVecUtils.angle(App.Vector(1,0,0), global_v.sub(p1))
+            Draft.rotate(obj, math.degrees(new_angle - current_angle), p1)
+            #obj.Proxy.set_last_point(obj, global_v) # this causes frequent hard crashes, probably to delay
+
     obj.recompute()
 
 
