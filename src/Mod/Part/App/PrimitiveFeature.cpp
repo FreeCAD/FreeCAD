@@ -915,6 +915,7 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         Standard_Real myPitch  = 1.0;
         Standard_Real myHeight = myNumRot * myPitch;
         Standard_Real myAngle  = atan(myGrowth / myPitch);
+        Standard_Real partTurn = myNumRot - floor(myNumRot);
         TopoShape helix;
 
         if (myGrowth < Precision::Confusion())
@@ -928,6 +929,7 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
 
         gp_Pnt2d aPnt(0, 0);
         gp_Dir2d aDir(2. * M_PI, myPitch);
+        Standard_Real coneDir = 1.0;
         gp_Ax2d aAx2d(aPnt, aDir);
 
         Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
@@ -940,12 +942,38 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         gp_Pnt2d cend(u, v);
         end = cend;
 
-        Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
+//         Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
+// 
+//         TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+//         TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
+//         BRepLib::BuildCurves3d(wire);
 
-        TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
-        TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
+        BRepBuilderAPI_MakeWire mkWire;
+        Handle(Geom2d_TrimmedCurve) segm;
+        TopoDS_Edge edgeOnSurf;
+
+        for (unsigned long i = 0; i < floor(myNumRot); i++) {
+            u = coneDir * (i+1) * 2.0 * M_PI;
+            v = ((i+1) * myPitch) / cos(myAngle);
+            end = gp_Pnt2d(u, v);
+            segm = GCE2d_MakeSegment(beg , end);
+            edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+            mkWire.Add(edgeOnSurf);
+            beg = end;
+        }
+
+        if (partTurn > Precision::Confusion()) {
+            u = coneDir * myNumRot * 2.0 * M_PI;
+            v = myHeight / cos(myAngle);
+            end = gp_Pnt2d(u, v);
+            segm = GCE2d_MakeSegment(beg , end);
+            edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+            mkWire.Add(edgeOnSurf);
+        }
+
+        TopoDS_Wire wire = mkWire.Wire();
         BRepLib::BuildCurves3d(wire);
-
+        
         Handle(Geom_Plane) aPlane = new Geom_Plane(gp_Pnt(0.0,0.0,0.0), gp::DZ());
         Standard_Real range = (myNumRot+1) * myGrowth + 1 + myRadius;
         BRepBuilderAPI_MakeFace mkFace(aPlane, -range, range, -range, range
