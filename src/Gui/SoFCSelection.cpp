@@ -60,6 +60,8 @@
 #include "SoFCUnifiedSelection.h"
 #include "ViewParams.h"
 
+FC_LOG_LEVEL_INIT("Selection", true, true)
+
 // For 64-bit system the method using the front buffer doesn't work at all for lines.
 // Thus, use the method which forces a redraw every time. This is a bit slower but at
 // least it works.
@@ -665,156 +667,18 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
 #endif
 }
 
-// doc from parent
-void
-SoFCSelection::GLRenderBelowPath(SoGLRenderAction * action)
-{
-    SoState * state = action->getState();
-    SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext);
-    if(selContext2->checkGlobal(ctx))
-        ctx = selContext2;
-    if(!useNewSelection.getValue() && selContext == ctx) {
-        ctx->selectionColor = this->colorSelection.getValue();
-        ctx->highlightColor = this->colorHighlight.getValue();
-        if(this->selected.getValue()==SELECTED)
-            ctx->selectAll();
-        else
-            ctx->selectionIndex.clear();
-        if(!this->highlighted)
-            ctx->highlightAll();
-        else
-            ctx->removeHighlight();
-    }
-
-#ifdef NO_FRONTBUFFER
-    if(this->style.getValue() == SoFCSelection::BOX 
-            || ViewParams::instance()->getShowSelectionBoundingBox()) 
-    {
-        inherited::GLRenderBelowPath(action);
-        if(this->setOverride(action,ctx))
-            state->pop();
-    } else if(this->setOverride(action,ctx)) {
-        inherited::GLRenderBelowPath(action);
-        state->pop();
-    } else 
-        inherited::GLRenderBelowPath(action);
-#else
-    // Set up state for locate highlighting (if necessary)
-    GLint oldDepthFunc;
-    SbBool drawHighlighted = preRender(action, oldDepthFunc);
-
-    // now invoke the parent method
-    inherited::GLRenderBelowPath(action);
-
-    // Restore old depth buffer model if needed
-    if (drawHighlighted || highlighted)
-        glDepthFunc((GLenum)oldDepthFunc);
-
-    // Clean up state if needed
-    if (drawHighlighted)
-        action->getState()->pop();
-#endif
-}
-
 void SoFCSelection::GLRender(SoGLRenderAction * action)
 {
-    SoState * state = action->getState();
-    SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext);
-    if(selContext2->checkGlobal(ctx))
-        ctx = selContext2;
-    if(!useNewSelection.getValue() && selContext == ctx) {
-        ctx->selectionColor = this->colorSelection.getValue();
-        ctx->highlightColor = this->colorHighlight.getValue();
-        if(this->selected.getValue()==SELECTED)
-            ctx->selectAll();
-        else
-            ctx->selectionIndex.clear();
-        if(!this->highlighted)
-            ctx->highlightAll();
-        else
-            ctx->removeHighlight();
-    }
-
-#ifdef NO_FRONTBUFFER
-    if(this->style.getValue() == SoFCSelection::BOX 
-            || ViewParams::instance()->getShowSelectionBoundingBox()) 
-    {
-        inherited::GLRender(action);
-        if(this->setOverride(action,ctx))
-            state->pop();
-    } else if(this->setOverride(action,ctx)) {
-        inherited::GLRender(action);
-        state->pop();
-    } else
-        inherited::GLRender(action);
-#else
-    // Set up state for locate highlighting (if necessary)
-    GLint oldDepthFunc;
-    SbBool drawHighlighted = preRender(action, oldDepthFunc);
-
-    // now invoke the parent method
-    inherited::GLRender(action);
-
-    // Restore old depth buffer model if needed
-    if (drawHighlighted || highlighted)
-        glDepthFunc((GLenum)oldDepthFunc);
-
-    // Clean up state if needed
-    if (drawHighlighted)
-        action->getState()->pop();
-#endif
+    glRender(action, action->isRenderingDelayedPaths());
 }
 
 // doc from parent
 void
 SoFCSelection::GLRenderInPath(SoGLRenderAction * action)
 {
-    SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext);
-    if(selContext2->checkGlobal(ctx))
-        ctx = selContext2;
-    if(!useNewSelection.getValue() && selContext == ctx) {
-        ctx->selectionColor = this->colorSelection.getValue();
-        ctx->highlightColor = this->colorHighlight.getValue();
-        if(this->selected.getValue()==SELECTED)
-            ctx->selectAll();
-        else
-            ctx->selectionIndex.clear();
-        if(!this->highlighted)
-            ctx->highlightAll();
-        else
-            ctx->removeHighlight();
-    }
-#ifdef NO_FRONTBUFFER
-    // check if preselection is active
-    SoState * state = action->getState();
-    if(this->style.getValue() == SoFCSelection::BOX 
-            || ViewParams::instance()->getShowSelectionBoundingBox()) 
-    {
-        inherited::GLRenderInPath(action);
-        if(this->setOverride(action,ctx))
-            state->pop();
-    } else if(this->setOverride(action,ctx)) {
-        inherited::GLRenderInPath(action);
-        state->pop();
-    } else
-        inherited::GLRenderInPath(action);
-#else
-    // Set up state for locate highlighting (if necessary)
-    GLint oldDepthFunc;
-    SbBool drawHighlighted = preRender(action, oldDepthFunc);
-
-    // now invoke the parent method
-    inherited::GLRenderInPath(action);
-
-    // Restore old depth buffer model if needed
-    if (drawHighlighted || highlighted)
-        glDepthFunc((GLenum)oldDepthFunc);
-
-    // Clean up state if needed
-    if (drawHighlighted)
-        action->getState()->pop();
-#endif
+    glRender(action, action->isRenderingDelayedPaths());
 }
+
 
 SbBool
 SoFCSelection::preRender(SoGLRenderAction *action, GLint &oldDepthFunc)
@@ -972,16 +836,52 @@ SoFCSelection::readInstance  (  SoInput *  in, unsigned short  flags )
     SbBool ret = inherited::readInstance(in, flags);
     return ret;
 }
-//
-// update override state before rendering
-//
-bool
-SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
+
+void SoFCSelection::glRender(SoGLRenderAction *action, bool inpath)
 {
+    SoState * state = action->getState();
+    SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext);
+    if(selContext2->checkGlobal(ctx))
+        ctx = selContext2;
+    if(!useNewSelection.getValue() && selContext == ctx) {
+        ctx->selectionColor = this->colorSelection.getValue();
+        ctx->highlightColor = this->colorHighlight.getValue();
+        if(this->selected.getValue()==SELECTED)
+            ctx->selectAll();
+        else
+            ctx->selectionIndex.clear();
+        if(!this->highlighted)
+            ctx->highlightAll();
+        else
+            ctx->removeHighlight();
+    }
+
     HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
     bool preselected = ctx && ctx->isHighlighted() && (useNewSelection.getValue()||mymode == AUTO);
-    if (!preselected && mymode!=ON && (!ctx || !ctx->isSelected()))
-        return false;
+    if (!preselected && mymode!=ON && (!ctx || !ctx->isSelected())) {
+        inherited::GLRender(action);
+        return;
+    }
+
+    Styles mystyle = (Styles) this->style.getValue();
+
+    if (!inpath && (mystyle == SoFCSelection::BOX
+                    || ViewParams::instance()->getShowSelectionBoundingBox()))
+    {
+        inherited::GLRender(action);
+    }
+
+    if (!action->isRenderingDelayedPaths()) {
+        if (preselected || !ViewParams::getShowSelectionOnTop())
+            action->addDelayedPath(action->getCurPath()->copy());
+        else
+            SoCacheElement::invalidate(state);
+        return;
+    }
+
+    Gui::FCDepthFunc guard;
+    if (!ViewParams::getShowSelectionOnTop())
+        guard.set(GL_LEQUAL);
 
     // uniqueId is returned by SoNode::getNodeId(). It is used to notify change
     // and for render cache update. In order to update cache on selection state
@@ -990,19 +890,15 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
     auto oldId = this->uniqueId;
     this->uniqueId ^= std::hash<void*>()(ctx.get()) + 0x9e3779b9 + (oldId << 6) + (oldId >> 2);
 
-    Styles mystyle = (Styles) this->style.getValue();
-
     if(mystyle == SoFCSelection::BOX || ViewParams::instance()->getShowSelectionBoundingBox()) {
         if(!ctx->isSelectAll() && !ctx->isHighlightAll()) {
             SoFCSelectionRoot::renderBBox(action,this,
                     preselected?ctx->highlightColor:ctx->selectionColor,0,true);
         }
         this->uniqueId = oldId;
-        return false;
+        return;
     }
 
-    //Base::Console().Log("SoFCSelection::setOverride() (%p)\n",this);
-    SoState * state = action->getState();
     state->push();
 
     SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
@@ -1025,7 +921,8 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
     }
 
     this->uniqueId = oldId;
-    return true;
+    inherited::GLRender(action);
+    state->pop();
 }
 
 // private convenience method

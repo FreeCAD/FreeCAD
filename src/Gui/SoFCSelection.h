@@ -103,7 +103,7 @@ public:
     virtual void GLRender(SoGLRenderAction * action);
 
     virtual void handleEvent(SoHandleEventAction * action);
-    virtual void GLRenderBelowPath(SoGLRenderAction * action);
+    // virtual void GLRenderBelowPath(SoGLRenderAction * action);
     virtual void GLRenderInPath(SoGLRenderAction * action);
     static  void turnOffCurrentHighlight(SoGLRenderAction * action);
 
@@ -119,10 +119,11 @@ protected:
 
     virtual SbBool readInstance(SoInput *  in, unsigned short  flags); 
 
+    void glRender(SoGLRenderAction *action, bool inpath);
+
 private:
     static int getPriority(const SoPickedPoint*);
     static void turnoffcurrent(SoAction * action);
-    bool setOverride(SoGLRenderAction * action, SelContextPtr);
     SbBool isHighlighted(SoAction *action);
     SbBool preRender(SoGLRenderAction *act, GLint &oldDepthFunc);
     const SoPickedPoint* getPickedPoint(SoHandleEventAction*) const;
