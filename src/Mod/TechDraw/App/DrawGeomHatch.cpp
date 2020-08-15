@@ -106,8 +106,6 @@ DrawGeomHatch::DrawGeomHatch(void)
     m_saveFile = "";
     m_saveName = "";
 
-//    getParameters();
-
     std::string patFilter("pat files (*.pat *.PAT);;All files (*)");
     FilePattern.setFilter(patFilter);
 
@@ -538,31 +536,6 @@ TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
     return result;
 }
 
-void DrawGeomHatch::getParameters(void)
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
-
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
-    std::string defaultFileName = defaultDir + "FCPAT.pat";
-    QString patternFileName = QString::fromStdString(hGrp->GetASCII("FilePattern",defaultFileName.c_str()));
-    if (patternFileName.isEmpty()) {
-        patternFileName = QString::fromStdString(defaultFileName);
-    }
-    QFileInfo tfi(patternFileName);
-        if (tfi.isReadable()) {
-            FilePattern.setValue(patternFileName.toUtf8().constData());
-        } else {
-            Base::Console().Error("DrawGeomHatch: PAT file: %s Not Found\n",patternFileName.toUtf8().constData());
-        }
-    hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
-    std::string defaultNamePattern = "Diamond";
-    NamePattern.setValue(hGrp->GetASCII("NamePattern",defaultNamePattern.c_str()));
-
-}
-
-
 PyObject *DrawGeomHatch::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
@@ -646,9 +619,12 @@ std::string DrawGeomHatch::prefGeomHatchFile(void)
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
     std::string defaultFileName = defaultDir + "FCPAT.pat";
-    std::string result = hGrp->GetASCII("FilePattern", defaultFileName.c_str());
-    if (result.empty()) {
+    std::string prefHatchFile = hGrp->GetASCII("FilePattern", defaultFileName.c_str());
+    std::string result = prefHatchFile;
+    Base::FileInfo fi(result);
+    if (!fi.isReadable()) {
         result = defaultFileName;
+        Base::Console().Warning("Pat Hatch File: %s is not readable\n", prefHatchFile.c_str());
     }
     return result;
 }

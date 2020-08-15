@@ -759,11 +759,18 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Rebar":
         fill = "none"
-        if obj.Proxy:
-            if not hasattr(obj.Proxy,"wires"):
-                obj.Proxy.execute(obj)
-            if hasattr(obj.Proxy,"wires"):
-                svg += getPath(wires=obj.Proxy.wires)
+        basewire = obj.Base.Shape.Wires[0].copy()
+        # Not applying rounding because the results are not correct
+        # if hasattr(obj, "Rounding") and obj.Rounding:
+        #     basewire = DraftGeomUtils.filletWire(
+        #         basewire, obj.Rounding * obj.Diameter.Value
+        #     )
+        wires = []
+        for placement in obj.PlacementList:
+            wire = basewire.copy()
+            wire.Placement = placement.multiply(basewire.Placement)
+            wires.append(wire)
+        svg += getPath(wires=wires)
 
     elif getType(obj) == "PipeConnector":
         pass

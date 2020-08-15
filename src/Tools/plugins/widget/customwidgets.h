@@ -597,6 +597,28 @@ private:
     UIntSpinBoxPrivate * d;
 };
 
+// ------------------------------------------------------------------------------
+
+class IntSpinBox : public QSpinBox
+{
+    Q_OBJECT
+
+public:
+    IntSpinBox ( QWidget* parent=0 );
+    virtual ~IntSpinBox();
+};
+
+// ------------------------------------------------------------------------------
+
+class DoubleSpinBox : public QDoubleSpinBox
+{
+    Q_OBJECT
+
+public:
+    DoubleSpinBox ( QWidget* parent=0 );
+    virtual ~DoubleSpinBox();
+};
+
 // -------------------------------------------------------------
 
 class PrefSpinBox : public QSpinBox

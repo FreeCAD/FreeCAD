@@ -41,6 +41,7 @@
 # include <ShapeExtend_Explorer.hxx>
 # include <ShapeFix_Shape.hxx>
 # include <ShapeFix_Wire.hxx>
+# include <Standard_Failure.hxx>
 # include <TopoDS.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
@@ -191,6 +192,10 @@ int FaceMakerBullseye::FaceDriller::getWireDirection(const gp_Pln& plane, const 
     //make a test face
     BRepBuilderAPI_MakeFace mkFace(wire, /*onlyplane=*/Standard_True);
     TopoDS_Face tmpFace = mkFace.Face();
+    if (tmpFace.IsNull()) {
+        throw Standard_Failure("getWireDirection: Failed to create face from wire");
+    }
+
     //compare face surface normal with our plane's one
     BRepAdaptor_Surface surf(tmpFace);
     bool normal_co = surf.Plane().Axis().Direction().Dot(plane.Axis().Direction()) > 0;

@@ -44,10 +44,10 @@ import ArchIFCSchema
 import importIFCHelper
 import importIFCmulticore
 
-from draftutils.messages import _err
+from draftutils.messages import _msg, _err
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
+    import FreeCADGui as Gui
 
 __title__ = "FreeCAD IFC importer - Enhanced ifcopenshell-only version"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
@@ -144,9 +144,8 @@ structuralifcobjects = (
 )
 
 
-# Preferences available in import and export
 def getPreferences():
-    """Retrieve the IFC preferences.
+    """Retrieve the IFC preferences available in import and export.
 
     MERGE_MODE_ARCH:
         0 = parametric arch objects
@@ -157,7 +156,7 @@ def getPreferences():
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
 
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog", False):
-        FreeCADGui.showPreferences("Import-Export", 0)
+        Gui.showPreferences("Import-Export", 0)
 
     preferences = {
         'DEBUG': p.GetBool("ifcDebug", False),
@@ -200,6 +199,9 @@ def export(exportList, filename, colors=None, preferences=None):
 def open(filename, skip=[], only=[], root=None):
     """Open an IFC file inside a new document.
 
+    TODO: change the default argument to `None`, instead of `[]`.
+    This is better because lists are mutable.
+
     Most of the work is done in the `insert` function.
     """
     docname = os.path.splitext(os.path.basename(filename))[0]
@@ -212,6 +214,9 @@ def open(filename, skip=[], only=[], root=None):
 
 def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     """Import the contents of an IFC file in the current active document.
+
+    TODO: change the default argument to `None`, instead of `[]`.
+    This is better because lists are mutable.
 
     Parameters
     ----------
@@ -228,18 +233,17 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         It is used to import only the derivates of a certain element type,
         for example, `'ifcProduct'
     """
-    starttime = time.time()  # in seconds
-
-    # read preference settings
-    if preferences is None:
-        preferences = getPreferences()
-
-    if preferences["MULTICORE"] and not hasattr(srcfile, "by_guid"):
-        return importIFCmulticore.insert(srcfile, docname, preferences)
-
     try:
         import ifcopenshell
-        import ifcopenshell.geom
+        from ifcopenshell import geom
+
+        # Sometimes there is an error importing `geom` in this way
+        # import ifcopenshell.geom
+        #
+        # therefore we must use the `from x import y` way.
+        #
+        # For some reason this works; see the bug report
+        # https://github.com/IfcOpenShell/IfcOpenShell/issues/689
     except ModuleNotFoundError:
         _err("IfcOpenShell was not found on this system. "
              "IFC support is disabled.\n"
@@ -247,13 +251,20 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
              "to learn about installing it.")
         return
 
+    starttime = time.time()  # in seconds
+
+    if preferences is None:
+        preferences = getPreferences()
+
+    if preferences["MULTICORE"] and not hasattr(srcfile, "by_guid"):
+        return importIFCmulticore.insert(srcfile, docname, preferences)
+
     try:
         doc = FreeCAD.getDocument(docname)
     except NameError:
         doc = FreeCAD.newDocument(docname)
 
     FreeCAD.ActiveDocument = doc
-    if preferences['DEBUG']: print("done.")
 
     global parametrics
 
@@ -264,28 +275,34 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     # keeping global variable for debugging purposes
     # global ifcfile
 
+    # If the `by_guid` attribute exists, this is already a loaded ifcfile,
+    # otherwise, it's just a string, and we have to open it with ifcopenshell
     if hasattr(srcfile, "by_guid"):
         ifcfile = srcfile
         filesize = None
         filename = None
     else:
-        if preferences['DEBUG']: print("Opening ",srcfile,"...",end="")
+        if preferences['DEBUG']:
+            _msg("Opening '{}'... ".format(srcfile), end="")
         filename = importIFCHelper.decode(srcfile, utf=True)
-        filesize = os.path.getsize(filename) * 0.000001  # in megabytes
+        filesize = os.path.getsize(filename) * 1E-6  # in megabytes
         ifcfile = ifcopenshell.open(filename)
 
-    # get file scale
+    if preferences['DEBUG']:
+        _msg("done.")
+
+    # Get file scale
     ifcscale = importIFCHelper.getScaling(ifcfile)
 
     # IfcOpenShell multiplies the precision value of the file by 100
-    # So we raise the precision by 100 too to compensate...
+    # So we raise the precision by 100 too to compensate.
     # ctxs = ifcfile.by_type("IfcGeometricRepresentationContext")
     # for ctx in ctxs:
     #     if not ctx.is_a("IfcGeometricRepresentationSubContext"):
     #         ctx.Precision = ctx.Precision/100
 
-    # set default ifcopenshell options to work in brep mode
-    settings = ifcopenshell.geom.settings()
+    # Set default ifcopenshell options to work in brep mode
+    settings = geom.settings()
     settings.set(settings.USE_BREP_DATA, True)
     settings.set(settings.SEW_SHELLS, True)
     settings.set(settings.USE_WORLD_COORDS, True)
@@ -295,29 +312,36 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         settings.set(settings.APPLY_LAYERSETS, True)
 
     # build all needed tables
-    if preferences['DEBUG']: print("Building types and relationships table...", end="")
+    if preferences['DEBUG']:
+        _msg("Building types and relationships table...")
+
     # type tables
     sites = ifcfile.by_type("IfcSite")
     buildings = ifcfile.by_type("IfcBuilding")
     floors = ifcfile.by_type("IfcBuildingStorey")
     openings = ifcfile.by_type("IfcOpeningElement")
     materials = ifcfile.by_type("IfcMaterial")
-    products, annotations = importIFCHelper.buildRelProductsAnnotations(ifcfile, preferences['ROOT_ELEMENT'])
+    (products,
+     annotations) = importIFCHelper.buildRelProductsAnnotations(ifcfile,
+                                                                preferences['ROOT_ELEMENT'])
 
     # empty relation tables
     objects = {}  # { id:object, ... }
     shapes = {}  # { id:shaoe } only used for merge mode
     structshapes = {}  # { id:shaoe } only used for merge mode
     sharedobjects = {}  # { representationmapid:object }
-    parametrics = []  # a list of imported objects whose parametric
-                      # relationships need processing after all objects
-                      # have been created
+
+    # a list of imported objects whose parametric relationships
+    # need processing after all objects have been created
+    parametrics = []
     profiles = {}  # to store reused extrusion profiles {ifcid:fcobj, ...}
     layers = {}  # { layer_name, [ids] }
     # filled relation tables
 
-    # TODO for the following tables might be better use inverse attributes,
-    # done for properties
+    # TODO: investigate using inverse attributes.
+    # For the following tables it might be better to use inverse attributes
+    # to find the properties, otherwise a lot of loops
+    # and if testing is needed.
     # See https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
     prodrepr = importIFCHelper.buildRelProductRepresentation(ifcfile)
     additions = importIFCHelper.buildRelAdditions(ifcfile)
@@ -326,7 +350,8 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     mattable = importIFCHelper.buildRelMattable(ifcfile)
     colors = importIFCHelper.buildRelProductColors(ifcfile, prodrepr)
     colordict = {}  # { objname:color tuple } for non-GUI use
-    if preferences['DEBUG']: print("done.")
+    if preferences['DEBUG']:
+        _msg("done.")
 
     # only import a list of IDs and their children, if defined
     if only:
@@ -342,14 +367,14 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     count = 0
     from FreeCAD import Base
     progressbar = Base.ProgressIndicator()
-    progressbar.start("Importing IFC objects...",len(products))
-    if preferences['DEBUG']: print("Parsing",len(products),"BIM objects...")
+    progressbar.start("Importing IFC objects...", len(products))
+    if preferences['DEBUG']:
+        _msg("Parsing {} BIM objects...".format(len(products)))
 
     # Prepare the 3D view if applicable
     if preferences['FITVIEW_ONIMPORT'] and FreeCAD.GuiUp:
         overallboundbox = None
-        import FreeCADGui
-        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        Gui.ActiveDocument.activeView().viewAxonometric()
 
     # Create the base project object
     if not preferences['REPLACE_PROJECT']:
@@ -480,7 +505,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             else:
                 settings.set(settings.INCLUDE_CURVES,False)
         try:
-            cr = ifcopenshell.geom.create_shape(settings,product)
+            cr = geom.create_shape(settings, product)
             brep = cr.geometry.brep_data
         except:
             pass  # IfcOpenShell will yield an error if a given product has no shape, but we don't care, we're brave enough
@@ -512,7 +537,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                         if not overallboundbox:
                             overallboundbox = bb
                         if not overallboundbox.isInside(bb):
-                            FreeCADGui.SendMsgToActiveView("ViewFit")
+                            Gui.SendMsgToActiveView("ViewFit")
                         overallboundbox.add(bb)
 
                 if (preferences['MERGE_MODE_ARCH'] > 0 and archobj) or structobj:
@@ -1328,15 +1353,17 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
 
     FreeCAD.ActiveDocument.recompute()
 
-    if ZOOMOUT and FreeCAD.GuiUp:
-        import FreeCADGui
-        FreeCADGui.SendMsgToActiveView("ViewFit")
+    if FreeCAD.GuiUp and ZOOMOUT:
+        Gui.SendMsgToActiveView("ViewFit")
 
     endtime = time.time()-starttime
 
     if filesize:
-        print("Finished importing",round(filesize,1),"Mb in",int(endtime),"seconds, or",int(endtime/filesize),"s/Mb")
+        _msg("Finished importing {0} MB "
+             "in {1} seconds, or {2} s/MB".format(round(filesize, 1),
+                                                  int(endtime),
+                                                  int(endtime/filesize)))
     else:
-        print("Finished importing in",int(endtime),"seconds")
+        _msg("Finished importing in {} seconds".format(int(endtime)))
 
     return doc
