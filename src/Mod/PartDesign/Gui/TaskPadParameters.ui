@@ -81,7 +81,7 @@ the sketch plane's normal vector will be used</string>
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefQuantitySpinBox" name="XSkewEdit">
+         <widget class="Gui::DoubleSpinBox" name="XSkewEdit">
           <property name="toolTip">
            <string>x-component of direction vector</string>
           </property>
@@ -114,7 +114,7 @@ the sketch plane's normal vector will be used</string>
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefQuantitySpinBox" name="YSkewEdit">
+         <widget class="Gui::DoubleSpinBox" name="YSkewEdit">
           <property name="toolTip">
            <string>y-component of direction vector</string>
           </property>
@@ -147,7 +147,7 @@ the sketch plane's normal vector will be used</string>
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefQuantitySpinBox" name="ZSkewEdit">
+         <widget class="Gui::DoubleSpinBox" name="ZSkewEdit">
           <property name="toolTip">
            <string>z-component of direction vector</string>
           </property>

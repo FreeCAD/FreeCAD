@@ -75,6 +75,7 @@ public:
 private:
     static const char* TypeEnums[];
     //static const char* SideEnums[];
+    double RoundTo(double number, int precision);
 };
 
 } //namespace PartDesign

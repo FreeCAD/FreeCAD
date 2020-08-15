@@ -51,6 +51,7 @@
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
+#include <Base/UnitsApi.h>
 
 #include "FeaturePad.h"
 
@@ -94,6 +95,13 @@ short Pad::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
+double Pad::RoundTo(double number, int precision)
+{
+    const int divisor = 10 * precision;
+    return round(number * divisor) / divisor;
+}
+
+
 App::DocumentObjectExecReturn *Pad::execute(void)
 {
     // Validate parameters
@@ -121,14 +129,15 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         base = TopoDS_Shape();
     }
 
-
     // get the Sketch plane
     Base::Placement SketchPos = obj->Placement.getValue();
     // get the normal vector of the sketch
-    // its z component is the one for the pad direction
     Base::Vector3d SketchVector = getProfileNormal();
 
     try {
+        // get user-defined decimals
+        int precision = Base::UnitsApi::getDecimals();
+
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
@@ -143,18 +152,39 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             paddingDirection.z = SketchVector.z;
         }
         else {
-            // check for null vector, if yes, set z to 1.0
-            if ((XSkew.getValue() == 0.0)
-                && (YSkew.getValue() == 0.0)
-                && (ZSkew.getValue() == 0.0)) {
-                ZSkew.setValue(1.0);
+            // if null vector, use SketchVector
+            if ( (RoundTo(XSkew.getValue(), precision) == 0.0)
+                && (RoundTo(YSkew.getValue(), precision) == 0.0)
+                && (RoundTo(ZSkew.getValue(), precision) == 0.0) ) {
+                XSkew.setValue(SketchVector.x);
+                YSkew.setValue(SketchVector.y);
+                ZSkew.setValue(SketchVector.z);
             }
             paddingDirection.x = XSkew.getValue();
             paddingDirection.y = YSkew.getValue();
             paddingDirection.z = ZSkew.getValue();
         }
 
+        // create vector in padding direction with length 1
         gp_Dir dir(paddingDirection.x, paddingDirection.y, paddingDirection.z);
+
+        // The length of a gp_Dir is 1 so the resulting pad would have
+        // the length L in the direction of dir. But we want to have its height in the
+        // direction of the normal vector.
+        // Therefore we must multiply L by the factor that is necessary
+        // to make dir as long that its projection to the SketchVector
+        // equals the SketchVector.
+        // This is the scalar product of both vectors.
+
+        double factor = dir * gp_Dir(SketchVector.x, SketchVector.y, SketchVector.z);
+
+        // factor would be zero if vectors are orthogonal
+        if (RoundTo(factor, precision) == 0.0)
+            return new App::DocumentObjectExecReturn("Pad: Creation failed because direction is orthogonal to sketch's normal vector");
+        
+        // perform the length correction
+        L = L / factor;
+
         dir.Transform(invObjLoc.Transformation());
 
         if (sketchshape.IsNull())

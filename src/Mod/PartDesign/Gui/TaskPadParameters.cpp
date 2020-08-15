@@ -34,6 +34,7 @@
 #include "TaskPadParameters.h"
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -112,6 +113,12 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
+
+    // set decimals for the skew edits
+    int UserDecimals = Base::UnitsApi::getDecimals();
+    ui->XSkewEdit->setDecimals(UserDecimals);
+    ui->YSkewEdit->setDecimals(UserDecimals);
+    ui->ZSkewEdit->setDecimals(UserDecimals);
 
     // Set object labels
     if (obj && PartDesign::Feature::isDatum(obj)) {
@@ -302,46 +309,26 @@ void TaskPadParameters::onGBDirectionChanged(bool on)
 void TaskPadParameters::onXSkewEditChanged(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
-    // in case of a null vector, set value 1.0 to avoid that
-    if ((pcPad->YSkew.getValue() == 0.0)
-        && (pcPad->ZSkew.getValue() == 0.0)
-        && (len == 0.0)) {
-        pcPad->XSkew.setValue(1.0);
-        ui->XSkewEdit->setValue(1.0);
-    }
-    else
     pcPad->XSkew.setValue(len);
     recomputeFeature();
+    // checking for case of a null vector is done in FeaturePad.cpp
 }
+
 
 void TaskPadParameters::onYSkewEditChanged(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
-    // in case of a null vector, set value 1.0 to avoid that
-    if ((pcPad->XSkew.getValue() == 0.0)
-        && (pcPad->ZSkew.getValue() == 0.0)
-        && (len == 0.0)) {
-        pcPad->YSkew.setValue(1.0);
-        ui->YSkewEdit->setValue(1.0);
-    }
-    else
-        pcPad->YSkew.setValue(len);
+    pcPad->YSkew.setValue(len);
     recomputeFeature();
+    // checking for case of a null vector is done in FeaturePad.cpp
 }
 
 void TaskPadParameters::onZSkewEditChanged(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
-    // in case of a null vector, set value 1.0 to avoid that
-    if ((pcPad->XSkew.getValue() == 0.0)
-        && (pcPad->YSkew.getValue() == 0.0)
-        && (len == 0.0)) {
-        pcPad->ZSkew.setValue(1.0);
-        ui->ZSkewEdit->setValue(1.0);
-    }
-    else
     pcPad->ZSkew.setValue(len);
     recomputeFeature();
+    // checking for case of a null vector is done in FeaturePad.cpp
 }
 
 void TaskPadParameters::onOffsetChanged(double len)
@@ -439,17 +426,17 @@ bool   TaskPadParameters::getCustom(void) const
 
 double TaskPadParameters::getXSkew(void) const
 {
-    return ui->XSkewEdit->value().getValue();
+    return ui->XSkewEdit->value();
 }
 
 double TaskPadParameters::getYSkew(void) const
 {
-    return ui->YSkewEdit->value().getValue();
+    return ui->YSkewEdit->value();
 }
 
 double TaskPadParameters::getZSkew(void) const
 {
-    return ui->ZSkewEdit->value().getValue();
+    return ui->ZSkewEdit->value();
 }
 
 double TaskPadParameters::getOffset(void) const
@@ -562,6 +549,9 @@ void TaskPadParameters::apply()
     ui->lengthEdit->apply();
     ui->lengthEdit2->apply();
     FCMD_OBJ_CMD(obj, "UseCustomVector = " << (getCustom() ? 1 : 0));
+    FCMD_OBJ_CMD(obj, "XSkew = " << getXSkew());
+    FCMD_OBJ_CMD(obj, "YSkew = " << getYSkew());
+    FCMD_OBJ_CMD(obj, "ZSkew = " << getZSkew());
     FCMD_OBJ_CMD(obj,"Type = " << getMode());
     QString facename = getFaceName();
     FCMD_OBJ_CMD(obj,"UpToFace = " << facename.toLatin1().data());
