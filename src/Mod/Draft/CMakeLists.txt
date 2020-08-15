@@ -248,6 +248,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_snaps.py
     draftguitools/gui_snapper.py
     draftguitools/gui_trackers.py
+    draftguitools/gui_edit_base_object.py
     draftguitools/gui_edit_draft_objects.py
     draftguitools/gui_edit_arch_objects.py
     draftguitools/gui_edit_part_objects.py

@@ -33,109 +33,153 @@ __url__ = "https://www.freecadweb.org"
 import FreeCAD as App
 import DraftVecUtils
 
-def get_supported_part_objects():
-    return ["Part", "Part::Line", "Part::Box", 
-            "Part::Sphere", "Part::Cylinder", "Part::Cone"
-            ]
-
-# PART::LINE--------------------------------------------------------------
-
-def getPartLinePts(obj):
-    editpoints = []
-    editpoints.append(App.Vector(obj.X1,obj.Y1,obj.Z1))
-    editpoints.append(App.Vector(obj.X2,obj.Y2,obj.Z2))
-    return editpoints
-
-def updatePartLine(obj, nodeIndex, v):
-    if nodeIndex == 0:
-        obj.X1 = v.x
-        obj.Y1 = v.y
-        obj.Z1 = v.z
-    elif nodeIndex == 1:
-        obj.X2 = v.x
-        obj.Y2 = v.y
-        obj.Z2 = v.z
+from draftguitools.gui_edit_base_object import GuiTools
 
 
-# PART::BOX---------------------------------------------------------------
+class PartLineGuiTools(GuiTools):
 
-def getPartBoxPts(obj):
-    editpoints = []
-    editpoints.append(App.Vector(0, 0, 0))
-    editpoints.append(App.Vector(obj.Length, 0, 0))
-    editpoints.append(App.Vector(0, obj.Width, 0))
-    editpoints.append(App.Vector(0, 0, obj.Height))
-    return editpoints
+    def __init__(self):
+        pass
 
-def updatePartBox(obj, nodeIndex, v):
-    if nodeIndex == 0:
-        obj.Placement.Base = obj.Placement.Base + v
-    elif nodeIndex == 1:
-        _vector = DraftVecUtils.project(v, App.Vector(1, 0, 0))
-        obj.Length = _vector.Length
-    elif nodeIndex == 2:
-        _vector = DraftVecUtils.project(v, App.Vector(0, 1, 0))
-        obj.Width = _vector.Length
-    elif nodeIndex == 3:
-        _vector = DraftVecUtils.project(v, App.Vector(0, 0, 1))
-        obj.Height = _vector.Length
+    def get_edit_points(self, obj):
+        editpoints = []
+        editpoints.append(App.Vector(obj.X1,obj.Y1,obj.Z1))
+        editpoints.append(App.Vector(obj.X2,obj.Y2,obj.Z2))
+        return editpoints
 
-# Part::Cylinder --------------------------------------------------------------
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        if node_idx == 0:
+            obj.X1 = v.x
+            obj.Y1 = v.y
+            obj.Z1 = v.z
+        elif node_idx == 1:
+            obj.X2 = v.x
+            obj.Y2 = v.y
+            obj.Z2 = v.z
 
-def getPartCylinderPts(obj):
-    editpoints = []
-    editpoints.append(App.Vector(0, 0, 0))
-    editpoints.append(App.Vector(obj.Radius, 0, 0))
-    editpoints.append(App.Vector(0, 0, obj.Height))
-    return editpoints
-
-def updatePartCylinder(obj, nodeIndex, v):
-    if nodeIndex == 0:
-        obj.Placement.Base = obj.Placement.Base + v
-    elif nodeIndex == 1:
-        if v.Length > 0.0:
-            obj.Radius = v.Length
-    elif nodeIndex == 2:
-        _vector = DraftVecUtils.project(v, App.Vector(0, 0, 1))
-        obj.Height = _vector.Length
+    def get_edit_point_context_menu(self, obj, node_idx):
+        pass
+    
+    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
+        pass
 
 
-# Part::Cone --------------------------------------------------------------
+class PartBoxGuiTools(GuiTools):
 
-def getPartConePts(obj):
-    editpoints = []
-    editpoints.append(App.Vector(0, 0, 0))
-    editpoints.append(App.Vector(obj.Radius1, 0, 0))
-    editpoints.append(App.Vector(obj.Radius2, 0, obj.Height))
-    editpoints.append(App.Vector(0, 0, obj.Height))
-    return editpoints
+    def __init__(self):
+        pass
 
-def updatePartCone(obj, nodeIndex, v):
-    if nodeIndex == 0:
-        obj.Placement.Base = obj.Placement.Base + v
-    elif nodeIndex == 1:
-        obj.Radius1 = v.Length # TODO: Perhaps better to project on the face?
-    elif nodeIndex == 2:
-        v.z = 0
-        obj.Radius2 = v.Length # TODO: Perhaps better to project on the face?
-    elif nodeIndex == 3: # Height is last to have the priority on the radius
-        _vector = DraftVecUtils.project(v, App.Vector(0, 0, 1))
-        obj.Height = _vector.Length
+    def get_edit_points(self, obj):
+        editpoints = []
+        editpoints.append(App.Vector(0, 0, 0))
+        editpoints.append(App.Vector(obj.Length, 0, 0))
+        editpoints.append(App.Vector(0, obj.Width, 0))
+        editpoints.append(App.Vector(0, 0, obj.Height))
+        return editpoints
+
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        if node_idx == 0:
+            obj.Placement.Base = obj.Placement.Base + v
+        elif node_idx == 1:
+            _vector = DraftVecUtils.project(v, App.Vector(1, 0, 0))
+            obj.Length = _vector.Length
+        elif node_idx == 2:
+            _vector = DraftVecUtils.project(v, App.Vector(0, 1, 0))
+            obj.Width = _vector.Length
+        elif node_idx == 3:
+            _vector = DraftVecUtils.project(v, App.Vector(0, 0, 1))
+            obj.Height = _vector.Length
+
+    def get_edit_point_context_menu(self, obj, node_idx):
+        pass
+    
+    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
+        pass
 
 
-# Part::Sphere --------------------------------------------------------------
+class PartCylinderGuiTools(GuiTools):
 
-def getPartSpherePts(obj):
-    editpoints = []
-    editpoints.append(App.Vector(0, 0, 0))
-    editpoints.append(App.Vector(obj.Radius, 0, 0))
-    return editpoints
+    def __init__(self):
+        pass
 
-def updatePartSphere(obj, nodeIndex, v):
-    if nodeIndex == 0:
-        obj.Placement.Base = obj.Placement.Base + v
-    elif nodeIndex == 1:
-        if v.Length > 0.0:
-            obj.Radius = v.Length # TODO: Perhaps better to project on the face?
+    def get_edit_points(self, obj):
+        editpoints = []
+        editpoints.append(App.Vector(0, 0, 0))
+        editpoints.append(App.Vector(obj.Radius, 0, 0))
+        editpoints.append(App.Vector(0, 0, obj.Height))
+        return editpoints
+
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        if node_idx == 0:
+            obj.Placement.Base = obj.Placement.Base + v
+        elif node_idx == 1:
+            if v.Length > 0.0:
+                obj.Radius = v.Length
+        elif node_idx == 2:
+            _vector = DraftVecUtils.project(v, App.Vector(0, 0, 1))
+            obj.Height = _vector.Length
+
+    def get_edit_point_context_menu(self, obj, node_idx):
+        pass
+    
+    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
+        pass
+
+
+class PartConeGuiTools(GuiTools):
+
+    def __init__(self):
+        pass
+
+    def get_edit_points(self, obj):
+        editpoints = []
+        editpoints.append(App.Vector(0, 0, 0))
+        editpoints.append(App.Vector(obj.Radius1, 0, 0))
+        editpoints.append(App.Vector(obj.Radius2, 0, obj.Height))
+        editpoints.append(App.Vector(0, 0, obj.Height))
+        return editpoints
+
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        if node_idx == 0:
+            obj.Placement.Base = obj.Placement.Base + v
+        elif node_idx == 1:
+            obj.Radius1 = v.Length # TODO: Perhaps better to project on the face?
+        elif node_idx == 2:
+            v.z = 0
+            obj.Radius2 = v.Length # TODO: Perhaps better to project on the face?
+        elif node_idx == 3: # Height is last to have the priority on the radius
+            _vector = DraftVecUtils.project(v, App.Vector(0, 0, 1))
+            obj.Height = _vector.Length
+
+    def get_edit_point_context_menu(self, obj, node_idx):
+        pass
+    
+    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
+        pass
+
+
+class PartSphereGuiTools(GuiTools):
+
+    def __init__(self):
+        pass
+
+    def get_edit_points(self, obj):
+        editpoints = []
+        editpoints.append(App.Vector(0, 0, 0))
+        editpoints.append(App.Vector(obj.Radius, 0, 0))
+        return editpoints
+
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        if node_idx == 0:
+            obj.Placement.Base = obj.Placement.Base + v
+        elif node_idx == 1:
+            if v.Length > 0.0:
+                obj.Radius = v.Length # TODO: Perhaps better to project on the face?
+
+    def get_edit_point_context_menu(self, obj, node_idx):
+        pass
+    
+    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
+        pass
 
 ## @}
