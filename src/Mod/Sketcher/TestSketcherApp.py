@@ -175,8 +175,14 @@ class SketcherSolverTestCases(unittest.TestCase):
 		self.Doc2.recompute()
 		self.Doc2.Sketch.delGeometry(2)
 		values = d = {key: value for (key, value) in self.Doc2.Sketch.ExpressionEngine}
-		self.failUnless(values['Constraints[4]'] == u'60')
-		self.failUnless(values['Constraints[5]'] == u'65')
+		# the set values have as many decimals as defined by the user
+		# thus get them first
+		decimals = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
+		decimalsString = '.'
+		for x in range(decimals):
+			decimalsString = decimalsString + '0'
+		self.failUnless(values['Constraints[4]'] == u'60' + decimalsString)
+		self.failUnless(values['Constraints[5]'] == u'65' + decimalsString)
 		FreeCAD.closeDocument("Issue3245")
 
 	def testIssue3245_2(self):
