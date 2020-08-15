@@ -805,8 +805,8 @@ private:
             const TopAbs_Orientation anOrientation = currentFace.Orientation();
             bool flip = (anOrientation == TopAbs_REVERSED);
             if(!facets.IsNull()){
-                auto nodes = facets->Nodes();
-                auto triangles = facets->Triangles();
+                const TColgp_Array1OfPnt& nodes = facets->Nodes();
+                const Poly_Array1OfTriangle& triangles = facets->Triangles();
                 for(int i = 1; i <= triangles.Length(); i++){
                     Standard_Integer n1,n2,n3;
                     triangles(i).Get(n1, n2, n3);
