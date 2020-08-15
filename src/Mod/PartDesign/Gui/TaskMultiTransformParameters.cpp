@@ -83,6 +83,8 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(ui->listWidgetFeatures->model(),
+        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
     // Create a context menu for the listview of transformation features
     action = new QAction(tr("Edit"), ui->listTransformFeatures);

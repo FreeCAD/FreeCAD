@@ -193,7 +193,8 @@ bool ViewProviderProjGroup::onDelete(const std::vector<std::string> &)
     // if there are section or detail views we cannot delete because this would break them
     if (!ViewList.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
-            "The group cannot be deleted because its items have the following\nsection or detail views, or leader lines that would get broken:\n");
+            "The group cannot be deleted because its items have the following\nsection or detail views, or leader lines that would get broken:");
+        bodyMessageStream << '\n';
         for (auto ListIterator : ViewList)
             bodyMessageStream << '\n' << QString::fromUtf8(ListIterator.c_str());
         QMessageBox::warning(Gui::getMainWindow(),
@@ -206,10 +207,11 @@ bool ViewProviderProjGroup::onDelete(const std::vector<std::string> &)
     {
         // generate dialog
         bodyMessageStream << qApp->translate("Std_Delete",
-            "The projection group is not empty, therefore\nthe following referencing objects might be lost.\n\n"
-            "Are you sure you want to continue?\n");
+            "The projection group is not empty, therefore\nthe following referencing objects might be lost:");
+        bodyMessageStream << '\n';
         for (auto ObjIterator : objs)
             bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
+        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
         // show and evaluate dialog
         int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
@@ -238,7 +240,7 @@ std::vector<App::DocumentObject*> ViewProviderProjGroup::claimChildren(void) con
     std::vector<App::DocumentObject*> temp;
     const std::vector<App::DocumentObject *> &views = getObject()->Views.getValues();
     try {
-      for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
+      for (std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
           temp.push_back(*it);
       }
       return temp;

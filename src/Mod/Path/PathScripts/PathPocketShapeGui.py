@@ -76,7 +76,10 @@ class _Extension(object):
         hnt = coin.SoShapeHints()
 
         if not ext is None:
-            wire =  ext.getWire()
+            try:
+                wire =  ext.getWire()
+            except FreeCAD.Base.FreeCADError:
+                wire = None
             if wire:
                 if isinstance(wire, (list, tuple)):
                     p0 = [p for p in wire[0].discretize(Deflection=0.02)]
@@ -261,7 +264,11 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         if extendCorners:
             def edgesMatchShape(e0, e1):
-                return PathGeom.edgesMatch(e0, e1) or PathGeom.edgesMatch(e0, PathGeom.flipEdge(e1))
+                flipped = PathGeom.flipEdge(e1)
+                if flipped:
+                    return PathGeom.edgesMatch(e0, e1) or PathGeom.edgesMatch(e0, flipped)
+                else:
+                    return PathGeom.edgesMatch(e0, e1)
 
             self.extensionEdges = extensionEdges # pylint: disable=attribute-defined-outside-init
             for edgeList in Part.sortEdges(list(extensionEdges.keys())):

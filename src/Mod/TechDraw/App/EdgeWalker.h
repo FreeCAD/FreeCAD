@@ -29,8 +29,6 @@
 #define TECHDRAW_EDGEWALKER_H
 
 #include <vector>
-#include <iostream>
-
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/graph/graph_traits.hpp>
@@ -94,7 +92,7 @@ public:
 
     std::vector<WalkerEdge>  wedges;      //[WE] representing 1 wire
     void push_back(WalkerEdge w);
-    void clear() {wedges.clear();};
+    void clear() {wedges.clear();}
     int size(void);
 };
 

@@ -739,6 +739,7 @@ void NavigationStyle::zoom(SoCamera * cam, float diffvalue)
         // sqrt(FLT_MAX) == ~ 1e+19, which should be both safe for further
         // calculations and ok for the end-user and app-programmer.
         if (distorigo > float(sqrt(FLT_MAX))) {
+            // do nothing here
         }
         else {
             cam->position = newpos;

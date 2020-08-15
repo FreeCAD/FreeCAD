@@ -336,6 +336,49 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
     return envelopeshape
 
 
+# Function to extract offset face from shape
+def getOffsetArea(fcShape,
+                  offset,
+                  removeHoles=False,
+                  # Default: XY plane
+                  plane=Part.makeCircle(10),
+                  tolerance=1e-4):
+    '''Make an offset area of a shape, projected onto a plane.
+    Positive offsets expand the area, negative offsets shrink it.
+    Inspired by _buildPathArea() from PathAreaOp.py module. Adjustments made
+    based on notes by @sliptonic at this webpage:
+    https://github.com/sliptonic/FreeCAD/wiki/PathArea-notes.'''
+    PathLog.debug('getOffsetArea()')
+
+    areaParams = {}
+    areaParams['Offset'] = offset
+    areaParams['Fill'] = 1  # 1
+    areaParams['Outline'] = removeHoles
+    areaParams['Coplanar'] = 0
+    areaParams['SectionCount'] = 1  # -1 = full(all per depthparams??) sections
+    areaParams['Reorient'] = True
+    areaParams['OpenMode'] = 0
+    areaParams['MaxArcPoints'] = 400  # 400
+    areaParams['Project'] = True
+    areaParams['FitArcs'] = False  # Can be buggy & expensive
+    areaParams['Deflection'] = tolerance
+    areaParams['Accuracy'] = tolerance
+    areaParams['Tolerance'] = 1e-5  # Equal point tolerance
+    areaParams['Simplify'] = True
+    areaParams['CleanDistance'] = tolerance / 5
+
+    area = Path.Area()  # Create instance of Area() class object
+    # Set working plane normal to Z=1
+    area.setPlane(makeWorkplane(plane))
+    area.add(fcShape)
+    area.setParams(**areaParams)  # set parameters
+
+    offsetShape = area.getShape()
+    if not offsetShape.Faces:
+        return False
+    return offsetShape
+
+
 def reverseEdge(e):
     if DraftGeomUtils.geomType(e) == "Circle":
         arcstpt = e.valueAt(e.FirstParameter)

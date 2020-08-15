@@ -234,7 +234,7 @@ void SketcherValidation::on_findReversed_clicked()
             ui->swapReversed->setEnabled(false);
         }
     } else {
-        QMessageBox::warning(this, tr("Reversed external geometry"),
+        QMessageBox::information(this, tr("Reversed external geometry"),
             tr("No reversed external-geometry arcs were found."));
     }
 }
@@ -348,6 +348,41 @@ void SketcherValidation::hidePoints()
         vp->getRoot()->removeChild(coincidenceRoot);
         coincidenceRoot = 0;
     }
+}
+
+void SketcherValidation::on_findDegenerated_clicked()
+{
+    double prec = Precision::Confusion();
+    int count = sketchAnalyser.detectDegeneratedGeometries(prec);
+
+    if (count == 0) {
+        QMessageBox::information(this, tr("No degenerated geometry"),
+            tr("No degenerated geometry found"));
+        ui->fixDegenerated->setEnabled(false);
+    }
+    else {
+        QMessageBox::warning(this, tr("Degenerated geometry"),
+            tr("%1 degenerated geometry found").arg(count));
+        ui->fixDegenerated->setEnabled(true);
+    }
+}
+
+void SketcherValidation::on_fixDegenerated_clicked()
+{
+    // undo command open
+    App::Document* doc = sketch->getDocument();
+    doc->openTransaction("Remove degenerated geometry");
+
+    double prec = Precision::Confusion();
+    sketchAnalyser.removeDegeneratedGeometries(prec);
+
+    ui->fixButton->setEnabled(false);
+    hidePoints();
+
+    // finish the transaction and update
+    Gui::WaitCursor wc;
+    doc->commitTransaction();
+    doc->recompute();
 }
 
 // -----------------------------------------------

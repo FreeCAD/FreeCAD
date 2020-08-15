@@ -114,6 +114,7 @@ bool ViewProviderLux::setEdit(int ModNum)
 void ViewProviderLux::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
+        // Do nothing here
     }
     else {
         ViewProviderDocumentObjectGroup::unsetEdit(ModNum);
@@ -192,6 +193,7 @@ bool ViewProviderPovray::setEdit(int ModNum)
 void ViewProviderPovray::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
+        // Do nothing here
     }
     else {
         ViewProviderDocumentObjectGroup::unsetEdit(ModNum);

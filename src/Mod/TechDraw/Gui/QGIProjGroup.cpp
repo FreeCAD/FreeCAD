@@ -52,12 +52,6 @@ QGIProjGroup::QGIProjGroup()
     m_origin = new QGraphicsItemGroup();                  //QGIG added to this QGIG??
     m_origin->setParentItem(this);
 
-    // In place to ensure correct drawing and bounding box calculations
-    // WF: obs? not even part of QGIGroup!
-    m_groupBackground = new QGraphicsRectItem();
-    m_groupBackground->setPen(QPen(QColor(Qt::black)));
-
-    //addToGroup(m_groupBackground);
     setFlag(ItemIsSelectable, false);
     setFlag(ItemIsMovable, true);
     setFiltersChildEvents(true);
@@ -204,7 +198,6 @@ QGIView * QGIProjGroup::getAnchorQItem() const
 
 void QGIProjGroup::updateView(bool update)
 {
-    m_groupBackground->setRect(boundingRect());
     return QGIViewCollection::updateView(update);
 }
 

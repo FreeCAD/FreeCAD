@@ -53,6 +53,7 @@ using namespace Base;
     qApp->translate("Gui::Dialog::DlgSettingsUnits", "Building US (ft-in/sqft/cft)");
     qApp->translate("Gui::Dialog::DlgSettingsUnits", "Metric small parts & CNC(mm, mm/min)");
     qApp->translate("Gui::Dialog::DlgSettingsUnits", "Imperial for Civil Eng (ft, ft/sec)");
+    qApp->translate("Gui::Dialog::DlgSettingsUnits", "FEM (mm, N, sec)");
 #endif
 
 /**

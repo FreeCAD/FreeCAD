@@ -216,32 +216,32 @@ void Gui::SoFCDB::finish()
 }
 
 // buffer acrobatics for inventor ****************************************************
-static char * buffer;
-static size_t buffer_size = 0;
+static char * static_buffer;
+static size_t static_buffer_size = 0;
 static std::string cReturnString;
 
 static void *
 buffer_realloc(void * bufptr, size_t size)
 {
-    buffer = (char *)realloc(bufptr, size);
-    buffer_size = size;
-    return buffer;
+    static_buffer = (char *)realloc(bufptr, size);
+    static_buffer_size = size;
+    return static_buffer;
 }
 
 const std::string& Gui::SoFCDB::writeNodesToString(SoNode * root)
 {
     SoOutput out;
-    buffer = (char *)malloc(1024);
-    buffer_size = 1024;
-    out.setBuffer(buffer, buffer_size, buffer_realloc);
+    static_buffer = (char *)malloc(1024);
+    static_buffer_size = 1024;
+    out.setBuffer(static_buffer, static_buffer_size, buffer_realloc);
     if (root && root->getTypeId().isDerivedFrom(SoVRMLParent::getClassTypeId()))
         out.setHeaderString("#VRML V2.0 utf8");
 
     SoWriteAction wa(&out);
     wa.apply(root);
 
-    cReturnString = buffer;
-    free(buffer);
+    cReturnString = static_buffer;
+    free(static_buffer);
     return cReturnString;
 }
 

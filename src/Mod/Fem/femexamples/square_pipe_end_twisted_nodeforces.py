@@ -49,7 +49,7 @@ def get_information():
             "meshelement": "Tria6",
             "constraints": ["force", "fixed"],
             "solvers": ["calculix"],
-            "material": "Solid",
+            "material": "solid",
             "equation": "mechanical"
             }
     return info

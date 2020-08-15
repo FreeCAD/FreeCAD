@@ -609,6 +609,7 @@ CmdTechDrawHorizontalDimension::CmdTechDrawHorizontalDimension()
     sWhatsThis      = "TechDraw_HorizontalDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_HorizontalDimension";
+    sAccel          = "SHIFT+H";
 }
 
 void CmdTechDrawHorizontalDimension::activated(int iMsg)
@@ -722,6 +723,7 @@ CmdTechDrawVerticalDimension::CmdTechDrawVerticalDimension()
     sWhatsThis      = "TechDraw_VerticalDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_VerticalDimension";
+    sAccel          = "SHIFT+V";
 }
 
 void CmdTechDrawVerticalDimension::activated(int iMsg)

@@ -2056,7 +2056,6 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
     if (f == MINVERT) {
         Py::Object pyobj = args[0]->getPyValue();
-        Py::Tuple args;
         if (PyObject_TypeCheck(pyobj.ptr(),&Base::MatrixPy::Type)) {
             auto m = static_cast<Base::MatrixPy*>(pyobj.ptr())->value();
             if (fabs(m.determinant()) <= DBL_EPSILON)

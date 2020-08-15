@@ -179,7 +179,6 @@ protected:
     double m_lineWidth;
     bool m_obtuse;
     void parentViewMousePressed(QGIView *view, QPointF pos);
-    QPointF *oldLabelCenter;
     QGIView *parent;           //used to create edit dialog
 
     TechDraw::DrawView* getSourceView() const;

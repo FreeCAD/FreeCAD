@@ -142,12 +142,12 @@ void DlgCustomCommandsImp::onDescription(QTreeWidgetItem *item)
 }
 
 /** Shows all commands of this category */
-void DlgCustomCommandsImp::onGroupActivated(QTreeWidgetItem* item)
+void DlgCustomCommandsImp::onGroupActivated(QTreeWidgetItem* groupItem)
 {
-    if (!item)
+    if (!groupItem)
         return;
 
-    QVariant data = item->data(0, Qt::UserRole);
+    QVariant data = groupItem->data(0, Qt::UserRole);
     QString group = data.toString();
     ui->commandTreeWidget->clear();
 

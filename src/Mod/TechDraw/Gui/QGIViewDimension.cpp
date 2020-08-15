@@ -457,9 +457,6 @@ QGIViewDimension::QGIViewDimension() :
     dimLines->setZValue(ZVALUE::DIMENSION);
     dimLines->setStyle(Qt::SolidLine);
 
-    //centerMark = new QGICMark();
-    //addToGroup(centerMark);
-
     // connecting the needed slots and signals
     QObject::connect(
         datumLabel, SIGNAL(dragging(bool)),
@@ -512,12 +509,7 @@ void QGIViewDimension::setGroupSelection(bool b)
 
 void QGIViewDimension::select(bool state)
 {
-//    Base::Console().Message("QGIVD::select(%d)\n", state);
-    if (state) {
-//        setPrettySel();
-    } else {
-//        setPrettyNormal();
-    }
+//    setSelected(state);
 //    draw();
 }
 
@@ -671,7 +663,6 @@ QString QGIViewDimension::getLabelText(void)
 {
     QString result;
     QString first = datumLabel->getDimText()->toPlainText();
-//    QString second = datumLabel->getTolText()->toPlainText();
     QString second = datumLabel->getTolTextOver()->toPlainText();
     QString third = datumLabel->getTolTextUnder()->toPlainText();
     if (second.length() > third.length()) {
@@ -680,7 +671,6 @@ QString QGIViewDimension::getLabelText(void)
         result = first + third;
     }
 
-//    result = first + second;
     return result;
 }
 

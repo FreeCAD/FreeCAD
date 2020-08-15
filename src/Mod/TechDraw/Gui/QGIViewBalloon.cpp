@@ -299,10 +299,6 @@ QGIViewBalloon::QGIViewBalloon() :
     balloonShape->setZValue(ZVALUE::DIMENSION + 1);    //above balloonLines!
     balloonShape->setStyle(Qt::SolidLine);
 
-    oldLabelCenter = new QPointF;
-    oldLabelCenter->setX(0.0);
-    oldLabelCenter->setY(0.0);
-
     balloonLabel->setPosFromCenter(0, 0);
 
     // connecting the needed slots and signals

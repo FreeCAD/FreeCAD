@@ -25,7 +25,7 @@
 #define MESH_KERNEL_H
 
 #include <assert.h>
-#include <iostream>
+#include <iosfwd>
 
 #include "Elements.h"
 #include "Helpers.h"

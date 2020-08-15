@@ -18,7 +18,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-
+"""Helper functions that are used by IFC importer and exporters."""
 import six
 import sys
 import math
@@ -29,46 +29,46 @@ import ArchIFC
 
 from draftutils.messages import _wrn
 
-# ************************************************************************************************
-# ********** some helper, used in import and export, or should stay together
-def decode(filename,utf=False):
 
-    "turns unicodes into strings"
-
-    if six.PY2 and isinstance(filename,six.text_type):
-        # workaround since ifcopenshell currently can't handle unicode filenames
+def decode(filename, utf=False):
+    """Turn unicode into strings, only for Python 2."""
+    if six.PY2 and isinstance(filename, six.text_type):
+        # This is a workaround since ifcopenshell 0.6 currently
+        # can't handle unicode filenames
         encoding = "utf8" if utf else sys.getfilesystemencoding()
         filename = filename.encode(encoding)
     return filename
 
 
-# used in export
 def dd2dms(dd):
+    """Convert decimal degrees to degrees, minutes, seconds.
 
-    "converts decimal degrees to degrees,minutes,seconds"
-
+    Used in export.
+    """
     sign = 1 if dd >= 0 else -1
     dd = abs(dd)
-    minutes,seconds = divmod(dd*3600,60)
-    degrees,minutes = divmod(minutes,60)
+    minutes, seconds = divmod(dd * 3600, 60)
+    degrees, minutes = divmod(minutes, 60)
+
     if dd < 0:
         degrees = -degrees
-    return (int(degrees)*sign,int(minutes)*sign,int(seconds)*sign)
+
+    return (int(degrees) * sign,
+            int(minutes) * sign,
+            int(seconds) * sign)
 
 
-# used in import
 def dms2dd(degrees, minutes, seconds, milliseconds=0):
+    """Convert degrees, minutes, seconds to decimal degrees.
 
-    "converts degrees,minutes,seconds to decimal degrees"
-
-    dd = float(degrees) + float(minutes)/60 + float(seconds)/(3600)
+    Used in import.
+    """
+    dd = float(degrees) + float(minutes)/60 + float(seconds)/3600
     return dd
 
 
-# ************************************************************************************************
-# ********** some helper, mainly used in import
 class ProjectImporter:
-    """A helper class to create a FreeCAD Arch Project object"""
+    """A helper class to create an Arch Project object."""
 
     def __init__(self, file, objects):
         self.file = file
@@ -82,9 +82,9 @@ class ProjectImporter:
         self.setComplexAttributes()
 
     def setAttributes(self):
-        for property in self.object.PropertiesList:
-            if hasattr(self.project, property) and getattr(self.project, property):
-                setattr(self.object, property, getattr(self.project, property))
+        for prop in self.object.PropertiesList:
+            if hasattr(self.project, prop) and getattr(self.project, prop):
+                setattr(self.object, prop, getattr(self.project, prop))
 
     def setComplexAttributes(self):
         try:
@@ -92,10 +92,15 @@ class ProjectImporter:
 
             data = self.extractTargetCRSData(mapConversion.TargetCRS)
             data.update(self.extractMapConversionData(mapConversion))
+            # TODO: review and refactor this piece of code.
+            # Calling a method from a class is a bit strange;
+            # this class should be derived from that class to inherit
+            # this method; otherwise a simple function (not tied to a class)
+            # should be used.
             ArchIFC.IfcRoot.setObjIfcComplexAttributeValue(self, self.object, "RepresentationContexts", data)
         except:
-            # This scenario occurs validly in IFC2X3, as the mapConversion does
-            # not exist
+            # This scenario occurs validly in IFC2X3,
+            # as the mapConversion does not exist
             return
 
     def extractTargetCRSData(self, targetCRS):
@@ -131,86 +136,75 @@ class ProjectImporter:
         for attributeName, ifcName in mappings.items():
             data[attributeName] = str(getattr(mapConversion, ifcName))
 
-        data["true_north"] = str(self.calculateTrueNorthAngle(
-            mapConversion.XAxisAbscissa, mapConversion.XAxisOrdinate))
+        data["true_north"] = str(self.calculateTrueNorthAngle(mapConversion.XAxisAbscissa,
+                                                              mapConversion.XAxisOrdinate))
         return data
 
     def calculateTrueNorthAngle(self, x, y):
         return round(math.degrees(math.atan2(y, x)) - 90, 6)
 
 
-# type tables
-def buildRelProductsAnnotations(ifcfile, root_element):
-    """build the products and annotations relation table and"""
-
-    # products
+def buildRelProductsAnnotations(ifcfile, root_element='IfcProduct'):
+    """Build the products and annotations relation table."""
     products = ifcfile.by_type(root_element)
 
-    # annotations
     annotations = ifcfile.by_type("IfcAnnotation")
     tp = []
     for product in products:
-        if product.is_a("IfcGrid") and not (product in annotations):
+        if product.is_a("IfcGrid") and (product not in annotations):
             annotations.append(product)
-        elif not (product in annotations):
+        elif product not in annotations:
             tp.append(product)
 
     # remove any leftover annotations from products
-    products = sorted(tp,key=lambda prod: prod.id())
+    products = sorted(tp, key=lambda prod: prod.id())
 
     return products, annotations
 
 
-# relation tables
 def buildRelProductRepresentation(ifcfile):
-    """build the product/representations relation table"""
-
+    """Build the product/representations relation table."""
     prodrepr = {}  # product/representations table
 
     for p in ifcfile.by_type("IfcProduct"):
-        if hasattr(p,"Representation"):
-            if p.Representation:
-                for it in p.Representation.Representations:
-                    for it1 in it.Items:
-                        prodrepr.setdefault(p.id(),[]).append(it1.id())
-                        if it1.is_a("IfcBooleanResult"):
-                            prodrepr.setdefault(p.id(),[]).append(it1.FirstOperand.id())
-                        elif it.Items[0].is_a("IfcMappedItem"):
-                            prodrepr.setdefault(p.id(),[]).append(it1.MappingSource.MappedRepresentation.id())
-                            if it1.MappingSource.MappedRepresentation.is_a("IfcShapeRepresentation"):
-                                for it2 in it1.MappingSource.MappedRepresentation.Items:
-                                    prodrepr.setdefault(p.id(),[]).append(it2.id())
-
+        if hasattr(p, "Representation") and p.Representation:
+            for it in p.Representation.Representations:
+                for it1 in it.Items:
+                    prodrepr.setdefault(p.id(), []).append(it1.id())
+                    if it1.is_a("IfcBooleanResult"):
+                        prodrepr.setdefault(p.id(), []).append(it1.FirstOperand.id())
+                    elif it.Items[0].is_a("IfcMappedItem"):
+                        prodrepr.setdefault(p.id(), []).append(it1.MappingSource.MappedRepresentation.id())
+                        if it1.MappingSource.MappedRepresentation.is_a("IfcShapeRepresentation"):
+                            for it2 in it1.MappingSource.MappedRepresentation.Items:
+                                prodrepr.setdefault(p.id(), []).append(it2.id())
     return prodrepr
 
 
 def buildRelAdditions(ifcfile):
-    """build the additions relation table"""
-
+    """Build the additions relation table."""
     additions = {}  # { host:[child,...], ... }
 
     for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
-        additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
+        additions.setdefault(r.RelatingStructure.id(), []).extend([e.id() for e in r.RelatedElements])
     for r in ifcfile.by_type("IfcRelAggregates"):
-        additions.setdefault(r.RelatingObject.id(),[]).extend([e.id() for e in r.RelatedObjects])
+        additions.setdefault(r.RelatingObject.id(), []).extend([e.id() for e in r.RelatedObjects])
 
     return additions
 
 
 def buildRelGroups(ifcfile):
-    """build the groups relation table"""
-
+    """Build the groups relation table."""
     groups = {}  # { host:[child,...], ... }     # used in structural IFC
 
     for r in ifcfile.by_type("IfcRelAssignsToGroup"):
-        groups.setdefault(r.RelatingGroup.id(),[]).extend([e.id() for e in r.RelatedObjects])
+        groups.setdefault(r.RelatingGroup.id(), []).extend([e.id() for e in r.RelatedObjects])
 
     return groups
 
 
 def buildRelSubtractions(ifcfile):
-    """build the subtractions relation table"""
-
+    """Build the subtractions relation table."""
     subtractions = []  # [ [opening,host], ... ]
 
     for r in ifcfile.by_type("IfcRelVoidsElement"):
@@ -220,8 +214,7 @@ def buildRelSubtractions(ifcfile):
 
 
 def buildRelMattable(ifcfile):
-    """build the mattable relation table"""
-
+    """Build the mattable relation table."""
     mattable = {}  # { objid:matid }
 
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
@@ -502,29 +495,42 @@ def getIfcProperties(ifcfile, pid, psets, d):
     return d
 
 
-# ************************************************************************************************
+def getIfcPsetPoperties(ifcfile, pid):
+    """ directly build the property table from pid and ifcfile for FreeCAD"""
+
+    return getIfcProperties(ifcfile, pid, getIfcPropertySets(ifcfile, pid), {})
+
+
+def getUnit(unit):
+    """Get the unit multiplier for different decimal prefixes.
+
+    Only for when the unit is METRE.
+    When no Prefix is provided, return 1000, that is, mm x 1000 = metre.
+    For other cases, return 1.0.
+    """
+    if unit.Name == "METRE":
+        if unit.Prefix == "KILO":
+            return 1000000.0
+        elif unit.Prefix == "HECTO":
+            return 100000.0
+        elif unit.Prefix == "DECA":
+            return 10000.0
+        elif not unit.Prefix:
+            return 1000.0
+        elif unit.Prefix == "DECI":
+            return 100.0
+        elif unit.Prefix == "CENTI":
+            return 10.0
+    return 1.0
+
+
 def getScaling(ifcfile):
-    """returns a scaling factor from file units to mm"""
-
-    def getUnit(unit):
-        if unit.Name == "METRE":
-            if unit.Prefix == "KILO":
-                return 1000000.0
-            elif unit.Prefix == "HECTO":
-                return 100000.0
-            elif unit.Prefix == "DECA":
-                return 10000.0
-            elif not unit.Prefix:
-                return 1000.0
-            elif unit.Prefix == "DECI":
-                return 100.0
-            elif unit.Prefix == "CENTI":
-                return 10.0
-        return 1.0
-
+    """Return a scaling factor from the IFC file; units to mm."""
     ua = ifcfile.by_type("IfcUnitAssignment")
+
     if not ua:
         return 1.0
+
     ua = ua[0]
     for u in ua.Units:
         if u.UnitType == "LENGTHUNIT":
@@ -545,7 +551,7 @@ def getRotation(entity):
     except AttributeError:
         return FreeCAD.Rotation()
     import WorkingPlane
-    p = WorkingPlane.plane(u=u,v=v,w=w)
+    p = WorkingPlane.plane(u=u, v=v, w=w)
     return p.getRotation().Rotation
 
 

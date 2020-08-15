@@ -364,13 +364,6 @@ installed addons will be checked for available updates
       <translation type="unfinished">Automatically check for updates at start (requires GitPython)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="42"/>
-      <source>You can use this window to specify additional addon repositories
-sto be scanned for available addons</source>
-      <translation type="unfinished">You can use this window to specify additional addon repositories
-sto be scanned for available addons</translation>
-    </message>
-    <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
       <translation type="unfinished">Proxy </translation>
@@ -399,6 +392,13 @@ sto be scanned for available addons</translation>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the Addon Manager</source>
       <translation type="unfinished">Close the Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="42"/>
+      <source>You can use this window to specify additional addon repositories
+to be scanned for available addons</source>
+      <translation type="unfinished">You can use this window to specify additional addon repositories
+to be scanned for available addons</translation>
     </message>
   </context>
   <context>

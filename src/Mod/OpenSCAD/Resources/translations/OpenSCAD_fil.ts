@@ -137,7 +137,7 @@
       <translation>I-convert ang mga edge na maging mga face</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="211"/>
+      <location filename="../../OpenSCADCommands.py" line="243"/>
       <source>Please select 3 objects first</source>
       <translation>Mangyaring pumili muna ng 3 mga object</translation>
     </message>
@@ -152,37 +152,37 @@
       <translation>I-press ang OK</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="249"/>
+      <location filename="../../OpenSCADCommands.py" line="281"/>
       <source>Add</source>
       <translation>Magdugtong</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="250"/>
+      <location filename="../../OpenSCADCommands.py" line="282"/>
       <source>Clear</source>
       <translation>Malinaw</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="251"/>
+      <location filename="../../OpenSCADCommands.py" line="283"/>
       <source>as Mesh</source>
       <translation>bilang Mesh</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="252"/>
+      <location filename="../../OpenSCADCommands.py" line="284"/>
       <source>Add OpenSCAD Element</source>
       <translation>Magdagdag ng Elemento ng OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="325"/>
+      <location filename="../../OpenSCADCommands.py" line="357"/>
       <source>Perform</source>
       <translation>Magsagawa</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="326"/>
+      <location filename="../../OpenSCADCommands.py" line="358"/>
       <source>Mesh Boolean</source>
       <translation>Mesh Boolean</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="596"/>
+      <location filename="../../OpenSCADUtils.py" line="607"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>Kamalian lahat ng mga hugis ay dapat na alinman sa 2D o parehong 3D</translation>
     </message>
@@ -195,12 +195,12 @@
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="366"/>
+      <location filename="../../OpenSCADCommands.py" line="398"/>
       <source>Add OpenSCAD Element...</source>
       <translation>Magdagdag ng Elemento ng OpenSCAD...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="367"/>
+      <location filename="../../OpenSCADCommands.py" line="399"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>Magdagdag ng isang elemento ng OpenSCAD sa pamamagitan ng pag enter ng OpenSCAD code at pagsasagawa ng OpenSCAD binary</translation>
     </message>
@@ -229,12 +229,12 @@
   <context>
     <name>OpenSCAD_ExpandPlacements</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="193"/>
+      <location filename="../../OpenSCADCommands.py" line="225"/>
       <source>Expand Placements</source>
       <translation>I-expand ang mga Placement</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="194"/>
+      <location filename="../../OpenSCADCommands.py" line="226"/>
       <source>Expand all placements downwards the FeatureTree</source>
       <translation>I-expand lahat ng mga placement pababa ng FeatureTree</translation>
     </message>
@@ -255,12 +255,12 @@
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="399"/>
+      <location filename="../../OpenSCADCommands.py" line="431"/>
       <source>Hull</source>
       <translation>Hull</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="400"/>
+      <location filename="../../OpenSCADCommands.py" line="432"/>
       <source>Perform Hull</source>
       <translation>Magsagawa ng Hull</translation>
     </message>
@@ -268,12 +268,12 @@
   <context>
     <name>OpenSCAD_IncreaseToleranceFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="176"/>
+      <location filename="../../OpenSCADCommands.py" line="208"/>
       <source>Increase Tolerance Feature</source>
       <translation>Dagdagan ang feature ng Tolerance</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="177"/>
+      <location filename="../../OpenSCADCommands.py" line="209"/>
       <source>Create Feature that allows to increase the tolerance</source>
       <translation>Lumikha ng feature na magbibigay daan para tumaas ang tolerance</translation>
     </message>
@@ -281,12 +281,12 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="379"/>
+      <location filename="../../OpenSCADCommands.py" line="411"/>
       <source>Mesh Boolean...</source>
       <translation>Mesh Boolean...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="380"/>
+      <location filename="../../OpenSCADCommands.py" line="412"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation>I-export ang mga bagay bilang meshes at gamitin ang OpenSCAD upang magsagawa ng operasyon ng boolean</translation>
     </message>
@@ -294,14 +294,27 @@
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="418"/>
+      <location filename="../../OpenSCADCommands.py" line="450"/>
       <source>Minkowski</source>
       <translation>Minkowski</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="419"/>
+      <location filename="../../OpenSCADCommands.py" line="451"/>
       <source>Perform Minkowski</source>
       <translation>Magsagawa ng Minkowski</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_MirrorMeshFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="188"/>
+      <source>Mirror Mesh Feature...</source>
+      <translation type="unfinished">Mirror Mesh Feature...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="189"/>
+      <source>Create Mirror Mesh Feature</source>
+      <translation type="unfinished">Create Mirror Mesh Feature</translation>
     </message>
   </context>
   <context>
@@ -320,12 +333,12 @@
   <context>
     <name>OpenSCAD_RemoveSubtree</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="226"/>
+      <location filename="../../OpenSCADCommands.py" line="258"/>
       <source>Remove Objects and their Children</source>
       <translation>Alisin ang mga object at kanilang Children</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="227"/>
+      <location filename="../../OpenSCADCommands.py" line="259"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
       <translation>Nag aalis ng mga napiling mga object at lahat ng children na hindi na reference mula sa ibang mga object</translation>
     </message>
@@ -333,12 +346,12 @@
   <context>
     <name>OpenSCAD_ReplaceObject</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="214"/>
+      <location filename="../../OpenSCADCommands.py" line="246"/>
       <source>Replace Object</source>
       <translation>Palitan ang Object</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="215"/>
+      <location filename="../../OpenSCADCommands.py" line="247"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
       <translation>Palitan ang isang bagay sa Feature Tree. Mangyaring pumili ng luma, bago, at sanhi na bagay</translation>
     </message>

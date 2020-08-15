@@ -101,7 +101,6 @@ protected:
 
     void makeLineSets(void);
 
-    void getParameters(void);
     std::vector<PATLineSpec> getDecodedSpecsFromFile();
     std::vector<LineSet> m_lineSets;
     std::string m_saveFile;

@@ -100,7 +100,7 @@ boost::shared_ptr<FaceUnwrapper> FaceUnwrapper_mesh(const py::object& points,
         ColMat<double, 3> coords;
         coords.resize(l1.size(), 3);
         int row = 0;
-        for (Py::Sequence::iterator it = l1.begin(); it != l1.end(); ++it) {
+        for (Py::Sequence::iterator it = l1.begin(); it != l1.end(); ++it, ++row) {
             Py::Sequence c(*it);
             int col = 0;
             for (Py::Sequence::iterator jt = c.begin(); jt != c.end(); ++jt, ++col) {
@@ -112,7 +112,8 @@ boost::shared_ptr<FaceUnwrapper> FaceUnwrapper_mesh(const py::object& points,
         Py::Sequence l2(facets.ptr());
         ColMat<long, 3> triangles;
         triangles.resize(l2.size(), 3);
-        for (Py::Sequence::iterator it = l2.begin(); it != l2.end(); ++it) {
+        row = 0;
+        for (Py::Sequence::iterator it = l2.begin(); it != l2.end(); ++it, ++row) {
             Py::Sequence c(*it);
             int col = 0;
             for (Py::Sequence::iterator jt = c.begin(); jt != c.end(); ++jt, ++col) {
@@ -170,7 +171,30 @@ boost::python::list getFlatBoundaryNodesPy(FaceUnwrapper& instance)
     return ary;
 }
 
-
+namespace fm {
+// https://www.boost.org/doc/libs/1_52_0/libs/python/doc/v2/faq.html
+template<typename eigen_type>
+struct eigen_matrix
+{
+    static PyObject* convert(const eigen_type& mat)
+    {
+        // <class 'numpy.array'>
+        py::list ary;
+        for (int i = 0; i < mat.rows(); i++) {
+            py::list row;
+            for (int j = 0; j < mat.cols(); j++) {
+                row.append(mat.coeff(i ,j));
+            }
+            ary.append(row);
+        }
+        return boost::python::incref(ary.ptr());
+    }
+    static void to_python_converter()
+    {
+        py::to_python_converter<eigen_type, eigen_matrix<eigen_type>>();
+    }
+};
+} // namespace fm
 
 BOOST_PYTHON_MODULE(flatmesh)
 {
@@ -227,10 +251,16 @@ BOOST_PYTHON_MODULE(flatmesh)
         .def("findFlatNodes", &FaceUnwrapper::findFlatNodes)
         .def("interpolateFlatFace", &interpolateFlatFacePy)
         .def("getFlatBoundaryNodes", &getFlatBoundaryNodesPy)
-        .def_readonly("tris", &FaceUnwrapper::tris)
-        .def_readonly("nodes", &FaceUnwrapper::xyz_nodes)
-        .def_readonly("uv_nodes", &FaceUnwrapper::uv_nodes)
-        .def_readonly("ze_nodes", &FaceUnwrapper::ze_nodes)
-        .def_readonly("ze_poles", &FaceUnwrapper::ze_poles)
-        .def_readonly("A", &FaceUnwrapper::A);
+        .add_property("tris", py::make_getter(&FaceUnwrapper::tris, py::return_value_policy<py::return_by_value>()))
+        .add_property("nodes", py::make_getter(&FaceUnwrapper::xyz_nodes, py::return_value_policy<py::return_by_value>()))
+        .add_property("uv_nodes", py::make_getter(&FaceUnwrapper::uv_nodes, py::return_value_policy<py::return_by_value>()))
+        .add_property("ze_nodes", py::make_getter(&FaceUnwrapper::ze_nodes, py::return_value_policy<py::return_by_value>()))
+        .add_property("ze_poles", py::make_getter(&FaceUnwrapper::ze_poles, py::return_value_policy<py::return_by_value>()))
+        .add_property("A", py::make_getter(&FaceUnwrapper::A, py::return_value_policy<py::return_by_value>()));
+
+    fm::eigen_matrix<spMat>::to_python_converter();
+    fm::eigen_matrix<ColMat<double, 2>>::to_python_converter();
+    fm::eigen_matrix<ColMat<double, 3>>::to_python_converter();
+    fm::eigen_matrix<ColMat<long,   1>>::to_python_converter();
+    fm::eigen_matrix<ColMat<long,   3>>::to_python_converter();
 }

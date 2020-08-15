@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Approximate a cylinder</source>
-      <translation type="unfinished">Approximate a cylinder</translation>
+      <translation>Silindiri yaklaştırma</translation>
     </message>
   </context>
   <context>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="111"/>
       <source>Plane...</source>
-      <translation type="unfinished">Plane...</translation>
+      <translation>Düzlem...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="112"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="325"/>
       <source>Polynomial surface</source>
-      <translation type="unfinished">Polynomial surface</translation>
+      <translation>Polinom yüzeyi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="326"/>

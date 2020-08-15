@@ -55,6 +55,11 @@ DocumentT::DocumentT(const std::string& name)
     document = name;
 }
 
+DocumentT::DocumentT(const DocumentT& doc)
+{
+    document = doc.document;
+}
+
 DocumentT::~DocumentT()
 {
 }

@@ -25,9 +25,6 @@
 #ifndef _TechDraw_HATCHLINE_H_
 #define _TechDraw_HATCHLINE_H_
 
-#include <iostream>
-#include <sstream>
-#include <fstream>
 #include <vector>
 #include <string>
 

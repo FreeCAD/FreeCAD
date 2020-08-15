@@ -126,6 +126,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     // Bind input fields to properties
     ui->lengthEdit->bind(pcPocket->Length);
     ui->lengthEdit2->bind(pcPocket->Length2);
+    ui->offsetEdit->bind(pcPocket->Offset);
 
     QMetaObject::connectSlotsByName(this);
 

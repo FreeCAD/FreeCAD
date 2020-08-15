@@ -57,7 +57,7 @@
 using namespace Gui;
 
 /* XPM */
-static const char *px[]={
+static const char *not_found[]={
 "24 24 2 1",
 "# c #000000",
 ". c #ffffff",
@@ -293,7 +293,7 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
     }
 
     Base::Console().Warning("Cannot find icon: %s\n", name);
-    return QPixmap(px);
+    return QPixmap(not_found);
 }
 
 QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSize& size) const

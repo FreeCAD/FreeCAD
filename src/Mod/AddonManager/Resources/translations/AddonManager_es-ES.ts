@@ -363,12 +363,6 @@ installed addons will be checked for available updates
       <translation>Comprobar automáticamente actualizaciones al inicio (requiere GitPython)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="42"/>
-      <source>You can use this window to specify additional addon repositories
-sto be scanned for available addons</source>
-      <translation>Puede usar esta ventana para especificar repositorios adicionales de complementos a ser escaneados para complementos disponibles</translation>
-    </message>
-    <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
       <translation>Proxy </translation>
@@ -397,6 +391,13 @@ sto be scanned for available addons</source>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the Addon Manager</source>
       <translation>Cerrar el gestor de complementos</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="42"/>
+      <source>You can use this window to specify additional addon repositories
+to be scanned for available addons</source>
+      <translation>Puede usar esta ventana para especificar repositorios de complementos adicionales
+a ser escaneados para los complementos disponibles</translation>
     </message>
   </context>
   <context>

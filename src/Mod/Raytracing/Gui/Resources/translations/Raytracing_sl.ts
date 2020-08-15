@@ -387,12 +387,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="134"/>
       <source>POV-Ray output parameters:</source>
-      <translation>Vhodni parametri POV-Ray:</translation>
+      <translation>Izhodne določilke POV-Ray:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="143"/>
       <source>The POV-Ray parameters to be passed to the render.</source>
-      <translation>Parametri POV-Ray, ki naj se podajo izrisu.</translation>
+      <translation>Določilke POV-Raya, ki naj se upoštevajo pri upodobitvi.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="146"/>
@@ -496,17 +496,17 @@ Ali želite nadaljevati?</translation>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location filename="../../ViewProvider.cpp" line="146"/>
+      <location filename="../../ViewProvider.cpp" line="147"/>
       <source>Edit Povray project</source>
       <translation>Uredi projekt POV-Ray</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="177"/>
+      <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Povray template</source>
       <translation>Predloga POV-Ray</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="177"/>
+      <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Select a Povray template</source>
       <translation>Izberite predlogo POV-Ray</translation>
     </message>

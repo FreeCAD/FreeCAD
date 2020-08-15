@@ -126,6 +126,7 @@
 #include <boost/version.hpp>
 #include <QDir>
 #include <QFileInfo>
+#include <QProcessEnvironment>
 
 using namespace App;
 using namespace std;
@@ -2018,8 +2019,7 @@ void Application::initConfig(int argc, char ** argv)
 #endif
     }
 
-    // Set application tmp. directory
-    mConfig["AppTempPath"] = Base::FileInfo::getTempPath();
+    // Change application tmp. directory
     std::string tmpPath = _pcUserParamMngr->GetGroup("BaseApp/Preferences/General")->GetASCII("TempPath");
     Base::FileInfo di(tmpPath);
     if (di.exists() && di.isDir()) {
@@ -2696,20 +2696,70 @@ void Application::ExtractUserPath()
     mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
     mConfig["DocPath"] = mConfig["AppHomePath"] + "doc" + PATHSEP;
 
+    // Set application tmp. directory
+    mConfig["AppTempPath"] = Base::FileInfo::getTempPath();
+
+    // this is to support a portable version of FreeCAD
+    QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
+    QString userHome = env.value(QString::fromLatin1("FREECAD_USER_HOME"));
+    QString userData = env.value(QString::fromLatin1("FREECAD_USER_DATA"));
+    QString userTemp = env.value(QString::fromLatin1("FREECAD_USER_TEMP"));
+
+    // verify env. variables
+    if (!userHome.isEmpty()) {
+        QDir dir(userHome);
+        if (dir.exists())
+            userHome = QDir::toNativeSeparators(dir.canonicalPath());
+        else
+            userHome.clear();
+    }
+
+    if (!userData.isEmpty()) {
+        QDir dir(userData);
+        if (dir.exists())
+            userData = QDir::toNativeSeparators(dir.canonicalPath());
+        else
+            userData.clear();
+    }
+    else if (!userHome.isEmpty()) {
+        // if FREECAD_USER_HOME is set but not FREECAD_USER_DATA
+        userData = userHome;
+    }
+
+    // override temp directory if set by env. variable
+    if (!userTemp.isEmpty()) {
+        QDir dir(userTemp);
+        if (dir.exists()) {
+            userTemp = dir.canonicalPath();
+            userTemp += QDir::separator();
+            userTemp = QDir::toNativeSeparators(userTemp);
+            mConfig["AppTempPath"] = userTemp.toUtf8().data();
+        }
+    }
+    else if (!userHome.isEmpty()) {
+        // if FREECAD_USER_HOME is set but not FREECAD_USER_TEMP
+        QDir dir(userHome);
+        dir.mkdir(QString::fromLatin1("temp"));
+        QFileInfo fi(dir, QString::fromLatin1("temp"));
+        QString tmp(fi.absoluteFilePath());
+        tmp += QDir::separator();
+        tmp = QDir::toNativeSeparators(tmp);
+        mConfig["AppTempPath"] = tmp.toUtf8().data();
+    }
+
 #if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
     // Default paths for the user specific stuff
     struct passwd *pwd = getpwuid(getuid());
     if (pwd == NULL)
         throw Base::RuntimeError("Getting HOME path from system failed!");
     mConfig["UserHomePath"] = pwd->pw_dir;
+    if (!userHome.isEmpty()) {
+        mConfig["UserHomePath"] = userHome.toUtf8().data();
+    }
 
-    char *path = pwd->pw_dir;
-    char *fc_user_data;
-    if ((fc_user_data = getenv("FREECAD_USER_DATA"))) {
-        QString env = QString::fromUtf8(fc_user_data);
-        QDir dir(env);
-        if (!env.isEmpty() && dir.exists())
-            path = fc_user_data;
+    std::string path = pwd->pw_dir;
+    if (!userData.isEmpty()) {
+        path = userData.toUtf8().data();
     }
 
     std::string appData(path);
@@ -2764,7 +2814,14 @@ void Application::ExtractUserPath()
     if (pwd == NULL)
         throw Base::RuntimeError("Getting HOME path from system failed!");
     mConfig["UserHomePath"] = pwd->pw_dir;
+    if (!userHome.isEmpty()) {
+        mConfig["UserHomePath"] = userHome.toUtf8().data();
+    }
+
     std::string appData = pwd->pw_dir;
+    if (!userData.isEmpty()) {
+        appData = userData.toUtf8().data();
+    }
     appData += PATHSEP;
     appData += "Library";
     appData += PATHSEP;
@@ -2823,8 +2880,13 @@ void Application::ExtractUserPath()
         WideCharToMultiByte(CP_UTF8, 0, szPath, -1,dest, 256, NULL, NULL);
         mConfig["UserHomePath"] = dest;
     }
-    else
+    else {
         mConfig["UserHomePath"] = mConfig["AppHomePath"];
+    }
+
+    if (!userHome.isEmpty()) {
+        mConfig["UserHomePath"] = userHome.toUtf8().data();
+    }
 
     // In the second step we want the directory where user settings of the application can be
     // kept. There we create a directory with name of the vendor and a sub-directory with name
@@ -2834,6 +2896,9 @@ void Application::ExtractUserPath()
         WideCharToMultiByte(CP_UTF8, 0, szPath, -1,dest, 256, NULL, NULL);
 
         std::string appData = dest;
+        if (!userData.isEmpty()) {
+            appData = userData.toUtf8().data();
+        }
         Base::FileInfo fi(appData.c_str());
         if (!fi.exists()) {
             // This should never ever happen

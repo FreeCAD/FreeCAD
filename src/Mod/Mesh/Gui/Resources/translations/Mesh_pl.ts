@@ -731,7 +731,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
       <source>None</source>
-      <translation>Żaden</translation>
+      <translation>Brak</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
@@ -890,7 +890,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="186"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="347"/>
       <source>No selection</source>
-      <translation>Brak wyboru</translation>
+      <translation>Brak zaznaczenia</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="374"/>
@@ -943,7 +943,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="552"/>
       <source>%1 non-manifolds</source>
-      <translation>%1 nierozgałęźnych</translation>
+      <translation>%1 nie jest typu non-Manifold</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="599"/>
@@ -1057,7 +1057,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1193"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1196"/>
       <source>Mesh repair</source>
-      <translation>Napraw siatkę</translation>
+      <translation>Naprawa siatek</translation>
     </message>
   </context>
   <context>
@@ -1346,7 +1346,7 @@ lub czarny.</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="229"/>
       <source>Line transparency</source>
-      <translation>Przejrzystości linii</translation>
+      <translation>Przezroczystość linii</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="236"/>
@@ -1463,48 +1463,48 @@ do gładszego wyglądu.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="97"/>
+      <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
       <translation>Automatyczna</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Adaptive</source>
       <translation>Adaptacyjny</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="100"/>
+      <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Frontal</source>
       <translation>Przedni</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="102"/>
+      <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal Quad</source>
       <translation>Przedni czworobok</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Parallelograms</source>
       <translation>Równoległoboki</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="174"/>
-      <location filename="../../RemeshGmsh.cpp" line="230"/>
+      <location filename="../../RemeshGmsh.cpp" line="175"/>
+      <location filename="../../RemeshGmsh.cpp" line="231"/>
       <source>Time:</source>
       <translation>Czas:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="219"/>
+      <location filename="../../RemeshGmsh.cpp" line="220"/>
       <source>Running gmsh...</source>
       <translation>Uruchamianie Gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="241"/>
+      <location filename="../../RemeshGmsh.cpp" line="242"/>
       <source>Failed to start</source>
       <translation>Nie udało się uruchomić</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="248"/>
+      <location filename="../../RemeshGmsh.cpp" line="249"/>
       <source>Error</source>
       <translation>Błąd</translation>
     </message>
@@ -1535,7 +1535,7 @@ do gładszego wyglądu.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="731"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>Zakończ</translation>
     </message>
@@ -1738,7 +1738,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>Plan</translation>
+      <translation>Płaszczyzna</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -1834,7 +1834,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
       <source>Plane</source>
-      <translation>Plan</translation>
+      <translation>Płaszczyzna</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="126"/>
@@ -1866,7 +1866,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="391"/>
       <source>Center</source>
-      <translation>Środek</translation>
+      <translation>Wyśrodkowane</translation>
     </message>
   </context>
   <context>
@@ -2042,7 +2042,7 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     <message>
       <location filename="../../Command.cpp" line="515"/>
       <source>X3D Extensible 3D</source>
-      <translation>X3D rozszerzenie 3D(*. x3d)</translation>
+      <translation>X3D rozszerzenie 3D (*. x3d)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="517"/>
@@ -2092,7 +2092,7 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     <message>
       <location filename="../../Command.cpp" line="1367"/>
       <source>Solid Mesh</source>
-      <translation>Siatka solid</translation>
+      <translation>Siatka bryły</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1567"/>
@@ -2138,7 +2138,7 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
       <location filename="../../ViewProvider.cpp" line="1575"/>
       <location filename="../../ViewProviderCurvature.cpp" line="491"/>
       <source>Leave info mode</source>
-      <translation>Opuść tryb informacji</translation>
+      <translation>Opuść tryb informacyjny</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1634"/>

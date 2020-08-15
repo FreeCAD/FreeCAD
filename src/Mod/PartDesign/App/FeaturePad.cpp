@@ -66,10 +66,10 @@ Pad::Pad()
 {
     addSubType = FeatureAddSub::Additive;
 
-    ADD_PROPERTY_TYPE(Type,((long)0),"Pad",App::Prop_None,"Pad type");
+    ADD_PROPERTY_TYPE(Type,(0L),"Pad",App::Prop_None,"Pad type");
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length,(100.0),"Pad",App::Prop_None,"Pad length");
-    ADD_PROPERTY_TYPE(Length2,(100.0),"Pad",App::Prop_None,"P");
+    ADD_PROPERTY_TYPE(Length2,(100.0),"Pad",App::Prop_None,"Second Pad length");
     ADD_PROPERTY_TYPE(UpToFace,(0),"Pad",App::Prop_None,"Face where pad will end");
     ADD_PROPERTY_TYPE(Offset,(0.0),"Pad",App::Prop_None,"Offset from face in which pad will end");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};

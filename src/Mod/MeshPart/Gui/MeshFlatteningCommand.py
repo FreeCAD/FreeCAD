@@ -29,8 +29,8 @@ class CreateFlatMesh(BaseCommand):
         flattener = flatmesh.FaceUnwrapper(points, faces)
         flattener.findFlatNodes(5, 0.95)
         boundaries = flattener.getFlatBoundaryNodes()
-        print('number of nodes: {}'.format(len(flattener.ze_nodes)))
-        print('number of faces: {}'.format(len(flattener.tris)))
+        #print('number of nodes: {}'.format(len(flattener.ze_nodes)))
+        #print('number of faces: {}'.format(len(flattener.tris)))
 
         wires = []
         for edge in boundaries:

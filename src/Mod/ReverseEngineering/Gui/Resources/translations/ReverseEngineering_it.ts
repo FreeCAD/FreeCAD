@@ -473,7 +473,7 @@
       <location filename="../../SegmentationManual.ui" line="218"/>
       <location filename="../../SegmentationManual.ui" line="271"/>
       <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
+      <translation>Rileva</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -508,12 +508,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
       <source>Cut segment from mesh</source>
-      <translation>Segmento tagliato dalla mesh</translation>
+      <translation>Taglia il segmento dalla mesh</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
       <source>Hide segment</source>
-      <translation type="unfinished">Hide segment</translation>
+      <translation>Nascondi segmento</translation>
     </message>
   </context>
   <context>

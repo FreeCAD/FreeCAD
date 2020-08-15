@@ -49,6 +49,8 @@ public:
     DocumentT(Document*);
     /*! Constructor */
     DocumentT(const std::string&);
+    /*! Constructor */
+    DocumentT(const DocumentT&);
     /*! Destructor */
     ~DocumentT();
     /*! Assignment operator */
@@ -85,6 +87,8 @@ public:
     ViewProviderT();
     /*! Constructor */
     ViewProviderT(ViewProviderDocumentObject*);
+    /*! Constructor */
+    ViewProviderT(const ViewProviderT&);
     /*! Destructor */
     ~ViewProviderT();
     /*! Assignment operator */

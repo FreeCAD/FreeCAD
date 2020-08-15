@@ -168,6 +168,7 @@ protected Q_SLOTS:
     void onButtonAddFeature(const bool checked);
     void onButtonRemoveFeature(const bool checked);
     virtual void onFeatureDeleted(void)=0;
+    void indexesMoved();
 
 protected:
     /**

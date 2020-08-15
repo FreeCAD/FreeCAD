@@ -622,11 +622,12 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+      <translation>Префикс имени свойства с именем группы в форме 'Group_Name' во избежание конфликтов с существующим свойством.
+В этом случае префикс будет автоматически обрезан при отображении в редакторе свойств.
+Однако, свойство по-прежнему используется в скрипте с полным именем, например 'obj.Group_Name'.
 
-If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+Если этот параметр не установлен, свойство должно иметь уникальное имя и доступ к нему как к 'obj.Name'.
+</translation>
     </message>
     <message>
       <source>Prefix group name</source>
@@ -2220,8 +2221,8 @@ on-screen while displaying the message</source>
     <message>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation type="unfinished">When a log message has occurred, the Report View dialog becomes visible
-on-screen while displaying the log message</translation>
+      <translation>При появлении сообщения журнала, диалоговое окно Report View становится видимым на экране, 
+пока отображается сообщение журнала</translation>
     </message>
     <message>
       <source>Show report view on log message</source>
@@ -2241,7 +2242,7 @@ on-screen while displaying the log message</translation>
     </message>
     <message>
       <source>Font color for error messages in Report view panel</source>
-      <translation type="unfinished">Font color for error messages in Report view panel</translation>
+      <translation>Цвет шрифта для сообщений об ошибках на панели Report view</translation>
     </message>
     <message>
       <source>Internal Python output will be redirected
@@ -2262,6 +2263,14 @@ from Python console to Report view panel</source>
     <message>
       <source>Include a timecode for each entry</source>
       <translation>Включить код времени для каждой записи</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation type="unfinished">Normal messages will be recorded</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation type="unfinished">Record normal messages</translation>
     </message>
   </context>
   <context>
@@ -2368,18 +2377,16 @@ from Python console to Report view panel</source>
     <message>
       <source>Main coordinate system will always be shown in
 lower right corner within opened files</source>
-      <translation type="unfinished">Main coordinate system will always be shown in
-lower right corner within opened files</translation>
+      <translation>Основная система координат всегда отображается в нижнем правом углу в открытых файлах</translation>
     </message>
     <message>
       <source>Time needed for last operation and resulting frame rate
 will be shown at the lower left corner in opened files</source>
-      <translation type="unfinished">Time needed for last operation and resulting frame rate
-will be shown at the lower left corner in opened files</translation>
+      <translation>Время, необходимое для последней операции, и результирующая частота кадров будут показаны в левом нижнем углу открытых файлов</translation>
     </message>
     <message>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
-      <translation type="unfinished">If checked, application will remember which workbench is active for each tab of the viewport</translation>
+      <translation>Если флажок установлен, приложение будет помнить, какой верстак активен для каждой вкладки области просмотра</translation>
     </message>
     <message>
       <source>Remember active workbench by tab</source>
@@ -2400,20 +2407,17 @@ can be rendered directly by GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
-      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU. 
+      <translation>При выборе этого параметра будут использоваться объекты буфера вершин (VBO). 
+VBO - это технология OpenGL, позволяющая хранить координаты вершин совместно с их атрибутами (положение, нормальный вектор, цвет и т.д.) в памяти видеокарты. VBO обеспечивают существенное повышение производительности, поскольку данные находятся в графической памяти, а не в оперативной и поэтому они могут быть обработаны непосредственно  в GPU.
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support on the FreeCAD forums</translation>
+Примечание. Иногда эта функция может привести к множеству различных
+проблем, начиная от графических аномалий и заканчивая сбоями GPU. Не забудьте
+сообщать, что включали этот параметр при поиске поддержки на форумах FreeCAD
+</translation>
     </message>
     <message>
       <source>Use OpenGL VBO (Vertex Buffer Object)</source>
-      <translation type="unfinished">Use OpenGL VBO (Vertex Buffer Object)</translation>
+      <translation>Использовать OpenGL VBO (объекты буфера вершин)</translation>
     </message>
     <message>
       <source>Render cache</source>
@@ -2806,7 +2810,7 @@ automatically run a file recovery when it is started.</source>
     </message>
     <message>
       <source>A thumbnail will be stored when document is saved</source>
-      <translation type="unfinished">A thumbnail will be stored when document is saved</translation>
+      <translation>Миниатюра будет сохранена при сохранении документа</translation>
     </message>
     <message>
       <source>Size</source>
@@ -2834,7 +2838,7 @@ get date suffix according to the specified format</source>
     </message>
     <message>
       <source>Use date and FCBak extension</source>
-      <translation type="unfinished">Use date and FCBak extension</translation>
+      <translation>Использовать дату и расширение FCBak</translation>
     </message>
     <message>
       <source>Date format</source>
@@ -2856,7 +2860,7 @@ icon in the tree view to fully reload it.</source>
     </message>
     <message>
       <source>Disable partial loading of external linked objects</source>
-      <translation type="unfinished">Disable partial loading of external linked objects</translation>
+      <translation>Отключить частичную загрузку внешних связанных объектов</translation>
     </message>
     <message>
       <source>All documents that will be created will get the specified author name.
@@ -2874,11 +2878,11 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     </message>
     <message>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
-      <translation type="unfinished">The field 'Last modified by' will be set to specified author when saving the file</translation>
+      <translation>При сохранении файла поле 'Последнее изменение' будет заполнено именем указанного автора</translation>
     </message>
     <message>
       <source>Default company name to use for new files</source>
-      <translation type="unfinished">Default company name to use for new files</translation>
+      <translation>Название компании по умолчанию для использования в новых файлах</translation>
     </message>
     <message>
       <source>Default license for new documents</source>
@@ -2886,31 +2890,31 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     </message>
     <message>
       <source>Creative Commons Attribution</source>
-      <translation type="unfinished">Creative Commons Attribution</translation>
+      <translation>Лицензия «С указанием авторства», сокращённо CC BY</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-ShareAlike</source>
-      <translation type="unfinished">Creative Commons Attribution-ShareAlike</translation>
+      <translation>Лицензия «С указанием авторства — С сохранением условий», сокращённо CC BY-SA</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NoDerivatives</source>
-      <translation type="unfinished">Creative Commons Attribution-NoDerivatives</translation>
+      <translation>Лицензия «С указанием авторства — Без производных», сокращённо CC BY-ND</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial</translation>
+      <translation>Лицензия «С указанием авторства — Некоммерческая», сокращённо CC BY-NC</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial-ShareAlike</translation>
+      <translation>Лицензия «С указанием авторства — Некоммерческая — С сохранением условий», сокращённо CC BY-NC-SA</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial-NoDerivatives</translation>
+      <translation>Лицензия «С указанием авторства — Некоммерческая — Без производных», сокращённо CC BY-NC-ND</translation>
     </message>
     <message>
       <source>URL describing more about the license</source>
-      <translation type="unfinished">URL describing more about the license</translation>
+      <translation>URL-адрес, описывающий дополнительные сведения о лицензии</translation>
     </message>
   </context>
   <context>
@@ -3193,7 +3197,7 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     </message>
     <message>
       <source>Variables defined by macros are created as local variables</source>
-      <translation type="unfinished">Variables defined by macros are created as local variables</translation>
+      <translation>Переменные, определенные макросами создаются как локальные переменные</translation>
     </message>
     <message>
       <source>Commands executed by macro scripts are shown in Python console</source>
@@ -3201,11 +3205,11 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     </message>
     <message>
       <source>Recorded macros will also contain user interface commands</source>
-      <translation type="unfinished">Recorded macros will also contain user interface commands</translation>
+      <translation>Записанные макросы также будут содержать команды интерфейса пользователя</translation>
     </message>
     <message>
       <source>Recorded macros will also contain user interface commands as comments</source>
-      <translation type="unfinished">Recorded macros will also contain user interface commands as comments</translation>
+      <translation>Записанные макросы также будут содержать команды интерфейса пользователя в виде комментариев</translation>
     </message>
     <message>
       <source>The directory in which the application will search for macros</source>
@@ -3228,7 +3232,7 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     </message>
     <message>
       <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
-      <translation type="unfinished">Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</translation>
+      <translation>Число шагов поворота при использовании стрелок (по умолчанию = 8: угол шага = 360/8 = 45 град.)</translation>
     </message>
     <message>
       <source>Corner</source>
@@ -3291,14 +3295,6 @@ Turntable: the part will be rotated around the z-axis.</source>
     <message>
       <source>Trackball</source>
       <translation>Trackball</translation>
-    </message>
-    <message>
-      <source>New document camera orientation</source>
-      <translation>Ориентации камеры нового документа</translation>
-    </message>
-    <message>
-      <source>Camera orientation for new documents</source>
-      <translation>Ориентация камеры для новых документов</translation>
     </message>
     <message>
       <source>New document scale</source>
@@ -3408,6 +3404,14 @@ Mouse tilting is not disabled by this setting.</source>
       <source>Custom</source>
       <translation>Дополнительно</translation>
     </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation>Ориентация камеры по умолчанию</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation>Ориентация камеры по умолчанию при создании нового документа или выборе вида "Домой"</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
@@ -3493,11 +3497,11 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Number of decimals that should be shown for numbers and dimensions</source>
-      <translation type="unfinished">Number of decimals that should be shown for numbers and dimensions</translation>
+      <translation>Количество десятичных знаков, которые должны отображаться для чисел и размеров</translation>
     </message>
     <message>
       <source>Unit system that should be used for all parts the application</source>
-      <translation type="unfinished">Unit system that should be used for all parts the application</translation>
+      <translation>Система единиц измерения, которая должна использоваться для всех компонентов приложения</translation>
     </message>
     <message>
       <source>Minimum fractional inch to be displayed</source>
@@ -3560,11 +3564,11 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Enable preselection and highlight by specified color</source>
-      <translation type="unfinished">Enable preselection and highlight by specified color</translation>
+      <translation>Включить предварительный выбор и подсветку заданным цветом</translation>
     </message>
     <message>
       <source>Enable selection highlighting and use specified color</source>
-      <translation type="unfinished">Enable selection highlighting and use specified color</translation>
+      <translation>Включить подсветку выделения и использовать указанный цвет</translation>
     </message>
     <message>
       <source>Area for picking elements in 3D view.
@@ -3644,11 +3648,11 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Input the source value and unit</source>
-      <translation type="unfinished">Input the source value and unit</translation>
+      <translation>Введите значение источника и единицу измерения</translation>
     </message>
     <message>
       <source>Input here the unit for the result</source>
-      <translation type="unfinished">Input here the unit for the result</translation>
+      <translation>Введите сюда единицу измерения для результата</translation>
     </message>
     <message>
       <source>Result</source>
@@ -3657,8 +3661,8 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <source>List of last used calculations 
 To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations 
-To add a calculation press Return in the value input field</translation>
+      <translation>Список последних используемых вычислений 
+Чтобы добавить вычисление нажмите Возврат в поле ввода значения</translation>
     </message>
     <message>
       <source>Quantity</source>
@@ -3671,8 +3675,9 @@ To add a calculation press Return in the value input field</translation>
     <message>
       <source>Unit system to be used for the Quantity
 The preference system is the one set in the general preferences.</source>
-      <translation type="unfinished">Unit system to be used for the Quantity
-The preference system is the one set in the general preferences.</translation>
+      <translation>Система единиц измерения, используемая для Количества
+Система настроек - система, заданная в общих настройках.
+</translation>
     </message>
     <message>
       <source>Decimals:</source>
@@ -3680,7 +3685,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Decimals for the Quantity</source>
-      <translation type="unfinished">Decimals for the Quantity</translation>
+      <translation>Десятичные знаки для количества</translation>
     </message>
     <message>
       <source>Unit category:</source>
@@ -3688,7 +3693,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Unit category for the Quantity</source>
-      <translation type="unfinished">Unit category for the Quantity</translation>
+      <translation>Тип единицы для количества</translation>
     </message>
     <message>
       <source>Copy the result into the clipboard</source>
@@ -3699,11 +3704,11 @@ The preference system is the one set in the general preferences.</translation>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
       <source>unknown unit: </source>
-      <translation type="unfinished">unknown unit: </translation>
+      <translation>неизвестная единица:</translation>
     </message>
     <message>
       <source>unit mismatch</source>
-      <translation type="unfinished">unit mismatch</translation>
+      <translation>несоответствие единиц измерения</translation>
     </message>
   </context>
   <context>
@@ -3766,7 +3771,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;Примечание:&lt;/b&gt; Изменения станут активными при следующем запуске приложения.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -4459,18 +4464,6 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <source>Logging</source>
-      <translation>Информационные сообщения</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Предупреждения</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Ошибки</translation>
-    </message>
-    <message>
       <source>Options</source>
       <translation>Параметры</translation>
     </message>
@@ -4501,6 +4494,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Plain Text Files</source>
       <translation>Текстовые файлы</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation type="unfinished">Display message types</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation type="unfinished">Normal messages</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation type="unfinished">Log messages</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation type="unfinished">Warnings</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation type="unfinished">Errors</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation type="unfinished">Show report view on</translation>
     </message>
   </context>
   <context>
@@ -5821,7 +5838,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Show hidden tree view items</source>
-      <translation type="unfinished">Show hidden tree view items</translation>
+      <translation>Показать скрытые элементы дерева</translation>
     </message>
     <message>
       <source>Hide item</source>
@@ -5853,7 +5870,8 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
-      <translation type="unfinished">Enable or disable recomputating editing object when 'skip recomputation' is enabled</translation>
+      <translation>Включить или выключить повторное вычисление объекта редактирования, если включен параметр  'пропустить пересчет '
+</translation>
     </message>
     <message>
       <source>Recompute object</source>
@@ -6471,11 +6489,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Delete failed</source>
-      <translation type="unfinished">Delete failed</translation>
+      <translation>Удаление не удалось</translation>
     </message>
     <message>
       <source>Dependency error</source>
-      <translation type="unfinished">Dependency error</translation>
+      <translation>Ошибка зависимости</translation>
     </message>
     <message>
       <source>Copy selected</source>
@@ -6495,17 +6513,17 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Expression error</source>
-      <translation type="unfinished">Expression error</translation>
+      <translation>Ошибка выражения</translation>
     </message>
     <message>
       <source>Failed to parse some of the expressions.
 Please check the Report View for more details.</source>
-      <translation type="unfinished">Failed to parse some of the expressions.
-Please check the Report View for more details.</translation>
+      <translation>Не удалось проанализировать некоторые выражения.
+Дополнительные сведения смотрите в журнале.</translation>
     </message>
     <message>
       <source>Failed to paste expressions</source>
-      <translation type="unfinished">Failed to paste expressions</translation>
+      <translation>Не удалось вставить выражения</translation>
     </message>
     <message>
       <source>Simple group</source>
@@ -6513,11 +6531,11 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Group with links</source>
-      <translation type="unfinished">Group with links</translation>
+      <translation>Группа со ссылками</translation>
     </message>
     <message>
       <source>Group with transform links</source>
-      <translation type="unfinished">Group with transform links</translation>
+      <translation>Группа со ссылками преобразования</translation>
     </message>
     <message>
       <source>Create link group failed</source>
@@ -6529,11 +6547,11 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Failed to create relative link</source>
-      <translation type="unfinished">Failed to create relative link</translation>
+      <translation>Не удалось создать относительную ссылку</translation>
     </message>
     <message>
       <source>Unlink failed</source>
-      <translation type="unfinished">Unlink failed</translation>
+      <translation>Разрыв связи не удался</translation>
     </message>
     <message>
       <source>Replace link failed</source>
@@ -6541,25 +6559,25 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Failed to import links</source>
-      <translation type="unfinished">Failed to import links</translation>
+      <translation>Не удалось импортировать ссылки</translation>
     </message>
     <message>
       <source>Failed to import all links</source>
-      <translation type="unfinished">Failed to import all links</translation>
+      <translation>Не удалось импортировать все ссылки</translation>
     </message>
     <message>
       <source>Invalid name</source>
-      <translation type="unfinished">Invalid name</translation>
+      <translation>Недопустимое имя</translation>
     </message>
     <message>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
-      <translation type="unfinished">The property name or group name must only contain alpha numericals,
-underscore, and must not start with a digit.</translation>
+      <translation>буквенно-цифровых знаков
+Имя свойства или группы должно содержать только буквенно-цифровые знаки, подчеркивание и не должно начинаться с цифры</translation>
     </message>
     <message>
       <source>The property '%1' already exists in '%2'</source>
-      <translation type="unfinished">The property '%1' already exists in '%2'</translation>
+      <translation>Свойство '%1' уже существует в '%2'</translation>
     </message>
     <message>
       <source>Add property</source>
@@ -6567,7 +6585,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Failed to add property to '%1': %2</source>
-      <translation type="unfinished">Failed to add property to '%1': %2</translation>
+      <translation>Не удалось добавить свойство к '%1': %2</translation>
     </message>
     <message>
       <source>Save dependent files</source>
@@ -6575,11 +6593,11 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
-      <translation type="unfinished">The file contains external dependencies. Do you want to save the dependent files, too?</translation>
+      <translation>Файл содержит внешние зависимости. Хотите ли вы также сохранить зависимые файлы?</translation>
     </message>
     <message>
       <source>Failed to save document</source>
-      <translation type="unfinished">Failed to save document</translation>
+      <translation>Не удалось сохранить документ</translation>
     </message>
     <message>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
@@ -6595,7 +6613,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
-      <translation type="unfinished">There are grouped transactions in the following documents with other preceding transactions</translation>
+      <translation>В следующих документах имеются группируются транзакции с другими предыдущими транзакциями</translation>
     </message>
     <message>
       <source>Choose 'Yes' to roll back all preceding transactions.
@@ -6607,7 +6625,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Do you want to save your changes to document before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to document before closing?</translation>
+      <translation>Сохранить изменения перед закрытием документа ''?</translation>
     </message>
     <message>
       <source>Apply answer to all</source>
@@ -6615,7 +6633,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Drag &amp; drop failed</source>
-      <translation type="unfinished">Drag &amp; drop failed</translation>
+      <translation>Не удалось переместить</translation>
     </message>
     <message>
       <source>Override colors...</source>
@@ -7313,7 +7331,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Make link</source>
-      <translation type="unfinished">Make link</translation>
+      <translation>Создать ссылку</translation>
     </message>
     <message>
       <source>Create a link to the selected object(s)</source>
@@ -7328,7 +7346,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>Создать группу ссылок</translation>
     </message>
     <message>
       <source>Create a group of links</source>
@@ -7343,7 +7361,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation type="unfinished">Make sub-link</translation>
+      <translation>Сделать доп. ссылку</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>
@@ -7373,11 +7391,11 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Link navigation</source>
-      <translation type="unfinished">Link navigation</translation>
+      <translation>Навигация по ссылке</translation>
     </message>
     <message>
       <source>Link navigation actions</source>
-      <translation type="unfinished">Link navigation actions</translation>
+      <translation>Действия при переходе по ссылке</translation>
     </message>
   </context>
   <context>
@@ -7403,7 +7421,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Go to linked object</source>
-      <translation type="unfinished">Go to linked object</translation>
+      <translation>Перейти к связанному объекту</translation>
     </message>
     <message>
       <source>Select the linked object and switch to its owner document</source>
@@ -7418,7 +7436,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Go to the deepest linked object</source>
-      <translation type="unfinished">Go to the deepest linked object</translation>
+      <translation>Перейти на самый глубокий связанный объект</translation>
     </message>
     <message>
       <source>Select the deepest linked object and switch to its owner document</source>
@@ -7433,7 +7451,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Unlink</source>
-      <translation type="unfinished">Unlink</translation>
+      <translation>Отвязать</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
@@ -7959,7 +7977,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Go back to previous selection</source>
-      <translation type="unfinished">Go back to previous selection</translation>
+      <translation>Вернуться к предыдущему выбору</translation>
     </message>
   </context>
   <context>
@@ -7974,7 +7992,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Show selection bounding box</source>
-      <translation type="unfinished">Show selection bounding box</translation>
+      <translation>Показать границу выбора</translation>
     </message>
   </context>
   <context>
@@ -8296,11 +8314,11 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Expand selected item</source>
-      <translation type="unfinished">Expand selected item</translation>
+      <translation>Развернуть выбранный элемент</translation>
     </message>
     <message>
       <source>Expand currently selected tree items</source>
-      <translation type="unfinished">Expand currently selected tree items</translation>
+      <translation>Развернуть выбранные элементы дерева</translation>
     </message>
   </context>
   <context>
@@ -8326,11 +8344,11 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>TreeView actions</source>
-      <translation type="unfinished">TreeView actions</translation>
+      <translation>Действия с деревом</translation>
     </message>
     <message>
       <source>TreeView behavior options and actions</source>
-      <translation type="unfinished">TreeView behavior options and actions</translation>
+      <translation>Параметры поведения и действий TreeView</translation>
     </message>
   </context>
   <context>
@@ -8511,6 +8529,21 @@ Choose 'Abort' to abort</source>
     <message>
       <source>Set to front view</source>
       <translation>Установить вид спереди</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартный вид</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation>Домой</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation>Установить по умолчанию домашний вид</translation>
     </message>
   </context>
   <context>
@@ -8851,22 +8884,22 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Дерево элементов</translation>
     </message>
   </context>
   <context>
     <name>StdTreeDrag</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Дерево элементов</translation>
     </message>
     <message>
       <source>Initiate dragging</source>
-      <translation type="unfinished">Initiate dragging</translation>
+      <translation>Инициировать перетаскивание</translation>
     </message>
     <message>
       <source>Initiate dragging of current selected tree items</source>
-      <translation type="unfinished">Initiate dragging of current selected tree items</translation>
+      <translation>Инициировать перетаскивание выбранных элементов дерева</translation>
     </message>
   </context>
   <context>
@@ -8877,48 +8910,48 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Дерево элементов</translation>
     </message>
     <message>
       <source>Multi document</source>
-      <translation type="unfinished">Multi document</translation>
+      <translation>Многокомпонентный документ</translation>
     </message>
   </context>
   <context>
     <name>StdTreePreSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Дерево элементов</translation>
     </message>
     <message>
       <source>Pre-selection</source>
-      <translation type="unfinished">Pre-selection</translation>
+      <translation>Предвыборка</translation>
     </message>
     <message>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
-      <translation type="unfinished">Preselect the object in 3D view when mouse over the tree item</translation>
+      <translation>Выделить объект в режиме 3D при наведении курсора на элемент дерева</translation>
     </message>
   </context>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Дерево элементов</translation>
     </message>
     <message>
       <source>Record selection</source>
-      <translation type="unfinished">Record selection</translation>
+      <translation>Записать выделение</translation>
     </message>
     <message>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation type="unfinished">Record selection in tree view in order to go back/forward using navigation button</translation>
+      <translation>Записывать выделение в дереве для перехода назад / вперед с помощью кнопки навигации</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Дерево элементов</translation>
     </message>
     <message>
       <source>Go to selection</source>
@@ -8937,7 +8970,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Дерево элементов</translation>
     </message>
     <message>
       <source>Single document</source>
@@ -8948,11 +8981,11 @@ Choose 'Abort' to abort</source>
     <name>StdTreeSyncPlacement</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Дерево элементов</translation>
     </message>
     <message>
       <source>Sync placement</source>
-      <translation type="unfinished">Sync placement</translation>
+      <translation>Синхронизировать размещение</translation>
     </message>
     <message>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
@@ -8963,11 +8996,11 @@ Choose 'Abort' to abort</source>
     <name>StdTreeSyncSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Дерево элементов</translation>
     </message>
     <message>
       <source>Sync selection</source>
-      <translation type="unfinished">Sync selection</translation>
+      <translation>Синхронизировать выделение</translation>
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
@@ -8978,11 +9011,11 @@ Choose 'Abort' to abort</source>
     <name>StdTreeSyncView</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Дерево элементов</translation>
     </message>
     <message>
       <source>Sync view</source>
-      <translation type="unfinished">Sync view</translation>
+      <translation>Синхронизировать вид</translation>
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
@@ -9104,22 +9137,18 @@ Choose 'Abort' to abort</source>
 
 Are you sure you want to continue?
 </source>
-      <translation type="unfinished">The following referencing objects might break.
+      <translation>Следующие ссылки на объекты могут быть нарушены.
 
-Are you sure you want to continue?
-</translation>
-    </message>
-    <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document. 
-
+Уверены ли Вы, что хотите продолжить?
 </translation>
     </message>
     <message>
       <source>Object dependencies</source>
       <translation>Зависимости объектов</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>Эти элементы выбраны для удаления, но не находятся в активном документе.</translation>
     </message>
   </context>
   <context>
