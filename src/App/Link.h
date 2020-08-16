@@ -350,6 +350,8 @@ protected:
 
     std::vector<boost::signals2::scoped_connection> copyOnChangeConns;
     bool hasCopyOnChange;
+
+    mutable bool checkingProperty = false;
 };
 
 ///////////////////////////////////////////////////////////////////////////

@@ -1737,14 +1737,21 @@ static bool isExcludedProperties(const char *name) {
 }
 
 Property *LinkBaseExtension::extensionGetPropertyByName(const char* name) const {
-    auto prop = inherited::extensionGetPropertyByName(name);
-    if(prop || isExcludedProperties(name))
-        return prop;
+    if (checkingProperty)
+        return inherited::extensionGetPropertyByName(name);
+    Base::StateLocker guard(checkingProperty);
+    if(isExcludedProperties(name))
+        return nullptr;
     auto owner = getContainer();
-    if(owner && owner->canLinkProperties()) {
-        auto linked = getTrueLinkedObject(true);
-        if(linked)
-            return linked->getPropertyByName(name);
+    if (owner) {
+        App::Property *prop = owner->getPropertyByName(name);
+        if(prop)
+            return prop;
+        if(owner->canLinkProperties()) {
+            auto linked = getTrueLinkedObject(true);
+            if(linked)
+                return linked->getPropertyByName(name);
+        }
     }
     return 0;
 }
