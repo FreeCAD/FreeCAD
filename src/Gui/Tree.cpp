@@ -3231,6 +3231,7 @@ void TreeWidget::leaveEvent(QEvent *) {
     if(!updateBlocked && TreeParams::Instance()->PreSelection()) {
         preselectTimer->stop();
         Selection().rmvPreselect();
+        hiddenItem = nullptr;
     }
 }
 
