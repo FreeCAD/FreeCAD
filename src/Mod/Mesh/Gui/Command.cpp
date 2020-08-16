@@ -1619,6 +1619,7 @@ CmdMeshFillupHoles::CmdMeshFillupHoles()
     sToolTipText  = QT_TR_NOOP("Fill holes of the mesh");
     sWhatsThis    = "Mesh_FillupHoles";
     sStatusTip    = QT_TR_NOOP("Fill holes of the mesh");
+	sPixmap       = "Mesh_Fill_up_Holes";
 }
 
 void CmdMeshFillupHoles::activated(int)
