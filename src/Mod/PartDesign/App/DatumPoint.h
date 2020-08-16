@@ -47,8 +47,6 @@ public:
 
     Base::Vector3d getPoint();
 
-    virtual TopoDS_Shape getShape() const override;
-
     typedef Part::Datum Superclass;
 
 protected:

@@ -6354,10 +6354,7 @@ void SketchObject::rebuildExternalGeometry(bool defining)
 
         try {
             TopoDS_Shape refSubShape;
-            if (Obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
-                const Part::Datum* datum = static_cast<const Part::Datum*>(Obj);
-                refSubShape = datum->getShape();
-            } else  if (Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+            if (Obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
                 const App::Plane* pl = static_cast<const App::Plane*>(Obj);
                 Base::Placement plm = pl->Placement.getValue();
                 Base::Vector3d base = plm.getPosition();

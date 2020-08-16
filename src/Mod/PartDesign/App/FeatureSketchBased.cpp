@@ -372,47 +372,29 @@ std::vector<TopoShape> ProfileBased::getProfileWires() const {
     return wires;
 }
 
-// Note: We cannot return a reference, because it will become Null.
-// Not clear where, because we check for IsNull() here, but as soon as it is passed out of
-// this method, it becomes null!
-const TopoDS_Face ProfileBased::getSupportFace() const {
+TopoShape ProfileBased::getSupportFace() const {
     const Part::Part2DObject* sketch = getVerifiedSketch();
     if (sketch->MapMode.getValue() == Attacher::mmFlatFace  &&  sketch->Support.getValue()) {
         const auto &Support = sketch->Support;
         App::DocumentObject* ref = Support.getValue();
+        TopoShape shape;
+        shape = Part::Feature::getTopoShape(
+                ref, Support.getSubValues().size() ? Support.getSubValues()[0].c_str() : "", true);
 
-        Part::Feature *part = static_cast<Part::Feature*>(ref);
-        if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            const std::vector<std::string> &sub = Support.getSubValues();
-            assert(sub.size()==1);
-
-            if (sub.at(0) == "") {
-                // This seems to happen when sketch is on a datum plane
-                return TopoDS::Face(Feature::makeShapeFromPlane(sketch));
+        if (!shape.isNull()) {
+            if (shape.shapeType(true) != TopAbs_FACE) {
+                if (!shape.hasSubShape(TopAbs_FACE))
+                    throw Base::ValueError("Null face in SketchBased::getSupportFace()!");
+                shape = shape.getSubTopoShape(TopAbs_FACE, 1);
             }
-
-            // get the selected sub shape (a Face)
-            const Part::TopoShape &shape = part->Shape.getShape();
-            if (shape.getShape().IsNull())
-                throw Base::ValueError("Sketch support shape is empty!");
-
-            TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
-            if (sh.IsNull())
-                throw Base::ValueError("Null shape in SketchBased::getSupportFace()!");
-
-            const TopoDS_Face face = TopoDS::Face(sh);
-            if (face.IsNull())
-                throw Base::ValueError("Null face in SketchBased::getSupportFace()!");
-
-            BRepAdaptor_Surface adapt(face);
+            BRepAdaptor_Surface adapt(TopoDS::Face(shape.getShape()));
             if (adapt.GetType() != GeomAbs_Plane)
                 throw Base::TypeError("No planar face in SketchBased::getSupportFace()!");
 
-            return face;
+            return shape;
         }
     }
-    return TopoDS::Face(Feature::makeShapeFromPlane(sketch));
-
+    return Feature::makeShapeFromPlane(sketch);
 }
 
 int ProfileBased::getSketchAxisCount(void) const
@@ -473,48 +455,36 @@ void ProfileBased::onChanged(const App::Property* prop)
 }
 
 
-void ProfileBased::getUpToFaceFromLinkSub(TopoDS_Face& upToFace,
+void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace,
                                          const App::PropertyLinkSub& refFace)
 {
     App::DocumentObject* ref = refFace.getValue();
-    std::vector<std::string> subStrings = refFace.getSubValues();
 
     if (ref == NULL)
         throw Base::ValueError("SketchBased: Up to face: No face selected");
 
     if (ref->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
-        upToFace = TopoDS::Face(makeShapeFromPlane(ref));
-        return;
-    } else if (ref->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
-        Part::Datum* datum = static_cast<Part::Datum*>(ref);
-        upToFace = TopoDS::Face(datum->getShape());
+        upToFace = makeShapeFromPlane(ref);
         return;
     }
 
-    if (!ref->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        throw Base::TypeError("SketchBased: Up to face: Must be face of a feature");
-    Part::TopoShape baseShape = static_cast<Part::Feature*>(ref)->Shape.getShape();
-
-    if (subStrings.empty() || subStrings[0].empty())
-        throw Base::ValueError("SketchBased: Up to face: No face selected");
-    // TODO: Check for multiple UpToFaces?
-
-    upToFace = TopoDS::Face(baseShape.getSubShape(subStrings[0].c_str()));
-    if (upToFace.IsNull())
+    const auto &subs = refFace.getSubValues();
+    upToFace = Part::Feature::getTopoShape(ref, subs.size()?subs[0].c_str():nullptr,true);
+    if (!upToFace.hasSubShape(TopAbs_FACE))
         throw Base::ValueError("SketchBased: Up to face: Failed to extract face");
 }
 
-void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
-                              const TopoDS_Shape& support,
-                              const TopoDS_Face& supportface,
-                              const TopoDS_Shape& sketchshape,
+void ProfileBased::getUpToFace(TopoShape& upToFace,
+                              const TopoShape& support,
+                              const TopoShape& supportface,
+                              const TopoShape& sketchshape,
                               const std::string& method,
                               const gp_Dir& dir,
                               const double offset)
 {
     if ((method == "UpToLast") || (method == "UpToFirst")) {
         // Check for valid support object
-        if (support.IsNull())
+        if (support.isNull())
             throw Base::ValueError("SketchBased: Up to face: No support in Sketch and no base feature!");
 
         std::vector<Part::cutFaces> cfaces = Part::findAllFacesCutBy(support, sketchshape, dir);
@@ -532,18 +502,24 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
         upToFace = (method == "UpToLast" ? it_far->face : it_near->face);
     }
 
+    if (upToFace.shapeType(true) != TopAbs_FACE) {
+        if (!upToFace.hasSubShape(TopAbs_FACE))
+            throw Base::ValueError("SketchBased: Up to face: No face found");
+        upToFace = upToFace.getSubTopoShape(TopAbs_FACE, 1);
+    }
+
+    TopoDS_Face face = TopoDS::Face(upToFace.getShape());
+
     // Check whether the face has limits or not. Unlimited faces have no wire
     // Note: Datum planes are always unlimited
-    TopExp_Explorer Ex(upToFace,TopAbs_WIRE);
-    if (Ex.More()) {
+    if (upToFace.hasSubShape(TopAbs_WIRE)) {
         // Remove the limits of the upToFace so that the extrusion works even if sketchshape is larger
         // than the upToFace
         bool remove_limits = false;
-        for (Ex.Init(sketchshape,TopAbs_FACE); Ex.More(); Ex.Next()) {
+        for (auto &sketchface : sketchshape.getSubShapes(TopAbs_FACE)) {
             // Get outermost wire of sketch face
-            TopoDS_Face sketchface = TopoDS::Face(Ex.Current());
-            TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(sketchface);
-            if (!checkWireInsideFace(outerWire, upToFace, dir)) {
+            TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(sketchface));
+            if (!checkWireInsideFace(outerWire, face, dir)) {
                 remove_limits = true;
                 break;
             }
@@ -553,10 +529,10 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
         // lie outside the sketch shape. If this is not the case then the sketch
         // shape is not completely covered by the upToFace. See #0003141
         if (!remove_limits) {
-            TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(upToFace);
-            for (Ex.Init(upToFace, TopAbs_WIRE); Ex.More(); Ex.Next()) {
-                if (!outerWire.IsSame(Ex.Current())) {
-                    BRepProj_Projection proj(TopoDS::Wire(Ex.Current()), sketchshape, -dir);
+            TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(face);
+            for (auto &w : upToFace.getSubShapes(TopAbs_WIRE)) {
+                if (!outerWire.IsSame(w)) {
+                    BRepProj_Projection proj(TopoDS::Wire(w), sketchshape.getShape(), -dir);
                     if (proj.More()) {
                         remove_limits = true;
                         break;
@@ -567,8 +543,8 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
 
         if (remove_limits) {
             // Note: Using an unlimited face every time gives unnecessary failures for concave faces
-            TopLoc_Location loc = upToFace.Location();
-            BRepAdaptor_Surface adapt(upToFace, Standard_False);
+            TopLoc_Location loc = face.Location();
+            BRepAdaptor_Surface adapt(face, Standard_False);
             // use the placement of the adapter, not of the upToFace
             loc = TopLoc_Location(adapt.Trsf());
             BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface()
@@ -578,15 +554,14 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
             );
             if (!mkFace.IsDone())
                 throw Base::ValueError("SketchBased: Up To Face: Failed to create unlimited face");
-            upToFace = TopoDS::Face(mkFace.Shape());
-            upToFace.Location(loc);
+            upToFace.setShape(mkFace.Shape().Located(loc), false);
         }
     }
 
     // Check that the upToFace does not intersect the sketch face and
     // is not parallel to the extrusion direction (for simplicity, supportface is used instead of sketchshape)
-    BRepAdaptor_Surface adapt1(TopoDS::Face(supportface));
-    BRepAdaptor_Surface adapt2(TopoDS::Face(upToFace));
+    BRepAdaptor_Surface adapt1(TopoDS::Face(supportface.getShape()));
+    BRepAdaptor_Surface adapt2(face);
 
     if (adapt2.GetType() == GeomAbs_Plane) {
         if (adapt1.Plane().Axis().IsNormal(adapt2.Plane().Axis(), Precision::Confusion()))
@@ -594,7 +569,7 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
     }
 
     // We must measure from sketchshape, not supportface, here
-    BRepExtrema_DistShapeShape distSS(sketchshape, upToFace);
+    BRepExtrema_DistShapeShape distSS(sketchshape.getShape(), face);
     if (distSS.Value() < Precision::Confusion())
         throw Base::ValueError("SketchBased: Up to face: Must not intersect sketch!");
 
@@ -605,7 +580,7 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
             gp_Trsf mov;
             mov.SetTranslation(offset * gp_Vec(dir));
             TopLoc_Location loc(mov);
-            upToFace.Move(loc);
+            upToFace.move(loc);
         } else {
             throw Base::TypeError("SketchBased: Up to Face: Offset not supported yet for non-planar faces");
         }
@@ -667,8 +642,8 @@ void ProfileBased::generatePrism(TopoShape& prism,
                                  const std::string& method,
                                  const TopoShape& baseShape,
                                  const TopoShape& profileshape,
-                                 const TopoDS_Face& supportface,
-                                 const TopoDS_Face& uptoface,
+                                 const TopoShape& supportface,
+                                 const TopoShape& uptoface,
                                  const gp_Dir& direction,
                                  Standard_Integer Mode,
                                  Standard_Boolean Modify)
@@ -676,18 +651,20 @@ void ProfileBased::generatePrism(TopoShape& prism,
     if (method == "UpToFirst" || method == "UpToFace" || method == "UpToLast") {
         BRepFeat_MakePrism PrismMaker;
         prism = baseShape;
-        for (auto face : profileshape.getSubTopoShapes(TopAbs_FACE)) {
+
+        for (auto &face : profileshape.getSubTopoShapes(TopAbs_FACE)) {
             PrismMaker.Init(prism.getShape(), TopoDS::Face(face.getShape()), 
-                    supportface, direction, Mode, Modify);
-            PrismMaker.Perform(uptoface);
-            if (!PrismMaker.IsDone())
+                    TopoDS::Face(supportface.getShape()), direction, Mode, Modify);
+
+            PrismMaker.Perform(TopoDS::Face(uptoface.getShape()));
+
+            if (!PrismMaker.IsDone() || PrismMaker.Shape().IsNull())
                 throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
 
-            prism.makEShape(PrismMaker,{prism,face});
+            prism.makEShape(PrismMaker,{prism,face,uptoface,supportface});
             if (Mode == 2)
                 Mode = 1;
         }
-
     }
     else {
         std::stringstream str;
@@ -1254,3 +1231,23 @@ void ProfileBased::handleChangedPropertyName(
         }
     }
 }
+
+bool ProfileBased::isElementGenerated(const TopoShape &shape, const char *name) const
+{
+    auto profile = Profile.getValue();
+    if (!profile)
+        return FeatureAddSub::isElementGenerated(shape, name);
+    long profileTag = profile->getID();
+    bool res = false;
+    shape.traceElement(name,
+        [&] (const std::string &, size_t, long tag2) {
+            if (std::abs(tag2) == this->getID() || tag2 == profileTag) {
+                res = true;
+                return true;
+            }
+            return false;
+        });
+
+    return res;
+}
+

@@ -55,6 +55,7 @@
 //#include "Body.h"
 #include "FeaturePad.h"
 
+FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesign;
 
@@ -137,20 +138,20 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         std::string method(Type.getValueAsString());                
         if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
               // Note: This will return an unlimited planar face if support is a datum plane
-            TopoDS_Face supportface = getSupportFace();
-            supportface.Move(invObjLoc);
+            TopoShape supportface = getSupportFace();
+            supportface.move(invObjLoc);
 
             if (Reversed.getValue())
                 dir.Reverse();
 
             // Find a valid face or datum plane to extrude up to
-            TopoDS_Face upToFace;
+            TopoShape upToFace;
             if (method == "UpToFace") {
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
-                upToFace.Move(invObjLoc);
+                upToFace.move(invObjLoc);
             }
-            getUpToFace(upToFace, base.getShape(), supportface, 
-                    sketchshape.getShape(), method, dir, Offset.getValue());
+            getUpToFace(upToFace, base, supportface, 
+                    sketchshape, method, dir, Offset.getValue());
 
             // TODO: Write our own PrismMaker which does not depend on a solid base shape
             if (base.isNull()) {
@@ -215,10 +216,9 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
                 //generatePrism(prism, sketchshape, "Length", dir, length, 0.0, false, false);
                 base = sketchshape;
-                supportface = TopoDS::Face(sketchshape.getShape());
-                TopExp_Explorer Ex(supportface,TopAbs_WIRE);
-                if (!Ex.More())
-                    supportface = TopoDS_Face();
+                supportface = sketchshape;
+                if (!supportface.hasSubShape(TopAbs_WIRE))
+                    supportface = TopoShape();
 
 #if 0
                 BRepFeat_MakePrism PrismMaker;
@@ -242,9 +242,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 // warn the user
                 // FIXME: If the support shape is not the previous solid in the tree, then there will be unexpected results
                 // Check supportface for limits, otherwise Perform() throws an exception
-                TopExp_Explorer Ex(supportface,TopAbs_WIRE);
-                if (!Ex.More())
-                    supportface = TopoDS_Face();
+                if (!supportface.hasSubShape(TopAbs_WIRE))
+                    supportface = TopoShape();
 #if 0
                 BRepFeat_MakePrism PrismMaker;
                 PrismMaker.Init(base.getShape(), sketchshape.getShape(), supportface, dir, 2, 1);
@@ -263,10 +262,11 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             generatePrism(prism, sketchshape, method, dir, L, L2,
                           Midplane.getValue(), Reversed.getValue());
         }
-
+        
         // set the additive shape property for later usage in e.g. pattern
         prism = refineShapeIfActive(prism);
         this->AddSubShape.setValue(prism);
+        prism.Tag = -this->getID();
 
         if (!base.isNull()) {
 //             auto obj = getDocument()->addObject("Part::Feature", "prism");

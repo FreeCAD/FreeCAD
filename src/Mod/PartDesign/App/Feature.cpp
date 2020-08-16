@@ -200,24 +200,26 @@ bool Feature::isDatum(const App::DocumentObject* feature)
 
 gp_Pln Feature::makePlnFromPlane(const App::DocumentObject* obj)
 {
-    const App::GeoFeature* plane = static_cast<const App::GeoFeature*>(obj);
-    if (plane == NULL)
+    if (!obj || !obj->getNameInDocument())
         throw Base::ValueError("Feature: Null object");
+    auto propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(obj->getPropertyByName("Placement"));
+    if (!propPlacement)
+        throw Base::ValueError("Feature: no placement found");
 
-    Base::Vector3d pos = plane->Placement.getValue().getPosition();
-    Base::Rotation rot = plane->Placement.getValue().getRotation();
+    Base::Vector3d pos = propPlacement->getValue().getPosition();
+    Base::Rotation rot = propPlacement->getValue().getRotation();
     Base::Vector3d normal(0,0,1);
     rot.multVec(normal, normal);
     return gp_Pln(gp_Pnt(pos.x,pos.y,pos.z), gp_Dir(normal.x,normal.y,normal.z));
 }
 
-TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
+TopoShape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
 {
     BRepBuilderAPI_MakeFace builder(makePlnFromPlane(obj));
     if (!builder.IsDone())
         throw Base::CADKernelError("Feature: Could not create shape from base plane");
 
-    return builder.Shape();
+    return TopoShape(obj->getID(), nullptr, builder.Shape());
 }
 
 Body* Feature::getFeatureBody() const {

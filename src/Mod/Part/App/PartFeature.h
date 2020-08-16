@@ -189,13 +189,13 @@ public:
  * Useful for the "up to face" options to pocket or pad
  */
 struct cutFaces {
-    TopoDS_Face face;
+    TopoShape face;
     double distsq;
 };
 
 PartExport
-std::vector<cutFaces> findAllFacesCutBy(const TopoDS_Shape& shape,
-                                        const TopoDS_Shape& face, const gp_Dir& dir);
+std::vector<cutFaces> findAllFacesCutBy(const TopoShape& shape,
+                                        const TopoShape& face, const gp_Dir& dir);
 
 /**
   * Check for intersection between the two shapes. Only solids are guaranteed to work properly

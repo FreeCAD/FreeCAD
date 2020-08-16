@@ -941,11 +941,11 @@ template class PartExport FeaturePythonT<Part::Feature>;
 #include <gce_MakeDir.hxx>
 */
 std::vector<Part::cutFaces> Part::findAllFacesCutBy(
-        const TopoDS_Shape& shape, const TopoDS_Shape& face, const gp_Dir& dir)
+        const TopoShape& shape, const TopoShape& face, const gp_Dir& dir)
 {
     // Find the centre of gravity of the face
     GProp_GProps props;
-    BRepGProp::SurfaceProperties(face,props);
+    BRepGProp::SurfaceProperties(face.getShape(),props);
     gp_Pnt cog = props.CentreOfMass();
 
     // create a line through the centre of gravity
@@ -956,7 +956,7 @@ std::vector<Part::cutFaces> Part::findAllFacesCutBy(
     BRepIntCurveSurface_Inter mkSection;
     // TODO: Less precision than Confusion() should be OK?
 
-    for (mkSection.Init(shape, line, Precision::Confusion()); mkSection.More(); mkSection.Next()) {
+    for (mkSection.Init(shape.getShape(), line, Precision::Confusion()); mkSection.More(); mkSection.Next()) {
         gp_Pnt iPnt = mkSection.Pnt();
         double dsq = cog.SquareDistance(iPnt);
 
@@ -973,6 +973,7 @@ std::vector<Part::cutFaces> Part::findAllFacesCutBy(
 
         cutFaces newF;
         newF.face = mkSection.Face();
+        newF.face.mapSubElement(shape);
         newF.distsq = dsq;
         result.push_back(newF);
     }

@@ -50,6 +50,7 @@
 
 #include "FeaturePocket.h"
 
+FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesign;
 
@@ -150,20 +151,20 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                 return new App::DocumentObjectExecReturn("Pocket: Extruding up to a face is only possible if the sketch is located on a face");
 
             // Note: This will return an unlimited planar face if support is a datum plane
-            TopoDS_Face supportface = getSupportFace();
-            supportface.Move(invObjLoc);
+            TopoShape supportface = getSupportFace();
+            supportface.move(invObjLoc);
 
             if (Reversed.getValue())
                 dir.Reverse();
 
             // Find a valid face or datum plane to extrude up to
-            TopoDS_Face upToFace;
+            TopoShape upToFace;
             if (method == "UpToFace") {
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
-                upToFace.Move(invObjLoc);
+                upToFace.move(invObjLoc);
             }
-            getUpToFace(upToFace, base.getShape(), supportface, 
-                    profileshape.getShape(), method, dir, Offset.getValue());
+            getUpToFace(upToFace, base, supportface, 
+                    profileshape, method, dir, Offset.getValue());
 
             // BRepFeat_MakePrism(..., 2, 1) in combination with PerForm(upToFace) is buggy when the
             // prism that is being created is contained completely inside the base solid
@@ -172,9 +173,8 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             // The bug only occurs when the upToFace is limited (by a wire), not for unlimited upToFace. But
             // other problems occur with unlimited concave upToFace so it is not an option to always unlimit upToFace
             // Check supportface for limits, otherwise Perform() throws an exception
-            TopExp_Explorer Ex(supportface,TopAbs_WIRE);
-            if (!Ex.More())
-                supportface = TopoDS_Face();
+            if (!supportface.hasSubShape(TopAbs_WIRE))
+                supportface = TopoShape();
 #if 0
             BRepFeat_MakePrism PrismMaker;
             PrismMaker.Init(base.getShape(), profileshape.getShape(), supportface, dir, 0, 1);
@@ -187,9 +187,19 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             prism.makEShape(PrismMaker,{base,profileshape});
 #else
             TopoShape prism(0,getDocument()->getStringHasher());
-            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, 0, 1);
-#endif
 
+            // There is some pecularity in BRepFeat_MakePrism (used by
+            // generatePrism). If it is making a pocket, i.e. the extrusion
+            // directs into the base (i.e. making a pocket), then
+            // BRepFeat_MakePrism.Generated() failed to report the generated
+            // element if upToFace is a sub shape of base. Making a copy solve
+            // the problem.
+            //
+            // However, if the extrusion directs out of the base, i.e. (making
+            // a pad), then copying upToFace somehow cause BRepFeat_MakePrism
+            // to fail. 
+            generatePrism(prism, method, base, profileshape, supportface, upToFace.makECopy(), dir, 0, 1);
+#endif
             // And the really expensive way to get the SubShape...
             try {
                 TopoShape result(0,getDocument()->getStringHasher());
@@ -206,13 +216,14 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopoShape prism(0,getDocument()->getStringHasher());
             generatePrism(prism, profileshape, method, dir, L, L2,
                         Midplane.getValue(), Reversed.getValue());
-
             if (prism.isNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is empty");
 
             // set the subtractive shape property for later usage in e.g. pattern
             prism = refineShapeIfActive(prism);
             this->AddSubShape.setValue(prism);
+
+            prism.Tag = -this->getID();
 
             // Cut the SubShape out of the base feature
             TopoShape result(0,getDocument()->getStringHasher());

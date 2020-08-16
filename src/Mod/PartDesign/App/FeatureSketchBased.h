@@ -105,7 +105,7 @@ public:
     TopoShape getProfileShape() const;
     
     /// Returns the face of the sketch support (if any)
-    const TopoDS_Face getSupportFace() const;
+    TopoShape getSupportFace() const;
     
     Base::Vector3d getProfileNormal() const;
 
@@ -118,18 +118,20 @@ public:
     virtual void handleChangedPropertyName(
         Base::XMLReader &reader, const char * TypeName, const char *PropName);
     
+    virtual bool isElementGenerated(const TopoShape &shape, const char *name) const;
+
 protected:
     void remapSupportShape(const TopoDS_Shape&);
 
     /// Extract a face from a given LinkSub
-    static void getUpToFaceFromLinkSub(TopoDS_Face& upToFace,
+    static void getUpToFaceFromLinkSub(TopoShape& upToFace,
                                        const App::PropertyLinkSub& refFace);
 
     /// Find a valid face to extrude up to
-    static void getUpToFace(TopoDS_Face& upToFace,
-                            const TopoDS_Shape& support,
-                            const TopoDS_Face& supportface,
-                            const TopoDS_Shape& sketchshape,
+    static void getUpToFace(TopoShape& upToFace,
+                            const TopoShape& support,
+                            const TopoShape& supportface,
+                            const TopoShape& sketchshape,
                             const std::string& method,
                             const gp_Dir& dir,
                             const double offset);
@@ -153,8 +155,8 @@ protected:
                               const std::string& method,
                               const TopoShape& baseshape,
                               const TopoShape& profileshape,
-                              const TopoDS_Face& sketchface,
-                              const TopoDS_Face& uptoface,
+                              const TopoShape& sketchface,
+                              const TopoShape& uptoface,
                               const gp_Dir& direction,
                               Standard_Integer Mode,
                               Standard_Boolean Modify);

@@ -55,36 +55,6 @@ void Datum::onDocumentRestored()
     Part::Feature::onDocumentRestored();
 }
 
-TopoDS_Shape Datum::getShape() const
-{
-    Part::TopoShape sh = Shape.getShape();
-    sh.setPlacement(Placement.getValue());
-    return sh.getShape();
-}
-
-App::DocumentObject *Datum::getSubObject(const char *subname, 
-        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
-{
-    if(subname && Data::ComplexGeoData::findElementName(subname)!=subname)
-        return Part::Feature::getSubObject(subname, pyObj, pmat, transform, depth);
-
-    if(pmat && transform)
-        *pmat *= Placement.getValue().toMatrix();
-
-    if(!pyObj)
-        return const_cast<Datum*>(this);
-
-    Base::PyGILStateLocker lock;
-    PY_TRY {
-        TopoShape ts(getShape().Located(TopLoc_Location()));
-        ts.Tag = getID();
-        if(pmat && !ts.isNull()) 
-            ts.transformShape(*pmat,false,true);
-        *pyObj =  Py::new_reference_to(shape2pyshape(ts));
-        return const_cast<Datum*>(this);
-    } PY_CATCH_OCC
-}
-
 Base::Vector3d Datum::getBasePoint () const {
     return Placement.getValue().getPosition();
 }
