@@ -53,6 +53,13 @@ parser.add_argument('--preamble', help='set commands to be issued before the fir
 parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\n; M2"')
 parser.add_argument('--tool-change', help='0 ... suppress all tool change commands\n1 ... insert M6 for all tool changes\n2 ... insert M6 for all tool changes except the initial tool')
 parser.add_argument('--centerorigin', action='store_true', help='center all xy coords around mid point, default is bottom left')
+parser.add_argument('--centeroriginx', action='store_true', help='center all x coords around mid point')
+parser.add_argument('--centeroriginy', action='store_true', help='center all y coords around mid point')
+parser.add_argument('--swapxy', action='store_true', help='swaps the X and Y values')
+parser.add_argument('--invertx', action='store_true', help='X values are swapped 180 degrees')
+parser.add_argument('--inverty', action='store_true', help='Y values are swapped 180 degrees')
+parser.add_argument('--offsetx',  help='X values are offset')
+parser.add_argument('--offsety', help='Y values are offset')
 parser.add_argument('--spindlecontrol', action='store_true', help='Allow M3 / M5 for Marlin compiled with spindle support')
 TOOLTIP_ARGS=parser.format_help()
 
@@ -87,7 +94,8 @@ G92 X0 Y0 Z0
 #Postamble text will appear following the last operation.
 POSTAMBLE = '''
 G0 Z20
-G0 X0 Y0
+M5
+G0 X0 Y0 F''' + format(G0XY_FEEDRATE, 'd') + '''
 G0 Z5
 ; M2
 '''
@@ -110,7 +118,14 @@ TOOL_CHANGE = ''''''
 SUPPRESS_TOOL_CHANGE=0
 ASSUME_FIRST_TOOL = True
 
-CENTER_ORIGIN = False
+CENTER_ORIGIN_X = False
+CENTER_ORIGIN_Y = False
+SWAP_XY = False
+INVERT_X = False
+INVERT_Y = False
+OFFSET_X = 0.0
+OFFSET_Y = 0.0
+
 SPINDLE_CONTROL = False
 
 # to distinguish python built-in open function from the one declared below
@@ -128,7 +143,13 @@ def processArguments(argstring):
     global PREAMBLE
     global POSTAMBLE
     global SUPPRESS_TOOL_CHANGE
-    global CENTER_ORIGIN
+    global CENTER_ORIGIN_X
+    global CENTER_ORIGIN_Y
+    global SWAP_XY
+    global INVERT_X
+    global INVERT_Y
+    global OFFSET_X
+    global OFFSET_Y
     global SPINDLE_CONTROL
 
     try:
@@ -149,8 +170,10 @@ def processArguments(argstring):
             SHOW_EDITOR = False
         if args.show_editor:
             SHOW_EDITOR = True
+        
         print("Show editor = %d" % SHOW_EDITOR)
         PRECISION = args.precision
+        
         if not args.preamble is None:
             PREAMBLE = args.preamble
         if not args.postamble is None:
@@ -158,8 +181,24 @@ def processArguments(argstring):
         if not args.tool_change is None:
             OUTPUT_TOOL_CHANGE = int(args.tool_change) > 0
             SUPPRESS_TOOL_CHANGE = min(1, int(args.tool_change) - 1)
+        if args.swapxy:
+            SWAP_XY = True
+        if args.invertx:
+            INVERT_X = True
+        if args.inverty:
+            INVERT_Y = True
+        if not args.offsetx is None:
+            OFFSET_X = float(args.offsetx)
+        if not args.offsety is None:
+            OFFSET_Y = float(args.offsety)
         if args.centerorigin:
-            CENTER_ORIGIN = True
+            CENTER_ORIGIN_X = True
+            CENTER_ORIGIN_Y = True
+        else:
+            if args.centeroriginx:
+               CENTER_ORIGIN_X = not SWAP_XY  
+            if args.centeroriginy:
+               CENTER_ORIGIN_Y = not SWAP_XY
         if args.spindlecontrol:
             SPINDLE_CONTROL = True
             
@@ -245,24 +284,28 @@ def export(objectslist,filename,argstring):
     precision_string = '.' + str(PRECISION) +'f'
      
     if OUTPUT_COMMENTS:
-        wassup = 'Origin: ' + ('Bottom Left' if not CENTER_ORIGIN else 'Centered')
+        wassup = 'Origin: ' + ('Bottom Left' if not (CENTER_ORIGIN_X or CENTER_ORIGIN_Y) else 'Centered') + (' (Swap X and Y)' if SWAP_XY else '') + ('\n;' + ('x offset: ' + format(OFFSET_X, '0.2f')) if OFFSET_X > 0 else '') + ('\n;' + ('y offset: ' + format(OFFSET_Y, '0.2f')) if OFFSET_Y > 0 else '')
         print(wassup);
         
         gcode += ';' + wassup + '\n'
         
         for key in data_stats: 
-    	    if len(key) == 4:
-                wassup = key + ' is ' +  format(data_stats[key], precision_string) + ' ==> ' + format(data_stats[key+"'"], precision_string)
+            if len(key) == 4:
+                tkey = key
+                if SWAP_XY:
+                    if tkey[0] == 'X': tkey = 'Y' + tkey[1:4]
+                    elif tkey[0] == 'Y': tkey= 'X' + tkey[1:4]
+                wassup = tkey + ' is ' +  format(data_stats[key], precision_string) + ' ==> ' + format(data_stats[key+"'"], precision_string)
                 print(wassup)
                 gcode += ";" + wassup + '\n'
-    	    else:
-    	        break
-    	       
+            else:
+                break
+               
     if OUTPUT_COMMENTS: gcode += '\n;GCode Commands detected:\n\n'
     
     if OUTPUT_COMMENTS: 
         for key in data_stats:
-    	    if len(key) < 4:
+            if len(key) < 4:
                 nottoolate = key + ' detected, count is ' +  str(data_stats[key]) 
                 print(nottoolate)
                 gcode += ";" + nottoolate + "\n"
@@ -270,7 +313,7 @@ def export(objectslist,filename,argstring):
     gcode += '\n'
     gcode += gcodebody
     gcodebody = ''
-    	
+        
     #do the post_amble
 
     if OUTPUT_COMMENTS: gcode += ";Begin postamble\n"
@@ -311,26 +354,34 @@ def tallycmds(data_stats, command):
     return 0
     
 def boxlimits(data_stats, cmd, param, value, checkbounds):
+    # param is upper always
+    
+    if (INVERT_X and param == 'X') or (INVERT_Y and param == 'Y'):
+        value = -value
+        
     if checkbounds:
-      #  if cmd != 'G0' or param != 'Z':
-            if data_stats[param + "min"] > value:
-                data_stats[param + "min"] = value 
-            if data_stats[param + "max"] < value:
-    	        data_stats[param + "max"] = value 
+        if data_stats[param + "min"] > value:
+            data_stats[param + "min"] = value 
+        if data_stats[param + "max"] < value:
+            data_stats[param + "max"] = value 
     else:
+            
         if param == 'Z':
            value -= (data_stats[param + "max"] - 5)
         else:
-            if CENTER_ORIGIN:
+            if (CENTER_ORIGIN_X and param =='X') or (CENTER_ORIGIN_Y and param =='Y'):
                 value -=  ((data_stats[param + "max"] + data_stats[param + "min"]) / 2.0)
             else:
                 value -= data_stats[param + "min"]
         
+        if param == 'X': value += OFFSET_X
+        if param == 'Y': value += OFFSET_Y
+        
         if data_stats[param + "min'"] > value:
             data_stats[param + "min'"] = value 
         if data_stats[param + "max'"] < value:
-            data_stats[param + "max'"] = value 
-    
+            data_stats[param + "max'"] = value
+                   
     return value
 
 def emuldrill(c, state): #G81
@@ -392,6 +443,7 @@ class Commands:
             item = next(self.paths)
             command = item.Name
             params = item.Parameters
+                           
             #print (command)
             
             if command in Commands.tobe:
@@ -405,7 +457,7 @@ class Commands:
                     else:
                         params['F'] = G0XY_FEEDRATE / 60.0
                         #print ('G0 F' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
- 	
+    
                 if 'X' in params: Commands.state['lastx'] = params['X'] 
                 if 'Y' in params: Commands.state['lasty'] = params['Y'] 
                 if 'Z' in params: Commands.state['lastz'] = params['Z'] 
@@ -448,7 +500,7 @@ def parse(pathobj, data_stats, checkbounds):
             if MODAL == True:
                 if command == lastcommand:
                     outstring.pop(0)
-
+                
             # Now add the remaining parameters in order
             for param in params:
                 if param in Parameters:
@@ -461,6 +513,11 @@ def parse(pathobj, data_stats, checkbounds):
                         value = Parameters[param]
                         if param in ['X', 'Y', 'Z']:
                             value = boxlimits(data_stats, command, param, value, checkbounds)
+                            
+                        if SWAP_XY:
+                            if param.upper() == 'X': param = 'Y'
+                            elif param.upper() == 'Y': param = 'X'
+                            
                         outstring.append(param.upper() + format(value, precision_string))
 
             # store the latest command
@@ -500,3 +557,4 @@ def parse(pathobj, data_stats, checkbounds):
 
 
 print(__name__ + " gcode postprocessor loaded.")
+
