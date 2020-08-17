@@ -69,6 +69,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     lines->setCommand("Add Lines");
     *lines << "TechDraw_LeaderLine" << "TechDraw_FaceCenterLine"
         << "TechDraw_2LineCenterLine" << "TechDraw_2PointCenterLine";
+    *lines << "TechDraw_2PointCosmeticLine";
 
     // vertices
     Gui::MenuItem* vertices = new Gui::MenuItem;
@@ -183,6 +184,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 //    *anno << "TechDraw_FaceCenterLine";
 //    *anno << "TechDraw_2LineCenterLine";
 //    *anno << "TechDraw_2PointCenterLine";
+    *anno << "TechDraw_2PointCosmeticLine";
     *anno << "TechDraw_CosmeticEraser";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
@@ -256,6 +258,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 //    *anno << "TechDraw_FaceCenterLine";
 //    *anno << "TechDraw_2LineCenterLine";
 //    *anno << "TechDraw_2PointCenterLine";
+    *anno << "TechDraw_2PointCosmeticLine";
     *anno << "TechDraw_CosmeticEraser";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";

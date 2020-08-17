@@ -75,6 +75,7 @@ set(TechDrawGui_MOC_HDRS
     TaskActiveView.h
     TaskDetail.h
     QGIGhostHighlight.h
+    TaskCosmeticLine.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
@@ -112,6 +113,7 @@ set(TechDrawGui_UIC_SRCS
     SymbolChooser.ui
     TaskActiveView.ui
     TaskDetail.ui
+    TaskCosmeticLine.ui
 )
 
 if(BUILD_QT5)
@@ -226,6 +228,9 @@ SET(TechDrawGui_SRCS
     TaskDetail.h
     PreferencesGui.cpp
     PreferencesGui.h
+    TaskCosmeticLine.ui
+    TaskCosmeticLine.cpp
+    TaskCosmeticLine.h
 )
 
 SET(TechDrawGuiView_SRCS
@@ -393,6 +398,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     SymbolChooser.ui
     TaskActiveView.ui
     TaskDetail.ui
+    TaskCosmeticLine.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 
