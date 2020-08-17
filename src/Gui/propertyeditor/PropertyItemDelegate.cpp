@@ -147,6 +147,23 @@ bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
             }
         }
     }
+    else if (ev->type() == QEvent::FocusOut) {
+        PropertyEditor *parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+        auto widget = qobject_cast<QWidget*>(o);
+        if (widget && parentEditor && parentEditor->activeEditor
+                   && widget != parentEditor->activeEditor)
+        {
+            // We event filter child QAbstractButton and QLabel of an editor,
+            // which requires special focus change in order to not mess up with
+            // QItemDelegate's logic.
+            QWidget *w = QApplication::focusWidget();
+            while (w) { // don't worry about focus changes internally in the editor
+                if (w == widget || w == parentEditor->activeEditor)
+                    return false;
+                w = w->parentWidget();
+            }
+        }
+    }
     return QItemDelegate::eventFilter(o, ev);
 }
 
