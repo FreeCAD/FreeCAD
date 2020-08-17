@@ -1245,27 +1245,6 @@ class _ArchDrawingView:
 
         return mode
 
-    def getDXF(self,obj):
-
-        "returns a DXF representation of the view"
-        if obj.RenderingMode == "Solid":
-            print("Unable to get DXF from Solid mode: ",obj.Label)
-            return ""
-        result = []
-        import Drawing
-        if not hasattr(self,"baseshape"):
-            self.onChanged(obj,"Source")
-        if hasattr(self,"baseshape"):
-            if self.baseshape:
-                result.append(Drawing.projectToDXF(self.baseshape,self.direction))
-        if hasattr(self,"sectionshape"):
-            if self.sectionshape:
-                result.append(Drawing.projectToDXF(self.sectionshape,self.direction))
-        if hasattr(self,"hiddenshape"):
-            if self.hiddenshape:
-                result.append(Drawing.projectToDXF(self.hiddenshape,self.direction))
-        return result
-
 
 class SectionPlaneTaskPanel:
 
