@@ -193,28 +193,40 @@ QModelIndex PropertyModel::propertyIndexFromPath(const QStringList& path) const
     if (path.size() < 2)
         return QModelIndex();
 
-    auto it = groupItems.find(path.front());
-    if (it == groupItems.end())
-        return QModelIndex();
-
-    PropertyItem *item = it->second.groupItem;
-    QModelIndex index = this->index(item->row(), 0, QModelIndex());
-
-    for (int j=1; j<path.size(); ++j) {
-        bool found = false;
-        for (int i=0, c = item->childCount(); i<c; ++i) {
-            auto child = item->child(i);
-            if (child->propertyName() == path[j]) {
-                index = this->index(i, 1, index);
-                item = child;
-                found = true;
-                break;
+    auto findItem = [this](const QStringList &path, PropertyItem *item) -> QModelIndex {
+        QModelIndex index = this->index(item->row(), 0, QModelIndex());
+        for (int j=1; j<path.size(); ++j) {
+            bool found = false;
+            for (int i=0, c = item->childCount(); i<c; ++i) {
+                auto child = item->child(i);
+                if (child->propertyName() == path[j]) {
+                    index = this->index(i, 1, index);
+                    item = child;
+                    found = true;
+                    break;
+                }
             }
+            if (!found)
+                return j==1 ? QModelIndex() : index;
         }
-        if (!found)
-            return j==1?QModelIndex():index;
+        return index;
+    };
+
+    auto it = groupItems.find(path.front());
+    if (it != groupItems.end()) {
+        QModelIndex index = findItem(path, it->second.groupItem);
+        if (index.isValid())
+            return index;
     }
-    return index;
+
+    // No property with the same name found in the given group. So try to find
+    // one in a different group.
+    for (auto &v : groupItems) {
+        QModelIndex index = findItem(path, v.second.groupItem);
+        if (index.isValid())
+            return index;
+    }
+    return QModelIndex();
 }
 
 static void setPropertyItemName(PropertyItem *item, const char *propName, QString groupName) {
