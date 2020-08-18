@@ -614,14 +614,14 @@ void ComplexGeoData::encodeElementName(char element_type, std::string &name, std
             name.clear();
             return;
         }
-        findTagInElementName(name,&inputTag);
+        findTagInElementName(name,&inputTag,nullptr,nullptr,nullptr,true);
         if(inputTag == tag) {
             ss << name;
             name.clear();
             return;
         }
     }else if(!tag || tag==Tag) {
-        findTagInElementName(name,&inputTag);
+        findTagInElementName(name,&inputTag,nullptr,nullptr,nullptr,true);
         if(inputTag)
             tag = inputTag;
     }
@@ -647,7 +647,7 @@ long ComplexGeoData::getElementHistory(const char *_name,
         name = std::string(_name,dot-_name);
     else
         name = _name;
-    auto pos = findTagInElementName(name,&tag,&len);
+    auto pos = findTagInElementName(name,&tag,&len,nullptr,nullptr,true);
     if(pos == std::string::npos) {
         if(original)
             *original = name;
@@ -674,8 +674,8 @@ long ComplexGeoData::getElementHistory(const char *_name,
             ret = ret.substr(0,len);
         ret = dehashElementName(ret.c_str());
         long tag2 = 0;
-        pos = findTagInElementName(ret,&tag2,&len);
-        if(pos==std::string::npos || (tag2!=tag && tag!=Tag))
+        pos = findTagInElementName(ret,&tag2,&len,nullptr,nullptr,true);
+        if(pos==std::string::npos || (tag2!=tag && tag!=Tag && -tag!=Tag))
             return tag;
         tag = tag2;
         if(history)

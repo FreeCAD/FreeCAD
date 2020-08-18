@@ -39,22 +39,29 @@ std::string PartFeaturePy::representation(void) const
     return std::string("<Part::PartFeature>");
 }
 
-PyObject *PartFeaturePy::getElementHistory(PyObject *args) {
+PyObject *PartFeaturePy::getElementHistory(PyObject *args, PyObject *kwds) {
     const char *name;
     PyObject *recursive = Py_True;
     PyObject *sameType = Py_False;
-    if (!PyArg_ParseTuple(args, "s|OO",&name,&recursive,&sameType))
+    PyObject *showName = Py_False;
+    static char *kwlist[] = {"elementName", "recursive", "sameType", "showName", NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|OOO", kwlist, &name,&recursive,&sameType,&showName))
         return 0;
 
     auto feature = getFeaturePtr();
     Py::List list;
+    bool showObjName = PyObject_IsTrue(showName);
     PY_TRY {
         for(auto &history : Feature::getElementHistory(feature,name,
                     PyObject_IsTrue(recursive),PyObject_IsTrue(sameType))) {
             Py::Tuple ret(3);
-            if(history.obj) 
-                ret.setItem(0,Py::Object(history.obj->getPyObject(),true));
-            else
+            if(history.obj)  {
+                if (showObjName) {
+                    ret.setItem(0,Py::TupleN(Py::String(history.obj->getFullName()),
+                                             Py::String(history.obj->Label.getValue())));
+                } else
+                    ret.setItem(0,Py::Object(history.obj->getPyObject(),true));
+            } else
                 ret.setItem(0,Py::Int(history.tag));
             ret.setItem(1,Py::String(history.element));
             Py::List intermedates;

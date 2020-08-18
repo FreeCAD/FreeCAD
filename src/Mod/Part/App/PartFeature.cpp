@@ -269,12 +269,24 @@ Feature::getElementHistory(App::DocumentObject *feature,
     char element_type=0;
     if(sameType)
         element_type = shape.elementType(name);
+    int depth = 0;
     do {
         std::string original;
         ret.emplace_back(feature,mapped.c_str());
         long tag = shape.getElementHistory(mapped.c_str(),&original,&ret.back().intermediates);
-        App::DocumentObject *obj;
-        obj = tag?feature->getLinkedObject(true)->getDocument()->getObjectByID(tag):0;
+        App::DocumentObject *obj = nullptr;
+        if (tag) {
+            App::Document *doc = feature->getDocument();
+            for(;;++depth) {
+                auto linked = feature->getLinkedObject(false,nullptr,false,depth);
+                if (linked == feature)
+                    break;
+                feature = linked;
+                if (feature->getDocument() != doc)
+                    break;
+            }
+            obj = doc->getObjectByID(std::abs(tag));
+        }
         if(!recursive) {
             ret.emplace_back(obj,original.c_str());
             ret.back().tag = tag;
