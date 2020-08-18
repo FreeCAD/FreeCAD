@@ -1302,7 +1302,7 @@ App::Color ViewProviderPartExt::getElementColor(App::Color color,
         long tag = shape.getElementHistory(mapped.c_str(),&original);
         if(!tag)
             return color;
-        auto obj = doc->getObjectByID(tag);
+        auto obj = doc->getObjectByID(std::abs(tag));
         if(!obj || !obj->getNameInDocument())
             return color;
         auto &s = cache[obj];

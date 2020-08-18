@@ -187,18 +187,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             prism.makEShape(PrismMaker,{base,profileshape});
 #else
             TopoShape prism(0,getDocument()->getStringHasher());
-
-            // There is some pecularity in BRepFeat_MakePrism (used by
-            // generatePrism). If it is making a pocket, i.e. the extrusion
-            // directs into the base (i.e. making a pocket), then
-            // BRepFeat_MakePrism.Generated() failed to report the generated
-            // element if upToFace is a sub shape of base. Making a copy solve
-            // the problem.
-            //
-            // However, if the extrusion directs out of the base, i.e. (making
-            // a pad), then copying upToFace somehow cause BRepFeat_MakePrism
-            // to fail. 
-            generatePrism(prism, method, base, profileshape, supportface, upToFace.makECopy(), dir, 0, 1);
+            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, 0, 1);
 #endif
             // And the really expensive way to get the SubShape...
             try {
@@ -223,7 +212,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             prism = refineShapeIfActive(prism);
             this->AddSubShape.setValue(prism);
 
-            prism.Tag = -this->getID();
+            // prism.Tag = -this->getID();
 
             // Cut the SubShape out of the base feature
             TopoShape result(0,getDocument()->getStringHasher());

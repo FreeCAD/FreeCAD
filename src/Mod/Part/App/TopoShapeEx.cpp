@@ -164,6 +164,7 @@
 # include <ShapeAnalysis_FreeBoundData.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
 # include <BRepOffsetAPI_MakeFilling.hxx>
+# include <TopTools_DataMapIteratorOfDataMapOfShapeListOfShape.hxx>
 
 #include <array>
 #include <deque>
@@ -213,42 +214,74 @@ static void expandCompound(const TopoShape &shape, std::vector<TopoShape> &res) 
         expandCompound(s,res);
 }
 
-void ShapeMapper::populate(bool generated, const TopoShape &src, const std::vector<TopoShape> &dst) {
-    auto insert = [](ShapeMap &map,
-                     const TopoDS_Shape &s,
-                     const std::unordered_set<TopoDS_Shape> &d) {
-        auto &entry = map[s];
-        for(auto &shape : d) {
-            if(entry.shapeSet.insert(shape).second)
-                entry.shapes.push_back(shape);
-        }
-    };
+void ShapeMapper::expand(const TopoDS_Shape &d, std::vector<TopoDS_Shape> &shapes)
+{
+    if (d.IsNull()) return;
+    for(TopExp_Explorer xp(d, TopAbs_FACE);xp.More();xp.Next())
+        shapes.push_back(xp.Current());
+    for(TopExp_Explorer xp(d, TopAbs_EDGE, TopAbs_FACE);xp.More();xp.Next())
+        shapes.push_back(xp.Current());
+    for(TopExp_Explorer xp(d, TopAbs_VERTEX, TopAbs_EDGE);xp.More();xp.Next())
+        shapes.push_back(xp.Current());
+}
 
+void ShapeMapper::populate(bool generated,
+                           const TopTools_ListOfShape &src,
+                           const TopTools_ListOfShape &dst)
+{
+    for(TopTools_ListIteratorOfListOfShape it(src);it.More();it.Next())
+        populate(generated, it.Value(), dst);
+}
+
+void ShapeMapper::populate(bool generated,
+                           const TopoShape &src,
+                           const TopTools_ListOfShape &dst)
+{
     if(src.isNull())
         return;
-
-    auto &map = generated?_generated:_modified;
-
-    std::unordered_set<TopoDS_Shape> dstShapes;
-    for(auto &d : dst) {
-        if(d.isNull())
-            continue;
-        for(TopExp_Explorer xp(d.getShape(), TopAbs_FACE);xp.More();xp.Next())
-            dstShapes.insert(xp.Current());
-        for(TopExp_Explorer xp(d.getShape(), TopAbs_EDGE, TopAbs_FACE);xp.More();xp.Next())
-            dstShapes.insert(xp.Current());
-        for(TopExp_Explorer xp(d.getShape(), TopAbs_VERTEX, TopAbs_EDGE);xp.More();xp.Next())
-            dstShapes.insert(xp.Current());
-    }
-    if(shapeSet.insert(src.getShape()).second)
-        shapes.push_back(src);
-    for(TopExp_Explorer xp(src.getShape(), TopAbs_FACE);xp.More();xp.Next())
-        insert(map, xp.Current(), dstShapes);
-    for(TopExp_Explorer xp(src.getShape(), TopAbs_EDGE, TopAbs_FACE);xp.More();xp.Next())
-        insert(map, xp.Current(), dstShapes);
-    for(TopExp_Explorer xp(src.getShape(), TopAbs_VERTEX, TopAbs_EDGE);xp.More();xp.Next())
-        insert(map, xp.Current(), dstShapes);
+    std::vector<TopoDS_Shape> dstShapes;
+    for(TopTools_ListIteratorOfListOfShape it(dst);it.More();it.Next())
+        expand(it.Value(), dstShapes);
+    insert(generated, src.getShape(), dstShapes);
 }
+
+void ShapeMapper::insert(bool generated, const TopoDS_Shape &s, const TopoDS_Shape &d)
+{
+    if (s.IsNull() || d.IsNull()) return;
+    // Prevent an element shape from being both generated and modified
+    if (generated) {
+        if (_modifiedShapes.count(d))
+            return;
+        _generatedShapes.insert(d);
+    } else {
+        if( _generatedShapes.count(d))
+            return;
+        _modifiedShapes.insert(d);
+    }
+    auto &entry = generated?_generated[s]:_modified[s];
+    if(entry.shapeSet.insert(d).second)
+        entry.shapes.push_back(d);
+};
+
+void ShapeMapper::insert(bool generated, const TopoDS_Shape &s, const std::vector<TopoDS_Shape> &d)
+{
+    if (s.IsNull() || d.empty()) return;
+    auto &entry = generated?_generated[s]:_modified[s];
+    for(auto &shape : d) {
+        // Prevent an element shape from being both generated and modified
+        if (generated) {
+            if (_modifiedShapes.count(shape))
+                continue;
+            _generatedShapes.insert(shape);
+        } else {
+            if( _generatedShapes.count(shape))
+                continue;
+            _modifiedShapes.insert(shape);
+        }
+        if(entry.shapeSet.insert(shape).second)
+            entry.shapes.push_back(shape);
+    }
+};
 
 struct ShapeRelationKey {
     std::string name;
@@ -1302,6 +1335,120 @@ TopoShape &TopoShape::makEPrism(const TopoShape &base, const gp_Vec& vec, const 
     return makEShape(mkPrism,base,op);
 }
 
+void GenericShapeMapper::init(const TopoShape &src, const TopoDS_Shape &dst)
+{
+    for (TopExp_Explorer exp(dst, TopAbs_FACE); exp.More(); exp.Next()) {
+        const TopoDS_Shape &dstFace = exp.Current();
+        if (src.findShape(dstFace))
+            continue;
+
+        std::unordered_map<TopoDS_Shape, int> map;
+        bool found = false;
+
+        // Try to find a face in the src that shares at least two edges (or one
+        // closed edge) with dstFace.
+        // TODO: consider degenerative cases of two or more edges on the same line.
+        for (TopExp_Explorer it(dstFace, TopAbs_EDGE); it.More(); it.Next()) {
+            int idx = src.findShape(it.Current());
+            if (!idx)
+                continue;
+            TopoDS_Edge e = TopoDS::Edge(it.Current());
+#if OCC_VERSION_HEX >= 0x070000
+            if(BRep_Tool::IsClosed(e))
+#else
+            p1 = BRep_Tool::Pnt(TopExp::FirstVertex(e));
+            p2 = BRep_Tool::Pnt(TopExp::LastVertex(e));
+            if(p1.SquareDistance(p2)<1e-14)
+#endif
+            {
+                // closed edge, one face is enough
+                TopoDS_Shape face = src.findAncestorShape(
+                        src.getSubShape(TopAbs_EDGE,idx), TopAbs_FACE);
+                if (!face.IsNull()) {
+                    this->insert(false, face, dstFace);
+                    found = true;
+                    break;
+                }
+                continue;
+            }
+            for (auto &face : src.findAncestorsShapes(src.getSubShape(TopAbs_EDGE,idx), TopAbs_FACE)) {
+                int &cnt = map[face];
+                if (++cnt == 2) {
+                    this->insert(false, face, dstFace);
+                    found = true;
+                    break;
+                }
+                if (found)
+                break;
+            }
+        }
+
+        if (found) continue;
+
+        // if no face matches, try search by geometry surface
+        std::unique_ptr<Geometry> g(Geometry::fromShape(dstFace));
+        if (!g) continue;
+
+        for (auto &v : map) {
+            std::unique_ptr<Geometry> g2(Geometry::fromShape(v.first));
+            if (g2 && g2->isSame(*g,1e-7,1e-12)) {
+                this->insert(false, v.first, dstFace);
+                break;
+            }
+        }
+    }
+}
+
+TopoShape &TopoShape::makEPrism(const TopoShape &base, 
+                                const TopoShape& profileshape,
+                                const TopoShape& supportface,
+                                const TopoShape& uptoface,
+                                const gp_Dir& direction,
+                                Standard_Integer Mode,
+                                Standard_Boolean Modify,
+                                const char *op)
+{
+    if(!op) op = TOPOP_PRISM;
+
+    BRepFeat_MakePrism PrismMaker;
+
+    TopoDS_Shape res = base.getShape();
+    for (auto &face : profileshape.getSubTopoShapes(TopAbs_FACE)) {
+        PrismMaker.Init(res, TopoDS::Face(face.getShape()), 
+                TopoDS::Face(supportface.getShape()), direction, Mode, Modify);
+
+        PrismMaker.Perform(uptoface.getShape());
+
+        if (!PrismMaker.IsDone() || PrismMaker.Shape().IsNull())
+            FC_THROWM(Base::CADKernelError,"BRepFeat_MakePrism: Could not extrude the sketch!");
+
+        res = PrismMaker.Shape();
+
+        if (Mode == 2)
+            Mode = 1;
+    }
+    // BRepFeat_MakePrism does not seem to have a working Generated() and
+    // Modified() function, hence, the resulting element mapping will be
+    // broken. We use own own mapper instead.
+
+    GenericShapeMapper mapper;
+
+    std::vector<TopoShape> srcShapes;
+    srcShapes.push_back(base);
+    if (!profileshape.isNull() && !base.findShape(profileshape.getShape()))
+        srcShapes.push_back(profileshape);
+    if (!supportface.isNull() && !base.findShape(supportface.getShape()))
+        srcShapes.push_back(supportface);
+    if (!uptoface.isNull() && !base.findShape(uptoface.getShape()))
+        srcShapes.push_back(uptoface);
+
+    TopoShape src;
+    src = src.makECompound(srcShapes, nullptr, false);
+    mapper.init(src, res);
+    this->makESHAPE(res,mapper,{src},op);
+    return *this;
+}
+
 TopoShape &TopoShape::makERevolve(const TopoShape &_base, const gp_Ax1& axis, 
         double d, const char *face_maker, const char *op)
 {
@@ -1958,6 +2105,23 @@ TopoShape &TopoShape::makEFace(const std::vector<TopoShape> &shapes, const char 
     return *this;
 }
 
+class MyRefineMaker : public BRepBuilderAPI_RefineModel
+{
+public:
+    MyRefineMaker(const TopoDS_Shape &s)
+        :BRepBuilderAPI_RefineModel(s)
+    {}
+
+    void populate(ShapeMapper &mapper)
+    {
+        for (TopTools_DataMapIteratorOfDataMapOfShapeListOfShape it(this->myModified); it.More(); it.Next())
+        {
+            if (it.Key().IsNull()) continue;
+            mapper.populate(false, it.Key(), it.Value());
+        }
+    }
+};
+
 TopoShape &TopoShape::makERefine(const TopoShape &shape, const char *op, bool no_fail) {
     _Shape.Nullify();
     resetElementMap();
@@ -1968,8 +2132,16 @@ TopoShape &TopoShape::makERefine(const TopoShape &shape, const char *op, bool no
     }
     if(!op) op = TOPOP_REFINE;
     try {
+#if 1
+        MyRefineMaker mkRefine(shape.getShape());
+        GenericShapeMapper mapper;
+        mkRefine.populate(mapper); 
+        mapper.init(shape, mkRefine.Shape());
+        return makESHAPE(mkRefine.Shape(), mapper, {shape}, op);
+#else
         BRepBuilderAPI_RefineModel mkRefine(shape.getShape());
         return makEShape(mkRefine,shape,op);
+#endif
     }catch (Standard_Failure &) {
         if(!no_fail) throw;
     }
@@ -3274,7 +3446,7 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
     std::string postfix;
     char type;
     // extract tag and source element name length
-    if(findTagInElementName(name,&tag,&len,&postfix,&type)==std::string::npos)
+    if(findTagInElementName(name,&tag,&len,&postfix,&type,true)==std::string::npos)
         return ret;
 
     // recover the original element name
@@ -3286,11 +3458,11 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
     auto dehashed = dehashElementName(original.c_str());
     long tag2;
     char type2;
-    if(findTagInElementName(dehashed,&tag2,0,0,&type2)==std::string::npos) {
+    if(findTagInElementName(dehashed,&tag2,0,0,&type2,true)==std::string::npos) {
         ss.str("");
         encodeElementName(type,dehashed,ss,sids,0,tag);
         dehashed += ss.str();
-    }else if(tag2!=tag) {
+    }else if(tag2!=tag && tag2!=-tag) {
         // Here means the dehashed element belongs to some other shape.
         // So just reset to original with middle markers stripped.
         dehashed = original + postfix;
@@ -3309,7 +3481,7 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
     encodeElementName(type,modName,ss,sids);
     modName += ss.str();
     bool found = false;
-    if(findTagInElementName(modName,&tag,&len)!=std::string::npos) {
+    if(findTagInElementName(modName,&tag,&len,nullptr,nullptr,true)!=std::string::npos) {
         modName = modName.substr(0,len+modPostfix().size());
         for(auto &v : getElementNamesWithPrefix(modName.c_str())) {
             if((!sameType||type==v.second[0]) && 

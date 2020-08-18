@@ -486,6 +486,33 @@ public:
         return TopoShape(0,Hasher).makEPrism(*this,vec,op);
     }
 
+    TopoShape &makEPrism(const TopoShape &base, 
+                         const TopoShape& profileshape,
+                         const TopoShape& supportface,
+                         const TopoShape& uptoface,
+                         const gp_Dir& direction,
+                         Standard_Integer Mode,
+                         Standard_Boolean Modify,
+                         const char *op=0);
+
+    TopoShape makEPrism(const TopoShape& profileshape,
+                        const TopoShape& supportface,
+                        const TopoShape& uptoface,
+                        const gp_Dir& direction,
+                        Standard_Integer Mode,
+                        Standard_Boolean Modify,
+                        const char *op=0) const
+    {
+        return TopoShape(0,Hasher).makEPrism(*this,
+                                             profileshape,
+                                             supportface,
+                                             uptoface,
+                                             direction,
+                                             Mode,
+                                             Modify,
+                                             op);
+    }
+
     TopoShape &makEOffset(const TopoShape &shape, double offset, double tol,
             bool intersection = false, bool selfInter = false, short offsetMode = 0, 
             short join = 0, bool fill = false, const char *op=0);
@@ -688,14 +715,47 @@ struct hash<TopoDS_Shape> {
 
 namespace Part {
 
+// Hasher that ignore orientation
+struct ShapeHasher {
+    inline size_t operator()(const TopoShape &s) const {
+        return s.getShape().HashCode(INT_MAX);
+    }
+    inline size_t operator()(const TopoDS_Shape &s) const {
+        return s.HashCode(INT_MAX);
+    }
+    inline bool operator()(const TopoShape &a, const TopoShape &b) const {
+        return a.getShape().IsSame(b.getShape());
+    }
+    inline bool operator()(const TopoDS_Shape &a, const TopoDS_Shape &b) const {
+        return a.IsSame(b);
+    }
+};
+
 struct PartExport ShapeMapper: TopoShape::Mapper {
 
-    void populate(bool generated, const TopoShape &src, const std::vector<TopoShape> &dst);
+    void populate(bool generated, const TopoShape &src, const TopTools_ListOfShape &dst);
+    void populate(bool generated, const TopTools_ListOfShape &src, const TopTools_ListOfShape &dst);
 
-    void populate(bool generated, const std::vector<TopoShape> &src, const std::vector<TopoShape> &dst) {
+    void populate(bool generated, const std::vector<TopoShape> &src, const std::vector<TopoShape> &dst)
+    {
         for(auto &s : src)
             populate(generated,s,dst);
     }
+
+    void populate(bool generated, const TopoShape &src, const std::vector<TopoShape> &dst)
+    {
+        if(src.isNull())
+            return;
+        std::vector<TopoDS_Shape> dstShapes;
+        for(auto &d : dst)
+            expand(d.getShape(), dstShapes);
+        insert(generated, src.getShape(), dstShapes);
+    }
+
+    void expand(const TopoDS_Shape &d, std::vector<TopoDS_Shape> &shapes);
+
+    void insert(bool generated, const TopoDS_Shape &s, const std::vector<TopoDS_Shape> &d);
+    void insert(bool generated, const TopoDS_Shape &s, const TopoDS_Shape &d);
 
     virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &s) const override {
         auto iter = _generated.find(s);
@@ -712,15 +772,21 @@ struct PartExport ShapeMapper: TopoShape::Mapper {
     }
 
     std::vector<TopoShape> shapes;
-    std::unordered_set<TopoDS_Shape> shapeSet;
+    std::unordered_set<TopoDS_Shape,ShapeHasher,ShapeHasher> shapeSet;
 
     struct ShapeValue {
         std::vector<TopoDS_Shape> shapes;
-        std::unordered_set<TopoDS_Shape> shapeSet;
+        std::unordered_set<TopoDS_Shape,ShapeHasher,ShapeHasher> shapeSet;
     };
-    typedef std::unordered_map<TopoDS_Shape, ShapeValue> ShapeMap;
+    typedef std::unordered_map<TopoDS_Shape, ShapeValue,ShapeHasher,ShapeHasher> ShapeMap;
     ShapeMap _generated;
+    std::unordered_set<TopoDS_Shape,ShapeHasher,ShapeHasher> _generatedShapes;
     ShapeMap _modified;
+    std::unordered_set<TopoDS_Shape,ShapeHasher,ShapeHasher> _modifiedShapes;
+};
+
+struct PartExport GenericShapeMapper: ShapeMapper {
+    void init(const TopoShape &src, const TopoDS_Shape &dst);
 };
 
 class PartExport ShapeSegment : public Data::Segment

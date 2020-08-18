@@ -649,22 +649,7 @@ void ProfileBased::generatePrism(TopoShape& prism,
                                  Standard_Boolean Modify)
 {
     if (method == "UpToFirst" || method == "UpToFace" || method == "UpToLast") {
-        BRepFeat_MakePrism PrismMaker;
-        prism = baseShape;
-
-        for (auto &face : profileshape.getSubTopoShapes(TopAbs_FACE)) {
-            PrismMaker.Init(prism.getShape(), TopoDS::Face(face.getShape()), 
-                    TopoDS::Face(supportface.getShape()), direction, Mode, Modify);
-
-            PrismMaker.Perform(TopoDS::Face(uptoface.getShape()));
-
-            if (!PrismMaker.IsDone() || PrismMaker.Shape().IsNull())
-                throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
-
-            prism.makEShape(PrismMaker,{prism,face,uptoface,supportface});
-            if (Mode == 2)
-                Mode = 1;
-        }
+        prism = baseShape.makEPrism(profileshape, supportface, uptoface, direction, Mode, Modify);
     }
     else {
         std::stringstream str;

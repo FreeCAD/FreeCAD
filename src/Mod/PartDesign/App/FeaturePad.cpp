@@ -266,7 +266,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         // set the additive shape property for later usage in e.g. pattern
         prism = refineShapeIfActive(prism);
         this->AddSubShape.setValue(prism);
-        prism.Tag = -this->getID();
+        // prism.Tag = -this->getID();
 
         if (!base.isNull()) {
 //             auto obj = getDocument()->addObject("Part::Feature", "prism");
