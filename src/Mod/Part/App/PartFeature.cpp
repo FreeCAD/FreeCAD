@@ -677,6 +677,32 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     // transformation for easy shape caching, i.e.  with `transform` set
     // to false. So we manually apply the top level transform if asked.
 
+    if (needSubElement
+            && (!pmat || *pmat == Base::Matrix4D()) 
+            && obj->isDerivedFrom(Part::Feature::getClassTypeId())
+            && !obj->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId()))
+    {
+        // Some OCC shape making is very sensitive to shape transformation. So
+        // check here if a direct sub shape is required, and bypass all extra
+        // processing here.
+        if(subname && *subname && Data::ComplexGeoData::findElementName(subname) == subname) {
+            TopoShape ts = static_cast<const Part::Feature*>(obj)->Shape.getShape();
+            if (!transform)
+                ts.setShape(ts.getShape().Located(TopLoc_Location()),false);
+            if (noElementMap)
+                ts = ts.getSubShape(subname, true);
+            else
+                ts = ts.getSubTopoShape(subname, true);
+            if (!ts.isNull()) {
+                if (powner)
+                    *powner = const_cast<App::DocumentObject*>(obj);
+                if (pmat && transform)
+                    *pmat = static_cast<const Part::Feature*>(obj)->Placement.getValue().toMatrix();
+                return ts;
+            }
+        }
+    }
+
     Base::Matrix4D mat;
     auto shape = _getTopoShape(obj, subname, needSubElement, &mat, 
             powner, resolveLink, noElementMap, hiddens, lastLink);
