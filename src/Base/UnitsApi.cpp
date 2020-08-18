@@ -34,6 +34,7 @@
 #include "UnitsSchemaMKS.h"
 #include "UnitsSchemaCentimeters.h"
 #include "UnitsSchemaMmMin.h"
+#include "UnitsSchemaFemMilliMeterNewton.h"
 #include "StdStlTools.h"
 
 #ifndef M_PI
@@ -100,6 +101,8 @@ const char* UnitsApi::getDescription(UnitSystem system)
         return "Metric small parts & CNC(mm, mm/min)";
     case UnitSystem::ImperialCivil:
         return "Imperial for Civil Eng (ft, ft/sec)";
+    case UnitSystem::FemMilliMeterNewton:
+        return "FEM (mm, N, s)";
     default:
         return "Unknown schema";
     }
@@ -124,6 +127,8 @@ UnitsSchemaPtr UnitsApi::createSchema(UnitSystem s)
         return std::make_unique<UnitsSchemaMmMin>();
     case UnitSystem::ImperialCivil:
         return std::make_unique<UnitsSchemaImperialCivil>();
+    case UnitSystem::FemMilliMeterNewton:
+        return std::make_unique<UnitsSchemaFemMilliMeterNewton>();
     default:
         break;
     }

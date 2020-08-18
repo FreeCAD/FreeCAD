@@ -83,7 +83,8 @@ class DrawSketchHandler;
   * It uses the class DrawSketchHandler to facilitate the creation
   * of new geometry while editing.
   */
-class SketcherGuiExport ViewProviderSketch : public PartGui::ViewProvider2DObject, public Gui::SelectionObserver
+class SketcherGuiExport ViewProviderSketch : public PartGui::ViewProvider2DObjectGrid
+                                           , public Gui::SelectionObserver
 {
     Q_DECLARE_TR_FUNCTIONS(SketcherGui::ViewProviderSketch)
     /// generates a warning message about constraint conflicts and appends it to the given message

@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>MeshPart</source>
-      <translation>Ploskovjev del</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="277"/>
@@ -302,8 +302,8 @@
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>Določeno bo največje premo odstopanje odseka ploskovja
+Odstopanje površja pomnoženo z dolžino trenutnega odseka ploskovja (rob)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -533,7 +533,7 @@ Razpon vrednosti je 0.2-10.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
-      <translation>Ploskovjev del</translation>
+      <translation>Ploskovje</translation>
     </message>
   </context>
 </TS>

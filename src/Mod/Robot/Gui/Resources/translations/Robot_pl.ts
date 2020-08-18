@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="159"/>
       <source>Place robot...</source>
-      <translation>Miejsce robota...</translation>
+      <translation>Postaw robota...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="160"/>
       <source>Place a robot (experimental!)</source>
-      <translation>Miejsce robota (eksperymentalne!)</translation>
+      <translation>Postaw robota (eksperymentalne!)</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="63"/>
       <source>Create trajectory</source>
-      <translation>Utwórz trajektorię</translation>
+      <translation>Tworzenie toru pracy</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="322"/>
       <source>Generate a Trajectory from a set of edges</source>
-      <translation>Generuj trajektorię z zestawu krawędzi</translation>
+      <translation>Generuj tor pracy z zestawu krawędzi</translation>
     </message>
   </context>
   <context>
@@ -345,12 +345,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>Robot tools</source>
-      <translation>Narzędzia Robot</translation>
+      <translation>Narzędzia Robota</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Insert Robot</source>
-      <translation>Wstaw Robot</translation>
+      <translation>Wstaw Robota</translation>
     </message>
   </context>
   <context>

@@ -54,12 +54,6 @@ _ELMERGRID_OFORMAT = "2"
 _SOLID_PREFIX = "Solid"
 
 
-# TODO constants and units
-# should be only one system for all solver and not in each solver
-# https://forum.freecadweb.org/viewtopic.php?t=47895
-# https://forum.freecadweb.org/viewtopic.php?t=48451
-
-
 def _getAllSubObjects(obj):
     s = ["Solid" + str(i + 1) for i in range(len(obj.Shape.Solids))]
     s.extend(("Face" + str(i + 1) for i in range(len(obj.Shape.Faces))))
@@ -101,7 +95,20 @@ class Writer(object):
         self._writeStartinfo()
 
     def _handleUnits(self):
-        self.unit_schema = 0
+        # TODO constants and units
+        # should be only one system for all solver and not in each solver
+        # https://forum.freecadweb.org/viewtopic.php?t=47895
+        # https://forum.freecadweb.org/viewtopic.php?t=48451
+        # https://forum.freecadweb.org/viewtopic.php?f=10&t=48642
+        # The FreeCAD unit schema is only used to determine the schema number
+        # all definition are done here ATM
+        # keep in mind a unit schema might not be consistent:
+        # Length could be mm and Area could be m2 and Volume could be cm3
+        # as long as only the seven base units are retrieved from a unit schema
+        # the units are consistent
+        # TODO retrieve the seven base units from FreeCAD unit schema
+        # instead of hard coding them here for a second once
+        self.unit_schema = Units.Scheme.SI1
         self.unit_system = {  # standard FreeCAD Base units = unit schema 0
             "L": "mm",
             "M": "kg",
@@ -112,13 +119,13 @@ class Writer(object):
             "J": "cd",
         }
         param = ParamGet("User parameter:BaseApp/Preferences/Units")
-        self.unit_schema = param.GetInt("UserSchema", 0)
-        if self.unit_schema == 0:
+        self.unit_schema = param.GetInt("UserSchema", Units.Scheme.SI1)
+        if self.unit_schema == Units.Scheme.SI1:
             Console.PrintMessage(
                 "The FreeCAD standard unit schema mm/kg/s is used. "
                 "Elmer sif-file writing is done in Standard FreeCAD units.\n"
             )
-        elif self.unit_schema == 1:
+        elif self.unit_schema == Units.Scheme.SI2:
             Console.PrintMessage(
                 "The SI unit schema m/kg/s is used. "
                 "Elmer sif-file writing is done in SI-units.\n"
@@ -132,12 +139,27 @@ class Writer(object):
                 "N": "mol",
                 "J": "cd",
             }
-        elif self.unit_schema > 1:
+        elif self.unit_schema == Units.Scheme.FemMilliMeterNewton:
+            # see also unit comment in calculix writer
+            Console.PrintMessage(
+                "The FEM unit schema mm/N/s is used. "
+                "Elmer sif-file writing is done in FEM-units.\n"
+            )
+            self.unit_system = {
+                "L": "mm",
+                "M": "t",
+                "T": "s",
+                "I": "A",
+                "O": "K",
+                "N": "mol",
+                "J": "cd",
+            }
+        elif self.unit_schema > Units.Scheme.SI2 and self.unit_schema != Units.Scheme.FemMilliMeterNewton:
             Console.PrintMessage(
                 "Unit schema: {} not supported by Elmer writer. "
                 "The FreeCAD standard unit schema mm/kg/s is used. "
                 "Elmer sif-file writing is done in Standard FreeCAD units.\n"
-                .format(self.unit_schema)
+                .format(Units.listSchemas(self.unit_schema))
             )
 
     def _getFromUi(self, value, unit, outputDim):
@@ -255,7 +277,7 @@ class Writer(object):
     def _handleSimulation(self):
         self._simulation("Coordinate System", "Cartesian 3D")
         self._simulation("Coordinate Mapping", (1, 2, 3))
-        if self.unit_schema == 1:
+        if self.unit_schema == Units.Scheme.SI2:
             self._simulation("Coordinate Scaling", 0.001)
             Console.PrintMessage(
                 "'Coordinate Scaling = Real 0.001' was inserted into the solver input file.\n"
@@ -859,7 +881,7 @@ class Writer(object):
         s["Procedure"] = sifio.FileAttr("ResultOutputSolve/ResultOutputSolver")
         s["Output File Name"] = sifio.FileAttr("case")
         s["Vtu Format"] = True
-        if self.unit_schema == 1:
+        if self.unit_schema == Units.Scheme.SI2:
             s["Coordinate Scaling Revert"] = True
             Console.PrintMessage(
                 "'Coordinate Scaling Revert = Logical True' was "

@@ -45,6 +45,9 @@
      </item>
      <item>
       <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
@@ -62,7 +65,11 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit"/>
+      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -84,22 +91,25 @@
     </widget>
    </item>
    <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <item>
-               <widget class="QLabel" name="labelLength2">
-                   <property name="text">
-                       <string>2nd length</string>
-                   </property>
-               </widget>
-           </item>
-           <item>
-               <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2">
-                   <property name="minimum">
-                       <double>0.000000000000000</double>
-                   </property>
-               </widget>
-           </item>
-       </layout>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLabel" name="labelLength2">
+       <property name="text">
+        <string>2nd length</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -134,13 +144,18 @@
    </item>
   </layout>
  </widget>
- <resources/>
  <customwidgets>
-   <customwidget>
-     <class>Gui::PrefQuantitySpinBox</class>
-     <extends>QWidget</extends>
-     <header>Gui/PrefWidgets.h</header>
-   </customwidget>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
+ <resources/>
  <connections/>
 </ui>

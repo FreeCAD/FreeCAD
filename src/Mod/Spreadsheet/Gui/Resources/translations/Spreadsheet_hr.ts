@@ -163,7 +163,7 @@
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>Postavite nadimak za odabrane ćelije</translation>
+      <translation>Postavite pseudonim za odabrane ćelije</translation>
     </message>
   </context>
   <context>
@@ -313,7 +313,7 @@
     </message>
     <message>
       <source>Alias for this cell</source>
-      <translation>Nadimak za ovu ćeliju</translation>
+      <translation>Pseudonim za ovu ćeliju</translation>
     </message>
   </context>
   <context>
@@ -367,13 +367,17 @@ Odaberite samo jednu ćeliju.
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>Pseudonim sadrži nevažeće znakove!
+
+</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Referenca na ćeliju sa pseudonimom, na primjer
+Spreadsheet.my_alias_name umjesto Spreadsheet.B1
+
+</translation>
     </message>
   </context>
   <context>
@@ -459,17 +463,19 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>&amp;Sadržaj:</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>&amp;Pseudonim:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Referenca na ćeliju sa pseudonimom, na primjer
+Spreadsheet.my_alias_name umjesto Spreadsheet.B1
+
+</translation>
     </message>
   </context>
   <context>
