@@ -56,6 +56,7 @@
 
 using namespace PartDesignGui;
 using namespace Gui;
+namespace bp = boost::placeholders;
 
 /* TRANSLATOR PartDesignGui::TaskLoftParameters */
 
@@ -326,7 +327,7 @@ TaskLoftWireOrders::TaskLoftWireOrders(ViewProviderLoft *LoftView, bool /*newObj
             this, SLOT(onSketchBoxRowChanged(int)));
     connect(wireBox, SIGNAL(itemSelectionChanged()),
             this, SLOT(onWireBoxSelectionChanged()));
-    connectModObject = App::GetApplication().signalChangedObject.connect(boost::bind(&TaskLoftWireOrders::slotChangedObject,this,_1,_2));
+    connectModObject = App::GetApplication().signalChangedObject.connect(boost::bind(&TaskLoftWireOrders::slotChangedObject,this,bp::_1,bp::_2));
     connect(sketchBox, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             this, SLOT(onSketchBoxItemDoubleClicked(QListWidgetItem*)));
 
