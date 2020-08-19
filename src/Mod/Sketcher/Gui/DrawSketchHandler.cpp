@@ -102,13 +102,21 @@ void DrawSketchHandler::setCrosshairCursor(const char* svgName) {
 
 void DrawSketchHandler::setSvgCursor(const QString & cursorName, int x, int y, const std::map<unsigned long, unsigned long>& colorMapping)
 {
+    // The Sketcher_Pointer_*.svg icons have a default size of 64x64. When directly creating
+    // them with a size of 32x32 they look very bad.
+    // As a workaround the icons are created with 64x64 and afterwards the pixmap is scaled to
+    // 32x32. This workaround is only needed if pRatio is equal to 1.0
+    //
     qreal pRatio = devicePixelRatio();
-    qreal defaultCursorSize = 32;
-    qreal hotX = x * pRatio; 
-    qreal hotY = y * pRatio; 
+    bool isRatioOne = (pRatio == 1.0);
+    qreal defaultCursorSize = isRatioOne ? 64 : 32;
+    qreal hotX = x * pRatio;
+    qreal hotY = y * pRatio;
     qreal cursorSize = defaultCursorSize * pRatio;
 
     QPixmap pointer = Gui::BitmapFactory().pixmapFromSvg(cursorName.toStdString().c_str(), QSizeF(cursorSize, cursorSize), colorMapping);
+    if (isRatioOne)
+        pointer = pointer.scaled(32, 32);
 #if QT_VERSION >= 0x050000
     pointer.setDevicePixelRatio(pRatio);
 #endif
@@ -135,7 +143,7 @@ void DrawSketchHandler::setCursor(const QPixmap &p,int x,int y, bool autoScale)
 #endif
             int newWidth = p.width()*pRatio;
             int newHeight = p.height()*pRatio;
-            p1 = p1.scaled(newWidth, newHeight,Qt::KeepAspectRatio,Qt::SmoothTransformation);
+            p1 = p1.scaled(newWidth, newHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
             p1.setDevicePixelRatio(pRatio);
 #endif
