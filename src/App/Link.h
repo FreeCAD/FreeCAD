@@ -319,6 +319,8 @@ protected:
     mutable bool enableLabelCache;
 
     bool hasOldSubElement;
+
+    mutable bool checkingProperty = false;
 };
 
 ///////////////////////////////////////////////////////////////////////////
