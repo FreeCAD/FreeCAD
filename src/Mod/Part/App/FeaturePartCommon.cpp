@@ -232,5 +232,5 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
     this->Shape.setValue(res);
 #endif
 
-    return App::DocumentObject::StdReturn;
+    return Part::Feature::execute();
 }

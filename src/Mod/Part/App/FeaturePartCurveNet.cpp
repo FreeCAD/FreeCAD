@@ -60,5 +60,5 @@ App::DocumentObjectExecReturn *CurveNet::execute(void)
     aShape.read(FileName.getValue());
     this->Shape.setValue(aShape);
 
-    return App::DocumentObject::StdReturn;
+    return Part::Feature::execute();
 }

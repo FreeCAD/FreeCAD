@@ -51,6 +51,9 @@ class TubeFeature:
 
     def execute(self, fp):
         fp.Shape = makeTube(fp.OuterRadius, fp.InnerRadius, fp.Height)
+        # Return False here to signal FeaturePython to call its default
+        # execute() for extensions
+        return False
 
 
 class _CommandMakeTube:

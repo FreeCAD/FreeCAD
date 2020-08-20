@@ -111,6 +111,6 @@ App::DocumentObjectExecReturn *Face::execute(void)
     if (ret.isNull())
         return new App::DocumentObjectExecReturn("Creating face failed (null shape result)");
     this->Shape.setValue(ret);
-    return App::DocumentObject::StdReturn;
+    return Part::Feature::execute();
 }
 

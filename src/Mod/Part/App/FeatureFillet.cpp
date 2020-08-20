@@ -128,7 +128,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         this->Shape.setValue(res.makEShape(mkFillet,baseTopoShape,TOPOP_FILLET));
 #endif
 
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

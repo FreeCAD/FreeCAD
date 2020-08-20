@@ -130,6 +130,9 @@ class FeatureConnect:
         if selfobj.Refine:
             rst = rst.removeSplitter()
         selfobj.Shape = rst
+        # Return False here to signal FeaturePython to call its default
+        # execute() for extensions
+        return False
 
 
 class ViewProviderConnect:
@@ -233,6 +236,9 @@ class FeatureEmbed:
         if selfobj.Refine:
             rst = rst.removeSplitter()
         selfobj.Shape = rst
+        # Return False here to signal FeaturePython to call its default
+        # execute() for extensions
+        return False
 
 
 class ViewProviderEmbed:
@@ -321,6 +327,9 @@ class FeatureCutout:
         if selfobj.Refine:
             rst = rst.removeSplitter()
         selfobj.Shape = rst
+        # Return False here to signal FeaturePython to call its default
+        # execute() for extensions
+        return False
 
 
 class ViewProviderCutout:

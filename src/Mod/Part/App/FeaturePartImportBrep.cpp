@@ -62,6 +62,6 @@ App::DocumentObjectExecReturn *ImportBrep::execute(void)
     aShape.importBrep(FileName.getValue());
     this->Shape.setValue(aShape);
 
-    return App::DocumentObject::StdReturn;
+    return Part::Feature::execute();
 }
 

@@ -111,7 +111,9 @@ class _PartJoinFeature:
             if obj.Refine:
                 rst = rst.removeSplitter()
         obj.Shape = rst
-        return
+        # Return False here to signal FeaturePython to call its default
+        # execute() for extensions
+        return False
         
         
 class _ViewProviderPartJoinFeature:

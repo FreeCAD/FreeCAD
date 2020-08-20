@@ -61,7 +61,7 @@ App::DocumentObjectExecReturn *ImportStep::execute(void)
     aShape.importStep(FileName.getValue());
     this->Shape.setValue(aShape);
 
-    return App::DocumentObject::StdReturn;
+    return Part::Feature::execute();
 }
 
 

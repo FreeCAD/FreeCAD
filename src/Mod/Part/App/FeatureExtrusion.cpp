@@ -303,7 +303,7 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
         TopoShape result(0,getDocument()->getStringHasher());
         extrudeShape(result,Feature::getTopoShape(link),params);
         this->Shape.setValue(result);
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

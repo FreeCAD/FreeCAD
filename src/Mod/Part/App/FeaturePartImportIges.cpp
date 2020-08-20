@@ -62,7 +62,7 @@ App::DocumentObjectExecReturn *ImportIges::execute(void)
     aShape.importIges(FileName.getValue());
     this->Shape.setValue(aShape);
 
-    return App::DocumentObject::StdReturn;
+    return Part::Feature::execute();
 }
 
 

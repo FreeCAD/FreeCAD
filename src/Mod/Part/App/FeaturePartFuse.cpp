@@ -261,5 +261,5 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
         res = res.makERefine();
     this->Shape.setValue(res);
 #endif
-    return App::DocumentObject::StdReturn;
+    return Part::Feature::execute();
 }

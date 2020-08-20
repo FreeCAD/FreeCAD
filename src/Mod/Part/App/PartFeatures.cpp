@@ -275,7 +275,7 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
                     shapes,Orientation.getValue()));
 
 #endif
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
 
@@ -409,7 +409,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makELoft(
                     shapes, isSolid, isRuled, isClosed, degMax));
 #endif
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
 
@@ -609,7 +609,7 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
             mkPipeShell.MakeSolid();
 
         this->Shape.setValue(mkPipeShell.Shape());
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
 #else
     if(!Spine.getValue())
@@ -766,7 +766,7 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
     this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makEThickSolid(
                 base,shapes,thickness,tol,inter,self,mode,join));
 #endif
-    return App::DocumentObject::StdReturn;
+    return Part::Feature::execute();
 }
 
 // ----------------------------------------------------------------------------
@@ -787,7 +787,7 @@ App::DocumentObjectExecReturn *Refine::execute(void)
     try {
         TopoShape myShape = source->Shape.getShape();
         this->Shape.setValue(myShape.removeSplitter());
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -814,7 +814,7 @@ App::DocumentObjectExecReturn* Reverse::execute(void)
         if (!myShape.IsNull())
             this->Shape.setValue(myShape.Reversed());
         this->Placement.setValue(source->Placement.getValue());
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure & e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

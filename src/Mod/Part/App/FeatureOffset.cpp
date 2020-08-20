@@ -159,5 +159,5 @@ App::DocumentObjectExecReturn *Offset2D::execute(void)
     this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makEOffset2D(
                 shape,offset,join,fill,mode==0,inter));
 #endif
-    return App::DocumentObject::StdReturn;
+    return Part::Feature::execute();
 }

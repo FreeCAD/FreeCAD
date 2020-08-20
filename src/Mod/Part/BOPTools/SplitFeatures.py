@@ -83,6 +83,9 @@ class FeatureBooleanFragments:
         if len(shapes) < 2:
             raise ValueError("At least two shapes are needed for computing boolean fragments. Got only {num}.".format(num= len(shapes)))
         selfobj.Shape = SplitAPI.booleanFragments(shapes, selfobj.Mode, selfobj.Tolerance)
+        # Return False here to signal FeaturePython to call its default
+        # execute() for extensions
+        return False
 
 
 class ViewProviderBooleanFragments:
@@ -218,6 +221,9 @@ class FeatureSlice:
         if len(selfobj.Tools) < 1:
             raise ValueError("No slicing objects supplied!")
         selfobj.Shape = SplitAPI.slice(selfobj.Base.Shape, [obj.Shape for obj in selfobj.Tools], selfobj.Mode, selfobj.Tolerance)
+        # Return False here to signal FeaturePython to call its default
+        # execute() for extensions
+        return False
 
 
 class ViewProviderSlice:
@@ -378,6 +384,9 @@ class FeatureXOR:
         if len(shapes) < 2:
             raise ValueError("At least two shapes are needed for computing XOR. Got only {num}.".format(num= len(shapes)))
         selfobj.Shape = SplitAPI.xor(shapes, selfobj.Tolerance)
+        # Return False here to signal FeaturePython to call its default
+        # execute() for extensions
+        return False
 
 
 class ViewProviderXOR:

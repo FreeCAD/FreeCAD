@@ -145,7 +145,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
             res = res.makERefine();
         this->Shape.setValue(res);
 #endif
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (...) {
         return new App::DocumentObjectExecReturn("A fatal error occurred when running boolean operation");

@@ -131,7 +131,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         this->Shape.setValue(res.makEShape(mkChamfer,baseTopoShape,TOPOP_CHAMFER));
 #endif
 
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

@@ -117,7 +117,7 @@ App::DocumentObjectExecReturn *Mirroring::execute(void)
             Standard_Failure::Raise("Cannot mirror empty shape");
         this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makEMirror(shape,ax2));
 #endif
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

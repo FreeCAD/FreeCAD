@@ -173,7 +173,9 @@ class _CompoundFilter:
             sh.Placement = FreeCAD.Placement()
             obj.Shape = sh
 
-        return
+        # Return False here to signal FeaturePython to call its default
+        # execute() for extensions
+        return False
 
 
 class _ViewProviderCompoundFilter:
