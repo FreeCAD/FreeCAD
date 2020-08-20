@@ -142,5 +142,5 @@ App::DocumentObjectExecReturn *Offset2D::execute(void)
         return new App::DocumentObjectExecReturn("Mode 'Recto-Verso' is not supported for 2D offset.");
     const TopoShape& shape = static_cast<Part::Feature*>(source)->Shape.getShape();
     this->Shape.setValue(shape.makeOffset2D(offset, join, fill, mode == 0, inter));
-    return App::DocumentObject::StdReturn;
+    return Part::Feature::execute();
 }

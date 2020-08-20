@@ -61,6 +61,5 @@ App::DocumentObjectExecReturn *FeatureGeometrySet::execute(void)
     }
     
     Shape.setValue(result);
-
-    return App::DocumentObject::StdReturn;
+    return Part::Feature::execute();
 }

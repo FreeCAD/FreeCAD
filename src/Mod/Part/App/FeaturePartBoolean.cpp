@@ -133,7 +133,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
 
         this->Shape.setValue(resShape);
         this->History.setValues(history);
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (...) {
         return new App::DocumentObjectExecReturn("A fatal error occurred when running boolean operation");

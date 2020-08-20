@@ -70,5 +70,5 @@ App::DocumentObjectExecReturn *Part::Polygon::execute(void)
     TopoDS_Wire wire = poly.Wire();
     this->Shape.setValue(wire);
 
-    return App::DocumentObject::StdReturn;
+    return Part::Feature::execute();
 }

@@ -95,7 +95,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         prop.setContainer(this);
         prop.touch();
 
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

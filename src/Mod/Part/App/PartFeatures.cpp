@@ -253,7 +253,7 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         }
 
         this->Shape.setValue(ruledShape);
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
 
@@ -372,7 +372,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
 
         TopoShape myShape;
         this->Shape.setValue(myShape.makeLoft(profiles, isSolid, isRuled, isClosed, degMax));
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
 
@@ -570,7 +570,7 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
             mkPipeShell.MakeSolid();
 
         this->Shape.setValue(mkPipeShell.Shape());
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
 
@@ -667,7 +667,7 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
         this->Shape.setValue(shape.makeThickSolid(closingFaces, thickness, tol, inter, self, mode, join));
     else
         this->Shape.setValue(shape);
-    return App::DocumentObject::StdReturn;
+    return Part::Feature::execute();
 }
 
 // ----------------------------------------------------------------------------
@@ -688,7 +688,7 @@ App::DocumentObjectExecReturn *Refine::execute(void)
     try {
         TopoShape myShape = source->Shape.getShape();
         this->Shape.setValue(myShape.removeSplitter());
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -715,7 +715,7 @@ App::DocumentObjectExecReturn* Reverse::execute(void)
         if (!myShape.IsNull())
             this->Shape.setValue(myShape.Reversed());
         this->Placement.setValue(source->Placement.getValue());
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure & e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

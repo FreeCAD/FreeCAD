@@ -325,7 +325,7 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
         Extrusion::ExtrusionParameters params = computeFinalParameters();
         TopoShape result = extrudeShape(Feature::getShape(link),params);
         this->Shape.setValue(result);
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

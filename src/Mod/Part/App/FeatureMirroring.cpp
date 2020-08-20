@@ -110,7 +110,7 @@ App::DocumentObjectExecReturn *Mirroring::execute(void)
         mat = placement * mat;
         BRepBuilderAPI_Transform mkTrf(shape, mat);
         this->Shape.setValue(mkTrf.Shape());
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

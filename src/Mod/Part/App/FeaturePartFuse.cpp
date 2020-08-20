@@ -223,5 +223,5 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
         throw Base::CADKernelError("Not enough shape objects linked");
     }
 
-    return App::DocumentObject::StdReturn;
+    return Part::Feature::execute();
 }
