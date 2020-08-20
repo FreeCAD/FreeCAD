@@ -64,6 +64,7 @@ set(PartGui_MOC_HDRS
     TaskDimension.h
     TaskCheckGeometry.h
     TaskAttacher.h
+    PartParams.h
 )
 fc_wrap_cpp(PartGui_MOC_SRCS ${PartGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartGui_MOC_SRCS})
@@ -258,6 +259,8 @@ SET(PartGui_SRCS
     TaskCheckGeometry.h
     TaskAttacher.h 
     TaskAttacher.cpp 
+    PartParams.h 
+    PartParams.cpp 
 )
 
 if(FREECAD_USE_PCH)

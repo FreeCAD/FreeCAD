@@ -117,6 +117,7 @@
 #include <Gui/ViewProviderLink.h>
 
 #include <Gui/ViewParams.h>
+#include "PartParams.h"
 #include "ViewProviderExt.h"
 #include "SoBrepPointSet.h"
 #include "SoBrepEdgeSet.h"
@@ -225,8 +226,10 @@ void ViewProviderPartExt::getNormals(const TopoDS_Face&  theFace,
 // Construction/Destruction
 
 App::PropertyFloatConstraint::Constraints ViewProviderPartExt::sizeRange = {1.0,64.0,1.0};
-App::PropertyFloatConstraint::Constraints ViewProviderPartExt::tessRange = {0.01,100.0,0.01};
-App::PropertyQuantityConstraint::Constraints ViewProviderPartExt::angDeflectionRange = {1.0,180.0,0.05};
+App::PropertyFloatConstraint::Constraints ViewProviderPartExt::tessRange =
+    {PartParams::MinimumDeviation(),100.0,0.01};
+App::PropertyQuantityConstraint::Constraints ViewProviderPartExt::angDeflectionRange =
+    {PartParams::MinimumAngularDeflection(),180.0,0.05};
 const char* ViewProviderPartExt::LightingEnums[]= {"One side","Two side",NULL};
 const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","Dashdot",NULL};
 
@@ -234,7 +237,6 @@ ViewProviderPartExt::ViewProviderPartExt()
 {
     VisualTouched = true;
     forceUpdateCount = 0;
-    NormalsFromUV = true;
 
     unsigned long lcol = Gui::ViewParams::instance()->getDefaultShapeLineColor(); // dark grey (25,25,25)
     float r,g,b;
@@ -242,17 +244,9 @@ ViewProviderPartExt::ViewProviderPartExt()
     int lwidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
     int psize = Gui::ViewParams::instance()->getDefaultShapePointSize();
 
-    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Part");
-    NormalsFromUV = hPart->GetBool("NormalsFromUVNodes", NormalsFromUV);
+    NormalsFromUV = PartParams::NormalsFromUVNodes();
 
-    long twoside = hPart->GetBool("TwoSideRendering", true) ? 1 : 0;
-
-    // Let the user define a custom lower limit but a value less than
-    // OCCT's epsilon is not allowed
-    double lowerLimit = hPart->GetFloat("MinimumDeviation", tessRange.LowerBound);
-    lowerLimit = std::max(lowerLimit, Precision::Confusion());
-    tessRange.LowerBound = lowerLimit;
+    long twoside = PartParams::TwoSideRendering() ? 1 : 0;
 
     App::Material mat;
     mat.ambientColor.set(0.2f,0.2f,0.2f);
@@ -272,9 +266,9 @@ ViewProviderPartExt::ViewProviderPartExt()
     LineWidth.setConstraints(&sizeRange);
     PointSize.setConstraints(&sizeRange);
     ADD_PROPERTY(PointSize,(psize));
-    ADD_PROPERTY(Deviation,(0.5f));
+    ADD_PROPERTY(Deviation,(PartParams::MeshDeviation()));
     Deviation.setConstraints(&tessRange);
-    ADD_PROPERTY(AngularDeflection,(28.65));
+    ADD_PROPERTY(AngularDeflection,(PartParams::MeshAngularDeflection()));
     AngularDeflection.setConstraints(&angDeflectionRange);
     ADD_PROPERTY(Lighting,(twoside));
     Lighting.setEnums(LightingEnums);
@@ -327,7 +321,6 @@ ViewProviderPartExt::ViewProviderPartExt()
     DrawStyle.touch();
 
     sPixmap = "Tree_Part";
-    loadParameter();
 }
 
 ViewProviderPartExt::~ViewProviderPartExt()
@@ -354,16 +347,20 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     // to freeze the GUI
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=24912&p=195613
     if (prop == &Deviation) {
-        if(isUpdateForced()||Visibility.getValue()) 
-            updateVisual();
-        else
-            VisualTouched = true;
+        if (!prop->testStatus(App::Property::User3)) {
+            if(isUpdateForced()||Visibility.getValue()) 
+                updateVisual();
+            else
+                VisualTouched = true;
+        }
     }
     if (prop == &AngularDeflection) {
-        if(isUpdateForced()||Visibility.getValue()) 
-            updateVisual();
-        else
-            VisualTouched = true;
+        if (!prop->testStatus(App::Property::User3)) {
+            if(isUpdateForced()||Visibility.getValue()) 
+                updateVisual();
+            else
+                VisualTouched = true;
+        }
     }
     if (prop == &LineWidth) {
         pcLineStyle->lineWidth = LineWidth.getValue();
@@ -901,30 +898,26 @@ void ViewProviderPartExt::unsetHighlightedPoints()
     PointColorArray.touch();
 }
 
-bool ViewProviderPartExt::loadParameter()
-{
-    bool changed = false;
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Part");
-    float deviation = hGrp->GetFloat("MeshDeviation",0.2);
-    float angularDeflection = hGrp->GetFloat("MeshAngularDeflection",28.65);
-    NormalsFromUV = hGrp->GetBool("NormalsFromUVNodes", NormalsFromUV);
-
-    if (Deviation.getValue() != deviation) {
-        Deviation.setValue(deviation);
-        changed = true;
-    }
-    if (AngularDeflection.getValue() != angularDeflection ) {
-        AngularDeflection.setValue(angularDeflection);
-    }
-
-    return changed;
-}
-
 void ViewProviderPartExt::reload()
 {
-    if (loadParameter()) 
-        updateVisual();
+    tessRange.LowerBound = PartParams::MinimumDeviation();
+    angDeflectionRange.LowerBound = PartParams::MinimumAngularDeflection();
+
+    if (Deviation.getValue() == PartParams::MeshDeviation()
+            && Deviation.getValue() >= PartParams::MinimumDeviation()
+            && AngularDeflection.getValue() == PartParams::MeshAngularDeflection()
+            && AngularDeflection.getValue() >= PartParams::MinimumAngularDeflection())
+        return;
+
+    if (!PartParams::OverrideTessellation()) {
+        Deviation.setStatus(App::Property::User3, true);
+        Deviation.setValue(PartParams::MeshDeviation());
+        Deviation.setStatus(App::Property::User3, false);
+        AngularDeflection.setStatus(App::Property::User3, true);
+        AngularDeflection.setValue(PartParams::MeshAngularDeflection());
+        AngularDeflection.setStatus(App::Property::User3, false);
+    }
+    updateVisual();
 }
 
 void ViewProviderPartExt::updateData(const App::Property* prop)
@@ -1027,11 +1020,15 @@ void ViewProviderPartExt::updateVisual()
         Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
         bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
         Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 *
-            Deviation.getValue();
+            std::max(PartParams::OverrideTessellation() ? PartParams::MeshDeviation() : Deviation.getValue(),
+                     PartParams::MinimumDeviation());
 
         // create or use the mesh on the data structure
 #if OCC_VERSION_HEX >= 0x060600
-        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
+        Standard_Real AngDeflectionRads = 
+            std::max((PartParams::OverrideTessellation() ?
+                        PartParams::MeshAngularDeflection() : AngularDeflection.getValue()),
+                      PartParams::MinimumAngularDeflection()) / 180.0 * M_PI;
         BRepMesh_IncrementalMesh(cShape,deflection,Standard_False,
                 AngDeflectionRads,Standard_True);
 #else
