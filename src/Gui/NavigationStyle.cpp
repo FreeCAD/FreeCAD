@@ -45,6 +45,7 @@
 #include "Application.h"
 #include "MenuManager.h"
 #include "MouseSelection.h"
+#include "SoMouseWheelEvent.h"
 
 using namespace Gui;
 
@@ -797,6 +798,13 @@ void NavigationStyle::doZoom(SoCamera* camera, SbBool forward, const SbVec2f& po
 //    }
 }
 
+void NavigationStyle::doZoom_wheel(SoCamera* camera, int wheeldelta, const SbVec2f& pos)
+{
+    float value =this->zoomStep * wheeldelta / float(120.0);
+    if (this->invertZoom)
+        value = -value;
+    doZoom(camera, value, pos);
+}
 
 /*!
  *\brief NavigationStyle::doZoom Zooms in or out by specified factor, keeping the point on screen specified by parameter pos fixed
@@ -1466,7 +1474,27 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
 
 SbBool NavigationStyle::processSoEvent(const SoEvent * const ev)
 {
-    return viewer->processSoEventBase(ev);
+    const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
+    const SbVec2s size(vp.getViewportSizePixels());
+    const SbVec2s pos(ev->getPosition());
+    const SbVec2f posn((float) pos[0] / (float) std::max((int)(size[0] - 1), 1),
+                       (float) pos[1] / (float) std::max((int)(size[1] - 1), 1));
+    bool processed = false;
+
+    //handle mouse wheel zoom
+    if(ev->isOfType(SoMouseWheelEvent::getClassTypeId())){
+        doZoom_wheel(
+            viewer->getSoRenderManager()->getCamera(),
+            static_cast<const SoMouseWheelEvent*>(ev)->getDelta(),
+            posn
+        );
+        processed = true;
+    }
+
+    if (! processed)
+        return viewer->processSoEventBase(ev);
+    else
+        return processed;
 }
 
 void NavigationStyle::syncWithEvent(const SoEvent * const ev)

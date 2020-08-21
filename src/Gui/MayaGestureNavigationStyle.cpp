@@ -423,14 +423,6 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 }
                 processed = true;
                 break;
-            case SoMouseButtonEvent::BUTTON4: //(wheel?)
-                doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
-                processed = true;
-                break;
-            case SoMouseButtonEvent::BUTTON5: //(wheel?)
-                doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
-                processed = true;
-                break;
             }
         }
 
