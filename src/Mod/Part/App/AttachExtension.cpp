@@ -231,6 +231,15 @@ void AttachExtension::extHandleChangedPropertyName(Base::XMLReader &reader, cons
     }
 }
 
+void AttachExtension::extHandleChangedPropertyType(Base::XMLReader &reader, const char* TypeName, App::Property *prop)
+{
+    // MapPathParameter was type PropertyFloat, but now is PropertyFloatConstraint
+    Base::Type type = Base::Type::fromName(TypeName);
+    if (App::PropertyFloat::getClassTypeId() == type && strcmp(prop->getName(), "MapPathParameter") == 0) {
+        MapPathParameter.Restore(reader);
+    }
+}
+
 void AttachExtension::onExtendedDocumentRestored()
 {
     try {

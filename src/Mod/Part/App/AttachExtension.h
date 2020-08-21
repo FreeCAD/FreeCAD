@@ -122,6 +122,7 @@ public:
 protected:
     virtual void extensionOnChanged(const App::Property* /*prop*/);
     virtual void extHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName);
+    virtual void extHandleChangedPropertyType(Base::XMLReader &reader, const char* TypeName, App::Property* prop);
     
     App::PropertyPlacement& getPlacement() const;
 
