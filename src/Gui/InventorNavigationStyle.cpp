@@ -37,6 +37,7 @@
 #endif
 
 #include <Inventor/sensors/SoTimerSensor.h>
+#include "SoMouseWheelEvent.h"
 
 #include <App/Application.h>
 #include "NavigationStyle.h"
@@ -284,14 +285,6 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
             }
             this->button3down = press;
             break;
-        case SoMouseButtonEvent::BUTTON4:
-            doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
-            processed = true;
-            break;
-        case SoMouseButtonEvent::BUTTON5:
-            doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
-            processed = true;
-            break;
         default:
             break;
         }
@@ -396,7 +389,9 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if ((curmode == NavigationStyle::SELECTION ||
+    if (ev->isOfType(SoMouseWheelEvent::getClassTypeId()))
+        processed = inherited::processSoEvent(ev);
+    else if ((curmode == NavigationStyle::SELECTION ||
          newmode == NavigationStyle::SELECTION ||
          viewer->isEditing()) && !processed)
         processed = inherited::processSoEvent(ev);

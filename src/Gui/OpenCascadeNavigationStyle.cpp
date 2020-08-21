@@ -258,11 +258,6 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
             }
             this->button3down = press;
             break;
-        case SoMouseButtonEvent::BUTTON4:
-        case SoMouseButtonEvent::BUTTON5:
-            doZoom(viewer->getSoRenderManager()->getCamera(), button == SoMouseButtonEvent::BUTTON4, posn);
-            processed = true;
-            break;
         default:
             break;
         }
