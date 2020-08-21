@@ -90,6 +90,14 @@ class DraftLink(DraftObject):
         """Set up the link properties on attachment."""
         obj.configLinkProperty('Placement', LinkedObject='Base')
 
+        if not hasattr(obj, 'AlwaysSyncPlacement'):
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                'Force sync pattern placements even when array elements are expanded')
+            obj.addProperty("App::PropertyBool",
+                            "AlwaysSyncPlacement",
+                            "Objects",
+                            _tip)
+
         if hasattr(obj, 'ShowElement'):
             # Rename 'ShowElement' property to 'ExpandArray' to avoid conflict
             # with native App::Link
@@ -100,7 +108,7 @@ class DraftLink(DraftObject):
                                      "Show the individual array elements")
             obj.addProperty("App::PropertyBool",
                             "ExpandArray",
-                            "Draft",
+                            "Objects",
                             _tip)
 
             obj.ExpandArray = showElement
@@ -167,11 +175,15 @@ class DraftLink(DraftObject):
     def buildShape(self, obj, pl, pls):
         """Build the shape of the link object."""
         if self.use_link:
-            if not getattr(obj, 'ExpandArray', True) or obj.Count != len(pls):
+            if not getattr(obj, 'ExpandArray', False) or obj.Count != len(pls):
                 obj.setPropertyStatus('PlacementList', '-Immutable')
                 obj.PlacementList = pls
                 obj.setPropertyStatus('PlacementList', 'Immutable')
                 obj.Count = len(pls)
+            if getattr(obj, 'ExpandArray', False) \
+                    and getattr(obj, 'AlwaysSyncPlacement', False):
+                for pla,child in zip(pls,obj.ElementList):
+                    child.Placement = pla
 
         if obj.Base:
             shape = Part.getShape(obj.Base)
