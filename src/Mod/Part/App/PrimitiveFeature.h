@@ -27,6 +27,8 @@
 #include <App/PropertyUnits.h>
 #include "PartFeature.h"
 #include "AttachExtension.h"
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <Geom_Surface.hxx>
 
 namespace Part
 {
@@ -354,6 +356,8 @@ public:
 
 protected:
     void onChanged (const App::Property* prop);
+private:
+    void addSpiralSegment(float u, float v, gp_Pnt2d& beg, BRepBuilderAPI_MakeWire& builder, Handle(Geom_Surface) surf);
 };
 
 class PartExport Wedge : public Primitive

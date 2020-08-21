@@ -906,6 +906,26 @@ short Spiral::mustExecute() const
     return Primitive::mustExecute();
 }
 
+/** Adds a single segment to the Spiral being built
+ *
+ *  Note that the `gp_Pnt2d` and the `BRepBuiderAPI_MakeWire` references passed
+ *  in are both modified, therefore they are not `const` in the argument list
+ */
+void Spiral::addSpiralSegment(float u, float v, gp_Pnt2d& beg, BRepBuilderAPI_MakeWire& builder, Handle(Geom_Surface) surf)
+{
+    // First, create the new end-point using the provided values
+    gp_Pnt2d end = gp_Pnt2d(u, v);
+    // Use the provided beginning-point and the created end-point to create the
+    // new segment
+    Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
+    // Create a topological Edge out the segment
+    TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+    // Finally, add the segment to our  builder
+    builder.Add(edgeOnSurf);
+    // Update the beggining-point for the next iteration (if any)
+    beg = end;
+}
+
 App::DocumentObjectExecReturn *Spiral::execute(void)
 {
     try {
@@ -929,7 +949,6 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
 
         gp_Pnt2d aPnt(0, 0);
         gp_Dir2d aDir(2. * M_PI, myPitch);
-        Standard_Real coneDir = 1.0;
         gp_Ax2d aAx2d(aPnt, aDir);
 
         Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
@@ -942,33 +961,29 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         gp_Pnt2d cend(u, v);
         end = cend;
 
-//         Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
-// 
-//         TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
-//         TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
-//         BRepLib::BuildCurves3d(wire);
-
         BRepBuilderAPI_MakeWire mkWire;
         Handle(Geom2d_TrimmedCurve) segm;
         TopoDS_Edge edgeOnSurf;
 
         for (unsigned long i = 0; i < floor(myNumRot); i++) {
-            u = coneDir * (i+1) * 2.0 * M_PI;
+            u = 1.0 * (i+1) * 2.0 * M_PI;
             v = ((i+1) * myPitch) / cos(myAngle);
-            end = gp_Pnt2d(u, v);
-            segm = GCE2d_MakeSegment(beg , end);
-            edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
-            mkWire.Add(edgeOnSurf);
+//             end = gp_Pnt2d(u, v);
+//             segm = GCE2d_MakeSegment(beg , end);
+//             edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+//             mkWire.Add(edgeOnSurf);
+            Spiral::addSpiralSegment(u,v,beg,mkWire,surf);
             beg = end;
         }
 
         if (partTurn > Precision::Confusion()) {
-            u = coneDir * myNumRot * 2.0 * M_PI;
+            u = 1.0 * myNumRot * 2.0 * M_PI;
             v = myHeight / cos(myAngle);
-            end = gp_Pnt2d(u, v);
-            segm = GCE2d_MakeSegment(beg , end);
-            edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
-            mkWire.Add(edgeOnSurf);
+//             end = gp_Pnt2d(u, v);
+//             segm = GCE2d_MakeSegment(beg , end);
+//             edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+//             mkWire.Add(edgeOnSurf);
+            Spiral::addSpiralSegment(u,v,beg,mkWire,surf);
         }
 
         TopoDS_Wire wire = mkWire.Wire();
