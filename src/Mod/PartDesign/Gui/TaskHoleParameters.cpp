@@ -105,6 +105,11 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
     pcHole->updateProps();
+
+    ui->Reversed->blockSignals(true);
+    ui->Reversed->setChecked(pcHole->Reversed.getValue());
+    ui->Reversed->blockSignals(false);
+
     vp->show();
 
     ui->ThreadPitch->bind(pcHole->ThreadPitch);
