@@ -2463,22 +2463,19 @@ public:
             const char *filename, App::Document *pDoc, bool relative, QString *fullPath = 0) 
     {
         bool absolute;
-       // The path could be an URI, in that case
-       // TODO: build a far much more resilient approach to test for an URI
-       std::string prefix("https://");
-       std::string FileName(filename);
-       auto res = std::mismatch(prefix.begin(), prefix.end(), FileName.begin());
-       if ( res.first == prefix.end() )
-       {
-               // We do have an URI
-               QString path = QString::fromUtf8(filename);
-               if ( fullPath )
-                       *fullPath = path;
+        // The path could be an URI, in that case
+        // TODO: build a far much more resilient approach to test for an URI
+        QString path = QString::fromUtf8(filename);
+        if (path.startsWith(QLatin1String("https://"))) {
+            // We do have an URI
+            if (fullPath)
+                *fullPath = path;
                return std::string(filename);
-       }
+        }
+
         // make sure the filename is aboluste path
-        QString path = QDir::cleanPath(QString::fromUtf8(filename));
-        if((absolute=QFileInfo(path).isAbsolute())) {
+        path = QDir::cleanPath(path);
+        if((absolute = QFileInfo(path).isAbsolute())) {
             if(fullPath)
                 *fullPath = path;
             if(!relative)
@@ -2547,28 +2544,22 @@ public:
     }
 
     static QString getFullPath(const char *p) {
-       QString path = QString::fromUtf8(p);;
-       std::string prefix("https://");
-       std::string Path(path.toStdString());
-       auto res = std::mismatch(prefix.begin(), prefix.end(), Path.begin());
-       if ( res.first == prefix.end() )
-		return(path);
-	else
-	{
-        	if(!p) return QString();
- 	   	return QFileInfo(QString::fromUtf8(p)).canonicalFilePath();
-	}
-     }
+        QString path = QString::fromUtf8(p);
+        if (path.isEmpty())
+            return path;
+
+        if (path.startsWith(QLatin1String("https://")))
+            return path;
+        else
+            return QFileInfo(path).canonicalFilePath();
+    }
 
     QString getFullPath() const {
-       QString path = myPos->first;
-       std::string prefix("https://");
-       std::string Path(path.toStdString());
-       auto res = std::mismatch(prefix.begin(), prefix.end(), Path.begin());
-       if ( res.first == prefix.end() )
-		return(path);
-       else
-		return QFileInfo(myPos->first).canonicalFilePath();
+        QString path = myPos->first;
+        if (path.startsWith(QLatin1String("https://")))
+            return path;
+        else
+            return QFileInfo(myPos->first).canonicalFilePath();
     }
 
     const char *filePath() const {
