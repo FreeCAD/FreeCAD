@@ -345,13 +345,13 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 break;
             case SoKeyboardEvent::PAGE_UP:
                 if(press){
-                    doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
+                    doZoom(viewer->getSoRenderManager()->getCamera(), getDelta(), posn);
                 }
                 processed = true;
                 break;
             case SoKeyboardEvent::PAGE_DOWN:
                 if(press){
-                    doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
+                    doZoom(viewer->getSoRenderManager()->getCamera(), -getDelta(), posn);
                 }
                 processed = true;
                 break;

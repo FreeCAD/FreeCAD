@@ -157,11 +157,11 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
                 this->setViewing(true);
             break;
         case SoKeyboardEvent::PAGE_UP:
-            doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
+            doZoom(viewer->getSoRenderManager()->getCamera(), getDelta(), posn);
             processed = true;
             break;
         case SoKeyboardEvent::PAGE_DOWN:
-            doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
+            doZoom(viewer->getSoRenderManager()->getCamera(), -getDelta(), posn);
             processed = true;
             break;
         default:

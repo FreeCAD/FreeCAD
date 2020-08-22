@@ -771,36 +771,17 @@ void NavigationStyle::zoomOut()
     zoom(viewer->getSoRenderManager()->getCamera(), this->zoomStep);
 }
 
-void NavigationStyle::doZoom(SoCamera* camera, SbBool forward, const SbVec2f& pos)
+/*!
+ * Returns the steps if the mouse wheel is rotated
+ */
+int NavigationStyle::getDelta() const
 {
-//    SbBool zoomAtCur = this->zoomAtCursor;
-//    if (zoomAtCur) {
-//        const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-//        float ratio = vp.getViewportAspectRatio();
-//        SbViewVolume vv = camera->getViewVolume(vp.getViewportAspectRatio());
-//        SbPlane panplane = vv.getPlane(camera->focalDistance.getValue());
-//        panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, SbVec2f(0.5,0.5), pos);
-//    }
-
-    float value = this->zoomStep;
-    if (!forward)
-        value = -value;
-    if (this->invertZoom)
-        value = -value;
-    doZoom(camera, value, pos);
-
-//    if (zoomAtCur) {
-//        const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-//        float ratio = vp.getViewportAspectRatio();
-//        SbViewVolume vv = camera->getViewVolume(vp.getViewportAspectRatio());
-//        SbPlane panplane = vv.getPlane(camera->focalDistance.getValue());
-//        panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, pos, SbVec2f(0.5,0.5));
-//    }
+    return 120;
 }
 
-void NavigationStyle::doZoom_wheel(SoCamera* camera, int wheeldelta, const SbVec2f& pos)
+void NavigationStyle::doZoom(SoCamera* camera, int wheeldelta, const SbVec2f& pos)
 {
-    float value =this->zoomStep * wheeldelta / float(120.0);
+    float value = this->zoomStep * wheeldelta / float(getDelta());
     if (this->invertZoom)
         value = -value;
     doZoom(camera, value, pos);
@@ -1483,7 +1464,7 @@ SbBool NavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //handle mouse wheel zoom
     if(ev->isOfType(SoMouseWheelEvent::getClassTypeId())){
-        doZoom_wheel(
+        doZoom(
             viewer->getSoRenderManager()->getCamera(),
             static_cast<const SoMouseWheelEvent*>(ev)->getDelta(),
             posn
