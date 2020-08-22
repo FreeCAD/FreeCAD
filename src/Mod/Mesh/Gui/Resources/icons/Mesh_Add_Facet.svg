@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   id="svg9484"
+   height="64"
+   width="64">
+  <title
+     id="title3749">Mesh_Add_Facet</title>
+  <defs
+     id="defs9486">
+    <linearGradient
+       id="linearGradient1909">
+      <stop
+         id="stop1905"
+         offset="0"
+         style="stop-color:#4e9a06;stop-opacity:1" />
+      <stop
+         id="stop1907"
+         offset="1"
+         style="stop-color:#8ae234;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient1347">
+      <stop
+         id="stop1343"
+         offset="0"
+         style="stop-color:#4e9a06;stop-opacity:1" />
+      <stop
+         id="stop1345"
+         offset="1"
+         style="stop-color:#8ae234;stop-opacity:1" />
+    </linearGradient>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lstart"
+       refX="0.0"
+       refY="0.0"
+       orient="auto">
+      <path
+         transform="scale(0.8) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:none;stroke-width:1pt;stroke-opacity:1;fill:#8ae234;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1067" />
+    </marker>
+    <linearGradient
+       id="linearGradient12537">
+      <stop
+         id="stop12539"
+         offset="0"
+         style="stop-color:#00fd00;stop-opacity:1;" />
+      <stop
+         id="stop12541"
+         offset="1"
+         style="stop-color:#00fd00;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       gradientTransform="translate(35,-2)"
+       gradientUnits="userSpaceOnUse"
+       y2="14.755193"
+       x2="30.5"
+       y1="14.755193"
+       x1="4.5"
+       id="linearGradient12547"
+       xlink:href="#linearGradient12537" />
+    <linearGradient
+       xlink:href="#linearGradient1014"
+       id="linearGradient951"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.47516502,-0.46153841,0.47516502,0.46153841,20.184848,13.625688)"
+       x1="29"
+       y1="47"
+       x2="15"
+       y2="17" />
+    <linearGradient
+       id="linearGradient1014">
+      <stop
+         id="stop1010"
+         offset="0"
+         style="stop-color:#204a87;stop-opacity:1" />
+      <stop
+         id="stop1012"
+         offset="1"
+         style="stop-color:#729fcf;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="-19.181715"
+       x2="11.196301"
+       y1="-1.0932833"
+       x1="25.894817"
+       id="linearGradient1349"
+       xlink:href="#linearGradient1347" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="-18.27072"
+       x2="12.52975"
+       y1="0.75593823"
+       x1="23.388866"
+       id="linearGradient1911"
+       xlink:href="#linearGradient1909" />
+  </defs>
+  <metadata
+     id="metadata9489">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
+        <dc:title>Mesh_Add_Facet</dc:title>
+        <dc:description>Triangular mesh face</dc:description>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>Icon based on a wmayer' s design</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>mesh</rdf:li>
+            <rdf:li>triangle</rdf:li>
+            <rdf:li>face</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:relation />
+        <dc:identifier />
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>11-06-2020</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[bitacovir]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     style="opacity:1"
+     transform="translate(0,32)"
+     id="layer1">
+    <path
+       id="path1903"
+       d="M 7.1155185,-25.238729 56.894347,-12.973343 4,19 Z"
+       style="fill:url(#linearGradient1911);fill-opacity:1" />
+    <path
+       id="path1049"
+       d="M 59.924202,-13.754931 4,19 5.4759648,-27.173726 Z"
+       style="fill:none;stroke:#172a04;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:url(#linearGradient951);fill-opacity:1;fill-rule:evenodd;stroke:#0b1521;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+       d="m 34.439798,13.625688 v 5.538461 h 9.503301 v 9.230768 h 5.70198 v -9.230768 l 9.503301,-10e-7 v -5.538461 l -9.503301,1e-6 V 4.3949187 h -5.70198 v 9.2307693 z"
+       id="rect3761" />
+    <path
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#729fcf;stroke-width:1.32456;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+       d="m 35.865293,15.010303 v 2.769231 h 9.503301 v 9.230767 h 2.85099 v -9.230767 l 9.503301,-1e-6 v -2.769231 l -9.503301,1e-6 1e-6,-9.2307683 h -2.85099 l -10e-7,9.2307683 z"
+       id="rect3761-3" />
+    <path
+       style="fill:none;stroke:#8ae234;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 8.3067602,-23.368394 7.1698014,13.640775 52.021666,-12.602091 Z"
+       id="path1338" />
+  </g>
+</svg>
