@@ -86,6 +86,8 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 
+#include <QApplication>
+
 #include "SoBrepFaceSet.h"
 #include <Base/Console.h>
 #include <Gui/SoFCUnifiedSelection.h>
@@ -243,6 +245,18 @@ public:
         }
     }
 
+    static uint32_t getContext(uint32_t ctx)
+    {
+#if defined(HAVE_QT5_OPENGL)
+        int sharedContext = -1;
+        if (sharedContext < 0)
+            sharedContext = qApp->testAttribute(Qt::AA_ShareOpenGLContexts) ? 1 : 0;
+        return sharedContext ? 0 : ctx;
+#else
+        return ctx;
+#endif
+    }
+
     bool isVboAvailable(SoGLRenderAction *action) const {
         SoState *state = action->getState();
 
@@ -258,7 +272,7 @@ public:
                     SoOverrideElement::MATERIAL_BINDING|
                     SoOverrideElement::TRANSPARENCY))
         {
-            auto it = vbomap.find(action->getCacheContext());
+            auto it = vbomap.find(getContext(action->getCacheContext()));
             if(it == vbomap.end())
                 return false;
             auto &info = it->second;
@@ -1775,7 +1789,7 @@ bool SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     SoState * state = action->getState();
     const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
 
-    uint32_t contextId = action->getCacheContext();
+    uint32_t contextId = getContext(action->getCacheContext());
     auto res = this->vbomap.insert(std::make_pair(contextId,VBO::Buffer()));
     VBO::Buffer &buf = res.first->second;
 
