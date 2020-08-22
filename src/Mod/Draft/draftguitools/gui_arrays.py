@@ -54,7 +54,7 @@ class ArrayGroup:
         return ("Draft_OrthoArray",
                 "Draft_PolarArray", "Draft_CircularArray",
                 "Draft_PathArray", "Draft_PathLinkArray",
-                "Draft_PointArray")
+                "Draft_PointArray", "Draft_PointLinkArray")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""

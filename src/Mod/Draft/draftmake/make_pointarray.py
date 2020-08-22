@@ -45,9 +45,10 @@ from draftobjects.pointarray import PointArray
 
 if App.GuiUp:
     from draftviewproviders.view_array import ViewProviderDraftArray
+    from draftviewproviders.view_draftlink import ViewProviderDraftLink
 
 
-def make_point_array(base_object, point_object, extra=None):
+def make_point_array(base_object, point_object, extra=None, use_link=True):
     """Make a Draft PointArray object.
 
     Distribute copies of a `base_object` in the points
@@ -154,19 +155,29 @@ def make_point_array(base_object, point_object, extra=None):
     elif isinstance(extra, App.Rotation):
         extra = App.Placement(App.Vector(), extra)
 
-    new_obj = doc.addObject("Part::FeaturePython", "PointArray")
-    PointArray(new_obj)
+    if use_link:
+        # The PointArray class must be called in this special way
+        # to make it a LinkArray
+        new_obj = doc.addObject("Part::FeaturePython", "PointArray",
+                                PointArray(None), None, True)
+    else:
+        new_obj = doc.addObject("Part::FeaturePython", "PointArray")
+        PointArray(new_obj)
+
     new_obj.Base = base_object
     new_obj.PointObject = point_object
     new_obj.ExtraPlacement = extra
 
     if App.GuiUp:
-        ViewProviderDraftArray(new_obj.ViewObject)
-        gui_utils.formatObject(new_obj, new_obj.Base)
+        if use_link:
+            ViewProviderDraftLink(new_obj.ViewObject)
+        else:
+            ViewProviderDraftArray(new_obj.ViewObject)
+            gui_utils.format_object(new_obj, new_obj.Base)
 
-        if hasattr(new_obj.Base.ViewObject, "DiffuseColor"):
-            if len(new_obj.Base.ViewObject.DiffuseColor) > 1:
-                new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
+            if hasattr(new_obj.Base.ViewObject, "DiffuseColor"):
+                if len(new_obj.Base.ViewObject.DiffuseColor) > 1:
+                    new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
 
         new_obj.Base.ViewObject.hide()
         gui_utils.select(new_obj)
