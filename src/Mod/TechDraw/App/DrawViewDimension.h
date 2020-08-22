@@ -158,11 +158,12 @@ public:
     pointPair getArrowPositions(void);
     void saveArrowPositions(const Base::Vector2d positions[]);
 
+    bool showUnits() const;
+    bool useDecimals() const;
+
 protected:
     virtual void onChanged(const App::Property* prop) override;
     virtual void onDocumentRestored() override;
-    bool showUnits() const;
-    bool useDecimals() const;
     std::string getPrefix() const;
     std::string getDefaultFormatSpec() const;
     virtual pointPair getPointsOneEdge();
