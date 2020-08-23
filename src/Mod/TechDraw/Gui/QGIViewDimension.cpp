@@ -234,6 +234,15 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
     //set label's Qt position(top,left) given boundingRect center point
     setPos(xCenter - m_dimText->boundingRect().width() / 2., yCenter - m_dimText->boundingRect().height() / 2.);
 
+    QString uText = m_unitText->toPlainText();
+    if ( (uText.size() > 0) &&
+         (uText.at(0) != QChar::fromLatin1(' ')) ) {
+        QString vText = m_dimText->toPlainText();
+        vText = vText + uText;
+        m_dimText->setPlainText(vText);
+        m_unitText->setPlainText(QString());
+    }
+
     QRectF labelBox = m_dimText->boundingRect();
     double right = labelBox.right();
     double top   = labelBox.top();
@@ -624,7 +633,6 @@ void QGIViewDimension::updateDim()
             unitText  = QString::fromUtf8(dim->getFormatedValue(2).c_str()); //just the unit
         }
     }
-    
     QFont font = datumLabel->getFont();
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
     font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
