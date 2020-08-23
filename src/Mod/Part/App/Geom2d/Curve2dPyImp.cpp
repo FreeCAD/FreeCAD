@@ -166,16 +166,9 @@ TopoDS_Edge create3dCurve(const TopoDS_Edge& edge)
                                                 adapt_curve.LastParameter());
             edge3d =  mkBuilder3d.Edge();
         } break;
-    case GeomAbs_BSplineCurve:
-        {
-            BRepBuilderAPI_MakeEdge mkBuilder3d(adapt_curve.BSpline(),
-                                                adapt_curve.FirstParameter(),
-                                                adapt_curve.LastParameter());
-            edge3d =  mkBuilder3d.Edge();
-        } break;
     default:
         edge3d = edge;
-        BRepLib::BuildCurves3d(edge3d);
+        BRepLib::BuildCurves3d(edge3d, 1e-7, GeomAbs_Shape::GeomAbs_C2, 14, 10000);
         break;
     }
 
