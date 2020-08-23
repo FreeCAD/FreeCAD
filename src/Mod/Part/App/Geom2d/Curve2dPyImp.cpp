@@ -168,7 +168,7 @@ TopoDS_Edge create3dCurve(const TopoDS_Edge& edge)
         } break;
     default:
         edge3d = edge;
-        BRepLib::BuildCurves3d(edge3d, 1e-7, GeomAbs_Shape::GeomAbs_C2, 14, 10000);
+        BRepLib::BuildCurves3d(edge3d, Precision::Confusion(), GeomAbs_Shape::GeomAbs_C1, 14, 10000);
         break;
     }
 
