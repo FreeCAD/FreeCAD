@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
+ *   Copyright (c) 2020 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -20,55 +20,65 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_INVENTOR_BASE_H
-#define GUI_INVENTOR_BASE_H
+#include "PreCompiled.h"
 
-#include <boost/intrusive_ptr.hpp>
+#include "SoFCDetail.h"
 
-class SoGroup;
+SO_DETAIL_SOURCE(SoFCDetail);
 
-// define this only if we actually decide to run coin in multiple thread
-#ifdef FC_COIN_MULTI_THREAD
-#   define FC_COIN_THREAD_LOCAL thread_local
-#else
-#   define FC_COIN_THREAD_LOCAL
-#endif
-
-namespace Gui {
-
-/** Convenience smart pointer to wrap coin node. 
- *
- * It is basically boost::intrusive plus implicit pointer conversion to save the
- * trouble of typing get() all the time.
- */
-template<class T>
-class CoinPtr: public boost::intrusive_ptr<T> {
-public:
-# if (defined(_MSC_VER) && (_MSC_VER <= 1800))
-    // Too bad, VC2013 does not support constructor inheritance
-    typedef boost::intrusive_ptr<T> inherited;
-    CoinPtr() {}
-    CoinPtr(T *p, bool add_ref=true):inherited(p,add_ref){}
-    template<class Y> CoinPtr(CoinPtr<Y> const &r):inherited(r){}
-#else
-    using boost::intrusive_ptr<T>::intrusive_ptr;
-#endif
-    operator T *() const {
-        return this->get();
-    }
-};
-
-/** Helper function to deal with bug in SoNode::removeAllChildren()
- *
- * @sa https://bitbucket.org/Coin3D/coin/pull-requests/119/fix-sochildlist-auditing/diff
- */
-void GuiExport coinRemoveAllChildren(SoGroup *node);
-
+SoFCDetail::SoFCDetail(void)
+{
 }
 
-#ifndef FC_COIN_UNIQUE_ID_DEFINED
-#define FC_COIN_UNIQUE_ID_DEFINED
-typedef uint64_t SbFCUniqueId;
-#endif //FC_COIN_UNIQUE_ID_DEFINED
+SoFCDetail::~SoFCDetail()
+{
+}
 
-#endif //GUI_INVENTOR_BASE_H
+void
+SoFCDetail::initClass(void)
+{
+  SO_DETAIL_INIT_CLASS(SoFCDetail, SoDetail);
+}
+
+SoDetail *
+SoFCDetail::copy(void) const
+{
+  SoFCDetail *copy = new SoFCDetail();
+  copy->indexArray = this->indexArray;
+  return copy;
+}
+
+void
+SoFCDetail::setIndices(Type type, std::set<int> &&indices)
+{
+  if(type >= 0 && type < TypeMax)
+    indexArray[type] = std::move(indices);
+}
+
+bool
+SoFCDetail::addIndex(Type type, int index)
+{
+  if(type >= 0 && type < TypeMax)
+    return indexArray[type].insert(index).second;
+  return false;
+}
+
+bool
+SoFCDetail::removeIndex(Type type, int index)
+{
+  if(type >= 0 && type < TypeMax)
+    return indexArray[type].erase(index);
+  return false;
+}
+
+const std::set<int> &
+SoFCDetail::getIndices(Type type) const
+{
+  if(type < 0 || type >= TypeMax) {
+    static std::set<int> none;
+    return none;
+  }
+  return indexArray[type];
+}
+
+// vim: noai:ts=2:sw=2

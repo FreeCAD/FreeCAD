@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
+ *   Copyright (c) 2020 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -20,55 +20,38 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_INVENTOR_BASE_H
-#define GUI_INVENTOR_BASE_H
+#ifndef FC_DIFFUSEELEMENT_H
+#define FC_DIFFUSEELEMENT_H
 
-#include <boost/intrusive_ptr.hpp>
+#include "../InventorBase.h"
+#include <Inventor/system/inttypes.h>
+#include <Inventor/elements/SoElement.h>
 
-class SoGroup;
+class GuiExport SoFCDiffuseElement : public SoElement {
+  typedef SoElement inherited;
 
-// define this only if we actually decide to run coin in multiple thread
-#ifdef FC_COIN_MULTI_THREAD
-#   define FC_COIN_THREAD_LOCAL thread_local
-#else
-#   define FC_COIN_THREAD_LOCAL
-#endif
-
-namespace Gui {
-
-/** Convenience smart pointer to wrap coin node. 
- *
- * It is basically boost::intrusive plus implicit pointer conversion to save the
- * trouble of typing get() all the time.
- */
-template<class T>
-class CoinPtr: public boost::intrusive_ptr<T> {
+  SO_ELEMENT_HEADER(SoFCDiffuseElement);
 public:
-# if (defined(_MSC_VER) && (_MSC_VER <= 1800))
-    // Too bad, VC2013 does not support constructor inheritance
-    typedef boost::intrusive_ptr<T> inherited;
-    CoinPtr() {}
-    CoinPtr(T *p, bool add_ref=true):inherited(p,add_ref){}
-    template<class Y> CoinPtr(CoinPtr<Y> const &r):inherited(r){}
-#else
-    using boost::intrusive_ptr<T>::intrusive_ptr;
-#endif
-    operator T *() const {
-        return this->get();
-    }
+  static void initClass(void);
+  static void cleanup(void);
+
+public:
+  virtual void init(SoState * state);
+  virtual void push(SoState * state);
+  virtual SbBool matches(const SoElement * element) const;
+
+  virtual SoElement * copyMatchInfo() const;
+
+  SbFCUniqueId getDiffuseId() const;
+  SbFCUniqueId getTransparencyId() const;
+
+  static SbFCUniqueId get(SoState * state, SbFCUniqueId *transpid);
+  static void set(SoState * state, SbFCUniqueId *diffuseid, SbFCUniqueId *transpid);
+
+protected:
+  SbFCUniqueId diffuseId;
+  SbFCUniqueId transpId;
 };
 
-/** Helper function to deal with bug in SoNode::removeAllChildren()
- *
- * @sa https://bitbucket.org/Coin3D/coin/pull-requests/119/fix-sochildlist-auditing/diff
- */
-void GuiExport coinRemoveAllChildren(SoGroup *node);
-
-}
-
-#ifndef FC_COIN_UNIQUE_ID_DEFINED
-#define FC_COIN_UNIQUE_ID_DEFINED
-typedef uint64_t SbFCUniqueId;
-#endif //FC_COIN_UNIQUE_ID_DEFINED
-
-#endif //GUI_INVENTOR_BASE_H
+#endif //FC_DIFFUSEELEMENT_H
+// vim: noai:ts=2:sw=2

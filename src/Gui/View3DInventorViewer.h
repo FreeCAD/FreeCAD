@@ -67,6 +67,8 @@ class SoClipPlane;
 class SoTimerSensor;
 class SoSensor;
 class SbBox3f;
+class SoFCSwitch;
+class SoFCDisplayMode;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
@@ -77,11 +79,11 @@ class SoFCBackgroundGradient;
 class NavigationStyle;
 class SoFCUnifiedSelection;
 class SoFCSelectionRoot;
-class SoFCSwitch;
 class SoFCPathAnnotation;
-class SoFCDisplayMode;
 class SoSelectionElementAction;
 class SoHighlightElementAction;
+class SoFCSelectionAction;
+class SoFCHighlightAction;
 class SoFCPathAnnotation;
 class SoFCDirectionalLight;
 class SoFCSpotLight;
@@ -440,7 +442,9 @@ public:
 
     virtual PyObject *getPyObject(void);
 
-    SoPath *getGroupOnTopPath() {return pcGroupOnTopPath;}
+    const SoPath *getGroupOnTopPath() {return pcGroupOnTopPath;}
+
+    const SoPath *getRootPath() {return pcRootPath;}
 
     bool getSceneBoundBox(SbBox3f &box) const;
     bool getSceneBoundBox(Base::BoundBox3d &box) const;
@@ -525,6 +529,7 @@ private:
     SoPath            * pcGroupOnTopPath;
     SoPath            * pCurrentHighlightPath;
     SoFCDisplayMode   * pcGroupOnTopDispMode;
+    SoPath            * pcRootPath;
 
     struct OnTopInfo {
         SoFCPathAnnotation *node;
@@ -543,6 +548,8 @@ private:
 
     SoSelectionElementAction *selAction;
     SoHighlightElementAction *preselAction;
+    SoFCSelectionAction *selectionAction;
+    SoFCHighlightAction *highlightAction;
 
     SoSeparator * pcEditingRoot;
     SoTransform * pcEditingTransform;

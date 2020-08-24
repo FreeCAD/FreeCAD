@@ -786,21 +786,21 @@ SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
         static_cast<SoPointDetail*>(detail)->setCoordinateIndex(res.second + nodeset->startIndex.getValue() - 1);
         break;
     default:
-        detail = new Gui::SoFCDetail;
+        detail = new SoFCDetail;
         for(auto &s : subshape.getSubShapes(TopAbs_FACE)) {
             int index = shape.findShape(s);
             if(index>0)
-                static_cast<Gui::SoFCDetail*>(detail)->addIndex(Gui::SoFCDetail::Face, index-1);
+                static_cast<SoFCDetail*>(detail)->addIndex(SoFCDetail::Face, index-1);
         }
         for(auto &s : subshape.getSubShapes(TopAbs_EDGE)) {
             int index = shape.findShape(s);
             if(index>0)
-                static_cast<Gui::SoFCDetail*>(detail)->addIndex(Gui::SoFCDetail::Edge, index-1);
+                static_cast<SoFCDetail*>(detail)->addIndex(SoFCDetail::Edge, index-1);
         }
         for(auto &s : subshape.getSubShapes(TopAbs_VERTEX)) {
             int index = shape.findShape(s);
             if(index>0)
-                static_cast<Gui::SoFCDetail*>(detail)->addIndex(Gui::SoFCDetail::Vertex, index-1);
+                static_cast<SoFCDetail*>(detail)->addIndex(SoFCDetail::Vertex, index-1);
         }
         break;
     }

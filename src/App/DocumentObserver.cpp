@@ -427,8 +427,15 @@ const std::string &SubObjectT::getSubName() const {
     return subname;
 }
 
-std::string SubObjectT::getSubNameNoElement() const {
-    return Data::ComplexGeoData::noElementName(subname.c_str());
+std::string SubObjectT::getSubNameNoElement(bool withObjName) const {
+    if (!withObjName)
+        return Data::ComplexGeoData::noElementName(subname.c_str());
+    std::string res(getObjectName());
+    res += ".";
+    const char * element = Data::ComplexGeoData::findElementName(subname.c_str());
+    if(element)
+        return res.insert(res.size(), subname.c_str(), element - subname.c_str());
+    return res;
 }
 
 const char *SubObjectT::getElementName() const {

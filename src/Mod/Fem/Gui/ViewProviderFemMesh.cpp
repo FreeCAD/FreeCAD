@@ -61,7 +61,7 @@
 #include "ViewProviderFemMesh.h"
 #include "ViewProviderFemMeshPy.h"
 
-#include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Inventor/SoFCSwitch.h>
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemMesh.h>
 #include <App/Document.h>
@@ -341,8 +341,8 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcWireNodeRoot->addChild(pcWireRoot);
     addDisplayMaskMode(pcWireNodeRoot, Private::dm_wire_node);
 
-    if (pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId())) {
-        static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->defaultChild = 
+    if (pcModeSwitch->isOfType(SoFCSwitch::getClassTypeId())) {
+        static_cast<SoFCSwitch*>(pcModeSwitch)->defaultChild = 
             pcModeSwitch->findChild(pcFlatWireRoot);
     }
 }

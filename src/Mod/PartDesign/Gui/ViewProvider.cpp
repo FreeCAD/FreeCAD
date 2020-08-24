@@ -333,8 +333,8 @@ void ViewProvider::updateData(const App::Property* prop)
                 pSuppressedView->setStatus(Gui::SecondaryView,true);
 
                 auto switchNode = getModeSwitch();
-                if(switchNode->isOfType(Gui::SoFCSwitch::getClassTypeId()))
-                    static_cast<Gui::SoFCSwitch*>(switchNode)->overrideSwitch = Gui::SoFCSwitch::OverrideVisible;
+                if(switchNode->isOfType(SoFCSwitch::getClassTypeId()))
+                    static_cast<SoFCSwitch*>(switchNode)->overrideSwitch = SoFCSwitch::OverrideVisible;
 
                 pSuppressedView->attach(feature);
 

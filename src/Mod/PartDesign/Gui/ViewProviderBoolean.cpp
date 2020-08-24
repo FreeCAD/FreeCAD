@@ -58,8 +58,8 @@ ViewProviderBoolean::ViewProviderBoolean()
     ADD_PROPERTY(Display,((long)0));
     Display.setEnums(DisplayEnum);
 
-    if(pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId()))
-        static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->defaultChild = 1;
+    if(pcModeSwitch->isOfType(SoFCSwitch::getClassTypeId()))
+        static_cast<SoFCSwitch*>(pcModeSwitch)->defaultChild = 1;
 }
 
 ViewProviderBoolean::~ViewProviderBoolean()

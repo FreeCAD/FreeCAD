@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
+ *   Copyright (c) 2020 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -20,55 +20,49 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_INVENTOR_BASE_H
-#define GUI_INVENTOR_BASE_H
+#ifndef GUI_SOFCRENDERER_H
+#define GUI_SOFCRENDERER_H
 
-#include <boost/intrusive_ptr.hpp>
+#include "../InventorBase.h"
+#include "SoFCRenderCache.h"
 
+class SoGLRenderAction;
 class SoGroup;
+class SoFCRenderCache;
+class SoPath;
+class SoFCRendererP;
 
-// define this only if we actually decide to run coin in multiple thread
-#ifdef FC_COIN_MULTI_THREAD
-#   define FC_COIN_THREAD_LOCAL thread_local
-#else
-#   define FC_COIN_THREAD_LOCAL
-#endif
-
-namespace Gui {
-
-/** Convenience smart pointer to wrap coin node. 
- *
- * It is basically boost::intrusive plus implicit pointer conversion to save the
- * trouble of typing get() all the time.
- */
-template<class T>
-class CoinPtr: public boost::intrusive_ptr<T> {
+class GuiExport SoFCRenderer {
 public:
-# if (defined(_MSC_VER) && (_MSC_VER <= 1800))
-    // Too bad, VC2013 does not support constructor inheritance
-    typedef boost::intrusive_ptr<T> inherited;
-    CoinPtr() {}
-    CoinPtr(T *p, bool add_ref=true):inherited(p,add_ref){}
-    template<class Y> CoinPtr(CoinPtr<Y> const &r):inherited(r){}
-#else
-    using boost::intrusive_ptr<T>::intrusive_ptr;
-#endif
-    operator T *() const {
-        return this->get();
-    }
+  SoFCRenderer();
+  virtual ~SoFCRenderer();
+
+  void clear();
+
+  void render(SoGLRenderAction * action);
+
+  void setScene(const std::vector<Gui::CoinPtr<SoFCRenderCache> > & caches);
+
+  typedef SoFCRenderCache::VertexCacheMap VertexCacheMap;
+
+  void setHighlight(VertexCacheMap && caches);
+  void clearHighlight();
+
+  enum SelIdBits {
+    SelIdAlt = 0x40000000,
+    SelIdPartial = 0x20000000,
+    SelIdFull = 0x10000000,
+    SelIdSelected = (SelIdPartial|SelIdFull),
+  };
+  void addSelection(int id, const VertexCacheMap & caches);
+  void removeSelection(int id);
+
+  void getBoundingBox(SbBox3f & bbox) const;
+
+private:
+  friend class SoFCRenderCacheP;
+  SoFCRendererP * pimpl;
 };
 
-/** Helper function to deal with bug in SoNode::removeAllChildren()
- *
- * @sa https://bitbucket.org/Coin3D/coin/pull-requests/119/fix-sochildlist-auditing/diff
- */
-void GuiExport coinRemoveAllChildren(SoGroup *node);
-
-}
-
-#ifndef FC_COIN_UNIQUE_ID_DEFINED
-#define FC_COIN_UNIQUE_ID_DEFINED
-typedef uint64_t SbFCUniqueId;
-#endif //FC_COIN_UNIQUE_ID_DEFINED
-
-#endif //GUI_INVENTOR_BASE_H
+#endif //GUI_SOFCRENDERER_H
+// vim: noai:ts=2:sw=2

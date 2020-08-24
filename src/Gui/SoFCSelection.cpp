@@ -263,13 +263,13 @@ void SoFCSelection::doAction(SoAction *action)
         if (selectionMode.getValue() == SEL_ON && action->getTypeId() == SoFCSelectionAction::getClassTypeId()) {
             SoFCSelectionAction *selaction = static_cast<SoFCSelectionAction*>(action);
 
-            if (selaction->SelChange.Type == SelectionChanges::AddSelection ||
-                selaction->SelChange.Type == SelectionChanges::RmvSelection) {
-                if (documentName.getValue() == selaction->SelChange.pDocName &&
-                    objectName.getValue() == selaction->SelChange.pObjectName &&
-                    (subElementName.getValue() == selaction->SelChange.pSubName ||
-                    *(selaction->SelChange.pSubName) == '\0') ) {
-                    if (selaction->SelChange.Type == SelectionChanges::AddSelection) {
+            if (selaction->SelChange->Type == SelectionChanges::AddSelection ||
+                selaction->SelChange->Type == SelectionChanges::RmvSelection) {
+                if (documentName.getValue() == selaction->SelChange->pDocName &&
+                    objectName.getValue() == selaction->SelChange->pObjectName &&
+                    (subElementName.getValue() == selaction->SelChange->pSubName ||
+                    *(selaction->SelChange->pSubName) == '\0') ) {
+                    if (selaction->SelChange->Type == SelectionChanges::AddSelection) {
                         if(selected.getValue() == NOTSELECTED){
                             selected = SELECTED;
                         }
@@ -282,16 +282,16 @@ void SoFCSelection::doAction(SoAction *action)
                     return;
                 }
             }
-            else if (selaction->SelChange.Type == SelectionChanges::ClrSelection) {
-                if (documentName.getValue() == selaction->SelChange.pDocName ||
-                    strcmp(selaction->SelChange.pDocName,"") == 0){
+            else if (selaction->SelChange->Type == SelectionChanges::ClrSelection) {
+                if (documentName.getValue() == selaction->SelChange->pDocName ||
+                    strcmp(selaction->SelChange->pDocName,"") == 0){
                     if(selected.getValue() == SELECTED){
                         selected = NOTSELECTED;
                     }
 
                 }
             }
-            else if (selaction->SelChange.Type == SelectionChanges::SetSelection) {
+            else if (selaction->SelChange->Type == SelectionChanges::SetSelection) {
                 bool sel = Selection().isSelected(
                         documentName.getValue().getString(),
                         objectName.getValue().getString()/*,

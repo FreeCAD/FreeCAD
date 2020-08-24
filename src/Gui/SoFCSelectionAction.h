@@ -24,16 +24,18 @@
 #ifndef _SoFCSelectionAction_h
 #define _SoFCSelectionAction_h
 
-//#include <Inventor/SoAction.h>
+#include <vector>
+#include <memory>
+#include <set>
+#include <map>
+
+//#include <Inventor/SoAction.h> 
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/events/SoSubEvent.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbViewportRegion.h>
-#include <vector>
-#include <memory>
-#include <set>
 
 class SoSFString;
 class SoSFColor;
@@ -52,13 +54,13 @@ class GuiExport SoFCHighlightAction : public SoAction
     SO_ACTION_HEADER(SoFCHighlightAction);
 
 public:
-    SoFCHighlightAction (const SelectionChanges &SelCh);
+    SoFCHighlightAction ();
     ~SoFCHighlightAction();
 
     static void initClass();
     static void finish(void);
 
-    const SelectionChanges &SelChange;
+    const SelectionChanges *SelChange;
 
 protected:
     virtual void beginTraversal(SoNode *node);
@@ -77,13 +79,13 @@ class GuiExport SoFCSelectionAction : public SoAction
     SO_ACTION_HEADER(SoFCSelectionAction);
 
 public:
-    SoFCSelectionAction (const SelectionChanges &SelCh);
+    SoFCSelectionAction ();
     ~SoFCSelectionAction();
 
     static void initClass();
     static void finish(void);
 
-    const SelectionChanges &SelChange;
+    const SelectionChanges *SelChange;
 
 protected:
     virtual void beginTraversal(SoNode *node);

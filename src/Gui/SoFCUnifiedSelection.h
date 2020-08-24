@@ -34,7 +34,6 @@
 #include <Inventor/fields/SoMFName.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodes/SoLightModel.h>
-#include <Inventor/details/SoSubDetail.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/SbViewportRegion.h>
@@ -42,6 +41,9 @@
 #include "InventorBase.h"
 #include "View3DInventorViewer.h"
 #include "SoFCSelectionContext.h"
+#include "Inventor/SoFCDetail.h"
+#include "Inventor/SoFCSwitch.h"
+#include "Inventor/SoFCDisplayModeElement.h"
 #include <array>
 #include <list>
 #include <unordered_set>
@@ -96,7 +98,13 @@ public:
     SoSFBool useNewSelection;
 
     SoSFName overrideMode;
-    SoSFBool showHiddenLines;
+
+    static SbName DisplayModeTessellation;
+    static SbName DisplayModeShaded;
+    static SbName DisplayModeHiddenLine;
+    static SbName DisplayModeFlatLines;
+    static SbName DisplayModeAsIs;
+    static SbName DisplayModeNoShading;
 
     virtual void doAction(SoAction *action);
     //virtual void GLRender(SoGLRenderAction * action);
@@ -106,77 +114,33 @@ public:
     virtual void GLRenderInPath(SoGLRenderAction * action);
     //static  void turnOffCurrentHighlight(SoGLRenderAction * action);
 
+    virtual void callback(SoCallbackAction *action);
+
+    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+
     bool hasHighlight();
 
     static int getPriority(const SoPickedPoint* p);
 
     static bool getShowSelectionBoundingBox();
 
-    friend class View3DInventorViewer;
+    void setDocument(Document *);
+    void setViewer(View3DInventorViewer *);
+    void setSelectAll(bool enable);
 
+    SoPickedPoint* getPickedPoint(SoHandleEventAction*) const;
+
+    std::vector<App::SubObjectT> getPickedSelections(const SbVec2s &pos,
+                                                     const SbViewportRegion &viewport,
+                                                     bool singlePick) const;
 protected:
     virtual ~SoFCUnifiedSelection();
     //virtual void redrawHighlighted(SoAction * act, SbBool flag);
     //virtual SbBool readInstance(SoInput *  in, unsigned short  flags);
 
-private:
-    //static void turnoffcurrent(SoAction * action);
-    //void setOverride(SoGLRenderAction * action);
-    //SbBool isHighlighted(SoAction *action);
-    //SbBool preRender(SoGLRenderAction *act, GLint &oldDepthFunc);
-    SoPickedPoint* getPickedPoint(SoHandleEventAction*) const;
-
-    void setupDisplayMode(SoAction *);
-
-    struct PickedInfo;
-    bool setHighlight(const PickedInfo &);
-    bool setHighlight(SoFullPath *path, const SoDetail *det,
-            ViewProviderDocumentObject *vpd, const char *element, float x, float y, float z);
-
-    void removeHighlight();
-
-    bool setSelection(const std::vector<PickedInfo> &, bool ctrlDown, bool shiftDown, bool altDown);
-
-    std::vector<PickedInfo> getPickedList(const SbVec2s &pos,
-            const SbViewportRegion &vp, bool singlePick) const;
-
-    std::vector<PickedInfo> getPickedList(SoHandleEventAction* action, bool singlePick) const;
-
-    static void postProcessPickedList(std::vector<PickedInfo> &, bool singlePick);
-
-    void getPickedInfo(std::vector<PickedInfo> &, const SoPickedPointList &, bool singlePick, bool copy,
-            std::set<std::pair<ViewProvider*, std::string> > &filter) const;
-
-    void getPickedInfoOnTop(std::vector<PickedInfo> &, bool singlePick,
-            std::set<std::pair<ViewProvider*, std::string> > &filter) const;
-
-    std::vector<App::SubObjectT> getPickedSelections(const SbVec2s &pos,
-            const SbViewportRegion &viewport, bool singlePick) const;
-
-    void onPreselectTimer();
-
-    Gui::Document        *pcDocument;
-    View3DInventorViewer *pcViewer;
-
-    SoFullPath * currentHighlight;
-    SoFullPath * detailPath;
-
-    SbBool setPreSelection;
-
-    bool selectAll;
-
-    // -1 = not handled, 0 = not selected, 1 = selected
-    int32_t preSelection;
-    SoColorPacker colorpacker;
-
-    SbTime preselTime;
-    SoTimerSensor preselTimer;
-    SbVec2s preselPos;
-    SbViewportRegion preselViewport;
-
-    SoFCRayPickAction *pcRayPick;
-
-    mutable int pickBackFace = 0;
+    class Private;
+    friend class Private;
+    Private * pimpl;
 };
 
 
@@ -260,146 +224,6 @@ protected:
     bool det;
 };
 
-class GuiExport SoFCDisplayModeElement: public SoReplacedElement {
-    typedef SoReplacedElement inherited;
-
-    SO_ELEMENT_HEADER(SoFCDisplayModeElement);
-
-public:
-    static void initClass(void);
-protected:
-    virtual ~SoFCDisplayModeElement();
-
-public:
-    virtual void init(SoState *state);
-
-    static void set(SoState * const state, SoNode * const node,
-            const SbName &mode, SbBool hiddenLine);
-
-    static void setColors(SoState * const state, SoNode * const node,
-            const SbColor *faceColor, const SbColor *lineColor, float transp);
-
-    static const SbName &get(SoState * const state);
-    static SbBool showHiddenLines(SoState * const state);
-    static const SbColor *getFaceColor(SoState * const state);
-    static const SbColor *getLineColor(SoState * const state);
-    static float getTransparency(SoState * const state);
-
-    static SoFCDisplayModeElement * getInstance(SoState *state);
-
-    const SbName &get() const;
-    SbBool showHiddenLines() const;
-    const SbColor *getFaceColor() const;
-    const SbColor *getLineColor() const;
-    float getTransparency() const;
-
-    virtual SbBool matches(const SoElement * element) const;
-    virtual SoElement *copyMatchInfo(void) const;
-
-protected:
-    SbName displayMode;
-    SbBool hiddenLines;
-    SbBool hasFaceColor;
-    SbBool hasLineColor;
-    SbColor faceColor;
-    SbColor lineColor;
-    float transp;
-};
-
-class GuiExport SoFCDisplayMode: public SoNode {
-    typedef SoNode inherited;
-
-    SO_NODE_HEADER(SoFCDisplayMode);
-
-public:
-    static void initClass(void);
-protected:
-    virtual ~SoFCDisplayMode();
-
-public:
-    SoSFName displayMode;
-    SoSFBool showHiddenLines;
-    SoSFColor faceColor;
-    SoSFColor lineColor;
-    SoSFFloat transparency;
-
-    SoFCDisplayMode();
-    virtual void doAction(SoAction * action);
-    virtual void GLRender(SoGLRenderAction * action);
-    virtual void callback(SoCallbackAction * action);
-};
-
-/// Switch node that support global visibility override
-class GuiExport SoFCSwitch : public SoSwitch {
-    typedef SoSwitch inherited;
-    SO_NODE_HEADER(Gui::SoFCSwitch);
-
-public:
-    /// Stores the child index used in switching override mode
-    SoSFInt32 defaultChild;
-    /// Stores the child index that will be traversed last as long as the whichChild is not -1
-    SoSFInt32 tailChild;
-    /// Stores the child index that will be traversed first as long as the whichChild is not -1
-    SoSFInt32 headChild;
-    /// If greater than zero, then any children change will trigger parent notify
-    SoSFInt32 childNotify;
-
-    /// Stores children node names, for dynamic override children override
-    SoMFName childNames;
-
-    /// Enable/disable named child switch override
-    SoSFBool allowNamedOverride;
-
-    enum OverrideSwitch {
-        /// No switch override
-        OverrideNone,
-        /// Override this and following SoFCSwitch node to its \c defaultChild if visible
-        OverrideDefault,
-        /** If OverrideDefault is on by some parent SoFCSwitch node, then
-         * override any (grand)child SoFCSwitch nodes even if it is invisible
-         */
-        OverrideVisible,
-        /// Reset override mode after this node
-        OverrideReset,
-    };
-    SoSFEnum overrideSwitch;
-
-    static void initClass(void);
-    static void finish(void);
-
-    SoFCSwitch();
-
-    virtual void doAction(SoAction *action);
-    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-    virtual void search(SoSearchAction * action);
-    virtual void callback(SoCallbackAction *action);
-    virtual void pick(SoPickAction *action);
-    virtual void handleEvent(SoHandleEventAction *action);
-    virtual void notify(SoNotList * nl);
-
-    /// Enables switching override for the give action
-    static void switchOverride(SoAction *action, OverrideSwitch o=OverrideDefault);
-
-    enum TraverseStateFlag {
-        /// Normal traverse
-        TraverseNormal          =0,
-        /// One or more parent SoFCSwitch nodes have been overridden
-        TraverseOverride        =1,
-        /// One or more parent SoFCSwitch are supposed to be invisible, but got overridden
-        TraverseInvisible       =2,
-        /// The immediate parent SoFCSwitch node has been switch to its \c defaultChild
-        TraverseAlternative     =4,
-    };
-    typedef std::bitset<32> TraverseState;
-    static bool testTraverseState(TraverseStateFlag flag);
-
-private:
-    void traverseHead(SoAction *action, int idx);
-    void traverseTail(SoAction *action, int idx);
-    void traverseChild(SoAction *action, int idx);
-};
-
-
 /// Separator node that tracks render caching setting
 class GuiExport SoFCSeparator : public SoSeparator {
     typedef SoSeparator inherited;
@@ -423,32 +247,6 @@ public:
 private:
     bool trackCacheMode;
     static CacheEnabled CacheMode;
-};
-
-class GuiExport SoFCDetail : public SoDetail
-{
-    SO_DETAIL_HEADER(SoFCDetail);
-
-public:
-    SoFCDetail(void);
-    virtual ~SoFCDetail();
-
-    static void initClass(void);
-    virtual SoDetail * copy(void) const;
-
-    enum Type {
-        Vertex,
-        Edge,
-        Face,
-        TypeMax,
-    };
-    const std::set<int> &getIndices(Type type) const;
-    void setIndices(Type type, std::set<int> &&indices);
-    bool addIndex(Type type, int index);
-    bool removeIndex(Type type, int index);
-
-private:
-    std::array<std::set<int>, TypeMax> indexArray;
 };
 
 class GuiExport SoFCSelectionRoot : public SoFCSeparator {

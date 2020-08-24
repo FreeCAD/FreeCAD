@@ -1105,6 +1105,17 @@ SET(Inventor_CPP_SRCS
     Inventor/SoAutoZoomTranslation.cpp
     Inventor/MarkerBitmaps.cpp
     Inventor/SmSwitchboard.cpp
+    Inventor/SoFCVBO.cpp
+    Inventor/SoFCVertexArrayIndexer.cpp
+    Inventor/SoFCDiffuseElement.cpp
+    Inventor/SoFCVertexCache.cpp
+    Inventor/SoFCRenderCache.cpp
+    Inventor/SoFCRenderCacheManager.cpp
+    Inventor/SoFCRenderer.cpp
+    Inventor/SoFCDetail.cpp
+    Inventor/SoFCSwitch.cpp
+    Inventor/SoFCDisplayModeElement.cpp
+    Inventor/SoFCDisplayMode.cpp
     SoFCBackgroundGradient.cpp
     SoFCBoundingBox.cpp
     SoFCColorBar.cpp
@@ -1134,6 +1145,19 @@ SET(Inventor_SRCS
     Inventor/SoAutoZoomTranslation.h
     Inventor/MarkerBitmaps.h
     Inventor/SmSwitchboard.h
+    Inventor/SoFCVBO.h
+    Inventor/SoFCVertexAttribute.h
+    Inventor/SoFCVertexArrayIndexer.h
+    Inventor/SoFCDiffuseElement.h
+    Inventor/COWData.h
+    Inventor/SoFCVertexCache.h
+    Inventor/SoFCRenderCache.h
+    Inventor/SoFCRenderCacheManager.h
+    Inventor/SoFCRenderer.h
+    Inventor/SoFCDetail.h
+    Inventor/SoFCSwitch.h
+    Inventor/SoFCDisplayModeElement.h
+    Inventor/SoFCDisplayMode.h
     SoFCBackgroundGradient.h
     SoFCBoundingBox.h
     SoFCColorBar.h

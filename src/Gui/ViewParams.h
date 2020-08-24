@@ -107,6 +107,7 @@ public:
     FC_VIEW_PARAM(ShowHighlightEdgeOnly,bool,Bool,false, \
        QT_TRANSLATE_NOOP("ViewParams","Show pre-selection highlight edge only"))\
     FC_VIEW_PARAM(PreSelectionDelay,double,Float,0.1, "") \
+    FC_VIEW_PARAM(PreSelectionOnTop,bool,Bool,true, "") \
     FC_VIEW_PARAM(SelectionPickThreshold,int,Int,50, "") \
     FC_VIEW_PARAM(UseNewRayPick,bool,Bool,true, "") \
     FC_VIEW_PARAM(ViewSelectionExtendFactor,double,Float,0.5, "") \

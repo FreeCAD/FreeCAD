@@ -181,7 +181,8 @@ There are 3 options available to achieve this:
 2) 'Distributed', manually turn on cache for all view provider root node.
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
-but slower response to any scene changes.</string>
+but slower response to any scene changes.
+4) 'Experimental', new experimental caching method.</string>
           </property>
           <property name="currentIndex">
            <number>0</number>
@@ -199,6 +200,11 @@ but slower response to any scene changes.</string>
           <item>
            <property name="text">
             <string>Centralized</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Experimental</string>
            </property>
           </item>
          </widget>

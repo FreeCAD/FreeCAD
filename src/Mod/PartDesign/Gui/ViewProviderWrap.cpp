@@ -39,6 +39,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Inventor/SoFCDisplayMode.h>
 #include <Base/Console.h>
 
 typedef boost::iterator_range<const char*> CharRange;
@@ -51,7 +52,7 @@ ViewProviderWrap::ViewProviderWrap()
 {
     this->sPixmap = "PartDesign_Wrap.svg";
     this->pcGroupChildren = new SoGroup;
-    this->dispModeOverride.reset(new Gui::SoFCDisplayMode);
+    this->dispModeOverride.reset(new SoFCDisplayMode);
     this->previewGroup->addChild(this->dispModeOverride);
     this->previewGroup->addChild(this->pcGroupChildren);
 }

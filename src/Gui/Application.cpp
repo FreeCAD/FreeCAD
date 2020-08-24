@@ -423,7 +423,7 @@ Application::Application(bool GUIenabled)
         // so we can try to override the workaround by setting COIN_VBO
         ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
         if (hViewGrp->GetBool("UseVBO",false)) {
-            (void)coin_setenv("COIN_VBO", "0", true);
+            (void)coin_setenv("COIN_VBO", "-1", true);
         }
 
         // Check for the symbols for group separator and decimal point. They must be different otherwise

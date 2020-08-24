@@ -67,6 +67,9 @@
 #include "Inventor/SoAutoZoomTranslation.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Inventor/SmSwitchboard.h"
+#include "Inventor/SoFCVertexCache.h"
+#include "Inventor/SoFCRenderCache.h"
+#include "Inventor/SoFCDisplayMode.h"
 #include "SoFCCSysDragger.h"
 #include "SoFCDirectionalLight.h"
 #include "SoFCSpotLight.h"
@@ -151,6 +154,8 @@ void Gui::SoFCDB::init()
     SoFCDirectionalLight            ::initClass();
     SoFCSpotLight                   ::initClass();
     SoMouseWheelEvent               ::initClass();
+    SoFCRenderCache                 ::initClass();
+    SoFCVertexCache                 ::initClass();
 
     PropertyItem                    ::init();
     PropertySeparatorItem           ::init();
@@ -236,7 +241,9 @@ void Gui::SoFCDB::finish()
     SoFCSeparator                   ::finish();
     SoFCSelectionRoot               ::finish();
     SoFCPathAnnotation              ::finish();
-
+    SoFCRenderCache                 ::cleanup();
+    SoFCVertexCache                 ::cleanup();
+    
     storage->unref();
     storage = nullptr;
 }
@@ -766,3 +773,4 @@ SoGroup* Gui::SoFCDB::getStorage()
   assert(storage); //call init first.
   return storage;
 }
+// vim: noai:ts=2:sw=2

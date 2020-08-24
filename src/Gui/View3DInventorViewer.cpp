@@ -136,6 +136,7 @@
 #include "SoFCUnifiedSelection.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCBoundingBox.h"
+#include "Inventor/SoFCDisplayMode.h"
 #include "SoAxisCrossKit.h"
 #include "SoFCDirectionalLight.h"
 #include "SoFCSpotLight.h"
@@ -523,7 +524,8 @@ void View3DInventorViewer::init()
     static bool _cacheModeInited;
     if(!_cacheModeInited) {
         _cacheModeInited = true;
-        pcViewProviderRoot = 0;
+        pcViewProviderRoot = nullptr;
+        selectionRoot = nullptr;
         setRenderCache(-1);
     }
 
@@ -612,7 +614,7 @@ void View3DInventorViewer::init()
     // must be created. Using an SoSeparator avoids this drawback.
     selectionRoot = new Gui::SoFCUnifiedSelection();
     selectionRoot->applySettings();
-    selectionRoot->pcViewer = this;
+    selectionRoot->setViewer(this);
 #endif
     // set the ViewProvider root node
     pcViewProviderRoot = selectionRoot;
@@ -639,6 +641,9 @@ void View3DInventorViewer::init()
 
     selAction = new SoSelectionElementAction;
     preselAction = new SoHighlightElementAction;
+
+    selectionAction = new SoFCSelectionAction;
+    highlightAction = new SoFCHighlightAction;
 
     auto pcGroupOnTop = new SoSeparator;
     pcGroupOnTop->renderCaching = SoSeparator::OFF;
@@ -692,6 +697,9 @@ void View3DInventorViewer::init()
 
     auto path = sa.getPath();
     assert(path && path->getLength()>1);
+    pcRootPath = path->copy();
+    pcRootPath->ref();
+
     auto sceneNode = path->getNodeFromTail(1);
     assert(sceneNode->isOfType(SoGroup::getClassTypeId()));
 
@@ -812,13 +820,6 @@ void View3DInventorViewer::init()
 
 View3DInventorViewer::~View3DInventorViewer()
 {
-    // FIXME: SoUnfifiedSelection class has a static currentHighlight path that
-    // may have a reference to our selection root. Sometimes, we'll get warning
-    // "SoBase()::unref ref count less than zero", when the currentHighlight is
-    // released after this viewer is destroyed. Can't figure out why. Just
-    // clear preselection before destruction for now.
-    selectionRoot->removeHighlight();
-
     // to prevent following OpenGL error message: "Texture is not valid in the current context. Texture has not been destroyed"
     aboutToDestroyGLContext();
 
@@ -856,6 +857,9 @@ View3DInventorViewer::~View3DInventorViewer()
     if(pCurrentHighlightPath)
         pCurrentHighlightPath->unref();
 
+    this->pcRootPath->unref();
+    this->pcRootPath = 0;
+
     this->pcGroupOnTopPath->unref();
     this->pcGroupOnTopSwitch->unref();
     this->pcGroupOnTopPreSel->unref();
@@ -866,6 +870,11 @@ View3DInventorViewer::~View3DInventorViewer()
     selAction = 0;
     delete preselAction;
     preselAction = 0;
+
+    delete selectionAction;
+    selectionAction = 0;
+    delete highlightAction;
+    highlightAction = 0;
 
     this->pcEditingRoot->unref();
     this->pcEditingTransform->unref();
@@ -948,7 +957,7 @@ void View3DInventorViewer::setDocument(Gui::Document* pcDocument)
 {
     // write the document the viewer belongs to the selection node
     guiDocument = pcDocument;
-    selectionRoot->pcDocument = pcDocument;
+    selectionRoot->setDocument(pcDocument);
 
     if(pcDocument) {
         const auto &sels = Selection().getSelection(pcDocument->getDocument()->getName(),0);
@@ -1113,6 +1122,10 @@ bool View3DInventorViewer::isInGroupOnTop(const std::string &key, bool altOnly) 
 }
 
 void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool alt) {
+    if (ViewParams::getRenderCache() == 3) {
+        clearGroupOnTop();
+        return;
+    }
 
     bool preselect = false;
 
@@ -1126,7 +1139,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
             if(ViewParams::instance()->getMaxOnTopSelections() < (int)sels.size()) {
                 // setSelection() is normally used for selectAll(). Let's not blow up
                 // the whole scene with all those invisible objects
-                selectionRoot->selectAll = true;
+                selectionRoot->setSelectAll(true);
                 return;
             }
             for(auto &sel : sels ) {
@@ -1138,7 +1151,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
     case SelectionChanges::ClrSelection:
         clearGroupOnTop(alt);
         if(!alt)
-            selectionRoot->selectAll = false;
+            selectionRoot->setSelectAll(false);
         return;
     case SelectionChanges::SetPreselect:
     case SelectionChanges::RmvPreselect:
@@ -1478,22 +1491,25 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
         Reason.Type = SelectionChanges::RmvSelection;
 
     switch(Reason.Type) {
-    case SelectionChanges::RmvPreselect: {
-        //Hint: do not create a tmp. instance of SelectionChanges
-        SelectionChanges selChanges(SelectionChanges::RmvPreselect);
-        SoFCHighlightAction cAct(selChanges);
-        cAct.apply(pcViewProviderRoot);
+    case SelectionChanges::RmvPreselect:
+    case SelectionChanges::SetPreselect:
+        if (highlightAction->SelChange)
+            FC_WARN("Recursive highlight notification");
+        else {
+            highlightAction->SelChange = &Reason;
+            highlightAction->apply(pcViewProviderRoot);
+            highlightAction->SelChange = nullptr;
+        }
         break;
+    default:
+        if (selectionAction->SelChange)
+            FC_WARN("Recursive selection notification");
+        else {
+            selectionAction->SelChange = &Reason;
+            selectionAction->apply(pcViewProviderRoot);
+            selectionAction->SelChange = nullptr;
+        }
     }
-    case SelectionChanges::SetPreselect: {
-        SoFCHighlightAction cAct(Reason);
-        cAct.apply(pcViewProviderRoot);
-        break;
-    }
-    default: {
-        SoFCSelectionAction cAct(Reason);
-        cAct.apply(pcViewProviderRoot);
-    }}
 }
 /// @endcond
 
@@ -1834,24 +1850,24 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode)
 void View3DInventorViewer::applyOverrideMode()
 {
     this->overrideBGColor = 0;
-    this->selectionRoot->showHiddenLines = FALSE;
     auto views = getDocument()->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
-    if (overrideMode == "No Shading") {
+
+    const char * mode = this->overrideMode.c_str();
+    if (SoFCUnifiedSelection::DisplayModeNoShading == mode) {
         this->shading = false;
-        this->selectionRoot->overrideMode = "Flat Lines";
+        this->selectionRoot->overrideMode = SoFCUnifiedSelection::DisplayModeNoShading;
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
     }
-    else if (overrideMode == "Tessellation") {
+    else if (SoFCUnifiedSelection::DisplayModeTessellation == mode) {
         this->shading = true;
-        this->selectionRoot->overrideMode = "Shaded";
+        this->selectionRoot->overrideMode = SoFCUnifiedSelection::DisplayModeTessellation;
         this->getSoRenderManager()->setRenderMode(SoRenderManager::HIDDEN_LINE);
     }
-    else if (overrideMode == "Hidden Line") {
+    else if (SoFCUnifiedSelection::DisplayModeHiddenLine == mode) {
         if(ViewParams::getHiddenLineOverrideBackground())
             this->overrideBGColor = ViewParams::getHiddenLineBackground();
         this->shading = ViewParams::getHiddenLineShaded();
-        this->selectionRoot->overrideMode = "Flat Lines";
-        this->selectionRoot->showHiddenLines = TRUE;
+        this->selectionRoot->overrideMode = SoFCUnifiedSelection::DisplayModeHiddenLine;
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
     }
     else if (overrideMode == "Shadow") {
@@ -1859,10 +1875,7 @@ void View3DInventorViewer::applyOverrideMode()
     }
     else {
         this->shading = true;
-        if(overrideMode == "As Is")
-            this->selectionRoot->overrideMode = SbName::empty();
-        else
-            this->selectionRoot->overrideMode = overrideMode.c_str();
+        this->selectionRoot->overrideMode = overrideMode.c_str();
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
     }
 }
@@ -1882,6 +1895,7 @@ void View3DInventorViewer::Private::deactivate()
 void View3DInventorViewer::Private::activate()
 {
     owner->shading = true;
+
     App::Document *doc = owner->guiDocument?owner->guiDocument->getDocument():nullptr;
 
     static const char *_ShadowDisplayMode[] = {"Flat Lines", "Shaded", "As Is", nullptr};
@@ -1902,13 +1916,13 @@ void View3DInventorViewer::Private::activate()
         SbName mode;
         switch (displayMode) {
         case 0:
-            mode = "Flat Lines";
+            mode = SoFCUnifiedSelection::DisplayModeFlatLines;
             break;
         case 1:
-            mode = "Shaded";
+            mode = SoFCUnifiedSelection::DisplayModeShaded;
             break;
         default:
-            mode = "As Is";
+            mode = SoFCUnifiedSelection::DisplayModeAsIs;
             break;
         }
         if (owner->selectionRoot->overrideMode.getValue() != mode)
@@ -2324,13 +2338,16 @@ void View3DInventorViewer::setRenderCache(int mode)
 
     // If coin auto cache is disabled, do not use 'Auto' render cache mode, but
     // fallback to 'Distributed' mode.
-    if (!canAutoCache && mode != 2)
+    if (!canAutoCache && mode != 2 && mode != 3)
         mode = 1;
 
     auto caching = mode == 0 ? SoSeparator::AUTO :
                   (mode == 1 ? SoSeparator::ON :
                                SoSeparator::OFF);
 
+    if (this->selectionRoot)
+        this->selectionRoot->renderCaching = mode == 3 ?
+            SoSeparator::OFF : SoSeparator::ON;
     SoFCSeparator::setCacheMode(caching);
 }
 
@@ -3179,11 +3196,6 @@ void View3DInventorViewer::renderToFramebuffer(QtGLFramebufferObject* fbo)
     gl.setCacheContext(id);
     gl.setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
 
-    if (!this->shading) {
-        SoLightModelElement::set(gl.getState(), selectionRoot, SoLightModelElement::BASE_COLOR);
-        SoOverrideElement::setLightModelOverride(gl.getState(), selectionRoot, true);
-    }
-
     gl.apply(this->backgroundroot);
     // The render action of the render manager has set the depth function to GL_LESS
     // while creating a new render action has it set to GL_LEQUAL. So, in order to get
@@ -3336,12 +3348,6 @@ void View3DInventorViewer::renderScene(void)
 
     navigation->updateAnimation();
 
-    if (!this->shading) {
-        state->push();
-        SoLightModelElement::set(state, selectionRoot, SoLightModelElement::BASE_COLOR);
-        SoOverrideElement::setLightModelOverride(state, selectionRoot, true);
-    }
-
     SoBoxSelectionRenderAction *glbra = nullptr;
     if(glra->isOfType(SoBoxSelectionRenderAction::getClassTypeId())) {
         glbra = static_cast<SoBoxSelectionRenderAction*>(glra);
@@ -3361,10 +3367,6 @@ void View3DInventorViewer::renderScene(void)
                              QObject::tr("Not enough memory available to display the data."));
     }
     glbra->checkRootNode(nullptr);
-
-    if (!this->shading) {
-        state->pop();
-    }
 
 #if defined (ENABLE_GL_DEPTH_RANGE)
     // using 10% of the z-buffer for the foreground node
@@ -5092,8 +5094,8 @@ PyObject *View3DInventorViewer::getPyObject(void)
 void View3DInventorViewer::dropEvent (QDropEvent * e)
 {
     const QMimeData* data = e->mimeData();
-    if (data->hasUrls() && selectionRoot && selectionRoot->pcDocument) {
-        getMainWindow()->loadUrls(selectionRoot->pcDocument->getDocument(), data->urls());
+    if (data->hasUrls() && guiDocument) {
+        getMainWindow()->loadUrls(guiDocument->getDocument(), data->urls());
     }
     else {
         inherited::dropEvent(e);
@@ -5115,7 +5117,7 @@ void View3DInventorViewer::dragEnterEvent (QDragEnterEvent * e)
 void View3DInventorViewer::dragMoveEvent(QDragMoveEvent *e)
 {
     const QMimeData* data = e->mimeData();
-    if (data->hasUrls() && selectionRoot && selectionRoot->pcDocument) {
+    if (data->hasUrls() && guiDocument) {
         e->accept();
     }
     else {

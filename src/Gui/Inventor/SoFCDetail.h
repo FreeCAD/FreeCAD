@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
+ *   Copyright (c) 2020 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -20,55 +20,39 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_INVENTOR_BASE_H
-#define GUI_INVENTOR_BASE_H
+#ifndef FC_SOFCDETAIL_H
+#define FC_SOFCDETAIL_H
 
-#include <boost/intrusive_ptr.hpp>
+#include <set>
+#include <array>
+#include <Inventor/details/SoSubDetail.h>
+#include <Inventor/details/SoDetail.h>
 
-class SoGroup;
+class GuiExport SoFCDetail : public SoDetail
+{
+  SO_DETAIL_HEADER(SoFCDetail);
 
-// define this only if we actually decide to run coin in multiple thread
-#ifdef FC_COIN_MULTI_THREAD
-#   define FC_COIN_THREAD_LOCAL thread_local
-#else
-#   define FC_COIN_THREAD_LOCAL
-#endif
+  public:
+  SoFCDetail(void);
+  virtual ~SoFCDetail();
 
-namespace Gui {
+  static void initClass(void);
+  virtual SoDetail * copy(void) const;
 
-/** Convenience smart pointer to wrap coin node. 
- *
- * It is basically boost::intrusive plus implicit pointer conversion to save the
- * trouble of typing get() all the time.
- */
-template<class T>
-class CoinPtr: public boost::intrusive_ptr<T> {
-public:
-# if (defined(_MSC_VER) && (_MSC_VER <= 1800))
-    // Too bad, VC2013 does not support constructor inheritance
-    typedef boost::intrusive_ptr<T> inherited;
-    CoinPtr() {}
-    CoinPtr(T *p, bool add_ref=true):inherited(p,add_ref){}
-    template<class Y> CoinPtr(CoinPtr<Y> const &r):inherited(r){}
-#else
-    using boost::intrusive_ptr<T>::intrusive_ptr;
-#endif
-    operator T *() const {
-        return this->get();
-    }
+  enum Type {
+    Vertex,
+    Edge,
+    Face,
+    TypeMax,
+  };
+  const std::set<int> &getIndices(Type type) const;
+  void setIndices(Type type, std::set<int> &&indices);
+  bool addIndex(Type type, int index);
+  bool removeIndex(Type type, int index);
+
+  private:
+  std::array<std::set<int>, TypeMax> indexArray;
 };
 
-/** Helper function to deal with bug in SoNode::removeAllChildren()
- *
- * @sa https://bitbucket.org/Coin3D/coin/pull-requests/119/fix-sochildlist-auditing/diff
- */
-void GuiExport coinRemoveAllChildren(SoGroup *node);
-
-}
-
-#ifndef FC_COIN_UNIQUE_ID_DEFINED
-#define FC_COIN_UNIQUE_ID_DEFINED
-typedef uint64_t SbFCUniqueId;
-#endif //FC_COIN_UNIQUE_ID_DEFINED
-
-#endif //GUI_INVENTOR_BASE_H
+#endif // FC_SOFCDETAIL_H
+// vim: noai:ts=2:sw=2

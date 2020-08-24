@@ -597,8 +597,8 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
     if (prop == &DisplayModeBody) {
         auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
 
-        if(pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId())) {
-            static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->allowNamedOverride =
+        if(pcModeSwitch->isOfType(SoFCSwitch::getClassTypeId())) {
+            static_cast<SoFCSwitch*>(pcModeSwitch)->allowNamedOverride =
                 (DisplayModeBody.getValue() != 0);
         }
 

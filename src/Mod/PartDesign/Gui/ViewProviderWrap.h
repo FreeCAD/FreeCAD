@@ -25,9 +25,7 @@
 
 #include "ViewProviderAddSub.h"
 
-namespace Gui {
 class SoFCDisplayMode;
-}
 
 namespace PartDesignGui {
 
@@ -60,7 +58,7 @@ protected:
     virtual void setAddSubColor(const App::Color &color, float t) override;
 
 private:
-    Gui::CoinPtr<Gui::SoFCDisplayMode> dispModeOverride;
+    Gui::CoinPtr<SoFCDisplayMode> dispModeOverride;
     Gui::CoinPtr<SoGroup> pcGroupChildren;
 };
 
