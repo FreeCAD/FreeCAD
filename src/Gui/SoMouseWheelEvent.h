@@ -29,7 +29,6 @@
 //#endif
 
 #include <Inventor/events/SoEvent.h>
-#include <Inventor/events/SoSubEvent.h>
 
 /**
  * @brief The SoMouseWheelEvent class is a temporary replacement for

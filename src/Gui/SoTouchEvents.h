@@ -28,7 +28,6 @@
 #include <Quarter/devices/InputDevice.h>
 #include <Inventor/SbLinear.h>
 #include <Inventor/events/SoEvent.h>
-#include <Inventor/events/SoSubEvent.h>
 
 class QWidget;
 
