@@ -64,6 +64,10 @@ class PointArray(DraftLink):
         """Set up the properties when the object is attached."""
         self.set_properties(obj)
         super(PointArray, self).attach(obj)
+
+    def linkSetup(self, obj):
+        """Set up the object as a link object."""
+        super(PointArray, self).linkSetup(obj)
         obj.configLinkProperty(ElementCount='Count')
 
     def set_properties(self, obj):
