@@ -1,7 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-# *   Copyright (c) 2020 FreeCAD Developers                                 *
+# *   Copyright (c) 2019 Zheng, Lei (realthunder)<realthunder.dev@gmail.com>*
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -57,6 +58,8 @@ class ViewProviderDraftLink:
                 return ":/icons/Draft_CircularLinkArray.svg"
         elif tp == 'PathArray':
             return ":/icons/Draft_PathLinkArray.svg"
+        elif tp == 'PathTwistedArray':
+            return ":/icons/Draft_PathTwistedLinkArray.svg"
 
     def claimChildren(self):
         obj = self.Object

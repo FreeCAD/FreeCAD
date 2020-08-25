@@ -36,6 +36,7 @@ SET (Draft_geoutils
     draftgeoutils/sort_edges.py
     draftgeoutils/faces.py
     draftgeoutils/geometry.py
+    draftgeoutils/geo_arrays.py
     draftgeoutils/wires.py
     draftgeoutils/arcs.py
     draftgeoutils/fillets.py
@@ -154,6 +155,7 @@ SET(Draft_objects
     draftobjects/layer.py
     draftobjects/dimension.py
     draftobjects/patharray.py
+    draftobjects/pathtwistedarray.py
     draftobjects/point.py
     draftobjects/pointarray.py
     draftobjects/polygon.py
@@ -231,6 +233,7 @@ SET(Modifier_tools
     draftguitools/gui_circulararray.py
     draftguitools/gui_orthoarray.py
     draftguitools/gui_patharray.py
+    draftguitools/gui_pathtwistedarray.py
     draftguitools/gui_pointarray.py
     draftguitools/gui_polararray.py
     draftguitools/gui_clone.py

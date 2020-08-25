@@ -312,7 +312,8 @@ from draftmake.make_circulararray import make_circular_array
 from draftobjects.patharray import (PathArray,
                                     _PathArray)
 from draftmake.make_patharray import (make_path_array,
-                                      makePathArray)
+                                      makePathArray,
+                                      make_path_twisted_array)
 
 from draftobjects.pointarray import (PointArray,
                                      _PointArray)
