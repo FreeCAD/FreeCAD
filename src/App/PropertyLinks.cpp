@@ -2440,7 +2440,10 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*> &inLis
 
 // Key on absolute path.
 // Because of possible symbolic links, multiple entry may refer to the same
-// file. We use QFileInfo::canonicalPath to resolve that.
+// file. We used to rely on QFileInfo::canonicalFilePath to resolve it, but
+// has now been changed to simply use the absoluteFilePath(), and rely on user
+// to be aware of possible duplicated file location. The reason being that 
+// some user (especially Linux user) use symlink to organize file tree.
 typedef std::map<QString,DocInfoPtr> DocInfoMap;
 DocInfoMap _DocInfoMap;
 
@@ -2550,16 +2553,20 @@ public:
 
         if (path.startsWith(QLatin1String("https://")))
             return path;
-        else
-            return QFileInfo(path).canonicalFilePath();
+        else {
+            // return QFileInfo(path).canonicalFilePath();
+            return QFileInfo(path).absoluteFilePath();
+        }
     }
 
     QString getFullPath() const {
         QString path = myPos->first;
         if (path.startsWith(QLatin1String("https://")))
             return path;
-        else
-            return QFileInfo(myPos->first).canonicalFilePath();
+        else {
+            // return QFileInfo(myPos->first).canonicalFilePath();
+            return QFileInfo(myPos->first).absoluteFilePath();
+        }
     }
 
     const char *filePath() const {
@@ -2683,7 +2690,8 @@ public:
         if(&doc!=pcDoc) return;
 
         QFileInfo info(myPos->first);
-        QString path(info.canonicalFilePath());
+        // QString path(info.canonicalFilePath());
+        QString path(info.absoluteFilePath());
         const char *filename = doc.getFileName();
         QString docPath(getFullPath(filename));
 
