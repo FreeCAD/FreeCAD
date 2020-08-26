@@ -482,6 +482,8 @@ class CommandPathSanity:
 
         try:
             for TC in obj.ToolController:
+                if not hasattr(TC.Tool, 'BitBody'):
+                    continue  # skip old-style tools
                 tooldata = data.setdefault(str(TC.ToolNumber), {})
                 bitshape = tooldata.setdefault('BitShape', "")
                 if bitshape not in ["", TC.Tool.BitShape]:
