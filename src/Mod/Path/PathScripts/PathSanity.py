@@ -571,7 +571,11 @@ class CommandPathSanity:
             data['xLen'] = FreeCAD.Units.Quantity(bb.XLength, FreeCAD.Units.Length).UserString
             data['yLen'] = FreeCAD.Units.Quantity(bb.YLength, FreeCAD.Units.Length).UserString
             data['zLen'] = FreeCAD.Units.Quantity(bb.ZLength, FreeCAD.Units.Length).UserString
-            data['material'] = "Not Specified"  # fix this
+
+            data['material'] = "Not Specified"
+            if hasattr(obj.Stock, 'Material'):
+                if obj.Stock.Material is not None:
+                    data['material'] = obj.Stock.Material.Material['Name']
 
             if data['material'] == "Not Specified":
                 self.squawk("PathSanity", "Consider Specifying the Stock Material", squawkType="TIP")
@@ -579,6 +583,7 @@ class CommandPathSanity:
             data['stockImage'] = self.__makePicture(obj.Stock, "stockImage")
         except Exception as e:
             data['errors'] = e
+            print(e)
 
         return data
 
