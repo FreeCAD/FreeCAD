@@ -144,6 +144,7 @@ std::vector<std::string> MeshInput::supportedMeshFormats()
     fmt.emplace_back("bms");
     fmt.emplace_back("ply");
     fmt.emplace_back("stl");
+    fmt.emplace_back("ast");
     fmt.emplace_back("obj");
     fmt.emplace_back("off");
     fmt.emplace_back("smf");
