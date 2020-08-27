@@ -247,7 +247,10 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
     //objects are only allowed in a single GeoFeatureGroup
     if(p == &Group && !Group.testStatus(Property::User3)) {
     
-        if(!owner->isRestoring() && !owner->getDocument()->isPerformingTransaction()) {
+        if((!owner->isRestoring()
+                || owner->getDocument()->testStatus(Document::Importing))
+            && !owner->getDocument()->isPerformingTransaction())
+        {
             bool error = false;
             auto children = Group.getValues();
             std::unordered_map<App::DocumentObject*, bool> objMap;
