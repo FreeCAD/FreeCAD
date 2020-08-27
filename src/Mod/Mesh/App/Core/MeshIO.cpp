@@ -2417,9 +2417,12 @@ bool MeshOutput::SaveAsymptote(std::ostream &out) const
     clIter.Begin();
     clEnd.End();
 
+    const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
-    bool saveFaceColor = (_material && _material->binding == MeshIO::PER_FACE &&
-                          _material->diffuseColor.size() == rFacets.size());
+    bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX &&
+                            _material->diffuseColor.size() == rPoints.size());
+    bool saveFaceColor   = (_material && _material->binding == MeshIO::PER_FACE &&
+                            _material->diffuseColor.size() == rFacets.size());
 
     std::size_t index = 0;
     const MeshGeomFacet *pclFacet;
@@ -2435,14 +2438,25 @@ bool MeshOutput::SaveAsymptote(std::ostream &out) const
                        << pclFacet->_aclPoints[i].z << ")--";
         }
 
-        out << "cycle),\n";
+        out << "cycle";
 
-        if (saveFaceColor) {
+        if (saveVertexColor) {
+            const MeshFacet& face = rFacets[index];
+            out << ",\n             new pen[] {";
+            for (int i = 0; i < 3; i++) {
+                const App::Color& c = _material->diffuseColor[face._aulPoints[i]];
+                out << "rgb(" << c.r << ", " << c.g << ", " << c.b << ")";
+                if (i < 3)
+                    out << ", ";
+            }
+            out << "}));\n";
+        }
+        else if (saveFaceColor) {
             const App::Color& c = _material->diffuseColor[index];
-            out << "     rgb(" << c.r << ", " << c.g << ", " << c.b << "));\n";
+            out << "),\n     rgb(" << c.r << ", " << c.g << ", " << c.b << "));\n";
         }
         else {
-            out << "     rgb(0.8, 0.8, 0.8));\n";
+            out << "),\n     rgb(0.8, 0.8, 0.8));\n";
         }
 
         ++clIter;
