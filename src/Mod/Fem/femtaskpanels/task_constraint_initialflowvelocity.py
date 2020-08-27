@@ -64,7 +64,12 @@ class _TaskPanel(object):
             self._part.ViewObject.show()
 
     def reject(self):
-        FreeCADGui.ActiveDocument.resetEdit()
+        doc = FreeCADGui.getDocument(self.obj.Document)
+        if FreeCAD.getActiveTransaction() is not None:
+            FreeCAD.closeActiveTransaction(True)
+        else:
+            doc.resetEdit()
+        doc.Document.recompute()
         self._restoreVisibility()
         return True
 

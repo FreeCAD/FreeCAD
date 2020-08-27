@@ -124,6 +124,14 @@ class _TaskPanel:
         self.mesh_obj.ViewObject.Document.resetEdit()
         self.mesh_obj.Document.recompute()
         self.Timer.stop()
+        """
+        doc = FreeCADGui.getDocument(self.mesh_obj.Document)
+        if FreeCAD.getActiveTransaction() is not None:
+            FreeCAD.closeActiveTransaction(True)
+        else:
+            doc.resetEdit()
+        doc.Document.recompute()
+        """
         return True
 
     def clicked(self, button):
