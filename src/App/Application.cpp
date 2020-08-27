@@ -612,7 +612,7 @@ Document* Application::openDocument(const char * FileName, bool createView) {
     return 0;
 }
 
-Document *Application::getDocumentByPath(const char *path) const {
+Document *Application::getDocumentByPath(const char *path, int checkCanonical) const {
     if(!path || !path[0])
         return nullptr;
     if(DocFileMap.empty()) {
@@ -623,9 +623,28 @@ Document *Application::getDocumentByPath(const char *path) const {
         }
     }
     auto it = DocFileMap.find(FileInfo(path).filePath());
-    if(it == DocFileMap.end())
+    if(it != DocFileMap.end())
+        return it->second;
+
+    if (!checkCanonical)
         return nullptr;
-    return it->second;
+
+    std::string filepath = FileInfo(path).filePath();
+    QString canonicalPath = QFileInfo(QString::fromUtf8(path)).canonicalFilePath();
+    for (auto &v : DocMap) {
+        QFileInfo fi(QString::fromUtf8(v.second->FileName.getValue()));
+        if (canonicalPath == fi.canonicalFilePath()) {
+            if (checkCanonical == 1)
+                return v.second;
+            bool samePath = (canonicalPath == QString::fromUtf8(filepath.c_str()));
+            FC_WARN("Identical physical path '" << canonicalPath.toUtf8().constData() << "'\n"
+                    << (samePath?"":"  for file '") << (samePath?"":filepath.c_str()) << (samePath?"":"'\n")
+                    << "  with existing document '" << v.second->Label.getValue()
+                    << "' in path: '" << v.second->FileName.getValue() << "'");
+            break;
+        }
+    }
+    return nullptr;
 }
 
 std::vector<Document*> Application::openDocuments(const std::vector<std::string> &filenames,
@@ -840,7 +859,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     }
 
     // Before creating a new document we check whether the document is already open
-    auto doc = getDocumentByPath(File.filePath().c_str());
+    auto doc = getDocumentByPath(File.filePath().c_str(), 2);
     if(doc) {
         if(doc->testStatus(App::Document::PartialDoc) 
                 || doc->testStatus(App::Document::PartialRestore)) {
