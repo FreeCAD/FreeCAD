@@ -110,7 +110,7 @@ class DressupPathBoundary(object):
 
             boundary = obj.Stock.Shape
             cmd = obj.Base.Path.Commands[0] 
-            pos = cmd.Placement.Base # bogus m/c postion to create first edge 
+            pos = cmd.Placement.Base # bogus m/c position to create first edge 
             bogusX = True
             bogusY = True
             commands = [cmd]
