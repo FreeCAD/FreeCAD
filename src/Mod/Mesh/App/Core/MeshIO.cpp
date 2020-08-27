@@ -2424,6 +2424,12 @@ bool MeshOutput::SaveAsymptote(std::ostream &out) const
                             _material->diffuseColor.size() == rPoints.size());
     bool saveFaceColor   = (_material && _material->binding == MeshIO::PER_FACE &&
                             _material->diffuseColor.size() == rFacets.size());
+    // global mesh color
+    App::Color mc(0.8f, 0.8f, 0.8f);
+    if (_material && _material->binding == MeshIO::OVERALL &&
+        _material->diffuseColor.size() == 1) {
+        mc = _material->diffuseColor[0];
+    }
 
     std::size_t index = 0;
     const MeshGeomFacet *pclFacet;
@@ -2457,7 +2463,7 @@ bool MeshOutput::SaveAsymptote(std::ostream &out) const
             out << "),\n     rgb(" << c.r << ", " << c.g << ", " << c.b << "));\n";
         }
         else {
-            out << "),\n     rgb(0.8, 0.8, 0.8));\n";
+            out << "),\n     rgb(" << mc.r << ", " << mc.g << ", " << mc.b << "));\n";
         }
 
         ++clIter;
