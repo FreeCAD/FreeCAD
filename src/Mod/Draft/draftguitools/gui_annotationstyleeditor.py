@@ -180,7 +180,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         for obj in self.get_annotations():
             vobj = obj.ViewObject
             try:
-                curent = vobj.AnnotationStyle
+                current = vobj.AnnotationStyle
             except AssertionError:
                 # empty annotation styles list
                 pass
