@@ -57,7 +57,8 @@ namespace MeshIO {
         APLY,
         PY,
         AMF,
-        SMF
+        SMF,
+        ASY
     };
     enum Binding {
         OVERALL,
@@ -186,6 +187,8 @@ public:
     bool SaveBinaryPLY (std::ostream &rstrOut) const;
     /** Saves the mesh object into an ASCII PLY file. */
     bool SaveAsciiPLY (std::ostream &rstrOut) const;
+    /** Saves the mesh object into an asymptote file. */
+    bool SaveAsymptote (std::ostream &rstrOut) const;
     /** Saves the mesh object into an XML file. */
     void SaveXML (Base::Writer &writer) const;
     /** Saves a node to an OpenInventor file. */

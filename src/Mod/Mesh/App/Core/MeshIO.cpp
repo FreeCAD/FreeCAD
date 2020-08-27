@@ -1774,6 +1774,7 @@ std::vector<std::string> MeshOutput::supportedMeshFormats()
     fmt.emplace_back("wrl");
     fmt.emplace_back("wrz");
     fmt.emplace_back("amf");
+    fmt.emplace_back("asy");
     return fmt;
 }
 
@@ -1827,6 +1828,9 @@ MeshIO::Format MeshOutput::GetFormat(const char* FileName)
     }
     else if (file.hasExtension("smf")) {
         return MeshIO::SMF;
+    }
+    else if (file.hasExtension("asy")) {
+        return MeshIO::ASY;
     }
     else {
         return MeshIO::Undefined;
@@ -1946,6 +1950,11 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         if (!SaveNastran(str))
             throw Base::FileException("Export of NASTRAN mesh failed",FileName);
     }
+    else if (fileformat == MeshIO::ASY) {
+        // write file
+        if (!SaveAsymptote(str))
+            throw Base::FileException("Export of ASY mesh failed",FileName);
+    }
     else {
         throw Base::FileException("File format not supported", FileName);
     }
@@ -1990,6 +1999,8 @@ bool MeshOutput::SaveFormat(std::ostream &str, MeshIO::Format fmt) const
         return SaveAsciiPLY(str);
     case MeshIO::PY:
         return SavePython(str);
+    case MeshIO::ASY:
+        return SaveAsymptote(str);
     default:
         throw Base::FileException("Unsupported file format");
     }
@@ -2356,6 +2367,72 @@ bool MeshOutput::SaveSMF (std::ostream &out) const
                     << it->_aulPoints[1]+1 << " "
                     << it->_aulPoints[2]+1 << '\n';
         seq.next(true); // allow to cancel
+    }
+
+    return true;
+}
+
+/** Saves an Asymptote file. */
+bool MeshOutput::SaveAsymptote(std::ostream &out) const
+{
+    out << "/*\n"
+           " * Created by FreeCAD <http://www.freecadweb.org>\n"
+           " */\n\n";
+
+    out << "import three;\n\n";
+
+    out << "size(500);\n\n";
+
+    Base::BoundBox3f bbox = _rclMesh.GetBoundBox();
+    Base::Vector3f camera(bbox.GetCenter());
+    camera.x += bbox.LengthX();
+    Base::Vector3f target(bbox.GetCenter());
+    Base::Vector3f upvec(0.0f, 0.0f, 1.0f);
+
+    out << "// CA:Camera, OB:Camera\n"
+        << "currentprojection = perspective(camera = (" << camera.x << ", "
+                                                        << camera.y << ", "
+                                                        << camera.z << "),\n"
+        << "                                target = (" << target.x << ", "
+                                                        << target.y << ", "
+                                                        << target.z << "),\n"
+           "                                autoadjust = false,\n"
+           "                                showtarget = false,\n"
+           "                                up = (" << upvec.x << ", "
+                                                    << upvec.y << ", "
+                                                    << upvec.z << "));\n\n";
+
+    out << "// LA:Spot, OB:Lamp\n"
+        << "// WO:World\n"
+        << "currentlight = light(diffuse = rgb(1, 1, 1),\n"
+           "                     specular = rgb(1, 1, 1),\n"
+           "                     background = rgb(0.078281, 0.16041, 0.25),\n"
+           "                     0.56639, 0.21839, 0.79467);\n\n";
+
+    out << "// ME:Mesh, OB:Mesh\n";
+
+    MeshFacetIterator clIter(_rclMesh), clEnd(_rclMesh);
+    clIter.Transform(this->_transform);
+    clIter.Begin();
+    clEnd.End();
+
+    const MeshGeomFacet *pclFacet;
+    while (clIter < clEnd) {
+        pclFacet = &(*clIter);
+
+        out << "draw(surface(";
+
+        // vertices
+        for (int i = 0; i < 3; i++) {
+            out << '(' << pclFacet->_aclPoints[i].x << ", "
+                       << pclFacet->_aclPoints[i].y << ", "
+                       << pclFacet->_aclPoints[i].z << ")--";
+        }
+
+        out << "cycle),\n";
+        out << "     rgb(0.8, 0.8, 0.8));\n";
+
+        ++clIter;
     }
 
     return true;

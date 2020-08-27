@@ -521,6 +521,7 @@ void CmdMeshExport::activated(int)
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrz)").arg(QObject::tr("Compressed VRML 2.0")), "WRZ");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.nas *.bdf)").arg(QObject::tr("Nastran")), "NAS");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.py)").arg(QObject::tr("Python module def")), "PY");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.asy)").arg(QObject::tr("Asymptote Format")), "ASY");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files")), ""); // Undefined
     QStringList filter;
     for (QList<QPair<QString, QByteArray> >::iterator it = ext.begin(); it != ext.end(); ++it)

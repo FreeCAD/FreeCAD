@@ -177,6 +177,7 @@ PyObject*  MeshPy::read(PyObject *args, PyObject *kwds)
     ext["PLY" ] = MeshCore::MeshIO::PLY;
     ext["APLY"] = MeshCore::MeshIO::APLY;
     ext["PY"  ] = MeshCore::MeshIO::PY;
+    ext["ASY" ] = MeshCore::MeshIO::ASY;
 
     PyObject* input;
     char* Ext;
@@ -228,6 +229,7 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
     ext["PLY" ] = MeshCore::MeshIO::PLY;
     ext["APLY"] = MeshCore::MeshIO::APLY;
     ext["PY"  ] = MeshCore::MeshIO::PY;
+    ext["ASY" ] = MeshCore::MeshIO::ASY;
 
     static char* keywords_path[] = {"Filename","Format","Name","Material",NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "et|ssO", keywords_path, "utf-8",
