@@ -2597,9 +2597,9 @@ bool MeshOutput::SaveBinaryPLY (std::ostream &out) const
         }
         if (saveVertexColor) {
             const App::Color& c = _material->diffuseColor[i];
-            int r = (int)(255.0f * c.r);
-            int g = (int)(255.0f * c.g);
-            int b = (int)(255.0f * c.b);
+            uint8_t r = uint8_t(255.0f * c.r);
+            uint8_t g = uint8_t(255.0f * c.g);
+            uint8_t b = uint8_t(255.0f * c.b);
             os << r << g << b;
         }
     }
