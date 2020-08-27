@@ -2384,30 +2384,31 @@ bool MeshOutput::SaveAsymptote(std::ostream &out) const
     out << "size(500);\n\n";
 
     Base::BoundBox3f bbox = _rclMesh.GetBoundBox();
-    Base::Vector3f camera(bbox.GetCenter());
-    camera.x += bbox.LengthX();
-    Base::Vector3f target(bbox.GetCenter());
+    Base::Vector3f center = bbox.GetCenter();
+    this->_transform.multVec(center, center);
+    Base::Vector3f camera(center);
+    camera.x += std::max<float>(std::max<float>(bbox.LengthX(), bbox.LengthY()), bbox.LengthZ());
+    Base::Vector3f target(center);
     Base::Vector3f upvec(0.0f, 0.0f, 1.0f);
 
     out << "// CA:Camera, OB:Camera\n"
-        << "currentprojection = perspective(camera = (" << camera.x << ", "
-                                                        << camera.y << ", "
-                                                        << camera.z << "),\n"
-        << "                                target = (" << target.x << ", "
-                                                        << target.y << ", "
-                                                        << target.z << "),\n"
-           "                                autoadjust = false,\n"
-           "                                showtarget = false,\n"
-           "                                up = (" << upvec.x << ", "
-                                                    << upvec.y << ", "
-                                                    << upvec.z << "));\n\n";
+        << "currentprojection = orthographic(camera = (" << camera.x << ", "
+                                                         << camera.y << ", "
+                                                         << camera.z << "),\n"
+        << "                                 target = (" << target.x << ", "
+                                                         << target.y << ", "
+                                                         << target.z << "),\n"
+           "                                 showtarget = false,\n"
+           "                                 up = (" << upvec.x << ", "
+                                                     << upvec.y << ", "
+                                                     << upvec.z << "));\n\n";
 
-    out << "// LA:Spot, OB:Lamp\n"
-        << "// WO:World\n"
-        << "currentlight = light(diffuse = rgb(1, 1, 1),\n"
-           "                     specular = rgb(1, 1, 1),\n"
-           "                     background = rgb(0.078281, 0.16041, 0.25),\n"
-           "                     0.56639, 0.21839, 0.79467);\n\n";
+    //out << "// LA:Spot, OB:Lamp\n"
+    //    << "// WO:World\n"
+    //    << "currentlight = light(diffuse = rgb(1, 1, 1),\n"
+    //       "                     specular = rgb(1, 1, 1),\n"
+    //       "                     background = rgb(0.078281, 0.16041, 0.25),\n"
+    //       "                     0.56639, 0.21839, 0.79467);\n\n";
 
     out << "// ME:Mesh, OB:Mesh\n";
 
@@ -2416,6 +2417,11 @@ bool MeshOutput::SaveAsymptote(std::ostream &out) const
     clIter.Begin();
     clEnd.End();
 
+    const MeshFacetArray& rFacets = _rclMesh.GetFacets();
+    bool saveFaceColor = (_material && _material->binding == MeshIO::PER_FACE &&
+                          _material->diffuseColor.size() == rFacets.size());
+
+    std::size_t index = 0;
     const MeshGeomFacet *pclFacet;
     while (clIter < clEnd) {
         pclFacet = &(*clIter);
@@ -2430,9 +2436,17 @@ bool MeshOutput::SaveAsymptote(std::ostream &out) const
         }
 
         out << "cycle),\n";
-        out << "     rgb(0.8, 0.8, 0.8));\n";
+
+        if (saveFaceColor) {
+            const App::Color& c = _material->diffuseColor[index];
+            out << "     rgb(" << c.r << ", " << c.g << ", " << c.b << "));\n";
+        }
+        else {
+            out << "     rgb(0.8, 0.8, 0.8));\n";
+        }
 
         ++clIter;
+        ++index;
     }
 
     return true;
@@ -2550,7 +2564,7 @@ bool MeshOutput::SaveBinaryPLY (std::ostream &out) const
 
     Base::OutputStream os(out);
     os.setByteOrder(Base::Stream::LittleEndian);
-    Base::Vector3f pt;
+
     for (std::size_t i = 0; i < v_count; i++) {
         const MeshPoint& p = rPoints[i];
         if (this->apply_transform) {
@@ -2608,8 +2622,6 @@ bool MeshOutput::SaveAsciiPLY (std::ostream &out) const
     out << "element face " << f_count << '\n'
         << "property list uchar int vertex_index\n"
         << "end_header\n";
-
-    Base::Vector3f pt;
 
     out.precision(6);
     out.setf(std::ios::fixed | std::ios::showpoint);
