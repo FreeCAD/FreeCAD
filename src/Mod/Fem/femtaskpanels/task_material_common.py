@@ -222,20 +222,26 @@ class _TaskPanel:
                 )
                 FreeCAD.Console.PrintError(error_message)
                 QtGui.QMessageBox.critical(None, "Material data not changed", error_message)
-        self.recompute_and_set_back_all()
+        self.set_back_selection()
+        doc = FreeCADGui.getDocument(self.obj.Document)
+        doc.resetEdit()
+        doc.Document.recompute()
         return True
 
     def reject(self):
-        self.recompute_and_set_back_all()
+        self.set_back_selection()
+        doc = FreeCADGui.getDocument(self.obj.Document)
+        if FreeCAD.getActiveTransaction() is not None:
+            FreeCAD.closeActiveTransaction(True)
+        else:
+            doc.resetEdit()
+        doc.Document.recompute()
         return True
 
-    def recompute_and_set_back_all(self):
-        doc = FreeCADGui.getDocument(self.obj.Document)
-        doc.Document.recompute()
+    def set_back_selection(self):
         self.selectionWidget.setback_listobj_visibility()
         if self.selectionWidget.sel_server:
             FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
-        doc.resetEdit()
 
     def do_not_set_thermal_zeros(self):
         """ thermal material parameter are set to 0.0 if not available
