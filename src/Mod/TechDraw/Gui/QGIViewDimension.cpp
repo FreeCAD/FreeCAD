@@ -236,7 +236,7 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
 
     QString uText = m_unitText->toPlainText();
     if ( (uText.size() > 0) &&
-         (uText.at(0) != QChar(QChar::Space)) ) {
+         (uText.at(0) != QChar(QChar::SpecialCharacter::Space)) ) {
         QString vText = m_dimText->toPlainText();
         vText = vText + uText;
         m_dimText->setPlainText(vText);
