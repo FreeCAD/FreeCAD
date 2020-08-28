@@ -531,9 +531,9 @@ coordinate system.</UserDocu>
 		<Methode Name="curveOnSurface" Const="true">
 			<Documentation>
 				<UserDocu>curveOnSurface(idx) -> None or tuple
-Returns the 2D curve, the surface and the parameter range of index idx.
+Returns the 2D curve, the surface, the placement and the parameter range of index idx.
 Returns None if index idx is out of range.
-Returns a 4-items tuple of a curve, a surface, first parameter and last parameter.
+Returns a 5-items tuple of a curve, a surface, a placement, first parameter and last parameter.
 				</UserDocu>
 			</Documentation>
 		</Methode>

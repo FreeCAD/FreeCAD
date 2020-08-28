@@ -1071,12 +1071,21 @@ PyObject* TopoShapeEdgePy::curveOnSurface(PyObject *args)
         Part::GeomSurface* geosurf = makeFromSurface(surf);
         if (!geosurf)
             Py_Return;
-
-        Py::Tuple tuple(4);
+        
+        gp_Trsf trsf = loc.Transformation();
+        gp_XYZ pos = trsf.TranslationPart();
+        gp_XYZ axis;
+        Standard_Real angle;
+        trsf.GetRotation(axis, angle);
+        Base::Rotation rot(Base::Vector3d(axis.X(), axis.Y(), axis.Z()), angle);
+        Base::Placement placement(Base::Vector3d(pos.X(), pos.Y(), pos.Z()), rot);
+        
+        Py::Tuple tuple(5);
         tuple.setItem(0, Py::asObject(geo2d->getPyObject()));
         tuple.setItem(1, Py::asObject(geosurf->getPyObject()));
-        tuple.setItem(2, Py::Float(first));
-        tuple.setItem(3, Py::Float(last));
+        tuple.setItem(2, Py::Object(new Base::PlacementPy(placement), true));
+        tuple.setItem(3, Py::Float(first));
+        tuple.setItem(4, Py::Float(last));
         return Py::new_reference_to(tuple);
     }
     catch (Standard_Failure& e) {
