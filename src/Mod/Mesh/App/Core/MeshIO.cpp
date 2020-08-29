@@ -1755,6 +1755,15 @@ void MeshOutput::SetSTLHeaderData(const std::string& header)
     }
 }
 
+std::string MeshOutput::asyWidth = "500";
+std::string MeshOutput::asyHeight = "500";
+
+void MeshOutput::SetAsymptoteSize(const std::string& w, const std::string& h)
+{
+    asyWidth = w;
+    asyHeight = h;
+}
+
 void MeshOutput::Transform(const Base::Matrix4D& mat)
 {
     _transform = mat;
@@ -2404,7 +2413,12 @@ bool MeshOutput::SaveAsymptote(std::ostream &out) const
 
     out << "import three;\n\n";
 
-    out << "size(500);\n\n";
+    if (!asyWidth.empty()) {
+        out << "size(" << asyWidth;
+        if (!asyHeight.empty())
+            out << ", " << asyHeight;
+        out << ");\n\n";
+    }
 
     Base::BoundBox3f bbox = _rclMesh.GetBoundBox();
     Base::Vector3f center = bbox.GetCenter();
