@@ -1772,7 +1772,7 @@ std::vector<std::string> MeshOutput::supportedMeshFormats()
     fmt.emplace_back("off");
     fmt.emplace_back("smf");
     fmt.emplace_back("x3d");
-    fmt.emplace_back("html");
+    fmt.emplace_back("xhtml");
     fmt.emplace_back("wrl");
     fmt.emplace_back("wrz");
     fmt.emplace_back("amf");
@@ -1813,8 +1813,8 @@ MeshIO::Format MeshOutput::GetFormat(const char* FileName)
     else if (file.hasExtension("x3d")) {
         return MeshIO::X3D;
     }
-    else if (file.hasExtension("html")) {
-        return MeshIO::HTML;
+    else if (file.hasExtension("xhtml")) {
+        return MeshIO::X3DOM;
     }
     else if (file.hasExtension("py")) {
         return MeshIO::PY;
@@ -1928,10 +1928,10 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         if (!SaveX3D(str))
             throw Base::FileException("Export of X3D failed",FileName);
     }
-    else if (fileformat == MeshIO::HTML) {
+    else if (fileformat == MeshIO::X3DOM) {
         // write file
-        if (!SaveHTML(str))
-            throw Base::FileException("Export of HTML failed",FileName);
+        if (!SaveX3DOM(str))
+            throw Base::FileException("Export of X3DOM failed",FileName);
     }
     else if (fileformat == MeshIO::PY) {
         // write file
@@ -1996,8 +1996,8 @@ bool MeshOutput::SaveFormat(std::ostream &str, MeshIO::Format fmt) const
         return SaveInventor(str);
     case MeshIO::X3D:
         return SaveX3D(str);
-    case MeshIO::HTML:
-        return SaveHTML(str);
+    case MeshIO::X3DOM:
+        return SaveX3DOM(str);
     case MeshIO::VRML:
         return SaveVRML(str);
     case MeshIO::WRZ:
@@ -3021,11 +3021,11 @@ bool MeshOutput::SaveX3D (std::ostream &out) const
     // XML header info
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 
-    return SaveX3DContent(out);
+    return SaveX3DContent(out, false);
 }
 
 /** Writes an X3D file. */
-bool MeshOutput::SaveX3DContent (std::ostream &out) const
+bool MeshOutput::SaveX3DContent (std::ostream &out, bool exportViewpoints) const
 {
     if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
         return false;
@@ -3035,6 +3035,16 @@ bool MeshOutput::SaveX3DContent (std::ostream &out) const
     Base::BoundBox3f bbox = _rclMesh.GetBoundBox();
     if (apply_transform)
         bbox = bbox.Transformed(_transform);
+
+    App::Color mat(0.65f, 0.65f, 0.65f);
+    if (_material && _material->binding == MeshIO::Binding::OVERALL) {
+        if (!_material->diffuseColor.empty())
+            mat = _material->diffuseColor.front();
+    }
+    bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX &&
+                            _material->diffuseColor.size() == pts.size());
+    bool saveFaceColor   = (_material && _material->binding == MeshIO::PER_FACE &&
+                            _material->diffuseColor.size() == fts.size());
 
     Base::SequencerLauncher seq("Saving...", _rclMesh.CountFacets() + 1);
     out.precision(6);
@@ -3051,33 +3061,35 @@ bool MeshOutput::SaveX3DContent (std::ostream &out) const
         << "  </head>\n";
 
     // Beginning
-    out << "  <Scene DEF='scene'>\n";
+    out << "  <Scene>\n";
 
-    auto viewpoint = [&out](const char* text, const Base::Vector3f& cnt,
-                            const Base::Vector3f& pos, const Base::Vector3f& axis, float angle) {
-        out << "    <Viewpoint id=\"" << text
-            << "\" centerOfRotation=\"" << cnt.x << " " << cnt.y << " " << cnt.z
-            << "\" position=\"" << pos.x << " " << pos.y << " " << pos.z
-            << "\" orientation=\"" << axis.x << " " << axis.y << " " << axis.z << " " << angle
-            << "\" description=\"camera\" fieldOfView=\"0.9\">"
-            << "</Viewpoint>\n";
-    };
+    if (exportViewpoints) {
+        auto viewpoint = [&out](const char* text, const Base::Vector3f& cnt,
+                                const Base::Vector3f& pos, const Base::Vector3f& axis, float angle) {
+            out << "    <Viewpoint id=\"" << text
+                << "\" centerOfRotation=\"" << cnt.x << " " << cnt.y << " " << cnt.z
+                << "\" position=\"" << pos.x << " " << pos.y << " " << pos.z
+                << "\" orientation=\"" << axis.x << " " << axis.y << " " << axis.z << " " << angle
+                << "\" description=\"camera\" fieldOfView=\"0.9\">"
+                << "</Viewpoint>\n";
+        };
 
-    Base::Vector3f cnt = bbox.GetCenter();
-    float minx = bbox.MinX;
-    float maxx = bbox.MaxX;
-    float miny = bbox.MinY;
-    float maxy = bbox.MaxY;
-    float minz = bbox.MinZ;
-    float maxz = bbox.MaxZ;
-    float len = bbox.CalcDiagonalLength();
+        Base::Vector3f cnt = bbox.GetCenter();
+        float minx = bbox.MinX;
+        float maxx = bbox.MaxX;
+        float miny = bbox.MinY;
+        float maxy = bbox.MaxY;
+        float minz = bbox.MinZ;
+        float maxz = bbox.MaxZ;
+        float len = bbox.CalcDiagonalLength();
 
-    viewpoint("Front", cnt, Base::Vector3f(cnt.x, miny-len, cnt.z), Base::Vector3f(1.0f, 0.0f, 0.0f), 1.5707964f);
-    viewpoint("Back", cnt, Base::Vector3f(cnt.x, maxy+len, cnt.z), Base::Vector3f(0.0f, 0.707106f, 0.707106f), 3.141592f);
-    viewpoint("Right", cnt, Base::Vector3f(maxx+len, cnt.y, cnt.z), Base::Vector3f(0.577350f, 0.577350f, 0.577350f), 2.094395f);
-    viewpoint("Left", cnt, Base::Vector3f(minx-len, cnt.y, cnt.z), Base::Vector3f(-0.577350f, 0.577350f, 0.577350f), 4.188790f);
-    viewpoint("Top", cnt, Base::Vector3f(cnt.x, cnt.y, maxz+len), Base::Vector3f(0.0f, 0.0f, 1.0f), 0.0f);
-    viewpoint("Bottom", cnt, Base::Vector3f(cnt.x, cnt.y, minz-len), Base::Vector3f(1.0f, 0.0f, 0.0f), 3.141592f);
+        viewpoint("Front", cnt, Base::Vector3f(cnt.x, miny-len, cnt.z), Base::Vector3f(1.0f, 0.0f, 0.0f), 1.5707964f);
+        viewpoint("Back", cnt, Base::Vector3f(cnt.x, maxy+len, cnt.z), Base::Vector3f(0.0f, 0.707106f, 0.707106f), 3.141592f);
+        viewpoint("Right", cnt, Base::Vector3f(maxx+len, cnt.y, cnt.z), Base::Vector3f(0.577350f, 0.577350f, 0.577350f), 2.094395f);
+        viewpoint("Left", cnt, Base::Vector3f(minx-len, cnt.y, cnt.z), Base::Vector3f(-0.577350f, 0.577350f, 0.577350f), 4.188790f);
+        viewpoint("Top", cnt, Base::Vector3f(cnt.x, cnt.y, maxz+len), Base::Vector3f(0.0f, 0.0f, 1.0f), 0.0f);
+        viewpoint("Bottom", cnt, Base::Vector3f(cnt.x, cnt.y, minz-len), Base::Vector3f(1.0f, 0.0f, 0.0f), 3.141592f);
+    }
 
     if (apply_transform) {
         Base::Placement p(_transform);
@@ -3100,10 +3112,19 @@ bool MeshOutput::SaveX3DContent (std::ostream &out) const
         out << "    <Transform>\n";
     }
     out << "      <Shape>\n";
-    out << "        <Appearance><Material DEF='Shape_Mat' diffuseColor='0.65 0.65 0.65'"
-           " shininess='0.9' specularColor='1 1 1'></Material></Appearance>\n";
+    out << "        <Appearance>\n"
+           "          <Material diffuseColor='" << mat.r << " " << mat.g << " " << mat.b << "' shininess='0.9' specularColor='1 1 1'></Material>\n"
+           "        </Appearance>\n";
 
-    out << "        <IndexedFaceSet solid=\"false\" coordIndex=\"";
+    out << "        <IndexedFaceSet solid=\"false\" ";
+    if (saveVertexColor) {
+        out << "colorPerVertex=\"true\" ";
+    }
+    else if (saveFaceColor) {
+        out << "colorPerVertex=\"false\" ";
+    }
+
+    out << "coordIndex=\"";
     for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
         out << it->_aulPoints[0] << " " << it->_aulPoints[1] << " " << it->_aulPoints[2] << " -1 ";
     }
@@ -3114,6 +3135,15 @@ bool MeshOutput::SaveX3DContent (std::ostream &out) const
         out << it->x << " " << it->y << " " << it->z << ", ";
     }
     out << "\"/>\n";
+
+    // write colors per vertex or face
+    if (saveVertexColor || saveFaceColor) {
+        out << "          <Color color=\"";
+        for (const auto& c : _material->diffuseColor) {
+            out << c.r << " " << c.g << " " << c.b << ", ";
+        }
+        out << "\"/>\n";
+    }
 
     // End
     out << "        </IndexedFaceSet>\n"
@@ -3127,13 +3157,18 @@ bool MeshOutput::SaveX3DContent (std::ostream &out) const
     return true;
 }
 
-/** Writes an HTML file. */
-bool MeshOutput::SaveHTML (std::ostream &out) const
+/** Writes an X3DOM file. */
+bool MeshOutput::SaveX3DOM (std::ostream &out) const
 {
     if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
         return false;
 
-    out << "<html>\n"
+    // See:
+    // https://stackoverflow.com/questions/31976056/unable-to-color-faces-using-indexedfaceset-in-x3dom
+    //
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
+    out << "<html xmlns='http://www.w3.org/1999/xhtml'>\n"
         << "  <head>\n"
         << "    <script type='text/javascript' src='http://www.x3dom.org/download/x3dom.js'> </script>\n"
         << "    <link rel='stylesheet' type='text/css' href='http://www.x3dom.org/download/x3dom.css'></link>\n"
@@ -3149,7 +3184,7 @@ bool MeshOutput::SaveHTML (std::ostream &out) const
     <button onclick="zoom(0.15);">Zoom out</button>
 #endif
 
-    SaveX3DContent(out);
+    SaveX3DContent(out, true);
 
     auto onclick = [&out](const char* text) {
         out << "  <button onclick=\"document.getElementById('" << text << "').setAttribute('set_bind','true');\">" << text << "</button>\n";

@@ -50,7 +50,7 @@ namespace MeshIO {
         MGL,
         IV,
         X3D,
-        HTML,
+        X3DOM,
         VRML,
         WRZ,
         NAS,
@@ -202,8 +202,8 @@ public:
     bool SaveInventor (std::ostream &rstrOut) const;
     /** Writes an X3D file. */
     bool SaveX3D (std::ostream &rstrOut) const;
-    /** Writes an HTML file. */
-    bool SaveHTML (std::ostream &rstrOut) const;
+    /** Writes an X3dom file. */
+    bool SaveX3DOM (std::ostream &rstrOut) const;
     /** Writes a VRML file. */
     bool SaveVRML (std::ostream &rstrOut) const;
     /** Writes a Nastran file. */
@@ -217,7 +217,7 @@ public:
 
 protected:
     /** Writes an X3D file. */
-    bool SaveX3DContent (std::ostream &rstrOut) const;
+    bool SaveX3DContent (std::ostream &rstrOut, bool exportViewpoints) const;
 
 protected:
     const MeshKernel &_rclMesh;   /**< reference to mesh data structure */

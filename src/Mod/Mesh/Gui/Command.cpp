@@ -516,7 +516,7 @@ void CmdMeshExport::activated(int)
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format")), "OFF");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii")), "IV");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.x3d)").arg(QObject::tr("X3D Extensible 3D")), "X3D");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.html)").arg(QObject::tr("WebGL/X3D")), "HTML");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.xhtml)").arg(QObject::tr("WebGL/X3D")), "X3DOM");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon")), "PLY");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrl *.vrml)").arg(QObject::tr("VRML V2.0")), "VRML");
     ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrz)").arg(QObject::tr("Compressed VRML 2.0")), "WRZ");

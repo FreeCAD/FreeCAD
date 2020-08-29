@@ -210,26 +210,26 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
 
     MeshCore::MeshIO::Format format = MeshCore::MeshIO::Undefined;
     std::map<std::string, MeshCore::MeshIO::Format> ext;
-    ext["BMS" ] = MeshCore::MeshIO::BMS;
-    ext["STL" ] = MeshCore::MeshIO::BSTL;
-    ext["AST" ] = MeshCore::MeshIO::ASTL;
-    ext["OBJ" ] = MeshCore::MeshIO::OBJ;
-    ext["SMF" ] = MeshCore::MeshIO::SMF;
-    ext["OFF" ] = MeshCore::MeshIO::OFF;
-    ext["IDTF"] = MeshCore::MeshIO::IDTF;
-    ext["MGL" ] = MeshCore::MeshIO::MGL;
-    ext["IV"  ] = MeshCore::MeshIO::IV;
-    ext["X3D" ] = MeshCore::MeshIO::X3D;
-    ext["HTML"] = MeshCore::MeshIO::HTML;
-    ext["VRML"] = MeshCore::MeshIO::VRML;
-    ext["WRL" ] = MeshCore::MeshIO::VRML;
-    ext["WRZ" ] = MeshCore::MeshIO::WRZ;
-    ext["NAS" ] = MeshCore::MeshIO::NAS;
-    ext["BDF" ] = MeshCore::MeshIO::NAS;
-    ext["PLY" ] = MeshCore::MeshIO::PLY;
-    ext["APLY"] = MeshCore::MeshIO::APLY;
-    ext["PY"  ] = MeshCore::MeshIO::PY;
-    ext["ASY" ] = MeshCore::MeshIO::ASY;
+    ext["BMS"  ] = MeshCore::MeshIO::BMS;
+    ext["STL"  ] = MeshCore::MeshIO::BSTL;
+    ext["AST"  ] = MeshCore::MeshIO::ASTL;
+    ext["OBJ"  ] = MeshCore::MeshIO::OBJ;
+    ext["SMF"  ] = MeshCore::MeshIO::SMF;
+    ext["OFF"  ] = MeshCore::MeshIO::OFF;
+    ext["IDTF" ] = MeshCore::MeshIO::IDTF;
+    ext["MGL"  ] = MeshCore::MeshIO::MGL;
+    ext["IV"   ] = MeshCore::MeshIO::IV;
+    ext["X3D"  ] = MeshCore::MeshIO::X3D;
+    ext["X3DOM"] = MeshCore::MeshIO::X3DOM;
+    ext["VRML" ] = MeshCore::MeshIO::VRML;
+    ext["WRL"  ] = MeshCore::MeshIO::VRML;
+    ext["WRZ"  ] = MeshCore::MeshIO::WRZ;
+    ext["NAS"  ] = MeshCore::MeshIO::NAS;
+    ext["BDF"  ] = MeshCore::MeshIO::NAS;
+    ext["PLY"  ] = MeshCore::MeshIO::PLY;
+    ext["APLY" ] = MeshCore::MeshIO::APLY;
+    ext["PY"   ] = MeshCore::MeshIO::PY;
+    ext["ASY"  ] = MeshCore::MeshIO::ASY;
 
     static char* keywords_path[] = {"Filename","Format","Name","Material",NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "et|ssO", keywords_path, "utf-8",
