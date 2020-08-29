@@ -50,6 +50,7 @@ namespace MeshIO {
         MGL,
         IV,
         X3D,
+        X3DZ,
         X3DOM,
         VRML,
         WRZ,

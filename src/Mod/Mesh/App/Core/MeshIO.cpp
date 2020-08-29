@@ -1772,6 +1772,7 @@ std::vector<std::string> MeshOutput::supportedMeshFormats()
     fmt.emplace_back("off");
     fmt.emplace_back("smf");
     fmt.emplace_back("x3d");
+    fmt.emplace_back("x3dz");
     fmt.emplace_back("xhtml");
     fmt.emplace_back("wrl");
     fmt.emplace_back("wrz");
@@ -1812,6 +1813,9 @@ MeshIO::Format MeshOutput::GetFormat(const char* FileName)
     }
     else if (file.hasExtension("x3d")) {
         return MeshIO::X3D;
+    }
+    else if (file.hasExtension("x3dz")) {
+        return MeshIO::X3DZ;
     }
     else if (file.hasExtension("xhtml")) {
         return MeshIO::X3DOM;
@@ -1927,6 +1931,13 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         // write file
         if (!SaveX3D(str))
             throw Base::FileException("Export of X3D failed",FileName);
+    }
+    else if (fileformat == MeshIO::X3DZ) {
+        // Compressed X3D is nothing else than a GZIP'ped X3D ascii file
+        zipios::GZIPOutputStream gzip(str);
+        // write file
+        if (!SaveX3D(gzip))
+            throw Base::FileException("Export of compressed X3D mesh failed",FileName);
     }
     else if (fileformat == MeshIO::X3DOM) {
         // write file

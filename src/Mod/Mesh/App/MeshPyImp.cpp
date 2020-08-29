@@ -169,6 +169,7 @@ PyObject*  MeshPy::read(PyObject *args, PyObject *kwds)
     ext["OFF" ] = MeshCore::MeshIO::OFF;
     ext["IV"  ] = MeshCore::MeshIO::IV;
     ext["X3D" ] = MeshCore::MeshIO::X3D;
+    ext["X3DZ"] = MeshCore::MeshIO::X3DZ;
     ext["VRML"] = MeshCore::MeshIO::VRML;
     ext["WRL" ] = MeshCore::MeshIO::VRML;
     ext["WRZ" ] = MeshCore::MeshIO::WRZ;
@@ -220,6 +221,7 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
     ext["MGL"  ] = MeshCore::MeshIO::MGL;
     ext["IV"   ] = MeshCore::MeshIO::IV;
     ext["X3D"  ] = MeshCore::MeshIO::X3D;
+    ext["X3DZ" ] = MeshCore::MeshIO::X3DZ;
     ext["X3DOM"] = MeshCore::MeshIO::X3DOM;
     ext["VRML" ] = MeshCore::MeshIO::VRML;
     ext["WRL"  ] = MeshCore::MeshIO::VRML;
