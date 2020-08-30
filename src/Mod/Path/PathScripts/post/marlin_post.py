@@ -452,7 +452,7 @@ class Commands:
             elif Commands.state['output']:
                 if command == 'G0':
                     if 'Z' in params:
-                        params['F'] =  (G0Z_UP_FEEDRATE if params['Z'] > Commands.state['lastz'] else G0Z_DOWN_FEEDRATE) / 60.0
+                        params['F'] = (G0Z_UP_FEEDRATE if params['Z'] > Commands.state['lastz'] else G0Z_DOWN_FEEDRATE if params['Z'] < Commands.state['lastz'] else G0XY_FEEDRATE) / 60.0
                         #print ('lastz ' + format(Commands.state['lastz'], '0.2f') + ' currentZ ' + format(params['Z'], '0.2f') + ' G0 ' + format(params['F'] * 60.0, '0.2f') if 'F' in params else 'wtf')
                     else:
                         params['F'] = G0XY_FEEDRATE / 60.0
