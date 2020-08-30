@@ -165,7 +165,7 @@ def joinWalls(walls,delete=False):
     if base.Base:
         if base.Base.Shape.Faces:
             return None
-        if Draft.getType(base.Base) == "Sketch":
+        if Draft.getType(base.Base) == "Sketcher::SketchObject":
             sk = base.Base
         else:
             sk = Draft.makeSketch(base.Base,autoconstraints=True)
@@ -1017,7 +1017,7 @@ class _Wall(ArchComponent.Component):
                                 if Draft.getType(obj.Base) == "Wire":
                                     #print "modifying p2"
                                     obj.Base.End = p2
-                                elif Draft.getType(obj.Base) == "Sketch":
+                                elif Draft.getType(obj.Base) == "Sketcher::SketchObject":
                                     try:
                                         obj.Base.movePoint(0,2,p2,0)
                                     except:
