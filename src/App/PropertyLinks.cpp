@@ -2473,7 +2473,7 @@ public:
                return std::string(filename);
         }
 
-        // make sure the filename is aboluste path
+        // make sure the filename is absolute path
         path = QDir::cleanPath(path);
         if((absolute = QFileInfo(path).isAbsolute())) {
             if(fullPath)
