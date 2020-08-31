@@ -232,7 +232,8 @@ protected:
     std::string objectName;
     std::vector<Group> _groups;
     static std::string stl_header;
-    static std::string asyWidth, asyHeight;
+    static std::string asyWidth;
+    static std::string asyHeight;
 };
 
 /*!
