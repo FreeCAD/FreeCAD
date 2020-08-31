@@ -95,7 +95,7 @@ Q_DECLARE_METATYPE(Py::Object)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyItem)
 
-PropertyItem::PropertyItem() : parentItem(0), readonly(false), cleared(false), linked(false)
+PropertyItem::PropertyItem() : parentItem(0), readonly(false), linked(false), expanded(false)
 {
     precision = Base::UnitsApi::getDecimals();
     setAutoApply(true);
@@ -255,6 +255,11 @@ void PropertyItem::removeChildren(int from, int to)
     }
 }
 
+void PropertyItem::moveChild(int from, int to)
+{
+    childItems.move(from, to);
+}
+
 /*!
  * \brief PropertyItem::takeChild
  * Removes the child at index row but doesn't delete it
@@ -303,6 +308,16 @@ void PropertyItem::setLinked(bool l)
 bool PropertyItem::isLinked() const
 {
     return linked;
+}
+
+void PropertyItem::setExpanded(bool enable)
+{
+    expanded = enable;
+}
+
+bool PropertyItem::isExpanded() const
+{
+    return expanded;
 }
 
 bool PropertyItem::testStatus(App::Property::Status pos) const
@@ -453,9 +468,15 @@ QString PropertyItem::propertyName() const
     return propName;
 }
 
-void PropertyItem::setPropertyName(const QString& name)
+void PropertyItem::setPropertyName(QString name, QString realName)
 {
-    setObjectName(name);
+    if(realName.size())
+        propName = realName;
+    else
+        propName = name;
+
+    setObjectName(propName);
+
     QString display;
     bool upper = false;
     for (int i=0; i<name.length(); i++) {
@@ -537,6 +558,9 @@ QVariant PropertyItem::data(int column, int role) const
 {
     // property name
     if (column == 0) {
+        if (role == Qt::TextColorRole && linked)
+            return QVariant::fromValue(QColor(0x20,0xaa,0x20));
+
         if (role == Qt::BackgroundRole || role == Qt::TextColorRole) {
             if(PropertyView::showAll()
                 && propertyItems.size() == 1
@@ -555,17 +579,16 @@ QVariant PropertyItem::data(int column, int role) const
         if (propertyItems.empty())
             return QVariant();
         else if (role == Qt::ToolTipRole) {
-            if(!PropertyView::showAll())
-                return toolTip(propertyItems[0]);
-            QString type = QString::fromLatin1("Type: %1").arg(
-                    QString::fromLatin1(propertyItems[0]->getTypeId().getName()));
-            QString doc = toolTip(propertyItems[0]).toString();
+            QString type = QString::fromLatin1("Type: %1\nName: %2").arg(
+                    QString::fromLatin1(propertyItems[0]->getTypeId().getName()), objectName());
+
+            QString doc = PropertyItem::toolTip(propertyItems[0]).toString();
+            if(doc.isEmpty())
+                doc = toolTip(propertyItems[0]).toString();
             if(doc.size())
                 return type + QLatin1String("\n\n") + doc;
             return type;
-        } else if (role == Qt::TextColorRole && linked)
-            return QVariant::fromValue(QColor(0,0x80,0));
-        else
+        } else
             return QVariant();
     }
     else {
@@ -611,8 +634,6 @@ QVariant PropertyItem::data(int column, int role) const
 
 bool PropertyItem::setData (const QVariant& value)
 {
-    cleared = false;
-
     // This is the basic mechanism to set the value to
     // a property and if no property is set for this item
     // it delegates it to its parent which sets then the
@@ -3755,6 +3776,9 @@ LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
 #endif
     editButton->setToolTip(tr("Change the linked object"));
     layout->addWidget(editButton);
+
+    this->setFocusPolicy(Qt::StrongFocus);
+    this->setFocusProxy(label);
     
     // setLayout(layout);
     
@@ -3820,7 +3844,7 @@ void LinkLabel::onEditClicked ()
     if(!dlg) {
         dlg = new DlgPropertyLink(this);
         dlg->init(objProp,true);
-        connect(dlg, SIGNAL(accepted()), this, SLOT(onLinkChanged()));
+        connect(dlg, SIGNAL(finished(int)), this, SLOT(onLinkChanged()));
     } else
         dlg->init(objProp,false);
     dlg->show();

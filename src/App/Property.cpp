@@ -248,7 +248,8 @@ void Property::setStatusValue(unsigned long status) {
         |(1<<PropReadOnly)
         |(1<<PropTransient)
         |(1<<PropOutput)
-        |(1<<PropHidden);
+        |(1<<PropHidden)
+        |(1<<PropNoPersist);
 
     status &= ~mask;
     status |= StatusBits.to_ulong() & mask;
