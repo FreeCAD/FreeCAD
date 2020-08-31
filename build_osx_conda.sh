@@ -1,14 +1,15 @@
 ##!/usr/bin/env bash
 
+BUILDDIR=freecad_build
 HOST=$(uname)
 
-mkdir -p build
-cd build
+mkdir -p ${BUILDDIR}
+pushd ${BUILDDIR}
 
 if [[ ${FEATURE_DEBUG} = 1 ]]; then
-      BUILD_TYPE="Debug"
+  BUILD_TYPE="Debug"
 else
-      BUILD_TYPE="Release"
+  BUILD_TYPE="Release"
 fi
 
 declare -a CMAKE_PLATFORM_FLAGS
