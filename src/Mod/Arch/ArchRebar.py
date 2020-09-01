@@ -662,6 +662,8 @@ def getLengthOfRebar(rebar):
         for geo in base.Geometry:
             length += geo.length()
         return length
+    elif base.isDerivedFrom("Part::Helix"):
+        return base.Shape.Wires[0].Length
     else:
         FreeCAD.Console.PrintError("Cannot calculate rebar length from its base object\n")
         return None
