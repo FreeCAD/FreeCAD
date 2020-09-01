@@ -218,6 +218,7 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
                 App.Console.PrintWarning("Warning: object history removed\n")
                 obj.Base = None
                 obj.Tool = None
+            obj.Placement = App.Placement() # p points are in the global coordinate system
             obj.Points = p
         elif utils.get_type(obj) == "BSpline":
             #print(delta)
