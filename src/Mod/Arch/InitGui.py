@@ -48,13 +48,9 @@ class ArchWorkbench(FreeCADGui.Workbench):
 
         import Draft_rc
         import DraftTools
-        import DraftGui
-        from draftguitools import gui_circulararray
-        from draftguitools import gui_polararray
-        from draftguitools import gui_orthoarray
-        from draftguitools import gui_arrays
         import Arch_rc
         import Arch
+        import ArchGui
 
         # Set up command lists
         self.archtools = ["Arch_Wall", "Arch_Structure", "Arch_Rebar",
@@ -67,6 +63,7 @@ class ArchWorkbench(FreeCADGui.Workbench):
                           "Arch_Frame", "Arch_Fence", "Arch_Truss",
                           "Arch_Profile","Arch_MaterialTools",
                           "Arch_Schedule", "Arch_PipeTools",
+                          "Arch_TwistedBridge",
                           "Arch_CutPlane", "Arch_CutLine",
                           "Arch_Add", "Arch_Remove", "Arch_Survey"]
         self.utilities = ["Arch_Component", "Arch_CloneComponent",
