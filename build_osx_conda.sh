@@ -20,6 +20,16 @@ FCENV=freecad_build
 HOST=$(uname)
 
 ###########################################################################
+# Env Checks
+###########################################################################
+which xcrun
+if [ $? != 0 ]; then
+  echo "xcrun not found... install XCode command line tools..."
+  echo "using: xcode-select --install"
+  exit 1
+fi 
+
+###########################################################################
 # Conda Setup
 ###########################################################################
 which conda
@@ -47,4 +57,4 @@ if [ $? != 0 ]; then
   fi
 fi
 
-conda build ./conda --channel conda-forge 
+conda build ./conda --channel conda-forge

@@ -8,11 +8,13 @@ package:
     version: {{ version }}
 
 source:
-    git_url: https://github.com/FreeCAD/FreeCAD
-    git_tag: master
+    # JZ - For local building this is the setup. 
+    path: ../
+    #git_url: https://github.com/FreeCAD/FreeCAD
+    #git_tag: master
     patches:
         - windows_python_interface.patch
-        
+
 
 build:
     number: {{ build_number }}
