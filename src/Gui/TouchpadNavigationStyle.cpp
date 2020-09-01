@@ -312,6 +312,12 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
         newmode = NavigationStyle::IDLE;
         break;
     case SHIFTDOWN:
+        // Shift + left mouse click enables dragging.
+        // If the mouse is released the event should not be forwarded to the base
+        // class that eventually performs a selection.
+        if (newmode == NavigationStyle::DRAGGING) {
+            processed = true;
+        }
         newmode = NavigationStyle::PANNING;
         break;
     case ALTDOWN:
@@ -322,6 +328,12 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
         break;
     case CTRLDOWN|SHIFTDOWN:
     case CTRLDOWN|SHIFTDOWN|BUTTON1DOWN:
+        // Left mouse button doesn't change the zoom
+        // behaviour but when pressing or releasing it then do not forward the
+        // event to the base class that eventually performs a selection.
+        if (newmode == NavigationStyle::ZOOMING) {
+            processed = true;
+        }
         newmode = NavigationStyle::ZOOMING;
         break;
     default:
