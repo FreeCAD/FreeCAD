@@ -45,7 +45,10 @@ public:
     static const std::string& writeNodesToString(SoNode * root);
     static bool writeToVRML(SoNode* node, const char* filename, bool binary);
     static void writeToVRML(SoNode* node, std::string& buffer);
-    // Write to VRML or Inventor file
+    static bool writeToX3D(SoNode* node, const char* filename, bool binary);
+    static bool writeToX3D(SoNode* node, std::string& buffer);
+    static bool writeToX3DOM(SoNode* node, std::string& buffer);
+    // Write to Inventor, VRML, X3D or XHTML (based on X3DOM) file
     static bool writeToFile(SoNode* node, const char* filename, bool binary);
     /*! container for app lifetime storage. See SoFCCSysDragger for details
      * on why this is needed.
