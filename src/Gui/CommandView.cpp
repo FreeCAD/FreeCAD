@@ -3456,7 +3456,7 @@ StdCmdSelBoundingBox::StdCmdSelBoundingBox()
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("&Bounding box");
   sToolTipText  = QT_TR_NOOP("Show selection bounding box");
-  sWhatsThis    = "Std_SelBack";
+  sWhatsThis    = "Std_SelBoundingBox";
   sStatusTip    = QT_TR_NOOP("Show selection bounding box");
   sPixmap       = "sel-bbox";
   eType         = Alter3DView;

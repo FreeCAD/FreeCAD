@@ -28,6 +28,10 @@
 # include <Inventor/VRMLnodes/SoVRMLParent.h>
 # include <Inventor/SbString.h>
 # include <Inventor/nodes/SoGroup.h>
+# include <QDir>
+# include <QProcess>
+# include <QTemporaryFile>
+# include <sstream>
 #endif
 
 #include <Base/FileInfo.h>
@@ -359,6 +363,116 @@ bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
     return false;
 }
 
+bool Gui::SoFCDB::writeToX3D(SoNode* node, const char* filename, bool binary)
+{
+    std::string buffer;
+    writeToX3D(node, buffer);
+
+    Base::FileInfo fi(filename);
+    if (binary) {
+        Base::ofstream str(fi, std::ios::out | std::ios::binary);
+        zipios::GZIPOutputStream gzip(str);
+
+        if (gzip) {
+            gzip << buffer;
+            gzip.close();
+            return true;
+        }
+    }
+    else {
+        Base::ofstream str(fi, std::ios::out);
+
+        if (str) {
+            str << buffer;
+            str.close();
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Gui::SoFCDB::writeToX3D(SoNode* node, std::string& buffer)
+{
+    writeToVRML(node, buffer);
+    if (buffer.empty())
+        return false;
+
+    QString filename = QDir::tempPath();
+    filename += QLatin1String("/sceneXXXXXX.wrl");
+    QTemporaryFile wrlFile(filename);
+    if (wrlFile.open()) {
+        filename = wrlFile.fileName();
+        wrlFile.write(buffer.c_str(), buffer.size());
+        wrlFile.close();
+
+        QString exe(QLatin1String("tovrmlx3d"));
+        QStringList args;
+        args << filename << QLatin1String("--encoding") << QLatin1String("xml");
+        QProcess proc;
+        proc.setEnvironment(QProcess::systemEnvironment());
+        proc.start(exe, args);
+        if (proc.waitForStarted() && proc.waitForFinished()) {
+            QByteArray x3d = proc.readAll();
+            if (x3d.isEmpty())
+                return false;
+
+            x3d.replace('\t', "  ");
+
+            // compute a sensible view point
+            SoGetBoundingBoxAction bboxAction(SbViewportRegion(1280, 1024));
+            bboxAction.apply(node);
+            SbBox3f bbox = bboxAction.getBoundingBox();
+            SbSphere bs;
+            bs.circumscribe(bbox);
+            const SbVec3f& cnt = bs.getCenter();
+            float dist = bs.getRadius();
+
+            QString vp = QString::fromLatin1("  <Viewpoint id=\"Top\" centerOfRotation=\"%1 %2 %3\" "
+                                             "position=\"%1 %2 %4\" orientation=\"0.000000 0.000000 1.000000 0.000000\" "
+                                             "description=\"camera\" fieldOfView=\"0.9\"></Viewpoint>\n")
+                         .arg(cnt[0]).arg(cnt[1]).arg(cnt[2]).arg(cnt[2] + 2.0f * dist);
+            int index = x3d.indexOf("<Scene>\n");
+            if (index >= 0) {
+                x3d.insert(index + 8, vp);
+            }
+
+            buffer = x3d.data();
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
+{
+    std::string x3d;
+    if (!writeToX3D(node, x3d))
+        return false;
+
+    // remove the first two lines from the x3d output as this duplicates
+    // the xml and doctype header
+    std::size_t pos = x3d.find('\n');
+    pos = x3d.find('\n', pos + 1);
+    x3d = x3d.erase(0, pos + 1);
+
+    std::stringstream out;
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
+    out << "<html xmlns='http://www.w3.org/1999/xhtml'>\n"
+        << "  <head>\n"
+        << "    <script type='text/javascript' src='http://www.x3dom.org/download/x3dom.js'> </script>\n"
+        << "    <link rel='stylesheet' type='text/css' href='http://www.x3dom.org/download/x3dom.css'></link>\n"
+        << "  </head>\n";
+    out << x3d;
+    out << "</html>\n";
+
+    buffer = out.str();
+
+    return true;
+}
+
 bool Gui::SoFCDB::writeToFile(SoNode* node, const char* filename, bool binary)
 {
     bool ret = false;
@@ -371,6 +485,25 @@ bool Gui::SoFCDB::writeToFile(SoNode* node, const char* filename, bool binary)
             binary = true;
 
         ret = SoFCDB::writeToVRML(node, filename, binary);
+    }
+    else if (fi.hasExtension("x3d") || fi.hasExtension("x3dz")) {
+        // If 'x3dz' is set then force compression
+        if (fi.hasExtension("x3dz"))
+            binary = true;
+
+        ret = SoFCDB::writeToX3D(node, filename, binary);
+    }
+    else if (fi.hasExtension("xhtml")) {
+        std::string buffer;
+        if (SoFCDB::writeToX3DOM(node, buffer)) {
+            Base::ofstream str(Base::FileInfo(filename), std::ios::out);
+
+            if (str) {
+                str << buffer;
+                str.close();
+                ret = true;
+            }
+        }
     }
     else if (fi.hasExtension("iv")) {
         // Write Inventor in ASCII
