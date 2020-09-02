@@ -592,6 +592,69 @@ class DraftModification(unittest.TestCase):
         obj = Draft.stretch(line, direction)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
+    def test_scale_rectangle(self):
+        """Create and scale a rectangle."""
+        operation = "Draft Scale rectangle"
+        _msg("  Test '{}'".format(operation))
+
+        pt = App.Vector(2, 1, 0) # bottom left point is also center for scaling.
+        pl = App.Placement()
+        pl.Base = pt
+        len = 4
+        hgt = 3
+        _msg("  Rectangle")
+        _msg("  length={0}, height={1}".format(len, hgt))
+        _msg("  base={}".format(pt))
+        rect = Draft.make_rectangle(len, hgt, pl, False)
+        App.ActiveDocument.recompute()
+
+        sca = App.Vector(2, 3, 1)
+        _msg("  Scale")
+        _msg("  vector={}".format(sca))
+        _msg("  center={}".format(pt))
+        Draft.scale([rect], sca, pt, False)
+        App.ActiveDocument.recompute()
+
+        self.assertTrue(rect.Placement.Base == pt, "'{}' failed".format(operation))
+        self.assertTrue(rect.Length == len * sca.x, "'{}' failed".format(operation))
+        self.assertTrue(rect.Height == hgt * sca.y, "'{}' failed".format(operation))
+
+    def test_scale_wire(self):
+        """Create and scale a wire."""
+        operation = "Draft Scale wire"
+        _msg("  Test '{}'".format(operation))
+
+        pts = [App.Vector( 2, 1, 0),
+               App.Vector( 6, 1, 0),
+               App.Vector( 6, 4, 0),
+               App.Vector( 2, 4, 0)]
+        pl = App.Placement()
+        pl.Base = pts[0] # bottom left point is also center for scaling.
+        _msg("  Wire")
+        _msg("  a={0}, b={1}".format(pts[0], pts[1]))
+        _msg("  c={0}, d={1}".format(pts[2], pts[3]))
+        _msg("  base={}".format(pts[0]))
+        wire = Draft.make_wire(pts, True, pl)
+        App.ActiveDocument.recompute()
+
+        sca = App.Vector(2, 3, 1)
+        _msg("  Scale")
+        _msg("  vector={}".format(sca))
+        _msg("  Center={}".format(pts[0]))
+        Draft.scale([wire], sca, pts[0], False)
+        App.ActiveDocument.recompute()
+
+        vrts = wire.Shape.Vertexes
+        result = True
+        for i in range(4):
+            ptNew = pts[i].sub(pts[0])
+            ptNew = ptNew.scale(sca.x, sca.y, sca.z)
+            ptNew = ptNew.add(pts[0])
+            if vrts[i].Point != ptNew:
+                result = False
+                break
+        self.assertTrue(result, "'{}' failed".format(operation))
+
     def tearDown(self):
         """Finish the test.
 
