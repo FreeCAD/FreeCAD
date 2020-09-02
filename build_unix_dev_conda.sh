@@ -38,7 +38,18 @@ if [ $? != 0 ]; then
   exit 1
 fi
 
-conda activate ${FCENV}
+if [[ "${CONDA_DEFAULT_ENV}" =~ "${FCENV}" ]]; then
+  echo "Already in env"
+elif [[ -z "${CONDA_DEFAULT_ENV}" ]]; then
+  echo "Not in conda env... activating"
+  conda activate ${FCENV}
+else
+  # Assume we are in some other env.
+  echo "In ${CONDA_DEFAULT_ENV}, attempting switch to ${FCENV}"
+  conda deactivate
+  conda activate ${FCENV}
+fi
+
 if [ $? != 0 ]; then
   echo "Failed to activate conda env: ${FCENV} ... creating"
 
@@ -65,4 +76,4 @@ if [ -z "${CONDA_PREFIX}" ]; then
   exit 1
 fi
 
-PREFIX="${CONDA_PREFIX}" ./conda/build.sh 
+PREFIX="${CONDA_PREFIX}" ./conda/build.sh
