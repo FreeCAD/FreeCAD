@@ -5,9 +5,9 @@ mkdir -p build
 cd build
 
 if [[ ${FEATURE_DEBUG} = 1 ]]; then
-      BUILD_TYPE="Debug"
+  BUILD_TYPE="Debug"
 else
-      BUILD_TYPE="Release"
+  BUILD_TYPE="Release"
 fi
 
 declare -a CMAKE_PLATFORM_FLAGS
@@ -73,9 +73,14 @@ cmake \
   ${CMAKE_PLATFORM_FLAGS[@]} \
   ..
 
+if [ $? != 0 ]; then
+  echo "CMake failed to configure."
+  exit 1
+fi
+
 echo "FREECAD_USE_3DCONNEXION=${FREECAD_USE_3DCONNEXION}"
 
-ninja install
+ninja install 
 rm -r ${PREFIX}/share/doc/FreeCAD     # smaller size of package!
 mv ${PREFIX}/bin/FreeCAD ${PREFIX}/bin/freecad
 mv ${PREFIX}/bin/FreeCADCmd ${PREFIX}/bin/freecadcmd
