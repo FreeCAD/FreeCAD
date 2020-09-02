@@ -22,10 +22,20 @@ HOST=$(uname)
 ###########################################################################
 # Env Checks
 ###########################################################################
-which xcrun
-if [ $? != 0 ]; then
-  echo "xcrun not found... install XCode command line tools..."
-  echo "using: xcode-select --install"
+if [[ ${HOST} =~ "Linux" ]]; then
+  # Linux specifc checks here
+  echo "Linux specific checks..."
+elif [[ ${HOST} =~ "Darwin" ]]; then
+  # OSX specific checks here.
+  echo "OS X specific checks..."
+  which xcrun
+  if [ $? != 0 ]; then
+    echo "xcrun not found... install XCode command line tools..."
+    echo "using: xcode-select --install"
+    exit 1
+  fi
+else
+  echo "unknown host env... probably won't work. Aborting build."
   exit 1
 fi
 
