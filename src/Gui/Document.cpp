@@ -1068,7 +1068,7 @@ static bool checkCanonicalPath(const std::map<App::Document*, bool> &docs)
         if (v.second.size() <= 1) continue;
         for (auto doc : v.second) {
             if (docs.count(doc)) {
-                FC_WARN("Pyhsical path: " << v.first.toUtf8().constData());
+                FC_WARN("Physical path: " << v.first.toUtf8().constData());
                 for (auto d : v.second)
                     FC_WARN("  Document: " << docName(d).toUtf8().constData()
                             << ": " << d->FileName.getValue());

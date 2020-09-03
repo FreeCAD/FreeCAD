@@ -30,7 +30,7 @@ Base::Vector3d toVector3d(const double* a)
 }
 
 CDxfWrite::CDxfWrite(const char* filepath) :
-//TODO: these should probably be parms in config file
+//TODO: these should probably be parameters in config file
 //handles:
 //boilerplate 0 - A00
 //used by dxf.cpp A01 - FFFE

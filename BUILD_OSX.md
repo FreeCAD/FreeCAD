@@ -34,5 +34,5 @@ Output binaries will be in the `./build/bin/FreeCAD` *and*
 `${CONDA_PREFIX}/bin/FreeCAD` directories.
 
 You can code/build/test using the cmake configuration folder `./build` in
-the standard way *from withing the freecad_dev conda enviroment*.
+the standard way *from within the freecad_dev conda environment*.
 
