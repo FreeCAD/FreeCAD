@@ -70,7 +70,7 @@ if FreeCAD.GuiUp:
             return
 
         def getIcon(self):
-            return ":/icons/Tree_Part_Cylinder_Parametric.svg"
+            return ":/icons/Tree_Part_Tube_Parametric.svg"
 
         def __getstate__(self):
             return None
@@ -85,7 +85,7 @@ if FreeCAD.GuiUp:
             return {'MenuText': Qt.QT_TRANSLATE_NOOP("Part_MakeTube","Create tube"),
                     'Accel': "",
                     'CmdType': "ForEdit",
-                    'Pixmap'  : ":/icons/Part_Cylinder.svg",
+                    'Pixmap'  : ":/icons/Part_Tube.svg",
                     'ToolTip': Qt.QT_TRANSLATE_NOOP("Part_MakeTube","Creates a tube")}
         
         def Activated(self):

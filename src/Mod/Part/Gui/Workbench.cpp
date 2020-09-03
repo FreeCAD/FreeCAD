@@ -183,6 +183,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
             << "Part_Sphere"
             << "Part_Cone"
             << "Part_Torus"
+            << "Part_MakeTube"
             << "Part_Primitives"
             << "Part_Builder";
 
