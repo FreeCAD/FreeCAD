@@ -27,8 +27,12 @@
 # include <boost/algorithm/string.hpp>
 #endif
 
-#include "Mod/Path/App/Voronoi.h"
-#include "Mod/Path/App/VoronoiVertex.h"
+#include "Voronoi.h"
+#include "VoronoiPy.h"
+#include "VoronoiEdge.h"
+#include "VoronoiEdgePy.h"
+#include "VoronoiVertex.h"
+#include "VoronoiVertexPy.h"
 #include <Base/Exception.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/PlacementPy.h>
@@ -36,8 +40,6 @@
 #include <Base/VectorPy.h>
 
 // files generated out of VoronoiVertexPy.xml
-#include "VoronoiPy.h"
-#include "VoronoiVertexPy.h"
 #include "VoronoiVertexPy.cpp"
 
 using namespace Path;
@@ -50,8 +52,7 @@ std::string VoronoiVertexPy::representation(void) const
   ss << "VoronoiVertex(";
   VoronoiVertex *v = getVoronoiVertexPtr();
   if (v->isBound()) {
-    Voronoi::diagram_type::vertex_type pt = v->dia->vertices()[v->index];
-    ss << "[" << pt.x() << ", " << pt.y() << "]";
+    ss << "[" << v->ptr->x() << ", " << v->ptr->y() << "]";
   }
   ss << ")";
   return ss.str();
@@ -81,7 +82,7 @@ PyObject* VoronoiVertexPy::richCompare(PyObject *lhs, PyObject *rhs, int op) {
       && op == Py_EQ) {
     const VoronoiVertex *vl = static_cast<VoronoiVertexPy*>(lhs)->getVoronoiVertexPtr();
     const VoronoiVertex *vr = static_cast<VoronoiVertexPy*>(rhs)->getVoronoiVertexPtr();
-    if (vl->index == vr->index && &(*vl->dia) == &(*vr->dia)) {
+    if (vl->index == vr->index && vl->dia == vr->dia) {
       cmp = Py_True;
     }
   }
@@ -92,7 +93,7 @@ PyObject* VoronoiVertexPy::richCompare(PyObject *lhs, PyObject *rhs, int op) {
 const Voronoi::voronoi_diagram_type::vertex_type* getVertexFromPy(VoronoiVertexPy *v, bool throwIfNotBound = true) {
   auto self = v->getVoronoiVertexPtr();
   if (self->isBound()) {
-    return &self->dia->vertices()[self->index];
+    return self->ptr;
   }
   if (throwIfNotBound) {
     throw Py::TypeError("Vertex not bound to voronoi diagram");
@@ -103,7 +104,7 @@ const Voronoi::voronoi_diagram_type::vertex_type* getVertexFromPy(VoronoiVertexP
 Py::Int VoronoiVertexPy::getColor(void) const {
   VoronoiVertex *v = getVoronoiVertexPtr();
   if (v->isBound()) {
-    return Py::Int(v->dia->vertices()[v->index].color());
+    return Py::Int(v->ptr->color());
   }
   return Py::Int(0);
 }
@@ -118,7 +119,7 @@ Py::Float VoronoiVertexPy::getX(void) const
   if (!v->isBound()) {
     throw Py::FloatingPointError("Cannot get coordinates of unbound voronoi vertex");
   }
-  return Py::Float(v->dia->vertices()[v->index].x());
+  return Py::Float(v->ptr->x());
 }
 
 Py::Float VoronoiVertexPy::getY(void) const
@@ -127,15 +128,16 @@ Py::Float VoronoiVertexPy::getY(void) const
   if (!v->isBound()) {
     throw Py::FloatingPointError("Cannot get coordinates of unbound voronoi vertex");
   }
-  return Py::Float(v->dia->vertices()[v->index].y());
+  return Py::Float(v->ptr->y());
 }
 
-#if 0
 Py::Object VoronoiVertexPy::getIncidentEdge() const {
-  Py_INCREF(Py_None);
-  return Py_None;
+  VoronoiVertex *v = getVoronoiVertexPtr();
+  if (!v->isBound()) {
+    throw Py::TypeError("Vertex not bound to voronoi diagram");
+  }
+  return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(v->dia, v->ptr->incident_edge())));
 }
-#endif
 
 // custom attributes get/set
 

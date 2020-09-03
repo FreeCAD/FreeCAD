@@ -47,6 +47,8 @@
 #include "AreaPy.h"
 #include "FeatureArea.h"
 #include "Voronoi.h"
+#include "VoronoiEdge.h"
+#include "VoronoiEdgePy.h"
 #include "VoronoiPy.h"
 #include "VoronoiVertex.h"
 #include "VoronoiVertexPy.h"
@@ -71,13 +73,14 @@ PyMOD_INIT_FUNC(Path)
     Base::Console().Log("Loading Path module... done\n");
 
     // Add Types to module
-    Base::Interpreter().addType(&Path::CommandPy    ::Type, pathModule, "Command");
-    Base::Interpreter().addType(&Path::PathPy       ::Type, pathModule, "Path");
-    Base::Interpreter().addType(&Path::ToolPy       ::Type, pathModule, "Tool");
-    Base::Interpreter().addType(&Path::TooltablePy  ::Type, pathModule, "Tooltable");
-    Base::Interpreter().addType(&Path::AreaPy       ::Type, pathModule, "Area");
-    Base::Interpreter().addType(&Path::VoronoiPy    ::Type, pathModule, "Voronoi");
-    Base::Interpreter().addType(&Path::VoronoiVertexPy    ::Type, pathModule, "VoronoiVertex");
+    Base::Interpreter().addType(&Path::CommandPy        ::Type, pathModule, "Command");
+    Base::Interpreter().addType(&Path::PathPy           ::Type, pathModule, "Path");
+    Base::Interpreter().addType(&Path::ToolPy           ::Type, pathModule, "Tool");
+    Base::Interpreter().addType(&Path::TooltablePy      ::Type, pathModule, "Tooltable");
+    Base::Interpreter().addType(&Path::AreaPy           ::Type, pathModule, "Area");
+    Base::Interpreter().addType(&Path::VoronoiPy        ::Type, pathModule, "Voronoi");
+    Base::Interpreter().addType(&Path::VoronoiEdgePy    ::Type, pathModule, "VoronoiEdge");
+    Base::Interpreter().addType(&Path::VoronoiVertexPy  ::Type, pathModule, "VoronoiVertex");
 
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
@@ -101,6 +104,7 @@ PyMOD_INIT_FUNC(Path)
     Path::FeatureAreaView        ::init();
     Path::FeatureAreaViewPython  ::init();
     Path::Voronoi                ::init();
+    Path::VoronoiEdge            ::init();
     Path::VoronoiVertex          ::init();
 
     PyMOD_Return(pathModule);

@@ -28,6 +28,7 @@
 #endif
 
 #include "Mod/Path/App/Voronoi.h"
+#include "Mod/Path/App/VoronoiEdge.h"
 #include "Mod/Path/App/VoronoiVertex.h"
 #include <Base/Exception.h>
 #include <Base/GeometryPyCXX.h>
@@ -37,6 +38,7 @@
 // files generated out of VoronoiPy.xml
 #include "VoronoiPy.h"
 #include "VoronoiPy.cpp"
+#include "VoronoiEdgePy.h"
 #include "VoronoiVertexPy.h"
 
 using namespace Path;
@@ -145,6 +147,14 @@ Py::List VoronoiPy::getVertices(void) const {
   Py::List list;
   for (int i=0; i<getVoronoiPtr()->numVertices(); ++i) {
     list.append(Py::asObject(new VoronoiVertexPy(new VoronoiVertex(getVoronoiPtr()->vd, i))));
+  }
+  return list;
+}
+
+Py::List VoronoiPy::getEdges(void) const {
+  Py::List list;
+  for (int i=0; i<getVoronoiPtr()->numEdges(); ++i) {
+    list.append(Py::asObject(new VoronoiEdgePy(new VoronoiEdge(getVoronoiPtr()->vd, i))));
   }
   return list;
 }

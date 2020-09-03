@@ -19,36 +19,58 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-#ifndef PATH_VORONOIVERTEX_H
-#define PATH_VORONOIVERTEX_H
 
-#include <Base/Handle.h>
-#include <Base/BaseClass.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
-#include "Voronoi.h"
 
-namespace Path
-{
+#include "PreCompiled.h"
 
-class Voronoi;
-
-class PathExport VoronoiVertex
-  : public Base::BaseClass
-{
-  TYPESYSTEM_HEADER();
-public:
-
-  VoronoiVertex(Voronoi::diagram_type *dia = 0, long index = Voronoi::InvalidIndex);
-  VoronoiVertex(Voronoi::diagram_type *dia, const Voronoi::diagram_type::vertex_type *v);
-  ~VoronoiVertex();
-
-  bool isBound(void) const;
-
-  Base::Reference<Voronoi::diagram_type> dia;
-  long index;
-  mutable const Voronoi::diagram_type::vertex_type *ptr;
-};
-
-}
+#ifndef _PreComp_
+# include <cinttypes>
+# include <iomanip>
+# include <boost/algorithm/string.hpp>
+# include <boost/lexical_cast.hpp>
 #endif
+
+#include <Base/Vector3D.h>
+#include <Base/Writer.h>
+#include <Base/Reader.h>
+#include <Base/Exception.h>
+#include "Voronoi.h"
+#include "VoronoiEdge.h"
+
+using namespace Base;
+using namespace Path;
+
+TYPESYSTEM_SOURCE(Path::VoronoiEdge , Base::Persistence)
+
+VoronoiEdge::VoronoiEdge(Voronoi::diagram_type *d, long index)
+  : dia(d)
+  , index(index)
+  , ptr(0)
+{
+  if (dia && long(dia->num_edges()) > index) {
+    ptr = &(dia->edges()[index]);
+  }
+}
+
+VoronoiEdge::VoronoiEdge(Voronoi::diagram_type *d, const Voronoi::diagram_type::edge_type *e)
+  : dia(d)
+  , index(Voronoi::InvalidIndex)
+  , ptr(e)
+{
+  if (d && e) {
+    index = dia->index(e);
+  }
+}
+
+VoronoiEdge::~VoronoiEdge() {
+}
+
+bool VoronoiEdge::isBound(void) const {
+  if (ptr != 0 && dia.isValid() && index != Voronoi::InvalidIndex) {
+    if (&(dia->edges()[index]) == ptr) {
+      return true;
+    }
+  }
+  ptr = 0;
+  return false;
+}

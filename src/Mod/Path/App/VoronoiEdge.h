@@ -19,8 +19,8 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-#ifndef PATH_VORONOIVERTEX_H
-#define PATH_VORONOIVERTEX_H
+#ifndef PATH_VORONOIEDGE_H
+#define PATH_VORONOIEDGE_H
 
 #include <Base/Handle.h>
 #include <Base/BaseClass.h>
@@ -33,21 +33,21 @@ namespace Path
 
 class Voronoi;
 
-class PathExport VoronoiVertex
+class PathExport VoronoiEdge
   : public Base::BaseClass
 {
   TYPESYSTEM_HEADER();
 public:
 
-  VoronoiVertex(Voronoi::diagram_type *dia = 0, long index = Voronoi::InvalidIndex);
-  VoronoiVertex(Voronoi::diagram_type *dia, const Voronoi::diagram_type::vertex_type *v);
-  ~VoronoiVertex();
+  VoronoiEdge(Voronoi::diagram_type *dia = 0, long index = Voronoi::InvalidIndex);
+  VoronoiEdge(Voronoi::diagram_type *dia, const Voronoi::diagram_type::edge_type *edge);
+  ~VoronoiEdge();
 
   bool isBound(void) const;
 
   Base::Reference<Voronoi::diagram_type> dia;
   long index;
-  mutable const Voronoi::diagram_type::vertex_type *ptr;
+  mutable const Voronoi::diagram_type::edge_type *ptr;
 };
 
 }

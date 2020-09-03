@@ -34,13 +34,11 @@
             </Documentation>
             <Parameter Name="Y" Type="Float"/>
         </Attribute>
-        <!--
         <Attribute Name="IncidentEdge" ReadOnly="true">
             <Documentation>
                 <UserDocu>Y position</UserDocu>
             </Documentation>
             <Parameter Name="IncidentEdge" Type="Object"/>
         </Attribute>
-        -->
     </PythonExport>
 </GenerateModel>

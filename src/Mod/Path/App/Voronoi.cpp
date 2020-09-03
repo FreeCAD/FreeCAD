@@ -68,6 +68,48 @@ static void color_exterior(const Voronoi::diagram_type::edge_type *edge) {
 
 // Constructors & destructors
 
+int Voronoi::diagram_type::index(const Voronoi::diagram_type::cell_type   *cell)   const {
+  auto it = cell_index.find(intptr_t(cell));
+  if (it == cell_index.end()) {
+    return Voronoi::InvalidIndex;
+  }
+  return it->second;
+}
+int Voronoi::diagram_type::index(const Voronoi::diagram_type::edge_type   *edge)   const {
+  auto it = edge_index.find(intptr_t(edge));
+  if (it == edge_index.end()) {
+    return Voronoi::InvalidIndex;
+  }
+  return it->second;
+}
+int Voronoi::diagram_type::index(const Voronoi::diagram_type::vertex_type *vertex) const {
+  auto it = vertex_index.find(intptr_t(vertex));
+  if (it == vertex_index.end()) {
+    return Voronoi::InvalidIndex;
+  }
+  return it->second;
+}
+
+void Voronoi::diagram_type::reIndex() {
+  int idx = 0;
+  cell_index.clear();
+  edge_index.clear();
+  vertex_index.clear();
+
+  idx = 0;
+  for (auto it = cells().begin(); it != cells().end(); ++it, ++idx) {
+    cell_index[intptr_t(&(*it))] = idx;
+  }
+  idx = 0;
+  for (auto it = edges().begin(); it != edges().end(); ++it, ++idx) {
+    edge_index[intptr_t(&(*it))] = idx;
+  }
+  idx = 0;
+  for (auto it = vertices().begin(); it != vertices().end(); ++it, ++idx) {
+    vertex_index[intptr_t(&(*it))] = idx;
+  }
+}
+
 Voronoi::Voronoi()
   :vd(new diagram_type)
 {
@@ -103,4 +145,5 @@ void Voronoi::construct()
 {
   vd->clear();
   construct_voronoi(points.begin(), points.end(), segments.begin(), segments.end(), (voronoi_diagram_type*)vd);
+  vd->reIndex();
 }

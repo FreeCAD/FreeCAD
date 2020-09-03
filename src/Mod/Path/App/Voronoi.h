@@ -46,6 +46,7 @@ namespace Path
     Voronoi();
     ~Voronoi();
 
+    static const int InvalidIndex = INT_MAX;
     // types
     typedef double coordinate_type;
     typedef boost::polygon::point_data<coordinate_type> point_type;
@@ -54,7 +55,24 @@ namespace Path
     class diagram_type
       : public voronoi_diagram_type
       , public Base::Handled
-    { };
+    {
+    public:
+
+      typedef std::map<intptr_t, int> cell_map_type;
+      typedef std::map<intptr_t, int> edge_map_type;
+      typedef std::map<intptr_t, int> vertex_map_type;
+
+      int index(const cell_type   *cell)   const;
+      int index(const edge_type   *edge)   const;
+      int index(const vertex_type *vertex) const;
+
+      void reIndex();
+
+    private:
+      cell_map_type   cell_index;
+      edge_map_type   edge_index;
+      vertex_map_type vertex_index;
+    };
 
     // specific methods
     void addPoint(const point_type &p);

@@ -22,13 +22,13 @@
             </Documentation>
             <Parameter Name="Cells" Type="List"/>
         </Attribute>
+        -->
         <Attribute Name="Edges" ReadOnly="true">
             <Documentation>
                 <UserDocu>List of all edges of the voronoi diagram</UserDocu>
             </Documentation>
             <Parameter Name="Edges" Type="List"/>
         </Attribute>
-        -->
         <Attribute Name="Vertices" ReadOnly="true">
             <Documentation>
                 <UserDocu>List of all vertices of the voronoi diagram</UserDocu>
