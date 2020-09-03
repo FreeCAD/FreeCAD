@@ -23,7 +23,7 @@ HOST=$(uname)
 # Env Checks
 ###########################################################################
 if [[ ${HOST} =~ "Linux" ]]; then
-  # Linux specifc checks here
+  # Linux specific checks here
   echo "Linux specific checks..."
 elif [[ ${HOST} =~ "Darwin" ]]; then
   # OSX specific checks here.

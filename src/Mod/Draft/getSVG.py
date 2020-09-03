@@ -561,7 +561,7 @@ def get_path(obj, plane,
                                 A = "A " + _a
                             except:
                                 _wrn("Circle or ellipse: "
-                                     "error spliting the projection snip")
+                                     "error splitting the projection snip")
                             else:
                                 edata += A
                                 done = True
