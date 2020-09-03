@@ -176,6 +176,12 @@ class Component(ArchIFC.IfcProduct):
     def __init__(self, obj):
         obj.Proxy = self
         Component.setProperties(self, obj)
+        # if the FreeCAD duplicate command is used this init is not executed
+        # thus is makes no sense to check here if the guid exists already
+        if hasattr(obj, "GlobalId"):
+            print("GlobalId: {}".format(obj.GlobalId))
+        else:
+            print("No GlobalId attr")
         self.Type = "Component"
 
     def setProperties(self, obj):
@@ -256,6 +262,10 @@ class Component(ArchIFC.IfcProduct):
             The component object.
         """
 
+        if hasattr(obj, "GlobalId"):
+            print("GlobalId: {}".format(obj.GlobalId))
+        else:
+            print("No GlobalId attr")
         if self.clone(obj):
             return
         if obj.Base:
