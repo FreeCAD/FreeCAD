@@ -254,7 +254,20 @@ def export(exportList, filename, colors=None, preferences=None):
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
     annotations = []
+    guids =  {}
     for obj in objectslist:
+        # https://forum.freecadweb.org/viewtopic.php?t=49818
+        key_guid = "{}_{}".format(obj.Document.Uid, obj.ID)
+        # print("guid key: {}".format(key_guid))  # this will be unique key
+        if hasattr(obj, "IfcData") and "IfcUID" in obj.IfcData.keys():
+            guids[key_guid] = obj.IfcData["IfcUID"]
+            # why is the guid saved twice
+            # https://forum.freecadweb.org/viewtopic.php?f=23&t=55873
+            # print(obj.IfcData["IfcUID"]) # filled on ifc export and ifc import 
+            # print(obj.GlobalId)  # only filled on ifc import
+            # the GlobalId should be set on export too!
+        else:
+            guids[key_guid] = ""
         if obj.isDerivedFrom("Part::Part2DObject"):
             annotations.append(obj)
         elif obj.isDerivedFrom("App::Annotation") or (Draft.getType(obj) == "DraftText"):
@@ -263,6 +276,7 @@ def export(exportList, filename, colors=None, preferences=None):
             if obj.Shape:
                 if obj.Shape.Edges and (not obj.Shape.Faces):
                     annotations.append(obj)
+    print(guids)
 
     # clean objects list of unwanted types
 
