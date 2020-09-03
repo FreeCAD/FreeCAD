@@ -34,8 +34,13 @@
 # include <sstream>
 #endif
 
+#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+#include <Inventor/fields/SoSFNode.h>
+#include <Inventor/fields/SoMFNode.h>
+
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <zipios++/gzipoutputstream.h>
 
 #include "SoFCDB.h"
@@ -317,6 +322,7 @@ void Gui::SoFCDB::writeToVRML(SoNode* node, std::string& buffer)
     SoToVRML2Action tovrml2;
     tovrml2.apply(noSwitches);
     SoVRMLGroup* vrmlRoot = tovrml2.getVRML2SceneGraph();
+
     vrmlRoot->setInstancePrefix(SbString("o"));
     vrmlRoot->ref();
     buffer = SoFCDB::writeNodesToString(vrmlRoot);
@@ -366,7 +372,7 @@ bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
 bool Gui::SoFCDB::writeToX3D(SoNode* node, const char* filename, bool binary)
 {
     std::string buffer;
-    writeToX3D(node, buffer);
+    writeToX3D(node, false, buffer);
 
     Base::FileInfo fi(filename);
     if (binary) {
@@ -392,8 +398,9 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, const char* filename, bool binary)
     return false;
 }
 
-bool Gui::SoFCDB::writeToX3D(SoNode* node, std::string& buffer)
+bool Gui::SoFCDB::writeToX3D(SoNode* node, bool exportViewpoints, std::string& buffer)
 {
+#if 0
     writeToVRML(node, buffer);
     if (buffer.empty())
         return false;
@@ -419,22 +426,24 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, std::string& buffer)
 
             x3d.replace('\t', "  ");
 
-            // compute a sensible view point
-            SoGetBoundingBoxAction bboxAction(SbViewportRegion(1280, 1024));
-            bboxAction.apply(node);
-            SbBox3f bbox = bboxAction.getBoundingBox();
-            SbSphere bs;
-            bs.circumscribe(bbox);
-            const SbVec3f& cnt = bs.getCenter();
-            float dist = bs.getRadius();
+            if (exportViewpoints) {
+                // compute a sensible view point
+                SoGetBoundingBoxAction bboxAction(SbViewportRegion(1280, 1024));
+                bboxAction.apply(node);
+                SbBox3f bbox = bboxAction.getBoundingBox();
+                SbSphere bs;
+                bs.circumscribe(bbox);
+                const SbVec3f& cnt = bs.getCenter();
+                float dist = bs.getRadius();
 
-            QString vp = QString::fromLatin1("  <Viewpoint id=\"Top\" centerOfRotation=\"%1 %2 %3\" "
-                                             "position=\"%1 %2 %4\" orientation=\"0.000000 0.000000 1.000000 0.000000\" "
-                                             "description=\"camera\" fieldOfView=\"0.9\"></Viewpoint>\n")
-                         .arg(cnt[0]).arg(cnt[1]).arg(cnt[2]).arg(cnt[2] + 2.0f * dist);
-            int index = x3d.indexOf("<Scene>\n");
-            if (index >= 0) {
-                x3d.insert(index + 8, vp);
+                QString vp = QString::fromLatin1("  <Viewpoint id=\"Top\" centerOfRotation=\"%1 %2 %3\" "
+                                                 "position=\"%1 %2 %4\" orientation=\"0.000000 0.000000 1.000000 0.000000\" "
+                                                 "description=\"camera\" fieldOfView=\"0.9\"></Viewpoint>\n")
+                             .arg(cnt[0]).arg(cnt[1]).arg(cnt[2]).arg(cnt[2] + 2.0f * dist);
+                int index = x3d.indexOf("<Scene>\n");
+                if (index >= 0) {
+                    x3d.insert(index + 8, vp);
+                }
             }
 
             buffer = x3d.data();
@@ -443,12 +452,186 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, std::string& buffer)
     }
 
     return false;
+#else
+    SoNode* noSwitches = replaceSwitchesInSceneGraph(node);
+    noSwitches->ref();
+    SoVRMLAction vrml2;
+    vrml2.setOverrideMode(true);
+    vrml2.apply(noSwitches);
+    SoToVRML2Action tovrml2;
+    tovrml2.apply(noSwitches);
+    SoVRMLGroup* vrmlRoot = tovrml2.getVRML2SceneGraph();
+
+    vrmlRoot->setInstancePrefix(SbString("o"));
+    vrmlRoot->ref();
+
+    std::stringstream out;
+    writeX3D(vrmlRoot, exportViewpoints, out);
+    buffer = out.str();
+
+    vrmlRoot->unref(); // release the memory as soon as possible
+
+    // restore old settings
+    vrml2.setOverrideMode(false);
+    vrml2.apply(noSwitches);
+    noSwitches->unref();
+
+    return true;
+#endif
+}
+
+void Gui::SoFCDB::writeX3DFields(SoNode* node, std::map<SoNode*, std::string>& nodeMap,
+                                 bool isRoot, int& numDEF, int spaces, std::ostream& out)
+{
+    // remove the VRML prefix from the type name
+    std::string type(node->getTypeId().getName().getString());
+    type = type.substr(4);
+
+    out << Base::blanks(spaces) << "<" << type;
+    if (node->getRefCount() > 1 && !isRoot) {
+        SbName name = node->getName();
+        std::stringstream str;
+        if (name.getLength() == 0)
+            str << "o" << numDEF++;
+        else
+            str << name.getString();
+
+        nodeMap[node] = str.str();
+        out << " DEF=\"" << str.str() << "\"";
+    }
+
+    const SoFieldData* fielddata = node->getFieldData();
+    if (fielddata) {
+        int numFieldNodes = 0;
+
+        // process non-SoSFNode and non-SoMFNode fields
+        for (int i=0; i<fielddata->getNumFields(); i++) {
+            SoField* field = fielddata->getField(node, i);
+            if (!field->isDefault()) {
+                if (!field->isOfType(SoSFNode::getClassTypeId()) &&
+                    !field->isOfType(SoMFNode::getClassTypeId())) {
+                    SbString value;
+                    field->get(value);
+                    QByteArray ba(value.getString(), value.getLength());
+                    ba.replace('\n', ' ');
+                    if (field->isOfType(SoMField::getClassTypeId())) {
+                        ba.replace('[', ' ');
+                        ba.replace(']', ' ');
+                        QList<QByteArray> ary = ba.split(',');
+                        for (auto& it : ary) {
+                            it = it.simplified();
+                        }
+
+                        ba = ary.join(", ");
+                    }
+
+                    out << '\n' << Base::blanks(spaces+2) << fielddata->getFieldName(i).getString() << "=\"" << ba.data() << "\" ";
+                }
+                else {
+                    numFieldNodes++;
+                }
+            }
+        }
+
+        if (numFieldNodes > 0) {
+            out << ">\n";
+        }
+        else {
+            out << "/>\n";
+        }
+
+        // process SoSFNode or SoMFNode fields
+        for (int i=0; i<fielddata->getNumFields(); i++) {
+            SoField* field = fielddata->getField(node, i);
+            if (!field->isDefault()) {
+                if (field->isOfType(SoSFNode::getClassTypeId())) {
+                    SoSFNode* sfNode = static_cast<SoSFNode*>(field);
+                    writeX3DChild(sfNode->getValue(), nodeMap, numDEF, spaces+2, out);
+                }
+                else if (field->isOfType(SoMFNode::getClassTypeId())) {
+                    SoMFNode* mfNode = static_cast<SoMFNode*>(field);
+                    for (int j=0; j<mfNode->getNum(); j++) {
+                        writeX3DChild(mfNode->getNode(j), nodeMap, numDEF, spaces+2, out);
+                    }
+                }
+            }
+        }
+
+        if (numFieldNodes > 0) {
+            out << Base::blanks(spaces) << "</" << type << ">\n";
+        }
+    }
+}
+
+void Gui::SoFCDB::writeX3DChild(SoNode* node, std::map<SoNode*, std::string>& nodeMap,
+                                int& numDEF, int spaces, std::ostream& out)
+{
+    // check if the node is already used
+    auto mapIt = nodeMap.find(node);
+    if (mapIt == nodeMap.end()) {
+        writeX3DFields(node, nodeMap, false, numDEF, spaces, out);
+    }
+    else {
+        // remove the VRML prefix from the type name
+        std::string sftype(node->getTypeId().getName().getString());
+        sftype = sftype.substr(4);
+        out << Base::blanks(spaces) << "<" << sftype << " USE=\"" << mapIt->second << "\" />\n";
+    }
+}
+
+void Gui::SoFCDB::writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostream& out)
+{
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    out << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
+    out << "<X3D profile=\"Immersive\" version=\"3.2\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema-instance\" "
+           "xsd:noNamespaceSchemaLocation=\"http://www.web3d.org/specifications/x3d-3.2.xsd\" width=\"1280px\"  height=\"1024px\">\n";
+    out << "  <head>\n"
+           "    <meta name=\"generator\" content=\"FreeCAD\"/>\n"
+           "    <meta name=\"author\" content=\"\"/>\n"
+           "    <meta name=\"company\" content=\"\"/>\n"
+           "  </head>\n";
+
+    std::map<SoNode*, std::string> nodeMap;
+    out << "<Scene>\n";
+
+    // compute a sensible view point
+    SoGetBoundingBoxAction bboxAction(SbViewportRegion(1280, 1024));
+    bboxAction.apply(node);
+    SbBox3f bbox = bboxAction.getBoundingBox();
+    SbSphere bs;
+    bs.circumscribe(bbox);
+    const SbVec3f& cnt = bs.getCenter();
+    float dist = 2.0f * bs.getRadius();
+
+    if (exportViewpoints) {
+        auto viewpoint = [&out](const char* text, const SbVec3f& cnt,
+                                const SbVec3f& pos, const SbVec3f& axis, float angle) {
+            out << "  <Viewpoint id=\"" << text
+                << "\" centerOfRotation=\"" << cnt[0] << " " << cnt[1] << " " << cnt[2]
+                << "\" position=\"" << pos[0] << " " << pos[1] << " " << pos[2]
+                << "\" orientation=\"" << axis[0] << " " << axis[1] << " " << axis[2] << " " << angle
+                << "\" description=\"camera\" fieldOfView=\"0.9\">"
+                << "</Viewpoint>\n";
+        };
+
+        viewpoint("Front", cnt, SbVec3f(cnt[0], cnt[1] - dist, cnt[2]), SbVec3f(1.0f, 0.0f, 0.0f), 1.5707964f);
+        viewpoint("Back", cnt, SbVec3f(cnt[0], cnt[1] + dist, cnt[2]), SbVec3f(0.0f, 0.707106f, 0.707106f), 3.141592f);
+        viewpoint("Right", cnt, SbVec3f(cnt[0] + dist, cnt[1], cnt[2]), SbVec3f(0.577350f, 0.577350f, 0.577350f), 2.094395f);
+        viewpoint("Left", cnt, SbVec3f(cnt[0] - dist, cnt[1], cnt[2]), SbVec3f(-0.577350f, 0.577350f, 0.577350f), 4.188790f);
+        viewpoint("Top", cnt, SbVec3f(cnt[0], cnt[1], cnt[2] + dist), SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
+        viewpoint("Bottom", cnt, SbVec3f(cnt[0], cnt[1], cnt[2] - dist), SbVec3f(1.0f, 0.0f, 0.0f), 3.141592f);
+    }
+
+    int numDEF = 0;
+    writeX3DFields(node, nodeMap, true, numDEF, 2, out);
+    out << "</Scene>\n";
+    out << "</X3D>\n";
 }
 
 bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
 {
     std::string x3d;
-    if (!writeToX3D(node, x3d))
+    if (!writeToX3D(node, true, x3d))
         return false;
 
     // remove the first two lines from the x3d output as this duplicates
@@ -466,6 +649,18 @@ bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
         << "    <link rel='stylesheet' type='text/css' href='http://www.x3dom.org/download/x3dom.css'></link>\n"
         << "  </head>\n";
     out << x3d;
+
+    auto onclick = [&out](const char* text) {
+        out << "  <button onclick=\"document.getElementById('" << text << "').setAttribute('set_bind','true');\">" << text << "</button>\n";
+    };
+
+    onclick("Front");
+    onclick("Back");
+    onclick("Right");
+    onclick("Left");
+    onclick("Top");
+    onclick("Bottom");
+
     out << "</html>\n";
 
     buffer = out.str();
