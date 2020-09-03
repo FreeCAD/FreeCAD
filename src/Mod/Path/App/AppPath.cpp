@@ -46,6 +46,10 @@
 #include "FeaturePathShape.h"
 #include "AreaPy.h"
 #include "FeatureArea.h"
+#include "Voronoi.h"
+#include "VoronoiPy.h"
+#include "VoronoiVertex.h"
+#include "VoronoiVertexPy.h"
 
 namespace Path {
 extern PyObject* initModule();
@@ -72,6 +76,8 @@ PyMOD_INIT_FUNC(Path)
     Base::Interpreter().addType(&Path::ToolPy       ::Type, pathModule, "Tool");
     Base::Interpreter().addType(&Path::TooltablePy  ::Type, pathModule, "Tooltable");
     Base::Interpreter().addType(&Path::AreaPy       ::Type, pathModule, "Area");
+    Base::Interpreter().addType(&Path::VoronoiPy    ::Type, pathModule, "Voronoi");
+    Base::Interpreter().addType(&Path::VoronoiVertexPy    ::Type, pathModule, "VoronoiVertex");
 
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
@@ -94,6 +100,8 @@ PyMOD_INIT_FUNC(Path)
     Path::FeatureAreaPython      ::init();
     Path::FeatureAreaView        ::init();
     Path::FeatureAreaViewPython  ::init();
+    Path::Voronoi                ::init();
+    Path::VoronoiVertex          ::init();
 
     PyMOD_Return(pathModule);
 }
