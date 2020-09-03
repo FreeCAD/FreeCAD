@@ -517,12 +517,7 @@ void Gui::SoFCDB::writeX3DFields(SoNode* node, std::map<SoNode*, std::string>& n
                     if (field->isOfType(SoMField::getClassTypeId())) {
                         ba.replace('[', ' ');
                         ba.replace(']', ' ');
-                        QList<QByteArray> ary = ba.split(',');
-                        for (auto& it : ary) {
-                            it = it.simplified();
-                        }
-
-                        ba = ary.join(", ");
+                        ba = ba.simplified();
                     }
 
                     out << '\n' << Base::blanks(spaces+2) << fielddata->getFieldName(i).getString() << "=\"" << ba.data() << "\" ";
