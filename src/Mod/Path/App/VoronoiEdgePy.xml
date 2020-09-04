@@ -94,7 +94,7 @@
                 <UserDocu>Returns true if edge goes through endpoint of the segment site</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="getGeom" Const="true">
+        <Methode Name="toGeom" Const="true">
             <Documentation>
                 <UserDocu>Returns true if edge goes through endpoint of the segment site</UserDocu>
             </Documentation>

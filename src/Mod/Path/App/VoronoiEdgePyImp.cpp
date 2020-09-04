@@ -41,6 +41,7 @@
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/LineSegmentPy.h>
+#include <Mod/Part/App/ArcOfParabolaPy.h>
 
 // files generated out of VoronoiEdgePy.xml
 #include "VoronoiEdgePy.cpp"
@@ -132,13 +133,13 @@ VoronoiEdge* getVoronoiEdgeFromPy(const VoronoiEdgePy *e, PyObject *args = 0) {
 Py::Int VoronoiEdgePy::getColor(void) const {
   VoronoiEdge *e = getVoronoiEdgePtr();
   if (e->isBound()) {
-    return Py::Int(e->dia->edges()[e->index].color());
+    return Py::Int(e->ptr->color() & Voronoi::ColorMask);
   }
   return Py::Int(0);
 }
 
 void VoronoiEdgePy::setColor(Py::Int color) {
-  getEdgeFromPy(this)->color(int(color) & 0x0FFFFFFF);
+  getEdgeFromPy(this)->color(int(color) & Voronoi::ColorMask);
 }
 
 Py::List VoronoiEdgePy::getVertices(void) const
@@ -250,7 +251,7 @@ PyObject* VoronoiEdgePy::isSecondary(PyObject *args)
 }
 
 namespace {
-  Voronoi::point_type retrievPoint(Voronoi::diagram_type *dia, const Voronoi::diagram_type::cell_type *cell) {
+  Voronoi::point_type retrievePoint(Voronoi::diagram_type *dia, const Voronoi::diagram_type::cell_type *cell) {
     Voronoi::diagram_type::cell_type::source_index_type index = cell->source_index();
     Voronoi::diagram_type::cell_type::source_category_type category = cell->source_category();
     if (category == boost::polygon::SOURCE_CATEGORY_SINGLE_POINT) {
@@ -270,7 +271,7 @@ namespace {
   }
 }
 
-PyObject* VoronoiEdgePy::getGeom(PyObject *args)
+PyObject* VoronoiEdgePy::toGeom(PyObject *args)
 {
   double z = 0.0;
   if (!PyArg_ParseTuple(args, "|d", &z)) {
@@ -283,7 +284,7 @@ PyObject* VoronoiEdgePy::getGeom(PyObject *args)
         auto v0 = e->ptr->vertex0();
         auto v1 = e->ptr->vertex1();
         if (v0 && v1) {
-          auto p = new Part::GeomLineSegment();
+          auto p = new Part::GeomLineSegment;
           p->setPoints(Base::Vector3d(v0->x(), v0->y(), z), Base::Vector3d(v1->x(), v1->y(), z));
           return new Part::LineSegmentPy(p);
         }
@@ -294,14 +295,14 @@ PyObject* VoronoiEdgePy::getGeom(PyObject *args)
         Voronoi::point_type origin;
         Voronoi::point_type direction;
         if (c0->contains_point() && c1->contains_point()) {
-          Voronoi::point_type p0 = retrievPoint(e->dia, c0);
-          Voronoi::point_type p1 = retrievPoint(e->dia, c1);
+          Voronoi::point_type p0 = retrievePoint(e->dia, c0);
+          Voronoi::point_type p1 = retrievePoint(e->dia, c1);
           origin.x((p0.x() + p1.x()) / 2.);
           origin.y((p0.y() + p1.y()) / 2.);
           direction.x(p0.y() - p1.y());
           direction.y(p1.x() - p0.x());
         } else {
-          origin = c0->contains_segment() ? retrievPoint(e->dia, c1) : retrievPoint(e->dia, c0);
+          origin = c0->contains_segment() ? retrievePoint(e->dia, c1) : retrievePoint(e->dia, c0);
           Voronoi::segment_type segment = c0->contains_segment() ? retrieveSegment(e->dia, c0) : retrieveSegment(e->dia, c1);
           Voronoi::coordinate_type dx = high(segment).x() - low(segment).x();
           Voronoi::coordinate_type dy = high(segment).y() - low(segment).y();
@@ -330,10 +331,78 @@ PyObject* VoronoiEdgePy::getGeom(PyObject *args)
           end.x(origin.x() + direction.x() * k);
           end.y(origin.y() + direction.y() * k);
         }
-        auto p = new Part::GeomLineSegment();
+        auto p = new Part::GeomLineSegment;
         p->setPoints(Base::Vector3d(begin.x(), begin.y(), z), Base::Vector3d(end.x(), end.y()));
         return new Part::LineSegmentPy(p);
       }
+    } else {
+      // parabolic curve, which is always formed by a point and an edge
+      Voronoi::point_type   point   = e->ptr->cell()->contains_point() ? retrievePoint(e->dia, e->ptr->cell())  : retrievePoint(e->dia, e->ptr->twin()->cell());
+      Voronoi::segment_type segment = e->ptr->cell()->contains_point() ? retrieveSegment(e->dia, e->ptr->twin()->cell()) : retrieveSegment(e->dia, e->ptr->cell());
+      // the location is the mid point betwenn the normal on the segment through point
+      // this is only the mid point of the segment if the parabola is symmetric
+      Voronoi::point_type loc;
+      {
+        // move segment so it goes through the origin (s)
+        Voronoi::point_type offset;
+        {
+          offset.x(low(segment).x());
+          offset.y(low(segment).y());
+        }
+        Voronoi::point_type s;
+        {
+          s.x(high(segment).x() - offset.x());
+          s.y(high(segment).y() - offset.y());
+        }
+        // move point accordingly so it maintains it's relation to s (p)
+        Voronoi::point_type p;
+        {
+          p.x(point.x() - offset.x());
+          p.y(point.y() - offset.y());
+        }
+        // calculate the orthogonal projection of p onto s
+        // ((p dot s) / (s dot s)) * s (https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line)
+        double proj = (p.x() * s.x() + p.y() * s.y()) / (s.x() * s.x() + s.y() * s.y());
+        Voronoi::point_type p1;
+        {
+          p1.x(proj * s.x());
+          p1.y(proj * s.y());
+        }
+        // finally ...
+        // the location is the mid point between the projection on the segment and the point
+        loc.x(((offset.x() + p1.x()) + point.x()) / 2);
+        loc.y(((offset.y() + p1.y()) + point.y()) / 2);
+      }
+      Voronoi::point_type axis;
+      {
+        axis.x(point.x() - loc.x());
+        axis.y(point.y() - loc.y());
+      }
+      auto p = new Part::GeomParabola;
+      {
+        p->setCenter(Base::Vector3d(point.x(), point.y(), z));
+        p->setLocation(Base::Vector3d(loc.x(), loc.y(), z));
+        p->setAngleXU(atan2(axis.y(), axis.x()));
+        p->setFocal(sqrt(axis.x() * axis.x() + axis.y() * axis.y()));
+      }
+      auto a = new Part::GeomArcOfParabola;
+      {
+        a->setHandle(Handle(Geom_Parabola)::DownCast(p->handle()));
+
+        // figure out the arc parameters
+        auto v0 = e->ptr->vertex0();
+        auto v1 = e->ptr->vertex1();
+        double param0 = 0;
+        double param1 = 0;
+        if (!p->closestParameter(Base::Vector3d(v0->x(), v0->y(), z), param0)) {
+          std::cerr << "closestParameter(v0) failed" << std::endl;
+        }
+        if (!p->closestParameter(Base::Vector3d(v1->x(), v1->y(), z), param1)) {
+          std::cerr << "closestParameter(v0) failed" << std::endl;
+        }
+        a->setRange(param0, param1, false);
+      }
+      return new Part::ArcOfParabolaPy(a);
     }
   }
   Py_INCREF(Py_None);

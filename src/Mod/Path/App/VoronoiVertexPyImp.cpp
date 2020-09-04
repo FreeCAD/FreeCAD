@@ -116,13 +116,13 @@ VoronoiVertex* getVoronoiVertexFromPy(const VoronoiVertexPy *v, PyObject *args =
 Py::Int VoronoiVertexPy::getColor(void) const {
   VoronoiVertex *v = getVoronoiVertexPtr();
   if (v->isBound()) {
-    return Py::Int(v->ptr->color());
+    return Py::Int(v->ptr->color() & Voronoi::ColorMask);
   }
   return Py::Int(0);
 }
 
 void VoronoiVertexPy::setColor(Py::Int color) {
-  getVertexFromPy(this)->color(int(color) & 0x0FFFFFFF);
+  getVertexFromPy(this)->color(int(color) & Voronoi::ColorMask);
 }
 
 Py::Float VoronoiVertexPy::getX(void) const
@@ -140,7 +140,7 @@ Py::Object VoronoiVertexPy::getIncidentEdge() const {
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(v->dia, v->ptr->incident_edge())));
 }
 
-PyObject* VoronoiVertexPy::getGeom(PyObject *args)
+PyObject* VoronoiVertexPy::toGeom(PyObject *args)
 {
   double z = 0.0;
   if (!PyArg_ParseTuple(args, "|d", &z)) {

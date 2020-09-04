@@ -47,6 +47,8 @@ namespace Path
     ~Voronoi();
 
     static const int InvalidIndex = INT_MAX;
+    static const int ColorMask    = 0x07FFFFFF; // top 5 bits reserved internally
+
     // types
     typedef double coordinate_type;
     typedef boost::polygon::point_data<coordinate_type> point_type;
