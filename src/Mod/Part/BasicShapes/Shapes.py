@@ -84,7 +84,7 @@ if FreeCAD.GuiUp:
         def GetResources(self):
             return {'MenuText': Qt.QT_TRANSLATE_NOOP("Part_MakeTube","Create tube"),
                     'Accel': "",
-                    'CmdType': "ForEdit",
+                    'CmdType': "AlterDoc:Alter3DView:AlterSelection",
                     'Pixmap'  : ":/icons/Part_Tube.svg",
                     'ToolTip': Qt.QT_TRANSLATE_NOOP("Part_MakeTube","Creates a tube")}
         
