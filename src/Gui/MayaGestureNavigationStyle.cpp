@@ -70,8 +70,6 @@
 # include <QRegExp>
 #endif
 
-#include <Inventor/sensors/SoTimerSensor.h>
-
 #include <App/Application.h>
 #include <Base/Console.h>
 #include "NavigationStyle.h"

@@ -159,6 +159,7 @@
 #include <Inventor/projectors/SbSpherePlaneProjector.h>
 #include <Inventor/projectors/SbSphereSheetProjector.h>
 #include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/system/inttypes.h>
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 

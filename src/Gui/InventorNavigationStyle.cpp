@@ -36,7 +36,6 @@
 # include <QRegExp>
 #endif
 
-#include <Inventor/sensors/SoTimerSensor.h>
 #include "SoMouseWheelEvent.h"
 
 #include <App/Application.h>

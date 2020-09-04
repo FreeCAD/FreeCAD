@@ -26,10 +26,10 @@
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoClipPlane.h>
 # include <Inventor/nodes/SoGroup.h>
+# include <Inventor/sensors/SoTimerSensor.h>
 # include <QPointer>
 # include <cmath>
 #endif
-# include <Inventor/sensors/SoTimerSensor.h>
 
 #include "Clipping.h"
 #include "ui_Clipping.h"

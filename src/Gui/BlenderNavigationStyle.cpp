@@ -36,8 +36,6 @@
 # include <QRegExp>
 #endif
 
-#include <Inventor/sensors/SoTimerSensor.h>
-
 #include <App/Application.h>
 #include "NavigationStyle.h"
 #include "View3DInventorViewer.h"
