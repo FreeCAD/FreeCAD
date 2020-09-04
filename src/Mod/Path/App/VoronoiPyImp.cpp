@@ -169,6 +169,28 @@ Py::List VoronoiPy::getCells(void) const {
   return list;
 }
 
+PyObject* VoronoiPy::colorExterior(PyObject *args) {
+  int color = 0;
+  if (!PyArg_ParseTuple(args, "i", &color)) {
+    throw  Py::RuntimeError("colorExterior requires an integer (color) argument");
+  }
+  getVoronoiPtr()->colorExterior(color);
+
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+
+PyObject* VoronoiPy::colorTwins(PyObject *args) {
+  int color = 0;
+  if (!PyArg_ParseTuple(args, "i", &color)) {
+    throw  Py::RuntimeError("colorTwins requires an integer (color) argument");
+  }
+  getVoronoiPtr()->colorTwins(color);
+
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+
 // custom attributes get/set
 
 PyObject *VoronoiPy::getCustomAttributes(const char* /*attr*/) const

@@ -63,5 +63,15 @@
                 <UserDocu>constructs the voronoi diagram from the input collections</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="colorExterior">
+            <Documentation>
+                <UserDocu>assign given color to all exterior edges and vertices</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="colorTwins">
+            <Documentation>
+                <UserDocu>assign given color to all twins of edges (which one is considered a twin is arbitrary)</UserDocu>
+            </Documentation>
+        </Methode>
     </PythonExport>
 </GenerateModel>

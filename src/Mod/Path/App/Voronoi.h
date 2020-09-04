@@ -89,8 +89,13 @@ namespace Path
     long numEdges() const;
     long numVertices() const;
 
+    void colorExterior(int color);
+    void colorTwins(int color);
+
+  private:
     // attributes
     Base::Reference<diagram_type> vd;
+    friend class VoronoiPy;
   };
 
 } //namespace Path

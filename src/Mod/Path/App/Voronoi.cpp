@@ -43,28 +43,24 @@ TYPESYSTEM_SOURCE(Path::Voronoi , Base::BaseClass);
 
 // Helpers
 
-#if 0
-static const std::size_t EXTERNAL_COLOR = 1;
-
-static void color_exterior(const Voronoi::diagram_type::edge_type *edge) {
-  if (edge->color() == EXTERNAL_COLOR) {
+static void colorExterior(const Voronoi::diagram_type::edge_type *edge, std::size_t colorValue) {
+  if (edge->color() == colorValue) {
     // end recursion
     return;
   }
-  edge->color(EXTERNAL_COLOR);
-  edge->twin()->color(EXTERNAL_COLOR);
+  edge->color(colorValue);
+  edge->twin()->color(colorValue);
   auto v = edge->vertex1();
   if (v == NULL || !edge->is_primary()) {
     return;
   }
-  v->color(EXTERNAL_COLOR);
+  v->color(colorValue);
   auto e = v->incident_edge();
   do {
-    color_exterior(e);
+    colorExterior(e, colorValue);
     e = e->rot_next();
   } while (e != v->incident_edge());
 }
-#endif
 
 // Constructors & destructors
 
@@ -146,4 +142,23 @@ void Voronoi::construct()
   vd->clear();
   construct_voronoi(vd->points.begin(), vd->points.end(), vd->segments.begin(), vd->segments.end(), (voronoi_diagram_type*)vd);
   vd->reIndex();
+}
+
+void Voronoi::colorExterior(int color) {
+  for (diagram_type::const_edge_iterator it = vd->edges().begin(); it != vd->edges().end(); ++it) {
+    if (!it->is_finite()) {
+      ::colorExterior(&(*it), color);
+    }
+  }
+}
+
+void Voronoi::colorTwins(int color) {
+  for (diagram_type::const_edge_iterator it = vd->edges().begin(); it != vd->edges().end(); ++it) {
+    if (!it->color()) {
+      auto twin = it->twin();
+      if (!twin->color()) {
+        twin->color(color);
+      }
+    }
+  }
 }
