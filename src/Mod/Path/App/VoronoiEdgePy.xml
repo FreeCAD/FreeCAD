@@ -22,14 +22,12 @@
             </Documentation>
             <Parameter Name="Color" Type="Int"/>
         </Attribute>
-        <!--
         <Attribute Name="Cell" ReadOnly="true">
             <Documentation>
                 <UserDocu>cell the edge belongs to</UserDocu>
             </Documentation>
             <Parameter Name="Cell" Type="Object"/>
         </Attribute>
-        -->
         <Attribute Name="Vertices" ReadOnly="true">
             <Documentation>
                 <UserDocu>Begin and End voronoi vertex</UserDocu>

@@ -101,6 +101,18 @@ const Voronoi::voronoi_diagram_type::vertex_type* getVertexFromPy(VoronoiVertexP
   return 0;
 }
 
+VoronoiVertex* getVoronoiVertexFromPy(const VoronoiVertexPy *v, PyObject *args = 0) {
+  VoronoiVertex *self = v->getVoronoiVertexPtr();
+  if (!self->isBound()) {
+    throw Py::TypeError("Vertex not bound to voronoi diagram");
+  }
+  if (args && !PyArg_ParseTuple(args, "")) {
+    throw Py::RuntimeError("No arguments accepted");
+  }
+  return self;
+}
+
+
 Py::Int VoronoiVertexPy::getColor(void) const {
   VoronoiVertex *v = getVoronoiVertexPtr();
   if (v->isBound()) {
@@ -115,27 +127,16 @@ void VoronoiVertexPy::setColor(Py::Int color) {
 
 Py::Float VoronoiVertexPy::getX(void) const
 {
-  VoronoiVertex *v = getVoronoiVertexPtr();
-  if (!v->isBound()) {
-    throw Py::FloatingPointError("Cannot get coordinates of unbound voronoi vertex");
-  }
-  return Py::Float(v->ptr->x());
+  return Py::Float(getVoronoiVertexFromPy(this)->ptr->x());
 }
 
 Py::Float VoronoiVertexPy::getY(void) const
 {
-  VoronoiVertex *v = getVoronoiVertexPtr();
-  if (!v->isBound()) {
-    throw Py::FloatingPointError("Cannot get coordinates of unbound voronoi vertex");
-  }
-  return Py::Float(v->ptr->y());
+  return Py::Float(getVoronoiVertexFromPy(this)->ptr->y());
 }
 
 Py::Object VoronoiVertexPy::getIncidentEdge() const {
-  VoronoiVertex *v = getVoronoiVertexPtr();
-  if (!v->isBound()) {
-    throw Py::TypeError("Vertex not bound to voronoi diagram");
-  }
+  VoronoiVertex *v = getVoronoiVertexFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(v->dia, v->ptr->incident_edge())));
 }
 

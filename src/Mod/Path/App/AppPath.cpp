@@ -47,6 +47,8 @@
 #include "AreaPy.h"
 #include "FeatureArea.h"
 #include "Voronoi.h"
+#include "VoronoiCell.h"
+#include "VoronoiCellPy.h"
 #include "VoronoiEdge.h"
 #include "VoronoiEdgePy.h"
 #include "VoronoiPy.h"
@@ -79,6 +81,7 @@ PyMOD_INIT_FUNC(Path)
     Base::Interpreter().addType(&Path::TooltablePy      ::Type, pathModule, "Tooltable");
     Base::Interpreter().addType(&Path::AreaPy           ::Type, pathModule, "Area");
     Base::Interpreter().addType(&Path::VoronoiPy        ::Type, pathModule, "Voronoi");
+    Base::Interpreter().addType(&Path::VoronoiCellPy    ::Type, pathModule, "VoronoiCell");
     Base::Interpreter().addType(&Path::VoronoiEdgePy    ::Type, pathModule, "VoronoiEdge");
     Base::Interpreter().addType(&Path::VoronoiVertexPy  ::Type, pathModule, "VoronoiVertex");
 
@@ -104,6 +107,7 @@ PyMOD_INIT_FUNC(Path)
     Path::FeatureAreaView        ::init();
     Path::FeatureAreaViewPython  ::init();
     Path::Voronoi                ::init();
+    Path::VoronoiCell            ::init();
     Path::VoronoiEdge            ::init();
     Path::VoronoiVertex          ::init();
 

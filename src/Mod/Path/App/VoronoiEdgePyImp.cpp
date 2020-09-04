@@ -29,6 +29,8 @@
 
 #include "Mod/Path/App/Voronoi.h"
 #include "Mod/Path/App/Voronoi.h"
+#include "Mod/Path/App/VoronoiCell.h"
+#include "Mod/Path/App/VoronoiCellPy.h"
 #include "Mod/Path/App/VoronoiEdge.h"
 #include "Mod/Path/App/VoronoiEdgePy.h"
 #include "Mod/Path/App/VoronoiVertex.h"
@@ -190,6 +192,13 @@ Py::Object VoronoiEdgePy::getRotatedPrev(void) const
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(e->dia, e->ptr->rot_prev())));
 }
+
+Py::Object VoronoiEdgePy::getCell(void) const
+{
+  VoronoiEdge *e = getVoronoiEdgeFromPy(this);
+  return Py::asObject(new VoronoiCellPy(new VoronoiCell(e->dia, e->ptr->cell())));
+}
+
 
 PyObject* VoronoiEdgePy::isFinite(PyObject *args)
 {

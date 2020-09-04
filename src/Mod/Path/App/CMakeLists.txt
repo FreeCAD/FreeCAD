@@ -37,6 +37,7 @@ generate_from_xml(FeaturePathCompoundPy)
 generate_from_xml(AreaPy)
 generate_from_xml(FeatureAreaPy)
 generate_from_xml(VoronoiPy)
+generate_from_xml(VoronoiCellPy)
 generate_from_xml(VoronoiEdgePy)
 generate_from_xml(VoronoiVertexPy)
 
@@ -57,6 +58,8 @@ SET(Python_SRCS
     FeatureAreaPyImp.cpp
     VoronoiPy.xml
     VoronoiPyImp.cpp
+    VoronoiCellPy.xml
+    VoronoiCellPyImp.cpp
     VoronoiEdgePy.xml
     VoronoiEdgePyImp.cpp
     VoronoiVertexPy.xml
@@ -101,6 +104,8 @@ SET(Path_SRCS
     PathSegmentWalker.cpp
     Voronoi.cpp
     Voronoi.h
+    VoronoiCell.cpp
+    VoronoiCell.h
     VoronoiEdge.cpp
     VoronoiEdge.h
     VoronoiVertex.cpp
