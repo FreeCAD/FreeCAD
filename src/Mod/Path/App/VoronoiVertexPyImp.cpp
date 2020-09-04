@@ -140,6 +140,20 @@ Py::Object VoronoiVertexPy::getIncidentEdge() const {
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(v->dia, v->ptr->incident_edge())));
 }
 
+PyObject* VoronoiVertexPy::getGeom(PyObject *args)
+{
+  double z = 0.0;
+  if (!PyArg_ParseTuple(args, "|d", &z)) {
+    throw Py::RuntimeError("single argument of type double accepted");
+  }
+  VoronoiVertex *v = getVoronoiVertexPtr();
+  if (v->isBound()) {
+    return new Base::VectorPy(new Base::Vector3d(v->ptr->x(), v->ptr->y(), z));
+  }
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+
 // custom attributes get/set
 
 PyObject* VoronoiVertexPy::getCustomAttributes(const char* /*attr*/) const

@@ -121,11 +121,11 @@ Voronoi::~Voronoi()
 
 
 void Voronoi::addPoint(const Voronoi::point_type &p) {
-  points.push_back(p);
+  vd->points.push_back(p);
 }
 
 void Voronoi::addSegment(const Voronoi::segment_type &s) {
-  segments.push_back(s);
+  vd->segments.push_back(s);
 }
 
 
@@ -144,6 +144,6 @@ long Voronoi::numVertices() const {
 void Voronoi::construct()
 {
   vd->clear();
-  construct_voronoi(points.begin(), points.end(), segments.begin(), segments.end(), (voronoi_diagram_type*)vd);
+  construct_voronoi(vd->points.begin(), vd->points.end(), vd->segments.begin(), vd->segments.end(), (voronoi_diagram_type*)vd);
   vd->reIndex();
 }

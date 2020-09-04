@@ -45,6 +45,9 @@ public:
 
   bool isBound(void) const;
 
+  Voronoi::point_type   sourcePoint()  const;
+  Voronoi::segment_type sourceSegment() const;
+
   Base::Reference<Voronoi::diagram_type> dia;
   long index;
   mutable const Voronoi::diagram_type::cell_type *ptr;

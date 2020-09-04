@@ -40,6 +40,7 @@
 #include <Base/PlacementPy.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
+#include <Mod/Part/App/LineSegmentPy.h>
 
 // files generated out of VoronoiEdgePy.xml
 #include "VoronoiEdgePy.cpp"
@@ -248,6 +249,96 @@ PyObject* VoronoiEdgePy::isSecondary(PyObject *args)
   return chk;
 }
 
+namespace {
+  Voronoi::point_type retrievPoint(Voronoi::diagram_type *dia, const Voronoi::diagram_type::cell_type *cell) {
+    Voronoi::diagram_type::cell_type::source_index_type index = cell->source_index();
+    Voronoi::diagram_type::cell_type::source_category_type category = cell->source_category();
+    if (category == boost::polygon::SOURCE_CATEGORY_SINGLE_POINT) {
+      return dia->points[index];
+    }
+    index -= dia->points.size();
+    if (category == boost::polygon::SOURCE_CATEGORY_SEGMENT_START_POINT) {
+      return low(dia->segments[index]);
+    } else {
+      return high(dia->segments[index]);
+    }
+  }
+
+  Voronoi::segment_type retrieveSegment(Voronoi::diagram_type *dia, const Voronoi::diagram_type::cell_type *cell) {
+    Voronoi::diagram_type::cell_type::source_index_type index = cell->source_index() - dia->points.size();
+    return dia->segments[index];
+  }
+}
+
+PyObject* VoronoiEdgePy::getGeom(PyObject *args)
+{
+  double z = 0.0;
+  if (!PyArg_ParseTuple(args, "|d", &z)) {
+    throw Py::RuntimeError("single argument of type double accepted");
+  }
+  VoronoiEdge *e = getVoronoiEdgePtr();
+  if (e->isBound()) {
+    if (e->ptr->is_linear()) {
+      if (e->ptr->is_finite()) {
+        auto v0 = e->ptr->vertex0();
+        auto v1 = e->ptr->vertex1();
+        if (v0 && v1) {
+          auto p = new Part::GeomLineSegment();
+          p->setPoints(Base::Vector3d(v0->x(), v0->y(), z), Base::Vector3d(v1->x(), v1->y(), z));
+          return new Part::LineSegmentPy(p);
+        }
+      } else {
+        // infinite linear, need to clip somehow
+        const Voronoi::diagram_type::cell_type *c0 = e->ptr->cell();
+        const Voronoi::diagram_type::cell_type *c1 = e->ptr->twin()->cell();
+        Voronoi::point_type origin;
+        Voronoi::point_type direction;
+        if (c0->contains_point() && c1->contains_point()) {
+          Voronoi::point_type p0 = retrievPoint(e->dia, c0);
+          Voronoi::point_type p1 = retrievPoint(e->dia, c1);
+          origin.x((p0.x() + p1.x()) / 2.);
+          origin.y((p0.y() + p1.y()) / 2.);
+          direction.x(p0.y() - p1.y());
+          direction.y(p1.x() - p0.x());
+        } else {
+          origin = c0->contains_segment() ? retrievPoint(e->dia, c1) : retrievPoint(e->dia, c0);
+          Voronoi::segment_type segment = c0->contains_segment() ? retrieveSegment(e->dia, c0) : retrieveSegment(e->dia, c1);
+          Voronoi::coordinate_type dx = high(segment).x() - low(segment).x();
+          Voronoi::coordinate_type dy = high(segment).y() - low(segment).y();
+          if ((low(segment) == origin) ^ c0->contains_point()) {
+            direction.x(dy);
+            direction.y(-dx);
+          } else {
+            direction.x(-dy);
+            direction.y(dx);
+          }
+        }
+        double k = 10.0;
+        Voronoi::point_type begin;
+        Voronoi::point_type end;
+        if (e->ptr->vertex0()) {
+          begin.x(e->ptr->vertex0()->x());
+          begin.y(e->ptr->vertex0()->y());
+        } else {
+          begin.x(origin.x() - direction.x() * k);
+          begin.y(origin.y() - direction.y() * k);
+        }
+        if (e->ptr->vertex1()) {
+          end.x(e->ptr->vertex1()->x());
+          end.y(e->ptr->vertex1()->y());
+        } else {
+          end.x(origin.x() + direction.x() * k);
+          end.y(origin.y() + direction.y() * k);
+        }
+        auto p = new Part::GeomLineSegment();
+        p->setPoints(Base::Vector3d(begin.x(), begin.y(), z), Base::Vector3d(end.x(), end.y()));
+        return new Part::LineSegmentPy(p);
+      }
+    }
+  }
+  Py_INCREF(Py_None);
+  return Py_None;
+}
 
 // custom attributes get/set
 

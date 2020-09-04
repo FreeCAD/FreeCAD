@@ -51,7 +51,7 @@ std::string VoronoiPy::representation(void) const
   std::stringstream ss;
   ss.precision(5);
   ss << "Voronoi("
-    << "{" << getVoronoiPtr()->segments.size() << ", " << getVoronoiPtr()->points.size() << "}"
+    << "{" << getVoronoiPtr()->vd->segments.size() << ", " << getVoronoiPtr()->vd->points.size() << "}"
     << " -> "
     << "{" << getVoronoiPtr()->numCells() << ", " << getVoronoiPtr()->numEdges() << ", " << getVoronoiPtr()->numVertices() << "}"
     << ")";
@@ -92,7 +92,7 @@ Voronoi::point_type getPointFromPy(PyObject *obj) {
 PyObject* VoronoiPy::addPoint(PyObject *args) {
   PyObject *obj = 0;
   if (PyArg_ParseTuple(args, "O", &obj)) {
-    getVoronoiPtr()->points.push_back(getPointFromPy(obj));
+    getVoronoiPtr()->vd->points.push_back(getPointFromPy(obj));
   }
   Py_INCREF(Py_None);
   return Py_None;
@@ -105,7 +105,7 @@ PyObject* VoronoiPy::addSegment(PyObject *args) {
   if (PyArg_ParseTuple(args, "OO", &objBegin, &objEnd)) {
     auto p0 = getPointFromPy(objBegin);
     auto p1 = getPointFromPy(objEnd);
-    getVoronoiPtr()->segments.push_back(Voronoi::segment_type(p0, p1));
+    getVoronoiPtr()->vd->segments.push_back(Voronoi::segment_type(p0, p1));
   }
   Py_INCREF(Py_None);
   return Py_None;

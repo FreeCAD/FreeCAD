@@ -52,6 +52,7 @@ namespace Path
     typedef boost::polygon::point_data<coordinate_type> point_type;
     typedef boost::polygon::segment_data<coordinate_type> segment_type;
     typedef boost::polygon::voronoi_diagram<coordinate_type> voronoi_diagram_type;
+
     class diagram_type
       : public voronoi_diagram_type
       , public Base::Handled
@@ -67,6 +68,9 @@ namespace Path
       int index(const vertex_type *vertex) const;
 
       void reIndex();
+
+      std::vector<point_type>       points;
+      std::vector<segment_type>     segments;
 
     private:
       cell_map_type   cell_index;
@@ -84,8 +88,6 @@ namespace Path
     long numVertices() const;
 
     // attributes
-    std::vector<point_type>       points;
-    std::vector<segment_type>     segments;
     Base::Reference<diagram_type> vd;
   };
 

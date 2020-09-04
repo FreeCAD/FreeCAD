@@ -74,3 +74,21 @@ bool VoronoiCell::isBound(void) const {
   ptr = 0;
   return false;
 }
+
+Voronoi::point_type VoronoiCell::sourcePoint() const {
+  int index = ptr->source_index();
+  int category = ptr->source_category();
+  if (category == boost::polygon::SOURCE_CATEGORY_SINGLE_POINT) {
+    return dia->points[index];
+  }
+  if (category == boost::polygon::SOURCE_CATEGORY_SEGMENT_START_POINT) {
+    return low(dia->segments[index - dia->points.size()]);
+  } else {
+    return high(dia->segments[index - dia->points.size()]);
+  }
+}
+
+Voronoi::segment_type VoronoiCell::sourceSegment() const {
+  return dia->segments[ptr->source_index() - dia->points.size()];
+}
+
