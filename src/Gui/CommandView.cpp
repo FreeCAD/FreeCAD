@@ -529,9 +529,12 @@ void StdCmdToggleClipPlane::activated(int iMsg)
             view->toggleClippingPlane();
     }
 #else
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (view) {
-        Gui::Control().showDialog(new Gui::Dialog::TaskClipping(view));
+    static QPointer<Gui::Dialog::Clipping> clipping = nullptr;
+    if (!clipping) {
+        View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+        if (view) {
+            clipping = Gui::Dialog::Clipping::makeDockWidget(view);
+        }
     }
 #endif
 }
@@ -553,9 +556,8 @@ bool StdCmdToggleClipPlane::isActive(void)
         return false;
     }
 #else
-    if (Gui::Control().activeDialog())
-        return false;
-    return true;
+    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    return view ? true : false;
 #endif
 }
 
