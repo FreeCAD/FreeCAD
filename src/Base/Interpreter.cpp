@@ -328,8 +328,12 @@ std::string InterpreterSingleton::runStringWithKey(const char *psCmd, const char
     if (!key_return_value.isString())
         key_return_value = key_return_value.str();
 
+#if PY_MAJOR_VERSION >= 3
     Py::Bytes str = Py::String(key_return_value).encode("utf-8", "~E~");
     std::string result = static_cast<std::string>(str);
+#else
+    std::string result = static_cast<std::string>(Py::String(key_return_value));
+#endif
     return result;
 }
 
