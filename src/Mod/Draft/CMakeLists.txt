@@ -15,7 +15,6 @@ SET(Draft_SRCS_base
     DraftLayer.py
     DraftFillet.py
     WorkingPlane.py
-    getSVG.py
     TestDraft.py
     TestDraftGui.py
 )
@@ -97,6 +96,7 @@ SET(Draft_functions
     draftfunctions/rotate.py
     draftfunctions/scale.py
     draftfunctions/split.py
+    draftfunctions/svg.py
     draftfunctions/upgrade.py
     draftfunctions/README.md
 )
