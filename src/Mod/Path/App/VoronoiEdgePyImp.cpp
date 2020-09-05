@@ -269,6 +269,36 @@ namespace {
     Voronoi::diagram_type::cell_type::source_index_type index = cell->source_index() - dia->points.size();
     return dia->segments[index];
   }
+
+  Voronoi::point_type orthognalProjection(const Voronoi::point_type &point, const Voronoi::segment_type &segment) {
+    // move segment so it goes through the origin (s)
+    Voronoi::point_type offset;
+    {
+      offset.x(low(segment).x());
+      offset.y(low(segment).y());
+    }
+    Voronoi::point_type s;
+    {
+      s.x(high(segment).x() - offset.x());
+      s.y(high(segment).y() - offset.y());
+    }
+    // move point accordingly so it maintains it's relation to s (p)
+    Voronoi::point_type p;
+    {
+      p.x(point.x() - offset.x());
+      p.y(point.y() - offset.y());
+    }
+    // calculate the orthogonal projection of p onto s
+    // ((p dot s) / (s dot s)) * s (https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line)
+    // and it back by original offset to get the projected point
+    double proj = (p.x() * s.x() + p.y() * s.y()) / (s.x() * s.x() + s.y() * s.y());
+    Voronoi::point_type pt;
+    {
+      pt.x(offset.x() + proj * s.x());
+      pt.y(offset.y() + proj * s.y());
+    }
+    return pt;
+  }
 }
 
 PyObject* VoronoiEdgePy::toGeom(PyObject *args)
@@ -314,7 +344,7 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
             direction.y(dx);
           }
         }
-        double k = 10.0;
+        double k = 10.0; // <-- need something smarter here
         Voronoi::point_type begin;
         Voronoi::point_type end;
         if (e->ptr->vertex0()) {
@@ -343,35 +373,10 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
       // this is only the mid point of the segment if the parabola is symmetric
       Voronoi::point_type loc;
       {
-        // move segment so it goes through the origin (s)
-        Voronoi::point_type offset;
-        {
-          offset.x(low(segment).x());
-          offset.y(low(segment).y());
-        }
-        Voronoi::point_type s;
-        {
-          s.x(high(segment).x() - offset.x());
-          s.y(high(segment).y() - offset.y());
-        }
-        // move point accordingly so it maintains it's relation to s (p)
-        Voronoi::point_type p;
-        {
-          p.x(point.x() - offset.x());
-          p.y(point.y() - offset.y());
-        }
-        // calculate the orthogonal projection of p onto s
-        // ((p dot s) / (s dot s)) * s (https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line)
-        double proj = (p.x() * s.x() + p.y() * s.y()) / (s.x() * s.x() + s.y() * s.y());
-        Voronoi::point_type p1;
-        {
-          p1.x(proj * s.x());
-          p1.y(proj * s.y());
-        }
-        // finally ...
+        Voronoi::point_type proj = orthognalProjection(point, segment);
         // the location is the mid point between the projection on the segment and the point
-        loc.x(((offset.x() + p1.x()) + point.x()) / 2);
-        loc.y(((offset.y() + p1.y()) + point.y()) / 2);
+        loc.x((proj.x() + point.x()) / 2);
+        loc.y((proj.y() + point.y()) / 2);
       }
       Voronoi::point_type axis;
       {
@@ -407,6 +412,70 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
   }
   Py_INCREF(Py_None);
   return Py_None;
+}
+
+
+namespace {
+
+  double distanceBetween(const Voronoi::diagram_type::vertex_type &v0, const Voronoi::point_type &p1) {
+    double x = v0.x() - p1.x();
+    double y = v0.y() - p1.y();
+    return sqrt(x * x + y * y);
+  }
+
+  void addDistanceBetween(const Voronoi::diagram_type::vertex_type *v0, const Voronoi::point_type &p1, Py::List *list) {
+    if (v0) {
+      list->append(Py::Float(distanceBetween(*v0, p1)));
+    } else {
+      Py_INCREF(Py_None);
+      list->append(Py::asObject(Py_None));
+    }
+  }
+
+  void addProjectedDistanceBetween(const Voronoi::diagram_type::vertex_type *v0, const Voronoi::segment_type &segment, Py::List *list) {
+    if (v0) {
+      Voronoi::point_type p0;
+      {
+        p0.x(v0->x());
+        p0.y(v0->y());
+      }
+      Voronoi::point_type p1 = orthognalProjection(p0, segment);
+      list->append(Py::Float(distanceBetween(*v0, p1)));
+    } else {
+      Py_INCREF(Py_None);
+      list->append(Py::asObject(Py_None));
+    }
+  }
+
+  bool addDistancesToPoint(const VoronoiEdge *edge, Voronoi::point_type p, Py::List *list) {
+    addDistanceBetween(edge->ptr->vertex0(), p, list);
+    addDistanceBetween(edge->ptr->vertex1(), p, list);
+    return true;
+  }
+
+  bool retrieveDistances(const VoronoiEdge *edge, Py::List *list) {
+    const Voronoi::diagram_type::cell_type *c0 = edge->ptr->cell();
+    if (c0->contains_point()) {
+      return addDistancesToPoint(edge, retrievePoint(edge->dia, c0), list);
+    }
+    const Voronoi::diagram_type::cell_type *c1 = edge->ptr->twin()->cell();
+    if (c1->contains_point()) {
+      return addDistancesToPoint(edge, retrievePoint(edge->dia, c1), list);
+    }
+    // at this point both cells are sourced from segments and it does not matter which one we use
+    Voronoi::segment_type segment = retrieveSegment(edge->dia, c0);
+    addProjectedDistanceBetween(edge->ptr->vertex0(), segment, list);
+    addProjectedDistanceBetween(edge->ptr->vertex1(), segment, list);
+    return false;
+  }
+}
+
+PyObject* VoronoiEdgePy::getDistances(PyObject *args)
+{
+  VoronoiEdge *e = getVoronoiEdgeFromPy(this, args);
+  Py::List list;
+  retrieveDistances(e, &list);
+  return Py::new_reference_to(list);
 }
 
 // custom attributes get/set

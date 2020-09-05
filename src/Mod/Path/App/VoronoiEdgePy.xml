@@ -96,7 +96,12 @@
         </Methode>
         <Methode Name="toGeom" Const="true">
             <Documentation>
-                <UserDocu>Returns true if edge goes through endpoint of the segment site</UserDocu>
+                <UserDocu>Returns a geom representation of the edge (line segment or arc of parabola)</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getDistances" Const="true">
+            <Documentation>
+                <UserDocu>Returns the distance of the vertices to the input source</UserDocu>
             </Documentation>
         </Methode>
     </PythonExport>
