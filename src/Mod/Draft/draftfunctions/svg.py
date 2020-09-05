@@ -2,7 +2,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2018 George Shuklin (amarao)                            *
-# *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to return the SVG representation of various shapes."""
-## @defgroup getSVG getSVG
-#  \ingroup DRAFT
-#  \brief Provides functions to return the SVG representation of shapes.
+## @package svg
+# \ingroup draftfuctions
+# \brief Provides functions to return the SVG representation of shapes.
 
 import math
 import six
@@ -45,7 +45,7 @@ Drawing = lz.LazyLoader("Drawing", globals(), "Drawing")
 
 param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
-## \addtogroup getSVG
+## \addtogroup draftfuctions
 # @{
 
 

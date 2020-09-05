@@ -95,8 +95,8 @@ from draftutils.utils import (string_encode_coin,
                               get_DXF,
                               getDXF)
 
-from getSVG import (get_svg,
-                    getSVG)
+from draftfunctions.svg import (get_svg,
+                                getSVG)
 
 from draftutils.gui_utils import (get3DView,
                                   get_3d_view,
