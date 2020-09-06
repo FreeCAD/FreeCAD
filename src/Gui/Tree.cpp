@@ -3648,6 +3648,7 @@ TreePanel::TreePanel(const char *name, QWidget* parent)
             this, SLOT(showEditor()));
 
     this->searchBox = new Gui::ExpressionLineEdit(this,true);
+    static_cast<ExpressionLineEdit*>(this->searchBox)->setMatchExact(false);
     pLayout->addWidget(this->searchBox);
     this->searchBox->hide();
     this->searchBox->installEventFilter(this);
@@ -3726,14 +3727,16 @@ void TreePanel::itemSearch(const QString &text)
 /* TRANSLATOR Gui::TreeDockWidget */
 
 TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
-  : DockWindow(pcDocument,parent)
+  : DockWindow(pcDocument,parent), treeWidget(nullptr)
 {
     setWindowTitle(tr("Tree view"));
-    this->treeWidget = new TreePanel("TreeView",this);
+    auto panel = new TreePanel("TreeView", this);
+    // this->treeWidget = new TreePanel("TreeView",this);
     QGridLayout* pLayout = new QGridLayout(this);
     pLayout->setSpacing(0);
     pLayout->setMargin (0);
-    pLayout->addWidget(this->treeWidget, 0, 0 );
+    // pLayout->addWidget(this->treeWidget, 0, 0 );
+    pLayout->addWidget(panel, 0, 0 );
 }
 
 TreeDockWidget::~TreeDockWidget()
