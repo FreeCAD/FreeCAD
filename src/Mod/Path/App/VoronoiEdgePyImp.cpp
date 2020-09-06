@@ -59,13 +59,13 @@ std::string VoronoiEdgePy::representation(void) const
     const Voronoi::diagram_type::vertex_type *v0 = e->ptr->vertex0();
     const Voronoi::diagram_type::vertex_type *v1 = e->ptr->vertex1();
     if (v0) {
-      ss << "[" << v0->x() << ", " << v0->y() << "]";
+      ss << "[" << (v0->x() / e->dia->getScale()) << ", " << (v0->y() / e->dia->getScale()) << "]";
     } else {
       ss << "[~]";
     }
     ss << ", ";
     if (v1) {
-      ss << "[" << v1->x() << ", " << v1->y() << "]";
+      ss << "[" << (v1->x() / e->dia->getScale()) << ", " << (v1->y() / e->dia->getScale()) << "]";
     } else {
       ss << "[~]";
     }
@@ -315,7 +315,7 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
         auto v1 = e->ptr->vertex1();
         if (v0 && v1) {
           auto p = new Part::GeomLineSegment;
-          p->setPoints(Base::Vector3d(v0->x(), v0->y(), z), Base::Vector3d(v1->x(), v1->y(), z));
+          p->setPoints(e->dia->scaledVector(*v0, z), e->dia->scaledVector(*v1, z));
           return new Part::LineSegmentPy(p);
         }
       } else {
@@ -362,7 +362,7 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
           end.y(origin.y() + direction.y() * k);
         }
         auto p = new Part::GeomLineSegment;
-        p->setPoints(Base::Vector3d(begin.x(), begin.y(), z), Base::Vector3d(end.x(), end.y()));
+        p->setPoints(e->dia->scaledVector(begin, z), e->dia->scaledVector(end, z));
         return new Part::LineSegmentPy(p);
       }
     } else {
@@ -385,10 +385,10 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
       }
       auto p = new Part::GeomParabola;
       {
-        p->setCenter(Base::Vector3d(point.x(), point.y(), z));
-        p->setLocation(Base::Vector3d(loc.x(), loc.y(), z));
+        p->setCenter(e->dia->scaledVector(point, z));
+        p->setLocation(e->dia->scaledVector(loc, z));
         p->setAngleXU(atan2(axis.y(), axis.x()));
-        p->setFocal(sqrt(axis.x() * axis.x() + axis.y() * axis.y()));
+        p->setFocal(sqrt(axis.x() * axis.x() + axis.y() * axis.y()) / e->dia->getScale());
       }
       auto a = new Part::GeomArcOfParabola;
       {
@@ -399,10 +399,10 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
         auto v1 = e->ptr->vertex1();
         double param0 = 0;
         double param1 = 0;
-        if (!p->closestParameter(Base::Vector3d(v0->x(), v0->y(), z), param0)) {
+        if (!p->closestParameter(e->dia->scaledVector(*v0, z), param0)) {
           std::cerr << "closestParameter(v0) failed" << std::endl;
         }
-        if (!p->closestParameter(Base::Vector3d(v1->x(), v1->y(), z), param1)) {
+        if (!p->closestParameter(e->dia->scaledVector(*v1, z), param1)) {
           std::cerr << "closestParameter(v0) failed" << std::endl;
         }
         a->setRange(param0, param1, false);
@@ -417,22 +417,22 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
 
 namespace {
 
-  double distanceBetween(const Voronoi::diagram_type::vertex_type &v0, const Voronoi::point_type &p1) {
+  double distanceBetween(const Voronoi::diagram_type::vertex_type &v0, const Voronoi::point_type &p1, double scale) {
     double x = v0.x() - p1.x();
     double y = v0.y() - p1.y();
-    return sqrt(x * x + y * y);
+    return sqrt(x * x + y * y) / scale;
   }
 
-  void addDistanceBetween(const Voronoi::diagram_type::vertex_type *v0, const Voronoi::point_type &p1, Py::List *list) {
+  void addDistanceBetween(const Voronoi::diagram_type::vertex_type *v0, const Voronoi::point_type &p1, Py::List *list, double scale) {
     if (v0) {
-      list->append(Py::Float(distanceBetween(*v0, p1)));
+      list->append(Py::Float(distanceBetween(*v0, p1, scale)));
     } else {
       Py_INCREF(Py_None);
       list->append(Py::asObject(Py_None));
     }
   }
 
-  void addProjectedDistanceBetween(const Voronoi::diagram_type::vertex_type *v0, const Voronoi::segment_type &segment, Py::List *list) {
+  void addProjectedDistanceBetween(const Voronoi::diagram_type::vertex_type *v0, const Voronoi::segment_type &segment, Py::List *list, double scale) {
     if (v0) {
       Voronoi::point_type p0;
       {
@@ -440,32 +440,32 @@ namespace {
         p0.y(v0->y());
       }
       Voronoi::point_type p1 = orthognalProjection(p0, segment);
-      list->append(Py::Float(distanceBetween(*v0, p1)));
+      list->append(Py::Float(distanceBetween(*v0, p1, scale)));
     } else {
       Py_INCREF(Py_None);
       list->append(Py::asObject(Py_None));
     }
   }
 
-  bool addDistancesToPoint(const VoronoiEdge *edge, Voronoi::point_type p, Py::List *list) {
-    addDistanceBetween(edge->ptr->vertex0(), p, list);
-    addDistanceBetween(edge->ptr->vertex1(), p, list);
+  bool addDistancesToPoint(const VoronoiEdge *edge, Voronoi::point_type p, Py::List *list, double scale) {
+    addDistanceBetween(edge->ptr->vertex0(), p, list, scale);
+    addDistanceBetween(edge->ptr->vertex1(), p, list, scale);
     return true;
   }
 
   bool retrieveDistances(const VoronoiEdge *edge, Py::List *list) {
     const Voronoi::diagram_type::cell_type *c0 = edge->ptr->cell();
     if (c0->contains_point()) {
-      return addDistancesToPoint(edge, retrievePoint(edge->dia, c0), list);
+      return addDistancesToPoint(edge, retrievePoint(edge->dia, c0), list, edge->dia->getScale());
     }
     const Voronoi::diagram_type::cell_type *c1 = edge->ptr->twin()->cell();
     if (c1->contains_point()) {
-      return addDistancesToPoint(edge, retrievePoint(edge->dia, c1), list);
+      return addDistancesToPoint(edge, retrievePoint(edge->dia, c1), list, edge->dia->getScale());
     }
     // at this point both cells are sourced from segments and it does not matter which one we use
     Voronoi::segment_type segment = retrieveSegment(edge->dia, c0);
-    addProjectedDistanceBetween(edge->ptr->vertex0(), segment, list);
-    addProjectedDistanceBetween(edge->ptr->vertex1(), segment, list);
+    addProjectedDistanceBetween(edge->ptr->vertex0(), segment, list, edge->dia->getScale());
+    addProjectedDistanceBetween(edge->ptr->vertex1(), segment, list, edge->dia->getScale());
     return false;
   }
 }

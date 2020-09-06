@@ -51,7 +51,7 @@ std::string VoronoiPy::representation(void) const
   std::stringstream ss;
   ss.precision(5);
   ss << "Voronoi("
-    << "{" << getVoronoiPtr()->vd->segments.size() << ", " << getVoronoiPtr()->vd->points.size() << "}"
+    << "{" << getVoronoiPtr()->numSegments() << ", " << getVoronoiPtr()->numPoints() << "}"
     << " -> "
     << "{" << getVoronoiPtr()->numCells() << ", " << getVoronoiPtr()->numEdges() << ", " << getVoronoiPtr()->numVertices() << "}"
     << ")";
@@ -92,7 +92,7 @@ Voronoi::point_type getPointFromPy(PyObject *obj) {
 PyObject* VoronoiPy::addPoint(PyObject *args) {
   PyObject *obj = 0;
   if (PyArg_ParseTuple(args, "O", &obj)) {
-    getVoronoiPtr()->vd->points.push_back(getPointFromPy(obj));
+    getVoronoiPtr()->addPoint(getPointFromPy(obj));
   }
   Py_INCREF(Py_None);
   return Py_None;
@@ -105,7 +105,7 @@ PyObject* VoronoiPy::addSegment(PyObject *args) {
   if (PyArg_ParseTuple(args, "OO", &objBegin, &objEnd)) {
     auto p0 = getPointFromPy(objBegin);
     auto p1 = getPointFromPy(objEnd);
-    getVoronoiPtr()->vd->segments.push_back(Voronoi::segment_type(p0, p1));
+    getVoronoiPtr()->addSegment(Voronoi::segment_type(p0, p1));
   }
   Py_INCREF(Py_None);
   return Py_None;
@@ -148,7 +148,7 @@ PyObject* VoronoiPy::numVertices(PyObject *args)
 Py::List VoronoiPy::getVertices(void) const {
   Py::List list;
   for (int i=0; i<getVoronoiPtr()->numVertices(); ++i) {
-    list.append(Py::asObject(new VoronoiVertexPy(new VoronoiVertex(getVoronoiPtr()->vd, i))));
+    list.append(Py::asObject(new VoronoiVertexPy(getVoronoiPtr()->create<VoronoiVertex>(i))));
   }
   return list;
 }
@@ -156,7 +156,7 @@ Py::List VoronoiPy::getVertices(void) const {
 Py::List VoronoiPy::getEdges(void) const {
   Py::List list;
   for (int i=0; i<getVoronoiPtr()->numEdges(); ++i) {
-    list.append(Py::asObject(new VoronoiEdgePy(new VoronoiEdge(getVoronoiPtr()->vd, i))));
+    list.append(Py::asObject(new VoronoiEdgePy(getVoronoiPtr()->create<VoronoiEdge>(i))));
   }
   return list;
 }
@@ -164,7 +164,7 @@ Py::List VoronoiPy::getEdges(void) const {
 Py::List VoronoiPy::getCells(void) const {
   Py::List list;
   for (int i=0; i<getVoronoiPtr()->numCells(); ++i) {
-    list.append(Py::asObject(new VoronoiCellPy(new VoronoiCell(getVoronoiPtr()->vd, i))));
+    list.append(Py::asObject(new VoronoiCellPy(getVoronoiPtr()->create<VoronoiCell>(i))));
   }
   return list;
 }

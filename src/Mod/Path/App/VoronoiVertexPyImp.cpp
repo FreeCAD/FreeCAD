@@ -52,7 +52,7 @@ std::string VoronoiVertexPy::representation(void) const
   ss << "VoronoiVertex(";
   VoronoiVertex *v = getVoronoiVertexPtr();
   if (v->isBound()) {
-    ss << "[" << v->ptr->x() << ", " << v->ptr->y() << "]";
+    ss << "[" << (v->ptr->x() / v->dia->getScale()) << ", " << (v->ptr->y() / v->dia->getScale()) << "]";
   }
   ss << ")";
   return ss.str();
@@ -127,12 +127,14 @@ void VoronoiVertexPy::setColor(Py::Int color) {
 
 Py::Float VoronoiVertexPy::getX(void) const
 {
-  return Py::Float(getVoronoiVertexFromPy(this)->ptr->x());
+  VoronoiVertex *v = getVoronoiVertexFromPy(this);
+  return Py::Float(v->ptr->x() / v->dia->getScale());
 }
 
 Py::Float VoronoiVertexPy::getY(void) const
 {
-  return Py::Float(getVoronoiVertexFromPy(this)->ptr->y());
+  VoronoiVertex *v = getVoronoiVertexFromPy(this);
+  return Py::Float(v->ptr->y() / v->dia->getScale());
 }
 
 Py::Object VoronoiVertexPy::getIncidentEdge() const {
@@ -148,7 +150,7 @@ PyObject* VoronoiVertexPy::toGeom(PyObject *args)
   }
   VoronoiVertex *v = getVoronoiVertexPtr();
   if (v->isBound()) {
-    return new Base::VectorPy(new Base::Vector3d(v->ptr->x(), v->ptr->y(), z));
+    return new Base::VectorPy(new Base::Vector3d(v->ptr->x() / v->dia->getScale(), v->ptr->y() / v->dia->getScale(), z));
   }
   Py_INCREF(Py_None);
   return Py_None;

@@ -53,13 +53,21 @@ namespace Path
     typedef double coordinate_type;
     typedef boost::polygon::point_data<coordinate_type> point_type;
     typedef boost::polygon::segment_data<coordinate_type> segment_type;
-    typedef boost::polygon::voronoi_diagram<coordinate_type> voronoi_diagram_type;
+    typedef boost::polygon::voronoi_diagram<double> voronoi_diagram_type;
 
     class diagram_type
       : public voronoi_diagram_type
       , public Base::Handled
     {
     public:
+      diagram_type();
+
+      double getScale() const;
+      void   setScale(double s);
+
+      Base::Vector3d scaledVector(double x, double y, double z) const;
+      Base::Vector3d scaledVector(const point_type &p, double z) const;
+      Base::Vector3d scaledVector(const vertex_type &v, double z) const;
 
       typedef std::map<intptr_t, int> cell_map_type;
       typedef std::map<intptr_t, int> edge_map_type;
@@ -75,14 +83,16 @@ namespace Path
       std::vector<segment_type>     segments;
 
     private:
+      double          scale;
       cell_map_type   cell_index;
       edge_map_type   edge_index;
       vertex_map_type vertex_index;
     };
 
-    // specific methods
     void addPoint(const point_type &p);
     void addSegment(const segment_type &p);
+    long numPoints() const;
+    long numSegments() const;
 
     void construct();
     long numCells() const;
@@ -92,10 +102,13 @@ namespace Path
     void colorExterior(int color);
     void colorTwins(int color);
 
+    template<typename T>
+    T* create(int index) {
+      return new T(vd, index);
+    }
+
   private:
-    // attributes
     Base::Reference<diagram_type> vd;
-    friend class VoronoiPy;
   };
 
 } //namespace Path

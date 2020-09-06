@@ -62,7 +62,33 @@ static void colorExterior(const Voronoi::diagram_type::edge_type *edge, std::siz
   } while (e != v->incident_edge());
 }
 
-// Constructors & destructors
+// Voronoi::diagram_type
+
+Voronoi::diagram_type::diagram_type()
+  :scale(1000)
+{
+}
+
+double Voronoi::diagram_type::getScale() const {
+  return scale;
+}
+
+void Voronoi::diagram_type::setScale(double s) {
+  scale = s;
+}
+
+Base::Vector3d Voronoi::diagram_type::scaledVector(double x, double y, double z) const {
+  return Base::Vector3d(x / scale, y / scale, z);
+}
+
+Base::Vector3d Voronoi::diagram_type::scaledVector(const point_type &p, double z) const {
+  return scaledVector(p.x(), p.y(), z);
+}
+
+Base::Vector3d Voronoi::diagram_type::scaledVector(const vertex_type &v, double z) const {
+  return scaledVector(v.x(), v.y(), z);
+}
+
 
 int Voronoi::diagram_type::index(const Voronoi::diagram_type::cell_type   *cell)   const {
   auto it = cell_index.find(intptr_t(cell));
@@ -106,6 +132,8 @@ void Voronoi::diagram_type::reIndex() {
   }
 }
 
+// Voronoi
+
 Voronoi::Voronoi()
   :vd(new diagram_type)
 {
@@ -117,11 +145,27 @@ Voronoi::~Voronoi()
 
 
 void Voronoi::addPoint(const Voronoi::point_type &p) {
-  vd->points.push_back(p);
+  Voronoi::point_type pi;
+  pi.x(p.x() * vd->getScale());
+  pi.y(p.y() * vd->getScale());
+  vd->points.push_back(pi);
 }
 
 void Voronoi::addSegment(const Voronoi::segment_type &s) {
-  vd->segments.push_back(s);
+  Voronoi::point_type pil, pih;
+  pil.x(low(s).x() * vd->getScale());
+  pil.y(low(s).y() * vd->getScale());
+  pih.x(high(s).x() * vd->getScale());
+  pih.y(high(s).y() * vd->getScale());
+  vd->segments.push_back(segment_type(pil, pih));
+}
+
+long Voronoi::numPoints() const {
+  return vd->points.size();
+}
+
+long Voronoi::numSegments() const {
+  return vd->segments.size();
 }
 
 
