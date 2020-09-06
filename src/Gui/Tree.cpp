@@ -2914,16 +2914,11 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
   : DockWindow(pcDocument,parent)
 {
     setWindowTitle(tr("Tree view"));
-    this->treeWidget = new TreeWidget("TreeView",this);
-    this->treeWidget->setRootIsDecorated(false);
-    int indent = TreeParams::Instance()->Indentation();
-    if(indent)
-        this->treeWidget->setIndentation(indent);
-
+    auto panel = new TreePanel("TreeView", this);
     QGridLayout* pLayout = new QGridLayout(this);
     pLayout->setSpacing(0);
     pLayout->setMargin (0);
-    pLayout->addWidget(this->treeWidget, 0, 0 );
+    pLayout->addWidget(panel, 0, 0 );
 }
 
 TreeDockWidget::~TreeDockWidget()

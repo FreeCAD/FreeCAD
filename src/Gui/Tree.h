@@ -481,9 +481,6 @@ class TreeDockWidget : public Gui::DockWindow
 public:
     TreeDockWidget(Gui::Document*  pcDocument,QWidget *parent=0);
     ~TreeDockWidget();
-
-private:
-    QTreeWidget* treeWidget;
 };
 
 
