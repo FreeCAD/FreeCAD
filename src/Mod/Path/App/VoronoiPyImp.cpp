@@ -68,10 +68,13 @@ PyObject *VoronoiPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Py
 // constructor
 int VoronoiPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
-  if (!PyArg_ParseTuple(args, "")) {
-    PyErr_SetString(PyExc_RuntimeError, "no arguments accepted");
+  Voronoi *vo = getVoronoiPtr();
+  double scale = vo->getScale();
+  if (!PyArg_ParseTuple(args, "|d", &scale)) {
+    PyErr_SetString(PyExc_RuntimeError, "scale argument (double) accepted, default = 1000");
     return -1;
   }
+  vo->setScale(scale);
   return 0;
 }
 

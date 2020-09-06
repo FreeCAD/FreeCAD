@@ -107,6 +107,9 @@ namespace Path
       return new T(vd, index);
     }
 
+    double getScale() const { return vd->getScale(); }
+    void   setScale(double scale) { vd->setScale(scale); }
+
   private:
     Base::Reference<diagram_type> vd;
   };
