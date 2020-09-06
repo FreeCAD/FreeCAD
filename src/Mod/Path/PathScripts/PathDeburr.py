@@ -145,10 +145,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         
         self.wires = wires # pylint: disable=attribute-defined-outside-init
         self.buildpathocc(obj, wires, zValues, True, forward, obj.EntryPoint)
-
-        # the last command is a move to clearance, which is automatically added by PathOp
-        if self.commandlist:
-            self.commandlist.pop()
+        
 
     def opRejectAddBase(self, obj, base, sub):
         '''The chamfer op can only deal with features of the base model, all others are rejected.'''
