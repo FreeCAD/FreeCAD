@@ -76,6 +76,7 @@ DlgPropertyLink::DlgPropertyLink(QWidget* parent)
     ui->typeTree->hide();
     ui->searchBox->installEventFilter(this);
     ui->searchBox->setNoProperty(true);
+    ui->searchBox->setMatchExact(false);
 
     timer = new QTimer(this);
     timer->setSingleShot(true);

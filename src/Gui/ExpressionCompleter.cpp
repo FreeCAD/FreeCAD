@@ -537,7 +537,11 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty)
     , block(true)
     , noProperty(noProperty)
 {
-    connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(slotTextChanged(const QString&)));
+    auto handle = GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Expression");
+    matchExact = handle->GetBool("CompleterMatchExact", false);
+
+    connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(slotTextChanged(const QString&)));
 }
 
 void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDocObj)
@@ -550,6 +554,10 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer = new ExpressionCompleter(currentDocObj, this, noProperty);
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
+#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
+        if (!matchExact)
+            completer->setFilterMode(Qt::MatchContains);
+#endif
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
         connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
         connect(this, SIGNAL(textChanged2(QString,int)), completer, SLOT(slotUpdate(QString,int)));
@@ -560,6 +568,14 @@ void ExpressionLineEdit::setNoProperty(bool enabled) {
     noProperty = enabled;
     if(completer)
         completer->setNoProperty(enabled);
+}
+
+void ExpressionLineEdit::setMatchExact(bool enabled) {
+    matchExact = enabled;
+#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
+    if (completer)
+        completer->setFilterMode(matchExact ? Qt::MatchExactly : Qt::MatchContains);
+#endif
 }
 
 bool ExpressionLineEdit::completerActive() const
@@ -607,7 +623,19 @@ ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
     , completer(0)
     , block(true)
 {
+    auto handle = GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Expression");
+    matchExact = handle->GetBool("CompleterMatchExact", false);
+
     connect(this, SIGNAL(textChanged()), this, SLOT(slotTextChanged()));
+}
+
+void ExpressionTextEdit::setMatchExact(bool enabled) {
+    matchExact = enabled;
+#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
+    if (completer)
+        completer->setFilterMode(matchExact ? Qt::MatchExactly : Qt::MatchContains);
+#endif
 }
 
 void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDocObj)
@@ -619,6 +647,10 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDo
 
     if (currentDocObj != 0) {
         completer = new ExpressionCompleter(currentDocObj, this);
+#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
+        if (!matchExact)
+            completer->setFilterMode(Qt::MatchContains);
+#endif
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
