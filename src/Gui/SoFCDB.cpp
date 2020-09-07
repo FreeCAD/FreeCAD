@@ -643,7 +643,6 @@ bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
         << "    <script type='text/javascript' src='http://www.x3dom.org/download/x3dom.js'> </script>\n"
         << "    <link rel='stylesheet' type='text/css' href='http://www.x3dom.org/download/x3dom.css'></link>\n"
         << "  </head>\n";
-    out << x3d;
 
     auto onclick = [&out](const char* text) {
         out << "  <button onclick=\"document.getElementById('" << text << "').setAttribute('set_bind','true');\">" << text << "</button>\n";
@@ -655,6 +654,8 @@ bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
     onclick("Left");
     onclick("Top");
     onclick("Bottom");
+
+    out << x3d;
 
     out << "</html>\n";
 

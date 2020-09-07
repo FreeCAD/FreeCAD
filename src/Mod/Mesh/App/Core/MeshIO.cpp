@@ -3199,6 +3199,17 @@ bool MeshOutput::SaveX3DOM (std::ostream &out) const
         << "    <link rel='stylesheet' type='text/css' href='http://www.x3dom.org/download/x3dom.css'></link>\n"
         << "  </head>\n";
 
+    auto onclick = [&out](const char* text) {
+        out << "  <button onclick=\"document.getElementById('" << text << "').setAttribute('set_bind','true');\">" << text << "</button>\n";
+    };
+
+    onclick("Front");
+    onclick("Back");
+    onclick("Right");
+    onclick("Left");
+    onclick("Top");
+    onclick("Bottom");
+
 #if 0 // https://stackoverflow.com/questions/32305678/x3dom-how-to-make-zoom-buttons
     function zoom (delta) {
         var x3d = document.getElementById("right");
@@ -3210,17 +3221,6 @@ bool MeshOutput::SaveX3DOM (std::ostream &out) const
 #endif
 
     SaveX3DContent(out, true);
-
-    auto onclick = [&out](const char* text) {
-        out << "  <button onclick=\"document.getElementById('" << text << "').setAttribute('set_bind','true');\">" << text << "</button>\n";
-    };
-
-    onclick("Front");
-    onclick("Back");
-    onclick("Right");
-    onclick("Left");
-    onclick("Top");
-    onclick("Bottom");
 
     out << "</html>\n";
 
