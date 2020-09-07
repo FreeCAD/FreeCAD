@@ -3108,6 +3108,7 @@ bool MeshOutput::SaveX3DContent (std::ostream &out, bool exportViewpoints) const
         float maxz = bbox.MaxZ;
         float len = bbox.CalcDiagonalLength();
 
+        viewpoint("Iso", cnt, cnt + Base::Vector3f(0.5f*len, -0.5f*len, 0.5f*len), Base::Vector3f(0.742906f, 0.307722f, 0.594473f), 1.21712f);
         viewpoint("Front", cnt, Base::Vector3f(cnt.x, miny-len, cnt.z), Base::Vector3f(1.0f, 0.0f, 0.0f), 1.5707964f);
         viewpoint("Back", cnt, Base::Vector3f(cnt.x, maxy+len, cnt.z), Base::Vector3f(0.0f, 0.707106f, 0.707106f), 3.141592f);
         viewpoint("Right", cnt, Base::Vector3f(maxx+len, cnt.y, cnt.z), Base::Vector3f(0.577350f, 0.577350f, 0.577350f), 2.094395f);
@@ -3203,6 +3204,7 @@ bool MeshOutput::SaveX3DOM (std::ostream &out) const
         out << "  <button onclick=\"document.getElementById('" << text << "').setAttribute('set_bind','true');\">" << text << "</button>\n";
     };
 
+    onclick("Iso");
     onclick("Front");
     onclick("Back");
     onclick("Right");

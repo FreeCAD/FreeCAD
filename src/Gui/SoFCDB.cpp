@@ -72,6 +72,7 @@
 #include "GestureNavigationStyle.h"
 #include "Flag.h"
 #include "SelectionObject.h"
+#include "View3DPy.h"
 
 using namespace Gui;
 using namespace Gui::Inventor;
@@ -597,10 +598,13 @@ void Gui::SoFCDB::writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostrea
     bs.circumscribe(bbox);
     const SbVec3f& cnt = bs.getCenter();
     float dist = 2.0f * bs.getRadius();
+    float dist3 = 0.577350f * dist; // sqrt(1/3) * dist
 
     if (exportViewpoints) {
         auto viewpoint = [&out](const char* text, const SbVec3f& cnt,
-                                const SbVec3f& pos, const SbVec3f& axis, float angle) {
+                                const SbVec3f& pos, const SbRotation& rot) {
+            SbVec3f axis; float angle;
+            rot.getValue(axis, angle);
             out << "  <Viewpoint id=\"" << text
                 << "\" centerOfRotation=\"" << cnt[0] << " " << cnt[1] << " " << cnt[2]
                 << "\" position=\"" << pos[0] << " " << pos[1] << " " << pos[2]
@@ -609,12 +613,13 @@ void Gui::SoFCDB::writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostrea
                 << "</Viewpoint>\n";
         };
 
-        viewpoint("Front", cnt, SbVec3f(cnt[0], cnt[1] - dist, cnt[2]), SbVec3f(1.0f, 0.0f, 0.0f), 1.5707964f);
-        viewpoint("Back", cnt, SbVec3f(cnt[0], cnt[1] + dist, cnt[2]), SbVec3f(0.0f, 0.707106f, 0.707106f), 3.141592f);
-        viewpoint("Right", cnt, SbVec3f(cnt[0] + dist, cnt[1], cnt[2]), SbVec3f(0.577350f, 0.577350f, 0.577350f), 2.094395f);
-        viewpoint("Left", cnt, SbVec3f(cnt[0] - dist, cnt[1], cnt[2]), SbVec3f(-0.577350f, 0.577350f, 0.577350f), 4.188790f);
-        viewpoint("Top", cnt, SbVec3f(cnt[0], cnt[1], cnt[2] + dist), SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
-        viewpoint("Bottom", cnt, SbVec3f(cnt[0], cnt[1], cnt[2] - dist), SbVec3f(1.0f, 0.0f, 0.0f), 3.141592f);
+        viewpoint("Iso", cnt, SbVec3f(cnt[0] + dist3, cnt[1] - dist3, cnt[2] + dist3), Camera::rotation(Camera::Isometric));
+        viewpoint("Front", cnt, SbVec3f(cnt[0], cnt[1] - dist, cnt[2]), Camera::rotation(Camera::Front));
+        viewpoint("Back", cnt, SbVec3f(cnt[0], cnt[1] + dist, cnt[2]), Camera::rotation(Camera::Rear));
+        viewpoint("Right", cnt, SbVec3f(cnt[0] + dist, cnt[1], cnt[2]), Camera::rotation(Camera::Right));
+        viewpoint("Left", cnt, SbVec3f(cnt[0] - dist, cnt[1], cnt[2]), Camera::rotation(Camera::Left));
+        viewpoint("Top", cnt, SbVec3f(cnt[0], cnt[1], cnt[2] + dist), Camera::rotation(Camera::Top));
+        viewpoint("Bottom", cnt, SbVec3f(cnt[0], cnt[1], cnt[2] - dist), Camera::rotation(Camera::Bottom));
     }
 
     int numDEF = 0;
@@ -648,6 +653,7 @@ bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
         out << "  <button onclick=\"document.getElementById('" << text << "').setAttribute('set_bind','true');\">" << text << "</button>\n";
     };
 
+    onclick("Iso");
     onclick("Front");
     onclick("Back");
     onclick("Right");
