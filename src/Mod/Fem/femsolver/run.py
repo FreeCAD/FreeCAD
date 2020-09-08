@@ -251,7 +251,7 @@ def _getBesideBase(solver):
     # doc.FileName
     # the above returns an empty string in FreeCAD 0.19
     # https://forum.freecadweb.org/viewtopic.php?f=10&t=48842
-    if path is "":
+    if path == "":
         error_message = (
             "Please save the file before executing the solver. "
             "This must be done because the location of the working "

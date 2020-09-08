@@ -69,7 +69,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         The requirement is that the enumeration lists must
             be in the same order in both the opPropertyEnumerations() method
             and the UI panel QComboBox list.
-        Another step to ensure sychronization of the two lists is to
+        Another step to ensure synchronization of the two lists is to
             populate the list dynamically in this Gui module in `initPage()`
             using the property enumerations list when loading the UI panel.
             This type of dynamic combobox population is done for the

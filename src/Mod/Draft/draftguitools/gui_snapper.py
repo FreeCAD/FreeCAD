@@ -193,7 +193,7 @@ class Snapper:
         """
         self.active_snaps = []
         param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        snap_modes = param.GetString("snapModes")
+        snap_modes = param.GetString("snapModes", "100000000000000") # default value: only lock is ON
         i = 0
         for snap in snap_modes:
             if bool(int(snap)):
@@ -1111,6 +1111,44 @@ class Snapper:
             if self.dim2.Distance:
                 self.dim2.on()
 
+    def get_cursor_size(self):
+        # TODO Unfortunately, there's no way to get the cursor size in Qt
+        # Either provide platform-specific implementation or make it a user preference
+        # This should be in device-independent pixels
+        return 32
+
+    def device_pixel_ratio(self):
+        device_pixel_ratio = 1
+        mw = Gui.getMainWindow()
+        for w in mw.findChild(QtGui.QMdiArea).findChildren(QtGui.QWidget):
+            if w.metaObject().className() == "SIM::Coin3D::Quarter::QuarterWidget":
+                device_pixel_ratio = w.devicePixelRatio()
+        return device_pixel_ratio
+
+    def get_cursor_with_tail(self, base_icon_name, tail_icon_name=None):
+        base_icon = QtGui.QPixmap(base_icon_name)
+        device_pixel_ratio = self.device_pixel_ratio()
+        full_icon_size = self.get_cursor_size()
+        new_icon_width = full_icon_size * device_pixel_ratio
+        new_icon_height = 0.75 * full_icon_size * device_pixel_ratio
+        new_icon = QtGui.QPixmap(new_icon_width, new_icon_height)
+        new_icon.fill(QtCore.Qt.transparent)
+        qp = QtGui.QPainter()
+        qp.begin(new_icon)
+        base_icon = base_icon.scaledToWidth(0.5 * full_icon_size * device_pixel_ratio)
+        qp.drawPixmap(0, 0, base_icon)
+        if tail_icon_name:
+            tail_icon_width = 0.5 * full_icon_size * device_pixel_ratio
+            tail_icon_x = 0.5 * full_icon_size * device_pixel_ratio
+            tail_icon_y = 0.25 * full_icon_size * device_pixel_ratio
+            tail_pixmap = QtGui.QPixmap(tail_icon_name).scaledToWidth(tail_icon_width)
+            qp.drawPixmap(QtCore.QPoint(tail_icon_x, tail_icon_y), tail_pixmap)
+        qp.end()
+        cur_hot_x = 0.25 * full_icon_size * device_pixel_ratio
+        cur_hot_y = 0.25 * full_icon_size * device_pixel_ratio
+        new_icon.setDevicePixelRatio(device_pixel_ratio)
+        cur = QtGui.QCursor(new_icon, cur_hot_x, cur_hot_y)
+        return cur
 
     def setCursor(self, mode=None):
         """Set or reset the cursor to the given mode or resets."""
@@ -1128,23 +1166,16 @@ class Snapper:
             self.cursorMode = None
         else:
             if mode != self.cursorMode:
-                baseicon = QtGui.QPixmap(":/icons/Draft_Cursor.svg")
-                newicon = QtGui.QPixmap(32, 24)
-                newicon.fill(QtCore.Qt.transparent)
-                qp = QtGui.QPainter()
-                qp.begin(newicon)
-                qp.drawPixmap(0, 0, baseicon)
+                base_icon_name = ":/icons/Draft_Cursor.svg"
+                tail_icon_name = None
                 if not (mode == 'passive'):
-                    tp = QtGui.QPixmap(self.cursors[mode]).scaledToWidth(16)
-                    qp.drawPixmap(QtCore.QPoint(16, 8), tp)
-                qp.end()
-                cur = QtGui.QCursor(newicon, 8, 8)
+                    tail_icon_name = self.cursors[mode]
+                cur = self.get_cursor_with_tail(base_icon_name, tail_icon_name)
                 mw = Gui.getMainWindow()
                 for w in mw.findChild(QtGui.QMdiArea).findChildren(QtGui.QWidget):
                     if w.metaObject().className() == "SIM::Coin3D::Quarter::QuarterWidget":
                         w.setCursor(cur)
                 self.cursorMode = mode
-
 
     def restack(self):
         """Lower the grid tracker so it doesn't obscure other objects."""
@@ -1489,29 +1520,23 @@ class Snapper:
 
     def restore_snap_buttons_state(self, toolbar, button_suffix):
         """
-        Restore toolbar button's checked state according to 
+        Restore toolbar button's checked state according to
         "snapModes" saved in preferences
         """
         # set status tip where needed
-        param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        snap_modes = param.GetString("snapModes")
-
         for button in toolbar.actions():
             if len(button.statusTip()) == 0:
                 button.setStatusTip(button.toolTip())
 
         # restore toolbar buttons state
-        if snap_modes:
-            for action in toolbar.findChildren(QtGui.QAction):
-                snap = action.objectName()[11:].replace(button_suffix, "")
-                if snap in Gui.Snapper.snaps:
-                    i = Gui.Snapper.snaps.index(snap)
-                    state = bool(int(snap_modes[i]))
-                    action.setChecked(state)
-                    if state:
-                        action.setToolTip(action.toolTip() + " (ON)")
-                    else:
-                        action.setToolTip(action.toolTip() + " (OFF)")
+        for action in toolbar.findChildren(QtGui.QAction):
+            snap = action.objectName()[11:].replace(button_suffix, "")
+            if snap in self.active_snaps:
+                action.setChecked(True)
+                action.setToolTip(action.toolTip() + " (ON)")
+            elif snap in Gui.Snapper.snaps: # required: the toolbar has more children than the buttons
+                action.setChecked(False)
+                action.setToolTip(action.toolTip() + " (OFF)")
 
 
     def get_snap_toolbar(self):

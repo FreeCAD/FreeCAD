@@ -512,17 +512,24 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         gen->Restore(reader);
         gen->occEdge = GeometryUtils::edgeFromGeneric(gen);
         m_geometry = (TechDraw::BaseGeom*) gen;
-        
+        permaStart = gen->getStartPoint();
+        permaEnd   = gen->getEndPoint();
     } else if (gType == TechDraw::GeomType::CIRCLE) {
         TechDraw::Circle* circ = new TechDraw::Circle();
         circ->Restore(reader);
         circ->occEdge = GeometryUtils::edgeFromCircle(circ);
         m_geometry = (TechDraw::BaseGeom*) circ;
+        permaRadius = circ->radius;
+        permaStart  = circ->center;
+        permaEnd    = circ->center;
     } else if (gType == TechDraw::GeomType::ARCOFCIRCLE) {
         TechDraw::AOC* aoc = new TechDraw::AOC();
         aoc->Restore(reader);
         aoc->occEdge = GeometryUtils::edgeFromCircleArc(aoc);
         m_geometry = (TechDraw::BaseGeom*) aoc;
+        permaStart = aoc->startPnt;
+        permaEnd   = aoc->endPnt;
+        permaRadius = aoc->radius;
     } else {
         Base::Console().Warning("CE::Restore - unimplemented geomType: %d\n", gType);
     }

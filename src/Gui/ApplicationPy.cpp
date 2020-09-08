@@ -583,8 +583,13 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args)
         QFileInfo fi;
         fi.setFile(fileName);
         QString ext = fi.suffix().toLower();
-        if (ext == QLatin1String("iv") || ext == QLatin1String("wrl") ||
-            ext == QLatin1String("vrml") || ext == QLatin1String("wrz")) {
+        if (ext == QLatin1String("iv") ||
+            ext == QLatin1String("wrl") ||
+            ext == QLatin1String("vrml") ||
+            ext == QLatin1String("wrz") ||
+            ext == QLatin1String("x3d") ||
+            ext == QLatin1String("x3dz") ||
+            ext == QLatin1String("xhtml")) {
 
             // build up the graph
             SoSeparator* sep = new SoSeparator();

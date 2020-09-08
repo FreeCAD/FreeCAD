@@ -118,10 +118,12 @@ private:
     bool autoupdate;
     bool committing;
     bool delaybuild;
+    bool binding;
+
+    int transactionID = 0;
+
     QColor groupColor;
     QBrush background;
-
-    bool binding;
 
     friend class Gui::PropertyView;
 };

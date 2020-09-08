@@ -193,8 +193,9 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
     //objects are only allowed in a single GeoFeatureGroup
     if(p == &Group && !Group.testStatus(Property::User3)) {
     
-        if(!getExtendedObject()->isRestoring() &&
-           !getExtendedObject()->getDocument()->isPerformingTransaction()) {
+        if((!getExtendedObject()->isRestoring()
+                || getExtendedObject()->getDocument()->testStatus(Document::Importing))
+            && !getExtendedObject()->getDocument()->isPerformingTransaction()) {
                 
             bool error = false;
             auto corrected = Group.getValues();

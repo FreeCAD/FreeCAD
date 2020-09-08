@@ -101,6 +101,7 @@ private Q_SLOTS:
     void drillPointChanged();
     void drillPointAngledValueChanged(double value);
     void taperedChanged();
+    void reversedChanged();
     void taperedAngleChanged(double value);   
 private:
     class Observer : public App::DocumentObserver {

@@ -166,7 +166,11 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
         Base::Console().Log("Couldn't connect to 3Dconnexion driver\n");
         return;
     }
-    
+
+    // Turn on all features and buttons
+    SetConnexionClientMask(tdxClientID, kConnexionMaskAll);
+    SetConnexionClientButtonMask(tdxClientID, kConnexionMaskAllButtons);
+
     Base::Console().Log("3Dconnexion driver initialized. Client ID: %d\n", tdxClientID);
     mainApp->setSpaceballPresent(true);
 }

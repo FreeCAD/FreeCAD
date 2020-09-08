@@ -4839,60 +4839,64 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
     return arc;
 }
 
-GeomSurface* makeFromSurface(const Handle(Geom_Surface)& s)
+std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface)& s)
 {
+    std::unique_ptr<GeomSurface> geoSurf;
     if (s->IsKind(STANDARD_TYPE(Geom_ToroidalSurface))) {
         Handle(Geom_ToroidalSurface) hSurf = Handle(Geom_ToroidalSurface)::DownCast(s);
-        return new GeomToroid(hSurf);
+        geoSurf.reset(new GeomToroid(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_BezierSurface))) {
         Handle(Geom_BezierSurface) hSurf = Handle(Geom_BezierSurface)::DownCast(s);
-        return new GeomBezierSurface(hSurf);
+        geoSurf.reset(new GeomBezierSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_BSplineSurface))) {
         Handle(Geom_BSplineSurface) hSurf = Handle(Geom_BSplineSurface)::DownCast(s);
-        return new GeomBSplineSurface(hSurf);
+        geoSurf.reset(new GeomBSplineSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_CylindricalSurface))) {
         Handle(Geom_CylindricalSurface) hSurf = Handle(Geom_CylindricalSurface)::DownCast(s);
-        return new GeomCylinder(hSurf);
+        geoSurf.reset(new GeomCylinder(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_ConicalSurface))) {
         Handle(Geom_ConicalSurface) hSurf = Handle(Geom_ConicalSurface)::DownCast(s);
-        return new GeomCone(hSurf);
+        geoSurf.reset(new GeomCone(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SphericalSurface))) {
         Handle(Geom_SphericalSurface) hSurf = Handle(Geom_SphericalSurface)::DownCast(s);
-        return new GeomSphere(hSurf);
+        geoSurf.reset(new GeomSphere(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_Plane))) {
         Handle(Geom_Plane) hSurf = Handle(Geom_Plane)::DownCast(s);
-        return new GeomPlane(hSurf);
+        geoSurf.reset(new GeomPlane(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_OffsetSurface))) {
         Handle(Geom_OffsetSurface) hSurf = Handle(Geom_OffsetSurface)::DownCast(s);
-        return new GeomOffsetSurface(hSurf);
+        geoSurf.reset(new GeomOffsetSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(GeomPlate_Surface))) {
         Handle(GeomPlate_Surface) hSurf = Handle(GeomPlate_Surface)::DownCast(s);
-        return new GeomPlateSurface(hSurf);
+        geoSurf.reset(new GeomPlateSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_RectangularTrimmedSurface))) {
         Handle(Geom_RectangularTrimmedSurface) hSurf = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
-        return new GeomTrimmedSurface(hSurf);
+        geoSurf.reset(new GeomTrimmedSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfRevolution))) {
         Handle(Geom_SurfaceOfRevolution) hSurf = Handle(Geom_SurfaceOfRevolution)::DownCast(s);
-        return new GeomSurfaceOfRevolution(hSurf);
+        geoSurf.reset(new GeomSurfaceOfRevolution(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfLinearExtrusion))) {
         Handle(Geom_SurfaceOfLinearExtrusion) hSurf = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(s);
-        return new GeomSurfaceOfExtrusion(hSurf);
+        geoSurf.reset(new GeomSurfaceOfExtrusion(hSurf));
+    }
+    else {
+        std::string err = "Unhandled surface type ";
+        err += s->DynamicType()->Name();
+        throw Base::TypeError(err);
     }
 
-    std::string err = "Unhandled surface type ";
-    err += s->DynamicType()->Name();
-    throw Base::TypeError(err);
+    return geoSurf;
 }
 
 }

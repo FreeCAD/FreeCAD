@@ -43,6 +43,7 @@ import draftutils.gui_utils as gui_utils
 from draftutils.messages import _msg, _err
 from draftutils.translate import _tr
 from draftobjects.patharray import PathArray
+from draftobjects.pathtwistedarray import PathTwistedArray
 
 if App.GuiUp:
     from draftviewproviders.view_array import ViewProviderDraftArray
@@ -317,5 +318,82 @@ def makePathArray(baseobject, pathobject, count,
                            xlate, pathobjsubs,
                            align,
                            use_link)
+
+
+def make_path_twisted_array(base_object, path_object,
+                            count=15, rot_factor=0.25,
+                            use_link=True):
+    """Create a Path twisted array."""
+    _name = "make_path_twisted_array"
+    utils.print_header(_name, "Path twisted array")
+
+    found, doc = utils.find_doc(App.activeDocument())
+    if not found:
+        _err(_tr("No active document. Aborting."))
+        return None
+
+    if isinstance(base_object, str):
+        base_object_str = base_object
+
+    found, base_object = utils.find_object(base_object, doc)
+    if not found:
+        _msg("base_object: {}".format(base_object_str))
+        _err(_tr("Wrong input: object not in document."))
+        return None
+
+    _msg("base_object: {}".format(base_object.Label))
+
+    if isinstance(path_object, str):
+        path_object_str = path_object
+
+    found, path_object = utils.find_object(path_object, doc)
+    if not found:
+        _msg("path_object: {}".format(path_object_str))
+        _err(_tr("Wrong input: object not in document."))
+        return None
+
+    _msg("path_object: {}".format(path_object.Label))
+
+    _msg("count: {}".format(count))
+    try:
+        utils.type_check([(count, (int, float))],
+                         name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be a number."))
+        return None
+    count = int(count)
+
+    use_link = bool(use_link)
+    _msg("use_link: {}".format(use_link))
+
+    if use_link:
+        # The PathTwistedArray class must be called in this special way
+        # to make it a PathTwistLinkArray
+        new_obj = doc.addObject("Part::FeaturePython", "PathTwistedArray",
+                                PathTwistedArray(None), None, True)
+    else:
+        new_obj = doc.addObject("Part::FeaturePython", "PathTwistedArray")
+        PathTwistedArray(new_obj)
+
+    new_obj.Base = base_object
+    new_obj.PathObject = path_object
+    new_obj.Count = count
+    new_obj.RotationFactor = rot_factor
+
+    if App.GuiUp:
+        if use_link:
+            ViewProviderDraftLink(new_obj.ViewObject)
+        else:
+            ViewProviderDraftArray(new_obj.ViewObject)
+            gui_utils.formatObject(new_obj, new_obj.Base)
+
+        if hasattr(new_obj.Base.ViewObject, "DiffuseColor"):
+            if len(new_obj.Base.ViewObject.DiffuseColor) > 1:
+                new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
+
+        new_obj.Base.ViewObject.hide()
+        gui_utils.select(new_obj)
+
+    return new_obj
 
 ## @}

@@ -800,8 +800,8 @@ class CheckSingleWorker(QtCore.QThread):
             import git
         except:
             return
-        FreeCAD.Console.PrintLog("Checking for available updates of the "+name+" addon\n")
-        addondir = os.path.join(FreeCAD.getUserAppDataDir(),"Mod",name)
+        FreeCAD.Console.PrintLog("Checking for available updates of the "+self.name+" addon\n")
+        addondir = os.path.join(FreeCAD.getUserAppDataDir(),"Mod",self.name)
         if os.path.exists(addondir):
             if os.path.exists(addondir + os.sep + '.git'):
                 gitrepo = git.Git(addondir)

@@ -72,7 +72,9 @@ App::PropertyFloatConstraint::Constraints ViewProviderPoints::floatRange = {1.0,
 
 ViewProviderPoints::ViewProviderPoints()
 {
-    ADD_PROPERTY(PointSize,(2.0f));
+    static const char *osgroup = "Object Style";
+
+    ADD_PROPERTY_TYPE(PointSize, (2.0f), osgroup, App::Prop_None, "Set point size");
     PointSize.setConstraints(&floatRange);
 
     // Create the selection node

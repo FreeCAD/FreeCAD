@@ -1710,7 +1710,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
                         Application::Instance->getViewProvider(targetObj));
                 if(!vp) {
-                    FC_ERR("Cannot find drop traget object " << target);
+                    FC_ERR("Cannot find drop target object " << target);
                     break;
                 }
 

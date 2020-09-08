@@ -30,6 +30,7 @@
 # include <qdir.h>
 # include <qfileinfo.h>
 # include <QKeySequence>
+# include <QTextStream>
 # include <qmessagebox.h>
 # include <qstatusbar.h>
 # include <boost/signals2.hpp>
@@ -1036,21 +1037,95 @@ App::Document* Document::getDocument(void) const
     return d->_pcDocument;
 }
 
+static bool checkCanonicalPath(const std::map<App::Document*, bool> &docs)
+{
+    std::map<QString, std::vector<App::Document*> > paths;
+    bool warn = false;
+    for (auto doc : App::GetApplication().getDocuments()) {
+        QFileInfo info(QString::fromUtf8(doc->FileName.getValue()));
+        auto &d = paths[info.canonicalFilePath()];
+        d.push_back(doc);
+        if (!warn && d.size() > 1) {
+            if (docs.count(d.front()) || docs.count(d.back()))
+                warn = true;
+        }
+    }
+    if (!warn)
+        return true;
+    QString msg;
+    QTextStream ts(&msg);
+    ts << QObject::tr("Identical physical path detected. It may cause unwanted overwrite of existing document!\n\n")
+       << QObject::tr("Are you sure you want to continue?");
+
+    auto docName = [](App::Document *doc) -> QString {
+        if (doc->Label.getStrValue() == doc->getName())
+            return QString::fromLatin1(doc->getName());
+        return QString::fromLatin1("%1 (%2)").arg(QString::fromUtf8(doc->Label.getValue()),
+                                                  QString::fromLatin1(doc->getName()));
+    };
+    int count = 0;
+    for (auto &v : paths) {
+        if (v.second.size() <= 1) continue;
+        for (auto doc : v.second) {
+            if (docs.count(doc)) {
+                FC_WARN("Physical path: " << v.first.toUtf8().constData());
+                for (auto d : v.second)
+                    FC_WARN("  Document: " << docName(d).toUtf8().constData()
+                            << ": " << d->FileName.getValue());
+                if (count == 3) {
+                    ts << QObject::tr("\n\nPlease check report view for more...");
+                } else if (count < 3) {
+                    ts << QObject::tr("\n\nPyhsical path: ") << v.first
+                    << QObject::tr("\nDocument: ") << docName(doc)
+                    << QObject::tr("\n  Path: ") << QString::fromUtf8(doc->FileName.getValue());
+                    for (auto d : v.second) {
+                        if (d == doc) continue;
+                        ts << QObject::tr("\nDocument: ") << docName(d)
+                        << QObject::tr("\n  Path: ") << QString::fromUtf8(d->FileName.getValue());
+                    }
+                }
+                ++count;
+                break;
+            }
+        }
+    }
+    int ret = QMessageBox::warning(getMainWindow(),
+            QObject::tr("Identical physical path"), msg, QMessageBox::Yes, QMessageBox::No);
+    return ret == QMessageBox::Yes;
+}
+
 /// Save the document
 bool Document::save(void)
 {
     if (d->_pcDocument->isSaved()) {
         try {
-            std::vector<std::pair<App::Document*,bool> > docs;
+            std::vector<App::Document*> docs;
+            std::map<App::Document*,bool> dmap;
             try {
-                for(auto doc : getDocument()->getDependentDocuments()) {
+                docs = getDocument()->getDependentDocuments();
+                for(auto it=docs.begin(); it!=docs.end();) {
+                    App::Document *doc = *it;
+                    if (doc == getDocument()) {
+                        dmap[doc] = doc->mustExecute();
+                        ++it;
+                        continue;
+                    }
                     auto gdoc = Application::Instance->getDocument(doc);
-                    if(gdoc && (gdoc==this || gdoc->isModified()))
-                        docs.emplace_back(doc,doc->mustExecute());
+                    if ((gdoc && !gdoc->isModified())
+                            || doc->testStatus(App::Document::PartialDoc)
+                            || doc->testStatus(App::Document::TempDoc))
+                    {
+                        it = docs.erase(it);
+                        continue;
+                    }
+                    dmap[doc] = doc->mustExecute();
+                    ++it;
                 }
             }catch(const Base::RuntimeError &e) {
                 FC_ERR(e.what());
-                docs.emplace_back(getDocument(),getDocument()->mustExecute());
+                docs = {getDocument()};
+                dmap.clear();
+                dmap[getDocument()] = getDocument()->mustExecute();
             }
             if(docs.size()>1) {
                 int ret = QMessageBox::question(getMainWindow(),
@@ -1059,16 +1134,20 @@ bool Document::save(void)
                         "Do you want to save the dependent files, too?"),
                         QMessageBox::Yes,QMessageBox::No);
                 if (ret != QMessageBox::Yes) {
-                    docs.clear();
-                    docs.emplace_back(getDocument(),getDocument()->mustExecute());
+                    docs = {getDocument()};
+                    dmap.clear();
+                    dmap[getDocument()] = getDocument()->mustExecute();
                 }
             }
+
+            if (!checkCanonicalPath(dmap))
+                return false;
+
             Gui::WaitCursor wc;
             // save all documents
-            for(auto v : docs) {
-                auto doc = v.first;
+            for(auto doc : docs) {
                 // Changed 'mustExecute' status may be triggered by saving external document
-                if(!v.second && doc->mustExecute()) {
+                if(!dmap[doc] && doc->mustExecute()) {
                     App::AutoTransaction trans("Recompute");
                     Command::doCommand(Command::Doc,"App.getDocument(\"%s\").recompute()",doc->getName());
                 }
@@ -1142,8 +1221,15 @@ void Document::saveAll()
     }
 
     std::map<App::Document *, bool> dmap;
-    for(auto doc : docs)
+    for(auto doc : docs) {
+        if (doc->testStatus(App::Document::PartialDoc) || doc->testStatus(App::Document::TempDoc))
+            continue;
         dmap[doc] = doc->mustExecute();
+    }
+
+    if (!checkCanonicalPath(dmap))
+        return;
+
     for(auto doc : docs) {
         if (doc->testStatus(App::Document::PartialDoc) || doc->testStatus(App::Document::TempDoc))
             continue;
