@@ -73,5 +73,15 @@
                 <UserDocu>assign given color to all twins of edges (which one is considered a twin is arbitrary)</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="colorColinear">
+            <Documentation>
+                <UserDocu>assign given color to all edges sourced by two segments almost in line with each other (optional angle in degrees)</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="resetColor">
+            <Documentation>
+                <UserDocu>assign color 0 to all elements with the given color</UserDocu>
+            </Documentation>
+        </Methode>
     </PythonExport>
 </GenerateModel>

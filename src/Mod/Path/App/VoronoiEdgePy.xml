@@ -104,5 +104,10 @@
                 <UserDocu>Returns the distance of the vertices to the input source</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getSegmentAngle" Const="true">
+            <Documentation>
+                <UserDocu>Returns the angle (in degree) of the segments if the edge was formed by two segments</UserDocu>
+            </Documentation>
+        </Methode>
     </PythonExport>
 </GenerateModel>

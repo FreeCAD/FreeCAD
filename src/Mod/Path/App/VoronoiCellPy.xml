@@ -55,5 +55,10 @@
                 <UserDocu>Returns true if the cell doesn't have an incident edge</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getSource" Const="true">
+            <Documentation>
+                <UserDocu>Returns the Source for the cell</UserDocu>
+            </Documentation>
+        </Methode>
     </PythonExport>
 </GenerateModel>

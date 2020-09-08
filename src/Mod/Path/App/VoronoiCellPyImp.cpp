@@ -28,7 +28,6 @@
 #endif
 
 #include "Mod/Path/App/Voronoi.h"
-#include "Mod/Path/App/Voronoi.h"
 #include "Mod/Path/App/VoronoiCell.h"
 #include "Mod/Path/App/VoronoiCellPy.h"
 #include "Mod/Path/App/VoronoiEdge.h"
@@ -112,15 +111,15 @@ VoronoiCell* getVoronoiCellFromPy(const VoronoiCellPy *c, PyObject *args = 0) {
   return self;
 }
 
-Py::Int VoronoiCellPy::getColor(void) const {
+Py::Long VoronoiCellPy::getColor(void) const {
   VoronoiCell *c = getVoronoiCellPtr();
   if (c->isBound()) {
-    return Py::Int(c->ptr->color() & Voronoi::ColorMask);
+    return Py::Long(c->ptr->color() & Voronoi::ColorMask);
   }
-  return Py::Int(0);
+  return Py::Long(0);
 }
 
-void VoronoiCellPy::setColor(Py::Int color) {
+void VoronoiCellPy::setColor(Py::Long color) {
   getCellFromPy(this)->color(int(color) & Voronoi::ColorMask);
 }
 
@@ -164,6 +163,27 @@ PyObject* VoronoiCellPy::isDegenerate(PyObject *args)
   PyObject *chk = c->ptr->is_degenerate() ? Py_True : Py_False;
   Py_INCREF(chk);
   return chk;
+}
+
+PyObject* VoronoiCellPy::getSource(PyObject *args)
+{
+  double z = 0;
+  if (!PyArg_ParseTuple(args, "|d", &z)) {
+    throw Py::TypeError("Optional z argument (double) accepted");
+  }
+
+  VoronoiCell *c = getVoronoiCellFromPy(this);
+  if (c->ptr->contains_point()) {
+    Base::Vector3d v = c->dia->scaledVector(c->dia->retrievePoint(c->ptr), z);
+    return new Base::VectorPy(new Base::Vector3d(v));
+  }
+  Voronoi::segment_type s = c->dia->retrieveSegment(c->ptr);
+  Base::Vector3d v0 = c->dia->scaledVector(low(s), z);
+  Base::Vector3d v1 = c->dia->scaledVector(high(s), z);
+  Py::List list;
+  list.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(v0))));
+  list.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(v1))));
+  return Py::new_reference_to(list);
 }
 
 

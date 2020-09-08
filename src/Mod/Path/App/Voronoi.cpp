@@ -132,6 +132,26 @@ void Voronoi::diagram_type::reIndex() {
   }
 }
 
+Voronoi::point_type Voronoi::diagram_type::retrievePoint(const Voronoi::diagram_type::cell_type *cell) const {
+  Voronoi::diagram_type::cell_type::source_index_type index = cell->source_index();
+  Voronoi::diagram_type::cell_type::source_category_type category = cell->source_category();
+  if (category == boost::polygon::SOURCE_CATEGORY_SINGLE_POINT) {
+    return points[index];
+  }
+  index -= points.size();
+  if (category == boost::polygon::SOURCE_CATEGORY_SEGMENT_START_POINT) {
+    return low(segments[index]);
+  } else {
+    return high(segments[index]);
+  }
+}
+
+Voronoi::segment_type Voronoi::diagram_type::retrieveSegment(const Voronoi::diagram_type::cell_type *cell) const {
+  Voronoi::diagram_type::cell_type::source_index_type index = cell->source_index() - points.size();
+  return segments[index];
+}
+
+
 // Voronoi
 
 Voronoi::Voronoi()
@@ -188,7 +208,7 @@ void Voronoi::construct()
   vd->reIndex();
 }
 
-void Voronoi::colorExterior(int color) {
+void Voronoi::colorExterior(Voronoi::color_type color) {
   for (diagram_type::const_edge_iterator it = vd->edges().begin(); it != vd->edges().end(); ++it) {
     if (!it->is_finite()) {
       ::colorExterior(&(*it), color);
@@ -196,13 +216,95 @@ void Voronoi::colorExterior(int color) {
   }
 }
 
-void Voronoi::colorTwins(int color) {
+void Voronoi::colorTwins(Voronoi::color_type color) {
   for (diagram_type::const_edge_iterator it = vd->edges().begin(); it != vd->edges().end(); ++it) {
     if (!it->color()) {
       auto twin = it->twin();
       if (!twin->color()) {
         twin->color(color);
       }
+    }
+  }
+}
+
+double Voronoi::diagram_type::angleOfSegment(int i, Voronoi::diagram_type::angle_map_t *angle) const {
+  Voronoi::diagram_type::angle_map_t::const_iterator a = angle ? angle->find(i) : Voronoi::diagram_type::angle_map_t::const_iterator();
+  if (!angle || a == angle->end()) {
+    Voronoi::point_type p0 = low(segments[i]);
+    Voronoi::point_type p1 = high(segments[i]);
+    double ang = 0;
+    if (p0.x() == p1.x()) {
+      if ((p0.y() > 0 && p1.y() > 0) || (p0.y() > 0 && p1.y() > 0)) {
+        ang = M_PI_2;
+      } else {
+        ang = -M_PI_2;
+      }
+    } else {
+      ang = atan((p0.y() - p1.y()) / (p0.x() - p1.x()));
+    }
+    if (angle) {
+      angle->insert(angle_map_t::value_type(i, ang));
+    }
+    return ang;
+  }
+  return a->second;
+}
+
+static bool pointsMatch(const Voronoi::point_type &p0, const Voronoi::point_type &p1) {
+  return long(p0.x()) == long(p1.x()) && long(p0.y()) == long(p1.y());
+}
+
+bool Voronoi::diagram_type::segmentsAreConnected(int i, int j) const {
+  return
+       pointsMatch(low(segments[i]), low(segments[j]))
+    || pointsMatch(low(segments[i]), high(segments[j]))
+    || pointsMatch(high(segments[i]), low(segments[j]))
+    || pointsMatch(high(segments[i]), high(segments[j]));
+}
+
+void Voronoi::colorColinear(Voronoi::color_type color, double degree) {
+  double rad = degree * M_PI / 180; 
+
+  Voronoi::diagram_type::angle_map_t angle;
+  int psize = vd->points.size();
+
+  for (diagram_type::const_edge_iterator it = vd->edges().begin(); it != vd->edges().end(); ++it) {
+    int i0 = it->cell()->source_index() - psize;
+    int i1 = it->twin()->cell()->source_index() - psize;
+    if (it->color() == 0
+        && it->cell()->contains_segment()
+        && it->twin()->cell()->contains_segment()
+        && vd->segmentsAreConnected(i0, i1)) {
+      double a0 = vd->angleOfSegment(i0, &angle);
+      double a1 = vd->angleOfSegment(i1, &angle);
+      double a = a0 - a1;
+      if (a > M_PI_2) {
+        a -= M_PI;
+      } else if (a < -M_PI_2) {
+        a += M_PI;
+      }
+      if (fabs(a) < rad) {
+        it->color(color);
+        it->twin()->color(color);
+      }
+    }
+  }
+}
+
+void Voronoi::resetColor(Voronoi::color_type color) {
+  for (auto it = vd->cells().begin(); it != vd->cells().end(); ++it) {
+    if (it->color() == color) {
+      it->color(0);
+    }
+  }
+  for (auto it = vd->edges().begin(); it != vd->edges().end(); ++it) {
+    if (it->color() == color) {
+      it->color(0);
+    }
+  }
+  for (auto it = vd->vertices().begin(); it != vd->vertices().end(); ++it) {
+    if (it->color() == color) {
+      it->color(0);
     }
   }
 }

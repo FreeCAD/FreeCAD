@@ -130,15 +130,15 @@ VoronoiEdge* getVoronoiEdgeFromPy(const VoronoiEdgePy *e, PyObject *args = 0) {
   return self;
 }
 
-Py::Int VoronoiEdgePy::getColor(void) const {
+Py::Long VoronoiEdgePy::getColor(void) const {
   VoronoiEdge *e = getVoronoiEdgePtr();
   if (e->isBound()) {
-    return Py::Int(e->ptr->color() & Voronoi::ColorMask);
+    return Py::Long(e->ptr->color() & Voronoi::ColorMask);
   }
-  return Py::Int(0);
+  return Py::Long(0);
 }
 
-void VoronoiEdgePy::setColor(Py::Int color) {
+void VoronoiEdgePy::setColor(Py::Long color) {
   getEdgeFromPy(this)->color(int(color) & Voronoi::ColorMask);
 }
 
@@ -251,25 +251,6 @@ PyObject* VoronoiEdgePy::isSecondary(PyObject *args)
 }
 
 namespace {
-  Voronoi::point_type retrievePoint(Voronoi::diagram_type *dia, const Voronoi::diagram_type::cell_type *cell) {
-    Voronoi::diagram_type::cell_type::source_index_type index = cell->source_index();
-    Voronoi::diagram_type::cell_type::source_category_type category = cell->source_category();
-    if (category == boost::polygon::SOURCE_CATEGORY_SINGLE_POINT) {
-      return dia->points[index];
-    }
-    index -= dia->points.size();
-    if (category == boost::polygon::SOURCE_CATEGORY_SEGMENT_START_POINT) {
-      return low(dia->segments[index]);
-    } else {
-      return high(dia->segments[index]);
-    }
-  }
-
-  Voronoi::segment_type retrieveSegment(Voronoi::diagram_type *dia, const Voronoi::diagram_type::cell_type *cell) {
-    Voronoi::diagram_type::cell_type::source_index_type index = cell->source_index() - dia->points.size();
-    return dia->segments[index];
-  }
-
   Voronoi::point_type orthognalProjection(const Voronoi::point_type &point, const Voronoi::segment_type &segment) {
     // move segment so it goes through the origin (s)
     Voronoi::point_type offset;
@@ -325,15 +306,15 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
         Voronoi::point_type origin;
         Voronoi::point_type direction;
         if (c0->contains_point() && c1->contains_point()) {
-          Voronoi::point_type p0 = retrievePoint(e->dia, c0);
-          Voronoi::point_type p1 = retrievePoint(e->dia, c1);
+          Voronoi::point_type p0 = e->dia->retrievePoint(c0);
+          Voronoi::point_type p1 = e->dia->retrievePoint(c1);
           origin.x((p0.x() + p1.x()) / 2.);
           origin.y((p0.y() + p1.y()) / 2.);
           direction.x(p0.y() - p1.y());
           direction.y(p1.x() - p0.x());
         } else {
-          origin = c0->contains_segment() ? retrievePoint(e->dia, c1) : retrievePoint(e->dia, c0);
-          Voronoi::segment_type segment = c0->contains_segment() ? retrieveSegment(e->dia, c0) : retrieveSegment(e->dia, c1);
+          origin = c0->contains_segment() ? e->dia->retrievePoint(c1) : e->dia->retrievePoint(c0);
+          Voronoi::segment_type segment = c0->contains_segment() ? e->dia->retrieveSegment(c0) : e->dia->retrieveSegment(c1);
           Voronoi::coordinate_type dx = high(segment).x() - low(segment).x();
           Voronoi::coordinate_type dy = high(segment).y() - low(segment).y();
           if ((low(segment) == origin) ^ c0->contains_point()) {
@@ -367,8 +348,8 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
       }
     } else {
       // parabolic curve, which is always formed by a point and an edge
-      Voronoi::point_type   point   = e->ptr->cell()->contains_point() ? retrievePoint(e->dia, e->ptr->cell())  : retrievePoint(e->dia, e->ptr->twin()->cell());
-      Voronoi::segment_type segment = e->ptr->cell()->contains_point() ? retrieveSegment(e->dia, e->ptr->twin()->cell()) : retrieveSegment(e->dia, e->ptr->cell());
+      Voronoi::point_type   point   = e->ptr->cell()->contains_point() ? e->dia->retrievePoint(e->ptr->cell())  : e->dia->retrievePoint(e->ptr->twin()->cell());
+      Voronoi::segment_type segment = e->ptr->cell()->contains_point() ? e->dia->retrieveSegment(e->ptr->twin()->cell()) : e->dia->retrieveSegment(e->ptr->cell());
       // the location is the mid point betwenn the normal on the segment through point
       // this is only the mid point of the segment if the parabola is symmetric
       Voronoi::point_type loc;
@@ -456,14 +437,14 @@ namespace {
   bool retrieveDistances(const VoronoiEdge *edge, Py::List *list) {
     const Voronoi::diagram_type::cell_type *c0 = edge->ptr->cell();
     if (c0->contains_point()) {
-      return addDistancesToPoint(edge, retrievePoint(edge->dia, c0), list, edge->dia->getScale());
+      return addDistancesToPoint(edge, edge->dia->retrievePoint(c0), list, edge->dia->getScale());
     }
     const Voronoi::diagram_type::cell_type *c1 = edge->ptr->twin()->cell();
     if (c1->contains_point()) {
-      return addDistancesToPoint(edge, retrievePoint(edge->dia, c1), list, edge->dia->getScale());
+      return addDistancesToPoint(edge, edge->dia->retrievePoint(c1), list, edge->dia->getScale());
     }
     // at this point both cells are sourced from segments and it does not matter which one we use
-    Voronoi::segment_type segment = retrieveSegment(edge->dia, c0);
+    Voronoi::segment_type segment = edge->dia->retrieveSegment(c0);
     addProjectedDistanceBetween(edge->ptr->vertex0(), segment, list, edge->dia->getScale());
     addProjectedDistanceBetween(edge->ptr->vertex1(), segment, list, edge->dia->getScale());
     return false;
@@ -476,6 +457,56 @@ PyObject* VoronoiEdgePy::getDistances(PyObject *args)
   Py::List list;
   retrieveDistances(e, &list);
   return Py::new_reference_to(list);
+}
+
+std::ostream& operator<<(std::ostream &str, const Voronoi::point_type &p) {
+  return str << "[" << int(p.x()) << ", " << int(p.y()) << "]";
+}
+
+std::ostream& operator<<(std::ostream &str, const Voronoi::segment_type &s) {
+  return str << '<' << low(s) << '-' << high(s) << '>';
+}
+
+static bool pointsMatch(const Voronoi::point_type &p0, const Voronoi::point_type &p1) {
+  return long(p0.x()) == long(p1.x()) && long(p0.y()) == long(p1.y());
+}
+
+static void printCompare(const char *label, const Voronoi::point_type &p0, const Voronoi::point_type &p1) {
+  std::cerr << "         " << label <<": " << pointsMatch(p1, p0) << pointsMatch(p0, p1) << "    " << p0 << ' ' << p1 << std::endl;
+}
+
+PyObject* VoronoiEdgePy::getSegmentAngle(PyObject *args)
+{
+  VoronoiEdge *e = getVoronoiEdgeFromPy(this, args);
+
+  if (e->ptr->cell()->contains_segment() && e->ptr->twin()->cell()->contains_segment()) {
+    int i0 = e->ptr->cell()->source_index() - e->dia->points.size();
+    int i1 = e->ptr->twin()->cell()->source_index() - e->dia->points.size();
+    if (e->dia->segmentsAreConnected(i0, i1)) {
+      double a0 = e->dia->angleOfSegment(i0);
+      double a1 = e->dia->angleOfSegment(i1);
+      double a = a0 - a1;
+      if (a > M_PI_2) {
+        a -= M_PI;
+      } else if (a < -M_PI_2) {
+        a += M_PI;
+      }
+      return Py::new_reference_to(Py::Float(a));
+    } else {
+      std::cerr << "indices: " << std::endl;
+      std::cerr << "   " << e->dia->segments[i0] << std::endl;
+      std::cerr << "   " << e->dia->segments[i1] << std::endl;
+      std::cerr << "   connected: " << e->dia->segmentsAreConnected(i0, i1) << std::endl;
+      printCompare("l/l", low(e->dia->segments[i0]),  low(e->dia->segments[i1]));
+      printCompare("l/h", low(e->dia->segments[i0]),  high(e->dia->segments[i1]));
+      printCompare("h/l", high(e->dia->segments[i0]), low(e->dia->segments[i1]));
+      printCompare("h/h", high(e->dia->segments[i0]), high(e->dia->segments[i1]));
+    }
+  } else {
+    std::cerr << "constains_segment(" << e->ptr->cell()->contains_segment() << ", " << e->ptr->twin()->cell()->contains_segment() << ")" << std::endl;
+  }
+  Py_INCREF(Py_None);
+  return Py_None;
 }
 
 // custom attributes get/set

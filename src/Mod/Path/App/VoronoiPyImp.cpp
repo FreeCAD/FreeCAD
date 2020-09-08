@@ -173,8 +173,8 @@ Py::List VoronoiPy::getCells(void) const {
 }
 
 PyObject* VoronoiPy::colorExterior(PyObject *args) {
-  int color = 0;
-  if (!PyArg_ParseTuple(args, "i", &color)) {
+  Voronoi::color_type color = 0;
+  if (!PyArg_ParseTuple(args, "k", &color)) {
     throw  Py::RuntimeError("colorExterior requires an integer (color) argument");
   }
   getVoronoiPtr()->colorExterior(color);
@@ -184,11 +184,35 @@ PyObject* VoronoiPy::colorExterior(PyObject *args) {
 }
 
 PyObject* VoronoiPy::colorTwins(PyObject *args) {
-  int color = 0;
-  if (!PyArg_ParseTuple(args, "i", &color)) {
+  Voronoi::color_type color = 0;
+  if (!PyArg_ParseTuple(args, "k", &color)) {
     throw  Py::RuntimeError("colorTwins requires an integer (color) argument");
   }
   getVoronoiPtr()->colorTwins(color);
+
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+
+PyObject* VoronoiPy::colorColinear(PyObject *args) {
+  Voronoi::color_type color = 0;
+  double degree = 10.;
+  if (!PyArg_ParseTuple(args, "k|d", &color, &degree)) {
+    throw  Py::RuntimeError("colorColinear requires an integer (color) and optionally a derivation in degrees argument (default 10)");
+  }
+  getVoronoiPtr()->colorColinear(color, degree);
+
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+
+PyObject* VoronoiPy::resetColor(PyObject *args) {
+  Voronoi::color_type color = 0;
+  if (!PyArg_ParseTuple(args, "k", &color)) {
+    throw  Py::RuntimeError("clearColor requires an integer (color) argument");
+  }
+
+  getVoronoiPtr()->resetColor(color);
 
   Py_INCREF(Py_None);
   return Py_None;
