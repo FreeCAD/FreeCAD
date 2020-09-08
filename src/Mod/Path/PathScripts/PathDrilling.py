@@ -110,6 +110,14 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         self.commandlist.append(Path.Command('G90'))
         self.commandlist.append(Path.Command(obj.ReturnLevel))
 
+        # Set correct start depth
+        if obj.OpStartDepth.Value != obj.StartDepth.Value:
+            obj.RetractHeight.Value = obj.StartDepth.Value + 1
+
+            # Adjust retract input box
+            s = str(obj.RetractHeight.Value) + 'mm'
+            self.applyExpression(obj, 'RetractHeight', s)
+
         for p in holes:
             cmd = "G81"
             cmdParams = {}
