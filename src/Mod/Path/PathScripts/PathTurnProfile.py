@@ -37,6 +37,7 @@ __author__ = "dubstar-04 (Daniel Wood)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class implementation for turning profiling operations."
 
+
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -48,12 +49,12 @@ class ObjectTurnProfile(PathTurnBase.ObjectOp):
         #PathLog.track(obj.Label)
         PathTurnBase.ObjectOp.initOperation(self, obj)
 
-        obj.addProperty('App::PropertyEnumeration', 'Direction',  'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'Direction of Operation'))
+        obj.addProperty('App::PropertyEnumeration', 'Direction',  'Turn Path', QtCore.QT_TRANSLATE_NOOP('TurnPath', 'Direction of Operation'))
         obj.Direction = ['CW', 'CCW']
-        obj.addProperty('App::PropertyInteger', 'StartOffset', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
-        obj.addProperty('App::PropertyInteger', 'EndOffset', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
-        obj.addProperty('App::PropertyInteger', 'MinDia', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
-        obj.addProperty('App::PropertyInteger', 'MaxDia', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
+        obj.addProperty('App::PropertyInteger', 'StartOffset', 'Turn Path', QtCore.QT_TRANSLATE_NOOP('TurnPath', 'StartOffset'))
+        obj.addProperty('App::PropertyInteger', 'EndOffset', 'Turn Path', QtCore.QT_TRANSLATE_NOOP('TurnPath', 'EndOffset'))
+        obj.addProperty('App::PropertyInteger', 'MinDia', 'Turn Path', QtCore.QT_TRANSLATE_NOOP('TurnPath', 'MinDia'))
+        obj.addProperty('App::PropertyInteger', 'MaxDia', 'Turn Path', QtCore.QT_TRANSLATE_NOOP('TurnPath', 'MaxDia'))
 
     def generate_gcode(self, obj):
         '''

@@ -51,12 +51,12 @@ class ObjectTurnFace(PathTurnBase.ObjectOp):
         #PathLog.track(obj.Label)
         PathTurnBase.ObjectOp.initOperation(self, obj)
 
-        obj.addProperty('App::PropertyEnumeration', 'Direction',  'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'Direction of Operation'))
+        obj.addProperty('App::PropertyEnumeration', 'Direction',  'Turn Face', QtCore.QT_TRANSLATE_NOOP('TurnPath', 'Direction of Operation'))
         obj.Direction = ['CW', 'CCW']
-        obj.addProperty('App::PropertyInteger', 'StartOffset', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
-        obj.addProperty('App::PropertyInteger', 'EndOffset', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
-        obj.addProperty('App::PropertyInteger', 'MinDia', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
-        obj.addProperty('App::PropertyInteger', 'MaxDia', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
+        obj.addProperty('App::PropertyInteger', 'StartOffset', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('TurnPath', 'StartOffset'))
+        obj.addProperty('App::PropertyInteger', 'EndOffset', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('TurnPath', 'EndOffset'))
+        obj.addProperty('App::PropertyInteger', 'MinDia', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('TurnPath', 'MinDia'))
+        obj.addProperty('App::PropertyInteger', 'MaxDia', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('TurnPath', 'MaxDia'))
     
     def generate_gcode(self, obj):
         '''
