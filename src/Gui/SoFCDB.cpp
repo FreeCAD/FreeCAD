@@ -35,6 +35,9 @@
 #endif
 
 #include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+#include <Inventor/VRMLnodes/SoVRMLNormal.h>
+#include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
+#include <Inventor/VRMLnodes/SoVRMLShape.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoMFNode.h>
 
@@ -466,6 +469,33 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, bool exportViewpoints, std::string& b
     vrmlRoot->setInstancePrefix(SbString("o"));
     vrmlRoot->ref();
 
+    // Search for SoVRMLIndexedFaceSet nodes and set creaseAngle to 0.5
+    {
+        SoSearchAction sa;
+        sa.setType(SoVRMLShape::getClassTypeId());
+        sa.setInterest(SoSearchAction::ALL);
+        sa.setSearchingAll(true);
+        sa.apply(vrmlRoot);
+        SoPathList& paths = sa.getPaths();
+        for (int i=0; i<paths.getLength(); i++) {
+            SoPath* path = paths[i];
+            SoVRMLShape* shape = static_cast<SoVRMLShape*>(path->getTail());
+            SoNode* geom = shape->geometry.getValue();
+            if (geom && geom->getTypeId() == SoVRMLIndexedFaceSet::getClassTypeId()) {
+                SoNode* norm = static_cast<SoVRMLIndexedFaceSet*>(geom)->normal.getValue();
+                if (norm && norm->getTypeId() == SoVRMLNormal::getClassTypeId()) {
+                    // if empty then nullify the normal field node
+                    if (static_cast<SoVRMLNormal*>(norm)->vector.getNum() == 0)
+                        static_cast<SoVRMLIndexedFaceSet*>(geom)->normal.setValue(nullptr);
+                }
+                else {
+                    static_cast<SoVRMLIndexedFaceSet*>(geom)->creaseAngle.setValue(0.5f);
+                }
+            }
+        }
+        sa.reset(); // clear the internal cache
+    }
+
     std::stringstream out;
     writeX3D(vrmlRoot, exportViewpoints, out);
     buffer = out.str();
@@ -562,6 +592,9 @@ void Gui::SoFCDB::writeX3DFields(SoNode* node, std::map<SoNode*, std::string>& n
 void Gui::SoFCDB::writeX3DChild(SoNode* node, std::map<SoNode*, std::string>& nodeMap,
                                 int& numDEF, int spaces, std::ostream& out)
 {
+    if (!node)
+        return;
+
     // check if the node is already used
     auto mapIt = nodeMap.find(node);
     if (mapIt == nodeMap.end()) {
@@ -588,7 +621,7 @@ void Gui::SoFCDB::writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostrea
            "  </head>\n";
 
     std::map<SoNode*, std::string> nodeMap;
-    out << "<Scene>\n";
+    out << "  <Scene>\n";
 
     // compute a sensible view point
     SoGetBoundingBoxAction bboxAction(SbViewportRegion(1280, 1024));
@@ -605,7 +638,7 @@ void Gui::SoFCDB::writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostrea
                                 const SbVec3f& pos, const SbRotation& rot) {
             SbVec3f axis; float angle;
             rot.getValue(axis, angle);
-            out << "  <Viewpoint id=\"" << text
+            out << "    <Viewpoint id=\"" << text
                 << "\" centerOfRotation=\"" << cnt[0] << " " << cnt[1] << " " << cnt[2]
                 << "\" position=\"" << pos[0] << " " << pos[1] << " " << pos[2]
                 << "\" orientation=\"" << axis[0] << " " << axis[1] << " " << axis[2] << " " << angle
@@ -623,8 +656,8 @@ void Gui::SoFCDB::writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostrea
     }
 
     int numDEF = 0;
-    writeX3DFields(node, nodeMap, true, numDEF, 2, out);
-    out << "</Scene>\n";
+    writeX3DFields(node, nodeMap, true, numDEF, 4, out);
+    out << "  </Scene>\n";
     out << "</X3D>\n";
 }
 
