@@ -88,9 +88,6 @@ the sketch plane's normal vector will be used</string>
           <property name="keyboardTracking">
            <bool>false</bool>
           </property>
-          <property name="unit" stdset="0">
-           <string notr="true"/>
-          </property>
           <property name="minimum">
            <double>-100.000000000000000</double>
           </property>
@@ -99,6 +96,9 @@ the sketch plane's normal vector will be used</string>
           </property>
           <property name="singleStep">
            <double>0.100000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
           </property>
          </widget>
         </item>
@@ -121,9 +121,6 @@ the sketch plane's normal vector will be used</string>
           <property name="keyboardTracking">
            <bool>false</bool>
           </property>
-          <property name="unit" stdset="0">
-           <string notr="true"/>
-          </property>
           <property name="minimum">
            <double>-100.000000000000000</double>
           </property>
@@ -132,6 +129,9 @@ the sketch plane's normal vector will be used</string>
           </property>
           <property name="singleStep">
            <double>0.100000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
           </property>
          </widget>
         </item>
@@ -154,9 +154,6 @@ the sketch plane's normal vector will be used</string>
           <property name="keyboardTracking">
            <bool>false</bool>
           </property>
-          <property name="unit" stdset="0">
-           <string notr="true"/>
-          </property>
           <property name="minimum">
            <double>-100.000000000000000</double>
           </property>
@@ -168,6 +165,9 @@ the sketch plane's normal vector will be used</string>
           </property>
           <property name="value">
            <double>1.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
           </property>
          </widget>
         </item>
@@ -279,6 +279,11 @@ the sketch plane's normal vector will be used</string>
    <class>Gui::QuantitySpinBox</class>
    <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::DoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/SpinBox.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::PrefQuantitySpinBox</class>
