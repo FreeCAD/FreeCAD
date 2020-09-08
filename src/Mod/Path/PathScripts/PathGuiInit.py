@@ -24,6 +24,7 @@
 # pylint: disable=unused-import
 
 import PathScripts.PathLog as PathLog
+import FreeCAD
 
 LOGLEVEL = False
 
@@ -82,6 +83,16 @@ def Startup():
         from PathScripts import PathToolLibraryEditor
         from PathScripts import PathUtilsGui
         # from PathScripts import PathWaterlineGui  # Added in initGui.py due to OCL dependency
+
+        try:
+            import LibLathe 
+            from PathScripts import PathTurnFace
+            from PathScripts import PathTurnFaceGui
+            from PathScripts import PathTurnProfile
+            from PathScripts import PathTurnProfileGui
+        except ImportError:
+            FreeCAD.Console.PrintError("LibLathe is not working!\n")
+
         Processed = True
     else:
         PathLog.debug('Skipping PathGui initialisation')

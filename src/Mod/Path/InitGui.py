@@ -103,6 +103,7 @@ class PathWorkbench (Workbench):
                           "Path_DressupDogbone", "Path_DressupDragKnife",
                           "Path_DressupLeadInOut", "Path_DressupRampEntry",
                           "Path_DressupTag", "Path_DressupZCorrect"]
+        turncmdlist = []
         extracmdlist = []
         # modcmdmore = ["Path_Hop",]
         # remotecmdlist = ["Path_Remote"]
@@ -111,10 +112,19 @@ class PathWorkbench (Workbench):
         FreeCADGui.addCommand('Path_EngraveTools', PathCommandGroup(engravecmdlist, QtCore.QT_TRANSLATE_NOOP("Path", 'Engraving Operations')))
 
         threedcmdgroup = threedopcmdlist
+        turncmdgroup = []
         if PathPreferences.experimentalFeaturesEnabled():
             projcmdlist.append("Path_Sanity")
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
+            
+            try:
+                import LibLathe
+                turncmdlist = ["Path_TurnFace", "Path_TurnProfile"]
+                turncmdgroup = ['Path_TurnTools']                 
+                FreeCADGui.addCommand('Path_TurnTools', PathCommandGroup(turncmdlist, QtCore.QT_TRANSLATE_NOOP("Path",'Turning Operations')))
+            except ImportError:
+                FreeCAD.Console.PrintError("LibLathe is not working!\n")
 
             try:
                 import ocl  # pylint: disable=unused-variable
@@ -128,14 +138,14 @@ class PathWorkbench (Workbench):
 
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist)
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist)
-        self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "New Operations"), twodopcmdlist+engravecmdgroup+threedcmdgroup)
+        self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "New Operations"), twodopcmdlist+engravecmdgroup+threedcmdgroup+turncmdgroup)
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Path Modification"), modcmdlist)
         if extracmdlist:
             self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Helpful Tools"), extracmdlist)
 
         self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path")], projcmdlist + ["Path_ExportTemplate", "Separator"] +
                         toolbitcmdlist + toolcmdlist + ["Separator"] + twodopcmdlist + engravecmdlist + ["Separator"] +
-                        threedopcmdlist + ["Separator"])
+                        threedopcmdlist + ["Separator"] + turncmdlist +["Separator"])
         self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path"), QtCore.QT_TRANSLATE_NOOP(
             "Path", "Path Dressup")], dressupcmdlist)
         self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path"), QtCore.QT_TRANSLATE_NOOP(

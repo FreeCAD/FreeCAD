@@ -329,6 +329,8 @@ def select(op):
     opsel['Waterline'] = surfaceselect
     opsel['Adaptive'] = adaptiveselect
     opsel['Probe'] = probeselect
+    opsel['TurnFace'] = drillselect
+    opsel['TurnProfile'] = drillselect
     opsel['Custom'] = customselect
     return opsel[op]
 

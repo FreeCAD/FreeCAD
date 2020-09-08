@@ -82,6 +82,8 @@
         <file>icons/edge-join-round-not.svg</file>
         <file>icons/edge-join-round.svg</file>
         <file>icons/preferences-path.svg</file>
+	<file>icons/Path-TurnFace.svg</file>
+	<file>icons/Path-TurnProfile.svg</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
         <file>panels/DlgJobModelSelect.ui</file>
@@ -98,6 +100,7 @@
         <file>panels/PageBaseHoleGeometryEdit.ui</file>
         <file>panels/PageBaseLocationEdit.ui</file>
         <file>panels/PageDepthsEdit.ui</file>
+        <file>panels/PageDiametersEdit.ui</file>
         <file>panels/PageHeightsEdit.ui</file>
         <file>panels/PageOpCustomEdit.ui</file>
         <file>panels/PageOpDeburrEdit.ui</file>
@@ -111,6 +114,7 @@
         <file>panels/PageOpSlotEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>
         <file>panels/PageOpWaterlineEdit.ui</file>
+        <file>panels/PageOpTurnBaseEdit.ui</file>
         <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
         <file>panels/SetupGlobal.ui</file>
