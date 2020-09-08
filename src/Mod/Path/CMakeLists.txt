@@ -156,6 +156,19 @@ SET(PathScripts_post_SRCS
     PathScripts/post/smoothie_post.py
 )
 
+SET(LibLathe_SRCS
+  LibLathe/LLCommand.py
+  LibLathe/LLPoint.py
+  LibLathe/LLSegmentGroup.py
+  LibLathe/LLTool.py
+  LibLathe/LLVector.py
+  LibLathe/LLBaseOP.py
+  LibLathe/LLFaceOP.py
+  LibLathe/LLProfileOP.py
+  LibLathe/LLSegment.py
+  LibLathe/LLUtils.py
+)
+
 SET(Tools_Bit_SRCS
   Tools/Bit/t1.fctb
   Tools/Bit/t2.fctb
@@ -226,6 +239,7 @@ SET(Path_Images
 SET(all_files
     ${PathScripts_SRCS}
     ${PathScripts_post_SRCS}
+    ${LibLathe_SRCS}
     ${Tools_Bit_SRCS}
     ${Tools_Library_SRCS}
     ${Tools_Shape_SRCS}
@@ -267,6 +281,13 @@ INSTALL(
         ${PathScripts_post_SRCS}
     DESTINATION
         Mod/Path/PathScripts/post
+)
+
+INSTALL(
+    FILES
+        ${LibLathe_SRCS}
+    DESTINATION
+        Mod/Path/LibLathe
 )
 
 INSTALL(
