@@ -68,8 +68,8 @@ class ObjectOp(PathOp.ObjectOp):
     def initOperation(self, obj):
         '''initOperation(obj)'''
 
-        obj.addProperty("App::PropertyLength", "StepOver", "Turn Path", translate("TurnPath", "Operation Stepover")).StepOver = 1.0 
-        obj.addProperty("App::PropertyInteger", "FinishPasses", "Turn Path", translate("TurnPath", "Number of Finish Passes")).FinishPasses = 2
+        obj.addProperty("App::PropertyLength", "StepOver", "Turn Path", translate("TurnPath", "Operation Stepover"))
+        obj.addProperty("App::PropertyInteger", "FinishPasses", "Turn Path", translate("TurnPath", "Number of Finish Passes"))
         obj.addProperty("App::PropertyBool", "AllowGrooving", "Turn Path", translate("TurnPath", "Minimum Diameter for Operation"))
         obj.addProperty("App::PropertyBool", "AllowFacing", "Turn Path", translate("TurnPath", "Minimum Diameter for Operation"))
 
@@ -96,7 +96,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.generate_gcode(obj)
 
     def getProps(self, obj):
-        #TODO: use the start and final depths
+        # TODO: use the start and final depths
         print('getProps - Start Depth: ', obj.OpStartDepth.Value, 'Final Depth: ', obj.OpFinalDepth.Value)
 
         props = {}
@@ -108,7 +108,7 @@ class ObjectOp(PathOp.ObjectOp):
         props['allow_facing']=self.allowFacing
         props['step_over']=self.stepOver
         props['finish_passes']=self.finishPasses
-        props['hfeed' ]=obj.ToolController.HorizFeed.Value 
+        props['hfeed' ]=obj.ToolController.HorizFeed.Value
         props['vfeed']=obj.ToolController.VertFeed.Value
         return props
 

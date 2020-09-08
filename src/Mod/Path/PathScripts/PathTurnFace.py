@@ -47,6 +47,17 @@ class ObjectTurnFace(PathTurnBase.ObjectOp):
         '''opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation.'''
         return PathTurnBase.PathOp.FeatureDiameters | PathTurnBase.PathOp.FeatureTool | PathTurnBase.PathOp.FeatureDepths | PathTurnBase.PathOp.FeatureNoFinalDepth | PathTurnBase.PathOp.FeatureCoolant 
     
+    def initOperation(self, obj):
+        #PathLog.track(obj.Label)
+        PathTurnBase.ObjectOp.initOperation(self, obj)
+
+        obj.addProperty('App::PropertyEnumeration', 'Direction',  'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'Direction of Operation'))
+        obj.Direction = ['CW', 'CCW']
+        obj.addProperty('App::PropertyInteger', 'StartOffset', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
+        obj.addProperty('App::PropertyInteger', 'EndOffset', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
+        obj.addProperty('App::PropertyInteger', 'MinDia', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
+        obj.addProperty('App::PropertyInteger', 'MaxDia', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
+    
     def generate_gcode(self, obj):
         '''
         Generate GCode for the op
@@ -68,6 +79,11 @@ class ObjectTurnFace(PathTurnBase.ObjectOp):
 
     def opSetDefaultValues(self, obj, job):
         obj.OpStartDepth = obj.OpStockZMax
+        #obj.Direction = 0
+        obj.StepOver = 1.0
+        obj.FinishPasses = 2
+        #obj.StartOffset = 0
+        #obj.EndOffset = 0
 
     def opUpdateDepths(self, obj):
         obj.OpStartDepth = obj.OpStockZMax

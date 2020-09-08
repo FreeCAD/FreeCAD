@@ -44,6 +44,17 @@ def translate(context, text, disambig=None):
 class ObjectTurnProfile(PathTurnBase.ObjectOp):
     '''Proxy class for turning profile operations.'''
 
+    def initOperation(self, obj):
+        #PathLog.track(obj.Label)
+        PathTurnBase.ObjectOp.initOperation(self, obj)
+
+        obj.addProperty('App::PropertyEnumeration', 'Direction',  'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'Direction of Operation'))
+        obj.Direction = ['CW', 'CCW']
+        obj.addProperty('App::PropertyInteger', 'StartOffset', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
+        obj.addProperty('App::PropertyInteger', 'EndOffset', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
+        obj.addProperty('App::PropertyInteger', 'MinDia', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
+        obj.addProperty('App::PropertyInteger', 'MaxDia', 'Turn Face', QtCore.QT_TRANSLATE_NOOP('PathTurnFace', 'dd'))
+
     def generate_gcode(self, obj):
         '''
         Generate GCode for the op
@@ -65,6 +76,11 @@ class ObjectTurnProfile(PathTurnBase.ObjectOp):
     def opSetDefaultValues(self, obj, job):
         obj.OpStartDepth = job.Stock.Shape.BoundBox.ZMax
         obj.OpFinalDepth = job.Stock.Shape.BoundBox.ZMin
+        #obj.Direction = 0
+        obj.StepOver = 1.0
+        obj.FinishPasses = 2
+        #obj.StartOffset = 0
+        #obj.EndOffset = 0
 
     def opUpdateDepths(self, obj):
         obj.OpStartDepth = obj.OpStockZMax
