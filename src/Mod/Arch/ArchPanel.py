@@ -1383,7 +1383,7 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
     def __init__(self,vobj):
 
         Draft._ViewProviderDraft.__init__(self,vobj)
-        self.setProperties(self,vobj)
+        self.setProperties(vobj)
         vobj.PatternSize = 0.0035
 
     def setProperties(self,vobj):
