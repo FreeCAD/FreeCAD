@@ -30,6 +30,7 @@ import sys
 import unittest
 from os import listdir
 from os.path import join
+from os.path import isfile
 
 import FreeCAD
 
@@ -136,7 +137,7 @@ class TestSolverZ88(unittest.TestCase):
 
         # compare created input files with the given input files
         test_path = join(testtools.get_fem_test_home_dir(), "z88", base_name)
-        test_files = [f for f in listdir(test_path)]
+        test_files = [f for f in listdir(test_path) if isfile(join(test_path, f))]
         # fcc_print(sorted(test_files))
         not_files = ["__init__.py"]
         test_files = [f for f in test_files if f not in not_files]

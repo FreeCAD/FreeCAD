@@ -193,7 +193,7 @@ class Snapper:
         """
         self.active_snaps = []
         param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        snap_modes = param.GetString("snapModes")
+        snap_modes = param.GetString("snapModes", "100000000000000") # default value: only lock is ON
         i = 0
         for snap in snap_modes:
             if bool(int(snap)):
@@ -1520,29 +1520,23 @@ class Snapper:
 
     def restore_snap_buttons_state(self, toolbar, button_suffix):
         """
-        Restore toolbar button's checked state according to 
+        Restore toolbar button's checked state according to
         "snapModes" saved in preferences
         """
         # set status tip where needed
-        param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        snap_modes = param.GetString("snapModes")
-
         for button in toolbar.actions():
             if len(button.statusTip()) == 0:
                 button.setStatusTip(button.toolTip())
 
         # restore toolbar buttons state
-        if snap_modes:
-            for action in toolbar.findChildren(QtGui.QAction):
-                snap = action.objectName()[11:].replace(button_suffix, "")
-                if snap in Gui.Snapper.snaps:
-                    i = Gui.Snapper.snaps.index(snap)
-                    state = bool(int(snap_modes[i]))
-                    action.setChecked(state)
-                    if state:
-                        action.setToolTip(action.toolTip() + " (ON)")
-                    else:
-                        action.setToolTip(action.toolTip() + " (OFF)")
+        for action in toolbar.findChildren(QtGui.QAction):
+            snap = action.objectName()[11:].replace(button_suffix, "")
+            if snap in self.active_snaps:
+                action.setChecked(True)
+                action.setToolTip(action.toolTip() + " (ON)")
+            elif snap in Gui.Snapper.snaps: # required: the toolbar has more children than the buttons
+                action.setChecked(False)
+                action.setToolTip(action.toolTip() + " (OFF)")
 
 
     def get_snap_toolbar(self):
