@@ -3100,21 +3100,16 @@ bool MeshOutput::SaveX3DContent (std::ostream &out, bool exportViewpoints) const
         };
 
         Base::Vector3f cnt = bbox.GetCenter();
-        float minx = bbox.MinX;
-        float maxx = bbox.MaxX;
-        float miny = bbox.MinY;
-        float maxy = bbox.MaxY;
-        float minz = bbox.MinZ;
-        float maxz = bbox.MaxZ;
-        float len = bbox.CalcDiagonalLength();
+        float dist = 1.2f * bbox.CalcDiagonalLength();
+        float dist3 = 0.577350f * dist; // sqrt(1/3) * dist
 
-        viewpoint("Iso", cnt, cnt + Base::Vector3f(0.5f*len, -0.5f*len, 0.5f*len), Base::Vector3f(0.742906f, 0.307722f, 0.594473f), 1.21712f);
-        viewpoint("Front", cnt, Base::Vector3f(cnt.x, miny-len, cnt.z), Base::Vector3f(1.0f, 0.0f, 0.0f), 1.5707964f);
-        viewpoint("Back", cnt, Base::Vector3f(cnt.x, maxy+len, cnt.z), Base::Vector3f(0.0f, 0.707106f, 0.707106f), 3.141592f);
-        viewpoint("Right", cnt, Base::Vector3f(maxx+len, cnt.y, cnt.z), Base::Vector3f(0.577350f, 0.577350f, 0.577350f), 2.094395f);
-        viewpoint("Left", cnt, Base::Vector3f(minx-len, cnt.y, cnt.z), Base::Vector3f(-0.577350f, 0.577350f, 0.577350f), 4.188790f);
-        viewpoint("Top", cnt, Base::Vector3f(cnt.x, cnt.y, maxz+len), Base::Vector3f(0.0f, 0.0f, 1.0f), 0.0f);
-        viewpoint("Bottom", cnt, Base::Vector3f(cnt.x, cnt.y, minz-len), Base::Vector3f(1.0f, 0.0f, 0.0f), 3.141592f);
+        viewpoint("Iso", cnt, Base::Vector3f(cnt.x + dist3, cnt.y - dist3, cnt.z + dist3), Base::Vector3f(0.742906f, 0.307722f, 0.594473f), 1.21712f);
+        viewpoint("Front", cnt, Base::Vector3f(cnt.x, cnt.y - dist, cnt.z), Base::Vector3f(1.0f, 0.0f, 0.0f), 1.5707964f);
+        viewpoint("Back", cnt, Base::Vector3f(cnt.x, cnt.y + dist, cnt.z), Base::Vector3f(0.0f, 0.707106f, 0.707106f), 3.141592f);
+        viewpoint("Right", cnt, Base::Vector3f(cnt.x + dist, cnt.y, cnt.z), Base::Vector3f(0.577350f, 0.577350f, 0.577350f), 2.094395f);
+        viewpoint("Left", cnt, Base::Vector3f(cnt.x - dist, cnt.y, cnt.z), Base::Vector3f(-0.577350f, 0.577350f, 0.577350f), 4.188790f);
+        viewpoint("Top", cnt, Base::Vector3f(cnt.x, cnt.y, cnt.z + dist), Base::Vector3f(0.0f, 0.0f, 1.0f), 0.0f);
+        viewpoint("Bottom", cnt, Base::Vector3f(cnt.x, cnt.y, cnt.z - dist), Base::Vector3f(1.0f, 0.0f, 0.0f), 3.141592f);
     }
 
     if (apply_transform) {

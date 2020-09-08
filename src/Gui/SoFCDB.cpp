@@ -630,7 +630,7 @@ void Gui::SoFCDB::writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostrea
     SbSphere bs;
     bs.circumscribe(bbox);
     const SbVec3f& cnt = bs.getCenter();
-    float dist = 2.0f * bs.getRadius();
+    float dist = 2.4f * bs.getRadius();
     float dist3 = 0.577350f * dist; // sqrt(1/3) * dist
 
     if (exportViewpoints) {
