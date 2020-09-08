@@ -172,12 +172,45 @@ Py::List VoronoiPy::getCells(void) const {
   return list;
 }
 
+static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, const Voronoi::diagram_type::vertex_type *v, bool &isExterior) {
+  if (!isExterior) {
+    PyObject *vx = new VoronoiVertexPy(new VoronoiVertex(dia, v));
+    PyObject *arglist = Py_BuildValue("(O)", vx);
+    PyObject *result = PyEval_CallObject(callback, arglist);
+    Py_DECREF(arglist);
+    Py_DECREF(vx);
+    if (result == NULL) {
+      return false;
+    }
+    isExterior = result == Py_True;
+    Py_DECREF(result);
+  }
+  return true;
+}
+
 PyObject* VoronoiPy::colorExterior(PyObject *args) {
   Voronoi::color_type color = 0;
-  if (!PyArg_ParseTuple(args, "k", &color)) {
+  PyObject *callback = 0;
+  if (!PyArg_ParseTuple(args, "k|O", &color, &callback)) {
     throw  Py::RuntimeError("colorExterior requires an integer (color) argument");
   }
-  getVoronoiPtr()->colorExterior(color);
+  Voronoi *vo = getVoronoiPtr();
+  vo->colorExterior(color);
+  if (callback) {
+    for (auto e = vo->vd->edges().begin(); e != vo->vd->edges().end(); ++e) {
+      if (e->is_finite() && e->color() == 0) {
+        const Voronoi::diagram_type::vertex_type *v0 = e->vertex0();
+        const Voronoi::diagram_type::vertex_type *v1 = e->vertex1();
+        bool isExterior = false;
+        if (!callbackWithVertex(vo->vd, callback, v0, isExterior) || !callbackWithVertex(vo->vd, callback, v1, isExterior)) {
+          return NULL;
+        }
+        if (isExterior) {
+          vo->colorExterior(&(*e), color);
+        }
+      }
+    }
+  }
 
   Py_INCREF(Py_None);
   return Py_None;
