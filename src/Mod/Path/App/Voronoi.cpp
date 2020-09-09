@@ -293,7 +293,7 @@ void Voronoi::colorColinear(Voronoi::color_type color, double degree) {
 
 void Voronoi::resetColor(Voronoi::color_type color) {
   for (auto it = vd->cells().begin(); it != vd->cells().end(); ++it) {
-    if (it->color() == color) {
+    if (color == -1 || it->color() == color) {
       it->color(0);
     }
   }
