@@ -82,8 +82,8 @@
         <file>icons/edge-join-round-not.svg</file>
         <file>icons/edge-join-round.svg</file>
         <file>icons/preferences-path.svg</file>
-	<file>icons/Path-TurnFace.svg</file>
-	<file>icons/Path-TurnProfile.svg</file>
+        <file>icons/Path-TurnFace.svg</file>
+        <file>icons/Path-TurnProfile.svg</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
         <file>panels/DlgJobModelSelect.ui</file>
