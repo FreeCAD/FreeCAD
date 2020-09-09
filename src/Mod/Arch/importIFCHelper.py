@@ -383,6 +383,16 @@ def buildRelMaterialColors(ifcfile, prodrepr):
     pass
 
 
+def getColorFromProduct(product):
+
+    if product.Representation:
+        for rep in product.Representation.Representations:
+            for item in rep.Items:
+                for style in item.StyledByItem:
+                    color = getColorFromStyledItem(style)
+                    if color:
+                        return color
+
 def getColorFromMaterial(material):
 
     if material.HasRepresentation:
@@ -410,11 +420,12 @@ def getColorFromStyledItem(styled_item):
         Return `None` if `styled_item` is not of type `'IfcStyledItem'`
         or if there is any other problem getting a color.
     """
-    if not styled_item.is_a("IfcStyledItem"):
-        return None
 
     if styled_item.is_a("IfcStyledRepresentation"):
         styled_item = styled_item.Items[0]
+
+    if not styled_item.is_a("IfcStyledItem"):
+        return None
 
     rgb_color = None
     transparency = None
