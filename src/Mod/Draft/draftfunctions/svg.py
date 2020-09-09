@@ -707,7 +707,7 @@ def get_svg(obj,
             scale=1, linewidth=0.35, fontsize=12,
             fillstyle="shape color", direction=None, linestyle=None,
             color=None, linespacing=None, techdraw=False, rotation=0,
-            fillSpaces=False, override=True):
+            fillspaces=False, override=True):
     """Return a string containing an SVG representation of the object.
 
     Paramaeters
@@ -748,7 +748,7 @@ def get_svg(obj,
     rotation: float, optional
         It defaults to 0.
 
-    fillSpaces: bool, optional
+    fillspaces: bool, optional
         It defaults to `False`.
 
     override: bool, optional
@@ -765,7 +765,7 @@ def get_svg(obj,
                                scale, linewidth, fontsize,
                                fillstyle, direction, linestyle,
                                color, linespacing, techdraw,
-                               rotation, fillSpaces, override)
+                               rotation, fillspaces, override)
             return svg
 
     pathdata = []
@@ -1224,7 +1224,7 @@ def get_svg(obj,
 
         if App.GuiUp:
             vobj = obj.ViewObject
-            if fillSpaces and hasattr(obj, "Proxy"):
+            if fillspaces and hasattr(obj, "Proxy"):
                 if not hasattr(obj.Proxy, "face"):
                     obj.Proxy.getArea(obj, notouch=True)
                 if hasattr(obj.Proxy, "face"):
@@ -1373,15 +1373,19 @@ def get_svg(obj,
 
 def getSVG(obj,
            scale=1, linewidth=0.35, fontsize=12,
-           fillstyle="shape color", direction=None, linestyle=None,
-           color=None, linespacing=None, techdraw=False, rotation=0,
+           fillstyle="shape color", direction=None,
+           linestyle=None,
+           color=None, linespacing=None,
+           techdraw=False, rotation=0,
            fillSpaces=False, override=True):
     """Return SVG string of the object. DEPRECATED. Use 'get_svg'."""
     utils.use_instead("get_svg")
     return get_svg(obj,
-                   scale, linewidth, fontsize,
-                   fillstyle, direction, linestyle,
-                   color, linespacing, techdraw, rotation,
-                   fillSpaces, override)
+                   scale=scale, linewidth=linewidth, fontsize=fontsize,
+                   fillstyle=fillstyle, direction=direction,
+                   linestyle=linestyle,
+                   color=color, linespacing=linespacing,
+                   techdraw=techdraw, rotation=rotation,
+                   fillspaces=fillSpaces, override=override)
 
 ## @}
