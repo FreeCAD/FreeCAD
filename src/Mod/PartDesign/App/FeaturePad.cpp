@@ -152,9 +152,9 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         }
         else {
             // if null vector, use SketchVector
-            if ( (Direction.getValue().x < Precision::Confusion())
-                && (Direction.getValue().y < Precision::Confusion())
-                && (Direction.getValue().z < Precision::Confusion()) )
+            if ( (fabs(Direction.getValue().x) < Precision::Confusion())
+                && (fabs(Direction.getValue().y) < Precision::Confusion())
+                && (fabs(Direction.getValue().z) < Precision::Confusion()) )
             {
                 Direction.setValue(SketchVector.x, SketchVector.y, SketchVector.z);
             }
@@ -173,8 +173,9 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         // to make dir as long that its projection to the SketchVector
         // equals the SketchVector.
         // This is the scalar product of both vectors.
+        // Since the pad length cannot be negative, the factor must not be negative.
 
-        double factor = dir * gp_Dir(SketchVector.x, SketchVector.y, SketchVector.z);
+        double factor = fabs(dir * gp_Dir(SketchVector.x, SketchVector.y, SketchVector.z));
 
         // factor would be zero if vectors are orthogonal
         if (factor < Precision::Confusion())
