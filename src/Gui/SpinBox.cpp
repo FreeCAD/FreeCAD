@@ -286,6 +286,7 @@ void UIntSpinBox::onChange() {
         if (value) {
             setValue(boost::math::round(value->getValue()));
             setReadOnly(true);
+            setButtonSymbols(QAbstractSpinBox::NoButtons);
             iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
 
             QPalette p(lineEdit()->palette());
@@ -296,6 +297,7 @@ void UIntSpinBox::onChange() {
     }
     else {
         setReadOnly(false);
+        setButtonSymbols(QAbstractSpinBox::UpDownArrows);
         iconLabel->setPixmap(getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight)));
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
@@ -336,6 +338,7 @@ void UIntSpinBox::resizeEvent(QResizeEvent * event)
 
             if (value) {
                 setReadOnly(true);
+                setButtonSymbols(QAbstractSpinBox::NoButtons);
                 QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
                 iconLabel->setPixmap(pixmap);
 
@@ -347,6 +350,7 @@ void UIntSpinBox::resizeEvent(QResizeEvent * event)
         }
         else {
             setReadOnly(false);
+            setButtonSymbols(QAbstractSpinBox::UpDownArrows);
             QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
             iconLabel->setPixmap(pixmap);
 
@@ -480,6 +484,7 @@ void IntSpinBox::onChange() {
         if (value) {
             setValue(boost::math::round(value->getValue()));
             setReadOnly(true);
+            setButtonSymbols(QAbstractSpinBox::NoButtons);
             iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
 
             QPalette p(lineEdit()->palette());
@@ -490,6 +495,7 @@ void IntSpinBox::onChange() {
     }
     else {
         setReadOnly(false);
+        setButtonSymbols(QAbstractSpinBox::UpDownArrows);
         iconLabel->setPixmap(getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight)));
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
@@ -514,6 +520,7 @@ void IntSpinBox::resizeEvent(QResizeEvent * event)
 
             if (value) {
                 setReadOnly(true);
+                setButtonSymbols(QAbstractSpinBox::NoButtons);
                 QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
                 iconLabel->setPixmap(pixmap);
 
@@ -525,6 +532,7 @@ void IntSpinBox::resizeEvent(QResizeEvent * event)
         }
         else {
             setReadOnly(false);
+            setButtonSymbols(QAbstractSpinBox::UpDownArrows);
             QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
             iconLabel->setPixmap(pixmap);
 
@@ -658,6 +666,7 @@ void DoubleSpinBox::onChange() {
         if (value) {
             setValue(value->getValue());
             setReadOnly(true);
+            setButtonSymbols(QAbstractSpinBox::NoButtons);
             iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
 
             QPalette p(lineEdit()->palette());
@@ -668,6 +677,7 @@ void DoubleSpinBox::onChange() {
     }
     else {
         setReadOnly(false);
+        setButtonSymbols(QAbstractSpinBox::UpDownArrows);
         iconLabel->setPixmap(getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight)));
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
@@ -692,6 +702,7 @@ void DoubleSpinBox::resizeEvent(QResizeEvent * event)
 
             if (value) {
                 setReadOnly(true);
+                setButtonSymbols(QAbstractSpinBox::NoButtons);
                 QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
                 iconLabel->setPixmap(pixmap);
 
@@ -703,6 +714,7 @@ void DoubleSpinBox::resizeEvent(QResizeEvent * event)
         }
         else {
             setReadOnly(false);
+            setButtonSymbols(QAbstractSpinBox::UpDownArrows);
             QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
             iconLabel->setPixmap(pixmap);
 
