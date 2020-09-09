@@ -16,6 +16,12 @@
             <Author Licence="LGPL" Name="sliptonic" EMail="shopinthewoods@gmail.com" />
             <UserDocu>Edge of a Voronoi diagram</UserDocu>
         </Documentation>
+        <Attribute Name="Index" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Internal id of the element.</UserDocu>
+            </Documentation>
+            <Parameter Name="Index" Type="Int"/>
+        </Attribute>
         <Attribute Name="Color" ReadOnly="false">
             <Documentation>
                 <UserDocu>Assigned color of the receiver.</UserDocu>
@@ -46,17 +52,17 @@
             </Documentation>
             <Parameter Name="Prev" Type="Object"/>
         </Attribute>
-        <Attribute Name="RotatedNext" ReadOnly="true">
+        <Attribute Name="RotNext" ReadOnly="true">
             <Documentation>
                 <UserDocu>Rotated CCW next edge whithin voronoi cell</UserDocu>
             </Documentation>
-            <Parameter Name="RotatedNext" Type="Object"/>
+            <Parameter Name="RotNext" Type="Object"/>
         </Attribute>
-        <Attribute Name="RotatedPrev" ReadOnly="true">
+        <Attribute Name="RotPrev" ReadOnly="true">
             <Documentation>
                 <UserDocu>Rotated CCW previous edge whithin voronoi cell</UserDocu>
             </Documentation>
-            <Parameter Name="RotatedPrev" Type="Object"/>
+            <Parameter Name="RotPrev" Type="Object"/>
         </Attribute>
         <Attribute Name="Twin" ReadOnly="true">
             <Documentation>

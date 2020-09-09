@@ -111,6 +111,14 @@ VoronoiCell* getVoronoiCellFromPy(const VoronoiCellPy *c, PyObject *args = 0) {
   return self;
 }
 
+Py::Int VoronoiCellPy::getIndex(void) const {
+  VoronoiCell *c = getVoronoiCellPtr();
+  if (c->isBound()) {
+    return Py::Int(c->dia->index(c->ptr));
+  }
+  return Py::Int(-1);
+}
+
 Py::Long VoronoiCellPy::getColor(void) const {
   VoronoiCell *c = getVoronoiCellPtr();
   if (c->isBound()) {

@@ -130,6 +130,14 @@ VoronoiEdge* getVoronoiEdgeFromPy(const VoronoiEdgePy *e, PyObject *args = 0) {
   return self;
 }
 
+Py::Int VoronoiEdgePy::getIndex(void) const {
+  VoronoiEdge *e = getVoronoiEdgePtr();
+  if (e->isBound()) {
+    return Py::Int(e->dia->index(e->ptr));
+  }
+  return Py::Int(-1);
+}
+
 Py::Long VoronoiEdgePy::getColor(void) const {
   VoronoiEdge *e = getVoronoiEdgePtr();
   if (e->isBound()) {
@@ -183,13 +191,13 @@ Py::Object VoronoiEdgePy::getPrev(void) const
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(e->dia, e->ptr->prev())));
 }
 
-Py::Object VoronoiEdgePy::getRotatedNext(void) const
+Py::Object VoronoiEdgePy::getRotNext(void) const
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(e->dia, e->ptr->rot_next())));
 }
 
-Py::Object VoronoiEdgePy::getRotatedPrev(void) const
+Py::Object VoronoiEdgePy::getRotPrev(void) const
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(e->dia, e->ptr->rot_prev())));

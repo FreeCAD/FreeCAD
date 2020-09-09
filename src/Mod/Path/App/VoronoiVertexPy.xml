@@ -16,6 +16,12 @@
             <Author Licence="LGPL" Name="sliptonic" EMail="shopinthewoods@gmail.com" />
             <UserDocu>Vertex of a Voronoi diagram</UserDocu>
         </Documentation>
+        <Attribute Name="Index" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Internal id of the element.</UserDocu>
+            </Documentation>
+            <Parameter Name="Index" Type="Int"/>
+        </Attribute>
         <Attribute Name="Color" ReadOnly="false">
             <Documentation>
                 <UserDocu>Assigned color of the receiver.</UserDocu>
