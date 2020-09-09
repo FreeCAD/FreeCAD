@@ -94,13 +94,6 @@ short Pad::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
-double Pad::RoundTo(double number, int precision)
-{
-    const int divisor = 10 * precision;
-    return round(number * divisor) / divisor;
-}
-
-
 App::DocumentObjectExecReturn *Pad::execute(void)
 {
     // Validate parameters
