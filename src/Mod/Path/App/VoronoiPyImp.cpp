@@ -172,20 +172,22 @@ Py::List VoronoiPy::getCells(void) const {
   return list;
 }
 
-static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, const Voronoi::diagram_type::vertex_type *v, bool &isExterior) {
-  if (!isExterior && v->color() == 0) {
+static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, const Voronoi::diagram_type::vertex_type *v, bool &bail) {
+  bool rc = false;
+  if (!bail && v->color() == 0) {
     PyObject *vx = new VoronoiVertexPy(new VoronoiVertex(dia, v));
     PyObject *arglist = Py_BuildValue("(O)", vx);
     PyObject *result = PyEval_CallObject(callback, arglist);
     Py_DECREF(arglist);
     Py_DECREF(vx);
     if (result == NULL) {
-      return false;
+      bail = true;
+    } else {
+      rc = result == Py_True;
+      Py_DECREF(result);
     }
-    isExterior = result == Py_True;
-    Py_DECREF(result);
   }
-  return true;
+  return rc;
 }
 
 PyObject* VoronoiPy::colorExterior(PyObject *args) {
@@ -201,13 +203,12 @@ PyObject* VoronoiPy::colorExterior(PyObject *args) {
       if (e->is_finite() && e->color() == 0) {
         const Voronoi::diagram_type::vertex_type *v0 = e->vertex0();
         const Voronoi::diagram_type::vertex_type *v1 = e->vertex1();
-        bool is0 = false;
-        bool is1 = false;
-        if (!callbackWithVertex(vo->vd, callback, v0, is0) || !callbackWithVertex(vo->vd, callback, v1, is1)) {
-          return NULL;
-        }
-        if (is0 && is1) {
+        bool bail = false;
+        if (callbackWithVertex(vo->vd, callback, v0, bail) && callbackWithVertex(vo->vd, callback, v1, bail)) {
           vo->colorExterior(&(*e), color);
+        }
+        if (bail) {
+          return NULL;
         }
       }
     }
