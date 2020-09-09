@@ -90,6 +90,7 @@ static void appendUnit(int l, bool isNumerator, std::string unit, std::vector<st
     }
 }
 
+#if 0 // obsolete function
 static std::string getUnitString(const Base::Unit & unit)
 {
     std::vector<std::string> numerator;
@@ -144,6 +145,7 @@ static std::string getUnitString(const Base::Unit & unit)
 
     return unitStr;
 }
+#endif
 
 QVariant SheetModel::data(const QModelIndex &index, int role) const
 {
@@ -371,12 +373,16 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
                 }
             }
             else {
-                QString number = QLocale().toString(floatProp->getValue(),'f',Base::UnitsApi::getDecimals());
-                //QString number = QString::number(floatProp->getValue());
-                if (!computedUnit.isEmpty())
-                    v = number + Base::Tools::fromStdString(" " + getUnitString(computedUnit));
-                else
-                    v = number;
+                //QString number = QLocale().toString(floatProp->getValue(),'f',Base::UnitsApi::getDecimals());
+                //if (!computedUnit.isEmpty())
+                //    v = number + Base::Tools::fromStdString(" " + getUnitString(computedUnit));
+                //else
+                //    v = number;
+
+                // When displaying a quantity then use the globally set scheme
+                // See: https://forum.freecadweb.org/viewtopic.php?f=3&t=50078
+                Base::Quantity value = floatProp->getQuantityValue();
+                v = value.getUserString();
             }
 
             return QVariant(v);
