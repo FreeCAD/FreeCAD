@@ -86,6 +86,7 @@ SET(Draft_functions
     draftfunctions/cut.py
     draftfunctions/downgrade.py
     draftfunctions/draftify.py
+    draftfunctions/dxf.py
     draftfunctions/extrude.py
     draftfunctions/fuse.py
     draftfunctions/heal.py
