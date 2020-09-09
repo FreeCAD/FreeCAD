@@ -75,6 +75,7 @@ int SheetModel::columnCount(const QModelIndex &parent) const
     return 26 * 26 + 26;
 }
 
+#if 0 // obsolete function
 static void appendUnit(int l, bool isNumerator, std::string unit, std::vector<std::string> & v)
 {
     if (l == 0)
@@ -90,7 +91,6 @@ static void appendUnit(int l, bool isNumerator, std::string unit, std::vector<st
     }
 }
 
-#if 0 // obsolete function
 static std::string getUnitString(const Base::Unit & unit)
 {
     std::vector<std::string> numerator;
