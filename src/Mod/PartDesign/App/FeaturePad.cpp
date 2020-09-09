@@ -70,9 +70,10 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(Length, (100.0), "Pad", App::Prop_None,"Pad length");
     ADD_PROPERTY_TYPE(Length2, (100.0), "Pad", App::Prop_None,"Second Pad length");
     ADD_PROPERTY_TYPE(UseCustomVector, (0), "Pad", App::Prop_None, "Use custom vector for pad direction");
-    ADD_PROPERTY_TYPE(XSkew, (1.0), "Pad", App::Prop_None, "x-component of pad direction vector");
-    ADD_PROPERTY_TYPE(YSkew, (1.0), "Pad", App::Prop_None, "y-component of pad direction vector");
-    ADD_PROPERTY_TYPE(ZSkew, (1.0), "Pad", App::Prop_None, "z-component of pad direction vector");
+    ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0f, 1.0f, 1.0f)), "Pad", App::Prop_None, "Pad direction vector");
+    //ADD_PROPERTY_TYPE(XDirection, (1.0), "Pad", App::Prop_None, "x-component of pad direction vector");
+    //ADD_PROPERTY_TYPE(YDirection, (1.0), "Pad", App::Prop_None, "y-component of pad direction vector");
+    //ADD_PROPERTY_TYPE(ZDirection, (1.0), "Pad", App::Prop_None, "z-component of pad direction vector");
     ADD_PROPERTY_TYPE(UpToFace, (0), "Pad", App::Prop_None, "Face where pad will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
@@ -86,9 +87,7 @@ short Pad::mustExecute() const
         Length.isTouched() ||
         Length2.isTouched() ||
         UseCustomVector.isTouched() ||
-        XSkew.isTouched() ||
-        YSkew.isTouched() ||
-        ZSkew.isTouched() ||
+        Direction.isTouched() ||
         Offset.isTouched() ||
         UpToFace.isTouched())
         return 1;
@@ -153,16 +152,15 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         }
         else {
             // if null vector, use SketchVector
-            if ( (RoundTo(XSkew.getValue(), precision) == 0.0)
-                && (RoundTo(YSkew.getValue(), precision) == 0.0)
-                && (RoundTo(ZSkew.getValue(), precision) == 0.0) ) {
-                XSkew.setValue(SketchVector.x);
-                YSkew.setValue(SketchVector.y);
-                ZSkew.setValue(SketchVector.z);
+            if ( (Direction.getValue().x < Precision::Confusion())
+                && (Direction.getValue().y < Precision::Confusion())
+                && (Direction.getValue().z < Precision::Confusion()) )
+            {
+                Direction.setValue(SketchVector.x, SketchVector.y, SketchVector.z);
             }
-            paddingDirection.x = XSkew.getValue();
-            paddingDirection.y = YSkew.getValue();
-            paddingDirection.z = ZSkew.getValue();
+            paddingDirection.x = Direction.getValue().x;
+            paddingDirection.y = Direction.getValue().y;
+            paddingDirection.z = Direction.getValue().z;
         }
 
         // create vector in padding direction with length 1
@@ -179,7 +177,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         double factor = dir * gp_Dir(SketchVector.x, SketchVector.y, SketchVector.z);
 
         // factor would be zero if vectors are orthogonal
-        if (RoundTo(factor, precision) == 0.0)
+        if (factor < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Pad: Creation failed because direction is orthogonal to sketch's normal vector");
         
         // perform the length correction

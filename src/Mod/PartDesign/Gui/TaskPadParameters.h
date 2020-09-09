@@ -59,9 +59,9 @@ private Q_SLOTS:
     void onLengthChanged(double);
     void onLength2Changed(double);
     void onGBDirectionChanged(bool);
-    void onXSkewEditChanged(double);
-    void onYSkewEditChanged(double);
-    void onZSkewEditChanged(double);
+    void onXDirectionEditChanged(double);
+    void onYDirectionEditChanged(double);
+    void onZDirectionEditChanged(double);
     void onOffsetChanged(double);
     void onMidplaneChanged(bool);
     void onReversedChanged(bool);
@@ -76,9 +76,9 @@ private:
     double getLength(void) const;
     double getLength2(void) const;
     bool   getCustom(void) const;
-    double getXSkew(void) const;
-    double getYSkew(void) const;
-    double getZSkew(void) const;
+    double getXDirection(void) const;
+    double getYDirection(void) const;
+    double getZDirection(void) const;
     double getOffset(void) const;
     bool   getReversed(void) const;
     bool   getMidplane(void) const;

@@ -76,9 +76,9 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     Base::Quantity l = pcPad->Length.getQuantityValue();
     Base::Quantity l2 = pcPad->Length2.getQuantityValue();
     bool useCustom = pcPad->UseCustomVector.getValue();
-    double xs = pcPad->XSkew.getValue();
-    double ys = pcPad->YSkew.getValue();
-    double zs = pcPad->ZSkew.getValue();
+    double xs = pcPad->Direction.getValue().x;
+    double ys = pcPad->Direction.getValue().y;
+    double zs = pcPad->Direction.getValue().z;
     Base::Quantity off = pcPad->Offset.getQuantityValue();
     bool midplane = pcPad->Midplane.getValue();
     bool reversed = pcPad->Reversed.getValue();
@@ -97,28 +97,29 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     ui->lengthEdit->setValue(l);
     ui->lengthEdit2->setValue(l2);
     ui->groupBoxDirection->setChecked(useCustom);
-    ui->XSkewEdit->setValue(xs);
-    ui->YSkewEdit->setValue(ys);
-    ui->ZSkewEdit->setValue(zs);
+    ui->XDirectionEdit->setValue(xs);
+    ui->YDirectionEdit->setValue(ys);
+    ui->ZDirectionEdit->setValue(zs);
     ui->offsetEdit->setValue(off);
 
     // Bind input fields to properties
     ui->lengthEdit->bind(pcPad->Length);
     ui->lengthEdit2->bind(pcPad->Length2);
-    ui->XSkewEdit->bind(pcPad->XSkew);
-    ui->YSkewEdit->bind(pcPad->YSkew);
-    ui->ZSkewEdit->bind(pcPad->ZSkew);
+    App::DocumentObject* CurrentObj = vp->getObject();
+    ui->XDirectionEdit->bind(App::ObjectIdentifier::parse(CurrentObj, std::string("Direction.x")));
+    ui->YDirectionEdit->bind(App::ObjectIdentifier::parse(CurrentObj, std::string("Direction.y")));
+    ui->ZDirectionEdit->bind(App::ObjectIdentifier::parse(CurrentObj, std::string("Direction.z")));
     ui->offsetEdit->bind(pcPad->Offset);
     ui->checkBoxMidplane->setChecked(midplane);
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
 
-    // set decimals for the skew edits
+    // set decimals for the direction edits
     int UserDecimals = Base::UnitsApi::getDecimals();
-    ui->XSkewEdit->setDecimals(UserDecimals);
-    ui->YSkewEdit->setDecimals(UserDecimals);
-    ui->ZSkewEdit->setDecimals(UserDecimals);
+    ui->XDirectionEdit->setDecimals(UserDecimals);
+    ui->YDirectionEdit->setDecimals(UserDecimals);
+    ui->ZDirectionEdit->setDecimals(UserDecimals);
 
     // Set object labels
     if (obj && PartDesign::Feature::isDatum(obj)) {
@@ -155,12 +156,12 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
             this, SLOT(onLength2Changed(double)));
     connect(ui->groupBoxDirection, SIGNAL(toggled(bool)),
         this, SLOT(onGBDirectionChanged(bool)));
-    connect(ui->XSkewEdit, SIGNAL(valueChanged(double)),
-        this, SLOT(onXSkewEditChanged(double)));
-    connect(ui->YSkewEdit, SIGNAL(valueChanged(double)),
-        this, SLOT(onYSkewEditChanged(double)));
-    connect(ui->ZSkewEdit, SIGNAL(valueChanged(double)),
-        this, SLOT(onZSkewEditChanged(double)));
+    connect(ui->XDirectionEdit, SIGNAL(valueChanged(double)),
+        this, SLOT(onXDirectionEditChanged(double)));
+    connect(ui->YDirectionEdit, SIGNAL(valueChanged(double)),
+        this, SLOT(onYDirectionEditChanged(double)));
+    connect(ui->ZDirectionEdit, SIGNAL(valueChanged(double)),
+        this, SLOT(onZDirectionEditChanged(double)));
     connect(ui->offsetEdit, SIGNAL(valueChanged(double)),
             this, SLOT(onOffsetChanged(double)));
     connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
@@ -194,7 +195,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
 void TaskPadParameters::updateUI(int index)
 {
     // disable/hide everything unless we are sure we don't need it
-    // exception: the skew parameters are in any case visible
+    // exception: the direction parameters are in any case visible
     bool isLengthEditVisable  = false;
     bool isLengthEdit2Visable = false;
     bool isOffsetEditVisable  = false;
@@ -306,27 +307,27 @@ void TaskPadParameters::onGBDirectionChanged(bool on)
     recomputeFeature();
 }
 
-void TaskPadParameters::onXSkewEditChanged(double len)
+void TaskPadParameters::onXDirectionEditChanged(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
-    pcPad->XSkew.setValue(len);
+    pcPad->Direction.setValue(len, pcPad->Direction.getValue().y, pcPad->Direction.getValue().z);
     recomputeFeature();
     // checking for case of a null vector is done in FeaturePad.cpp
 }
 
 
-void TaskPadParameters::onYSkewEditChanged(double len)
+void TaskPadParameters::onYDirectionEditChanged(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
-    pcPad->YSkew.setValue(len);
+    pcPad->Direction.setValue(pcPad->Direction.getValue().x, len, pcPad->Direction.getValue().z);
     recomputeFeature();
     // checking for case of a null vector is done in FeaturePad.cpp
 }
 
-void TaskPadParameters::onZSkewEditChanged(double len)
+void TaskPadParameters::onZDirectionEditChanged(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
-    pcPad->ZSkew.setValue(len);
+    pcPad->Direction.setValue(pcPad->Direction.getValue().x, pcPad->Direction.getValue().y, len);
     recomputeFeature();
     // checking for case of a null vector is done in FeaturePad.cpp
 }
@@ -424,19 +425,19 @@ bool   TaskPadParameters::getCustom(void) const
     return ui->groupBoxDirection->isChecked();
 }
 
-double TaskPadParameters::getXSkew(void) const
+double TaskPadParameters::getXDirection(void) const
 {
-    return ui->XSkewEdit->value();
+    return ui->XDirectionEdit->value();
 }
 
-double TaskPadParameters::getYSkew(void) const
+double TaskPadParameters::getYDirection(void) const
 {
-    return ui->YSkewEdit->value();
+    return ui->YDirectionEdit->value();
 }
 
-double TaskPadParameters::getZSkew(void) const
+double TaskPadParameters::getZDirection(void) const
 {
-    return ui->ZSkewEdit->value();
+    return ui->ZDirectionEdit->value();
 }
 
 double TaskPadParameters::getOffset(void) const
@@ -483,9 +484,9 @@ void TaskPadParameters::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         ui->lengthEdit->blockSignals(true);
         ui->lengthEdit2->blockSignals(true);
-        ui->XSkewEdit->blockSignals(true);
-        ui->YSkewEdit->blockSignals(true);
-        ui->ZSkewEdit->blockSignals(true);
+        ui->XDirectionEdit->blockSignals(true);
+        ui->YDirectionEdit->blockSignals(true);
+        ui->ZDirectionEdit->blockSignals(true);
         ui->offsetEdit->blockSignals(true);
         ui->lineFaceName->blockSignals(true);
         ui->changeMode->blockSignals(true);
@@ -525,9 +526,9 @@ void TaskPadParameters::changeEvent(QEvent *e)
 
         ui->lengthEdit->blockSignals(false);
         ui->lengthEdit2->blockSignals(false);
-        ui->XSkewEdit->blockSignals(false);
-        ui->YSkewEdit->blockSignals(false);
-        ui->ZSkewEdit->blockSignals(false);
+        ui->XDirectionEdit->blockSignals(false);
+        ui->YDirectionEdit->blockSignals(false);
+        ui->ZDirectionEdit->blockSignals(false);
         ui->offsetEdit->blockSignals(false);
         ui->lineFaceName->blockSignals(false);
         ui->changeMode->blockSignals(false);
@@ -549,9 +550,8 @@ void TaskPadParameters::apply()
     ui->lengthEdit->apply();
     ui->lengthEdit2->apply();
     FCMD_OBJ_CMD(obj, "UseCustomVector = " << (getCustom() ? 1 : 0));
-    FCMD_OBJ_CMD(obj, "XSkew = " << getXSkew());
-    FCMD_OBJ_CMD(obj, "YSkew = " << getYSkew());
-    FCMD_OBJ_CMD(obj, "ZSkew = " << getZSkew());
+    FCMD_OBJ_CMD(obj, "Direction = ("
+        << getXDirection() << ", " << getYDirection() << ", " << getZDirection() << ")");
     FCMD_OBJ_CMD(obj,"Type = " << getMode());
     QString facename = getFaceName();
     FCMD_OBJ_CMD(obj,"UpToFace = " << facename.toLatin1().data());
