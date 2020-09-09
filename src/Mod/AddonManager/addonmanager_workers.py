@@ -304,6 +304,9 @@ class FillMacroListWorker(QtCore.QThread):
         self.info_label_signal.emit("Downloading list of macros from the FreeCAD wiki...")
         self.progressbar_show.emit(True)
         u = utils.urlopen("https://www.freecadweb.org/wiki/Macros_recipes")
+        if u is None:
+            FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time')+"\n")
+            return
         if not u:
            return
         p = u.read()
