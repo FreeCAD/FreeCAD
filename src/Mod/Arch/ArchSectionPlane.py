@@ -562,7 +562,7 @@ def getSVG(source,
                                  color=lineColor,
                                  techdraw=techdraw,
                                  rotation=rotation,
-                                 fillSpaces=fillSpaces)
+                                 fillspaces=fillSpaces)
         if not techdraw:
             svg += '</g>'
 
