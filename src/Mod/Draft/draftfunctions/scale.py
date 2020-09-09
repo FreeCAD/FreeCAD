@@ -71,11 +71,9 @@ def scale(objectslist, scale=App.Vector(1,1,1),
         if hasattr(obj,'Shape'):
             scaled_shape = obj.Shape.copy()
             m = App.Matrix()
-            m.move(obj.Placement.Base.negative())
             m.move(center.negative())
             m.scale(scale.x,scale.y,scale.z)
             m.move(center)
-            m.move(obj.Placement.Base)
             scaled_shape = scaled_shape.transformGeometry(m)
         if utils.get_type(obj) == "Rectangle":
             p = []

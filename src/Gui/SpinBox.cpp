@@ -409,6 +409,7 @@ void UIntSpinBox::keyPressEvent(QKeyEvent *event)
         QAbstractSpinBox::keyPressEvent(event);
 }
 
+// ----------------------------------------------------------------------------
 
 IntSpinBox::IntSpinBox(QWidget* parent) : QSpinBox(parent) {
 
@@ -437,7 +438,7 @@ IntSpinBox::~IntSpinBox() {
 bool IntSpinBox::apply(const std::string& propName) {
     
     if (!ExpressionBinding::apply(propName)) {
-        Gui::Command::doCommand(Gui::Command::Doc, "%s = %u", propName.c_str(), value());
+        Gui::Command::doCommand(Gui::Command::Doc, "%s = %d", propName.c_str(), value());
         return true;
     }
     else
@@ -586,6 +587,7 @@ void IntSpinBox::keyPressEvent(QKeyEvent *event)
         QAbstractSpinBox::keyPressEvent(event);
 }
 
+// ----------------------------------------------------------------------------
 
 DoubleSpinBox::DoubleSpinBox(QWidget* parent): QDoubleSpinBox(parent) {
 
@@ -614,11 +616,11 @@ DoubleSpinBox::~DoubleSpinBox() {
 bool DoubleSpinBox::apply(const std::string& propName) {
     
     if (!ExpressionBinding::apply(propName)) {
-        Gui::Command::doCommand(Gui::Command::Doc, "%s = %u", propName.c_str(), value());
+        Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), value());
         return true;
     }
-    else
-        return false;
+
+    return false;
 }
 
 void DoubleSpinBox::bind(const ObjectIdentifier& _path) {
@@ -654,7 +656,7 @@ void DoubleSpinBox::onChange() {
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
         if (value) {
-            setValue(boost::math::round(value->getValue()));
+            setValue(value->getValue());
             setReadOnly(true);
             iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
 

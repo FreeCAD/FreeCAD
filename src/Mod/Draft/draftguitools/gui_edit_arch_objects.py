@@ -39,142 +39,199 @@ import DraftVecUtils
 from draftutils.translate import translate
 import draftutils.utils as utils
 
-
-def get_supported_arch_objects():
-    return ["Wall", "Window", "Structure", "Space", "PanelCut", "PanelSheet"]
+from draftguitools.gui_edit_base_object import GuiTools
 
 
-# WALL---------------------------------------------------------------------
 
-def getWallPts(obj):
-    """Return the list of edipoints for the given Arch Wall object.
+class ArchWallGuiTools(GuiTools):
 
-    0 : height of the wall
-    1-to end : base object editpoints, in place with the wall
-    """
-    editpoints = []
-    # height of the wall
-    editpoints.append(App.Vector(0, 0, obj.Height))
-    return editpoints
+    def __init__(self):
+        pass
 
+    def get_edit_points(self, obj):
+        """Return the list of edipoints for the given Arch Wall object.
 
-def updateWall(obj, nodeIndex, v):
-    if nodeIndex == 0:
-        vz = DraftVecUtils.project(v, App.Vector(0, 0, 1))
-        if vz.Length > 0:
-            obj.Height = vz.Length
-    obj.recompute()
+        0 : height of the wall
+        1-to end : base object editpoints, in place with the wall
+        """
 
-
-# WINDOW-------------------------------------------------------------------
-
-def getWindowPts(obj):
-    editpoints = []
-    pos = obj.Base.Placement.Base
-    h = float(obj.Height) + pos.z
-    normal = obj.Normal
-    angle = normal.getAngle(App.Vector(1, 0, 0))
-    editpoints.append(pos)
-    editpoints.append(App.Vector(pos.x + float(obj.Width) * math.cos(angle-math.pi / 2.0),
-                                            pos.y + float(obj.Width) * math.sin(angle-math.pi / 2.0),
-                                            pos.z))
-    editpoints.append(App.Vector(pos.x, pos.y, h))
-    return editpoints
-
-
-def updateWindow(obj, nodeIndex, v):
-    pos = obj.Base.Placement.Base
-    if nodeIndex == 0:
-        obj.Base.Placement.Base = v
-        obj.Base.recompute()
-    if nodeIndex == 1:
-        obj.Width = pos.sub(v).Length
-        obj.Base.recompute()
-    if nodeIndex == 2:
-        obj.Height = pos.sub(v).Length
-        obj.Base.recompute()
-    for obj in obj.Hosts:
-        obj.recompute()
-    obj.recompute()
-
-
-# STRUCTURE----------------------------------------------------------------
-def get_structure_format(obj):
-    return (obj.ViewObject.DisplayMode,
-            obj.ViewObject.NodeSize,
-            obj.ViewObject.ShowNodes)
-
-def set_structure_editing_format(obj):
-    obj.ViewObject.DisplayMode = "Wireframe"
-    obj.ViewObject.NodeSize = 1
-    obj.ViewObject.ShowNodes = True
-
-def restore_structure_format(obj, modes):
-    obj.ViewObject.DisplayMode = modes[0]
-    obj.ViewObject.NodeSize = modes[1]
-    obj.ViewObject.ShowNodes = modes[2]
-
-def getStructurePts(obj):
-    if obj.Nodes:
         editpoints = []
-        for p in obj.Nodes:
-            editpoints.append(p)
+        # height of the wall
+        editpoints.append(App.Vector(0, 0, obj.Height))
         return editpoints
-    else:
-        return None
 
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        '''            if node_idx == 0:
+            edit_arch.updateWall(obj, node_idx, v)
+        elif node_idx > 0:
+            if obj.Base:
+                if utils.get_type(obj.Base) in ["Wire", "Circle", "Rectangle",
+                                                "Polygon", "Sketch"]:
+                    self.update(obj.Base, node_idx - 1, v)'''
+        if node_idx == 0:
+            vz = DraftVecUtils.project(v, App.Vector(0, 0, 1))
+            if vz.Length > 0:
+                obj.Height = vz.Length
 
-def updateStructure(obj, nodeIndex, v):
-    nodes = obj.Nodes
-    nodes[nodeIndex] = v
-    obj.Nodes = nodes
+    def get_edit_point_context_menu(self, obj, node_idx):
+        pass
 
-
-# SPACE--------------------------------------------------------------------
-
-def getSpacePts(obj):
-    try:
-        editpoints = []
-        editpoints.append(obj.ViewObject.Proxy.getTextPosition(obj.ViewObject))
-        return editpoints
-    except:
+    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
         pass
 
 
-def updateSpace(obj, nodeIndex, v):
-    if nodeIndex == 0:
-        obj.ViewObject.TextPosition = v
+class ArchWindowGuiTools(GuiTools):
+
+    def __init__(self):
+        pass
+
+    def get_edit_points(self, obj):
+        editpoints = []
+        pos = obj.Base.Placement.Base
+        h = float(obj.Height) + pos.z
+        normal = obj.Normal
+        angle = normal.getAngle(App.Vector(1, 0, 0))
+        editpoints.append(pos)
+        editpoints.append(App.Vector(pos.x + float(obj.Width) * math.cos(angle-math.pi / 2.0),
+                                                pos.y + float(obj.Width) * math.sin(angle-math.pi / 2.0),
+                                                pos.z))
+        editpoints.append(App.Vector(pos.x, pos.y, h))
+        return editpoints
+
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        pos = obj.Base.Placement.Base
+        if node_idx == 0:
+            obj.Base.Placement.Base = v
+            obj.Base.recompute()
+        if node_idx == 1:
+            obj.Width = pos.sub(v).Length
+            obj.Base.recompute()
+        if node_idx == 2:
+            obj.Height = pos.sub(v).Length
+            obj.Base.recompute()
+        for obj in obj.Hosts:
+            obj.recompute()
+
+    def get_edit_point_context_menu(self, obj, node_idx):
+        pass
+
+    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
+        pass
 
 
-# PANELS-------------------------------------------------------------------
+class ArchStructureGuiTools(GuiTools):
 
-def getPanelCutPts(obj):
-    editpoints = []
-    if obj.TagPosition.Length == 0:
-        pos = obj.Shape.BoundBox.Center
-    else:
-        pos = obj.TagPosition
-    editpoints.append(pos)
-    return editpoints
+    def __init__(self):
+        pass
+
+    def get_edit_points(self, obj):
+        if obj.Nodes:
+            editpoints = []
+            for p in obj.Nodes:
+                editpoints.append(p)
+            return editpoints
+        else:
+            return None
+
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        nodes = obj.Nodes
+        nodes[node_idx] = v
+        obj.Nodes = nodes
+
+    def get_edit_point_context_menu(self, obj, node_idx):
+        pass
+
+    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
+        pass
+
+    def get_object_style(self, obj):
+        return (obj.ViewObject.DisplayMode,
+                obj.ViewObject.NodeSize,
+                obj.ViewObject.ShowNodes)
+
+    def set_object_editing_style(self, obj):
+        obj.ViewObject.DisplayMode = "Wireframe"
+        obj.ViewObject.NodeSize = 1
+        obj.ViewObject.ShowNodes = True
+
+    def restore_object_style(self, obj, modes):
+        obj.ViewObject.DisplayMode = modes[0]
+        obj.ViewObject.NodeSize = modes[1]
+        obj.ViewObject.ShowNodes = modes[2]
 
 
-def updatePanelCut(obj, nodeIndex, v):
-    if nodeIndex == 0:
-        obj.TagPosition = v
+class ArchSpaceGuiTools(GuiTools):
+
+    def __init__(self):
+        pass
+
+    def get_edit_points(self, obj):
+        try:
+            editpoints = []
+            editpoints.append(obj.ViewObject.Proxy.getTextPosition(obj.ViewObject))
+            return editpoints
+        except:
+            pass
+
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        if node_idx == 0:
+            obj.ViewObject.TextPosition = v
+
+    def get_edit_point_context_menu(self, obj, node_idx):
+        pass
+
+    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
+        pass
 
 
-def getPanelSheetPts(obj):
-    editpoints = []
-    editpoints.append(obj.TagPosition)
-    for o in obj.Group:
-        editpoints.append(o.Placement.Base)
-    return editpoints
+class ArchPanelCutGuiTools(GuiTools):
+
+    def __init__(self):
+        pass
+
+    def get_edit_points(self, obj):
+        editpoints = []
+        if obj.TagPosition.Length == 0:
+            pos = obj.Shape.BoundBox.Center
+        else:
+            pos = obj.TagPosition
+        editpoints.append(pos)
+        return editpoints
+
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        if node_idx == 0:
+            obj.TagPosition = v
+
+    def get_edit_point_context_menu(self, obj, node_idx):
+        pass
+
+    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
+        pass
 
 
-def updatePanelSheet(obj, nodeIndex, v):
-    if nodeIndex == 0:
-        obj.TagPosition = v
-    else:
-        obj.Group[nodeIndex-1].Placement.Base = v
+class ArchPanelSheetGuiTools(GuiTools):
+
+    def __init__(self):
+        pass
+
+    def get_edit_points(self, obj):
+        editpoints = []
+        editpoints.append(obj.TagPosition)
+        for o in obj.Group:
+            editpoints.append(o.Placement.Base)
+        return editpoints
+
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        if node_idx == 0:
+            obj.TagPosition = v
+        else:
+            obj.Group[node_idx-1].Placement.Base = v
+
+    def get_edit_point_context_menu(self, obj, node_idx):
+        pass
+
+    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
+        pass
+
 
 ## @}

@@ -2,7 +2,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2018 George Shuklin (amarao)                            *
-# *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,20 +22,20 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to return the SVG representation of various shapes."""
-## @defgroup getSVG getSVG
-#  \ingroup DRAFT
-#  \brief Provides functions to return the SVG representation of shapes.
+## @package svg
+# \ingroup draftfuctions
+# \brief Provides functions to return the SVG representation of shapes.
 
 import math
 import six
 import lazy_loader.lazy_loader as lz
 
-import FreeCAD
+import FreeCAD as App
 import DraftVecUtils
 import WorkingPlane
 import draftutils.utils as utils
 
-from FreeCAD import Vector
+from draftutils.utils import param
 from draftutils.messages import _msg, _wrn
 
 # Delay import of module until first use because it is heavy
@@ -43,9 +43,8 @@ Part = lz.LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 Drawing = lz.LazyLoader("Drawing", globals(), "Drawing")
 
-param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
-## \addtogroup getSVG
+## \addtogroup draftfuctions
 # @{
 
 
@@ -111,7 +110,7 @@ def get_proj(vec, plane=None):
 
     # if techdraw: buggy - we now simply do it at the end
     #    ly = -ly
-    return Vector(lx, ly, 0)
+    return App.Vector(lx, ly, 0)
 
 
 def getProj(vec, plane=None):
@@ -174,10 +173,10 @@ def get_circle(plane,
     cen = get_proj(edge.Curve.Center, plane)
     rad = edge.Curve.Radius
 
-    if hasattr(FreeCAD, "DraftWorkingPlane"):
-        drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
+    if hasattr(App, "DraftWorkingPlane"):
+        drawing_plane_normal = App.DraftWorkingPlane.axis
     else:
-        drawing_plane_normal = FreeCAD.Vector(0, 0, 1)
+        drawing_plane_normal = App.Vector(0, 0, 1)
 
     if plane:
         drawing_plane_normal = plane.axis
@@ -245,7 +244,7 @@ def get_arrow(obj,
     """Get the SVG representation from an arrow."""
     svg = ""
 
-    if not FreeCAD.GuiUp or not obj.ViewObject:
+    if not App.GuiUp or not obj.ViewObject:
         return svg
 
     _cx_cy_r = 'cx="{}" cy="{}" r="{}"'.format(point.x, point.y, arrowsize)
@@ -347,7 +346,7 @@ def get_text(plane, techdraw,
              angle, base, text,
              linespacing=0.5, align="center", flip=True):
     """Get the SVG representation of a textual element."""
-    if isinstance(angle, FreeCAD.Rotation):
+    if isinstance(angle, App.Rotation):
         if not plane:
             angle = angle.Angle
         else:
@@ -536,10 +535,10 @@ def get_path(obj, plane,
             isellipse = DraftGeomUtils.geomType(e) == "Ellipse"
 
             if iscircle or isellipse:
-                if hasattr(FreeCAD, "DraftWorkingPlane"):
-                    drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
+                if hasattr(App, "DraftWorkingPlane"):
+                    drawing_plane_normal = App.DraftWorkingPlane.axis
                 else:
-                    drawing_plane_normal = FreeCAD.Vector(0, 0, 1)
+                    drawing_plane_normal = App.Vector(0, 0, 1)
 
                 if plane:
                     drawing_plane_normal = plane.axis
@@ -595,7 +594,7 @@ def get_path(obj, plane,
                             rx = c.MajorRadius
                             ry = c.MinorRadius
                             rot = math.degrees(c.AngleXU
-                                               * c.Axis * Vector(0, 0, 1))
+                                               * c.Axis * App.Vector(0, 0, 1))
                             if rot > 90:
                                 rot -= 180
                             if rot < -90:
@@ -708,7 +707,7 @@ def get_svg(obj,
             scale=1, linewidth=0.35, fontsize=12,
             fillstyle="shape color", direction=None, linestyle=None,
             color=None, linespacing=None, techdraw=False, rotation=0,
-            fillSpaces=False, override=True):
+            fillspaces=False, override=True):
     """Return a string containing an SVG representation of the object.
 
     Paramaeters
@@ -749,7 +748,7 @@ def get_svg(obj,
     rotation: float, optional
         It defaults to 0.
 
-    fillSpaces: bool, optional
+    fillspaces: bool, optional
         It defaults to `False`.
 
     override: bool, optional
@@ -766,7 +765,7 @@ def get_svg(obj,
                                scale, linewidth, fontsize,
                                fillstyle, direction, linestyle,
                                color, linespacing, techdraw,
-                               rotation, fillSpaces, override)
+                               rotation, fillspaces, override)
             return svg
 
     pathdata = []
@@ -793,10 +792,10 @@ def get_svg(obj,
     plane = None
 
     if direction:
-        if isinstance(direction, FreeCAD.Vector):
-            if direction != Vector(0, 0, 0):
+        if isinstance(direction, App.Vector):
+            if direction != App.Vector(0, 0, 0):
                 plane = WorkingPlane.plane()
-                plane.alignToPointAndAxis_SVG(Vector(0, 0, 0),
+                plane.alignToPointAndAxis_SVG(App.Vector(0, 0, 0),
                                               direction.negative().negative(),
                                               0)
         elif isinstance(direction, WorkingPlane.plane):
@@ -808,7 +807,7 @@ def get_svg(obj,
             stroke = color
         else:
             stroke = utils.get_rgb(color)
-    elif FreeCAD.GuiUp:
+    elif App.GuiUp:
         if hasattr(obj, "ViewObject"):
             if hasattr(obj.ViewObject, "LineColor"):
                 stroke = utils.get_rgb(obj.ViewObject.LineColor)
@@ -838,10 +837,10 @@ def get_svg(obj,
                         edges=obj.Edges, pathname="")
 
     elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
-        if not FreeCAD.GuiUp:
+        if not App.GuiUp:
             _wrn("Export of dimensions to SVG is only available in GUI mode")
 
-        if FreeCAD.GuiUp and obj.ViewObject.Proxy:
+        if App.GuiUp and obj.ViewObject.Proxy:
             vobj = obj.ViewObject
 
             if hasattr(vobj.Proxy, "p1"):
@@ -864,8 +863,8 @@ def get_svg(obj,
 
                 tbase = get_proj(prx.tbase, plane)
                 r = prx.textpos.rotation.getValue().getValue()
-                _rv = FreeCAD.Rotation(r[0], r[1], r[2], r[3])
-                rv = _rv.multVec(FreeCAD.Vector(1, 0, 0))
+                _rv = App.Rotation(r[0], r[1], r[2], r[3])
+                rv = _rv.multVec(App.Vector(1, 0, 0))
                 angle = -DraftVecUtils.angle(get_proj(rv, plane))
                 # angle = -DraftVecUtils.angle(p3.sub(p2))
 
@@ -892,7 +891,7 @@ def get_svg(obj,
                         #       " text: ", prx.string)
                         if abs(tangle + math.radians(rotation)) < 0.0001:
                             tangle += math.pi
-                            _v = Vector(0, 2.0/scale, 0)
+                            _v = App.Vector(0, 2.0/scale, 0)
                             _rot = DraftVecUtils.rotate(_v, tangle)
                             tbase = tbase + _rot
 
@@ -906,7 +905,7 @@ def get_svg(obj,
                     if rotation != 0:
                         tangle = -math.radians(rotation)
 
-                    tbase = tbase + Vector(0, -2.0/scale, 0)
+                    tbase = tbase + App.Vector(0, -2.0/scale, 0)
                     if not nolines:
                         svg += 'd="M ' + str(p1.x) + ' ' + str(p1.y) + ' '
                         svg += 'L ' + str(p2.x) + ' ' + str(p2.y) + ' '
@@ -964,10 +963,10 @@ def get_svg(obj,
                                 tangle, tbase, prx.string)
 
     elif utils.get_type(obj) == "AngularDimension":
-        if not FreeCAD.GuiUp:
+        if not App.GuiUp:
             _wrn("Export of dimensions to SVG is only available in GUI mode")
 
-        if FreeCAD.GuiUp:
+        if App.GuiUp:
             if obj.ViewObject.Proxy:
                 if hasattr(obj.ViewObject.Proxy, "circle"):
                     prx = obj.ViewObject.Proxy
@@ -1046,7 +1045,7 @@ def get_svg(obj,
                                                  + _diff/2.0)
                         tbase = get_proj(_va, plane)
 
-                        _v = Vector(0, 2.0/scale, 0)
+                        _v = App.Vector(0, 2.0/scale, 0)
                         tbase = tbase + DraftVecUtils.rotate(_v, tangle)
                         # print(tbase)
                     else:
@@ -1078,7 +1077,7 @@ def get_svg(obj,
             # We are different here from 3D view
             # if Line is set to 'off', no arrow is drawn
             if hasattr(obj.ViewObject, "ArrowType") and len(obj.Points) >= 2:
-                last_segment = FreeCAD.Vector(obj.Points[-1] - obj.Points[-2])
+                last_segment = App.Vector(obj.Points[-1] - obj.Points[-2])
                 _v = get_proj(last_segment, plane)
                 angle = -DraftVecUtils.angle(_v) + math.pi
                 svg += get_arrow(obj,
@@ -1087,11 +1086,11 @@ def get_svg(obj,
                                  obj.ViewObject.ArrowSize.Value/pointratio,
                                  stroke, linewidth, angle)
 
-        if not FreeCAD.GuiUp:
+        if not App.GuiUp:
             _wrn("Export of texts to SVG is only available in GUI mode")
 
         # print text
-        if FreeCAD.GuiUp:
+        if App.GuiUp:
             fontname = obj.ViewObject.TextFont
             position = get_proj(obj.Placement.Base, plane)
             rotation = obj.Placement.Rotation
@@ -1104,10 +1103,10 @@ def get_svg(obj,
 
     elif utils.get_type(obj) in ["Annotation", "DraftText", "Text"]:
         # returns an svg representation of a document annotation
-        if not FreeCAD.GuiUp:
+        if not App.GuiUp:
             _wrn("Export of texts to SVG is only available in GUI mode")
 
-        if FreeCAD.GuiUp:
+        if App.GuiUp:
             n = obj.ViewObject.FontName
             if utils.get_type(obj) == "Annotation":
                 p = get_proj(obj.Position, plane)
@@ -1126,10 +1125,10 @@ def get_svg(obj,
 
     elif utils.get_type(obj) == "Axis":
         # returns the SVG representation of an Arch Axis system
-        if not FreeCAD.GuiUp:
+        if not App.GuiUp:
             _wrn("Export of axes to SVG is only available in GUI mode")
 
-        if FreeCAD.GuiUp:
+        if App.GuiUp:
             vobj = obj.ViewObject
             lorig = lstyle
             fill = 'none'
@@ -1220,17 +1219,17 @@ def get_svg(obj,
         fill_opacity = 1
 
         # returns an SVG fragment for the text of a space
-        if not FreeCAD.GuiUp:
+        if not App.GuiUp:
             _wrn("Export of spaces to SVG is only available in GUI mode")
 
-        if FreeCAD.GuiUp:
+        if App.GuiUp:
             vobj = obj.ViewObject
-            if fillSpaces and hasattr(obj, "Proxy"):
+            if fillspaces and hasattr(obj, "Proxy"):
                 if not hasattr(obj.Proxy, "face"):
                     obj.Proxy.getArea(obj, notouch=True)
                 if hasattr(obj.Proxy, "face"):
                     # setting fill
-                    if FreeCAD.GuiUp:
+                    if App.GuiUp:
                         fill = utils.get_rgb(vobj.ShapeColor,
                                              testbw=False)
                         fill_opacity = 1 - vobj.Transparency / 100.0
@@ -1252,10 +1251,10 @@ def get_svg(obj,
             f1 = fontsize * scale
 
             _v = vobj.Proxy.coords.translation.getValue().getValue()
-            p2 = obj.Placement.multVec(FreeCAD.Vector(_v))
+            p2 = obj.Placement.multVec(App.Vector(_v))
 
             _h = vobj.Proxy.header.translation.getValue().getValue()
-            lspc = FreeCAD.Vector(_h)
+            lspc = App.Vector(_h)
             p1 = p2 + lspc
             j = vobj.TextAlign
             t3 = get_text(plane, techdraw,
@@ -1264,10 +1263,10 @@ def get_svg(obj,
                           linespacing, j, flip=True)
             svg += t3
             if t2:
-                ofs = FreeCAD.Vector(0, -lspc.Length, 0)
+                ofs = App.Vector(0, -lspc.Length, 0)
                 if a:
-                    Z = FreeCAD.Vector(0, 0, 1)
-                    ofs = FreeCAD.Rotation(Z, -rotation).multVec(ofs)
+                    Z = App.Vector(0, 0, 1)
+                    ofs = App.Rotation(Z, -rotation).multVec(ofs)
                 t4 = get_text(plane, techdraw,
                               c, fontsize, n,
                               a, get_proj(p1, plane).add(ofs), t2,
@@ -1287,7 +1286,7 @@ def get_svg(obj,
         fill_opacity = 1
         # setting fill
         if obj.Shape.Faces:
-            if FreeCAD.GuiUp:
+            if App.GuiUp:
                 try:
                     m = obj.ViewObject.DisplayMode
                 except AttributeError:
@@ -1351,7 +1350,7 @@ def get_svg(obj,
                                    fill_opacity=fill_opacity,
                                    edges=obj.Shape.Edges)
 
-        if (FreeCAD.GuiUp
+        if (App.GuiUp
                 and hasattr(obj.ViewObject, "EndArrow")
                 and obj.ViewObject.EndArrow
                 and hasattr(obj.ViewObject, "ArrowType")
@@ -1374,15 +1373,19 @@ def get_svg(obj,
 
 def getSVG(obj,
            scale=1, linewidth=0.35, fontsize=12,
-           fillstyle="shape color", direction=None, linestyle=None,
-           color=None, linespacing=None, techdraw=False, rotation=0,
+           fillstyle="shape color", direction=None,
+           linestyle=None,
+           color=None, linespacing=None,
+           techdraw=False, rotation=0,
            fillSpaces=False, override=True):
     """Return SVG string of the object. DEPRECATED. Use 'get_svg'."""
     utils.use_instead("get_svg")
     return get_svg(obj,
-                   scale, linewidth, fontsize,
-                   fillstyle, direction, linestyle,
-                   color, linespacing, techdraw, rotation,
-                   fillSpaces, override)
+                   scale=scale, linewidth=linewidth, fontsize=fontsize,
+                   fillstyle=fillstyle, direction=direction,
+                   linestyle=linestyle,
+                   color=color, linespacing=linespacing,
+                   techdraw=techdraw, rotation=rotation,
+                   fillspaces=fillSpaces, override=override)
 
 ## @}
