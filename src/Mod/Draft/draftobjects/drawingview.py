@@ -40,6 +40,7 @@ this object should no longer be available.
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import draftfunctions.svg as get_svg
+import draftfunctions.dxf as get_dxf
 import draftutils.utils as utils
 import draftutils.groups as groups
 
@@ -182,7 +183,7 @@ class DrawingView(DraftObject):
 
     def getDXF(self, obj):
         """Return a DXF fragment."""
-        return utils.getDXF(obj)
+        return get_dxf.get_dxf(obj)
 
 
 # Alias for compatibility with v0.18 and earlier
