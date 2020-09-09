@@ -113,6 +113,17 @@ def setup(doc=None, solvertype="ccxtools"):
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver_object.WorkingDir = u""
+    elif solvertype == "elmer":
+        solver_object = analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))[0]
+        solver_object.SteadyStateMinIterations = 1
+        solver_object.SteadyStateMaxIterations = 10
+        eq_heat = ObjectsFem.makeEquationHeat(doc, solver_object)
+        eq_heat.Bubbles = True
+        eq_heat.Priority = 2
+        eq_elasticity = ObjectsFem.makeEquationElasticity(doc, solver_object)
+        eq_elasticity.Bubbles = True
+        eq_elasticity.Priority = 1
+        eq_elasticity.LinearSolverType = "Direct"
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "
@@ -139,6 +150,7 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["SpecificHeat"] = "385 J/kg/K"
     mat["ThermalConductivity"] = "200 W/m/K"
     mat["ThermalExpansionCoefficient"] = "0.00002 m/m/K"
+    mat["Density"] = "1.00 kg/m^3"
     material_obj_bottom.Material = mat
     material_obj_bottom.References = [(geom_obj, "Solid1")]
     analysis.addObject(material_obj_bottom)
@@ -153,6 +165,7 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["SpecificHeat"] = "510 J/kg/K"
     mat["ThermalConductivity"] = "13 W/m/K"
     mat["ThermalExpansionCoefficient"] = "0.0000012 m/m/K"
+    mat["Density"] = "1.00 kg/m^3"
     material_obj_top.Material = mat
     material_obj_top.References = [(geom_obj, "Solid2")]
     analysis.addObject(material_obj_top)

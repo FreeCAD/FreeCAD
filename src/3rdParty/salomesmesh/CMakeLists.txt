@@ -419,9 +419,12 @@ if(WIN32)
 else()
     set_target_properties(NETGENPlugin PROPERTIES COMPILE_FLAGS "${NETGEN_CXX_FLAGS}")
 endif(WIN32)
-IF(NOT NETGEN_VERSION_C LESS NETGEN_VERSION_62) # Version >= 6.2
+IF(NOT NETGEN_VERSION_C LESS NETGEN_VERSION_62_2004) # Version >= 6.2.2004
     set_target_properties(NETGENPlugin PROPERTIES CXX_STANDARD_REQUIRED ON)
     set_target_properties(NETGENPlugin PROPERTIES CXX_STANDARD 17) # Standard std=c++1y could work aswell
+ELSEIF(NOT NETGEN_VERSION_C LESS NETGEN_VERSION_62) # Version >= 6.2
+    set_target_properties(NETGENPlugin PROPERTIES CXX_STANDARD_REQUIRED ON)
+    set_target_properties(NETGENPlugin PROPERTIES CXX_STANDARD 14) # Standard std=c++1y could work aswell
 ENDIF()
 
 endif (BUILD_FEM_NETGEN)

@@ -116,10 +116,10 @@
                 <text x="315" y="265">阶段标记</text>
                 <text x="338" y="265">重量</text>
                 <text x="350" y="265">比例</text>
-                <text x="315" y="284">共</text>
-                <text x="327" y="284">张</text>
-                <text x="335" y="284">第</text>
-                <text x="349" y="284">张</text>
+                <text x="311" y="284">共</text>
+                <text x="330" y="284">张</text>
+                <text x="336" y="284">第</text>
+                <text x="355" y="284">张</text>
                 <text x="231.5" y="257">标记</text>
                 <text x="241.5" y="257">处数</text>
                 <text x="254" y="257">分区</text>
@@ -130,9 +130,12 @@
                 <text x="278" y="257">号</text>
                 <text x="284.5" y="257">签名</text>
                 <text x="295" y="257">(年月日)</text>
-                <text x="361" y="278" style="font-size:3.5;word-spacing:-0.5;kerning:-0.5;">图纸幅面: A3</text>
-                <text x="361" y="282" style="font-size:3.5;word-spacing:-0.5;kerning:-0.5;">中国国标图纸贡献者</text>
-                <text x="361" y="286" style="font-size:3.5;word-spacing:-0.5;kerning:-0.5;">李峰 felix@95839.com</text>
+	        <text x="361" y="286" style="font-size:10;">A3</text>
+       		<text x="372.5" y="280.5" style="font-size:1.8;">模板版本:0.0.2</text>
+        	<text x="372.5" y="283" style="font-size:1.8;">模板设计:李峰</text>
+        	<text x="372.5" y="285.5" style="font-size:1.8;">felix@95839.com</text>
+		<text x="327" y="236">材料牌号</text>
+
 	</g>
 	<g id="titleblock-text-editable" style="font-size:5;text-anchor:start;fill:#000000;font-family:HYSWLongFangSong" xml:space="preserve">
 	        <text freecad:editable="AUTHOR_NAME" x="224" y="271"><tspan>设计人</tspan></text>
@@ -140,33 +143,40 @@
                 <text freecad:editable="CRAFTS_NAME" x="235.5" y="285"><tspan>评审人</tspan></text>
                 <text freecad:editable="DRAWING_NAME" x="275.5" y="278"><tspan>制图人</tspan></text>
                 <text freecad:editable="APPROVER_NAME" x="275.5" y="285"><tspan>批准人</tspan></text>
-                <text freecad:editable="TOTAL_SHEETS" x="313" y="284"><tspan> 99 </tspan></text>
-                <text freecad:editable="OF_SHEET" x="333.5" y="284"><tspan> 1 </tspan></text>
+                <text freecad:editable="TOTAL_SHEETS" x="308" y="284"><tspan> 99 </tspan></text>
+                <text freecad:editable="OF_SHEET" x="333" y="284"><tspan> 1 </tspan></text>
                 <text freecad:editable="SCALE" x="342" y="275"><tspan>M x:x</tspan></text>
+ 		<text freecad:editable="STAGE-S" x="306" y="275"  style="text-anchor:start;text-align:center;fill:#000000;"><tspan></tspan></text>
+         	<text freecad:editable="STAGE-A" x="312.5" y="275"  style="text-anchor:start;text-align:center;fill:#000000;"><tspan></tspan></text>
+         	<text freecad:editable="STAGE-B" x="318.5" y="275"  style="text-anchor:start;text-align:center;fill:#000000;"><tspan></tspan></text>
+         	<text freecad:editable="STAGE-C" x="325.5" y="275"  style="text-anchor:start;text-align:center;fill:#000000;"><tspan></tspan></text>
                 <text freecad:editable="WEIGHT" x="330" y="275"><tspan>重量</tspan></text>
-                <text freecad:editable="DATE-1" x="288.5" y="270.5"  style="font-size:3.5;text-anchor:start;text-align:center;fill:#000000;font-family:HYSWLongFangSong"><tspan>YYYY-MM-DD</tspan></text>
-                <text freecad:editable="DATE-2" x="248.5" y="270.5" style="font-size:3.5;text-anchor:start;text-align:center;fill:#000000;font-family:HYSWLongFangSong" ><tspan>YYYY-MM-DD</tspan></text>
+                <text freecad:editable="DATE-1" x="290" y="270.5"  style="font-size:3.5;text-anchor:start;text-align:center;fill:#000000;font-family:HYSWLongFangSong"><tspan>YYYY-MM-DD</tspan></text>
+                <text freecad:editable="DATE-2" x="250" y="270.5" style="font-size:3.5;text-anchor:start;text-align:center;fill:#000000;font-family:HYSWLongFangSong" ><tspan>YYYY-MM-DD</tspan></text>
                 <text freecad:editable="COMPANYNAME" x="353.5" y="235"><tspan>(单位名称/单位代号)</tspan></text>
                 <text freecad:editable="COMPANYADDR" x="353.5" y="240"><tspan>(单位地址)</tspan></text>
                 <text freecad:editable="COMPANYPHONE" x="353.5" y="245"><tspan>(单位电话/电邮)</tspan></text>
-                <text freecad:editable="MATERIALMARK" x="335" y="246" text-anchor="middle"><tspan>(材料标记)</tspan></text>
+                <text freecad:editable="MATERIALMARK" x="332" y="250" text-anchor="middle" style="font-size:10;"><tspan>(材料标记)</tspan></text>
                 <text freecad:editable="PROJECT_TITLE" x="353.5" y="250.5"><tspan>(项目标题)</tspan></text>
                 <text freecad:editable="SUBTITLE" x="353.5" y="255.5"><tspan>(子项目标题)</tspan></text>
                 <text freecad:editable="PARTNAME" x="353.5" y="260.5"><tspan>(零件名称)</tspan></text>
                 <text freecad:editable="VERSION" x="353.5" y="265.5"><tspan>(版本号)</tspan></text>
-                <text freecad:editable="PART_CODE_NAME" x="354" y="273"><tspan>(图样代号)</tspan></text>
-                <text freecad:editable="COPYRIGHT" x="223" y="229"><tspan>未经图纸所有人允许，请勿向第三方透漏此图纸任何信息！本图纸内容受《中华人民共和国版权法》保护。</tspan></text>
+                <text freecad:editable="PART_CODE_NAME" x="384" y="273"  style="font-size:5;text-anchor:start;text-align:center;text-anchor:middle;fill:#000000;"><tspan>(图样代号)</tspan></text>
 	</g>
-<g style="stroke:#000000;stroke-width:0.25;">
-   		<line x1="388" y1="282" x2="398" y2="282" stroke-dasharray="2.75,0.25,0.25,0.25,2.75,0.25,0.25,0.25" />
-    		<line x1="400" y1="282" x2="410" y2="282" stroke-dasharray="2.75,0.25,0.25,0.25,2.75,0.25,0.25,0.25" />
-    		<line x1="405" y1="277" x2="405" y2="287" stroke-dasharray="2.75,0.25,0.25,0.25,2.75,0.25,0.25,0.25" />
-</g>
-<g stroke="black" stroke-width="0.25" fill="none" >
-		<polygon points="389,280 397,278 397,286 389,284" />
-    		<circle cx="405" cy="282" r="2" />
-    		<circle cx="405" cy="282" r="4" />
-</g>
+
+        <g id="project mark">
+        <!-- project mark begin -->
+		<g style="stroke:#000000;stroke-width:0.5;">
+   		<line x1="387" y1="282" x2="397" y2="282" stroke-dasharray="2.75,0.25,0.25,0.25,2.75,0.25,0.25,0.25" />
+    		<line x1="399" y1="282" x2="409" y2="282" stroke-dasharray="2.75,0.25,0.25,0.25,2.75,0.25,0.25,0.25" />
+    		<line x1="404" y1="277" x2="404" y2="287" stroke-dasharray="2.75,0.25,0.25,0.25,2.75,0.25,0.25,0.25" />
+		</g>
+		<g stroke="black" stroke-width="0.5" fill="none" >
+		<polygon points="388,280 396,278 396,286 388,284" />
+    		<circle cx="404" cy="282" r="2" />
+    		<circle cx="404" cy="282" r="4" />
+		</g>
+	</g>
 <g id="center-line" style="stroke:#000000;stroke-width:0.5;">
    		<line x1="210" y1="291" x2="210" y2="282" />
    		<line x1="210" y1="6" x2="210" y2="15" />
@@ -185,17 +195,17 @@
 </g>
 <g id="metric-mark" style="stroke:#000000;stroke-width:0.5;">
         <line x1="210" y1="287" x2="210" y2="297" />
-        <line x1="160" y1="291.125" x2="260" y2="291.125" />
-        <line x1="160" y1="287" x2="160" y2="291.25" />
-        <line x1="170" y1="287" x2="170" y2="291" />
-        <line x1="180" y1="287" x2="180" y2="291" />
-        <line x1="190" y1="287" x2="190" y2="291" />
-        <line x1="200" y1="287" x2="200" y2="291" />
-        <line x1="220" y1="287" x2="220" y2="291" />
-        <line x1="230" y1="287" x2="230" y2="291" />
-        <line x1="240" y1="287" x2="240" y2="291" />
-        <line x1="250" y1="287" x2="250" y2="291" />
-        <line x1="260" y1="287" x2="260" y2="291.25" />
+        <line x1="159.75" y1="292" x2="260.25" y2="292" />
+        <line x1="160" y1="287" x2="160" y2="292" />
+        <line x1="170" y1="287" x2="170" y2="292" />
+        <line x1="180" y1="287" x2="180" y2="292" />
+        <line x1="190" y1="287" x2="190" y2="292" />
+        <line x1="200" y1="287" x2="200" y2="292" />
+        <line x1="220" y1="287" x2="220" y2="292" />
+        <line x1="230" y1="287" x2="230" y2="292" />
+        <line x1="240" y1="287" x2="240" y2="292" />
+        <line x1="250" y1="287" x2="250" y2="292" />
+        <line x1="260" y1="287" x2="260" y2="292" />
 </g>
 <g id="direction-marker"  style="fill:none;stroke:#000000;stroke-width:0.5;">
         <polygon points="205.5,284 214.5,284 210,290" />

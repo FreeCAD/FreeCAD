@@ -49,7 +49,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
       <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Skaluj płaszczyznę obrazu definiując odległość między dwoma punktami</translation>
+      <translation>Skaluje płaszczyznę obrazu poprzez określenie odległości między dwoma punktami</translation>
     </message>
   </context>
   <context>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="81"/>
       <source>Offset:</source>
-      <translation>Odsunięcie:</translation>
+      <translation>Przesunięcie:</translation>
     </message>
   </context>
   <context>
@@ -238,17 +238,17 @@
       <location filename="../../Command.cpp" line="75"/>
       <location filename="../../Command.cpp" line="122"/>
       <source>Choose an image file to open</source>
-      <translation>Wybierz plik obrazu do otwarcia</translation>
+      <translation>Wybierz plik obrazu, aby otworzyć</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Error opening image</source>
-      <translation>Błąd podczas otwierania obrazu</translation>
+      <translation>Błąd podczas otwierania pliku obrazu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Could not load the chosen image</source>
-      <translation>Nie można wczytać wybranego obrazu</translation>
+      <translation>Nie można załadować wybranego obrazu</translation>
     </message>
   </context>
   <context>

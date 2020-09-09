@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   id="svg2766"
+   height="64px"
+   width="64px">
+  <title
+     id="title870">Mesh_Scale</title>
+  <defs
+     id="defs2768">
+    <linearGradient
+       id="linearGradient3856">
+      <stop
+         id="stop3858"
+         offset="0"
+         style="stop-color:#4e9a06;stop-opacity:1" />
+      <stop
+         id="stop3860"
+         offset="1"
+         style="stop-color:#8ae234;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3824">
+      <stop
+         id="stop3826"
+         offset="0"
+         style="stop-color:#8ae234;stop-opacity:1" />
+      <stop
+         id="stop3828"
+         offset="1"
+         style="stop-color:#4e9a06;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3787">
+      <stop
+         style="stop-color:#0619c0;stop-opacity:1;"
+         offset="0"
+         id="stop3789" />
+      <stop
+         style="stop-color:#379cfb;stop-opacity:1;"
+         offset="1"
+         id="stop3791" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3864">
+      <stop
+         style="stop-color:#0619c0;stop-opacity:1;"
+         offset="0"
+         id="stop3866" />
+      <stop
+         style="stop-color:#379cfb;stop-opacity:1;"
+         offset="1"
+         id="stop3868" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3895"
+       id="linearGradient3036"
+       gradientUnits="userSpaceOnUse"
+       x1="56.172409"
+       y1="29.279999"
+       x2="21.689653"
+       y2="36.079998"
+       gradientTransform="matrix(0,-1.4500001,1.4705882,0,-15.05882,91.45)" />
+    <linearGradient
+       id="linearGradient3895">
+      <stop
+         id="stop3897"
+         offset="0"
+         style="stop-color:#729fcf;stop-opacity:1;" />
+      <stop
+         id="stop3899"
+         offset="1"
+         style="stop-color:#204a87;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3895"
+       id="linearGradient3012"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.38366341,-0.38366341,0.41875298,0.41875298,12.196434,25.003375)"
+       x1="44.058071"
+       y1="18.865765"
+       x2="32.329041"
+       y2="43.940212" />
+    <linearGradient
+       gradientTransform="translate(-0.9420628,1.000004)"
+       gradientUnits="userSpaceOnUse"
+       y2="128.1946"
+       x2="599.1272"
+       y1="103.1946"
+       x1="591.59064"
+       id="linearGradient3830"
+       xlink:href="#linearGradient3824" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="68.194603"
+       x2="595.35895"
+       y1="135.1946"
+       x1="613.25824"
+       id="linearGradient3862"
+       xlink:href="#linearGradient3856" />
+  </defs>
+  <g
+     id="layer1">
+    <g
+       transform="matrix(1.0614931,0,0,1,-612.96941,-69.194602)"
+       id="g3518">
+      <path
+         style="display:inline;overflow:visible;visibility:visible;fill:url(#linearGradient3862);fill-opacity:1;fill-rule:nonzero;stroke:#172a04;stroke-width:1.94121;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+         d="m 580.28581,72.194602 3e-5,14 h 5.65241 v -8 h 1.88414 v -6 z m 11.30486,0 v 6 h 7.53655 v -6 z m 11.30483,0 v 6 h 7.53655 v -6 z m 11.30483,0 v 6 h 7.53655 v -6 z m 11.30483,0 v 6 h 3.76828 v 4 h 5.65241 v -10 z m 3.76828,14 v 8 h 5.65241 v -8 z m -48.9876,4 v 8 h 5.65241 v -8 z m 48.9876,8 v 7.999998 h 5.65241 v -7.999998 z m 0,11.999998 v 8 h 5.65241 v -8 z m 0,12 v 2 h -3.76828 v 6 h 9.42069 v -8 z m -18.84139,2 v 6 h 11.30483 v -6 z"
+         id="rect3446" />
+      <path
+         id="path3018"
+         d="m 581.09443,102.94082 v 26.48566 h 24.84408 v -26.48566 z"
+         style="fill:#4e9a06;stroke:#172a04;stroke-width:3.49797;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         transform="matrix(0.94206924,0,0,1,577.45963,69.194602)"
+         id="path3832"
+         d="M 36,57 H 46"
+         style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="matrix(0.94206924,0,0,1,577.45963,69.194602)"
+         id="path3834"
+         d="m 52,57 h 5 v -2 h 3"
+         style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         transform="matrix(0.94206924,0,0,1,577.45963,69.194602)"
+         id="path3836"
+         d="M 57,48 V 42"
+         style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="matrix(0.94206924,0,0,1,577.45963,69.194602)"
+         id="path3838"
+         d="M 57,36 V 30"
+         style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="matrix(0.94206924,0,0,1,577.45963,69.194602)"
+         id="path3840"
+         d="M 57,24 V 18"
+         style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="matrix(0.94206924,0,0,1,577.45963,69.194602)"
+         id="path3842"
+         d="M 53,8 V 5 h 7"
+         style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="matrix(0.94206924,0,0,1,577.45963,69.194602)"
+         id="path3844"
+         d="M 46,5 H 40"
+         style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="matrix(0.94206924,0,0,1,577.45963,69.194602)"
+         id="path3846"
+         d="M 34,5 H 28"
+         style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="matrix(0.94206924,0,0,1,577.45963,69.194602)"
+         id="path3848"
+         d="M 22,5 H 16"
+         style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="matrix(0.94206924,0,0,1,577.45963,69.194602)"
+         id="path3850"
+         d="M 10,5 H 5 v 11"
+         style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="matrix(0.94206924,0,0,1,577.45963,69.194602)"
+         id="path3852"
+         d="m 5,22 v 6"
+         style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="matrix(0.94206924,0,0,1,577.45963,69.194602)"
+         id="path3854"
+         d="M 57,12 V 9"
+         style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         id="path889"
+         d="m 581.09443,102.94082 24.84408,26.48566"
+         style="fill:#172a04;stroke:#172a04;stroke-width:2.42651;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         id="path924"
+         d="m 587.76414,106.15385 14.97158,-0.0736 0.0693,16.11295 z"
+         style="fill:none;stroke:#8ae234;stroke-width:2.91181;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         id="path926"
+         d="m 584.25789,110.23022 0.0654,16.02995 14.96994,-0.0326 z"
+         style="fill:none;stroke:#8ae234;stroke-width:2.91181;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <path
+       id="path3343"
+       d="M 35,15 39.062816,19.37832 31,27 l 6,6 7.71967,-7.964826 4.24264,4.242641 L 49,15 Z"
+       style="fill:url(#linearGradient3012);fill-opacity:1;fill-rule:evenodd;stroke:#0b1521;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path3343-2"
+       d="m 39.550023,17 2.32515,2.37832 -7.987667,7.653821 3.080353,3.112494 7.751811,-7.937888 2.221642,2.240472 L 47.000002,17 Z"
+       style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+  <metadata
+     id="metadata5370">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Mesh_Scale</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>12-06-2020</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[bitacovir]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier />
+        <dc:relation />
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>Based on a wmayer's design</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>green square</rdf:li>
+            <rdf:li>arrow</rdf:li>
+            <rdf:li>dotted line</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>A small square in the bottom left corner of a large dotted box ith an arrow pointing from the top left corner of the inner box to the top left corner of the</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

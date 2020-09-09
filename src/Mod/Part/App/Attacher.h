@@ -224,7 +224,7 @@ public: //methods
                       const Base::Placement &attachmentOffset = Base::Placement());
     virtual void setUp(const AttachEngine &another);
     virtual AttachEngine* copy() const = 0;
-    virtual Base::Placement calculateAttachedPlacement(Base::Placement origPlacement) const = 0;
+    virtual Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const = 0;
 
     /**
      * @brief placementFactory calculates placement from Z axis direction,
@@ -422,7 +422,7 @@ class PartExport AttachEngine3D : public AttachEngine
 public:
     AttachEngine3D();
     virtual AttachEngine3D* copy() const;
-    virtual Base::Placement calculateAttachedPlacement(Base::Placement origPlacement) const;
+    virtual Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const;
 private:
     double calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp_Vec edB) const;
 };
@@ -434,7 +434,7 @@ class PartExport AttachEnginePlane : public AttachEngine
 public:
     AttachEnginePlane();
     virtual AttachEnginePlane* copy() const;
-    virtual Base::Placement calculateAttachedPlacement(Base::Placement origPlacement) const;
+    virtual Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const;
 };
 
 //attacher specialized for datum lines
@@ -444,7 +444,7 @@ class PartExport AttachEngineLine : public AttachEngine
 public:
     AttachEngineLine();
     virtual AttachEngineLine* copy() const;
-    virtual Base::Placement calculateAttachedPlacement(Base::Placement origPlacement) const;
+    virtual Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const;
 };
 
 //attacher specialized for datum points
@@ -454,7 +454,7 @@ class PartExport AttachEnginePoint : public AttachEngine
 public:
     AttachEnginePoint();
     virtual AttachEnginePoint* copy() const;
-    virtual Base::Placement calculateAttachedPlacement(Base::Placement origPlacement) const;
+    virtual Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const;
 
 private:
     gp_Pnt getProximityPoint(eMapMode mode, const TopoDS_Shape& s1, const TopoDS_Shape& s2) const;

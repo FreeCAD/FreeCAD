@@ -52,6 +52,11 @@ DocumentT::DocumentT(const std::string& name)
     document = name;
 }
 
+DocumentT::DocumentT(const DocumentT& doc)
+{
+    document = doc.document;
+}
+
 DocumentT::~DocumentT()
 {
 }
@@ -123,6 +128,12 @@ ViewProviderT::ViewProviderT(ViewProviderDocumentObject* obj)
 {
     object = obj->getObject()->getNameInDocument();
     document = obj->getObject()->getDocument()->getName();
+}
+
+ViewProviderT::ViewProviderT(const ViewProviderT& vp)
+{
+    object = vp.object;
+    document = vp.document;
 }
 
 ViewProviderT::~ViewProviderT()

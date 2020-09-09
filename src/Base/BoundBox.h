@@ -28,7 +28,6 @@
 #include "Matrix.h"
 #include "ViewProj.h"
 #include "Tools2D.h"
-#include <iostream>
 #include <limits>
 
 namespace Base {
@@ -985,29 +984,10 @@ inline void BoundBox3<_Precision>::ScaleZ (_Precision f)
     MinZ *= f; MaxZ *= f;
 }
 
-template <class _Precision>
-inline void BoundBox3<_Precision>::Print (std::ostream& out) const
-{
-    out << "X1 : " << MinX << "   Y1 : " << MinY << "   Z1 : " << MinZ << std::endl;
-    out << "X2 : " << MaxX << "   Y2 : " << MaxY << "   Z2 : " << MaxZ << std::endl;
-}
-
 typedef BoundBox3<float> BoundBox3f;
 typedef BoundBox3<double> BoundBox3d;
 
 } // namespace Base
-
-inline std::ostream& operator << (std::ostream& out, const Base::BoundBox3f& bb)
-{
-    bb.Print(out);
-    return out;
-}
-
-inline std::ostream& operator << (std::ostream& out, const Base::BoundBox3d& bb)
-{
-    bb.Print(out);
-    return out;
-}
 
 #endif  // BASE_BOUNDBOX_H
 

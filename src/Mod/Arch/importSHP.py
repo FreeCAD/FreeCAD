@@ -137,7 +137,7 @@ def checkShapeFileLibrary():
             from PySide import QtGui
             reply = QtGui.QMessageBox.question(FreeCADGui.getMainWindow(), 
                                                translate("Arch","Shapefile module not found"), 
-                                               translate("Arch","The shapefile python library was not found on your system. Would you like to downloadit now from <a href=\"https://github.com/GeospatialPython/pyshp\">https://github.com/GeospatialPython/pyshp</a>? It will be placed in your macros folder."),
+                                               translate("Arch","The shapefile python library was not found on your system. Would you like to download it now from <a href=\"https://github.com/GeospatialPython/pyshp\">https://github.com/GeospatialPython/pyshp</a>? It will be placed in your macros folder."),
                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, 
                                                QtGui.QMessageBox.No)
             if reply == QtGui.QMessageBox.Yes:

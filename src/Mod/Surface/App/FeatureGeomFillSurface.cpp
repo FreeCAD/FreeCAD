@@ -197,7 +197,7 @@ GeomFill_FillingStyle GeomFillSurface::getFillingStyle()
         return static_cast<GeomFill_FillingStyle>(FillType.getValue());
     default:
         Standard_Failure::Raise("Filling style must be 0 (Stretch), 1 (Coons), or 2 (Curved).\n");
-        throw; // this is to shut up the compiler
+        return GeomFill_StretchStyle; // this is to shut up the compiler
     }
 }
 

@@ -114,7 +114,7 @@
       <translation>Το υπολογισμένο εμβαδόν αυτού του ορόφου</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="856"/>
+      <location filename="../../ArchSectionPlane.py" line="873"/>
       <source>The placement of this object</source>
       <translation>Η τοποθέτηση αυτού του αντικειμένου</translation>
     </message>
@@ -204,12 +204,12 @@
       <translation>Η κανονική διεύθυνση επέκτασης αυτού του αντικειμένου (κρατήστε το (0,0,0) για αυτόματη κανονική επιλογή)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1159"/>
+      <location filename="../../ArchSectionPlane.py" line="1177"/>
       <source>The linked object</source>
       <translation>Το συνδεδεμένο αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1169"/>
+      <location filename="../../ArchSectionPlane.py" line="1187"/>
       <source>The line width of the rendered objects</source>
       <translation>Το πλάτος γραμμής των παρεχόμενων αντικειμένων</translation>
     </message>
@@ -614,52 +614,52 @@
       <translation>Το υπολογιστικό φύλλο στο οποίο να εκτυπωθούν τα αποτελέσματα</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="862"/>
+      <location filename="../../ArchSectionPlane.py" line="879"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Aν αυτό είναι ψευδές, θα περικοπούν και τα μη στερεά στοιχεία, με πιθανώς λανθασμένα αποτελέσματα.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="932"/>
+      <location filename="../../ArchSectionPlane.py" line="949"/>
       <source>The display length of this section plane</source>
       <translation>Το μήκος εμφάνισης αυτού του επιπέδου τομής</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="938"/>
+      <location filename="../../ArchSectionPlane.py" line="955"/>
       <source>The display height of this section plane</source>
       <translation>Το ύψος εμφάνισης αυτού του επιπέδου τομής</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="944"/>
+      <location filename="../../ArchSectionPlane.py" line="961"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Το μέγεθος των βελών αυτού του επιπέδου τομής</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="958"/>
+      <location filename="../../ArchSectionPlane.py" line="975"/>
       <source>Show the cut in the 3D view</source>
       <translation>Εμφανίστε την περικοπή σε τρισδιάστατη προβολή</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1161"/>
+      <location filename="../../ArchSectionPlane.py" line="1179"/>
       <source>The rendering mode to use</source>
       <translation>Η λειτουργία αποτύπωσης προς χρήση</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1165"/>
+      <location filename="../../ArchSectionPlane.py" line="1183"/>
       <source>If cut geometry is shown or not</source>
       <translation>Αν η κομμένη γεωμετρική οντότητα απεικονίζεται ή όχι</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1167"/>
+      <location filename="../../ArchSectionPlane.py" line="1185"/>
       <source>If cut geometry is filled or not</source>
       <translation>Αν η κομμένη γεωμετρική οντότητα είναι γεμάτη ή όχι</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1172"/>
+      <location filename="../../ArchSectionPlane.py" line="1190"/>
       <source>The size of the texts inside this object</source>
       <translation>Το μέγεθος των κειμένων μέσα σε αυτό το αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1175"/>
+      <location filename="../../ArchSectionPlane.py" line="1193"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Εάν επιλεχθούν, τα πηγαία αντικείμενα εμφανίζονται ανεξάρτητα από το αν είναι ορατά στο τρισδιάστατο μοντέλο</translation>
     </message>
@@ -809,52 +809,52 @@
       <translation>Ο τύπος κλιματισμού αυτού του χώρου</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="506"/>
+      <location filename="../../ArchSpace.py" line="507"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
       <translation>Το κείμενο προς εμφάνιση. Χρησιμοποιήστε $area, $label, $tag, $floor, $walls, $ceiling για να εισαγάγετε τα αντίστοιχα δεδομένα</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="509"/>
+      <location filename="../../ArchSpace.py" line="510"/>
       <source>The name of the font</source>
       <translation>Το όνομα της γραμματοσειράς</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="512"/>
+      <location filename="../../ArchSpace.py" line="513"/>
       <source>The color of the area text</source>
       <translation>Το χρώμα του κειμένου περιοχής</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="515"/>
+      <location filename="../../ArchSpace.py" line="516"/>
       <source>The size of the text font</source>
       <translation>Το μέγεθος της γραμματοσειράς κειμένου</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="518"/>
+      <location filename="../../ArchSpace.py" line="519"/>
       <source>The size of the first line of text</source>
       <translation>Το μέγεθος της πρώτης γραμμής του κειμένου</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="521"/>
+      <location filename="../../ArchSpace.py" line="522"/>
       <source>The space between the lines of text</source>
       <translation>Το κενό μεταξύ των γραμμών του κειμένου</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="524"/>
+      <location filename="../../ArchSpace.py" line="525"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>Η θέση του κειμένου. Κρατήστε το (0,0,0) για αυτόματη τοποθέτηση</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="526"/>
+      <location filename="../../ArchSpace.py" line="527"/>
       <source>The justification of the text</source>
       <translation>Η αιτιολόγηση του κειμένου</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="530"/>
+      <location filename="../../ArchSpace.py" line="531"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>Ο αριθμός των δεκαδικών ψηφίων προς χρήση για κείμενα υπολογισμένων διαστάσεων</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="533"/>
+      <location filename="../../ArchSpace.py" line="534"/>
       <source>Show the unit suffix</source>
       <translation>Εμφανίστε την κατάληξη μονάδας</translation>
     </message>
@@ -1024,12 +1024,12 @@
       <translation>Η απόσταση μεταξύ του εν λόγω τοίχου και της βασικής γραμμής του (μόνο για ευθυγραμμίσεις στον οριζόντιο άξονα)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="548"/>
+      <location filename="../../ArchWindow.py" line="551"/>
       <source>The normal direction of this window</source>
       <translation>Η κανονική κατεύθυνση αυτού του παραθύρου</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="557"/>
+      <location filename="../../ArchWindow.py" line="560"/>
       <source>The area of this window</source>
       <translation>Το εμβαδόν αυτού του παραθύρου</translation>
     </message>
@@ -1044,7 +1044,7 @@
       <translation>Μια προαιρετική πρόσθετη τοποθέτηση για το προφίλ πριν την επέκταση</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="563"/>
+      <location filename="../../ArchWindow.py" line="566"/>
       <source>Opens the subcomponents that have a hinge defined</source>
       <translation>Ανοίγει τα υποσυστήματα που έχουν έναν ορισμένο εύκαμπτο σύνδεσμο</translation>
     </message>
@@ -1084,12 +1084,12 @@
       <translation>Η λίστα με τα πάχη στρωμάτων</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1195"/>
       <source>The line color of the projected objects</source>
       <translation>Το χρώμα γραμμής των προβεβλημένων αντικειμένων</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1179"/>
+      <location filename="../../ArchSectionPlane.py" line="1197"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Το χρώμα των κομμένων όψεων (αν είναι ενεργοποιημένο)</translation>
     </message>
@@ -1099,7 +1099,7 @@
       <translation>Η επικάλυψη των χορδιστών πάνω από τη βάση των σκαλοπατιών</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1318"/>
+      <location filename="../../ArchWindow.py" line="1322"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Ο αριθμός του σύρματος που ορίζει την οπή. Μια τιμή 0 θα σημάνει αυτόματη επιλογή</translation>
     </message>
@@ -1189,7 +1189,7 @@
       <translation>Η προσαρμοσμένη απόσταση του οπλισμού</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="494"/>
+      <location filename="../../ArchRebar.py" line="501"/>
       <source>Shape of rebar</source>
       <translation>Σχήμα του οπλισμού</translation>
     </message>
@@ -1199,17 +1199,17 @@
       <translation>Αντιστρέψτε την κατεύθυνση της οροφής αν οδεύει προς τη λάθος πλευρά</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="567"/>
+      <location filename="../../ArchWindow.py" line="570"/>
       <source>Shows plan opening symbols if available</source>
       <translation>Εμφανίζει τα σύμβολα ανοίγματος σχεδίου αν διατίθενται</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="569"/>
+      <location filename="../../ArchWindow.py" line="572"/>
       <source>Show elevation opening symbols if available</source>
       <translation>Εμφανίστε τα σύμβολα ανοίγματος ανύψωσης αν διατίθενται</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="535"/>
+      <location filename="../../ArchWindow.py" line="538"/>
       <source>The objects that host this window</source>
       <translation>Τα αντικείμενα που φιλοξενούν αυτό το παράθυρο</translation>
     </message>
@@ -1264,12 +1264,12 @@
       <translation type="unfinished">The level of the (0,0,0) point of this level</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="858"/>
+      <location filename="../../ArchSectionPlane.py" line="875"/>
       <source>The shape of this object</source>
       <translation>Το σχήμα αυτού του αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="950"/>
+      <location filename="../../ArchSectionPlane.py" line="967"/>
       <source>The line width of this object</source>
       <translation>Το πλάτος γραμμής αυτού του αντικειμένου</translation>
     </message>
@@ -1394,22 +1394,22 @@
       <translation type="unfinished">If true, the colors from the linked file will be kept updated</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="860"/>
+      <location filename="../../ArchSectionPlane.py" line="877"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation type="unfinished">The objects that must be considered by this section plane. Empty means the whole document.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="947"/>
+      <location filename="../../ArchSectionPlane.py" line="964"/>
       <source>The transparency of this object</source>
       <translation>Η διαφάνεια αυτού του αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="955"/>
+      <location filename="../../ArchSectionPlane.py" line="972"/>
       <source>The color of this object</source>
       <translation>Το χρώμα αυτού του αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="960"/>
+      <location filename="../../ArchSectionPlane.py" line="977"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Η απόσταση μεταξύ του κομμένου επιπέδου και της πραγματικής προβολής περικοπής (κρατήστε μια πολύ μικρή τιμή αλλά όχι μηδέν)</translation>
     </message>
@@ -1524,57 +1524,57 @@
       <translation>Ο αριθμός των σπασμένων φραγμών</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="537"/>
+      <location filename="../../ArchWindow.py" line="540"/>
       <source>The components of this window</source>
       <translation>Τα στοιχεία αυτού του παραθύρου</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="540"/>
+      <location filename="../../ArchWindow.py" line="543"/>
       <source>The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</source>
       <translation>Το βάθος της οπής που δημιουργεί αυτό το παράθυρο στο γονικό του αντικείμενο. Αν είναι 0, η τιμή θα υπολογίζεται αυτόματα.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="542"/>
+      <location filename="../../ArchWindow.py" line="545"/>
       <source>An optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation>Ένα προαιρετικό αντικείμενο που καθορίζει έναν όγκο προς αφαίρεση από τα γονικά στοιχεία αυτού του παραθύρου</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="544"/>
+      <location filename="../../ArchWindow.py" line="547"/>
       <source>The width of this window</source>
       <translation>Το πλάτος του παραθύρου</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="546"/>
+      <location filename="../../ArchWindow.py" line="549"/>
       <source>The height of this window</source>
       <translation>Το ύψος του παραθύρου</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="550"/>
+      <location filename="../../ArchWindow.py" line="553"/>
       <source>The preset number this window is based on</source>
       <translation>Ο προεπιλεγμένος αριθμός στον οποίο βασίζεται αυτό το παράθυρο</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="553"/>
+      <location filename="../../ArchWindow.py" line="556"/>
       <source>The frame size of this window</source>
       <translation>Το μέγεθος του πλαισίου του παραθύρου</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="555"/>
+      <location filename="../../ArchWindow.py" line="558"/>
       <source>The offset size of this window</source>
       <translation>Το αποτύπωμα αυτού του παραθύρου</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="559"/>
+      <location filename="../../ArchWindow.py" line="562"/>
       <source>The width of louvre elements</source>
       <translation>Το πλάτος των περσίδων</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="561"/>
+      <location filename="../../ArchWindow.py" line="564"/>
       <source>The space between louvre elements</source>
       <translation>Η απόσταση μεταξύ των περσίδων</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="565"/>
+      <location filename="../../ArchWindow.py" line="568"/>
       <source>The number of the wire that defines the hole. If 0, the value will be calculated automatically</source>
       <translation>Ο αριθμός του σύρματος που ορίζει την οπή. Μια τιμή 0 θα σημάνει αυτόματη επιλογή</translation>
     </message>
@@ -1629,12 +1629,12 @@
       <translation type="unfinished">Description of IFC attributes are not yet implemented</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="865"/>
+      <location filename="../../ArchSectionPlane.py" line="882"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation type="unfinished">If True, resulting views will be clipped to the section plane area.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="867"/>
+      <location filename="../../ArchSectionPlane.py" line="884"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation type="unfinished">If true, the color of the objects material will be used to fill cut areas.</translation>
     </message>
@@ -1998,11 +1998,16 @@
       <source>Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</source>
       <translation type="unfinished">Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</translation>
     </message>
+    <message>
+      <location filename="../../ArchRebar.py" line="202"/>
+      <source>The rebar mark</source>
+      <translation type="unfinished">The rebar mark</translation>
+    </message>
   </context>
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchWindow.py" line="1561"/>
+      <location filename="../../ArchWindow.py" line="1565"/>
       <source>Components</source>
       <translation>Στοιχεία</translation>
     </message>
@@ -2022,12 +2027,12 @@
       <translation>Δημιουργήστε Άξονα</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1555"/>
+      <location filename="../../ArchWindow.py" line="1559"/>
       <source>Remove</source>
       <translation>Αφαίρεση</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1556"/>
+      <location filename="../../ArchWindow.py" line="1560"/>
       <source>Add</source>
       <translation>Προσθήκη</translation>
     </message>
@@ -2137,7 +2142,7 @@
       <translation>Προβολή</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="835"/>
+      <location filename="../../ArchSectionPlane.py" line="852"/>
       <source>Create Section Plane</source>
       <translation>Δημιουργήστε επίπεδο τομής</translation>
     </message>
@@ -2172,47 +2177,47 @@
       <translation>Αυτό το πλέγμα είναι ένα μη έγκυρο στερεό στοιχείο</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="248"/>
+      <location filename="../../ArchWindow.py" line="251"/>
       <source>Create Window</source>
       <translation>Δημιουργήστε Παράθυρο</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1557"/>
+      <location filename="../../ArchWindow.py" line="1561"/>
       <source>Edit</source>
       <translation>Επεξεργασία</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1558"/>
+      <location filename="../../ArchWindow.py" line="1562"/>
       <source>Create/update component</source>
       <translation>Δημιουργήστε/ενημερώστε στοιχείο</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1559"/>
+      <location filename="../../ArchWindow.py" line="1563"/>
       <source>Base 2D object</source>
       <translation>Δισδιάστατο αντικείμενο βάσης</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1565"/>
+      <location filename="../../ArchWindow.py" line="1569"/>
       <source>Wires</source>
       <translation>Σύρματα</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1562"/>
+      <location filename="../../ArchWindow.py" line="1566"/>
       <source>Create new component</source>
       <translation>Δημιουργήστε νέο εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1563"/>
+      <location filename="../../ArchWindow.py" line="1567"/>
       <source>Name</source>
       <translation>Όνομα</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1564"/>
+      <location filename="../../ArchWindow.py" line="1568"/>
       <source>Type</source>
       <translation>Τύπος</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1566"/>
+      <location filename="../../ArchWindow.py" line="1570"/>
       <source>Thickness</source>
       <translation>Πάχος</translation>
     </message>
@@ -2222,7 +2227,7 @@
       <translation>Σφάλμα: Αδύνατος ο καθορισμός της κωδικοποίησης χαρακτήρων</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="327"/>
+      <location filename="../../importDAE.py" line="328"/>
       <source>file %s successfully created.</source>
       <translation>το αρχείο %s δημιουργήθηκε με επιτυχία.</translation>
     </message>
@@ -2487,7 +2492,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Οι τοίχοι μπορούν να βασίζονται μόνο σε εξαρτήματα ή πλέγματα</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="773"/>
+      <location filename="../../ArchSpace.py" line="774"/>
       <source>Set text position</source>
       <translation>Καθορίστε τη θέση κειμένου</translation>
     </message>
@@ -2697,7 +2702,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Περιστροφή</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1567"/>
+      <location filename="../../ArchWindow.py" line="1571"/>
       <source>Offset</source>
       <translation>Μετατοπίστε</translation>
     </message>
@@ -2785,22 +2790,22 @@ Site creation aborted.</source>
       <translation>Πόρτα</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1568"/>
+      <location filename="../../ArchWindow.py" line="1572"/>
       <source>Hinge</source>
       <translation>Εύκαμπτος σύνδεσμος</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1569"/>
+      <location filename="../../ArchWindow.py" line="1573"/>
       <source>Opening mode</source>
       <translation>Λειτουργία ανοίγματος</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1574"/>
+      <location filename="../../ArchWindow.py" line="1578"/>
       <source>Get selected edge</source>
       <translation>Λάβετε την επιλεγμένη ακμή</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1575"/>
+      <location filename="../../ArchWindow.py" line="1579"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Πιέστε για να ανακτήσετε την επιλεγμένη ακμή</translation>
     </message>
@@ -2835,12 +2840,12 @@ Site creation aborted.</source>
       <translation>Προεπιλογές Τοίχου...</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1552"/>
+      <location filename="../../ArchWindow.py" line="1556"/>
       <source>Hole wire</source>
       <translation>Σύρμα οπής</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1554"/>
+      <location filename="../../ArchWindow.py" line="1558"/>
       <source>Pick selected</source>
       <translation>Διαλέξτε τα επιλεγμένα</translation>
     </message>
@@ -2925,7 +2930,7 @@ Site creation aborted.</source>
       <translation>Αυτό το αντικείμενο δεν έχει καμία όψη</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="777"/>
+      <location filename="../../ArchSpace.py" line="778"/>
       <source>Space boundaries</source>
       <translation>Όρια χώρου</translation>
     </message>
@@ -2935,7 +2940,7 @@ Site creation aborted.</source>
       <translation>Σφάλμα: Δεν μπορείτε να τροποποιήσετε το αντικείμενο βάση αυτού του τοίχου</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1551"/>
+      <location filename="../../ArchWindow.py" line="1555"/>
       <source>Window elements</source>
       <translation>Στοιχεία παραθύρου</translation>
     </message>
@@ -3220,37 +3225,37 @@ Floor creation aborted.</source>
       <translation>Δημιουργία εξωτερικής αναφοράς</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1416"/>
+      <location filename="../../ArchSectionPlane.py" line="1434"/>
       <source>Section plane settings</source>
       <translation type="unfinished">Section plane settings</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1421"/>
+      <location filename="../../ArchSectionPlane.py" line="1439"/>
       <source>Objects seen by this section plane:</source>
       <translation>Αντικείμενα που φαίνονται από αυτό το επίπεδο τομής:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1422"/>
+      <location filename="../../ArchSectionPlane.py" line="1440"/>
       <source>Section plane placement:</source>
       <translation type="unfinished">Section plane placement:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1423"/>
+      <location filename="../../ArchSectionPlane.py" line="1441"/>
       <source>Rotate X</source>
       <translation>Περιστροφή Υ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1425"/>
+      <location filename="../../ArchSectionPlane.py" line="1443"/>
       <source>Rotate Y</source>
       <translation>Περιστροφή Υ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1427"/>
+      <location filename="../../ArchSectionPlane.py" line="1445"/>
       <source>Rotate Z</source>
       <translation>Περιστροφή Ζ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1429"/>
+      <location filename="../../ArchSectionPlane.py" line="1447"/>
       <source>Resize</source>
       <translation>Αλλαγή μεγέθους</translation>
     </message>
@@ -3311,32 +3316,32 @@ Note: You can change that in the preferences.</source>
       <translation>Αδύνατος ο υπολογισμός των φραγμών για τον τοίχο</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="233"/>
+      <location filename="../../ArchWindow.py" line="236"/>
       <source>Choose a face on an existing object or select a preset</source>
       <translation>Διαλέξτε μια όψη σε ένα υπάρχον αντικείμενο ή επιλέξτε μια προεπιλεγμένη</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1513"/>
+      <location filename="../../ArchWindow.py" line="1517"/>
       <source>Unable to create component</source>
       <translation>Αδύνατη η δημιουργία εξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1553"/>
+      <location filename="../../ArchWindow.py" line="1557"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Ο αριθμός του σύρματος που ορίζει μια οπή στο γονικό αντικείμενο. Η τιμή μηδέν θα συνεπάγεται την αυτόματη επιλογή του μεγαλύτερου σύρματος</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1572"/>
+      <location filename="../../ArchWindow.py" line="1576"/>
       <source>+ default</source>
       <translation>+ προεπιλογή</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1571"/>
+      <location filename="../../ArchWindow.py" line="1575"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1573"/>
+      <location filename="../../ArchWindow.py" line="1577"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
     </message>
@@ -3351,7 +3356,7 @@ Note: You can change that in the preferences.</source>
       <translation>Αυτός ο εξαγωγέας μπορεί να εξαγάγει μόνο ένα χωρικό στοιχείο</translation>
     </message>
     <message>
-      <location filename="../../importGBXML.py" line="90"/>
+      <location filename="../../importGBXML.py" line="91"/>
       <source>Error: Space '%s' has no Zone. Aborting.</source>
       <translation>Σφάλμα: Ο χώρος '%s' δεν έχει καμία Ζώνη. Ματαίωση.</translation>
     </message>
@@ -3381,7 +3386,7 @@ Note: You can change that in the preferences.</source>
       <translation>Σφάλμα: Η έκδοση της IfcOpenShell εργαλειοθήκης σας είναι πολύ παλιά</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="272"/>
+      <location filename="../../importOBJ.py" line="273"/>
       <source>Successfully written</source>
       <translation>Γράφτηκε με επιτυχία</translation>
     </message>
@@ -3391,7 +3396,7 @@ Note: You can change that in the preferences.</source>
       <translation>Βρέθηκε σχήμα που περιέχει καμπύλες, τριγωνοποίηση σε εξέλιξη</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="350"/>
+      <location filename="../../importOBJ.py" line="351"/>
       <source>Successfully imported</source>
       <translation>Εισήχθη με επιτυχία</translation>
     </message>
@@ -3407,42 +3412,42 @@ You can change that in the preferences.</source>
 Αυτό μπορείτε να το αλλάξετε στις προτιμήσεις.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1418"/>
+      <location filename="../../ArchSectionPlane.py" line="1436"/>
       <source>Remove highlighted objects from the list above</source>
       <translation type="unfinished">Remove highlighted objects from the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1419"/>
+      <location filename="../../ArchSectionPlane.py" line="1437"/>
       <source>Add selected</source>
       <translation>Προσθήκη επιλεγμένων</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1420"/>
+      <location filename="../../ArchSectionPlane.py" line="1438"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1424"/>
+      <location filename="../../ArchSectionPlane.py" line="1442"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Περιστρέψτε το επίπεδο στον άξονα X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1426"/>
+      <location filename="../../ArchSectionPlane.py" line="1444"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Περιστρέψτε το επίπεδο στον άξονα Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1428"/>
+      <location filename="../../ArchSectionPlane.py" line="1446"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Περιστρέψτε το επίπεδο στον άξονα Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1430"/>
+      <location filename="../../ArchSectionPlane.py" line="1448"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1432"/>
+      <location filename="../../ArchSectionPlane.py" line="1450"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation type="unfinished">Centers the plane on the objects in the list above</translation>
     </message>
@@ -3482,7 +3487,7 @@ You can change that in the preferences.</source>
       <translation>Στήλη</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="367"/>
+      <location filename="../../ArchWindow.py" line="370"/>
       <source>Preset</source>
       <translation>Προκαθορισμένο</translation>
     </message>
@@ -3542,22 +3547,22 @@ You can change that in the preferences.</source>
       <translation>Κατασκευή</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="78"/>
+      <location filename="../../ArchWindow.py" line="81"/>
       <source>Window</source>
       <translation>Παράθυρο</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="324"/>
+      <location filename="../../ArchWindow.py" line="327"/>
       <source>Window options</source>
       <translation type="unfinished">Window options</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="328"/>
+      <location filename="../../ArchWindow.py" line="331"/>
       <source>Auto include in host object</source>
       <translation type="unfinished">Auto include in host object</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="334"/>
+      <location filename="../../ArchWindow.py" line="337"/>
       <source>Sill height</source>
       <translation type="unfinished">Sill height</translation>
     </message>
@@ -3652,11 +3657,6 @@ You can change that in the preferences.</source>
       <translation type="unfinished">Shapefile module not found</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="138"/>
-      <source>The shapefile python library was not found on your system. Would you like to downloadit now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</source>
-      <translation type="unfinished">The shapefile python library was not found on your system. Would you like to downloadit now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
-    </message>
-    <message>
       <location filename="../../importSHP.py" line="146"/>
       <source>Error: Unable to download from:</source>
       <translation type="unfinished">Error: Unable to download from:</translation>
@@ -3680,6 +3680,11 @@ You can change that in the preferences.</source>
       <location filename="../../importSHP.py" line="165"/>
       <source>The shapefile library can be downloaded from the following URL and installed in your macros folder:</source>
       <translation type="unfinished">The shapefile library can be downloaded from the following URL and installed in your macros folder:</translation>
+    </message>
+    <message>
+      <location filename="../../importSHP.py" line="138"/>
+      <source>The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</source>
+      <translation type="unfinished">The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
     </message>
   </context>
   <context>
@@ -4358,12 +4363,12 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="819"/>
+      <location filename="../../ArchSectionPlane.py" line="836"/>
       <source>Section Plane</source>
       <translation>Επίπεδο Τομής</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="820"/>
+      <location filename="../../ArchSectionPlane.py" line="837"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Δημιουργεί ένα στοιχείο επιπέδου τομής, συμπεριλαμβάνοντας τα επιλεγμένα στοιχεία</translation>
     </message>
@@ -4514,12 +4519,12 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_Window</name>
     <message>
-      <location filename="../../ArchWindow.py" line="151"/>
+      <location filename="../../ArchWindow.py" line="154"/>
       <source>Window</source>
       <translation>Παράθυρο</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="153"/>
+      <location filename="../../ArchWindow.py" line="156"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
       <translation>Δημιουργεί ένα στοιχείο παραθύρου από ένα επιλεγμένο στοιχείο (σύρμα, ορθογώνιο ή σκαρίφημα)</translation>
     </message>
@@ -4807,25 +4812,25 @@ a certain property.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="86"/>
-      <source>An optional semicolon (;) separated list of object names 
+      <source>An optional semicolon (;) separated list of object names
 (internal names, not labels), to be considered by this operation.
 If the list contains groups, children will be added.
 Leave blank to use all objects from the document</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names 
+      <translation type="unfinished">An optional semicolon (;) separated list of object names
 (internal names, not labels), to be considered by this operation.
 If the list contains groups, children will be added.
 Leave blank to use all objects from the document</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="97"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Descriptionl:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DON't have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Descriptionl:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DON't have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="857"/>
+      <location filename="../../ArchBuildingPart.py" line="859"/>
       <source>Writing camera position</source>
       <translation>Θέση κάμερας εγγραφής</translation>
     </message>
@@ -5226,17 +5231,17 @@ Leave blank to use all objects from the document</translation>
       <translation>Μέθοδος περικοπής</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="49"/>
+      <location filename="../ui/preferences-ifc.ui" line="58"/>
       <source>Show debug messages</source>
       <translation>Εμφάνιση μηνυμάτων εντοπισμού σφαλμάτων</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="256"/>
+      <location filename="../ui/preferences-ifc.ui" line="288"/>
       <source>Separate openings</source>
       <translation>Διαχωρισμός ανοιγμάτων</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="305"/>
+      <location filename="../ui/preferences-ifc.ui" line="337"/>
       <source>Prefix names with ID number</source>
       <translation>Ονόματα προθεμάτων με αριθμό ID</translation>
     </message>
@@ -5311,7 +5316,7 @@ Leave blank to use all objects from the document</translation>
       <translation>Πάχος</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="88"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="115"/>
       <source>Force export as Brep</source>
       <translation>Δύναμη εξαγωγής ως Brep</translation>
     </message>
@@ -5336,77 +5341,77 @@ Leave blank to use all objects from the document</translation>
       <translation>DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="39"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="57"/>
       <source>Export options</source>
       <translation>Επιλογές εξαγωγής</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="26"/>
+      <location filename="../ui/preferences-ifc.ui" line="35"/>
       <source>General options</source>
       <translation>Γενικές επιλογές</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="125"/>
+      <location filename="../ui/preferences-ifc.ui" line="157"/>
       <source>Import options</source>
       <translation>Επιλογές εισαγωγής</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="133"/>
+      <location filename="../ui/preferences-ifc.ui" line="165"/>
       <source>Import arch IFC objects as</source>
       <translation>Εισάγετε αρχιτεκτονικά στοιχεία IFC ως</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="189"/>
+      <location filename="../ui/preferences-ifc.ui" line="221"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
       <translation>Προσδιορίζει τι είδους στοιχεία θα δημιουργηθούν στο FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="150"/>
+      <location filename="../ui/preferences-ifc.ui" line="182"/>
       <source>Parametric Arch objects</source>
       <translation>Παραμετρικά Αρχιτεκτονικά στοιχεία</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="199"/>
+      <location filename="../ui/preferences-ifc.ui" line="231"/>
       <source>Non-parametric Arch objects</source>
       <translation>Μη παραμετρικά Αρχιτεκτονικά στοιχεία</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="204"/>
+      <location filename="../ui/preferences-ifc.ui" line="236"/>
       <source>Simple Part shapes</source>
       <translation>Απλά σχήματα Εξαρτημάτων</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="165"/>
+      <location filename="../ui/preferences-ifc.ui" line="197"/>
       <source>One compound per floor</source>
       <translation>Ένα σύνθετο σχήμα ανά όροφο</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="170"/>
+      <location filename="../ui/preferences-ifc.ui" line="202"/>
       <source>Do not import Arch objects</source>
       <translation>Μην εισάγετε Αρχιτεκτονικά στοιχεία</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="182"/>
+      <location filename="../ui/preferences-ifc.ui" line="214"/>
       <source>Import struct IFC objects as</source>
       <translation>Εισάγετε δομικά στοιχεία IFC ως</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="209"/>
+      <location filename="../ui/preferences-ifc.ui" line="241"/>
       <source>One compound for all</source>
       <translation>Ένα σύνθετο σχήμα για όλα</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="214"/>
+      <location filename="../ui/preferences-ifc.ui" line="246"/>
       <source>Do not import structural objects</source>
       <translation>Μην εισάγετε δομικά στοιχεία</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="226"/>
+      <location filename="../ui/preferences-ifc.ui" line="258"/>
       <source>Root element:</source>
       <translation>Στοιχείο ρίζας:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="273"/>
+      <location filename="../ui/preferences-ifc.ui" line="305"/>
       <source>Detect extrusions</source>
       <translation>Εντοπίστε επεκτάσεις</translation>
     </message>
@@ -5481,17 +5486,17 @@ Leave blank to use all objects from the document</translation>
       <translation>Να επιτραπούν τα τετράπλευρα</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="101"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="128"/>
       <source>Use triangulation options set in the DAE options page</source>
       <translation>Χρησιμοποιήστε τις επιλογές τριγωνοποίησης που έχουν οριστεί στη σελίδα επιλογών DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="104"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="131"/>
       <source>Use DAE triangulation options</source>
       <translation>Χρησιμοποιήστε τις επιλογές τριγωνοποίησης DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="122"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="149"/>
       <source>Join coplanar facets when triangulating</source>
       <translation>Ενώστε συνεπίπεδες όψεις κατά την τριγωνοποίηση</translation>
     </message>
@@ -5511,7 +5516,7 @@ Leave blank to use all objects from the document</translation>
       <translation>Αφαιρέστε την εξωτερική γεωμετρία των σκαριφημάτων βάσης όποτε είναι απαραίτητο</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="66"/>
+      <location filename="../ui/preferences-ifc.ui" line="75"/>
       <source>Create clones when objects have shared geometry</source>
       <translation>Δημιουργήστε κλώνους σε περιπτώσεις που αντικείμενα έχουν κοινή γεωμετρία</translation>
     </message>
@@ -5566,22 +5571,22 @@ Leave blank to use all objects from the document</translation>
       <translation>Διάμετρος:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="286"/>
+      <location filename="../ui/preferences-ifc.ui" line="318"/>
       <source>Split walls made of multiple layers</source>
       <translation>Διαιρέστε τοίχους που αποτελούνται από πολλαπλά στρώματα</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="289"/>
+      <location filename="../ui/preferences-ifc.ui" line="321"/>
       <source>Split multilayer walls</source>
       <translation>Διαιρέστε πολυστρωματικούς τοίχους</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="162"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="189"/>
       <source>Use IfcOpenShell serializer if available</source>
       <translation>Χρησιμοποιήστε το IfcOpenShell πρόγραμμα σειριοποίησης αν διατίθεται</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="178"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="205"/>
       <source>Export 2D objects as IfcAnnotations</source>
       <translation>Εξαγάγετε δισδιάστατα αντικείμενα ως Περιγραφές Ifc</translation>
     </message>
@@ -5596,12 +5601,12 @@ Leave blank to use all objects from the document</translation>
       <translation>Τιμή ανοχής για χρήση όταν ελέγχετε αν 2 παρακείμενες όψεις είναι επίπεδες</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="401"/>
+      <location filename="../ui/preferences-ifc.ui" line="433"/>
       <source>Fit view while importing</source>
       <translation>Προσαρμόστε την προβολή κατά την εισαγωγή</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="198"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="225"/>
       <source>Export full FreeCAD parametric model</source>
       <translation>Εξαγάγετε πλήρες παραμετρικό μοντέλο FreeCAD</translation>
     </message>
@@ -5646,17 +5651,17 @@ Leave blank to use all objects from the document</translation>
       <translation type="unfinished">Helpers (grids, axes, etc...)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="369"/>
+      <location filename="../ui/preferences-ifc.ui" line="401"/>
       <source>Exclude list:</source>
       <translation>Αποκλείστε λίστα:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="215"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="242"/>
       <source>Reuse similar entities</source>
       <translation>Επαναχρησιμοποίηση παρόμοιων οντοτήτων</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="237"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="264"/>
       <source>Disable IfcRectangleProfileDef</source>
       <translation type="unfinished">Disable IfcRectangleProfileDef</translation>
     </message>
@@ -5721,12 +5726,12 @@ Leave blank to use all objects from the document</translation>
       <translation>Χρώμα γραμμής</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="418"/>
+      <location filename="../ui/preferences-ifc.ui" line="450"/>
       <source>Import full FreeCAD parametric definitions if available</source>
       <translation type="unfinished">Import full FreeCAD parametric definitions if available</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="256"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="283"/>
       <source>Auto-detect and export as standard cases when applicable</source>
       <translation type="unfinished">Auto-detect and export as standard cases when applicable</translation>
     </message>
@@ -5820,19 +5825,19 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
       <translation type="unfinished">IFC export</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="26"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="41"/>
       <source>Show this dialog when exporting</source>
       <translation type="unfinished">Show this dialog when exporting</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="84"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="111"/>
       <source>Some IFC viewers don't like objects exported as extrusions.
 Use this to force all objects to be exported as BREP geometry.</source>
       <translation type="unfinished">Some IFC viewers don't like objects exported as extrusions.
 Use this to force all objects to be exported as BREP geometry.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="135"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="162"/>
       <source>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</source>
@@ -5841,12 +5846,12 @@ will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="140"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="167"/>
       <source>Store IFC unique ID in FreeCAD objects</source>
       <translation type="unfinished">Store IFC unique ID in FreeCAD objects</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="156"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="183"/>
       <source>IFCOpenShell is a library that allows to import IFC files.
 Its serializer functionality allows to give it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
@@ -5857,26 +5862,26 @@ produce adequate IFC geometry: NURBS, faceted, or anything else.
 Note: The serializer is still an experimental feature!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="175"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="202"/>
       <source>2D objects will be exported as IfcAnnotation</source>
       <translation type="unfinished">2D objects will be exported as IfcAnnotation</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="194"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="221"/>
       <source>All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</source>
       <translation type="unfinished">All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="211"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="238"/>
       <source>When possible, similar entities will be used only once in the file if possible.
 This can reduce the file size a lot, but will make it less easily readable.</source>
       <translation type="unfinished">When possible, similar entities will be used only once in the file if possible.
 This can reduce the file size a lot, but will make it less easily readable.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="231"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="258"/>
       <source>When possible, IFC objects that are extruded rectangles will be
 exported as IfcRectangleProfileDef.
 However, some other applications might have problems importing that entity.
@@ -5887,7 +5892,7 @@ However, some other applications might have problems importing that entity.
 If this is your case, you can disable this and then all profiles will be exported as IfcArbitraryClosedProfileDef.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="250"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="277"/>
       <source>Some IFC types such as IfcWall or IfcBeam have special standard versions
 like IfcWallStandardCase or IfcBeamStandardCase.
 If this option is turned on, FreeCAD will automatically export such objects
@@ -5898,19 +5903,19 @@ If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="269"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="296"/>
       <source>If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</source>
       <translation type="unfinished">If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="273"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="300"/>
       <source>Add default site if one is not found in the document</source>
       <translation type="unfinished">Add default site if one is not found in the document</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="286"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="313"/>
       <source>If no building is found in the FreeCAD document, a default one will be added.
 Warning: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file.
 However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</source>
@@ -5919,39 +5924,34 @@ Warning: The IFC standard asks for at least one building in each file. By turnin
 However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="291"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="318"/>
       <source>Add default building if one is not found in the document (no standard)</source>
       <translation type="unfinished">Add default building if one is not found in the document (no standard)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="307"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="334"/>
       <source>If no building storey is found in the FreeCAD document, a default one will be added.
 A building storey is not mandatory but a common practice to have at least one in the file.</source>
       <translation type="unfinished">If no building storey is found in the FreeCAD document, a default one will be added.
 A building storey is not mandatory but a common practice to have at least one in the file.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="311"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="338"/>
       <source>Add default building storey if one is not found in the document</source>
       <translation type="unfinished">Add default building storey if one is not found in the document</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="326"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="361"/>
       <source>IFC file units</source>
       <translation type="unfinished">IFC file units</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="333"/>
-      <source>The units you want your IFC file to be exported to. Note that IFC file are ALWAYS written in metric units. Imperial units are only a conversion applied on top of it. But some BIM applications will use this to choose which unit to work with when opening the file.</source>
-      <translation type="unfinished">The units you want your IFC file to be exported to. Note that IFC file are ALWAYS written in metric units. Imperial units are only a conversion applied on top of it. But some BIM applications will use this to choose which unit to work with when opening the file.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="343"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="383"/>
       <source>Metric</source>
       <translation type="unfinished">Metric</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="348"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="388"/>
       <source>Imperial</source>
       <translation type="unfinished">Imperial</translation>
     </message>
@@ -5961,128 +5961,123 @@ A building storey is not mandatory but a common practice to have at least one in
       <translation type="unfinished">IFC import</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="32"/>
+      <location filename="../ui/preferences-ifc.ui" line="41"/>
       <source>Show this dialog when importing</source>
       <translation type="unfinished">Show this dialog when importing</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="45"/>
+      <location filename="../ui/preferences-ifc.ui" line="54"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
       <translation type="unfinished">Shows verbose debug messages during import and export
 of IFC files in the Report view panel</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="62"/>
+      <location filename="../ui/preferences-ifc.ui" line="71"/>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
       <translation type="unfinished">Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="233"/>
+      <location filename="../ui/preferences-ifc.ui" line="265"/>
       <source>Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</source>
       <translation type="unfinished">Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="252"/>
+      <location filename="../ui/preferences-ifc.ui" line="284"/>
       <source>Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</source>
       <translation type="unfinished">Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="269"/>
+      <location filename="../ui/preferences-ifc.ui" line="301"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
       <translation type="unfinished">The importer will try to detect extrusions.
 Note that this might slow things down.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="302"/>
+      <location filename="../ui/preferences-ifc.ui" line="334"/>
       <source>Object names will be prefixed with the IFC ID number</source>
       <translation type="unfinished">Object names will be prefixed with the IFC ID number</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="318"/>
+      <location filename="../ui/preferences-ifc.ui" line="350"/>
       <source>If several materials with the same name and color are found in the IFC file,
 they will be treated as one.</source>
       <translation type="unfinished">If several materials with the same name and color are found in the IFC file,
 they will be treated as one.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="322"/>
+      <location filename="../ui/preferences-ifc.ui" line="354"/>
       <source>Merge materials with same name and same color</source>
       <translation type="unfinished">Merge materials with same name and same color</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="335"/>
+      <location filename="../ui/preferences-ifc.ui" line="367"/>
       <source>Each object will have their IFC properties stored in a spreadsheet object</source>
       <translation type="unfinished">Each object will have their IFC properties stored in a spreadsheet object</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="338"/>
+      <location filename="../ui/preferences-ifc.ui" line="370"/>
       <source>Import IFC properties in spreadsheet</source>
       <translation type="unfinished">Import IFC properties in spreadsheet</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="351"/>
+      <location filename="../ui/preferences-ifc.ui" line="383"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
       <translation type="unfinished">IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="354"/>
+      <location filename="../ui/preferences-ifc.ui" line="386"/>
       <source>Allow invalid shapes</source>
       <translation type="unfinished">Allow invalid shapes</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="376"/>
+      <location filename="../ui/preferences-ifc.ui" line="408"/>
       <source>Comma-separated list of IFC entities to be excluded from imports</source>
       <translation type="unfinished">Comma-separated list of IFC entities to be excluded from imports</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="397"/>
+      <location filename="../ui/preferences-ifc.ui" line="429"/>
       <source>Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</source>
       <translation type="unfinished">Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="414"/>
+      <location filename="../ui/preferences-ifc.ui" line="446"/>
       <source>Creates a full parametric model on import using stored
 FreeCAD object properties</source>
       <translation type="unfinished">Creates a full parametric model on import using stored
 FreeCAD object properties</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="47"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="71"/>
       <source>Export type</source>
       <translation type="unfinished">Export type</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="54"/>
-      <source>The type of objects you wish to export: Standard (solid objects), wireframe model for structural analysis, or both in a same model</source>
-      <translation type="unfinished">The type of objects you wish to export: Standard (solid objects), wireframe model for structural analysis, or both in a same model</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="64"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="91"/>
       <source>Standard model</source>
       <translation type="unfinished">Standard model</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="69"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="96"/>
       <source>Structural analysis</source>
       <translation type="unfinished">Structural analysis</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="74"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="101"/>
       <source>Standard + structural</source>
       <translation type="unfinished">Standard + structural</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="117"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="144"/>
       <source>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
@@ -6091,24 +6086,70 @@ are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="100"/>
-      <source>Number of cores to use:</source>
-      <translation type="unfinished">Number of cores to use:</translation>
+      <location filename="../ui/preferences-ifc-export.ui" line="78"/>
+      <source>The type of objects that you wish to export:
+- Standard model: solid objects.
+- Structural analysis: wireframe model for structural calculations.
+- Standard + structural: both types of models.</source>
+      <translation type="unfinished">The type of objects that you wish to export:
+- Standard model: solid objects.
+- Structural analysis: wireframe model for structural calculations.
+- Standard + structural: both types of models.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="107"/>
-      <source>EXPERIMENTAL - The number of cores to use in multicore mode. Keep 0 to disable multicore mode, or 1 to use multicore mode in single-core mode (safer if you get crashes). Max value should be your number of cores - 1, ex: 3 if you have a quad-core CPU.</source>
-      <translation type="unfinished">EXPERIMENTAL - The number of cores to use in multicore mode. Keep 0 to disable multicore mode, or 1 to use multicore mode in single-core mode (safer if you get crashes). Max value should be your number of cores - 1, ex: 3 if you have a quad-core CPU.</translation>
+      <location filename="../ui/preferences-ifc-export.ui" line="368"/>
+      <source>The units you want your IFC file to be exported to.
+
+Note that IFC files are ALWAYS written in metric units; imperial units
+are only a conversion factor applied on top of them.
+However, some BIM applications will use this factor to choose which
+unit to work with when opening the file.</source>
+      <translation type="unfinished">The units you want your IFC file to be exported to.
+
+Note that IFC files are ALWAYS written in metric units; imperial units
+are only a conversion factor applied on top of them.
+However, some BIM applications will use this factor to choose which
+unit to work with when opening the file.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="431"/>
-      <source>If this option is checked, the default Project, Site, Building, and Storeys objects that are usually found in an IFC file are not imported, and all objects are placed in a Group. Buildings and Storeys are still imported if there is more than one.</source>
-      <translation type="unfinished">If this option is checked, the default Project, Site, Building, and Storeys objects that are usually found in an IFC file are not imported, and all objects are placed in a Group. Buildings and Storeys are still imported if there is more than one.</translation>
+      <location filename="../ui/preferences-ifc.ui" line="119"/>
+      <source>EXPERIMENTAL
+The number of cores to use in multicore mode.
+Keep 0 to disable multicore mode.
+The maximum value should be your number of cores minus 1,
+for example, 3 if you have a 4-core CPU.
+
+Set it to 1 to use multicore mode in single-core mode; this is safer
+if you start getting crashes when you set multiple cores.</source>
+      <translation type="unfinished">EXPERIMENTAL
+The number of cores to use in multicore mode.
+Keep 0 to disable multicore mode.
+The maximum value should be your number of cores minus 1,
+for example, 3 if you have a 4-core CPU.
+
+Set it to 1 to use multicore mode in single-core mode; this is safer
+if you start getting crashes when you set multiple cores.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="434"/>
-      <source>Replace Project, Site, Building, and Storey by Group</source>
-      <translation type="unfinished">Replace Project, Site, Building, and Storey by Group</translation>
+      <location filename="../ui/preferences-ifc.ui" line="129"/>
+      <source>Number of cores to use (experimental)</source>
+      <translation type="unfinished">Number of cores to use (experimental)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="463"/>
+      <source>If this option is checked, the default 'Project', 'Site', 'Building', and 'Storeys'
+objects that are usually found in an IFC file are not imported, and all objects
+are placed in a 'Group' instead.
+'Buildings' and 'Storeys' are still imported if there is more than one.</source>
+      <translation type="unfinished">If this option is checked, the default 'Project', 'Site', 'Building', and 'Storeys'
+objects that are usually found in an IFC file are not imported, and all objects
+are placed in a 'Group' instead.
+'Buildings' and 'Storeys' are still imported if there is more than one.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="469"/>
+      <source>Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</source>
+      <translation type="unfinished">Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</translation>
     </message>
   </context>
   <context>

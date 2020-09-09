@@ -366,13 +366,13 @@ Please select one cell only.</source>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>エイリアスに無効な文字が含まれています！</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Spreadsheet.B1 の代わりに
+Spreadsheet.my_alias_name のように、エイリアスでセルを参照してください。</translation>
     </message>
   </context>
   <context>
@@ -458,17 +458,17 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>内容 (&amp;C)</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>エイリアス (&amp;A):</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Spreadsheet.B1 の代わりに
+Spreadsheet.my_alias_name のように、エイリアスでセルを参照してください。</translation>
     </message>
   </context>
   <context>

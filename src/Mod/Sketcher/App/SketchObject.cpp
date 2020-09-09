@@ -2572,15 +2572,18 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                         solve();
 
                     return 0;
-                } else
+                } else {
                     return -1;
+                }
             } else if (theta1 < 0.001*arcLength) { // drop the second intersection point
                 std::swap(GeoId1,GeoId2);
                 std::swap(point1,point2);
             } else if (theta2 > 0.999*arcLength) {
+                // Do nothing here
             }
-            else
+            else {
                 return -1;
+            }
         }
 
         if (GeoId1 >= 0) {
@@ -2749,14 +2752,17 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                         solve();
 
                     return 0;
-                } else
+                } else {
                     return -1;
+                }
             } else if (theta1 < 0.001*arcLength) { // drop the second intersection point
                 std::swap(GeoId1,GeoId2);
                 std::swap(point1,point2);
             } else if (theta2 > 0.999*arcLength) {
-            } else
+                // Do nothing here
+            } else {
                 return -1;
+            }
         }
 
         if (GeoId1 >= 0) {
@@ -2927,14 +2933,17 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     delete newConstr;
 
                     return 0;
-                } else
+                } else {
                     return -1;
+                }
             } else if (theta1 < 0.001*arcLength) { // drop the second intersection point
                 std::swap(GeoId1,GeoId2);
                 std::swap(point1,point2);
             } else if (theta2 > 0.999*arcLength) {
-            } else
+                // Do nothing here
+            } else {
                 return -1;
+            }
         }
 
         if (GeoId1 >= 0) {

@@ -274,6 +274,7 @@ void DlgMacroExecuteImp::accept()
 
     QFileInfo fi(dir, item->text(0));
     try {
+        getMainWindow()->appendRecentMacro(fi.filePath());
         Application::Instance->macroManager()->run(Gui::MacroManager::File, fi.filePath().toUtf8());
         // after macro run recalculate the document
         if (Application::Instance->activeDocument())
@@ -334,6 +335,7 @@ void DlgMacroExecuteImp::on_editButton_clicked()
     edit->open(file);
     edit->resize(400, 300);
     getMainWindow()->addWindow(edit);
+    getMainWindow()->appendRecentMacro(file);
 
     if (mitem->systemWide) {
         editor->setReadOnly(true);
@@ -341,7 +343,6 @@ void DlgMacroExecuteImp::on_editButton_clicked()
         shownName = QString::fromLatin1("%1[*] - [%2]").arg(item->text(0), tr("Read-only"));
         edit->setWindowTitle(shownName);
     }
-
     close();
 }
 
@@ -380,6 +381,7 @@ void DlgMacroExecuteImp::on_createButton_clicked()
             editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
             PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
             edit->open(fi.absoluteFilePath());
+            getMainWindow()->appendRecentMacro(fi.absoluteFilePath());
             edit->setWindowTitle(QString::fromLatin1("%1[*]").arg(fn));
             edit->resize(400, 300);
             getMainWindow()->addWindow(edit);

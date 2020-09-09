@@ -68,8 +68,8 @@ private Q_SLOTS:
 
 protected:
     Robot::RobotObject *pcRobot;
-    void viewTcp(const Base::Placement pos);
-    void viewTool(const Base::Placement pos);
+    void viewTcp(const Base::Placement& pos);
+    void viewTool(const Base::Placement& pos);
     void setColor(int i,float angle, QLineEdit &lineEdit);
 private:
 

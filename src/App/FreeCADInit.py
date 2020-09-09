@@ -824,6 +824,27 @@ App.Units.DynamicViscosity             = App.Units.Unit(-1,1,-1)
 App.Units.KinematicViscosity           = App.Units.Unit(2,0,-1)
 App.Units.VacuumPermittivity           = App.Units.Unit(-3,-1,4,2)
 
+# Add an enum for the different unit schemes
+if sys.version_info.major < 3:
+    IntEnum = object
+else:
+    from enum import IntEnum
+
+# The values must match with that of the
+# C++ enum class UnitSystem
+class Scheme(IntEnum):
+    SI1 = 0
+    SI2 = 1
+    Imperial1 = 2
+    ImperialDecimal = 3
+    Centimeters = 4
+    ImperialBuilding = 5
+    MmMin = 6
+    ImperialCivil = 7
+    FemMilliMeterNewton = 8
+
+App.Units.Scheme = Scheme
+
 # clean up namespace
 del(InitApplications)
 del(test_ascii)

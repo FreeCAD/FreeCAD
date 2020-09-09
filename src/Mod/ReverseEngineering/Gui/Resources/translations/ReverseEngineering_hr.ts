@@ -473,7 +473,7 @@
       <location filename="../../SegmentationManual.ui" line="218"/>
       <location filename="../../SegmentationManual.ui" line="271"/>
       <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
+      <translation>Otkri</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -503,17 +503,17 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>Segmentacija</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
       <source>Cut segment from mesh</source>
-      <translation type="unfinished">Cut segment from mesh</translation>
+      <translation>Skrati segment mreže</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
       <source>Hide segment</source>
-      <translation type="unfinished">Hide segment</translation>
+      <translation>Sakri segment</translation>
     </message>
   </context>
   <context>

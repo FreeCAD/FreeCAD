@@ -129,12 +129,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="726"/>
+      <location filename="../../BrowserView.cpp" line="727"/>
       <source>Browser</source>
       <translation>Браузер</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="555"/>
+      <location filename="../../BrowserView.cpp" line="556"/>
       <source>File does not exist!</source>
       <translation>Файл не існує!</translation>
     </message>
@@ -142,18 +142,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="546"/>
-      <location filename="../../BrowserView.cpp" line="551"/>
+      <location filename="../../BrowserView.cpp" line="547"/>
+      <location filename="../../BrowserView.cpp" line="552"/>
       <source>Error</source>
       <translation>Помилка</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="551"/>
+      <location filename="../../BrowserView.cpp" line="552"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Відбулися помилки при завантаженні файлу. Можливо, деякі дані були змінені або не відновлені. Подивіться у вікно звіту для більш конкретної інформації про порушених об'єктах.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="697"/>
+      <location filename="../../BrowserView.cpp" line="698"/>
       <source>Loading %1...</source>
       <translation>Завантаження %1...</translation>
     </message>
@@ -161,17 +161,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="308"/>
+      <location filename="../../BrowserView.cpp" line="304"/>
       <source>Open in External Browser</source>
       <translation>Відкрити у зовнішньому браузері</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="312"/>
+      <location filename="../../BrowserView.cpp" line="308"/>
       <source>Open in new window</source>
       <translation>Відкрити у новому вікні</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="344"/>
+      <location filename="../../BrowserView.cpp" line="340"/>
       <source>View source</source>
       <translation>Переглянути вихідний код</translation>
     </message>

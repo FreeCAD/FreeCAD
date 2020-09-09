@@ -2,49 +2,11 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="hu" sourcelanguage="en">
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="110"/>
-      <source>The objects that are part of this layer</source>
-      <translation>Ennek a rétegnek a részét képező alkatrészek</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="147"/>
-      <source>If on, the child objects of this layer will match its visual aspects</source>
-      <translation>Ha be van kapcsolva, akkor a réteg al-objektumai megfelelnek a vizuális szempontoknak</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="156"/>
-      <source>The line color of the children of this layer</source>
-      <translation>A rétegen lévő al objektumok vonalszíne</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="162"/>
-      <source>The shape color of the children of this layer</source>
-      <translation>A rétegen lévő al objektumok alakzatszíne</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="168"/>
-      <source>The line width of the children of this layer</source>
-      <translation>A rétegen lévő al objektumok vonalvastagsága</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="174"/>
-      <source>The draw style of the children of this layer</source>
-      <translation>A rétegen lévő al objektumok rajzolási stílusa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="180"/>
-      <source>The transparency of the children of this layer</source>
-      <translation>A rétegen lévő al objektumok átlátszósága</translation>
-    </message>
-  </context>
-  <context>
     <name>Dialog</name>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation type="unfinished">Annotation Styles Editor</translation>
+      <translation>Jegyzetstílusok szerkesztője</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
@@ -59,7 +21,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="61"/>
       <source>Renames the selected style</source>
-      <translation type="unfinished">Renames the selected style</translation>
+      <translation>Átnevezi a kijelölt stílust</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="64"/>
@@ -69,7 +31,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="86"/>
       <source>Deletes the selected style</source>
-      <translation type="unfinished">Deletes the selected style</translation>
+      <translation>Törli a kijelölt stílust</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="89"/>
@@ -89,7 +51,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="139"/>
       <source>Line spacing</source>
-      <translation type="unfinished">Line spacing</translation>
+      <translation>Sorköz</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="149"/>
@@ -99,7 +61,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="156"/>
       <source>The font to use for texts and dimensions</source>
-      <translation type="unfinished">The font to use for texts and dimensions</translation>
+      <translation>A szövegekhez és méretezésekhez használt betütípus</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="183"/>
@@ -109,7 +71,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
       <source>Scale multiplier</source>
-      <translation type="unfinished">Scale multiplier</translation>
+      <translation>Lépték szorzó</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
@@ -119,17 +81,17 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="212"/>
       <source>Unit override</source>
-      <translation type="unfinished">Unit override</translation>
+      <translation>Mértékegység felülírás</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
       <source>Show unit</source>
-      <translation type="unfinished">Show unit</translation>
+      <translation>Mértékegység megjelenítés</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="275"/>
       <source>Line and arrows</source>
-      <translation type="unfinished">Line and arrows</translation>
+      <translation>Vonal és nyilak</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="284"/>
@@ -139,7 +101,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="294"/>
       <source>Extension overshoot</source>
-      <translation type="unfinished">Extension overshoot</translation>
+      <translation>Meghoszabbítás túllépése</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="304"/>
@@ -149,17 +111,17 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="314"/>
       <source>Show lines</source>
-      <translation type="unfinished">Show lines</translation>
+      <translation>Vonalak megjelenítése</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="324"/>
       <source>Dimension overshoot</source>
-      <translation type="unfinished">Dimension overshoot</translation>
+      <translation>Méretvonal túllépése</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="334"/>
       <source>Extension lines</source>
-      <translation type="unfinished">Extension lines</translation>
+      <translation>Meghoszabbító vonalak</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="344"/>
@@ -169,12 +131,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="354"/>
       <source>Line / text color</source>
-      <translation type="unfinished">Line / text color</translation>
+      <translation>Vonal / szöveg szín</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="377"/>
       <source>The width of the dimension lines</source>
-      <translation type="unfinished">The width of the dimension lines</translation>
+      <translation>Méret segédvonalak vastagsága</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="380"/>
@@ -184,7 +146,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="390"/>
       <source>The color of dimension lines, arrows and texts</source>
-      <translation type="unfinished">The color of dimension lines, arrows and texts</translation>
+      <translation>Méret segédvonalak, nyilak és szövegek színe</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="408"/>
@@ -204,32 +166,32 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="26"/>
       <source>The name of your style. Existing style names can be edited.</source>
-      <translation type="unfinished">The name of your style. Existing style names can be edited.</translation>
+      <translation>Stílusának a neve. Meglévő stílus nevek szerkeszthetőek.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="163"/>
       <source>Font size in the system units</source>
-      <translation type="unfinished">Font size in the system units</translation>
+      <translation>Rendszer mértékegységek betűmérete</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="136"/>
       <source>Line spacing in system units</source>
-      <translation type="unfinished">Line spacing in system units</translation>
+      <translation>Rendszer mértékegységek vonal térköze</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation type="unfinished">A multiplier factor that affects the size of texts and markers</translation>
+      <translation>Lépték szorzó, mely befojásolja a jelölők és szövegek méretét</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="249"/>
       <source>The number of decimals to show for dimension values</source>
-      <translation type="unfinished">The number of decimals to show for dimension values</translation>
+      <translation>A dimenzióértékekhez megjelenítandő tizedesjegyek száma</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="242"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation type="unfinished">Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</translation>
+      <translation>Adjon meg egy érvényes hosszegységet, például mm, m, in, ft, az egység méretértékének megjelenítésének kényszerítéséhez</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="259"/>
@@ -734,19 +696,6 @@ It must be at least 2.</translation>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
       <translation>Pont visszaállítása</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="83"/>
-      <source>Layer</source>
-      <translation>Réteg</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="84"/>
-      <source>Adds a layer</source>
-      <translation>Egy réteget ad hozzá</translation>
     </message>
   </context>
   <context>
@@ -2871,21 +2820,6 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Jelölje be ezt, ha az objektumnak kitöltöttként kell megjelennie, máskülönben drótvázként fog megjelenni. Nem érhető el, ha a "Rész-primitívek használata" beállítás engedélyezve van</translation>
     </message>
     <message>
-      <location filename="../../DraftLayer.py" line="43"/>
-      <source>No active document. Aborting</source>
-      <translation>Nincs aktív dokumentum. Megszakítás</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="50"/>
-      <source>Layer</source>
-      <translation>Réteg</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="71"/>
-      <source>Layers</source>
-      <translation>Rétegek</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Polyline</source>
       <translation>Vonallánc</translation>
@@ -2929,16 +2863,6 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <location filename="../../DraftGui.py" line="949"/>
       <source>Trim distance</source>
       <translation type="unfinished">Trim distance</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="334"/>
-      <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="341"/>
-      <source>Select contents</source>
-      <translation type="unfinished">Select contents</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>

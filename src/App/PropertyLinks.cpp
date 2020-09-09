@@ -2440,7 +2440,10 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*> &inLis
 
 // Key on absolute path.
 // Because of possible symbolic links, multiple entry may refer to the same
-// file. We use QFileInfo::canonicalPath to resolve that.
+// file. We used to rely on QFileInfo::canonicalFilePath to resolve it, but
+// has now been changed to simply use the absoluteFilePath(), and rely on user
+// to be aware of possible duplicated file location. The reason being that 
+// some user (especially Linux user) use symlink to organize file tree.
 typedef std::map<QString,DocInfoPtr> DocInfoMap;
 DocInfoMap _DocInfoMap;
 
@@ -2463,22 +2466,19 @@ public:
             const char *filename, App::Document *pDoc, bool relative, QString *fullPath = 0) 
     {
         bool absolute;
-       // The path could be an URI, in that case
-       // TODO: build a far much more resilient approach to test for an URI
-       std::string prefix("https://");
-       std::string FileName(filename);
-       auto res = std::mismatch(prefix.begin(), prefix.end(), FileName.begin());
-       if ( res.first == prefix.end() )
-       {
-               // We do have an URI
-               QString path = QString::fromUtf8(filename);
-               if ( fullPath )
-                       *fullPath = path;
+        // The path could be an URI, in that case
+        // TODO: build a far much more resilient approach to test for an URI
+        QString path = QString::fromUtf8(filename);
+        if (path.startsWith(QLatin1String("https://"))) {
+            // We do have an URI
+            if (fullPath)
+                *fullPath = path;
                return std::string(filename);
-       }
-        // make sure the filename is aboluste path
-        QString path = QDir::cleanPath(QString::fromUtf8(filename));
-        if((absolute=QFileInfo(path).isAbsolute())) {
+        }
+
+        // make sure the filename is absolute path
+        path = QDir::cleanPath(path);
+        if((absolute = QFileInfo(path).isAbsolute())) {
             if(fullPath)
                 *fullPath = path;
             if(!relative)
@@ -2547,28 +2547,26 @@ public:
     }
 
     static QString getFullPath(const char *p) {
-       QString path = QString::fromUtf8(p);;
-       std::string prefix("https://");
-       std::string Path(path.toStdString());
-       auto res = std::mismatch(prefix.begin(), prefix.end(), Path.begin());
-       if ( res.first == prefix.end() )
-		return(path);
-	else
-	{
-        	if(!p) return QString();
- 	   	return QFileInfo(QString::fromUtf8(p)).canonicalFilePath();
-	}
-     }
+        QString path = QString::fromUtf8(p);
+        if (path.isEmpty())
+            return path;
+
+        if (path.startsWith(QLatin1String("https://")))
+            return path;
+        else {
+            // return QFileInfo(path).canonicalFilePath();
+            return QFileInfo(path).absoluteFilePath();
+        }
+    }
 
     QString getFullPath() const {
-       QString path = myPos->first;
-       std::string prefix("https://");
-       std::string Path(path.toStdString());
-       auto res = std::mismatch(prefix.begin(), prefix.end(), Path.begin());
-       if ( res.first == prefix.end() )
-		return(path);
-       else
-		return QFileInfo(myPos->first).canonicalFilePath();
+        QString path = myPos->first;
+        if (path.startsWith(QLatin1String("https://")))
+            return path;
+        else {
+            // return QFileInfo(myPos->first).canonicalFilePath();
+            return QFileInfo(myPos->first).absoluteFilePath();
+        }
     }
 
     const char *filePath() const {
@@ -2692,7 +2690,8 @@ public:
         if(&doc!=pcDoc) return;
 
         QFileInfo info(myPos->first);
-        QString path(info.canonicalFilePath());
+        // QString path(info.canonicalFilePath());
+        QString path(info.absoluteFilePath());
         const char *filename = doc.getFileName();
         QString docPath(getFullPath(filename));
 

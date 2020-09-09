@@ -116,15 +116,16 @@ PyObject* DocumentPy::setEdit(PyObject *args)
             PyErr_Format(Base::BaseExceptionFreeCADError, "No such object found in document: '%s'", psFeatStr);
             return 0;
         }
-    }else{
+    }
+    else {
         PyErr_Clear();
         PyObject *pyObj;
-        if(!PyArg_ParseTuple(args, "O|is", &pyObj,&mod,&subname))
+        if (!PyArg_ParseTuple(args, "O|is", &pyObj,&mod,&subname))
             return 0;
 
-        if(PyObject_TypeCheck(pyObj,&App::DocumentObjectPy::Type))
+        if (PyObject_TypeCheck(pyObj,&App::DocumentObjectPy::Type))
             obj = static_cast<App::DocumentObjectPy*>(pyObj)->getDocumentObjectPtr();
-        else if(PyObject_TypeCheck(pyObj,&ViewProviderPy::Type))
+        else if (PyObject_TypeCheck(pyObj,&ViewProviderPy::Type))
             vp = static_cast<ViewProviderPy*>(pyObj)->getViewProviderPtr();
         else {
             PyErr_SetString(PyExc_TypeError,"Expect the first argument to be string|DocObject|ViewObject");
@@ -132,8 +133,8 @@ PyObject* DocumentPy::setEdit(PyObject *args)
         }
     }
 
-    if(!vp) {
-        if(!obj || !obj->getNameInDocument() || !(vp=Application::Instance->getViewProvider(obj))) {
+    if (!vp) {
+        if (!obj || !obj->getNameInDocument() || !(vp=Application::Instance->getViewProvider(obj))) {
             PyErr_SetString(PyExc_ValueError,"Invalid document object");
             return 0;
         }
@@ -303,9 +304,9 @@ PyObject* DocumentPy::toggleTreeItem(PyObject *args)
         assert(Object);    
 
         App::DocumentObject *parent = 0;
-        if(subname) {
+        if (subname) {
             auto sobj = Object->getSubObject(subname);
-            if(!sobj) 
+            if (!sobj) 
                 throw Py::RuntimeError("Sub-object not found");
             parent = Object;
             Object = sobj;
@@ -316,7 +317,7 @@ PyObject* DocumentPy::toggleTreeItem(PyObject *args)
         //ActiveGuiDoc = Gui::Application::Instance->getDocument(getDocumentPtr());
         Gui::ViewProviderDocumentObject* ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (getDocumentPtr()->getViewProvider(Object));
         assert(ActiveVp);
-        switch(mod) {
+        switch (mod) {
             case 0: getDocumentPtr()->signalExpandObject(*ActiveVp, TreeItemMode::ToggleItem, parent, subname); break;
             case 1: getDocumentPtr()->signalExpandObject(*ActiveVp, TreeItemMode::CollapseItem, parent, subname); break;
             case 2: getDocumentPtr()->signalExpandObject(*ActiveVp, TreeItemMode::ExpandItem, parent, subname); break;
@@ -399,7 +400,7 @@ Py::Object DocumentPy::getEditingTransform(void) const {
 }
 
 void DocumentPy::setEditingTransform(Py::Object arg) {
-    if(!PyObject_TypeCheck(arg.ptr(),&Base::MatrixPy::Type))
+    if (!PyObject_TypeCheck(arg.ptr(),&Base::MatrixPy::Type))
         throw Py::TypeError("Expecting type of matrix");
     getDocumentPtr()->setEditingTransform(
             *static_cast<Base::MatrixPy*>(arg.ptr())->getMatrixPtr());
@@ -410,7 +411,7 @@ Py::Object DocumentPy::getInEditInfo(void) const {
     std::string subname,subelement;
     int mode = 0;
     getDocumentPtr()->getInEdit(&vp,&subname,&mode,&subelement); 
-    if(!vp || !vp->getObject() || !vp->getObject()->getNameInDocument()) 
+    if (!vp || !vp->getObject() || !vp->getObject()->getNameInDocument()) 
         return Py::None();
     return Py::TupleN(Py::Object(vp->getObject()->getPyObject(),true),
             Py::String(subname),Py::String(subelement),Py::Int(mode));

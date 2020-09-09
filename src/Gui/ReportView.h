@@ -148,7 +148,9 @@ public:
     /** Returns true whether warnings are reported. */ 
     bool isWarning() const;
     /** Returns true whether log messages are reported. */ 
-    bool isLogging() const;
+    bool isLogMessage() const;
+    /** Returns true whether normal messages are reported. */
+    bool isNormalMessage() const;
 
 protected:
     /** For internal use only */
@@ -166,7 +168,9 @@ public Q_SLOTS:
     /** Toggles the report of warnings. */
     void onToggleWarning();
     /** Toggles the report of log messages. */
-    void onToggleLogging();
+    void onToggleLogMessage();
+    /** Toggles the report of normal messages. */
+    void onToggleNormalMessage();
     /** Toggles whether to show report view on warnings*/
     void onToggleShowReportViewOnWarning();
     /** Toggles whether to show report view on errors*/

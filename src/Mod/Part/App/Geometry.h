@@ -55,6 +55,7 @@
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
 #include <list>
+#include <memory>
 #include <vector>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
@@ -1079,7 +1080,7 @@ PartExport
 GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const GeomLineSegment *lineSeg2,
                                       const Base::Vector3d &center, double radius);
 PartExport
-GeomSurface *makeFromSurface(const Handle(Geom_Surface)&);
+std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface)&);
 }
 
 #endif // PART_GEOMETRY_H

@@ -69,7 +69,6 @@ Base::XMLReader::XMLReader(const char* FileName, std::istream& str)
 #ifdef _MSC_VER
     str.imbue(std::locale::empty());
 #else
-    //FIXME: Check whether this is correct
     str.imbue(std::locale::classic());
 #endif
 

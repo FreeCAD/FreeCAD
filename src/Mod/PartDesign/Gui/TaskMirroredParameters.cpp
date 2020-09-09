@@ -118,6 +118,8 @@ void TaskMirroredParameters::setupUI()
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(ui->listWidgetFeatures->model(),
+        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
     connect(ui->comboPlane, SIGNAL(activated(int)),
             this, SLOT(onPlaneChanged(int)));

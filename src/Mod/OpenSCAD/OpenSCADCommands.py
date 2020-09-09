@@ -30,6 +30,7 @@ This Script includes the GUI Commands of the OpenSCAD module
 
 import FreeCAD,FreeCADGui
 from PySide import QtCore, QtGui
+import OpenSCADUtils
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
@@ -162,19 +163,18 @@ class MirrorMeshFeature:
         return FreeCADGui.Selection.countObjectsOfType('Mesh::Feature') > 0
 
     def Activated(self):
-        import Part,OpenSCADFeatures,OpenSCADUtils
         selection=FreeCADGui.Selection.getSelectionEx()
         for selobj in selection:
             newobj=selobj.Document.addObject("Mesh::Feature",'mirror')
             newobj.Label='mirror_%s' % selobj.Object.Label
             msh=selobj.Object.Mesh
-            items=["[1,0,0]","[0,1,0]","[0,0,1]","[1,1,0]","[0,1,1]","[1,0,1]","[1,1,1]"]
-            item, ok = QtGui.QInputDialog.getItem(QtGui.QApplication.activeWindow(),u'Mirror about which Axis?',u'Select Axis (or enter custom value)?',items,editable=True)
+            items=["[1;0;0]","[0;1;0]","[0;0;1]","[1;1;0]","[0;1;1]","[1;0;1]","[1;1;1]"]
+            item, ok = QtGui.QInputDialog.getItem(QtGui.QApplication.activeWindow(),'Mirror about which Axis?','Select Axis (or enter custom value):',items,editable=True)
             if ok:
-                splits = list(item)
-                x = float(splits[1])
-                y = float(splits[3])
-                z = float(splits[5])
+                splits = list(item.replace('[','').replace(']','').split(';'))
+                x = float(splits[0])
+                y = float(splits[1])
+                z = float(splits[2])
                 vec = FreeCAD.Base.Vector(x,y,z)
                 newmesh=OpenSCADUtils.mirrormesh(msh, vec)
                 newobj.Mesh=newmesh
@@ -187,6 +187,65 @@ class MirrorMeshFeature:
         return {'Pixmap'  : 'OpenSCAD_MirrorMeshFeature',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MirrorMeshFeature', 'Mirror Mesh Feature...'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MirrorMeshFeature', 'Create Mirror Mesh Feature')}
+
+class ScaleMeshFeature:
+    def IsActive(self):
+        return FreeCADGui.Selection.countObjectsOfType('Mesh::Feature') > 0
+
+    def Activated(self):
+        selection=FreeCADGui.Selection.getSelectionEx()
+        for selobj in selection:
+            newobj=selobj.Document.addObject("Mesh::Feature",'scale')
+            newobj.Label='scale_%s' % selobj.Object.Label
+            msh=selobj.Object.Mesh
+            items=["[1;1;1]"]
+            item, ok = QtGui.QInputDialog.getItem(QtGui.QApplication.activeWindow(),'Scale about which Axis?','Enter scaling value:',items,editable=True)
+            if ok:
+                splits = list(item.replace('[','').replace(']','').split(';'))
+                x = float(splits[0])
+                y = float(splits[1])
+                z = float(splits[2])
+                vec = FreeCAD.Base.Vector(x,y,z)
+                newmesh=OpenSCADUtils.scalemesh(msh, vec)
+                newobj.Mesh=newmesh
+                selobj.Object.ViewObject.hide()
+            else:
+                selobj.Document.removeObject(newobj.Name)
+        FreeCAD.ActiveDocument.recompute()
+    def GetResources(self):
+        return {'Pixmap'  : 'OpenSCAD_ScaleMeshFeature',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ScaleMeshFeature', 'Scale Mesh Feature...'),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ScaleMeshFeature', 'Create Scale Mesh Feature')}
+
+
+class ResizeMeshFeature:
+    def IsActive(self):
+        return FreeCADGui.Selection.countObjectsOfType('Mesh::Feature') > 0
+
+    def Activated(self):
+        selection=FreeCADGui.Selection.getSelectionEx()
+        for selobj in selection:
+            newobj=selobj.Document.addObject("Mesh::Feature",'resize')
+            newobj.Label='resize_%s' % selobj.Object.Label
+            msh=selobj.Object.Mesh
+            items=["[1;1;1]"]
+            item, ok = QtGui.QInputDialog.getItem(QtGui.QApplication.activeWindow(),'Resize about which Axis?','Enter resizing value:',items,editable=True)
+            if ok:
+                splits = list(item.replace('[','').replace(']','').split(';'))
+                x = float(splits[0])
+                y = float(splits[1])
+                z = float(splits[2])
+                vec = FreeCAD.Base.Vector(x,y,z)
+                newmesh=OpenSCADUtils.resizemesh(msh, vec)
+                newobj.Mesh=newmesh
+                selobj.Object.ViewObject.hide()
+            else:
+                selobj.Document.removeObject(newobj.Name)
+        FreeCAD.ActiveDocument.recompute()
+    def GetResources(self):
+        return {#'Pixmap'  : 'OpenSCAD_ResizeMeshFeature',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ResizeMeshFeature', 'Resize Mesh Feature...'),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ResizeMeshFeature', 'Create Resize Mesh Feature')}
 
 
 class IncreaseToleranceFeature:
@@ -455,6 +514,8 @@ FreeCADGui.addCommand('OpenSCAD_ExplodeGroup',ExplodeGroup())
 FreeCADGui.addCommand('OpenSCAD_Edgestofaces',Edgestofaces())
 FreeCADGui.addCommand('OpenSCAD_RefineShapeFeature',RefineShapeFeature())
 FreeCADGui.addCommand('OpenSCAD_MirrorMeshFeature',MirrorMeshFeature())
+FreeCADGui.addCommand('OpenSCAD_ScaleMeshFeature',ScaleMeshFeature())
+FreeCADGui.addCommand('OpenSCAD_ResizeMeshFeature',ResizeMeshFeature())
 FreeCADGui.addCommand('OpenSCAD_IncreaseToleranceFeature',IncreaseToleranceFeature())
 FreeCADGui.addCommand('OpenSCAD_ExpandPlacements',ExpandPlacements())
 FreeCADGui.addCommand('OpenSCAD_ReplaceObject',ReplaceObject())

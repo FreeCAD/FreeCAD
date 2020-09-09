@@ -24,7 +24,7 @@
 #ifndef PART_TOPOSHAPE_H
 #define PART_TOPOSHAPE_H
 
-#include <iostream>
+#include <iosfwd>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopTools_ListOfShape.hxx>
@@ -52,8 +52,6 @@ public:
    NullShapeException();
    NullShapeException(const char * sMessage);
    NullShapeException(const std::string& sMessage);
-   /// Construction
-   NullShapeException(const NullShapeException &inst);
    /// Destruction
    virtual ~NullShapeException() throw() {}
 };
@@ -67,8 +65,6 @@ public:
    BooleanException();
    BooleanException(const char * sMessage);
    BooleanException(const std::string& sMessage);
-   /// Construction
-   BooleanException(const BooleanException &inst);
    /// Destruction
    virtual ~BooleanException() throw() {}
 };

@@ -439,7 +439,7 @@ bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)
 }
 
 //!convert fromPoint in coordinate system fromSystem to reference coordinate system
-Base::Vector3d DrawUtil::toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint)
+Base::Vector3d DrawUtil::toR3(const gp_Ax2& fromSystem, const Base::Vector3d& fromPoint)
 {
     gp_Pnt gFromPoint(fromPoint.x,fromPoint.y,fromPoint.z);
     gp_Pnt gToPoint;
@@ -773,6 +773,22 @@ bool  DrawUtil::isCrazy(TopoDS_Edge e)
 //    Base::Console().Message("DU::isCrazy - returns: %d ratio: %.3f\n", result, ratio);
     return result;
 } 
+
+//get 3d position of a face's center
+Base::Vector3d DrawUtil::getFaceCenter(TopoDS_Face f)
+{
+    BRepAdaptor_Surface adapt(f);
+    double u1 = adapt.FirstUParameter();
+    double u2 = adapt.LastUParameter();
+    double mu = (u1 + u2) / 2.0;
+    double v1 = adapt.FirstVParameter();
+    double v2 = adapt.LastVParameter();
+    double mv = (v1 + v2) / 2.0;
+    BRepLProp_SLProps prop(adapt,mu,mv,0,Precision::Confusion());
+    const gp_Pnt gv = prop.Value();
+    Base::Vector3d v(gv.X(), gv.Y(), gv.Z());
+    return v;
+}
 
 // Supplementary mathematical functions
 // ====================================
@@ -1247,7 +1263,7 @@ QString DrawUtil::qbaToDebug(const QByteArray & line)
 }
 
 void DrawUtil::dumpCS(const char* text,
-                      gp_Ax2 CS)
+                      const gp_Ax2& CS)
 {
     gp_Dir baseAxis = CS.Direction();
     gp_Dir baseX    = CS.XDirection();
@@ -1261,7 +1277,7 @@ void DrawUtil::dumpCS(const char* text,
 }
 
 void DrawUtil::dumpCS3(const char* text,
-                       gp_Ax3 CS)
+                       const gp_Ax3& CS)
 {
     gp_Dir baseAxis = CS.Direction();
     gp_Dir baseX    = CS.XDirection();

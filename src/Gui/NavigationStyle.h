@@ -188,9 +188,10 @@ protected:
                    const SbVec2f & current);
     void pan(SoCamera* camera);
     void panToCenter(const SbPlane & pplane, const SbVec2f & currpos);
+    int getDelta() const;
     void zoom(SoCamera * camera, float diffvalue);
     void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos);
-    void doZoom(SoCamera * camera, SbBool forward, const SbVec2f& pos);
+    void doZoom(SoCamera * camera, int wheeldelta, const SbVec2f& pos);
     void doZoom(SoCamera * camera, float logzoomfactor, const SbVec2f& pos);
     void doRotate(SoCamera * camera, float angle, const SbVec2f& pos);
     void spin(const SbVec2f & pointerpos);

@@ -89,6 +89,12 @@ class FemExamples(QtGui.QWidget):
                 for constraint in file_constraints:
                     constraints.add(constraint)
 
+        constraints = sorted(constraints)
+        meshes = sorted(meshes)
+        solvers = sorted(solvers)
+        equations = sorted(equations)
+        materials = sorted(materials)
+
         all_examples = QtGui.QTreeWidgetItem(self.view, ["All"])
         for example, info in files_info.items():
             QtGui.QTreeWidgetItem(all_examples, [info["name"]])
@@ -103,6 +109,34 @@ class FemExamples(QtGui.QWidget):
                     QtGui.QTreeWidgetItem(constraint_item, [info["name"]])
 
         self.view.addTopLevelItem(all_constraints)
+
+        all_equations = QtGui.QTreeWidgetItem(self.view, ["Equations"])
+        for equation in equations:
+            equation_item = QtGui.QTreeWidgetItem(all_equations, [equation])
+            for example, info in files_info.items():
+                if info["equation"] == equation:
+                    QtGui.QTreeWidgetItem(equation_item, [info["name"]])
+
+        self.view.addTopLevelItem(all_equations)
+
+        all_materials = QtGui.QTreeWidgetItem(self.view, ["Materials"])
+        for material in materials:
+            material_item = QtGui.QTreeWidgetItem(all_materials, [material])
+            for example, info in files_info.items():
+                if info["material"] == material:
+                    QtGui.QTreeWidgetItem(material_item, [info["name"]])
+
+        self.view.addTopLevelItem(all_materials)
+
+        all_meshes = QtGui.QTreeWidgetItem(self.view, ["Meshes"])
+        for mesh in meshes:
+            mesh_item = QtGui.QTreeWidgetItem(all_meshes, [mesh])
+            for example, info in files_info.items():
+                if info["meshelement"] == mesh:
+                    QtGui.QTreeWidgetItem(mesh_item, [info["name"]])
+
+        self.view.addTopLevelItem(all_meshes)
+
         all_solvers = QtGui.QTreeWidgetItem(self.view, ["Solvers"])
         for solver in solvers:
             solver_item = QtGui.QTreeWidgetItem(all_solvers, [solver])
@@ -113,33 +147,9 @@ class FemExamples(QtGui.QWidget):
 
         self.view.addTopLevelItem(all_solvers)
 
-        all_meshes = QtGui.QTreeWidgetItem(self.view, ["Meshes"])
-        for mesh in meshes:
-            mesh_item = QtGui.QTreeWidgetItem(all_meshes, [mesh])
-            for example, info in files_info.items():
-                if info["meshelement"] == mesh:
-                    QtGui.QTreeWidgetItem(mesh_item, [info["name"]])
-
-        self.view.addTopLevelItem(all_meshes)
-        all_equations = QtGui.QTreeWidgetItem(self.view, ["Equations"])
-        for equation in equations:
-            equation_item = QtGui.QTreeWidgetItem(all_equations, [equation])
-            for example, info in files_info.items():
-                if info["equation"] == equation:
-                    QtGui.QTreeWidgetItem(equation_item, [info["name"]])
-
-        self.view.addTopLevelItem(all_equations)
-        all_materials = QtGui.QTreeWidgetItem(self.view, ["Materials"])
-        for material in materials:
-            material_item = QtGui.QTreeWidgetItem(all_materials, [material])
-            for example, info in files_info.items():
-                if info["material"] == material:
-                    QtGui.QTreeWidgetItem(material_item, [info["name"]])
-
-        self.view.addTopLevelItem(all_materials)
-
         self.view.setHeaderHidden(True)
         self.view.itemClicked.connect(self.enable_buttons)
+        self.view.itemDoubleClicked.connect(self.double_clicked)
 
         # Ok buttons:
         self.button_box = QtGui.QDialogButtonBox(self)
@@ -169,10 +179,11 @@ class FemExamples(QtGui.QWidget):
             self.reject()
 
     def accept(self):
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         item = self.view.selectedItems()[0]
         name = item.text(0)
         example = self.files_name[name]
-        solver = "ccxtools"
+        solver = None
         parent = item.parent()
         if parent is not None:
             grand_parent = parent.parent()
@@ -182,7 +193,11 @@ class FemExamples(QtGui.QWidget):
                     solver = parent.text(0)
         # if done this way the Python commands are printed in Python console
         FreeCADGui.doCommand("from femexamples.{}  import setup".format(str(example)))
-        FreeCADGui.doCommand("setup(solvertype=\"{}\")".format(str(solver)))
+        if solver is not None:
+            FreeCADGui.doCommand("setup(solvertype=\"{}\")".format(str(solver)))
+        else:
+            FreeCADGui.doCommand("setup()")
+        QtGui.QApplication.restoreOverrideCursor()
 
     def reject(self):
         self.close()
@@ -193,10 +208,11 @@ class FemExamples(QtGui.QWidget):
             pw.deleteLater()
 
     def run(self):
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         item = self.view.selectedItems()[0]
         name = item.text(0)
         example = self.files_name[name]
-        solver = "ccxtools"
+        solver = None
         parent = item.parent()
         if parent is not None:
             grand_parent = parent.parent()
@@ -206,7 +222,12 @@ class FemExamples(QtGui.QWidget):
                     solver = parent.text(0)
         # if done this way the Python commands are printed in Python console
         FreeCADGui.doCommand("from femexamples.manager import run_example")
-        FreeCADGui.doCommand("run_example(\"{}\", solver=\"{}\")".format(str(example), str(solver)))
+        if solver is not None:
+            FreeCADGui.doCommand("run_example(\"{}\", solver=\"{}\")"
+                                 .format(str(example), str(solver)))
+        else:
+            FreeCADGui.doCommand("run_example(\"{}\")".format(str(example)))
+        QtGui.QApplication.restoreOverrideCursor()
 
     def enable_buttons(self):
         # only enable buttons if a example is selected
@@ -218,9 +239,17 @@ class FemExamples(QtGui.QWidget):
             self.run_button.setEnabled(False)
             self.setup_button.setEnabled(False)
 
+    def double_clicked(self):
+        # setup an example when it is double clicked
+        sel_item_text = self.view.selectedItems()[0].text(0)
+        if sel_item_text in self.files_name:
+            self.accept()
+
 
 def show_examplegui():
+    QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
     mw = FreeCADGui.getMainWindow()
     example_widget = QtGui.QDockWidget("FEM Examples", mw)
     example_widget.setWidget(FemExamples())
     mw.addDockWidget(QtCore.Qt.RightDockWidgetArea, example_widget)
+    QtGui.QApplication.restoreOverrideCursor()

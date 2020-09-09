@@ -900,8 +900,6 @@ void DlgCustomToolbarsImp::moveDownCustomCommand(const QString& name, const QByt
 
 void DlgCustomToolbarsImp::changeEvent(QEvent *e)
 {
-    if (e->type() == QEvent::LanguageChange) {
-    }
     DlgCustomToolbars::changeEvent(e);
 }
 

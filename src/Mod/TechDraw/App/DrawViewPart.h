@@ -162,7 +162,6 @@ public:
 
 
     bool handleFaces(void);
-    bool showSectionEdges(void);
 
     bool isUnsetting(void) { return nowUnsetting; }
     
@@ -225,8 +224,7 @@ protected:
 
     Base::Vector3d shapeCentroid;
     void getRunControl(void);
-    
-    bool m_sectionEdges;
+
     bool m_handleFaces;
 
     TopoDS_Shape m_saveShape;    //TODO: make this a Property.  Part::TopoShapeProperty??

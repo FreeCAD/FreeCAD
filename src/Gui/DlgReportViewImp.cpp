@@ -58,6 +58,7 @@ DlgReportViewImp::~DlgReportViewImp()
 
 void DlgReportViewImp::saveSettings()
 {
+    ui->checkMessage->onSave();
     ui->checkLogging->onSave();
     ui->checkWarning->onSave();
     ui->checkError->onSave();
@@ -76,6 +77,7 @@ void DlgReportViewImp::saveSettings()
 
 void DlgReportViewImp::loadSettings()
 {
+    ui->checkMessage->onRestore();
     ui->checkLogging->onRestore();
     ui->checkWarning->onRestore();
     ui->checkError->onRestore();

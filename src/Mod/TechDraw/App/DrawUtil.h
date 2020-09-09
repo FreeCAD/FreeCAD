@@ -93,7 +93,7 @@ class TechDrawExport DrawUtil {
         static std::string formatVector(const QPointF& v);
 
         static bool vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2);
-        static Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
+        static Base::Vector3d toR3(const gp_Ax2& fromSystem, const Base::Vector3d& fromPoint);
         static bool checkParallel(const Base::Vector3d v1, const Base::Vector3d v2, double tolerance = FLT_EPSILON);
         //! rotate vector by angle radians around axis through org
         static Base::Vector3d vecRotate(Base::Vector3d vec,
@@ -120,6 +120,7 @@ class TechDrawExport DrawUtil {
         static App::Color pyTupleToColor(PyObject* pColor);
         static PyObject* colorToPyTuple(App::Color color);
         static bool isCrazy(TopoDS_Edge e);
+        static Base::Vector3d getFaceCenter(TopoDS_Face f);
 
         // Supplementary mathematical functions
         static int sgn(double x);
@@ -172,8 +173,8 @@ class TechDrawExport DrawUtil {
         static void countEdges(const char* label, const TopoDS_Shape& s);
         static const char* printBool(bool b);
         static QString qbaToDebug(const QByteArray& line);
-        static void dumpCS(const char* text, gp_Ax2 CS);
-        static void dumpCS3(const char* text, gp_Ax3 CS);
+        static void dumpCS(const char* text, const gp_Ax2& CS);
+        static void dumpCS3(const char* text, const gp_Ax3& CS);
         static void dumpEdges(const char* text, const TopoDS_Shape& s);
 
 };

@@ -87,8 +87,8 @@ class CommandManager(object):
             )
         elif self.is_active == "with_selresult":
             active = (
-                FemGui.getActiveAnalysis() is not None
-                and self.active_analysis_in_active_doc()
+                # on import of Frd file in a empty document not Analysis will be there
+                FreeCADGui.ActiveDocument is not None
                 and self.result_selected()
             )
         elif self.is_active == "with_part_feature":
@@ -173,10 +173,8 @@ class CommandManager(object):
     def result_selected(self):
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemResultObject"):
-            for o in FemGui.getActiveAnalysis().Group:
-                if o == sel[0]:
-                    self.selobj = o
-                    return True
+            self.selobj = sel[0]
+            return True
         return False
 
     def part_feature_selected(self):

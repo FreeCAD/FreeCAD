@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DRAWINGVIEW_H
-#define DRAWINGGUI_DRAWINGVIEW_H
+#ifndef TECHDRAWGUI_MDIVIEWPAGE_H
+#define TECHDRAWGUI_MDIVIEWPAGE_H
 
 #include <Gui/MDIView.h>
 #include <Gui/Selection.h>
@@ -64,7 +64,7 @@ public:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void preSelectionChanged(const QPoint &pos);
 
-    /// QGraphicsScene seletion routines
+    /// QGraphicsScene selection routines
     void selectQGIView(App::DocumentObject *obj, bool state);
     void clearSceneSelection();
     void blockSelection(bool isBlocked);
@@ -163,11 +163,11 @@ private:
     QPrinter::PaperSize m_paperSize;
     ViewProviderPage *m_vpPage;
 
-    QList<QGraphicsItem*> qgSceneSelected;
+    QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
     QList<QGIView *> deleteItems;
 };
 
 
 } // namespace MDIViewPageGui
 
-#endif // DRAWINGGUI_DRAWINGVIEW_H
+#endif // TECHDRAWGUI_MDIVIEWPAGE_H
