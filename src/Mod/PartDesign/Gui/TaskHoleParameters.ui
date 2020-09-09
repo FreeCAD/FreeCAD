@@ -481,6 +481,13 @@
      </property>
     </widget>
    </item>
+   <item row="21" column="5">
+    <widget class="QCheckBox" name="Reversed">
+     <property name="text">
+      <string>Reversed</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>

@@ -529,9 +529,12 @@ void StdCmdToggleClipPlane::activated(int iMsg)
             view->toggleClippingPlane();
     }
 #else
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (view) {
-        Gui::Control().showDialog(new Gui::Dialog::TaskClipping(view));
+    static QPointer<Gui::Dialog::Clipping> clipping = nullptr;
+    if (!clipping) {
+        View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+        if (view) {
+            clipping = Gui::Dialog::Clipping::makeDockWidget(view);
+        }
     }
 #endif
 }
@@ -553,9 +556,8 @@ bool StdCmdToggleClipPlane::isActive(void)
         return false;
     }
 #else
-    if (Gui::Control().activeDialog())
-        return false;
-    return true;
+    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    return view ? true : false;
 #endif
 }
 
@@ -3456,7 +3458,7 @@ StdCmdSelBoundingBox::StdCmdSelBoundingBox()
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("&Bounding box");
   sToolTipText  = QT_TR_NOOP("Show selection bounding box");
-  sWhatsThis    = "Std_SelBack";
+  sWhatsThis    = "Std_SelBoundingBox";
   sStatusTip    = QT_TR_NOOP("Show selection bounding box");
   sPixmap       = "sel-bbox";
   eType         = Alter3DView;

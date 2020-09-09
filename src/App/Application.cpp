@@ -794,11 +794,20 @@ Document* Application::openDocumentPrivate(const char * FileName,
 
     // Before creating a new document we check whether the document is already open
     std::string filepath = File.filePath();
+    QString canonicalPath = QFileInfo(QString::fromUtf8(FileName)).canonicalFilePath();
     for (std::map<std::string,Document*>::iterator it = DocMap.begin(); it != DocMap.end(); ++it) {
         // get unique path separators
         std::string fi = FileInfo(it->second->FileName.getValue()).filePath();
-        if (filepath != fi) 
+        if (filepath != fi) {
+            if (canonicalPath == QFileInfo(QString::fromUtf8(fi.c_str())).canonicalFilePath()) {
+                bool samePath = (canonicalPath == QString::fromUtf8(FileName));
+                FC_WARN("Identical physical path '" << canonicalPath.toUtf8().constData() << "'\n"
+                        << (samePath?"":"  for file '") << (samePath?"":FileName) << (samePath?"":"'\n")
+                        << "  with existing document '" << it->second->Label.getValue()
+                        << "' in path: '" << it->second->FileName.getValue() << "'");
+            }
             continue;
+        }
         if(it->second->testStatus(App::Document::PartialDoc) 
                 || it->second->testStatus(App::Document::PartialRestore)) {
             // Here means a document is already partially loaded, but the document

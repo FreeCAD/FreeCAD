@@ -213,6 +213,38 @@ private:
 // --------------------------------------------------------------------
 
 /**
+ * The RecentMacrosAction class holds a menu listed with the recent macros
+ * that were executed, edited, or created
+ */
+class GuiExport RecentMacrosAction : public ActionGroup
+{
+    Q_OBJECT
+
+public:
+    RecentMacrosAction (Command* pcCmd, QObject * parent = 0);
+    virtual ~RecentMacrosAction();
+
+    void appendFile(const QString&);
+    void activateFile(int);
+    void resizeList(int);
+
+private:
+    void setFiles(const QStringList&);
+    QStringList files() const;
+    void restore();
+    void save();
+
+private:
+    int visibleItems; /**< Number of visible items */
+    int maximumItems; /**< Number of maximum items */
+    std::string shortcut_modifiers; /**< default = "Ctrl+Shift+" */
+    int shortcut_count; /**< Number of dynamic shortcuts to create -- default = 3*/
+};
+
+
+// --------------------------------------------------------------------
+
+/**
  * The UndoAction class reimplements a special behaviour to make a menu 
  * appearing when the button with the arrow is clicked.
  * @author Werner Mayer

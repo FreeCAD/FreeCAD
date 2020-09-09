@@ -149,6 +149,26 @@ void OriginGroupExtension::onExtendedUnsetupObject () {
     GeoFeatureGroupExtension::onExtendedUnsetupObject ();
 }
 
+void OriginGroupExtension::extensionOnChanged(const Property* p) {
+    if(p == &Origin) {
+        App::DocumentObject *owner = getExtendedObject();
+        App::DocumentObject *origin = Origin.getValue();
+        // Document::Importing indicates the object is being imported (i.e.
+        // copied). So check the Origin ownership here to prevent copy without
+        // dependency
+        if (origin && owner && owner->getDocument()
+                   && owner->getDocument()->testStatus(Document::Importing)) {
+            for (auto o : origin->getInList()) {
+                if(o != owner && o->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
+                    Origin.setValue(nullptr);
+                    throw Base::RuntimeError("Origin can only be in a single OriginGroup");
+                }
+            }
+        }
+    }
+    GeoFeatureGroupExtension::extensionOnChanged(p);
+}
+
 void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
 {
     //we get all links and replace the origin objects if needed (subnames need not to change, they

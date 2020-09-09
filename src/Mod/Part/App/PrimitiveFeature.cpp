@@ -912,9 +912,9 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         Standard_Real myNumRot = Rotations.getValue();
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myGrowth = Growth.getValue();
-        Standard_Real myPitch  = 1.0;
-        Standard_Real myHeight = myNumRot * myPitch;
-        Standard_Real myAngle  = atan(myGrowth / myPitch);
+        Standard_Real myAngle  = 45.0;
+        Standard_Real myPitch  = myGrowth / tan(Base::toRadians(myAngle));
+        Standard_Real myHeight = myPitch * myNumRot;
         TopoShape helix;
 
         if (myGrowth < Precision::Confusion())
@@ -922,29 +922,9 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
 
         if (myNumRot < Precision::Confusion())
             Standard_Failure::Raise("Number of rotations too small");
-
-        gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
-        Handle(Geom_Surface) surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), myAngle, myRadius);
-
-        gp_Pnt2d aPnt(0, 0);
-        gp_Dir2d aDir(2. * M_PI, myPitch);
-        gp_Ax2d aAx2d(aPnt, aDir);
-
-        Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
-        gp_Pnt2d beg = line->Value(0);
-        gp_Pnt2d end = line->Value(sqrt(4.0*M_PI*M_PI+myPitch*myPitch)*(myHeight/myPitch));
-
-        // calculate end point for conical helix
-        Standard_Real v = myHeight / cos(myAngle);
-        Standard_Real u = (myHeight/myPitch) * 2.0 * M_PI;
-        gp_Pnt2d cend(u, v);
-        end = cend;
-
-        Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
-
-        TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
-        TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
-        BRepLib::BuildCurves3d(wire);
+        // spiral suffers from same bug as helix (FC bug #0954)
+        // So, we use same work around for OCC bug #23314
+        TopoDS_Shape myHelix = helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, Standard_False);
 
         Handle(Geom_Plane) aPlane = new Geom_Plane(gp_Pnt(0.0,0.0,0.0), gp::DZ());
         Standard_Real range = (myNumRot+1) * myGrowth + 1 + myRadius;
@@ -953,7 +933,7 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         , Precision::Confusion()
 #endif
         );
-        BRepProj_Projection proj(wire, mkFace.Face(), gp::DZ());
+        BRepProj_Projection proj(myHelix, mkFace.Face(), gp::DZ());
         this->Shape.setValue(proj.Shape());
 
         return Primitive::execute();

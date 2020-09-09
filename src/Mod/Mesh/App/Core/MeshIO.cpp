@@ -144,6 +144,7 @@ std::vector<std::string> MeshInput::supportedMeshFormats()
     fmt.emplace_back("bms");
     fmt.emplace_back("ply");
     fmt.emplace_back("stl");
+    fmt.emplace_back("ast");
     fmt.emplace_back("obj");
     fmt.emplace_back("off");
     fmt.emplace_back("smf");
@@ -1754,6 +1755,15 @@ void MeshOutput::SetSTLHeaderData(const std::string& header)
     }
 }
 
+std::string MeshOutput::asyWidth = "500";
+std::string MeshOutput::asyHeight = "500";
+
+void MeshOutput::SetAsymptoteSize(const std::string& w, const std::string& h)
+{
+    asyWidth = w;
+    asyHeight = h;
+}
+
 void MeshOutput::Transform(const Base::Matrix4D& mat)
 {
     _transform = mat;
@@ -1771,9 +1781,12 @@ std::vector<std::string> MeshOutput::supportedMeshFormats()
     fmt.emplace_back("off");
     fmt.emplace_back("smf");
     fmt.emplace_back("x3d");
+    fmt.emplace_back("x3dz");
+    fmt.emplace_back("xhtml");
     fmt.emplace_back("wrl");
     fmt.emplace_back("wrz");
     fmt.emplace_back("amf");
+    fmt.emplace_back("asy");
     return fmt;
 }
 
@@ -1810,6 +1823,12 @@ MeshIO::Format MeshOutput::GetFormat(const char* FileName)
     else if (file.hasExtension("x3d")) {
         return MeshIO::X3D;
     }
+    else if (file.hasExtension("x3dz")) {
+        return MeshIO::X3DZ;
+    }
+    else if (file.hasExtension("xhtml")) {
+        return MeshIO::X3DOM;
+    }
     else if (file.hasExtension("py")) {
         return MeshIO::PY;
     }
@@ -1827,6 +1846,9 @@ MeshIO::Format MeshOutput::GetFormat(const char* FileName)
     }
     else if (file.hasExtension("smf")) {
         return MeshIO::SMF;
+    }
+    else if (file.hasExtension("asy")) {
+        return MeshIO::ASY;
     }
     else {
         return MeshIO::Undefined;
@@ -1919,6 +1941,18 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         if (!SaveX3D(str))
             throw Base::FileException("Export of X3D failed",FileName);
     }
+    else if (fileformat == MeshIO::X3DZ) {
+        // Compressed X3D is nothing else than a GZIP'ped X3D ascii file
+        zipios::GZIPOutputStream gzip(str);
+        // write file
+        if (!SaveX3D(gzip))
+            throw Base::FileException("Export of compressed X3D mesh failed",FileName);
+    }
+    else if (fileformat == MeshIO::X3DOM) {
+        // write file
+        if (!SaveX3DOM(str))
+            throw Base::FileException("Export of X3DOM failed",FileName);
+    }
     else if (fileformat == MeshIO::PY) {
         // write file
         if (!SavePython(str))
@@ -1945,6 +1979,11 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         // write file
         if (!SaveNastran(str))
             throw Base::FileException("Export of NASTRAN mesh failed",FileName);
+    }
+    else if (fileformat == MeshIO::ASY) {
+        // write file
+        if (!SaveAsymptote(str))
+            throw Base::FileException("Export of ASY mesh failed",FileName);
     }
     else {
         throw Base::FileException("File format not supported", FileName);
@@ -1977,6 +2016,8 @@ bool MeshOutput::SaveFormat(std::ostream &str, MeshIO::Format fmt) const
         return SaveInventor(str);
     case MeshIO::X3D:
         return SaveX3D(str);
+    case MeshIO::X3DOM:
+        return SaveX3DOM(str);
     case MeshIO::VRML:
         return SaveVRML(str);
     case MeshIO::WRZ:
@@ -1990,6 +2031,8 @@ bool MeshOutput::SaveFormat(std::ostream &str, MeshIO::Format fmt) const
         return SaveAsciiPLY(str);
     case MeshIO::PY:
         return SavePython(str);
+    case MeshIO::ASY:
+        return SaveAsymptote(str);
     default:
         throw Base::FileException("Unsupported file format");
     }
@@ -2361,6 +2404,111 @@ bool MeshOutput::SaveSMF (std::ostream &out) const
     return true;
 }
 
+/** Saves an Asymptote file. */
+bool MeshOutput::SaveAsymptote(std::ostream &out) const
+{
+    out << "/*\n"
+           " * Created by FreeCAD <http://www.freecadweb.org>\n"
+           " */\n\n";
+
+    out << "import three;\n\n";
+
+    if (!asyWidth.empty()) {
+        out << "size(" << asyWidth;
+        if (!asyHeight.empty())
+            out << ", " << asyHeight;
+        out << ");\n\n";
+    }
+
+    Base::BoundBox3f bbox = _rclMesh.GetBoundBox();
+    Base::Vector3f center = bbox.GetCenter();
+    this->_transform.multVec(center, center);
+    Base::Vector3f camera(center);
+    camera.x += std::max<float>(std::max<float>(bbox.LengthX(), bbox.LengthY()), bbox.LengthZ());
+    Base::Vector3f target(center);
+    Base::Vector3f upvec(0.0f, 0.0f, 1.0f);
+
+    out << "// CA:Camera, OB:Camera\n"
+        << "currentprojection = orthographic(camera = (" << camera.x << ", "
+                                                         << camera.y << ", "
+                                                         << camera.z << "),\n"
+        << "                                 target = (" << target.x << ", "
+                                                         << target.y << ", "
+                                                         << target.z << "),\n"
+           "                                 showtarget = false,\n"
+           "                                 up = (" << upvec.x << ", "
+                                                     << upvec.y << ", "
+                                                     << upvec.z << "));\n\n";
+
+    //out << "// LA:Spot, OB:Lamp\n"
+    //    << "// WO:World\n"
+    //    << "currentlight = light(diffuse = rgb(1, 1, 1),\n"
+    //       "                     specular = rgb(1, 1, 1),\n"
+    //       "                     background = rgb(0.078281, 0.16041, 0.25),\n"
+    //       "                     0.56639, 0.21839, 0.79467);\n\n";
+
+    out << "// ME:Mesh, OB:Mesh\n";
+
+    MeshFacetIterator clIter(_rclMesh), clEnd(_rclMesh);
+    clIter.Transform(this->_transform);
+    clIter.Begin();
+    clEnd.End();
+
+    const MeshPointArray& rPoints = _rclMesh.GetPoints();
+    const MeshFacetArray& rFacets = _rclMesh.GetFacets();
+    bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX &&
+                            _material->diffuseColor.size() == rPoints.size());
+    bool saveFaceColor   = (_material && _material->binding == MeshIO::PER_FACE &&
+                            _material->diffuseColor.size() == rFacets.size());
+    // global mesh color
+    App::Color mc(0.8f, 0.8f, 0.8f);
+    if (_material && _material->binding == MeshIO::OVERALL &&
+        _material->diffuseColor.size() == 1) {
+        mc = _material->diffuseColor[0];
+    }
+
+    std::size_t index = 0;
+    const MeshGeomFacet *pclFacet;
+    while (clIter < clEnd) {
+        pclFacet = &(*clIter);
+
+        out << "draw(surface(";
+
+        // vertices
+        for (int i = 0; i < 3; i++) {
+            out << '(' << pclFacet->_aclPoints[i].x << ", "
+                       << pclFacet->_aclPoints[i].y << ", "
+                       << pclFacet->_aclPoints[i].z << ")--";
+        }
+
+        out << "cycle";
+
+        if (saveVertexColor) {
+            const MeshFacet& face = rFacets[index];
+            out << ",\n             new pen[] {";
+            for (int i = 0; i < 3; i++) {
+                const App::Color& c = _material->diffuseColor[face._aulPoints[i]];
+                out << "rgb(" << c.r << ", " << c.g << ", " << c.b << ")";
+                if (i < 3)
+                    out << ", ";
+            }
+            out << "}));\n";
+        }
+        else if (saveFaceColor) {
+            const App::Color& c = _material->diffuseColor[index];
+            out << "),\n     rgb(" << c.r << ", " << c.g << ", " << c.b << "));\n";
+        }
+        else {
+            out << "),\n     rgb(" << mc.r << ", " << mc.g << ", " << mc.b << "));\n";
+        }
+
+        ++clIter;
+        ++index;
+    }
+
+    return true;
+}
+
 /** Saves an OFF file. */
 bool MeshOutput::SaveOFF (std::ostream &out) const
 {
@@ -2473,7 +2621,7 @@ bool MeshOutput::SaveBinaryPLY (std::ostream &out) const
 
     Base::OutputStream os(out);
     os.setByteOrder(Base::Stream::LittleEndian);
-    Base::Vector3f pt;
+
     for (std::size_t i = 0; i < v_count; i++) {
         const MeshPoint& p = rPoints[i];
         if (this->apply_transform) {
@@ -2485,9 +2633,9 @@ bool MeshOutput::SaveBinaryPLY (std::ostream &out) const
         }
         if (saveVertexColor) {
             const App::Color& c = _material->diffuseColor[i];
-            int r = (int)(255.0f * c.r);
-            int g = (int)(255.0f * c.g);
-            int b = (int)(255.0f * c.b);
+            uint8_t r = uint8_t(255.0f * c.r);
+            uint8_t g = uint8_t(255.0f * c.g);
+            uint8_t b = uint8_t(255.0f * c.b);
             os << r << g << b;
         }
     }
@@ -2531,8 +2679,6 @@ bool MeshOutput::SaveAsciiPLY (std::ostream &out) const
     out << "element face " << f_count << '\n'
         << "property list uchar int vertex_index\n"
         << "end_header\n";
-
-    Base::Vector3f pt;
 
     out.precision(6);
     out.setf(std::ios::fixed | std::ios::showpoint);
@@ -2897,18 +3043,42 @@ bool MeshOutput::SaveX3D (std::ostream &out) const
     if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
         return false;
 
+    // XML header info
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+
+    return SaveX3DContent(out, false);
+}
+
+/** Writes an X3D file. */
+bool MeshOutput::SaveX3DContent (std::ostream &out, bool exportViewpoints) const
+{
+    if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
+        return false;
+
     const MeshPointArray& pts = _rclMesh.GetPoints();
     const MeshFacetArray& fts = _rclMesh.GetFacets();
+    Base::BoundBox3f bbox = _rclMesh.GetBoundBox();
+    if (apply_transform)
+        bbox = bbox.Transformed(_transform);
+
+    App::Color mat(0.65f, 0.65f, 0.65f);
+    if (_material && _material->binding == MeshIO::Binding::OVERALL) {
+        if (!_material->diffuseColor.empty())
+            mat = _material->diffuseColor.front();
+    }
+    bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX &&
+                            _material->diffuseColor.size() == pts.size());
+    bool saveFaceColor   = (_material && _material->binding == MeshIO::PER_FACE &&
+                            _material->diffuseColor.size() == fts.size());
 
     Base::SequencerLauncher seq("Saving...", _rclMesh.CountFacets() + 1);
     out.precision(6);
     out.setf(std::ios::fixed | std::ios::showpoint);
 
     // Header info
-    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     out << "<X3D profile=\"Immersive\" version=\"3.2\" xmlns:xsd="
         << "\"http://www.w3.org/2001/XMLSchema-instance\" xsd:noNamespaceSchemaLocation="
-        << "\"http://www.web3d.org/specifications/x3d-3.2.xsd\">\n";
+        << "\"http://www.web3d.org/specifications/x3d-3.2.xsd\" width=\"1280px\"  height=\"1024px\">\n";
     out << "  <head>\n"
         << "    <meta name=\"generator\" content=\"FreeCAD\"/>\n"
         << "    <meta name=\"author\" content=\"\"/> \n"
@@ -2917,6 +3087,31 @@ bool MeshOutput::SaveX3D (std::ostream &out) const
 
     // Beginning
     out << "  <Scene>\n";
+
+    if (exportViewpoints) {
+        auto viewpoint = [&out](const char* text, const Base::Vector3f& cnt,
+                                const Base::Vector3f& pos, const Base::Vector3f& axis, float angle) {
+            out << "    <Viewpoint id=\"" << text
+                << "\" centerOfRotation=\"" << cnt.x << " " << cnt.y << " " << cnt.z
+                << "\" position=\"" << pos.x << " " << pos.y << " " << pos.z
+                << "\" orientation=\"" << axis.x << " " << axis.y << " " << axis.z << " " << angle
+                << "\" description=\"camera\" fieldOfView=\"0.9\">"
+                << "</Viewpoint>\n";
+        };
+
+        Base::Vector3f cnt = bbox.GetCenter();
+        float dist = 1.2f * bbox.CalcDiagonalLength();
+        float dist3 = 0.577350f * dist; // sqrt(1/3) * dist
+
+        viewpoint("Iso", cnt, Base::Vector3f(cnt.x + dist3, cnt.y - dist3, cnt.z + dist3), Base::Vector3f(0.742906f, 0.307722f, 0.594473f), 1.21712f);
+        viewpoint("Front", cnt, Base::Vector3f(cnt.x, cnt.y - dist, cnt.z), Base::Vector3f(1.0f, 0.0f, 0.0f), 1.5707964f);
+        viewpoint("Back", cnt, Base::Vector3f(cnt.x, cnt.y + dist, cnt.z), Base::Vector3f(0.0f, 0.707106f, 0.707106f), 3.141592f);
+        viewpoint("Right", cnt, Base::Vector3f(cnt.x + dist, cnt.y, cnt.z), Base::Vector3f(0.577350f, 0.577350f, 0.577350f), 2.094395f);
+        viewpoint("Left", cnt, Base::Vector3f(cnt.x - dist, cnt.y, cnt.z), Base::Vector3f(-0.577350f, 0.577350f, 0.577350f), 4.188790f);
+        viewpoint("Top", cnt, Base::Vector3f(cnt.x, cnt.y, cnt.z + dist), Base::Vector3f(0.0f, 0.0f, 1.0f), 0.0f);
+        viewpoint("Bottom", cnt, Base::Vector3f(cnt.x, cnt.y, cnt.z - dist), Base::Vector3f(1.0f, 0.0f, 0.0f), 3.141592f);
+    }
+
     if (apply_transform) {
         Base::Placement p(_transform);
         const Base::Vector3d& v = p.getPosition();
@@ -2938,10 +3133,19 @@ bool MeshOutput::SaveX3D (std::ostream &out) const
         out << "    <Transform>\n";
     }
     out << "      <Shape>\n";
-    out << "        <Appearance><Material DEF='Shape_Mat' diffuseColor='0.65 0.65 0.65'"
-           " shininess='0.9' specularColor='1 1 1'></Material></Appearance>\n";
+    out << "        <Appearance>\n"
+           "          <Material diffuseColor='" << mat.r << " " << mat.g << " " << mat.b << "' shininess='0.9' specularColor='1 1 1'></Material>\n"
+           "        </Appearance>\n";
 
-    out << "        <IndexedFaceSet solid=\"false\" coordIndex=\"";
+    out << "        <IndexedFaceSet solid=\"false\" ";
+    if (saveVertexColor) {
+        out << "colorPerVertex=\"true\" ";
+    }
+    else if (saveFaceColor) {
+        out << "colorPerVertex=\"false\" ";
+    }
+
+    out << "coordIndex=\"";
     for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
         out << it->_aulPoints[0] << " " << it->_aulPoints[1] << " " << it->_aulPoints[2] << " -1 ";
     }
@@ -2953,12 +3157,69 @@ bool MeshOutput::SaveX3D (std::ostream &out) const
     }
     out << "\"/>\n";
 
+    // write colors per vertex or face
+    if (saveVertexColor || saveFaceColor) {
+        out << "          <Color color=\"";
+        for (const auto& c : _material->diffuseColor) {
+            out << c.r << " " << c.g << " " << c.b << ", ";
+        }
+        out << "\"/>\n";
+    }
+
     // End
     out << "        </IndexedFaceSet>\n"
         << "      </Shape>\n"
         << "    </Transform>\n"
+        << "    <Background groundColor=\"0.7 0.7 0.7\" skyColor=\"0.7 0.7 0.7\" />\n"
+        << "    <NavigationInfo/>\n"
         << "  </Scene>\n"
         << "</X3D>\n";
+
+    return true;
+}
+
+/** Writes an X3DOM file. */
+bool MeshOutput::SaveX3DOM (std::ostream &out) const
+{
+    if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
+        return false;
+
+    // See:
+    // https://stackoverflow.com/questions/31976056/unable-to-color-faces-using-indexedfaceset-in-x3dom
+    //
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
+    out << "<html xmlns='http://www.w3.org/1999/xhtml'>\n"
+        << "  <head>\n"
+        << "    <script type='text/javascript' src='http://www.x3dom.org/download/x3dom.js'> </script>\n"
+        << "    <link rel='stylesheet' type='text/css' href='http://www.x3dom.org/download/x3dom.css'></link>\n"
+        << "  </head>\n";
+
+    auto onclick = [&out](const char* text) {
+        out << "  <button onclick=\"document.getElementById('" << text << "').setAttribute('set_bind','true');\">" << text << "</button>\n";
+    };
+
+    onclick("Iso");
+    onclick("Front");
+    onclick("Back");
+    onclick("Right");
+    onclick("Left");
+    onclick("Top");
+    onclick("Bottom");
+
+#if 0 // https://stackoverflow.com/questions/32305678/x3dom-how-to-make-zoom-buttons
+    function zoom (delta) {
+        var x3d = document.getElementById("right");
+        var vpt = x3d.getElementsByTagName("Viewpoint")[0];
+        vpt.fieldOfView = parseFloat(vpt.fieldOfView) + delta;
+    }
+
+    <button onclick="zoom(0.15);">Zoom out</button>
+#endif
+
+    SaveX3DContent(out, true);
+
+    out << "</html>\n";
 
     return true;
 }

@@ -758,7 +758,7 @@ class Component(ArchIFC.IfcProduct):
                 for host in link.Hosts:
                     if host == obj:
                         subs.append(link)
-            elif hasattr(link,"Host"):
+            elif hasattr(link,"Host") and Draft.getType(link) != "Rebar":
                 if link.Host == obj:
                     subs.append(link)
         for o in subs:

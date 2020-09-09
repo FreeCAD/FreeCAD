@@ -307,6 +307,7 @@ def update_svg_cache(source, renderMode, showHidden, showFill, fillSpaces, joinA
                 source.Proxy.shapecache = None
     return svgcache
 
+
 def getSVG(source,
            renderMode="Wireframe",
            allOn=False,
@@ -314,33 +315,49 @@ def getSVG(source,
            scale=1,
            rotation=0,
            linewidth=1,
-           lineColor=(0.0,0.0,0.0),
+           lineColor=(0.0, 0.0, 0.0),
            fontsize=1,
            showFill=False,
-           fillColor=(0.8,0.8,0.8),
+           fillColor=(0.8, 0.8, 0.8),
            techdraw=False,
            fillSpaces=False,
            cutlinewidth=0,
            joinArch=False):
-
     """
-    returns an SVG fragment from an Arch SectionPlane or BuildingPart. If
-    allOn is True, all cut objects are shown, regardless if they are visible or not.
-    renderMode can be Wireframe (default) or Solid to use the Arch solid renderer. If
-    showHidden is True, the hidden geometry above the section plane is shown in dashed line.
-    If showFill is True, the cut areas get filled with a pattern.
-    lineColor -- Color of lines for the renderMode "Wireframe".
-    fillColor -- If showFill is True and renderMode is "Wireframe",
-                 the cut areas are filled with fillColor.
-    fillSpaces - If True, shows space objects as filled surfaces
-    """
+    Return an SVG fragment from an Arch SectionPlane or BuildingPart.
 
-    import Part,DraftGeomUtils
+    allOn
+        If it is `True`, all cut objects are shown, regardless of if they are
+        visible or not.
+
+    renderMode
+        Can be `'Wireframe'` (default) or `'Solid'` to use the Arch solid
+        renderer.
+
+    showHidden
+        If it is `True`, the hidden geometry above the section plane
+        is shown in dashed line.
+
+    showFill
+        If it is `True`, the cut areas get filled with a pattern.
+
+    lineColor
+        Color of lines for the `renderMode` is `'Wireframe'`.
+
+    fillColor
+        If `showFill` is `True` and `renderMode` is `'Wireframe'`,
+        the cut areas are filled with `fillColor`.
+
+    fillSpaces
+        If `True`, shows space objects as filled surfaces.
+    """
+    import Part
+
     objs, cutplane, onlySolids, clip, direction = getSectionData(source)
     if not objs:
         return ""
     if not allOn:
-            objs = Draft.removeHidden(objs)
+        objs = Draft.removeHidden(objs)
 
     # separate spaces and Draft objects
     spaces = []
@@ -482,12 +499,17 @@ def getSVG(source,
                         for s in shapes:
                             if s.Edges:
                                 objectFill = getFillForObject(o, fillColor, source)
-                                #svg += Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
+                                # svg += Draft.get_svg(s,
+                                #                      direction=direction.negative(),
+                                #                      linewidth=0,
+                                #                      fillstyle="sectionfill",
+                                #                      color=(0,0,0))
                                 # temporarily disabling fill patterns
-                                svgcache += Draft.getSVG(s, direction=direction.negative(),
-                                    linewidth=0,
-                                    fillstyle=Draft.getrgb(objectFill),
-                                    color=lineColor)
+                                svgcache += Draft.get_svg(s,
+                                                          linewidth=0,
+                                                          fillstyle=Draft.getrgb(objectFill),
+                                                          direction=direction.negative(),
+                                                          color=lineColor)
                     svgcache += "</g>\n"
                 sshapes = Part.makeCompound(sshapes)
                 style = {'stroke':       "SVGLINECOLOR",
@@ -510,9 +532,14 @@ def getSVG(source,
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for d in drafts:
-            svg += Draft.getSVG(d, scale=scale, linewidth=svgSymbolLineWidth,
-                                fontsize=fontsize, direction=direction, color=lineColor,
-                                techdraw=techdraw, rotation=rotation)
+            svg += Draft.get_svg(d,
+                                 scale=scale,
+                                 linewidth=svgSymbolLineWidth,
+                                 fontsize=fontsize,
+                                 direction=direction,
+                                 color=lineColor,
+                                 techdraw=techdraw,
+                                 rotation=rotation)
         if not techdraw:
             svg += '</g>'
 
@@ -527,9 +554,15 @@ def getSVG(source,
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for s in spaces:
-            svg += Draft.getSVG(s, scale=scale, linewidth=svgSymbolLineWidth,
-                                fontsize=fontsize, direction=direction, color=lineColor,
-                                techdraw=techdraw, rotation=rotation, fillSpaces=fillSpaces)
+            svg += Draft.get_svg(s,
+                                 scale=scale,
+                                 linewidth=svgSymbolLineWidth,
+                                 fontsize=fontsize,
+                                 direction=direction,
+                                 color=lineColor,
+                                 techdraw=techdraw,
+                                 rotation=rotation,
+                                 fillspaces=fillSpaces)
         if not techdraw:
             svg += '</g>'
 
@@ -557,11 +590,15 @@ def getSVG(source,
             if not techdraw:
                 svg += '<g transform="scale(1,-1)">'
             for s in sh:
-                svg += Draft.getSVG(s, scale=scale,
-                                    linewidth=svgSymbolLineWidth,
-                                    fontsize=fontsize, fillstyle="none",
-                                    direction=direction, color=lineColor,
-                                    techdraw=techdraw, rotation=rotation)
+                svg += Draft.get_svg(s,
+                                     scale=scale,
+                                     linewidth=svgSymbolLineWidth,
+                                     fontsize=fontsize,
+                                     fillstyle="none",
+                                     direction=direction,
+                                     color=lineColor,
+                                     techdraw=techdraw,
+                                     rotation=rotation)
             if not techdraw:
                 svg += '</g>'
 
@@ -569,9 +606,7 @@ def getSVG(source,
 
 
 def getDXF(obj):
-
-    """returns a DXF representation from a TechDraw/Drawing view"""
-    
+    """Return a DXF representation from a TechDraw/Drawing view."""
     allOn = True
     if hasattr(obj,"AllOn"):
         allOn = obj.AllOn
