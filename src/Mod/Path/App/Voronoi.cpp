@@ -190,7 +190,7 @@ void Voronoi::construct()
 }
 
 void Voronoi::colorExterior(const Voronoi::diagram_type::edge_type *edge, std::size_t colorValue) {
-  if (edge->color() == colorValue) {
+  if (edge->color()) {
     // end recursion
     return;
   }
@@ -210,7 +210,7 @@ void Voronoi::colorExterior(const Voronoi::diagram_type::edge_type *edge, std::s
 
 void Voronoi::colorExterior(Voronoi::color_type color) {
   for (diagram_type::const_edge_iterator it = vd->edges().begin(); it != vd->edges().end(); ++it) {
-    if (!it->is_finite()) {
+    if (it->is_infinite()) {
       colorExterior(&(*it), color);
     }
   }

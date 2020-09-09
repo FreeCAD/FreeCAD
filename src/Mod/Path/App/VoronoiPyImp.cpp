@@ -173,7 +173,7 @@ Py::List VoronoiPy::getCells(void) const {
 }
 
 static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, const Voronoi::diagram_type::vertex_type *v, bool &isExterior) {
-  if (!isExterior) {
+  if (!isExterior && v->color() == 0) {
     PyObject *vx = new VoronoiVertexPy(new VoronoiVertex(dia, v));
     PyObject *arglist = Py_BuildValue("(O)", vx);
     PyObject *result = PyEval_CallObject(callback, arglist);
@@ -201,11 +201,12 @@ PyObject* VoronoiPy::colorExterior(PyObject *args) {
       if (e->is_finite() && e->color() == 0) {
         const Voronoi::diagram_type::vertex_type *v0 = e->vertex0();
         const Voronoi::diagram_type::vertex_type *v1 = e->vertex1();
-        bool isExterior = false;
-        if (!callbackWithVertex(vo->vd, callback, v0, isExterior) || !callbackWithVertex(vo->vd, callback, v1, isExterior)) {
+        bool is0 = false;
+        bool is1 = false;
+        if (!callbackWithVertex(vo->vd, callback, v0, is0) || !callbackWithVertex(vo->vd, callback, v1, is1)) {
           return NULL;
         }
-        if (isExterior) {
+        if (is0 && is1) {
           vo->colorExterior(&(*e), color);
         }
       }
