@@ -1109,42 +1109,6 @@ PyObject* BSplineSurfacePy::exchangeUV(PyObject *args)
     Py_Return;
 }
 
-PyObject* BSplineSurfacePy::uIso(PyObject * args)
-{
-    double u;
-    if (!PyArg_ParseTuple(args, "d", &u))
-        return 0;
-
-    try {
-        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
-            (getGeometryPtr()->handle());
-        Handle(Geom_Curve) c = surf->UIso(u);
-        return new BSplineCurvePy(new GeomBSplineCurve(Handle(Geom_BSplineCurve)::DownCast(c)));
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
-}
-
-PyObject* BSplineSurfacePy::vIso(PyObject * args)
-{
-    double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
-        return 0;
-
-    try {
-        Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast
-            (getGeometryPtr()->handle());
-        Handle(Geom_Curve) c = surf->VIso(v);
-        return new BSplineCurvePy(new GeomBSplineCurve(Handle(Geom_BSplineCurve)::DownCast(c)));
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
-}
-
 PyObject* BSplineSurfacePy::reparametrize(PyObject * args)
 {
     int u,v;
