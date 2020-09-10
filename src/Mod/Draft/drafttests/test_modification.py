@@ -28,13 +28,16 @@
 
 ## \addtogroup drafttests
 # @{
+import math
 import unittest
 
 import FreeCAD as App
 import Draft
 import drafttests.auxiliary as aux
+import Part
 
 from FreeCAD import Vector
+from draftfunctions.scale import scale_vector_from_center
 from draftutils.messages import _msg, _wrn
 
 
@@ -591,6 +594,185 @@ class DraftModification(unittest.TestCase):
         Draft.stretch = aux.fake_function
         obj = Draft.stretch(line, direction)
         self.assertTrue(obj, "'{}' failed".format(operation))
+
+    def test_scale_part_feature_arcs(self):
+        """Create and scale a part feature (arcs)."""
+        operation = "Draft Scale part feature (arcs)"
+        _msg("  Test '{}'".format(operation))
+
+        base = App.Vector(3.5, 2.5, 0)
+        cen = App.Vector(2, 1, 0) # center for scaling
+        sca = App.Vector(2, 3, 1)
+        ends = [App.Vector(0, 0, 0),
+                App.Vector(4, 0, 0),
+                App.Vector(4, 3, 0),
+                App.Vector(0, 3, 0)]
+        mids = [App.Vector( 2.0, -0.5, 0),
+                App.Vector( 4.5,  1.5, 0),
+                App.Vector( 2.0,  3.5, 0),
+                App.Vector(-0.5,  1.5, 0)] # arc midpoints
+
+        shp = Part.Shape([Part.Arc(ends[0], mids[0], ends[1]),
+                          Part.Arc(ends[1], mids[1], ends[2]),
+                          Part.Arc(ends[2], mids[2], ends[3]),
+                          Part.Arc(ends[3], mids[3], ends[0])])
+        obj = App.ActiveDocument.addObject("Part::Feature")
+        obj.Shape = shp
+        obj.Placement.Base = base
+        App.ActiveDocument.recompute()
+
+        _msg("  Scale")
+        _msg("  vector={}".format(sca))
+        _msg("  center={}".format(cen))
+        Draft.scale([obj], sca, cen, False)
+        App.ActiveDocument.recompute()
+
+        # check endpoints of arcs:
+        vrts = obj.Shape.Vertexes
+        result = True
+        for i in range(4):
+            ptNew = scale_vector_from_center(ends[i].add(base), sca, cen)
+            if not vrts[i].Point.isEqual(ptNew, 1e-8):
+                result = False
+                break
+        # check midpoints of arcs:
+        if result == True:
+            for i in range(4):
+                ptNew = scale_vector_from_center(mids[i].add(base), sca, cen)
+                edge = obj.Shape.Edges[i]
+                par = (edge.LastParameter - edge.FirstParameter) / 2
+                if not edge.valueAt(par).isEqual(ptNew, 1e-8):
+                    result = False
+                    break
+        self.assertTrue(result, "'{}' failed".format(operation))
+
+    def test_scale_part_feature_lines(self):
+        """Create and scale a part feature (lines)."""
+        operation = "Draft Scale part feature (lines)"
+        _msg("  Test '{}'".format(operation))
+
+        base = App.Vector(3.5, 2.5, 0)
+        cen = App.Vector(2, 1, 0) # center for scaling
+        sca = App.Vector(2, 3, 1)
+        pts = [App.Vector(0, 0, 0),
+               App.Vector(4, 0, 0),
+               App.Vector(4, 3, 0),
+               App.Vector(0, 3, 0)]
+
+        shp = Part.Shape([Part.LineSegment(pts[0], pts[1]),
+                          Part.LineSegment(pts[1], pts[2]),
+                          Part.LineSegment(pts[2], pts[3]),
+                          Part.LineSegment(pts[3], pts[0])])
+        obj = App.ActiveDocument.addObject("Part::Feature")
+        obj.Shape = shp
+        obj.Placement.Base = base
+        App.ActiveDocument.recompute()
+
+        _msg("  Scale")
+        _msg("  vector={}".format(sca))
+        _msg("  center={}".format(cen))
+        Draft.scale([obj], sca, cen, False)
+        App.ActiveDocument.recompute()
+
+        vrts = obj.Shape.Vertexes
+        result = True
+        for i in range(4):
+            ptNew = scale_vector_from_center(pts[i].add(base), sca, cen)
+            if not vrts[i].Point.isEqual(ptNew, 1e-8):
+                result = False
+                break
+        self.assertTrue(result, "'{}' failed".format(operation))
+
+    def test_scale_rectangle(self):
+        """Create and scale a rectangle."""
+        operation = "Draft Scale rectangle"
+        _msg("  Test '{}'".format(operation))
+
+        base = App.Vector(3.5, 2.5, 0)
+        cen = App.Vector(2, 1, 0) # center for scaling
+        sca = App.Vector(2, 3, 1)
+        len = 4
+        hgt = 3
+
+        obj = Draft.make_rectangle(len, hgt)
+        obj.Placement.Base = base
+        App.ActiveDocument.recompute()
+
+        _msg("  Scale")
+        _msg("  vector={}".format(sca))
+        _msg("  center={}".format(cen))
+        Draft.scale([obj], sca, cen, False)
+        App.ActiveDocument.recompute()
+
+        ptNew = scale_vector_from_center(base, sca, cen)
+        result = obj.Placement.Base.isEqual(ptNew, 1e-8)
+        if result == True:
+            result = math.isclose(obj.Length, len * sca.x, abs_tol = 1e-8)
+        if result == True:
+            result = math.isclose(obj.Height, hgt * sca.y, abs_tol = 1e-8)
+        self.assertTrue(result, "'{}' failed".format(operation))
+
+    def test_scale_spline(self):
+        """Create and scale a spline."""
+        operation = "Draft Scale spline"
+        _msg("  Test '{}'".format(operation))
+
+        base = App.Vector(3.5, 2.5, 0)
+        cen = App.Vector(2, 1, 0) # center for scaling
+        sca = App.Vector(2, 3, 1)
+        pts = [App.Vector(0, 0, 0),
+               App.Vector(2, 3, 0),
+               App.Vector(4, 0, 0)]
+
+        obj = Draft.make_bspline(pts, False)
+        obj.Placement.Base = base
+        App.ActiveDocument.recompute()
+
+        _msg("  Scale")
+        _msg("  vector={}".format(sca))
+        _msg("  center={}".format(cen))
+        Draft.scale([obj], sca, cen, False)
+        App.ActiveDocument.recompute()
+
+        result = True
+        for i in range(3):
+            ptNew = scale_vector_from_center(pts[i].add(base), sca, cen)
+            if not obj.Points[i].add(base).isEqual(ptNew, 1e-8):
+                result = False
+                break
+        self.assertTrue(result, "'{}' failed".format(operation))
+
+    def test_scale_wire(self):
+        """Create and scale a wire."""
+        operation = "Draft Scale wire"
+        _msg("  Test '{}'".format(operation))
+
+        base = App.Vector(3.5, 2.5, 0)
+        cen = App.Vector(2, 1, 0) # center for scaling
+        sca = App.Vector(2, 3, 1)
+        pts = [App.Vector(0, 0, 0),
+               App.Vector(4, 0, 0),
+               App.Vector(4, 3, 0),
+               App.Vector(0, 3, 0)]
+
+        obj = Draft.make_wire(pts, True)
+        obj.Placement.Base = base
+        App.ActiveDocument.recompute()
+
+        _msg("  Scale")
+        _msg("  vector={}".format(sca))
+        _msg("  center={}".format(cen))
+        Draft.scale([obj], sca, cen, False)
+        App.ActiveDocument.recompute()
+
+        vrts = obj.Shape.Vertexes
+        result = True
+        for i in range(4):
+            ptNew = scale_vector_from_center(pts[i].add(base), sca, cen)
+            if not vrts[i].Point.isEqual(ptNew, 1e-8):
+                result = False
+                break
+        self.assertTrue(result, "'{}' failed".format(operation))
 
     def tearDown(self):
         """Finish the test.
