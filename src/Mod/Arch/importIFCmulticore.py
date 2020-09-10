@@ -222,8 +222,8 @@ def setColor(obj,ifcproduct):
 
     color = importIFCHelper.getColorFromProduct(ifcproduct)
     colors[obj.Name] = color
-    if FreeCAD.GuiUp:
-        obj.ViewObject.ShapeColor = color
+    if FreeCAD.GuiUp and color:
+        obj.ViewObject.ShapeColor = color[:3]
 
 
 def createLayer(obj,ifcproduct):
@@ -236,7 +236,7 @@ def createLayer(obj,ifcproduct):
         for rep in ifcproduct.Representation.Representations:
             for layer in rep.LayerAssignments:
                 if not layer.id() in layers:
-                    layers[layer.id()] = Draft.makeLayer(layer.Name)
+                    layers[layer.id()] = Draft.make_layer(layer.Name)
                 layers[layer.id()].Proxy.addObject(layers[layer.id()],obj)
 
 
