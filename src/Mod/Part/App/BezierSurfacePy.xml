@@ -308,15 +308,5 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="uIso" Const="true">
-			<Documentation>
-				<UserDocu>Builds the U isoparametric Bezier curve of this Bezier surface</UserDocu>
-			</Documentation>
-		</Methode>
-        <Methode Name="vIso" Const="true">
-			<Documentation>
-				<UserDocu>Builds the V isoparametric Bezier curve of this Bezier surface</UserDocu>
-			</Documentation>
-		</Methode>
 	</PythonExport>
 </GenerateModel>

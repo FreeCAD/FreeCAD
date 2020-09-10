@@ -151,46 +151,6 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
     return -1;
 }
 
-PyObject* ConePy::uIso(PyObject * args)
-{
-    double u;
-    if (!PyArg_ParseTuple(args, "d", &u))
-        return 0;
-
-    try {
-        Handle(Geom_ConicalSurface) cone = Handle(Geom_ConicalSurface)::DownCast
-            (getGeomConePtr()->handle());
-        Handle(Geom_Line) c = Handle(Geom_Line)::DownCast(cone->UIso(u));
-        GeomLine* line = new GeomLine();
-        Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
-            (line->handle());
-        this_curv->SetLin(c->Lin());
-        return new LinePy(line);
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
-}
-
-PyObject* ConePy::vIso(PyObject * args)
-{
-    double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
-        return 0;
-
-    try {
-        Handle(Geom_ConicalSurface) cone = Handle(Geom_ConicalSurface)::DownCast
-            (getGeomConePtr()->handle());
-        Handle(Geom_Curve) c = cone->VIso(v);
-        return new CirclePy(new GeomCircle(Handle(Geom_Circle)::DownCast(c)));
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
-}
-
 Py::Object ConePy::getApex(void) const
 {
     Handle(Geom_ConicalSurface) s = Handle(Geom_ConicalSurface)::DownCast
