@@ -173,6 +173,7 @@ Py::List VoronoiPy::getCells(void) const {
 }
 
 typedef std::map<uintptr_t,bool> exterior_map_t;
+typedef std::map<int32_t, std::set<int32_t> > coordinate_map_t;
 
 #define VORONOI_USE_EXTERIOR_CACHE 1
 
@@ -215,7 +216,8 @@ PyObject* VoronoiPy::colorExterior(PyObject *args) {
   Voronoi *vo = getVoronoiPtr();
   vo->colorExterior(color);
   if (callback) {
-    exterior_map_t cache;
+    exterior_map_t   cache;
+    coordinate_map_t pts;
     for (auto e = vo->vd->edges().begin(); e != vo->vd->edges().end(); ++e) {
       if (e->is_finite() && e->color() == 0) {
         const Voronoi::diagram_type::vertex_type *v0 = e->vertex0();
@@ -223,6 +225,17 @@ PyObject* VoronoiPy::colorExterior(PyObject *args) {
         bool bail = false;
         if (callbackWithVertex(vo->vd, callback, v0, bail, cache) && callbackWithVertex(vo->vd, callback, v1, bail, cache)) {
           vo->colorExterior(&(*e), color);
+        } else if (!bail && callbackWithVertex(vo->vd, callback, v1, bail, cache)) {
+          if (pts.empty()) {
+            for (auto s = vo->vd->segments.begin(); s != vo->vd->segments.end(); ++s) {
+              pts[low(*s).x()].insert(low(*s).y());
+              pts[high(*s).x()].insert(high(*s).y());
+            }
+          }
+          auto ys = pts.find(int32_t(v0->x()));
+          if (ys != pts.end() && ys->second.find(v0->y()) != ys->second.end()) {
+            vo->colorExterior(&(*e), color);
+          }
         }
         if (bail) {
           return NULL;
