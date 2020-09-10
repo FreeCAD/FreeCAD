@@ -172,20 +172,36 @@ Py::List VoronoiPy::getCells(void) const {
   return list;
 }
 
-static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, const Voronoi::diagram_type::vertex_type *v, bool &bail) {
+typedef std::map<uintptr_t,bool> exterior_map_t;
+
+#define VORONOI_USE_EXTERIOR_CACHE 1
+
+static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, const Voronoi::diagram_type::vertex_type *v, bool &bail, exterior_map_t &cache) {
   bool rc = false;
   if (!bail && v->color() == 0) {
-    PyObject *vx = new VoronoiVertexPy(new VoronoiVertex(dia, v));
-    PyObject *arglist = Py_BuildValue("(O)", vx);
-    PyObject *result = PyEval_CallObject(callback, arglist);
-    Py_DECREF(arglist);
-    Py_DECREF(vx);
-    if (result == NULL) {
-      bail = true;
+#if VORONOI_USE_EXTERIOR_CACHE
+    auto it = cache.find(uintptr_t(v));
+    if (it == cache.end()) {
+#endif
+      PyObject *vx = new VoronoiVertexPy(new VoronoiVertex(dia, v));
+      PyObject *arglist = Py_BuildValue("(O)", vx);
+      PyObject *result = PyEval_CallObject(callback, arglist);
+      Py_DECREF(arglist);
+      Py_DECREF(vx);
+      if (result == NULL) {
+        bail = true;
+      } else {
+        rc = result == Py_True;
+        Py_DECREF(result);
+        cache.insert(exterior_map_t::value_type(uintptr_t(v), rc));
+      }
+#if VORONOI_USE_EXTERIOR_CACHE
     } else {
-      rc = result == Py_True;
-      Py_DECREF(result);
+      rc = it->second;
     }
+#else
+    (void)cache;
+#endif
   }
   return rc;
 }
@@ -199,12 +215,13 @@ PyObject* VoronoiPy::colorExterior(PyObject *args) {
   Voronoi *vo = getVoronoiPtr();
   vo->colorExterior(color);
   if (callback) {
+    exterior_map_t cache;
     for (auto e = vo->vd->edges().begin(); e != vo->vd->edges().end(); ++e) {
       if (e->is_finite() && e->color() == 0) {
         const Voronoi::diagram_type::vertex_type *v0 = e->vertex0();
         const Voronoi::diagram_type::vertex_type *v1 = e->vertex1();
         bool bail = false;
-        if (callbackWithVertex(vo->vd, callback, v0, bail) && callbackWithVertex(vo->vd, callback, v1, bail)) {
+        if (callbackWithVertex(vo->vd, callback, v0, bail, cache) && callbackWithVertex(vo->vd, callback, v1, bail, cache)) {
           vo->colorExterior(&(*e), color);
         }
         if (bail) {
