@@ -253,6 +253,54 @@ PyObject* VoronoiPy::resetColor(PyObject *args) {
   return Py_None;
 }
 
+PyObject* VoronoiPy::getPoints(PyObject *args) {
+  double z = 0;
+  if (!PyArg_ParseTuple(args, "|d", &z)) {
+    throw Py::RuntimeError("Optional z argument (double) accepted");
+  }
+  Voronoi *vo = getVoronoiPtr();
+  Py::List list;
+  for (auto it = vo->vd->points.begin(); it != vo->vd->points.end(); ++it) {
+    list.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(vo->vd->scaledVector(*it, z)))));
+  }
+  return Py::new_reference_to(list);
+}
+
+PyObject* VoronoiPy::getSegments(PyObject *args) {
+  double z = 0;
+  if (!PyArg_ParseTuple(args, "|d", &z)) {
+    throw Py::RuntimeError("Optional z argument (double) accepted");
+  }
+  Voronoi *vo = getVoronoiPtr();
+  Py::List list;
+  for (auto it = vo->vd->segments.begin(); it != vo->vd->segments.end(); ++it) {
+    PyObject *p0 = new Base::VectorPy(new Base::Vector3d(vo->vd->scaledVector(low(*it), z)));
+    PyObject *p1 = new Base::VectorPy(new Base::Vector3d(vo->vd->scaledVector(high(*it), z)));
+    PyObject *tp = PyTuple_New(2);
+    PyTuple_SetItem(tp, 0, p0);
+    PyTuple_SetItem(tp, 1, p1);
+    list.append(Py::asObject(tp));
+  }
+  return Py::new_reference_to(list);
+}
+
+PyObject* VoronoiPy::numPoints(PyObject *args)
+{
+  if (!PyArg_ParseTuple(args, "")) {
+    throw  Py::RuntimeError("no arguments accepted");
+  }
+  return PyLong_FromLong(getVoronoiPtr()->vd->points.size());
+}
+
+PyObject* VoronoiPy::numSegments(PyObject *args)
+{
+  if (!PyArg_ParseTuple(args, "")) {
+    throw  Py::RuntimeError("no arguments accepted");
+  }
+  return PyLong_FromLong(getVoronoiPtr()->vd->segments.size());
+}
+
+
 // custom attributes get/set
 
 PyObject *VoronoiPy::getCustomAttributes(const char* /*attr*/) const

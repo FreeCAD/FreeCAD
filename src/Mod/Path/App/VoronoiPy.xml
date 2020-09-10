@@ -83,5 +83,25 @@
                 <UserDocu>assign color 0 to all elements with the given color</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getPoints" Const="true">
+            <Documentation>
+                <UserDocu>Get list of all input points.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="numPoints" Const="true">
+            <Documentation>
+                <UserDocu>Return number of input points</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getSegments" Const="true">
+            <Documentation>
+                <UserDocu>Get list of all input segments.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="numSegments" Const="true">
+            <Documentation>
+                <UserDocu>Return number of input segments</UserDocu>
+            </Documentation>
+        </Methode>
     </PythonExport>
 </GenerateModel>
