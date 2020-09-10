@@ -75,54 +75,6 @@
 #include <Mod/Part/App/TopoShapeFacePy.h>
 
 namespace Part {
-const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c)
-{
-    if (c->IsKind(STANDARD_TYPE(Geom_Circle))) {
-        Handle(Geom_Circle) circ = Handle(Geom_Circle)::DownCast(c);
-        return Py::asObject(new CirclePy(new GeomCircle(circ)));
-    }
-    else if (c->IsKind(STANDARD_TYPE(Geom_Ellipse))) {
-        Handle(Geom_Ellipse) ell = Handle(Geom_Ellipse)::DownCast(c);
-        return Py::asObject(new EllipsePy(new GeomEllipse(ell)));
-    }
-    else if (c->IsKind(STANDARD_TYPE(Geom_Hyperbola))) {
-        Handle(Geom_Hyperbola) hyp = Handle(Geom_Hyperbola)::DownCast(c);
-        return Py::asObject(new HyperbolaPy(new GeomHyperbola(hyp)));
-    }
-    else if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
-        Handle(Geom_Line) lin = Handle(Geom_Line)::DownCast(c);
-        return Py::asObject(new LinePy(new GeomLine(lin)));
-    }
-    else if (c->IsKind(STANDARD_TYPE(Geom_OffsetCurve))) {
-        Handle(Geom_OffsetCurve) oc = Handle(Geom_OffsetCurve)::DownCast(c);
-        return Py::asObject(new OffsetCurvePy(new GeomOffsetCurve(oc)));
-    }
-    else if (c->IsKind(STANDARD_TYPE(Geom_Parabola))) {
-        Handle(Geom_Parabola) par = Handle(Geom_Parabola)::DownCast(c);
-        return Py::asObject(new ParabolaPy(new GeomParabola(par)));
-    }
-    else if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
-        Handle(Geom_TrimmedCurve) trc = Handle(Geom_TrimmedCurve)::DownCast(c);
-        return Py::asObject(new GeometryCurvePy(new GeomTrimmedCurve(trc)));
-    }
-    /*else if (c->IsKind(STANDARD_TYPE(Geom_BoundedCurve))) {
-        Handle(Geom_BoundedCurve) bc = Handle(Geom_BoundedCurve)::DownCast(c);
-        return Py::asObject(new GeometryCurvePy(new GeomBoundedCurve(bc)));
-    }*/
-    else if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
-        Handle(Geom_BezierCurve) bezier = Handle(Geom_BezierCurve)::DownCast(c);
-        return Py::asObject(new BezierCurvePy(new GeomBezierCurve(bezier)));
-    }
-    else if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
-        Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(c);
-        return Py::asObject(new BSplineCurvePy(new GeomBSplineCurve(bspline)));
-    }
-
-    std::string err = "Unhandled curve type ";
-    err += c->DynamicType()->Name();
-    throw Py::TypeError(err);
-}
-
 const Py::Object makeTrimmedCurvePy(const Handle(Geom_Curve)& c, double f,double l)
 {
     if (c->IsKind(STANDARD_TYPE(Geom_Circle))) {
@@ -221,6 +173,53 @@ const Py::Object makeTrimmedCurvePy(const Handle(Geom_Curve)& c, double f,double
         Handle(Geom_BoundedCurve) bc = Handle(Geom_BoundedCurve)::DownCast(c);
         return Py::asObject(new GeometryCurvePy(new GeomBoundedCurve(bc)));
     }*/
+
+    std::string err = "Unhandled curve type ";
+    err += c->DynamicType()->Name();
+    throw Py::TypeError(err);
+}
+
+const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c)
+{
+    if (c->IsKind(STANDARD_TYPE(Geom_Circle))) {
+        Handle(Geom_Circle) circ = Handle(Geom_Circle)::DownCast(c);
+        return Py::asObject(new CirclePy(new GeomCircle(circ)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_Ellipse))) {
+        Handle(Geom_Ellipse) ell = Handle(Geom_Ellipse)::DownCast(c);
+        return Py::asObject(new EllipsePy(new GeomEllipse(ell)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_Hyperbola))) {
+        Handle(Geom_Hyperbola) hyp = Handle(Geom_Hyperbola)::DownCast(c);
+        return Py::asObject(new HyperbolaPy(new GeomHyperbola(hyp)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
+        Handle(Geom_Line) lin = Handle(Geom_Line)::DownCast(c);
+        return Py::asObject(new LinePy(new GeomLine(lin)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_OffsetCurve))) {
+        Handle(Geom_OffsetCurve) oc = Handle(Geom_OffsetCurve)::DownCast(c);
+        return Py::asObject(new OffsetCurvePy(new GeomOffsetCurve(oc)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_Parabola))) {
+        Handle(Geom_Parabola) par = Handle(Geom_Parabola)::DownCast(c);
+        return Py::asObject(new ParabolaPy(new GeomParabola(par)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+        return makeTrimmedCurvePy(c, c->FirstParameter(), c->LastParameter());
+    }
+    /*else if (c->IsKind(STANDARD_TYPE(Geom_BoundedCurve))) {
+        Handle(Geom_BoundedCurve) bc = Handle(Geom_BoundedCurve)::DownCast(c);
+        return Py::asObject(new GeometryCurvePy(new GeomBoundedCurve(bc)));
+    }*/
+    else if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
+        Handle(Geom_BezierCurve) bezier = Handle(Geom_BezierCurve)::DownCast(c);
+        return Py::asObject(new BezierCurvePy(new GeomBezierCurve(bezier)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
+        Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(c);
+        return Py::asObject(new BSplineCurvePy(new GeomBSplineCurve(bspline)));
+    }
 
     std::string err = "Unhandled curve type ";
     err += c->DynamicType()->Name();
