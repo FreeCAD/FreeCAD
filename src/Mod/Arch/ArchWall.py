@@ -1342,7 +1342,9 @@ class _Wall(ArchComponent.Component):
                             if curAligns == "Left":
 
                                 if layers:
-                                    curWidth = [abs(layers[i])]
+                                    curWidth = []
+                                    for n in range(edgeNum):
+                                        curWidth.append(abs(layers[i]))
                                     off = off+layeroffset
                                     dvec.multiply(curWidth[0])
                                     layeroffset += abs(curWidth[0])
@@ -1386,7 +1388,9 @@ class _Wall(ArchComponent.Component):
                                 dvec = dvec.negative()
 
                                 if layers:
-                                    curWidth = [abs(layers[i])]
+                                    curWidth = []
+                                    for n in range(edgeNum):
+                                        curWidth.append(abs(layers[i]))
                                     off = off+layeroffset
                                     dvec.multiply(curWidth[0])
                                     layeroffset += abs(curWidth[0])
