@@ -602,8 +602,7 @@ def find(vector, vlist):
     return None
 
 
-def closest(vector, vlist, returnLength=False):
-
+def closest(vector, vlist, return_length=False):
     """Find the closest point to one point in a list of points (vectors).
 
     The scalar distance between the original point and one point in the list
@@ -612,22 +611,24 @@ def closest(vector, vlist, returnLength=False):
 
     Parameters
     ----------
-    vector : Base::Vector3
-        The tested point (or vector).
-    vlist : list
-        A list of points (or vectors).
-    returnLength : True / False
+    vector: Base::Vector3
+        The tested point or vector.
+
+    vlist: list
+        A list of points or vectors.
+
+    return_length: bool, optional
+        It defaults to `False`.
+        If it is `True`, the value of the smallest distance will be returned.
 
     Returns
     -------
     int
         The index of the list where the closest point is found.
 
-    int, dist
-        The index,
-        and the distance to the closest point (numeric value only, no unit)
-        if returnLength is True.
-
+    int, float
+        If `return_length` is `True`, it returns both the index
+        and the length to the closest point.
     """
     typecheck([(vector, Vector), (vlist, list)], "closest")
 
@@ -636,13 +637,13 @@ def closest(vector, vlist, returnLength=False):
     dist = 9999999999999999
     index = None
     for i, v in enumerate(vlist):
-        d = vector.sub(v).Length
+        d = (vector - v).Length
         if d < dist:
             dist = d
             index = i
 
-    if returnLength:
-        return (index, dist)
+    if return_length:
+        return index, dist
     else:
         return index
 
