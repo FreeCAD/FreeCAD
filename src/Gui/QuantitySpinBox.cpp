@@ -23,17 +23,19 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QDebug>
-# include <QLineEdit>
 # include <QFocusEvent>
 # include <QFontMetrics>
 # include <QHBoxLayout>
 # include <QLabel>
-# include <QStyle>
-# include <QPixmapCache>
+# include <QLineEdit>
 # include <QMouseEvent>
+# include <QPixmapCache>
+# include <QStyle>
+# include <QStyleOptionSpinBox>
+# include <QStylePainter>
 # include <QToolTip>
-# include <QApplication>
 #endif
 
 #include "QuantitySpinBox.h"
@@ -517,6 +519,20 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
         QAbstractSpinBox::keyPressEvent(event);
 }
 
+void Gui::QuantitySpinBox::paintEvent(QPaintEvent*)
+{
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    if (hasExpression()) {
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxUp;
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxDown;
+        opt.state &= ~QStyle::State_Active;
+        opt.stepEnabled = StepNone;
+    }
+
+    QStylePainter p(this);
+    p.drawComplexControl(QStyle::CC_SpinBox, opt);
+}
 
 void QuantitySpinBox::updateText(const Quantity &quant)
 {

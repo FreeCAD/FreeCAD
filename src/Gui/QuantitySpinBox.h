@@ -156,6 +156,7 @@ protected:
     virtual void focusOutEvent(QFocusEvent * event);
     virtual void keyPressEvent(QKeyEvent *event);
     virtual void resizeEvent(QResizeEvent *event);
+    virtual void paintEvent(QPaintEvent *event);
 
 private:
     void updateText(const Base::Quantity&);
