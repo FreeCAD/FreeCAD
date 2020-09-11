@@ -65,11 +65,11 @@ def vec(edge, use_orientation = False):
     If use_orientation is True, it takes into account the edges orientation.
     If edge is not straight, you'll get strange results!
     """
-    if isinstance(edge, Part.Edge):
-        if edge.Orientation == "Forward" or not use_orientation:
-            return edge.Vertexes[-1].Point.sub(edge.Vertexes[0].Point)
-        else:
+    if isinstance(edge, Part.Shape):
+        if use_orientation and isinstance(edge, Part.Edge) and edge.Orientation == "Reversed":
             return edge.Vertexes[0].Point.sub(edge.Vertexes[-1].Point)
+        else:
+            return edge.Vertexes[-1].Point.sub(edge.Vertexes[0].Point)
     elif isinstance(edge, Part.LineSegment):
         return edge.EndPoint.sub(edge.StartPoint)
     else:
