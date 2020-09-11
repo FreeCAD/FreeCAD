@@ -313,6 +313,9 @@ void TaskPadParameters::onXDirectionEditChanged(double len)
     pcPad->Direction.setValue(len, pcPad->Direction.getValue().y, pcPad->Direction.getValue().z);
     recomputeFeature();
     // checking for case of a null vector is done in FeaturePad.cpp
+    // if there was a null vector, the normal vector of the sketch is used.
+    // therefore the vector component edits must be updated
+    updateDirectionEdits();
 }
 
 
@@ -321,7 +324,7 @@ void TaskPadParameters::onYDirectionEditChanged(double len)
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Direction.setValue(pcPad->Direction.getValue().x, len, pcPad->Direction.getValue().z);
     recomputeFeature();
-    // checking for case of a null vector is done in FeaturePad.cpp
+    updateDirectionEdits();
 }
 
 void TaskPadParameters::onZDirectionEditChanged(double len)
@@ -329,7 +332,15 @@ void TaskPadParameters::onZDirectionEditChanged(double len)
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Direction.setValue(pcPad->Direction.getValue().x, pcPad->Direction.getValue().y, len);
     recomputeFeature();
-    // checking for case of a null vector is done in FeaturePad.cpp
+    updateDirectionEdits();
+}
+
+void TaskPadParameters::updateDirectionEdits(void)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    ui->XDirectionEdit->setValue(pcPad->Direction.getValue().x);
+    ui->YDirectionEdit->setValue(pcPad->Direction.getValue().y);
+    ui->ZDirectionEdit->setValue(pcPad->Direction.getValue().z);
 }
 
 void TaskPadParameters::onOffsetChanged(double len)

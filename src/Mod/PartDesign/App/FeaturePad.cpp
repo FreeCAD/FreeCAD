@@ -127,9 +127,6 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     Base::Vector3d SketchVector = getProfileNormal();
 
     try {
-        // get user-defined decimals
-        int precision = Base::UnitsApi::getDecimals();
-
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
