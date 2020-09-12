@@ -1228,6 +1228,7 @@ CmdPartReverseShape::CmdPartReverseShape()
     sToolTipText  = QT_TR_NOOP("Reverse orientation of shapes");
     sWhatsThis    = "Part_ReverseShape";
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Reverse_Shape";
 }
 
 void CmdPartReverseShape::activated(int iMsg)
