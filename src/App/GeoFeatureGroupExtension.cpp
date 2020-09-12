@@ -29,6 +29,7 @@
 
 #include <App/Document.h>
 
+#include "Link.h"
 #include "GeoFeatureGroupExtension.h"
 #include "OriginFeature.h"
 #include "Origin.h"
@@ -376,7 +377,10 @@ bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const
         }
         if(ret) {
             if(dot) ++dot;
-            if(dot && *dot && !ret->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            if(dot && *dot 
+                    && !ret->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId())
+                    && !ret->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) 
+            {
                 // Consider this
                 // Body
                 //  | -- Pad
