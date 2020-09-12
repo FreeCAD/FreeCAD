@@ -18,7 +18,7 @@ class CreateFlatMesh(BaseCommand):
     """create flat wires from a meshed face"""
 
     def GetResources(self):
-        return {'MenuText': 'Unwrap Mesh', 'ToolTip': 'find a flat representation of a mesh'}
+        return {'Pixmap': 'MeshPart_Create_Flat_Mesh.svg', 'MenuText': 'Unwrap Mesh', 'ToolTip': 'find a flat representation of a mesh'}
 
     def Activated(self):
         import numpy as np
@@ -48,7 +48,7 @@ class CreateFlatFace(BaseCommand):
        only full faces are supported right now"""
        
     def GetResources(self):
-        return {'MenuText': 'Unwrap Face', 'ToolTip': 'find a flat representation of a mesh'}
+        return {'Pixmap': 'MeshPart_Create_Flat_Face.svg', 'MenuText': 'Unwrap Face', 'ToolTip': 'find a flat representation of a mesh'}
     
     def Activated(self):
         import numpy as np
