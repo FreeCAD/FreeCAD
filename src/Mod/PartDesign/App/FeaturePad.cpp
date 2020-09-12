@@ -163,9 +163,10 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         // factor would be zero if vectors are orthogonal
         if (factor < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Pad: Creation failed because direction is orthogonal to sketch's normal vector");
-        
+
         // perform the length correction
         L = L / factor;
+        L2 = L2 / factor;
 
         dir.Transform(invObjLoc.Transformation());
 
