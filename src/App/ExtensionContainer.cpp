@@ -32,7 +32,7 @@
 #include "DocumentObject.h"
 #include "Base/Exception.h"
 #include <Base/Console.h>
- 
+
 using namespace App;
 
 TYPESYSTEM_SOURCE(App::ExtensionContainer, App::PropertyContainer)
@@ -44,7 +44,7 @@ ExtensionContainer::ExtensionContainer() {
 ExtensionContainer::~ExtensionContainer() {
 
     //we need to delete all dynamically added extensions
-    for(auto entry : _extensions) {            
+    for(auto entry : _extensions) {
         if(entry.second->isPythonExtension())
             delete entry.second;
     }
@@ -54,17 +54,17 @@ void ExtensionContainer::registerExtension(Base::Type extension, Extension* ext)
 
     if(ext->getExtendedContainer() != this)
         throw Base::ValueError("ExtensionContainer::registerExtension: Extension has not this as base object");
-       
+
     //no duplicate extensions (including base classes)
     if(hasExtension(extension)) {
-        for(auto entry : _extensions) {            
+        for(auto entry : _extensions) {
             if(entry.first == extension || entry.first.isDerivedFrom(extension)) {
                 _extensions.erase(entry.first);
                 break;
             }
         }
     }
-        
+
     _extensions[extension] = ext;
 }
 
@@ -74,7 +74,7 @@ bool ExtensionContainer::hasExtension(Base::Type t, bool derived) const {
     bool found = _extensions.find(t) != _extensions.end();
     if(!found && derived) {
         //and for types derived from it, as they can be cast to the extension
-        for(auto entry : _extensions) {            
+        for(auto entry : _extensions) {
             if(entry.first.isDerivedFrom(t))
                 return true;
         }
@@ -86,7 +86,7 @@ bool ExtensionContainer::hasExtension(Base::Type t, bool derived) const {
 bool ExtensionContainer::hasExtension(const std::string& name) const {
 
     //and for types derived from it, as they can be cast to the extension
-    for(auto entry : _extensions) {            
+    for(auto entry : _extensions) {
         if(entry.second->name() == name)
             return true;
     }
@@ -95,7 +95,7 @@ bool ExtensionContainer::hasExtension(const std::string& name) const {
 
 
 Extension* ExtensionContainer::getExtension(Base::Type t, bool derived, bool no_except) const {
-   
+
     auto result = _extensions.find(t);
     if((result == _extensions.end()) && derived) {
         //we need to check for derived types
@@ -118,14 +118,14 @@ Extension* ExtensionContainer::getExtension(Base::Type t, bool derived, bool no_
 }
 
 bool ExtensionContainer::hasExtensions() const {
-    
+
     return !_extensions.empty();
 }
 
 Extension* ExtensionContainer::getExtension(const std::string& name) const {
 
     //and for types derived from it, as they can be cast to the extension
-    for(auto entry : _extensions) {            
+    for(auto entry : _extensions) {
         if(entry.second->name() == name)
             return entry.second;
     }
@@ -136,7 +136,7 @@ std::vector< Extension* > ExtensionContainer::getExtensionsDerivedFrom(Base::Typ
 
     std::vector<Extension*> vec;
     //and for types derived from it, as they can be cast to the extension
-    for(auto entry : _extensions) {            
+    for(auto entry : _extensions) {
         if(entry.first.isDerivedFrom(type))
             vec.push_back(entry.second);
     }
@@ -145,13 +145,13 @@ std::vector< Extension* > ExtensionContainer::getExtensionsDerivedFrom(Base::Typ
 
 void ExtensionContainer::getPropertyList(std::vector< Property* >& List) const {
     App::PropertyContainer::getPropertyList(List);
-    for(auto entry : _extensions)         
+    for(auto entry : _extensions)
         entry.second->extensionGetPropertyList(List);
 }
 
 void ExtensionContainer::getPropertyMap(std::map< std::string, Property* >& Map) const {
     App::PropertyContainer::getPropertyMap(Map);
-    for(auto entry : _extensions)     
+    for(auto entry : _extensions)
         entry.second->extensionGetPropertyMap(Map);
 }
 
@@ -159,13 +159,13 @@ Property* ExtensionContainer::getPropertyByName(const char* name) const {
     auto prop = App::PropertyContainer::getPropertyByName(name);
     if(prop)
         return prop;
-    
-    for(auto entry : _extensions) {            
+
+    for(auto entry : _extensions) {
         auto prop = entry.second->extensionGetPropertyByName(name);
         if(prop)
             return prop;
     }
-    
+
     return nullptr;
 }
 
@@ -174,122 +174,122 @@ short int ExtensionContainer::getPropertyType(const Property* prop) const {
     short int res = App::PropertyContainer::getPropertyType(prop);
     if(res != 0)
         return res;
-    
-    for(auto entry : _extensions) {            
+
+    for(auto entry : _extensions) {
         res = entry.second->extensionGetPropertyType(prop);
         if(res != 0)
-            return res;     
+            return res;
     }
-    
+
     return 0;
 }
 
 short int ExtensionContainer::getPropertyType(const char* name) const {
-    
+
     short int res = App::PropertyContainer::getPropertyType(name);
     if(res != 0)
         return res;
-    
-    for(auto entry : _extensions) {            
+
+    for(auto entry : _extensions) {
         res = entry.second->extensionGetPropertyType(name);
         if(res != 0)
-            return res;     
+            return res;
     }
-    
+
     return 0;
 }
 
 
 const char* ExtensionContainer::getPropertyName(const Property* prop) const {
-    
+
     const char* res = App::PropertyContainer::getPropertyName(prop);
     if(res != 0)
         return res;
-    
-    for(auto entry : _extensions) {            
+
+    for(auto entry : _extensions) {
         res = entry.second->extensionGetPropertyName(prop);
         if(res != 0)
-            return res;     
+            return res;
     }
-    
+
     return 0;
 }
 
 const char* ExtensionContainer::getPropertyGroup(const Property* prop) const {
-    
+
     const char* res = App::PropertyContainer::getPropertyGroup(prop);
     if(res != 0)
         return res;
-    
-    for(auto entry : _extensions) {            
+
+    for(auto entry : _extensions) {
         res = entry.second->extensionGetPropertyGroup(prop);
         if(res != 0)
-            return res;     
+            return res;
     }
-    
+
     return 0;
 }
 
 const char* ExtensionContainer::getPropertyGroup(const char* name) const {
-        
+
     const char* res = App::PropertyContainer::getPropertyGroup(name);
     if(res != 0)
         return res;
-    
-    for(auto entry : _extensions) {            
+
+    for(auto entry : _extensions) {
         res = entry.second->extensionGetPropertyGroup(name);
         if(res != 0)
-            return res;     
+            return res;
     }
-    
+
     return 0;
 }
 
 
 const char* ExtensionContainer::getPropertyDocumentation(const Property* prop) const {
-    
+
     const char* res = App::PropertyContainer::getPropertyDocumentation(prop);
     if(res != 0)
         return res;
-    
-    for(auto entry : _extensions) {            
+
+    for(auto entry : _extensions) {
         res = entry.second->extensionGetPropertyDocumentation(prop);
         if(res != 0)
-            return res;     
+            return res;
     }
-    
+
     return 0;
 }
 
 const char* ExtensionContainer::getPropertyDocumentation(const char* name) const {
-    
+
     const char* res = App::PropertyContainer::getPropertyDocumentation(name);
     if(res != 0)
         return res;
-    
-    for(auto entry : _extensions) {            
+
+    for(auto entry : _extensions) {
         res = entry.second->extensionGetPropertyDocumentation(name);
         if(res != 0)
-            return res;     
+            return res;
     }
-    
+
     return 0;
 }
 
 void ExtensionContainer::onChanged(const Property* prop) {
-    
-    //inform all extensions about changed property. This includes all properties from the 
+
+    //inform all extensions about changed property. This includes all properties from the
     //extended object (this) as well as all extension properties
     for(auto entry : _extensions)
         entry.second->extensionOnChanged(prop);
-        
+
     App::PropertyContainer::onChanged(prop);
 }
 
 void ExtensionContainer::Save(Base::Writer& writer) const {
 
-    //Note: save extensions must be called first to ensure that the extension element is always the 
-    //      very first inside the object element. This is needed since extension element works together with 
+    //Note: save extensions must be called first to ensure that the extension element is always the
+    //      very first inside the object element. This is needed since extension element works together with
     //      an object attribute, and if another element would be read first the object attributes would be
     //      cleared.
     saveExtensions(writer);
@@ -297,28 +297,28 @@ void ExtensionContainer::Save(Base::Writer& writer) const {
 }
 
 void ExtensionContainer::Restore(Base::XMLReader& reader) {
-    
-    //restore dynamic extensions. 
-    //Note 1: The extension element must be read first, before all other object elements. That is 
-    //        needed as the element works together with an object element attribute, which would be 
+
+    //restore dynamic extensions.
+    //Note 1: The extension element must be read first, before all other object elements. That is
+    //        needed as the element works together with an object element attribute, which would be
     //        cleared if another attribute is read first
-    //Note 2: This must happen before the py object of this container is used, as only in the 
+    //Note 2: This must happen before the py object of this container is used, as only in the
     //        pyobject constructor the extension methods are added to the container.
     restoreExtensions(reader);
     App::PropertyContainer::Restore(reader);
 }
 
 void ExtensionContainer::saveExtensions(Base::Writer& writer) const {
-        
+
     //we don't save anything if there are no dynamic extensions
     if(!hasExtensions())
         return;
-     
+
     //save dynamic extensions
     writer.incInd(); // indentation for 'Extensions'
     writer.Stream() << writer.ind() << "<Extensions Count=\"" << _extensions.size() << "\">" << std::endl;
     for(auto entry : _extensions) {
-        
+
         auto ext = entry.second;
         writer.incInd(); // indentation for 'Extension name'
         writer.Stream() << writer.ind() << "<Extension"
@@ -346,7 +346,7 @@ void ExtensionContainer::saveExtensions(Base::Writer& writer) const {
         }
 #endif
         writer.decInd(); // indentation for the actual extension
-        writer.Stream() << writer.ind() << "</Extension>" << std::endl;    
+        writer.Stream() << writer.ind() << "</Extension>" << std::endl;
         writer.decInd(); // indentation for 'Extension name'
     }
     writer.Stream() << writer.ind() << "</Extensions>" << std::endl;
@@ -356,12 +356,12 @@ void ExtensionContainer::saveExtensions(Base::Writer& writer) const {
 void ExtensionContainer::restoreExtensions(Base::XMLReader& reader) {
 
     //Dynamic extensions are optional (also because they are introduced late into the document format)
-    //and hence it is possible that the element does not exist. As we cannot check for the existence of 
-    //an element a object attribute is set if extensions are available. Here we check that 
+    //and hence it is possible that the element does not exist. As we cannot check for the existence of
+    //an element a object attribute is set if extensions are available. Here we check that
     //attribute, and only if it exists the extensions element will be available.
     if(!reader.hasAttribute("Extensions"))
         return;
-     
+
     reader.readElement("Extensions");
     int Cnt = reader.getAttributeAsInteger("Count");
 
