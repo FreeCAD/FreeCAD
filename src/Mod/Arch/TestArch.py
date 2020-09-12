@@ -401,8 +401,8 @@ class ArchTest(unittest.TestCase):
         matMulti = Arch.makeMultiMaterial()
         matMulti.Materials = [matA, matB]
         matMulti.Thicknesses = [100, 200] # total width different from default 200
-        pts = [App.Vector(0, 0, 0),
-               App.Vector(1000, 0, 0),
+        pts = [App.Vector(   0,    0, 0),
+               App.Vector(1000,    0, 0),
                App.Vector(1000, 1000, 0),
                App.Vector(2000, 1000, 0)]
         # wall based on wire:
@@ -421,23 +421,17 @@ class ArchTest(unittest.TestCase):
         checkLst = [[App.Vector(0, -300, 0), App.Vector(2000, 1000, 0)],
                     [App.Vector(0, -150, 0), App.Vector(2000, 1150, 0)],
                     [App.Vector(0,    0, 0), App.Vector(2000, 1300, 0)]]
-        result = True
         for i in range(3):
             wallWire.Align = alignLst[i]
             wallSketch.Align = alignLst[i]
             App.ActiveDocument.recompute()
             for box in [wallWire.Shape.BoundBox, wallSketch.Shape.BoundBox]:
                 ptMin = App.Vector(box.XMin, box.YMin, 0)
-                if not ptMin.isEqual(checkLst[i][0], 1e-8):
-                    result = False
-                    break
+                self.failUnless(ptMin.isEqual(checkLst[i][0], 1e-8),
+                                "Arch Wall with MultiMaterial and 3 alignments failed")
                 ptMax = App.Vector(box.XMax, box.YMax, 0)
-                if not ptMax.isEqual(checkLst[i][1], 1e-8):
-                    result = False
-                    break
-            if result == False:
-                break
-        self.failUnless(result, "Arch Wall with MultiMaterial and 3 alignments failed")
+                self.failUnless(ptMax.isEqual(checkLst[i][1], 1e-8),
+                                "Arch Wall with MultiMaterial and 3 alignments failed")
 
     def testStructure(self):
         App.Console.PrintLog ('Checking Arch Structure...\n')
