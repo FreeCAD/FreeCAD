@@ -28,7 +28,6 @@
 
 ## \addtogroup drafttests
 # @{
-import math
 import unittest
 
 import FreeCAD as App
@@ -628,25 +627,19 @@ class DraftModification(unittest.TestCase):
                    Vector(13.0, 14.5, 0.0),
                    Vector( 5.0, 14.5, 0.0)]
         vrts = obj.Shape.Vertexes
-        result = True
         for i in range(4):
-            if not vrts[i].Point.isEqual(newEnds[i], 1e-8):
-                result = False
-                break
+            self.assertTrue(vrts[i].Point.isEqual(newEnds[i], 1e-8),
+                            "'{}' failed".format(operation))
         # check midpoints of arcs:
-        if result == True:
-            newMids = [Vector( 9.0,  4.0, 0.0),
-                       Vector(14.0, 10.0, 0.0),
-                       Vector( 9.0, 16.0, 0.0),
-                       Vector( 4.0, 10.0, 0.0)]
-            for i in range(4):
-                edge = obj.Shape.Edges[i]
-                par = (edge.LastParameter - edge.FirstParameter) / 2.0
-                if not edge.valueAt(par).isEqual(newMids[i], 1e-8):
-                    result = False
-                    break
-
-        self.assertTrue(result, "'{}' failed".format(operation))
+        newMids = [Vector( 9.0,  4.0, 0.0),
+                   Vector(14.0, 10.0, 0.0),
+                   Vector( 9.0, 16.0, 0.0),
+                   Vector( 4.0, 10.0, 0.0)]
+        for i in range(4):
+            edge = obj.Shape.Edges[i]
+            par = (edge.LastParameter - edge.FirstParameter) / 2.0
+            self.assertTrue(edge.valueAt(par).isEqual(newMids[i], 1e-8),
+                            "'{}' failed".format(operation))
 
     def test_scale_part_feature_lines(self):
         """Create and scale a part feature (lines)."""
@@ -677,13 +670,9 @@ class DraftModification(unittest.TestCase):
                   Vector(13.0, 14.5, 0.0),
                   Vector( 5.0, 14.5, 0.0)]
         vrts = obj.Shape.Vertexes
-        result = True
         for i in range(4):
-            if not vrts[i].Point.isEqual(newPts[i], 1e-8):
-                result = False
-                break
-
-        self.assertTrue(result, "'{}' failed".format(operation))
+            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-8),
+                            "'{}' failed".format(operation))
 
     def test_scale_rectangle(self):
         """Create and scale a rectangle."""
@@ -705,13 +694,16 @@ class DraftModification(unittest.TestCase):
         newBase = Vector(5.0, 5.5, 0.0)
         newLen = 8.0
         newHgt = 9.0
-        result = obj.Placement.Base.isEqual(newBase, 1e-8)
-        if result == True:
-            result = math.isclose(obj.Length, newLen, abs_tol = 1e-8)
-        if result == True:
-            result = math.isclose(obj.Height, newHgt, abs_tol = 1e-8)
-
-        self.assertTrue(result, "'{}' failed".format(operation))
+        self.assertTrue(obj.Placement.Base.isEqual(newBase, 1e-8),
+                        "'{}' failed".format(operation))
+        self.assertAlmostEqual(obj.Length,
+                               newLen,
+                               delta = 1e-8,
+                               msg = "'{}' failed".format(operation))
+        self.assertAlmostEqual(obj.Height,
+                               newHgt,
+                               delta = 1e-8,
+                               msg = "'{}' failed".format(operation))
 
     def test_scale_spline(self):
         """Create and scale a spline."""
@@ -734,13 +726,9 @@ class DraftModification(unittest.TestCase):
         newPts = [Vector( 5.0,  5.5, 0.0),
                   Vector( 9.0, 14.5, 0.0),
                   Vector(13.0,  5.5, 0.0)]
-        result = True
         for i in range(3):
-            if not obj.Points[i].add(base).isEqual(newPts[i], 1e-8):
-                result = False
-                break
-
-        self.assertTrue(result, "'{}' failed".format(operation))
+            self.assertTrue(obj.Points[i].add(base).isEqual(newPts[i], 1e-8),
+                            "'{}' failed".format(operation))
 
     def test_scale_wire(self):
         """Create and scale a wire."""
@@ -766,14 +754,10 @@ class DraftModification(unittest.TestCase):
                   Vector(13.0, 14.5, 0.0),
                   Vector( 5.0, 14.5, 0.0)]
         vrts = obj.Shape.Vertexes
-        result = True
         for i in range(4):
-            if not vrts[i].Point.isEqual(newPts[i], 1e-8):
-                result = False
-                break
+            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-8),
+                            "'{}' failed".format(operation))
 
-        self.assertTrue(result, "'{}' failed".format(operation))
-        
     def tearDown(self):
         """Finish the test.
 
