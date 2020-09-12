@@ -157,16 +157,16 @@ SET(PathScripts_post_SRCS
 )
 
 SET(LibLathe_SRCS
-  LibLathe/LLCommand.py
-  LibLathe/LLPoint.py
-  LibLathe/LLSegmentGroup.py
-  LibLathe/LLTool.py
-  LibLathe/LLVector.py
-  LibLathe/LLBaseOP.py
-  LibLathe/LLFaceOP.py
-  LibLathe/LLProfileOP.py
-  LibLathe/LLSegment.py
-  LibLathe/LLUtils.py
+  #LibLathe/LLCommand.py
+  #LibLathe/LLPoint.py
+  #LibLathe/LLSegmentGroup.py
+  #LibLathe/LLTool.py
+  #LibLathe/LLVector.py
+  #LibLathe/LLBaseOP.py
+  #LibLathe/LLFaceOP.py
+  #LibLathe/LLProfileOP.py
+  #LibLathe/LLSegment.py
+  #LibLathe/LLUtils.py
 )
 
 SET(Tools_Bit_SRCS

@@ -117,14 +117,6 @@ class PathWorkbench (Workbench):
             projcmdlist.append("Path_Sanity")
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
-            
-            try:
-                import LibLathe
-                turncmdlist = ["Path_TurnFace", "Path_TurnProfile"]
-                turncmdgroup = ['Path_TurnTools']                 
-                FreeCADGui.addCommand('Path_TurnTools', PathCommandGroup(turncmdlist, QtCore.QT_TRANSLATE_NOOP("Path",'Turning Operations')))
-            except ImportError:
-                FreeCAD.Console.PrintError("LibLathe is not working!\n")
 
             try:
                 import ocl  # pylint: disable=unused-variable
@@ -135,6 +127,14 @@ class PathWorkbench (Workbench):
                 FreeCADGui.addCommand('Path_3dTools', PathCommandGroup(threedopcmdlist, QtCore.QT_TRANSLATE_NOOP("Path", '3D Operations')))
             except ImportError:
                 FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
+            
+            try:
+                import LibLathe
+                turncmdlist = ["Path_TurnFace", "Path_TurnProfile"]
+                turncmdgroup = ['Path_TurnTools']                 
+                FreeCADGui.addCommand('Path_TurnTools', PathCommandGroup(turncmdlist, QtCore.QT_TRANSLATE_NOOP("Path",'Turning Operations')))
+            except ImportError:
+                FreeCAD.Console.PrintError("LibLathe is not working!\n")
 
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist)
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist)
