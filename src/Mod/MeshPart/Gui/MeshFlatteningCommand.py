@@ -2,6 +2,7 @@ import Mesh
 import FreeCAD as App
 import FreeCADGui as Gui
 import Part
+import MeshPartGui
 
 class BaseCommand(object):
     def __init__(self):
@@ -12,7 +13,7 @@ class BaseCommand(object):
             return False
         else:
             return True
-    
+
 
 class CreateFlatMesh(BaseCommand):
     """create flat wires from a meshed face"""
