@@ -32,9 +32,11 @@ __url__ = ["http://www.sloan-home.co.uk/Export/Export.html"]
 import FreeCAD, os, Part, math
 from FreeCAD import Vector
 
-try: import FreeCADGui
-except ValueError: gui = False
-else: gui = True
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    gui = True
+else:
+    gui = False
 
 #***************************************************************************
 # Tailor following to your requirements ( Should all be strings )          *
