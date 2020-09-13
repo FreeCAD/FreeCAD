@@ -68,7 +68,7 @@ public:
     bool completerActive() const;
     void hideCompleter();
     void setNoProperty(bool enabled=true);
-    void setMatchExact(bool enabled=true);
+    void setExactMatch(bool enabled=true);
 Q_SIGNALS:
     void textChanged2(QString text, int pos);
 public Q_SLOTS:
@@ -76,11 +76,12 @@ public Q_SLOTS:
     void slotCompleteText(const QString & completionPrefix);
 protected:
     void keyPressEvent(QKeyEvent * event);
+    void contextMenuEvent(QContextMenuEvent * event);
 private:
     ExpressionCompleter * completer;
     bool block;
     bool noProperty;
-    bool matchExact;
+    bool exactMatch;
 };
 
 class GuiExport ExpressionTextEdit : public QPlainTextEdit {
@@ -90,9 +91,10 @@ public:
     void setDocumentObject(const App::DocumentObject *currentDocObj);
     bool completerActive() const;
     void hideCompleter();
-    void setMatchExact(bool enabled=true);
+    void setExactMatch(bool enabled=true);
 protected:
     void keyPressEvent(QKeyEvent * event);
+    void contextMenuEvent(QContextMenuEvent * event);
 Q_SIGNALS:
     void textChanged2(QString text, int pos);
 public Q_SLOTS:
@@ -101,7 +103,14 @@ public Q_SLOTS:
 private:
     ExpressionCompleter * completer;
     bool block;
-    bool matchExact;
+    bool exactMatch;
+};
+
+class GuiExport ExpressionParameter {
+public:
+    static ExpressionParameter *instance();
+    bool isCaseSensitive() const;
+    bool isExactMatch() const;
 };
 
 }

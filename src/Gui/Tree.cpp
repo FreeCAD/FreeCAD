@@ -2838,7 +2838,7 @@ TreePanel::TreePanel(const char *name, QWidget* parent)
             this, SLOT(showEditor()));
 
     this->searchBox = new Gui::ExpressionLineEdit(this,true);
-    static_cast<ExpressionLineEdit*>(this->searchBox)->setMatchExact(false);
+    static_cast<ExpressionLineEdit*>(this->searchBox)->setExactMatch(Gui::ExpressionParameter::instance()->isExactMatch());
     pLayout->addWidget(this->searchBox);
     this->searchBox->hide();
     this->searchBox->installEventFilter(this);
