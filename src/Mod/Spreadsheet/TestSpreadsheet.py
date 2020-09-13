@@ -1017,6 +1017,57 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         self.assertEqual(sheet.get('C1'), Units.Quantity('3 mm'))
 
+    def testInsertRowsAlias(self):
+        """ Regression test for issue 4429; insert rows to sheet with aliases"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A3', '1')
+        sheet.setAlias('A3', 'alias1')
+        sheet.set('A4', '=alias1 + 1')
+        sheet.setAlias('A4', 'alias2')
+        sheet.set('A5', '=alias2 + 1')
+        self.doc.recompute()
+        sheet.insertRows('1', 1)
+        self.doc.recompute()
+        self.assertEqual(sheet.A6, 3)
+
+    def testInsertColumnsAlias(self):
+        """ Regression test for issue 4429; insert columns to sheet with aliases"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('C1', '1')
+        sheet.setAlias('C1', 'alias1')
+        sheet.set('D1', '=alias1 + 1')
+        sheet.setAlias('D1', 'alias2')
+        sheet.set('E1', '=alias2 + 1')
+        self.doc.recompute()
+        sheet.insertColumns('A', 1)
+        self.doc.recompute()
+        self.assertEqual(sheet.F1, 3)
+
+    def testRemoveRowsAlias(self):
+        """ Regression test for issue 4429; remove rows from sheet with aliases"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A3', '1')
+        sheet.setAlias('A3', 'alias1')
+        sheet.set('A5', '=alias1 + 1')
+        sheet.setAlias('A5', 'alias2')
+        sheet.set('A4', '=alias2 + 1')
+        self.doc.recompute()
+        sheet.removeRows('1', 1)
+        self.doc.recompute()
+        self.assertEqual(sheet.A3, 3)
+
+    def testRemoveColumnsAlias(self):
+        """ Regression test for issue 4429; remove columns from sheet with aliases"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('C1', '1')
+        sheet.setAlias('C1', 'alias1')
+        sheet.set('E1', '=alias1 + 1')
+        sheet.setAlias('E1', 'alias2')
+        sheet.set('D1', '=alias2 + 1')
+        self.doc.recompute()
+        sheet.removeColumns('A', 1)
+        self.doc.recompute()
+        self.assertEqual(sheet.C1, 3)
 
     def tearDown(self):
         #closing doc
