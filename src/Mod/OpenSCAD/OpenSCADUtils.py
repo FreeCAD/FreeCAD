@@ -29,22 +29,22 @@ This Script includes various python helper functions that are shared across
 the module
 '''
 from exportCSG import mesh2polyhedron
-try:
-    from PySide import QtGui
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def translate(context, text):
-        "convenience function for Qt translator"
-        return QtGui.QApplication.translate(context, text, None, _encoding)
-except AttributeError:
-    def translate(context, text):
-        "convenience function for Qt translator"
+import FreeCAD, io
+
+if FreeCAD.GuiUp:
+    try:
         from PySide import QtGui
-        return QtGui.QApplication.translate(context, text, None)
-
-import io
+        _encoding = QtGui.QApplication.UnicodeUTF8
+        def translate(context, text):
+            "convenience function for Qt translator"
+            return QtGui.QApplication.translate(context, text, None, _encoding)
+    except AttributeError:
+        def translate(context, text):
+            "convenience function for Qt translator"
+            from PySide import QtGui
+            return QtGui.QApplication.translate(context, text, None)
 
 try:
-    import FreeCAD
     BaseError = FreeCAD.Base.FreeCADError
 except (ImportError, AttributeError):
     BaseError = RuntimeError
