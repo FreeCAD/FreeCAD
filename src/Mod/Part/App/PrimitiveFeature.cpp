@@ -564,12 +564,12 @@ Prism::Prism(void)
     ADD_PROPERTY_TYPE(Polygon, (6.0), "Prism", App::Prop_None, "Number of sides in the polygon, of the prism");
     ADD_PROPERTY_TYPE(Circumradius, (2.0), "Prism", App::Prop_None, "Circumradius (centre to vertex) of the polygon, of the prism");
     ADD_PROPERTY_TYPE(Height, (10.0f), "Prism", App::Prop_None, "The height of the prism");
-    ADD_PROPERTY_TYPE(FirstSkew, (0.0f), "Prism", App::Prop_None, "Angle in first direction");
-    ADD_PROPERTY_TYPE(SecondSkew, (0.0f), "Prism", App::Prop_None, "Angle in second direction");
+    ADD_PROPERTY_TYPE(FirstAngle, (0.0f), "Prism", App::Prop_None, "Angle in first direction");
+    ADD_PROPERTY_TYPE(SecondAngle, (0.0f), "Prism", App::Prop_None, "Angle in second direction");
     Polygon.setConstraints(&polygonRange);
     static const App::PropertyQuantityConstraint::Constraints angleConstraint = { -89.99999, 89.99999, 1.0 };
-    FirstSkew.setConstraints(&angleConstraint);
-    SecondSkew.setConstraints(&angleConstraint);
+    FirstAngle.setConstraints(&angleConstraint);
+    SecondAngle.setConstraints(&angleConstraint);
 }
 
 short Prism::mustExecute() const
@@ -580,9 +580,9 @@ short Prism::mustExecute() const
         return 1;
     if (Height.isTouched())
         return 1;
-    if (FirstSkew.isTouched())
+    if (FirstAngle.isTouched())
         return 1;
-    if (SecondSkew.isTouched())
+    if (SecondAngle.isTouched())
         return 1;
     return Primitive::mustExecute();
 }
@@ -611,10 +611,10 @@ App::DocumentObjectExecReturn *Prism::execute(void)
         }
         mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
         BRepBuilderAPI_MakeFace mkFace(mkPoly.Wire());
-        // the direction vector for the prism is the height for z and the skew
+        // the direction vector for the prism is the height for z and the given angle
         BRepPrimAPI_MakePrism mkPrism(mkFace.Face(),
-            gp_Vec(Height.getValue() * tan(Base::toRadians<double>(FirstSkew.getValue())),
-                   Height.getValue() * tan(Base::toRadians<double>(SecondSkew.getValue())),
+            gp_Vec(Height.getValue() * tan(Base::toRadians<double>(FirstAngle.getValue())),
+                   Height.getValue() * tan(Base::toRadians<double>(SecondAngle.getValue())),
                    Height.getValue()));
         this->Shape.setValue(mkPrism.Shape());
     }
