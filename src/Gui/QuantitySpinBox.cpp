@@ -227,7 +227,20 @@ public:
                     state = QValidator::Intermediate;
                 }
                 else if (res.getUnit() != this->unit) {
-                    state = QValidator::Invalid;
+                    // If the user input is of the form "number * unit", "number + unit"
+                    // or "number - unit" it's rejected by the quantity parser and it's
+                    // assumed that the user input is not complete yet (Intermediate).
+                    // However, if the user input is of the form "number / unit" it's accepted
+                    // by the parser but because the units mismatch it's considered as invalid
+                    // and the last valid input will be restored.
+                    // See #0004422: PartDesign value input does not accept trailing slash
+                    // To work around this issue of the quantity parser it's checked if the
+                    // inversed unit matches and if yes the input is also considered as not
+                    // complete.
+                    if (res.getUnit().pow(-1) == this->unit)
+                        state = QValidator::Intermediate;
+                    else
+                        state = QValidator::Invalid;
                 }
                 else {
                     state = QValidator::Acceptable;
