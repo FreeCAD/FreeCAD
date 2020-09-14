@@ -142,6 +142,7 @@ SET(PathScripts_post_SRCS
     PathScripts/post/jtech_post.py
     PathScripts/post/linuxcnc_post.py
     PathScripts/post/mach3_mach4_post.py
+    PathScripts/post/nccad_post.py
     PathScripts/post/opensbp_post.py
     PathScripts/post/opensbp_pre.py
     PathScripts/post/philips_post.py
