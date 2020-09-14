@@ -229,6 +229,7 @@ generate_from_xml(SelectionObjectPy)
 generate_from_xml(LinkViewPy)
 generate_from_xml(ViewProviderLinkPy)
 generate_from_xml(AxisOriginPy)
+generate_from_xml(CommandPy)
 
 generate_from_py(FreeCADGuiInit GuiInitScript.h)
 
@@ -243,6 +244,7 @@ SET(FreeCADGui_XML_SRCS
     LinkViewPy.xml
     ViewProviderLinkPy.xml
     AxisOriginPy.xml
+    CommandPy.xml
 )
 SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
 
@@ -498,6 +500,7 @@ SET(Command_CPP_SRCS
     CommandView.cpp
     CommandStructure.cpp
     CommandLink.cpp
+    CommandPyImp.cpp
 )
 SET(Command_SRCS
     ${Command_CPP_SRCS}
@@ -1092,6 +1095,7 @@ SET(Inventor_CPP_SRCS
     SoAxisCrossKit.cpp
     SoTextLabel.cpp
     SoTouchEvents.cpp
+    SoMouseWheelEvent.cpp
     SoFCCSysDragger.cpp
 )
 SET(Inventor_SRCS
@@ -1118,6 +1122,7 @@ SET(Inventor_SRCS
     SoAxisCrossKit.h
     SoTextLabel.h
     SoTouchEvents.h
+    SoMouseWheelEvent.h
     SoFCCSysDragger.h
 )
 SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})

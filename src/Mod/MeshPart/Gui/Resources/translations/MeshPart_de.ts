@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation>Standardmesher verwenden</translation>
+      <translation>Standardnetzgenerator verwenden</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>

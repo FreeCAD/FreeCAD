@@ -200,6 +200,8 @@ DocumentRecovery::DocumentRecovery(const QList<QFileInfo>& dirs, QWidget* parent
             d_ptr->ui.treeWidget->addTopLevelItem(item);
         }
     }
+
+    this->adjustSize();
 }
 
 DocumentRecovery::~DocumentRecovery()

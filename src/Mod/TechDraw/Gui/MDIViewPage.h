@@ -64,7 +64,7 @@ public:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void preSelectionChanged(const QPoint &pos);
 
-    /// QGraphicsScene seletion routines
+    /// QGraphicsScene selection routines
     void selectQGIView(App::DocumentObject *obj, bool state);
     void clearSceneSelection();
     void blockSelection(bool isBlocked);

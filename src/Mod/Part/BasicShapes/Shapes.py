@@ -28,7 +28,6 @@ __doc__ = "Basic shapes"
 
 import FreeCAD
 from FreeCAD import Qt
-import FreeCADGui
 import Part
 import math
 import sys
@@ -48,29 +47,57 @@ class TubeFeature:
         obj.addProperty("App::PropertyLength","OuterRadius","Tube","Outer radius").OuterRadius = 5.0
         obj.addProperty("App::PropertyLength","InnerRadius","Tube","Inner radius").InnerRadius = 2.0
         obj.addProperty("App::PropertyLength","Height","Tube", "Height of the tube").Height = 10.0
+        obj.addExtension("Part::AttachExtensionPython", self)
 
     def execute(self, fp):
+        if fp.InnerRadius >= fp.OuterRadius:
+            raise ValueError("Inner radius must be smaller than outer radius")
         fp.Shape = makeTube(fp.OuterRadius, fp.InnerRadius, fp.Height)
 
 
-class _CommandMakeTube:
-    "Make tube command"
-    def GetResources(self):
-        return {'MenuText': Qt.QT_TRANSLATE_NOOP("Part_MakeTube","Create tube"),
-                'Accel': "",
-                'CmdType': "ForEdit",
-                'ToolTip': Qt.QT_TRANSLATE_NOOP("Part_MakeTube","Creates a tube")}
+# Only if GUI is running
+if FreeCAD.GuiUp:
+    import FreeCADGui
+
+
+    class ViewProviderTube:
+        def __init__(self, obj):
+            ''' Set this object to the proxy object of the actual view provider '''
+            obj.Proxy = self
+
+        def attach(self, obj):
+            ''' Setup the scene sub-graph of the view provider, this method is mandatory '''
+            return
+
+        def getIcon(self):
+            return ":/icons/Tree_Part_Tube_Parametric.svg"
+
+        def __getstate__(self):
+            return None
+
+        def __setstate__(self,state):
+            return None
+
+
+    class _CommandMakeTube:
+        "Make tube command"
+        def GetResources(self):
+            return {'MenuText': Qt.QT_TRANSLATE_NOOP("Part_MakeTube","Create tube"),
+                    'Accel': "",
+                    'CmdType': "AlterDoc:Alter3DView:AlterSelection",
+                    'Pixmap'  : ":/icons/Part_Tube.svg",
+                    'ToolTip': Qt.QT_TRANSLATE_NOOP("Part_MakeTube","Creates a tube")}
         
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create tube")
-        tube = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Tube")
-        TubeFeature(tube)
-        tube.ViewObject.Proxy = 0
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        def Activated(self):
+            FreeCAD.ActiveDocument.openTransaction("Create tube")
+            tube = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Tube")
+            TubeFeature(tube)
+            ViewProviderTube(tube.ViewObject)
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
 
-    def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        def IsActive(self):
+            return not FreeCAD.ActiveDocument is None
 
 
-FreeCADGui.addCommand('Part_MakeTube',_CommandMakeTube())
+    FreeCADGui.addCommand('Part_MakeTube',_CommandMakeTube())

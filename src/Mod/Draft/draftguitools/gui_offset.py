@@ -100,7 +100,11 @@ class Offset(gui_base_original.Modifier):
             self.dvec = None
             self.npts = None
             self.constrainSeg = None
+
             self.ui.offsetUi()
+            occmode = utils.param.GetBool("Offset_OCC", False)
+            self.ui.occOffset.setChecked(occmode)
+
             self.linetrack = trackers.lineTracker()
             self.faces = False
             self.shape = self.sel.Shape
@@ -180,6 +184,7 @@ class Offset(gui_base_original.Modifier):
                     a = -DraftVecUtils.angle(v1, v2)
                     self.dvec = DraftVecUtils.rotate(d, a, plane.axis)
                     occmode = self.ui.occOffset.isChecked()
+                    utils.param.SetBool("Offset_OCC", occmode)
                     _wire = DraftGeomUtils.offsetWire(self.shape,
                                                       self.dvec,
                                                       occ=occmode)
@@ -220,6 +225,7 @@ class Offset(gui_base_original.Modifier):
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 copymode = False
                 occmode = self.ui.occOffset.isChecked()
+                utils.param.SetBool("Offset_OCC", occmode)
                 if (gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT)
                         or self.ui.isCopy.isChecked()):
                     copymode = True
@@ -294,6 +300,7 @@ class Offset(gui_base_original.Modifier):
                 delta = DraftVecUtils.toString(self.dvec)
             copymode = False
             occmode = self.ui.occOffset.isChecked()
+            utils.param.SetBool("Offset_OCC", occmode)
             if self.ui.isCopy.isChecked():
                 copymode = True
             Gui.addModule("Draft")

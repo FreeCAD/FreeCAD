@@ -2,44 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="ru" sourcelanguage="en">
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="110"/>
-      <source>The objects that are part of this layer</source>
-      <translation>Объекты, которые являются частью этого слоя</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="147"/>
-      <source>If on, the child objects of this layer will match its visual aspects</source>
-      <translation>Если включено, то визуальные аспекты дочерних объектов этого слоя будут повторять его свойства</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="156"/>
-      <source>The line color of the children of this layer</source>
-      <translation>Цвет линии дочерних объектов этого слоя</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="162"/>
-      <source>The shape color of the children of this layer</source>
-      <translation>Цвет фигур дочерних объектов этого слоя</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="168"/>
-      <source>The line width of the children of this layer</source>
-      <translation>Ширина линии дочерних объектов этого слоя</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="174"/>
-      <source>The draw style of the children of this layer</source>
-      <translation>Стиль рисования дочерних объектов этого слоя</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="180"/>
-      <source>The transparency of the children of this layer</source>
-      <translation>Прозрачность дочерних объектов этого слоя</translation>
-    </message>
-  </context>
-  <context>
     <name>Dialog</name>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
@@ -239,7 +201,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
       <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
-      <translation type="unfinished">The distance that the extension lines are additionally extended beyond the dimension line</translation>
+      <translation>Расстояние на которое выносные линии дополнительно расширяют размерную линию</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
@@ -259,7 +221,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
       <source>The length of the extension lines</source>
-      <translation type="unfinished">The length of the extension lines</translation>
+      <translation>Длина выносных линий</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="404"/>
@@ -294,7 +256,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="../../InitGui.py" line="107"/>
       <source>Draft utility tools</source>
-      <translation type="unfinished">Draft utility tools</translation>
+      <translation>Инструменты верстака набросок</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="110"/>
@@ -642,9 +604,9 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
       <source>Sweeping angle of the polar distribution.
 A negative angle produces a polar pattern in the opposite direction.
 The maximum absolute value is 360 degrees.</source>
-      <translation type="unfinished">Sweeping angle of the polar distribution.
-A negative angle produces a polar pattern in the opposite direction.
-The maximum absolute value is 360 degrees.</translation>
+      <translation>Угол сектора круга.
+Отрицательное значение начертит чектор в противоположном направлении.
+Максимальное абсолютное значение составляет 360 градусов.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="180"/>
@@ -730,19 +692,6 @@ It must be at least 2.</source>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
       <translation>Сбросить точку</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="83"/>
-      <source>Layer</source>
-      <translation>Слой</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="84"/>
-      <source>Adds a layer</source>
-      <translation>Добавляет слой</translation>
     </message>
   </context>
   <context>
@@ -1963,19 +1912,18 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draft.ui" line="216"/>
       <source>Draft tools options</source>
-      <translation type="unfinished">Draft tools options</translation>
+      <translation>Настройки инструментов верстака набросок</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="230"/>
       <source>When drawing lines, set focus on Length instead of X coordinate.
 This allows to point the direction and type the distance.</source>
-      <translation type="unfinished">When drawing lines, set focus on Length instead of X coordinate.
-This allows to point the direction and type the distance.</translation>
+      <translation>При черчении линий, установить фокус на длине вместо координаты X. Это позволит указать направление и ввести расстояние.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="234"/>
       <source>Set focus on Length instead of X coordinate</source>
-      <translation type="unfinished">Set focus on Length instead of X coordinate</translation>
+      <translation>Установить фокус на длине вместо координаты X</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="250"/>
@@ -1986,29 +1934,26 @@ This allows to point the direction and type the distance.</translation>
       <location filename="../ui/preferences-draft.ui" line="263"/>
       <source>If this is checked, objects will appear as filled by default.
 Otherwise, they will appear as wireframe</source>
-      <translation type="unfinished">If this is checked, objects will appear as filled by default.
-Otherwise, they will appear as wireframe</translation>
+      <translation>Если этот параметр выбран, по умолчанию объекты будут отображаться как заполненные. В противном случае они будут отображаться как каркас</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="283"/>
       <source>Normally, after copying objects, the copies get selected.
 If this option is checked, the base objects will be selected instead.</source>
-      <translation type="unfinished">Normally, after copying objects, the copies get selected.
-If this option is checked, the base objects will be selected instead.</translation>
+      <translation>Как правило, после копирования объектов будут выбраны полученные копии. Если установить этот параметр, будут выбираться базовые объекты.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="300"/>
       <source>If this is checked, copy mode will be kept across command,
 otherwise commands will always start in no-copy mode</source>
-      <translation type="unfinished">If this is checked, copy mode will be kept across command,
-otherwise commands will always start in no-copy mode</translation>
+      <translation>Если выбран этот пункт, режим копирования будет применен для поледующих команд, в противном случае выполнение команд всегда будет начинаться без режима копирования</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="320"/>
       <source>Force Draft Tools to create Part primitives instead of Draft objects.
 Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</source>
-      <translation type="unfinished">Force Draft Tools to create Part primitives instead of Draft objects.
-Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</translation>
+      <translation>Заставить инструменты набросков создавать примитивы детали вместо объектов наброска.
+Обратите внимание, что это не полностью поддерживается, и многие объекты не будут редактироваться с помощью модификаторов верстака набросок.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="14"/>
@@ -2018,37 +1963,37 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="884"/>
       <source>Enable draft statusbar customization</source>
-      <translation type="unfinished">Enable draft statusbar customization</translation>
+      <translation>Включить настройку строки состояния верстака набросок</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="887"/>
       <source>Draft Statusbar</source>
-      <translation type="unfinished">Draft Statusbar</translation>
+      <translation>Строка состояния наброска</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="907"/>
       <source>Enable snap statusbar widget</source>
-      <translation type="unfinished">Enable snap statusbar widget</translation>
+      <translation>Включить привязку строки состояния</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="910"/>
       <source>Draft snap widget</source>
-      <translation type="unfinished">Draft snap widget</translation>
+      <translation>Привязка строки состояния наброска</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="926"/>
       <source>Enable draft statusbar annotation scale widget</source>
-      <translation type="unfinished">Enable draft statusbar annotation scale widget</translation>
+      <translation>Включить строку состояния отметки масштаба верстака набросок</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="929"/>
       <source>Annotation scale widget</source>
-      <translation type="unfinished">Annotation scale widget</translation>
+      <translation>Отметка масштаба</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="532"/>
       <source>Draft Edit preferences</source>
-      <translation type="unfinished">Draft Edit preferences</translation>
+      <translation>Изменить настройки Наброска</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="535"/>
@@ -2063,7 +2008,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="572"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Устанавливает максимальное количество одновременно редактируемых объектов наброска &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="610"/>
@@ -2097,9 +2042,8 @@ Note: C++ importer is faster, but is not as featureful yet</source>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet
       </source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet
-      </translation>
+      <translation>Использовать экспорт Python, иначе используется более новая версия C++.
+Примечание: экспортер C++ быстрее, но еще не является полнофункциональным      </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="88"/>
@@ -2182,7 +2126,7 @@ instead of the size they have in the DXF document</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="405"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation type="unfinished">If this is checked, DXF layers will be imported as Draft Layers</translation>
+      <translation>Импортировать слои DXF как слои наброска</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="408"/>
@@ -2204,8 +2148,8 @@ as closed wires with correct width</source>
       <location filename="../ui/preferences-dxf.ui" line="511"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
-      <translation type="unfinished">Maximum length of each of the polyline segments.
-If it is set to '0' the whole spline is treated as a straight segment.</translation>
+      <translation>Максимальная длина каждого из сегментов полилинии.
+Если задано значение «0», весь сплайн рассматривается как прямой отрезок.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="550"/>
@@ -2227,7 +2171,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
       <source>Method chosen for importing SVG object color to FreeCAD</source>
-      <translation type="unfinished">Method chosen for importing SVG object color to FreeCAD</translation>
+      <translation>Метод выбран для импорта SVG цвета объекта во FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="82"/>
@@ -2239,7 +2183,7 @@ One unit in the SVG file will translate as one millimeter. </source>
     <message>
       <location filename="../ui/preferences-svg.ui" line="128"/>
       <source>Style of SVG file to write when exporting a sketch</source>
-      <translation type="unfinished">Style of SVG file to write when exporting a sketch</translation>
+      <translation>Стиль SVG файла для записи при экспорте эскиза</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="158"/>
@@ -2251,9 +2195,9 @@ One unit in the SVG file will translate as one millimeter. </source>
       <source>Versions of Open CASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length. </source>
-      <translation type="unfinished">Versions of Open CASCADE older than version 6.8 don't support arc projection.
-In this case arcs will be discretized into small line segments.
-This value is the maximum segment length. </translation>
+      <translation>Версии Open CASCADE старее версии 6.8 не поддерживают дуги проекции.
+В этом случае дуги будут дискретизированы в маленькие сегменты.
+Это значение является максимальной длиной звена. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="310"/>
@@ -2284,7 +2228,7 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../../importSVG.py" line="1807"/>
       <source>Unknown SVG export style, switching to Translated</source>
-      <translation type="unfinished">Unknown SVG export style, switching to Translated</translation>
+      <translation>Неизвестный стиль экспорта SVG, переключение на Translated</translation>
     </message>
   </context>
   <context>
@@ -2853,21 +2797,6 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Установите флажок, если объект должен отображаться как заполненный, в противном случае он будет отображаться как каркас. Недоступно если включен параметр эскиза 'Использовать примитивы детали'</translation>
     </message>
     <message>
-      <location filename="../../DraftLayer.py" line="43"/>
-      <source>No active document. Aborting</source>
-      <translation>Нет активного документа. Отмена</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="50"/>
-      <source>Layer</source>
-      <translation>Слой</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="71"/>
-      <source>Layers</source>
-      <translation>Слои</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Polyline</source>
       <translation>Ломаная линия</translation>
@@ -2880,7 +2809,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../DraftGui.py" line="74"/>
       <source>Toggle near snap on/off</source>
-      <translation type="unfinished">Toggle near snap on/off</translation>
+      <translation>Включить привязку вблизи</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="656"/>
@@ -2913,16 +2842,6 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Расстояние обрезки</translation>
     </message>
     <message>
-      <location filename="../../DraftLayer.py" line="334"/>
-      <source>Activate this layer</source>
-      <translation>Активировать этот слой</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="341"/>
-      <source>Select contents</source>
-      <translation>Выбрать содержимое</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Wire</source>
       <translation>Ломаная</translation>
@@ -2933,7 +2852,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../importOCA.py" line="359"/>
       <source>OCA error: couldn't determine character encoding</source>
-      <translation type="unfinished">OCA error: couldn't determine character encoding</translation>
+      <translation>Ошибка OCA: не удалось определить кодировку символов</translation>
     </message>
     <message>
       <location filename="../../importOCA.py" line="445"/>

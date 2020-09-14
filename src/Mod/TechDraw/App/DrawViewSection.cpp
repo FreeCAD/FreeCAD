@@ -869,6 +869,14 @@ int DrawViewSection::prefCutSurface(void) const
     return result;
 }
 
+bool DrawViewSection::showSectionEdges(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    return (hGrp->GetBool("ShowSectionEdges", true));
+}
+
+
 void DrawViewSection::onDocumentRestored() 
 {
 //    Base::Console().Message("DVS::onDocumentRestored()\n");

@@ -3800,7 +3800,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                                                    style='STANDARD',
                                                    layer=getStrGroup(ob)))
 
-                elif Draft.getType(ob) == "DraftText":
+                elif Draft.getType(ob) in ("DraftText","Text"):
                     # texts
                     if gui:
                         height = float(ob.ViewObject.FontSize)

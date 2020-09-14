@@ -16,7 +16,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="177"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation>Preklopi med prikazanim in skritim glavnikom krivulje za vse B-zlepke</translation>
+      <translation>Preklopi med prikazanim in skritim glavnikom ukrivljenosti za vse B-zlepke</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="210"/>
       <source>Show/Hide B-spline knot multiplicity</source>
-      <translation>Prikaži/skrij mnogokratnost vozla B-zlepka</translation>
+      <translation>Prikaži/skrij večkratnost vozla B-zlepka</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="211"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation>Preklopi med prikazano in skrito mnogokratnostjo vozla za vse B-zlepke</translation>
+      <translation>Preklopi med prikazano in skrito večkratnostjo vozla za vse B-zlepke</translation>
     </message>
   </context>
   <context>
@@ -158,7 +158,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="326"/>
       <source>Show/Hide B-spline knot multiplicity</source>
-      <translation>Prikaži/skrij mnogokratnost vozla B-zlepka</translation>
+      <translation>Prikaži/skrij večkratnost vozla B-zlepka</translation>
     </message>
   </context>
   <context>
@@ -387,22 +387,22 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="796"/>
       <source>Modify knot multiplicity</source>
-      <translation>Spremeni mnogokratnost vozla</translation>
+      <translation>Spremeni večkratnost vozla</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="797"/>
       <source>Modifies the multiplicity of the selected knot of a B-spline</source>
-      <translation>Spremeni mnogokratnost izbranih vozlov B-zlepka</translation>
+      <translation>Spremeni večkratnost izbranih vozlov B-zlepka</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="859"/>
       <source>Increase knot multiplicity</source>
-      <translation>Povečaj mnogokratnost vozla</translation>
+      <translation>Povečaj večkratnost vozla</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="863"/>
       <source>Decrease knot multiplicity</source>
-      <translation>Zmanjšaj mnogokratnost vozla</translation>
+      <translation>Zmanjšaj večkratnost vozla</translation>
     </message>
   </context>
   <context>
@@ -726,7 +726,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="6578"/>
       <source>Create a symmetry constraint between two points with respect to a line or a third point</source>
-      <translation>Ustvari simetrično omejitev med dvema točkama glede na črto ali tretjo točko</translation>
+      <translation>Ustvari omejitev somernosti med dvema točkama glede na črto ali tretjo točko</translation>
     </message>
   </context>
   <context>
@@ -1153,12 +1153,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1384"/>
       <source>Create polyline</source>
-      <translation>Ustvari lomljenko</translation>
+      <translation>Ustvari črtovje</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1385"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
-      <translation>Ustvari lomljenko v skici. Tipka 'M' preklaplja vedenje.</translation>
+      <translation>Ustvari črtovje v očrtu. Tipka 'M' preklaplja med obnašanji</translation>
     </message>
   </context>
   <context>
@@ -1279,28 +1279,28 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="652"/>
       <source>Decrease multiplicity</source>
-      <translation>Zmanjšaj mnogokratnost</translation>
+      <translation>Zmanjšaj večkratnost</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="653"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Zmanjša mnogokratnost izbranih vozlov B-zlepka</translation>
+      <translation>Zmanjša večkratnost izbranih vozlov B-zlepka</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherDeleteAllConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1999"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1997"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2000"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1998"/>
       <source>Delete All Constraints</source>
       <translation>Izbriši Vse Omejitve</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2001"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1999"/>
       <source>Deletes all the constraints</source>
       <translation>Izbriše vse omejitve</translation>
     </message>
@@ -1308,17 +1308,17 @@
   <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1936"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1934"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1937"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1935"/>
       <source>Delete All Geometry</source>
       <translation>Izbriši Vso Geometrijo</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1938"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1936"/>
       <source>Deletes all the geometry and constraints but external geometry</source>
       <translation>Izbriše vso geometrijo in omejitve razen zunanje geometrije</translation>
     </message>
@@ -1405,12 +1405,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="495"/>
       <source>Increase knot multiplicity</source>
-      <translation>Povečaj mnogokratnost vozla</translation>
+      <translation>Povečaj večkratnost vozla</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="496"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Poveča mnogokratnost izbranih vozlov B-zlepka</translation>
+      <translation>Poveča večkratnost izbranih vozlov B-zlepka</translation>
     </message>
   </context>
   <context>
@@ -1541,17 +1541,17 @@
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1797"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1795"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1796"/>
       <source>Rectangular Array</source>
       <translation>Pravokotni vzorec</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1799"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1797"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
       <translation>Ustvari pravokotni vzorec geometrije glede na zadnjo izbrano točko</translation>
     </message>
@@ -1770,12 +1770,12 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="912"/>
       <source>Symmetry</source>
-      <translation>Simetrija</translation>
+      <translation>Somernost</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="913"/>
       <source>Creates symmetric geometry with respect to the last selected line or point</source>
-      <translation>Ustvari simetrično geometrijo glede na zadnjo izbrano črto ali točko</translation>
+      <translation>Ustvari somerno geometrijo glede na zadnjo izbrano daljico ali točko</translation>
     </message>
   </context>
   <context>
@@ -1917,84 +1917,84 @@
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="370"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="372"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
       <translation>Napaka samodejne omejitve: Nerešljiva skica med uporabo omejitve sovpadanja.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="449"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="453"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
       <translation>Napaka samodejne omejitve: Nerešljiva skica med uporabo navpične/vodoravne omejitve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="644"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="650"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
       <translation>Napaka samodejne omejitve: Nerešljiva skica med uporabo enakostne omejitve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="698"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="704"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
       <translation>Napaka samodejne omejitve: Nerešljiva skica brez omejitev.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="735"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="741"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
       <translation>Napaka samodejne omejitve: Nerešljiva skica po uporabi vodoravne in navpične omejitve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="757"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="763"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
       <translation>Napaka samodejne omejitve: Nerešljiva skica po uporabi omejitve točka-na-točko.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="785"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="791"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
       <translation>Napaka samodejne omejitve: Nerešljiva skica po uporabi enakostne omejitve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1690"/>
+      <location filename="../../../App/SketchObject.cpp" line="1694"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Ni mogoče uganiti presečišča krivulj. Poskusite dodati omejitev sovpadanja med vozlišči krivulj, ki jih nameravate zaokrožiti.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5192"/>
+      <location filename="../../../App/SketchObject.cpp" line="5205"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
       <translation>Ta različica OCE/OCC ne podpira dela z vozli. Potrebuješ različico 6.9.0 ali višjo.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5196"/>
+      <location filename="../../../App/SketchObject.cpp" line="5209"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Kazalo geometrije B-zlepka (GeoID) je izven omejitev.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5199"/>
+      <location filename="../../../App/SketchObject.cpp" line="5212"/>
       <source>You are requesting no change in knot multiplicity.</source>
-      <translation>Ne zahtevate spremembe mnogoterosti vozla.</translation>
+      <translation>Ne zahtevate spremembe večkratnosti vozla.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5204"/>
+      <location filename="../../../App/SketchObject.cpp" line="5217"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Priskrbljeno kazalo geometrije (GeoId) ni krivulja B-zlepek.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5211"/>
+      <location filename="../../../App/SketchObject.cpp" line="5224"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Kazalo vozla je izven omejitev. Upoštevajte, da v skladu z OCC zapisom, ima prvi vozel indeks 1 in ne nič.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5218"/>
+      <location filename="../../../App/SketchObject.cpp" line="5231"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
-      <translation>Mnogoterost ne more biti povečana preko stopnje B-zlepka.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/SketchObject.cpp" line="5221"/>
-      <source>The multiplicity cannot be decreased beyond zero.</source>
-      <translation>Mnogoterost ne more biti zmanjšana pod ničlo.</translation>
+      <translation>Večkratnost ne more biti povečana preko stopnje B-zlepka.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5234"/>
+      <source>The multiplicity cannot be decreased beyond zero.</source>
+      <translation>Večkratnost ne more biti zmanjšana pod ničlo.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/SketchObject.cpp" line="5247"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
-      <translation>OCC ne more zmanjšati mnogoterosti znotraj največjega dopustnega odstopanja.</translation>
+      <translation>OCC ne more zmanjšati večkratnost znotraj največjega dopustnega odstopanja.</translation>
     </message>
   </context>
   <context>
@@ -2185,9 +2185,9 @@
       <location filename="../../CommandSketcherTools.cpp" line="1285"/>
       <location filename="../../CommandSketcherTools.cpp" line="1293"/>
       <location filename="../../CommandSketcherTools.cpp" line="1352"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1816"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1824"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1886"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1814"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1822"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1884"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="129"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="153"/>
@@ -2503,7 +2503,7 @@
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>perpendicular constraint</comment>
-      <translation>To je število načinov za uporabo te omejitve.
+      <translation>Obstaja veliko načinov za uporabo te omejitve.
 
 Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni točki, dve krivulji in točka.</translation>
     </message>
@@ -2551,7 +2551,7 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>tangent constraint</comment>
-      <translation>Obstaja veliko število načinov za uporabo te omejitve.
+      <translation>Obstaja veliko načinov za uporabo te omejitve.
 
 Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni točki, dve krivulji in točka.</translation>
     </message>
@@ -2673,7 +2673,7 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
       <location filename="../../CommandConstraints.cpp" line="6737"/>
       <location filename="../../CommandConstraints.cpp" line="6801"/>
       <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
-      <translation>Izberite dve točki in črto simetrije, dve točki in točko simetrije ali črto in točko simetrije na skici.</translation>
+      <translation>Izberite dve točki in somernico, dve točki in točko somernosti ali črto in točko somernosti na očrtu.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6651"/>
@@ -2681,7 +2681,7 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
       <location filename="../../CommandConstraints.cpp" line="6759"/>
       <location filename="../../CommandConstraints.cpp" line="6786"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
-      <translation>Omejitve simetrije ni mogoče dodati med črto in njenima končnima točkama!</translation>
+      <translation>Omejitve somernosti ni mogoče dodati med črto in njenima krajiščema!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6860"/>
@@ -2876,8 +2876,8 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
       <location filename="../../CommandSketcherTools.cpp" line="939"/>
       <location filename="../../CommandSketcherTools.cpp" line="1286"/>
       <location filename="../../CommandSketcherTools.cpp" line="1294"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1817"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1825"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1815"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1823"/>
       <source>Select elements from a single sketch.</source>
       <translation>Izberite elemente iz ene skice.</translation>
     </message>
@@ -2894,36 +2894,36 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1045"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
-      <translation>Simetrična konstrukcija zahteva vsaj dva geometrijska elementa z zadnjim geometrijskim elementom kot osnovo za simetrično konstrukcijo.</translation>
+      <translation>Vzpostavitev somernosti zahteva vsaj dve geometrijski prvini, pri čemer je zadnja geometrijskim prvina osnova za somerno konstrukcijo.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1051"/>
       <source>The last element must be a point or a line serving as reference for the symmetry construction.</source>
-      <translation>Zadnji element mora biti točka ali črta, ki služi kot osnova za simetrično konstrukcijo.</translation>
+      <translation>Zadnja prvina mora biti točka ali daljica, ki služi kot osnova za vzpostavitev somernosti.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1353"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1887"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1885"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Kopija zahteva vsaj en izbran nezunanji geometrijski element</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1950"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1948"/>
       <source>Delete All Geometry</source>
       <translation>Izbriši Vso Geometrijo</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1951"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1949"/>
       <source>Are you really sure you want to delete all the geometry and constraints?</source>
       <translation>Ali ste prepričani, da želite izbrisati vso geometrijo in omejitve?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2013"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2011"/>
       <source>Delete All Constraints</source>
       <translation>Izbriši Vse Omejitve</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2014"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2012"/>
       <source>Are you really sure you want to delete all the constraints?</source>
       <translation>Ali ste prepričani, da želite izbrisati vse omejitve?</translation>
     </message>
@@ -4327,104 +4327,104 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5611"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5615"/>
       <source>Edit sketch</source>
       <translation type="unfinished">Edit sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5625"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5629"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5626"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5630"/>
       <source>Do you want to close this dialog?</source>
       <translation type="unfinished">Do you want to close this dialog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5640"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5644"/>
       <source>Invalid sketch</source>
       <translation>Neveljavna skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5641"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5645"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Ali želite odprti orodje za preverjanje veljavnosti skic?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5642"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5646"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Skica je neveljavna in je ni mogoče urejati.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5824"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5828"/>
       <source>Please remove the following constraint:</source>
       <translation>Odstranite naslednjo omejitev:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5826"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5830"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Odstranite vsaj eno od naslednjih omejitev:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5842"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5846"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Odstranite naslednjo odvečno omejitev:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5844"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5848"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Odstranite naslednje odvečne omejitve:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5863"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5867"/>
       <source>Empty sketch</source>
       <translation>Prazna skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5870"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5874"/>
       <source>Over-constrained sketch </source>
       <translation>Skica s preveč omejitvami </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5871"/>
-      <location filename="../../ViewProviderSketch.cpp" line="5878"/>
-      <location filename="../../ViewProviderSketch.cpp" line="5886"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5875"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5882"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5890"/>
       <source>(click to select)</source>
       <translation>(kliknite za izbiro)</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5877"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5881"/>
       <source>Sketch contains conflicting constraints </source>
       <translation>Skica vsebuje omejitve v sporu </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5885"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5889"/>
       <source>Sketch contains redundant constraints </source>
       <translation>Skica vsebuje odvečne omejitve </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5896"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5900"/>
       <source>Fully constrained sketch</source>
       <translation>Popolnoma omejena skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5901"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5905"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom</source>
       <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5903"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5907"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom</source>
       <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5906"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5910"/>
       <source>Solved in %1 sec</source>
       <translation>Rešeno v %1 s</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5909"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5913"/>
       <source>Unsolved (%1 sec)</source>
       <translation>Ni rešeno (%1 s)</translation>
     </message>
@@ -4435,7 +4435,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandSketcherBSpline.cpp" line="323"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="324"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation>Preklopi med prikazanim in skritim glavnikom krivulje za vse B-zlepke</translation>
+      <translation>Preklopi med prikazanim in skritim glavnikom ukrivljenosti za vse B-zlepke</translation>
     </message>
   </context>
   <context>
@@ -4444,7 +4444,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandSketcherBSpline.cpp" line="864"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="865"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Zmanjša mnogokratnost izbranih vozlov B-zlepka</translation>
+      <translation>Zmanjša večkratnost izbranih vozlov B-zlepka</translation>
     </message>
   </context>
   <context>
@@ -4462,7 +4462,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandSketcherBSpline.cpp" line="860"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="861"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Poveča mnogokratnost izbranih vozlov B-zlepka</translation>
+      <translation>Poveča večkratnost izbranih vozlov B-zlepka</translation>
     </message>
   </context>
   <context>
@@ -4471,7 +4471,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="328"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation>Preklopi med prikazano in skrito mnogokratnostjo vozla za vse B-zlepke</translation>
+      <translation>Preklopi med prikazano in skrito večkratnostjo vozla za vse B-zlepke</translation>
     </message>
   </context>
   <context>
@@ -4486,8 +4486,8 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1609"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1610"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1607"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1608"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Ustvari klon geometrije glede na zadnjo izbrano točko</translation>
     </message>
@@ -4495,17 +4495,17 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_CompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1608"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1606"/>
       <source>Clone</source>
       <translation>Kloniraj</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1612"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1610"/>
       <source>Copy</source>
       <translation>Kopiraj</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1616"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1614"/>
       <source>Move</source>
       <translation>Premakni</translation>
     </message>
@@ -4531,8 +4531,8 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1613"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1614"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1611"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1612"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Ustvari preprosto kopijo geometrije glede na zadnjo izbrano točko</translation>
     </message>
@@ -4774,8 +4774,8 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
   <context>
     <name>Sketcher_Move</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1617"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1618"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1615"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1616"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Premakne geometrijo glede na zadnjo izbrano točko</translation>
     </message>

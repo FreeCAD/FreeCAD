@@ -2,44 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="ca" sourcelanguage="en">
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="110"/>
-      <source>The objects that are part of this layer</source>
-      <translation>Els objectes que formen part d'aquest lloc</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="147"/>
-      <source>If on, the child objects of this layer will match its visual aspects</source>
-      <translation>Si está activat, els objectes fill d'aquesta capa coincidiran amb els aspectes visuals</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="156"/>
-      <source>The line color of the children of this layer</source>
-      <translation>El color de línia dels fills d'aquesta capa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="162"/>
-      <source>The shape color of the children of this layer</source>
-      <translation>El color de forma dels fills d'aquesta capa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="168"/>
-      <source>The line width of the children of this layer</source>
-      <translation>L'amplada de la línia dels objectes renderitzats</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="174"/>
-      <source>The draw style of the children of this layer</source>
-      <translation>L'estil de dibuix dels fills d'aquesta capa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="180"/>
-      <source>The transparency of the children of this layer</source>
-      <translation>La transparencia dels fills d'aquesta capa</translation>
-    </message>
-  </context>
-  <context>
     <name>Dialog</name>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
@@ -733,19 +695,6 @@ It must be at least 2.</source>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
       <translation>Reiniciar Punt</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="83"/>
-      <source>Layer</source>
-      <translation>Capa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="84"/>
-      <source>Adds a layer</source>
-      <translation>Afegir capa</translation>
     </message>
   </context>
   <context>
@@ -2839,21 +2788,6 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongui Sí.</transla
       <translation>Marqui això si l'objecte te d'aparèixer com ple, cas contrari apareixerà com estructura filferro. No està disponible si l'opció de preferència de Draft 'Usar primitives de peça' està habilitada</translation>
     </message>
     <message>
-      <location filename="../../DraftLayer.py" line="43"/>
-      <source>No active document. Aborting</source>
-      <translation>No hi ha cap documento actiu. Sort-in</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="50"/>
-      <source>Layer</source>
-      <translation>Capa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="71"/>
-      <source>Layers</source>
-      <translation>Capes</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Polyline</source>
       <translation>Polilínia</translation>
@@ -2897,16 +2831,6 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongui Sí.</transla
       <location filename="../../DraftGui.py" line="949"/>
       <source>Trim distance</source>
       <translation>Distància de retall</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="334"/>
-      <source>Activate this layer</source>
-      <translation>Activa aquesta capa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="341"/>
-      <source>Select contents</source>
-      <translation>Seleccioneu el contingut</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>

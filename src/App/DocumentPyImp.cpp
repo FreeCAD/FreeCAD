@@ -200,11 +200,12 @@ PyObject*  DocumentPy::addObject(PyObject *args, PyObject *kwd)
 
     DocumentObject *pcFtr = 0;
 
-    if(!obj || !PyObject_IsTrue(attach)) {
+    if (!obj || !PyObject_IsTrue(attach)) {
         pcFtr = getDocumentPtr()->addObject(sType,sName,true,sViewType);
-    }else{
+    }
+    else {
         Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
-        if(base) {
+        if (base) {
             if (!base->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
                 delete base;
                 std::stringstream str;
@@ -227,16 +228,17 @@ PyObject*  DocumentPy::addObject(PyObject *args, PyObject *kwd)
                 }
                 pyftr.setAttr("Proxy", pyobj);
 
-                if(PyObject_IsTrue(attach)) {
+                if (PyObject_IsTrue(attach)) {
                     getDocumentPtr()->addObject(pcFtr,sName);
 
                     try {
                         Py::Callable method(pyobj.getAttr("attach"));
-                        if(!method.isNone()) {
+                        if (!method.isNone()) {
                             Py::TupleN arg(pyftr);
                             method.apply(arg);
                         }
-                    }catch (Py::Exception&) {
+                    }
+                    catch (Py::Exception&) {
                         Base::PyException e;
                         e.ReportException();
                     }
@@ -277,10 +279,11 @@ PyObject*  DocumentPy::removeObject(PyObject *args)
 
 
     DocumentObject *pcFtr = getDocumentPtr()->getObject(sName);
-    if(pcFtr) {
+    if (pcFtr) {
         getDocumentPtr()->removeObject( sName );
         Py_Return;
-    } else {
+    }
+    else {
         std::stringstream str;
         str << "No document object found with name '" << sName << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
@@ -295,20 +298,22 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
 
     std::vector<App::DocumentObject*> objs;
     bool single = false;
-    if(PySequence_Check(obj)) {
+    if (PySequence_Check(obj)) {
         Py::Sequence seq(obj);
-        for(size_t i=0;i<seq.size();++i) {
-            if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
+        for (size_t i=0;i<seq.size();++i) {
+            if (!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
                 return 0;
             }
             objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
         }
-    }else if(!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {
+    }
+    else if (!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {
         PyErr_SetString(PyExc_TypeError, 
             "Expect first argument to be either a document object or sequence of document objects");
         return 0;
-    }else {
+    }
+    else {
         objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
         single = true;
     }
@@ -319,10 +324,10 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
             return ret[0]->getPyObject();
 
         Py::Tuple tuple(ret.size());
-        for(size_t i=0;i<ret.size();++i) 
+        for (size_t i=0;i<ret.size();++i) 
             tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
         return Py::new_reference_to(tuple);
-    }PY_CATCH
+    } PY_CATCH
 }
 
 PyObject*  DocumentPy::importLinks(PyObject *args)
@@ -334,18 +339,18 @@ PyObject*  DocumentPy::importLinks(PyObject *args)
     std::vector<App::DocumentObject*> objs;
     if (PySequence_Check(obj)) {
         Py::Sequence seq(obj);
-        for(size_t i=0;i<seq.size();++i) {
-            if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
+        for (size_t i=0;i<seq.size();++i) {
+            if (!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
                 return 0;
             }
             objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
         }
     }
-    else if(obj == Py_None) {
+    else if (obj == Py_None) {
         // do nothing here
     }
-    else if(!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {
+    else if (!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {
         PyErr_SetString(PyExc_TypeError, 
             "Expect first argument to be either a document object or sequence of document objects");
         return 0;
@@ -354,17 +359,17 @@ PyObject*  DocumentPy::importLinks(PyObject *args)
         objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
     }
     
-    if(objs.empty())
+    if (objs.empty())
         objs = getDocumentPtr()->getObjects();
 
     PY_TRY {
         auto ret = getDocumentPtr()->importLinks(objs);
 
         Py::Tuple tuple(ret.size());
-        for(size_t i=0;i<ret.size();++i) 
+        for (size_t i=0;i<ret.size();++i) 
             tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
         return Py::new_reference_to(tuple);
-    }PY_CATCH
+    } PY_CATCH
 }
 
 PyObject*  DocumentPy::moveObject(PyObject *args)
@@ -512,7 +517,7 @@ PyObject*  DocumentPy::getObject(PyObject *args)
     long id = -1;
     char *sName = 0;
     if (!PyArg_ParseTuple(args, "s",&sName))  {   // convert args: Python->C 
-        if(!PyArg_ParseTuple(args, "l", &id))
+        if (!PyArg_ParseTuple(args, "l", &id))
             return NULL;                             // NULL triggers exception 
     }
 
@@ -579,7 +584,7 @@ PyObject*  DocumentPy::findObjects(PyObject *args, PyObject *kwds)
 Py::Object DocumentPy::getActiveObject(void) const
 {
     DocumentObject *pcFtr = getDocumentPtr()->getActiveObject();
-    if(pcFtr)
+    if (pcFtr)
         return Py::Object(pcFtr->getPyObject(), true);
     return Py::None();
 }
@@ -799,8 +804,8 @@ PyObject* DocumentPy::getLinksTo(PyObject *args)
 
     PY_TRY {
         DocumentObject *obj = 0;
-        if(pyobj!=Py_None) {
-            if(!PyObject_TypeCheck(pyobj,&DocumentObjectPy::Type)) {
+        if (pyobj!=Py_None) {
+            if (!PyObject_TypeCheck(pyobj,&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect the first argument of type document object");
                 return 0;
             }
@@ -810,18 +815,18 @@ PyObject* DocumentPy::getLinksTo(PyObject *args)
         getDocumentPtr()->getLinksTo(links,obj,options,count);
         Py::Tuple ret(links.size());
         int i=0;
-        for(auto o : links) 
+        for (auto o : links) 
             ret.setItem(i++,Py::Object(o->getPyObject(),true));
         return Py::new_reference_to(ret);
-    }PY_CATCH
+    } PY_CATCH
 }
 
 Py::List DocumentPy::getInList(void) const
 {
     Py::List ret;
     auto lists = PropertyXLink::getDocumentInList(getDocumentPtr());
-    if(lists.size()==1) {
-        for(auto doc : lists.begin()->second)
+    if (lists.size()==1) {
+        for (auto doc : lists.begin()->second)
             ret.append(Py::Object(doc->getPyObject(), true));
     }
     return ret;
@@ -831,8 +836,8 @@ Py::List DocumentPy::getOutList(void) const
 {
     Py::List ret;
     auto lists = PropertyXLink::getDocumentOutList(getDocumentPtr());
-    if(lists.size()==1) {
-        for(auto doc : lists.begin()->second)
+    if (lists.size()==1) {
+        for (auto doc : lists.begin()->second)
             ret.append(Py::Object(doc->getPyObject(), true));
     }
     return ret;
@@ -845,7 +850,7 @@ PyObject *DocumentPy::getDependentDocuments(PyObject *args) {
     PY_TRY {
         auto docs = getDocumentPtr()->getDependentDocuments(PyObject_IsTrue(sort));
         Py::List ret;
-        for(auto doc : docs)
+        for (auto doc : docs)
             ret.append(Py::Object(doc->getPyObject(), true));
         return Py::new_reference_to(ret);
     } PY_CATCH;

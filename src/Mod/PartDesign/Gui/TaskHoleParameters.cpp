@@ -99,11 +99,17 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     connect(ui->drillPointAngled, SIGNAL(clicked(bool)), this, SLOT(drillPointChanged()));
     connect(ui->DrillPointAngle, SIGNAL(valueChanged(double)), this, SLOT(drillPointAngledValueChanged(double)));
     connect(ui->Tapered, SIGNAL(clicked(bool)), this, SLOT(taperedChanged()));
+    connect(ui->Reversed, SIGNAL(clicked(bool)), this, SLOT(reversedChanged()));
     connect(ui->TaperedAngle, SIGNAL(valueChanged(double)), this, SLOT(taperedAngleChanged(double)));
 
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
     pcHole->updateProps();
+
+    ui->Reversed->blockSignals(true);
+    ui->Reversed->setChecked(pcHole->Reversed.getValue());
+    ui->Reversed->blockSignals(false);
+
     vp->show();
 
     ui->ThreadPitch->bind(pcHole->ThreadPitch);
@@ -254,6 +260,14 @@ void TaskHoleParameters::taperedChanged()
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
     pcHole->Tapered.setValue(ui->Tapered->isChecked());
+    recomputeFeature();
+}
+
+void TaskHoleParameters::reversedChanged()
+{
+    PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
+
+    pcHole->Reversed.setValue(ui->Reversed->isChecked());
     recomputeFeature();
 }
 

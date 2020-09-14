@@ -87,14 +87,14 @@
     <message>
       <location filename="../../Command.cpp" line="1448"/>
       <source>Decimation...</source>
-      <translation type="unfinished">Decimation...</translation>
+      <translation>Dezimierung...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1449"/>
       <location filename="../../Command.cpp" line="1450"/>
       <location filename="../../Command.cpp" line="1451"/>
       <source>Decimates a mesh</source>
-      <translation type="unfinished">Decimates a mesh</translation>
+      <translation>Dezimiert ein Netz (die Anzahl der Knoten)</translation>
     </message>
   </context>
   <context>
@@ -721,12 +721,12 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
       <source>Decimating</source>
-      <translation type="unfinished">Decimating</translation>
+      <translation>Dezimierung</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
       <source>Reduction</source>
-      <translation>Reduzierung</translation>
+      <translation>Verringerung</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
@@ -736,13 +736,13 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
       <source>Full</source>
-      <translation>Voll</translation>
+      <translation>Vollständig</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
       <location filename="../../DlgDecimating.cpp" line="91"/>
       <source>Absolute number</source>
-      <translation type="unfinished">Absolute number</translation>
+      <translation>Absolute Anzahl</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
@@ -752,7 +752,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="85"/>
       <source>Absolute number (Maximum: %1)</source>
-      <translation type="unfinished">Absolute number (Maximum: %1)</translation>
+      <translation>Absolute Anzahl (Maximum: %1)</translation>
     </message>
   </context>
   <context>
@@ -1459,48 +1459,48 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="97"/>
+      <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
       <translation>Automatisch</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Adaptive</source>
       <translation>Adaptiv</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="100"/>
+      <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Frontal</source>
       <translation>Frontal</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="102"/>
+      <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal Quad</source>
       <translation>Frontales Quad</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Parallelograms</source>
       <translation>Parallelogramme</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="174"/>
-      <location filename="../../RemeshGmsh.cpp" line="230"/>
+      <location filename="../../RemeshGmsh.cpp" line="175"/>
+      <location filename="../../RemeshGmsh.cpp" line="231"/>
       <source>Time:</source>
       <translation>Zeit:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="219"/>
+      <location filename="../../RemeshGmsh.cpp" line="220"/>
       <source>Running gmsh...</source>
       <translation>Bearbeitung von gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="241"/>
+      <location filename="../../RemeshGmsh.cpp" line="242"/>
       <source>Failed to start</source>
       <translation>Start fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="248"/>
+      <location filename="../../RemeshGmsh.cpp" line="249"/>
       <source>Error</source>
       <translation>Fehlermeldungen</translation>
     </message>
@@ -1531,7 +1531,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="731"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>Fertig</translation>
     </message>

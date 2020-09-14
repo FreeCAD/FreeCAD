@@ -249,8 +249,14 @@ def makeLayer(name=None, linecolor=None, drawstyle=None,
     """Create a Layer. DEPRECATED. Use 'make_layer'."""
     utils.use_instead("make_layer")
 
+    if not drawstyle:
+        drawstyle = "Solid"
+
+    if not transparency:
+        transparency = 0
+
     return make_layer(name,
-                      linecolor, shapecolor,
+                      line_color=linecolor, shape_color=shapecolor,
                       draw_style=drawstyle, transparency=transparency)
 
 ## @}

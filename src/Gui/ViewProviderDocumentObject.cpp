@@ -71,19 +71,20 @@ PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 ViewProviderDocumentObject::ViewProviderDocumentObject()
   : pcObject(nullptr)
   , pcDocument(nullptr)
-  , _UpdatingView(false)
 {
-    ADD_PROPERTY(DisplayMode,((long)0));
-    ADD_PROPERTY(Visibility,(true));
-    ADD_PROPERTY(ShowInTree,(true));
-
-    ADD_PROPERTY(SelectionStyle,((long)0));
+    static const char *dogroup = "Display Options";
+    static const char *sgroup = "Selection";
+    
+    ADD_PROPERTY_TYPE(DisplayMode, ((long)0), dogroup, App::Prop_None, "Set the display mode");
+    ADD_PROPERTY_TYPE(Visibility, (true), dogroup, App::Prop_None, "Show the object in the 3d view");
+    ADD_PROPERTY_TYPE(ShowInTree, (true), dogroup, App::Prop_None, "Show the object in the tree view");
+    
+    ADD_PROPERTY_TYPE(SelectionStyle, ((long)0), sgroup, App::Prop_None, "Set the object selection style");
     static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
     SelectionStyle.setEnums(SelectionStyleEnum);
 
     static const char* OnTopEnum[]= {"Disabled","Enabled","Object","Element",NULL};
-    ADD_PROPERTY(OnTopWhenSelected,((long int)0));
-    ADD_PROPERTY_TYPE(OnTopWhenSelected,((long int)0), "Base", App::Prop_None, 
+    ADD_PROPERTY_TYPE(OnTopWhenSelected,((long int)0), sgroup, App::Prop_None,
             "Enabled: Display the object on top of any other object when selected\n"
             "Object: On top only if the whole object is selected\n"
             "Element: On top only if some sub-element of the object is selected");
@@ -232,6 +233,32 @@ void ViewProviderDocumentObject::hide(void)
         Visibility.setValue(false);
         Visibility.setStatus(App::Property::User2, false);
     }
+}
+
+bool ViewProviderDocumentObject::isShowable() const
+{
+    return _Showable;
+}
+
+void ViewProviderDocumentObject::setShowable(bool enable)
+{
+    if (_Showable == enable)
+        return;
+
+    _Showable = enable;
+    int which = getModeSwitch()->whichChild.getValue();
+    if (_Showable && which == -1 && Visibility.getValue()) {
+        setModeSwitch();
+    }
+    else if (!_Showable) {
+        if (which >= 0)
+            ViewProvider::hide();
+    }
+}
+
+void ViewProviderDocumentObject::setModeSwitch() {
+    if(isShowable())
+        ViewProvider::setModeSwitch();
 }
 
 void ViewProviderDocumentObject::show(void)

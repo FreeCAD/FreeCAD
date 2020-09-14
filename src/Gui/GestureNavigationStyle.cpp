@@ -301,16 +301,6 @@ public:
             return transit<NS::AwaitingReleaseState>();
         }
 
-        //wheel events
-        if(ev.isMouseButtonEvent() && ev.asMouseButtonEvent()->getButton() == SoMouseButtonEvent::BUTTON4){
-            ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), true, posn);
-            ev.flags->processed = true;
-        }
-        if(ev.isMouseButtonEvent() && ev.asMouseButtonEvent()->getButton() == SoMouseButtonEvent::BUTTON5){
-            ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), false, posn);
-            ev.flags->processed = true;
-        }
-
         //touchscreen gestures
         if(ev.isGestureActive()){
             ev.flags->processed = true;
@@ -329,12 +319,12 @@ public:
                 break;
                 case SoKeyboardEvent::PAGE_UP:
                     if(!press){
-                        ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), true, posn);
+                        ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), ns.getDelta(), posn);
                     }
                 break;
                 case SoKeyboardEvent::PAGE_DOWN:
                     if(!press){
-                        ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), false, posn);
+                        ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), -ns.getDelta(), posn);
                     }
                 break;
                 default:

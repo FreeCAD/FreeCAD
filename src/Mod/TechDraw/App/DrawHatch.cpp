@@ -266,9 +266,12 @@ std::string DrawHatch::prefSvgHatch(void)
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
     std::string defaultFileName = defaultDir + "simple.svg";
-    std::string result = hGrp->GetASCII("FileHatch",defaultFileName.c_str());
-    if (result.empty()) {
+    std::string prefHatchFile = hGrp->GetASCII("FileHatch",defaultFileName.c_str());
+    std::string result = prefHatchFile;
+    Base::FileInfo fi(result);
+    if (!fi.isReadable()) {
         result = defaultFileName;
+        Base::Console().Warning("Svg Hatch File: %s is not readable\n", prefHatchFile.c_str());
     }
     return result;
 }

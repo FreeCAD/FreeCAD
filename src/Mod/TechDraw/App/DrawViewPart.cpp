@@ -132,6 +132,7 @@ DrawViewPart::DrawViewPart(void) :
     static const char *group = "Projection";
     static const char *sgroup = "HLR Parameters";
     nowUnsetting = false;
+    m_handleFaces = false;
 
     CosmeticExtension::initExtension(this);
 
@@ -169,7 +170,6 @@ DrawViewPart::DrawViewPart(void) :
     ADD_PROPERTY_TYPE(IsoCount ,(prefIsoCount()),sgroup,App::Prop_None,"Number of iso parameters lines");
 
     geometryObject = nullptr;
-    getRunControl();
     //initialize bbox to non-garbage
     bbox = Base::BoundBox3d(Base::Vector3d(0.0, 0.0, 0.0), 0.0);
 }
@@ -951,22 +951,11 @@ const std::vector<TechDraw::BaseGeom  *> DrawViewPart::getVisibleFaceEdges() con
     return geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
 }
 
-void DrawViewPart::getRunControl()
+bool DrawViewPart::handleFaces(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    m_sectionEdges = hGrp->GetBool("ShowSectionEdges", 0l);
-    m_handleFaces = hGrp->GetBool("HandleFaces", 1l);
-}
-
-bool DrawViewPart::handleFaces(void)
-{
-    return m_handleFaces;
-}
-
-bool DrawViewPart::showSectionEdges(void)
-{
-    return m_sectionEdges;
+    return hGrp->GetBool("HandleFaces", 1l);
 }
 
 //! remove features that are useless without this DVP
@@ -1302,7 +1291,7 @@ void DrawViewPart::refreshCEGeoms(void)
     std::vector<TechDraw::BaseGeom *> gEdges = getEdgeGeometry();
     std::vector<TechDraw::BaseGeom *> oldGEdges;
     for (auto& ge :gEdges) {
-        if (ge->getCosmeticTag().empty()) {       //keep only non-ce edges
+        if (ge->source() != SourceType::COSEDGE)  {
             oldGEdges.push_back(ge);
         }
     }
@@ -1340,8 +1329,7 @@ void DrawViewPart::refreshCLGeoms(void)
     std::vector<TechDraw::BaseGeom *> gEdges = getEdgeGeometry();
     std::vector<TechDraw::BaseGeom *> newGEdges;
     for (auto& ge :gEdges) {
-        //TODO: this will keep CE & CL
-        if (ge->getCosmeticTag().empty()) {       //keep only non-cl edges
+        if (ge->source() != SourceType::CENTERLINE)  {
             newGEdges.push_back(ge);
         }
     }

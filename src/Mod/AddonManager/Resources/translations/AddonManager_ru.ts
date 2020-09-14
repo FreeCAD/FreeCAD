@@ -49,7 +49,7 @@
     <message>
       <location filename="../../AddonManager.py" line="253"/>
       <source>update(s)</source>
-      <translation>обновления</translation>
+      <translation>обновление (обновления)</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="256"/>
@@ -239,7 +239,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="285"/>
       <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</translation>
+      <translation>Что-то пошло не так при запросе макроса с сайта Git. Возможно исполняемый файл Git не находится в нужном месте</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="455"/>
@@ -362,12 +362,6 @@ installed addons will be checked for available updates
       <translation>Автоматически проверять обновления при запуске (требуется GitPython)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="42"/>
-      <source>You can use this window to specify additional addon repositories
-sto be scanned for available addons</source>
-      <translation>Вы можете использовать это окно для указания дополнительных репозиториев дополнений для сканирования доступных дополнений</translation>
-    </message>
-    <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
       <translation>Прокси-сервер </translation>
@@ -396,6 +390,13 @@ sto be scanned for available addons</source>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the Addon Manager</source>
       <translation>Закрыть Менеджер дополнений</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="42"/>
+      <source>You can use this window to specify additional addon repositories
+to be scanned for available addons</source>
+      <translation>Вы можете использовать это окно для указания дополнительных репозиториев дополнений
+для сканирования доступных дополнений</translation>
     </message>
   </context>
   <context>

@@ -239,32 +239,32 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="285"/>
       <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</translation>
+      <translation>Git マクロの取得に問題が発生しました。おそらく Git 実行ファイルがパス中にありません。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="455"/>
       <source>This addon is marked as Python 2 Only</source>
-      <translation type="unfinished">This addon is marked as Python 2 Only</translation>
+      <translation>このアドオンは Python 2 専用として記されています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="456"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
-      <translation type="unfinished">This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</translation>
+      <translation>このワークベンチは保守されておらず、Python 3 システムにインストールすると起動時や使用中にエラーが発生する可能性が高くなります。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="625"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested updating a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>ユーザーが Python 3 を実行しているシステムで Python 2 用ワークベンチの更新を要求しました - </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="653"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
-      <translation type="unfinished">Workbench successfully updated. Please restart FreeCAD to apply the changes.</translation>
+      <translation>ワークベンチの更新が成功しました。 FreeCADを再起動して変更を有効にしてください。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="659"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested installing a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>ユーザーが Python 3 を実行しているシステムで Python 2 用ワークベンチのインストールを要求しました - </translation>
     </message>
   </context>
   <context>
@@ -362,12 +362,6 @@ installed addons will be checked for available updates
       <translation>開始時に更新を自動確認 （GitPython が必要）</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="42"/>
-      <source>You can use this window to specify additional addon repositories
-sto be scanned for available addons</source>
-      <translation>このウィンドウを使用して利用可能なアドオンとしてスキャンされる追加アドオン・レポジトリーを指定できます</translation>
-    </message>
-    <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
       <translation>プロキシ </translation>
@@ -390,12 +384,18 @@ sto be scanned for available addons</source>
     <message>
       <location filename="../../AddonManager.ui" line="14"/>
       <source>Addon Manager</source>
-      <translation type="unfinished">Addon Manager</translation>
+      <translation>アドオン・マネージャー</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the Addon Manager</source>
-      <translation type="unfinished">Close the Addon Manager</translation>
+      <translation>アドオン・マネージャーを閉じる</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="42"/>
+      <source>You can use this window to specify additional addon repositories
+to be scanned for available addons</source>
+      <translation>このウィンドウを使用して、利用可能なアドオンをスキャンさせる追加のアドオン・レポジトリーを指定できます</translation>
     </message>
   </context>
   <context>

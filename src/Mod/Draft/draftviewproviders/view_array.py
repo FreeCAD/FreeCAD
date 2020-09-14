@@ -46,6 +46,8 @@ class ViewProviderDraftArray(ViewProviderDraft):
                 return ":/icons/Draft_CircularArray.svg"
         elif hasattr(self.Object, "PointList"):
             return ":/icons/Draft_PointArray.svg"
+        elif self.Object.Proxy.Type == "PathTwistedArray":
+            return ":/icons/Draft_PathTwistedArray.svg"
         else:
             return ":/icons/Draft_PathArray.svg"
 

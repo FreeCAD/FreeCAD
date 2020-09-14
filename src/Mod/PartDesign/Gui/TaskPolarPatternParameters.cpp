@@ -119,13 +119,15 @@ void TaskPolarPatternParameters::setupUI()
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(ui->listWidgetFeatures->model(),
+        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
     updateViewTimer->setInterval(getUpdateViewTimeout());
-
     connect(updateViewTimer, SIGNAL(timeout()),
             this, SLOT(onUpdateViewTimer()));
+    
     connect(ui->comboAxis, SIGNAL(activated(int)),
             this, SLOT(onAxisChanged(int)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),

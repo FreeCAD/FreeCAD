@@ -803,8 +803,6 @@ protected:
      */
     std::vector<std::vector<SketcherGui::SelType> > allowedSelSequences;
 
-    const char** constraintCursor = 0;
-
     virtual void applyConstraint(std::vector<SelIdPair> &, int) {}
     virtual void activated(int /*iMsg*/);
     virtual bool isActive(void)
@@ -813,49 +811,11 @@ protected:
 
 extern char cursor_crosshair_color[];
 
-/* XPM */
-static const char *cursor_genericconstraint[]={
-"32 32 2 1",
-"  c None",
-cursor_crosshair_color,
-"      +                         ",
-"      +                         ",
-"      +                         ",
-"      +                         ",
-"      +                         ",
-"                                ",
-"+++++   +++++                   ",
-"                                ",
-"      +                         ",
-"      +                         ",
-"      +                         ",
-"      +                         ",
-"      +                         ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",};
-
 class DrawSketchHandlerGenConstraint: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerGenConstraint(const char* cursor[], CmdSketcherConstraint *_cmd)
-        : constraintCursor(cursor), cmd(_cmd), seqIndex(0) {}
+    DrawSketchHandlerGenConstraint(CmdSketcherConstraint *_cmd)
+        : cmd(_cmd), seqIndex(0) {}
     virtual ~DrawSketchHandlerGenConstraint()
     {
         Gui::Selection().rmvSelectionGate();
@@ -872,17 +832,25 @@ public:
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(selFilterGate);
 
-        setCrosshairColor();
-
         // Constrain icon size in px
-        int iconSize = 16;
-        QPixmap cursorPixmap(cursor_genericconstraint),
-                icon = Gui::BitmapFactory().pixmap(cmd->sPixmap).scaledToWidth(iconSize);
+        qreal pixelRatio = devicePixelRatio();
+        const unsigned long defaultCrosshairColor = 0xFFFFFF;
+        unsigned long color = getCrosshairColor();
+        auto colorMapping = std::map<unsigned long, unsigned long>();
+        colorMapping[defaultCrosshairColor] = color;
+
+        qreal fullIconWidth = 32 * pixelRatio;
+        qreal iconWidth = 16 * pixelRatio;
+        QPixmap cursorPixmap = Gui::BitmapFactory().pixmapFromSvg("Sketcher_Crosshair", QSizeF(fullIconWidth, fullIconWidth), colorMapping),
+                icon = Gui::BitmapFactory().pixmapFromSvg(cmd->sPixmap, QSizeF(iconWidth, iconWidth));
         QPainter cursorPainter;
         cursorPainter.begin(&cursorPixmap);
-        cursorPainter.drawPixmap(16, 16, icon);
+        cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
         cursorPainter.end();
-        setCursor(cursorPixmap, 7, 7);
+#if QT_VERSION >= 0x050000
+        cursorPixmap.setDevicePixelRatio(pixelRatio);
+#endif
+        setCursor(cursorPixmap, 7 * pixelRatio, 7 * pixelRatio, false);
     }
 
     virtual void mouseMove(Base::Vector2d /*onSketchPos*/) {}
@@ -983,7 +951,6 @@ public:
     }
 
 protected:
-    const char** constraintCursor;
     CmdSketcherConstraint* cmd;
 
     GenericConstraintSelection* selFilterGate = nullptr;
@@ -1018,50 +985,11 @@ protected:
 void CmdSketcherConstraint::activated(int /*iMsg*/)
 {
     ActivateHandler(getActiveGuiDocument(),
-            new DrawSketchHandlerGenConstraint(constraintCursor, this));
+            new DrawSketchHandlerGenConstraint(this));
     getSelection().clearSelection();
 }
 
 // ============================================================================
-
-/* XPM */
-static const char *cursor_createhoriconstraint[]={
-"32 32 3 1",
-"+ c white",
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+......#..........#.......",
-".............#..........#.......",
-".............#..........#.......",
-".............#..........#.......",
-".............#..........#.......",
-".............#..........#.......",
-".............############.......",
-".............#..........#.......",
-".............#..........#.......",
-".............#..........#.......",
-".............#..........#.......",
-".............#..........#.......",
-".............#..........#.......",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
 
 class CmdSketcherConstrainHorizontal : public CmdSketcherConstraint
 {
@@ -1090,7 +1018,6 @@ CmdSketcherConstrainHorizontal::CmdSketcherConstrainHorizontal()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelEdge}};
-    constraintCursor = cursor_createhoriconstraint;
 }
 
 void CmdSketcherConstrainHorizontal::activated(int iMsg)
@@ -1107,7 +1034,7 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                    new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                    new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1272,44 +1199,6 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
 
 // ================================================================================
 
-static const char *cursor_createvertconstraint[]={
-"32 32 3 1",
-"+ c white",
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+......#..........#.......",
-".............#..........#.......",
-".............#..........#.......",
-".............#..........#.......",
-".............#..........#.......",
-".............#..........#.......",
-".............#..........#.......",
-".............#..........#.......",
-"..............#........#........",
-"...............#......#.........",
-"................#....#..........",
-".................#..#...........",
-"..................##............",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
 class CmdSketcherConstrainVertical : public CmdSketcherConstraint
 {
 public:
@@ -1337,7 +1226,6 @@ CmdSketcherConstrainVertical::CmdSketcherConstrainVertical()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelEdge}};
-    constraintCursor = cursor_createvertconstraint;
 }
 
 void CmdSketcherConstrainVertical::activated(int iMsg)
@@ -1354,7 +1242,7 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1516,45 +1404,6 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
 
 // ======================================================================================
 
-/* XPM */
-static const char *cursor_createlock[]={
-"32 32 3 1",
-"+ c white",
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+..........###............",
-"................######..........",
-"...............##....##.........",
-"..............##......##........",
-"..............##......##........",
-".............############.......",
-".............############.......",
-".............############.......",
-".............############.......",
-".............############.......",
-".............############.......",
-".............############.......",
-".............############.......",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
 class CmdSketcherConstrainLock : public CmdSketcherConstraint
 {
 public:
@@ -1581,7 +1430,6 @@ CmdSketcherConstrainLock::CmdSketcherConstrainLock()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelVertex}};
-    constraintCursor = cursor_createlock;
 }
 
 void CmdSketcherConstrainLock::activated(int iMsg)
@@ -1598,7 +1446,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1777,45 +1625,6 @@ void CmdSketcherConstrainLock::updateAction(int mode)
 
 // ======================================================================================
 
-/* XPM */
-static const char *cursor_createblock[]={
-    "32 32 3 1",
-    "+ c white",
-    "# c red",
-    ". c None",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "................................",
-    "+++++...+++++...................",
-    "................................",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "......+..........###............",
-    "....................##..........",
-    ".....................##.........",
-    "......................##........",
-    "......................##........",
-    ".............############.......",
-    ".............###########........",
-    ".............##########.........",
-    ".............########...........",
-    ".............#######............",
-    ".............########...........",
-    ".............##########.........",
-    ".............###########........",
-    ".............############.......",
-    "......................##........",
-    "......................##........",
-    ".....................##.........",
-    "....................##..........",
-    ".................###............",
-    "................................"};
-
 class CmdSketcherConstrainBlock : public CmdSketcherConstraint
 {
 public:
@@ -1841,7 +1650,6 @@ CmdSketcherConstrainBlock::CmdSketcherConstrainBlock()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelEdge}};
-    constraintCursor = cursor_createblock;
 }
 
 void CmdSketcherConstrainBlock::activated(int iMsg)
@@ -1858,7 +1666,7 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                            new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                            new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -2147,7 +1955,6 @@ CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex}};
-    constraintCursor = cursor_createcoincident;
 }
 
 void CmdSketcherConstrainCoincident::activated(int iMsg)
@@ -2164,7 +1971,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
@@ -2339,7 +2146,6 @@ CmdSketcherConstrainDistance::CmdSketcherConstrainDistance()
                            {SelEdge}, {SelExternalEdge},
                            {SelVertex, SelEdgeOrAxis}, {SelRoot, SelEdge},
                            {SelVertex, SelExternalEdge}, {SelRoot, SelExternalEdge}};
-    constraintCursor = cursor_genericconstraint;
 }
 
 void CmdSketcherConstrainDistance::activated(int iMsg)
@@ -2355,7 +2161,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                new DrawSketchHandlerGenConstraint(this));
 
             getSelection().clearSelection();
         }
@@ -2650,45 +2456,6 @@ void CmdSketcherConstrainDistance::updateAction(int mode)
 
 // ======================================================================================
 
-/* XPM */
-static const char * cursor_createpointonobj[] = {
-"32 32 3 1",
-" 	c None",
-".	c #FFFFFF",
-"+	c #FF0000",
-"      .                         ",
-"      .                     ++++",
-"      .                   ++++++",
-"      .                +++++++  ",
-"      .              ++++++     ",
-"                   ++++++       ",
-".....   .....     +++++         ",
-"                +++++           ",
-"      .    +++ ++++             ",
-"      .  +++++++++              ",
-"      .  ++++++++               ",
-"      . +++++++++               ",
-"      . +++++++++               ",
-"        +++++++++               ",
-"         +++++++                ",
-"        ++++++++                ",
-"       +++++++                  ",
-"       +++                      ",
-"      +++                       ",
-"     +++                        ",
-"     +++                        ",
-"    +++                         ",
-"    +++                         ",
-"   +++                          ",
-"   +++                          ",
-"   ++                           ",
-"  +++                           ",
-"  ++                            ",
-" +++                            ",
-" +++                            ",
-" ++                             ",
-" ++                             "};
-
 class CmdSketcherConstrainPointOnObject : public CmdSketcherConstraint
 {
 public:
@@ -2720,7 +2487,6 @@ CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
                            {SelVertex, SelExternalEdge},
                            {SelEdge, SelVertexOrRoot}, {SelEdgeOrAxis, SelVertex},
                            {SelExternalEdge, SelVertex}};
-    constraintCursor = cursor_createpointonobj;
 
 }
 
@@ -2737,7 +2503,7 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                    new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                    new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
@@ -2903,7 +2669,6 @@ CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
 
     allowedSelSequences = {{SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex},
                            {SelEdge}, {SelExternalEdge}}; // Can't do single vertex because its a prefix for 2 vertices
-    constraintCursor = cursor_genericconstraint;
 }
 
 void CmdSketcherConstrainDistanceX::activated(int iMsg)
@@ -2919,7 +2684,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         }
         else {
@@ -3150,7 +2915,6 @@ CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
 
     allowedSelSequences = {{SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex},
                            {SelEdge}, {SelExternalEdge}}; // Can't do single vertex because its a prefix for 2 vertices
-    constraintCursor = cursor_genericconstraint;
 }
 
 void CmdSketcherConstrainDistanceY::activated(int iMsg)
@@ -3166,7 +2930,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                    new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                    new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
@@ -3365,45 +3129,6 @@ void CmdSketcherConstrainDistanceY::updateAction(int mode)
 
 //=================================================================================
 
-/* XPM */
-static const char *cursor_createparallel[]={
-"32 32 3 1",
-"  c None",
-". c #FFFFFF",
-"+ c #FF0000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"                                ",
-".....   .....                   ",
-"                                ",
-"      .                         ",
-"      .                         ",
-"      .         +         +     ",
-"      .        ++        ++     ",
-"      .        +         +      ",
-"              ++        ++      ",
-"              +         +       ",
-"             ++        ++       ",
-"             +         +        ",
-"            ++        ++        ",
-"            +         +         ",
-"           ++        ++         ",
-"           +         +          ",
-"          ++        ++          ",
-"          +         +           ",
-"         ++        ++           ",
-"         +         +            ",
-"        ++        ++            ",
-"        +         +             ",
-"       ++        ++             ",
-"       +         +              ",
-"                                ",
-"                                ",
-"                                "};
-
 class CmdSketcherConstrainParallel : public CmdSketcherConstraint
 {
 public:
@@ -3432,7 +3157,6 @@ CmdSketcherConstrainParallel::CmdSketcherConstrainParallel()
     // TODO: Also needed: ExternalEdges
     allowedSelSequences = {{SelEdge, SelEdgeOrAxis}, {SelEdgeOrAxis, SelEdge},
                            {SelEdge, SelExternalEdge}, {SelExternalEdge, SelEdge}};
-    constraintCursor = cursor_createparallel;
 }
 
 void CmdSketcherConstrainParallel::activated(int iMsg)
@@ -3448,7 +3172,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                    new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                    new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
@@ -3555,45 +3279,6 @@ void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair> &selSe
 
 // ======================================================================================
 
-/* XPM */
-static const char *cursor_createperpconstraint[] = {
-"32 32 3 1",
-" 	c None",
-".	c #FFFFFF",
-"+	c #FF0000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"                                ",
-".....   .....                   ",
-"                                ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .         ++              ",
-"      .         ++              ",
-"                ++              ",
-"                ++              ",
-"                ++              ",
-"                ++              ",
-"                ++              ",
-"                ++              ",
-"                ++              ",
-"                ++              ",
-"                ++              ",
-"                ++              ",
-"                ++              ",
-"                ++              ",
-"                ++              ",
-"                ++              ",
-"                ++              ",
-"       ++++++++++++++++++++     ",
-"       ++++++++++++++++++++     ",
-"                                ",
-"                                "};
-
 class CmdSketcherConstrainPerpendicular : public CmdSketcherConstraint
 {
 public:
@@ -3631,7 +3316,6 @@ CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
                            {SelEdge, SelVertexOrRoot, SelExternalEdge},
                            {SelExternalEdge, SelVertexOrRoot, SelEdge}};
 ;
-    constraintCursor = cursor_createperpconstraint;
 }
 
 void CmdSketcherConstrainPerpendicular::activated(int iMsg)
@@ -3654,7 +3338,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                    new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                    new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
@@ -4237,7 +3921,6 @@ CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
                            {SelEdge, SelVertexOrRoot, SelExternalEdge},
                            {SelExternalEdge, SelVertexOrRoot, SelEdge}, /* Two Curves and a Point */
                            {SelVertexOrRoot, SelVertex} /*Two Endpoints*/ /*No Place for One Endpoint and One Curve*/};
-    constraintCursor = cursor_genericconstraint;
 }
 
 void CmdSketcherConstrainTangent::activated(int iMsg)
@@ -4260,7 +3943,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                    new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                    new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             strError = QObject::tr("Select some geometry from the sketch.", "tangent constraint");
@@ -4871,7 +4554,6 @@ CmdSketcherConstrainRadius::CmdSketcherConstrainRadius()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelEdge}, {SelExternalEdge}};
-    constraintCursor = cursor_genericconstraint;
 }
 
 void CmdSketcherConstrainRadius::activated(int iMsg)
@@ -4887,7 +4569,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                    new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                    new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
@@ -5330,7 +5012,6 @@ CmdSketcherConstrainDiameter::CmdSketcherConstrainDiameter()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelEdge}, {SelExternalEdge}};
-    constraintCursor = cursor_genericconstraint;
 }
 
 void CmdSketcherConstrainDiameter::activated(int iMsg)
@@ -5346,7 +5027,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                            new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                            new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
@@ -5904,7 +5585,6 @@ CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
                            {SelVertexOrRoot, SelEdge, SelExternalEdge},
                            {SelVertexOrRoot, SelExternalEdge, SelEdge},
                            {SelVertexOrRoot, SelExternalEdge, SelExternalEdge}};
-    constraintCursor = cursor_genericconstraint;
 }
 
 void CmdSketcherConstrainAngle::activated(int iMsg)
@@ -5921,7 +5601,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                    new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                    new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             // TODO: Get the exact message from git history and put it here
@@ -6394,7 +6074,6 @@ CmdSketcherConstrainEqual::CmdSketcherConstrainEqual()
 
     allowedSelSequences = {{SelEdge, SelEdge}, {SelEdge, SelExternalEdge},
                            {SelExternalEdge, SelEdge}}; // Only option for equal constraint
-    constraintCursor = cursor_genericconstraint;
 }
 
 void CmdSketcherConstrainEqual::activated(int iMsg)
@@ -6410,7 +6089,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                            new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                            new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -6592,7 +6271,6 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
                            {SelVertex, SelVertexOrRoot, SelVertex},
                            {SelVertex, SelVertex, SelVertexOrRoot},
                            {SelVertexOrRoot, SelVertex, SelVertex}};
-    constraintCursor = cursor_genericconstraint;
 }
 
 void CmdSketcherConstrainSymmetric::activated(int iMsg)
@@ -6608,7 +6286,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
         if (constraintMode) {
             ActivateHandler(getActiveGuiDocument(),
-                            new DrawSketchHandlerGenConstraint(constraintCursor, this));
+                            new DrawSketchHandlerGenConstraint(this));
             getSelection().clearSelection();
         } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),

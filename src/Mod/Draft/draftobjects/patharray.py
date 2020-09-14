@@ -70,6 +70,7 @@ import lazy_loader.lazy_loader as lz
 from draftutils.messages import _msg, _wrn, _err
 from draftutils.translate import _tr
 
+from draftobjects.base import DraftObject
 from draftobjects.draftlink import DraftLink
 
 # Delay import of module until first use because it is heavy

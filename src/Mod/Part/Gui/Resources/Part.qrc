@@ -49,6 +49,7 @@
         <file>icons/Part_Polygon_Parametric.svg</file>
         <file>icons/Part_ProjectionOnSurface.svg</file>
         <file>icons/Part_Refine_Shape.svg</file>
+        <file>icons/Part_Reverse_Shape.svg</file>
         <file>icons/Part_Revolve.svg</file>
         <file>icons/Part_RuledSurface.svg</file>
         <file>icons/Part_Section.svg</file>
@@ -64,6 +65,7 @@
         <file>icons/Part_Thickness.svg</file>
         <file>icons/Part_Torus.svg</file>
         <file>icons/Part_Transformed_Copy.svg</file>
+        <file>icons/Part_Tube.svg</file>
         <file>icons/PartWorkbench.svg</file>
         <file>icons/Part_XOR.svg</file>
         <file>icons/preferences-part_design.svg</file>
@@ -77,6 +79,7 @@
         <file>icons/Tree_Part_Prism.svg</file>
         <file>icons/Tree_Part_Sphere_Parametric.svg</file>
         <file>icons/Tree_Part_Torus_Parametric.svg</file>
+        <file>icons/Tree_Part_Tube_Parametric.svg</file>
         <file>icons/Tree_Part_Wedge.svg</file>
         <file>translations/Part_af.qm</file>
         <file>translations/Part_ar.qm</file>

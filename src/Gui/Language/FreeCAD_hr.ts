@@ -610,7 +610,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Verbose description of the new property.</source>
-      <translation type="unfinished">Verbose description of the new property.</translation>
+      <translation>Detaljni opis nove osobine.</translation>
     </message>
     <message>
       <source>Documentation</source>
@@ -622,15 +622,15 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+      <translation>Prefix naziv osobine s nazivom grupe u obliku "Group_Name" kako biste izbjegli sukobe s postojećom osobinom.
+U tom se slučaju prefiks automatski skraćuje kada se prikaže u uređivaču svojstava.
+No, svojstvo se i dalje koristi u skripti s punim imenom, poput 'obj.Group_Name'.
 
-If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+Ako se to ne označi, osobina mora biti jedinstveno imenovana i njoj se pristupa kao "obj.Name".</translation>
     </message>
     <message>
       <source>Prefix group name</source>
-      <translation type="unfinished">Prefix group name</translation>
+      <translation>Prefix ime grupe</translation>
     </message>
   </context>
   <context>
@@ -1019,7 +1019,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
+      <translation>%1 modula nije učitano</translation>
     </message>
   </context>
   <context>
@@ -2027,7 +2027,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>Verzija Programa:</translation>
     </message>
   </context>
   <context>
@@ -2266,11 +2266,23 @@ od Python konzole na ploču prikaza izvješća
     </message>
     <message>
       <source>Include a timecode for each report</source>
-      <translation type="unfinished">Include a timecode for each report</translation>
+      <translation>Uključite vremenski kod za svako izvješće
+
+</translation>
     </message>
     <message>
       <source>Include a timecode for each entry</source>
-      <translation type="unfinished">Include a timecode for each entry</translation>
+      <translation>Uključite vremenski kod za svaki unos
+
+</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation type="unfinished">Normal messages will be recorded</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation type="unfinished">Record normal messages</translation>
     </message>
   </context>
   <context>
@@ -2522,12 +2534,16 @@ veličinom graničnog okvira 3D objekta koji se trenutno prikazuje.
     <message>
       <source>Axis cross will be shown by default at file
 opening or creation</source>
-      <translation type="unfinished">Axis cross will be shown by default at file
-opening or creation</translation>
+      <translation>Križ osi  prema zadanom će biti prikazan kod 
+otvaranja ili stvaranja datoteke
+
+</translation>
     </message>
     <message>
       <source>Show axis cross by default</source>
-      <translation type="unfinished">Show axis cross by default</translation>
+      <translation>Prikaz križa osi kao zadana postavka
+
+</translation>
     </message>
   </context>
   <context>
@@ -3307,14 +3323,6 @@ Okretni stol: dio će se zakrenuti oko z-osi.
       <translation>Prećeno</translation>
     </message>
     <message>
-      <source>New document camera orientation</source>
-      <translation>Orijentacija kamere za novi dokument</translation>
-    </message>
-    <message>
-      <source>Camera orientation for new documents</source>
-      <translation>Orijentacija kamere za nove dokumente</translation>
-    </message>
-    <message>
       <source>New document scale</source>
       <translation>Novo mjerilo dokumenta</translation>
     </message>
@@ -3423,6 +3431,16 @@ Naginjanje miša nije onemogućeno ovom postavkom.</translation>
     <message>
       <source>Custom</source>
       <translation>Prilagođeno</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation>Zadana orijentacija kamere
+
+</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation>Zadana orijentacija kamere prilikom izrade novog dokumenta ili odabira zadanog početnog prikaza</translation>
     </message>
   </context>
   <context>
@@ -4480,18 +4498,6 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <source>Logging</source>
-      <translation>Prijava</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Upozorenje</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Pogreška</translation>
-    </message>
-    <message>
       <source>Options</source>
       <translation>Mogućnosti</translation>
     </message>
@@ -4522,6 +4528,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Plain Text Files</source>
       <translation>Obične tekstualne datoteke</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation type="unfinished">Display message types</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation type="unfinished">Normal messages</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation type="unfinished">Log messages</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation type="unfinished">Warnings</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation type="unfinished">Errors</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation type="unfinished">Show report view on</translation>
     </message>
   </context>
   <context>
@@ -5889,18 +5919,20 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source> (but must be executed)</source>
-      <translation type="unfinished"> (but must be executed)</translation>
+      <translation>(ali mora biti izvršen)
+
+</translation>
     </message>
   </context>
   <context>
     <name>Gui::VectorListEditor</name>
     <message>
       <source>Vectors</source>
-      <translation type="unfinished">Vectors</translation>
+      <translation>Vektori</translation>
     </message>
     <message>
       <source>Table</source>
-      <translation type="unfinished">Table</translation>
+      <translation>Tabela</translation>
     </message>
     <message>
       <source>...</source>
@@ -7038,7 +7070,9 @@ Odaberite "Prekini" za prekid
     </message>
     <message>
       <source>Change the draw style of the objects</source>
-      <translation type="unfinished">Change the draw style of the objects</translation>
+      <translation>Promijenite stil crtanja objekata
+
+</translation>
     </message>
   </context>
   <context>
@@ -7468,7 +7502,9 @@ Odaberite "Prekini" za prekid
     </message>
     <message>
       <source>Strip on level of link</source>
-      <translation type="unfinished">Strip on level of link</translation>
+      <translation>Strip na razini veze
+
+</translation>
     </message>
   </context>
   <context>
@@ -8545,6 +8581,23 @@ Odaberite "Prekini" za prekid
     </message>
   </context>
   <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardni pogled</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation>Početna</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation>Postavite zadani početni prikaz
+
+</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Standard-View</source>
@@ -9143,14 +9196,12 @@ Jeste li sigurni da želite nastaviti?
 </translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Te su stavke odabrane za brisanje, ali nisu u aktivnom dokumentu.</translation>
-    </message>
-    <message>
       <source>Object dependencies</source>
       <translation>Zavisnosti objekta</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>Ove su stavke odabrane za brisanje, ali nisu u aktivnom dokumentu.</translation>
     </message>
   </context>
   <context>

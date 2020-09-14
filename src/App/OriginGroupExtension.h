@@ -70,6 +70,8 @@ public:
     virtual bool extensionGetSubObject(DocumentObject *&ret, const char *subname, PyObject **pyObj,
             Base::Matrix4D *mat, bool transform, int depth) const override;
 
+    virtual void extensionOnChanged(const Property* p) override;
+
 protected:
     /// Checks integrity of the Origin
     virtual App::DocumentObjectExecReturn *extensionExecute () override;

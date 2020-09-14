@@ -92,6 +92,7 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
     else:
         obj.OffsetStart = p.GetFloat("RebarOffset",30)
         obj.OffsetEnd = p.GetFloat("RebarOffset",30)
+    obj.Mark = obj.Label
     return obj
 
 
@@ -278,7 +279,7 @@ class _Rebar(ArchComponent.Component):
                 baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
             else:
                 baseoffset = None
-            if obj.ViewObject.RebarShape == "Stirrup":
+            if hasattr(obj, "RebarShape") and obj.RebarShape == "Stirrup":
                 interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value + obj.Diameter.Value)
             else:
                 interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
@@ -418,8 +419,8 @@ class _Rebar(ArchComponent.Component):
         self.wires = []
         rot = FreeCAD.Rotation()
         if obj.Amount == 1:
-            if obj.ViewObject:
-                barplacement = CalculatePlacement(obj.Amount, 1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
+            if hasattr(obj, "RebarShape"):
+                barplacement = CalculatePlacement(obj.Amount, 1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.RebarShape)
             else:
                 barplacement = CalculatePlacement(obj.Amount, 1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
             placementlist.append(barplacement)
@@ -430,14 +431,14 @@ class _Rebar(ArchComponent.Component):
                 baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
             else:
                 baseoffset = None
-            if obj.ViewObject and obj.ViewObject.RebarShape == "Stirrup":
+            if hasattr(obj, "RebarShape") and obj.RebarShape == "Stirrup":
                 interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value + obj.Diameter.Value)
             else:
                 interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
             interval = interval / (obj.Amount - 1)
             for i in range(obj.Amount):
-                if obj.ViewObject:
-                    barplacement = CalculatePlacement(obj.Amount, i+1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
+                if hasattr(obj, "RebarShape"):
+                    barplacement = CalculatePlacement(obj.Amount, i+1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.RebarShape)
                 else:
                     barplacement = CalculatePlacement(obj.Amount, i+1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
                 placementlist.append(barplacement)
@@ -446,7 +447,7 @@ class _Rebar(ArchComponent.Component):
         # Calculate placement of bars from custom spacing.
         if spacinglist:
             placementlist[:] = []
-            if obj.ViewObject.RebarShape == "Stirrup":
+            if hasattr(obj, "RebarShape") and obj.RebarShape == "Stirrup":
                 reqInfluenceArea = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value + obj.Diameter.Value)
             else:
                 reqInfluenceArea = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
@@ -513,7 +514,15 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
     def setEdit(self, vobj, mode):
 
         if mode == 0:
-            if vobj.RebarShape:
+            if hasattr(vobj.Object, "RebarShape"):
+                try:
+                    # Import module of RebarShape
+                    module = __import__(vobj.Object.RebarShape)
+                except ImportError:
+                    FreeCAD.Console.PrintError("Unable to import RebarShape module\n")
+                    return
+                module.editDialog(vobj)
+            elif vobj.RebarShape:
                 try:
                     # Import module of RebarShape
                     module = __import__(vobj.RebarShape)
@@ -653,6 +662,8 @@ def getLengthOfRebar(rebar):
         for geo in base.Geometry:
             length += geo.length()
         return length
+    elif base.isDerivedFrom("Part::Helix"):
+        return base.Shape.Wires[0].Length
     else:
         FreeCAD.Console.PrintError("Cannot calculate rebar length from its base object\n")
         return None

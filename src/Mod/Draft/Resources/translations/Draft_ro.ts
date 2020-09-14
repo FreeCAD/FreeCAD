@@ -2,44 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="ro" sourcelanguage="en">
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="110"/>
-      <source>The objects that are part of this layer</source>
-      <translation>The objects that are part of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="147"/>
-      <source>If on, the child objects of this layer will match its visual aspects</source>
-      <translation>If on, the child objects of this layer will match its visual aspects</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="156"/>
-      <source>The line color of the children of this layer</source>
-      <translation>The line color of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="162"/>
-      <source>The shape color of the children of this layer</source>
-      <translation>The shape color of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="168"/>
-      <source>The line width of the children of this layer</source>
-      <translation>The line width of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="174"/>
-      <source>The draw style of the children of this layer</source>
-      <translation>The draw style of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="180"/>
-      <source>The transparency of the children of this layer</source>
-      <translation>The transparency of the children of this layer</translation>
-    </message>
-  </context>
-  <context>
     <name>Dialog</name>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
@@ -732,19 +694,6 @@ Trebuie să fie cel puțin 2.</translation>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
       <translation>Reset Point</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="83"/>
-      <source>Layer</source>
-      <translation>Layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="84"/>
-      <source>Adds a layer</source>
-      <translation>Adds a layer</translation>
     </message>
   </context>
   <context>
@@ -2861,21 +2810,6 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Bifează dacă obiectul ar trebui să apară ca umplut, altfel va apărea ca wireframe. Aceasta nu este posibil dacă este activată opțiunea Schiței „Utilizați Piese Primitive”</translation>
     </message>
     <message>
-      <location filename="../../DraftLayer.py" line="43"/>
-      <source>No active document. Aborting</source>
-      <translation>Niciun document activ. Abandonare</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="50"/>
-      <source>Layer</source>
-      <translation>Layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="71"/>
-      <source>Layers</source>
-      <translation>Straturi</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Polyline</source>
       <translation>Polyline</translation>
@@ -2919,16 +2853,6 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <location filename="../../DraftGui.py" line="949"/>
       <source>Trim distance</source>
       <translation>Distanță de tăiere</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="334"/>
-      <source>Activate this layer</source>
-      <translation>Activează acest strat</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="341"/>
-      <source>Select contents</source>
-      <translation>Selectaţi conţinutul</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>

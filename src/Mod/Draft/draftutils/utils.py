@@ -415,15 +415,8 @@ def get_type(obj):
         If `obj` has a `Proxy`, it will return the value of `obj.Proxy.Type`.
 
         * If `obj` is a `Part.Shape`, returns `'Shape'`
-        * If `'Sketcher::SketchObject'`, returns `'Sketch'`
-        * If `'Part::Line'`, returns `'Part::Line'`
-        * If `'Part::Offset2D'`, returns `'Offset2D'`
-        * If `'Part::Feature'`, returns `'Part'`
-        * If `'App::Annotation'`, returns `'Annotation'`
-        * If `'Mesh::Feature'`, returns `'Mesh'`
-        * If `'Points::Feature'`, returns `'Points'`
-        * If `'App::DocumentObjectGroup'`, returns `'Group'`
-        * If `'App::Part'`,  returns `'App::Part'`
+
+        * If `obj` has a `TypeId`, returns `obj.TypeId`
 
         In other cases, it will return `'Unknown'`,
         or `None` if `obj` is `None`.
@@ -433,27 +426,10 @@ def get_type(obj):
         return None
     if isinstance(obj, Part.Shape):
         return "Shape"
-    if "Proxy" in obj.PropertiesList:
-        if hasattr(obj.Proxy, "Type"):
-            return obj.Proxy.Type
-    if obj.isDerivedFrom("Sketcher::SketchObject"):
-        return "Sketch"
-    if (obj.TypeId == "Part::Line"):
-        return "Part::Line"
-    if (obj.TypeId == "Part::Offset2D"):
-        return "Offset2D"
-    if obj.isDerivedFrom("Part::Feature"):
-        return "Part"
-    if (obj.TypeId == "App::Annotation"):
-        return "Annotation"
-    if obj.isDerivedFrom("Mesh::Feature"):
-        return "Mesh"
-    if obj.isDerivedFrom("Points::Feature"):
-        return "Points"
-    if (obj.TypeId == "App::DocumentObjectGroup"):
-        return "Group"
-    if (obj.TypeId == "App::Part"):
-        return "App::Part"
+    if hasattr(obj, 'Proxy') and hasattr(obj.Proxy, "Type"):
+        return obj.Proxy.Type
+    if hasattr(obj, 'TypeId'):
+        return obj.TypeId
     return "Unknown"
 
 

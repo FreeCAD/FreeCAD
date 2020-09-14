@@ -501,12 +501,16 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Polygon=%2\n"
                 "App.ActiveDocument.%1.Circumradius=%3\n"
                 "App.ActiveDocument.%1.Height=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n"
-                "App.ActiveDocument.%1.Label='%6'\n")
+                "App.ActiveDocument.%1.FirstSkew=%5\n"
+                "App.ActiveDocument.%1.SecondSkew=%6\n"
+                "App.ActiveDocument.%1.Placement=%7\n"
+                "App.ActiveDocument.%1.Label='%8'\n")
                 .arg(name)
                 .arg(ui.prismPolygon->value())
                 .arg(ui.prismCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(ui.prismHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.prismXSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+                .arg(ui.prismYSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Prism"));
         }

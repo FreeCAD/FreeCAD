@@ -18,12 +18,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provide the exporter for IFC files used above all in Arch and BIM.
+
+Internally it uses IfcOpenShell, which must be installed before using.
+"""
+## @package exportIFC
+#  \ingroup ARCH
+#  \brief IFC file format exporter
+#
+#  This module provides tools to export IFC files.
 
 from __future__ import print_function
-
-__title__ =  "FreeCAD IFC export"
-__author__ = "Yorik van Havre","Jonathan Wiedemann","Bernd Hahnebach"
-__url__ =    "https://www.freecadweb.org"
 
 import six
 import os
@@ -43,40 +48,38 @@ import exportIFCStructuralTools
 from DraftGeomUtils import vec
 from importIFCHelper import dd2dms
 from importIFCHelper import decode
+from draftutils.messages import _msg, _err
 
+if FreeCAD.GuiUp:
+    import FreeCADGui
 
-## @package exportIFC
-#  \ingroup ARCH
-#  \brief IFC file format exporter
-#
-#  This module provides tools to export IFC files.
+__title__ = "FreeCAD IFC export"
+__author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
+__url__ = "https://www.freecadweb.org"
 
-if open.__module__ in ['__builtin__','io']:
+# Save the Python open function because it will be redefined
+if open.__module__ in ['__builtin__', 'io']:
     pyopen = open
-    # pyopen is used in exporter to open a file in Arch
 
-
-# ************************************************************************************************
-# ********** templates and other definitions ****
-
-# specific FreeCAD <-> IFC slang translations
+# Templates and other definitions ****
+# Specific FreeCAD <-> IFC slang translations
 translationtable = {
-    "Foundation":"Footing",
-    "Floor":"BuildingStorey",
-    "Rebar":"ReinforcingBar",
-    "HydroEquipment":"SanitaryTerminal",
-    "ElectricEquipment":"ElectricAppliance",
-    "Furniture":"FurnishingElement",
-    "Stair Flight":"StairFlight",
-    "Curtain Wall":"CurtainWall",
-    "Pipe Segment":"PipeSegment",
-    "Pipe Fitting":"PipeFitting",
-    "VisGroup":"Group",
-    "Undefined":"BuildingElementProxy",
-    }
+    "Foundation": "Footing",
+    "Floor": "BuildingStorey",
+    "Rebar": "ReinforcingBar",
+    "HydroEquipment": "SanitaryTerminal",
+    "ElectricEquipment": "ElectricAppliance",
+    "Furniture": "FurnishingElement",
+    "Stair Flight": "StairFlight",
+    "Curtain Wall": "CurtainWall",
+    "Pipe Segment": "PipeSegment",
+    "Pipe Fitting": "PipeFitting",
+    "VisGroup": "Group",
+    "Undefined": "BuildingElementProxy",
+}
 
-
-# the base IFC template for export
+# The base IFC template for export, the $variables will be substituted
+# by specific information
 ifctemplate = """ISO-10303-21;
 HEADER;
 FILE_DESCRIPTION(('ViewDefinition [CoordinationView]'),'2;1');
@@ -106,77 +109,99 @@ END-ISO-10303-21;
 """
 
 
-# ************************************************************************************************
-# ********** get the prefs, available in import and export ****************
 def getPreferences():
-
-    """retrieves IFC preferences"""
-
+    """Retrieve the IFC preferences available in import and export."""
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
 
-    if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
-        import FreeCADGui
-        FreeCADGui.showPreferences("Import-Export",1)
-    ifcunit = p.GetInt("ifcUnit",0)
+    if FreeCAD.GuiUp and p.GetBool("ifcShowDialog", False):
+        FreeCADGui.showPreferences("Import-Export", 1)
+
+    ifcunit = p.GetInt("ifcUnit", 0)
+
+    # Factor to multiply the dimension in millimeters
+    # mm x 0.001 = metre
+    # mm x 0.00328084 = foot
+    # mm x 0.03937008 = inch
+
+    # The only real use of these units is to make Revit choose which mode
+    # to work with.
+    #
+    # Inch is not yet implemented, and I don't even know if it is actually
+    # desired
+
     f = 0.001
     u = "metre"
+
     if ifcunit == 1:
         f = 0.00328084
         u = "foot"
-    #if ifcunit == "inch":
-    #    f = 0.03937008
-    # not yet implemented, and I don't even know if it is interesting to do it.
-    # the only real use of these units is to make revit choose which mode to work with
 
+    # if ifcunit == 2:
+    #     f = 0.03937008
+    #     u = "inch"
+
+    # Be careful with setting ADD_DEFAULT_SITE, ADD_DEFAULT_BUILDING,
+    # and ADD_DEFAULT_STOREY to False. If this is done the spatial structure
+    # may no longer be fully connected to the `IfcProject`. This means
+    # some objects may be "unreferenced" and won't belong to the `IfcProject`.
+    # Some applications may fail at importing these unreferenced objects.
     preferences = {
-        'DEBUG': p.GetBool("ifcDebug",False),
-        'CREATE_CLONES': p.GetBool("ifcCreateClones",True),
-        'FORCE_BREP': p.GetBool("ifcExportAsBrep",False),
-        'STORE_UID': p.GetBool("ifcStoreUid",True),
-        'SERIALIZE': p.GetBool("ifcSerialize",False),
-        'EXPORT_2D': p.GetBool("ifcExport2D",True),
-        'FULL_PARAMETRIC': p.GetBool("IfcExportFreeCADProperties",False),
-        'ADD_DEFAULT_SITE': p.GetBool("IfcAddDefaultSite",False),
-        'ADD_DEFAULT_STOREY': p.GetBool("IfcAddDefaultStorey",False),
-        'ADD_DEFAULT_BUILDING': p.GetBool("IfcAddDefaultBuilding",True),
+        'DEBUG': p.GetBool("ifcDebug", False),
+        'CREATE_CLONES': p.GetBool("ifcCreateClones", True),
+        'FORCE_BREP': p.GetBool("ifcExportAsBrep", False),
+        'STORE_UID': p.GetBool("ifcStoreUid", True),
+        'SERIALIZE': p.GetBool("ifcSerialize", False),
+        'EXPORT_2D': p.GetBool("ifcExport2D", True),
+        'FULL_PARAMETRIC': p.GetBool("IfcExportFreeCADProperties", False),
+        'ADD_DEFAULT_SITE': p.GetBool("IfcAddDefaultSite", True),
+        'ADD_DEFAULT_BUILDING': p.GetBool("IfcAddDefaultBuilding", True),
+        'ADD_DEFAULT_STOREY': p.GetBool("IfcAddDefaultStorey", True),
         'IFC_UNIT': u,
         'SCALE_FACTOR': f,
-        'GET_STANDARD': p.GetBool("getStandardType",False),
-        'EXPORT_MODEL': ['arch','struct','hybrid'][p.GetInt("ifcExportModel",0)]
+        'GET_STANDARD': p.GetBool("getStandardType", False),
+        'EXPORT_MODEL': ['arch', 'struct', 'hybrid'][p.GetInt("ifcExportModel", 0)]
     }
-    if hasattr(ifcopenshell,"schema_identifier"):
+
+    if hasattr(ifcopenshell, "schema_identifier"):
         schema = ifcopenshell.schema_identifier
-    elif hasattr(ifcopenshell,"version") and (float(ifcopenshell.version[:3]) >= 0.6):
+    elif hasattr(ifcopenshell, "version") and (float(ifcopenshell.version[:3]) >= 0.6):
         # v0.6 onwards allows to set our own schema
-        schema = ["IFC4", "IFC2X3"][FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("IfcVersion",0)]
+        schema = ["IFC4", "IFC2X3"][p.GetInt("IfcVersion", 0)]
     else:
         schema = "IFC2X3"
+
     preferences["SCHEMA"] = schema
 
     return preferences
 
 
-# ************************************************************************************************
-# ********** export IFC ****************
-def export(exportList,filename,colors=None,preferences=None):
+def export(exportList, filename, colors=None, preferences=None):
+    """Export the selected objects to IFC format.
 
-    """export(exportList,filename,colors=None,preferences=None) -- exports FreeCAD contents to an IFC file.
-    colors is an optional dictionary of objName:shapeColorTuple or objName:diffuseColorList elements
-    to be used in non-GUI mode if you want to be able to export colors."""
-
+    Parameters
+    ----------
+    colors:
+        It defaults to `None`.
+        It is an optional dictionary of `objName:shapeColorTuple`
+        or `objName:diffuseColorList` elements to be used in non-GUI mode
+        if you want to be able to export colors.
+    """
     try:
         global ifcopenshell
         import ifcopenshell
-    except:
-        FreeCAD.Console.PrintError("IfcOpenShell was not found on this system. IFC support is disabled\n")
-        FreeCAD.Console.PrintMessage("Visit https://www.freecadweb.org/wiki/Arch_IFC to learn how to install it\n")
+    except ModuleNotFoundError:
+        _err("IfcOpenShell was not found on this system. "
+             "IFC support is disabled.\n"
+             "Visit https://wiki.freecadweb.org/IfcOpenShell "
+             "to learn about installing it.")
         return
+
+    starttime = time.time()
 
     if preferences is None:
         preferences = getPreferences()
 
     # process template
-
     version = FreeCAD.Version()
     owner = FreeCAD.ActiveDocument.CreatedBy
     email = ''
@@ -184,28 +209,34 @@ def export(exportList,filename,colors=None,preferences=None):
         s = owner.split("<")
         owner = s[0].strip()
         email = s[1].strip(">")
+
     global template
-    template = ifctemplate.replace("$version",version[0]+"."+version[1]+" build "+version[2])
-    if preferences['DEBUG']: print("Exporting an",preferences['SCHEMA'],"file...")
-    template = template.replace("$ifcschema",preferences['SCHEMA'])
-    template = template.replace("$owner",owner)
-    template = template.replace("$company",FreeCAD.ActiveDocument.Company)
-    template = template.replace("$email",email)
-    template = template.replace("$now",str(int(time.time())))
-    template = template.replace("$filename",os.path.basename(filename))
-    template = template.replace("$timestamp",str(time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())))
-    if hasattr(ifcopenshell,"version"):
-        template = template.replace("IfcOpenShell","IfcOpenShell "+ifcopenshell.version)
-    templatefilehandle,templatefile = tempfile.mkstemp(suffix=".ifc")
-    of = pyopen(templatefile,"w")
+    template = ifctemplate.replace("$version",
+                                   version[0] + "."
+                                   + version[1] + " build " + version[2])
+    if preferences['DEBUG']: print("Exporting an", preferences['SCHEMA'], "file...")
+    template = template.replace("$ifcschema", preferences['SCHEMA'])
+    template = template.replace("$owner", owner)
+    template = template.replace("$company", FreeCAD.ActiveDocument.Company)
+    template = template.replace("$email", email)
+    template = template.replace("$now", str(int(time.time())))
+    template = template.replace("$filename", os.path.basename(filename))
+    template = template.replace("$timestamp",
+                                str(time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())))
+    if hasattr(ifcopenshell, "version"):
+        template = template.replace("IfcOpenShell",
+                                    "IfcOpenShell " + ifcopenshell.version)
+    templatefilehandle, templatefile = tempfile.mkstemp(suffix=".ifc")
+    of = pyopen(templatefile, "w")
+
     if six.PY2:
         template = template.encode("utf8")
+
     of.write(template)
     of.close()
     os.close(templatefilehandle)
 
     # create IFC file
-
     global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs
     ifcfile = ifcopenshell.open(templatefile)
     ifcfile = exportIFCHelper.writeUnits(ifcfile,preferences["IFC_UNIT"])
@@ -1497,6 +1528,10 @@ def export(exportList,filename,colors=None,preferences=None):
         f.close()
         print("Compression ratio:",int((float(ifcbin.spared)/(s+ifcbin.spared))*100),"%")
     del ifcbin
+
+    endtime = time.time() - starttime
+
+    _msg("Finished exporting in {} seconds".format(int(endtime)))
 
 
 # ************************************************************************************************

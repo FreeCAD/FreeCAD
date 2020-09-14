@@ -2,44 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="tr" sourcelanguage="en">
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="110"/>
-      <source>The objects that are part of this layer</source>
-      <translation>Bu katmanın bir parçası olan nesneler</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="147"/>
-      <source>If on, the child objects of this layer will match its visual aspects</source>
-      <translation>Açıksa, bu katmanın alt nesneleri görsel yönleriyle eşleşir</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="156"/>
-      <source>The line color of the children of this layer</source>
-      <translation>Bu katmandaki alt grupların (çocukların) çizgi rengi</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="162"/>
-      <source>The shape color of the children of this layer</source>
-      <translation>Bu katmandaki alt grupların (çocukların) şekil rengi</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="168"/>
-      <source>The line width of the children of this layer</source>
-      <translation>Bu katmandaki alt grupların (çocukların) çizgi kalınlığı</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="174"/>
-      <source>The draw style of the children of this layer</source>
-      <translation>Bu katmandaki alt grupların (çocukların) çizim stili</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="180"/>
-      <source>The transparency of the children of this layer</source>
-      <translation>Bu katmandaki alt grupların (çocukların) şeffaflığı</translation>
-    </message>
-  </context>
-  <context>
     <name>Dialog</name>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
@@ -734,19 +696,6 @@ It must be at least 2.</translation>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
       <translation>Noktayı sıfırla</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="83"/>
-      <source>Layer</source>
-      <translation>Katman</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="84"/>
-      <source>Adds a layer</source>
-      <translation>Bir katman ekler</translation>
     </message>
   </context>
   <context>
@@ -2869,21 +2818,6 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Nesnenin dolu gibi görünüp görünmediğini kontrol edin, aksi takdirde tel kafes şeklinde görünecektir. Taslak tercih seçeneği 'Parça Temellerini Kullan' etkinleştirilmişse kullanılamaz</translation>
     </message>
     <message>
-      <location filename="../../DraftLayer.py" line="43"/>
-      <source>No active document. Aborting</source>
-      <translation>Etkin belge yok. Durduruluyor</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="50"/>
-      <source>Layer</source>
-      <translation>Katman</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="71"/>
-      <source>Layers</source>
-      <translation>Katmanlar</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Polyline</source>
       <translation>Çoklu çizgi</translation>
@@ -2927,16 +2861,6 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <location filename="../../DraftGui.py" line="949"/>
       <source>Trim distance</source>
       <translation type="unfinished">Trim distance</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="334"/>
-      <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="341"/>
-      <source>Select contents</source>
-      <translation type="unfinished">Select contents</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>
