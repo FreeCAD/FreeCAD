@@ -87,7 +87,7 @@ namespace Part {
     // 6. Register your type and corresponding python type in AppPart.cpp
 
     template <typename T>
-    inline GeometryDefaultExtension<T>::GeometryDefaultExtension(){ }
+    inline GeometryDefaultExtension<T>::GeometryDefaultExtension():value{}{}
 
     // Specialised constructors go here so that specialisation is before the template instantiation
     // Specialised default constructors are inline, because a full specialisation otherwise shall go in the cpp file, but there it would be after the template instantiation.
