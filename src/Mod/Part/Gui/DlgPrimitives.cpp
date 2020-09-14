@@ -501,8 +501,8 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Polygon=%2\n"
                 "App.ActiveDocument.%1.Circumradius=%3\n"
                 "App.ActiveDocument.%1.Height=%4\n"
-                "App.ActiveDocument.%1.FirstSkew=%5\n"
-                "App.ActiveDocument.%1.SecondSkew=%6\n"
+                "App.ActiveDocument.%1.FirstAngle=%5\n"
+                "App.ActiveDocument.%1.SecondAngle=%6\n"
                 "App.ActiveDocument.%1.Placement=%7\n"
                 "App.ActiveDocument.%1.Label='%8'\n")
                 .arg(name)
