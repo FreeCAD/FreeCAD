@@ -98,7 +98,14 @@
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidgetReferences"/>
+    <widget class="QListWidget" name="listWidgetReferences">
+     <property name="toolTip">
+      <string>List can be reordered by dragging</string>
+     </property>
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::InternalMove</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line">
