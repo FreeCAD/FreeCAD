@@ -2,7 +2,7 @@
 
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -30,14 +30,16 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGeom as PathGeom
+import PathScripts.PathPreferences as PathPreferences
+
 import traceback
-import time
-from PathScripts.PathOpTools import orientWire
+
 import math
 
 from PySide import QtCore
 
 __doc__ = "Class and implementation of Path Vcarve operation"
+
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -60,18 +62,30 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
     def setupAdditionalProperties(self, obj):
         if not hasattr(obj, 'BaseShapes'):
-            obj.addProperty("App::PropertyLinkList", "BaseShapes", "Path", QtCore.QT_TRANSLATE_NOOP("PathVcarve", "Additional base objects to be engraved"))
+            obj.addProperty("App::PropertyLinkList", "BaseShapes", "Path",
+                            QtCore.QT_TRANSLATE_NOOP("PathVcarve",
+                                "Additional base objects to be engraved"))
         obj.setEditorMode('BaseShapes', 2)  # hide
         if not hasattr(obj, 'BaseObject'):
-            obj.addProperty("App::PropertyLink", "BaseObject", "Path", QtCore.QT_TRANSLATE_NOOP("PathVcarve", "Additional base objects to be engraved"))
+            obj.addProperty("App::PropertyLink", "BaseObject", "Path",
+                            QtCore.QT_TRANSLATE_NOOP("PathVcarve",
+                            "Additional base objects to be engraved"))
         obj.setEditorMode('BaseObject', 2)  # hide
 
     def initOperation(self, obj):
         '''initOperation(obj) ... create vcarve specific properties.'''
-        obj.addProperty("App::PropertyFloat", "Discretize", "Path", QtCore.QT_TRANSLATE_NOOP("PathVcarve", "The deflection value for discretizing arcs"))
-        obj.addProperty("App::PropertyFloat", "Threshold", "Path", QtCore.QT_TRANSLATE_NOOP("PathVcarve", "cutoff threshold for removing extraneous segments (0-1.0). default=0.8. Larger numbers remove less."))
-        obj.Threshold = 0.8
+        obj.addProperty("App::PropertyFloat", "Discretize", "Path",
+                        QtCore.QT_TRANSLATE_NOOP("PathVcarve",
+                        "The deflection value for discretizing arcs"))
+        obj.addProperty("App::PropertyFloat", "Threshold", "Path",
+                        QtCore.QT_TRANSLATE_NOOP("PathVcarve",
+                        "cutoff for removing colinear segments (degrees). \
+                        default=10.0."))
+        obj.addProperty("App::PropertyFloat", "Tolerance", "Path",
+                QtCore.QT_TRANSLATE_NOOP("PathVcarve", ""))
+        obj.Threshold = 10.0
         obj.Discretize = 0.01
+        obj.Tolerance = PathPreferences.defaultGeometryTolerance()
         self.setupAdditionalProperties(obj)
 
     def opOnDocumentRestored(self, obj):
@@ -80,30 +94,8 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
     def buildPathMedial(self, obj, Faces):
         '''constructs a medial axis path using openvoronoi'''
-        #import openvoronoi as ovd
-
-        # def insert_wire_points(vd, wire):
-        #     pts = []
-        #     for p in wire.Vertexes:
-        #         pts.append(ovd.Point(p.X, p.Y))
-        #         PathLog.debug('ovd.Point( {} ,{} )'.format(p.X, p.Y))
-        #     id_list = []
-        #     PathLog.debug("inserting {} openvoronoi point-sites".format(len(pts)))
-        #     for p in pts:
-        #         id_list.append(vd.addVertexSite(p))
-        #     return id_list
-
-        # def insert_wire_segments(vd, id_list):
-        #     PathLog.debug('inserting {} segments into the voronoi diagram'.format(len(id_list)))
-        #     for n in range(len(id_list)):
-        #         n_nxt = n + 1
-        #         if n == (len(id_list) - 1):
-        #             n_nxt = 0
-        #         vd.addLineSite(id_list[n], id_list[n_nxt])
 
         def insert_many_wires(vd, wires):
-            #polygon_ids = []
-            #t_before = time.time()
             for wire in wires:
                 PathLog.debug('discretize value: {}'.format(obj.Discretize))
                 pts = wire.discretize(QuasiDeflection=obj.Discretize)
@@ -113,52 +105,14 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 for i in range(len(pts)):
                     vd.addSegment(ptv[i], ptv[i+1])
 
-                # segwire = Part.Wire([Part.makeLine(p[0], p[1]) for p in zip(pointList, pointList[1:])])
-
-                # if idx == 0:
-                #     segwire = orientWire(segwire, forward=False)
-                # else:
-                #     segwire = orientWire(segwire, forward=True)
-
-                # poly_id = insert_wire_points(vd, segwire)
-                # polygon_ids.append(poly_id)
-            # t_after = time.time()
-            # pt_time = t_after - t_before
-
-            # t_before = time.time()
-            # for ids in polygon_ids:
-                # insert_wire_segments(vd, ids)
-            # t_after = time.time()
-            # seg_time = t_after - t_before
-            # return [pt_time, seg_time]
-
         def calculate_depth(MIC):
             # given a maximum inscribed circle (MIC) and tool angle,
             # return depth of cut.
             maxdepth = obj.ToolController.Tool.CuttingEdgeHeight
             toolangle = obj.ToolController.Tool.CuttingEdgeAngle
-            d = MIC / math.tan(math.radians(toolangle / 2))
+            d = round(MIC / math.tan(math.radians(toolangle / 2)), 4)
             return d if d <= maxdepth else maxdepth
 
-        # def buildMedial(vd):
-        #     safeheight = obj.SafeHeight.Value
-        #     path = []
-        #     maw = ovd.MedialAxisWalk(vd.getGraph())
-        #     toolpath = maw.walk()
-        #     for chain in toolpath:
-
-        #         path.append(Path.Command("G0 Z{}".format(safeheight)))
-        #         p = chain[0][0][0]
-        #         z = -(chain[0][0][1])
-
-        #         path.append(Path.Command("G0 X{} Y{} Z{}".format(p.x, p.y, safeheight)))
-
-        #         for step in chain:
-        #             for point in step:
-        #                 p = point[0]
-        #                 z = calculate_depth(-(point[1]))
-        #                 path.append(Path.Command("G1 X{} Y{} Z{} F{}".format(p.x, p.y, z, obj.ToolController.HorizFeed.Value)))
-#     path.append(Path.Command("G0 Z{}".format(safeheight))) return path pathlist = []
         def getEdges(vd, color=[0]):
             if type(color) == int:
                 color = [color]
@@ -166,90 +120,87 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             for e in vd.Edges:
                 if e.Color not in color:
                     continue
-                # geom = e.toGeom(8)
                 if e.toGeom(8) is None:
                     continue
                 p1 = e.Vertices[0].toGeom(calculate_depth(0-e.getDistances()[0]))
                 p2 = e.Vertices[-1].toGeom(calculate_depth(0-e.getDistances()[-1]))
-                geomList.append(Part.LineSegment(p1, p2))
-                # if individualEdges:
-                # name = "e%04d" % i
-                # Part.show(Part.Edge(geom), name)
-                #geomList.append(Part.Edge(geom))
+                newedge = Part.Edge(Part.Vertex(p1), Part.Vertex(p2))
+
+                newedge.fixTolerance(obj.Tolerance, Part.Vertex)
+                geomList.append(newedge)
+
             if geomList:
                 return geomList
 
-        def areConnected(seg1, seg2):
-            '''
-            Checks if two segments share an endpoint.
-            returns a new linesegment if connected or original seg1 if not
-            '''
-            l1 = [seg1.StartPoint, seg1.EndPoint]
-            l2 = [seg2.StartPoint, seg2.EndPoint]
-            l3 = [v1 for v1 in l1 for v2 in l2 if PathGeom.pointsCoincide (v1, v2, error=0.01)]
-            # for v1 in l1:
-            #     for v2 in l2:
-            #         if PathGeom.pointsCoincide(v1, v2):
-            #             l3.append(v1)
-            #l3 = [value for value in l1 if value in l2]
-            print('l1: {} l2: {} l3: {}'.format(l1,l2,l3))
-            if len(l3) == 0:  # no connection
-                print('no connection')
-                return seg1
-            elif len(l3) == 1:  # extend chain
-                print('one vert')
-                p1 = l1[0] if l1[0] == l3[0] else l1[1]
-                p2 = l2[0] if l2[0] == l3[0] else l2[1]
-                return Part.LineSegment(p1, p2)
-            else:  # loop
-                print('loop')
-                return None
+        def sortEm(mywire, unmatched):
+            remaining = []
+            wireGrowing = False
 
-        def chains(seglist):
-            '''
-            iterates through segements and builds a list of chains
-            '''
+            # end points of existing wire
+            wireverts = [mywire.Edges[0].valueAt(mywire.Edges[0].FirstParameter),
+                mywire.Edges[-1].valueAt(mywire.Edges[-1].LastParameter)]
+
+            for i, candidate in enumerate(unmatched):
+                if candidate.Length < obj.Tolerance:
+                    continue
+
+                # end points of candidate edge
+                cverts = [candidate.Edges[0].valueAt(candidate.Edges[0].FirstParameter),
+                    candidate.Edges[-1].valueAt(candidate.Edges[-1].LastParameter)]
+
+                # iterate the combination of endpoints. If a match is found,
+                # make an edge from the common endpoint to the other end of
+                # the candidate wire. Add the edge to the wire and return it.
+
+                # This generates a new edge rather than using the candidate to
+                # avoid vertexes with close but different vectors
+                for wvert in wireverts:
+                    for idx, cvert in enumerate(cverts):
+                        if PathGeom.pointsCoincide(wvert, cvert, obj.Tolerance):
+                            wireGrowing = True
+                            elist = mywire.Edges
+                            otherIndex = int(not(idx))
+                            newedge = Part.Edge(Part.Vertex(wvert),
+                                    Part.Vertex(cverts[otherIndex]))
+                            elist.append(newedge)
+                            mywire = Part.Wire(Part.__sortEdges__(elist))
+                            remaining.extend(unmatched[i+1:])
+                            return mywire, remaining, wireGrowing
+
+                # if not matched, add to remaining list to test later
+                remaining.append(candidate)
+
+            return mywire, remaining, wireGrowing
+
+        def getWires(candidateList):
 
             chains = []
-            while len(seglist) > 0:
-                cur_seg = seglist.pop(0)
-                cur_chain = [cur_seg]
-                remaining = []
-                tempseg = cur_seg  # tempseg is a linesegment from first vertex to last in curchain
-                for i, seg in enumerate(seglist):
+            while len(candidateList) > 0:
+                cur_wire = Part.Wire(candidateList.pop(0))
 
-                    ac = areConnected(tempseg, seg)
-                    if ac != tempseg:
-                        cur_chain.append(seg)
-                    if ac is None:
-                        remaining.extend(seglist[i+1:])
-                        break
-                    else:
-                        tempseg = ac
+                wireGrowing = True
+                while wireGrowing:
+                    cur_wire, candidateList, wireGrowing = sortEm(cur_wire,
+                            candidateList)
 
-                    #print("c: {}".format(cur_chain))
-
-                chains.append(cur_chain)
-                seglist = remaining
+                chains.append(cur_wire)
 
             return chains
 
         def cutWire(w):
             path = []
-            p = w.Vertexes[0]
             path.append(Path.Command("G0 Z{}".format(obj.SafeHeight.Value)))
-            path.append(Path.Command("G0 X{} Y{} Z{}".format(p.X, p.Y, obj.SafeHeight.Value)))
-            # print('\/ \/ \/')
-            # print(p.Point)
-            c = Path.Command("G1 X{} Y{} Z{} F{}".format(p.X, p.Y, p.Z, obj.ToolController.HorizFeed.Value))
-            # print(c)
-            # print('/\ /\ /\ ')
+            e = w.Edges[0]
+            p = e.valueAt(e.FirstParameter)
+            path.append(Path.Command("G0 X{} Y{} Z{}".format(p.x, p.y,
+                obj.SafeHeight.Value)))
+            c = Path.Command("G1 X{} Y{} Z{} F{}".format(p.x, p.y, p.z,
+                obj.ToolController.HorizFeed.Value))
             path.append(c)
-            #path.append(Path.Command("G1 X{} Y{} Z{} F{}".format(p.X, p.Y, p.Z, obj.ToolController.HorizFeed.Value)))
-            for vert in w.Vertexes[1:]:
-                path.append(Path.Command("G1 X{} Y{} Z{} F{}".format(vert.X, vert.Y, vert.Z, obj.ToolController.HorizFeed.Value)))
+            for e in w.Edges:
+                path.extend(PathGeom.cmdsForEdge(e,
+                    hSpeed=obj.ToolController.HorizFeed.Value))
 
-            path.append(Path.Command("G0 Z{}".format(obj.SafeHeight.Value)))
             return path
 
         pathlist = []
@@ -259,59 +210,36 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             insert_many_wires(vd, f.Wires)
 
             vd.construct()
-            # vd.colorExterior(1)
-            # vd.colorTwins(2)
 
             for e in vd.Edges:
                 e.Color = 0 if e.isPrimary() else 5
             vd.colorExterior(1)
-            vd.colorExterior(4, lambda v: not f.isInside(v.toGeom(), 0.01, True))   # should derive tolerance from geometry
-            vd.colorColinear(3)
+            vd.colorExterior(4, lambda v: not f.isInside(v.toGeom(),
+                obj.Tolerance, True))
+            vd.colorColinear(3, obj.Threshold)
             vd.colorTwins(2)
 
             edgelist = getEdges(vd)
-            # for e in edgelist:
-            #     Part.show(e.toShape())
 
-            # for e in [e_ for e_ in vd.Edges if e_.Color == 2]:
-            #     print(e.getDistances())
-            #     p1 = e.Vertices[0].toGeom(calculate_depth(0-e.getDistances()[0]))
-            #     p2 = e.Vertices[-1].toGeom(calculate_depth(0-e.getDistances()[-1]))
-            #     edgelist.append(Part.makeLine(p1, p2))
-
-                # vlist = []
-                # for v, r in zip(e.Vertices, e.getDistances()):
-                #     p = v.toGeom()
-                #     p.z = calculate_depth(r)
-                #     vlist.append(p)
-                # l = Part.makeLine(vlist[0], vlist[-1])
-                # edgelist.append(l)
-
-            # for s in Part.sortEdges(edgelist):
-            #     pathlist.extend(cutWire(Part.Wire(s)))
-
-            for chain in chains(edgelist):
-                print('chain length {}'.format(len(chain)))
-                print(chain)
-                Part.show(Part.Wire([e.toShape() for e in chain]))
-
-            #pathlist.extend(sortedWires)  # the actual cutting g-code
+            for wire in getWires(edgelist):
+                pathlist.extend(cutWire(wire))
 
         self.commandlist = pathlist
 
     def opExecute(self, obj):
         '''opExecute(obj) ... process engraving operation'''
         PathLog.track()
-        # Openvoronoi must be installed
 
         if obj.ToolController.Tool.ToolType != 'Engraver':
             FreeCAD.Console.PrintError(
-                translate("Path_Vcarve", "This operation requires an engraver tool.") + "\n")
+                translate("Path_Vcarve",
+                    "This operation requires an engraver tool.") + "\n")
             return
 
         if obj.ToolController.Tool.CuttingEdgeAngle >= 180.0:
             FreeCAD.Console.PrintError(
-                translate("Path_Vcarve", "Engraver Cutting Edge Angle must be < 180 degrees.") + "\n")
+                translate("Path_Vcarve",
+                    "Engraver Cutting Edge Angle must be < 180 degrees.") + "\n")
             return
         try:
             if obj.Base:
@@ -335,10 +263,13 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         except Exception as e:
             PathLog.error(e)
             traceback.print_exc()
-            PathLog.error(translate('PathVcarve', 'The Job Base Object has no engraveable element.  Engraving operation will produce no output.'))
+            PathLog.error(translate('PathVcarve',
+                'The Job Base Object has no engraveable element.\
+                        Engraving operation will produce no output.'))
 
     def opUpdateDepths(self, obj, ignoreErrors=False):
-        '''updateDepths(obj) ... engraving is always done at the top most z-value'''
+        '''updateDepths(obj) ... engraving is always done at \
+                the top most z-value'''
         job = PathUtils.findParentJob(obj)
         self.opSetDefaultValues(obj, job)
 
