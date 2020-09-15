@@ -108,8 +108,9 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
         item->setData(Qt::UserRole, QByteArray(obj->getNameInDocument()));
         ui->listWidgetReferences->addItem(item);
     }
-    if (loft->Sections.getValues().size()>0){
-        static_cast<ViewProviderLoft*>(vp)->makeTemporaryVisible(true);
+
+    if (!loft->Sections.getValues().empty()) {
+        LoftView->makeTemporaryVisible(true);
     }
 
     // activate and de-activate dialog elements as appropriate
