@@ -21,7 +21,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides functions to return the SVG representation of various shapes."""
+"""Provides functions to return the SVG representation of various shapes.
+
+Warning: this still uses the `Drawing.projectToSVG` method to provide
+the SVG representation of certain objects.
+Therefore, even if the Drawing Workbench is obsolete, the `Drawing` module
+may not be removed completely yet. This must be checked.
+"""
 ## @package svg
 # \ingroup draftfuctions
 # \brief Provides functions to return the SVG representation of shapes.
@@ -69,6 +75,8 @@ def get_line_style(line_style, scale):
             style = ",".join([str(float(d)/scale) for d in style])
             # print("lstyle ", style)
         except:
+            # TODO: trap only specific exception; what is the problem?
+            # Bad string specification?
             return "none"
         else:
             return style
@@ -84,6 +92,11 @@ def getLineStyle(linestyle, scale):
 
 def get_proj(vec, plane=None):
     """Get a projection of the vector in the plane's u and v directions.
+
+    TODO: check if the same function for SVG and DXF projection can be used
+    so that this function is not just duplicated code.
+    This function may also be present elsewhere, like `WorkingPlane`
+    or `DraftGeomUtils`, so we should avoid code duplication.
 
     Parameters
     ----------
@@ -251,7 +264,7 @@ def get_arrow(obj,
     _rotate = 'rotate({},{},{})'.format(math.degrees(angle),
                                         point.x, point.y)
     _transl = 'translate({},{})'.format(point.x, point.y)
-    _scale = 'scale({},{})'.format(arrowsize, arrowsize)
+    _scale = 'scale({size},{size})'.format(size=arrowsize)
     _style = 'style="stroke-miterlimit:4;stroke-dasharray:none"'
 
     if obj.ViewObject.ArrowType == "Circle":
@@ -443,6 +456,9 @@ def get_text(plane, techdraw,
                 _t = text[0].replace("&", "&amp;").replace("<", "&lt;")
                 svg += _t.replace(">", "&gt;")
             except:
+                # TODO: trap only specific exception; what is the problem?
+                # Bad UTF8 string specification? This can be removed
+                # once the code is only used with Python 3.
                 _t = text[0].decode("utf8")
                 _t = _t.replace("&", "&amp;").replace("<", "&lt;")
                 svg += _t.replace(">", "&gt;")
@@ -457,6 +473,9 @@ def get_text(plane, techdraw,
                     _t = text[i].replace("&", "&amp;").replace("<", "&lt;")
                     svg += _t.replace(">", "&gt;")
                 except:
+                    # TODO: trap only specific exception; what is the problem?
+                    # Bad UTF8 string specification? This can be removed
+                    # once the code is only used with Python 3.
                     _t = text[i].decode("utf8")
                     _t = _t.replace("&", "&amp;").replace("<", "&lt;")
                     svg += _t.replace(">", "&gt;")
@@ -487,7 +506,11 @@ def get_path(obj, plane,
              fill, pathdata, stroke, linewidth, lstyle,
              fill_opacity=None,
              edges=[], wires=[], pathname=None):
-    """Get the SVG representation from an object's edges or wires."""
+    """Get the SVG representation from an object's edges or wires.
+
+    TODO: the `edges` and `wires` must not default to empty list `[]`
+    but to `None`. Verify that the code doesn't break with this change.
+    """
     svg = "<path "
 
     if pathname is None:
@@ -558,9 +581,14 @@ def get_path(obj, plane,
                                 _a = _a.split('"')[0]
                                 _a = _a.split("A")[1]
                                 A = "A " + _a
-                            except:
+                            except IndexError:
+                                # TODO: trap only specific exception;
+                                # what is the problem?
+                                # split didn't produce a two element list?
                                 _wrn("Circle or ellipse: "
-                                     "error splitting the projection snip")
+                                     "not possible to split the projection "
+                                     "snip obtained by Drawing.projectToSVG, "
+                                     "continue manually.")
                             else:
                                 edata += A
                                 done = True
