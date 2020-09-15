@@ -138,6 +138,8 @@ private Q_SLOTS:
     void onButtonRefAdd(bool checked);
     void onButtonRefRemove(bool checked);
     void updateUI(int idx);
+    void onDeleteSection();
+    void indexesMoved();
   
 protected:
     enum selectionModes { none, refAdd, refRemove };

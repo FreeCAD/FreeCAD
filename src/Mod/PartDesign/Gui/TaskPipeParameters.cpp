@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QAction>
 # include <QRegExp>
 # include <QTextStream>
 # include <QMessageBox>
@@ -648,13 +649,31 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     connect(ui->stackedWidget, SIGNAL(currentChanged(int)),
             this, SLOT(updateUI(int)));
 
+    // Create context menu
+    QAction* remove = new QAction(tr("Remove"), this);
+    remove->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    remove->setShortcutVisibleInContextMenu(true);
+#endif
+    ui->listWidgetReferences->addAction(remove);
+    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteSection()));
+
+    connect(ui->listWidgetReferences->model(),
+        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
+
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
-    const std::vector<App::DocumentObject*>& sections = pipe->Sections.getValues();
-    for (auto it : sections) {
-        QString label = QString::fromUtf8(it->Label.getValue());
-        ui->listWidgetReferences->addItem(label);
+    for (auto obj : pipe->Sections.getValues()) {
+        Gui::Application::Instance->showViewProvider(obj);
+
+        QString label = QString::fromUtf8(obj->Label.getValue());
+        QListWidgetItem* item = new QListWidgetItem();
+        item->setText(label);
+        item->setData(Qt::UserRole, QByteArray(obj->getNameInDocument()));
+        ui->listWidgetReferences->addItem(item);
     }
 
     ui->comboBoxScaling->setCurrentIndex(pipe->Transformation.getValue());
@@ -780,6 +799,53 @@ void TaskPipeScaling::removeFromListWidget(QListWidget* widget, QString name) {
         for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
             QListWidgetItem* it = widget->takeItem(widget->row(*i));
             delete it;
+        }
+    }
+}
+
+void TaskPipeScaling::indexesMoved()
+{
+    QAbstractItemModel* model = qobject_cast<QAbstractItemModel*>(sender());
+    if (!model)
+        return;
+
+    PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+    std::vector<App::DocumentObject*> originals = pipe->Sections.getValues();
+
+    QByteArray name;
+    int rows = model->rowCount();
+    for (int i = 0; i < rows; i++) {
+        QModelIndex index = model->index(i, 0);
+        name = index.data(Qt::UserRole).toByteArray().constData();
+        originals[i] = pipe->getDocument()->getObject(name.constData());
+    }
+    clearButtons();
+    pipe->Sections.setValues(originals);
+    //static_cast<PartDesign::Pipe*>(vp->getObject())->Sections.setValues(originals);
+    recomputeFeature();
+}
+
+void TaskPipeScaling::onDeleteSection()
+{
+    // Delete the selected profile
+    int row = ui->listWidgetReferences->currentRow();
+    //Base::Console().Warning(std::to_string(row).c_str());
+    QListWidgetItem* item = ui->listWidgetReferences->item(row);
+    if (item) {
+        QByteArray data = item->data(Qt::UserRole).toByteArray();
+        ui->listWidgetReferences->takeItem(row);
+        delete item;
+
+        // search inside the list of sections
+        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+        std::vector<App::DocumentObject*> refs = pipe->Sections.getValues();
+        App::DocumentObject* obj = pipe->getDocument()->getObject(data.constData());
+        std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
+        if (f != refs.end()) {
+            refs.erase(f);
+            pipe->Sections.setValues(refs);
+            clearButtons();
+            recomputeFeature();
         }
     }
 }
