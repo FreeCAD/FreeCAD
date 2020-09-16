@@ -547,6 +547,112 @@ def format_point(coords, action='L'):
     return "{action}{x},{y}".format(x=coords.x, y=coords.y, action=action)
 
 
+def _get_path_circ_ellipse(plane, e, edata, iscircle,
+                           fill, stroke, linewidth, lstyle,
+                           isellipse, vs):
+    """Get the edge data from a path that is a circle or ellipse."""
+    if hasattr(App, "DraftWorkingPlane"):
+        drawing_plane_normal = App.DraftWorkingPlane.axis
+    else:
+        drawing_plane_normal = App.Vector(0, 0, 1)
+
+    if plane:
+        drawing_plane_normal = plane.axis
+
+    c = e.Curve
+    ax = c.Axis
+    if round(ax.getAngle(drawing_plane_normal), 2) in [0, 3.14]:
+        occversion = Part.OCC_VERSION.split(".")
+        done = False
+        if int(occversion[0]) >= 7 and int(occversion[1]) >= 1:
+            # if using occ >= 7.1, use HLR algorithm
+            snip = Drawing.projectToSVG(e, drawing_plane_normal)
+
+            if snip:
+                try:
+                    _a = snip.split('path d="')[1]
+                    _a = _a.split('"')[0]
+                    _a = _a.split("A")[1]
+                    A = "A " + _a
+                except IndexError:
+                    # TODO: trap only specific exception;
+                    # what is the problem?
+                    # split didn't produce a two element list?
+                    _wrn("Circle or ellipse: "
+                         "not possible to split the projection "
+                         "snip obtained by Drawing.projectToSVG, "
+                         "continue manually.")
+                else:
+                    edata += A
+                    done = True
+
+        if not done:
+            if len(e.Vertexes) == 1 and iscircle:
+                # Complete circle not only arc
+                svg = get_circle(plane,
+                                 fill, stroke, linewidth, lstyle,
+                                 e)
+                # If it's a circle we will return the final SVG string,
+                # otherwise it will process the `edata` further
+                return "svg", svg
+            elif len(e.Vertexes) == 1 and isellipse:
+                # Complete ellipse not only arc
+                # svg = get_ellipse(plane,
+                #                   fill, stroke, linewidth,
+                #                   lstyle, edge)
+                # return svg
+
+                # Difference in angles
+                _diff = (c.LastParameter - c.FirstParameter)/2.0
+                endpoints = [get_proj(c.value(_diff), plane),
+                             get_proj(vs[-1].Point, plane)]
+            else:
+                endpoints = [get_proj(vs[-1].Point, plane)]
+
+            # Arc with more than one vertex
+            if iscircle:
+                rx = ry = c.Radius
+                rot = 0
+            else:  # ellipse
+                rx = c.MajorRadius
+                ry = c.MinorRadius
+                rot = math.degrees(c.AngleXU
+                                   * c.Axis * App.Vector(0, 0, 1))
+                if rot > 90:
+                    rot -= 180
+                if rot < -90:
+                    rot += 180
+
+            # Be careful with the sweep flag
+            _diff = e.ParameterRange[1] - e.ParameterRange[0]
+            _diff = _diff / math.pi
+            flag_large_arc = (_diff % 2) > 1
+
+            # flag_sweep = (c.Axis * drawing_plane_normal >= 0) \
+            #     == (e.LastParameter > e.FirstParameter)
+            #     == (e.Orientation == "Forward")
+
+            # Another method: check the direction of the angle
+            # between tangents
+            _diff = e.LastParameter - e.FirstParameter
+            t1 = e.tangentAt(e.FirstParameter)
+            t2 = e.tangentAt(e.FirstParameter + _diff/10)
+            flag_sweep = DraftVecUtils.angle(t1, t2,
+                                             drawing_plane_normal) < 0
+
+            for v in endpoints:
+                edata += ('A {} {} {} '
+                          '{} {} '
+                          '{} {} '.format(rx, ry, rot,
+                                          int(flag_large_arc),
+                                          int(flag_sweep),
+                                          v.x, v.y))
+    else:
+        edata += get_discretized(e, plane)
+
+    return "edata", edata
+
+
 def get_path(obj, plane,
              fill, pathdata, stroke, linewidth, lstyle,
              fill_opacity=None,
@@ -555,6 +661,10 @@ def get_path(obj, plane,
 
     TODO: the `edges` and `wires` must not default to empty list `[]`
     but to `None`. Verify that the code doesn't break with this change.
+
+    `edges` and `wires` are mutually exclusive. If no `wires` are provided,
+    sort the `edges`, and use them. If `wires` are provided, sort the edges
+    in these `wires`, and use them.
     """
     svg = "<path "
 
@@ -564,6 +674,7 @@ def get_path(obj, plane,
         svg += 'id="{}" '.format(pathname)
 
     svg += ' d="'
+
     if not wires:
         egroups = Part.sortEdges(edges)
     else:
@@ -603,103 +714,15 @@ def get_path(obj, plane,
             isellipse = DraftGeomUtils.geomType(e) == "Ellipse"
 
             if iscircle or isellipse:
-                if hasattr(App, "DraftWorkingPlane"):
-                    drawing_plane_normal = App.DraftWorkingPlane.axis
-                else:
-                    drawing_plane_normal = App.Vector(0, 0, 1)
+                _type, data = _get_path_circ_ellipse(plane, e, edata, iscircle,
+                                                     fill, stroke, linewidth,
+                                                     lstyle, isellipse, vs)
+                if _type == "svg":
+                    # final svg string already calculated, so just return it
+                    return data
 
-                if plane:
-                    drawing_plane_normal = plane.axis
-
-                c = e.Curve
-                ax = c.Axis
-                if round(ax.getAngle(drawing_plane_normal), 2) in [0, 3.14]:
-                    occversion = Part.OCC_VERSION.split(".")
-                    done = False
-                    if int(occversion[0]) >= 7 and int(occversion[1]) >= 1:
-                        # if using occ >= 7.1, use HLR algorithm
-                        snip = Drawing.projectToSVG(e, drawing_plane_normal)
-
-                        if snip:
-                            try:
-                                _a = snip.split('path d="')[1]
-                                _a = _a.split('"')[0]
-                                _a = _a.split("A")[1]
-                                A = "A " + _a
-                            except IndexError:
-                                # TODO: trap only specific exception;
-                                # what is the problem?
-                                # split didn't produce a two element list?
-                                _wrn("Circle or ellipse: "
-                                     "not possible to split the projection "
-                                     "snip obtained by Drawing.projectToSVG, "
-                                     "continue manually.")
-                            else:
-                                edata += A
-                                done = True
-
-                    if not done:
-                        if len(e.Vertexes) == 1 and iscircle:
-                            # Complete circle not only arc
-                            svg = get_circle(plane,
-                                             fill, stroke, linewidth, lstyle,
-                                             e)
-                            return svg
-                        elif len(e.Vertexes) == 1 and isellipse:
-                            # Complete ellipse not only arc
-                            # svg = get_ellipse(plane,
-                            #                   fill, stroke, linewidth,
-                            #                   lstyle, edge)
-                            # return svg
-
-                            # Difference in angles
-                            _diff = (c.LastParameter - c.FirstParameter)/2.0
-                            endpoints = [get_proj(c.value(_diff), plane),
-                                         get_proj(vs[-1].Point, plane)]
-                        else:
-                            endpoints = [get_proj(vs[-1].Point, plane)]
-
-                        # Arc with more than one vertex
-                        if iscircle:
-                            rx = ry = c.Radius
-                            rot = 0
-                        else:  # ellipse
-                            rx = c.MajorRadius
-                            ry = c.MinorRadius
-                            rot = math.degrees(c.AngleXU
-                                               * c.Axis * App.Vector(0, 0, 1))
-                            if rot > 90:
-                                rot -= 180
-                            if rot < -90:
-                                rot += 180
-
-                        # Be careful with the sweep flag
-                        _diff = e.ParameterRange[1] - e.ParameterRange[0]
-                        _diff = _diff / math.pi
-                        flag_large_arc = (_diff % 2) > 1
-
-                        # flag_sweep = (c.Axis * drawing_plane_normal >= 0) \
-                        #     == (e.LastParameter > e.FirstParameter)
-                        #     == (e.Orientation == "Forward")
-
-                        # Another method: check the direction of the angle
-                        # between tangents
-                        _diff = e.LastParameter - e.FirstParameter
-                        t1 = e.tangentAt(e.FirstParameter)
-                        t2 = e.tangentAt(e.FirstParameter + _diff/10)
-                        flag_sweep = DraftVecUtils.angle(t1, t2,
-                                                         drawing_plane_normal) < 0
-
-                        for v in endpoints:
-                            edata += ('A {} {} {} '
-                                      '{} {} '
-                                      '{} {} '.format(rx, ry, rot,
-                                                      int(flag_large_arc),
-                                                      int(flag_sweep),
-                                                      v.x, v.y))
-                else:
-                    edata += get_discretized(e, plane)
-
+                # else the `edata` was properly augmented, so re-assing it
+                edata = data
             elif DraftGeomUtils.geomType(e) == "Line":
                 v = get_proj(vs[-1].Point, plane)
                 edata += 'L {} {} '.format(v.x, v.y)
