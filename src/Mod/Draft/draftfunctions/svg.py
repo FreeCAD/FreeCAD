@@ -354,6 +354,93 @@ def getOvershoot(point, shootsize, color, linewidth, angle=0):
     return get_overshoot(point, shootsize, color, linewidth, angle)
 
 
+def _get_text_techdraw(text, tcolor, fontsize, anchor,
+                       align, fontname, angle, base,
+                       linespacing):
+    """Return the SVG representation of text for TechDraw display.
+
+    `text` is a list of textual elements; they are iterated, styled,
+    and added around a `<text>` tag.
+    ::
+        <text ...> text[0] </text>
+        <text ...> text[1] </text>
+    """
+    svg = ""
+    for i in range(len(text)):
+        _t = text[i].replace("&", "&amp;")
+        _t = _t.replace("<", "&lt;")
+        t = _t.replace(">", "&gt;")
+
+        if six.PY2 and not isinstance(t, six.text_type):
+            t = t.decode("utf8")
+
+        # possible workaround if UTF8 is unsupported
+        #   import unicodedata as U
+        #   v = list()
+        #   for c in U.normalize("NFKD", t):
+        #       if not U.combining(c):
+        #           v.append(c)
+        #
+        #   t = u"".join(v)
+        #   t = t.encode("utf8")
+
+        svg += '<text '
+        svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
+        svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)
+        svg += 'style="text-anchor:{};text-align:{};'.format(anchor,
+                                                             align.lower())
+        svg += 'font-family:{}" '.format(fontname)
+        svg += 'transform="'
+        svg += 'rotate({},{},{}) '.format(math.degrees(angle),
+                                          base.x,
+                                          base.y - i * linespacing)
+        svg += 'translate({},{}) '.format(base.x,
+                                          base.y - i * linespacing)
+        svg += 'scale(1,-1)"'
+        # svg += 'freecad:skip="1"'
+        svg += '>\n'
+        svg += t
+        svg += '</text>\n'
+    return svg
+
+
+def _get_text_header(tcolor, fontsize, anchor, align,
+                     fontname, angle, base, flip):
+    """Return the initial <text> tag with style options.
+
+    The text must be added after this tag, and then must be closed.
+    ::
+        <text ...>
+        ...
+        </text>
+    """
+    svg = '<text '
+    svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
+    svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)
+    svg += 'style="text-anchor:{};text-align:{};'.format(anchor,
+                                                         align.lower())
+    svg += 'font-family:{}" '.format(fontname)
+    svg += 'transform="'
+    svg += 'rotate({},{},{}) '.format(math.degrees(angle),
+                                      base.x,
+                                      base.y)
+    if flip:
+        svg += 'translate({},{}) '.format(base.x, base.y)
+    else:
+        svg += 'translate({},{}) '.format(base.x, -base.y)
+    # svg += 'scale({},-{}) '.format(tmod/2000, tmod/2000)
+
+    if flip:
+        svg += 'scale(1,-1) '
+    else:
+        svg += 'scale(1,1) '
+
+    svg += '" '
+    svg += 'freecad:skip="1"'
+    svg += '>\n'
+    return svg
+
+
 def get_text(plane, techdraw,
              tcolor, fontsize, fontname,
              angle, base, text,
@@ -389,67 +476,25 @@ def get_text(plane, techdraw,
         anchor = "end"
 
     if techdraw:
-        svg = ""
-        for i in range(len(text)):
-            _t = text[i].replace("&", "&amp;")
-            _t = _t.replace("<", "&lt;")
-            t = _t.replace(">", "&gt;")
-
-            if six.PY2 and not isinstance(t, six.text_type):
-                t = t.decode("utf8")
-
-            # possible workaround if UTF8 is unsupported
-            #   import unicodedata as U
-            #   v = list()
-            #   for c in U.normalize("NFKD", t):
-            #       if not U.combining(c):
-            #           v.append(c)
-            #
-            #   t = u"".join(v)
-            #   t = t.encode("utf8")
-
-            svg += '<text '
-            svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
-            svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)
-            svg += 'style="text-anchor:{};text-align:{};'.format(anchor,
-                                                                 align.lower())
-            svg += 'font-family:{}" '.format(fontname)
-            svg += 'transform="'
-            svg += 'rotate({},{},{}) '.format(math.degrees(angle),
-                                              base.x,
-                                              base.y - i * linespacing)
-            svg += 'translate({},{}) '.format(base.x,
-                                              base.y - i * linespacing)
-            svg += 'scale(1,-1)"'
-            # svg += 'freecad:skip="1"'
-            svg += '>\n'
-            svg += t
-            svg += '</text>\n'
+        # For TechDraw display each item in the text list is placed
+        # in an individual tag.
+        # <text ...> text[0] </text>
+        # <text ...> text[1] </text>
+        svg = _get_text_techdraw(text, tcolor, fontsize, anchor,
+                                 align, fontname, angle, base,
+                                 linespacing)
     else:
-        svg = '<text '
-        svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
-        svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)
-        svg += 'style="text-anchor:{};text-align:{};'.format(anchor,
-                                                             align.lower())
-        svg += 'font-family:{}" '.format(fontname)
-        svg += 'transform="'
-        svg += 'rotate({},{},{}) '.format(math.degrees(angle),
-                                          base.x,
-                                          base.y)
-        if flip:
-            svg += 'translate({},{}) '.format(base.x, base.y)
-        else:
-            svg += 'translate({},{}) '.format(base.x, -base.y)
-        # svg += 'scale({},-{}) '.format(tmod/2000, tmod/2000)
-
-        if flip:
-            svg += 'scale(1,-1) '
-        else:
-            svg += 'scale(1,1) '
-
-        svg += '" '
-        svg += 'freecad:skip="1"'
-        svg += '>\n'
+        # If the SVG is not for TechDraw, and there is a single item
+        # in the text list, place it in a single tag.
+        # <text ...> text </text>
+        #
+        # For multiple elements, place each element inside a <tspan> tag.
+        # <text ...>
+        #   <tspan>text[0]</tspan>
+        #   <tspan>text[1]</tspan>
+        # </text>
+        svg = _get_text_header(tcolor, fontsize, anchor, align,
+                               fontname, angle, base, flip)
 
         if len(text) == 1:
             try:
