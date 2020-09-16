@@ -211,6 +211,7 @@ QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QS
 
 TaskSketchBasedParameters::~TaskSketchBasedParameters()
 {
+    Gui::Selection().rmvSelectionGate();
 }
 
 
