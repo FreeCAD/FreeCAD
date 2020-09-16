@@ -239,21 +239,21 @@ void PropertyEditor::onItemActivated ( const QModelIndex & index )
 
 void PropertyEditor::closeTransaction()
 {
-    if (autoupdate) {
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if (doc) {
-            if (!doc->isTransactionEmpty()) {
-                // Between opening and committing a transaction a recompute
-                // could already have been done
-                if (doc->isTouched())
-                    doc->recompute();
+    int tid = 0;
+    if(App::GetApplication().getActiveTransaction(&tid) && tid == transactionID) {
+        if (autoupdate) {
+            App::Document* doc = App::GetApplication().getActiveDocument();
+            if (doc) {
+                if (!doc->isTransactionEmpty()) {
+                    // Between opening and committing a transaction a recompute
+                    // could already have been done
+                    if (doc->isTouched())
+                        doc->recompute();
+                }
             }
         }
-    }
-
-    int tid = 0;
-    if(App::GetApplication().getActiveTransaction(&tid) && tid == transactionID)
         App::GetApplication().closeActiveTransaction();
+    }
 }
 
 void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
