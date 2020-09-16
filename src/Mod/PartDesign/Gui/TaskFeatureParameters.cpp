@@ -106,15 +106,14 @@ bool TaskDlgFeatureParameters::accept() {
             throw Base::TypeError("Bad object processed in the feature dialog.");
         }
 
-        App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
-
-        FCMD_OBJ_HIDE(previous);
-
         Gui::cmdAppDocument(feature, "recompute()");
 
         if (!feature->isValid()) {
             throw Base::RuntimeError(vp->getObject()->getStatusString());
         }
+
+        App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
+        Gui::cmdAppObjectHide(previous);
 
         // detach the task panel from the selection to avoid to invoke
         // eventually onAddSelection when the selection changes
