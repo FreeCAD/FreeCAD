@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QAction>
 # include <QRegExp>
 # include <QTextStream>
 # include <QMessageBox>
@@ -90,6 +91,17 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     connect(ui->buttonSpineBase, SIGNAL(toggled(bool)),
             this, SLOT(onBaseButton(bool)));
 
+    // Create context menu
+    QAction* remove = new QAction(tr("Remove"), this);
+    remove->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    remove->setShortcutVisibleInContextMenu(true);
+#endif
+    ui->listWidgetReferences->addAction(remove);
+    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
+    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
@@ -110,8 +122,13 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
         ui->spineBaseEdit->setText(QString::fromUtf8(pipe->Spine.getValue()->Label.getValue()));
 
     std::vector<std::string> strings = pipe->Spine.getSubValues();
-    for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it)
-        ui->listWidgetReferences->addItem(QString::fromStdString(*it));
+    for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it) {
+        QString label = QString::fromStdString(*it);
+        QListWidgetItem* item = new QListWidgetItem();
+        item->setText(label);
+        item->setData(Qt::UserRole, QByteArray(label.toUtf8()));
+        ui->listWidgetReferences->addItem(item);
+    }
 
     if (!strings.empty()) {
         PipeView->makeTemporaryVisible(true);
@@ -288,6 +305,30 @@ void TaskPipeParameters::removeFromListWidget(QListWidget* widget, QString items
     }
 }
 
+void TaskPipeParameters::onDeleteEdge()
+{
+    // Delete the selected path edge
+    int row = ui->listWidgetReferences->currentRow();
+    QListWidgetItem* item = ui->listWidgetReferences->item(row);
+    if (item) {
+        QByteArray data = item->data(Qt::UserRole).toByteArray();
+        ui->listWidgetReferences->takeItem(row);
+        delete item;
+        // search inside the list of spines
+        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+        std::vector<std::string> refs = pipe->Spine.getSubValues();
+        std::string obj = data.toStdString();
+        std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), obj);
+        // if something was found, delte it and update the spine list
+        if (f != refs.end()) {
+            refs.erase(f);
+            pipe->Spine.setValue(pipe->Spine.getValue(), refs);
+            clearButtons();
+            recomputeFeature();
+        }
+    }
+}
+
 bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const {
 
     if (msg.Type == Gui::SelectionChanges::AddSelection && selectionMode != none) {
@@ -401,6 +442,17 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
     connect(ui->doubleSpinBoxZ, SIGNAL(valueChanged(double)),
             this, SLOT(onBinormalChanged(double)));
 
+    // Create context menu
+    QAction* remove = new QAction(tr("Remove"), this);
+    remove->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    remove->setShortcutVisibleInContextMenu(true);
+#endif
+    ui->listWidgetReferences->addAction(remove);
+    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteItem()));
+    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
@@ -419,8 +471,13 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
         ui->profileBaseEdit->setText(QString::fromUtf8(pipe->AuxillerySpine.getValue()->Label.getValue()));
 
     std::vector<std::string> strings = pipe->AuxillerySpine.getSubValues();
-    for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it)
-        ui->listWidgetReferences->addItem(QString::fromStdString(*it));
+    for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it) {
+        QString label = QString::fromStdString(*it);
+        QListWidgetItem* item = new QListWidgetItem();
+        item->setText(label);
+        item->setData(Qt::UserRole, QByteArray(label.toUtf8()));
+        ui->listWidgetReferences->addItem(item);
+    }
 
     ui->comboBoxMode->setCurrentIndex(pipe->Mode.getValue());
     ui->curvelinear->setChecked(pipe->AuxilleryCurvelinear.getValue());
@@ -615,6 +672,30 @@ void TaskPipeOrientation::removeFromListWidget(QListWidget* widget, QString name
     }
 }
 
+void TaskPipeOrientation::onDeleteItem()
+{
+    // Delete the selected spine
+    int row = ui->listWidgetReferences->currentRow();
+    QListWidgetItem* item = ui->listWidgetReferences->item(row);
+    if (item) {
+        QByteArray data = item->data(Qt::UserRole).toByteArray();
+        ui->listWidgetReferences->takeItem(row);
+        delete item;
+        // search inside the list of spines
+        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+        std::vector<std::string> refs = pipe->AuxillerySpine.getSubValues();
+        std::string obj = data.toStdString();
+        std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), obj);
+        // if something was found, delte it and update the spine list
+        if (f != refs.end()) {
+            refs.erase(f);
+            pipe->AuxillerySpine.setValue(pipe->AuxillerySpine.getValue(), refs);
+            clearButtons();
+            recomputeFeature();
+        }
+    }
+}
+
 void TaskPipeOrientation::updateUI(int idx) {
 
     //make sure we resize to the size of the current page
@@ -648,13 +729,27 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     connect(ui->stackedWidget, SIGNAL(currentChanged(int)),
             this, SLOT(updateUI(int)));
 
+    // Create context menu
+    QAction* remove = new QAction(tr("Remove"), this);
+    remove->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    remove->setShortcutVisibleInContextMenu(true);
+#endif
+    ui->listWidgetReferences->addAction(remove);
+    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteSection()));
+
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
-    const std::vector<App::DocumentObject*>& sections = pipe->Sections.getValues();
-    for (auto it : sections) {
-        QString label = QString::fromUtf8(it->Label.getValue());
-        ui->listWidgetReferences->addItem(label);
+    for (auto obj : pipe->Sections.getValues()) {
+        Gui::Application::Instance->showViewProvider(obj);
+        QString label = QString::fromUtf8(obj->Label.getValue());
+        QListWidgetItem* item = new QListWidgetItem();
+        item->setText(label);
+        item->setData(Qt::UserRole, QByteArray(obj->getNameInDocument()));
+        ui->listWidgetReferences->addItem(item);
     }
 
     ui->comboBoxScaling->setCurrentIndex(pipe->Transformation.getValue());
@@ -780,6 +875,30 @@ void TaskPipeScaling::removeFromListWidget(QListWidget* widget, QString name) {
         for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
             QListWidgetItem* it = widget->takeItem(widget->row(*i));
             delete it;
+        }
+    }
+}
+
+void TaskPipeScaling::onDeleteSection()
+{
+    // Delete the selected profile
+    int row = ui->listWidgetReferences->currentRow();
+    QListWidgetItem* item = ui->listWidgetReferences->item(row);
+    if (item) {
+        QByteArray data = item->data(Qt::UserRole).toByteArray();
+        ui->listWidgetReferences->takeItem(row);
+        delete item;
+        // search inside the list of sections
+        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+        std::vector<App::DocumentObject*> refs = pipe->Sections.getValues();
+        App::DocumentObject* obj = pipe->getDocument()->getObject(data.constData());
+        std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
+        // if something was found, delte it and update the section list
+        if (f != refs.end()) {
+            refs.erase(f);
+            pipe->Sections.setValues(refs);
+            clearButtons();
+            recomputeFeature();
         }
     }
 }
