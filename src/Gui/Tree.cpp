@@ -322,11 +322,17 @@ public:
             if (newSet.find(child) == newSet.end()) {
                 // this means old child removed
                 updated = true;
-                docItem->_ParentMap[child].erase(obj);
+                auto mapIt = docItem->_ParentMap.find(child);
 
-                auto childVp = docItem->getViewProvider(child);
-                if (childVp && child->getDocument() == obj->getDocument())
-                    childVp->setShowable(docItem->isObjectShowable(child));
+                // If 'child' is not part of the map then it has already been deleted
+                // in _slotDeleteObject.
+                if (mapIt != docItem->_ParentMap.end()) {
+                    docItem->_ParentMap[child].erase(obj);
+
+                    auto childVp = docItem->getViewProvider(child);
+                    if (childVp && child->getDocument() == obj->getDocument())
+                        childVp->setShowable(docItem->isObjectShowable(child));
+                }
             }
         }
         // We still need to check the order of the children
