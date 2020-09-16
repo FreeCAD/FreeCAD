@@ -446,11 +446,11 @@ class Snapper:
                     snaps.extend(self.snapToEndpoints(edge))
                     snaps.extend(self.snapToIntersection(edge))
 
-            elif Draft.getType(obj) == "Mesh":
+            elif Draft.getType(obj).startswith("Mesh::"):
                 # for meshes we only snap to vertices
                 snaps.extend(self.snapToEndpoints(obj.Mesh))
 
-            elif Draft.getType(obj) == "Points":
+            elif Draft.getType(obj).startswith("Points::"):
                 # for points we only snap to points
                 snaps.extend(self.snapToEndpoints(obj.Points))
 

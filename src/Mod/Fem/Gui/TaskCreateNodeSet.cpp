@@ -219,6 +219,7 @@ void TaskCreateNodeSet::onSelectionChanged(const Gui::SelectionChanges& msg)
 TaskCreateNodeSet::~TaskCreateNodeSet()
 {
     delete ui;
+    Gui::Selection().rmvSelectionGate();
 }
 
 

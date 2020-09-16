@@ -29,6 +29,9 @@
 # include <QStyle>
 # include <QLineEdit>
 # include <QKeyEvent>
+# include <QStyle>
+# include <QStyleOptionSpinBox>
+# include <QStylePainter>
 #endif
 
 #include "SpinBox.h"
@@ -409,6 +412,21 @@ void UIntSpinBox::keyPressEvent(QKeyEvent *event)
         QAbstractSpinBox::keyPressEvent(event);
 }
 
+void UIntSpinBox::paintEvent(QPaintEvent*)
+{
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    if (hasExpression()) {
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxUp;
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxDown;
+        opt.state &= ~QStyle::State_Active;
+        opt.stepEnabled = StepNone;
+    }
+
+    QStylePainter p(this);
+    p.drawComplexControl(QStyle::CC_SpinBox, opt);
+}
+
 // ----------------------------------------------------------------------------
 
 IntSpinBox::IntSpinBox(QWidget* parent) : QSpinBox(parent) {
@@ -587,6 +605,21 @@ void IntSpinBox::keyPressEvent(QKeyEvent *event)
         QAbstractSpinBox::keyPressEvent(event);
 }
 
+void IntSpinBox::paintEvent(QPaintEvent*)
+{
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    if (hasExpression()) {
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxUp;
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxDown;
+        opt.state &= ~QStyle::State_Active;
+        opt.stepEnabled = StepNone;
+    }
+
+    QStylePainter p(this);
+    p.drawComplexControl(QStyle::CC_SpinBox, opt);
+}
+
 // ----------------------------------------------------------------------------
 
 DoubleSpinBox::DoubleSpinBox(QWidget* parent): QDoubleSpinBox(parent) {
@@ -762,6 +795,21 @@ void DoubleSpinBox::keyPressEvent(QKeyEvent *event)
         openFormulaDialog();
     else
         QAbstractSpinBox::keyPressEvent(event);
+}
+
+void DoubleSpinBox::paintEvent(QPaintEvent*)
+{
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    if (hasExpression()) {
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxUp;
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxDown;
+        opt.state &= ~QStyle::State_Active;
+        opt.stepEnabled = StepNone;
+    }
+
+    QStylePainter p(this);
+    p.drawComplexControl(QStyle::CC_SpinBox, opt);
 }
 
 #include "moc_SpinBox.cpp"

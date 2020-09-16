@@ -80,6 +80,7 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
     ui(new Ui_TaskCosmeticLine),
     m_partFeat(partFeat),
     m_edgeName(edgeName),
+    m_ce(nullptr),
     m_saveCE(nullptr),
     m_createMode(false)
 {
@@ -106,6 +107,7 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
                                    std::vector<bool> is3d) :
     ui(new Ui_TaskCosmeticLine),
     m_partFeat(partFeat),
+    m_ce(nullptr),
     m_saveCE(nullptr),
     m_points(points),
     m_is3d(is3d),

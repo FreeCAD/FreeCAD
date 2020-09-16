@@ -522,6 +522,7 @@ void QGIViewDimension::setGroupSelection(bool b)
 
 void QGIViewDimension::select(bool state)
 {
+    Q_UNUSED(state)
 //    setSelected(state);
 //    draw();
 }

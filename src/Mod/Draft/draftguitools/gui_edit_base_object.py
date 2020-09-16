@@ -1,6 +1,4 @@
 # ***************************************************************************
-# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
-# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *   Copyright (c) 2019, 2020 Carlo Pavan <carlopav@gmail.com>             *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -20,66 +18,73 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides support functions to edit Sketch objects."""
-## @package gui_edit_sketcher_objects
+"""Provides support functions to edit Arch objects."""
+## @package gui_edit_arch_objects
 # \ingroup draftguitools
-# \brief Provides support functions to edit Sketch objects.
+# \brief Provides support functions to edit Arch objects.
 
 __title__ = "FreeCAD Draft Edit Tool"
-__author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
-              "Dmitry Chigrin, Carlo Pavan")
+__author__ = ("Carlo Pavan")
 __url__ = "https://www.freecadweb.org"
 
 ## \addtogroup draftguitools
 # @{
-import FreeCAD as App
-from draftutils.translate import translate
-
-from draftguitools.gui_edit_base_object import GuiTools
 
 
-class SketcherSketchObjectGuiTools(GuiTools):
+class GuiTools:
+    """ Base class for object editing tools
+    """
 
     def __init__(self):
         pass
 
     def get_edit_points(self, obj):
-        """Return the list of edipoints for the given single line sketch.
-        (WallTrace)
-        0 : startpoint
-        1 : endpoint
-        """
-        editpoints = []
-        if obj.GeometryCount == 1:
-            editpoints.append(obj.getPoint(0,1))
-            editpoints.append(obj.getPoint(0,2))
-            return editpoints
-        else:
-            _wrn = translate("draft", "Sketch is too complex to edit: "
-                                    "it is suggested to use sketcher default editor")
-            App.Console.PrintWarning(_wrn + "\n")
-            return None
+        """Return to Draft_Edit a list of vectors for the given object.
+        Remember to use object local coordinates system.
 
+        Parameters:
+        obj: the object
+        """
+        pass
 
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
-        """Move a single line sketch vertex a certain displacement.
+        """Update the object from modified Draft_Edit point.
+        No need to recompute at the end.
 
-        (single segment sketch object, node index as Int, App.Vector)
-        move a single line sketch (WallTrace) vertex according to a given App.Vector
-        0 : startpoint
-        1 : endpoint
+        Parameters:
+        obj: the object
+        node_idx: number of the edited node
+        v: target vector of the node in object local coordinates system
+        alt_edit_mode: alternative edit mode to perform different operations
+                       (usually can be selected from the Draft_Edit context menu)
+                       default = 0
         """
-        if node_idx == 0:
-            obj.movePoint(0, 1, v)
-        elif node_idx == 1:
-            obj.movePoint(0, 2, v)
-        obj.recompute()
+        pass
 
     def get_edit_point_context_menu(self, obj, node_idx):
+        """ Return a list of Draft_Edit context menu actions.
+        """
         pass
     
+
     def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
+        """ Do something when a Draft_Edit context menu action is triggered over a node.
+        """
         pass
 
+    def get_object_style(self, obj):
+        pass
+
+    def set_object_editing_style(self, obj):
+        pass
+
+    def restore_object_style(self, obj, modes):
+        pass
+
+    def init_preview_object(self, obj):
+        pass
+
+    def update_preview_object(self, edit_command, obj, node_idx, v):
+        pass
 
 ## @}

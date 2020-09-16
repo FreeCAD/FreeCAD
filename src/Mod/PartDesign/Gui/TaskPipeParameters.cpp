@@ -49,7 +49,7 @@
 #include <Gui/WaitCursor.h>
 #include <Base/Console.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/FeaturePipe.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -113,6 +113,10 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it)
         ui->listWidgetReferences->addItem(QString::fromStdString(*it));
 
+    if (!strings.empty()) {
+        PipeView->makeTemporaryVisible(true);
+    }
+
     ui->comboBoxTransition->setCurrentIndex(pipe->Transition.getValue());
 
     updateUI();
@@ -133,11 +137,14 @@ TaskPipeParameters::~TaskPipeParameters()
                 spineShow = false;
             }
 
+            //setting visibility to true is needed when preselecting profile and path prior to invoking sweep
+            Gui::cmdGuiObject(pipe, "Visibility = True");
             static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, false);
         }
     }
-    catch (const Base::RuntimeError&) {
+    catch (const Base::Exception& e) {
         // getDocument() may raise an exception
+        e.ReportException();
     }
 
     delete ui;
@@ -397,7 +404,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    Gui::Document* doc = Gui::Application::Instance->getDocument(pipe->getDocument());
 
     //make sure the user sees an important things: the base feature to select edges and the
     //spine/auxiliary spine he already selected
@@ -877,10 +884,10 @@ bool TaskDlgPipeParameters::accept()
     }
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+        Gui::cmdAppDocument(pcPipe, "recompute()");
         if (!vp->getObject()->isValid())
             throw Base::RuntimeError(vp->getObject()->getStatusString());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+        Gui::cmdGuiDocument(pcPipe, "resetEdit()");
         Gui::Command::commitCommand();
 
         //we need to add the copied features to the body after the command action, as otherwise FreeCAD crashes unexplainably

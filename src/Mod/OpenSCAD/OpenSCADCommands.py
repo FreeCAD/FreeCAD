@@ -28,19 +28,26 @@ __url__ = ["https://www.freecadweb.org"]
 This Script includes the GUI Commands of the OpenSCAD module
 '''
 
-import FreeCAD,FreeCADGui
-from PySide import QtCore, QtGui
+import FreeCAD
 import OpenSCADUtils
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def translate(context, text):
-        "convenience function for Qt translator"
-        return QtGui.QApplication.translate(context, text, None, _encoding)
-except AttributeError:
-    def translate(context, text):
-        "convenience function for Qt translator"
-        return QtGui.QApplication.translate(context, text, None)
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtCore, QtGui
+    gui = True
+else:
+    gui = False
+
+if gui:
+    try:
+        _encoding = QtGui.QApplication.UnicodeUTF8
+        def translate(context, text):
+            "convenience function for Qt translator"
+            return QtGui.QApplication.translate(context, text, None, _encoding)
+    except AttributeError:
+        def translate(context, text):
+            "convenience function for Qt translator"
+            return QtGui.QApplication.translate(context, text, None)
 
 class ExplodeGroup:
     "Ungroup Objects"

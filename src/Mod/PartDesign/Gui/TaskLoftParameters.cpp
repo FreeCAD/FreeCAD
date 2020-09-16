@@ -109,6 +109,10 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
         ui->listWidgetReferences->addItem(item);
     }
 
+    if (!loft->Sections.getValues().empty()) {
+        LoftView->makeTemporaryVisible(true);
+    }
+
     // activate and de-activate dialog elements as appropriate
     for (QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(false);

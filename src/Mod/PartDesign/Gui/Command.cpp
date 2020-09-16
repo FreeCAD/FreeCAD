@@ -1004,7 +1004,40 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             for (auto &s : subs)
                 ss << "'" << s << "',";
             FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", [" << ss.str() << "])");   
-        }         
+        }
+
+        //for additive and subtractive lofts allow the user to preselect the sections
+        if (which.compare("AdditiveLoft") == 0 || which.compare("SubtractiveLoft") == 0) {
+            std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+            if (selection.size() > 1) { //treat additional selected objects as sections
+                for (std::vector<Gui::SelectionObject>::size_type ii = 1; ii < selection.size(); ii++) {
+                    if (selection[ii].getObject()->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+                        auto objCmdSection = Gui::Command::getObjectCmd(selection[ii].getObject());
+                        FCMD_OBJ_CMD(Feat, "Sections += [" << objCmdSection << "]");
+                    }
+                }
+            }
+        }
+
+        // for additive and subtractive pipes allow the user to preselect the spines
+        if (which.compare("AdditivePipe") == 0 || which.compare("SubtractivePipe") == 0) {
+            std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+            if (selection.size() == 2) { //treat additional selected object as spine
+                std::vector <string> subnames = selection[1].getSubNames();
+                auto objCmdSpine = Gui::Command::getObjectCmd(selection[1].getObject());
+                if (selection[1].getObject()->isDerivedFrom(Part::Part2DObject::getClassTypeId()) && subnames.empty()) {
+                    FCMD_OBJ_CMD(Feat,"Spine = " << objCmdSpine);
+                }
+                else {
+                    std::ostringstream ss;
+                    for(auto &s : subnames) {
+                        if (s.find("Edge") != std::string::npos)
+                            ss << "'" << s << "',";
+                    }
+                    FCMD_OBJ_CMD(Feat,"Spine = (" << objCmdSpine << ", [" << ss.str() << "])");
+                }
+            }
+        }
 
         func(static_cast<Part::Feature*>(feature), Feat);
     };

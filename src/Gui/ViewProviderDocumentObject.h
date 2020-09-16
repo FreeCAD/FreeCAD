@@ -148,6 +148,9 @@ public:
         return false;
     }
 
+    void setShowable(bool enable);
+    bool isShowable() const;
+
 protected:
     /*! Get the active mdi view of the document this view provider is part of.
       @note The returned mdi view doesn't need to be a 3d view but can be e.g.
@@ -194,14 +197,17 @@ protected:
 
     //@}
 
+    virtual void setModeSwitch() override;
+
 protected:
     App::DocumentObject *pcObject;
     Gui::Document* pcDocument;
 
 private:
+    bool _Showable = true;
+
     std::vector<const char*> aDisplayEnumsArray;
     std::vector<std::string> aDisplayModesArray;
-    bool _UpdatingView;
 
     friend class Document;
 };

@@ -113,7 +113,12 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 
 DocumentObjectExecReturn *DocumentObject::execute(void)
 {
-    //call all extensions
+    return executeExtensions();
+}
+
+App::DocumentObjectExecReturn* DocumentObject::executeExtensions()
+{
+    //execute extensions but stop on error
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for(auto ext : vector) {
         auto ret = ext->extensionExecute();
