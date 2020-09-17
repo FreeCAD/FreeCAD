@@ -189,8 +189,12 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
             else if (selectionMode == refAdd) {
                 QString sub = QString::fromStdString(msg.pSubName);
-                if (!sub.isEmpty())
-                    ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
+                if (!sub.isEmpty()) {
+                    QListWidgetItem* item = new QListWidgetItem();
+                    item->setText(sub);
+                    item->setData(Qt::UserRole, QByteArray(msg.pSubName));
+                    ui->listWidgetReferences->addItem(item);
+                }
 
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);
                 App::DocumentObject* object = document ? document->getObject(msg.pObjectName) : nullptr;
@@ -309,17 +313,18 @@ void TaskPipeParameters::onDeleteEdge()
 {
     // Delete the selected path edge
     int row = ui->listWidgetReferences->currentRow();
-    QListWidgetItem* item = ui->listWidgetReferences->item(row);
+    QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
     if (item) {
         QByteArray data = item->data(Qt::UserRole).toByteArray();
-        ui->listWidgetReferences->takeItem(row);
         delete item;
+
         // search inside the list of spines
         PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
         std::vector<std::string> refs = pipe->Spine.getSubValues();
-        std::string obj = data.toStdString();
+        std::string obj = data.constData();
         std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), obj);
-        // if something was found, delte it and update the spine list
+
+        // if something was found, delete it and update the spine list
         if (f != refs.end()) {
             refs.erase(f);
             pipe->Spine.setValue(pipe->Spine.getValue(), refs);
@@ -582,8 +587,12 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg) {
         if (referenceSelected(msg)) {
             if (selectionMode == refAdd) {
                 QString sub = QString::fromStdString(msg.pSubName);
-                if (!sub.isEmpty())
-                    ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
+                if (!sub.isEmpty()) {
+                    QListWidgetItem* item = new QListWidgetItem();
+                    item->setText(sub);
+                    item->setData(Qt::UserRole, QByteArray(msg.pSubName));
+                    ui->listWidgetReferences->addItem(item);
+                }
 
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);
                 App::DocumentObject* object = document ? document->getObject(msg.pObjectName) : nullptr;
@@ -676,17 +685,18 @@ void TaskPipeOrientation::onDeleteItem()
 {
     // Delete the selected spine
     int row = ui->listWidgetReferences->currentRow();
-    QListWidgetItem* item = ui->listWidgetReferences->item(row);
+    QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
     if (item) {
         QByteArray data = item->data(Qt::UserRole).toByteArray();
-        ui->listWidgetReferences->takeItem(row);
         delete item;
+
         // search inside the list of spines
         PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
         std::vector<std::string> refs = pipe->AuxillerySpine.getSubValues();
-        std::string obj = data.toStdString();
+        std::string obj = data.constData();
         std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), obj);
-        // if something was found, delte it and update the spine list
+
+        // if something was found, delete it and update the spine list
         if (f != refs.end()) {
             refs.erase(f);
             pipe->AuxillerySpine.setValue(pipe->AuxillerySpine.getValue(), refs);
@@ -811,7 +821,10 @@ void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg) {
             if (object) {
                 QString label = QString::fromUtf8(object->Label.getValue());
                 if (selectionMode == refAdd) {
-                    ui->listWidgetReferences->addItem(label);
+                    QListWidgetItem* item = new QListWidgetItem();
+                    item->setText(label);
+                    item->setData(Qt::UserRole, QByteArray(msg.pObjectName));
+                    ui->listWidgetReferences->addItem(item);
                 }
                 else if (selectionMode == refRemove) {
                     removeFromListWidget(ui->listWidgetReferences, label);
@@ -883,17 +896,18 @@ void TaskPipeScaling::onDeleteSection()
 {
     // Delete the selected profile
     int row = ui->listWidgetReferences->currentRow();
-    QListWidgetItem* item = ui->listWidgetReferences->item(row);
+    QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
     if (item) {
         QByteArray data = item->data(Qt::UserRole).toByteArray();
-        ui->listWidgetReferences->takeItem(row);
         delete item;
+
         // search inside the list of sections
         PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
         std::vector<App::DocumentObject*> refs = pipe->Sections.getValues();
         App::DocumentObject* obj = pipe->getDocument()->getObject(data.constData());
         std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
-        // if something was found, delte it and update the section list
+
+        // if something was found, delete it and update the section list
         if (f != refs.end()) {
             refs.erase(f);
             pipe->Sections.setValues(refs);
