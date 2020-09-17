@@ -166,10 +166,9 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
                 QString internalName = QString::fromStdString(body);
                 for (int row = 0; row < ui->listWidgetBodies->count(); row++) {
-                    QListWidgetItem* item = ui->listWidgetBodies->item(row);
+                    QListWidgetItem* item = ui->listWidgetBodies->takeItem(row);
                     QString name = item->data(Qt::UserRole).toString();
                     if (name == internalName) {
-                        ui->listWidgetBodies->takeItem(row);
                         delete item;
                         break;
                     }

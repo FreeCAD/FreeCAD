@@ -241,10 +241,9 @@ void TaskLoftParameters::onDeleteSection()
 {
     // Delete the selected profile
     int row = ui->listWidgetReferences->currentRow();
-    QListWidgetItem* item = ui->listWidgetReferences->item(row);
+    QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
     if (item) {
         QByteArray data = item->data(Qt::UserRole).toByteArray();
-        ui->listWidgetReferences->takeItem(row);
         delete item;
 
         // search inside the list of sections
