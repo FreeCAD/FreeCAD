@@ -204,9 +204,9 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 }
             }
             else if (selectionMode == refRemove) {
-                QString sub = QString::fromStdString(msg.pSubName);
+                QString sub = QString::fromLatin1(msg.pSubName);
                 if (!sub.isEmpty()) {
-                    removeFromListWidget(ui->listWidgetReferences, QString::fromUtf8(msg.pSubName));
+                    removeFromListWidget(ui->listWidgetReferences, sub);
                 }
                 else {
                     ui->spineBaseEdit->clear();
@@ -248,6 +248,11 @@ void TaskPipeParameters::onButtonRefAdd(bool checked) {
         selectionMode = refAdd;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(true, false);
     }
+    else {
+        Gui::Selection().clearSelection();
+        selectionMode = none;
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, false);
+    }
 }
 
 void TaskPipeParameters::onButtonRefRemove(bool checked) {
@@ -259,6 +264,11 @@ void TaskPipeParameters::onButtonRefRemove(bool checked) {
         selectionMode = refRemove;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(true, false);
     }
+    else {
+        Gui::Selection().clearSelection();
+        selectionMode = none;
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, false);
+    }
 }
 
 void TaskPipeParameters::onBaseButton(bool checked) {
@@ -266,7 +276,7 @@ void TaskPipeParameters::onBaseButton(bool checked) {
     if (checked) {
         //clearButtons(refRemove);
         //hideObject();
-        Gui::Selection().clearSelection();        
+        Gui::Selection().clearSelection();
         selectionMode = refObjAdd;
         //DressUpView->highlightReferences(true);
     }
@@ -541,6 +551,11 @@ void TaskPipeOrientation::onButtonRefAdd(bool checked) {
         selectionMode = refAdd;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(true, true);
     }
+    else {
+        Gui::Selection().clearSelection();
+        selectionMode = none;
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, true);
+    }
 }
 
 void TaskPipeOrientation::onButtonRefRemove(bool checked) {
@@ -549,6 +564,11 @@ void TaskPipeOrientation::onButtonRefRemove(bool checked) {
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(true, true);
+    }
+    else {
+        Gui::Selection().clearSelection();
+        selectionMode = none;
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, true);
     }
 }
 
@@ -576,8 +596,6 @@ void TaskPipeOrientation::onBinormalChanged(double)
     recomputeFeature();
 }
 
-
-
 void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg) {
 
     if (selectionMode == none)
@@ -602,9 +620,9 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg) {
                 }
             }
             else if (selectionMode == refRemove) {
-                QString sub = QString::fromStdString(msg.pSubName);
+                QString sub = QString::fromLatin1(msg.pSubName);
                 if (!sub.isEmpty())
-                    removeFromListWidget(ui->listWidgetReferences, QString::fromUtf8(msg.pSubName));
+                    removeFromListWidget(ui->listWidgetReferences, sub);
                 else {
                     ui->profileBaseEdit->clear();
                 }
@@ -985,7 +1003,8 @@ bool TaskDlgPipeParameters::accept()
         int result = dia.exec();
         if (result == QDialog::DialogCode::Rejected)
             return false;
-        else if(!dlg.radioXRef->isChecked()) {
+
+        if(!dlg.radioXRef->isChecked()) {
 
             if(!pcActiveBody->hasObject(pcPipe->Spine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->Spine.getValue())) {
                 pcPipe->Spine.setValue(PartDesignGui::TaskFeaturePick::makeCopy(pcPipe->Spine.getValue(), "", dlg.radioIndependent->isChecked()),
