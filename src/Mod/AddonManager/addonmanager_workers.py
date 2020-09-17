@@ -40,27 +40,17 @@ from addonmanager_macro import Macro
 #  \brief Multithread workers for the addon manager
 
 # Blacklisted addons
-MACROS_BLACKLIST = ["BOLTS",
-                    "WorkFeatures",
-                    "how to install",
-                    "PartsLibrary",
-                    "FCGear"]
+macros_blacklist = []
 
 # These addons will print an additional message informing the user
-OBSOLETE =         ["assembly2",
-                    "drawing_dimensioning",
-                    "cura_engine"]
+obsolete = []
 
 # These addons will print an additional message informing the user Python2 only
-PY2ONLY =          ["geodata",
-                    "GDT",
-                    "timber",
-                    "flamingo",
-                    "reconstruction",
-                    "animation"]
+py2only = []
 
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
+NOMARKDOWN = False # for debugging purposes, set this to True to disable Markdown lib
 
 """Multithread workers for the Addon Manager"""
 
@@ -82,7 +72,31 @@ class UpdateWorker(QtCore.QThread):
         "populates the list of addons"
 
         self.progressbar_show.emit(True)
-        u = utils.urlopen("https://github.com/FreeCAD/FreeCAD-addons")
+
+        # update info lists
+        global obsolete, macros_blacklist, py2only
+        u = utils.urlopen("https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/addonflags.json")
+        if u:
+            p = u.read()
+            if sys.version_info.major >= 3 and isinstance(p, bytes):
+                p = p.decode("utf-8")
+            u.close()
+            hit = re.findall(r'"obsolete"[^\{]*?{[^\{]*?"Mod":\[(?P<obsolete>[^\[\]]+?)\]}',
+                             p.replace('\n', '').replace(' ', ''))
+            if hit:
+                obsolete = hit[0].replace('"', '').split(',')
+            hit = re.findall(r'"blacklisted"[^\{]*?{[^\{]*?"Macro":\[(?P<blacklisted>[^\[\]]+?)\]}',
+                             p.replace('\n', '').replace(' ', ''))
+            if hit:
+                macros_blacklist = hit[0].replace('"', '').split(',')
+            hit = re.findall(r'"py2only"[^\{]*?{[^\{]*?"Mod":\[(?P<py2only>[^\[\]]+?)\]}',
+                             p.replace('\n', '').replace(' ', ''))
+            if hit:
+                py2only = hit[0].replace('"', '').split(',')
+        else:
+            print("Debug: addon_flags.json not found")
+
+        u = utils.urlopen("https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/.gitmodules")
         if not u:
             self.progressbar_show.emit(False)
             self.done.emit()
@@ -92,32 +106,23 @@ class UpdateWorker(QtCore.QThread):
         if sys.version_info.major >= 3 and isinstance(p, bytes):
             p = p.decode("utf-8")
         u.close()
-        p = p.replace("\n"," ")
-        p = re.findall("octicon-file-submodule(.*?)message",p)
+        p = re.findall((r"(?m)\[submodule\s*\"(?P<name>.*)\"\]\s*"
+                        r"path\s*=\s*(?P<path>.+)\s*"
+                        r"url\s*=\s*(?P<url>https?://.*)"), p)
         basedir = FreeCAD.getUserAppDataDir()
         moddir = basedir + os.sep + "Mod"
         repos = []
         # querying official addons
-        for l in p:
-            #name = re.findall("data-skip-pjax=\"true\">(.*?)<",l)[0]
-            res = re.findall("title=\"(.*?) @",l)
-            if res:
-                name = res[0]
-            else:
-                print("AddonMananger: Debug: couldn't find title in",l)
-                continue
+        for name, path, url in p:
             self.info_label.emit(name)
-            #url = re.findall("title=\"(.*?) @",l)[0]
-            url = utils.getRepoUrl(l)
-            if url:
-                addondir = moddir + os.sep + name
-                #print ("found:",name," at ",url)
-                if os.path.exists(addondir) and os.listdir(addondir):
-                    # make sure the folder exists and it contains files!
-                    state = 1
-                else:
-                    state = 0
-                repos.append([name,url,state])
+            url = url.split(".git")[0]
+            addondir = moddir + os.sep + name
+            if os.path.exists(addondir) and os.listdir(addondir):
+                # make sure the folder exists and it contains files!
+                state = 1
+            else:
+                state = 0
+            repos.append([name, url, state])
         # querying custom addons
         customaddons = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons").GetString("CustomRepositories","").split("\n")
         for url in customaddons:
@@ -316,7 +321,7 @@ class FillMacroListWorker(QtCore.QThread):
         for mac in macros:
             macname = mac[6:]  # Remove "Macro ".
             macname = macname.replace("&amp;","&")
-            if (macname not in MACROS_BLACKLIST) and ('recipes' not in macname.lower()):
+            if (macname not in macros_blacklist) and ('recipes' not in macname.lower()):
                 macro = Macro(macname)
                 macro.on_wiki = True
                 self.macros.append(macro)
@@ -355,24 +360,50 @@ class ShowWorker(QtCore.QThread):
             url = self.repos[self.idx][1]
             self.info_label.emit(translate("AddonsInstaller", "Retrieving info from") + ' ' + str(url))
             desc = ""
-            # get the README if possible
-            readmeurl = utils.getReadmeUrl(url)
-            if not readmeurl:
-                print("Debug: README not found for",url)
-            u = utils.urlopen(readmeurl)
-            if not u:
-                print("Debug: README not found at",readmeurl)
-            if u:
-                p = u.read()
-                if sys.version_info.major >= 3 and isinstance(p, bytes):
-                    p = p.decode("utf-8")
-                u.close()
-                readmeregex = utils.getReadmeRegex(url)
-                if readmeregex:
-                    readme = re.findall(readmeregex,p,flags=re.MULTILINE|re.DOTALL)
+            regex = utils.getReadmeRegex(url)
+            if regex:
+                # extract readme from html via regex
+                readmeurl = utils.getReadmeHTMLUrl(url)
+                if not readmeurl:
+                    print("Debug: README not found for",url)
+                u = utils.urlopen(readmeurl)
+                if not u:
+                    print("Debug: README not found at",readmeurl)
+                u = utils.urlopen(readmeurl)
+                if u:
+                    p = u.read()
+                    if sys.version_info.major >= 3 and isinstance(p, bytes):
+                        p = p.decode("utf-8")
+                    u.close()
+                    readme = re.findall(regex,p,flags=re.MULTILINE|re.DOTALL)
                     if readme:
-                        desc += readme[0]
-            if not desc:
+                        desc = readme[0]
+                else:
+                    print("Debug: README not found at",readmeurl)
+            else:
+                # convert raw markdown using lib
+                readmeurl = utils.getReadmeUrl(url)
+                if not readmeurl:
+                    print("Debug: README not found for",url)
+                u = utils.urlopen(readmeurl)
+                if u:
+                    p = u.read()
+                    if sys.version_info.major >= 3 and isinstance(p, bytes):
+                        p = p.decode("utf-8")
+                    u.close()
+                    desc = utils.fixRelativeLinks(p,readmeurl.rsplit("/README.md")[0])
+                    try:
+                        if NOMARKDOWN:
+                            raise ImportError
+                        import markdown  # try to use system Markdown lib
+                        desc = markdown.markdown(desc,extensions=['md_in_html'])
+                    except ImportError:
+                        message = " <div style=\"width: 100%; text-align:center; background: #91bbe0;\"><strong style=\"color: #FFFFFF;\">"+translate("AddonsInstaller","Raw markdown displayed")+"</strong><br/><br/>"
+                        message += translate("AddonsInstaller","Python Markdown library is missing.")+"<br/></div><hr/><pre>" + desc + "</pre>"
+                        desc = message
+                else:
+                    print("Debug: README not found at",readmeurl)
+            if desc == "":
                 # fall back to the description text
                 u = utils.urlopen(url)
                 if not u:
@@ -387,7 +418,7 @@ class ShowWorker(QtCore.QThread):
                 if descregex:
                     desc = re.findall(descregex,p)
                     if desc:
-                        desc = "<br/>"+desc[0]
+                        desc = desc[0]
             if not desc:
                 desc = "Unable to retrieve addon description"
             self.repos[self.idx].append(desc)
@@ -447,12 +478,12 @@ class ShowWorker(QtCore.QThread):
             message = desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
 
         # If the Addon is obsolete, let the user know through the Addon UI
-        if self.repos[self.idx][0] in OBSOLETE:
+        if self.repos[self.idx][0] in obsolete:
             message = " <div style=\"width: 100%; text-align:center; background: #FFB3B3;\"><strong style=\"color: #FFFFFF; background: #FF0000;\">"+translate("AddonsInstaller","This addon is marked as obsolete")+"</strong><br/><br/>"
             message += translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.")+"<br/></div><hr/>" + desc
 
         # If the Addon is Python 2 only, let the user know through the Addon UI
-        if self.repos[self.idx][0] in PY2ONLY:
+        if self.repos[self.idx][0] in py2only:
             message = " <div style=\"width: 100%; text-align:center; background: #ffe9b3;\"><strong style=\"color: #FFFFFF; background: #ff8000;\">"+translate("AddonsInstaller","This addon is marked as Python 2 Only")+"</strong><br/><br/>"
             message += translate("AddonsInstaller","This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.")+"<br/></div><hr/>" + desc
 
@@ -622,7 +653,7 @@ class InstallWorker(QtCore.QThread):
             self.progressbar_show.emit(True)
             if os.path.exists(clonedir):
                 self.info_label.emit("Updating module...")
-                if sys.version_info.major > 2 and str(self.repos[idx][0]) in PY2ONLY:
+                if sys.version_info.major > 2 and str(self.repos[idx][0]) in py2only:
                     FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "User requested updating a Python 2 workbench on a system running Python 3 - ")+str(self.repos[idx][0])+"\n")
                 if git:
                     if not os.path.exists(clonedir + os.sep + '.git'):
@@ -656,7 +687,7 @@ class InstallWorker(QtCore.QThread):
                 self.info_label.emit("Checking module dependencies...")
                 depsok,answer = self.checkDependencies(self.repos[idx][1])
                 if depsok:
-                    if sys.version_info.major > 2 and str(self.repos[idx][0]) in PY2ONLY:
+                    if sys.version_info.major > 2 and str(self.repos[idx][0]) in py2only:
                         FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "User requested installing a Python 2 workbench on a system running Python 3 - ")+str(self.repos[idx][0])+"\n")
                     if git:
                         self.info_label.emit("Cloning module...")
