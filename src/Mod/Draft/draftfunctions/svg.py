@@ -656,6 +656,42 @@ def _get_path_circ_ellipse(plane, edge, vertex, edata,
     return "edata", edata
 
 
+def _get_path_bspline(plane, edge, edata):
+    """Convert the edge to a BSpline and discretize it."""
+    bspline = edge.Curve.toBSpline(edge.FirstParameter, edge.LastParameter)
+    if bspline.Degree > 3 or bspline.isRational():
+        try:
+            bspline = bspline.approximateBSpline(0.05, 50, 3, 'C0')
+        except RuntimeError:
+            _wrn("Debug: unable to approximate bspline from edge")
+
+    if bspline.Degree <= 3 and not bspline.isRational():
+        for bezierseg in bspline.toBezier():
+            if bezierseg.Degree > 3:  # should not happen
+                _wrn("Bezier segment of degree > 3")
+                raise AssertionError
+            elif bezierseg.Degree == 1:
+                edata += 'L '
+            elif bezierseg.Degree == 2:
+                edata += 'Q '
+            elif bezierseg.Degree == 3:
+                edata += 'C '
+
+            for pole in bezierseg.getPoles()[1:]:
+                v = get_proj(pole, plane)
+                edata += '{} {} '.format(v.x, v.y)
+    else:
+        _msg("Debug: one edge (hash {}) "
+             "has been discretized "
+             "with parameter 0.1".format(edge.hashCode()))
+
+        for linepoint in bspline.discretize(0.1)[1:]:
+            v = get_proj(linepoint, plane)
+            edata += 'L {} {} '.format(v.x, v.y)
+
+    return edata
+
+
 def get_path(obj, plane,
              fill, pathdata, stroke, linewidth, lstyle,
              fill_opacity=None,
@@ -684,40 +720,40 @@ def get_path(obj, plane,
         egroups = []
         first = True
         for w in wires:
-            w1 = w.copy()
+            wire = w.copy()
             if first:
                 first = False
             else:
                 # invert further wires to create holes
-                w1 = DraftGeomUtils.invert(w1)
+                wire = DraftGeomUtils.invert(wire)
 
-            w1.fixWire()
-            egroups.append(Part.__sortEdges__(w1.Edges))
+            wire.fixWire()
+            egroups.append(Part.__sortEdges__(wire.Edges))
 
-    for egroupindex, edges in enumerate(egroups):
+    for _, _edges in enumerate(egroups):
         edata = ""
-        vs = ()  # skipped for the first edge
+        vertex = ()  # skipped for the first edge
 
-        for edgeindex, e in enumerate(edges):
-            previousvs = vs
+        for edgeindex, edge in enumerate(_edges):
+            previousvs = vertex
             # vertexes of an edge (reversed if needed)
-            vs = e.Vertexes
+            vertex = edge.Vertexes
             if previousvs:
-                if (vs[0].Point - previousvs[-1].Point).Length > 1e-6:
-                    vs.reverse()
+                if (vertex[0].Point - previousvs[-1].Point).Length > 1e-6:
+                    vertex.reverse()
 
             if edgeindex == 0:
-                v = get_proj(vs[0].Point, plane)
+                v = get_proj(vertex[0].Point, plane)
                 edata += 'M {} {} '.format(v.x, v.y)
             else:
-                if (vs[0].Point - previousvs[-1].Point).Length > 1e-6:
+                if (vertex[0].Point - previousvs[-1].Point).Length > 1e-6:
                     raise ValueError('edges not ordered')
 
-            iscircle = DraftGeomUtils.geomType(e) == "Circle"
-            isellipse = DraftGeomUtils.geomType(e) == "Ellipse"
+            iscircle = DraftGeomUtils.geomType(edge) == "Circle"
+            isellipse = DraftGeomUtils.geomType(edge) == "Ellipse"
 
             if iscircle or isellipse:
-                _type, data = _get_path_circ_ellipse(plane, e, vs,
+                _type, data = _get_path_circ_ellipse(plane, edge, vertex,
                                                      edata,
                                                      iscircle, isellipse,
                                                      fill, stroke,
@@ -728,42 +764,13 @@ def get_path(obj, plane,
 
                 # else the `edata` was properly augmented, so re-assing it
                 edata = data
-            elif DraftGeomUtils.geomType(e) == "Line":
-                v = get_proj(vs[-1].Point, plane)
+            elif DraftGeomUtils.geomType(edge) == "Line":
+                v = get_proj(vertex[-1].Point, plane)
                 edata += 'L {} {} '.format(v.x, v.y)
             else:
                 # If it's not a circle nor ellipse nor straight line
                 # convert the curve to BSpline
-                bspline = e.Curve.toBSpline(e.FirstParameter, e.LastParameter)
-                if bspline.Degree > 3 or bspline.isRational():
-                    try:
-                        bspline = bspline.approximateBSpline(0.05, 50, 3, 'C0')
-                    except RuntimeError:
-                        _wrn("Debug: unable to approximate bspline from edge")
-
-                if bspline.Degree <= 3 and not bspline.isRational():
-                    for bezierseg in bspline.toBezier():
-                        if bezierseg.Degree > 3:  # should not happen
-                            _wrn("Bezier segment of degree > 3")
-                            raise AssertionError
-                        elif bezierseg.Degree == 1:
-                            edata += 'L '
-                        elif bezierseg.Degree == 2:
-                            edata += 'Q '
-                        elif bezierseg.Degree == 3:
-                            edata += 'C '
-
-                        for pole in bezierseg.getPoles()[1:]:
-                            v = get_proj(pole, plane)
-                            edata += '{} {} '.format(v.x, v.y)
-                else:
-                    _msg("Debug: one edge (hash {}) "
-                         "has been discretized "
-                         "with parameter 0.1".format(e.hashCode()))
-
-                    for linepoint in bspline.discretize(0.1)[1:]:
-                        v = get_proj(linepoint, plane)
-                        edata += 'L {} {} '.format(v.x, v.y)
+                edata = _get_path_bspline(plane, edge, edata)
 
         if fill != 'none':
             edata += 'Z '
