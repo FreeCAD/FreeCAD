@@ -102,6 +102,7 @@ private Q_SLOTS:
     void onButtonRefRemove(bool checked);
     void updateUI(int idx);
     void onBaseButton(bool checked);
+    void onClearButton();
     void onCurvelinearChanged(bool checked);
     void onBinormalChanged(double);
     void onDeleteItem();

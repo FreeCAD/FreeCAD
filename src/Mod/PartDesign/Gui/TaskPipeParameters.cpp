@@ -156,7 +156,7 @@ TaskPipeParameters::~TaskPipeParameters()
 
             //setting visibility to true is needed when preselecting profile and path prior to invoking sweep
             Gui::cmdGuiObject(pipe, "Visibility = True");
-            static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, false);
+            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, false);
         }
     }
     catch (const Base::Exception& e) {
@@ -224,7 +224,6 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
 
             clearButtons();
-            static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, false);
             recomputeFeature();
         }
 
@@ -246,12 +245,12 @@ void TaskPipeParameters::onButtonRefAdd(bool checked) {
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(true, false);
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, true);
     }
     else {
         Gui::Selection().clearSelection();
         selectionMode = none;
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, false);
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, false);
     }
 }
 
@@ -262,12 +261,12 @@ void TaskPipeParameters::onButtonRefRemove(bool checked) {
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(true, false);
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, true);
     }
     else {
         Gui::Selection().clearSelection();
         selectionMode = none;
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, false);
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, false);
     }
 }
 
@@ -278,7 +277,12 @@ void TaskPipeParameters::onBaseButton(bool checked) {
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refObjAdd;
-        //DressUpView->highlightReferences(true);
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, true);
+    }
+    else {
+        Gui::Selection().clearSelection();
+        selectionMode = none;
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, false);
     }
 }
 
@@ -293,12 +297,16 @@ void TaskPipeParameters::onProfileButton(bool checked)
             pvp->setVisible(true);
         }
 
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, false);
         //clearButtons(refRemove);
         //hideObject();
         Gui::Selection().clearSelection();
         selectionMode = refProfile;
-        //DressUpView->highlightReferences(true);
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Profile, true);
+    }
+    else {
+        Gui::Selection().clearSelection();
+        selectionMode = none;
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Profile, false);
     }
 }
 
@@ -359,6 +367,8 @@ bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const {
             PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
             Gui::Document* doc = vp->getDocument();
 
+            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Profile, false);
+
             bool success = true;
             App::DocumentObject* profile = pipe->getDocument()->getObject(msg.pObjectName);
             if (profile) {
@@ -385,6 +395,7 @@ bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const {
             std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);
 
             if (selectionMode == refObjAdd) {
+                static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, false);
                 refs.clear();
             }
             else if (selectionMode == refAdd) {
@@ -446,6 +457,8 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
             this, SLOT(onButtonRefRemove(bool)));
     connect(ui->buttonProfileBase, SIGNAL(toggled(bool)),
             this, SLOT(onBaseButton(bool)));
+    connect(ui->buttonProfileClear, SIGNAL(clicked()),
+            this, SLOT(onClearButton()));
     connect(ui->stackedWidget, SIGNAL(currentChanged(int)),
             this, SLOT(updateUI(int)));
     connect(ui->curvelinear, SIGNAL(toggled(bool)),
@@ -517,7 +530,7 @@ TaskPipeOrientation::~TaskPipeOrientation()
                 auxSpineShow = false;
             }
 
-            static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, true);
+            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
         }
     }
     catch (const Base::RuntimeError&) {
@@ -549,12 +562,12 @@ void TaskPipeOrientation::onButtonRefAdd(bool checked) {
     if (checked) {
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(true, true);
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, true);
     }
     else {
         Gui::Selection().clearSelection();
         selectionMode = none;
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, true);
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
     }
 }
 
@@ -563,12 +576,12 @@ void TaskPipeOrientation::onButtonRefRemove(bool checked) {
     if (checked) {
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(true, true);
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, true);
     }
     else {
         Gui::Selection().clearSelection();
         selectionMode = none;
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, true);
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
     }
 }
 
@@ -577,7 +590,22 @@ void TaskPipeOrientation::onBaseButton(bool checked)
     if (checked) {
         Gui::Selection().clearSelection();
         selectionMode = refObjAdd;
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, true);
     }
+    else {
+        Gui::Selection().clearSelection();
+        selectionMode = none;
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
+    }
+}
+
+void TaskPipeOrientation::onClearButton()
+{
+    static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
+
+    ui->listWidgetReferences->clear();
+    ui->profileBaseEdit->clear();
+    static_cast<PartDesign::Pipe*>(vp->getObject())->AuxillerySpine.setValue(nullptr);
 }
 
 void TaskPipeOrientation::onCurvelinearChanged(bool checked)
@@ -639,7 +667,7 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg) {
             }
 
             clearButtons();
-            static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, true);
+            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
             recomputeFeature();
         }
 
@@ -808,7 +836,12 @@ void TaskPipeScaling::onButtonRefAdd(bool checked) {
     if (checked) {
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
-        //static_cast<ViewProviderPipe*>(vp)->highlightReferences(true, true);
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, true);
+    }
+    else {
+        Gui::Selection().clearSelection();
+        selectionMode = none;
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, false);
     }
 }
 
@@ -817,7 +850,12 @@ void TaskPipeScaling::onButtonRefRemove(bool checked) {
     if (checked) {
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
-        //static_cast<ViewProviderPipe*>(vp)->highlightReferences(true, true);
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, true);
+    }
+    else {
+        Gui::Selection().clearSelection();
+        selectionMode = none;
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, false);
     }
 }
 
@@ -850,7 +888,6 @@ void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg) {
             }
 
             clearButtons();
-            //static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, true);
             recomputeFeature();
         }
         clearButtons();
@@ -892,6 +929,7 @@ bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const {
                 return false;
         }
 
+        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, false);
         static_cast<PartDesign::Pipe*>(vp->getObject())->Sections.setValues(refs);
         return true;
     }
