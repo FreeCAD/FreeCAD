@@ -26,14 +26,14 @@
 import os
 import unittest
 
-import FreeCAD
+import FreeCAD as App
 
 import Arch
 import Draft
 import Part
 import Sketcher
 
-if FreeCAD.GuiUp:
+if App.GuiUp:
     import FreeCADGui
 
 brepArchiCAD = """
@@ -381,33 +381,72 @@ class ArchTest(unittest.TestCase):
 
     def setUp(self):
         # setting a new document to hold the tests
-        if FreeCAD.ActiveDocument:
-            if FreeCAD.ActiveDocument.Name != "ArchTest":
-                FreeCAD.newDocument("ArchTest")
+        if App.ActiveDocument:
+            if App.ActiveDocument.Name != "ArchTest":
+                App.newDocument("ArchTest")
         else:
-            FreeCAD.newDocument("ArchTest")
-        FreeCAD.setActiveDocument("ArchTest")
+            App.newDocument("ArchTest")
+        App.setActiveDocument("ArchTest")
 
     def testWall(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Wall...\n')
-        l=Draft.makeLine(FreeCAD.Vector(0,0,0),FreeCAD.Vector(-2,0,0))
+        App.Console.PrintLog ('Checking Arch Wall...\n')
+        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(-2,0,0))
         w = Arch.makeWall(l)
         self.failUnless(w,"Arch Wall failed")
 
+    def testWallMultiMatAlign(self):
+        App.Console.PrintLog ('Checking Arch Wall with MultiMaterial and 3 alignments...\n')
+        matA = Arch.makeMaterial()
+        matB = Arch.makeMaterial()
+        matMulti = Arch.makeMultiMaterial()
+        matMulti.Materials = [matA, matB]
+        matMulti.Thicknesses = [100, 200] # total width different from default 200
+        pts = [App.Vector(   0,    0, 0),
+               App.Vector(1000,    0, 0),
+               App.Vector(1000, 1000, 0),
+               App.Vector(2000, 1000, 0)]
+        # wall based on wire:
+        wire = Draft.makeWire(pts)
+        wallWire = Arch.makeWall(wire)
+        wallWire.Material = matMulti
+        # wall based on sketch:
+        sketch = App.activeDocument().addObject('Sketcher::SketchObject','Sketch')
+        sketch.addGeometry([Part.LineSegment(pts[0], pts[1]),
+                            Part.LineSegment(pts[1], pts[2]),
+                            Part.LineSegment(pts[2], pts[3])])
+        wallSketch = Arch.makeWall(sketch)
+        wallSketch.Material = matMulti
+
+        alignLst = ["Left", "Center", "Right"]
+        checkLst = [[App.Vector(0, -300, 0), App.Vector(2000, 1000, 0)],
+                    [App.Vector(0, -150, 0), App.Vector(2000, 1150, 0)],
+                    [App.Vector(0,    0, 0), App.Vector(2000, 1300, 0)]]
+        for i in range(3):
+            wallWire.Align = alignLst[i]
+            wallSketch.Align = alignLst[i]
+            App.ActiveDocument.recompute()
+            for box in [wallWire.Shape.BoundBox, wallSketch.Shape.BoundBox]:
+                ptMin = App.Vector(box.XMin, box.YMin, 0)
+                self.failUnless(ptMin.isEqual(checkLst[i][0], 1e-8),
+                                "Arch Wall with MultiMaterial and 3 alignments failed")
+                ptMax = App.Vector(box.XMax, box.YMax, 0)
+                self.failUnless(ptMax.isEqual(checkLst[i][1], 1e-8),
+                                "Arch Wall with MultiMaterial and 3 alignments failed")
+
     def testStructure(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Structure...\n')
+        App.Console.PrintLog ('Checking Arch Structure...\n')
         s = Arch.makeStructure(length=2,width=3,height=5)
         self.failUnless(s,"Arch Structure failed")
 
     def testRebar(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Rebar...\n')
+        App.Console.PrintLog ('Checking Arch Rebar...\n')
         s = Arch.makeStructure(length=2,width=3,height=5)
-        sk = FreeCAD.ActiveDocument.addObject('Sketcher::SketchObject','Sketch')
+        sk = App.ActiveDocument.addObject('Sketcher::SketchObject','Sketch')
         sk.Support = (s,["Face6"])
-        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-0.85,1.25,0),FreeCAD.Vector(0.75,1.25,0)))
-        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(0.75,1.25,0),FreeCAD.Vector(0.75,-1.20,0)))
-        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(0.75,-1.20,0),FreeCAD.Vector(-0.85,-1.20,0)))
-        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-0.85,-1.20,0),FreeCAD.Vector(-0.85,1.25,0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(-0.85,1.25,0),App.Vector(0.75,1.25,0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(0.75,1.25,0),App.Vector(0.75,-1.20,0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(0.75,-1.20,0),App.Vector(-0.85,-1.20,0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(-0.85,-1.20,0),App.Vector(-0.85,1.25,0)))
         sk.addConstraint(Sketcher.Constraint('Coincident',0,2,1,1))
         sk.addConstraint(Sketcher.Constraint('Coincident',1,2,2,1))
         sk.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1))
@@ -416,20 +455,20 @@ class ArchTest(unittest.TestCase):
         self.failUnless(r,"Arch Rebar failed")
 
     def testFloor(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Floor...\n')
+        App.Console.PrintLog ('Checking Arch Floor...\n')
         s = Arch.makeStructure(length=2,width=3,height=5)
         f = Arch.makeFloor([s])
         self.failUnless(f,"Arch Floor failed")
 
     def testBuilding(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Building...\n')
+        App.Console.PrintLog ('Checking Arch Building...\n')
         s = Arch.makeStructure(length=2,width=3,height=5)
         f = Arch.makeFloor([s])
         b = Arch.makeBuilding([f])
         self.failUnless(b,"Arch Building failed")
 
     def testSite(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Site...\n')
+        App.Console.PrintLog ('Checking Arch Site...\n')
         s = Arch.makeStructure(length=2,width=3,height=5)
         f = Arch.makeFloor([s])
         b = Arch.makeBuilding([f])
@@ -437,15 +476,15 @@ class ArchTest(unittest.TestCase):
         self.failUnless(si,"Arch Site failed")
 
     def testWindow(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Window...\n')
-        l=Draft.makeLine(FreeCAD.Vector(0,0,0),FreeCAD.Vector(-2,0,0))
+        App.Console.PrintLog ('Checking Arch Window...\n')
+        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(-2,0,0))
         w = Arch.makeWall(l)
-        sk = FreeCAD.ActiveDocument.addObject('Sketcher::SketchObject','Sketch001')
+        sk = App.ActiveDocument.addObject('Sketcher::SketchObject','Sketch001')
         sk.Support = (w,["Face3"])
-        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-1.80,1.30,0),FreeCAD.Vector(-0.90,1.30,0)))
-        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-0.90,1.30,0),FreeCAD.Vector(-0.90,0.25,0)))
-        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-0.90,0.25,0),FreeCAD.Vector(-1.80,0.25,0)))
-        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-1.80,0.25,0),FreeCAD.Vector(-1.80,1.30,0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(-1.80,1.30,0),App.Vector(-0.90,1.30,0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(-0.90,1.30,0),App.Vector(-0.90,0.25,0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(-0.90,0.25,0),App.Vector(-1.80,0.25,0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(-1.80,0.25,0),App.Vector(-1.80,1.30,0)))
         sk.addConstraint(Sketcher.Constraint('Coincident',0,2,1,1))
         sk.addConstraint(Sketcher.Constraint('Coincident',1,2,2,1))
         sk.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1))
@@ -455,26 +494,26 @@ class ArchTest(unittest.TestCase):
         self.failUnless(win,"Arch Window failed")
 
     def testRoof(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Roof...\n')
+        App.Console.PrintLog ('Checking Arch Roof...\n')
         r = Draft.makeRectangle(length=2,height=-1)
         ro = Arch.makeRoof(r)
         self.failUnless(ro,"Arch Roof failed")
 
     def testAxis(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Axis...\n')
+        App.Console.PrintLog ('Checking Arch Axis...\n')
         a = Arch.makeAxis()
         self.failUnless(a,"Arch Axis failed")
 
     def testSection(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Section...\n')
+        App.Console.PrintLog ('Checking Arch Section...\n')
         s = Arch.makeSectionPlane([])
         v = Arch.makeSectionView(s)
         self.failUnless(v,"Arch Section failed")
 
     def testSpace(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Space...\n')
+        App.Console.PrintLog ('Checking Arch Space...\n')
         sb = Part.makeBox(1,1,1)
-        b = FreeCAD.ActiveDocument.addObject('Part::Feature','Box')
+        b = App.ActiveDocument.addObject('Part::Feature','Box')
         b.Shape = sb
         s = Arch.makeSpace([b])
         self.failUnless(s,"Arch Space failed")
@@ -483,30 +522,30 @@ class ArchTest(unittest.TestCase):
         shape = Part.Shape()
         shape.importBrepFromString(brepArchiCAD)
         bborig = shape.BoundBox
-        FreeCAD.Console.PrintLog ("Original BB: "+str(bborig))
-        baseobj = FreeCAD.ActiveDocument.addObject("Part::Feature","brepArchiCAD_body")
+        App.Console.PrintLog ("Original BB: "+str(bborig))
+        baseobj = App.ActiveDocument.addObject("Part::Feature","brepArchiCAD_body")
         baseobj.Shape = shape
         space = Arch.makeSpace(baseobj)
         space.recompute()
         bbnew = space.Shape.BoundBox
-        FreeCAD.Console.PrintLog ("New BB: "+str(bbnew))
+        App.Console.PrintLog ("New BB: "+str(bbnew))
         self.failUnless(checkBB(bborig,bbnew),"Arch Space has wrong Placement")
 
     def testStairs(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Stairs...\n')
+        App.Console.PrintLog ('Checking Arch Stairs...\n')
         s = Arch.makeStairs()
         self.failUnless(s,"Arch Stairs failed")
 
     def testFrame(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Frame...\n')
-        l=Draft.makeLine(FreeCAD.Vector(0,0,0),FreeCAD.Vector(-2,0,0))
+        App.Console.PrintLog ('Checking Arch Frame...\n')
+        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(-2,0,0))
         p = Draft.makeRectangle(length=.5,height=.5)
         f = Arch.makeFrame(l,p)
         self.failUnless(f,"Arch Frame failed")
 
     def testEquipment(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Equipment...\n')
-        box = FreeCAD.ActiveDocument.addObject("Part::Box", "Box")
+        App.Console.PrintLog ('Checking Arch Equipment...\n')
+        box = App.ActiveDocument.addObject("Part::Box", "Box")
         box.Length = 500
         box.Width = 2000
         box.Height = 600
@@ -514,37 +553,36 @@ class ArchTest(unittest.TestCase):
         self.failUnless(equip,"Arch Equipment failed")
 
     def testPipe(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Pipe...\n')
+        App.Console.PrintLog ('Checking Arch Pipe...\n')
         pipe = Arch.makePipe(diameter=120, length=3000)
         self.failUnless(pipe,"Arch Pipe failed")
 
     def testAdd(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Add...\n')
-        l=Draft.makeLine(FreeCAD.Vector(0,0,0),FreeCAD.Vector(2,0,0))
+        App.Console.PrintLog ('Checking Arch Add...\n')
+        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(2,0,0))
         w = Arch.makeWall(l,width=0.2,height=2)
         sb = Part.makeBox(1,1,1)
-        b = FreeCAD.ActiveDocument.addObject('Part::Feature','Box')
+        b = App.ActiveDocument.addObject('Part::Feature','Box')
         b.Shape = sb
-        FreeCAD.ActiveDocument.recompute()
+        App.ActiveDocument.recompute()
         Arch.addComponents(b,w)
-        FreeCAD.ActiveDocument.recompute()
+        App.ActiveDocument.recompute()
         r = (w.Shape.Volume > 1.5)
         self.failUnless(r,"Arch Add failed")
 
     def testRemove(self):
-        FreeCAD.Console.PrintLog ('Checking Arch Remove...\n')
-        l=Draft.makeLine(FreeCAD.Vector(0,0,0),FreeCAD.Vector(2,0,0))
+        App.Console.PrintLog ('Checking Arch Remove...\n')
+        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(2,0,0))
         w = Arch.makeWall(l,width=0.2,height=2)
         sb = Part.makeBox(1,1,1)
-        b = FreeCAD.ActiveDocument.addObject('Part::Feature','Box')
+        b = App.ActiveDocument.addObject('Part::Feature','Box')
         b.Shape = sb
-        FreeCAD.ActiveDocument.recompute()
+        App.ActiveDocument.recompute()
         Arch.removeComponents(b,w)
-        FreeCAD.ActiveDocument.recompute()
+        App.ActiveDocument.recompute()
         r = (w.Shape.Volume < 0.75)
         self.failUnless(r,"Arch Remove failed")
 
     def tearDown(self):
-        FreeCAD.closeDocument("ArchTest")
+        App.closeDocument("ArchTest")
         pass
-

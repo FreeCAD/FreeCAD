@@ -75,9 +75,9 @@ public:
     /// Point on Point constraint simple routine Analyse step (see constructor)
     void analyseMissingPointOnPointCoincident(double angleprecision = M_PI/8);
     /// Point on Point constraint simple routine Get step (see constructor)
-    std::vector<ConstraintIds> &getMissingPointOnPointConstraints(void) {return vertexConstraints;};
+    std::vector<ConstraintIds> &getMissingPointOnPointConstraints(void) {return vertexConstraints;}
     /// Vertical/Horizontal constraints simple routine Set step (see constructor)
-    void setMissingPointOnPointConstraints(std::vector<ConstraintIds>& cl) {vertexConstraints = cl;};
+    void setMissingPointOnPointConstraints(std::vector<ConstraintIds>& cl) {vertexConstraints = cl;}
     /// Point on Point constraint simple routine Make step (see constructor)
     /// if onebyone, then the sketch is solved after each individual constraint addition and any redundancy removed.
     void makeMissingPointOnPointCoincident(bool onebyone = false);
@@ -85,24 +85,29 @@ public:
     /// Vertical/Horizontal constraints simple routine Detect step (see constructor)
     int detectMissingVerticalHorizontalConstraints(double angleprecision = M_PI/8);
     /// Vertical/Horizontal constraints simple routine Get step (see constructor)
-    std::vector<ConstraintIds> &getMissingVerticalHorizontalConstraints(void) {return verthorizConstraints;};
+    std::vector<ConstraintIds> &getMissingVerticalHorizontalConstraints(void) {return verthorizConstraints;}
     /// Vertical/Horizontal constraints simple routine Set step (see constructor)
-    void setMissingVerticalHorizontalConstraints(std::vector<ConstraintIds>& cl) {verthorizConstraints = cl;};
+    void setMissingVerticalHorizontalConstraints(std::vector<ConstraintIds>& cl) {verthorizConstraints = cl;}
     /// Vertical/Horizontal constraints simple routine Make step (see constructor)
     void makeMissingVerticalHorizontal(bool onebyone = false);
 
     /// Equality constraints simple routine Detect step (see constructor)
     int detectMissingEqualityConstraints(double precision);
     /// Equality constraints simple routine Get step for line segments (see constructor)
-    std::vector<ConstraintIds> &getMissingLineEqualityConstraints(void) {return lineequalityConstraints;};
+    std::vector<ConstraintIds> &getMissingLineEqualityConstraints(void) {return lineequalityConstraints;}
     /// Equality constraints simple routine Get step for radii (see constructor)
-    std::vector<ConstraintIds> &getMissingRadiusConstraints(void) {return radiusequalityConstraints;};
+    std::vector<ConstraintIds> &getMissingRadiusConstraints(void) {return radiusequalityConstraints;}
     /// Equality constraints simple routine Set step for line segments (see constructor)
-    void setMissingLineEqualityConstraints(std::vector<ConstraintIds>& cl) {lineequalityConstraints = cl;};
+    void setMissingLineEqualityConstraints(std::vector<ConstraintIds>& cl) {lineequalityConstraints = cl;}
     /// Equality constraints simple routine Set step for radii (see constructor)
-    void setMissingRadiusConstraints(std::vector<ConstraintIds>& cl) {radiusequalityConstraints = cl;};
+    void setMissingRadiusConstraints(std::vector<ConstraintIds>& cl) {radiusequalityConstraints = cl;}
     /// Equality constraints simple routine Make step (see constructor)
     void makeMissingEquality(bool onebyone = true);
+
+    /// Detect degenerated geometries
+    int detectDegeneratedGeometries(double tolerance);
+    /// Remove degenerated geometries
+    int removeDegeneratedGeometries(double tolerance);
 
     // Complex routines (see constructor)
 

@@ -85,11 +85,11 @@ class DressupPathBoundary(object):
             return []
         cmds = []
         if begin.z < self.safeHeight:
-            cmds.append(Path.Command('G1', {'Z': self.safeHeight, 'F': verticalFeed}))
+            cmds.append(self.strG1ZsafeHeight)
         if begin.z < self.clearanceHeight:
-            cmds.append(Path.Command('G0', {'Z': self.clearanceHeight}))
+            cmds.append(self.strG0ZclearanceHeight)
         if end:
-            cmds.append(Path.Command('G0', {'X': end.x, 'Y': end.y}))
+            cmds.append(Path.Command('G0', {'X': end.x, 'Y': end.y}))             
             if end.z < self.clearanceHeight:
                 cmds.append(Path.Command('G0', {'Z': max(self.safeHeight, end.z)}))
             if end.z < self.safeHeight:
@@ -105,29 +105,38 @@ class DressupPathBoundary(object):
         if len(obj.Base.Path.Commands) > 0:
             self.safeHeight = float(PathUtil.opProperty(obj.Base, 'SafeHeight'))
             self.clearanceHeight = float(PathUtil.opProperty(obj.Base, 'ClearanceHeight'))
+            self.strG1ZsafeHeight = Path.Command('G1', {'Z': self.safeHeight, 'F': tc.VertFeed.Value})
+            self.strG0ZclearanceHeight = Path.Command('G0', {'Z': self.clearanceHeight})
 
             boundary = obj.Stock.Shape
-            cmd = obj.Base.Path.Commands[0]
-            pos = cmd.Placement.Base
+            cmd = obj.Base.Path.Commands[0] 
+            pos = cmd.Placement.Base # bogus m/c position to create first edge 
+            bogusX = True
+            bogusY = True
             commands = [cmd]
             lastExit = None
             for cmd in obj.Base.Path.Commands[1:]:
                 if cmd.Name in PathGeom.CmdMoveAll:
+                    if bogusX == True :
+                        bogusX = ( 'X' not in cmd.Parameters  )
+                    if bogusY :
+                        bogusY = ( 'Y' not in cmd.Parameters  )
                     edge = PathGeom.edgeForCmd(cmd, pos)
                     if edge:
                         inside = edge.common(boundary).Edges
                         outside = edge.cut(boundary).Edges
-                        if not obj.Inside:
-                            t = inside
+                        if not obj.Inside:  # UI "inside boundary" param
+                            tmp = inside
                             inside = outside
-                            outside = t
+                            outside = tmp
                         # it's really a shame that one cannot trust the sequence and/or
                         # orientation of edges
                         if 1 == len(inside) and 0 == len(outside):
                             PathLog.track(_vstr(pos), _vstr(lastExit), ' + ', cmd)
                             # cmd fully included by boundary
                             if lastExit:
-                                commands.extend(self.boundaryCommands(obj, lastExit, pos, tc.VertFeed.Value))
+                                if not ( bogusX or bogusY ) : # don't insert false paths based on bogus m/c position
+                                    commands.extend(self.boundaryCommands(obj, lastExit, pos, tc.VertFeed.Value)) 
                                 lastExit = None
                             commands.append(cmd)
                             pos = PathGeom.commandEndPoint(cmd, pos)
@@ -145,16 +154,17 @@ class DressupPathBoundary(object):
                                 PathLog.track(ie)
                                 if ie:
                                     e = ie[0]
-                                    ptL = e.valueAt(e.LastParameter)
-                                    flip = PathGeom.pointsCoincide(pos, ptL)
-                                    newPos = e.valueAt(e.FirstParameter) if flip else ptL
+                                    LastPt = e.valueAt(e.LastParameter)
+                                    flip = PathGeom.pointsCoincide(pos, LastPt)
+                                    newPos = e.valueAt(e.FirstParameter) if flip else LastPt
                                     # inside edges are taken at this point (see swap of inside/outside
                                     # above - so we can just connect the dots ...
                                     if lastExit:
-                                        commands.extend(self.boundaryCommands(obj, lastExit, pos, tc.VertFeed.Value))
+                                        if not ( bogusX or bogusY ) : commands.extend(self.boundaryCommands(obj, lastExit, pos, tc.VertFeed.Value))
                                         lastExit = None
                                     PathLog.track(e, flip)
-                                    commands.extend(PathGeom.cmdsForEdge(e, flip, False, 50, tc.HorizFeed.Value, tc.VertFeed.Value))  # add missing HorizFeed to G2 paths
+                                    if not ( bogusX or bogusY ) : # don't insert false paths based on bogus m/c position
+                                        commands.extend(PathGeom.cmdsForEdge(e, flip, False, 50, tc.HorizFeed.Value, tc.VertFeed.Value))  
                                     inside.remove(e)
                                     pos = newPos
                                     lastExit = newPos

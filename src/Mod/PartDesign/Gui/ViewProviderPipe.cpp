@@ -129,46 +129,71 @@ bool ViewProviderPipe::onDelete(const std::vector<std::string> &s)
 
 
 
-void ViewProviderPipe::highlightReferences(const bool on, bool auxiliary)
+void ViewProviderPipe::highlightReferences(ViewProviderPipe::Reference mode, bool on)
 {
     PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getObject());
-    Part::Feature* base;
-    if(!auxiliary)
-        base = static_cast<Part::Feature*>(pcPipe->Spine.getValue());
-    else
-        base = static_cast<Part::Feature*>(pcPipe->AuxillerySpine.getValue());
 
-    if (base == NULL) return;
+    switch (mode) {
+    case Spine:
+        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->Spine.getValue()),
+                            pcPipe->Spine.getSubValuesStartsWith("Edge"), on);
+        break;
+    case AuxiliarySpine:
+        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->AuxillerySpine.getValue()),
+                            pcPipe->AuxillerySpine.getSubValuesStartsWith("Edge"), on);
+        break;
+    case Profile:
+        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->Profile.getValue()),
+                            pcPipe->Profile.getSubValuesStartsWith("Edge"), on);
+        break;
+    case Section:
+        {
+            std::vector<App::DocumentObject*> sections = pcPipe->Sections.getValues();
+            for (auto it : sections) {
+                highlightReferences(dynamic_cast<Part::Feature*>(it),
+                                    std::vector<std::string>(), on);
+            }
+        }
+        break;
+    default:
+        break;
+    }
+}
+
+void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vector<std::string>& edges, bool on) {
+
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(base));
-    if (svp == NULL) return;
+    if (svp == nullptr)
+        return;
 
-    std::vector<std::string> edges;
-    if(!auxiliary)
-        edges = pcPipe->Spine.getSubValuesStartsWith("Edge");
-    else
-        edges = pcPipe->AuxillerySpine.getSubValuesStartsWith("Edge");
+    std::vector<App::Color>& edgeColors = originalLineColors[base->getID()];
 
     if (on) {
-         if (!edges.empty() && originalLineColors.empty()) {
+         if (edgeColors.empty()) {
             TopTools_IndexedMapOfShape eMap;
             TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
-            originalLineColors = svp->LineColorArray.getValues();
-            std::vector<App::Color> colors = originalLineColors;
+            edgeColors = svp->LineColorArray.getValues();
+            std::vector<App::Color> colors = edgeColors;
             colors.resize(eMap.Extent(), svp->LineColor.getValue());
 
-            for (std::string e : edges) {
-                int idx = std::stoi(e.substr(4)) - 1;
-                assert ( idx >= 0 );
-                if ( idx < (ssize_t) colors.size() )
-                    colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+            if (!edges.empty()) {
+                for (std::string e : edges) {
+                    int idx = std::stoi(e.substr(4)) - 1;
+                    assert ( idx >= 0 );
+                    if ( idx < (ssize_t) colors.size() )
+                        colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                }
+            }
+            else {
+                std::fill(colors.begin(), colors.end(), App::Color(0.6,0.0,1.0)); // purple
             }
             svp->LineColorArray.setValues(colors);
         }
     } else {
-        if (!edges.empty() && !originalLineColors.empty()) {
-            svp->LineColorArray.setValues(originalLineColors);
-            originalLineColors.clear();
+        if (!edgeColors.empty()) {
+            svp->LineColorArray.setValues(edgeColors);
+            edgeColors.clear();
         }
     }
 }

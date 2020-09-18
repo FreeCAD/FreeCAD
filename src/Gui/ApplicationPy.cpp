@@ -139,24 +139,6 @@ PyMethodDef Application::Methods[] = {
   {"runCommand",              (PyCFunction) Application::sRunCommand, METH_VARARGS,
    "runCommand(string) -> None\n\n"
    "Run command with name"},
-  {"isCommandActive",         (PyCFunction) Application::sIsCommandActive, METH_VARARGS,
-   "isCommandActive(string) -> Bool\n\n"
-   "Test if a command is active"},
-  {"listCommands",               (PyCFunction) Application::sListCommands, METH_VARARGS,
-   "listCommands() -> list of strings\n\n"
-   "Returns a list of all commands known to FreeCAD."},
-  {"getCommandInfo",               (PyCFunction) Application::sGetCommandInfo, METH_VARARGS,
-  "getCommandInfo(string) -> list of strings\n\n"
-  "Usage: menuText,tooltipText,whatsThisText,statustipText,pixmapText,shortcutText = getCommandInfo(string)"},
-  {"getCommandShortcut",               (PyCFunction) Application::sGetCommandShortcut, METH_VARARGS,
-   "getCommandShortcut(string) -> string\n\n"
-   "Returns string representing shortcut key accelerator for command."},
-    {"setCommandShortcut",              (PyCFunction) Application::sSetCommandShortcut, METH_VARARGS,
-    "setCommandShortcut(string,string) > bool\n\n"
-    "Sets shortcut for given command, returns bool True for success"},
-  {"updateCommands",        (PyCFunction) Application::sUpdateCommands, METH_VARARGS,
-   "updateCommands\n\n"
-   "Update all command active status"},
   {"SendMsgToActiveView",     (PyCFunction) Application::sSendActiveView, METH_VARARGS,
    "deprecated -- use class View"},
   {"sendMsgToFocusView",     (PyCFunction) Application::sSendFocusView, METH_VARARGS,
@@ -601,8 +583,13 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args)
         QFileInfo fi;
         fi.setFile(fileName);
         QString ext = fi.suffix().toLower();
-        if (ext == QLatin1String("iv") || ext == QLatin1String("wrl") ||
-            ext == QLatin1String("vrml") || ext == QLatin1String("wrz")) {
+        if (ext == QLatin1String("iv") ||
+            ext == QLatin1String("wrl") ||
+            ext == QLatin1String("vrml") ||
+            ext == QLatin1String("wrz") ||
+            ext == QLatin1String("x3d") ||
+            ext == QLatin1String("x3dz") ||
+            ext == QLatin1String("xhtml")) {
 
             // build up the graph
             SoSeparator* sep = new SoSeparator();
@@ -1256,159 +1243,6 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args)
         PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
         return 0;
     }
-}
-
-PyObject* Application::sIsCommandActive(PyObject * /*self*/, PyObject *args)
-{
-    char* pName;
-    if (!PyArg_ParseTuple(args, "s", &pName))
-        return NULL;
-
-    Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
-    if (!cmd) {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
-        return 0;
-    }
-    PY_TRY {
-        return Py::new_reference_to(Py::Boolean(cmd->isActive()));
-    }PY_CATCH;
-}
-
-PyObject* Application::sUpdateCommands(PyObject * /*self*/, PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return NULL;
-
-    getMainWindow()->updateActions();
-    Py_Return;
-}
-
-PyObject* Application::sGetCommandShortcut(PyObject * /*self*/, PyObject *args)
-{
-    char* pName;
-    if (!PyArg_ParseTuple(args, "s", &pName))
-        return NULL;
-
-    Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
-    if (cmd) {
-
-#if PY_MAJOR_VERSION >= 3
-        PyObject* str = PyUnicode_FromString(cmd->getAction() ? cmd->getAction()->shortcut().toString().toStdString().c_str() : "");
-#else
-        PyObject* str = PyString_FromString(cmd->getAction() ? cmd->getAction()->shortcut().toString().toStdString().c_str() : "");
-#endif
-        return str;
-    }
-    else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
-        return 0;
-    }
-}
-
-PyObject* Application::sSetCommandShortcut(PyObject * /*self*/, PyObject *args)
-{
-    char* pName;
-    char* pShortcut;
-    if (!PyArg_ParseTuple(args, "ss", &pName, &pShortcut))
-        return NULL;
-
-    Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
-    if (cmd) {
-        Action* action = cmd->getAction();
-        if (action){
-            QKeySequence shortcut = QString::fromLatin1(pShortcut);
-            QString nativeText = shortcut.toString(QKeySequence::NativeText);
-            action->setShortcut(nativeText);
-            bool success = action->shortcut() == nativeText;
-            /**
-             * avoid cluttering parameters unnecessarily by saving only
-             * when new shortcut is not the default shortcut
-             * remove spaces to handle cases such as shortcut = "C,L" or "C, L"
-             */
-            QString default_shortcut = QString::fromLatin1(cmd->getAccel());
-            QString spc = QString::fromLatin1(" ");
-            ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
-            if (success && default_shortcut.remove(spc).toUpper() != nativeText.remove(spc).toUpper()){
-                hGrp->SetASCII(pName, pShortcut);
-            } else {
-                hGrp->RemoveASCII(pName);
-            }
-            return Py::new_reference_to(Py::Boolean(success));
-        } else {
-            return Py::new_reference_to(Py::Boolean(false));
-        }
-    }
-    else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
-        return NULL;
-    }
-}
-
-
-PyObject* Application::sGetCommandInfo(PyObject * /*self*/, PyObject *args)
-{
-    char* pName;
-    if (!PyArg_ParseTuple(args, "s", &pName))
-        return NULL;
-    Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
-    if (cmd) {
-        Action* action = cmd->getAction();
-        PyObject* pyList = PyList_New(6);
-        const char* menuTxt = cmd->getMenuText();
-        const char* tooltipTxt = cmd->getToolTipText();
-        const char* whatsThisTxt = cmd->getWhatsThis();
-        const char* statustipTxt = cmd->getStatusTip();
-        const char* pixMapTxt = cmd->getPixmap();
-        std::string shortcutTxt = "";
-        if(action)
-            shortcutTxt = action->shortcut().toString().toStdString();
-
-#if PY_MAJOR_VERSION >= 3
-        PyObject* strMenuTxt = PyUnicode_FromString(menuTxt ? menuTxt : "");
-        PyObject* strTooltipTxt = PyUnicode_FromString(tooltipTxt ? tooltipTxt : "");
-        PyObject* strWhatsThisTxt = PyUnicode_FromString(whatsThisTxt ? whatsThisTxt : "");
-        PyObject* strStatustipTxt = PyUnicode_FromString(statustipTxt ? statustipTxt : "");
-        PyObject* strPixMapTxt = PyUnicode_FromString(pixMapTxt ? pixMapTxt : "");
-        PyObject* strShortcutTxt = PyUnicode_FromString(!shortcutTxt.empty() ? shortcutTxt.c_str() : "");
-#else
-        PyObject* strMenuTxt = PyString_FromString(menuTxt ? menuTxt : "");
-        PyObject* strTooltipTxt = PyString_FromString(tooltipTxt ? tooltipTxt : "");
-        PyObject* strWhatsThisTxt = PyString_FromString(whatsThisTxt ? whatsThisTxt : "");
-        PyObject* strStatustipTxt = PyString_FromString(statustipTxt ? statustipTxt : "");
-        PyObject* strPixMapTxt = PyString_FromString(pixMapTxt ? pixMapTxt : "");
-        PyObject* strShortcutTxt = PyString_FromString(!shortcutTxt.empty() ? shortcutTxt.c_str() : "");
-#endif
-        PyList_SetItem(pyList, 0, strMenuTxt);
-        PyList_SetItem(pyList, 1, strTooltipTxt);
-        PyList_SetItem(pyList, 2, strWhatsThisTxt);
-        PyList_SetItem(pyList, 3, strStatustipTxt);
-        PyList_SetItem(pyList, 4, strPixMapTxt);
-        PyList_SetItem(pyList, 5, strShortcutTxt);
-        return pyList;
-    }
-    else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
-        return 0;
-    }
-}
-
-PyObject* Application::sListCommands(PyObject * /*self*/, PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return NULL;
-
-    std::vector <Command*> cmds = Application::Instance->commandManager().getAllCommands();
-    PyObject* pyList = PyList_New(cmds.size());
-    int i=0;
-    for ( std::vector<Command*>::iterator it = cmds.begin(); it != cmds.end(); ++it ) {
-#if PY_MAJOR_VERSION >= 3
-        PyObject* str = PyUnicode_FromString((*it)->getName());
-#else
-        PyObject* str = PyString_FromString((*it)->getName());
-#endif
-        PyList_SetItem(pyList, i++, str);
-    }
-    return pyList;
 }
 
 PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args)

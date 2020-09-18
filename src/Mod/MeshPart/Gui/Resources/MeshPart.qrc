@@ -1,6 +1,8 @@
 <RCC>
     <qresource> 
         <file>icons/actions/MeshFace.svg</file>
+        <file>icons/MeshPart_Create_Flat_Face.svg</file>
+        <file>icons/MeshPart_Create_Flat_Mesh.svg</file>
         <file>translations/MeshPart_af.qm</file>
         <file>translations/MeshPart_de.qm</file>
         <file>translations/MeshPart_fi.qm</file>

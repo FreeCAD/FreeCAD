@@ -536,10 +536,20 @@ void Hole::updateDiameterParam()
 
     int threadType = ThreadType.getValue();
     int threadSize = ThreadSize.getValue();
-    if (threadType < 0)
+    if (threadType < 0) {
+        // When restoring the feature it might be in an inconsistent state.
+        // So, just silently ignore it instead of throwing an exception.
+        if (isRestoring())
+            return;
         throw Base::IndexError("Thread type out of range");
-    if (threadSize < 0)
+    }
+    if (threadSize < 0) {
+        // When restoring the feature it might be in an inconsistent state.
+        // So, just silently ignore it instead of throwing an exception.
+        if (isRestoring())
+            return;
         throw Base::IndexError("Thread size out of range");
+    }
     double diameter = threadDescription[threadType][threadSize].diameter;
     double pitch = threadDescription[threadType][threadSize].pitch;
 

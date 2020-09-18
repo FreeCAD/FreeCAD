@@ -23,17 +23,19 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QDebug>
-# include <QLineEdit>
 # include <QFocusEvent>
 # include <QFontMetrics>
 # include <QHBoxLayout>
 # include <QLabel>
-# include <QStyle>
-# include <QPixmapCache>
+# include <QLineEdit>
 # include <QMouseEvent>
+# include <QPixmapCache>
+# include <QStyle>
+# include <QStyleOptionSpinBox>
+# include <QStylePainter>
 # include <QToolTip>
-# include <QApplication>
 #endif
 
 #include "QuantitySpinBox.h"
@@ -225,7 +227,20 @@ public:
                     state = QValidator::Intermediate;
                 }
                 else if (res.getUnit() != this->unit) {
-                    state = QValidator::Invalid;
+                    // If the user input is of the form "number * unit", "number + unit"
+                    // or "number - unit" it's rejected by the quantity parser and it's
+                    // assumed that the user input is not complete yet (Intermediate).
+                    // However, if the user input is of the form "number / unit" it's accepted
+                    // by the parser but because the units mismatch it's considered as invalid
+                    // and the last valid input will be restored.
+                    // See #0004422: PartDesign value input does not accept trailing slash
+                    // To work around this issue of the quantity parser it's checked if the
+                    // inversed unit matches and if yes the input is also considered as not
+                    // complete.
+                    if (res.getUnit().pow(-1) == this->unit)
+                        state = QValidator::Intermediate;
+                    else
+                        state = QValidator::Invalid;
                 }
                 else {
                     state = QValidator::Acceptable;
@@ -517,6 +532,20 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
         QAbstractSpinBox::keyPressEvent(event);
 }
 
+void Gui::QuantitySpinBox::paintEvent(QPaintEvent*)
+{
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    if (hasExpression()) {
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxUp;
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxDown;
+        opt.state &= ~QStyle::State_Active;
+        opt.stepEnabled = StepNone;
+    }
+
+    QStylePainter p(this);
+    p.drawComplexControl(QStyle::CC_SpinBox, opt);
+}
 
 void QuantitySpinBox::updateText(const Quantity &quant)
 {
@@ -640,7 +669,7 @@ void QuantitySpinBox::updateFromCache(bool notify)
     if (d->pendingEmit) {
         double factor;
         const Base::Quantity& res = d->cached;
-        getUserString(res, factor, d->unitStr);
+        QString text = getUserString(res, factor, d->unitStr);
         d->unitValue = res.getValue() / factor;
         d->quantity = res;
 
@@ -649,6 +678,7 @@ void QuantitySpinBox::updateFromCache(bool notify)
             d->pendingEmit = false;
             valueChanged(res);
             valueChanged(res.getValue());
+            textChanged(text);
         }
     }
 }
@@ -670,8 +700,12 @@ void QuantitySpinBox::setUnit(const Base::Unit &unit)
 
 void QuantitySpinBox::setUnitText(const QString& str)
 {
-    Base::Quantity quant = Base::Quantity::parse(str);
-    setUnit(quant.getUnit());
+    try {
+        Base::Quantity quant = Base::Quantity::parse(str);
+        setUnit(quant.getUnit());
+    }
+    catch (const Base::Exception&) {
+    }
 }
 
 QString QuantitySpinBox::unitText(void)

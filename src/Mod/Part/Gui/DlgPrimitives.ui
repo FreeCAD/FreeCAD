@@ -180,7 +180,16 @@
       <string>Parameter</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -193,7 +202,16 @@
         </property>
         <widget class="QWidget" name="page0_plane">
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -201,7 +219,16 @@
           </property>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -260,7 +287,16 @@
         </widget>
         <widget class="QWidget" name="Page1_box">
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -284,7 +320,16 @@
           </item>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -347,7 +392,16 @@
         </widget>
         <widget class="QWidget" name="Page2_cylinder">
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -358,7 +412,16 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>
@@ -408,7 +471,16 @@
           </item>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -454,7 +526,16 @@
         </widget>
         <widget class="QWidget" name="Page3_cone">
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -465,7 +546,16 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>
@@ -515,7 +605,16 @@
           </item>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -578,7 +677,16 @@
         </widget>
         <widget class="QWidget" name="Page4_sphere">
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -596,7 +704,16 @@
           </item>
           <item row="2" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -685,7 +802,16 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>
@@ -711,7 +837,16 @@
         </widget>
         <widget class="QWidget" name="Page5_ellipsoid">
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -742,7 +877,16 @@
           </item>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -803,7 +947,16 @@
           </item>
           <item row="2" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -875,7 +1028,16 @@
         </widget>
         <widget class="QWidget" name="Page6_torus">
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -893,7 +1055,16 @@
           </item>
           <item row="2" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -979,7 +1150,16 @@
           </item>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -1025,7 +1205,16 @@
         </widget>
         <widget class="QWidget" name="page_prism">
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -1033,7 +1222,16 @@
           </property>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -1090,6 +1288,52 @@
               </property>
               <property name="value">
                <double>10.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="labelPrismXSkew">
+              <property name="text">
+               <string>Angle in first direction:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2">
+             <widget class="Gui::QuantitySpinBox" name="prismXSkew">
+              <property name="toolTip">
+               <string>Angle in first direction</string>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true">deg</string>
+              </property>
+              <property name="minimum">
+               <double>-90.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>90.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="labelPrismYSkew">
+              <property name="text">
+               <string>Angle in second direction:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="2">
+             <widget class="Gui::QuantitySpinBox" name="prismYSkew">
+              <property name="toolTip">
+               <string>Angle in second direction</string>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true">deg</string>
+              </property>
+              <property name="minimum">
+               <double>-90.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>90.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -1160,9 +1404,6 @@
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
-              <property name="value">
-               <double>0.000000000000000</double>
-              </property>
              </widget>
             </item>
             <item row="0" column="2">
@@ -1180,9 +1421,6 @@
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
-              <property name="value">
-               <double>0.000000000000000</double>
-              </property>
              </widget>
             </item>
             <item row="1" column="2">
@@ -1199,9 +1437,6 @@
              <widget class="Gui::QuantitySpinBox" name="wedgeZmin">
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
-              </property>
-              <property name="value">
-               <double>0.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -1274,7 +1509,16 @@
         </widget>
         <widget class="QWidget" name="page8_helix">
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -1295,7 +1539,16 @@
           </item>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -1355,9 +1608,6 @@
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
-              <property name="value">
-               <double>0.000000000000000</double>
-              </property>
              </widget>
             </item>
             <item row="0" column="1">
@@ -1396,7 +1646,16 @@
         </widget>
         <widget class="QWidget" name="page9_spiral">
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -1417,7 +1676,16 @@
           </item>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -1482,7 +1750,16 @@
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="0" column="0">
            <layout class="QGridLayout" name="circleParameters">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -1513,9 +1790,6 @@
              <widget class="Gui::QuantitySpinBox" name="circleAngle0">
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
-              </property>
-              <property name="value">
-               <double>0.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -1637,9 +1911,6 @@
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
-              <property name="value">
-               <double>0.000000000000000</double>
-              </property>
              </widget>
             </item>
             <item row="3" column="1">
@@ -1708,9 +1979,6 @@
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
-              <property name="value">
-               <double>0.000000000000000</double>
-              </property>
              </widget>
             </item>
             <item row="1" column="1">
@@ -1718,18 +1986,12 @@
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
-              <property name="value">
-               <double>0.000000000000000</double>
-              </property>
              </widget>
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="vertexZ">
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
-              </property>
-              <property name="value">
-               <double>0.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -1843,9 +2105,6 @@
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
-              <property name="value">
-               <double>0.000000000000000</double>
-              </property>
              </widget>
             </item>
             <item row="2" column="1">
@@ -1853,18 +2112,12 @@
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
-              <property name="value">
-               <double>0.000000000000000</double>
-              </property>
              </widget>
             </item>
             <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="edgeZ1">
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
-              </property>
-              <property name="value">
-               <double>0.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -1917,7 +2170,16 @@
         </widget>
         <widget class="QWidget" name="page_regularPolygon">
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -1925,7 +2187,16 @@
           </property>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">

@@ -58,7 +58,7 @@ protected:
     /// For faster access a suggested name can be tested, first.
     QVariant objectNameByLabel(const QString& label, const QVariant& suggest) const;
 
-    static QString getFaceReference(const QString& obj, const QString& sub);
+    QString getFaceReference(const QString& obj, const QString& sub) const;
 };
 
 class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgFeatureParameters

@@ -33,6 +33,7 @@ import unittest
 import FreeCAD as App
 import Draft
 import drafttests.auxiliary as aux
+import Part
 
 from FreeCAD import Vector
 from draftutils.messages import _msg, _wrn
@@ -591,6 +592,171 @@ class DraftModification(unittest.TestCase):
         Draft.stretch = aux.fake_function
         obj = Draft.stretch(line, direction)
         self.assertTrue(obj, "'{}' failed".format(operation))
+
+    def test_scale_part_feature_arcs(self):
+        """Create and scale a part feature (arcs)."""
+        operation = "Draft Scale part feature (arcs)"
+        _msg("  Test '{}'".format(operation))
+
+        base = Vector(3.5, 2.5, 0.0)
+        cen = Vector(2.0, 1.0, 0.0) # center for scaling
+        sca = Vector(2.0, 3.0, 1.0)
+        ends = [Vector(0.0, 0.0, 0.0),
+                Vector(4.0, 0.0, 0.0),
+                Vector(4.0, 3.0, 0.0),
+                Vector(0.0, 3.0, 0.0)]
+        mids = [Vector( 2.0, -0.5, 0.0),
+                Vector( 4.5,  1.5, 0.0),
+                Vector( 2.0,  3.5, 0.0),
+                Vector(-0.5,  1.5, 0.0)] # arc midpoints
+
+        shp = Part.Shape([Part.Arc(ends[0], mids[0], ends[1]),
+                          Part.Arc(ends[1], mids[1], ends[2]),
+                          Part.Arc(ends[2], mids[2], ends[3]),
+                          Part.Arc(ends[3], mids[3], ends[0])])
+        obj = App.ActiveDocument.addObject("Part::Feature")
+        obj.Shape = shp
+        obj.Placement.Base = base
+        App.ActiveDocument.recompute()
+        Draft.scale([obj], sca, cen, False)
+        App.ActiveDocument.recompute()
+
+        # check endpoints of arcs:
+        newEnds = [Vector( 5.0,  5.5, 0.0),
+                   Vector(13.0,  5.5, 0.0),
+                   Vector(13.0, 14.5, 0.0),
+                   Vector( 5.0, 14.5, 0.0)]
+        vrts = obj.Shape.Vertexes
+        for i in range(4):
+            self.assertTrue(vrts[i].Point.isEqual(newEnds[i], 1e-8),
+                            "'{}' failed".format(operation))
+        # check midpoints of arcs:
+        newMids = [Vector( 9.0,  4.0, 0.0),
+                   Vector(14.0, 10.0, 0.0),
+                   Vector( 9.0, 16.0, 0.0),
+                   Vector( 4.0, 10.0, 0.0)]
+        for i in range(4):
+            edge = obj.Shape.Edges[i]
+            par = (edge.LastParameter - edge.FirstParameter) / 2.0
+            self.assertTrue(edge.valueAt(par).isEqual(newMids[i], 1e-8),
+                            "'{}' failed".format(operation))
+
+    def test_scale_part_feature_lines(self):
+        """Create and scale a part feature (lines)."""
+        operation = "Draft Scale part feature (lines)"
+        _msg("  Test '{}'".format(operation))
+
+        base = Vector(3.5, 2.5, 0.0)
+        cen = Vector(2.0, 1.0, 0.0) # center for scaling
+        sca = Vector(2.0, 3.0, 1.0)
+        pts = [Vector(0.0, 0.0, 0.0),
+               Vector(4.0, 0.0, 0.0),
+               Vector(4.0, 3.0, 0.0),
+               Vector(0.0, 3.0, 0.0)]
+
+        shp = Part.Shape([Part.LineSegment(pts[0], pts[1]),
+                          Part.LineSegment(pts[1], pts[2]),
+                          Part.LineSegment(pts[2], pts[3]),
+                          Part.LineSegment(pts[3], pts[0])])
+        obj = App.ActiveDocument.addObject("Part::Feature")
+        obj.Shape = shp
+        obj.Placement.Base = base
+        App.ActiveDocument.recompute()
+        Draft.scale([obj], sca, cen, False)
+        App.ActiveDocument.recompute()
+
+        newPts = [Vector( 5.0,  5.5, 0.0),
+                  Vector(13.0,  5.5, 0.0),
+                  Vector(13.0, 14.5, 0.0),
+                  Vector( 5.0, 14.5, 0.0)]
+        vrts = obj.Shape.Vertexes
+        for i in range(4):
+            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-8),
+                            "'{}' failed".format(operation))
+
+    def test_scale_rectangle(self):
+        """Create and scale a rectangle."""
+        operation = "Draft Scale rectangle"
+        _msg("  Test '{}'".format(operation))
+
+        base = Vector(3.5, 2.5, 0.0)
+        cen = Vector(2.0, 1.0, 0.0) # center for scaling
+        sca = Vector(2.0, 3.0, 1.0)
+        len = 4.0
+        hgt = 3.0
+
+        obj = Draft.make_rectangle(len, hgt)
+        obj.Placement.Base = base
+        App.ActiveDocument.recompute()
+        Draft.scale([obj], sca, cen, False)
+        App.ActiveDocument.recompute()
+
+        newBase = Vector(5.0, 5.5, 0.0)
+        newLen = 8.0
+        newHgt = 9.0
+        self.assertTrue(obj.Placement.Base.isEqual(newBase, 1e-8),
+                        "'{}' failed".format(operation))
+        self.assertAlmostEqual(obj.Length,
+                               newLen,
+                               delta = 1e-8,
+                               msg = "'{}' failed".format(operation))
+        self.assertAlmostEqual(obj.Height,
+                               newHgt,
+                               delta = 1e-8,
+                               msg = "'{}' failed".format(operation))
+
+    def test_scale_spline(self):
+        """Create and scale a spline."""
+        operation = "Draft Scale spline"
+        _msg("  Test '{}'".format(operation))
+
+        base = Vector(3.5, 2.5, 0.0)
+        cen = Vector(2.0, 1.0, 0.0) # center for scaling
+        sca = Vector(2.0, 3.0, 1.0)
+        pts = [Vector(0.0, 0.0, 0.0),
+               Vector(2.0, 3.0, 0.0),
+               Vector(4.0, 0.0, 0.0)]
+
+        obj = Draft.make_bspline(pts, False)
+        obj.Placement.Base = base
+        App.ActiveDocument.recompute()
+        Draft.scale([obj], sca, cen, False)
+        App.ActiveDocument.recompute()
+
+        newPts = [Vector( 5.0,  5.5, 0.0),
+                  Vector( 9.0, 14.5, 0.0),
+                  Vector(13.0,  5.5, 0.0)]
+        for i in range(3):
+            self.assertTrue(obj.Points[i].add(base).isEqual(newPts[i], 1e-8),
+                            "'{}' failed".format(operation))
+
+    def test_scale_wire(self):
+        """Create and scale a wire."""
+        operation = "Draft Scale wire"
+        _msg("  Test '{}'".format(operation))
+
+        base = Vector(3.5, 2.5, 0.0)
+        cen = Vector(2.0, 1.0, 0.0) # center for scaling
+        sca = Vector(2.0, 3.0, 1.0)
+        pts = [Vector(0.0, 0.0, 0.0),
+               Vector(4.0, 0.0, 0.0),
+               Vector(4.0, 3.0, 0.0),
+               Vector(0.0, 3.0, 0.0)]
+
+        obj = Draft.make_wire(pts, True)
+        obj.Placement.Base = base
+        App.ActiveDocument.recompute()
+        Draft.scale([obj], sca, cen, False)
+        App.ActiveDocument.recompute()
+
+        newPts = [Vector( 5.0,  5.5, 0.0),
+                  Vector(13.0,  5.5, 0.0),
+                  Vector(13.0, 14.5, 0.0),
+                  Vector( 5.0, 14.5, 0.0)]
+        vrts = obj.Shape.Vertexes
+        for i in range(4):
+            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-8),
+                            "'{}' failed".format(operation))
 
     def tearDown(self):
         """Finish the test.

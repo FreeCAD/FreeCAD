@@ -305,7 +305,8 @@ class FillMacroListWorker(QtCore.QThread):
         self.progressbar_show.emit(True)
         u = utils.urlopen("https://www.freecadweb.org/wiki/Macros_recipes")
         if not u:
-           return
+            FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time')+"\n")
+            return
         p = u.read()
         u.close()
         if sys.version_info.major >= 3 and isinstance(p, bytes):
@@ -800,8 +801,8 @@ class CheckSingleWorker(QtCore.QThread):
             import git
         except:
             return
-        FreeCAD.Console.PrintLog("Checking for available updates of the "+name+" addon\n")
-        addondir = os.path.join(FreeCAD.getUserAppDataDir(),"Mod",name)
+        FreeCAD.Console.PrintLog("Checking for available updates of the "+self.name+" addon\n")
+        addondir = os.path.join(FreeCAD.getUserAppDataDir(),"Mod",self.name)
         if os.path.exists(addondir):
             if os.path.exists(addondir + os.sep + '.git'):
                 gitrepo = git.Git(addondir)

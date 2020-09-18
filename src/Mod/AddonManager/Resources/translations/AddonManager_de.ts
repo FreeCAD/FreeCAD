@@ -239,22 +239,22 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="285"/>
       <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</translation>
+      <translation>Ein Fehler ist bei der Git-Makro Abfrage aufgetreten, möglicherweise befindet sich die ausführbare Git-Datei nicht in dem Pfad</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="455"/>
       <source>This addon is marked as Python 2 Only</source>
-      <translation type="unfinished">This addon is marked as Python 2 Only</translation>
+      <translation>Dieses Addon ist als nur für Python 2 gekennzeichnet</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="456"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
-      <translation type="unfinished">This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</translation>
+      <translation>Diese Workbench wird möglicherweise nicht mehr gewartet und die Installation auf einem Python-3-System wird höchstwahrscheinlich zu Fehlern beim Start oder während der Nutzung führen.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="625"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested updating a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>Der Benutzer hat die Aktualisierung einer Python-2-Workbench auf einem System mit Python 3 angefordert - </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="653"/>
@@ -264,7 +264,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="659"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested installing a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>Der Benutzer hat die Installation einer Python-2-Workbench auf einem System mit Python 3 angefordert - </translation>
     </message>
   </context>
   <context>
@@ -362,12 +362,6 @@ installed addons will be checked for available updates
       <translation>Automatisch beim Start nach Updates suchen (benötigt GitPython)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="42"/>
-      <source>You can use this window to specify additional addon repositories
-sto be scanned for available addons</source>
-      <translation>Sie können dieses Fenster verwenden, um zusätzliche Addon-Ordner auszuwählen, die nach verfügbaren Addons durchsucht werden</translation>
-    </message>
-    <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
       <translation>Proxy </translation>
@@ -396,6 +390,12 @@ sto be scanned for available addons</source>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the Addon Manager</source>
       <translation>Addon-Manager schließen</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="42"/>
+      <source>You can use this window to specify additional addon repositories
+to be scanned for available addons</source>
+      <translation>Dieses Fenster kann verwendet werden, um zusätzliche Addon-Ablageordner auszuwählen, die nach verfügbaren Addons durchsucht werden</translation>
     </message>
   </context>
   <context>

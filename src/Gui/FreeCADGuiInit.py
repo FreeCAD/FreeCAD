@@ -34,6 +34,8 @@ import FreeCAD, FreeCADGui
 
 # shortcuts
 Gui = FreeCADGui
+# this is to keep old code working
+Gui.listCommands = Gui.Command.listAll
 
 # Important definitions
 class Workbench:
@@ -203,6 +205,8 @@ FreeCAD.addImportType("VRML V2.0 (*.wrl *.vrml *.wrz *.wrl.gz)","FreeCADGui")
 FreeCAD.addImportType("Python (*.py *.FCMacro *.FCScript)","FreeCADGui")
 FreeCAD.addExportType("Inventor V2.1 (*.iv)","FreeCADGui")
 FreeCAD.addExportType("VRML V2.0 (*.wrl *.vrml *.wrz *.wrl.gz)","FreeCADGui")
+FreeCAD.addExportType("X3D Extensible 3D (*.x3d *.x3dz)","FreeCADGui")
+FreeCAD.addExportType("WebGL/X3D (*.xhtml)","FreeCADGui")
 #FreeCAD.addExportType("IDTF (for 3D PDF) (*.idtf)","FreeCADGui")
 #FreeCAD.addExportType("3D View (*.svg)","FreeCADGui")
 FreeCAD.addExportType("Portable Document Format (*.pdf)","FreeCADGui")

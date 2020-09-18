@@ -632,13 +632,13 @@ void ReportOutput::onToggleShowReportViewOnError()
 
 void ReportOutput::onToggleShowReportViewOnNormalMessage()
 {
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnNormalMessage", true);
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnNormalMessage", false);
     getWindowParameter()->SetBool("checkShowReportViewOnNormalMessage", !show);
 }
 
 void ReportOutput::onToggleShowReportViewOnLogMessage()
 {
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnLogMessage", true);
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnLogMessage", false);
     getWindowParameter()->SetBool("checkShowReportViewOnLogMessage", !show);
 }
 

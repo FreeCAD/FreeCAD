@@ -446,7 +446,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="557"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation>FEM-Netz mit Gmsh-Vernetzer erstellen</translation>
+      <translation>FEM-Netz mit Gmsh-Netzgenerator erstellen</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
@@ -638,7 +638,7 @@
     <message>
       <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Erstelle ein FEM Volumen Mesh aus einem Festkörper oder Flächenform von Netgen internen Meshers</translation>
+      <translation>Erstellen eines FEM-Volumennetzes aus einem Festkörper oder einer Flächenform mit Netgens internem Netzgenerator</translation>
     </message>
   </context>
   <context>
@@ -832,7 +832,7 @@
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="42"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Erstelle ein FEM Volumen Mesh aus einem Festkörper oder Flächenform von Netgen internen Meshers</translation>
+      <translation>Erstellen eines FEM-Volumennetzes aus einem Festkörper oder einer Flächenform mit Netgens internem Netzgenerator</translation>
     </message>
   </context>
   <context>

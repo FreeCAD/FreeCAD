@@ -299,13 +299,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             self.setEditorProperties(obj)
 
     def setEditorProperties(self, obj):
+        obj.setEditorMode('ReverseDirection', 2)
         if obj.EnableRotation == 'Off':
-            obj.setEditorMode('ReverseDirection', 2)
             obj.setEditorMode('InverseAngle', 2)
             obj.setEditorMode('AttemptInverseAngle', 2)
             obj.setEditorMode('LimitDepthToFace', 2)
         else:
-            obj.setEditorMode('ReverseDirection', 0)
+            # obj.setEditorMode('ReverseDirection', 0)
             obj.setEditorMode('InverseAngle', 0)
             obj.setEditorMode('AttemptInverseAngle', 0)
             obj.setEditorMode('LimitDepthToFace', 0)
@@ -446,6 +446,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 for (base, subList) in obj.Base:
                     baseSubsTuples.append((base, subList, 0.0, 'X', stock))
             else:
+                PathLog.debug('Rotation is active...')
                 for p in range(0, len(obj.Base)):
                     (base, subsList) = obj.Base[p]
                     isLoop = False
@@ -478,8 +479,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                         break
 
                             if rtn is False:
-                                PathLog.debug(translate("Path", "Face appears misaligned after initial rotation."))
-                                if obj.InverseAngle is False:
+                                PathLog.debug(translate("Path", "Face appears misaligned after initial rotation.") + ' 1')
+                                if obj.InverseAngle:
+                                    (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
+                                else:
                                     if obj.AttemptInverseAngle is True:
                                         (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
                                     else:
@@ -543,8 +546,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                             angle -= 180.0
 
                                     if rtn is True:
-                                        PathLog.debug(translate("Path", "Face appears misaligned after initial rotation."))
-                                        if obj.InverseAngle is False:
+                                        PathLog.debug(translate("Path", "Face appears misaligned after initial rotation.") + ' 2')
+                                        if obj.InverseAngle:
+                                            (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
+                                            if self.isFaceUp(clnBase, faceIA) is False:
+                                                PathLog.debug('isFaceUp is False')
+                                                angle += 180.0
+                                        else:
                                             if obj.AttemptInverseAngle is True:
                                                 (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
                                             else:
@@ -649,36 +657,47 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         self.horizontal.append(shape)
 
                 # extrude all faces up to StartDepth and those are the removal shapes
-                sD = obj.StartDepth.Value
-                fD = obj.FinalDepth.Value
+                start_dep = obj.StartDepth.Value
                 clrnc = 0.5
                 for face in self.horizontal:
-                    afD = fD
+                    adj_final_dep = obj.FinalDepth.Value
                     useAngle = angle
                     shpZMin = face.BoundBox.ZMin
-                    PathLog.debug('self.horizontal shpZMin: {}'.format(shpZMin))
-                    if self.isFaceUp(subBase, face) is False:
+                    shpZMinVal = shpZMin
+                    PathLog.debug('self.horizontal pre-shpZMin: {}'.format(shpZMin))
+                    isFaceUp = self.isFaceUp(subBase, face)
+                    if not isFaceUp:
                         useAngle += 180.0
                         invZ = (-2 * shpZMin) - clrnc
                         face.translate(FreeCAD.Vector(0.0, 0.0, invZ))
                         shpZMin = -1 * shpZMin
                     else:
                         face.translate(FreeCAD.Vector(0.0, 0.0, -1 * clrnc))
+                    PathLog.debug('self.horizontal post-shpZMin: {}'.format(shpZMin))
                     
                     if obj.LimitDepthToFace is True and obj.EnableRotation != 'Off':
-                        if shpZMin > obj.FinalDepth.Value:
-                            afD = shpZMin
-                            if sD <= afD:
-                                sD = afD + 1.0
+                        if shpZMinVal > obj.FinalDepth.Value:
+                            PathLog.debug('shpZMin > obj.FinalDepth.Value')
+                            adj_final_dep = shpZMinVal  # shpZMin
+                            if start_dep <= adj_final_dep:
+                                start_dep = adj_final_dep + 1.0
                                 msg = translate('PathPocketShape', 'Start Depth is lower than face depth. Setting to ')
-                                PathLog.warning(msg + ' {} mm.'.format(sD))
+                                PathLog.warning(msg + ' {} mm.'.format(start_dep))
+                            PathLog.debug('LimitDepthToFace adj_final_dep: {}'.format(adj_final_dep))
                     else:
-                        face.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - shpZMin))
+                        translation = obj.FinalDepth.Value - shpZMin
+                        if not isFaceUp:
+                            # Check if the `isFaceUp` returned correctly
+                            zDestination = face.BoundBox.ZMin + translation
+                            if (round(start_dep - obj.FinalDepth.Value, 6) !=
+                                round(start_dep - zDestination, 6)):
+                                shpZMin = -1 * shpZMin
+                        face.translate(FreeCAD.Vector(0, 0, translation))
                     
-                    extent = FreeCAD.Vector(0, 0, sD - afD + clrnc)
+                    extent = FreeCAD.Vector(0, 0, abs(start_dep - shpZMin) + clrnc)  # adj_final_dep + clrnc)
                     extShp = face.removeSplitter().extrude(extent)
-                    self.removalshapes.append((extShp, False, 'pathPocketShape', useAngle, axis, sD, afD))
-                    PathLog.debug("Extent values are strDep: {}, finDep: {},  extrd: {}".format(sD, afD, extent))
+                    self.removalshapes.append((extShp, False, 'pathPocketShape', useAngle, axis, start_dep, adj_final_dep))
+                    PathLog.debug("Extent values are strDep: {}, finDep: {},  extrd: {}".format(start_dep, adj_final_dep, extent))
                 # Efor face
             # Efor
 

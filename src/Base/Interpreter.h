@@ -218,6 +218,8 @@ public:
     //@{
     /// Run a statement on the python interpreter and gives back a string with the representation of the result.
     std::string runString(const char *psCmd);
+    /// Run a statement on the python interpreter with a key for exchanging strings
+    std::string runStringWithKey(const char *psCmd, const char *key, const char *key_initial_value="");
     /// Run a statement on the python interpreter and return back the result object.
     Py::Object runStringObject(const char *sCmd);
     /// Run a statement on the python interpreter and gives back a string with the representation of the result.

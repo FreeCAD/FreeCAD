@@ -86,8 +86,8 @@ SET(PathScripts_SRCS
     PathScripts/PathPreferences.py
     PathScripts/PathPreferencesPathDressup.py
     PathScripts/PathPreferencesPathJob.py
-	PathScripts/PathProbe.py
-	PathScripts/PathProbeGui.py
+    PathScripts/PathProbe.py
+    PathScripts/PathProbeGui.py
     PathScripts/PathProfile.py
     PathScripts/PathProfileContour.py
     PathScripts/PathProfileContourGui.py
@@ -142,6 +142,7 @@ SET(PathScripts_post_SRCS
     PathScripts/post/jtech_post.py
     PathScripts/post/linuxcnc_post.py
     PathScripts/post/mach3_mach4_post.py
+    PathScripts/post/nccad_post.py
     PathScripts/post/opensbp_post.py
     PathScripts/post/opensbp_pre.py
     PathScripts/post/philips_post.py
@@ -151,27 +152,27 @@ SET(PathScripts_post_SRCS
 )
 
 SET(Tools_Bit_SRCS
-  Tools/Bit/t1.fctb
-  Tools/Bit/t2.fctb
-  Tools/Bit/t3.fctb
-  Tools/Bit/t4.fctb
-  Tools/Bit/t5.fctb
-  Tools/Bit/t6.fctb
-  Tools/Bit/t7.fctb
-  Tools/Bit/t8.fctb
-  Tools/Bit/t9.fctb
+    Tools/Bit/t1.fctb
+    Tools/Bit/t2.fctb
+    Tools/Bit/t3.fctb
+    Tools/Bit/t4.fctb
+    Tools/Bit/t5.fctb
+    Tools/Bit/t6.fctb
+    Tools/Bit/t7.fctb
+    Tools/Bit/t8.fctb
+    Tools/Bit/t9.fctb
 )
 
 SET(Tools_Library_SRCS
-  Tools/Library/endmills.fctl
+    Tools/Library/endmills.fctl
 )
 
 SET(Tools_Shape_SRCS
-  Tools/Shape/ballend.fcstd
-  Tools/Shape/bullnose.fcstd
-  Tools/Shape/drill.fcstd
-  Tools/Shape/endmill.fcstd
-  Tools/Shape/v-bit.fcstd
+    Tools/Shape/ballend.fcstd
+    Tools/Shape/bullnose.fcstd
+    Tools/Shape/drill.fcstd
+    Tools/Shape/endmill.fcstd
+    Tools/Shape/v-bit.fcstd
 )
 
 SET(PathTests_SRCS

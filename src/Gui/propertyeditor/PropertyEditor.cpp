@@ -225,7 +225,7 @@ void PropertyEditor::setupTransaction(const QModelIndex &index) {
     str << prop->getName();
     if(items.size()>1)
         str << "...";
-    app.setActiveTransaction(str.str().c_str());
+    transactionID = app.setActiveTransaction(str.str().c_str());
     FC_LOG("editor transaction " << app.getActiveTransaction());
 }
 
@@ -239,14 +239,17 @@ void PropertyEditor::onItemActivated ( const QModelIndex & index )
 
 void PropertyEditor::closeTransaction()
 {
-    if (autoupdate) {
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if (doc) {
-            if (!doc->isTransactionEmpty()) {
-                // Between opening and committing a transaction a recompute
-                // could already have been done
-                if (doc->isTouched())
-                    doc->recompute();
+    int tid = 0;
+    if(App::GetApplication().getActiveTransaction(&tid) && tid == transactionID) {
+        if (autoupdate) {
+            App::Document* doc = App::GetApplication().getActiveDocument();
+            if (doc) {
+                if (!doc->isTransactionEmpty()) {
+                    // Between opening and committing a transaction a recompute
+                    // could already have been done
+                    if (doc->isTouched())
+                        doc->recompute();
+                }
             }
         }
         App::GetApplication().closeActiveTransaction();
@@ -325,8 +328,7 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList &&props, bool checkDocu
         return;
     }
 
-    if(this->state() == EditingState)
-        closeTransaction();
+    closeTransaction();
 
     QModelIndex index = this->currentIndex();
     QStringList propertyPath = propertyModel->propertyPathFromIndex(index);

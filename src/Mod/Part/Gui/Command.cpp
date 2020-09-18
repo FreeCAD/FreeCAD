@@ -1228,6 +1228,7 @@ CmdPartReverseShape::CmdPartReverseShape()
     sToolTipText  = QT_TR_NOOP("Reverse orientation of shapes");
     sWhatsThis    = "Part_ReverseShape";
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Reverse_Shape";
 }
 
 void CmdPartReverseShape::activated(int iMsg)
@@ -2424,18 +2425,18 @@ bool CmdBoxSelection::isActive(void)
 }
 
 //===========================================================================
-// Part_projectionOnSurface
+// Part_ProjectionOnSurface
 //===========================================================================
 DEF_STD_CMD_A(CmdPartProjectionOnSurface)
 
 CmdPartProjectionOnSurface::CmdPartProjectionOnSurface()
-  :Command("Part_projectionOnSurface")
+  :Command("Part_ProjectionOnSurface")
 {
   sAppModule = "Part";
   sGroup = QT_TR_NOOP("Part");
   sMenuText = QT_TR_NOOP("Create projection on surface...");
   sToolTipText = QT_TR_NOOP("Create projection on surface...");
-  sWhatsThis = "Part_projectionOnSurface";
+  sWhatsThis = "Part_ProjectionOnSurface";
   sStatusTip = sToolTipText;
   sPixmap = "Part_ProjectionOnSurface";
 }

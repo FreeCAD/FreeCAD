@@ -327,6 +327,53 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
     return PyUnicode_FromString(newTag.c_str());   //return tag for new CE
 }
 
+PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
+{
+    PyObject* pPnt1 = nullptr;
+    PyObject* pPnt2 = nullptr;
+    int style = LineFormat::getDefEdgeStyle();
+    double weight = LineFormat::getDefEdgeWidth();
+    App::Color defCol = LineFormat::getDefEdgeColor();
+    PyObject* pColor = nullptr;
+
+    if (!PyArg_ParseTuple(args, "O!O!|idO", &(Base::VectorPy::Type), &pPnt1,
+                                        &(Base::VectorPy::Type), &pPnt2,
+                                        &style, &weight,
+                                        &pColor)) {
+        throw Py::TypeError("expected (vector, vector,[style,weight,color])");
+    }
+
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    Base::Vector3d centroid = dvp->getOriginalCentroid();
+
+    Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
+    pnt1 = pnt1 - centroid;
+    pnt1 = DrawUtil::invertY(dvp->projectPoint(pnt1));
+
+    Base::Vector3d pnt2 = static_cast<Base::VectorPy*>(pPnt2)->value();
+    pnt2 = pnt2 - centroid;
+    pnt2 = DrawUtil::invertY(dvp->projectPoint(pnt2));
+
+    std::string newTag = dvp->addCosmeticEdge(pnt1, pnt2);
+    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
+    if (ce != nullptr) {
+        ce->m_format.m_style = style;
+        ce->m_format.m_weight = weight;
+        if (pColor == nullptr) {
+            ce->m_format.m_color = defCol;
+        } else {
+            ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
+        }
+    } else {
+        std::string msg = "DVPPI:makeCosmeticLine - line creation failed";
+        Base::Console().Message("%s\n",msg.c_str());
+        throw Py::RuntimeError(msg);
+    }
+    //int link = 
+    dvp->add1CEToGE(newTag);
+    dvp->requestPaint();
+    return PyUnicode_FromString(newTag.c_str());   //return tag for new CE
+}
 PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
 {
     PyObject* pPnt1 = nullptr;
@@ -677,6 +724,57 @@ PyObject* DrawViewPartPy::getVertexByIndex(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &vertexIndex)) {
         throw Py::TypeError("expected (vertIndex)");
     }
+    DrawViewPart* dvp = getDrawViewPartPtr();
+
+    //this is scaled and +Yup
+    //need unscaled and +Ydown
+    TechDraw::Vertex* vert = dvp->getProjVertexByIndex(vertexIndex);
+    if (vert == nullptr) {
+        throw Py::ValueError("wrong vertIndex");
+    }
+    Base::Vector3d point = DrawUtil::invertY(vert->point()) / dvp->getScale();
+
+    gp_Pnt gPoint(point.x, point.y, point.z);
+    BRepBuilderAPI_MakeVertex mkVertex(gPoint);
+    TopoDS_Vertex outVertex = mkVertex.Vertex();
+    return new Part::TopoShapeVertexPy(new Part::TopoShape(outVertex));
+}
+
+PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
+{
+    int edgeIndex = 0;
+    char* selName;           //Selection routine name - "Edge0"
+    if (!PyArg_ParseTuple(args, "s", &selName)) {
+        throw Py::TypeError("expected (string)");
+    }
+
+    edgeIndex = DrawUtil::getIndexFromName(std::string(selName));
+    DrawViewPart* dvp = getDrawViewPartPtr();
+
+    //this is scaled and +Yup
+    //need unscaled and +Ydown
+    TechDraw::BaseGeom* geom = dvp->getGeomByIndex(edgeIndex);
+    if (geom == nullptr) {
+        throw Py::ValueError("wrong edgeIndex");
+    }
+
+    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->occEdge,
+                                      Base::Vector3d(0.0, 0.0, 0.0),
+                                      1.0 / dvp->getScale());
+
+    TopoDS_Edge outEdge = TopoDS::Edge(temp);
+    return new Part::TopoShapeEdgePy(new Part::TopoShape(outEdge));
+}
+
+PyObject* DrawViewPartPy::getVertexBySelection(PyObject *args)
+{
+    int vertexIndex = 0;
+    char* selName;           //Selection routine name - "Vertex0"
+    if (!PyArg_ParseTuple(args, "s", &selName)) {
+        throw Py::TypeError("expected (string)");
+    }
+
+    vertexIndex = DrawUtil::getIndexFromName(std::string(selName));
     DrawViewPart* dvp = getDrawViewPartPtr();
 
     //this is scaled and +Yup

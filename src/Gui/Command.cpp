@@ -381,7 +381,13 @@ void Command::invoke(int i, TriggerSource trigger)
         if(displayText.empty())
             displayText = getName();
     }
-    App::AutoTransaction committer((eType&NoTransaction)?0:displayText.c_str(),true);
+
+    // Because Transaction now captures ViewObject changes, auto named
+    // transaction is disabled here to avoid too many unnecessary transactions.
+    //
+    // App::AutoTransaction committer((eType&NoTransaction)?0:displayText.c_str(),true);
+    App::AutoTransaction committer(0,true);
+
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
     Base::Console().Log("CmdG: %s\n",sName);
@@ -684,7 +690,8 @@ void Command::_runCommand(const char *file, int line, DoCmd_Type eType, const ch
 
     try {
         Base::Interpreter().runString(sCmd);
-    }catch(Py::Exception &) {
+    }
+    catch(Py::Exception &) {
         Base::PyException::ThrowException();
     }
 }

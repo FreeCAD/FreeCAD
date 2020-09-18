@@ -165,7 +165,7 @@ def joinWalls(walls,delete=False):
     if base.Base:
         if base.Base.Shape.Faces:
             return None
-        if Draft.getType(base.Base) == "Sketch":
+        if Draft.getType(base.Base) == "Sketcher::SketchObject":
             sk = base.Base
         else:
             sk = Draft.makeSketch(base.Base,autoconstraints=True)
@@ -1017,7 +1017,7 @@ class _Wall(ArchComponent.Component):
                                 if Draft.getType(obj.Base) == "Wire":
                                     #print "modifying p2"
                                     obj.Base.End = p2
-                                elif Draft.getType(obj.Base) == "Sketch":
+                                elif Draft.getType(obj.Base) == "Sketcher::SketchObject":
                                     try:
                                         obj.Base.movePoint(0,2,p2,0)
                                     except:
@@ -1342,10 +1342,12 @@ class _Wall(ArchComponent.Component):
                             if curAligns == "Left":
 
                                 if layers:
-                                    curWidth = abs(layers[i])
+                                    curWidth = []
+                                    for n in range(edgeNum):
+                                        curWidth.append(abs(layers[i]))
                                     off = off+layeroffset
-                                    dvec.multiply(curWidth)
-                                    layeroffset += abs(curWidth)
+                                    dvec.multiply(curWidth[0])
+                                    layeroffset += abs(curWidth[0])
                                 else:
                                     curWidth = widths
                                     dvec.multiply(width)
@@ -1386,10 +1388,12 @@ class _Wall(ArchComponent.Component):
                                 dvec = dvec.negative()
 
                                 if layers:
-                                    curWidth = abs(layers[i])
+                                    curWidth = []
+                                    for n in range(edgeNum):
+                                        curWidth.append(abs(layers[i]))
                                     off = off+layeroffset
-                                    dvec.multiply(curWidth)
-                                    layeroffset += abs(curWidth)
+                                    dvec.multiply(curWidth[0])
+                                    layeroffset += abs(curWidth[0])
                                 else:
                                     curWidth = widths
                                     dvec.multiply(width)

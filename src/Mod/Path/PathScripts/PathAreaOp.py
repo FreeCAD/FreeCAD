@@ -487,11 +487,12 @@ class ObjectOp(PathOp.ObjectOp):
                 sims.append(sim)
             # Eif
 
-            if self.areaOpRetractTool(obj) and self.endVector is not None:
+            if self.areaOpRetractTool(obj) and self.endVector is not None and len(self.commandlist) > 1:
                 self.endVector[2] = obj.ClearanceHeight.Value
                 self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
         # Raise cutter to safe height and rotate back to original orientation
+        #    based on next rotational operation in job
         if self.rotateFlag is True:
             resetAxis = False
             lastJobOp = None
@@ -517,12 +518,12 @@ class ObjectOp(PathOp.ObjectOp):
                     PathLog.debug('Last Op, {}, has `EnableRotation` set to {}'.format(lastJobOp.Label, lastJobOp.EnableRotation))
                     if lastJobOp.EnableRotation != obj.EnableRotation:
                         resetAxis = True
-            if ns == numShapes - 1:  # If last shape, check next op EnableRotation setting
-                if nextJobOp is not None:
-                    if hasattr(nextJobOp, 'EnableRotation'):
-                        PathLog.debug('Next Op, {}, has `EnableRotation` set to {}'.format(nextJobOp.Label, nextJobOp.EnableRotation))
-                        if nextJobOp.EnableRotation != obj.EnableRotation:
-                            resetAxis = True
+            # if ns == numShapes - 1:  # If last shape, check next op EnableRotation setting
+            if nextJobOp is not None:
+                if hasattr(nextJobOp, 'EnableRotation'):
+                    PathLog.debug('Next Op, {}, has `EnableRotation` set to {}'.format(nextJobOp.Label, nextJobOp.EnableRotation))
+                    if nextJobOp.EnableRotation != obj.EnableRotation:
+                        resetAxis = True
 
             # Raise to safe height if rotation activated
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
@@ -748,8 +749,6 @@ class ObjectOp(PathOp.ObjectOp):
         else:
             praInfo += "\n - ... NO rotation triggered"
 
-        PathLog.debug("\n" + str(praInfo))
-
         return (rtn, angle, axis, praInfo)
 
     def guiMessage(self, title, msg, show=False):
@@ -909,10 +908,11 @@ class ObjectOp(PathOp.ObjectOp):
         elif axis == 'Y':
             vect = FreeCAD.Vector(0, 1, 0)
 
-        if obj.InverseAngle is True:
-            angle = -1 * angle
-            if math.fabs(angle) == 0.0:
-                angle = 0.0
+        # Commented out to fix PocketShape InverseAngle rotation problem
+        # if obj.InverseAngle is True:
+        #    angle = -1 * angle
+        #    if math.fabs(angle) == 0.0:
+        #        angle = 0.0
 
         # Create a temporary clone of model for rotational use.
         (clnBase, clnStock, tag) = self.cloneBaseAndStock(obj, base, angle, axis, subCount)
@@ -939,7 +939,7 @@ class ObjectOp(PathOp.ObjectOp):
         clnStock.purgeTouched()
         # Update property and angle values
         obj.InverseAngle = True
-        obj.AttemptInverseAngle = False
+        # obj.AttemptInverseAngle = False
         angle = -1 * angle
 
         PathLog.debug(translate("Path", "Rotated to inverse angle."))
@@ -991,11 +991,13 @@ class ObjectOp(PathOp.ObjectOp):
         dwn = face.extrude(FreeCAD.Vector(0.0, 0.0, -5.0))
         upCmn = base.Shape.common(up)
         dwnCmn = base.Shape.common(dwn)
-        if upCmn.Volume == 0.0:
+        # Identify orientation based on volumes of common() results
+        if len(upCmn.Edges) > 0 and round(upCmn.Volume, 6) == 0.0:
             return True
-        elif dwnCmn.Volume == 0.0:
+        elif len(dwnCmn.Edges) > 0 and round(dwnCmn.Volume, 6) == 0.0:
             return False
-        if dwnCmn.Volume > upCmn.Volume:
+        if (len(upCmn.Edges) > 0 and len(dwnCmn.Edges) > 0 and
+                round(dwnCmn.Volume, 6) > round(upCmn.Volume, 6)):
             return True
         return False
 
@@ -1010,7 +1012,7 @@ class ObjectOp(PathOp.ObjectOp):
             final_depth=finDep,
             user_depths=None)
         return cdp
-
+# Eclass
 
 def SetupProperties():
     setup = ['EnableRotation']

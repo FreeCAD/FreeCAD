@@ -361,9 +361,9 @@ private:
 
         if (!PyArg_ParseTupleAndKeywords( args.ptr(), keywds.ptr(),
 #if PY_MAJOR_VERSION >= 3
-                                          "Oet|fp",
+                                          "Oet|dp",
 #else
-                                          "Oet|fi",
+                                          "Oet|di",
 #endif // Python version switch
                                           kwList, &objects, "utf-8", &fileNamePy,
                                           &fTolerance, &exportAmfCompressed )) {

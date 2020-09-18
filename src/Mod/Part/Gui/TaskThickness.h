@@ -48,7 +48,7 @@ private Q_SLOTS:
     void on_joinType_activated(int);
     void on_intersection_toggled(bool);
     void on_selfIntersection_toggled(bool);
-    void on_facesButton_clicked();
+    void on_facesButton_toggled(bool);
     void on_updateView_toggled(bool);
 
 private:

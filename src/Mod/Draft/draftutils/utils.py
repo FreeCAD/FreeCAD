@@ -415,15 +415,8 @@ def get_type(obj):
         If `obj` has a `Proxy`, it will return the value of `obj.Proxy.Type`.
 
         * If `obj` is a `Part.Shape`, returns `'Shape'`
-        * If `'Sketcher::SketchObject'`, returns `'Sketch'`
-        * If `'Part::Line'`, returns `'Part::Line'`
-        * If `'Part::Offset2D'`, returns `'Offset2D'`
-        * If `'Part::Feature'`, returns `'Part'`
-        * If `'App::Annotation'`, returns `'Annotation'`
-        * If `'Mesh::Feature'`, returns `'Mesh'`
-        * If `'Points::Feature'`, returns `'Points'`
-        * If `'App::DocumentObjectGroup'`, returns `'Group'`
-        * If `'App::Part'`,  returns `'App::Part'`
+
+        * If `obj` has a `TypeId`, returns `obj.TypeId`
 
         In other cases, it will return `'Unknown'`,
         or `None` if `obj` is `None`.
@@ -433,27 +426,10 @@ def get_type(obj):
         return None
     if isinstance(obj, Part.Shape):
         return "Shape"
-    if "Proxy" in obj.PropertiesList:
-        if hasattr(obj.Proxy, "Type"):
-            return obj.Proxy.Type
-    if obj.isDerivedFrom("Sketcher::SketchObject"):
-        return "Sketch"
-    if (obj.TypeId == "Part::Line"):
-        return "Part::Line"
-    if (obj.TypeId == "Part::Offset2D"):
-        return "Offset2D"
-    if obj.isDerivedFrom("Part::Feature"):
-        return "Part"
-    if (obj.TypeId == "App::Annotation"):
-        return "Annotation"
-    if obj.isDerivedFrom("Mesh::Feature"):
-        return "Mesh"
-    if obj.isDerivedFrom("Points::Feature"):
-        return "Points"
-    if (obj.TypeId == "App::DocumentObjectGroup"):
-        return "Group"
-    if (obj.TypeId == "App::Part"):
-        return "App::Part"
+    if hasattr(obj, 'Proxy') and hasattr(obj.Proxy, "Type"):
+        return obj.Proxy.Type
+    if hasattr(obj, 'TypeId'):
+        return obj.TypeId
     return "Unknown"
 
 
@@ -808,75 +784,6 @@ def get_rgb(color, testbw=True):
 
 
 getrgb = get_rgb
-
-
-def get_DXF(obj,direction=None):
-    """getDXF(object,[direction]): returns a DXF entity from the given
-    object. If direction is given, the object is projected in 2D."""
-    plane = None
-    result = ""
-    if obj.isDerivedFrom("Drawing::View") or obj.isDerivedFrom("TechDraw::DrawView"):
-        if obj.Source.isDerivedFrom("App::DocumentObjectGroup"):
-            for o in obj.Source.Group:
-                result += getDXF(o,obj.Direction)
-        else:
-            result += getDXF(obj.Source,obj.Direction)
-        return result
-    if direction:
-        if isinstance(direction, App.Vector):
-            import WorkingPlane
-            if direction != App.Vector(0,0,0):
-                plane = WorkingPlane.Plane()
-                plane.alignToPointAndAxis(App.Vector(0,0,0), direction)
-
-    def getProj(vec):
-        if not plane: return vec
-        nx = DraftVecUtils.project(vec,plane.u)
-        ny = DraftVecUtils.project(vec,plane.v)
-        return App.Vector(nx.Length,ny.Length,0)
-
-    if getType(obj) in ["Dimension","LinearDimension"]:
-        p1 = getProj(obj.Start)
-        p2 = getProj(obj.End)
-        p3 = getProj(obj.Dimline)
-        result += "0\nDIMENSION\n8\n0\n62\n0\n3\nStandard\n70\n1\n"
-        result += "10\n"+str(p3.x)+"\n20\n"+str(p3.y)+"\n30\n"+str(p3.z)+"\n"
-        result += "13\n"+str(p1.x)+"\n23\n"+str(p1.y)+"\n33\n"+str(p1.z)+"\n"
-        result += "14\n"+str(p2.x)+"\n24\n"+str(p2.y)+"\n34\n"+str(p2.z)+"\n"
-
-    elif getType(obj) == "Annotation":
-        p = getProj(obj.Position)
-        count = 0
-        for t in obj.LabeLtext:
-            result += "0\nTEXT\n8\n0\n62\n0\n"
-            result += "10\n"+str(p.x)+"\n20\n"+str(p.y+count)+"\n30\n"+str(p.z)+"\n"
-            result += "40\n1\n"
-            result += "1\n"+str(t)+"\n"
-            result += "7\nSTANDARD\n"
-            count += 1
-
-    elif hasattr(obj,'Shape'):
-        # TODO do this the Draft way, for ex. using polylines and rectangles
-        import Drawing
-        import DraftVecUtils
-        if not direction:
-            direction = App.Vector(0,0,-1)
-        if DraftVecUtils.isNull(direction):
-            direction = App.Vector(0,0,-1)
-        try:
-            d = Drawing.projectToDXF(obj.Shape,direction)
-        except:
-            print("Draft.getDXF: Unable to project ",obj.Label," to ",direction)
-        else:
-            result += d
-
-    else:
-        print("Draft.getDXF: Unsupported object: ",obj.Label)
-
-    return result
-
-
-getDXF = get_DXF
 
 
 def filter_objects_for_modifiers(objects, isCopied=False):

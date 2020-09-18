@@ -234,13 +234,28 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
     //set label's Qt position(top,left) given boundingRect center point
     setPos(xCenter - m_dimText->boundingRect().width() / 2., yCenter - m_dimText->boundingRect().height() / 2.);
 
-    //set tolerance position
+    QString uText = m_unitText->toPlainText();
+    if ( (uText.size() > 0) &&
+         (uText.at(0) != QChar::fromLatin1(' ')) ) {
+        QString vText = m_dimText->toPlainText();
+        vText = vText + uText;
+        m_dimText->setPlainText(vText);
+        m_unitText->setPlainText(QString());
+    }
+
     QRectF labelBox = m_dimText->boundingRect();
     double right = labelBox.right();
     double top   = labelBox.top();
     double bottom = labelBox.bottom();
     double middle = (top + bottom) / 2.0;
 
+    //set unit position
+    QRectF unitBox = m_unitText->boundingRect();
+    double unitWidth = unitBox.width();
+    double unitRight = right + unitWidth;
+    m_unitText->setPos(right,top);
+
+    //set tolerance position
     QRectF overBox = m_tolTextOver->boundingRect();
     double overWidth  = overBox.width();
     QRectF underBox = m_tolTextUnder->boundingRect();
@@ -249,17 +264,11 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
     if (overWidth > underWidth) {
         width = overWidth;
     }
-    double tolRight = right + width;
+    double tolRight = unitRight + width;
 
     m_tolTextOver->justifyRightAt(tolRight, middle, false);
     m_tolTextUnder->justifyRightAt(tolRight, middle + underBox.height(), false);
 
-    //set unit position
-    if (dim->hasTolerance()) {
-        m_unitText->setPos(tolRight,top);
-    } else {
-        m_unitText->setPos(right, top);
-    }
 }
 
 void QGIDatumLabel::setLabelCenter()
@@ -335,6 +344,10 @@ void QGIDatumLabel::setTolString()
                            qsPrecision +
                            QString::fromUtf8("g");               //trim trailing zeroes
     }
+    QString tolSuffix;
+    if ((dim->Type.isValue("Angle")) || (dim->Type.isValue("Angle3Pt"))) {
+        tolSuffix = QString::fromUtf8(dim->getFormatedValue(2).c_str()); //just the unit
+    }
 
     QString overFormat;
     QString underFormat;
@@ -347,8 +360,8 @@ void QGIDatumLabel::setTolString()
         underFormat = qs2.sprintf(qsFormatUnder.toStdString().c_str(), underTol);
     #endif
 
-    m_tolTextOver->setPlainText(overFormat);
-    m_tolTextUnder->setPlainText(underFormat);
+    m_tolTextOver->setPlainText(overFormat + tolSuffix);
+    m_tolTextUnder->setPlainText(underFormat + tolSuffix);
 
     return;
 } 
@@ -509,6 +522,7 @@ void QGIViewDimension::setGroupSelection(bool b)
 
 void QGIViewDimension::select(bool state)
 {
+    Q_UNUSED(state)
 //    setSelected(state);
 //    draw();
 }
@@ -620,7 +634,6 @@ void QGIViewDimension::updateDim()
             unitText  = QString::fromUtf8(dim->getFormatedValue(2).c_str()); //just the unit
         }
     }
-    
     QFont font = datumLabel->getFont();
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
     font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));

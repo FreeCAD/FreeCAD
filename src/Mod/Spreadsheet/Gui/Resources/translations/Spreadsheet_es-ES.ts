@@ -253,7 +253,7 @@
     </message>
     <message>
       <source>&amp;Alignment</source>
-      <translation>&amp;Alineacion</translation>
+      <translation>&amp;Alinear</translation>
     </message>
     <message>
       <source>Horizontal</source>
@@ -366,13 +366,13 @@ Por favor, seleccione una única celda.</translation>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>¡El alias contiene caracteres no válidos!</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Consulte la celda por alias, por ejemplo
+Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -458,17 +458,17 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>&amp;Contenido:</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>&amp;Alias:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Consulte la celda por alias, por ejemplo
+Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
   </context>
   <context>

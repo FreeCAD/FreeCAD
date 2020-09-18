@@ -366,13 +366,13 @@ Gelieve slechts één cel te kiezen.</translation>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>Alias bevat ongeldige tekens!</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Verwijs naar cel met een alias, bijvoorbeeld
+Spreadsheet.mijn_alias_naam in plaats van Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -458,17 +458,17 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>&amp;Inhoud:</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>&amp;Alias:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Verwijs naar cel met een alias, bijvoorbeeld
+Spreadsheet.mijn_alias_naam in plaats van Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
