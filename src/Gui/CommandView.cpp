@@ -648,6 +648,11 @@ public:
     virtual const char* className() const {return "StdCmdDrawStyle";}
     bool isActive(void);
     void updateIcon(const MDIView *);
+    virtual Action * createAction(void) {
+        Action * action = GroupCommand::createAction();
+        action->setCheckable(false);
+        return action;
+    }
 };
 
 StdCmdDrawStyle::StdCmdDrawStyle()
