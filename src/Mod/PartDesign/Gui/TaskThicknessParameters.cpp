@@ -101,6 +101,8 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
 void TaskThicknessParameters::refresh()
 {
     TaskDressUpParameters::refresh();
+    if (!DressUpView)
+        return;
 
     PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
     bool r = pcThickness->Reversed.getValue();
