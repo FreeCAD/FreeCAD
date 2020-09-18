@@ -33,13 +33,13 @@ may not be removed completely yet. This must be checked.
 # \brief Provides functions to return the SVG representation of shapes.
 
 import math
-import six
 import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
 import DraftVecUtils
 import WorkingPlane
 import draftutils.utils as utils
+import draftfunctions.svgtext as svgtext
 
 from draftutils.utils import param
 from draftutils.messages import _msg, _wrn
@@ -352,194 +352,6 @@ def getOvershoot(point, shootsize, color, linewidth, angle=0):
     """Get the SVG representation of a dimension line overshoot. DEPRECATED."""
     utils.use_instead("get_overshoot")
     return get_overshoot(point, shootsize, color, linewidth, angle)
-
-
-def _get_text_techdraw(text, tcolor, fontsize, anchor,
-                       align, fontname, angle, base,
-                       linespacing):
-    """Return the SVG representation of text for TechDraw display.
-
-    `text` is a list of textual elements; they are iterated, styled,
-    and added around a `<text>` tag.
-    ::
-        <text ...> text[0] </text>
-        <text ...> text[1] </text>
-    """
-    svg = ""
-    for i in range(len(text)):
-        _t = text[i].replace("&", "&amp;")
-        _t = _t.replace("<", "&lt;")
-        t = _t.replace(">", "&gt;")
-
-        if six.PY2 and not isinstance(t, six.text_type):
-            t = t.decode("utf8")
-
-        # possible workaround if UTF8 is unsupported
-        #   import unicodedata as U
-        #   v = list()
-        #   for c in U.normalize("NFKD", t):
-        #       if not U.combining(c):
-        #           v.append(c)
-        #
-        #   t = u"".join(v)
-        #   t = t.encode("utf8")
-
-        svg += '<text '
-        svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
-        svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)
-        svg += 'style="text-anchor:{};text-align:{};'.format(anchor,
-                                                             align.lower())
-        svg += 'font-family:{}" '.format(fontname)
-        svg += 'transform="'
-        svg += 'rotate({},{},{}) '.format(math.degrees(angle),
-                                          base.x,
-                                          base.y - i * linespacing)
-        svg += 'translate({},{}) '.format(base.x,
-                                          base.y - i * linespacing)
-        svg += 'scale(1,-1)"'
-        # svg += 'freecad:skip="1"'
-        svg += '>\n'
-        svg += t
-        svg += '</text>\n'
-    return svg
-
-
-def _get_text_header(tcolor, fontsize, anchor, align,
-                     fontname, angle, base, flip):
-    """Return the initial <text> tag with style options.
-
-    The text must be added after this tag, and then must be closed.
-    ::
-        <text ...>
-        ...
-        </text>
-    """
-    svg = '<text '
-    svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
-    svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)
-    svg += 'style="text-anchor:{};text-align:{};'.format(anchor,
-                                                         align.lower())
-    svg += 'font-family:{}" '.format(fontname)
-    svg += 'transform="'
-    svg += 'rotate({},{},{}) '.format(math.degrees(angle),
-                                      base.x,
-                                      base.y)
-    if flip:
-        svg += 'translate({},{}) '.format(base.x, base.y)
-    else:
-        svg += 'translate({},{}) '.format(base.x, -base.y)
-    # svg += 'scale({},-{}) '.format(tmod/2000, tmod/2000)
-
-    if flip:
-        svg += 'scale(1,-1) '
-    else:
-        svg += 'scale(1,1) '
-
-    svg += '" '
-    svg += 'freecad:skip="1"'
-    svg += '>\n'
-    return svg
-
-
-def get_text(plane, techdraw,
-             tcolor, fontsize, fontname,
-             angle, base, text,
-             linespacing=0.5, align="center", flip=True):
-    """Get the SVG representation of a textual element."""
-    if isinstance(angle, App.Rotation):
-        if not plane:
-            angle = angle.Angle
-        else:
-            if plane.axis.getAngle(angle.Axis) < 0.001:
-                angle = angle.Angle
-            elif abs(plane.axis.getAngle(angle.Axis) - math.pi) < 0.001:
-                if abs(angle.Angle) > 0.1:
-                    angle = -angle.Angle
-                else:
-                    angle = angle.Angle
-            elif abs(plane.axis.getAngle(angle.Axis) - math.pi/2) < 0.001:
-                # text is perpendicular to view, so it shouldn't appear
-                return ""
-            else:
-                # TODO maybe there is something better to do here?
-                angle = 0
-
-    # text should be a list of strings separated by a newline
-    if not isinstance(text, list):
-        text = text.split("\n")
-
-    if align.lower() == "center":
-        anchor = "middle"
-    elif align.lower() == "left":
-        anchor = "start"
-    else:
-        anchor = "end"
-
-    if techdraw:
-        # For TechDraw display each item in the text list is placed
-        # in an individual tag.
-        # <text ...> text[0] </text>
-        # <text ...> text[1] </text>
-        svg = _get_text_techdraw(text, tcolor, fontsize, anchor,
-                                 align, fontname, angle, base,
-                                 linespacing)
-    else:
-        # If the SVG is not for TechDraw, and there is a single item
-        # in the text list, place it in a single tag.
-        # <text ...> text </text>
-        #
-        # For multiple elements, place each element inside a <tspan> tag.
-        # <text ...>
-        #   <tspan>text[0]</tspan>
-        #   <tspan>text[1]</tspan>
-        # </text>
-        svg = _get_text_header(tcolor, fontsize, anchor, align,
-                               fontname, angle, base, flip)
-
-        if len(text) == 1:
-            try:
-                _t = text[0].replace("&", "&amp;").replace("<", "&lt;")
-                svg += _t.replace(">", "&gt;")
-            except:
-                # TODO: trap only specific exception; what is the problem?
-                # Bad UTF8 string specification? This can be removed
-                # once the code is only used with Python 3.
-                _t = text[0].decode("utf8")
-                _t = _t.replace("&", "&amp;").replace("<", "&lt;")
-                svg += _t.replace(">", "&gt;")
-        else:
-            for i in range(len(text)):
-                if i == 0:
-                    svg += '<tspan>'
-                else:
-                    svg += '<tspan x="0" dy="{}">'.format(linespacing)
-
-                try:
-                    _t = text[i].replace("&", "&amp;").replace("<", "&lt;")
-                    svg += _t.replace(">", "&gt;")
-                except:
-                    # TODO: trap only specific exception; what is the problem?
-                    # Bad UTF8 string specification? This can be removed
-                    # once the code is only used with Python 3.
-                    _t = text[i].decode("utf8")
-                    _t = _t.replace("&", "&amp;").replace("<", "&lt;")
-                    svg += _t.replace(">", "&gt;")
-
-                svg += '</tspan>\n'
-        svg += '</text>\n'
-    return svg
-
-
-def getText(plane, techdraw,
-            tcolor, fontsize, fontname,
-            angle, base, text,
-            linespacing=0.5, align="center", flip=True):
-    """Get the SVG representation of a textual element. DEPRECATED."""
-    utils.use_instead("get_text")
-    return get_text(plane, techdraw,
-                    tcolor, fontsize, fontname,
-                    angle, base, text,
-                    linespacing, align, flip)
 
 
 def format_point(coords, action='L'):
@@ -1066,9 +878,9 @@ def get_svg(obj,
                                          angle + math.pi)
 
                 # drawing text
-                svg += get_text(plane, techdraw,
-                                stroke, fontsize, vobj.FontName,
-                                tangle, tbase, prx.string)
+                svg += svgtext.get_text(plane, techdraw,
+                                        stroke, fontsize, vobj.FontName,
+                                        tangle, tbase, prx.string)
 
     elif utils.get_type(obj) == "AngularDimension":
         if not App.GuiUp:
@@ -1160,9 +972,10 @@ def get_svg(obj,
                         tangle = 0
                         tbase = get_proj(prx.tbase, plane)
 
-                    svg += get_text(plane, techdraw,
-                                    stroke, fontsize, obj.ViewObject.FontName,
-                                    tangle, tbase, prx.string)
+                    svg += svgtext.get_text(plane, techdraw,
+                                            stroke, fontsize,
+                                            obj.ViewObject.FontName,
+                                            tangle, tbase, prx.string)
 
     elif utils.get_type(obj) == "Label":
         if getattr(obj.ViewObject, "Line", True):
@@ -1204,10 +1017,10 @@ def get_svg(obj,
             rotation = obj.Placement.Rotation
             justification = obj.ViewObject.TextAlignment
             text = obj.Text
-            svg += get_text(plane, techdraw,
-                            stroke, fontsize, fontname,
-                            rotation, position, text,
-                            linespacing, justification)
+            svg += svgtext.get_text(plane, techdraw,
+                                    stroke, fontsize, fontname,
+                                    rotation, position, text,
+                                    linespacing, justification)
 
     elif utils.get_type(obj) in ["Annotation", "DraftText", "Text"]:
         # returns an svg representation of a document annotation
@@ -1226,10 +1039,10 @@ def get_svg(obj,
                 t = obj.Text
 
             j = obj.ViewObject.Justification
-            svg += get_text(plane, techdraw,
-                            stroke, fontsize, n,
-                            r, p, t,
-                            linespacing, j)
+            svg += svgtext.get_text(plane, techdraw,
+                                    stroke, fontsize, n,
+                                    r, p, t,
+                                    linespacing, j)
 
     elif utils.get_type(obj) == "Axis":
         # returns the SVG representation of an Arch Axis system
@@ -1365,20 +1178,20 @@ def get_svg(obj,
             lspc = App.Vector(_h)
             p1 = p2 + lspc
             j = vobj.TextAlign
-            t3 = get_text(plane, techdraw,
-                          c, f1, n,
-                          a, get_proj(p1, plane), t1,
-                          linespacing, j, flip=True)
+            t3 = svgtext.get_text(plane, techdraw,
+                                  c, f1, n,
+                                  a, get_proj(p1, plane), t1,
+                                  linespacing, j, flip=True)
             svg += t3
             if t2:
                 ofs = App.Vector(0, -lspc.Length, 0)
                 if a:
                     Z = App.Vector(0, 0, 1)
                     ofs = App.Rotation(Z, -rotation).multVec(ofs)
-                t4 = get_text(plane, techdraw,
-                              c, fontsize, n,
-                              a, get_proj(p1, plane).add(ofs), t2,
-                              linespacing, j, flip=True)
+                t4 = svgtext.get_text(plane, techdraw,
+                                      c, fontsize, n,
+                                      a, get_proj(p1, plane).add(ofs), t2,
+                                      linespacing, j, flip=True)
                 svg += t4
 
     elif hasattr(obj, 'Shape'):
