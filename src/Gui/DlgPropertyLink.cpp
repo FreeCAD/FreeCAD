@@ -89,7 +89,6 @@ DlgPropertyLink::DlgPropertyLink(QWidget* parent, int flags)
     } else {
         ui->searchBox->installEventFilter(this);
         ui->searchBox->setNoProperty(true);
-        ui->searchBox->setMatchExact(false);
         connect(ui->searchBox, SIGNAL(returnPressed()), this, SLOT(onItemSearch()));
     }
 
