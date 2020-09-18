@@ -4375,27 +4375,6 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
 }
 
 ViewProviderDocumentObject *DocumentItem::getViewProvider(App::DocumentObject *obj) {
-    // Note: It is possible that we receive an invalid pointer from
-    // claimChildren(), e.g. if multiple properties were changed in
-    // a transaction and slotChangedObject() is triggered by one
-    // property being reset before the invalid pointer has been
-    // removed from another. Currently this happens for
-    // PartDesign::Body when cancelling a new feature in the dialog.
-    // First the new feature is deleted, then the Tip property is
-    // reset, but claimChildren() accesses the Model property which
-    // still contains the pointer to the deleted feature
-    //
-    // return obj && obj->getNameInDocument() && pDocument->isIn(obj);
-    //
-
-    // NOTE to the above comments. It is not safe to access obj pointer here.
-    // If an object is created and deleted in the same transaction, or
-    // undo/redo is simply disabled, the deleted object will be deallocated
-    // from memory.  Since we are using timer triggered lazy claimed children
-    // update, there may be invalid pointer inside the children.  We will
-    // instead assume that Gui::Document can correctly perform bookkeeping, and
-    // ask for view provider directly.
-
     return Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
             Application::Instance->getViewProvider(obj));
 }
