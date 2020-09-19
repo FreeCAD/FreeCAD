@@ -153,6 +153,10 @@ private Q_SLOTS:
 
     void onToggleDockWidget(bool checked);
 
+    void onDockWidgetTitleChange(const QString &);
+
+    void onTaskViewUpdate();
+
     void onTimer();
 
     void onFocusChanged(QWidget *, QWidget *);
@@ -298,6 +302,7 @@ protected Q_SLOTS:
 
 private:
     friend class OverlayProxyWidget;
+    friend struct DockWindowManagerP;
 
     QSize offset;
     int sizeDelta = 0;

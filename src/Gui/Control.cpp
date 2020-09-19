@@ -79,10 +79,9 @@ void ControlSingleton::showTaskView()
 {
     Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
         (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
-    if (pcComboView) {
+    if (pcComboView)
         pcComboView->showTaskView();
-        Gui::DockWindowManager::instance()->refreshOverlay(pcComboView);
-    } else if (_taskPanel)
+    else if (_taskPanel)
         _taskPanel->raise();
 }
 
@@ -134,7 +133,6 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
             return; // dialog is already defined
         ActiveDialog = dlg;
         connect(dlg, SIGNAL(aboutToBeDestroyed()), this, SLOT(closedDialog()));
-        Gui::DockWindowManager::instance()->refreshOverlay(pcComboView);
     }
     // not all workbenches have the combo view enabled
     else if (!_taskPanel) {
@@ -213,7 +211,6 @@ void ControlSingleton::closeDialog()
     if (pcComboView) {
         pcComboView->closeDialog();
         pcComboView->showTreeView();
-        Gui::DockWindowManager::instance()->refreshOverlay(pcComboView);
     } else if (_taskPanel)
         _taskPanel->removeDialog();
 }

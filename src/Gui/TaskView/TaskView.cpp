@@ -422,7 +422,15 @@ TaskView::~TaskView()
 
 bool TaskView::isEmpty() const
 {
-    return !ActiveCtrl && !ActiveDialog && ActiveWatcher.empty();
+    if (ActiveCtrl || ActiveDialog)
+        return false;
+
+    for (auto * watcher : ActiveWatcher) {
+        if (watcher->shouldShow())
+            return false;
+    }
+
+    return true;
 }
 
 bool TaskView::event(QEvent* event)
@@ -622,6 +630,8 @@ void TaskView::showDialog(TaskDialog *dlg)
     ActiveDialog->open();
 
     getMainWindow()->updateActions();
+
+    Q_EMIT taskUpdate();
 }
 
 void TaskView::removeDialog(void)
@@ -696,6 +706,8 @@ void TaskView::updateWatcher(void)
     // give it the focus back.
     if (fwp && fwp->isVisible())
         fwp->setFocus();
+
+    Q_EMIT taskUpdate();
 }
 
 void TaskView::addTaskWatcher(const std::vector<TaskWatcher*> &Watcher)

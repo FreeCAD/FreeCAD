@@ -35,6 +35,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "Tree.h"
+#include "DockWindowManager.h"
 #include "TaskView/TaskView.h"
 #include "propertyeditor/PropertyEditor.h"
 
@@ -50,8 +51,6 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
   , modelIndex(-1)
   , taskIndex(-1)
 {
-    setWindowTitle(tr("Combo View"));
-
     QGridLayout* pLayout = new QGridLayout(this); 
     pLayout->setSpacing( 0 );
     pLayout->setMargin ( 0 );
@@ -61,6 +60,10 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
     tabs->setObjectName(QString::fromUtf8("combiTab"));
     tabs->setTabPosition(QTabWidget::North);
     pLayout->addWidget( tabs, 0, 0 );
+
+#if QT_VERSION>=QT_VERSION_CHECK(5,4,0)
+    tabs->setTabBarAutoHide(true);
+#endif
 
     setShowModel(showModel);
     connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));
@@ -78,12 +81,17 @@ ComboView::~ComboView()
 {
 }
 
+bool ComboView::hasTreeView() const
+{
+    return tree != nullptr;
+}
+
 void ComboView::setShowModel(bool showModel)
 {
+    setWindowTitle(showModel ? tr("Combo View") : tr("Task View"));
     if (showModel) {
         if(tree)
             return;
-
         // splitter between tree and property view
         QSplitter *splitter = new QSplitter();
         splitter->setOrientation(Qt::Vertical);
@@ -146,6 +154,8 @@ void ComboView::closedDialog()
 
 void ComboView::showTreeView()
 {
+    if (modelIndex < 0)
+        return;
     // switch to the tree view
     tabs->setCurrentIndex(modelIndex);
 }

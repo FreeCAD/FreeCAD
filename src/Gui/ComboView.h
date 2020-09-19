@@ -89,6 +89,8 @@ public:
     void showTreeView();
     void showTaskView();
 
+    bool hasTreeView() const;
+
 private Q_SLOTS:
     void onCurrentTabChanged(int index);
 

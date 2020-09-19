@@ -191,6 +191,9 @@ public:
     void clearActionStyle();
     void restoreActionStyle();
 
+Q_SIGNALS:
+    void taskUpdate();
+
 protected Q_SLOTS:
     void accept();
     void reject();

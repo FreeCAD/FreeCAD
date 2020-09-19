@@ -62,6 +62,7 @@
 #include "Application.h"
 #include "Control.h"
 #include "TaskView/TaskView.h"
+#include "ComboView.h"
 #include "Tree.h"
 #include <App/Application.h>
 #include "propertyeditor/PropertyEditor.h"
@@ -1673,10 +1674,8 @@ void OverlayTabWidget::onSplitterMoved()
     for(int size : splitter->sizes()) {
         ++index;
         if(size) {
-            if (index != currentIndex()) {
-                QSignalBlocker guard(this);
+            if (index != currentIndex())
                 setCurrentIndex(index);
-            }
             break;
         }
     }
@@ -2470,7 +2469,7 @@ struct DockWindowManagerP
         toggleOverlay(dock, m);
     }
 
-    void onToggleDockWidget(QDockWidget *dock, bool checked)
+    void onToggleDockWidget(QDockWidget *dock, int checked)
     {
         if(!dock)
             return;
@@ -2484,22 +2483,44 @@ struct DockWindowManagerP
             if(it == _overlays.end())
                 return;
         }
+        OverlayTabWidget *tabWidget = it.value()->tabWidget;
         if(checked) {
-            int index = it.value()->tabWidget->dockWidgetIndex(dock);
+            int index = tabWidget->dockWidgetIndex(dock);
             if(index >= 0) {
-                auto sizes = it.value()->tabWidget->getSplitter()->sizes();
-                if(index >= sizes.size() || sizes[index]==0) 
-                    it.value()->tabWidget->setCurrent(dock);
-                else {
-                    QSignalBlocker guard(it.value()->tabWidget);
-                    it.value()->tabWidget->setCurrent(dock);
+                auto sizes = tabWidget->getSplitter()->sizes();
+                if(index >= sizes.size() || sizes[index]==0) {
+                    if (checked > 0) {
+                        tabWidget->setCurrent(dock);
+                        tabWidget->onCurrentChanged(tabWidget->dockWidgetIndex(dock));
+                    }
+                } else if (checked < 0) {
+                    if (sizes[index] > 0 && sizes.size() > 1) {
+                        bool expand = true;
+                        for (int i=0; i<sizes.size(); ++i) {
+                            if (i != index && sizes[i] > 0) {
+                                expand = false;
+                                break;
+                            }
+                        }
+                        if (expand) {
+                            int next = index == sizes.size()-1 ? 0 : index+1;
+                            tabWidget->setCurrentIndex(next);
+                            tabWidget->onCurrentChanged(next);
+                        }
+                    }
+                } else if (sizes[index] == 0) {
+                    tabWidget->setCurrent(dock);
+                    tabWidget->onCurrentChanged(tabWidget->dockWidgetIndex(dock));
                 }
             }
-            it.value()->tabWidget->setRevealTime(QTime::currentTime().addMSecs(
-                    ViewParams::getDockOverlayRevealDelay()));
+            if (checked > 0)
+                tabWidget->setRevealTime(QTime::currentTime().addMSecs(
+                        ViewParams::getDockOverlayRevealDelay()));
+            refreshOverlay();
+        } else if (checked < 0) {
             refreshOverlay();
         } else {
-            it.value()->tabWidget->removeWidget(dock);
+            tabWidget->removeWidget(dock);
             getMainWindow()->addDockWidget(it.value()->dockArea, dock);
             _overlays.erase(it);
         }
@@ -2726,12 +2747,16 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
 
     // set object name and window title needed for i18n stuff
     dw->setObjectName(QLatin1String(name));
-    dw->setWindowTitle(QDockWidget::tr(name));
+    QString title = widget->windowTitle();
+    if (title.isEmpty())
+        title = QDockWidget::tr(name);
+    dw->setWindowTitle(title);
     dw->setFeatures(QDockWidget::AllDockWidgetFeatures);
 
     d->_dockedWindows.push_back(dw);
 
     connect(dw->toggleViewAction(), SIGNAL(triggered(bool)), this, SLOT(onToggleDockWidget(bool)));
+    connect(widget, SIGNAL(windowTitleChanged(QString)), this, SLOT(onDockWidgetTitleChange(QString)));
     return dw;
 }
 
@@ -2740,7 +2765,52 @@ void DockWindowManager::onToggleDockWidget(bool checked)
     auto action = qobject_cast<QAction*>(sender());
     if(!action)
         return;
-    d->onToggleDockWidget(qobject_cast<QDockWidget*>(action->parent()), checked);
+    d->onToggleDockWidget(qobject_cast<QDockWidget*>(action->parent()), checked?1:0);
+}
+
+void DockWindowManager::onTaskViewUpdate()
+{
+#ifdef FC_HAS_DOCK_OVERLAY
+    auto taskview = qobject_cast<TaskView::TaskView*>(sender());
+    if (!taskview)
+        return;
+    QDockWidget *dock = nullptr;
+    DockWnd::ComboView *comboview = nullptr;
+    for (QWidget *w=taskview; w; w=w->parentWidget()) {
+        if ((dock = qobject_cast<QDockWidget*>(w)))
+            break;
+        if (!comboview)
+            comboview = qobject_cast<DockWnd::ComboView*>(w);
+    }
+    if (dock) {
+        if (comboview && comboview->hasTreeView())
+            refreshOverlay();
+        else
+            d->onToggleDockWidget(dock, taskview->isEmpty() ? -1 : 1);
+    }
+#endif
+}
+
+void DockWindowManager::onDockWidgetTitleChange(const QString &title)
+{
+    if (title.isEmpty())
+        return;
+#ifdef FC_HAS_DOCK_OVERLAY
+    auto widget = qobject_cast<QWidget*>(sender());
+    QDockWidget *dock = nullptr;
+    for (QWidget *w=widget; w; w=w->parentWidget()) {
+        if ((dock = qobject_cast<QDockWidget*>(w)))
+            break;
+    }
+    if(!dock)
+        return;
+    auto tabWidget = findTabWidget(dock);
+    if (!tabWidget)
+        return;
+    int index = tabWidget->dockWidgetIndex(dock);
+    if (index >= 0)
+        tabWidget->setTabText(index, title);
+#endif
 }
 
 /**
@@ -2829,7 +2899,11 @@ void DockWindowManager::removeDockWindow(QWidget* widget)
 void DockWindowManager::retranslate()
 {
     for (QList<QDockWidget*>::Iterator it = d->_dockedWindows.begin(); it != d->_dockedWindows.end(); ++it) {
-        (*it)->setWindowTitle(QDockWidget::tr((*it)->objectName().toLatin1()));
+        QString title = (*it)->windowTitle();
+        if (title.isEmpty())
+            (*it)->setWindowTitle(QDockWidget::tr((*it)->objectName().toLatin1()));
+        else
+            (*it)->setWindowTitle(title);
     }
     d->retranslate();
 }
@@ -3212,6 +3286,9 @@ void DockWindowManager::saveOverlay()
 void DockWindowManager::restoreOverlay()
 {
     d->restoreOverlay();
+
+    if (Control().taskPanel())
+        connect(Control().taskPanel(), SIGNAL(taskUpdate()), this, SLOT(onTaskViewUpdate()));
 }
 
 void DockWindowManager::changeOverlaySize(int changes)
