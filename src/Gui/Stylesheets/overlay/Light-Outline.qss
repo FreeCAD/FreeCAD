@@ -168,18 +168,3 @@ Gui--CallTipsList::item::selected {
   background-color: rgba(94, 144, 250);
 }
 
-/*==================================================================================================
-Tasks panel (custom FreeCAD class)
-==================================================================================================*/
-/* Panel header */
-QSint--ActionGroup QFrame[class="header"] {
-  background-color: rgba(250, 250, 250, 0.1); /* Task Panel Header background color */
-}
-
-QSint--ActionGroup QToolButton[class="header"] {
-  color: #e0e0e0; /* Task Panel Header text color */
-}
-
-QSint--ActionGroup QFrame[class="content"] {
-  background-color: rgba(255,255,255,0.05); /* Task Panel background color */
-}

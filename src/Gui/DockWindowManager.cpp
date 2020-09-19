@@ -1275,7 +1275,8 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
 
 void OverlayTabWidget::setOverlayMode(QWidget *widget, int enable)
 {
-    if(!widget || qobject_cast<QDialog*>(widget))
+    if(!widget || qobject_cast<QDialog*>(widget)
+               || qobject_cast<TaskView::TaskPanel*>(widget))
         return;
 
     if(widget != tabBar()) {
