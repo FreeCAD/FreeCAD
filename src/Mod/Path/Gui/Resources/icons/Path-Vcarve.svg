@@ -14,7 +14,7 @@
    height="64px"
    id="svg2816"
    version="1.1"
-   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="Path-Vcarve.svg">
   <defs
      id="defs2818">
@@ -566,10 +566,10 @@
      inkscape:snap-bbox-midpoints="true"
      inkscape:object-paths="true"
      inkscape:object-nodes="true"
-     inkscape:window-width="1165"
-     inkscape:window-height="1047"
-     inkscape:window-x="1829"
-     inkscape:window-y="1050"
+     inkscape:window-width="1076"
+     inkscape:window-height="605"
+     inkscape:window-x="0"
+     inkscape:window-y="1287"
      inkscape:window-maximized="0"
      showguides="true"
      inkscape:guide-bbox="true"
@@ -595,7 +595,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
         <dc:title>Path-Engrave</dc:title>
         <dc:date>2016-02-24</dc:date>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
@@ -610,13 +610,27 @@
             <dc:title>FreeCAD LGPL2+</dc:title>
           </cc:Agent>
         </dc:rights>
-        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by/4.0/">https://www.gnu.org/copyleft/lesser.html</cc:license>
         <dc:contributor>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>
           </cc:Agent>
         </dc:contributor>
       </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by/4.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
     </rdf:RDF>
   </metadata>
   <g

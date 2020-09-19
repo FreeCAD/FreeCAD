@@ -230,12 +230,6 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         '''opExecute(obj) ... process engraving operation'''
         PathLog.track()
 
-        if obj.ToolController.Tool.ToolType != 'Engraver':
-            FreeCAD.Console.PrintError(
-                translate("Path_Vcarve",
-                    "This operation requires an engraver tool.") + "\n")
-            return
-
         if obj.ToolController.Tool.CuttingEdgeAngle >= 180.0:
             FreeCAD.Console.PrintError(
                 translate("Path_Vcarve",
