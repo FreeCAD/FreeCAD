@@ -213,6 +213,23 @@ def format_point(coords, action='L'):
     return "{action}{x},{y}".format(x=coords.x, y=coords.y, action=action)
 
 
+def _svg_shape(svg, obj, plane,
+               fillstyle, pathdata, stroke, linewidth, lstyle):
+    """Return the SVG representation of a Part.Shape."""
+    if "#" in fillstyle:
+        fill = fillstyle
+    elif fillstyle == "shape color":
+        fill = "#888888"
+    else:
+        fill = 'url(#' + fillstyle + ')'
+
+    svg += get_path(obj, plane,
+                    fill, pathdata, stroke, linewidth, lstyle,
+                    fill_opacity=None,
+                    edges=obj.Edges, pathname="")
+    return svg
+
+
 def get_svg(obj,
             scale=1, linewidth=0.35, fontsize=12,
             fillstyle="shape color", direction=None, linestyle=None,
@@ -335,16 +352,8 @@ def get_svg(obj,
         pass
 
     elif isinstance(obj, Part.Shape):
-        if "#" in fillstyle:
-            fill = fillstyle
-        elif fillstyle == "shape color":
-            fill = "#888888"
-        else:
-            fill = 'url(#'+fillstyle+')'
-        svg += get_path(obj, plane,
-                        fill, pathdata, stroke, linewidth, lstyle,
-                        fill_opacity=None,
-                        edges=obj.Edges, pathname="")
+        svg = _svg_shape(svg, obj, plane,
+                         fillstyle, pathdata, stroke, linewidth, lstyle)
 
     elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
         if not App.GuiUp:
