@@ -1039,6 +1039,8 @@ static inline OverlayTabWidget *findTabWidget(QWidget *widget=nullptr, bool filt
 
 void OverlayTabWidget::leaveEvent(QEvent*)
 {
+    if (titleBar && QWidget::mouseGrabber() == titleBar)
+        return;
     DockWindowManager::instance()->refreshOverlay();
 }
 
@@ -1734,6 +1736,76 @@ void OverlayTabWidget::changeSize(int changes, bool checkModify)
         break;
     }
     setRect(rect);
+}
+
+void OverlayTabWidget::onSizeGripMove(const QPoint &p)
+{
+    static const int MiniumSize = 10;
+
+    QPoint pos = mapFromGlobal(p) + this->pos();
+    QRect rect = this->rectOverlay;
+
+    switch(dockArea) {
+    case Qt::LeftDockWidgetArea:
+        if (pos.x() - rect.left() < MiniumSize)
+            return;
+        rect.setRight(pos.x());
+        break;
+    case Qt::RightDockWidgetArea:
+        if (rect.right() - pos.x() < MiniumSize)
+            return;
+        rect.setLeft(pos.x());
+        break;
+    case Qt::TopDockWidgetArea:
+        if (pos.y() - rect.top() < MiniumSize)
+            return;
+        rect.setBottom(pos.y());
+        break;
+    default:
+        if (rect.bottom() - pos.y() < MiniumSize)
+            return;
+        rect.setTop(pos.y());
+        break;
+    }
+    this->setRect(rect);
+    DockWindowManager::instance()->refreshOverlay();
+}
+
+// -----------------------------------------------------------
+
+OverlaySizeGrip::OverlaySizeGrip(QWidget * parent, bool vertical)
+    :QWidget(parent)
+{
+    setMouseTracking(true);
+    setCursor(vertical ? Qt::SizeHorCursor : Qt::SizeVerCursor);
+}
+
+void OverlaySizeGrip::paintEvent(QPaintEvent*)
+{
+    QPainter painter(this);
+    painter.setPen(Qt::transparent);
+    painter.setBrush(QBrush(Qt::black, Qt::Dense5Pattern));
+    QRect rect(this->rect());
+    painter.drawRect(rect);
+}
+
+void OverlaySizeGrip::mouseMoveEvent(QMouseEvent *me)
+{
+    if (QWidget::mouseGrabber() != this)
+        return;
+
+    Q_EMIT dragMove(me->globalPos());
+}
+
+void OverlaySizeGrip::mousePressEvent(QMouseEvent *)
+{
+    grabMouse();
+}
+
+void OverlaySizeGrip::mouseReleaseEvent(QMouseEvent *)
+{
+    if (QWidget::mouseGrabber() == this)
+        releaseMouse();
 }
 
 // -----------------------------------------------------------
@@ -2588,6 +2660,20 @@ struct DockWindowManagerP
         layout->addSpacerItem(new QSpacerItem(_TitleButtonSize,_TitleButtonSize,
                     vertical?QSizePolicy::Minimum:QSizePolicy::Expanding,
                     vertical?QSizePolicy::Expanding:QSizePolicy::Minimum));
+
+        if (tabWidget) {
+            auto grip = new OverlaySizeGrip(parent, !vertical);
+            if (vertical) {
+                grip->setFixedHeight(6);
+                grip->setMinimumWidth(_TitleButtonSize);
+            } else {
+                grip->setFixedWidth(6);
+                grip->setMinimumHeight(_TitleButtonSize);
+            }
+            QObject::connect(grip, SIGNAL(dragMove(QPoint)),
+                    tabWidget, SLOT(onSizeGripMove(QPoint)));
+            layout->addWidget(grip);
+        }
         return widget;
     }
 
@@ -3108,7 +3194,8 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
     case QEvent::MouseMove:
     case QEvent::Wheel:
     case QEvent::ContextMenu: {
-        if (d->mouseTransparent)
+        QWidget *grabber = QWidget::mouseGrabber();
+        if (d->mouseTransparent || (grabber && grabber != d->_trackingOverlay))
             return false;
         if (d->_trackingView >= 0) {
             View3DInventorViewer *view = nullptr;
@@ -3120,7 +3207,7 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
                      || QApplication::mouseButtons() == Qt::NoButton)
             {
                 d->_trackingView = -1;
-                if (d->_trackingOverlay == QWidget::mouseGrabber()
+                if (d->_trackingOverlay == grabber
                         && ev->type() == QEvent::MouseButtonRelease)
                 {
                     d->_trackingOverlay = nullptr;
@@ -3130,7 +3217,7 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
                     // release the mouse.
                     return false;
                 }
-                if(d->_trackingOverlay && QWidget::mouseGrabber() == d->_trackingOverlay)
+                if(d->_trackingOverlay && grabber == d->_trackingOverlay)
                     d->_trackingOverlay->releaseMouse();
                 d->_trackingOverlay = nullptr;
             }

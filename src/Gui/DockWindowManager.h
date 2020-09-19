@@ -299,6 +299,7 @@ protected Q_SLOTS:
     void onRepaint();
     void onAnimationStateChanged();
     void setupLayout();
+    void onSizeGripMove(const QPoint &);
 
 private:
     friend class OverlayProxyWidget;
@@ -338,6 +339,22 @@ private:
     QPropertyAnimation *_animator = nullptr;
 
     State _state = State_Normal;
+};
+
+class OverlaySizeGrip: public QWidget
+{
+    Q_OBJECT
+public:
+    OverlaySizeGrip(QWidget *parent, bool vertical);
+
+Q_SIGNALS:
+    void dragMove(const QPoint &globalPos);
+
+protected:
+    void paintEvent(QPaintEvent*);
+    void mouseMoveEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
 };
 
 class OverlayToolButton: public QToolButton
