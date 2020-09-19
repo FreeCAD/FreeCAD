@@ -43,7 +43,7 @@ import draftfunctions.svgtext as svgtext
 
 from draftfunctions.svgshapes import get_proj, get_circle, get_path
 from draftutils.utils import param
-from draftutils.messages import _wrn
+from draftutils.messages import _wrn, _err
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
@@ -230,6 +230,147 @@ def _svg_shape(svg, obj, plane,
     return svg
 
 
+def _svg_dimension(obj, plane, scale, linewidth, fontsize,
+                   stroke, pointratio, techdraw, rotation):
+    """Return the SVG representation of a linear dimension."""
+    if not App.GuiUp:
+        _wrn("'{}': SVG can only be generated "
+             "in GUI mode".format(obj.Label))
+        return ""
+
+    if not hasattr(obj.ViewObject, "Proxy") or not obj.ViewObject.Proxy:
+        _err("'{}': doesn't have Proxy, "
+             "SVG cannot be generated".format(obj.Label))
+        return ""
+
+    vobj = obj.ViewObject
+    prx = vobj.Proxy
+
+    if not hasattr(prx, "p1"):
+        _err("'{}': doesn't have points, "
+             "SVG cannot be generated".format(obj.Label))
+        return ""
+
+    ts = len(prx.string) * vobj.FontSize.Value / 4.0
+    rm = (prx.p3 - prx.p2).Length/2.0 - ts
+
+    _diff32 = prx.p3 - prx.p2
+    _diff23 = prx.p2 - prx.p3
+
+    _v32 = DraftVecUtils.scaleTo(_diff32, rm)
+    _v23 = DraftVecUtils.scaleTo(_diff23, rm)
+
+    p2a = get_proj(prx.p2 + _v32, plane)
+    p2b = get_proj(prx.p3 + _v23, plane)
+    p1 = get_proj(prx.p1, plane)
+    p2 = get_proj(prx.p2, plane)
+    p3 = get_proj(prx.p3, plane)
+    p4 = get_proj(prx.p4, plane)
+
+    tbase = get_proj(prx.tbase, plane)
+    r = prx.textpos.rotation.getValue().getValue()
+    _rv = App.Rotation(r[0], r[1], r[2], r[3])
+    rv = _rv.multVec(App.Vector(1, 0, 0))
+    angle = -DraftVecUtils.angle(get_proj(rv, plane))
+    # angle = -DraftVecUtils.angle(p3.sub(p2))
+
+    svg = ''
+    nolines = False
+    if hasattr(vobj, "ShowLine"):
+        if not vobj.ShowLine:
+            nolines = True
+
+    # drawing lines
+    if not nolines:
+        svg += '<path '
+
+    if vobj.DisplayMode == "2D":
+        tangle = angle
+        if tangle > math.pi/2:
+            tangle = tangle-math.pi
+        # elif (tangle <= -math.pi/2) or (tangle > math.pi/2):
+        #    tangle = tangle + math.pi
+
+        if rotation != 0:
+            # print("dim: tangle:", tangle,
+            #       " rot: ", rotation,
+            #       " text: ", prx.string)
+            if abs(tangle + math.radians(rotation)) < 0.0001:
+                tangle += math.pi
+                _v = App.Vector(0, 2.0/scale, 0)
+                _rot = DraftVecUtils.rotate(_v, tangle)
+                tbase = tbase + _rot
+
+        if not nolines:
+            svg += 'd="M ' + str(p1.x) + ' ' + str(p1.y) + ' '
+            svg += 'L ' + str(p2.x) + ' ' + str(p2.y) + ' '
+            svg += 'L ' + str(p3.x) + ' ' + str(p3.y) + ' '
+            svg += 'L ' + str(p4.x) + ' ' + str(p4.y) + '" '
+    else:
+        tangle = 0
+        if rotation != 0:
+            tangle = -math.radians(rotation)
+
+        tbase = tbase + App.Vector(0, -2.0/scale, 0)
+        if not nolines:
+            svg += 'd="M ' + str(p1.x) + ' ' + str(p1.y) + ' '
+            svg += 'L ' + str(p2.x) + ' ' + str(p2.y) + ' '
+            svg += 'L ' + str(p2a.x) + ' ' + str(p2a.y) + ' '
+            svg += 'M ' + str(p2b.x) + ' ' + str(p2b.y) + ' '
+            svg += 'L ' + str(p3.x) + ' ' + str(p3.y) + ' '
+            svg += 'L ' + str(p4.x) + ' ' + str(p4.y) + '" '
+
+    if not nolines:
+        svg += 'fill="none" stroke="'
+        svg += stroke + '" '
+        svg += 'stroke-width="' + str(linewidth) + ' px" '
+        svg += 'style="stroke-width:' + str(linewidth)
+        svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
+        svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
+        svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
+        svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
+        svg += '/>\n'
+
+        # drawing dimension and extension lines overshoots
+        if hasattr(vobj, "DimOvershoot") and vobj.DimOvershoot.Value:
+            shootsize = vobj.DimOvershoot.Value/pointratio
+            svg += get_overshoot(p2, shootsize, stroke,
+                                 linewidth, angle)
+            svg += get_overshoot(p3, shootsize, stroke,
+                                 linewidth, angle + math.pi)
+
+        if hasattr(vobj, "ExtOvershoot") and vobj.ExtOvershoot.Value:
+            shootsize = vobj.ExtOvershoot.Value/pointratio
+            shootangle = -DraftVecUtils.angle(p1 - p2)
+            svg += get_overshoot(p2, shootsize, stroke,
+                                 linewidth, shootangle)
+            svg += get_overshoot(p3, shootsize, stroke,
+                                 linewidth, shootangle)
+
+        # drawing arrows
+        if hasattr(vobj, "ArrowType"):
+            arrowsize = vobj.ArrowSize.Value/pointratio
+            if hasattr(vobj, "FlipArrows"):
+                if vobj.FlipArrows:
+                    angle = angle + math.pi
+
+            svg += get_arrow(obj,
+                             vobj.ArrowType,
+                             p2, arrowsize, stroke, linewidth,
+                             angle)
+            svg += get_arrow(obj,
+                             vobj.ArrowType,
+                             p3, arrowsize, stroke, linewidth,
+                             angle + math.pi)
+
+    # drawing text
+    svg += svgtext.get_text(plane, techdraw,
+                            stroke, fontsize, vobj.FontName,
+                            tangle, tbase, prx.string)
+
+    return svg
+
+
 def get_svg(obj,
             scale=1, linewidth=0.35, fontsize=12,
             fillstyle="shape color", direction=None, linestyle=None,
@@ -356,130 +497,8 @@ def get_svg(obj,
                          fillstyle, pathdata, stroke, linewidth, lstyle)
 
     elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
-        if not App.GuiUp:
-            _wrn("Export of dimensions to SVG is only available in GUI mode")
-
-        if App.GuiUp and obj.ViewObject.Proxy:
-            vobj = obj.ViewObject
-
-            if hasattr(vobj.Proxy, "p1"):
-                prx = vobj.Proxy
-                ts = len(prx.string) * vobj.FontSize.Value / 4.0
-                rm = (prx.p3 - prx.p2).Length/2.0 - ts
-
-                _diff32 = prx.p3 - prx.p2
-                _diff23 = prx.p2 - prx.p3
-
-                _v32 = DraftVecUtils.scaleTo(_diff32, rm)
-                _v23 = DraftVecUtils.scaleTo(_diff23, rm)
-
-                p2a = get_proj(prx.p2 + _v32, plane)
-                p2b = get_proj(prx.p3 + _v23, plane)
-                p1 = get_proj(prx.p1, plane)
-                p2 = get_proj(prx.p2, plane)
-                p3 = get_proj(prx.p3, plane)
-                p4 = get_proj(prx.p4, plane)
-
-                tbase = get_proj(prx.tbase, plane)
-                r = prx.textpos.rotation.getValue().getValue()
-                _rv = App.Rotation(r[0], r[1], r[2], r[3])
-                rv = _rv.multVec(App.Vector(1, 0, 0))
-                angle = -DraftVecUtils.angle(get_proj(rv, plane))
-                # angle = -DraftVecUtils.angle(p3.sub(p2))
-
-                svg = ''
-                nolines = False
-                if hasattr(vobj, "ShowLine"):
-                    if not vobj.ShowLine:
-                        nolines = True
-
-                # drawing lines
-                if not nolines:
-                    svg += '<path '
-
-                if vobj.DisplayMode == "2D":
-                    tangle = angle
-                    if tangle > math.pi/2:
-                        tangle = tangle-math.pi
-                    # elif (tangle <= -math.pi/2) or (tangle > math.pi/2):
-                    #    tangle = tangle + math.pi
-
-                    if rotation != 0:
-                        # print("dim: tangle:", tangle,
-                        #       " rot: ", rotation,
-                        #       " text: ", prx.string)
-                        if abs(tangle + math.radians(rotation)) < 0.0001:
-                            tangle += math.pi
-                            _v = App.Vector(0, 2.0/scale, 0)
-                            _rot = DraftVecUtils.rotate(_v, tangle)
-                            tbase = tbase + _rot
-
-                    if not nolines:
-                        svg += 'd="M ' + str(p1.x) + ' ' + str(p1.y) + ' '
-                        svg += 'L ' + str(p2.x) + ' ' + str(p2.y) + ' '
-                        svg += 'L ' + str(p3.x) + ' ' + str(p3.y) + ' '
-                        svg += 'L ' + str(p4.x) + ' ' + str(p4.y) + '" '
-                else:
-                    tangle = 0
-                    if rotation != 0:
-                        tangle = -math.radians(rotation)
-
-                    tbase = tbase + App.Vector(0, -2.0/scale, 0)
-                    if not nolines:
-                        svg += 'd="M ' + str(p1.x) + ' ' + str(p1.y) + ' '
-                        svg += 'L ' + str(p2.x) + ' ' + str(p2.y) + ' '
-                        svg += 'L ' + str(p2a.x) + ' ' + str(p2a.y) + ' '
-                        svg += 'M ' + str(p2b.x) + ' ' + str(p2b.y) + ' '
-                        svg += 'L ' + str(p3.x) + ' ' + str(p3.y) + ' '
-                        svg += 'L ' + str(p4.x) + ' ' + str(p4.y) + '" '
-
-                if not nolines:
-                    svg += 'fill="none" stroke="'
-                    svg += stroke + '" '
-                    svg += 'stroke-width="' + str(linewidth) + ' px" '
-                    svg += 'style="stroke-width:' + str(linewidth)
-                    svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
-                    svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
-                    svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
-                    svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
-                    svg += '/>\n'
-
-                    # drawing dimension and extension lines overshoots
-                    if hasattr(vobj, "DimOvershoot") and vobj.DimOvershoot.Value:
-                        shootsize = vobj.DimOvershoot.Value/pointratio
-                        svg += get_overshoot(p2, shootsize, stroke,
-                                             linewidth, angle)
-                        svg += get_overshoot(p3, shootsize, stroke,
-                                             linewidth, angle + math.pi)
-
-                    if hasattr(vobj, "ExtOvershoot") and vobj.ExtOvershoot.Value:
-                        shootsize = vobj.ExtOvershoot.Value/pointratio
-                        shootangle = -DraftVecUtils.angle(p1 - p2)
-                        svg += get_overshoot(p2, shootsize, stroke,
-                                             linewidth, shootangle)
-                        svg += get_overshoot(p3, shootsize, stroke,
-                                             linewidth, shootangle)
-
-                    # drawing arrows
-                    if hasattr(vobj, "ArrowType"):
-                        arrowsize = vobj.ArrowSize.Value/pointratio
-                        if hasattr(vobj, "FlipArrows"):
-                            if vobj.FlipArrows:
-                                angle = angle + math.pi
-
-                        svg += get_arrow(obj,
-                                         vobj.ArrowType,
-                                         p2, arrowsize, stroke, linewidth,
-                                         angle)
-                        svg += get_arrow(obj,
-                                         vobj.ArrowType,
-                                         p3, arrowsize, stroke, linewidth,
-                                         angle + math.pi)
-
-                # drawing text
-                svg += svgtext.get_text(plane, techdraw,
-                                        stroke, fontsize, vobj.FontName,
-                                        tangle, tbase, prx.string)
+        svg = _svg_dimension(obj, plane, scale, linewidth, fontsize,
+                             stroke, pointratio, techdraw, rotation)
 
     elif utils.get_type(obj) == "AngularDimension":
         if not App.GuiUp:
