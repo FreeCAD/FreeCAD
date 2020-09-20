@@ -1590,7 +1590,7 @@ void Document::writeObject(Base::Writer &writer,
         const App::DocumentObject *doc, const ViewProvider *obj) const
 {
     writer.Stream() << writer.ind() << "<ViewProvider name=\"" 
-        << doc->getNameInDocument() << "\" expanded=\"" 
+        << doc->getExportName() << "\" expanded=\"" 
         << (doc->testStatus(App::Expand) ? 1:0) << "\"";
 
     if (obj->canSaveExtension())
