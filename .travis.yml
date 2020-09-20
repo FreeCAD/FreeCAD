@@ -251,12 +251,12 @@ before_install:
        # clcache stats before compilation
        cmd.exe //C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
 
-       curl -L https://github.com/FreeCAD/FreeCAD/releases/download/0.19_pre/FreeCADLibs_12.1.4_x64_VC15.7z --output FreeCADLibs.7z
+       curl -L https://github.com/FreeCAD/FreeCAD/releases/download/0.19_pre/FreeCADLibs_12.1.6_x64_VC15.7z --output FreeCADLibs.7z
        7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
        rm -f FreeCADLibs.7z
-       export FREECAD_LIBPACK_DIR="$TRAVIS_BUILD_DIR\FreeCADLibs\FreeCADLibs_12.1.4_x64_VC15"
+       export FREECAD_LIBPACK_DIR="$TRAVIS_BUILD_DIR\FreeCADLibs\FreeCADLibs_12.1.6_x64_VC15"
 
-       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_LIBPACK_DIR=$TRAVIS_BUILD_DIR\FreeCADLibs\FreeCADLibs_12.1.4_x64_VC15 -DPYTHON_EXECUTABLE=$TRAVIS_BUILD_DIR\FreeCADLibs\FreeCADLibs_12.1.4_x64_VC15\bin\python.exe \
+       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_LIBPACK_DIR=$TRAVIS_BUILD_DIR\FreeCADLibs\FreeCADLibs_12.1.6_x64_VC15 -DPYTHON_EXECUTABLE=$TRAVIS_BUILD_DIR\FreeCADLibs\FreeCADLibs_12.1.6_x64_VC15\bin\python.exe \
        -DBUILD_QT5=TRUE"
        export PATH=$MSBUILD_PATH:$PATH
        ;;
@@ -286,7 +286,7 @@ script:
         cmd.exe //C 'C:\Users\travis\build\FreeCAD\FreeCAD\.travis\build.bat'
         # ls -lahR
         mkdir bin/
-        mv ../FreeCADLibs/FreeCADLibs_12.1.4_x64_VC15/bin/* bin/
+        mv ../FreeCADLibs/FreeCADLibs_12.1.6_x64_VC15/bin/* bin/
         du -hs bin/
         # show clcache hit stats
         cmd.exe //C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
