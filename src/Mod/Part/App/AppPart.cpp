@@ -53,8 +53,10 @@
 #include "FeatureOffset.h"
 #include "PartFeatures.h"
 #include "BodyBase.h"
+#include "BodyBasePy.h"
 #include "PrimitiveFeature.h"
 #include "Part2DObject.h"
+#include "Part2DObjectPy.h"
 #include "CustomFeature.h"
 #include "Geometry.h"
 #include "GeometryExtension.h"
@@ -360,6 +362,8 @@ PyMOD_INIT_FUNC(Part)
                                                             ::Type,partModule,"RectangularTrimmedSurface");
 
     Base::Interpreter().addType(&Part::PartFeaturePy        ::Type,partModule,"Feature");
+    Base::Interpreter().addType(&Part::Part2DObjectPy       ::Type,partModule,"Part2DObject");
+    Base::Interpreter().addType(&Part::BodyBasePy           ::Type,partModule,"BodyBase");
     Base::Interpreter().addType(&Attacher::AttachEnginePy   ::Type,partModule,"AttachEngine");
 
     Base::Interpreter().addType(&Part::GeometryIntExtensionPy ::Type,partModule,"GeometryIntExtension");

@@ -114,6 +114,12 @@
 #include <Base/GeometryPyCXX.h>
 #include "Link.h"
 
+#include "DocumentPy.h"
+#include "DocumentObjectGroupPy.h"
+#include "LinkBaseExtensionPy.h"
+#include "OriginGroupExtensionPy.h"
+#include "PartPy.h"
+
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
 // src/Build/Version.h. Or create your own from src/Build/Version.h.in!
@@ -308,6 +314,23 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Base::Interpreter().addType(&Base::TypePy            ::Type,pBaseModule,"TypeId");
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
+
+    // Add document types
+    Base::Interpreter().addType(&App::PropertyContainerPy::Type, pAppModule, "PropertyContainer");
+    Base::Interpreter().addType(&App::ExtensionContainerPy::Type, pAppModule, "ExtensionContainer");
+    Base::Interpreter().addType(&App::DocumentPy::Type, pAppModule, "Document");
+    Base::Interpreter().addType(&App::DocumentObjectPy::Type, pAppModule, "DocumentObject");
+    Base::Interpreter().addType(&App::DocumentObjectGroupPy::Type, pAppModule, "DocumentObjectGroup");
+    Base::Interpreter().addType(&App::GeoFeaturePy::Type, pAppModule, "GeoFeature");
+    Base::Interpreter().addType(&App::PartPy::Type, pAppModule, "Part");
+
+    // Add extension types
+    Base::Interpreter().addType(&App::ExtensionPy::Type, pAppModule, "Extension");
+    Base::Interpreter().addType(&App::DocumentObjectExtensionPy::Type, pAppModule, "DocumentObjectExtension");
+    Base::Interpreter().addType(&App::GroupExtensionPy::Type, pAppModule, "GroupExtension");
+    Base::Interpreter().addType(&App::GeoFeatureGroupExtensionPy::Type, pAppModule, "GeoFeatureGroupExtension");
+    Base::Interpreter().addType(&App::OriginGroupExtensionPy::Type, pAppModule, "OriginGroupExtension");
+    Base::Interpreter().addType(&App::LinkBaseExtensionPy::Type, pAppModule, "LinkBaseExtension");
 
     //insert Base and Console
     Py_INCREF(pBaseModule);
