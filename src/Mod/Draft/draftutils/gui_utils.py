@@ -43,7 +43,7 @@ import six
 import FreeCAD as App
 import draftutils.utils as utils
 
-from draftutils.messages import _msg, _wrn
+from draftutils.messages import _msg, _wrn, _err
 from draftutils.translate import _tr, translate
 
 if App.GuiUp:
@@ -676,5 +676,75 @@ def migrate_text_display_mode(obj_type="Text", mode="3D text", doc=None):
     for obj in doc.Objects:
         if utils.get_type(obj) == obj_type:
             obj.ViewObject.DisplayMode = mode
+
+
+def get_bbox(obj, debug=False):
+    """Return a BoundBox from any object that has a Coin RootNode.
+
+    Normally the bounding box of an object can be taken
+    from its `Part::TopoShape`.
+    ::
+        >>> print(obj.Shape.BoundBox)
+
+    However, for objects without a `Shape`, such as those
+    derived from `App::FeaturePython` like `Draft Text` and `Draft Dimension`,
+    the bounding box can be calculated from the `RootNode` of the viewprovider.
+
+    Parameters
+    ----------
+    obj: App::DocumentObject
+        Any object that has a `ViewObject.RootNode`.
+
+    Returns
+    -------
+    Base::BoundBox
+        It returns a `BoundBox` object which has information like
+        minimum and maximum values of X, Y, and Z, as well as bounding box
+        center.
+
+    None
+        If there is a problem it will return `None`.
+    """
+    _name = "get_bbox"
+    utils.print_header(_name, "Bounding box", debug=debug)
+
+    found, doc = utils.find_doc(App.activeDocument())
+    if not found:
+        _err(_tr("No active document. Aborting."))
+        return None
+
+    if isinstance(obj, str):
+        obj_str = obj
+
+    found, obj = utils.find_object(obj, doc)
+    if not found:
+        _msg("obj: {}".format(obj_str))
+        _err(_tr("Wrong input: object not in document."))
+        return None
+
+    if debug:
+        _msg("obj: {}".format(obj.Label))
+
+    if (not hasattr(obj, "ViewObject")
+            or not obj.ViewObject
+            or not hasattr(obj.ViewObject, "RootNode")):
+        _err(_tr("Does not have 'ViewObject.RootNode'."))
+
+    # For Draft Dimensions
+    # node = obj.ViewObject.Proxy.node
+    node = obj.ViewObject.RootNode
+
+    view = Gui.ActiveDocument.ActiveView
+    region = view.getViewer().getSoRenderManager().getViewportRegion()
+    action = coin.SoGetBoundingBoxAction(region)
+
+    node.getBoundingBox(action)
+    bb = action.getBoundingBox()
+
+    # xlength, ylength, zlength = bb.getSize().getValue()
+    xmin, ymin, zmin = bb.getMin().getValue()
+    xmax, ymax, zmax = bb.getMax().getValue()
+
+    return App.BoundBox(xmin, ymin, zmin, xmax, ymax, zmax)
 
 ## @}
