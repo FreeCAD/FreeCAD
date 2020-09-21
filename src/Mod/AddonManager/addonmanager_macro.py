@@ -21,17 +21,49 @@
 #*                                                                         *
 #***************************************************************************
 
-## @package AddonManager_macro
-#  \ingroup ADDONMANAGER
-#  \brief Unified handler for FreeCAD macros that can be obtained from different sources
-
 import os
 import re
 import sys
+
+from PySide import QtCore, QtGui
+
 import FreeCAD
+import FreeCADGui
 
 from addonmanager_utilities import translate
 from addonmanager_utilities import urlopen
+
+try:
+    from HTMLParser import HTMLParser
+    unescape = HTMLParser().unescape
+except ImportError:
+    from html import unescape
+
+try:
+    import StringIO as io
+    _stringio = io.StringIO
+except ImportError:  # StringIO is not available with python3
+    import io
+    _stringio = io.BytesIO
+
+have_git = False
+try:
+    import git
+    have_git = True
+except ImportError:
+    pass
+
+have_zip = False
+try:
+    import zipfile
+    have_zip = True
+except ImportError:
+    pass
+
+#  @package AddonManager_macro
+#  \ingroup ADDONMANAGER
+#  \brief Unified handler for FreeCAD macros that can be obtained from different sources
+#  @{
 
 
 class Macro(object):
@@ -41,11 +73,11 @@ class Macro(object):
         self.name = name
         self.on_wiki = False
         self.on_git = False
-        self.desc = ''
-        self.code = ''
-        self.url = ''
-        self.version = ''
-        self.src_filename = ''
+        self.desc = ""
+        self.code = ""
+        self.url = ""
+        self.version = ""
+        self.src_filename = ""
         self.other_files = []
         self.parsed = False
 
@@ -56,13 +88,13 @@ class Macro(object):
     def filename(self):
         if self.on_git:
             return os.path.basename(self.src_filename)
-        return (self.name + '.FCMacro').replace(' ', '_')
+        return (self.name + ".FCMacro").replace(" ", "_")
 
     def is_installed(self):
         if self.on_git and not self.src_filename:
             return False
         return (os.path.exists(os.path.join(FreeCAD.getUserMacroDir(True), self.filename))
-                or os.path.exists(os.path.join(FreeCAD.getUserMacroDir(True), 'Macro_' + self.filename)))
+                or os.path.exists(os.path.join(FreeCAD.getUserMacroDir(True), "Macro_" + self.filename)))
 
     def fill_details_from_file(self, filename):
         with open(filename) as f:
@@ -73,22 +105,22 @@ class Macro(object):
             re_url = re.compile(r"^__Web__\s*=\s*(['\"])(.*)\1")
             re_version = re.compile(r"^__Version__\s*=\s*(['\"])(.*)\1")
             re_files = re.compile(r"^__Files__\s*=\s*(['\"])(.*)\1")
-            for l in f.readlines():
-                match = re.match(re_desc, l)
+            for line in f.readlines():
+                match = re.match(re_desc, line)
                 if match:
                     self.desc = match.group(2)
                     number_of_required_fields -= 1
-                match = re.match(re_url, l)
+                match = re.match(re_url, line)
                 if match:
                     self.url = match.group(2)
                     number_of_required_fields -= 1
-                match = re.match(re_version, l)
+                match = re.match(re_version, line)
                 if match:
                     self.version = match.group(2)
                     number_of_required_fields -= 1
-                match = re.match(re_files, l)
+                match = re.match(re_files, line)
                 if match:
-                    self.other_files = [of.strip() for of in match.group(2).split(',')]
+                    self.other_files = [of.strip() for of in match.group(2).split(",")]
                     number_of_required_fields -= 1
                 if number_of_required_fields <= 0:
                     break
@@ -98,75 +130,65 @@ class Macro(object):
 
     def fill_details_from_wiki(self, url):
         code = ""
-        try:
-            u = urlopen(url)
-        except:
-            print("AddonManager: Debug: unable to open URL",url)
-            return
-        if u is None :
-            print("AddonManager: Debug: connection is lost (proxy setting changed?)",url)
+        u = urlopen(url)
+        if u is None:
+            print("AddonManager: Debug: connection is lost (proxy setting changed?)", url)
             return
         p = u.read()
         if sys.version_info.major >= 3 and isinstance(p, bytes):
-            p = p.decode('utf-8')
+            p = p.decode("utf-8")
         u.close()
         # check if the macro page has its code hosted elsewhere, download if needed
         if "rawcodeurl" in p:
-            rawcodeurl = re.findall("rawcodeurl.*?href=\"(http.*?)\">",p)
+            rawcodeurl = re.findall("rawcodeurl.*?href=\"(http.*?)\">", p)
             if rawcodeurl:
                 rawcodeurl = rawcodeurl[0]
-                try:
-                    u2 = urlopen(rawcodeurl)
-                except:
-                    print("AddonManager: Debug: unable to open URL",rawcodeurl)
+                u2 = urlopen(rawcodeurl)
+                if u2 is None:
+                    print("AddonManager: Debug: unable to open URL", rawcodeurl)
                     return
                 # code = u2.read()
                 # github is slow to respond... We need to use this trick below
                 response = ""
                 block = 8192
-                #expected = int(u2.headers['content-length'])
-                while 1:
-                    #print("expected:",expected,"got:",len(response))
+                # expected = int(u2.headers["content-length"])
+                while True:
+                    # print("expected:", expected, "got:", len(response))
                     data = u2.read(block)
                     if not data:
                         break
                     if sys.version_info.major >= 3 and isinstance(data, bytes):
-                        data = data.decode('utf-8')
+                        data = data.decode("utf-8")
                     response += data
                 if response:
                     code = response
                 u2.close()
         if not code:
-            code = re.findall('<pre>(.*?)<\/pre>', p.replace('\n', '--endl--'))
+            code = re.findall(r"<pre>(.*?)</pre>", p.replace("\n", "--endl--"))
             if code:
                 # code = code[0]
                 # take the biggest code block
                 code = sorted(code, key=len)[-1]
-                code = code.replace('--endl--', '\n')
+                code = code.replace("--endl--", "\n")
             else:
                 FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to fetch the code of this macro."))
             # Clean HTML escape codes.
-            try:
-                from HTMLParser import HTMLParser
-            except ImportError:
-                from html.parser import HTMLParser
             if sys.version_info.major < 3:
-                code = code.decode('utf8')
-            try:
-                code = HTMLParser().unescape(code)
-                code = code.replace(b'\xc2\xa0'.decode("utf-8"), ' ')
-            except:
-                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to clean macro code") + ": "+ code + '\n')
+                code = code.decode("utf8")
+            code = unescape(code)
+            code = code.replace(b"\xc2\xa0".decode("utf-8"), " ")
             if sys.version_info.major < 3:
-                code = code.encode('utf8')
-        desc = re.findall("<td class=\"ctEven left macro-description\">(.*?)<\/td>", p.replace('\n', ' '))
+                code = code.encode("utf8")
+        desc = re.findall(r"<td class=\"ctEven left macro-description\">(.*?)</td>", p.replace("\n", " "))
         if desc:
             desc = desc[0]
         else:
-            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to retrieve a description for this macro."))
+            FreeCAD.Console.PrintWarning(translate("AddonsInstaller",
+                                                   "Unable to retrieve a description for this macro."))
             desc = "No description available"
         self.desc = desc
         self.url = url
         self.code = code
         self.parsed = True
 
+#  @}
