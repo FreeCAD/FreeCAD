@@ -2273,7 +2273,11 @@ struct DockWindowManagerP
             return;
 
         auto focus = findTabWidget(qApp->focusWidget());
+        if (focus && !focus->getSplitter()->isVisible())
+            focus = nullptr;
         auto active = findTabWidget(qApp->widgetAt(QCursor::pos()));
+        if (active && !active->getSplitter()->isVisible())
+            active = nullptr;
         OverlayTabWidget *reveal = nullptr;
 
         bool updateFocus = false;
