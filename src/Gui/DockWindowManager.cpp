@@ -1384,23 +1384,19 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     if (_state == State_Normal)
         titleBar->setVisible(!enable);
 
-    if(!enable && isTransparent())
-    {
-        proxyWidget->setStyleSheet(OverlayStyleSheet::instance()->activeStyleSheet);
-        setStyleSheet(OverlayStyleSheet::instance()->activeStyleSheet);
+    QString stylesheet;
+
+    if(!enable && isTransparent()) {
+        stylesheet = OverlayStyleSheet::instance()->activeStyleSheet;
         setOverlayMode(this, -1);
     } else if (enable && !isTransparent() && (isEditShow() || isAutoHide())) {
-        proxyWidget->setStyleSheet(OverlayStyleSheet::instance()->offStyleSheet);
-        setStyleSheet(OverlayStyleSheet::instance()->offStyleSheet);
+        stylesheet = OverlayStyleSheet::instance()->offStyleSheet;
         setOverlayMode(this, 0);
     } else {
-        if(enable) {
-            proxyWidget->setStyleSheet(OverlayStyleSheet::instance()->onStyleSheet);
-            setStyleSheet(OverlayStyleSheet::instance()->onStyleSheet);
-        } else {
-            proxyWidget->setStyleSheet(OverlayStyleSheet::instance()->offStyleSheet);
-            setStyleSheet(OverlayStyleSheet::instance()->offStyleSheet);
-        }
+        if(enable)
+            stylesheet = OverlayStyleSheet::instance()->onStyleSheet;
+        else
+            stylesheet = OverlayStyleSheet::instance()->offStyleSheet;
 
         setOverlayMode(this, enable?1:0);
     }
@@ -1415,6 +1411,11 @@ void OverlayTabWidget::setOverlayMode(bool enable)
         tabBar()->setVisible(!enable || !OverlayStyleSheet::instance()->hideTab);
 
     setRect(rectOverlay);
+
+    if (stylesheet != this->styleSheet()) {
+        proxyWidget->setStyleSheet(stylesheet);
+        this->setStyleSheet(stylesheet);
+    }
 }
 
 const QRect &OverlayTabWidget::getRect()
@@ -1476,7 +1477,7 @@ void OverlayTabWidget::setSizeDelta(int delta)
 
 void OverlayTabWidget::setRect(QRect rect)
 {
-    if(rect.width()<=0 || rect.height()<=0)
+    if(busy || rect.width()<=0 || rect.height()<=0)
         return;
 
     if(hGrp && rect.size() != rectOverlay.size()) {
@@ -1530,6 +1531,7 @@ void OverlayTabWidget::setRect(QRect rect)
         if(!isVisible() && count()) {
             proxyWidget->hide();
             startShow();
+            Base::StateLocker guard(busy);
             setOverlayMode(overlayed);
         }
     }
@@ -1543,11 +1545,13 @@ void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
 
     auto titleWidget = dock->titleBarWidget();
     if(titleWidget && titleWidget->objectName()==QLatin1String("OverlayTitle")) {
+        // replace the title bar with an invisible widget to hide it. The
+        // OverlayTabWidget uses its own title bar for all docks.
         auto w = new QWidget();
         w->setObjectName(QLatin1String("OverlayTitle"));
         dock->setTitleBarWidget(w);
         w->hide();
-        delete titleWidget;
+        titleWidget->deleteLater();
     }
 
     dock->show();
@@ -1566,17 +1570,21 @@ int OverlayTabWidget::dockWidgetIndex(QDockWidget *dock) const
     return splitter->indexOf(dock);
 }
 
-void OverlayTabWidget::removeWidget(QDockWidget *dock)
+void OverlayTabWidget::removeWidget(QDockWidget *dock, QDockWidget *lastDock)
 {
     int index = dockWidgetIndex(dock);
     if(index < 0)
         return;
 
-    dock->setParent(nullptr);
+    dock->show();
+    if(lastDock)
+        getMainWindow()->tabifyDockWidget(lastDock, dock);
+    else
+        getMainWindow()->addDockWidget(dockArea, dock);
 
     auto w = this->widget(index);
     removeTab(index);
-    delete w;
+    w->deleteLater();
 
     if(!count())
         hide();
@@ -1584,7 +1592,7 @@ void OverlayTabWidget::removeWidget(QDockWidget *dock)
     w = dock->titleBarWidget();
     if(w && w->objectName() == QLatin1String("OverlayTitle")) {
         dock->setTitleBarWidget(nullptr);
-        delete w;
+        w->deleteLater();
     }
     DockWindowManager::instance()->setupTitleBar(dock);
 
@@ -1839,11 +1847,13 @@ void OverlayGraphicsEffect::draw(QPainter* painter)
     if (px.isNull())
         return;
 
+#if 0
     if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         static int count;
         getMainWindow()->showMessage(
                 QString::fromLatin1("dock overlay redraw %1").arg(count++));
     }
+#endif
 
     QTransform restoreTransform = painter->worldTransform();
     painter->setWorldTransform(QTransform());
@@ -1992,25 +2002,16 @@ struct OverlayInfo {
 
         QPointer<QWidget> focus = qApp->focusWidget();
 
-        MainWindow *mw = getMainWindow();
         QDockWidget *lastDock = tabWidget->currentDockWidget();
-        if(lastDock) {
+        if(lastDock)
             tabWidget->removeWidget(lastDock);
-            lastDock->show();
-            mw->addDockWidget(dockArea, lastDock);
-        }
         while(tabWidget->count()) {
             QDockWidget *dock = tabWidget->dockWidget(0);
             if(!dock) {
                 tabWidget->removeTab(0);
                 continue;
             }
-            tabWidget->removeWidget(dock);
-            dock->show();
-            if(lastDock)
-                mw->tabifyDockWidget(lastDock, dock);
-            else
-                mw->addDockWidget(dockArea, dock);
+            tabWidget->removeWidget(dock, lastDock);
             lastDock = dock;
         }
 

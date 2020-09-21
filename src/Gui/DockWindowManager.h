@@ -196,7 +196,7 @@ public:
     void setOverlayMode(QWidget *widget, int enable);
     void setOverlayMode(bool enable);
     void addWidget(QDockWidget *widget, const QString &title);
-    void removeWidget(QDockWidget *widget);
+    void removeWidget(QDockWidget *widget, QDockWidget *last=nullptr);
     void setCurrent(QDockWidget *widget);
 
     void setAutoHide(bool enable);
@@ -323,6 +323,7 @@ private:
     bool repainting = false;
     bool overlayed = false;
     bool touched = false;
+    bool busy = false;
     Qt::DockWidgetArea dockArea;
     int tabSize = 0;
     QTime revealTime;
