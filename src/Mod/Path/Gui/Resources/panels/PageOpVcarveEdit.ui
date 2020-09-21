@@ -81,28 +81,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="threshold">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Threshold is used by the medial axis filter to remove unwanted segments. If the resulting path contains unwanted segments, decrease this value. &lt;/p&gt;&lt;p&gt;Valid values are 0.0 - 1.0&lt;/p&gt;&lt;p&gt;Default = 0.8&lt;/p&gt;&lt;p&gt;1.0 will remove nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.800000000000000</double>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_3">
         <property name="toolTip">
@@ -110,6 +88,19 @@
         </property>
         <property name="text">
          <string>Threshold</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="threshold">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Threshold is used by the medial axis filter to remove unwanted segments. If the resulting path contains unwanted segments, decrease this value. &lt;/p&gt;&lt;p&gt;Valid values are 0.0 - 1.0&lt;/p&gt;&lt;p&gt;Default = 0.8&lt;/p&gt;&lt;p&gt;1.0 will remove nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="maximum">
+         <number>180</number>
+        </property>
+        <property name="value">
+         <number>10</number>
         </property>
        </widget>
       </item>

@@ -40,6 +40,12 @@ from PySide import QtCore
 
 __doc__ = "Class and implementation of Path Vcarve operation"
 
+PRIMARY = 0
+EXTERIOR1 = 1
+EXTERIOR2 = 4
+TWIN = 2
+COLINEAR = 3
+OTHER = 5
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -113,14 +119,14 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             d = round(MIC / math.tan(math.radians(toolangle / 2)), 4)
             return d if d <= maxdepth else maxdepth
 
-        def getEdges(vd, color=[0]):
+        def getEdges(vd, color=[PRIMARY]):
             if type(color) == int:
                 color = [color]
             geomList = []
             for e in vd.Edges:
                 if e.Color not in color:
                     continue
-                if e.toGeom(8) is None:
+                if e.toGeom() is None:
                     continue
                 p1 = e.Vertices[0].toGeom(calculate_depth(0-e.getDistances()[0]))
                 p2 = e.Vertices[-1].toGeom(calculate_depth(0-e.getDistances()[-1]))
@@ -129,8 +135,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 newedge.fixTolerance(obj.Tolerance, Part.Vertex)
                 geomList.append(newedge)
 
-            if geomList:
-                return geomList
+            return geomList
 
         def sortEm(mywire, unmatched):
             remaining = []
@@ -212,12 +217,13 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             vd.construct()
 
             for e in vd.Edges:
-                e.Color = 0 if e.isPrimary() else 5
-            vd.colorExterior(1)
-            vd.colorExterior(4, lambda v: not f.isInside(v.toGeom(),
+                e.Color = PRIMARY if e.isPrimary() else OTHER
+            vd.colorExterior(EXTERIOR1)
+            vd.colorExterior(EXTERIOR2,
+                lambda v: not f.isInside(v.toGeom(f.BoundBox.ZMin),
                 obj.Tolerance, True))
-            vd.colorColinear(3, obj.Threshold)
-            vd.colorTwins(2)
+            vd.colorColinear(COLINEAR, obj.Threshold)
+            vd.colorTwins(TWIN)
 
             edgelist = getEdges(vd)
 
@@ -229,6 +235,12 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
     def opExecute(self, obj):
         '''opExecute(obj) ... process engraving operation'''
         PathLog.track()
+
+        if not (hasattr(obj.ToolController.Tool, "CuttingEdgeAngle") and
+            hasattr(obj.ToolController.Tool, "CuttingEdgeHeight")):
+                FreeCAD.Console.PrintError(
+                    translate("Path_Vcarve", "VCarve requires an engraving \
+                        cutter with CuttingEdgeAngle and CuttingEdgeHeight") + "\n")
 
         if obj.ToolController.Tool.CuttingEdgeAngle >= 180.0:
             FreeCAD.Console.PrintError(
@@ -276,5 +288,5 @@ def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Vcarve operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectVcarve(obj, name)
+    ObjectVcarve(obj, name)
     return obj
