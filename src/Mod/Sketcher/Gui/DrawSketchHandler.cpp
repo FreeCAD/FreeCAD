@@ -110,8 +110,13 @@ void DrawSketchHandler::setSvgCursor(const QString & cursorName, int x, int y, c
     qreal pRatio = devicePixelRatio();
     bool isRatioOne = (pRatio == 1.0);
     qreal defaultCursorSize = isRatioOne ? 64 : 32;
+#if defined(Q_OS_WIN32)
+    qreal hotX = x;
+    qreal hotY = y;
+#else
     qreal hotX = x * pRatio;
     qreal hotY = y * pRatio;
+#endif
     qreal cursorSize = defaultCursorSize * pRatio;
 
     QPixmap pointer = Gui::BitmapFactory().pixmapFromSvg(cursorName.toStdString().c_str(), QSizeF(cursorSize, cursorSize), colorMapping);

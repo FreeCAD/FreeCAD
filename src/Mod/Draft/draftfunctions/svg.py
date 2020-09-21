@@ -21,7 +21,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides functions to return the SVG representation of various shapes."""
+"""Provides functions to return the SVG representation of various shapes.
+
+Warning: this still uses the `Drawing.projectToSVG` method to provide
+the SVG representation of certain objects.
+Therefore, even if the Drawing Workbench is obsolete, the `Drawing` module
+may not be removed completely yet. This must be checked.
+"""
 ## @package svg
 # \ingroup draftfuctions
 # \brief Provides functions to return the SVG representation of shapes.
@@ -69,6 +75,8 @@ def get_line_style(line_style, scale):
             style = ",".join([str(float(d)/scale) for d in style])
             # print("lstyle ", style)
         except:
+            # TODO: trap only specific exception; what is the problem?
+            # Bad string specification?
             return "none"
         else:
             return style
@@ -84,6 +92,11 @@ def getLineStyle(linestyle, scale):
 
 def get_proj(vec, plane=None):
     """Get a projection of the vector in the plane's u and v directions.
+
+    TODO: check if the same function for SVG and DXF projection can be used
+    so that this function is not just duplicated code.
+    This function may also be present elsewhere, like `WorkingPlane`
+    or `DraftGeomUtils`, so we should avoid code duplication.
 
     Parameters
     ----------
@@ -251,7 +264,7 @@ def get_arrow(obj,
     _rotate = 'rotate({},{},{})'.format(math.degrees(angle),
                                         point.x, point.y)
     _transl = 'translate({},{})'.format(point.x, point.y)
-    _scale = 'scale({},{})'.format(arrowsize, arrowsize)
+    _scale = 'scale({size},{size})'.format(size=arrowsize)
     _style = 'style="stroke-miterlimit:4;stroke-dasharray:none"'
 
     if obj.ViewObject.ArrowType == "Circle":
@@ -341,6 +354,93 @@ def getOvershoot(point, shootsize, color, linewidth, angle=0):
     return get_overshoot(point, shootsize, color, linewidth, angle)
 
 
+def _get_text_techdraw(text, tcolor, fontsize, anchor,
+                       align, fontname, angle, base,
+                       linespacing):
+    """Return the SVG representation of text for TechDraw display.
+
+    `text` is a list of textual elements; they are iterated, styled,
+    and added around a `<text>` tag.
+    ::
+        <text ...> text[0] </text>
+        <text ...> text[1] </text>
+    """
+    svg = ""
+    for i in range(len(text)):
+        _t = text[i].replace("&", "&amp;")
+        _t = _t.replace("<", "&lt;")
+        t = _t.replace(">", "&gt;")
+
+        if six.PY2 and not isinstance(t, six.text_type):
+            t = t.decode("utf8")
+
+        # possible workaround if UTF8 is unsupported
+        #   import unicodedata as U
+        #   v = list()
+        #   for c in U.normalize("NFKD", t):
+        #       if not U.combining(c):
+        #           v.append(c)
+        #
+        #   t = u"".join(v)
+        #   t = t.encode("utf8")
+
+        svg += '<text '
+        svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
+        svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)
+        svg += 'style="text-anchor:{};text-align:{};'.format(anchor,
+                                                             align.lower())
+        svg += 'font-family:{}" '.format(fontname)
+        svg += 'transform="'
+        svg += 'rotate({},{},{}) '.format(math.degrees(angle),
+                                          base.x,
+                                          base.y - i * linespacing)
+        svg += 'translate({},{}) '.format(base.x,
+                                          base.y - i * linespacing)
+        svg += 'scale(1,-1)"'
+        # svg += 'freecad:skip="1"'
+        svg += '>\n'
+        svg += t
+        svg += '</text>\n'
+    return svg
+
+
+def _get_text_header(tcolor, fontsize, anchor, align,
+                     fontname, angle, base, flip):
+    """Return the initial <text> tag with style options.
+
+    The text must be added after this tag, and then must be closed.
+    ::
+        <text ...>
+        ...
+        </text>
+    """
+    svg = '<text '
+    svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
+    svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)
+    svg += 'style="text-anchor:{};text-align:{};'.format(anchor,
+                                                         align.lower())
+    svg += 'font-family:{}" '.format(fontname)
+    svg += 'transform="'
+    svg += 'rotate({},{},{}) '.format(math.degrees(angle),
+                                      base.x,
+                                      base.y)
+    if flip:
+        svg += 'translate({},{}) '.format(base.x, base.y)
+    else:
+        svg += 'translate({},{}) '.format(base.x, -base.y)
+    # svg += 'scale({},-{}) '.format(tmod/2000, tmod/2000)
+
+    if flip:
+        svg += 'scale(1,-1) '
+    else:
+        svg += 'scale(1,1) '
+
+    svg += '" '
+    svg += 'freecad:skip="1"'
+    svg += '>\n'
+    return svg
+
+
 def get_text(plane, techdraw,
              tcolor, fontsize, fontname,
              angle, base, text,
@@ -376,73 +476,34 @@ def get_text(plane, techdraw,
         anchor = "end"
 
     if techdraw:
-        svg = ""
-        for i in range(len(text)):
-            _t = text[i].replace("&", "&amp;")
-            _t = _t.replace("<", "&lt;")
-            t = _t.replace(">", "&gt;")
-
-            if six.PY2 and not isinstance(t, six.text_type):
-                t = t.decode("utf8")
-
-            # possible workaround if UTF8 is unsupported
-            #   import unicodedata as U
-            #   v = list()
-            #   for c in U.normalize("NFKD", t):
-            #       if not U.combining(c):
-            #           v.append(c)
-            #
-            #   t = u"".join(v)
-            #   t = t.encode("utf8")
-
-            svg += '<text '
-            svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
-            svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)
-            svg += 'style="text-anchor:{};text-align:{};'.format(anchor,
-                                                                 align.lower())
-            svg += 'font-family:{}" '.format(fontname)
-            svg += 'transform="'
-            svg += 'rotate({},{},{}) '.format(math.degrees(angle),
-                                              base.x,
-                                              base.y - i * linespacing)
-            svg += 'translate({},{}) '.format(base.x,
-                                              base.y - i * linespacing)
-            svg += 'scale(1,-1)"'
-            # svg += 'freecad:skip="1"'
-            svg += '>\n'
-            svg += t
-            svg += '</text>\n'
+        # For TechDraw display each item in the text list is placed
+        # in an individual tag.
+        # <text ...> text[0] </text>
+        # <text ...> text[1] </text>
+        svg = _get_text_techdraw(text, tcolor, fontsize, anchor,
+                                 align, fontname, angle, base,
+                                 linespacing)
     else:
-        svg = '<text '
-        svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
-        svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)
-        svg += 'style="text-anchor:{};text-align:{};'.format(anchor,
-                                                             align.lower())
-        svg += 'font-family:{}" '.format(fontname)
-        svg += 'transform="'
-        svg += 'rotate({},{},{}) '.format(math.degrees(angle),
-                                          base.x,
-                                          base.y)
-        if flip:
-            svg += 'translate({},{}) '.format(base.x, base.y)
-        else:
-            svg += 'translate({},{}) '.format(base.x, -base.y)
-        # svg += 'scale({},-{}) '.format(tmod/2000, tmod/2000)
-
-        if flip:
-            svg += 'scale(1,-1) '
-        else:
-            svg += 'scale(1,1) '
-
-        svg += '" '
-        svg += 'freecad:skip="1"'
-        svg += '>\n'
+        # If the SVG is not for TechDraw, and there is a single item
+        # in the text list, place it in a single tag.
+        # <text ...> text </text>
+        #
+        # For multiple elements, place each element inside a <tspan> tag.
+        # <text ...>
+        #   <tspan>text[0]</tspan>
+        #   <tspan>text[1]</tspan>
+        # </text>
+        svg = _get_text_header(tcolor, fontsize, anchor, align,
+                               fontname, angle, base, flip)
 
         if len(text) == 1:
             try:
                 _t = text[0].replace("&", "&amp;").replace("<", "&lt;")
                 svg += _t.replace(">", "&gt;")
             except:
+                # TODO: trap only specific exception; what is the problem?
+                # Bad UTF8 string specification? This can be removed
+                # once the code is only used with Python 3.
                 _t = text[0].decode("utf8")
                 _t = _t.replace("&", "&amp;").replace("<", "&lt;")
                 svg += _t.replace(">", "&gt;")
@@ -457,6 +518,9 @@ def get_text(plane, techdraw,
                     _t = text[i].replace("&", "&amp;").replace("<", "&lt;")
                     svg += _t.replace(">", "&gt;")
                 except:
+                    # TODO: trap only specific exception; what is the problem?
+                    # Bad UTF8 string specification? This can be removed
+                    # once the code is only used with Python 3.
                     _t = text[i].decode("utf8")
                     _t = _t.replace("&", "&amp;").replace("<", "&lt;")
                     svg += _t.replace(">", "&gt;")
@@ -483,11 +547,164 @@ def format_point(coords, action='L'):
     return "{action}{x},{y}".format(x=coords.x, y=coords.y, action=action)
 
 
+def _get_path_circ_ellipse(plane, edge, vertex, edata,
+                           iscircle, isellipse,
+                           fill, stroke, linewidth, lstyle):
+    """Get the edge data from a path that is a circle or ellipse."""
+    if hasattr(App, "DraftWorkingPlane"):
+        drawing_plane_normal = App.DraftWorkingPlane.axis
+    else:
+        drawing_plane_normal = App.Vector(0, 0, 1)
+
+    if plane:
+        drawing_plane_normal = plane.axis
+
+    center = edge.Curve
+    ax = center.Axis
+
+    # The angle between the curve axis and the plane is not 0 nor 180 degrees
+    _angle = math.degrees(ax.getAngle(drawing_plane_normal))
+    if round(_angle, 2) not in (0, 180):
+        edata += get_discretized(edge, plane)
+        return "edata", edata
+
+    # The angle is 0 or 180, coplanar
+    occversion = Part.OCC_VERSION.split(".")
+    done = False
+    if int(occversion[0]) >= 7 and int(occversion[1]) >= 1:
+        # if using occ >= 7.1, use HLR algorithm
+        snip = Drawing.projectToSVG(edge, drawing_plane_normal)
+
+        if snip:
+            try:
+                _a = snip.split('path d="')[1]
+                _a = _a.split('"')[0]
+                _a = _a.split("A")[1]
+                A = "A " + _a
+            except IndexError:
+                # TODO: trap only specific exception.
+                # Check the problem. Split didn't produce a two element list?
+                _wrn("Circle or ellipse: "
+                     "cannot split the projection snip "
+                     "obtained by 'projectToSVG', "
+                     "continue manually.")
+            else:
+                edata += A
+                done = True
+
+    if not done:
+        if len(edge.Vertexes) == 1 and iscircle:
+            # Complete circle not only arc
+            svg = get_circle(plane,
+                             fill, stroke, linewidth, lstyle,
+                             edge)
+            # If it's a circle we will return the final SVG string,
+            # otherwise it will process the `edata` further
+            return "svg", svg
+        elif len(edge.Vertexes) == 1 and isellipse:
+            # Complete ellipse not only arc
+            # svg = get_ellipse(plane,
+            #                   fill, stroke, linewidth,
+            #                   lstyle, edge)
+            # return svg
+
+            # Difference in angles
+            _diff = (center.LastParameter - center.FirstParameter)/2.0
+            endpoints = [get_proj(center.value(_diff), plane),
+                         get_proj(vertex[-1].Point, plane)]
+        else:
+            endpoints = [get_proj(vertex[-1].Point, plane)]
+
+        # Arc with more than one vertex
+        if iscircle:
+            rx = ry = center.Radius
+            rot = 0
+        else:  # ellipse
+            rx = center.MajorRadius
+            ry = center.MinorRadius
+            _rot = center.AngleXU * center.Axis * App.Vector(0, 0, 1)
+            rot = math.degrees(_rot)
+            if rot > 90:
+                rot -= 180
+            if rot < -90:
+                rot += 180
+
+        # Be careful with the sweep flag
+        _diff = edge.ParameterRange[1] - edge.ParameterRange[0]
+        _diff = _diff / math.pi
+        flag_large_arc = (_diff % 2) > 1
+
+        # flag_sweep = (center.Axis * drawing_plane_normal >= 0) \
+        #     == (edge.LastParameter > edge.FirstParameter)
+        #     == (edge.Orientation == "Forward")
+
+        # Another method: check the direction of the angle
+        # between tangents
+        _diff = edge.LastParameter - edge.FirstParameter
+        t1 = edge.tangentAt(edge.FirstParameter)
+        t2 = edge.tangentAt(edge.FirstParameter + _diff/10)
+        flag_sweep = DraftVecUtils.angle(t1, t2, drawing_plane_normal) < 0
+
+        for v in endpoints:
+            edata += ('A {} {} {} '
+                      '{} {} '
+                      '{} {} '.format(rx, ry, rot,
+                                      int(flag_large_arc),
+                                      int(flag_sweep),
+                                      v.x, v.y))
+
+    return "edata", edata
+
+
+def _get_path_bspline(plane, edge, edata):
+    """Convert the edge to a BSpline and discretize it."""
+    bspline = edge.Curve.toBSpline(edge.FirstParameter, edge.LastParameter)
+    if bspline.Degree > 3 or bspline.isRational():
+        try:
+            bspline = bspline.approximateBSpline(0.05, 50, 3, 'C0')
+        except RuntimeError:
+            _wrn("Debug: unable to approximate bspline from edge")
+
+    if bspline.Degree <= 3 and not bspline.isRational():
+        for bezierseg in bspline.toBezier():
+            if bezierseg.Degree > 3:  # should not happen
+                _wrn("Bezier segment of degree > 3")
+                raise AssertionError
+            elif bezierseg.Degree == 1:
+                edata += 'L '
+            elif bezierseg.Degree == 2:
+                edata += 'Q '
+            elif bezierseg.Degree == 3:
+                edata += 'C '
+
+            for pole in bezierseg.getPoles()[1:]:
+                v = get_proj(pole, plane)
+                edata += '{} {} '.format(v.x, v.y)
+    else:
+        _msg("Debug: one edge (hash {}) "
+             "has been discretized "
+             "with parameter 0.1".format(edge.hashCode()))
+
+        for linepoint in bspline.discretize(0.1)[1:]:
+            v = get_proj(linepoint, plane)
+            edata += 'L {} {} '.format(v.x, v.y)
+
+    return edata
+
+
 def get_path(obj, plane,
              fill, pathdata, stroke, linewidth, lstyle,
              fill_opacity=None,
              edges=[], wires=[], pathname=None):
-    """Get the SVG representation from an object's edges or wires."""
+    """Get the SVG representation from an object's edges or wires.
+
+    TODO: the `edges` and `wires` must not default to empty list `[]`
+    but to `None`. Verify that the code doesn't break with this change.
+
+    `edges` and `wires` are mutually exclusive. If no `wires` are provided,
+    sort the `edges`, and use them. If `wires` are provided, sort the edges
+    in these `wires`, and use them.
+    """
     svg = "<path "
 
     if pathname is None:
@@ -496,173 +713,64 @@ def get_path(obj, plane,
         svg += 'id="{}" '.format(pathname)
 
     svg += ' d="'
+
     if not wires:
         egroups = Part.sortEdges(edges)
     else:
         egroups = []
         first = True
         for w in wires:
-            w1 = w.copy()
+            wire = w.copy()
             if first:
                 first = False
             else:
                 # invert further wires to create holes
-                w1 = DraftGeomUtils.invert(w1)
+                wire = DraftGeomUtils.invert(wire)
 
-            w1.fixWire()
-            egroups.append(Part.__sortEdges__(w1.Edges))
+            wire.fixWire()
+            egroups.append(Part.__sortEdges__(wire.Edges))
 
-    for egroupindex, edges in enumerate(egroups):
+    for _, _edges in enumerate(egroups):
         edata = ""
-        vs = ()  # skipped for the first edge
+        vertex = ()  # skipped for the first edge
 
-        for edgeindex, e in enumerate(edges):
-            previousvs = vs
+        for edgeindex, edge in enumerate(_edges):
+            previousvs = vertex
             # vertexes of an edge (reversed if needed)
-            vs = e.Vertexes
+            vertex = edge.Vertexes
             if previousvs:
-                if (vs[0].Point - previousvs[-1].Point).Length > 1e-6:
-                    vs.reverse()
+                if (vertex[0].Point - previousvs[-1].Point).Length > 1e-6:
+                    vertex.reverse()
 
             if edgeindex == 0:
-                v = get_proj(vs[0].Point, plane)
+                v = get_proj(vertex[0].Point, plane)
                 edata += 'M {} {} '.format(v.x, v.y)
             else:
-                if (vs[0].Point - previousvs[-1].Point).Length > 1e-6:
+                if (vertex[0].Point - previousvs[-1].Point).Length > 1e-6:
                     raise ValueError('edges not ordered')
 
-            iscircle = DraftGeomUtils.geomType(e) == "Circle"
-            isellipse = DraftGeomUtils.geomType(e) == "Ellipse"
+            iscircle = DraftGeomUtils.geomType(edge) == "Circle"
+            isellipse = DraftGeomUtils.geomType(edge) == "Ellipse"
 
             if iscircle or isellipse:
-                if hasattr(App, "DraftWorkingPlane"):
-                    drawing_plane_normal = App.DraftWorkingPlane.axis
-                else:
-                    drawing_plane_normal = App.Vector(0, 0, 1)
+                _type, data = _get_path_circ_ellipse(plane, edge, vertex,
+                                                     edata,
+                                                     iscircle, isellipse,
+                                                     fill, stroke,
+                                                     linewidth, lstyle)
+                if _type == "svg":
+                    # final svg string already calculated, so just return it
+                    return data
 
-                if plane:
-                    drawing_plane_normal = plane.axis
-
-                c = e.Curve
-                ax = c.Axis
-                if round(ax.getAngle(drawing_plane_normal), 2) in [0, 3.14]:
-                    occversion = Part.OCC_VERSION.split(".")
-                    done = False
-                    if int(occversion[0]) >= 7 and int(occversion[1]) >= 1:
-                        # if using occ >= 7.1, use HLR algorithm
-                        snip = Drawing.projectToSVG(e, drawing_plane_normal)
-
-                        if snip:
-                            try:
-                                _a = snip.split('path d="')[1]
-                                _a = _a.split('"')[0]
-                                _a = _a.split("A")[1]
-                                A = "A " + _a
-                            except:
-                                _wrn("Circle or ellipse: "
-                                     "error splitting the projection snip")
-                            else:
-                                edata += A
-                                done = True
-
-                    if not done:
-                        if len(e.Vertexes) == 1 and iscircle:
-                            # Complete circle not only arc
-                            svg = get_circle(plane,
-                                             fill, stroke, linewidth, lstyle,
-                                             e)
-                            return svg
-                        elif len(e.Vertexes) == 1 and isellipse:
-                            # Complete ellipse not only arc
-                            # svg = get_ellipse(plane,
-                            #                   fill, stroke, linewidth,
-                            #                   lstyle, edge)
-                            # return svg
-
-                            # Difference in angles
-                            _diff = (c.LastParameter - c.FirstParameter)/2.0
-                            endpoints = [get_proj(c.value(_diff), plane),
-                                         get_proj(vs[-1].Point, plane)]
-                        else:
-                            endpoints = [get_proj(vs[-1].Point, plane)]
-
-                        # Arc with more than one vertex
-                        if iscircle:
-                            rx = ry = c.Radius
-                            rot = 0
-                        else:  # ellipse
-                            rx = c.MajorRadius
-                            ry = c.MinorRadius
-                            rot = math.degrees(c.AngleXU
-                                               * c.Axis * App.Vector(0, 0, 1))
-                            if rot > 90:
-                                rot -= 180
-                            if rot < -90:
-                                rot += 180
-
-                        # Be careful with the sweep flag
-                        _diff = e.ParameterRange[1] - e.ParameterRange[0]
-                        _diff = _diff / math.pi
-                        flag_large_arc = (_diff % 2) > 1
-
-                        # flag_sweep = (c.Axis * drawing_plane_normal >= 0) \
-                        #     == (e.LastParameter > e.FirstParameter)
-                        #     == (e.Orientation == "Forward")
-
-                        # Another method: check the direction of the angle
-                        # between tangents
-                        _diff = e.LastParameter - e.FirstParameter
-                        t1 = e.tangentAt(e.FirstParameter)
-                        t2 = e.tangentAt(e.FirstParameter + _diff/10)
-                        flag_sweep = DraftVecUtils.angle(t1, t2,
-                                                         drawing_plane_normal) < 0
-
-                        for v in endpoints:
-                            edata += ('A {} {} {} '
-                                      '{} {} '
-                                      '{} {} '.format(rx, ry, rot,
-                                                      int(flag_large_arc),
-                                                      int(flag_sweep),
-                                                      v.x, v.y))
-                else:
-                    edata += get_discretized(e, plane)
-
-            elif DraftGeomUtils.geomType(e) == "Line":
-                v = get_proj(vs[-1].Point, plane)
+                # else the `edata` was properly augmented, so re-assing it
+                edata = data
+            elif DraftGeomUtils.geomType(edge) == "Line":
+                v = get_proj(vertex[-1].Point, plane)
                 edata += 'L {} {} '.format(v.x, v.y)
             else:
                 # If it's not a circle nor ellipse nor straight line
                 # convert the curve to BSpline
-                bspline = e.Curve.toBSpline(e.FirstParameter, e.LastParameter)
-                if bspline.Degree > 3 or bspline.isRational():
-                    try:
-                        bspline = bspline.approximateBSpline(0.05, 50, 3, 'C0')
-                    except RuntimeError:
-                        _wrn("Debug: unable to approximate bspline from edge")
-
-                if bspline.Degree <= 3 and not bspline.isRational():
-                    for bezierseg in bspline.toBezier():
-                        if bezierseg.Degree > 3:  # should not happen
-                            _wrn("Bezier segment of degree > 3")
-                            raise AssertionError
-                        elif bezierseg.Degree == 1:
-                            edata += 'L '
-                        elif bezierseg.Degree == 2:
-                            edata += 'Q '
-                        elif bezierseg.Degree == 3:
-                            edata += 'C '
-
-                        for pole in bezierseg.getPoles()[1:]:
-                            v = get_proj(pole, plane)
-                            edata += '{} {} '.format(v.x, v.y)
-                else:
-                    _msg("Debug: one edge (hash {}) "
-                         "has been discretized "
-                         "with parameter 0.1".format(e.hashCode()))
-
-                    for linepoint in bspline.discretize(0.1)[1:]:
-                        v = get_proj(linepoint, plane)
-                        edata += 'L {} {} '.format(v.x, v.y)
+                edata = _get_path_bspline(plane, edge, edata)
 
         if fill != 'none':
             edata += 'Z '

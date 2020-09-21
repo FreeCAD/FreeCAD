@@ -182,11 +182,11 @@ void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vecto
                     int idx = std::stoi(e.substr(4)) - 1;
                     assert ( idx >= 0 );
                     if ( idx < (ssize_t) colors.size() )
-                        colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+                        colors[idx] = App::Color(1.0f,0.0f,1.0f); // magenta
                 }
             }
             else {
-                std::fill(colors.begin(), colors.end(), App::Color(0.6,0.0,1.0)); // purple
+                std::fill(colors.begin(), colors.end(), App::Color(0.6f,0.0f,1.0f)); // purple
             }
             svp->LineColorArray.setValues(colors);
         }

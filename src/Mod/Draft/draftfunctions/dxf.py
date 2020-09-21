@@ -20,10 +20,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides functions to return the DXF representation of various shapes."""
+"""Provides functions to return the DXF representation of various shapes.
+
+Warning: this still uses the `Drawing.projectToDXF` method to provide
+the DXF representation of certain objects.
+Therefore, even if the Drawing Workbench is obsolete, the `Drawing` module
+may not be removed completely yet. This must be checked.
+"""
 ## @package dxf
 # \ingroup draftfuctions
-# \brief Provides functions to return the SVG representation of shapes.
+# \brief Provides functions to return the DXF representation of shapes.
 
 import lazy_loader.lazy_loader as lz
 
@@ -44,6 +50,13 @@ Drawing = lz.LazyLoader("Drawing", globals(), "Drawing")
 # @{
 
 def _get_proj(vec, plane=None):
+    """Get a projection of the vector in the plane's u and v directions.
+
+    TODO: check if the same function for SVG and DXF projection can be used
+    so that this function is not just duplicated code.
+    This function may also be present elsewhere, like `WorkingPlane`
+    or `DraftGeomUtils`, so we should avoid code duplication.
+    """
     if not plane:
         return vec
 
@@ -108,6 +121,8 @@ def get_dxf(obj, direction=None):
         try:
             d = Drawing.projectToDXF(obj.Shape, direction)
         except:
+            # TODO: trap only specific exception.
+            # Impossible to generate DXF from Shape? Which exception is throw?
             _wrn("get_dxf: "
                  "unable to project '{}' to {}".format(obj.Label, direction))
         else:

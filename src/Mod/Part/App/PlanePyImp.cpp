@@ -255,50 +255,6 @@ void PlanePy::setAxis(Py::Object arg)
     }
 }
 
-PyObject* PlanePy::uIso(PyObject * args)
-{
-    double u;
-    if (!PyArg_ParseTuple(args, "d", &u))
-        return 0;
-
-    try {
-        Handle(Geom_Plane) plane = Handle(Geom_Plane)::DownCast
-            (getGeomPlanePtr()->handle());
-        Handle(Geom_Line) c = Handle(Geom_Line)::DownCast(plane->UIso(u));
-        GeomLine* line = new GeomLine();
-        Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
-            (line->handle());
-        this_curv->SetLin(c->Lin());
-        return new LinePy(line);
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
-}
-
-PyObject* PlanePy::vIso(PyObject * args)
-{
-    double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
-        return 0;
-
-    try {
-        Handle(Geom_Plane) plane = Handle(Geom_Plane)::DownCast
-            (getGeomPlanePtr()->handle());
-        Handle(Geom_Line) c = Handle(Geom_Line)::DownCast(plane->VIso(v));
-        GeomLine* line = new GeomLine();
-        Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
-            (line->handle());
-        this_curv->SetLin(c->Lin());
-        return new LinePy(line);
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
-}
-
 PyObject *PlanePy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
