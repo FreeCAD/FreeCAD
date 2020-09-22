@@ -104,7 +104,7 @@ jobs:
       - os: osx
         osx_image: xcode11.6
         env:
-          - CMAKE_ARGS="-DBUILD_QT5=ON -DUSE_PYTHON3=1 -DCMAKE_CXX_FLAGS='-std=c++14' -DBUILD_FEM_NETGEN=1 -DBUILD_FEM=1 -DCMAKE_PREFIX_PATH=/usr/local/Cellar/qt/5.15.1//lib/cmake:/usr/local/Cellar/nglib//v6.2.2007/Contents/Resources -DBUILD_FEM_NETGEN:BOOL=ON -DFREECAD_USE_EXTERNAL_KDL=ON -DCMAKE_BUILD_TYPE=Release"
+          - CMAKE_ARGS="-DBUILD_QT5=ON -DUSE_PYTHON3=1 -DCMAKE_CXX_FLAGS='-std=c++14' -DBUILD_FEM_NETGEN=1 -DBUILD_FEM=1 -DCMAKE_PREFIX_PATH='/usr/local/Cellar/qt/5.15.1/lib/cmake:/usr/local/Cellar/nglib/v6.2.2007/Contents/Resources' -DBUILD_FEM_NETGEN:BOOL=ON -DFREECAD_USE_EXTERNAL_KDL=ON -DCMAKE_BUILD_TYPE=Release"
           - PATH=/usr/local/bin:$PATH
 
       - os: windows
@@ -288,6 +288,8 @@ install:
 ####
 #  Build FreeCAD with cmake options set above for each platform
 ##
+  - echo ${CMAKE_ARGS}
+  - ls /usr/local/Cellar/qt/5.15.1/lib/cmake
   - mkdir build && cd build && cmake -G"${GENERATOR}" ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
 script:
