@@ -560,7 +560,7 @@ def get_clone_base(obj, strict=False):
         if obj.CloneOf:
             return get_clone_base(obj.CloneOf)
     if get_type(obj) == "Clone" and obj.Objects:
-        return obj.Objects[0]
+        return get_clone_base(obj.Objects[0])
     if strict:
         return False
     return obj
