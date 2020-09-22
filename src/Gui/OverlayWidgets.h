@@ -30,14 +30,16 @@
 #include <QToolButton>
 #include <QGraphicsEffect>
 #include <QImage>
+#include <QDockWidget>
 
 #include <Base/Parameter.h>
 
-class QDockWidget;
 class QSplitter;
 class QPropertyAnimation;
 
 namespace Gui {
+
+class OverlayTabWidget;
 
 class GuiExport OverlayManager : public QObject {
     Q_OBJECT
@@ -79,8 +81,13 @@ public:
     bool isUnderOverlay() const;
 
     void initDockWidget(QDockWidget *, QWidget *);
-    void setupDockWidget(QDockWidget *);
+    void setupDockWidget(QDockWidget *, int dockArea = Qt::NoDockWidgetArea);
     void unsetupDockWidget(QDockWidget *);
+
+    void dropDockWidget(const QPoint &pos,
+                        QWidget *src,
+                        OverlayTabWidget *dst,
+                        int index);
 
     static OverlayManager * instance();
     static void destruct();
@@ -109,6 +116,7 @@ private:
 
 #ifdef FC_HAS_DOCK_OVERLAY
 
+class OverlayTitleBar;
 class OverlayProxyWidget;
 class OverlayGraphicsEffect;
 
@@ -157,6 +165,7 @@ public:
     bool getAutoHideRect(QRect &rect) const;
     void changeSize(int changes, bool checkModifier=true);
     void onAction(QAction *);
+    void syncAction();
 
     void setOffset(const QSize &ofs);
     const QSize &getOffset() const {return offset;}
@@ -238,6 +247,7 @@ protected Q_SLOTS:
 
 private:
     friend class OverlayProxyWidget;
+    friend class OverlayTitleBar;
     friend class OverlayManager::Private;
 
     QSize offset;
@@ -249,6 +259,7 @@ private:
     QAction actAutoHide;
     QAction actEditHide;
     QAction actEditShow;
+    QAction actAutoMode;
     QAction actTransparent;
     QAction actIncrease;
     QAction actDecrease;
@@ -277,10 +288,12 @@ private:
     State _state = State_Normal;
 };
 
-#if 0
 class OverlayDragFrame: public QWidget
 {
     Q_OBJECT
+public:
+    OverlayDragFrame(QWidget * parent);
+
 protected:
     void paintEvent(QPaintEvent*);
 };
@@ -288,13 +301,20 @@ protected:
 class OverlayTitleBar: public QWidget
 {
     Q_OBJECT
+public:
+    OverlayTitleBar(QWidget * parent);
+    
 protected:
-    void paintEvent(QPaintEvent*);
     void mouseMoveEvent(QMouseEvent *);
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
+
+private:
+    QPoint dragOffset;
+    QSize dragSize;
+    OverlayTabWidget *dragOverlay = nullptr;
+    int dragDockIndex;
 };
-#endif
 
 class OverlaySizeGrip: public QWidget
 {
