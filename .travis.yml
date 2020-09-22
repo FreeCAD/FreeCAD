@@ -292,7 +292,7 @@ install:
   - echo ${CMAKE_ARGS}
   - ls /usr/local/Cellar/qt/5.15.1/lib/cmake
   - ls /usr/local/lib/python3.8/site-packages/*matplotlib*
-  - python3 -c "import matplotlib;"
+  - python3 -c "import matplotlib; print(matplotlib.__version__);"
   - exit 0
   - mkdir build && cd build && cmake -Wno-dev -G"${GENERATOR}" ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
