@@ -47,7 +47,7 @@ TWIN = 2
 COLINEAR = 3
 OTHER = 5
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -146,12 +146,14 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 mywire.Edges[-1].valueAt(mywire.Edges[-1].LastParameter)]
 
             for i, candidate in enumerate(unmatched):
-                if candidate.Length < obj.Tolerance:
-                    continue
 
                 # end points of candidate edge
                 cverts = [candidate.Edges[0].valueAt(candidate.Edges[0].FirstParameter),
                     candidate.Edges[-1].valueAt(candidate.Edges[-1].LastParameter)]
+
+                # ignore short segments below tolerance level
+                if PathGeom.pointsCoincide(cverts[0], cverts[1], obj.Tolerance):
+                    continue
 
                 # iterate the combination of endpoints. If a match is found,
                 # make an edge from the common endpoint to the other end of
@@ -165,8 +167,10 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                             wireGrowing = True
                             elist = mywire.Edges
                             otherIndex = int(not(idx))
+
                             newedge = Part.Edge(Part.Vertex(wvert),
-                                    Part.Vertex(cverts[otherIndex]))
+                                Part.Vertex(cverts[otherIndex]))
+
                             elist.append(newedge)
                             mywire = Part.Wire(Part.__sortEdges__(elist))
                             remaining.extend(unmatched[i+1:])

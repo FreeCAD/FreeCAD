@@ -57,13 +57,21 @@ class VCARVEGate:
         if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
             return True
 
-        if shape.ShapeType == 'Edge':
+        if shape.ShapeType == 'Face':
             return True
+
+        elif shape.ShapeType == 'Solid':
+            if sub and sub[0:4] == 'Face':
+                return True
+
+        elif shape.ShapeType == 'Compound':
+            if sub and sub[0:4] == 'Face':
+                return True
 
         if sub:
             subShape = shape.getElement(sub)
             if subShape.ShapeType == 'Edge':
-                return True
+                return False
 
         return False
 
