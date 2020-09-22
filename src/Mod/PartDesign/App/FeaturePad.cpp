@@ -56,7 +56,7 @@
 
 using namespace PartDesign;
 
-const char* Pad::TypeEnums[]= {"Length","UpToLast","UpToFirst","UpToFace","TwoLengths",NULL};
+const char* Pad::TypeEnums[]= {"Length", "UpToLast", "UpToFirst", "UpToFace", "TwoLengths", NULL};
 
 PROPERTY_SOURCE(PartDesign::Pad, PartDesign::ProfileBased)
 
@@ -70,6 +70,8 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(Length2, (100.0), "Pad", App::Prop_None,"Second Pad length");
     ADD_PROPERTY_TYPE(UseCustomVector, (0), "Pad", App::Prop_None, "Use custom vector for pad direction");
     ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pad", App::Prop_None, "Pad direction vector");
+    ADD_PROPERTY_TYPE(AlongCustomVector, (1), "Pad", App::Prop_None, "Measure length along custom direction vector");
+    ADD_PROPERTY_TYPE(Edge, (0), "Pad", App::Prop_None, "Edge to define the direction");
     ADD_PROPERTY_TYPE(UpToFace, (0), "Pad", App::Prop_None, "Face where pad will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
@@ -84,6 +86,8 @@ short Pad::mustExecute() const
         Length2.isTouched() ||
         UseCustomVector.isTouched() ||
         Direction.isTouched() ||
+        AlongCustomVector.isTouched() ||
+        Edge.isTouched() ||
         Offset.isTouched() ||
         UpToFace.isTouched())
         return 1;
@@ -129,11 +133,16 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         base.Move(invObjLoc);
 
         Base::Vector3d paddingDirection;
-
-        // use the given vector if necessary
+        
         if (!UseCustomVector.getValue()) {
-            paddingDirection = SketchVector;
+            paddingDirection = Direction.getValue();
+            // if Direction not reversed to SketchVector use SketchVector
+            if ((paddingDirection.x * -1.0f != SketchVector.x)
+                && (paddingDirection.y * -1.0f != SketchVector.y)
+                && (paddingDirection.z * -1.0f != SketchVector.z))
+                paddingDirection = SketchVector;
         }
+        // use the given vector
         else {
             // if null vector, use SketchVector
             if ( (fabs(Direction.getValue().x) < Precision::Confusion())
@@ -164,10 +173,16 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         if (factor < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Pad: Creation failed because direction is orthogonal to sketch's normal vector");
 
-        // perform the length correction
-        L = L / factor;
-        L2 = L2 / factor;
+        // perform the length correction if not along custom vector
+        if (AlongCustomVector.getValue()) {
+            L = L / factor;
+            L2 = L2 / factor;
+        }
 
+        // explicitly set the Direction so that the dialog shows also the used direction
+        // if the sketch's normal vector was used
+        Direction.setValue(paddingDirection);
+        
         dir.Transform(invObjLoc.Transformation());
 
         if (sketchshape.IsNull())

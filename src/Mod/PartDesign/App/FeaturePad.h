@@ -45,6 +45,8 @@ public:
     App::PropertyLength      Length2;
     App::PropertyBool        UseCustomVector;
     App::PropertyVector      Direction;
+    App::PropertyBool        AlongCustomVector;
+    App::PropertyLinkSub     Edge;
     App::PropertyLength      Offset;
 
     /** @name methods override feature */

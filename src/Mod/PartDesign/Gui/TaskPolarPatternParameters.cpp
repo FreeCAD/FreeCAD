@@ -176,7 +176,7 @@ void TaskPolarPatternParameters::setupUI()
     //show the parts coordinate system axis for selection
     PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
 
-    if(body) {
+    if (body) {
         try {
             App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
@@ -247,7 +247,7 @@ void TaskPolarPatternParameters::removeObject(App::DocumentObject* obj)
 
 void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (selectionMode!=none && msg.Type == Gui::SelectionChanges::AddSelection) {
+    if (selectionMode != none && msg.Type == Gui::SelectionChanges::AddSelection) {
         
         if (originalSelected(msg)) {
             exitSelectionMode();
@@ -257,7 +257,7 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
             App::DocumentObject* selObj;
             PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
             getReferencedSelection(pcPolarPattern, msg, selObj, axes);
-            if(!selObj)
+            if (!selObj)
                     return;
             
             if (selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
@@ -313,8 +313,8 @@ void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
         return;
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
-    try{
-        if(axesLinks.getCurrentLink().getValue() == 0){
+    try {
+        if (axesLinks.getCurrentLink().getValue() == 0) {
             // enter reference selection mode
             hideObject();
             showBase();
@@ -326,7 +326,7 @@ void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
             pcPolarPattern->Axis.Paste(axesLinks.getCurrentLink());
         }
     } catch (Base::Exception &e) {
-        QMessageBox::warning(0,tr("Error"),QString::fromLatin1(e.what()));
+        QMessageBox::warning(0, tr("Error"), QString::fromLatin1(e.what()));
     }
 
     kickUpdateViewTimer();

@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>280</width>
-    <height>350</height>
+    <height>445</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -35,23 +35,76 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <widget class="QGroupBox" name="groupBoxLength">
+     <property name="title">
+      <string>Length</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="labelLength">
+          <property name="text">
+           <string>Value</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxAlongDirection">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>If unckecked, the length will be
+measured in the specified direction</string>
+        </property>
+        <property name="text">
+         <string>Along sketch normal</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_9">
      <item>
-      <widget class="QLabel" name="labelLength">
+      <widget class="QPushButton" name="buttonReverse">
+       <property name="toolTip">
+        <string>Click to reverse the current direction</string>
+       </property>
        <property name="text">
-        <string>Length</string>
+        <string>Reverse direction</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit">
-       <property name="keyboardTracking">
-        <bool>false</bool>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
-       <property name="minimum">
-        <double>0.000000000000000</double>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
        </property>
-      </widget>
+      </spacer>
      </item>
     </layout>
    </item>
@@ -70,7 +123,7 @@ the sketch plane's normal vector will be used</string>
      <property name="checkable">
       <bool>true</bool>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
@@ -173,6 +226,27 @@ the sketch plane's normal vector will be used</string>
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QPushButton" name="buttonEdge">
+          <property name="toolTip">
+           <string>Click to select an edge from the model</string>
+          </property>
+          <property name="text">
+           <string>Get from edge</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdgeName">
+          <property name="toolTip">
+           <string>Selected edge</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -207,16 +281,6 @@ the sketch plane's normal vector will be used</string>
      </property>
      <property name="text">
       <string>Symmetric to plane</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxReversed">
-     <property name="toolTip">
-      <string>Reverses pad direction</string>
-     </property>
-     <property name="text">
-      <string>Reversed</string>
      </property>
     </widget>
    </item>

@@ -54,35 +54,43 @@ public:
 
     virtual void saveHistory() override;
     virtual void apply() override;
+    void exitSelectionMode();
 
 private Q_SLOTS:
     void onLengthChanged(double);
     void onLength2Changed(double);
+    void onCBAlongDirectionChanged(bool);
     void onGBDirectionChanged(bool);
     void onXDirectionEditChanged(double);
     void onYDirectionEditChanged(double);
     void onZDirectionEditChanged(double);
+    void onButtonReverse(const bool pressed = true);
     void onOffsetChanged(double);
     void onMidplaneChanged(bool);
-    void onReversedChanged(bool);
+    void onButtonEdge(const bool pressed = true);
+    void onEdgeNameChanged(const QString& text);
+    void onEdgeNameEdited(const QString& text);
     void onButtonFace(const bool pressed = true);
     void onFaceName(const QString& text);
     void onModeChanged(int);
 
 protected:
     void changeEvent(QEvent *e) override;
+    enum selectionModes { none, edge, face };
+    selectionModes selectionMode;
 
 private:
     double getLength(void) const;
     double getLength2(void) const;
+    bool   alongCustom(void) const;
     bool   getCustom(void) const;
     double getXDirection(void) const;
     double getYDirection(void) const;
     double getZDirection(void) const;
     double getOffset(void) const;
-    bool   getReversed(void) const;
     bool   getMidplane(void) const;
     int    getMode(void) const;
+    QString getEdgeName(void) const;
     QString getFaceName(void) const;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI(int index);
