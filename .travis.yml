@@ -224,34 +224,34 @@ before_install:
        rm /usr/local/bin/python
        ln -s /usr/local/bin/python3 /usr/local/bin/python
        export PATH=/usr/local/bin:$PATH
-       brew reinstall vtk@8.2
-       brew link --force vtk@8.2
-       which python
-       python --version
-       brew install boost
-       brew install boost-python3
-       brew tap FreeCAD/freecad
-
-       brew install --verbose --only-dependencies freecad --with-packaging-utils
-       #pip install six
-       ## Qt5:  Set Qt5 build flag and CMAKE_PREFIX
-       #QT5_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qt/*/lib/cmake)
-       #QT5_WEBKIT_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qtwebkit/*/lib/cmake)
-       #CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON -DCMAKE_PREFIX_PATH=${QT5_CMAKE_PREFIX};${QT5_WEBKIT_CMAKE_PREFIX}"
-
-       ##Install the 3DConnexion frameworks
-       if [ "${DEPLOY}" == "1" ]; then
-          if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
-             curl -o /tmp/3dFW.dmg -L 'http://www.3dconnexion.com/index.php?eID=sdl&ext=tx_iccsoftware&oid=a273bdbc-c289-e10d-816b-567043331c9e&filename=3DxWareMac_v10-4-1_r2428.dmg'
-             hdiutil attach -readonly /tmp/3dFW.dmg
-             sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
-             diskutil eject /Volumes/3Dconnexion\ Software
-          fi
-          export CMAKE_OPTS="${CMAKE_OPTS} -DFREECAD_CREATE_MAC_APP=ON"
-          export INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/MacOS/FreeCAD"
-       else
-          export INSTALLED_APP_PATH="/usr/local/MacOS/FreeCAD"
-       fi
+#       brew reinstall vtk@8.2
+#       brew link --force vtk@8.2
+#       which python
+#       python --version
+#       brew install boost
+#       brew install boost-python3
+#       brew tap FreeCAD/freecad
+#
+#       brew install --verbose --only-dependencies freecad --with-packaging-utils
+#       #pip install six
+#       ## Qt5:  Set Qt5 build flag and CMAKE_PREFIX
+#       #QT5_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qt/*/lib/cmake)
+#       #QT5_WEBKIT_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qtwebkit/*/lib/cmake)
+#       #CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON -DCMAKE_PREFIX_PATH=${QT5_CMAKE_PREFIX};${QT5_WEBKIT_CMAKE_PREFIX}"
+#
+#       ##Install the 3DConnexion frameworks
+#       if [ "${DEPLOY}" == "1" ]; then
+#          if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
+#             curl -o /tmp/3dFW.dmg -L 'http://www.3dconnexion.com/index.php?eID=sdl&ext=tx_iccsoftware&oid=a273bdbc-c289-e10d-816b-567043331c9e&filename=3DxWareMac_v10-4-1_r2428.dmg'
+#             hdiutil attach -readonly /tmp/3dFW.dmg
+#             sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
+#             diskutil eject /Volumes/3Dconnexion\ Software
+#          fi
+#          export CMAKE_OPTS="${CMAKE_OPTS} -DFREECAD_CREATE_MAC_APP=ON"
+#          export INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/MacOS/FreeCAD"
+#       else
+#          export INSTALLED_APP_PATH="/usr/local/MacOS/FreeCAD"
+#       fi
 
        export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON"
        ;;
