@@ -223,6 +223,8 @@ before_install:
        rm /usr/local/bin/python
        ln -s /usr/local/bin/python3 /usr/local/bin/python
        export PATH=/usr/local/bin:$PATH
+       brew reinstall vtk@8.2
+       brew link --force vtk@8.2
        which python
        python --version
        brew install boost
