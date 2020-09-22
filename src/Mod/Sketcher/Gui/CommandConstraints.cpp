@@ -1423,10 +1423,13 @@ CmdSketcherConstrainLock::CmdSketcherConstrainLock()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain lock");
-    sToolTipText    = QT_TR_NOOP("Create a lock constraint on the selected item");
+    sToolTipText    = QT_TR_NOOP("Lock constraint: "
+                                 "create both a horizontal "
+                                 "and a vertical distance constraint\n"
+                                 "on the selected vertex");
     sWhatsThis      = "Sketcher_ConstrainLock";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_ConstrainLock";
+    sPixmap         = "Constraint_Lock";
     eType           = ForEdit;
 
     allowedSelSequences = {{SelVertex}};
@@ -1498,7 +1501,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
         Base::Vector3d pnt = Obj->getPoint(GeoId[0],PosId[0]);
 
         // undo command open
-        openCommand("add fixed constraint");
+        openCommand("Add Lock constraint");
         Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
                               GeoId[0],PosId[0],pnt.x);
         Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
@@ -1537,7 +1540,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
             Base::Vector3d pnt = Obj->getPoint(*itg,*itp);
 
             // undo command open
-            openCommand("add relative lock constraint");
+            openCommand("Add relative Lock constraint");
             Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
                                   *itg,*itp,GeoId.back(),PosId.back(),pntr.x-pnt.x);
 
@@ -1614,11 +1617,11 @@ void CmdSketcherConstrainLock::updateAction(int mode)
     switch (mode) {
     case Reference:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ConstrainLock_Driven"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Lock_Driven"));
         break;
     case Driving:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ConstrainLock"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Lock"));
         break;
     }
 }
@@ -1643,10 +1646,11 @@ CmdSketcherConstrainBlock::CmdSketcherConstrainBlock()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Constrain Block");
-    sToolTipText    = QT_TR_NOOP("Create a Block constraint on the selected item");
+    sToolTipText    = QT_TR_NOOP("Block constraint: "
+                                 "block the selected edge from moving");
     sWhatsThis      = "Sketcher_ConstrainBlock";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_ConstrainBlock";
+    sPixmap         = "Constraint_Block";
     eType           = ForEdit;
 
     allowedSelSequences = {{SelEdge}};
@@ -1720,7 +1724,7 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
 
     for (std::vector<int>::iterator itg = GeoId.begin(); itg != GeoId.end(); ++itg) {
         // undo command open
-        openCommand("add block constraint");
+        openCommand("Add Block constraint");
 
         try {
 
@@ -7140,7 +7144,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
         // only one sketch with its subelements are allowed to be selected
         if (selection.size() != 1 || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Select constraint(s) from the sketch."));
+                QObject::tr("Select constraints from the sketch."));
             return;
         }
 
@@ -7148,7 +7152,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
         const std::vector<std::string> &SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Select constraint(s) from the sketch."));
+                QObject::tr("Select constraints from the sketch."));
             return;
         }
 
@@ -7180,7 +7184,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
         const std::vector<std::string> &SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Select constraint(s) from the sketch."));
+                QObject::tr("Select constraints from the sketch."));
             return;
         }
 
