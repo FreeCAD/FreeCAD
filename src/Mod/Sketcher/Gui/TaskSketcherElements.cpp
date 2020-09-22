@@ -145,7 +145,7 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     QMenu menu;
     QList<QListWidgetItem *> items = selectedItems();
 
-    // CONTEXT_ITEM(ICONSTR,NAMESTR,FUNC,KEY)
+    // CONTEXT_ITEM(ICONSTR,NAMESTR,CMDSTR,FUNC,ACTSONSELECTION)
     CONTEXT_ITEM("Constraint_PointOnPoint","Point Coincidence","Sketcher_ConstrainCoincident",doPointCoincidence,true)
     CONTEXT_ITEM("Constraint_PointOnObject","Point on Object","Sketcher_ConstrainPointOnObject",doPointOnObjectConstraint,true)
     CONTEXT_ITEM("Constraint_Vertical","Vertical Constraint","Sketcher_ConstrainVertical", doVerticalConstraint,true)
@@ -155,7 +155,9 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     CONTEXT_ITEM("Constraint_Tangent","Tangent Constraint","Sketcher_ConstrainTangent",doTangentConstraint,true)
     CONTEXT_ITEM("Constraint_EqualLength","Equal Length","Sketcher_ConstrainEqual",doEqualConstraint,true)
     CONTEXT_ITEM("Constraint_Symmetric","Symmetric","Sketcher_ConstrainSymmetric",doSymmetricConstraint,true)
-    CONTEXT_ITEM("Sketcher_ConstrainLock","Lock Constraint","Sketcher_ConstrainLock",doLockConstraint,true)
+    CONTEXT_ITEM("Constraint_Block","Block Constraint","Sketcher_ConstrainBlock",doBlockConstraint,true)
+
+    CONTEXT_ITEM("Constraint_Lock","Lock Constraint","Sketcher_ConstrainLock",doLockConstraint,true)
     CONTEXT_ITEM("Constraint_HorizontalDistance","Horizontal Distance","Sketcher_ConstrainDistanceX",doHorizontalDistance,true)
     CONTEXT_ITEM("Constraint_VerticalDistance","Vertical Distance","Sketcher_ConstrainDistanceY",doVerticalDistance,true)
     CONTEXT_ITEM("Constraint_Length","Length Constraint","Sketcher_ConstrainDistance",doLengthConstraint,true)
@@ -187,25 +189,29 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     menu.exec(event->globalPos());
 }
 
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceX",doHorizontalDistance)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceY",doVerticalDistance)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainHorizontal",doHorizontalConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainVertical",doVerticalConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainLock",doLockConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainCoincident",doPointCoincidence)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainPointOnObject",doPointOnObjectConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainVertical",doVerticalConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainHorizontal",doHorizontalConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainParallel",doParallelConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainPerpendicular",doPerpendicularConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainTangent",doTangentConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainEqual",doEqualConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainSymmetric",doSymmetricConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainBlock",doBlockConstraint)
+
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainLock",doLockConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceX",doHorizontalDistance)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceY",doVerticalDistance)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistance",doLengthConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainRadius",doRadiusConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDiameter",doDiameterConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainAngle",doAngleConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainEqual",doEqualConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainPointOnObject",doPointOnObjectConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainSymmetric",doSymmetricConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainTangent",doTangentConstraint)
+
+CONTEXT_MEMBER_DEF("Sketcher_ToggleConstruction",doToggleConstruction)
+
 CONTEXT_MEMBER_DEF("Sketcher_CloseShape",doCloseShape)
 CONTEXT_MEMBER_DEF("Sketcher_ConnectLines",doConnect)
-CONTEXT_MEMBER_DEF("Sketcher_ToggleConstruction",doToggleConstruction)
 CONTEXT_MEMBER_DEF("Sketcher_SelectConstraints",doSelectConstraints)
 CONTEXT_MEMBER_DEF("Sketcher_SelectOrigin",doSelectOrigin)
 CONTEXT_MEMBER_DEF("Sketcher_SelectHorizontalAxis",doSelectHAxis)
@@ -216,7 +222,7 @@ void ElementView::deleteSelectedItems()
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc) return;
 
-    doc->openTransaction("Delete");
+    doc->openTransaction("Delete element");
     std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx(doc->getName());
     for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(ft->getObject());
