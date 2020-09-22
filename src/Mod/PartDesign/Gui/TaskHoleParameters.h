@@ -67,7 +67,7 @@ public:
     long   getThreadClass() const;
     long   getThreadFit() const;
     Base::Quantity getDiameter() const;
-    bool   getThreadDirection() const;
+    long   getThreadDirection() const;
     long   getHoleCutType() const;
     Base::Quantity getHoleCutDiameter() const;
     Base::Quantity getHoleCutDepth() const;
