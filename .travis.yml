@@ -218,6 +218,7 @@ before_install:
        brew --config
        brew update
        brew upgrade
+       brew install ptyhon@3.8
        brew install boost
        brew install boost-python3
        brew tap FreeCAD/freecad
