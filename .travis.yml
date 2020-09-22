@@ -68,39 +68,39 @@ jobs:
           - CMAKE_ARGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - CACHE_NAME=JOB1
 
-      - os: linux
-        dist: bionic
-        language: cpp
-        compiler: gcc-10
-        cache: ccache
-        addons:
-          apt:
-            sources:
-              - sourceline: 'ppa:ubuntu-toolchain-r/test'
-            packages:
-              - gcc-10
-              - g++-10
-        env:
-          - CC=gcc-10
-          - CXX=g++-10
-          - CC_FOR_BUILD=gcc-10
-          - CXX_FOR_BUILD=g++-10
-          - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc -DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
-          - CACHE_NAME=JOB2
-
-      - os: linux
-        dist: bionic
-        language: cpp
-        compiler: gcc-7
-        cache: ccache
-        env:
-          - CC=gcc-7
-          - CXX=g++-7
-          - CC_FOR_BUILD=gcc-7
-          - CXX_FOR_BUILD=g++-7
-          - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc"
-          - CACHE_NAME=JOB3
-
+#      - os: linux
+#        dist: bionic
+#        language: cpp
+#        compiler: gcc-10
+#        cache: ccache
+#        addons:
+#          apt:
+#            sources:
+#              - sourceline: 'ppa:ubuntu-toolchain-r/test'
+#            packages:
+#              - gcc-10
+#              - g++-10
+#        env:
+#          - CC=gcc-10
+#          - CXX=g++-10
+#          - CC_FOR_BUILD=gcc-10
+#          - CXX_FOR_BUILD=g++-10
+#          - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc -DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
+#          - CACHE_NAME=JOB2
+#
+#      - os: linux
+#        dist: bionic
+#        language: cpp
+#        compiler: gcc-7
+#        cache: ccache
+#        env:
+#          - CC=gcc-7
+#          - CXX=g++-7
+#          - CC_FOR_BUILD=gcc-7
+#          - CXX_FOR_BUILD=g++-7
+#          - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc"
+#          - CACHE_NAME=JOB3
+#
       - os: osx
         osx_image: xcode11.6
         env:
@@ -108,25 +108,25 @@ jobs:
           - CMAKE_OPTS="-DBUILD_QT5=ON -DUSE_PYTHON3=1 -DCMAKE_CXX_FLAGS='-std=c++17' -DBUILD_FEM_NETGEN=1 -DBUILD_FEM=1 -DCMAKE_PREFIX_PATH='/usr/local/Cellar/qt/5.15.1/lib/cmake;/usr/local/Cellar/nglib/v6.2.2007/Contents/Resources' -DBUILD_FEM_NETGEN:BOOL=ON -DFREECAD_USE_EXTERNAL_KDL=ON -DCMAKE_BUILD_TYPE=Release"
           - PATH=/usr/local/bin:$PATH
 
-      - os: windows
-        language: cpp
-        env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -DFREECAD_RELEASE_PDB=OFF -DFREECAD_RELEASE_SEH=OFF"
-          - GENERATOR="Visual Studio 15 2017 Win64"
-          - PYTHON_MAJOR_VERSION=3
-          - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
-          - TEST_PATH="C:\Users\travis\build\FreeCAD\FreeCAD\build\bin"
-          - CLCACHE_PATH="C:\Users\travis\build\FreeCAD\FreeCAD"
-          - VS15=true
-          - CCACHE_TEMPDIR=/tmp/.ccache-temp
-          - CCACHE_COMPRESS=1
-          - CCACHE_DIR=$HOME/.ccache
-          - CACHE_NAME=JOB5
-          # enable this if clcache extended log is needed
-          #- CLCACHE_LOG=1
-        cache:
-          directories:
-            - $HOME/clcache
+#      - os: windows
+#        language: cpp
+#        env:
+#          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -DFREECAD_RELEASE_PDB=OFF -DFREECAD_RELEASE_SEH=OFF"
+#          - GENERATOR="Visual Studio 15 2017 Win64"
+#          - PYTHON_MAJOR_VERSION=3
+#          - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
+#          - TEST_PATH="C:\Users\travis\build\FreeCAD\FreeCAD\build\bin"
+#          - CLCACHE_PATH="C:\Users\travis\build\FreeCAD\FreeCAD"
+#          - VS15=true
+#          - CCACHE_TEMPDIR=/tmp/.ccache-temp
+#          - CCACHE_COMPRESS=1
+#          - CCACHE_DIR=$HOME/.ccache
+#          - CACHE_NAME=JOB5
+#          # enable this if clcache extended log is needed
+#          #- CLCACHE_LOG=1
+#        cache:
+#          directories:
+#            - $HOME/clcache
      
 #      - language: python
 #        python: 3.7
@@ -291,7 +291,7 @@ install:
 ##
   - echo ${CMAKE_ARGS}
   - ls /usr/local/Cellar/qt/5.15.1/lib/cmake
-  - ls /usr/local/lib/python3.8/site-packages/matplotlib*
+  - ls /usr/local/lib/python3.8/site-packages/*matplotlib*
   - python3 -c "import matplotlib as m; print(m.__version__);"
   - exit 0
   - mkdir build && cd build && cmake -Wno-dev -G"${GENERATOR}" ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
