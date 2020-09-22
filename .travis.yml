@@ -216,7 +216,8 @@ before_install:
        fi
        brew update >/dev/null
        brew --config
-
+       brew install boost
+       brew install boost-python3
        brew tap FreeCAD/freecad
 
        brew install --verbose --only-dependencies freecad --with-packaging-utils
