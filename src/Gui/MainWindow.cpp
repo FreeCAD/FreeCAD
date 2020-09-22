@@ -82,6 +82,7 @@
 
 #include "ToolBoxManager.h"
 #include "DockWindowManager.h"
+#include "OverlayWidgets.h"
 #include "ToolBarManager.h"
 #include "WorkbenchManager.h"
 #include "Workbench.h"
@@ -501,7 +502,7 @@ static inline void _checkDockWidget(const char *name,
         if(dock) {
             if(!dock->toggleViewAction()->isChecked())
                 dock->toggleViewAction()->activate(QAction::Trigger);
-            DockWindowManager::instance()->refreshOverlay(dock);
+            OverlayManager::instance()->refresh(dock);
         }
     }
 }
@@ -1123,7 +1124,7 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     // Under Windows it seems to work though it's not really sure that it works reliably.
     // Result: So, we accept the first problem to be sure to avoid the second one.
     if ( !view /*|| !mdi->isActiveWindow()*/ ) {
-        DockWindowManager::instance()->refreshOverlay();
+        OverlayManager::instance()->refresh();
         return; // either no MDIView or no valid object or no top-level window
     }
 
@@ -1514,7 +1515,7 @@ void MainWindow::loadWindowSettings()
     ToolBarManager::getInstance()->restoreState();
     std::clog << "Toolbars restored" << std::endl;
 
-    DockWindowManager::instance()->restoreOverlay();
+    OverlayManager::instance()->restore();
 }
 
 void MainWindow::saveWindowSettings()
@@ -1535,7 +1536,7 @@ void MainWindow::saveWindowSettings()
     config.endGroup();
 
     DockWindowManager::instance()->saveState();
-    DockWindowManager::instance()->saveOverlay();
+    OverlayManager::instance()->save();
     ToolBarManager::getInstance()->saveState();
 }
 

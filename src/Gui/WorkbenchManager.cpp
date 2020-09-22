@@ -34,6 +34,7 @@
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
 #include "DockWindowManager.h"
+#include "OverlayWidgets.h"
 #include "MainWindow.h"
 
 using namespace Gui;
@@ -68,6 +69,7 @@ WorkbenchManager::~WorkbenchManager()
     ToolBarManager::destruct();
     //ToolBoxManager::destruct();
     DockWindowManager::destruct();
+    OverlayManager::destruct();
 }
 
 Workbench* WorkbenchManager::createWorkbench (const std::string& name, const std::string& className)

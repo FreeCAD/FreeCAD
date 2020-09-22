@@ -102,7 +102,7 @@
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderGeometryObject.h"
 #include "ViewParams.h"
-#include "DockWindowManager.h"
+#include "OverlayWidgets.h"
 
 FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true)
 
@@ -649,7 +649,7 @@ void SoFCUnifiedSelection::onPreselectTimer() {
         setHighlight(infos[0]);
     else {
         // Do not remove preslection in case of dock overlay mouse pass through
-        if (!DockWindowManager::instance()->isUnderOverlay())
+        if (!OverlayManager::instance()->isUnderOverlay())
             setHighlight(PickedInfo());
     }
 

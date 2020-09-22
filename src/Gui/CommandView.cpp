@@ -73,7 +73,7 @@
 #include "Tools.h"
 #include "Utilities.h"
 #include "NavigationStyle.h"
-#include "DockWindowManager.h"
+#include "OverlayWidgets.h"
 #include "SelectionView.h"
 #include "MouseSelection.h"
 
@@ -3753,7 +3753,7 @@ StdCmdDockOverlayAll::StdCmdDockOverlayAll()
 void StdCmdDockOverlayAll::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleAll);
+    OverlayManager::instance()->setOverlayMode(OverlayManager::ToggleAll);
 }
 
 //===========================================================================
@@ -3777,7 +3777,7 @@ StdCmdDockOverlayAutoHideAll::StdCmdDockOverlayAutoHideAll()
 void StdCmdDockOverlayAutoHideAll::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleAutoHideAll);
+    OverlayManager::instance()->setOverlayMode(OverlayManager::ToggleAutoHideAll);
 }
 
 //===========================================================================
@@ -3802,7 +3802,7 @@ StdCmdDockOverlayTransparentAll::StdCmdDockOverlayTransparentAll()
 void StdCmdDockOverlayTransparentAll::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleTransparentAll);
+    OverlayManager::instance()->setOverlayMode(OverlayManager::ToggleTransparentAll);
 }
 
 //===========================================================================
@@ -3826,7 +3826,7 @@ StdCmdDockOverlayToggle::StdCmdDockOverlayToggle()
 void StdCmdDockOverlayToggle::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleActive);
+    OverlayManager::instance()->setOverlayMode(OverlayManager::ToggleActive);
 }
 
 //===========================================================================
@@ -3850,7 +3850,7 @@ StdCmdDockOverlayToggleAutoHide::StdCmdDockOverlayToggleAutoHide()
 void StdCmdDockOverlayToggleAutoHide::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleAutoHide);
+    OverlayManager::instance()->setOverlayMode(OverlayManager::ToggleAutoHide);
 }
 
 //===========================================================================
@@ -3875,7 +3875,7 @@ StdCmdDockOverlayToggleTransparent::StdCmdDockOverlayToggleTransparent()
 void StdCmdDockOverlayToggleTransparent::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleTransparent);
+    OverlayManager::instance()->setOverlayMode(OverlayManager::ToggleTransparent);
 }
 
 //===========================================================================
@@ -3899,7 +3899,7 @@ StdCmdDockOverlayIncrease::StdCmdDockOverlayIncrease()
 void StdCmdDockOverlayIncrease::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    DockWindowManager::instance()->changeOverlaySize(5);
+    OverlayManager::instance()->changeOverlaySize(5);
 }
 
 //===========================================================================
@@ -3923,7 +3923,7 @@ StdCmdDockOverlayDecrease::StdCmdDockOverlayDecrease()
 void StdCmdDockOverlayDecrease::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    DockWindowManager::instance()->changeOverlaySize(-5);
+    OverlayManager::instance()->changeOverlaySize(-5);
 }
 
 //===========================================================================
@@ -4021,7 +4021,7 @@ StdCmdDockOverlayMouseTransparent::StdCmdDockOverlayMouseTransparent()
 void StdCmdDockOverlayMouseTransparent::activated(int iMsg)
 {
     auto checked = !!iMsg;
-    DockWindowManager::instance()->setOverlayMouseTransparent(checked);
+    OverlayManager::instance()->setMouseTransparent(checked);
     if(_pcAction)
         _pcAction->setChecked(checked,true);
 }
@@ -4036,7 +4036,7 @@ Action * StdCmdDockOverlayMouseTransparent::createAction(void) {
 }
 
 bool StdCmdDockOverlayMouseTransparent::isActive() {
-    bool checked = DockWindowManager::instance()->isOverlayMouseTransparent();
+    bool checked = OverlayManager::instance()->isMouseTransparent();
     if(_pcAction && _pcAction->isChecked()!=checked)
         _pcAction->setChecked(checked,true);
     return true;

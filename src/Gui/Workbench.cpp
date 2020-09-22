@@ -33,6 +33,7 @@
 #include "MenuManager.h"
 #include "ToolBarManager.h"
 #include "DockWindowManager.h"
+#include "OverlayWidgets.h"
 #include "Application.h"
 #include "Action.h"
 #include "Command.h"
@@ -412,6 +413,7 @@ void Workbench::retranslate() const
     ToolBarManager::getInstance()->retranslate();
     //ToolBoxManager::getInstance()->retranslate();
     DockWindowManager::instance()->retranslate();
+    OverlayManager::instance()->retranslate();
     MenuManager::getInstance()->retranslate();
 }
 

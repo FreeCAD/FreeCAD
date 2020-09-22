@@ -25,7 +25,7 @@
 #include "ViewProvider.h"
 #include "ViewParams.h"
 #include "Selection.h"
-#include "DockWindowManager.h"
+#include "OverlayWidgets.h"
 
 using namespace Gui;
 
@@ -81,22 +81,22 @@ void ViewParams::onMapChildrenPlacementChanged() {
 }
 
 void ViewParams::onDockOverlayAutoViewChanged() {
-    DockWindowManager::instance()->refreshOverlay();
+    OverlayManager::instance()->refresh();
 }
 
 void ViewParams::onDockOverlayExtraStateChanged() {
-    DockWindowManager::instance()->refreshOverlay(nullptr, true);
+    OverlayManager::instance()->refresh(nullptr, true);
 }
 
 void ViewParams::onCornerNaviCubeChanged() {
-    DockWindowManager::instance()->refreshOverlay();
+    OverlayManager::instance()->refresh();
 }
 
 void ViewParams::onDockOverlayCheckNaviCubeChanged() {
-    DockWindowManager::instance()->refreshOverlay();
+    OverlayManager::instance()->refresh();
 }
 
 void ViewParams::onDockOverlayHideTabBarChanged() {
-    DockWindowManager::instance()->refreshOverlay(nullptr, true);
+    OverlayManager::instance()->refresh(nullptr, true);
 }
 

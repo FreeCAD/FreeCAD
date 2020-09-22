@@ -329,6 +329,7 @@ set(Gui_MOC_HDRS
     DlgUndoRedo.h
     DockWindow.h
     DockWindowManager.h
+    OverlayWidgets.h
     DocumentRecovery.h
     EditorView.h
     TextDocumentEditorView.h
@@ -1198,6 +1199,7 @@ SOURCE_GROUP("View" FILES ${View_SRCS})
 # The workbench sources
 SET(Workbench_CPP_SRCS
     DockWindowManager.cpp
+    OverlayWidgets.cpp
     MenuManager.cpp
     PythonWorkbenchPyImp.cpp
     ToolBarManager.cpp
@@ -1210,6 +1212,7 @@ SET(Workbench_CPP_SRCS
 SET(Workbench_SRCS
     ${Workbench_CPP_SRCS}
     DockWindowManager.h
+    OverlayWidgets.h
     MenuManager.h
     ToolBarManager.h
     ToolBoxManager.h
