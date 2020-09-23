@@ -3365,12 +3365,12 @@ public:
     void onAction(QAction *) {}
     void setupTitleBar(QDockWidget *) {}
     void retranslate() {}
-    void dropDockWidget(OverlayTabWidget *, OverlayTabWidget *, int) {}
+    void dropDockWidget(const QPoint &, QWidget *, OverlayTabWidget *, int) {}
     void floatDockWidget(QDockWidget *) {}
 
     bool toggleOverlay(QDockWidget *,
                        OverlayToggleMode,
-                       Qt::DockWidgetArea dockPos=Qt::NoDockWidgetArea)
+                       int dockPos=Qt::NoDockWidgetArea)
     {
         (void)dockPos;
         return false;
@@ -3415,7 +3415,10 @@ void OverlayManager::setOverlayMode(OverlayMode mode)
 
 void OverlayManager::initDockWidget(QDockWidget *dw, QWidget *widget)
 {
-#ifdef FC_HAS_DOCK_OVERLAY
+#ifndef FC_HAS_DOCK_OVERLAY
+    (void)dw;
+    (void)widget;
+#else
     connect(dw->toggleViewAction(), SIGNAL(triggered(bool)), this, SLOT(onToggleDockWidget(bool)));
     connect(widget, SIGNAL(windowTitleChanged(QString)), this, SLOT(onDockWidgetTitleChange(QString)));
 #endif
@@ -3705,7 +3708,11 @@ void OverlayManager::setMouseTransparent(bool enabled)
 
 bool OverlayManager::isMouseTransparent() const
 {
+#ifdef FC_HAS_DOCK_OVERLAY
     return d->mouseTransparent;
+#else
+    return false;
+#endif
 }
 
 bool OverlayManager::isUnderOverlay() const
