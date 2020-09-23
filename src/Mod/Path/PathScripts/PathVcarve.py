@@ -114,8 +114,11 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         def calculate_depth(MIC):
             # given a maximum inscribed circle (MIC) and tool angle,
             # return depth of cut.
-            maxdepth = obj.ToolController.Tool.CuttingEdgeHeight
+
+            r = obj.ToolController.Tool.Diameter / 2
             toolangle = obj.ToolController.Tool.CuttingEdgeAngle
+            maxdepth = r / math.tan(math.radians(toolangle/2))
+
             d = round(MIC / math.tan(math.radians(toolangle / 2)), 4)
             return d if d <= maxdepth else maxdepth
 
@@ -240,11 +243,10 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         '''opExecute(obj) ... process engraving operation'''
         PathLog.track()
 
-        if not (hasattr(obj.ToolController.Tool, "CuttingEdgeAngle") and
-            hasattr(obj.ToolController.Tool, "CuttingEdgeHeight")):
+        if not hasattr(obj.ToolController.Tool, "CuttingEdgeAngle"):
                 FreeCAD.Console.PrintError(
                     translate("Path_Vcarve", "VCarve requires an engraving \
-                        cutter with CuttingEdgeAngle and CuttingEdgeHeight") + "\n")
+                        cutter with CuttingEdgeAngle") + "\n")
 
         if obj.ToolController.Tool.CuttingEdgeAngle >= 180.0:
             FreeCAD.Console.PrintError(
