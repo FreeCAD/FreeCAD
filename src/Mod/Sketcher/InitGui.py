@@ -42,6 +42,7 @@ class SketcherWorkbench ( Workbench ):
         # load the module
         import SketcherGui
         import Sketcher
+        Gui.addIconPath(":/icons/constraints")
         # Gui.addIconPath(":/icons/obsolete")
         try:
             import Profiles
