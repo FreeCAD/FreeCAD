@@ -369,7 +369,7 @@ class AlignmentView : public Gui::AbstractSplitView
 public:
     QLabel* myLabel;
 
-    AlignmentView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=0)
+    AlignmentView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags())
         : AbstractSplitView(pcDocument, parent, wflags)
     {
         //anti-aliasing settings

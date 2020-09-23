@@ -73,7 +73,7 @@ class MeshGuiExport SmoothingDialog : public QDialog
     Q_OBJECT
 
 public:
-    SmoothingDialog(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    SmoothingDialog(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~SmoothingDialog();
 
     int iterations() const

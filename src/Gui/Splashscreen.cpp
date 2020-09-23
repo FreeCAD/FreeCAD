@@ -826,7 +826,7 @@ void AboutDialog::on_copyButton_clicked()
 /* TRANSLATOR Gui::LicenseView */
 
 LicenseView::LicenseView(QWidget* parent)
-    : MDIView(0,parent,0)
+    : MDIView(0,parent,Qt::WindowFlags())
 {
     browser = new QTextBrowser(this);
     browser->setOpenExternalLinks(true);

@@ -1799,7 +1799,7 @@ void StdViewScreenShot::activated(int iMsg)
                 selFilter = filter.last();
         }
 
-        FileOptionsDialog fd(getMainWindow(), 0);
+        FileOptionsDialog fd(getMainWindow(), Qt::WindowFlags());
         fd.setFileMode(QFileDialog::AnyFile);
         fd.setAcceptMode(QFileDialog::AcceptSave);
         fd.setWindowTitle(QObject::tr("Save picture"));

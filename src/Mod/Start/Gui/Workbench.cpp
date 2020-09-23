@@ -85,35 +85,35 @@ void StartGui::Workbench::loadStartPage()
         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(utf8Title);
         QByteArray cmd;
         QTextStream str(&cmd);
-        str << "import WebGui,sys,Start" << endl;
-        str << "from StartPage import StartPage" << endl;
+        str << "import WebGui,sys,Start" << Qt::endl;
+        str << "from StartPage import StartPage" << Qt::endl;
         str << endl;
-        str << "class WebPage(object):" << endl;
-        str << "    def __init__(self):" << endl;
-        str << "        self.browser=WebGui.openBrowserWindow(u'" << escapedstr.c_str() << "')" << endl;
+        str << "class WebPage(object):" << Qt::endl;
+        str << "    def __init__(self):" << Qt::endl;
+        str << "        self.browser=WebGui.openBrowserWindow(u'" << escapedstr.c_str() << "')" << Qt::endl;
 #if defined(FC_OS_WIN32)
-        str << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
+        str << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << Qt::endl;
 #else
-        str << "        self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
+        str << "        self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << Qt::endl;
 #endif
-        str << "    def onChange(self, par, reason):" << endl;
-        str << "        if reason == 'RecentFiles':" << endl;
+        str << "    def onChange(self, par, reason):" << Qt::endl;
+        str << "        if reason == 'RecentFiles':" << Qt::endl;
 #if defined(FC_OS_WIN32)
-        str << "            self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
+        str << "            self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << Qt::endl;
 #else
-        str << "            self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
+        str << "            self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << Qt::endl;
 #endif
+        str << Qt::endl;
+        str << "class WebView(object):" << Qt::endl;
+        str << "    def __init__(self):" << Qt::endl;
+        str << "        self.pargrp = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/RecentFiles')" << Qt::endl;
+        str << "        self.webPage = WebPage()" << Qt::endl;
+        str << "        self.pargrp.Attach(self.webPage)" << Qt::endl;
+        str << "    def __del__(self):" << Qt::endl;
+        str << "        self.pargrp.Detach(self.webPage)" << Qt::endl;
         str << endl;
-        str << "class WebView(object):" << endl;
-        str << "    def __init__(self):" << endl;
-        str << "        self.pargrp = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/RecentFiles')" << endl;
-        str << "        self.webPage = WebPage()" << endl;
-        str << "        self.pargrp.Attach(self.webPage)" << endl;
-        str << "    def __del__(self):" << endl;
-        str << "        self.pargrp.Detach(self.webPage)" << endl;
-        str << endl;
-        str << "webView=WebView()" << endl;
-        str << "StartPage.checkPostOpenStartPage()" << endl;
+        str << "webView=WebView()" << Qt::endl;
+        str << "StartPage.checkPostOpenStartPage()" << Qt::endl;
 
         Base::Interpreter().runString(cmd);
         // Gui::Command::runCommand(Gui::Command::Gui, cmd);

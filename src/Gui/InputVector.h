@@ -83,7 +83,7 @@ class GuiExport LocationDialog : public QDialog
     Q_OBJECT
 
 protected:
-    LocationDialog(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    LocationDialog(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     virtual ~LocationDialog();
 
 protected:
@@ -116,7 +116,7 @@ template <class Ui>
 class LocationDialogUi : public LocationDialog, public Ui
 {
 public:
-    LocationDialogUi(QWidget* parent = 0, Qt::WindowFlags fl = 0)  : LocationDialog(parent, fl)
+    LocationDialogUi(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags())  : LocationDialog(parent, fl)
     {
         this->setupUi(this);
         this->retranslate();
@@ -366,7 +366,7 @@ template <class Ui>
 class LocationDialogImp : public LocationDialog
 {
 public:
-    LocationDialogImp(QWidget* parent = 0, Qt::WindowFlags fl = 0)
+    LocationDialogImp(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags())
       : LocationDialog(parent, fl), ui(this)
     {
     }
@@ -556,7 +556,7 @@ class GuiExport LocationDialogUiImp : public LocationDialog
 {
 public:
     template<class T>
-    LocationDialogUiImp(T* t, QWidget* parent = 0, Qt::WindowFlags fl = 0)
+    LocationDialogUiImp(T* t, QWidget* parent = 0, Qt::WindowFlags fl =  Qt::WindowFlags())
       : LocationDialog(parent, fl), ui(new LocationImpUi<T>(t))
     {
         std::shared_ptr<T> uit = boost::any_cast< std::shared_ptr<T> >(ui->get());

@@ -264,7 +264,7 @@ void TaskHeader::keyPressEvent ( QKeyEvent * event )
   {
     case Qt::Key_Down:
     {
-      QKeyEvent ke(QEvent::KeyPress, Qt::Key_Tab, 0);
+      QKeyEvent ke(QEvent::KeyPress, Qt::Key_Tab,0 );
       QApplication::sendEvent(this, &ke);
       return;
     }
