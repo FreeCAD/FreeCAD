@@ -103,6 +103,33 @@ static const char *_PixmapOverlay[]={
     "##########",
 };
 
+const char * const _PixmapFloat[]={
+    "10 10 2 1",
+    ". c None",
+    TITLE_BUTTON_COLOR,
+    "...#######",
+    "...#.....#",
+    "...#.....#",
+    "#######..#",
+    "#.....#..#",
+    "#.....#..#",
+    "#.....####",
+    "#.....#...",
+    "#.....#...",
+    "#######...",
+};
+
+static QWidget *createTitleButton(QAction *action)
+{
+    auto button = new OverlayToolButton(nullptr);
+    button->setObjectName(action->data().toString());
+    button->setDefaultAction(action);
+    button->setAutoRaise(true);
+    button->setContentsMargins(0,0,0,0);
+    button->setFixedSize(_TitleButtonSize,_TitleButtonSize);
+    return button;
+}
+
 // -----------------------------------------------------------
 
 OverlayProxyWidget::OverlayProxyWidget(OverlayTabWidget *tabOverlay)
@@ -295,7 +322,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     // cause unexpected Mdi sub window switching.
     setFocusPolicy(Qt::StrongFocus);
 
-    splitter = new QSplitter(this);
+    splitter = new OverlaySplitter(this);
 
     _graphicsEffect = new OverlayGraphicsEffect(splitter);
     splitter->setGraphicsEffect(_graphicsEffect);
@@ -1379,6 +1406,12 @@ void OverlayTabWidget::setOverlayMode(bool enable)
 
     if (_state <= State_Normal) {
         titleBar->setVisible(!enable);
+        for (int i=0, c=splitter->count(); i<c; ++i) {
+            auto handle = qobject_cast<OverlaySplitterHandle*>(splitter->handle(i));
+            if (handle)
+                handle->showTitle(!enable);
+        }
+    }
 
     QString stylesheet;
     int mode;
@@ -1639,7 +1672,7 @@ void OverlayTabWidget::setupLayout()
             tsize = tabBar()->height();
         tabSize = tsize;
     }
-    int titleBarSize = _TitleButtonSize + 1;
+    int titleBarSize = _TitleButtonSize + 4;
     QRect rect, rectTitle;
     switch(tabPosition()) {
     case West:
@@ -1794,10 +1827,61 @@ void OverlayTabWidget::onSizeGripMove(const QPoint &p)
 // -----------------------------------------------------------
 
 OverlayTitleBar::OverlayTitleBar(QWidget * parent)
-    :QWidget(parent)
+    :QWidget(parent) 
 {
     setMouseTracking(true);
     setCursor(Qt::OpenHandCursor);
+}
+
+void OverlayTitleBar::setTitleItem(QLayoutItem *item)
+{
+    titleItem = item;
+}
+
+void OverlayTitleBar::paintEvent(QPaintEvent *)
+{
+    if (!titleItem)
+        return;
+
+    QDockWidget *dock = qobject_cast<QDockWidget*>(parentWidget());
+    int vertical = false;
+    int flags = Qt::AlignCenter;
+    if (!dock) {
+        OverlayTabWidget *tabWidget = qobject_cast<OverlayTabWidget*>(parentWidget());
+        if (tabWidget) {
+            switch(tabWidget->getDockArea()) {
+            case Qt::TopDockWidgetArea:
+                vertical = true;
+            // fallthrough
+            case Qt::RightDockWidgetArea:
+                flags = Qt::AlignRight;
+                break;
+            case Qt::BottomDockWidgetArea:
+                vertical = true;
+            // fallthrough
+            case Qt::LeftDockWidgetArea:
+                flags = Qt::AlignLeft;
+                break;
+            default:
+                break;
+            }
+            dock = tabWidget->dockWidget(0);
+        }
+    }
+    if (!dock)
+        return;
+
+    QPainter painter(this);
+    QRect r = titleItem->geometry();
+    if (vertical) {
+        r = r.transposed();
+        painter.translate(r.left(), r.top() + r.width());
+        painter.rotate(-90);
+        painter.translate(-r.left(), -r.top());
+    }
+    QString text = painter.fontMetrics().elidedText(
+            dock->windowTitle(), Qt::ElideRight, r.width());
+    painter.drawText(r, flags, text);
 }
 
 void OverlayTitleBar::mouseMoveEvent(QMouseEvent *me)
@@ -2058,6 +2142,191 @@ void OverlaySizeGrip::mouseReleaseEvent(QMouseEvent *)
 
 // -----------------------------------------------------------
 
+OverlaySplitter::OverlaySplitter(QWidget *parent)
+    : QSplitter(parent)
+{
+}
+
+QSplitterHandle * OverlaySplitter::createHandle()
+{
+    auto widget = new OverlaySplitterHandle(this->orientation(), this);
+
+    QBoxLayout *layout = nullptr;
+    auto tabWidget = qobject_cast<OverlayTabWidget*>(parentWidget());
+    if(!tabWidget) {
+        layout = new QBoxLayout(QBoxLayout::LeftToRight, widget); 
+    } else {
+        switch(tabWidget->getDockArea()) {
+        case Qt::LeftDockWidgetArea:
+            layout = new QBoxLayout(QBoxLayout::LeftToRight, widget); 
+            break;
+        case Qt::RightDockWidgetArea:
+            layout = new QBoxLayout(QBoxLayout::RightToLeft, widget); 
+            break;
+        case Qt::TopDockWidgetArea:
+            layout = new QBoxLayout(QBoxLayout::TopToBottom, widget); 
+            break;
+        case Qt::BottomDockWidgetArea:
+            layout = new QBoxLayout(QBoxLayout::BottomToTop, widget); 
+            break;
+        default:
+            break;
+        }
+    }
+    bool vertical = this->orientation() != Qt::Vertical;
+    layout->addSpacing(5);
+    layout->setContentsMargins(1,1,1,1);
+    auto spacer = new QSpacerItem(_TitleButtonSize,_TitleButtonSize,
+                vertical?QSizePolicy::Minimum:QSizePolicy::Expanding,
+                vertical?QSizePolicy::Expanding:QSizePolicy::Minimum);
+    layout->addSpacerItem(spacer);
+    widget->setTitleItem(spacer);
+
+    layout->addWidget(createTitleButton(&widget->actFloat));
+
+    if (tabWidget) {
+        auto grip = new OverlaySizeGrip(tabWidget, !vertical);
+        if (vertical) {
+            grip->setFixedHeight(6);
+            grip->setMinimumWidth(_TitleButtonSize);
+        } else {
+            grip->setFixedWidth(6);
+            grip->setMinimumHeight(_TitleButtonSize);
+        }
+        QObject::connect(grip, SIGNAL(dragMove(QPoint)),
+                        tabWidget, SLOT(onSizeGripMove(QPoint)));
+        layout->addWidget(grip);
+        grip->raise();
+    }
+
+    return widget;
+}
+
+// -----------------------------------------------------------
+
+OverlaySplitterHandle::OverlaySplitterHandle(Qt::Orientation orientation, QSplitter *parent)
+    : QSplitterHandle(orientation, parent)
+{
+    actFloat.setIcon(QPixmap(_PixmapFloat));
+    retranslate();
+    QObject::connect(&actFloat, SIGNAL(triggered(bool)), this, SLOT(onAction()));
+}
+
+QSize OverlaySplitterHandle::sizeHint() const
+{ 
+    QSize size = QSplitterHandle::sizeHint();
+    if (this->orientation() == Qt::Vertical)
+        size.setHeight(std::max(_TitleButtonSize+4, size.height()));
+    else
+        size.setWidth(std::max(_TitleButtonSize+4, size.width()));
+    return size;
+}
+
+void OverlaySplitterHandle::onAction()
+{
+    auto action = qobject_cast<QAction*>(sender());
+    if(action == &actFloat) {
+        QDockWidget *dock = dockWidget();
+        if (dock)
+            OverlayManager::instance()->floatDockWidget(dock);
+    }
+}
+
+QDockWidget *OverlaySplitterHandle::dockWidget()
+{
+    QSplitter *parent = splitter();
+    if (!parent)
+        return nullptr;
+
+    if (parent->handle(this->idx) != this) {
+        this->idx = -1;
+        for (int i=0, c=parent->count(); i<c; ++i) {
+            if (parent->handle(i) == this) {
+                this->idx = i;
+                break;
+            }
+        }
+    }
+    return qobject_cast<QDockWidget*>(parent->widget(this->idx));
+}
+
+void OverlaySplitterHandle::retranslate()
+{
+    actFloat.setToolTip(QObject::tr("Toggle floating window"));
+}
+
+void OverlaySplitterHandle::changeEvent(QEvent *e)
+{
+    QSplitterHandle::changeEvent(e);
+    if (e->type() == QEvent::LanguageChange)
+        retranslate();
+}
+
+void OverlaySplitterHandle::setTitleItem(QLayoutItem *item)
+{
+    titleItem = item;
+}
+
+void OverlaySplitterHandle::showTitle(bool enable)
+{
+    if (_showTitle == enable)
+        return;
+    _showTitle = enable;
+    for (auto child : findChildren<QWidget*>(QString(), Qt::FindDirectChildrenOnly))
+        child->setVisible(enable);
+    update();
+}
+
+void OverlaySplitterHandle::paintEvent(QPaintEvent *e)
+{
+    if (!_showTitle)
+        return;
+
+    if (!titleItem) {
+        QSplitterHandle::paintEvent(e);
+        return;
+    }
+
+    int flags = Qt::AlignCenter;
+    auto tabWidget = qobject_cast<OverlayTabWidget*>(
+            splitter() ? splitter()->parentWidget() : nullptr);
+
+    if (tabWidget) {
+        switch(tabWidget->getDockArea()) {
+        case Qt::TopDockWidgetArea:
+        case Qt::RightDockWidgetArea:
+            flags = Qt::AlignRight;
+            break;
+        case Qt::BottomDockWidgetArea:
+        case Qt::LeftDockWidgetArea:
+            flags = Qt::AlignLeft;
+            break;
+        default:
+            break;
+        }
+    }
+
+    QDockWidget *dock = dockWidget();
+    if (!dock) {
+        QSplitterHandle::paintEvent(e);
+        return;
+    }
+    
+    QPainter painter(this);
+    QRect r = titleItem->geometry();
+    if (this->orientation() != Qt::Vertical) {
+        r = r.transposed();
+        painter.translate(r.left(), r.top() + r.width());
+        painter.rotate(-90);
+        painter.translate(-r.left(), -r.top());
+    }
+    QString text = painter.fontMetrics().elidedText(
+            dock->windowTitle(), Qt::ElideRight, r.width());
+    painter.drawText(r, flags, text);
+}
+
+// -----------------------------------------------------------
+
 OverlayGraphicsEffect::OverlayGraphicsEffect(QObject *parent) :
     QGraphicsEffect(parent),
     _enabled(false),
@@ -2103,10 +2372,22 @@ void OverlayGraphicsEffect::draw(QPainter* painter)
     tmp.setDevicePixelRatio(px.devicePixelRatioF());
     tmp.fill(0);
     QPainter tmpPainter(&tmp);
+    QPainterPath clip;
     tmpPainter.setCompositionMode(QPainter::CompositionMode_Source);
     if(_size.width() == 0 && _size.height() == 0)
         tmpPainter.drawPixmap(QPoint(0, 0), px);
     else {
+        // exclude splitter handles
+        auto splitter = qobject_cast<QSplitter*>(parent());
+        if (splitter) {
+            for (int i=0, c=splitter->count(); i<c; ++i) {
+                QRect rect = splitter->widget(i)->geometry();
+                clip.addRect(rect.x()+1, rect.y()+1,
+                             rect.width(), rect.height());
+            }
+            tmpPainter.setClipPath(clip);
+        }
+
         for (int x=-_size.width();x<=_size.width();++x) {
             for (int y=-_size.height();y<=_size.height();++y) {
                 if (x || y) {
@@ -2351,22 +2632,7 @@ public:
         _actOverlay.setIcon(QPixmap(_PixmapOverlay));
         _actOverlay.setData(QString::fromLatin1("OBTN Overlay"));
 
-        const char * const pixmapFloat[]={
-            "10 10 2 1",
-            ". c None",
-            TITLE_BUTTON_COLOR,
-            "...#######",
-            "...#.....#",
-            "...#.....#",
-            "#######..#",
-            "#.....#..#",
-            "#.....#..#",
-            "#.....####",
-            "#.....#...",
-            "#.....#...",
-            "#######...",
-        };
-        _actFloat.setIcon(QPixmap(pixmapFloat));
+        _actFloat.setIcon(QPixmap(_PixmapFloat));
         _actFloat.setData(QString::fromLatin1("OBTN Float"));
 
         const char * const pixmapClose[]={
@@ -2905,6 +3171,12 @@ public:
         }
         layout->addSpacing(5);
         layout->setContentsMargins(1,1,1,1);
+        auto spacer = new QSpacerItem(_TitleButtonSize,_TitleButtonSize,
+                    vertical?QSizePolicy::Minimum:QSizePolicy::Expanding,
+                    vertical?QSizePolicy::Expanding:QSizePolicy::Minimum);
+        layout->addSpacerItem(spacer);
+        widget->setTitleItem(spacer);
+
         if(tabWidget) {
             for(auto action : tabWidget->actions())
                 layout->addWidget(createTitleButton(action));
@@ -2912,10 +3184,6 @@ public:
             for(auto action : _actions)
                 layout->addWidget(createTitleButton(action));
         }
-        // layout->addStretch(2);
-        layout->addSpacerItem(new QSpacerItem(_TitleButtonSize,_TitleButtonSize,
-                    vertical?QSizePolicy::Minimum:QSizePolicy::Expanding,
-                    vertical?QSizePolicy::Expanding:QSizePolicy::Minimum));
 
         if (tabWidget) {
             auto grip = new OverlaySizeGrip(tabWidget, !vertical);
@@ -2932,17 +3200,6 @@ public:
             grip->raise();
         }
         return widget;
-    }
-
-    QWidget *createTitleButton(QAction *action)
-    {
-        auto button = new OverlayToolButton(nullptr);
-        button->setObjectName(action->data().toString());
-        button->setDefaultAction(action);
-        button->setAutoRaise(true);
-        button->setContentsMargins(0,0,0,0);
-        button->setFixedSize(_TitleButtonSize,_TitleButtonSize);
-        return button;
     }
 
     void onAction(QAction *action) {
@@ -2981,6 +3238,17 @@ public:
         _actOverlay.setToolTip(QObject::tr("Toggle overlay"));
         _actFloat.setToolTip(QObject::tr("Toggle floating window"));
         _actClose.setToolTip(QObject::tr("Close dock window"));
+    }
+
+    void floatDockWidget(QDockWidget *dock)
+    {
+        auto it = _overlayMap.find(dock);
+        if (it != _overlayMap.end()) {
+            it->second->tabWidget->removeWidget(dock);
+            _overlayMap.erase(it);
+        }
+        dock->setFloating(true);
+        dock->show();
     }
 
     void dropDockWidget(const QPoint &pos,
@@ -3098,6 +3366,7 @@ public:
     void setupTitleBar(QDockWidget *) {}
     void retranslate() {}
     void dropDockWidget(OverlayTabWidget *, OverlayTabWidget *, int) {}
+    void floatDockWidget(QDockWidget *) {}
 
     bool toggleOverlay(QDockWidget *,
                        OverlayToggleMode,
@@ -3332,7 +3601,8 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
                         hit = -1;
                     break;
                 }
-                if (qobject_cast<QAbstractButton*>(widget))
+                if (qobject_cast<QAbstractButton*>(widget)
+                        || qobject_cast<OverlaySplitterHandle*>(widget))
                     break;
                 auto tabWidget = qobject_cast<OverlayTabWidget*>(widget);
                 if (tabWidget) {
@@ -3489,6 +3759,11 @@ void OverlayManager::dropDockWidget(const QPoint &pos,
                                     int index)
 {
     d->dropDockWidget(pos, src, dst, index);
+}
+
+void OverlayManager::floatDockWidget(QDockWidget *dock)
+{
+    d->floatDockWidget(dock);
 }
 
 #include "moc_OverlayWidgets.cpp"

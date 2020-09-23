@@ -144,7 +144,7 @@ public:
         QT_TRANSLATE_NOOP("ViewParams", "Auto hide hint visual display size"))\
     FC_VIEW_PARAM(DockOverlayHintTabBar,bool,Bool,false, \
         QT_TRANSLATE_NOOP("ViewParams", "Show tab bar on mouse over when auto hide"))\
-    FC_VIEW_PARAM2(DockOverlayHideTabBar,bool,Bool,false, \
+    FC_VIEW_PARAM2(DockOverlayHideTabBar,bool,Bool,true, \
         QT_TRANSLATE_NOOP("ViewParams", "Hide tab bar in dock overlay"))\
     FC_VIEW_PARAM(DockOverlayHintDelay,int,Int,200, \
         QT_TRANSLATE_NOOP("ViewParams", "Delay before show hint visual"))\

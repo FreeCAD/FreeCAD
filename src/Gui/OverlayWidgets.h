@@ -31,11 +31,12 @@
 #include <QGraphicsEffect>
 #include <QImage>
 #include <QDockWidget>
+#include <QSplitter>
 
 #include <Base/Parameter.h>
 
-class QSplitter;
 class QPropertyAnimation;
+class QLayoutItem;
 
 namespace Gui {
 
@@ -88,6 +89,7 @@ public:
                         QWidget *src,
                         OverlayTabWidget *dst,
                         int index);
+    void floatDockWidget(QDockWidget *);
 
     static OverlayManager * instance();
     static void destruct();
@@ -304,17 +306,21 @@ class OverlayTitleBar: public QWidget
     Q_OBJECT
 public:
     OverlayTitleBar(QWidget * parent);
-    
+    void setTitleItem(QLayoutItem *);
+
 protected:
     void mouseMoveEvent(QMouseEvent *);
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
+    void paintEvent(QPaintEvent*);
 
 private:
     QPoint dragOffset;
     QSize dragSize;
     OverlayTabWidget *dragOverlay = nullptr;
     int dragDockIndex;
+    QLayoutItem *titleItem = nullptr;
+    QColor textcolor;
 };
 
 class OverlaySizeGrip: public QWidget
@@ -331,6 +337,45 @@ protected:
     void mouseMoveEvent(QMouseEvent *);
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
+};
+
+class OverlaySplitter : public QSplitter
+{
+    Q_OBJECT
+public:
+    OverlaySplitter(QWidget *parent);
+    void retranslate();
+
+protected:
+    virtual QSplitterHandle *createHandle();
+};
+
+class OverlaySplitterHandle : public QSplitterHandle
+{
+    Q_OBJECT
+public:
+    friend class OverlaySplitter;
+
+    OverlaySplitterHandle(Qt::Orientation, QSplitter *parent);
+    void setTitleItem(QLayoutItem *);
+    void retranslate();
+    QDockWidget * dockWidget();
+
+    void showTitle(bool enable);
+
+protected:
+    void paintEvent(QPaintEvent*);
+    void changeEvent(QEvent*);
+    virtual QSize sizeHint() const;
+
+protected Q_SLOTS:
+    void onAction();
+
+private:
+    QLayoutItem * titleItem = nullptr;
+    int idx = -1;
+    QAction actFloat;
+    bool _showTitle = true;
 };
 
 class OverlayToolButton: public QToolButton
