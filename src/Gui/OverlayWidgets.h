@@ -217,6 +217,7 @@ public:
     void startHide();
 
     enum State {
+        State_Showing,
         State_Normal,
         State_Hint,
         State_HintHidden,

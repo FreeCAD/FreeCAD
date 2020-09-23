@@ -186,7 +186,7 @@ bool OverlayProxyWidget::hitTest(QPoint pt, bool delay)
                     break;
                 }
             }
-            owner->setState(OverlayTabWidget::State_Normal);
+            owner->setState(OverlayTabWidget::State_Showing);
             OverlayManager::instance()->refresh();
         }
 
@@ -236,7 +236,7 @@ void OverlayProxyWidget::mousePressEvent(QMouseEvent *ev)
     if(!owner->count() || ev->button() != Qt::LeftButton)
         return;
 
-    owner->setState(OverlayTabWidget::State_Normal);
+    owner->setState(OverlayTabWidget::State_Showing);
     OverlayManager::instance()->refresh(this);
 }
 
@@ -539,6 +539,8 @@ void OverlayTabWidget::onAnimationStateChanged()
             hide();
             OverlayManager::instance()->refresh();
         }
+        if (_state == State_Showing)
+            setState(State_Normal);
     }
 }
 
@@ -552,7 +554,7 @@ void OverlayTabWidget::setAnimation(qreal t)
 
 void OverlayTabWidget::startShow()
 {
-    if (isVisible() || _state != State_Normal)
+    if (isVisible() || _state > State_Normal)
         return;
     int duration = ViewParams::getDockOverlayAnimationDuration();
     if (duration) {
@@ -562,6 +564,8 @@ void OverlayTabWidget::startShow()
         _animator->setEasingCurve((QEasingCurve::Type)ViewParams::getDockOverlayAnimationCurve());
         _animator->start();
     }
+    else if (_state == State_Showing)
+        setState(State_Normal);
     proxyWidget->hide();
     show();
 }
@@ -569,7 +573,7 @@ void OverlayTabWidget::startShow()
 void OverlayTabWidget::startHide()
 {
     if (!isVisible()
-            || _state != State_Normal
+            || _state > State_Normal
             || (_animator->state() == QAbstractAnimation::Running
                 && _animator->startValue().toReal() == 0.0))
         return;
@@ -779,7 +783,7 @@ void OverlayTabWidget::setEffectEnabled(bool enable)
 bool OverlayTabWidget::eventFilter(QObject *o, QEvent *ev)
 {
     if(ev->type() == QEvent::Resize && o == tabBar()) {
-        if (_state == State_Normal)
+        if (_state <= State_Normal)
             timer.start(10);
     }
     return QTabWidget::eventFilter(o, ev);
@@ -939,7 +943,12 @@ void OverlayTabWidget::setState(State state)
     if (_state == state)
         return;
     switch(state) {
+    case State_Showing:
     case State_Normal:
+        if (_state == State_Showing) {
+            _state = state;
+            return;
+        }
         _state = state;
         hide();
         if (dockArea == Qt::RightDockWidgetArea)
@@ -975,6 +984,8 @@ void OverlayTabWidget::setState(State state)
         _state = state;
         hide();
         _graphicsEffectTab->setEnabled(true);
+        break;
+    default:
         break;
     }
 }
@@ -1366,7 +1377,7 @@ void OverlayTabWidget::setOverlayMode(bool enable)
 
     touched = false;
 
-    if (_state == State_Normal)
+    if (_state <= State_Normal) {
         titleBar->setVisible(!enable);
 
     QString stylesheet;
@@ -1436,7 +1447,7 @@ bool OverlayTabWidget::getAutoHideRect(QRect &rect) const
     default:
         break;
     }
-    return overlayed && checkAutoHide();
+    return _state != State_Showing && overlayed && checkAutoHide();
 }
 
 void OverlayTabWidget::setOffset(const QSize &ofs)
@@ -1609,13 +1620,13 @@ void OverlayTabWidget::removeWidget(QDockWidget *dock, QDockWidget *lastDock)
 void OverlayTabWidget::resizeEvent(QResizeEvent *ev)
 {
     QTabWidget::resizeEvent(ev);
-    if (_state == State_Normal)
+    if (_state <= State_Normal)
         timer.start(10);
 }
 
 void OverlayTabWidget::setupLayout()
 {
-    if (_state != State_Normal)
+    if (_state > State_Normal)
         return;
 
     if(count() == 1)
@@ -2606,7 +2617,7 @@ public:
             _bottom.tabWidget->setRect(QRect(ofs.width(),h-rect.height(),bw,rect.height()));
 
             if (_bottom.tabWidget->isVisible() 
-                    && _bottom.tabWidget->getState() == OverlayTabWidget::State_Normal)
+                    && _bottom.tabWidget->getState() <= OverlayTabWidget::State_Normal)
                 rectBottom = _bottom.tabWidget->getRect();
         }
 
@@ -2625,7 +2636,7 @@ public:
             _left.tabWidget->setRect(QRect(ofs.height(),ofs.width(),rect.width(),lh));
 
             if (_left.tabWidget->isVisible() 
-                    && _left.tabWidget->getState() == OverlayTabWidget::State_Normal)
+                    && _left.tabWidget->getState() <= OverlayTabWidget::State_Normal)
                 rectLeft = _left.tabWidget->getRect();
         }
 
@@ -2645,7 +2656,7 @@ public:
             _right.tabWidget->setRect(QRect(w-rect.width(),ofs.width(),rect.width(),rh));
 
             if (_right.tabWidget->isVisible() 
-                    && _right.tabWidget->getState() == OverlayTabWidget::State_Normal)
+                    && _right.tabWidget->getState() <= OverlayTabWidget::State_Normal)
                 rectRight = _right.tabWidget->getRect();
         }
 
