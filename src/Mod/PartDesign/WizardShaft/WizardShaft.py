@@ -88,7 +88,7 @@ class TaskWizardShaft:
         self.form.setLayout(layout)
         
         # Switch to feature window
-        mdi=QtGui.QApplication.activeWindow().findChild(QtGui.QMdiArea)
+        mdi=FreeCADGui.getMainWindow().findChild(QtGui.QMdiArea)
         cw.setActiveSubWindow(featureWindow)
         
     def slotAllx(self):

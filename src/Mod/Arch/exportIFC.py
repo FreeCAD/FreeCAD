@@ -2093,10 +2093,12 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
                         if fcshape.Solids:
                             dataset = fcshape.Solids
-                        else:
+                        elif fcshape.Shells:
                             dataset = fcshape.Shells
                             #if preferences['DEBUG']: print("Warning! object contains no solids")
-
+                        else:
+                            if preferences['DEBUG']: print("Warning! object "+obj.Label+" contains no solids or shells")
+                            dataset = [fcshape]
                         for fcsolid in dataset:
                             fcsolid.scale(preferences['SCALE_FACTOR']) # to meters
                             faces = []

@@ -55,7 +55,7 @@ class ArrayGroup:
         return ("Draft_OrthoArray",
                 "Draft_PolarArray", "Draft_CircularArray",
                 "Draft_PathArray", "Draft_PathLinkArray",
-                "Draft_PointArray", "Draft_PointLinkArray")
+                "Draft_PointArray", "Draft_PointLinkArray",
                 "Draft_PathTwistedArray", "Draft_PathTwistedLinkArray")
 
     def GetResources(self):
