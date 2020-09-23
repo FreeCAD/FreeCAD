@@ -587,8 +587,11 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
 
         if (method == "TwoLengths") {
             // midplane makes no sense here
-            Loffset = -L2;
             Ltotal += L2;
+            if (reversed)
+                Loffset = -L;
+            else
+                Loffset = -L2;
         } else if (midplane)
             Loffset = -Ltotal/2;
 
