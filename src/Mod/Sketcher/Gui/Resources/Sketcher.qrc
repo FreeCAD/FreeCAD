@@ -43,6 +43,8 @@
         <file>icons/Constraint_Vertical.svg</file>
         <file>icons/Constraint_VerticalDistance.svg</file>
         <file>icons/Constraint_VerticalDistance_Driven.svg</file>
+    </qresource>
+    <qresource>
         <file>icons/Sketcher_AlterFillet.svg</file>
         <file>icons/Sketcher_BSplineApproximate.svg</file>
         <file>icons/Sketcher_BSplineComb.svg</file>
@@ -62,11 +64,6 @@
         <file>icons/Sketcher_Conics_Ellipse_3points.svg</file>
         <file>icons/Sketcher_Conics_Ellipse_Center.svg</file>
         <file>icons/Sketcher_ConnectLines.svg</file>
-        <file>icons/Sketcher_ConstrainCoincident.svg</file>
-        <file>icons/Sketcher_ConstrainDistance.svg</file>
-        <file>icons/Sketcher_ConstrainHorizontal.svg</file>
-        <file>icons/Sketcher_ConstrainParallel.svg</file>
-        <file>icons/Sketcher_ConstrainVertical.svg</file>
         <file>icons/Sketcher_Copy.svg</file>
         <file>icons/Sketcher_Create3PointArc.svg</file>
         <file>icons/Sketcher_Create3PointArc_Constr.svg</file>
@@ -205,6 +202,15 @@
         <file>icons/Sketcher_ViewSection.svg</file>
         <file>icons/Sketcher_ViewSketch.svg</file>
         <file>icons/SketcherWorkbench.svg</file>
+    </qresource>
+    <qresource>
+        <file>icons/obsolete/Sketcher_ConstrainCoincident_old.svg</file>
+        <file>icons/obsolete/Sketcher_ConstrainDistance_old.svg</file>
+        <file>icons/obsolete/Sketcher_ConstrainHorizontal_old.svg</file>
+        <file>icons/obsolete/Sketcher_ConstrainParallel_old.svg</file>
+        <file>icons/obsolete/Sketcher_ConstrainVertical_old.svg</file>
+    </qresource>
+    <qresource>
         <file>icons/small/Constraint_Block_sm.xpm</file>
         <file>icons/small/Constraint_Concentric_sm.xpm</file>
         <file>icons/small/Constraint_EqualLength_sm.xpm</file>
@@ -230,6 +236,8 @@
         <file>icons/small/Constraint_Tangent_sm.xpm</file>
         <file>icons/small/Constraint_VerticalDistance_sm.xpm</file>
         <file>icons/small/Constraint_Vertical_sm.xpm</file>
+    </qresource>
+    <qresource>
         <file>translations/Sketcher_af.qm</file>
         <file>translations/Sketcher_ar.qm</file>
         <file>translations/Sketcher_ca.qm</file>
