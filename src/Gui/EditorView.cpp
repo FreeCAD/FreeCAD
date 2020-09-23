@@ -79,7 +79,7 @@ public:
  *  name 'name'.
  */
 EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
-    : MDIView(0,parent,0), WindowParameter( "Editor" )
+    : MDIView(0,parent,Qt::WindowFlags()), WindowParameter( "Editor" )
 {
     d = new EditorViewP;
     d->lock = false;

@@ -463,7 +463,7 @@ void DrawingView::onRelabel(Gui::Document *pDoc)
 
 void DrawingView::printPdf()
 {
-    Gui::FileOptionsDialog dlg(this, 0);
+    Gui::FileOptionsDialog dlg(this, Qt::WindowFlags());
     dlg.setFileMode(QFileDialog::AnyFile);
     dlg.setAcceptMode(QFileDialog::AcceptSave);
     dlg.setWindowTitle(tr("Export PDF"));

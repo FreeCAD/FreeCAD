@@ -43,7 +43,7 @@ class SegmentationManual : public QWidget
     Q_OBJECT
 
 public:
-    SegmentationManual(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    SegmentationManual(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~SegmentationManual();
     void reject();
     void createSegment();
