@@ -290,7 +290,7 @@ install:
 #  Build FreeCAD with cmake options set above for each platform
 ##
   - echo ${CMAKE_ARGS}
-  - brew install -s -v matplotlib
+  - brew install -s -v matplotlib 
   - ls /usr/local/Cellar/qt/5.15.1/lib/cmake
   - ls /usr/local/lib/python3.8/site-packages/*matplotlib*
   - python3 -c "import matplotlib; print(matplotlib.__version__);"
