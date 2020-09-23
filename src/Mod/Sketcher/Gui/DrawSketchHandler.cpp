@@ -113,7 +113,7 @@ void DrawSketchHandler::setSvgCursor(const QString & cursorName, int x, int y, c
     qreal pRatio = devicePixelRatio();
     bool isRatioOne = (pRatio == 1.0);
     qreal defaultCursorSize = isRatioOne ? 64 : 32;
-#if defined(Q_OS_WIN32)
+#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
     qreal hotX = x;
     qreal hotY = y;
 #else
