@@ -44,6 +44,7 @@ class SketcherWorkbench ( Workbench ):
         import Sketcher
         Gui.addIconPath(":/icons/constraints")
         Gui.addIconPath(":/icons/elements")
+        Gui.addIconPath(":/icons/geometry")
         # Gui.addIconPath(":/icons/obsolete")
         Gui.addIconPath(":/icons/pointers")
         try:
