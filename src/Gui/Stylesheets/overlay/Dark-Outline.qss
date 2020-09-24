@@ -172,3 +172,17 @@ Gui--CallTipsList::item::selected {
   background-color: rgb(94, 144, 250);
 }
 
+/* Use the following selector to customize title bar for each side */
+/*
+Gui--OverlayTabWidget#OverlayBottom Gui--OverlayTitleBar,
+Gui--OverlayTabWidget#OverlayBottom QSplitter Gui--OverlaySplitterHandle {
+  background-color: qlineargradient(
+    spread:pad, x1:0, y1:1, x2:0, y2:0,
+    stop:0 #80202020, stop:1 #00202020);
+}
+*/
+
+Gui--OverlayTitleBar,
+Gui--OverlaySplitterHandle {
+  background-color: rgba(80, 80, 80, 150)
+}

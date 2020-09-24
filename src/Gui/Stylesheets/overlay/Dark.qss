@@ -1,6 +1,7 @@
 * {
   color: palette(bright-text);
   alternate-background-color: rgba(50,50,50,120);
+  border: transparent;
 }
 
 QComboBox,
@@ -60,9 +61,9 @@ QTabBar::tab:hover {
 
 QHeaderView::section {
   color: rgb(200,200,200);
-  background-color: rgba(50,50,50,100);
-  border: 1px solid rgb(100,100,100);
+  background-color: rgba(50,50,50,50);
   padding: 2px;
+  border: 1px solid rgb(100,100,100);
 }
 
 QToolTip {
@@ -124,4 +125,19 @@ Gui--CallTipsList::item {
 
 Gui--CallTipsList::item::selected {
   background-color: rgb(94, 144, 250);
+}
+
+/* Use the following selector to customize title bar for each side */
+/*
+Gui--OverlayTabWidget#OverlayBottom Gui--OverlayTitleBar,
+Gui--OverlayTabWidget#OverlayBottom QSplitter Gui--OverlaySplitterHandle {
+  background-color: qlineargradient(
+    spread:pad, x1:0, y1:1, x2:0, y2:0,
+    stop:0 #80202020, stop:1 #00202020);
+}
+*/
+
+Gui--OverlayTitleBar,
+Gui--OverlaySplitterHandle {
+  background-color: rgba(80, 80, 80, 150)
 }
