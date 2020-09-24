@@ -6397,7 +6397,7 @@ void ViewProviderSketch::deleteSelected()
     if(SubNames.size()>0) {
         App::Document* doc = getSketchObject()->getDocument();
 
-        doc->openTransaction("delete sketch geometry");
+        doc->openTransaction("Delete sketch geometry");
 
         onDelete(SubNames);
 
