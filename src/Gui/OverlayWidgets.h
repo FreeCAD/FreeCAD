@@ -85,10 +85,12 @@ public:
     void setupDockWidget(QDockWidget *, int dockArea = Qt::NoDockWidgetArea);
     void unsetupDockWidget(QDockWidget *);
 
-    void dropDockWidget(const QPoint &pos,
-                        QWidget *src,
-                        OverlayTabWidget *dst,
-                        int index);
+    void dragDockWidget(const QPoint &pos,
+                        QWidget *widget,
+                        const QPoint &offset,
+                        const QSize &size,
+                        bool drop = false);
+
     void floatDockWidget(QDockWidget *);
 
     static OverlayManager * instance();
@@ -315,10 +317,9 @@ protected:
     void paintEvent(QPaintEvent*);
 
 private:
+    bool dragging = false;
     QPoint dragOffset;
     QSize dragSize;
-    OverlayTabWidget *dragOverlay = nullptr;
-    int dragDockIndex;
     QLayoutItem *titleItem = nullptr;
     QColor textcolor;
 };
@@ -364,9 +365,14 @@ public:
     void showTitle(bool enable);
 
 protected:
-    void paintEvent(QPaintEvent*);
-    void changeEvent(QEvent*);
+    virtual void paintEvent(QPaintEvent*);
+    virtual void changeEvent(QEvent*);
+    virtual void mouseMoveEvent(QMouseEvent *);
+    virtual void mousePressEvent(QMouseEvent *);
+    virtual void mouseReleaseEvent(QMouseEvent *);
     virtual QSize sizeHint() const;
+
+    void endDrag();
 
 protected Q_SLOTS:
     void onAction();
@@ -376,6 +382,9 @@ private:
     int idx = -1;
     QAction actFloat;
     bool _showTitle = true;
+    int dragging = 0;
+    QPoint dragOffset;
+    QSize dragSize;
 };
 
 class OverlayToolButton: public QToolButton
