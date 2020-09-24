@@ -2351,13 +2351,20 @@ void OverlayGraphicsEffect::draw(QPainter* painter)
                 ++i;
                 if (!size)
                     continue;
-                QRect rect = splitter->widget(i)->geometry();
+                QWidget *w = splitter->widget(i);
+                if (w->findChild<TaskView::TaskView*>())
+                    continue;
+                QRect rect = w->geometry();
                 if (splitter->orientation() == Qt::Vertical)
                     clip.addRect(rect.x(), rect.y()+4,
                                 rect.width(), rect.height()-4);
                 else
                     clip.addRect(rect.x()+4, rect.y(),
                                 rect.width()-4, rect.height());
+            }
+            if (clip.isEmpty()) {
+                drawSource(painter);
+                return;
             }
             tmpPainter.setClipPath(clip);
         }
@@ -2378,8 +2385,6 @@ void OverlayGraphicsEffect::draw(QPainter* painter)
     blurred.setDevicePixelRatio(px.devicePixelRatioF());
     blurred.fill(0);
     QPainter blurPainter(&blurred);
-    if (!clip.isEmpty())
-        blurPainter.setClipPath(clip);
     qt_blurImage(&blurPainter, tmp, blurRadius(), false, true);
     blurPainter.end();
 
@@ -2387,8 +2392,6 @@ void OverlayGraphicsEffect::draw(QPainter* painter)
 
     // blacken the image...
     tmpPainter.begin(&tmp);
-    if (!clip.isEmpty())
-        tmpPainter.setClipPath(clip);
     tmpPainter.setCompositionMode(QPainter::CompositionMode_SourceIn);
     tmpPainter.fillRect(tmp.rect(), color());
     tmpPainter.end();

@@ -1108,7 +1108,7 @@ QSint--ActionGroup QFrame[class="content"] {
 }
 
 QSint--ActionGroup QFrame[class="content"] > QWidget {
-    background-color: #208c8c8c; /* Task Panel background color */
+    background-color: #8c8c8c; /* Task Panel background color */
 }
 
 /* Fixs for tabs inside Task Panel */
