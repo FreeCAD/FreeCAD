@@ -504,8 +504,7 @@ protected:
                     ViewProviderT::setOverrideMode(viewerMode);
                 }
                 if (!this->testStatus(Gui::isRestoring) &&
-                    ViewProviderT::canAddToSceneGraph() &&
-                    imp->canAddToSceneGraph() == ViewProviderPythonFeatureImp::NotImplemented) {
+                    !canAddToSceneGraph()) {
                     this->getDocument()->toggleInSceneGraph(this);
                 }
                 ViewProviderT::updateView();
