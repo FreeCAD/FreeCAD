@@ -1,5 +1,37 @@
 <RCC>
     <qresource>
+        <file>icons/Sketcher_AlterFillet.svg</file>
+        <file>icons/Sketcher_CarbonCopy.svg</file>
+        <file>icons/Sketcher_CarbonCopy_Constr.svg</file>
+        <file>icons/Sketcher_Crosshair.svg</file>
+        <file>icons/Sketcher_DraftLine.svg</file>
+        <file>icons/Sketcher_EditSketch.svg</file>
+        <file>icons/Sketcher_Extend.svg</file>
+        <file>icons/Sketcher_External.svg</file>
+        <file>icons/Sketcher_LeaveSketch.svg</file>
+        <file>icons/Sketcher_MapSketch.svg</file>
+        <file>icons/Sketcher_MergeSketch.svg</file>
+        <file>icons/Sketcher_MirrorSketch.svg</file>
+        <file>icons/Sketcher_NewSketch.svg</file>
+        <file alias="icons/preferences-sketcher.svg">icons/Sketcher_NewSketch.svg</file>
+        <file>icons/Sketcher_ProfilesHexagon1.svg</file>
+        <file>icons/Sketcher_ReorientSketch.svg</file>
+        <file>icons/Sketcher_Sketch.svg</file>
+        <file>icons/Sketcher_SwitchVirtualSpace.svg</file>
+        <file>icons/Sketcher_ToggleActiveConstraint.svg</file>
+        <file>icons/Sketcher_ToggleConstraint.svg</file>
+        <file>icons/Sketcher_Toggle_Constraint_Driven.svg</file>
+        <file>icons/Sketcher_Toggle_Constraint_Driving.svg</file>
+        <file>icons/Sketcher_ToggleConstruction.svg</file>
+        <file>icons/Sketcher_ToggleConstruction_old.svg</file>
+        <file>icons/Sketcher_ToggleNormal.svg</file>
+        <file>icons/Sketcher_Trimming.svg</file>
+        <file>icons/Sketcher_ValidateSketch.svg</file>
+        <file>icons/Sketcher_ViewSection.svg</file>
+        <file>icons/Sketcher_ViewSketch.svg</file>
+        <file>icons/SketcherWorkbench.svg</file>
+    </qresource>
+    <qresource>
         <file>icons/constraints/Constraint_Block.svg</file>
         <file>icons/constraints/Constraint_Concentric.svg</file>
         <file>icons/constraints/Constraint_Diameter.svg</file>
@@ -45,22 +77,40 @@
         <file>icons/constraints/Constraint_VerticalDistance_Driven.svg</file>
     </qresource>
     <qresource>
-        <file>icons/Sketcher_AlterFillet.svg</file>
-    </qresource>
-    <qresource>
-        <file>icons/splines/Sketcher_BSplineApproximate.svg</file>
-        <file>icons/splines/Sketcher_BSplineComb.svg</file>
-        <file>icons/splines/Sketcher_BSplineDecreaseDegree.svg</file>
-        <file>icons/splines/Sketcher_BSplineDecreaseKnotMultiplicity.svg</file>
-        <file>icons/splines/Sketcher_BSplineDegree.svg</file>
-        <file>icons/splines/Sketcher_BSplineIncreaseDegree.svg</file>
-        <file>icons/splines/Sketcher_BSplineIncreaseKnotMultiplicity.svg</file>
-        <file>icons/splines/Sketcher_BSplineKnotMultiplicity.svg</file>
-        <file>icons/splines/Sketcher_BSplinePolygon.svg</file>
-    </qresource>
-    <qresource>
-        <file>icons/Sketcher_CarbonCopy.svg</file>
-        <file>icons/Sketcher_CarbonCopy_Constr.svg</file>
+        <file>icons/elements/Sketcher_Element_Arc_Edge.svg</file>
+        <file>icons/elements/Sketcher_Element_Arc_EndPoint.svg</file>
+        <file>icons/elements/Sketcher_Element_Arc_MidPoint.svg</file>
+        <file>icons/elements/Sketcher_Element_Arc_StartingPoint.svg</file>
+        <file>icons/elements/Sketcher_Element_BSpline_Edge.svg</file>
+        <file>icons/elements/Sketcher_Element_BSpline_EndPoint.svg</file>
+        <file>icons/elements/Sketcher_Element_BSpline_StartPoint.svg</file>
+        <file>icons/elements/Sketcher_Element_Circle_Edge.svg</file>
+        <file>icons/elements/Sketcher_Element_Circle_MidPoint.svg</file>
+        <file>icons/elements/Sketcher_Element_Ellipse_All.svg</file>
+        <file>icons/elements/Sketcher_Element_Ellipse_CentrePoint.svg</file>
+        <file>icons/elements/Sketcher_Element_Ellipse_Edge_1.svg</file>
+        <file>icons/elements/Sketcher_Element_Ellipse_Edge_2.svg</file>
+        <file>icons/elements/Sketcher_Element_Ellipse_Focus1.svg</file>
+        <file>icons/elements/Sketcher_Element_Ellipse_Focus2.svg</file>
+        <file>icons/elements/Sketcher_Element_Ellipse_MajorAxis.svg</file>
+        <file>icons/elements/Sketcher_Element_Ellipse_MinorAxis.svg</file>
+        <file>icons/elements/Sketcher_Element_Elliptical_Arc_Centre_Point.svg</file>
+        <file>icons/elements/Sketcher_Element_Elliptical_Arc_Edge.svg</file>
+        <file>icons/elements/Sketcher_Element_Elliptical_Arc_End_Point.svg</file>
+        <file>icons/elements/Sketcher_Element_Elliptical_Arc_Start_Point.svg</file>
+        <file>icons/elements/Sketcher_Element_Hyperbolic_Arc_Centre_Point.svg</file>
+        <file>icons/elements/Sketcher_Element_Hyperbolic_Arc_Edge.svg</file>
+        <file>icons/elements/Sketcher_Element_Hyperbolic_Arc_End_Point.svg</file>
+        <file>icons/elements/Sketcher_Element_Hyperbolic_Arc_Start_Point.svg</file>
+        <file>icons/elements/Sketcher_Element_Line_Edge.svg</file>
+        <file>icons/elements/Sketcher_Element_Line_EndPoint.svg</file>
+        <file>icons/elements/Sketcher_Element_Line_StartingPoint.svg</file>
+        <file>icons/elements/Sketcher_Element_Parabolic_Arc_Centre_Point.svg</file>
+        <file>icons/elements/Sketcher_Element_Parabolic_Arc_Edge.svg</file>
+        <file>icons/elements/Sketcher_Element_Parabolic_Arc_End_Point.svg</file>
+        <file>icons/elements/Sketcher_Element_Parabolic_Arc_Start_Point.svg</file>
+        <file>icons/elements/Sketcher_Element_Point_StartingPoint.svg</file>
+        <file>icons/elements/Sketcher_Element_SelectionTypeInvalid.svg</file>
     </qresource>
     <qresource>
         <file>icons/geometry/Sketcher_Conics.svg</file>
@@ -116,55 +166,11 @@
         <file>icons/geometry/Sketcher_CreateTriangle_Constr.svg</file>
     </qresource>
     <qresource>
-        <file>icons/Sketcher_Crosshair.svg</file>
-        <file>icons/Sketcher_DraftLine.svg</file>
-        <file>icons/Sketcher_EditSketch.svg</file>
-    </qresource>
-    <qresource>
-        <file>icons/elements/Sketcher_Element_Arc_Edge.svg</file>
-        <file>icons/elements/Sketcher_Element_Arc_EndPoint.svg</file>
-        <file>icons/elements/Sketcher_Element_Arc_MidPoint.svg</file>
-        <file>icons/elements/Sketcher_Element_Arc_StartingPoint.svg</file>
-        <file>icons/elements/Sketcher_Element_BSpline_Edge.svg</file>
-        <file>icons/elements/Sketcher_Element_BSpline_EndPoint.svg</file>
-        <file>icons/elements/Sketcher_Element_BSpline_StartPoint.svg</file>
-        <file>icons/elements/Sketcher_Element_Circle_Edge.svg</file>
-        <file>icons/elements/Sketcher_Element_Circle_MidPoint.svg</file>
-        <file>icons/elements/Sketcher_Element_Ellipse_All.svg</file>
-        <file>icons/elements/Sketcher_Element_Ellipse_CentrePoint.svg</file>
-        <file>icons/elements/Sketcher_Element_Ellipse_Edge_1.svg</file>
-        <file>icons/elements/Sketcher_Element_Ellipse_Edge_2.svg</file>
-        <file>icons/elements/Sketcher_Element_Ellipse_Focus1.svg</file>
-        <file>icons/elements/Sketcher_Element_Ellipse_Focus2.svg</file>
-        <file>icons/elements/Sketcher_Element_Ellipse_MajorAxis.svg</file>
-        <file>icons/elements/Sketcher_Element_Ellipse_MinorAxis.svg</file>
-        <file>icons/elements/Sketcher_Element_Elliptical_Arc_Centre_Point.svg</file>
-        <file>icons/elements/Sketcher_Element_Elliptical_Arc_Edge.svg</file>
-        <file>icons/elements/Sketcher_Element_Elliptical_Arc_End_Point.svg</file>
-        <file>icons/elements/Sketcher_Element_Elliptical_Arc_Start_Point.svg</file>
-        <file>icons/elements/Sketcher_Element_Hyperbolic_Arc_Centre_Point.svg</file>
-        <file>icons/elements/Sketcher_Element_Hyperbolic_Arc_Edge.svg</file>
-        <file>icons/elements/Sketcher_Element_Hyperbolic_Arc_End_Point.svg</file>
-        <file>icons/elements/Sketcher_Element_Hyperbolic_Arc_Start_Point.svg</file>
-        <file>icons/elements/Sketcher_Element_Line_Edge.svg</file>
-        <file>icons/elements/Sketcher_Element_Line_EndPoint.svg</file>
-        <file>icons/elements/Sketcher_Element_Line_StartingPoint.svg</file>
-        <file>icons/elements/Sketcher_Element_Parabolic_Arc_Centre_Point.svg</file>
-        <file>icons/elements/Sketcher_Element_Parabolic_Arc_Edge.svg</file>
-        <file>icons/elements/Sketcher_Element_Parabolic_Arc_End_Point.svg</file>
-        <file>icons/elements/Sketcher_Element_Parabolic_Arc_Start_Point.svg</file>
-        <file>icons/elements/Sketcher_Element_Point_StartingPoint.svg</file>
-        <file>icons/elements/Sketcher_Element_SelectionTypeInvalid.svg</file>
-    </qresource>
-    <qresource>
-        <file>icons/Sketcher_Extend.svg</file>
-        <file>icons/Sketcher_External.svg</file>
-        <file>icons/Sketcher_LeaveSketch.svg</file>
-        <file>icons/Sketcher_MapSketch.svg</file>
-        <file>icons/Sketcher_MergeSketch.svg</file>
-        <file>icons/Sketcher_MirrorSketch.svg</file>
-        <file>icons/Sketcher_NewSketch.svg</file>
-        <file alias="icons/preferences-sketcher.svg">icons/Sketcher_NewSketch.svg</file>
+        <file>icons/obsolete/Sketcher_ConstrainCoincident_old.svg</file>
+        <file>icons/obsolete/Sketcher_ConstrainDistance_old.svg</file>
+        <file>icons/obsolete/Sketcher_ConstrainHorizontal_old.svg</file>
+        <file>icons/obsolete/Sketcher_ConstrainParallel_old.svg</file>
+        <file>icons/obsolete/Sketcher_ConstrainVertical_old.svg</file>
     </qresource>
     <qresource>
         <file>icons/pointers/Sketcher_Pointer_CarbonCopy.svg</file>
@@ -187,46 +193,6 @@
         <file>icons/pointers/Sketcher_Pointer_Regular_Polygon.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Slot.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Trimming.svg</file>
-    </qresource>
-    <qresource>
-        <file>icons/tools/Sketcher_Clone.svg</file>
-        <file>icons/tools/Sketcher_CloseShape.svg</file>
-        <file>icons/tools/Sketcher_ConnectLines.svg</file>
-        <file>icons/tools/Sketcher_Copy.svg</file>
-        <file>icons/tools/Sketcher_Move.svg</file>
-        <file>icons/tools/Sketcher_RectangularArray.svg</file>
-        <file>icons/tools/Sketcher_SelectConflictingConstraints.svg</file>
-        <file>icons/tools/Sketcher_SelectConstraints.svg</file>
-        <file>icons/tools/Sketcher_SelectElementsAssociatedWithConstraints.svg</file>
-        <file>icons/tools/Sketcher_SelectElementsWithDoFs.svg</file>
-        <file>icons/tools/Sketcher_SelectHorizontalAxis.svg</file>
-        <file>icons/tools/Sketcher_SelectOrigin.svg</file>
-        <file>icons/tools/Sketcher_SelectRedundantConstraints.svg</file>
-        <file>icons/tools/Sketcher_SelectVerticalAxis.svg</file>
-        <file>icons/tools/Sketcher_Symmetry.svg</file>
-    </qresource>
-    <qresource>
-        <file>icons/Sketcher_ProfilesHexagon1.svg</file>
-        <file>icons/Sketcher_Sketch.svg</file>
-        <file>icons/Sketcher_SwitchVirtualSpace.svg</file>
-        <file>icons/Sketcher_ToggleActiveConstraint.svg</file>
-        <file>icons/Sketcher_ToggleConstraint.svg</file>
-        <file>icons/Sketcher_Toggle_Constraint_Driven.svg</file>
-        <file>icons/Sketcher_Toggle_Constraint_Driving.svg</file>
-        <file>icons/Sketcher_ToggleConstruction.svg</file>
-        <file>icons/Sketcher_ToggleConstruction_old.svg</file>
-        <file>icons/Sketcher_ToggleNormal.svg</file>
-        <file>icons/Sketcher_Trimming.svg</file>
-        <file>icons/Sketcher_ViewSection.svg</file>
-        <file>icons/Sketcher_ViewSketch.svg</file>
-        <file>icons/SketcherWorkbench.svg</file>
-    </qresource>
-    <qresource>
-        <file>icons/obsolete/Sketcher_ConstrainCoincident_old.svg</file>
-        <file>icons/obsolete/Sketcher_ConstrainDistance_old.svg</file>
-        <file>icons/obsolete/Sketcher_ConstrainHorizontal_old.svg</file>
-        <file>icons/obsolete/Sketcher_ConstrainParallel_old.svg</file>
-        <file>icons/obsolete/Sketcher_ConstrainVertical_old.svg</file>
     </qresource>
     <qresource>
         <file>icons/small/Constraint_Block_sm.xpm</file>
@@ -254,6 +220,34 @@
         <file>icons/small/Constraint_Tangent_sm.xpm</file>
         <file>icons/small/Constraint_VerticalDistance_sm.xpm</file>
         <file>icons/small/Constraint_Vertical_sm.xpm</file>
+    </qresource>
+    <qresource>
+        <file>icons/splines/Sketcher_BSplineApproximate.svg</file>
+        <file>icons/splines/Sketcher_BSplineComb.svg</file>
+        <file>icons/splines/Sketcher_BSplineDecreaseDegree.svg</file>
+        <file>icons/splines/Sketcher_BSplineDecreaseKnotMultiplicity.svg</file>
+        <file>icons/splines/Sketcher_BSplineDegree.svg</file>
+        <file>icons/splines/Sketcher_BSplineIncreaseDegree.svg</file>
+        <file>icons/splines/Sketcher_BSplineIncreaseKnotMultiplicity.svg</file>
+        <file>icons/splines/Sketcher_BSplineKnotMultiplicity.svg</file>
+        <file>icons/splines/Sketcher_BSplinePolygon.svg</file>
+    </qresource>
+    <qresource>
+        <file>icons/tools/Sketcher_Clone.svg</file>
+        <file>icons/tools/Sketcher_CloseShape.svg</file>
+        <file>icons/tools/Sketcher_ConnectLines.svg</file>
+        <file>icons/tools/Sketcher_Copy.svg</file>
+        <file>icons/tools/Sketcher_Move.svg</file>
+        <file>icons/tools/Sketcher_RectangularArray.svg</file>
+        <file>icons/tools/Sketcher_SelectConflictingConstraints.svg</file>
+        <file>icons/tools/Sketcher_SelectConstraints.svg</file>
+        <file>icons/tools/Sketcher_SelectElementsAssociatedWithConstraints.svg</file>
+        <file>icons/tools/Sketcher_SelectElementsWithDoFs.svg</file>
+        <file>icons/tools/Sketcher_SelectHorizontalAxis.svg</file>
+        <file>icons/tools/Sketcher_SelectOrigin.svg</file>
+        <file>icons/tools/Sketcher_SelectRedundantConstraints.svg</file>
+        <file>icons/tools/Sketcher_SelectVerticalAxis.svg</file>
+        <file>icons/tools/Sketcher_Symmetry.svg</file>
     </qresource>
     <qresource>
         <file>translations/Sketcher_af.qm</file>
