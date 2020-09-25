@@ -1572,6 +1572,20 @@ protected:
         return;
     }
 
+    bool event(QEvent *e)
+    {
+        if (e->type() == QEvent::ShortcutOverride) {
+            auto ke = static_cast<QKeyEvent*>(e);
+            if (ke->key() == Qt::Key_Space
+                    && ke->modifiers() == Qt::NoModifier)
+            {
+                e->accept();
+                return true;
+            }
+        }
+        return QMenu::event(e);
+    }
+
     void showEvent(QShowEvent *ev)
     {
         QMenu::showEvent(ev);
