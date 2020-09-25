@@ -1,19 +1,8 @@
 <RCC>
     <qresource>
-        <file>icons/Sketcher_EditSketch.svg</file>
-        <file>icons/Sketcher_LeaveSketch.svg</file>
-        <file>icons/Sketcher_MapSketch.svg</file>
-        <file>icons/Sketcher_MergeSketch.svg</file>
-        <file>icons/Sketcher_MirrorSketch.svg</file>
-        <file>icons/Sketcher_NewSketch.svg</file>
-        <file alias="icons/preferences-sketcher.svg">icons/Sketcher_NewSketch.svg</file>
-        <file>icons/Sketcher_ReorientSketch.svg</file>
         <file>icons/Sketcher_Sketch.svg</file>
-        <file>icons/Sketcher_SwitchVirtualSpace.svg</file>
-        <file>icons/Sketcher_ValidateSketch.svg</file>
-        <file>icons/Sketcher_ViewSection.svg</file>
-        <file>icons/Sketcher_ViewSketch.svg</file>
         <file>icons/SketcherWorkbench.svg</file>
+        <file alias="icons/preferences-sketcher.svg">icons/SketcherWorkbench.svg</file>
     </qresource>
     <qresource>
         <file>icons/constraints/Constraint_Block.svg</file>
@@ -100,6 +89,19 @@
         <file>icons/elements/Sketcher_Element_Parabolic_Arc_Start_Point.svg</file>
         <file>icons/elements/Sketcher_Element_Point_StartingPoint.svg</file>
         <file>icons/elements/Sketcher_Element_SelectionTypeInvalid.svg</file>
+    </qresource>
+    <qresource>
+        <file>icons/general/Sketcher_EditSketch.svg</file>
+        <file>icons/general/Sketcher_LeaveSketch.svg</file>
+        <file>icons/general/Sketcher_MapSketch.svg</file>
+        <file>icons/general/Sketcher_MergeSketch.svg</file>
+        <file>icons/general/Sketcher_MirrorSketch.svg</file>
+        <file>icons/general/Sketcher_NewSketch.svg</file>
+        <file>icons/general/Sketcher_ReorientSketch.svg</file>
+        <file>icons/general/Sketcher_SwitchVirtualSpace.svg</file>
+        <file>icons/general/Sketcher_ValidateSketch.svg</file>
+        <file>icons/general/Sketcher_ViewSection.svg</file>
+        <file>icons/general/Sketcher_ViewSketch.svg</file>
     </qresource>
     <qresource>
         <file>icons/geometry/Sketcher_AlterFillet.svg</file>
