@@ -1,31 +1,15 @@
 <RCC>
     <qresource>
-        <file>icons/Sketcher_AlterFillet.svg</file>
-        <file>icons/Sketcher_CarbonCopy.svg</file>
-        <file>icons/Sketcher_CarbonCopy_Constr.svg</file>
-        <file>icons/Sketcher_Crosshair.svg</file>
-        <file>icons/Sketcher_DraftLine.svg</file>
         <file>icons/Sketcher_EditSketch.svg</file>
-        <file>icons/Sketcher_Extend.svg</file>
-        <file>icons/Sketcher_External.svg</file>
         <file>icons/Sketcher_LeaveSketch.svg</file>
         <file>icons/Sketcher_MapSketch.svg</file>
         <file>icons/Sketcher_MergeSketch.svg</file>
         <file>icons/Sketcher_MirrorSketch.svg</file>
         <file>icons/Sketcher_NewSketch.svg</file>
         <file alias="icons/preferences-sketcher.svg">icons/Sketcher_NewSketch.svg</file>
-        <file>icons/Sketcher_ProfilesHexagon1.svg</file>
         <file>icons/Sketcher_ReorientSketch.svg</file>
         <file>icons/Sketcher_Sketch.svg</file>
         <file>icons/Sketcher_SwitchVirtualSpace.svg</file>
-        <file>icons/Sketcher_ToggleActiveConstraint.svg</file>
-        <file>icons/Sketcher_ToggleConstraint.svg</file>
-        <file>icons/Sketcher_Toggle_Constraint_Driven.svg</file>
-        <file>icons/Sketcher_Toggle_Constraint_Driving.svg</file>
-        <file>icons/Sketcher_ToggleConstruction.svg</file>
-        <file>icons/Sketcher_ToggleConstruction_old.svg</file>
-        <file>icons/Sketcher_ToggleNormal.svg</file>
-        <file>icons/Sketcher_Trimming.svg</file>
         <file>icons/Sketcher_ValidateSketch.svg</file>
         <file>icons/Sketcher_ViewSection.svg</file>
         <file>icons/Sketcher_ViewSketch.svg</file>
@@ -75,6 +59,11 @@
         <file>icons/constraints/Constraint_Vertical.svg</file>
         <file>icons/constraints/Constraint_VerticalDistance.svg</file>
         <file>icons/constraints/Constraint_VerticalDistance_Driven.svg</file>
+        <file>icons/constraints/Sketcher_Crosshair.svg</file>
+        <file>icons/constraints/Sketcher_ToggleActiveConstraint.svg</file>
+        <file>icons/constraints/Sketcher_ToggleConstraint.svg</file>
+        <file>icons/constraints/Sketcher_Toggle_Constraint_Driven.svg</file>
+        <file>icons/constraints/Sketcher_Toggle_Constraint_Driving.svg</file>
     </qresource>
     <qresource>
         <file>icons/elements/Sketcher_Element_Arc_Edge.svg</file>
@@ -113,6 +102,9 @@
         <file>icons/elements/Sketcher_Element_SelectionTypeInvalid.svg</file>
     </qresource>
     <qresource>
+        <file>icons/geometry/Sketcher_AlterFillet.svg</file>
+        <file>icons/geometry/Sketcher_CarbonCopy.svg</file>
+        <file>icons/geometry/Sketcher_CarbonCopy_Constr.svg</file>
         <file>icons/geometry/Sketcher_Conics.svg</file>
         <file>icons/geometry/Sketcher_Conics_Constr.svg</file>
         <file>icons/geometry/Sketcher_Conics_Ellipse_3points.svg</file>
@@ -164,6 +156,10 @@
         <file>icons/geometry/Sketcher_CreateText.svg</file>
         <file>icons/geometry/Sketcher_CreateTriangle.svg</file>
         <file>icons/geometry/Sketcher_CreateTriangle_Constr.svg</file>
+        <file>icons/geometry/Sketcher_Extend.svg</file>
+        <file>icons/geometry/Sketcher_External.svg</file>
+        <file>icons/geometry/Sketcher_ToggleConstruction.svg</file>
+        <file>icons/geometry/Sketcher_Trimming.svg</file>
     </qresource>
     <qresource>
         <file>icons/obsolete/Sketcher_ConstrainCoincident_old.svg</file>
@@ -171,6 +167,10 @@
         <file>icons/obsolete/Sketcher_ConstrainHorizontal_old.svg</file>
         <file>icons/obsolete/Sketcher_ConstrainParallel_old.svg</file>
         <file>icons/obsolete/Sketcher_ConstrainVertical_old.svg</file>
+        <file>icons/obsolete/Sketcher_DraftLine.svg</file>
+        <file>icons/obsolete/Sketcher_ProfilesHexagon1.svg</file>
+        <file>icons/obsolete/Sketcher_ToggleConstruction_old.svg</file>
+        <file>icons/obsolete/Sketcher_ToggleNormal.svg</file>
     </qresource>
     <qresource>
         <file>icons/pointers/Sketcher_Pointer_CarbonCopy.svg</file>
