@@ -6,7 +6,7 @@
     <circle cx="7" cy="41" r="5" />
     <circle cx="38" cy="38" r="5" />
   </g>
-  <g id="crosshair" style="stroke:#eeeeec;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;"> 
+  <g id="crosshair" style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;"> 
     <path d="m16,3v9m0,8v9m-13-13h9m8,0h9" />
   </g>
 </svg>
