@@ -101,12 +101,9 @@ using namespace Gui;
 
 namespace WebGui {
 enum WebAction {
-    OpenLink = 0xff,
-#ifdef QTWEBENGINE
-    ViewSource = QWebEnginePage::ViewSource
-#else
-    ViewSource = 200 // QWebView doesn't have a ViewSource option
-#endif
+    OpenLink = 0,
+    OpenLinkInNewWindow = 1,
+    ViewSource = 2 // QWebView doesn't have a ViewSource option
 };
 
 #ifdef QTWEBENGINE
@@ -312,7 +309,6 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
 #endif
     if (!r.linkUrl().isEmpty()) {
         QMenu menu(this);
-        QWEBPAGE::WebAction openLink = static_cast<QWEBPAGE::WebAction>(WebAction::OpenLink);
 
         // building a custom signal for external browser action
         QSignalMapper* signalMapper = new QSignalMapper (&menu);
@@ -322,11 +318,11 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
 
         QAction* extAction = menu.addAction(tr("Open in External Browser"));
         connect (extAction, SIGNAL(triggered()), signalMapper, SLOT(map()));
-        signalMapper->setMapping(extAction, openLink);
+        signalMapper->setMapping(extAction, WebAction::OpenLink);
 
         QAction* newAction = menu.addAction(tr("Open in new window"));
         connect (newAction, SIGNAL(triggered()), signalMapper, SLOT(map()));
-        signalMapper->setMapping(newAction, QWEBPAGE::OpenLinkInNewWindow);
+        signalMapper->setMapping(newAction, WebAction::OpenLinkInNewWindow);
 
         menu.addAction(pageAction(QWEBPAGE::DownloadLinkToDisk));
         menu.addAction(pageAction(QWEBPAGE::CopyLinkToClipboard));
@@ -379,7 +375,7 @@ void WebView::triggerContextMenuAction(int id)
     case WebAction::OpenLink:
         openLinkInExternalBrowser(url);
         break;
-    case QWEBPAGE::OpenLinkInNewWindow:
+    case WebAction::OpenLinkInNewWindow:
         openLinkInNewWindow(url);
         break;
     case WebAction::ViewSource:
@@ -452,7 +448,12 @@ BrowserView::BrowserView(QWidget* parent)
     profile->setCachePath(basePath + QLatin1String("cache"));
 
     interceptLinks = new WebEngineUrlRequestInterceptor(this);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0))
+    profile->setUrlRequestInterceptor(interceptLinks);
+#else
     profile->setRequestInterceptor(interceptLinks);
+#endif
 
     view->settings()->setAttribute(QWebEngineSettings::AutoLoadIconsForPage, true);
 
@@ -583,7 +584,15 @@ bool BrowserView::chckHostAllowed(const QString& host)
 #ifdef QTWEBENGINE
 void BrowserView::onDownloadRequested(QWebEngineDownloadItem *request)
 {
-    Gui::Dialog::DownloadManager::getInstance()->download(request->url());
+    QUrl url = request->url();
+    if (!url.isLocalFile()) {
+        request->accept();
+        Gui::Dialog::DownloadManager::getInstance()->download(request->url());
+    }
+    else {
+        request->cancel();
+        Gui::getMainWindow()->loadUrls(App::GetApplication().getActiveDocument(), QList<QUrl>() << url);
+    }
 }
 
 void BrowserView::setWindowIcon(const QIcon &icon)
@@ -613,7 +622,13 @@ void BrowserView::onViewSource(const QUrl &url)
 #else
 void BrowserView::onDownloadRequested(const QNetworkRequest & request)
 {
-    Gui::Dialog::DownloadManager::getInstance()->download(request);
+    QUrl url = request.url();
+    if (!url.isLocalFile()) {
+        Gui::Dialog::DownloadManager::getInstance()->download(request);
+    }
+    else {
+        Gui::getMainWindow()->loadUrls(App::GetApplication().getActiveDocument(), QList<QUrl>() << url);
+    }
 }
 
 void BrowserView::onUnsupportedContent(QNetworkReply* reply)

@@ -16,7 +16,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Če želiš dodati sklice: izberi jih v 3D pogledu in klikni "Dodaj".</translation>
     </message>
   </context>
   <context>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+      <translation>Izberi elemente telesa, ki bojo dodani na seznam. Za dodajanje telesa klikni "Dodaj".</translation>
     </message>
   </context>
   <context>
@@ -1200,12 +1200,12 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Create FEM pulley constraint</source>
-      <translation>Ustvari omejitev MKE škripca</translation>
+      <translation>Ustvari omejitev MKE jermenice</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="488"/>
       <source>Create FEM constraint for a pulley</source>
-      <translation>Ustvari omejitev MKE za škripec</translation>
+      <translation>Ustvari omejitev MKE za jermenice</translation>
     </message>
   </context>
   <context>
@@ -1708,7 +1708,7 @@
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="94"/>
       <source>Pulley diameter</source>
-      <translation>Premer škripca</translation>
+      <translation>Premer jermenice</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="95"/>
@@ -2291,7 +2291,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="156"/>
       <source>Driven pulley</source>
-      <translation>Gonilni škripec</translation>
+      <translation>Gnana jermenica</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="165"/>

@@ -30,6 +30,7 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD Python Mesh reader and writer for FEM workbench
 
 import FreeCAD
+
 from femmesh import meshtools
 
 # ************************************************************************************************

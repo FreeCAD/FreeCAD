@@ -837,7 +837,7 @@ class ObjectSurface(PathOp.ObjectOp):
             SCANDATA.extend(profScan)
 
         if len(SCANDATA) == 0:
-            msg = translate('PathSuface', 'No scan data to convert to Gcode.')
+            msg = translate('PathSurface', 'No scan data to convert to Gcode.')
             PathLog.error(msg)
             return list()
 

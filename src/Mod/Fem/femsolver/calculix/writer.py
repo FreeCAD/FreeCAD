@@ -44,6 +44,37 @@ from femmesh import meshtools
 from femtools import geomtools
 
 
+# Interesting forum topic: https://forum.freecadweb.org/viewtopic.php?&t=48451
+# TODO somehow set units at beginning and every time a value is retrieved use this identifier
+# this would lead to support of unit system, force might be retrieved in base writer!
+
+
+# the following text will be at the end of the main calculix input file
+units_information = """***********************************************************
+**  About units:
+**  See ccx manual, ccx does not know about any unit.
+**  Golden rule: The user must make sure that the numbers he provides have consistent units.
+**  The user is the FreeCAD calculix writer module ;-)
+**
+**  The unit system which is used at Guido Dhodts company: mm, N, s, K
+**  Since Length and Mass are connected by Force, if Length is mm the Mass is in t to get N
+**  The following units are used to write to inp file:
+**
+**  Length: mm (this includes the mesh geometry)
+**  Mass: t
+**  TimeSpan: s
+**  Temperature: K
+**
+**  This leads to:
+**  Force: N
+**  Pressure: N/mm^2
+**  Density: t/mm^2
+**  Gravity: mm/s^2
+**  Thermal conductivity: t*mm/K*s^3
+**  Specific Heat: kJ/t/K = mm^2/s^2/K
+"""
+
+
 class FemInputWriterCcx(writerbase.FemInputWriter):
     def __init__(
         self,
@@ -1307,12 +1338,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         ))
         f.write("**\n")
         f.write("**\n")
-        f.write("**\n")
-        f.write("**   Units\n")
-        f.write("**\n")
-        f.write("**   Geometry (mesh data)        --> mm\n")
-        f.write("**   Materials (Young's modulus) --> N/mm2 = MPa\n")
-        f.write("**   Loads (nodal loads)         --> N\n")
+        f.write(units_information)
         f.write("**\n")
 
     # ********************************************************************************************

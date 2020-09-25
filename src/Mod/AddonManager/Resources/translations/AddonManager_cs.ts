@@ -4,9 +4,9 @@
   <context>
     <name>AddonInstaller</name>
     <message>
-      <location filename="../../addonmanager_workers.py" line="436"/>
+      <location filename="../../addonmanager_workers.py" line="444"/>
       <source>Installed location</source>
-      <translation type="unfinished">Installed location</translation>
+      <translation>Umístění instalace</translation>
     </message>
   </context>
   <context>
@@ -14,12 +14,12 @@
     <message>
       <location filename="../../addonmanager_macro.py" line="147"/>
       <source>Unable to fetch the code of this macro.</source>
-      <translation type="unfinished">Unable to fetch the code of this macro.</translation>
+      <translation>Nelze načíst kód tohoto makra.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="166"/>
       <source>Unable to retrieve a description for this macro.</source>
-      <translation type="unfinished">Unable to retrieve a description for this macro.</translation>
+      <translation>Nelze načíst popis tohto makra.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="76"/>
@@ -64,7 +64,7 @@
     <message>
       <location filename="../../AddonManager.py" line="433"/>
       <source>Unable to install</source>
-      <translation type="unfinished">Unable to install</translation>
+      <translation>Nelze nainstalovat</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="495"/>
@@ -74,7 +74,7 @@
     <message>
       <location filename="../../AddonManager.py" line="497"/>
       <source>Unable to remove this addon</source>
-      <translation type="unfinished">Unable to remove this addon</translation>
+      <translation>Tento doplněk nelze odstranit</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="503"/>
@@ -87,107 +87,107 @@
       <translation type="unfinished">Macro could not be removed.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="127"/>
+      <location filename="../../addonmanager_workers.py" line="135"/>
       <source>Unable to download addon list.</source>
       <translation type="unfinished">Unable to download addon list.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="132"/>
+      <location filename="../../addonmanager_workers.py" line="140"/>
       <source>Workbenches list was updated.</source>
       <translation type="unfinished">Workbenches list was updated.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="619"/>
+      <location filename="../../addonmanager_workers.py" line="634"/>
       <source>Outdated GitPython detected, consider upgrading with pip.</source>
       <translation type="unfinished">Outdated GitPython detected, consider upgrading with pip.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="254"/>
+      <location filename="../../addonmanager_workers.py" line="262"/>
       <source>List of macros successfully retrieved.</source>
       <translation type="unfinished">List of macros successfully retrieved.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="529"/>
+      <location filename="../../addonmanager_workers.py" line="542"/>
       <source>Retrieving description...</source>
-      <translation type="unfinished">Retrieving description...</translation>
+      <translation>Načítání popisu...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="347"/>
+      <location filename="../../addonmanager_workers.py" line="355"/>
       <source>Retrieving info from</source>
-      <translation type="unfinished">Retrieving info from</translation>
+      <translation>Načítání informací z</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="434"/>
+      <location filename="../../addonmanager_workers.py" line="442"/>
       <source>An update is available for this addon.</source>
       <translation type="unfinished">An update is available for this addon.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="430"/>
+      <location filename="../../addonmanager_workers.py" line="438"/>
       <source>This addon is already installed.</source>
-      <translation type="unfinished">This addon is already installed.</translation>
+      <translation>Toto rozšíření je již nainstalováno.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="531"/>
+      <location filename="../../addonmanager_workers.py" line="544"/>
       <source>Retrieving info from git</source>
-      <translation type="unfinished">Retrieving info from git</translation>
+      <translation>Načítání informací z gitu</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="534"/>
+      <location filename="../../addonmanager_workers.py" line="547"/>
       <source>Retrieving info from wiki</source>
-      <translation type="unfinished">Retrieving info from wiki</translation>
+      <translation>Načítání informací z wiki</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="583"/>
+      <location filename="../../addonmanager_workers.py" line="596"/>
       <source>GitPython not found. Using standard download instead.</source>
-      <translation type="unfinished">GitPython not found. Using standard download instead.</translation>
+      <translation>GitPython nenalezen. Použijte standardní způsob stažení.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="588"/>
+      <location filename="../../addonmanager_workers.py" line="601"/>
       <source>Your version of python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
       <translation type="unfinished">Your version of python doesn&apos;t appear to support ZIP files. Unable to proceed.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="653"/>
+      <location filename="../../addonmanager_workers.py" line="670"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
       <translation type="unfinished">Workbench successfully installed. Please restart FreeCAD to apply the changes.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="703"/>
+      <location filename="../../addonmanager_workers.py" line="720"/>
       <source>Missing workbench</source>
       <translation type="unfinished">Missing workbench</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="712"/>
+      <location filename="../../addonmanager_workers.py" line="729"/>
       <source>Missing python module</source>
-      <translation type="unfinished">Missing python module</translation>
+      <translation>Chybějící modul python</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="720"/>
+      <location filename="../../addonmanager_workers.py" line="737"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
       <translation type="unfinished">Missing optional python module (doesn&apos;t prevent installing)</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="722"/>
+      <location filename="../../addonmanager_workers.py" line="739"/>
       <source>Some errors were found that prevent to install this workbench</source>
       <translation type="unfinished">Some errors were found that prevent to install this workbench</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="723"/>
+      <location filename="../../addonmanager_workers.py" line="740"/>
       <source>Please install the missing components first.</source>
       <translation type="unfinished">Please install the missing components first.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="747"/>
+      <location filename="../../addonmanager_workers.py" line="764"/>
       <source>Error: Unable to download</source>
-      <translation type="unfinished">Error: Unable to download</translation>
+      <translation>Chyba: Nelze stáhnout</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="766"/>
+      <location filename="../../addonmanager_workers.py" line="783"/>
       <source>Successfully installed</source>
       <translation type="unfinished">Successfully installed</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="270"/>
+      <location filename="../../addonmanager_workers.py" line="278"/>
       <source>GitPython not installed! Cannot retrieve macros from git</source>
       <translation type="unfinished">GitPython not installed! Cannot retrieve macros from git</translation>
     </message>
@@ -199,56 +199,76 @@
     <message>
       <location filename="../../AddonManager.py" line="566"/>
       <source>Installed</source>
-      <translation type="unfinished">Installed</translation>
+      <translation>Nainstalováno</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="585"/>
       <source>Update available</source>
-      <translation type="unfinished">Update available</translation>
+      <translation>Dostupná aktualizace</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="544"/>
       <source>Restart required</source>
-      <translation type="unfinished">Restart required</translation>
+      <translation>Je vyžadován restart</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="541"/>
+      <location filename="../../addonmanager_workers.py" line="554"/>
       <source>This macro is already installed.</source>
       <translation type="unfinished">This macro is already installed.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="664"/>
+      <location filename="../../addonmanager_workers.py" line="681"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation type="unfinished">A macro has been installed and is available under Macro -&gt; Macros menu</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="277"/>
-      <source>Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_workers.py" line="442"/>
+      <location filename="../../addonmanager_workers.py" line="450"/>
       <source>This addon is marked as obsolete</source>
       <translation type="unfinished">This addon is marked as obsolete</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="443"/>
+      <location filename="../../addonmanager_workers.py" line="451"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
       <translation type="unfinished">This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="740"/>
+      <location filename="../../addonmanager_workers.py" line="757"/>
       <source>Error: Unable to locate zip from</source>
       <translation type="unfinished">Error: Unable to locate zip from</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="285"/>
+      <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
+      <translation type="unfinished">Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="455"/>
+      <source>This addon is marked as Python 2 Only</source>
+      <translation type="unfinished">This addon is marked as Python 2 Only</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="456"/>
+      <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
+      <translation type="unfinished">This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="625"/>
+      <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
+      <translation type="unfinished">User requested updating a Python 2 workbench on a system running Python 3 - </translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="653"/>
+      <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
+      <translation type="unfinished">Workbench successfully updated. Please restart FreeCAD to apply the changes.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="659"/>
+      <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
+      <translation type="unfinished">User requested installing a Python 2 workbench on a system running Python 3 - </translation>
     </message>
   </context>
   <context>
     <name>Dialog</name>
-    <message>
-      <location filename="../../AddonManager.ui" line="14"/>
-      <source>Addons manager</source>
-      <translation>Správce rozšíření</translation>
-    </message>
     <message>
       <location filename="../../AddonManager.ui" line="37"/>
       <source>Workbenches</source>
@@ -267,7 +287,7 @@
     <message>
       <location filename="../../AddonManager.ui" line="113"/>
       <source>Downloading info...</source>
-      <translation type="unfinished">Downloading info...</translation>
+      <translation>Stahování informací...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="150"/>
@@ -325,11 +345,6 @@
       <translation type="unfinished">Install/update selected</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.ui" line="157"/>
-      <source>Close the addons manager</source>
-      <translation type="unfinished">Close the addons manager</translation>
-    </message>
-    <message>
       <location filename="../../AddonManager.ui" line="160"/>
       <source>Close</source>
       <translation>Zavřít</translation>
@@ -347,13 +362,6 @@ installed addons will be checked for available updates
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires GitPython)</source>
       <translation type="unfinished">Automatically check for updates at start (requires GitPython)</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="42"/>
-      <source>You can use this window to specify additional addon repositories
-sto be scanned for available addons</source>
-      <translation type="unfinished">You can use this window to specify additional addon repositories
-sto be scanned for available addons</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
@@ -374,6 +382,23 @@ sto be scanned for available addons</translation>
       <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>User defined proxy :</source>
       <translation type="unfinished">User defined proxy :</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.ui" line="14"/>
+      <source>Addon Manager</source>
+      <translation type="unfinished">Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.ui" line="157"/>
+      <source>Close the Addon Manager</source>
+      <translation type="unfinished">Close the Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="42"/>
+      <source>You can use this window to specify additional addon repositories
+to be scanned for available addons</source>
+      <translation type="unfinished">You can use this window to specify additional addon repositories
+to be scanned for available addons</translation>
     </message>
   </context>
   <context>

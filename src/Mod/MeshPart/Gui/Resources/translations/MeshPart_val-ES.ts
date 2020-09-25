@@ -155,7 +155,7 @@
       <translation>Connecta les arestes si la distància és menor que</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="344"/>
+      <location filename="../../CrossSections.cpp" line="345"/>
       <source>Failure</source>
       <translation>Fallada</translation>
     </message>

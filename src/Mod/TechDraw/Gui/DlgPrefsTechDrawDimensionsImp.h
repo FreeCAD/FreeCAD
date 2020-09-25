@@ -25,12 +25,13 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
 
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDrawDimensions.h>
 #include <Gui/PropertyPage.h>
+#include <memory>
 
 namespace TechDrawGui {
+class Ui_DlgPrefsTechDrawDimensionsImp;
 
-class DlgPrefsTechDrawDimensionsImp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDrawDimensionsImp
+class DlgPrefsTechDrawDimensionsImp : public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -45,6 +46,8 @@ protected:
 
     int prefArrowStyle(void) const;
 
+private:
+    std::unique_ptr<Ui_DlgPrefsTechDrawDimensionsImp> ui;
 };
 
 } // namespace TechDrawGui

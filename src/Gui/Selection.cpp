@@ -134,14 +134,16 @@ bool SelectionObserver::isConnectionAttached() const
 void SelectionObserver::attachSelection()
 {
     if (!connectSelection.connected()) {
-        auto &signal = resolve>1?Selection().signalSelectionChanged3:(
-                resolve?Selection().signalSelectionChanged2:
-                Selection().signalSelectionChanged);
+        auto &signal = resolve > 1 ? Selection().signalSelectionChanged3 :
+                       resolve     ? Selection().signalSelectionChanged2 :
+                                     Selection().signalSelectionChanged  ;
         connectSelection = signal.connect(boost::bind
             (&SelectionObserver::_onSelectionChanged, this, bp::_1));
-        if(filterDocName.size())
+
+        if (filterDocName.size()) {
             Selection().addSelectionGate(
                     new SelectionGateFilterExternal(filterDocName.c_str(),filterObjName.c_str()));
+        }
     }
 }
 
@@ -621,7 +623,13 @@ void SelectionSingleton::notify(SelectionChanges &&Chng) {
         }
         if(notify) {
             Notify(msg);
-            signalSelectionChanged(msg);
+            try {
+                signalSelectionChanged(msg);
+            }
+            catch (const boost::exception&) {
+                // reported by code analyzers
+                Base::Console().Warning("notify: Unexpected boost exception\n");
+            }
         }
         NotificationQueue.pop_front();
     }
@@ -756,16 +764,28 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
                 newElementName.size()?newElementName.c_str():oldElementName.c_str(),
                 pObject->getTypeId().getName(), msg.x,msg.y,msg.z);
 
-        msg2.pOriginalMsg = &msg;
-        signalSelectionChanged3(msg2);
+        try {
+            msg2.pOriginalMsg = &msg;
+            signalSelectionChanged3(msg2);
 
-        msg2.Object.setSubName(oldElementName.c_str());
-        msg2.pSubName = msg2.Object.getSubName().c_str();
-        signalSelectionChanged2(msg2);
-
-    }else {
-        signalSelectionChanged3(msg);
-        signalSelectionChanged2(msg);
+            msg2.Object.setSubName(oldElementName.c_str());
+            msg2.pSubName = msg2.Object.getSubName().c_str();
+            signalSelectionChanged2(msg2);
+        }
+        catch (const boost::exception&) {
+            // reported by code analyzers
+            Base::Console().Warning("slotSelectionChanged: Unexpected boost exception\n");
+        }
+    }
+    else {
+        try {
+            signalSelectionChanged3(msg);
+            signalSelectionChanged2(msg);
+        }
+        catch (const boost::exception&) {
+            // reported by code analyzers
+            Base::Console().Warning("slotSelectionChanged: Unexpected boost exception\n");
+        }
     }
 }
 
@@ -997,9 +1017,11 @@ void SelectionSingleton::rmvSelectionGate(void)
 {
     if (ActiveGate) {
         delete ActiveGate;
-        ActiveGate=0;
+        ActiveGate = nullptr;
+
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
+            // if a document is about to be closed it has no MDI view any more
             Gui::MDIView* mdi = doc->getActiveView();
             if (mdi)
                 mdi->restoreOverrideCursor();
@@ -1458,28 +1480,31 @@ void SelectionSingleton::setVisible(VisibleState vis, const std::vector<App::Sub
         App::DocumentObject *parent = 0;
         std::string elementName;
         obj = obj->resolve(sel.getSubName().c_str(),&parent,&elementName);
-        if(!obj || !obj->getNameInDocument() || (parent && !parent->getNameInDocument()))
+        if (!obj || !obj->getNameInDocument() || (parent && !parent->getNameInDocument()))
             continue;
         // try call parent object's setElementVisible
-        if(parent) {
+        if (parent) {
             // prevent setting the same object visibility more than once
-            if(!filter.insert(std::make_pair(obj,parent)).second)
+            if (!filter.insert(std::make_pair(obj,parent)).second)
                 continue;
-            int vis = parent->hasChildElement()?
+            int visElement = parent->hasChildElement()?
                 parent->isElementVisible(elementName.c_str()):-1;
-            if(vis>=0) {
-                if(vis>0) vis = 1;
-                if(visible>=0) {
-                    if(vis == visible)
+            if (visElement >= 0) {
+                if (visElement > 0)
+                    visElement = 1;
+                if (visible >= 0) {
+                    if (visElement == visible)
                         continue;
-                    vis = visible;
-                }else
-                    vis = !vis;
+                    visElement = visible;
+                }
+                else {
+                    visElement = !visElement;
+                }
 
-                if(!vis)
+                if(!visElement)
                     updateSelection(false,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
                 parent->setElementVisible(elementName.c_str(),vis?true:false);
-                if(vis && ViewParams::instance()->getUpdateSelectionVisual())
+                if(visElement && ViewParams::instance()->getUpdateSelectionVisual())
                     updateSelection(true,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
                 continue;
             }
@@ -1493,14 +1518,14 @@ void SelectionSingleton::setVisible(VisibleState vis, const std::vector<App::Sub
         auto vp = Application::Instance->getViewProvider(obj);
 
         if(vp) {
-            int vis;
+            bool visObject;
             if(visible>=0)
-                vis = visible;
+                visObject = visible ? true : false;
             else
-                vis = !vp->isShow();
+                visObject = !vp->isShow();
 
             SelectionNoTopParentCheck guard;
-            if(vis) {
+            if(visObject) {
                 vp->show();
                 if(ViewParams::instance()->getUpdateSelectionVisual())
                     updateSelection(vis,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
@@ -1548,44 +1573,42 @@ void SelectionSingleton::clearSelection(const char* pDocName, bool clearPreSelec
     // Because the introduction of external editing, it is best to make
     // clearSelection(0) behave as clearCompleteSelection(), which is the same
     // behavior of python Selection.clearSelection(None)
-    if(!pDocName || !pDocName[0] || strcmp(pDocName,"*")==0) {
+    if (!pDocName || !pDocName[0] || strcmp(pDocName,"*")==0) {
         clearCompleteSelection(clearPreSelect);
         return;
     }
 
-    if(_PickedList.size()) {
+    if (_PickedList.size()) {
         _PickedList.clear();
         notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
     App::Document* pDoc;
     pDoc = getDocument(pDocName);
-    if(pDoc) {
-        std::string docName;
-        if (pDocName)
-            docName = pDocName;
-        else
-            docName = pDoc->getName(); // active document
-
-        if(clearPreSelect && DocName == docName)
+    if (pDoc) {
+        std::string docName = pDocName;
+        if (clearPreSelect && DocName == docName)
             rmvPreselect();
 
         bool touched = false;
-        for(auto it=_SelList.begin();it!=_SelList.end();) {
-            if(it->DocName == docName) {
+        for (auto it=_SelList.begin();it!=_SelList.end();) {
+            if (it->DocName == docName) {
                 touched = true;
                 it = _SelList.erase(it);
-            }else
+            }
+            else {
                 ++it;
+            }
         }
-        if(!touched)
+
+        if (!touched)
             return;
 
-        if(!logDisabled) {
+        if (!logDisabled) {
             std::ostringstream ss;
             ss << "Gui.Selection.clearSelection('" << docName << "'";
-            if(!clearPreSelect)
-                ss << ",False";
+            if (!clearPreSelect)
+                ss << ", False";
             ss << ')';
             Application::Instance->macroManager()->addLine(MacroManager::Cmt,ss.str().c_str());
         }

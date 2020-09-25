@@ -22,24 +22,27 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for rotating objects in the 3D space."""
+"""Provides GUI tools to rotate objects in the 3D space."""
 ## @package gui_rotate
-# \ingroup DRAFT
-# \brief Provides tools for rotating objects in the 3D space.
+# \ingroup draftguitools
+# \brief Provides GUI tools to rotate objects in the 3D space.
 
+## \addtogroup draftguitools
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
-from FreeCAD import Units as U
 import DraftVecUtils
-import draftutils.utils as utils
+import draftutils.groups as groups
 import draftutils.todo as todo
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+
+from FreeCAD import Units as U
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate, _tr
 
@@ -88,10 +91,11 @@ class Rotate(gui_base_original.Modifier):
         if self.call:
             self.view.removeEventCallback("SoEvent", self.call)
         self.selected_objects = Gui.Selection.getSelection()
-        self.selected_objects = utils.getGroupContents(self.selected_objects,
-                                                       addgroups=True,
-                                                       spaces=True,
-                                                       noarchchild=True)
+        self.selected_objects = \
+            groups.get_group_contents(self.selected_objects,
+                                      addgroups=True,
+                                      spaces=True,
+                                      noarchchild=True)
         self.selected_subelements = Gui.Selection.getSelectionEx()
         self.step = 0
         self.center = None
@@ -426,3 +430,5 @@ class Rotate(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Rotate', Rotate())
+
+## @}

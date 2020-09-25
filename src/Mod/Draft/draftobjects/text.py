@@ -21,11 +21,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the object code for Draft Text objects."""
+"""Provides the object code for the Text object."""
 ## @package text
-# \ingroup DRAFT
-# \brief Provide the object code for Draft Text objects.
+# \ingroup draftobjects
+# \brief Provides the object code for the Text object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -77,3 +79,5 @@ class Text(DraftAnnotation):
 
 # Alias for compatibility with v0.18 and earlier
 DraftText = Text
+
+## @}

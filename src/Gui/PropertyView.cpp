@@ -441,7 +441,7 @@ void PropertyView::onTimer() {
         vp->getPropertyMap(viewList);
 
         // store the properties with <name,id> as key in a map
-        if (ob) {
+        {
             for (auto prop : dataList) {
                 if (isPropertyHidden(prop))
                     continue;
@@ -461,7 +461,7 @@ void PropertyView::onTimer() {
             }
         }
         // the same for the view properties
-        if (vp) {
+        {
             std::map<std::string, App::Property*>::iterator pt;
             for (pt = viewList.begin(); pt != viewList.end(); ++pt) {
                 if (isPropertyHidden(pt->second))

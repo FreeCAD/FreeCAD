@@ -165,7 +165,7 @@ def joinWalls(walls,delete=False):
     if base.Base:
         if base.Base.Shape.Faces:
             return None
-        if Draft.getType(base.Base) == "Sketch":
+        if Draft.getType(base.Base) == "Sketcher::SketchObject":
             sk = base.Base
         else:
             sk = Draft.makeSketch(base.Base,autoconstraints=True)
@@ -1017,7 +1017,7 @@ class _Wall(ArchComponent.Component):
                                 if Draft.getType(obj.Base) == "Wire":
                                     #print "modifying p2"
                                     obj.Base.End = p2
-                                elif Draft.getType(obj.Base) == "Sketch":
+                                elif Draft.getType(obj.Base) == "Sketcher::SketchObject":
                                     try:
                                         obj.Base.movePoint(0,2,p2,0)
                                     except:
@@ -1243,8 +1243,10 @@ class _Wall(ArchComponent.Component):
                         skPlacement = obj.Base.Placement  # Get Sketch's placement to restore later
                         for i in skGeom:
                             if not i.Construction:
-                                skGeomEdgesI = i.toShape()
-                                skGeomEdges.append(skGeomEdgesI)
+                                # support Line, Arc, Circle for Sketch as Base at the moment
+                                if isinstance(i, (Part.LineSegment, Part.Circle, Part.ArcOfCircle)):
+                                    skGeomEdgesI = i.toShape()
+                                    skGeomEdges.append(skGeomEdgesI)
                         for cluster in Part.getSortedClusters(skGeomEdges):
                             clusterTransformed = []
                             for edge in cluster:
@@ -1262,11 +1264,23 @@ class _Wall(ArchComponent.Component):
                         normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))
 
                     else:
-                        # self.basewires = obj.Base.Shape.Wires
-                        self.basewires = []
-                        for cluster in Part.getSortedClusters(obj.Base.Shape.Edges):
-                            for c in Part.sortEdges(cluster):
-                                self.basewires.append(Part.Wire(c))
+                        self.basewires = obj.Base.Shape.Wires
+
+                        # Found case that after sorting below, direction of 
+                        # edges sorted are not as 'expected' thus resulted in
+                        # bug - e.g. a Dwire with edges/vertexes in clockwise 
+                        # order, 1st vertex is Forward as expected.  After 
+                        # sorting below, edges sorted still in clockwise order 
+                        # - no problem, but 1st vertex of each edge become 
+                        # Reverse rather than Forward.
+
+                        # See FC discussion - 
+                        # https://forum.freecadweb.org/viewtopic.php?f=23&t=48275&p=413745#p413745
+
+                        #self.basewires = []
+                        #for cluster in Part.getSortedClusters(obj.Base.Shape.Edges):
+                        #    for c in Part.sortEdges(cluster):
+                        #        self.basewires.append(Part.Wire(c))
                         # if not sketch, e.g. Dwire, can have wire which is 3d
                         # so not on the placement's working plane - below
                         # applied to Sketch not applicable here
@@ -1328,10 +1342,12 @@ class _Wall(ArchComponent.Component):
                             if curAligns == "Left":
 
                                 if layers:
-                                    curWidth = abs(layers[i])
+                                    curWidth = []
+                                    for n in range(edgeNum):
+                                        curWidth.append(abs(layers[i]))
                                     off = off+layeroffset
-                                    dvec.multiply(curWidth)
-                                    layeroffset += abs(curWidth)
+                                    dvec.multiply(curWidth[0])
+                                    layeroffset += abs(curWidth[0])
                                 else:
                                     curWidth = widths
                                     dvec.multiply(width)
@@ -1372,10 +1388,12 @@ class _Wall(ArchComponent.Component):
                                 dvec = dvec.negative()
 
                                 if layers:
-                                    curWidth = abs(layers[i])
+                                    curWidth = []
+                                    for n in range(edgeNum):
+                                        curWidth.append(abs(layers[i]))
                                     off = off+layeroffset
-                                    dvec.multiply(curWidth)
-                                    layeroffset += abs(curWidth)
+                                    dvec.multiply(curWidth[0])
+                                    layeroffset += abs(curWidth[0])
                                 else:
                                     curWidth = widths
                                     dvec.multiply(width)
@@ -1449,7 +1467,6 @@ class _Wall(ArchComponent.Component):
                                     continue
 
                                 sh.fix(0.1,0,1) # fixes self-intersecting wires
-
                                 f = Part.Face(sh)
                                 if baseface:
 
@@ -1508,6 +1525,7 @@ class _Wall(ArchComponent.Component):
                 base = Part.Face(Part.makePolygon([v1,v2,v3,v4,v1]))
             placement = FreeCAD.Placement()
         if base and placement:
+            normal.normalize()
             extrusion = normal.multiply(height)
             if placement.Rotation.Angle > 0:
                 extrusion = placement.inverse().Rotation.multVec(extrusion)

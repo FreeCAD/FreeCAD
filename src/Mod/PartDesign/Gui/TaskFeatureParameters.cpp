@@ -106,13 +106,13 @@ bool TaskDlgFeatureParameters::accept() {
             throw Base::TypeError("Bad object processed in the feature dialog.");
         }
 
-        App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
-
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+        Gui::cmdAppDocument(feature, "recompute()");
 
         if (!feature->isValid()) {
             throw Base::RuntimeError(vp->getObject()->getStatusString());
         }
+
+        App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
 
         // detach the task panel from the selection to avoid to invoke
         // eventually onAddSelection when the selection changes
@@ -123,7 +123,7 @@ bool TaskDlgFeatureParameters::accept() {
                 param->detachSelection();
         }
 
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+        Gui::cmdGuiDocument(feature, "resetEdit()");
         Gui::Command::commitCommand();
 
         Gui::cmdAppObjectHide(previous);

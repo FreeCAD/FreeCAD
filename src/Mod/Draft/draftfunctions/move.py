@@ -20,20 +20,20 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft move function.
-"""
+"""Provides functions to move objects from one position to another."""
 ## @package move
-# \ingroup DRAFT
-# \brief This module provides the code for Draft move function.
+# \ingroup draftfuctions
+# \brief Provides functions to move objects from one position to another.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
-
-import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
-
-from draftmake.make_copy import make_copy
-from draftmake.make_line import make_line
-from draftfunctions.join import join_wires
+import draftutils.gui_utils as gui_utils
+import draftutils.groups as groups
+import draftfunctions.join as join
+import draftmake.make_copy as make_copy
+import draftmake.make_line as make_line
 
 
 def move(objectslist, vector, copy=False):
@@ -59,8 +59,10 @@ def move(objectslist, vector, copy=False):
     The objects (or their copies) are returned.
     """
     utils.type_check([(vector, App.Vector), (copy,bool)], "move")
-    if not isinstance(objectslist, list): objectslist = [objectslist]
-    objectslist.extend(utils.get_movable_children(objectslist))
+    if not isinstance(objectslist, list):
+        objectslist = [objectslist]
+
+    objectslist.extend(groups.get_movable_children(objectslist))
     newobjlist = []
     newgroups = {}
     objectslist = utils.filter_objects_for_modifiers(objectslist, copy)
@@ -78,7 +80,7 @@ def move(objectslist, vector, copy=False):
 
         if utils.get_type(obj) == "Point":
             if copy:
-                newobj = make_copy(obj)
+                newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
             newobj.X = obj.X + real_vector.x
@@ -90,7 +92,7 @@ def move(objectslist, vector, copy=False):
 
         elif hasattr(obj,'Shape'):
             if copy:
-                newobj = make_copy(obj)
+                newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
             pla = newobj.Placement
@@ -98,21 +100,21 @@ def move(objectslist, vector, copy=False):
 
         elif utils.get_type(obj) == "Annotation":
             if copy:
-                newobj = make_copy(obj)
+                newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
             newobj.Position = obj.Position.add(real_vector)
 
-        elif utils.get_type(obj) == "Text":
+        elif utils.get_type(obj) in ("Text", "DraftText"):
             if copy:
-                newobj = make_copy(obj)
+                newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
             newobj.Placement.Base = obj.Placement.Base.add(real_vector)
 
         elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
             if copy:
-                newobj = make_copy(obj)
+                newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
             newobj.Start = obj.Start.add(real_vector)
@@ -121,14 +123,14 @@ def move(objectslist, vector, copy=False):
 
         elif utils.get_type(obj) in ["AngularDimension"]:
             if copy:
-                newobj = make_copy(obj)
+                newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
             newobj.Center = obj.Start.add(real_vector)
 
         elif "Placement" in obj.PropertiesList:
             if copy:
-                newobj = make_copy(obj)
+                newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
             pla = obj.Placement
@@ -136,7 +138,7 @@ def move(objectslist, vector, copy=False):
 
         if newobj is not None:
             newobjlist.append(newobj)
-        
+
         if copy:
             for p in obj.InList:
                 if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
@@ -150,7 +152,8 @@ def move(objectslist, vector, copy=False):
         gui_utils.select(objectslist)
     else:
         gui_utils.select(newobjlist)
-    if len(newobjlist) == 1: return newobjlist[0]
+    if len(newobjlist) == 1:
+        return newobjlist[0]
     return newobjlist
 
 
@@ -194,7 +197,7 @@ def copy_moved_edges(arguments):
     copied_edges = []
     for argument in arguments:
         copied_edges.append(copy_moved_edge(argument[0], argument[1], argument[2]))
-    join_wires(copied_edges)
+    join.join_wires(copied_edges)
 
 
 copyMovedEdges = copy_moved_edges
@@ -210,4 +213,6 @@ def copy_moved_edge(object, edge_index, vector):
         vertex2 = object.Placement.multVec(object.Points[0]).add(vector)
     else:
         vertex2 = object.Placement.multVec(object.Points[edge_index+1]).add(vector)
-    return make_line(vertex1, vertex2)
+    return make_line.make_line(vertex1, vertex2)
+
+## @}

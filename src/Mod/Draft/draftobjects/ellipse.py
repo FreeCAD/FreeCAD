@@ -20,17 +20,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Ellipse.
-"""
+"""Provides the object code for the Ellipse object."""
 ## @package ellipse
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Ellipse.
+# \ingroup draftobjects
+# \brief Provides the object code for the Ellipse object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
-from draftutils.utils import get_param
+import draftutils.utils as utils
 
 from draftobjects.base import DraftObject
 
@@ -60,7 +60,7 @@ class Ellipse(DraftObject):
         _tip = QT_TRANSLATE_NOOP("App::Property","Area of this object")
         obj.addProperty("App::PropertyArea", "Area","Draft", _tip)
 
-        obj.MakeFace = get_param("fillmode",True)
+        obj.MakeFace = utils.get_param("fillmode",True)
 
     def execute(self, obj):
         import Part
@@ -93,4 +93,7 @@ class Ellipse(DraftObject):
         obj.positionBySupport()
 
 
+# Alias for compatibility with v0.18 and earlier
 _Ellipse = Ellipse
+
+## @}

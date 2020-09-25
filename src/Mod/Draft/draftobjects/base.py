@@ -20,11 +20,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for the basic Draft object.
-"""
+"""Provides the object code for the base Draft object."""
 ## @package base
-# \ingroup DRAFT
-# \brief This module provides the object code for the basic Draft object.
+# \ingroup draftobjects
+# \brief Provides the object code for the base Draft object.
+
+## \addtogroup draftobjects
+# @{
+
 
 class DraftObject(object):
     """The base class for Draft objects.
@@ -71,6 +74,7 @@ class DraftObject(object):
     This class attribute is accessible through the `Proxy` object:
     `obj.Proxy.Type`.
     """
+
     def __init__(self, obj, tp="Unknown"):
         # This class is assigned to the Proxy attribute
         if obj:
@@ -109,7 +113,7 @@ class DraftObject(object):
             self.Type = state
 
         Parameters
-        ---------
+        ----------
         state : state
             A serialized object.
         """
@@ -117,7 +121,7 @@ class DraftObject(object):
             self.Type = state
 
     def execute(self, obj):
-        """This method is run when the object is created or recomputed.
+        """Run this method when the object is created or recomputed.
 
         Override this method to produce effects when the object
         is newly created, and whenever the document is recomputed.
@@ -133,7 +137,7 @@ class DraftObject(object):
         pass
 
     def onChanged(self, obj, prop):
-        """This method is run when a property is changed.
+        """Run this method when a property is changed.
 
         Override this method to handle the behavior
         of the object depending on changes that occur to its properties.
@@ -152,4 +156,7 @@ class DraftObject(object):
         pass
 
 
+# Alias for compatibility with v0.18 and earlier
 _DraftObject = DraftObject
+
+## @}

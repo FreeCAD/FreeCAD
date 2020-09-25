@@ -57,17 +57,18 @@ printverbose = True
 import tokrules
 from tokrules import tokens
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def translate(context, text):
-        "convenience function for Qt translator"
-        from PySide import QtGui
-        return QtGui.QApplication.translate(context, text, None, _encoding)
-except AttributeError:
-    def translate(context, text):
-        "convenience function for Qt translator"
-        from PySide import QtGui
-        return QtGui.QApplication.translate(context, text, None)
+if gui:
+    try:
+        _encoding = QtGui.QApplication.UnicodeUTF8
+        def translate(context, text):
+            "convenience function for Qt translator"
+            from PySide import QtGui
+            return QtGui.QApplication.translate(context, text, None, _encoding)
+    except AttributeError:
+        def translate(context, text):
+            "convenience function for Qt translator"
+            from PySide import QtGui
+            return QtGui.QApplication.translate(context, text, None)
 
 def open(filename):
     "called when freecad opens a file."
@@ -380,6 +381,7 @@ def CGALFeatureObj(name,children,arguments=[]):
 
 def p_offset_action(p):
     'offset_action : offset LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
+    subobj=None
     if len(p[6]) == 0:
         newobj = placeholder('group',[],'{}')
     elif (len(p[6]) == 1 ): #single object
@@ -925,7 +927,7 @@ def p_cylinder_action(p):
     n = int(round(float(p[3]['$fn'])))
     fnmax = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetInt('useMaxFN')
+        GetInt('useMaxFN', 16)
     if printverbose: print(p[3])
     if h > 0:
         if ( r1 == r2 and r1 > 0):
@@ -1034,7 +1036,7 @@ def p_circle_action(p) :
     n = int(p[3]['$fn'])
     fnmax = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetInt('useMaxFN',50)
+        GetInt('useMaxFN',16)
     # Alter Max polygon to control if polygons are circles or polygons
     # in the modules preferences
     import Draft

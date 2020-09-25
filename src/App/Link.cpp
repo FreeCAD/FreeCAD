@@ -931,7 +931,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
 
     if(mat) *mat *= getTransform(transform);
 
-    DocumentObject *element = 0;
+    //DocumentObject *element = 0;
     bool isElement = false;
     int idx = getElementIndex(subname,&subname);
     if(idx>=0) {
@@ -976,11 +976,15 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
         if(subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')) {
             if(mat)
                 *mat = matNext;
-        }else if(element)
-            ret = element;
+        }
+        // This is a useless check as 'element' is never set to a value other than null
+        //else if(element) {
+        //    ret = element;
+        //}
         else if(!isElement) {
             ret = const_cast<DocumentObject*>(obj);
-        } else {
+        }
+        else {
             if(idx) {
                 postfix = Data::ComplexGeoData::indexPostfix();
                 postfix += std::to_string(idx);

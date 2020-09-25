@@ -76,7 +76,10 @@ class _Extension(object):
         hnt = coin.SoShapeHints()
 
         if not ext is None:
-            wire =  ext.getWire()
+            try:
+                wire =  ext.getWire()
+            except FreeCAD.Base.FreeCADError:
+                wire = None
             if wire:
                 if isinstance(wire, (list, tuple)):
                     p0 = [p for p in wire[0].discretize(Deflection=0.02)]
@@ -173,16 +176,10 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.blockUpdateData = False # pylint: disable=attribute-defined-outside-init
 
     def cleanupPage(self, obj):
-        # If the object was already destroyed we can't access obj.Name.
-        # This is the case if this was a new op and the user hit Cancel.
-        # Unfortunately there's no direct way to determine the object's
-        # livelihood without causing an error so we look for the object
-        # in the document and clean up if it still exists.
-        for o in self.obj.Document.getObjectsByLabel(self.obj.Label):
-            if o == obj:
-                self.obj.ViewObject.RootNode.removeChild(self.switch)
-                return
-        PathLog.debug("%s already destroyed - no cleanup required" % (obj.Label))
+        try:
+            self.obj.ViewObject.RootNode.removeChild(self.switch)
+        except ReferenceError:
+            PathLog.debug("obj already destroyed - no cleanup required")
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketExtEdit.ui")
@@ -267,7 +264,11 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         if extendCorners:
             def edgesMatchShape(e0, e1):
-                return PathGeom.edgesMatch(e0, e1) or PathGeom.edgesMatch(e0, PathGeom.flipEdge(e1))
+                flipped = PathGeom.flipEdge(e1)
+                if flipped:
+                    return PathGeom.edgesMatch(e0, e1) or PathGeom.edgesMatch(e0, flipped)
+                else:
+                    return PathGeom.edgesMatch(e0, e1)
 
             self.extensionEdges = extensionEdges # pylint: disable=attribute-defined-outside-init
             for edgeList in Part.sortEdges(list(extensionEdges.keys())):

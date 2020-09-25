@@ -61,21 +61,38 @@ class Proxy(solverbase.Proxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
-        obj.addProperty(
-            "App::PropertyInteger", "SteadyStateMaxIterations",
-            "Steady State", "")
-        obj.addProperty(
-            "App::PropertyInteger", "SteadyStateMinIterations",
-            "Steady State", "")
-        obj.addProperty(
-            "App::PropertyLink", "ElmerResult",
-            "Base", "", 4 | 8)
-        obj.addProperty(
-            "App::PropertyLink", "ElmerOutput",
-            "Base", "", 4 | 8)
 
+        obj.addProperty(
+            "App::PropertyInteger",
+            "SteadyStateMaxIterations",
+            "Steady State",
+            ""
+        )
         obj.SteadyStateMaxIterations = 1
+
+        obj.addProperty(
+            "App::PropertyInteger",
+            "SteadyStateMinIterations",
+            "Steady State",
+            ""
+        )
         obj.SteadyStateMinIterations = 0
+
+        obj.addProperty(
+            "App::PropertyLink",
+            "ElmerResult",
+            "Base",
+            "",
+            4 | 8
+        )
+
+        obj.addProperty(
+            "App::PropertyLink",
+            "ElmerOutput",
+            "Base",
+            "",
+            4 | 8
+        )
 
     def createMachine(self, obj, directory, testmode=False):
         return run.Machine(

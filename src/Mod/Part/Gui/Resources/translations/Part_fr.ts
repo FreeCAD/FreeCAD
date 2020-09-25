@@ -101,7 +101,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Décalage des pièces jointes (en coordonnées locales) :</translation>
+      <translation>Décalage de l'accrochage(en coordonnées locales) :</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
@@ -165,7 +165,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 
 {errstr}
 
-Cliquez sur 'Continuer' pour créer la fonctionnalité de toute façon, ou 'Abandonner' pour annuler.</translation>
+Cliquez sur 'Continuer' pour créer la fonctionnalité quand même, ou 'Abandonner' pour annuler.</translation>
     </message>
   </context>
   <context>
@@ -342,7 +342,7 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
-      <translation>Séparer</translation>
+      <translation>Séparer et exploser</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
@@ -1779,7 +1779,7 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../Command.cpp" line="783"/>
       <source>Counpound tools</source>
-      <translation>Objets composés</translation>
+      <translation>Outils de composition</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="784"/>

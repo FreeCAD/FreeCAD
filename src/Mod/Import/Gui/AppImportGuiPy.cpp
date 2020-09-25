@@ -599,9 +599,10 @@ private:
                 if(keepPlacement!=Py_None)
                     ocaf.setKeepPlacement(PyObject_IsTrue(keepPlacement));
                 ocaf.exportObjects(objs);
-            } else {
-                bool keepExplicitPlacement = objs.size() > 1;
-                keepExplicitPlacement = Standard_True;
+            }
+            else {
+                //bool keepExplicitPlacement = objs.size() > 1;
+                bool keepExplicitPlacement = Standard_True;
                 ExportOCAFGui ocaf(hDoc, keepExplicitPlacement);
                 // That stuff is exporting a list of selected objects into FreeCAD Tree
                 std::vector <TDF_Label> hierarchical_label;

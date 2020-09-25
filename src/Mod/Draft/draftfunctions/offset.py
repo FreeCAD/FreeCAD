@@ -20,23 +20,21 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft offset function.
-"""
+"""Provides functions to create offsets of different shapes."""
 ## @package offset
-# \ingroup DRAFT
-# \brief This module provides the code for Draft offset function.
+# \ingroup draftfuctions
+# \brief Provides functions to create offsets of different shapes.
 
+## \addtogroup draftfuctions
+# @{
 import math
 
 import FreeCAD as App
-
 import DraftVecUtils
-
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
 
 from draftmake.make_copy import make_copy
-
 from draftmake.make_rectangle import makeRectangle
 from draftmake.make_wire import makeWire
 from draftmake.make_polygon import makePolygon
@@ -75,7 +73,7 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
     newwire = None
     delete = None
 
-    if utils.get_type(obj) in ["Sketch","Part"]:
+    if utils.get_type(obj).startswith("Part::") or utils.get_type(obj).startswith("Sketcher::"):
         copy = True
         print("the offset tool is currently unable to offset a non-Draft object directly - Creating a copy")
 
@@ -220,6 +218,7 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
                 App.Console.PrintWarning("Warning: object history removed\n")
                 obj.Base = None
                 obj.Tool = None
+            obj.Placement = App.Placement() # p points are in the global coordinate system
             obj.Points = p
         elif utils.get_type(obj) == "BSpline":
             #print(delta)
@@ -244,3 +243,5 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
     if delete:
         App.ActiveDocument.removeObject(delete)
     return newobj
+
+## @}

@@ -18,14 +18,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""FreeCAD IFC importer - Multicore version"""
 
 from __future__ import print_function
-
-"""FreeCAD IFC importer - Multicore version"""
 
 import sys
 import time
 import os
+
 import FreeCAD
 import Draft
 import Arch
@@ -34,9 +34,14 @@ import importIFCHelper
 from FreeCAD import Base
 import ArchIFC
 
+# global dicts to store ifc object/freecad object relationships
+
 layers = {} # ifcid : Draft_Layer
 materials = {} #ifcid : Arch_Material
 objects = {} #ifcid : Arch_Component
+subs = {} #host_ifcid: [child_ifcid,...]
+adds = {} #host_ifcid: [child_ifcid,...]
+colors = {} # objname : (r,g,b)
 
 
 def open(filename):
@@ -57,9 +62,13 @@ def insert(filename,docname=None,preferences=None):
     global layers
     global materials
     global objects
+    global adds
+    global subs
     layers = {}
     materials = {}
     objects = {}
+    adds = {}
+    subs = {}
 
     # statistics
     starttime = time.time() # in seconds
@@ -109,6 +118,10 @@ def insert(filename,docname=None,preferences=None):
         if not iterator.next():
             break
 
+    # post-processing
+    processRelationships()
+    storeColorDict()
+
     # finished
     progressbar.stop()
     FreeCAD.ActiveDocument.recompute()
@@ -137,7 +150,7 @@ def writeProgress(count=None,total=None,starttime=None):
         else:
             eta = "--:--"
         hashes = '#'*int(r*10)+' '*int(10-r*10)
-        fstring = '\rImporting '+str(total)+' products... [{0}] {1}%, ETA: {2}'
+        fstring = '\rImporting '+str(total)+' products [{0}] {1}%, ETA: {2}'
         sys.stdout.write(fstring.format(hashes, int(r*100),eta))
 
 
@@ -161,6 +174,8 @@ def createProduct(ifcproduct,brep):
     createLayer(obj,ifcproduct)
     createMaterial(obj,ifcproduct)
     createModelStructure(obj,ifcproduct)
+    setRelationships(obj,ifcproduct)
+    setColor(obj,ifcproduct)
     return obj
 
 
@@ -199,6 +214,18 @@ def setProperties(obj,ifcproduct):
                         propvalue = ";;".join(v)
 
 
+def setColor(obj,ifcproduct):
+
+    """sets the color of an object"""
+
+    global colors
+
+    color = importIFCHelper.getColorFromProduct(ifcproduct)
+    colors[obj.Name] = color
+    if FreeCAD.GuiUp and color:
+        obj.ViewObject.ShapeColor = color[:3]
+
+
 def createLayer(obj,ifcproduct):
 
     """sets the layer of a component"""
@@ -209,7 +236,7 @@ def createLayer(obj,ifcproduct):
         for rep in ifcproduct.Representation.Representations:
             for layer in rep.LayerAssignments:
                 if not layer.id() in layers:
-                    layers[layer.id()] = Draft.makeLayer(layer.Name)
+                    layers[layer.id()] = Draft.make_layer(layer.Name)
                 layers[layer.id()].Proxy.addObject(layers[layer.id()],obj)
 
 
@@ -252,3 +279,41 @@ def createModelStructure(obj,ifcobj):
         if hasattr(objects[parent.id()].Proxy,"addObject"):
             objects[parent.id()].Proxy.addObject(objects[parent.id()],obj)
 
+
+def setRelationships(obj,ifcobj):
+
+    """sets additions/subtractions"""
+
+    global adds
+    global subs
+
+    if hasattr(ifcobj,"HasOpenings") and ifcobj.HasOpenings:
+        for rel in ifcobj.HasOpenings:
+            subs.setdefault(ifcobj.id(),[]).append(rel.RelatedOpeningElement)
+
+    # TODO: assemblies & booleans
+
+
+def processRelationships():
+
+    """process all stored relationships"""
+
+    for dom in ((subs,"Subtractions"),(adds,"Additions")):
+        for key,vals in dom[0].items():
+            if key in objects:
+                for val in vals:
+                    if val in objects:
+                        if hasattr(objects[key],dom[1]):
+                            g = getattr(objects[key],dom[1])
+                            g.append(val)
+                            setattr(objects[key],dom[1],g)
+
+def storeColorDict():
+
+    """stores the color dictionary in the document Meta if non-GUI mode"""
+
+    if colors and not FreeCAD.GuiUp:
+        import json
+        d = FreeCAD.ActiveDocument.Meta
+        d["colordict"] = json.dumps(colors)
+        FreeCAD.ActiveDocument.Meta = d

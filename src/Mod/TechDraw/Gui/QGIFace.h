@@ -127,7 +127,6 @@ protected:
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
     QGCustomRect *m_rect;
 
-    QGCustomSvg *m_svg;
     QByteArray m_svgXML;
     std::string m_svgCol;
     std::string m_fileSpec;   //for svg & bitmaps

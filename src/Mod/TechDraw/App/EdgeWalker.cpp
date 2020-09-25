@@ -183,11 +183,13 @@ bool EdgeWalker::perform()
     kura_edges_t::iterator ki, ki_end;
     graph_traits<TechDraw::graph>::edge_descriptor e1;
 
+#if 0 // Function declared in block and lacking of implementation
     // Get the index associated with edge
     graph_traits<TechDraw::graph>::edges_size_type
         get(boost::edge_index_t,
             const TechDraw::graph& m_g,
             graph_traits<TechDraw::graph>::edge_descriptor edge);
+#endif
 
     bool isPlanar = boyer_myrvold_planarity_test(boyer_myrvold_params::graph = m_g,
                                  boyer_myrvold_params::embedding = &embedding[0],            // this is "an" embedding but not one for finding

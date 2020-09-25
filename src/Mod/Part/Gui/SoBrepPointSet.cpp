@@ -82,8 +82,8 @@ void SoBrepPointSet::initClass()
 }
 
 SoBrepPointSet::SoBrepPointSet()
-    :selContext(std::make_shared<SelContext>())
-    ,selContext2(std::make_shared<SelContext>())
+    : selContext(std::make_shared<SelContext>())
+    , selContext2(std::make_shared<SelContext>())
 {
     SO_NODE_CONSTRUCTOR(SoBrepPointSet);
     SO_NODE_ADD_FIELD(highlightIndices, (-1));

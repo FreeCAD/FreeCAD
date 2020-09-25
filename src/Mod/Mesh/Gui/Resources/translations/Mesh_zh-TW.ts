@@ -4,18 +4,18 @@
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="839"/>
+      <location filename="../../Command.cpp" line="840"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="840"/>
+      <location filename="../../Command.cpp" line="841"/>
       <source>Add triangle</source>
       <translation>加入三角形</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="841"/>
-      <location filename="../../Command.cpp" line="843"/>
+      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="844"/>
       <source>Add triangle manually to a mesh</source>
       <translation>手動於網格中加入三角形</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdMeshBoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1514"/>
+      <location filename="../../Command.cpp" line="1545"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1515"/>
+      <location filename="../../Command.cpp" line="1546"/>
       <source>Boundings info...</source>
       <translation>範圍資訊...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1516"/>
-      <location filename="../../Command.cpp" line="1518"/>
+      <location filename="../../Command.cpp" line="1547"/>
+      <location filename="../../Command.cpp" line="1549"/>
       <source>Shows the boundings of the selected mesh</source>
       <translation>顯示所選網格範圍</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1555"/>
+      <location filename="../../Command.cpp" line="1586"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1556"/>
+      <location filename="../../Command.cpp" line="1587"/>
       <source>Regular solid...</source>
       <translation>標準實體...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1557"/>
-      <location filename="../../Command.cpp" line="1559"/>
+      <location filename="../../Command.cpp" line="1588"/>
+      <location filename="../../Command.cpp" line="1590"/>
       <source>Builds a regular solid</source>
       <translation>建立一標準實體</translation>
     </message>
@@ -61,31 +61,51 @@
   <context>
     <name>CmdMeshCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1062"/>
+      <location filename="../../Command.cpp" line="1063"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1063"/>
+      <location filename="../../Command.cpp" line="1064"/>
       <source>Cross-sections...</source>
       <translation>剖面...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1064"/>
       <location filename="../../Command.cpp" line="1065"/>
+      <location filename="../../Command.cpp" line="1066"/>
       <source>Cross-sections</source>
       <translation>剖面</translation>
     </message>
   </context>
   <context>
-    <name>CmdMeshDemolding</name>
+    <name>CmdMeshDecimating</name>
     <message>
-      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="1447"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1448"/>
+      <source>Decimation...</source>
+      <translation>十進制...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1449"/>
+      <location filename="../../Command.cpp" line="1450"/>
+      <location filename="../../Command.cpp" line="1451"/>
+      <source>Decimates a mesh</source>
+      <translation>十進制網格</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshDemolding</name>
+    <message>
       <location filename="../../Command.cpp" line="133"/>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="134"/>
       <source>Interactive demolding direction</source>
       <translation>互動脫模方向</translation>
     </message>
@@ -93,12 +113,12 @@
   <context>
     <name>CmdMeshDifference</name>
     <message>
-      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="297"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="298"/>
       <source>Difference</source>
       <translation>差集</translation>
     </message>
@@ -106,18 +126,18 @@
   <context>
     <name>CmdMeshEvaluateFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="1183"/>
+      <location filename="../../Command.cpp" line="1184"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1184"/>
+      <location filename="../../Command.cpp" line="1185"/>
       <source>Face info</source>
       <translation>面資訊</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1185"/>
-      <location filename="../../Command.cpp" line="1187"/>
+      <location filename="../../Command.cpp" line="1186"/>
+      <location filename="../../Command.cpp" line="1188"/>
       <source>Information about face</source>
       <translation>面之資訊</translation>
     </message>
@@ -125,18 +145,18 @@
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1347"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1348"/>
+      <location filename="../../Command.cpp" line="1349"/>
       <source>Check solid mesh</source>
       <translation>檢查固體網格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1349"/>
-      <location filename="../../Command.cpp" line="1351"/>
+      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1352"/>
       <source>Checks whether the mesh is a solid</source>
       <translation>不論網格是否為實體均檢查</translation>
     </message>
@@ -144,18 +164,18 @@
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
-      <location filename="../../Command.cpp" line="1141"/>
+      <location filename="../../Command.cpp" line="1142"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../Command.cpp" line="1144"/>
       <source>Evaluate and repair mesh...</source>
-      <translation type="unfinished">Evaluate and repair mesh...</translation>
+      <translation>評估及修復網格...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1144"/>
-      <location filename="../../Command.cpp" line="1146"/>
+      <location filename="../../Command.cpp" line="1145"/>
+      <location filename="../../Command.cpp" line="1147"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
       <translation>開啟分析及修復網格對話窗</translation>
     </message>
@@ -163,18 +183,18 @@
   <context>
     <name>CmdMeshExport</name>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="488"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="488"/>
+      <location filename="../../Command.cpp" line="489"/>
       <source>Export mesh...</source>
       <translation>匯出網格...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="489"/>
-      <location filename="../../Command.cpp" line="491"/>
+      <location filename="../../Command.cpp" line="490"/>
+      <location filename="../../Command.cpp" line="492"/>
       <source>Exports a mesh to file</source>
       <translation>匯出網格至檔案</translation>
     </message>
@@ -182,18 +202,18 @@
   <context>
     <name>CmdMeshFillInteractiveHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1623"/>
+      <location filename="../../Command.cpp" line="1654"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1624"/>
+      <location filename="../../Command.cpp" line="1655"/>
       <source>Close hole</source>
       <translation>封閉空洞</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1625"/>
-      <location filename="../../Command.cpp" line="1627"/>
+      <location filename="../../Command.cpp" line="1656"/>
+      <location filename="../../Command.cpp" line="1658"/>
       <source>Close holes interactively</source>
       <translation>以交集封閉孔洞</translation>
     </message>
@@ -201,18 +221,18 @@
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
-      <location filename="../../Command.cpp" line="1586"/>
+      <location filename="../../Command.cpp" line="1617"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1587"/>
+      <location filename="../../Command.cpp" line="1618"/>
       <source>Fill holes...</source>
       <translation>填滿空洞...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1588"/>
-      <location filename="../../Command.cpp" line="1590"/>
+      <location filename="../../Command.cpp" line="1619"/>
+      <location filename="../../Command.cpp" line="1621"/>
       <source>Fill holes of the mesh</source>
       <translation>充填網格孔洞</translation>
     </message>
@@ -220,18 +240,18 @@
   <context>
     <name>CmdMeshFlipNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1480"/>
+      <location filename="../../Command.cpp" line="1511"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1481"/>
+      <location filename="../../Command.cpp" line="1512"/>
       <source>Flip normals</source>
       <translation>翻轉法線</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1482"/>
-      <location filename="../../Command.cpp" line="1484"/>
+      <location filename="../../Command.cpp" line="1513"/>
+      <location filename="../../Command.cpp" line="1515"/>
       <source>Flips the normals of the mesh</source>
       <translation>翻轉網格法線</translation>
     </message>
@@ -239,18 +259,18 @@
   <context>
     <name>CmdMeshFromGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="558"/>
+      <location filename="../../Command.cpp" line="559"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="559"/>
+      <location filename="../../Command.cpp" line="560"/>
       <source>Create mesh from geometry...</source>
       <translation>從幾何建立網格...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="560"/>
-      <location filename="../../Command.cpp" line="562"/>
+      <location filename="../../Command.cpp" line="561"/>
+      <location filename="../../Command.cpp" line="563"/>
       <source>Create mesh from the selected geometry</source>
       <translation>由所選幾何建立網格</translation>
     </message>
@@ -258,17 +278,17 @@
   <context>
     <name>CmdMeshFromPartShape</name>
     <message>
-      <location filename="../../Command.cpp" line="616"/>
+      <location filename="../../Command.cpp" line="617"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="617"/>
+      <location filename="../../Command.cpp" line="618"/>
       <source>Create mesh from shape...</source>
       <translation>由造型建立網格...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="618"/>
+      <location filename="../../Command.cpp" line="619"/>
       <source>Tessellate shape</source>
       <translation>格紋造型</translation>
     </message>
@@ -276,18 +296,18 @@
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1446"/>
+      <location filename="../../Command.cpp" line="1477"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1447"/>
+      <location filename="../../Command.cpp" line="1478"/>
       <source>Harmonize normals</source>
       <translation>統一法線</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1448"/>
-      <location filename="../../Command.cpp" line="1450"/>
+      <location filename="../../Command.cpp" line="1479"/>
+      <location filename="../../Command.cpp" line="1481"/>
       <source>Harmonizes the normals of the mesh</source>
       <translation>統一網格法線</translation>
     </message>
@@ -295,18 +315,18 @@
   <context>
     <name>CmdMeshImport</name>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="437"/>
+      <location filename="../../Command.cpp" line="438"/>
       <source>Import mesh...</source>
       <translation>匯入網格...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="438"/>
-      <location filename="../../Command.cpp" line="440"/>
+      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>Imports a mesh from file</source>
       <translation>從檔案中匯入網格</translation>
     </message>
@@ -314,12 +334,12 @@
   <context>
     <name>CmdMeshIntersection</name>
     <message>
-      <location filename="../../Command.cpp" line="366"/>
+      <location filename="../../Command.cpp" line="367"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="368"/>
       <source>Intersection</source>
       <translation>交集</translation>
     </message>
@@ -327,17 +347,17 @@
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1735"/>
+      <location filename="../../Command.cpp" line="1766"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1736"/>
+      <location filename="../../Command.cpp" line="1767"/>
       <source>Merge</source>
       <translation>合併</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1737"/>
+      <location filename="../../Command.cpp" line="1768"/>
       <source>Merges selected meshes into one</source>
       <translation>將所選網格合而為一</translation>
     </message>
@@ -345,18 +365,18 @@
   <context>
     <name>CmdMeshPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="886"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="886"/>
+      <location filename="../../Command.cpp" line="887"/>
       <source>Cut mesh</source>
       <translation>切割網格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="887"/>
-      <location filename="../../Command.cpp" line="889"/>
+      <location filename="../../Command.cpp" line="888"/>
+      <location filename="../../Command.cpp" line="890"/>
       <source>Cuts a mesh with a picked polygon</source>
       <translation>以選取之多邊形切割網格</translation>
     </message>
@@ -364,18 +384,18 @@
   <context>
     <name>CmdMeshPolySegm</name>
     <message>
-      <location filename="../../Command.cpp" line="730"/>
+      <location filename="../../Command.cpp" line="731"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="731"/>
+      <location filename="../../Command.cpp" line="732"/>
       <source>Make segment</source>
       <translation>建立分割</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="732"/>
-      <location filename="../../Command.cpp" line="734"/>
+      <location filename="../../Command.cpp" line="733"/>
+      <location filename="../../Command.cpp" line="735"/>
       <source>Creates a mesh segment</source>
       <translation>建立網格分割</translation>
     </message>
@@ -383,18 +403,18 @@
   <context>
     <name>CmdMeshPolySelect</name>
     <message>
-      <location filename="../../Command.cpp" line="786"/>
+      <location filename="../../Command.cpp" line="787"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="787"/>
+      <location filename="../../Command.cpp" line="788"/>
       <source>Select mesh</source>
       <translation>選擇網格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="788"/>
-      <location filename="../../Command.cpp" line="790"/>
+      <location filename="../../Command.cpp" line="789"/>
+      <location filename="../../Command.cpp" line="791"/>
       <source>Select an area of the mesh</source>
       <translation>選擇網格之區域</translation>
     </message>
@@ -402,18 +422,18 @@
   <context>
     <name>CmdMeshPolySplit</name>
     <message>
-      <location filename="../../Command.cpp" line="1087"/>
+      <location filename="../../Command.cpp" line="1088"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1088"/>
+      <location filename="../../Command.cpp" line="1089"/>
       <source>Split mesh</source>
       <translation>分割網格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1089"/>
-      <location filename="../../Command.cpp" line="1091"/>
+      <location filename="../../Command.cpp" line="1090"/>
+      <location filename="../../Command.cpp" line="1092"/>
       <source>Splits a mesh into two meshes</source>
       <translation>分為兩個網格</translation>
     </message>
@@ -421,18 +441,18 @@
   <context>
     <name>CmdMeshPolyTrim</name>
     <message>
-      <location filename="../../Command.cpp" line="946"/>
+      <location filename="../../Command.cpp" line="947"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="947"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>Trim mesh</source>
       <translation>修剪網格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="948"/>
-      <location filename="../../Command.cpp" line="950"/>
+      <location filename="../../Command.cpp" line="949"/>
+      <location filename="../../Command.cpp" line="951"/>
       <source>Trims a mesh with a picked polygon</source>
       <translation>依選定之多邊形修剪網格</translation>
     </message>
@@ -440,37 +460,37 @@
   <context>
     <name>CmdMeshRemeshGmsh</name>
     <message>
-      <location filename="../../Command.cpp" line="1271"/>
+      <location filename="../../Command.cpp" line="1272"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1272"/>
+      <location filename="../../Command.cpp" line="1273"/>
       <source>Refinement...</source>
-      <translation type="unfinished">Refinement...</translation>
+      <translation>精煉化...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1273"/>
       <location filename="../../Command.cpp" line="1274"/>
+      <location filename="../../Command.cpp" line="1275"/>
       <source>Refine existing mesh</source>
-      <translation type="unfinished">Refine existing mesh</translation>
+      <translation>精煉既有網格</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
-      <location filename="../../Command.cpp" line="1304"/>
+      <location filename="../../Command.cpp" line="1305"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1305"/>
+      <location filename="../../Command.cpp" line="1306"/>
       <source>Remove components by hand...</source>
       <translation>手動移除元件...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1306"/>
-      <location filename="../../Command.cpp" line="1308"/>
+      <location filename="../../Command.cpp" line="1307"/>
+      <location filename="../../Command.cpp" line="1309"/>
       <source>Mark a component to remove it from the mesh</source>
       <translation>使元件由網格中移出</translation>
     </message>
@@ -478,18 +498,18 @@
   <context>
     <name>CmdMeshRemoveComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1226"/>
+      <location filename="../../Command.cpp" line="1227"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1227"/>
+      <location filename="../../Command.cpp" line="1228"/>
       <source>Remove components...</source>
       <translation>刪除元件...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1228"/>
-      <location filename="../../Command.cpp" line="1230"/>
+      <location filename="../../Command.cpp" line="1229"/>
+      <location filename="../../Command.cpp" line="1231"/>
       <source>Remove topologic independent components from the mesh</source>
       <translation>自網格移除拓樸獨立元件</translation>
     </message>
@@ -497,17 +517,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1777"/>
+      <location filename="../../Command.cpp" line="1808"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1778"/>
+      <location filename="../../Command.cpp" line="1809"/>
       <source>Scale...</source>
       <translation type="unfinished">Scale...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1779"/>
+      <location filename="../../Command.cpp" line="1810"/>
       <source>Scale selected meshes</source>
       <translation type="unfinished">Scale selected meshes</translation>
     </message>
@@ -515,18 +535,18 @@
   <context>
     <name>CmdMeshSectionByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="1034"/>
+      <location filename="../../Command.cpp" line="1035"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1035"/>
+      <location filename="../../Command.cpp" line="1036"/>
       <source>Create section from mesh and plane</source>
       <translation type="unfinished">Create section from mesh and plane</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1036"/>
       <location filename="../../Command.cpp" line="1037"/>
+      <location filename="../../Command.cpp" line="1038"/>
       <source>Section from mesh and plane</source>
       <translation type="unfinished">Section from mesh and plane</translation>
     </message>
@@ -534,18 +554,18 @@
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1665"/>
+      <location filename="../../Command.cpp" line="1696"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1666"/>
+      <location filename="../../Command.cpp" line="1697"/>
       <source>Create mesh segments...</source>
       <translation>建立網格分割...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1667"/>
-      <location filename="../../Command.cpp" line="1669"/>
+      <location filename="../../Command.cpp" line="1698"/>
+      <location filename="../../Command.cpp" line="1700"/>
       <source>Create mesh segments</source>
       <translation>建立網格分割</translation>
     </message>
@@ -553,18 +573,18 @@
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1700"/>
+      <location filename="../../Command.cpp" line="1731"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1732"/>
       <source>Create mesh segments from best-fit surfaces...</source>
       <translation type="unfinished">Create mesh segments from best-fit surfaces...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
-      <location filename="../../Command.cpp" line="1704"/>
+      <location filename="../../Command.cpp" line="1733"/>
+      <location filename="../../Command.cpp" line="1735"/>
       <source>Create mesh segments from best-fit surfaces</source>
       <translation type="unfinished">Create mesh segments from best-fit surfaces</translation>
     </message>
@@ -572,18 +592,18 @@
   <context>
     <name>CmdMeshSmoothing</name>
     <message>
-      <location filename="../../Command.cpp" line="1384"/>
+      <location filename="../../Command.cpp" line="1385"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1385"/>
+      <location filename="../../Command.cpp" line="1386"/>
       <source>Smooth...</source>
       <translation>平滑...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1386"/>
-      <location filename="../../Command.cpp" line="1388"/>
+      <location filename="../../Command.cpp" line="1387"/>
+      <location filename="../../Command.cpp" line="1389"/>
       <source>Smooth the selected meshes</source>
       <translation>平滑化所選網格</translation>
     </message>
@@ -591,18 +611,18 @@
   <context>
     <name>CmdMeshToolMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="171"/>
+      <location filename="../../Command.cpp" line="172"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="172"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Segment by tool mesh</source>
       <translation>由工具網格分段</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
-      <location filename="../../Command.cpp" line="175"/>
+      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="176"/>
       <source>Creates a segment from a given tool mesh</source>
       <translation>由給定的工具網格建立分段</translation>
     </message>
@@ -610,18 +630,18 @@
   <context>
     <name>CmdMeshTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="93"/>
+      <location filename="../../Command.cpp" line="94"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="94"/>
+      <location filename="../../Command.cpp" line="95"/>
       <source>Transform mesh</source>
       <translation>轉換網格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="95"/>
-      <location filename="../../Command.cpp" line="97"/>
+      <location filename="../../Command.cpp" line="96"/>
+      <location filename="../../Command.cpp" line="98"/>
       <source>Rotate or move a mesh</source>
       <translation>旋轉或移除網格</translation>
     </message>
@@ -629,18 +649,18 @@
   <context>
     <name>CmdMeshTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="1006"/>
+      <location filename="../../Command.cpp" line="1007"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1007"/>
+      <location filename="../../Command.cpp" line="1008"/>
       <source>Trim mesh with a plane</source>
       <translation>以平面修剪網格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1008"/>
       <location filename="../../Command.cpp" line="1009"/>
+      <location filename="../../Command.cpp" line="1010"/>
       <source>Trims a mesh with a plane</source>
       <translation>以平面修剪網格</translation>
     </message>
@@ -648,12 +668,12 @@
   <context>
     <name>CmdMeshUnion</name>
     <message>
-      <location filename="../../Command.cpp" line="226"/>
+      <location filename="../../Command.cpp" line="227"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="227"/>
+      <location filename="../../Command.cpp" line="228"/>
       <source>Union</source>
       <translation>聯集</translation>
     </message>
@@ -661,18 +681,18 @@
   <context>
     <name>CmdMeshVertexCurvature</name>
     <message>
-      <location filename="../../Command.cpp" line="642"/>
+      <location filename="../../Command.cpp" line="643"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="643"/>
+      <location filename="../../Command.cpp" line="644"/>
       <source>Curvature plot</source>
       <translation>曲率圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="644"/>
-      <location filename="../../Command.cpp" line="646"/>
+      <location filename="../../Command.cpp" line="645"/>
+      <location filename="../../Command.cpp" line="647"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
       <translation>計算網格的頂點的曲率</translation>
     </message>
@@ -680,20 +700,59 @@
   <context>
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
-      <location filename="../../Command.cpp" line="685"/>
+      <location filename="../../Command.cpp" line="686"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="686"/>
+      <location filename="../../Command.cpp" line="687"/>
       <source>Curvature info</source>
       <translation>曲率資訊</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="687"/>
-      <location filename="../../Command.cpp" line="689"/>
+      <location filename="../../Command.cpp" line="688"/>
+      <location filename="../../Command.cpp" line="690"/>
       <source>Information about curvature</source>
       <translation>曲率資訊</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::DlgDecimating</name>
+    <message>
+      <location filename="../../DlgDecimating.ui" line="14"/>
+      <source>Decimating</source>
+      <translation type="unfinished">Decimating</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.ui" line="20"/>
+      <source>Reduction</source>
+      <translation type="unfinished">Reduction</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.ui" line="28"/>
+      <source>None</source>
+      <translation>無</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.ui" line="57"/>
+      <source>Full</source>
+      <translation type="unfinished">Full</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.ui" line="66"/>
+      <location filename="../../DlgDecimating.cpp" line="91"/>
+      <source>Absolute number</source>
+      <translation type="unfinished">Absolute number</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.ui" line="102"/>
+      <source>Tolerance</source>
+      <translation>公差</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.cpp" line="85"/>
+      <source>Absolute number (Maximum: %1)</source>
+      <translation type="unfinished">Absolute number (Maximum: %1)</translation>
     </message>
   </context>
   <context>
@@ -823,17 +882,19 @@
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="152"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="150"/>
       <source>Settings...</source>
       <translation type="unfinished">Settings...</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="188"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="349"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="186"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="347"/>
       <source>No selection</source>
       <translation>未選取</translation>
     </message>
     <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="374"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="375"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="376"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="377"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="378"/>
@@ -843,159 +904,157 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="382"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="383"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="384"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="385"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="386"/>
       <source>No information</source>
       <translation>沒有資訊</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="448"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="446"/>
       <source>Flipped normals found</source>
       <translation>發現被翻轉之法線</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="452"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="492"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="450"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="490"/>
       <source>Orientation</source>
       <translation>定位</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="451"/>
       <source>Check failed due to folds on the surface.
 Please run the command to repair folds first</source>
       <translation>檢查顯示面有重疊所產生之錯誤,請先執行修復重疊指令</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="461"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="459"/>
       <source>No flipped normals</source>
       <translation>無旋轉法線</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="467"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="465"/>
       <source>%1 flipped normals</source>
       <translation>%1無旋轉法線</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="547"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="545"/>
       <source>No non-manifolds</source>
       <translation>無非重疊網格</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="554"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="552"/>
       <source>%1 non-manifolds</source>
       <translation>%1非重疊網格</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="601"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="604"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="599"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="602"/>
       <source>Non-manifolds</source>
       <translation>非重疊網格</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="604"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="602"/>
       <source>Cannot remove non-manifolds</source>
       <translation>無法移除非重疊網格</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="642"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="640"/>
       <source>Invalid face indices</source>
       <translation>錯誤之面索引</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="649"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="647"/>
       <source>Invalid point indices</source>
       <translation>錯誤之點索引</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="656"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="654"/>
       <source>Multiple point indices</source>
       <translation>多點索引</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="663"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="661"/>
       <source>Invalid neighbour indices</source>
       <translation>錯誤之相鄰索引</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="670"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="668"/>
       <source>No invalid indices</source>
       <translation>無錯誤索引</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="694"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="692"/>
       <source>Indices</source>
       <translation>指數</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="729"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="727"/>
       <source>No degenerations</source>
       <translation>無簡化</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="735"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="733"/>
       <source>%1 degenerated faces</source>
       <translation>%1簡化面</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="760"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="758"/>
       <source>Degenerations</source>
       <translation>簡化</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="795"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="793"/>
       <source>No duplicated faces</source>
       <translation>無重疊面</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="801"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="799"/>
       <source>%1 duplicated faces</source>
       <translation>%1重疊面</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="827"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="825"/>
       <source>Duplicated faces</source>
       <translation>複製之面</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="861"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="859"/>
       <source>No duplicated points</source>
       <translation>無重疊點</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="867"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="892"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="865"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="890"/>
       <source>Duplicated points</source>
       <translation>複製之點</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="933"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="931"/>
       <source>No self-intersections</source>
       <translation>無內部交錯</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="939"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="977"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="937"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="975"/>
       <source>Self-intersections</source>
       <translation>自我交錯</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1021"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1019"/>
       <source>No folds on surface</source>
       <translation>於面上無重疊</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1037"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1035"/>
       <source>%1 folds on surface</source>
       <translation>於面上有%1的重疊</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1063"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1061"/>
       <source>Folds</source>
       <translation>折疊</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1195"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1198"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1193"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1196"/>
       <source>Mesh repair</source>
       <translation>修復網格</translation>
     </message>
@@ -1403,48 +1462,48 @@ to a smoother appearance.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="97"/>
+      <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
       <translation type="unfinished">Automatic</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Adaptive</source>
       <translation type="unfinished">Adaptive</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="100"/>
+      <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Frontal</source>
       <translation type="unfinished">Frontal</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="102"/>
+      <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal Quad</source>
       <translation type="unfinished">Frontal Quad</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Parallelograms</source>
       <translation type="unfinished">Parallelograms</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="174"/>
-      <location filename="../../RemeshGmsh.cpp" line="230"/>
+      <location filename="../../RemeshGmsh.cpp" line="175"/>
+      <location filename="../../RemeshGmsh.cpp" line="231"/>
       <source>Time:</source>
       <translation>時間：</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="219"/>
+      <location filename="../../RemeshGmsh.cpp" line="220"/>
       <source>Running gmsh...</source>
       <translation type="unfinished">Running gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="241"/>
+      <location filename="../../RemeshGmsh.cpp" line="242"/>
       <source>Failed to start</source>
       <translation type="unfinished">Failed to start</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="248"/>
+      <location filename="../../RemeshGmsh.cpp" line="249"/>
       <source>Error</source>
       <translation>錯誤</translation>
     </message>
@@ -1452,22 +1511,22 @@ to a smoother appearance.
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="378"/>
+      <location filename="../../MeshEditor.cpp" line="379"/>
       <source>Add triangle</source>
       <translation>加入三角形</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="379"/>
+      <location filename="../../MeshEditor.cpp" line="380"/>
       <source>Flip normal</source>
       <translation>翻轉正常面</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="380"/>
+      <location filename="../../MeshEditor.cpp" line="381"/>
       <source>Clear</source>
       <translation>清除</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="395"/>
+      <location filename="../../MeshEditor.cpp" line="396"/>
       <source>Finish</source>
       <translation>完成</translation>
     </message>
@@ -1475,7 +1534,7 @@ to a smoother appearance.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="731"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>結束</translation>
     </message>
@@ -1866,7 +1925,7 @@ to a smoother appearance.
   <context>
     <name>Mesh_BoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1531"/>
+      <location filename="../../Command.cpp" line="1562"/>
       <source>Boundings of %1:</source>
       <translation type="unfinished">Boundings of %1:</translation>
     </message>
@@ -1874,26 +1933,26 @@ to a smoother appearance.
   <context>
     <name>Mesh_Union</name>
     <message>
-      <location filename="../../Command.cpp" line="271"/>
-      <location filename="../../Command.cpp" line="276"/>
-      <location filename="../../Command.cpp" line="341"/>
-      <location filename="../../Command.cpp" line="346"/>
-      <location filename="../../Command.cpp" line="411"/>
-      <location filename="../../Command.cpp" line="416"/>
+      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="342"/>
+      <location filename="../../Command.cpp" line="347"/>
+      <location filename="../../Command.cpp" line="412"/>
+      <location filename="../../Command.cpp" line="417"/>
       <source>OpenSCAD</source>
       <translation>OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="272"/>
-      <location filename="../../Command.cpp" line="342"/>
-      <location filename="../../Command.cpp" line="412"/>
+      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="413"/>
       <source>Unknown error occurred while running OpenSCAD.</source>
       <translation type="unfinished">Unknown error occurred while running OpenSCAD.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
-      <location filename="../../Command.cpp" line="347"/>
-      <location filename="../../Command.cpp" line="417"/>
+      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="348"/>
+      <location filename="../../Command.cpp" line="418"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>於您的系統上未發現OpenSCAD
@@ -1903,7 +1962,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1241"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1239"/>
       <source>Evaluate &amp; Repair Mesh</source>
       <translation>評估和修復網格</translation>
     </message>
@@ -1916,146 +1975,146 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>匯入-匯出</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="448"/>
+      <location filename="../../Command.cpp" line="449"/>
       <source>All Mesh Files</source>
       <translation>所有網格檔</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="449"/>
-      <location filename="../../Command.cpp" line="506"/>
+      <location filename="../../Command.cpp" line="450"/>
+      <location filename="../../Command.cpp" line="507"/>
       <source>Binary STL</source>
       <translation>二進位 STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="450"/>
-      <location filename="../../Command.cpp" line="507"/>
+      <location filename="../../Command.cpp" line="451"/>
       <location filename="../../Command.cpp" line="508"/>
+      <location filename="../../Command.cpp" line="509"/>
       <source>ASCII STL</source>
       <translation>ASCII STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="451"/>
-      <location filename="../../Command.cpp" line="509"/>
+      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="510"/>
       <source>Binary Mesh</source>
       <translation>二進位網格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
-      <location filename="../../Command.cpp" line="510"/>
+      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="511"/>
       <source>Alias Mesh</source>
       <translation>Alias 網格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="454"/>
+      <location filename="../../Command.cpp" line="513"/>
       <source>Object File Format</source>
       <translation>Obj檔案格式</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
-      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="455"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Inventor V2.1 ascii</source>
       <translation>Inventor V2.1 ascii</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>Stanford Polygon</source>
       <translation>Stanford Polygon</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
-      <location filename="../../Command.cpp" line="520"/>
+      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="521"/>
       <source>All Files</source>
       <translation>所有檔案</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="461"/>
+      <location filename="../../Command.cpp" line="462"/>
       <source>Import mesh</source>
       <translation>匯入網格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="512"/>
       <source>Simple Model Format</source>
       <translation type="unfinished">Simple Model Format</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>X3D Extensible 3D</source>
       <translation>X3D Extensible 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="517"/>
       <source>VRML V2.0</source>
       <translation>VRML V2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="518"/>
       <source>Compressed VRML 2.0</source>
       <translation>壓縮之 VRML 2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="518"/>
+      <location filename="../../Command.cpp" line="519"/>
       <source>Nastran</source>
       <translation>Nastran</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="519"/>
+      <location filename="../../Command.cpp" line="520"/>
       <source>Python module def</source>
       <translation>Python模組設定</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="528"/>
       <source>Export mesh</source>
       <translation>匯出網格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="568"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>Meshing Tolerance</source>
       <translation>網格公差</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="569"/>
+      <location filename="../../Command.cpp" line="570"/>
       <source>Enter tolerance for meshing geometry:</source>
       <translation>輸入製作網格幾何公差：</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1361"/>
+      <location filename="../../Command.cpp" line="1362"/>
       <source>The mesh '%1' is not a solid.</source>
       <translation>網格'%1'不為實體</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1364"/>
+      <location filename="../../Command.cpp" line="1365"/>
       <source>The mesh '%1' is a solid.</source>
       <translation>網格'%1'為實體</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1366"/>
+      <location filename="../../Command.cpp" line="1367"/>
       <source>Solid Mesh</source>
       <translation>固體網格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1536"/>
+      <location filename="../../Command.cpp" line="1567"/>
       <source>Boundings</source>
       <translation>範圍</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1597"/>
+      <location filename="../../Command.cpp" line="1628"/>
       <source>Fill holes</source>
       <translation>填充孔</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1598"/>
+      <location filename="../../Command.cpp" line="1629"/>
       <source>Fill holes with maximum number of edges:</source>
       <translation>填充開口藉由最多邊之數量：</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1791"/>
+      <location filename="../../Command.cpp" line="1822"/>
       <source>Scaling</source>
       <translation type="unfinished">Scaling</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1792"/>
+      <location filename="../../Command.cpp" line="1823"/>
       <source>Enter scaling factor:</source>
       <translation type="unfinished">Enter scaling factor:</translation>
     </message>

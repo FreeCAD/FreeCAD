@@ -21,16 +21,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Draft Statusbar commands.
+"""Provides the initialization code for the workbench's status bar.
 
-This module provide the code for the Draft Statusbar, activated by initGui
+The status bar is activated by `InitGui.py` when the workbench is started,
+and is populated by various widgets, buttons and menus.
 """
 ## @package init_draft_statusbar
-# \ingroup DRAFT
-# \brief This module provides the code for the Draft Statusbar.
+# \ingroup draftutils
+# \brief Provides the initialization code for the workbench's status bar.
 
-from PySide import QtCore
-from PySide import QtGui
+## \addtogroup draftutils
+# @{
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -413,4 +416,6 @@ def hide_draft_statusbar():
         # out of the status bar to any other dock area...
         snap_widget = mw.findChild(QtGui.QToolBar,"draft_snap_widget")
         if snap_widget:
-            snap_widget.hide()                
+            snap_widget.hide()
+
+## @}

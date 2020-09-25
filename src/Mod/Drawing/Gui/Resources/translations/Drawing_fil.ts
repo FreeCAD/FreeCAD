@@ -741,20 +741,20 @@ Gusto mong magpatuloy?</translation>
       <translation>Pumili ng isang eksaktong Spreadsheet object.</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="53"/>
-      <location filename="../../TaskOrthoViews.cpp" line="981"/>
+      <location filename="../../TaskOrthoViews.cpp" line="54"/>
+      <location filename="../../TaskOrthoViews.cpp" line="982"/>
       <source>Make axonometric...</source>
       <translation>Gumawa ng axonometric...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="54"/>
-      <location filename="../../TaskOrthoViews.cpp" line="982"/>
+      <location filename="../../TaskOrthoViews.cpp" line="55"/>
+      <location filename="../../TaskOrthoViews.cpp" line="983"/>
       <source>Edit axonometric settings...</source>
       <translation>I-edit ang mga setting ng axonometric...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="55"/>
-      <location filename="../../TaskOrthoViews.cpp" line="983"/>
+      <location filename="../../TaskOrthoViews.cpp" line="56"/>
+      <location filename="../../TaskOrthoViews.cpp" line="984"/>
       <source>Make orthographic</source>
       <translation>Gumawa ng orthographic</translation>
     </message>

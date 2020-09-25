@@ -152,7 +152,7 @@ def getlinks(html):
             rg = re.findall('href="\/wiki\/(.*?)"',l)
             if "images" in rg:
                 rg = None
-            if "mediawiki" in rg:
+            elif "mediawiki" in rg:
                 rg = None
         if rg:
             rg = rg[0]

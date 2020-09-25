@@ -131,6 +131,8 @@ CmdTechDrawDimension::CmdTechDrawDimension()
 void CmdTechDrawDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+#if 0 
     bool result = _checkSelection(this,2);
     if (!result)
         return;
@@ -220,6 +222,7 @@ void CmdTechDrawDimension::activated(int iMsg)
     FCMD_OBJ_CMD(page,"addView(" << getObjectCmd(dim) << ")");
     objFeat->touch(true);
     dim->recomputeFeature();
+#endif
 }
 
 bool CmdTechDrawDimension::isActive(void)
@@ -507,34 +510,21 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    int edgeType = _isValidSingleEdge(this);
-    if ((edgeType == isHorizontal) ||
-        (edgeType == isVertical) ||
-        (edgeType == isDiagonal)) {
+    if (_isValidSingleEdge(this) ) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
-    } else if (_isValidVertexes(this)) {
-        objs.push_back(objFeat);
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-        subs.push_back(SubNames[1]);
-    } else if ((_isValidEdgeToEdge(this) == isHorizontal) ||
-               (_isValidEdgeToEdge(this) == isVertical) ||
-               (_isValidEdgeToEdge(this) == isDiagonal) ||
-               (_isValidEdgeToEdge(this) == isAngle)) {
-        edgeType = _isValidEdgeToEdge(this);
-        objs.push_back(objFeat);
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-        subs.push_back(SubNames[1]);
-    } else if (_isValidVertexToEdge(this)) {
+    } else if (  _isValidVertexes(this) || 
+                (_isValidEdgeToEdge(this) == isVertical)   ||
+                (_isValidEdgeToEdge(this) == isHorizontal) ||
+                (_isValidEdgeToEdge(this) == isDiagonal) ||
+                (_isValidVertexToEdge(this)) ) {
         objs.push_back(objFeat);
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Need 2 Vertexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for length Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
+        edgeMsg << "Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Distance Dimension";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -583,6 +573,7 @@ CmdTechDrawHorizontalDimension::CmdTechDrawHorizontalDimension()
     sWhatsThis      = "TechDraw_HorizontalDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_HorizontalDimension";
+    sAccel          = "SHIFT+H";
 }
 
 void CmdTechDrawHorizontalDimension::activated(int iMsg)
@@ -614,33 +605,21 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    int edgeType = _isValidSingleEdge(this);
-    if ((edgeType == isHorizontal) ||
-        (edgeType == isDiagonal)) {
+    if (_isValidSingleEdge(this) ) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
-    } else if (_isValidVertexes(this)) {
-        objs.push_back(objFeat);
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-        subs.push_back(SubNames[1]);
-    } else if ((_isValidEdgeToEdge(this) == isHorizontal) ||
-               (_isValidEdgeToEdge(this) == isVertical)   ||
-               (_isValidEdgeToEdge(this) == isDiagonal)   ||
-               (_isValidEdgeToEdge(this) == isAngle)) {
-        edgeType = _isValidEdgeToEdge(this);
-        objs.push_back(objFeat);
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-        subs.push_back(SubNames[1]);
-    } else if (_isValidVertexToEdge(this)) {
+    } else if (  _isValidVertexes(this) || 
+                (_isValidEdgeToEdge(this) == isVertical)   ||
+                (_isValidEdgeToEdge(this) == isHorizontal) ||
+                (_isValidEdgeToEdge(this) == isDiagonal) ||
+                (_isValidVertexToEdge(this)) ) {
         objs.push_back(objFeat);
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Need 2 Vertexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for Horizontal Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
+        edgeMsg << "Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Horizontal Dimension";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -690,6 +669,7 @@ CmdTechDrawVerticalDimension::CmdTechDrawVerticalDimension()
     sWhatsThis      = "TechDraw_VerticalDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_VerticalDimension";
+    sAccel          = "SHIFT+V";
 }
 
 void CmdTechDrawVerticalDimension::activated(int iMsg)
@@ -721,33 +701,21 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    int edgeType = _isValidSingleEdge(this);
-    if ((edgeType == isVertical) ||
-        (edgeType == isDiagonal)) {
+    if (_isValidSingleEdge(this) ) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
-    } else if (_isValidVertexes(this)) {
-        objs.push_back(objFeat);
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-        subs.push_back(SubNames[1]);
-    } else if ((_isValidEdgeToEdge(this) == isVertical)   ||
-               (_isValidEdgeToEdge(this) == isHorizontal) ||
-               (_isValidEdgeToEdge(this) == isDiagonal) ||
-               (_isValidEdgeToEdge(this) == isAngle))  {
-        edgeType = _isValidEdgeToEdge(this);
-        objs.push_back(objFeat);
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-        subs.push_back(SubNames[1]);
-    } else if (_isValidVertexToEdge(this)) {
+    } else if (  _isValidVertexes(this) || 
+                (_isValidEdgeToEdge(this) == isVertical)   ||
+                (_isValidEdgeToEdge(this) == isHorizontal) ||
+                (_isValidEdgeToEdge(this) == isDiagonal) ||
+                (_isValidVertexToEdge(this)) ) {
         objs.push_back(objFeat);
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Need 2 Vertexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for Horizontal Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
+        edgeMsg << "Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Vertical Dimension";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -1330,7 +1298,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
         return;
     }
 
-    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(views.front());
+    TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(views.front());
 
     std::vector<App::DocumentObject*> refs2d;
 
@@ -1538,7 +1506,6 @@ bool _isValidVertexes(Gui::Command* cmd, int count) {
 
 //! verify that the Selection contains valid geometries for an Edge to Edge Dimension
 int _isValidEdgeToEdge(Gui::Command* cmd) {
-//TODO: can the edges be in 2 different features??
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
 
     auto objFeat0( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
@@ -1550,14 +1517,15 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
 
     int edgeType = isInvalid;
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    if(SubNames.size() == 2) {                                         //there are 2
-        if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&                      //they both start with "Edge"
+    if(SubNames.size() == 2) {                                                   //there are 2
+        if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&    //they both start with "Edge"
             TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
             int GeoId0( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
             int GeoId1( TechDraw::DrawUtil::getIndexFromName(SubNames[1]) );
             TechDraw::BaseGeom* geom0 = objFeat0->getGeomByIndex(GeoId0);
             TechDraw::BaseGeom* geom1 = objFeat0->getGeomByIndex(GeoId1);
-            if ((!geom0) || (!geom1)) {
+
+            if ((!geom0) || (!geom1)) {                                         // missing gometry
                 Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",GeoId0,GeoId1);
                 return isInvalid;
             }
@@ -1568,26 +1536,21 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
                 TechDraw::Generic *gen1 = static_cast<TechDraw::Generic *>(geom1);
                 if(gen0->points.size() > 2 ||
                    gen1->points.size() > 2) {                          //the edge is a polyline
-                    return isInvalid;
+                    return isInvalid;                                  //not supported yet
                 }
                 Base::Vector3d line0 = gen0->points.at(1) - gen0->points.at(0);
                 Base::Vector3d line1 = gen1->points.at(1) - gen1->points.at(0);
                 double xprod = fabs(line0.x * line1.y - line0.y * line1.x);
-                if(xprod > FLT_EPSILON) {                              //edges are not parallel
-                    return isAngle;
-                }
-                if(fabs(line0.x) < FLT_EPSILON && fabs(line1.x) < FLT_EPSILON) {   //both horizontal
-                    edgeType = isHorizontal;
-                } else if(fabs(line0.y) < FLT_EPSILON && fabs(line1.y) < FLT_EPSILON) {  //both vertical
-                    edgeType = isVertical;
+                if (xprod > FLT_EPSILON) {                              //edges are not parallel
+                    return isAngle;                                 //angle or distance
                 } else {
-                    edgeType = isDiagonal;
+                    return isDiagonal;                              //distance || line
                 }
             } else {
-                return isInvalid;
+                return isDiagonal;                                  //two edges, not both straight lines
             }
-        }
-    }
+        }  //edges
+    } // 2 sub objects
     return edgeType;
 }
 
@@ -1596,7 +1559,6 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
     bool result = false;
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     TechDraw::DrawViewPart* objFeat0 = static_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    //TechDraw::DrawViewPart* objFeat1 = static_castt<TechDraw::DrawViewPart *>(selection[1].getObject());
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if(SubNames.size() == 2) {                                         //there are 2
         int eId,vId;
@@ -1617,9 +1579,6 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
         v = objFeat0->getProjVertexByIndex(vId);
         if ((!e) || (!v)) {
             Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",eId,vId);
-            return false;
-        }
-        if (e->geomType != TechDraw::GENERIC)  {      //only vertex-line for now.
             return false;
         }
         result = true;
@@ -1667,24 +1626,4 @@ char* _edgeTypeToText(int e)
     return result;
 }
 
-//bool _checkActive(Gui::Command* cmd, Base::Type classType, bool needSubs)
-//{
-//    //need a page, a selected classType and [a subelement]
-//    bool active = false;
-//    if (cmd->hasActiveDocument()) {
-//        auto drawPageType( TechDraw::DrawPage::getClassTypeId() );
-//        auto selPages = cmd->getDocument()->getObjectsOfType(drawPageType);
-//        if (!selPages.empty()) {
-//            std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-//            for (auto& s:selection) {
-//                if (s.getObject()->isDerivedFrom(classType)) {
-//                    if (needSubs && !(s.getSubNames().empty())) {
-//                        active = true;
-//                        break;
-//                    }
-//                }
-//            }
-//         }
-//    }
-//    return active;
-//}
+

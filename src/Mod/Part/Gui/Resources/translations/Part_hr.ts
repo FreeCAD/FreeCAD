@@ -101,7 +101,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>Dodatak pomaka (u lokalnim koordinatama):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
@@ -161,11 +161,11 @@ Kliknite na 'Nastavi' za stvaranja svojstava svejedno, ili "Odustani" za odustaj
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Računalni rezultat završio sa greškom: 
 
 {errstr}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Kliknite na 'Nastavi' za stvaranja svojstava svejedno, ili "Odustani" za odustajanje.</translation>
     </message>
   </context>
   <context>

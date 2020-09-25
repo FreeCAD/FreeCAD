@@ -101,7 +101,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>Ek Ofseti (yerel koordinatlarda):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
@@ -161,11 +161,11 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Sonucu hesaplanırken bşr hata oluştu:
 
-{errstr}
+{Errstr}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Buna rağmen özelliği oluşturmak için 'Devam'a, iptal etmek için' İptal'e tıklayın.</translation>
     </message>
   </context>
   <context>

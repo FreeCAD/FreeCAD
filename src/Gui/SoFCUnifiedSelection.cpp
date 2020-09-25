@@ -133,11 +133,15 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0), pcViewer(0), pcRay
     SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, OFF);
     SO_NODE_SET_SF_ENUM_TYPE (highlightMode, HighlightModes);
 
-    currentHighlight = static_cast<SoFullPath*>(new SoPath(20));
-    currentHighlight->ref();
-
+    // Documentation of SoFullPath:
+    // Since the SoFullPath is derived from SoPath and contains no private data, you can cast SoPath instances to the SoFullPath type.
+    // This will allow you to examine hidden children. Actually, you are not supposed to allocate instances of this class at all.
+    // It is only available as an "extended interface" into the superclass SoPath.
     detailPath = static_cast<SoFullPath*>(new SoPath(20));
     detailPath->ref();
+
+    currentHighlight = static_cast<SoFullPath*>(new SoPath(20));
+    currentHighlight->ref();
 
     setPreSelection = false;
     selectAll = false;
@@ -534,8 +538,8 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
         // Do not clear currently highlighted object when setting new pre-selection
         if (!setPreSelection && hilaction->SelChange.Type == SelectionChanges::RmvPreselect) {
             if (hasHighlight()) {
-                SoHighlightElementAction action;
-                action.apply(currentHighlight);
+                SoHighlightElementAction hlaction;
+                hlaction.apply(currentHighlight);
                 currentHighlight->truncate(0);
             }
         } else if (highlightMode.getValue() != OFF 
@@ -543,10 +547,11 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                     && hilaction->SelChange.Type == SelectionChanges::SetPreselect)
         {
             if (hasHighlight()) {
-                SoHighlightElementAction action;
-                action.apply(currentHighlight);
+                SoHighlightElementAction hlaction;
+                hlaction.apply(currentHighlight);
                 currentHighlight->truncate(0);
             }
+
             App::Document* doc = App::GetApplication().getDocument(hilaction->SelChange.pDocName);
             App::DocumentObject* obj = doc->getObject(hilaction->SelChange.pObjectName);
             ViewProvider*vp = Application::Instance->getViewProvider(obj);
@@ -565,7 +570,8 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 delete det;
             }
         }
-        if(useNewSelection.getValue())
+
+        if (useNewSelection.getValue())
             return;
     }
 
@@ -599,22 +605,24 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                             type = SoSelectionElementAction::None;
                     }
 
-                    SoSelectionElementAction action(type);
-                    action.setColor(this->colorSelection.getValue());
-                    action.setElement(detail);
+                    SoSelectionElementAction selectionAction(type);
+                    selectionAction.setColor(this->colorSelection.getValue());
+                    selectionAction.setElement(detail);
                     if(detailPath->getLength())
-                        action.apply(detailPath);
+                        selectionAction.apply(detailPath);
                     else
-                        action.apply(vp->getRoot());
+                        selectionAction.apply(vp->getRoot());
                 }
                 detailPath->truncate(0);
                 delete detail;
             }
-        }else if (selaction->SelChange.Type == SelectionChanges::ClrSelection) {
-            SoSelectionElementAction action(SoSelectionElementAction::None);
+        }
+        else if (selaction->SelChange.Type == SelectionChanges::ClrSelection) {
+            SoSelectionElementAction selectionAction(SoSelectionElementAction::None);
             for(int i=0;i<this->getNumChildren();++i)
-                action.apply(this->getChild(i));
-        }else if(selectionMode.getValue() == ON 
+                selectionAction.apply(this->getChild(i));
+        }
+        else if(selectionMode.getValue() == ON
                     && selaction->SelChange.Type == SelectionChanges::SetSelection) {
             std::vector<ViewProvider*> vps;
             if (this->pcDocument)
@@ -627,13 +635,14 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                         type = SoSelectionElementAction::All;
                     else
                         type = SoSelectionElementAction::None;
-                    SoSelectionElementAction action(type);
-                    action.setColor(this->colorSelection.getValue());
-                    action.apply(vpd->getRoot());
+
+                    SoSelectionElementAction selectionAction(type);
+                    selectionAction.setColor(this->colorSelection.getValue());
+                    selectionAction.apply(vpd->getRoot());
                 }
             }
         }
-        if(useNewSelection.getValue())
+        if (useNewSelection.getValue())
             return;
     }
 

@@ -20,7 +20,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides lists of commands for the Draft Workbench.
+"""Provides lists of commands in order to set up toolbars of the workbench.
 
 This module returns lists of commands, so that the toolbars
 can be initialized by Draft, and by other workbenches.
@@ -28,9 +28,11 @@ These commands should be defined in `DraftTools`, and in the individual
 modules in `draftguitools`.
 """
 ## @package init_tools
-# \ingroup DRAFT
-# \brief This module provides lists of commands for the Draft Workbench.
+# \ingroup draftutils
+# \brief Provides lists of commands to set up toolbars of the workbench.
 
+## \addtogroup draftutils
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # Comment out commands that aren't ready to be used
@@ -49,7 +51,7 @@ def get_draft_drawing_commands():
 def get_draft_annotation_commands():
     """Return the annotation commands list."""
     return ["Draft_Text", "Draft_Dimension",
-            "Draft_Label","Draft_AnnotationStyleEditor"]
+            "Draft_Label", "Draft_AnnotationStyleEditor"]
 
 
 def get_draft_array_commands():
@@ -132,7 +134,7 @@ def init_draft_toolbars(workbench):
 
     Parameters
     ----------
-    workbench : Gui.Workbench
+    workbench: Gui.Workbench
         The workbench class on which the commands have to be available.
         If called from within the `Initialize` method
         of a workbench class defined inside `InitGui.py`,
@@ -154,7 +156,7 @@ def init_draft_menus(workbench):
 
     Parameters
     ----------
-    workbench : Gui.Workbench
+    workbench: Gui.Workbench
         The workbench class on which the commands have to be available.
         If called from within the `Initialize` method
         of a workbench class defined inside `InitGui.py`,
@@ -169,3 +171,5 @@ def init_draft_menus(workbench):
     workbench.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Utilities"),
                          get_draft_utility_commands()
                          + get_draft_context_commands())
+
+## @}

@@ -1009,6 +1009,22 @@ PyObject* SketchObjectPy::movePoint(PyObject *args)
 
 }
 
+PyObject* SketchObjectPy::getGeoVertexIndex(PyObject *args)
+{
+    int index;
+    if (!PyArg_ParseTuple(args, "i", &index))
+        return 0;
+
+    SketchObject* obj = this->getSketchObjectPtr();
+    int geoId;
+    PointPos posId;
+    obj->getGeoVertexIndex(index, geoId, posId);
+    Py::Tuple tuple(2);
+    tuple.setItem(0, Py::Long(geoId));
+    tuple.setItem(1, Py::Long(posId));
+    return Py::new_reference_to(tuple);
+}
+
 PyObject* SketchObjectPy::getPoint(PyObject *args)
 {
     int GeoId, PointType;

@@ -46,7 +46,6 @@
 #undef isalnum
 #endif
 #define slots
-#include <iostream>
 #include <bitset>
 
 #include <typeinfo>

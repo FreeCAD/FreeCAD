@@ -142,6 +142,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner,
     , documentNameSet(false)
     , documentObjectNameSet(false)
     , localProperty(false)
+    , _hash(0)
 {
     if (_owner) {
         const DocumentObject * docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
@@ -191,6 +192,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, bool l
     , documentNameSet(false)
     , documentObjectNameSet(false)
     , localProperty(localProperty)
+    , _hash(0)
 {
     if (_owner) {
         const DocumentObject * docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
@@ -211,6 +213,7 @@ ObjectIdentifier::ObjectIdentifier(const Property &prop, int index)
     , documentNameSet(false)
     , documentObjectNameSet(false)
     , localProperty(false)
+    , _hash(0)
 {
     DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop.getContainer());
 
@@ -1896,31 +1899,36 @@ void ObjectIdentifier::String::toString(std::ostream &s, bool toPython) const
 void ObjectIdentifier::String::checkImport(const App::DocumentObject *owner,
         const App::DocumentObject *obj, String *objName)
 {
-    if(owner && owner->getDocument() &&
-       str.size() &&
-       ExpressionParser::ExpressionImporter::reader())
-    {
+    if(owner && owner->getDocument() && str.size() &&
+       ExpressionParser::ExpressionImporter::reader()) {
         auto reader = ExpressionParser::ExpressionImporter::reader();
-        if(obj || objName) {
+        if (obj || objName) {
             bool restoreLabel = false;
             str = PropertyLinkBase::importSubName(*reader,str.c_str(),restoreLabel);
-            if(restoreLabel) {
-                if(!obj) {
+            if (restoreLabel) {
+                if (!obj) {
                     std::bitset<32> flags;
                     obj = getDocumentObject(owner->getDocument(),*objName,flags);
-                    if(!obj)
+                    if (!obj) {
                         FC_ERR("Cannot find object " << objName->toString());
+                    }
                 }
-                PropertyLinkBase::restoreLabelReference(obj,str);
+
+                if (obj) {
+                    PropertyLinkBase::restoreLabelReference(obj,str);
+                }
             }
-        } else if (str.back()!='@')
+        }
+        else if (str.back()!='@') {
             str = reader->getName(str.c_str());
-        else{
+        }
+        else {
             str.resize(str.size()-1);
             auto mapped = reader->getName(str.c_str());
             auto obj = owner->getDocument()->getObject(mapped);
-            if(!obj)
+            if (!obj) {
                 FC_ERR("Cannot find object " << str);
+            }
             else {
                 isString = true;
                 forceIdentifier = false;

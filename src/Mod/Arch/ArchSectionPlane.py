@@ -73,7 +73,7 @@ def makeSectionPlane(objectslist=None,name="Section"):
     if objectslist:
         obj.Objects = objectslist
         bb = FreeCAD.BoundBox()
-        for o in Draft.getGroupContents(objectslist):
+        for o in Draft.get_group_contents(objectslist):
             if hasattr(o,"Shape") and hasattr(o.Shape,"BoundBox"):
                 bb.add(o.Shape.BoundBox)
         obj.Placement = FreeCAD.DraftWorkingPlane.getPlacement()
@@ -132,7 +132,7 @@ def getSectionData(source):
     p = FreeCAD.Placement(source.Placement)
     direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
     if objs:
-        objs = Draft.getGroupContents(objs,walls=True,addgroups=True)
+        objs = Draft.get_group_contents(objs, walls=True, addgroups=True)
     return objs,cutplane,onlySolids,clip,direction
 
 
@@ -282,6 +282,31 @@ def isOriented(obj,plane):
         return True
     return False
 
+def update_svg_cache(source, renderMode, showHidden, showFill, fillSpaces, joinArch, allOn, objs):
+    """
+    Returns None or cached SVG, clears shape cache if required
+    """
+    svgcache = None
+    if hasattr(source,"Proxy"):
+        if hasattr(source.Proxy,"svgcache") and source.Proxy.svgcache:
+            # TODO check array bounds
+            svgcache = source.Proxy.svgcache[0]
+            # empty caches if we want to force-recalculate for certain properties
+            if (source.Proxy.svgcache[1] != renderMode
+              or source.Proxy.svgcache[2] != showHidden
+              or source.Proxy.svgcache[3] != showFill
+              or source.Proxy.svgcache[4] != fillSpaces
+              or source.Proxy.svgcache[5] != joinArch
+              or source.Proxy.svgcache[6] != allOn
+              or source.Proxy.svgcache[7] != set(objs)):
+                svgcache = None
+            if (source.Proxy.svgcache[4] != fillSpaces
+              or source.Proxy.svgcache[5] != joinArch
+              or source.Proxy.svgcache[6] != allOn
+              or source.Proxy.svgcache[7] != set(objs)):
+                source.Proxy.shapecache = None
+    return svgcache
+
 
 def getSVG(source,
            renderMode="Wireframe",
@@ -290,33 +315,49 @@ def getSVG(source,
            scale=1,
            rotation=0,
            linewidth=1,
-           lineColor=(0.0,0.0,0.0),
+           lineColor=(0.0, 0.0, 0.0),
            fontsize=1,
            showFill=False,
-           fillColor=(0.8,0.8,0.8),
+           fillColor=(0.8, 0.8, 0.8),
            techdraw=False,
            fillSpaces=False,
            cutlinewidth=0,
            joinArch=False):
-
     """
-    returns an SVG fragment from an Arch SectionPlane or BuildingPart. If
-    allOn is True, all cut objects are shown, regardless if they are visible or not.
-    renderMode can be Wireframe (default) or Solid to use the Arch solid renderer. If
-    showHidden is True, the hidden geometry above the section plane is shown in dashed line.
-    If showFill is True, the cut areas get filled with a pattern.
-    lineColor -- Color of lines for the renderMode "Wireframe".
-    fillColor -- If showFill is True and renderMode is "Wireframe",
-                 the cut areas are filled with fillColor.
-    fillSpaces - If True, shows space objects as filled surfaces
-    """
+    Return an SVG fragment from an Arch SectionPlane or BuildingPart.
 
-    import Part,DraftGeomUtils
+    allOn
+        If it is `True`, all cut objects are shown, regardless of if they are
+        visible or not.
+
+    renderMode
+        Can be `'Wireframe'` (default) or `'Solid'` to use the Arch solid
+        renderer.
+
+    showHidden
+        If it is `True`, the hidden geometry above the section plane
+        is shown in dashed line.
+
+    showFill
+        If it is `True`, the cut areas get filled with a pattern.
+
+    lineColor
+        Color of lines for the `renderMode` is `'Wireframe'`.
+
+    fillColor
+        If `showFill` is `True` and `renderMode` is `'Wireframe'`,
+        the cut areas are filled with `fillColor`.
+
+    fillSpaces
+        If `True`, shows space objects as filled surfaces.
+    """
+    import Part
+
     objs, cutplane, onlySolids, clip, direction = getSectionData(source)
     if not objs:
         return ""
     if not allOn:
-            objs = Draft.removeHidden(objs)
+        objs = Draft.removeHidden(objs)
 
     # separate spaces and Draft objects
     spaces = []
@@ -364,40 +405,25 @@ def getSVG(source,
     svgLineColor = Draft.getrgb(lineColor)
     svg = ''
     # reading cached version
-    svgcache = None
-    if hasattr(source,"Proxy"):
-        if hasattr(source.Proxy,"svgcache") and source.Proxy.svgcache:
-            svgcache = source.Proxy.svgcache[0]
-            # empty caches if we want to force-recalculate for certain properties
-            if source.Proxy.svgcache[1] != renderMode:
-                svgcache = None
-            if source.Proxy.svgcache[2] != showHidden:
-                svgcache = None
-            if source.Proxy.svgcache[3] != showFill:
-                svgcache = None
-            if source.Proxy.svgcache[4] != fillSpaces:
-                svgcache = None
-                source.Proxy.shapecache = None
-            if source.Proxy.svgcache[5] != joinArch:
-                svgcache = None
-                source.Proxy.shapecache = None
+    svgcache = update_svg_cache(source, renderMode, showHidden, showFill, fillSpaces, joinArch, allOn, objs)
+    should_update_svg_cache = False
+    if not svgcache:
+        should_update_svg_cache = True
 
     # generating SVG
     if renderMode in ["Coin",2,"Coin mono",3]:
         # render using a coin viewer
         if hasattr(source.ViewObject,"ViewData") and source.ViewObject.ViewData:
-            cameradata = getCameraData(source.ViewObject.ViewData)
+            cameradata = None#getCameraData(source.ViewObject.ViewData)
         else:
             cameradata = None
-        if not svgcache:
+        if should_update_svg_cache:
             if renderMode in ["Coin mono",3]:
                 svgcache = getCoinSVG(cutplane,objs,cameradata,linewidth="SVGLINEWIDTH",facecolor="#ffffff")
             else:
                 svgcache = getCoinSVG(cutplane,objs,cameradata,linewidth="SVGLINEWIDTH")
-            if hasattr(source,"Proxy"):
-                source.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces,joinArch]
     elif renderMode in ["Solid",1]:
-        if not svgcache:
+        if should_update_svg_cache:
             svgcache = ''
             # render using the Arch Vector Renderer
             import ArchVRM, WorkingPlane
@@ -425,8 +451,6 @@ def getSVG(source,
                 svgcache += render.getHiddenSVG(linewidth="SVGLINEWIDTH")
             svgcache += '</g>\n'
             # print(render.info())
-            if hasattr(source,"Proxy"):
-                source.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces,joinArch]
     else:
         # Wireframe (0) mode
 
@@ -446,7 +470,7 @@ def getSVG(source,
                 objectSshapes = []
             source.Proxy.shapecache = [vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes]
 
-        if not svgcache:
+        if should_update_svg_cache:
             svgcache = ""
             # render using the Drawing module
             import Drawing, Part
@@ -475,12 +499,17 @@ def getSVG(source,
                         for s in shapes:
                             if s.Edges:
                                 objectFill = getFillForObject(o, fillColor, source)
-                                #svg += Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
+                                # svg += Draft.get_svg(s,
+                                #                      direction=direction.negative(),
+                                #                      linewidth=0,
+                                #                      fillstyle="sectionfill",
+                                #                      color=(0,0,0))
                                 # temporarily disabling fill patterns
-                                svgcache += Draft.getSVG(s, direction=direction.negative(),
-                                    linewidth=0,
-                                    fillstyle=Draft.getrgb(objectFill),
-                                    color=lineColor)
+                                svgcache += Draft.get_svg(s,
+                                                          linewidth=0,
+                                                          fillstyle=Draft.getrgb(objectFill),
+                                                          direction=direction.negative(),
+                                                          color=lineColor)
                     svgcache += "</g>\n"
                 sshapes = Part.makeCompound(sshapes)
                 style = {'stroke':       "SVGLINECOLOR",
@@ -489,8 +518,10 @@ def getSVG(source,
                     sshapes, direction,
                     hStyle=style, h0Style=style, h1Style=style,
                     vStyle=style, v0Style=style, v1Style=style)
-            if hasattr(source,"Proxy"):
-                source.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces,joinArch]
+    if should_update_svg_cache:
+        if hasattr(source,"Proxy"):
+            source.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces,joinArch,allOn,set(objs)]
+
     svgcache = svgcache.replace("SVGLINECOLOR",svgLineColor)
     svgcache = svgcache.replace("SVGLINEWIDTH",svgLineWidth)
     svgcache = svgcache.replace("SVGHIDDENPATTERN",svgHiddenPattern)
@@ -501,9 +532,14 @@ def getSVG(source,
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for d in drafts:
-            svg += Draft.getSVG(d, scale=scale, linewidth=svgSymbolLineWidth,
-                                fontsize=fontsize, direction=direction, color=lineColor,
-                                techdraw=techdraw, rotation=rotation)
+            svg += Draft.get_svg(d,
+                                 scale=scale,
+                                 linewidth=svgSymbolLineWidth,
+                                 fontsize=fontsize,
+                                 direction=direction,
+                                 color=lineColor,
+                                 techdraw=techdraw,
+                                 rotation=rotation)
         if not techdraw:
             svg += '</g>'
 
@@ -518,9 +554,15 @@ def getSVG(source,
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for s in spaces:
-            svg += Draft.getSVG(s, scale=scale, linewidth=svgSymbolLineWidth,
-                                fontsize=fontsize, direction=direction, color=lineColor,
-                                techdraw=techdraw, rotation=rotation, fillSpaces=fillSpaces)
+            svg += Draft.get_svg(s,
+                                 scale=scale,
+                                 linewidth=svgSymbolLineWidth,
+                                 fontsize=fontsize,
+                                 direction=direction,
+                                 color=lineColor,
+                                 techdraw=techdraw,
+                                 rotation=rotation,
+                                 fillspaces=fillSpaces)
         if not techdraw:
             svg += '</g>'
 
@@ -548,11 +590,15 @@ def getSVG(source,
             if not techdraw:
                 svg += '<g transform="scale(1,-1)">'
             for s in sh:
-                svg += Draft.getSVG(s, scale=scale,
-                                    linewidth=svgSymbolLineWidth,
-                                    fontsize=fontsize, fillstyle="none",
-                                    direction=direction, color=lineColor,
-                                    techdraw=techdraw, rotation=rotation)
+                svg += Draft.get_svg(s,
+                                     scale=scale,
+                                     linewidth=svgSymbolLineWidth,
+                                     fontsize=fontsize,
+                                     fillstyle="none",
+                                     direction=direction,
+                                     color=lineColor,
+                                     techdraw=techdraw,
+                                     rotation=rotation)
             if not techdraw:
                 svg += '</g>'
 
@@ -560,9 +606,7 @@ def getSVG(source,
 
 
 def getDXF(obj):
-
-    """returns a DXF representation from a TechDraw/Drawing view"""
-    
+    """Return a DXF representation from a TechDraw/Drawing view."""
     allOn = True
     if hasattr(obj,"AllOn"):
         allOn = obj.AllOn
@@ -652,12 +696,20 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
                 obj.ViewObject.Lighting = "One side"
 
     # get nodes to render
-    rn = coin.SoSeparator()
+    root_node = coin.SoSeparator()
     boundbox = FreeCAD.BoundBox()
     for obj in objs:
         if hasattr(obj.ViewObject,"RootNode") and obj.ViewObject.RootNode:
-            ncopy = obj.ViewObject.RootNode.copy()
-            rn.addChild(ncopy)
+            old_visibility = obj.ViewObject.isVisible()
+            # ignore visibility as only visible objects are passed here
+            obj.ViewObject.show()
+            node_copy = obj.ViewObject.RootNode.copy()
+            root_node.addChild(node_copy)
+            if(old_visibility):
+              obj.ViewObject.show()
+            else:
+                obj.ViewObject.hide()
+
         if hasattr(obj,"Shape") and hasattr(obj.Shape,"BoundBox"):
             boundbox.add(obj.Shape.BoundBox)
 
@@ -668,13 +720,13 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
                 obj.ViewObject.Lighting = ldict[obj.Name]
 
     # create viewer
-    v = FreeCADGui.createViewer()
-    viewername = "Temp" + str(uuid.uuid4().hex[:8])
-    v.setName(viewername)
+    view_window = FreeCADGui.createViewer()
+    view_window_name = "Temp" + str(uuid.uuid4().hex[:8])
+    view_window.setName(view_window_name)
+    inventor_view = view_window.getViewer()
 
-    vv = v.getViewer()
-    vv.setBackgroundColor(1,1,1)
-    v.redraw()
+    inventor_view.setBackgroundColor(1,1,1)
+    view_window.redraw()
 
     # set clip plane
     clip = coin.SoClipPlane()
@@ -686,7 +738,7 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
     clip.on = True
     plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),dist) #dir, position on dir
     clip.plane.setValue(plane)
-    rn.insertChild(clip,0)
+    root_node.insertChild(clip,0)
 
     # add white marker at scene bound box corner
     markervec = FreeCAD.Vector(10,10,10)
@@ -705,28 +757,28 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
     lset = coin.SoIndexedLineSet()
     lset.coordIndex.setValues(0,2,[0,1])
     sep.addChild(lset)
-    rn.insertChild(sep,0)
+    root_node.insertChild(sep,0)
 
     # set scenegraph
-    vv.setSceneGraph(rn)
+    inventor_view.setSceneGraph(root_node)
 
     # set camera
     if cameradata:
-        v.setCamera(cameradata)
+        view_window.setCamera(cameradata)
     else:
-        v.setCameraType("Orthographic")
+        view_window.setCameraType("Orthographic")
         #rot = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),cutplane.normalAt(0,0))
         vx = cutplane.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
         vy = cutplane.Placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
         vz = cutplane.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
         rot = FreeCAD.Rotation(vx,vy,vz,"ZXY")
-        v.setCameraOrientation(rot.Q)
+        view_window.setCameraOrientation(rot.Q)
     # this is needed to set correct focal depth, otherwise saving doesn't work properly
-    v.fitAll()
+    view_window.fitAll()
 
     # save view
     #print("saving to",svgfile)
-    v.saveVectorGraphic(svgfile,1) # number is pixel size
+    view_window.saveVectorGraphic(svgfile,1) # number is pixel size
 
     # set linewidth placeholder
     f = open(svgfile,"r")
@@ -785,7 +837,7 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
         svg = svg.replace("</svg>","</g>\n</svg>")
 
     # trigger viewer close
-    QtCore.QTimer.singleShot(1,lambda: closeViewer(viewername))
+    QtCore.QTimer.singleShot(1,lambda: closeViewer(view_window_name))
 
     # strip svg tags (needed for TD Arch view)
     svg = re.sub("<\?xml.*?>","",svg,flags=re.MULTILINE|re.DOTALL)
@@ -1079,7 +1131,8 @@ class _ViewProviderSectionPlane:
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
-                    for o in Draft.getGroupContents(vobj.Object.Objects,walls=True):
+                    for o in Draft.get_group_contents(vobj.Object.Objects,
+                                                      walls=True):
                         if hasattr(o.ViewObject,"Lighting"):
                             o.ViewObject.Lighting = "One side"
                     self.clip = coin.SoClipPlane()
@@ -1227,27 +1280,6 @@ class _ArchDrawingView:
 
         return mode
 
-    def getDXF(self,obj):
-
-        "returns a DXF representation of the view"
-        if obj.RenderingMode == "Solid":
-            print("Unable to get DXF from Solid mode: ",obj.Label)
-            return ""
-        result = []
-        import Drawing
-        if not hasattr(self,"baseshape"):
-            self.onChanged(obj,"Source")
-        if hasattr(self,"baseshape"):
-            if self.baseshape:
-                result.append(Drawing.projectToDXF(self.baseshape,self.direction))
-        if hasattr(self,"sectionshape"):
-            if self.sectionshape:
-                result.append(Drawing.projectToDXF(self.sectionshape,self.direction))
-        if hasattr(self,"hiddenshape"):
-            if self.hiddenshape:
-                result.append(Drawing.projectToDXF(self.hiddenshape,self.direction))
-        return result
-
 
 class SectionPlaneTaskPanel:
 
@@ -1376,7 +1408,7 @@ class SectionPlaneTaskPanel:
     def getBB(self):
         bb = FreeCAD.BoundBox()
         if self.obj:
-            for o in Draft.getGroupContents(self.obj.Objects):
+            for o in Draft.get_group_contents(self.obj.Objects):
                 if hasattr(o,"Shape") and hasattr(o.Shape,"BoundBox"):
                     bb.add(o.Shape.BoundBox)
         return bb

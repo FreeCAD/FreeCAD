@@ -173,6 +173,7 @@ struct EditData {
     EditData():
     sketchHandler(0),
     buttonPress(false),
+    handleEscapeButton(false),
     DragPoint(-1),
     DragCurve(-1),
     PreselectPoint(-1),
@@ -285,7 +286,7 @@ const Part::Geometry* GeoById(const std::vector<Part::Geometry*> GeoList, int Id
 
 /* TRANSLATOR SketcherGui::ViewProviderSketch */
 
-PROPERTY_SOURCE(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObject)
+PROPERTY_SOURCE(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObjectGrid)
 
 
 ViewProviderSketch::ViewProviderSketch()
@@ -319,6 +320,7 @@ ViewProviderSketch::ViewProviderSketch()
         this->GridSnap.setValue(hGrp->GetBool("GridSnap", false));
         this->Autoconstraints.setValue(hGrp->GetBool("AutoConstraints", true));
         this->AvoidRedundant.setValue(hGrp->GetBool("AvoidRedundantAutoconstraints", true));
+        this->GridAutoSize.setValue(false); //Grid size is managed by this class
     }
 
     sPixmap = "Sketcher_Sketch";
@@ -1494,7 +1496,7 @@ bool ViewProviderSketch::isSelectable(void) const
     if (isEditing())
         return false;
     else
-        return PartGui::ViewProvider2DObject::isSelectable();
+        return PartGui::ViewProvider2DObjectGrid::isSelectable();
 }
 
 void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -1883,7 +1885,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
             Gui::Selection().setPreselect(SEL_PARAMS
                                          ,Point->getPoint()[0]
                                          ,Point->getPoint()[1]
-                                         ,Point->getPoint()[2]);
+                                         ,Point->getPoint()[2]) != 0;
             edit->blockedPreselection = !accepted;
             if (accepted) {
                 setPreselectPoint(PtIndex);
@@ -1904,7 +1906,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
             Gui::Selection().setPreselect(SEL_PARAMS
                                          ,Point->getPoint()[0]
                                          ,Point->getPoint()[1]
-                                         ,Point->getPoint()[2]);
+                                         ,Point->getPoint()[2]) != 0;
             edit->blockedPreselection = !accepted;
             if (accepted) {
                 resetPreselectPoint();
@@ -1926,7 +1928,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
             Gui::Selection().setPreselect(SEL_PARAMS
                                          ,Point->getPoint()[0]
                                          ,Point->getPoint()[1]
-                                         ,Point->getPoint()[2]);
+                                         ,Point->getPoint()[2]) != 0;
             edit->blockedPreselection = !accepted;
             if (accepted) {
                 if (CrossIndex == 0)
@@ -1950,7 +1952,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
                 Gui::Selection().setPreselect(SEL_PARAMS
                                              ,Point->getPoint()[0]
                                              ,Point->getPoint()[1]
-                                             ,Point->getPoint()[2]);
+                                             ,Point->getPoint()[2]) != 0;
 
                 edit->blockedPreselection = !accepted;
                 //TODO: Should we clear preselections that went through, if one fails?
@@ -3608,6 +3610,9 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     int GeoId = 0;
 
     int stdcountsegments = hGrp->GetInt("SegmentsPerGeometry", 50);
+    // value cannot be smaller than 3
+    if (stdcountsegments < 3)
+        stdcountsegments = 3;
 
     // RootPoint
     Points.emplace_back(0.,0.,0.);
@@ -5598,7 +5603,7 @@ void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
 
 void ViewProviderSketch::updateData(const App::Property *prop)
 {
-    ViewProvider2DObject::updateData(prop);
+    ViewProvider2DObjectGrid::updateData(prop);
 
     // In the case of an undo/redo transaction, updateData is triggered by SketchObject::onUndoRedoFinished() in the solve()
     //
@@ -5648,7 +5653,7 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 void ViewProviderSketch::onChanged(const App::Property *prop)
 {
     // call father
-    PartGui::ViewProvider2DObject::onChanged(prop);
+    PartGui::ViewProvider2DObjectGrid::onChanged(prop);
 }
 
 void ViewProviderSketch::attach(App::DocumentObject *pcFeat)
@@ -5766,7 +5771,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     TightGrid.setValue(false);
 
-    ViewProvider2DObject::setEdit(ModNum); // notify to handle grid according to edit mode property
+    ViewProvider2DObjectGrid::setEdit(ModNum); // notify to handle grid according to edit mode property
 
     float transparency;
 
@@ -5951,7 +5956,7 @@ void ViewProviderSketch::UpdateSolverInformation()
                     edit->FullyConstrained = true;
 
                 if (!hasRedundancies) {
-                    signalSetUp(QString::fromLatin1("<font color='green'>%1</font>").arg(tr("Fully constrained sketch")));
+                    signalSetUp(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span>").arg(tr("Fully constrained sketch")));
                 }
             }
             else if (!hasRedundancies) {
@@ -5961,7 +5966,7 @@ void ViewProviderSketch::UpdateSolverInformation()
                     signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%1 degrees</span></a> of freedom").arg(dofs));
             }
 
-            signalSolved(QString::fromLatin1("<font color='green'>%1</font>").arg(tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime())));
+            signalSolved(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span>").arg(tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime())));
         }
         else {
             signalSolved(QString::fromLatin1("<font color='red'>%1</font>").arg(tr("Unsolved (%1 sec)").arg(getSketchObject()->getLastSolveTime())));
@@ -6224,7 +6229,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         e.ReportException();
     }
 
-    ViewProvider2DObject::unsetEdit(ModNum); // notify grid that edit mode is being left
+    ViewProvider2DObjectGrid::unsetEdit(ModNum); // notify grid that edit mode is being left
 }
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)

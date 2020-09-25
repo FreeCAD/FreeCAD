@@ -120,7 +120,6 @@ void Base::XMLReader::init(std::size_t bufsize) {
 #ifdef _MSC_VER
     _reader->imbue(std::locale::empty());
 #else
-    //FIXME: Check whether this is correct
     _reader->imbue(std::locale::classic());
 #endif
 

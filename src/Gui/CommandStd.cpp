@@ -174,6 +174,46 @@ Action * StdCmdRecentFiles::createAction(void)
 }
 
 //===========================================================================
+// Std_RecentMacros
+//===========================================================================
+
+DEF_STD_CMD_C(StdCmdRecentMacros)
+
+StdCmdRecentMacros::StdCmdRecentMacros()
+  :Command("Std_RecentMacros")
+{
+    sGroup        = QT_TR_NOOP("Macro");
+    sMenuText     = QT_TR_NOOP("Recent macros");
+    sToolTipText  = QT_TR_NOOP("Recent macro list");
+    sWhatsThis    = "Std_RecentMacros";
+    sStatusTip    = QT_TR_NOOP("Recent macro list");
+    eType         = NoTransaction;
+}
+
+/**
+ * Opens the recent macro at position \a iMsg in the menu.
+ * If the macro does not exist or cannot be loaded this item is removed
+ * from the list.
+ */
+void StdCmdRecentMacros::activated(int iMsg)
+{
+    RecentMacrosAction* act = qobject_cast<RecentMacrosAction*>(_pcAction);
+    if (act) act->activateFile( iMsg );
+}
+
+/**
+ * Creates the QAction object containing the recent macros.
+ */
+Action * StdCmdRecentMacros::createAction(void)
+{
+    RecentMacrosAction* pcAction = new RecentMacrosAction(this, getMainWindow());
+    pcAction->setObjectName(QLatin1String("recentMacros"));
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+    return pcAction;
+}
+
+//===========================================================================
 // Std_About
 //===========================================================================
 
@@ -848,6 +888,7 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdCommandLine());
     rcCmdMgr.addCommand(new StdCmdWorkbench());
     rcCmdMgr.addCommand(new StdCmdRecentFiles());
+    rcCmdMgr.addCommand(new StdCmdRecentMacros());
     rcCmdMgr.addCommand(new StdCmdWhatsThis());
     rcCmdMgr.addCommand(new StdCmdPythonHelp());
     rcCmdMgr.addCommand(new StdCmdOnlineHelp());

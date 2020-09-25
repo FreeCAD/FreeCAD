@@ -153,7 +153,7 @@ void OriginGroupExtension::extensionOnChanged(const Property* p) {
     if(p == &Origin) {
         App::DocumentObject *owner = getExtendedObject();
         App::DocumentObject *origin = Origin.getValue();
-        // Document::Importing indicats the object is being imported (i.e.
+        // Document::Importing indicates the object is being imported (i.e.
         // copied). So check the Origin ownership here to prevent copy without
         // dependency
         if (origin && owner && owner->getDocument()

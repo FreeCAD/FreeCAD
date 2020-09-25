@@ -355,9 +355,10 @@ void Cell::setContent(const char * value, bool eval)
             expr = expr->eval();
         setExpression(std::move(expr));
         signaller.tryInvoke();
-    } catch (Base::Exception &e) {
-        if(value) {
-            std::string _value;
+    }
+    catch (Base::Exception &e) {
+        if (value) {
+            std::string _value = value;
             if(*value != '=') {
                 _value = "=";
                 _value += value;

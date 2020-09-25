@@ -22,21 +22,24 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for upgrading objects with the Draft Workbench.
+"""Provides GUI tools to upgrade objects.
 
 Upgrades simple 2D objects to more complex objects until it reaches
 Draft scripted objects. For example, an edge to a wire, and to a Draft Line.
 """
 ## @package gui_upgrade
-# \ingroup DRAFT
-# \brief Provides tools for upgrading objects with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to upgrade objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
 import Draft_rc
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
+
 from draftutils.messages import _msg
 from draftutils.translate import translate, _tr
 
@@ -96,3 +99,5 @@ class Upgrade(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Upgrade', Upgrade())
+
+## @}

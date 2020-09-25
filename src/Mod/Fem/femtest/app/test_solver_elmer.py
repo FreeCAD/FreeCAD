@@ -25,6 +25,7 @@ __title__ = "Solver elmer FEM unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+import sys
 import unittest
 from os.path import join
 
@@ -56,23 +57,24 @@ class TestSolverElmer(unittest.TestCase):
             testtools.get_fem_test_home_dir(),
             "elmer"
         )
-
-        # make sure std FreeCAD unit system mm/kg/s is used
+        # set Units
+        # since in Elmer writer the FreeCAD pref is used, here we need to set the FreeCAD pref
+        # the use of FreeCAD.Units.setScheme would not take affect because the pref is not changed
+        # see https://forum.freecadweb.org/viewtopic.php?t=48451
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
-        self.unit_schema = param.GetInt("UserSchema")
-        if self.unit_schema != 0:
-            fcc_print("Unit schema: {}. Set unit schema to 0 (mm/kg/s)".format(self.unit_schema))
-            param.SetInt("UserSchema", 0)
+        self.saved_unit_schema = param.GetInt("UserSchema")
 
     # ********************************************************************************************
     def tearDown(
         self
     ):
         # set back unit unit schema
-        if self.unit_schema != 0:
-            fcc_print("Set unit schema back to {}".format(self.unit_schema))
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
+        unit_schema = param.GetInt("UserSchema")
+        if unit_schema != self.saved_unit_schema:
+            fcc_print("Reset unit schema back to {}".format(self.saved_unit_schema))
             param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
-            param.SetInt("UserSchema", self.unit_schema)
+            param.SetInt("UserSchema", self.saved_unit_schema)
 
         # tearDown is executed after every test
         FreeCAD.closeDocument(self.document.Name)
@@ -92,10 +94,23 @@ class TestSolverElmer(unittest.TestCase):
         ))
 
     # ********************************************************************************************
-    def test_box_static(
+    def set_unit_schema(
+        self,
+        new_unit_schema=0
+    ):
+        fcc_print(
+            "\nSaved unit schema: {}. Set unit schema to {}."
+            .format(self.saved_unit_schema, new_unit_schema)
+        )
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
+        param.SetInt("UserSchema", new_unit_schema)
+
+    # ********************************************************************************************
+    def test_box_static_0_mm(
         self
     ):
         fcc_print("")
+        self.set_unit_schema(0)  # mm/kg/s
 
         # set up the Elmer static analysis example
         from femexamples.boxanalysis_static import setup
@@ -133,7 +148,7 @@ class TestSolverElmer(unittest.TestCase):
         self.assertFalse(ret, "STARTINFO write file test failed.\n{}".format(ret))
 
         fcc_print("Test writing case file")
-        casefile_given = join(self.test_file_dir, base_name + "_mm" + self.ending)
+        casefile_given = join(self.test_file_dir, base_name + self.ending)
         casefile_totest = join(analysis_dir, self.infilename + self.ending)
         # fcc_print("Comparing {} to {}".format(casefile_given, casefile_totest))
         ret = testtools.compare_files(casefile_given, casefile_totest)
@@ -147,28 +162,48 @@ class TestSolverElmer(unittest.TestCase):
         self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
 
     # ********************************************************************************************
-    def test_ccxcantilever_faceload(
+    def test_ccxcantilever_faceload_0_mm(
         self
     ):
         fcc_print("")
+        self.set_unit_schema(0)  # mm/kg/s
         from femexamples.ccx_cantilever_faceload import setup
         setup(self.document, "elmer")
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_ccxcantilever_nodeload(
+    def test_ccxcantilever_faceload_1_si(
+        self
+    ):
+        if sys.version_info.major < 3:
+            # TODO does not pass on Python 2
+            # https://travis-ci.org/github/FreeCAD/FreeCAD/builds/707885742
+            # https://api.travis-ci.org/v3/job/707885745/log.txt
+            fcc_print("Python 2: test aborted.")
+            return
+
+        fcc_print("")
+        self.set_unit_schema(1)  # SI-units m/kg/s
+        from femexamples.ccx_cantilever_faceload import setup
+        setup(self.document, "elmer")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccxcantilever_nodeload_0_mm(
         self
     ):
         fcc_print("")
+        self.set_unit_schema(0)  # mm/kg/s
         from femexamples.ccx_cantilever_nodeload import setup
         setup(self.document, "elmer")
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_ccxcantilever_prescribeddisplacement(
+    def test_ccxcantilever_prescribeddisplacement_0_mm(
         self
     ):
         fcc_print("")
+        self.set_unit_schema(0)  # mm/kg/s
         from femexamples.ccx_cantilever_prescribeddisplacement import setup
         setup(self.document, "elmer")
         self.input_file_writing_test(get_namefromdef("test_"))
@@ -199,7 +234,7 @@ class TestSolverElmer(unittest.TestCase):
         # compare input file with the given one
         inpfile_given = join(
             self.test_file_dir,
-            base_name + "_mm" + self.ending
+            base_name + self.ending
         )
         inpfile_totest = join(
             working_dir,

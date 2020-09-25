@@ -22,15 +22,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools to change the slope of a line over the working plane.
+"""Provides GUI tools to change the slope of a line.
 
 It currently only works for a line in the XY plane, it changes the height
 of one of its points in the Z direction to create a sloped line.
 """
 ## @package gui_lineslope
-# \ingroup DRAFT
-# \brief Provides tools to change the slope of a line over the working plane.
+# \ingroup draftguitools
+# \brief Provides GUI tools to change the slope of a line.
 
+## \addtogroup draftguitools
+# @{
 import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -39,6 +41,7 @@ import FreeCADGui as Gui
 import Draft_rc
 import draftutils.utils as utils
 import draftguitools.gui_base as gui_base
+
 from draftutils.translate import _tr, translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -154,3 +157,5 @@ class LineSlope(gui_base.GuiCommandNeedsSelection):
 
 Draft_Slope = LineSlope
 Gui.addCommand('Draft_Slope', LineSlope())
+
+## @}

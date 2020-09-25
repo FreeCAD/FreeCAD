@@ -2395,7 +2395,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
                         Application::Instance->getViewProvider(targetObj));
                 if(!vp) {
-                    FC_ERR("Cannot find drop traget object " << target);
+                    FC_ERR("Cannot find drop target object " << target);
                     break;
                 }
 
@@ -2510,8 +2510,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 auto lines = manager->getLines();
 
                 if(da == Qt::LinkAction) {
-                    if(targetItemObj->getParentItem()) {
-                        auto parentItem = targetItemObj->getParentItem();
+                    auto parentItem = targetItemObj->getParentItem();
+                    if (parentItem) {
                         ss << Command::getObjectCmd(
                                 parentItem->object()->getObject(),0,".replaceObject(",true)
                             << Command::getObjectCmd(targetObj) << ","
@@ -2972,7 +2972,7 @@ struct UpdateDisabler {
     // Note! DO NOT block signal here, or else
     // QTreeWidgetItem::setChildIndicatorPolicy() does not work
     UpdateDisabler(QWidget &w, int &blocked)
-        :widget(w),blocked(blocked)
+        : widget(w), blocked(blocked), visible(false), focus(false)
     {
         if(++blocked > 1)
             return;
@@ -3151,14 +3151,14 @@ void TreeWidget::onUpdateStatus(void)
         this->blockConnection(false);
     }
 
-    auto currentDocItem = getDocumentItem(Application::Instance->activeDocument());
+    auto activeDocItem = getDocumentItem(Application::Instance->activeDocument());
 
     QTreeWidgetItem *errItem = 0;
     for(auto obj : errors) {
         DocumentObjectDataPtr data;
-        if(currentDocItem) {
-            auto it = currentDocItem->ObjectMap.find(obj);
-            if(it!=currentDocItem->ObjectMap.end())
+        if(activeDocItem) {
+            auto it = activeDocItem->ObjectMap.find(obj);
+            if(it!=activeDocItem->ObjectMap.end())
                 data = it->second;
         }
         if(!data) {
@@ -3726,7 +3726,7 @@ void TreePanel::itemSearch(const QString &text)
 /* TRANSLATOR Gui::TreeDockWidget */
 
 TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
-  : DockWindow(pcDocument,parent), treeWidget(nullptr)
+  : DockWindow(pcDocument,parent)
 {
     setWindowTitle(tr("Tree view"));
     auto panel = new TreePanel("TreeView", this);
@@ -5223,7 +5223,7 @@ DocumentObjectItem *DocumentItem::findItem(
     auto subObj = obj->getSubObject(name.c_str());
     if(!subObj || subObj==obj) {
         if(!subObj && !getTree()->searchDoc)
-            TREE_WARN("sub object not found " << item->getName() << '.' << name.c_str());
+            TREE_LOG("sub object not found " << item->getName() << '.' << name.c_str());
         if(select) {
             item->selected += 2;
             if(std::find(item->mySubs.begin(),item->mySubs.end(),subname)==item->mySubs.end())

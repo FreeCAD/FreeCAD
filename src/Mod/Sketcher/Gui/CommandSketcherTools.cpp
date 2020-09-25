@@ -1566,8 +1566,6 @@ void CmdSketcherCompCopy::activated(int iMsg)
         sc.activate();
         pcAction->setShortcut(QString::fromLatin1(""));
     }
-    else
-        return;
 }
 
 Gui::Action * CmdSketcherCompCopy::createAction(void)

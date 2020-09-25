@@ -20,12 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Block.
-"""
+"""Provides the object code for the Block object."""
 ## @package block
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Block.
+# \ingroup draftobjects
+# \brief Provides the object code for the Block object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from draftobjects.base import DraftObject
@@ -53,4 +54,8 @@ class Block(DraftObject):
         obj.Placement = plm
         obj.positionBySupport()
 
+
+# Alias for compatibility with v0.18 and earlier
 _Block = Block
+
+## @}

@@ -20,20 +20,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft draftify function.
-"""
+"""Provides functions to transform sketches into Draft objects."""
 ## @package draftify
-# \ingroup DRAFT
-# \brief This module provides the code for Draft draftify function.
+# \ingroup draftfuctions
+# \brief Provides functions to transform sketches into Draft objects.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
-
 import draftutils.gui_utils as gui_utils
-import draftutils.utils as utils
-
-from draftmake.make_block import makeBlock
-from draftmake.make_wire import makeWire
-from draftmake.make_circle import makeCircle
+import draftmake.make_block as make_block
+import draftmake.make_wire as make_wire
+import draftmake.make_circle as make_circle
 
 
 def draftify(objectslist, makeblock=False, delete=True):
@@ -66,12 +64,12 @@ def draftify(objectslist, makeblock=False, delete=True):
                 w = Part.Wire(cluster)
                 if DraftGeomUtils.hasCurves(w):
                     if (len(w.Edges) == 1) and (DraftGeomUtils.geomType(w.Edges[0]) == "Circle"):
-                        nobj = makeCircle(w.Edges[0])
+                        nobj = make_circle.make_circle(w.Edges[0])
                     else:
                         nobj = App.ActiveDocument.addObject("Part::Feature", obj.Name)
                         nobj.Shape = w
                 else:
-                    nobj = makeWire(w)
+                    nobj = make_wire.make_wire(w)
                 newobjlist.append(nobj)
                 gui_utils.format_object(nobj, obj)
                 # sketches are always in wireframe mode. In Draft we don't like that!
@@ -81,8 +79,10 @@ def draftify(objectslist, makeblock=False, delete=True):
                 App.ActiveDocument.removeObject(obj.Name)
 
     if makeblock:
-        return makeBlock(newobjlist)
+        return make_block.make_block(newobjlist)
     else:
         if len(newobjlist) == 1:
             return newobjlist[0]
         return newobjlist
+
+## @}

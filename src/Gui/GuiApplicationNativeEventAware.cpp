@@ -50,7 +50,7 @@
 #endif // Spacemice
 
 Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int &argc, char *argv[]) :
-        QApplication (argc, argv)
+        QApplication (argc, argv), spaceballPresent(false)
 {
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
     nativeEvent = new Gui::GuiNativeEvent(this);

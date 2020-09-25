@@ -739,20 +739,20 @@ Do you want to continue?</source>
       <translation>Selezionare un solo oggetto Foglio di calcolo.</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="53"/>
-      <location filename="../../TaskOrthoViews.cpp" line="981"/>
+      <location filename="../../TaskOrthoViews.cpp" line="54"/>
+      <location filename="../../TaskOrthoViews.cpp" line="982"/>
       <source>Make axonometric...</source>
       <translation>Rendi assonometrica...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="54"/>
-      <location filename="../../TaskOrthoViews.cpp" line="982"/>
+      <location filename="../../TaskOrthoViews.cpp" line="55"/>
+      <location filename="../../TaskOrthoViews.cpp" line="983"/>
       <source>Edit axonometric settings...</source>
       <translation>Modifica impostazioni assonometriche...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="55"/>
-      <location filename="../../TaskOrthoViews.cpp" line="983"/>
+      <location filename="../../TaskOrthoViews.cpp" line="56"/>
+      <location filename="../../TaskOrthoViews.cpp" line="984"/>
       <source>Make orthographic</source>
       <translation>Rendi ortogonale</translation>
     </message>

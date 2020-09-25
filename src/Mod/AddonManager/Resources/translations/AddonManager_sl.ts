@@ -4,9 +4,9 @@
   <context>
     <name>AddonInstaller</name>
     <message>
-      <location filename="../../addonmanager_workers.py" line="436"/>
+      <location filename="../../addonmanager_workers.py" line="444"/>
       <source>Installed location</source>
-      <translation type="unfinished">Installed location</translation>
+      <translation>Mesto namestitve</translation>
     </message>
   </context>
   <context>
@@ -87,107 +87,107 @@
       <translation>Makra ni bilo mogoče odstraniti.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="127"/>
+      <location filename="../../addonmanager_workers.py" line="135"/>
       <source>Unable to download addon list.</source>
       <translation>Seznama dodatkov ni bilo mogoče prenesti.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="132"/>
+      <location filename="../../addonmanager_workers.py" line="140"/>
       <source>Workbenches list was updated.</source>
       <translation>Seznam delovnih okolij je bil posodobljen.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="619"/>
+      <location filename="../../addonmanager_workers.py" line="634"/>
       <source>Outdated GitPython detected, consider upgrading with pip.</source>
       <translation>Zaznan je zastarel GitPython; razmislite o nadgraditivi s pip-om.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="254"/>
+      <location filename="../../addonmanager_workers.py" line="262"/>
       <source>List of macros successfully retrieved.</source>
       <translation>Seznam makrov uspšno pridobljen.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="529"/>
+      <location filename="../../addonmanager_workers.py" line="542"/>
       <source>Retrieving description...</source>
       <translation>Pridobivanje opisov ...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="347"/>
+      <location filename="../../addonmanager_workers.py" line="355"/>
       <source>Retrieving info from</source>
       <translation>Pridobivanje podatkov iz</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="434"/>
+      <location filename="../../addonmanager_workers.py" line="442"/>
       <source>An update is available for this addon.</source>
       <translation>Posodobitev za ta dodatek je na voljo.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="430"/>
+      <location filename="../../addonmanager_workers.py" line="438"/>
       <source>This addon is already installed.</source>
       <translation>Ta dodatek je že nameščen.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="531"/>
+      <location filename="../../addonmanager_workers.py" line="544"/>
       <source>Retrieving info from git</source>
       <translation>Pridobivanje podatkov iz git-a</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="534"/>
+      <location filename="../../addonmanager_workers.py" line="547"/>
       <source>Retrieving info from wiki</source>
       <translation>Pridobivanje podatkov iz wiki strani</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="583"/>
+      <location filename="../../addonmanager_workers.py" line="596"/>
       <source>GitPython not found. Using standard download instead.</source>
       <translation>GitPython ni mogoče najti. Namesto tega je običajno prenašanje.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="588"/>
+      <location filename="../../addonmanager_workers.py" line="601"/>
       <source>Your version of python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
       <translation>Kot kaže, vaša različica Pythona ne podpira datotek ZIP. Ni mogoče nadaljevati.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="653"/>
+      <location filename="../../addonmanager_workers.py" line="670"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
       <translation>Delovno okolje uspešno nameščeno. Za uveljavitev sprememb ponovno zaženite FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="703"/>
+      <location filename="../../addonmanager_workers.py" line="720"/>
       <source>Missing workbench</source>
       <translation>Manjkajoče delovno oklje</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="712"/>
+      <location filename="../../addonmanager_workers.py" line="729"/>
       <source>Missing python module</source>
       <translation>Manjkajoči Pythonov modul</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="720"/>
+      <location filename="../../addonmanager_workers.py" line="737"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
       <translation>Manjkajoči neobvezni Pythonov modul (ne ustavi namestitve)</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="722"/>
+      <location filename="../../addonmanager_workers.py" line="739"/>
       <source>Some errors were found that prevent to install this workbench</source>
       <translation>Najdene so bile določene napake, ki preprečujejo namestitev tega delovnega okolja</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="723"/>
+      <location filename="../../addonmanager_workers.py" line="740"/>
       <source>Please install the missing components first.</source>
       <translation>Namestite najprej manjkajoče sestavine.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="747"/>
+      <location filename="../../addonmanager_workers.py" line="764"/>
       <source>Error: Unable to download</source>
       <translation>Napaka: Ni mogoče prenesti</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="766"/>
+      <location filename="../../addonmanager_workers.py" line="783"/>
       <source>Successfully installed</source>
       <translation>Uspešno nameščeno</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="270"/>
+      <location filename="../../addonmanager_workers.py" line="278"/>
       <source>GitPython not installed! Cannot retrieve macros from git</source>
       <translation>GitPython ni nameščen! Makrov ni mogoče pridobiti iz git-a</translation>
     </message>
@@ -212,43 +212,63 @@
       <translation>Potreben ponovni zagon</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="541"/>
+      <location filename="../../addonmanager_workers.py" line="554"/>
       <source>This macro is already installed.</source>
       <translation>Ta makro je že nameščen.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="664"/>
+      <location filename="../../addonmanager_workers.py" line="681"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>Makro je bil namščen in je dosegljiv preko menija Makro -&gt; Makri</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="277"/>
-      <source>Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_workers.py" line="442"/>
+      <location filename="../../addonmanager_workers.py" line="450"/>
       <source>This addon is marked as obsolete</source>
-      <translation type="unfinished">This addon is marked as obsolete</translation>
+      <translation>Ta dodatek je označen kot zastarel</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="443"/>
+      <location filename="../../addonmanager_workers.py" line="451"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation type="unfinished">This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</translation>
+      <translation>To ponavadi pomeni, da ni več vzdrževan in naprednejši dodatek s tega seznama nudi enake zmožnosti.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="740"/>
+      <location filename="../../addonmanager_workers.py" line="757"/>
       <source>Error: Unable to locate zip from</source>
-      <translation type="unfinished">Error: Unable to locate zip from</translation>
+      <translation>Napaka: Ni mogoče najti zipa od</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="285"/>
+      <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
+      <translation>Pri pridobivanju Git makra se je nekje zalomilo. Najverjetneje Git-ove izvršljive datoteke ni na tej poti</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="455"/>
+      <source>This addon is marked as Python 2 Only</source>
+      <translation>Ta dodatek je označen, da je le za Python 2</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="456"/>
+      <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
+      <translation>To delovno okolje lahko ni več vzdrževano in namestitev v Python 3 okolje bo najverjetneje prinesla napake pri zagonu ali med delovanjem.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="625"/>
+      <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
+      <translation>Uporabnik je zaprosil posodobitev Python 2 delovnega okolja na okolje, ki se izvaja v Pythonu 3 - </translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="653"/>
+      <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
+      <translation>Delovno okolje je uspešno posodobljeno. Za uveljavitev sprememb ponovno zaženite FreeCAD.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="659"/>
+      <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
+      <translation>Uporabnik je zaprosil namestitev Python 2 delovnega okolja na okolje, ki se izvaja v Pythonu 3 - </translation>
     </message>
   </context>
   <context>
     <name>Dialog</name>
-    <message>
-      <location filename="../../AddonManager.ui" line="14"/>
-      <source>Addons manager</source>
-      <translation>Upravljalnik dodatkov</translation>
-    </message>
     <message>
       <location filename="../../AddonManager.ui" line="37"/>
       <source>Workbenches</source>
@@ -325,11 +345,6 @@
       <translation>Namesti/posodobi izbrano</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.ui" line="157"/>
-      <source>Close the addons manager</source>
-      <translation type="unfinished">Close the addons manager</translation>
-    </message>
-    <message>
       <location filename="../../AddonManager.ui" line="160"/>
       <source>Close</source>
       <translation>Zapri</translation>
@@ -339,41 +354,51 @@
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</translation>
+      <translation>Če je ta možnost izbrana, bo pri zagonu upravljalnika dodatkov
+za nameščene dodatke preverjena razpoložljivost posodobitev
+(potrebna je nameščenost paketa GitPython v vašem okolju)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires GitPython)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires GitPython)</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="42"/>
-      <source>You can use this window to specify additional addon repositories
-sto be scanned for available addons</source>
-      <translation type="unfinished">You can use this window to specify additional addon repositories
-sto be scanned for available addons</translation>
+      <translation>Samodejno preverjanje za posodobitve ob zagonu (potreben GitPython)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
-      <translation type="unfinished">Proxy </translation>
+      <translation>Posredniški strežnik </translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="64"/>
       <source>No proxy</source>
-      <translation type="unfinished">No proxy</translation>
+      <translation>Ni posredniškega strežnika</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="71"/>
       <source>User system proxy</source>
-      <translation type="unfinished">User system proxy</translation>
+      <translation>Posredniški strežnik uporabniškega okolja</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>User defined proxy :</source>
-      <translation type="unfinished">User defined proxy :</translation>
+      <translation>Posredniški strežnik, ki ga določi uporabnik:</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.ui" line="14"/>
+      <source>Addon Manager</source>
+      <translation>Upravljalnik dodatkov</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.ui" line="157"/>
+      <source>Close the Addon Manager</source>
+      <translation>Zapri upravljalnik dodatkov</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="42"/>
+      <source>You can use this window to specify additional addon repositories
+to be scanned for available addons</source>
+      <translation>To okno lahko uporabite za določanje dodatnih skladišč dodatkov,
+v katerih se preišče za morebitno razpoložljive dodatke</translation>
     </message>
   </context>
   <context>

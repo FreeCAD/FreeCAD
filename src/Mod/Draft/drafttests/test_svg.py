@@ -21,13 +21,20 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Unit test for the Draft Workbench, SVG import and export tests."""
+"""Unit tests for the Draft Workbench, SVG import and export tests."""
+## @package test_svg
+# \ingroup drafttests
+# \brief Unit tests for the Draft Workbench, SVG import and export tests.
 
+## \addtogroup drafttests
+# @{
 import os
 import unittest
+
 import FreeCAD as App
 import Draft
 import drafttests.auxiliary as aux
+
 from draftutils.messages import _msg
 
 
@@ -86,3 +93,5 @@ class DraftSVG(unittest.TestCase):
         This is executed after each test, so we close the document.
         """
         App.closeDocument(self.doc_name)
+
+## @}

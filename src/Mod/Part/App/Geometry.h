@@ -55,6 +55,7 @@
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
 #include <list>
+#include <memory>
 #include <vector>
 #include <bitset>
 #include <Base/Persistence.h>
@@ -73,7 +74,7 @@ class PartExport Geometry: public Base::Persistence
 public:
     virtual ~Geometry();
 
-    static Geometry* fromShape(const TopoDS_Shape &s, bool silent=false);
+    static std::unique_ptr<Geometry> fromShape(const TopoDS_Shape &s, bool silent=false);
 
     virtual TopoDS_Shape toShape() const = 0;
     virtual const Handle(Geom_Geometry)& handle() const = 0;
@@ -1190,10 +1191,10 @@ PartExport
 GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const GeomLineSegment *lineSeg2,
                                       const Base::Vector3d &center, double radius);
 PartExport
-GeomSurface *makeFromSurface(const Handle(Geom_Surface)&, bool silent=false);
+std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface)&, bool silent=false);
 
 PartExport
-GeomCurve *makeFromCurve(const Handle(Geom_Curve)&, bool silent=false);
+std::unique_ptr<GeomCurve> makeFromCurve(const Handle(Geom_Curve)&, bool silent=false);
 }
 
 #endif // PART_GEOMETRY_H

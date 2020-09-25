@@ -496,26 +496,42 @@ App::DocumentObject* TaskTransformedParameters::getSketchObject() const {
 
 void TaskTransformedParameters::hideObject()
 {
-    auto obj = getTopTransformedObject(true);
-    if(obj)
-        FCMD_OBJ_HIDE(obj);
+    try {
+        FCMD_OBJ_HIDE(getTopTransformedObject(true));
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
 }
 
 void TaskTransformedParameters::showObject()
 {
-    auto obj = getTopTransformedObject(true);
-    if(obj)
-        FCMD_OBJ_SHOW(obj);
+    try {
+        FCMD_OBJ_SHOW(getTopTransformedObject(true));
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
 }
 
 void TaskTransformedParameters::hideBase()
 {
-    FCMD_OBJ_HIDE(getBaseObject());
+    try {
+        FCMD_OBJ_HIDE(getBaseObject());
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
 }
 
 void TaskTransformedParameters::showBase()
 {
-    FCMD_OBJ_SHOW(getBaseObject());
+    try {
+        FCMD_OBJ_SHOW(getBaseObject());
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
 }
 
 void TaskTransformedParameters::exitSelectionMode()

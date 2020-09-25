@@ -53,7 +53,8 @@ class PartGuiExport TaskAttacher : public Gui::TaskView::TaskBox, public Gui::Se
     Q_OBJECT
 
 public:
-    typedef boost::function<void (bool, Gui::ViewProviderDocumentObject*, App::DocumentObject *, const std::string&)>  VisibilityFunction;
+    typedef boost::function<void (bool, const std::string &, Gui::ViewProviderDocumentObject*,
+                                  App::DocumentObject *, const std::string&)>  VisibilityFunction;
 
     TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent = 0,
                  QString picture = QString(),
@@ -125,6 +126,7 @@ private:
 
 protected:
     Gui::ViewProviderDocumentObject *ViewProvider;
+    std::string ObjectName;
 
 private:
     QWidget* proxy;

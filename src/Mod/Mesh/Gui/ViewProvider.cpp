@@ -236,19 +236,21 @@ PROPERTY_SOURCE(MeshGui::ViewProviderMesh, Gui::ViewProviderGeometryObject)
 
 ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
 {
-    ADD_PROPERTY(LineTransparency,(0));
+    static const char *osgroup = "Object Style";
+
+    ADD_PROPERTY_TYPE(LineTransparency,(0), osgroup, App::Prop_None, "Set line transparency.");
     LineTransparency.setConstraints(&intPercent);
-    ADD_PROPERTY(LineWidth,(1.0f));
+    ADD_PROPERTY_TYPE(LineWidth,(1.0f), osgroup, App::Prop_None, "Set line width.");
     LineWidth.setConstraints(&floatRange);
-    ADD_PROPERTY(PointSize,(2.0f));
+    ADD_PROPERTY_TYPE(PointSize,(2.0f), osgroup, App::Prop_None, "Set point size.");
     PointSize.setConstraints(&floatRange);
-    ADD_PROPERTY(CreaseAngle,(0.0f));
+    ADD_PROPERTY_TYPE(CreaseAngle,(0.0f), osgroup, App::Prop_None, "Set crease angle.");
     CreaseAngle.setConstraints(&angleRange);
-    ADD_PROPERTY(OpenEdges,(false));
-    ADD_PROPERTY(Coloring,(false));
-    ADD_PROPERTY(Lighting,(1));
+    ADD_PROPERTY_TYPE(OpenEdges,(false), osgroup, App::Prop_None, "Set open edges.");
+    ADD_PROPERTY_TYPE(Coloring,(false), osgroup, App::Prop_None, "Set coloring.");
+    ADD_PROPERTY_TYPE(Lighting,(1), osgroup, App::Prop_None, "Set if the illumination comes from two sides\n or one side in the 3D view.");
     Lighting.setEnums(LightingEnums);
-    ADD_PROPERTY(LineColor,(0,0,0));
+    ADD_PROPERTY_TYPE(LineColor,(0,0,0), osgroup, App::Prop_None, "Set line color.");
 
     // Create the selection node
     pcHighlight = Gui::ViewProviderBuilder::createSelection();
@@ -2372,7 +2374,7 @@ void ViewProviderMeshObject::updateData(const App::Property* prop)
     ViewProviderMesh::updateData(prop);
     if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         const Mesh::PropertyMeshKernel* mesh = static_cast<const Mesh::PropertyMeshKernel*>(prop);
-        this->pcMeshNode->mesh.setValue(mesh->getValuePtr());
+        this->pcMeshNode->mesh.setValue(Base::Reference<const Mesh::MeshObject>(mesh->getValuePtr()));
         // Needs to update internal bounding box caches
         this->pcMeshShape->touch();
     }

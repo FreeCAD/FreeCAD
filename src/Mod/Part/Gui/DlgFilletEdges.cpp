@@ -747,13 +747,13 @@ void DlgFilletEdges::changeEvent(QEvent *e)
     }
 }
 
-void DlgFilletEdges::on_shapeObject_activated(int index)
+void DlgFilletEdges::on_shapeObject_activated(int itemPos)
 {
     d->object = 0;
     QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
     model->removeRows(0, model->rowCount());
 
-    QByteArray name = ui->shapeObject->itemData(index).toByteArray();
+    QByteArray name = ui->shapeObject->itemData(itemPos).toByteArray();
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc)
         return;

@@ -38,6 +38,7 @@ TYPESYSTEM_SOURCE(Path::Tooltable , Base::Persistence)
 
 Tooltable::Tooltable()
 {
+    Version = 0;
 }
 
 Tooltable::~Tooltable()

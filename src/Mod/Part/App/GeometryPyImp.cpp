@@ -438,7 +438,6 @@ PyObject* GeometryPy::getExtensions(PyObject *args)
 
             if(p) {
                 // we create a python copy and add it to the list
-                Py::Tuple args(size_t(0));
                 PyObject* cpy = static_cast<GeometryExtensionPy *>(p->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
 
                 PyList_SetItem( list, i, cpy);

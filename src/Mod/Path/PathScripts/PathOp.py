@@ -514,10 +514,6 @@ class ObjectOp(object):
 
         result = self.opExecute(obj)  # pylint: disable=assignment-from-no-return
 
-        if FeatureHeights & self.opFeatures(obj):
-            # Let's finish by rapid to clearance...just for safety
-            self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-
         path = Path.Path(self.commandlist)
         obj.Path = path
         obj.CycleTime = self.getCycleTimeEstimate(obj)

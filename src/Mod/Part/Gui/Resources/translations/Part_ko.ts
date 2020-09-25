@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
       <source>No object named {name}</source>
-      <translation type="unfinished">No object named {name}</translation>
+      <translation>{name} 라는 이름의 객체를 찾지 못했습니다</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="98"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
+      <translation>링크 해석에 실패했습니다 (1개 이상의 콜론을 찾았습니다)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
       <source>Attachment</source>
-      <translation type="unfinished">Attachment</translation>
+      <translation>첨부 파일</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
@@ -51,22 +51,22 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="497"/>
       <source>{mode} (add {morerefs})</source>
-      <translation type="unfinished">{mode} (add {morerefs})</translation>
+      <translation>{mode} ({morerefs} 추가)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="500"/>
       <source>{mode} (add more references)</source>
-      <translation type="unfinished">{mode} (add more references)</translation>
+      <translation>{mode} (참조 추가하기)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="530"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>참조 결합:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
       <source>Reference{i}</source>
-      <translation type="unfinished">Reference{i}</translation>
+      <translation>참조{i}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="551"/>
@@ -3996,7 +3996,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="190"/>
       <source>Default line width</source>
-      <translation>기본 선 두께</translation>
+      <translation>기본 선 굵기</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="203"/>
@@ -4470,7 +4470,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="804"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>참조 결합:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="821"/>
@@ -5252,7 +5252,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>&amp;Part</source>
-      <translation>&amp; 파트</translation>
+      <translation>&amp;부품</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>

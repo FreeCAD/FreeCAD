@@ -101,7 +101,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>Odmik pripetka (v lokalnih koordinatah):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
@@ -161,11 +161,11 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Pri izračunavanju razultata je prišlo do napake: 
 
 {errstr}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Klikni "Nadaljuj", če želiš vseeno ustvariti značilnost, ali "Prekini" za preklic.</translation>
     </message>
   </context>
   <context>
@@ -3546,7 +3546,7 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="631"/>
       <source>V parameters:</source>
-      <translation>Spremenljivke V:</translation>
+      <translation>Določilke V:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="768"/>
@@ -5265,7 +5265,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>&amp;Parametric</source>
-      <translation>&amp;Parametričen</translation>
+      <translation>&amp;Določilovni</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>

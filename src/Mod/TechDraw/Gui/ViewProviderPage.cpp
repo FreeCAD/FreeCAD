@@ -87,7 +87,8 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 ViewProviderPage::ViewProviderPage()
   : m_mdiView(0),
     m_docReady(true),
-    m_pageName("")
+    m_pageName(""),
+    m_graphicsView(nullptr)
 {
     sPixmap = "TechDraw_Tree_Page";
     static const char *group = "Base";
@@ -165,7 +166,7 @@ void ViewProviderPage::removeMDIView(void)
 void ViewProviderPage::updateData(const App::Property* prop)
 {
     auto page = getDrawPage();
-    if(!page) {
+    if (!page) {
         Gui::ViewProviderDocumentObject::updateData(prop);
         return;
     }
@@ -178,18 +179,18 @@ void ViewProviderPage::updateData(const App::Property* prop)
        signalChangeIcon();
     //if the template is changed, rebuild the visual
     } else if (prop == &(page->Template)) {
-       if(m_mdiView && 
+       if (m_mdiView && 
           !page->isUnsetting()) {
             m_mdiView->matchSceneRectToTemplate();
             m_mdiView->updateTemplate();
         }
     } else if (prop == &(page->Label)) {
-       if(m_mdiView && 
+       if (m_mdiView && 
           !page->isUnsetting()) {
            m_mdiView->setTabText(page->Label.getValue());
        }
     } else if (prop == &page->Views) {
-        if(m_mdiView && !page->isUnsetting()) 
+        if (m_mdiView && !page->isUnsetting()) 
             m_mdiView->fixOrphans();
     }
 
@@ -221,10 +222,11 @@ bool ViewProviderPage::onDelete(const std::vector<std::string> &)
         QString bodyMessage;
         QTextStream bodyMessageStream(&bodyMessage);
         bodyMessageStream << qApp->translate("Std_Delete",
-            "The page is not empty, therefore the\n following referencing objects might be lost.\n\n"
-            "Are you sure you want to continue?\n");
+            "The page is not empty, therefore the\nfollowing referencing objects might be lost:");
+        bodyMessageStream << '\n';
         for (auto ObjIterator : objs)
             bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
+        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
         // show and evaluate the dialog
         int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
@@ -317,7 +319,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     App::DocumentObject *templateFeat = 0;
     templateFeat = getDrawPage()->Template.getValue();
 
-    if(templateFeat) {
+    if (templateFeat) {
         temp.push_back(templateFeat);
     }
 
@@ -334,7 +336,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     const std::vector<App::DocumentObject *> &views = getDrawPage()->Views.getValues();
 
     try {
-      for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
+      for (std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
           TechDraw::DrawView* featView = dynamic_cast<TechDraw::DrawView*> (*it);
           App::DocumentObject *docObj = *it;
           //DrawRichAnno with no parent is child of Page
@@ -349,14 +351,14 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
           }
 
           // Don't collect if dimension, projection group item, hatch or member of ClipGroup as these should be grouped elsewhere
-          if(docObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())    ||
-             docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())    ||
-             docObj->isDerivedFrom(TechDraw::DrawHatch::getClassTypeId())            ||
-             docObj->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())      ||
-             docObj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())         ||
-             docObj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())       ||
-             docObj->isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId())       ||
-             (featView && featView->isInClip()) )
+          if (docObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())    ||
+              docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())    ||
+              docObj->isDerivedFrom(TechDraw::DrawHatch::getClassTypeId())            ||
+              docObj->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())      ||
+              docObj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())         ||
+              docObj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())       ||
+              docObj->isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId())       ||
+              (featView && featView->isInClip()) )
               continue;
           else
               temp.push_back(*it);
@@ -390,7 +392,7 @@ MDIViewPage* ViewProviderPage::getMDIViewPage() const
 void ViewProviderPage::onChanged(const App::Property *prop)
 {
 //    if (prop == &(getDrawPage()->Template)) {
-//       if(m_mdiView) {
+//       if (m_mdiView) {
 //            m_mdiView->updateTemplate();
 //        }
 //    }
@@ -449,10 +451,12 @@ void ViewProviderPage::setTemplateMarkers(bool state)
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(templateFeat->getDocument());
     Gui::ViewProvider* vp = guiDoc->getViewProvider(templateFeat);
     ViewProviderTemplate* vpt = dynamic_cast<ViewProviderTemplate*>(vp);
-    vpt->setMarkers(state);
-    QGITemplate* t = vpt->getQTemplate();
-    if (t != nullptr) {
-        t->updateView(true);
+    if (vpt) {
+        vpt->setMarkers(state);
+        QGITemplate* t = vpt->getQTemplate();
+        if (t != nullptr) {
+            t->updateView(true);
+        }
     }
 }
 
@@ -475,7 +479,7 @@ bool ViewProviderPage::canDelete(App::DocumentObject *obj) const
 void ViewProviderPage::onGuiRepaint(const TechDraw::DrawPage* dp) 
 {
     if (dp == getDrawPage()) {
-        if(!m_mdiView.isNull() &&
+        if (!m_mdiView.isNull() &&
            !getDrawPage()->isUnsetting()) {
             m_mdiView->fixOrphans();
         }

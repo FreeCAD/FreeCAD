@@ -20,11 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the Draft PolarArray GuiCommand."""
+"""Provides GUI tools to create polar Array objects."""
 ## @package gui_polararray
-# \ingroup DRAFT
-# \brief This module provides the Draft PolarArray tool.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create polar Array objects.
 
+## \addtogroup draftguitools
+# @{
 from pivy import coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -142,3 +144,5 @@ class PolarArray(gui_base.GuiCommandBase):
 
 
 Gui.addCommand('Draft_PolarArray', PolarArray())
+
+## @}

@@ -73,16 +73,28 @@ using namespace TechDrawGui;
 //ctor for edit
 TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     ui(new Ui_TaskLeaderLine),
+    blockUpdate(false),
     m_tracker(nullptr),
+    m_mdi(nullptr),
+    m_scene(nullptr),
+    m_view(nullptr),
     m_lineVP(leadVP),
     m_baseFeat(nullptr),
     m_basePage(nullptr),
     m_lineFeat(nullptr),
+    m_qgParent(nullptr),
     m_createMode(false),
     m_leadLine(nullptr),
+    m_trackerMode(QGTracker::None),
+    m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
     m_qgLine(nullptr),
-    m_pbTrackerState(TRACKEREDIT)
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
+    m_pbTrackerState(TRACKEREDIT),
+    m_saveX(0.0),
+    m_saveY(0.0),
+    m_haveMdi(false)
 {
     if (m_lineVP == nullptr)  {
         //should be caught in CMD caller
@@ -122,8 +134,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     }
 
     //TODO: when/if leaders are allowed to be parented to Page, check for m_baseFeat will be removed
-    if ( (m_lineFeat == nullptr) ||
-         (m_baseFeat == nullptr) ||
+    if ( (m_baseFeat == nullptr) ||
          (m_basePage == nullptr) ) {
         Base::Console().Error("TaskLeaderLine - bad parameters (2).  Can not proceed.\n");
         return;
@@ -155,16 +166,28 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
 TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
                                TechDraw::DrawPage* page) :
     ui(new Ui_TaskLeaderLine),
+    blockUpdate(false),
     m_tracker(nullptr),
+    m_mdi(nullptr),
+    m_scene(nullptr),
+    m_view(nullptr),
     m_lineVP(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(page),
     m_lineFeat(nullptr),
+    m_qgParent(nullptr),
     m_createMode(true),
     m_leadLine(nullptr),
+    m_trackerMode(QGTracker::None),
+    m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
     m_qgLine(nullptr),
-    m_pbTrackerState(TRACKERPICK)
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
+    m_pbTrackerState(TRACKERPICK),
+    m_saveX(0.0),
+    m_saveY(0.0),
+    m_haveMdi(false)
 {
     if ( (m_basePage == nullptr) ||
          (m_baseFeat == nullptr) )  {
@@ -413,10 +436,12 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
     if (m_baseFeat != nullptr) {
         m_baseFeat->touch();
     }
-    if (m_basePage != nullptr) {
-        m_basePage->touch();
+
+    m_basePage->touch();
+
+    if (m_lineFeat != nullptr) {
+        m_lineFeat->requestPaint();
     }
-    m_lineFeat->requestPaint();
 }
 
 void TaskLeaderLine::updateLeaderFeature(void)

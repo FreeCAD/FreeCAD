@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "importCcxDatResults"
+__title__ = "Result import for Calculix dat file format"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -30,9 +30,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD Calculix DAT reader for FEM workbench
 
+import os
+
 import FreeCAD
 from FreeCAD import Console
-import os
 
 
 EIGENVALUE_OUTPUT_SECTION = "     E I G E N V A L U E   O U T P U T"

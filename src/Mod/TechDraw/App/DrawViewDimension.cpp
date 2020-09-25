@@ -33,6 +33,7 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepBndLib.hxx>
 #include <gp_Pnt.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Edge.hxx>
@@ -230,12 +231,12 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 
     //can't do anything until Source has geometry
     if (!getViewPart()->hasGeometry()) {                              //happens when loading saved document
-        if (isRestoring() ||
-            getDocument()->testStatus(App::Document::Status::Restoring)) {
+        //if (isRestoring() ||
+        //    getDocument()->testStatus(App::Document::Status::Restoring)) {
             return App::DocumentObject::StdReturn;
-        } else {
-            return App::DocumentObject::StdReturn;
-        }
+        //} else {
+        //    return App::DocumentObject::StdReturn;
+        //}
     }
 
     //now we can check if Reference2ds have valid targets.
@@ -584,7 +585,6 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
         }
     } else if ((unitSystem == Base::UnitSystem::ImperialCivil) &&
                 angularMeasure) {
-        multiValueSchema = true;
         QString dispMinute = QString::fromUtf8("\'");
         QString dispSecond = QString::fromUtf8("\"");
         QString schemeMinute = QString::fromUtf8("M");
@@ -886,7 +886,6 @@ pointPair DrawViewDimension::getPointsEdgeVert()
 //    Base::Console().Message("DVD::getPointsEdgeVert() - %s\n",getNameInDocument());
     pointPair result;
     const std::vector<std::string> &subElements      = References2D.getSubValues();
-
     int idx0 = DrawUtil::getIndexFromName(subElements[0]);
     int idx1 = DrawUtil::getIndexFromName(subElements[1]);
     TechDraw::BaseGeom* e;
@@ -903,7 +902,29 @@ pointPair DrawViewDimension::getPointsEdgeVert()
         Base::Console().Error("Error: DVD - %s - 2D references are corrupt (4)\n",getNameInDocument());
         return result;
     }
-    result = closestPoints(e->occEdge,v->occVertex);
+
+    // if DistanceX or DistanceY, needs to be closest horizontal or vertical extent of edge
+    // for Distance the perpendicular distance if fine. 
+    Bnd_Box edgeBox;
+    BRepBndLib::Add(e->occEdge, edgeBox);
+    edgeBox.SetGap(0.0);
+    double minX, minY, minZ, maxX, maxY, maxZ;
+    edgeBox.Get(minX, minY, minZ, maxX, maxY, maxZ);
+    gp_Pnt pnt = BRep_Tool::Pnt(v->occVertex);
+
+    if (Type.isValue("DistanceX") ) {
+        gp_Pnt p0(pnt.X(), minY, 0.0);
+        gp_Pnt p1(pnt.X(), maxY, 0.0);
+        TopoDS_Edge boundary = BRepBuilderAPI_MakeEdge(p0, p1);
+        result = closestPoints(e->occEdge, boundary);
+    } else if (Type.isValue("DistanceY") ) {
+        gp_Pnt p0(minX, pnt.Y(), 0.0);
+        gp_Pnt p1(maxX, pnt.Y(), 0.0);
+        TopoDS_Edge boundary = BRepBuilderAPI_MakeEdge(p0, p1);
+        result = closestPoints(e->occEdge, boundary);
+    } else {
+        result = closestPoints(e->occEdge,v->occVertex);
+    }
     return result;
 }
 

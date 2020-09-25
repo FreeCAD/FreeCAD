@@ -162,6 +162,7 @@ class Shaft:
     def updateEdge(self, column, start):
         App.Console.PrintMessage("Not implemented yet - waiting for robust references...")
         return
+        """
         if self.sketchClosed is not True:
             return
         # Create a chamfer or fillet at the start or end edge of the segment
@@ -186,6 +187,7 @@ class Shaft:
         edgeName = "Edge%u" % self.getEdgeIndex(column, idx, edgeType)
         self.doc.getObject(objName).Base = (self.doc.getObject("RevolutionShaft"),"[%s]" % edgeName)
         # etc. etc.
+        """
 
     def getEdgeIndex(self, column, startIdx):
         # FIXME: This is impossible without robust references anchored in the sketch!!!

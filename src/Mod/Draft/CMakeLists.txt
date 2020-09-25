@@ -15,7 +15,6 @@ SET(Draft_SRCS_base
     DraftLayer.py
     DraftFillet.py
     WorkingPlane.py
-    getSVG.py
     TestDraft.py
     TestDraftGui.py
 )
@@ -36,6 +35,7 @@ SET (Draft_geoutils
     draftgeoutils/sort_edges.py
     draftgeoutils/faces.py
     draftgeoutils/geometry.py
+    draftgeoutils/geo_arrays.py
     draftgeoutils/wires.py
     draftgeoutils/arcs.py
     draftgeoutils/fillets.py
@@ -68,8 +68,10 @@ SET(Draft_tests
 
 SET(Draft_utilities
     draftutils/__init__.py
+    draftutils/groups.py
     draftutils/init_tools.py
     draftutils/init_draft_statusbar.py
+    draftutils/units.py
     draftutils/utils.py
     draftutils/gui_utils.py
     draftutils/todo.py
@@ -84,6 +86,7 @@ SET(Draft_functions
     draftfunctions/cut.py
     draftfunctions/downgrade.py
     draftfunctions/draftify.py
+    draftfunctions/dxf.py
     draftfunctions/extrude.py
     draftfunctions/fuse.py
     draftfunctions/heal.py
@@ -94,6 +97,7 @@ SET(Draft_functions
     draftfunctions/rotate.py
     draftfunctions/scale.py
     draftfunctions/split.py
+    draftfunctions/svg.py
     draftfunctions/upgrade.py
     draftfunctions/README.md
 )
@@ -115,6 +119,7 @@ SET(Draft_make_functions
     draftmake/make_facebinder.py
     draftmake/make_fillet.py
     draftmake/make_label.py
+    draftmake/make_layer.py
     draftmake/make_line.py
     draftmake/make_orthoarray.py
     draftmake/make_patharray.py
@@ -148,8 +153,10 @@ SET(Draft_objects
     draftobjects/fillet.py
     draftobjects/draftlink.py
     draftobjects/label.py
+    draftobjects/layer.py
     draftobjects/dimension.py
     draftobjects/patharray.py
+    draftobjects/pathtwistedarray.py
     draftobjects/point.py
     draftobjects/pointarray.py
     draftobjects/polygon.py
@@ -177,6 +184,7 @@ SET(Draft_view_providers
     draftviewproviders/view_fillet.py
     draftviewproviders/view_draftlink.py
     draftviewproviders/view_label.py
+    draftviewproviders/view_layer.py
     draftviewproviders/view_dimension.py
     draftviewproviders/view_point.py
     draftviewproviders/view_rectangle.py
@@ -226,6 +234,7 @@ SET(Modifier_tools
     draftguitools/gui_circulararray.py
     draftguitools/gui_orthoarray.py
     draftguitools/gui_patharray.py
+    draftguitools/gui_pathtwistedarray.py
     draftguitools/gui_pointarray.py
     draftguitools/gui_polararray.py
     draftguitools/gui_clone.py
@@ -243,6 +252,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_snaps.py
     draftguitools/gui_snapper.py
     draftguitools/gui_trackers.py
+    draftguitools/gui_edit_base_object.py
     draftguitools/gui_edit_draft_objects.py
     draftguitools/gui_edit_arch_objects.py
     draftguitools/gui_edit_part_objects.py
@@ -255,6 +265,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_heal.py
     draftguitools/gui_dimension_ops.py
     draftguitools/gui_lineslope.py
+    draftguitools/gui_layers.py
     ${Creator_tools}
     ${Modifier_tools}
     draftguitools/README.md

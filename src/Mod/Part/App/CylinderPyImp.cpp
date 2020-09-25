@@ -157,59 +157,6 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
     return -1;
 }
 
-PyObject* CylinderPy::uIso(PyObject * args)
-{
-    double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
-        return 0;
-
-    try {
-        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
-            (getGeomCylinderPtr()->handle());
-        Handle(Geom_Curve) c = cyl->UIso(v);
-        if (!Handle(Geom_Line)::DownCast(c).IsNull()) {
-            GeomLine* line = new GeomLine();
-            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
-                (line->handle());
-            this_curv->SetLin(Handle(Geom_Line)::DownCast(c)->Lin());
-            return new LinePy(line);
-        }
-
-        PyErr_SetString(PyExc_NotImplementedError, "this type of conical curve is not implemented");
-        return 0;
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
-}
-
-PyObject* CylinderPy::vIso(PyObject * args)
-{
-    double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
-        return 0;
-
-    try {
-        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
-            (getGeomCylinderPtr()->handle());
-        Handle(Geom_Curve) c = cyl->VIso(v);
-        if (!Handle(Geom_Circle)::DownCast(c).IsNull()) {
-            return new CirclePy(new GeomCircle(Handle(Geom_Circle)::DownCast(c)));
-        }
-        if (!Handle(Geom_Ellipse)::DownCast(c).IsNull()) {
-            return new EllipsePy(new GeomEllipse(Handle(Geom_Ellipse)::DownCast(c)));
-        }
-
-        PyErr_SetString(PyExc_NotImplementedError, "this type of conical curve is not implemented");
-        return 0;
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
-}
-
 Py::Float CylinderPy::getRadius(void) const
 {
     Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast

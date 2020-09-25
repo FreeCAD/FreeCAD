@@ -39,7 +39,7 @@ class GuiExport ExpressionBinding
 {
 public:
     ExpressionBinding();
-    ~ExpressionBinding();
+    virtual ~ExpressionBinding();
 
     virtual void bind(const App::ObjectIdentifier & _path);
     virtual void bind(const App::Property & prop);

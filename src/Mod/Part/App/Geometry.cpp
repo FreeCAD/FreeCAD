@@ -210,34 +210,39 @@ unsigned int Geometry::getMemSize (void) const
     return 1;
 }
 
-Geometry* Geometry::fromShape(const TopoDS_Shape &s, bool silent)
+std::unique_ptr<Geometry> Geometry::fromShape(const TopoDS_Shape &s, bool silent)
 {
+    std::unique_ptr<Geometry> geom;
+
     if (s.IsNull()) {
         if(!silent)
             throw NullShapeException();
-        return nullptr;
+        return geom;
     }
 
     switch (s.ShapeType()) {
     case TopAbs_VERTEX: {
         gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(s));
-        return new GeomPoint(Base::Vector3d(p.X(),p.Y(),p.Z()));
+        geom.reset(new GeomPoint(Base::Vector3d(p.X(),p.Y(),p.Z())));
+        break;
     }
     case TopAbs_EDGE: {
         const TopoDS_Edge& e = TopoDS::Edge(s);
         BRepAdaptor_Curve adapt(e);
-        return makeFromCurve(adapt.Curve().Curve());
+        geom = makeFromCurve(adapt.Curve().Curve());
+        break;
     }
     case TopAbs_FACE: {
         const TopoDS_Face& f = TopoDS::Face(s);
         BRepAdaptor_Surface adapt(f);
-        return makeFromSurface(adapt.Surface().Surface());
+        geom = makeFromSurface(adapt.Surface().Surface());
+        break;
     }
     default:
         if(!silent)
             FC_THROWM(Base::TypeError, "Unsupported shape type " << TopoShape::shapeName(s.ShapeType()));
-        return nullptr;
     }
+    return geom;
 }
 
 void Geometry::Save(Base::Writer &writer) const
@@ -5366,108 +5371,113 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
     return arc;
 }
 
-GeomSurface* makeFromSurface(const Handle(Geom_Surface)& s, bool silent)
+std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface)& s, bool silent)
 {
+    std::unique_ptr<GeomSurface> geoSurf;
+
     if (s.IsNull()) {
         if (!silent)
             throw Base::ValueError("Null surface");
-        return nullptr;
+        return geoSurf;
     }
 
     if (s->IsKind(STANDARD_TYPE(Geom_ToroidalSurface))) {
         Handle(Geom_ToroidalSurface) hSurf = Handle(Geom_ToroidalSurface)::DownCast(s);
-        return new GeomToroid(hSurf);
+        geoSurf.reset(new GeomToroid(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_BezierSurface))) {
         Handle(Geom_BezierSurface) hSurf = Handle(Geom_BezierSurface)::DownCast(s);
-        return new GeomBezierSurface(hSurf);
+        geoSurf.reset(new GeomBezierSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_BSplineSurface))) {
         Handle(Geom_BSplineSurface) hSurf = Handle(Geom_BSplineSurface)::DownCast(s);
-        return new GeomBSplineSurface(hSurf);
+        geoSurf.reset(new GeomBSplineSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_CylindricalSurface))) {
         Handle(Geom_CylindricalSurface) hSurf = Handle(Geom_CylindricalSurface)::DownCast(s);
-        return new GeomCylinder(hSurf);
+        geoSurf.reset(new GeomCylinder(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_ConicalSurface))) {
         Handle(Geom_ConicalSurface) hSurf = Handle(Geom_ConicalSurface)::DownCast(s);
-        return new GeomCone(hSurf);
+        geoSurf.reset(new GeomCone(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SphericalSurface))) {
         Handle(Geom_SphericalSurface) hSurf = Handle(Geom_SphericalSurface)::DownCast(s);
-        return new GeomSphere(hSurf);
+        geoSurf.reset(new GeomSphere(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_Plane))) {
         Handle(Geom_Plane) hSurf = Handle(Geom_Plane)::DownCast(s);
-        return new GeomPlane(hSurf);
+        geoSurf.reset(new GeomPlane(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_OffsetSurface))) {
         Handle(Geom_OffsetSurface) hSurf = Handle(Geom_OffsetSurface)::DownCast(s);
-        return new GeomOffsetSurface(hSurf);
+        geoSurf.reset(new GeomOffsetSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(GeomPlate_Surface))) {
         Handle(GeomPlate_Surface) hSurf = Handle(GeomPlate_Surface)::DownCast(s);
-        return new GeomPlateSurface(hSurf);
+        geoSurf.reset(new GeomPlateSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_RectangularTrimmedSurface))) {
         Handle(Geom_RectangularTrimmedSurface) hSurf = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
-        return new GeomTrimmedSurface(hSurf);
+        geoSurf.reset(new GeomTrimmedSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfRevolution))) {
         Handle(Geom_SurfaceOfRevolution) hSurf = Handle(Geom_SurfaceOfRevolution)::DownCast(s);
-        return new GeomSurfaceOfRevolution(hSurf);
+        geoSurf.reset(new GeomSurfaceOfRevolution(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfLinearExtrusion))) {
         Handle(Geom_SurfaceOfLinearExtrusion) hSurf = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(s);
-        return new GeomSurfaceOfExtrusion(hSurf);
+        geoSurf.reset(new GeomSurfaceOfExtrusion(hSurf));
+    }
+    else if (!silent) {
+        std::string err = "Unhandled surface type ";
+        err += s->DynamicType()->Name();
+        throw Base::TypeError(err);
     }
 
-    if (silent)
-        return nullptr;
-
-    std::string err = "Unhandled surface type ";
-    err += s->DynamicType()->Name();
-    throw Base::TypeError(err);
+    return geoSurf;
 }
 
-GeomCurve* makeFromCurve(const Handle(Geom_Curve)& c, bool silent)
+std::unique_ptr<GeomCurve> makeFromCurve(const Handle(Geom_Curve)& c, bool silent)
 {
+    std::unique_ptr<GeomCurve> geoCurve;
+
     if (c.IsNull()) {
         if (!silent)
             throw Base::ValueError("Null curve");
-        return nullptr;
+        return geoCurve;
     }
 
     if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
-        return new GeomLine(Handle(Geom_Line)::DownCast(c));
+        geoCurve.reset(new GeomLine(Handle(Geom_Line)::DownCast(c)));
     } else if (c->IsKind(STANDARD_TYPE(Geom_Circle))) {
-        return new GeomCircle(Handle(Geom_Circle)::DownCast(c));
+        geoCurve.reset(new GeomCircle(Handle(Geom_Circle)::DownCast(c)));
     } else if (c->IsKind(STANDARD_TYPE(Geom_Ellipse))) {
-        return new GeomEllipse(Handle(Geom_Ellipse)::DownCast(c));
+        geoCurve.reset(new GeomEllipse(Handle(Geom_Ellipse)::DownCast(c)));
     } else if (c->IsKind(STANDARD_TYPE(Geom_Hyperbola))) {
-        return new GeomHyperbola(Handle(Geom_Hyperbola)::DownCast(c));
+        geoCurve.reset(new GeomHyperbola(Handle(Geom_Hyperbola)::DownCast(c)));
     } else if (c->IsKind(STANDARD_TYPE(Geom_Parabola))) {
-        return new GeomParabola(Handle(Geom_Parabola)::DownCast(c));
+        geoCurve.reset(new GeomParabola(Handle(Geom_Parabola)::DownCast(c)));
     } else if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
-        return new GeomBezierCurve(Handle(Geom_BezierCurve)::DownCast(c));
+        geoCurve.reset(new GeomBezierCurve(Handle(Geom_BezierCurve)::DownCast(c)));
     } else if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
-        return new GeomBSplineCurve(Handle(Geom_BSplineCurve)::DownCast(c));
+        geoCurve.reset(new GeomBSplineCurve(Handle(Geom_BSplineCurve)::DownCast(c)));
     }
 #if OCC_VERSION_HEX >= 0x070000
     else if (c->IsKind(STANDARD_TYPE(Geom_OffsetCurve))) {
         Handle(Geom_OffsetCurve) off = Handle(Geom_OffsetCurve)::DownCast(c);
         if (!off.IsNull())
-            return new GeomOffsetCurve(off);
+            geoCurve.reset(new GeomOffsetCurve(off));
     }
 #endif
 
-    if (silent)
-        return nullptr;
+    if (!geoCurve && !silent) {
+        std::string err = "Unhandled curve type ";
+        err += c->DynamicType()->Name();
+        throw Base::TypeError(err);
+    }
 
-    std::string err = "Unhandled curve type ";
-    err += c->DynamicType()->Name();
-    throw Base::TypeError(err);
+    return geoCurve;
 }
 
 } // namespace Part

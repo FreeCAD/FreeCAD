@@ -1,7 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-# *   Copyright (c) 2020 FreeCAD Developers                                 *
+# *   Copyright (c) 2019 Zheng, Lei (realthunder)<realthunder.dev@gmail.com>*
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,29 +21,21 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for the Draft Link object.
-"""
+"""Provides the base viewprovider code for the Link objects."""
 ## @package view_draftlink
-# \ingroup DRAFT
-# \brief This module provides the view provider code for the Draft Link object.
+# \ingroup draftviewproviders
+# \brief Provides the base viewprovider code for the Link objects.
 
+## \addtogroup draftviewproviders
+# @{
+from draftviewproviders.view_base import ViewProviderDraft
 
-class ViewProviderDraftLink:
+class ViewProviderDraftLink(ViewProviderDraft):
     """ A view provider for link type object.
     """
 
     def __init__(self,vobj):
-        self.Object = vobj.Object
-        vobj.Proxy = self
-
-    def attach(self,vobj):
-        self.Object = vobj.Object
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+        super(ViewProviderDraftLink, self).__init__(vobj)
 
     def getIcon(self):
         tp = self.Object.Proxy.Type
@@ -55,6 +48,10 @@ class ViewProviderDraftLink:
                 return ":/icons/Draft_CircularLinkArray.svg"
         elif tp == 'PathArray':
             return ":/icons/Draft_PathLinkArray.svg"
+        elif tp == 'PathTwistedArray':
+            return ":/icons/Draft_PathTwistedLinkArray.svg"
+        elif tp == 'PointArray':
+            return ":/icons/Draft_PointLinkArray.svg"
 
     def claimChildren(self):
         obj = self.Object
@@ -63,9 +60,12 @@ class ViewProviderDraftLink:
         else:
             expand = obj.ShowElement
         if not expand:
-            return [obj.Base]
+            return super(ViewProviderDraftLink, self).claimChildren()
         else:
             return obj.ElementList
-            
 
+
+# Alias for compatibility with old versions of v0.19
 _ViewProviderDraftLink = ViewProviderDraftLink
+
+## @}

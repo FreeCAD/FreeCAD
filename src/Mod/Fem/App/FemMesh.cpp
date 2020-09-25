@@ -2091,14 +2091,16 @@ int FemMesh::addGroup(const std::string TypeString, const std::string Name, cons
     return aId;
 }
 
-void FemMesh::addGroupElements(const int GroupId, const std::set<int> ElementIds)
+void FemMesh::addGroupElements(int GroupId, const std::set<int>& ElementIds)
 {
     SMESH_Group* group = this->getSMesh()->GetGroup(GroupId);
     if (!group) {
         throw std::runtime_error("AddGroupElements: No group for given id.");
     }
     SMESHDS_Group* groupDS = dynamic_cast<SMESHDS_Group*>(group->GetGroupDS());
-    // TODO: is this dynamic_cast OK?
+    if (!groupDS) {
+        throw std::runtime_error("addGroupElements: Failed to add group elements.");
+    }
 
     // Traverse the full mesh and add elements to group if id is in set 'ids'
     // and if group type is compatible with element

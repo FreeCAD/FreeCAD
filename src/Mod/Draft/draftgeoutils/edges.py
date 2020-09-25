@@ -21,10 +21,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides various functions for using edges."""
+"""Provides various functions to work with edges."""
 ## @package edges
-# \ingroup DRAFTGEOUTILS
-# \brief Provides various functions for using edges.
+# \ingroup draftgeoutils
+# \brief Provides various functions to work with edges.
 
 import lazy_loader.lazy_loader as lz
 
@@ -35,6 +35,9 @@ from draftgeoutils.general import geomType, vec
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftgeoutils
+# @{
 
 
 def findEdge(anEdge, aList):
@@ -205,3 +208,5 @@ def getTangent(edge, from_point=None):
         return v1.cross(edge.Curve.Axis)
 
     return None
+
+## @}

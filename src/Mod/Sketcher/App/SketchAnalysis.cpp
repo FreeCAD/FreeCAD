@@ -356,7 +356,9 @@ void SketchAnalysis::makeMissingPointOnPointCoincident(bool onebyone)
         c->SecondPos = it->SecondPos;
 
         if(onebyone) {
+            // addConstraint() creates a clone
             sketch->addConstraint(c);
+            delete c;
 
             solvesketch(status,dofs,true);
 
@@ -435,7 +437,9 @@ void SketchAnalysis::makeMissingVerticalHorizontal(bool onebyone)
         c->SecondPos = it->SecondPos;
 
         if(onebyone) {
+            // addConstraint() creates a clone
             sketch->addConstraint(c);
+            delete c;
 
             solvesketch(status,dofs,true);
 
@@ -630,7 +634,9 @@ void SketchAnalysis::makeMissingEquality(bool onebyone)
         c->SecondPos = it->SecondPos;
 
         if(onebyone) {
+            // addConstraint() creates a clone
             sketch->addConstraint(c);
+            delete c;
 
             solvesketch(status,dofs,true);
 
@@ -815,4 +821,50 @@ std::vector<Base::Vector3d> SketchAnalysis::getOpenVertices(void) const
     }
 
     return points;
+}
+
+int SketchAnalysis::detectDegeneratedGeometries(double tolerance)
+{
+    int countDegenerated = 0;
+    const std::vector<Part::Geometry *>& geom = sketch->getInternalGeometry();
+    for (std::size_t i=0; i<geom.size(); i++) {
+        Part::Geometry* g = geom[i];
+
+        if (g->Construction)
+            continue;
+
+        if (g->getTypeId().isDerivedFrom(Part::GeomCurve::getClassTypeId())) {
+            Part::GeomCurve* curve = static_cast<Part::GeomCurve*>(g);
+            double len = curve->length(curve->getFirstParameter(), curve->getLastParameter());
+            if (len < tolerance)
+                countDegenerated++;
+        }
+    }
+
+    return countDegenerated;
+}
+
+int SketchAnalysis::removeDegeneratedGeometries(double tolerance)
+{
+    std::set<int> delInternalGeometries;
+    const std::vector<Part::Geometry *>& geom = sketch->getInternalGeometry();
+    for (std::size_t i=0; i<geom.size(); i++) {
+        Part::Geometry* g = geom[i];
+
+        if (g->Construction)
+            continue;
+
+        if (g->getTypeId().isDerivedFrom(Part::GeomCurve::getClassTypeId())) {
+            Part::GeomCurve* curve = static_cast<Part::GeomCurve*>(g);
+            double len = curve->length(curve->getFirstParameter(), curve->getLastParameter());
+            if (len < tolerance)
+                delInternalGeometries.insert(static_cast<int>(i));
+        }
+    }
+
+    for (auto it = delInternalGeometries.rbegin(); it != delInternalGeometries.rend(); ++it) {
+        sketch->delGeometry(*it);
+    }
+
+    return static_cast<int>(delInternalGeometries.size());
 }

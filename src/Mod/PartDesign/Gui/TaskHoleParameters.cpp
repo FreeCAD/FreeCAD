@@ -99,11 +99,17 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     connect(ui->drillPointAngled, SIGNAL(clicked(bool)), this, SLOT(drillPointChanged()));
     connect(ui->DrillPointAngle, SIGNAL(valueChanged(double)), this, SLOT(drillPointAngledValueChanged(double)));
     connect(ui->Tapered, SIGNAL(clicked(bool)), this, SLOT(taperedChanged()));
+    connect(ui->Reversed, SIGNAL(clicked(bool)), this, SLOT(reversedChanged()));
     connect(ui->TaperedAngle, SIGNAL(valueChanged(double)), this, SLOT(taperedAngleChanged(double)));
 
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
     pcHole->updateProps();
+
+    ui->Reversed->blockSignals(true);
+    ui->Reversed->setChecked(pcHole->Reversed.getValue());
+    ui->Reversed->blockSignals(false);
+
     vp->show();
 
     ui->ThreadPitch->bind(pcHole->ThreadPitch);
@@ -254,6 +260,14 @@ void TaskHoleParameters::taperedChanged()
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
     pcHole->Tapered.setValue(ui->Tapered->isChecked());
+    recomputeFeature();
+}
+
+void TaskHoleParameters::reversedChanged()
+{
+    PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
+
+    pcHole->Reversed.setValue(ui->Reversed->isChecked());
     recomputeFeature();
 }
 
@@ -590,17 +604,17 @@ void TaskHoleParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     Q_UNUSED(msg)
 }
 
-bool   TaskHoleParameters::getThreaded() const
+bool TaskHoleParameters::getThreaded() const
 {
     return ui->Threaded->isChecked();
 }
 
-long   TaskHoleParameters::getThreadType() const
+long TaskHoleParameters::getThreadType() const
 {
     return ui->ThreadType->currentIndex();
 }
 
-long   TaskHoleParameters::getThreadSize() const
+long TaskHoleParameters::getThreadSize() const
 {
     if ( ui->ThreadSize->currentIndex() == -1 )
         return 0;
@@ -608,7 +622,7 @@ long   TaskHoleParameters::getThreadSize() const
         return ui->ThreadSize->currentIndex();
 }
 
-long   TaskHoleParameters::getThreadClass() const
+long TaskHoleParameters::getThreadClass() const
 {
     if ( ui->ThreadSize->currentIndex() == -1 )
         return 0;
@@ -618,10 +632,9 @@ long   TaskHoleParameters::getThreadClass() const
 
 long TaskHoleParameters::getThreadFit() const
 {
-    if (ui->Threaded->isChecked())
-        return ui->ThreadFit->currentIndex();
-    else
-        return 0;
+    // the fit is independent if the hole is threaded or not
+    // since an unthreaded hole for a screw can also have a close fit
+    return ui->ThreadFit->currentIndex();
 }
 
 Base::Quantity TaskHoleParameters::getDiameter() const
@@ -629,12 +642,15 @@ Base::Quantity TaskHoleParameters::getDiameter() const
     return ui->Diameter->value();
 }
 
-bool   TaskHoleParameters::getThreadDirection() const
+long TaskHoleParameters::getThreadDirection() const
 {
-    return ui->directionRightHand->isChecked();
+    if (ui->directionRightHand->isChecked())
+        return 0;
+    else
+        return 1;
 }
 
-long   TaskHoleParameters::getHoleCutType() const
+long TaskHoleParameters::getHoleCutType() const
 {
     if (ui->HoleCutType->currentIndex() == -1)
         return 0;
@@ -657,7 +673,7 @@ Base::Quantity TaskHoleParameters::getHoleCutCountersinkAngle() const
     return ui->HoleCutCountersinkAngle->value();
 }
 
-long   TaskHoleParameters::getDepthType() const
+long TaskHoleParameters::getDepthType() const
 {
     return ui->DepthType->currentIndex();
 }
@@ -667,7 +683,7 @@ Base::Quantity TaskHoleParameters::getDepth() const
     return ui->Depth->value();
 }
 
-long   TaskHoleParameters::getDrillPoint() const
+long TaskHoleParameters::getDrillPoint() const
 {
     if ( ui->drillPointFlat->isChecked() )
         return 0;
@@ -682,7 +698,7 @@ Base::Quantity TaskHoleParameters::getDrillPointAngle() const
     return ui->DrillPointAngle->value();
 }
 
-bool   TaskHoleParameters::getTapered() const
+bool TaskHoleParameters::getTapered() const
 {
     return ui->Tapered->isChecked();
 }

@@ -25,7 +25,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the object code for the Draft PathArray object.
+"""Provides the object code for the PathArray object.
 
 The copies will be placed along a path like a polyline, spline, or bezier
 curve, and along the selected subelements.
@@ -60,8 +60,8 @@ objects. Therefore, the first solution is simpler, that is, using
 a single property of type `App::PropertyLinkSub`.
 """
 ## @package patharray
-# \ingroup DRAFT
-# \brief Provides the object code for the Draft PathArray object.
+# \ingroup draftobjects
+# \brief Provides the object code for the PathArray object.
 
 import FreeCAD as App
 import DraftVecUtils
@@ -70,11 +70,15 @@ import lazy_loader.lazy_loader as lz
 from draftutils.messages import _msg, _wrn, _err
 from draftutils.translate import _tr
 
+from draftobjects.base import DraftObject
 from draftobjects.draftlink import DraftLink
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
+
+## \addtogroup draftobjects
+# @{
 
 
 class PathArray(DraftLink):
@@ -428,6 +432,7 @@ class PathArray(DraftLink):
             _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
 
 
+# Alias for compatibility with v0.18 and earlier
 _PathArray = PathArray
 
 
@@ -617,3 +622,5 @@ def get_parameter_from_v0(edge, offset):
 
 
 getParameterFromV0 = get_parameter_from_v0
+
+## @}

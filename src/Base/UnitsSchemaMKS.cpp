@@ -143,20 +143,6 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             factor = 1.0;
         }
     }
-    else if (unit == Unit::Volume) {
-        if (UnitValue < 1000000.0) {// smaller than 10 cubic cm
-            unitString = QString::fromLatin1("mm^3");
-            factor = 1.0;
-        }
-        else if (UnitValue < 1000000000000000000.0) {
-            unitString = QString::fromLatin1("m^3");
-            factor = 1000000000.0;
-        }
-        else { // bigger then 1 cubic kilometer
-            unitString = QString::fromLatin1("km^3");
-            factor = 1000000000000000000.0;
-        }
-    }
     else if (unit == Unit::Acceleration) {
         unitString = QString::fromLatin1("m/s^2");
         factor = 1000.0;

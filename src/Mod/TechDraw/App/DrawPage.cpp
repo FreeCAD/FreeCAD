@@ -101,6 +101,7 @@ DrawPage::DrawPage(void)
 
     Scale.setConstraints(&scaleRange);
     balloonPlacing = false;
+    balloonParent = nullptr;
 }
 
 DrawPage::~DrawPage()

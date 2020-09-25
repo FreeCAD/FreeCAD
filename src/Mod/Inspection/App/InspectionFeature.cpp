@@ -551,7 +551,7 @@ struct DistanceInspection
 // Helper internal class for QtConcurrent map operation. Holds sums-of-squares and counts for RMS calculation
 class DistanceInspectionRMS {
 public:
-    DistanceInspectionRMS() : m_numv(0), m_sumsq(0.0) {};
+    DistanceInspectionRMS() : m_numv(0), m_sumsq(0.0) {}
     DistanceInspectionRMS& operator += (const DistanceInspectionRMS& rhs)
     {
         this->m_numv += rhs.m_numv;
@@ -597,6 +597,8 @@ short Feature::mustExecute() const
 
 App::DocumentObjectExecReturn* Feature::execute(void)
 {
+    bool useMultithreading = true;
+
     App::DocumentObject* pcActual = Actual.getValue();
     if (!pcActual)
         throw Base::ValueError("No actual geometry to inspect specified");
@@ -611,6 +613,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
         actual = new InspectActualPoints(pts->Points.getValue());
     }
     else if (pcActual->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        useMultithreading = false;
         Part::Feature* part = static_cast<Part::Feature*>(pcActual);
         actual = new InspectActualShape(part->Shape.getShape());
     }
@@ -632,6 +635,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
             nominal = new InspectNominalPoints(pts->Points.getValue(), this->SearchRadius.getValue());
         }
         else if ((*it)->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            useMultithreading = false;
             Part::Feature* part = static_cast<Part::Feature*>(*it);
             nominal = new InspectNominalShape(part->Shape.getValue(), this->SearchRadius.getValue());
         }
@@ -695,7 +699,6 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     Base::Console().Message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
         this->Label.getValue(), -this->SearchRadius.getValue(), this->SearchRadius.getValue(), fRMS);
 #else
-    bool useMultithreading = true;
     unsigned long count = actual->countPoints();
     std::vector<float> vals(count);
     std::function<DistanceInspectionRMS(int)> fMap = [&](unsigned int index)
@@ -710,10 +713,12 @@ App::DocumentObjectExecReturn* Feature::execute(void)
                 fMinDist = fDist;
         }
 
-        if (fMinDist > this->SearchRadius.getValue())
+        if (fMinDist > this->SearchRadius.getValue()) {
             fMinDist = FLT_MAX;
-        else if (-fMinDist > this->SearchRadius.getValue())
+        }
+        else if (-fMinDist > this->SearchRadius.getValue()) {
             fMinDist = -FLT_MAX;
+        }
         else {
             res.m_sumsq += fMinDist * fMinDist;
             res.m_numv++;

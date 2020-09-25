@@ -84,6 +84,10 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
     ui(new Ui_TaskWeldingSymbol),
     m_leadFeat(leader),
     m_weldFeat(nullptr),
+    m_arrowFeat(nullptr),
+    m_otherFeat(nullptr),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_createMode(true),
     m_otherDirty(false)
 {
@@ -115,6 +119,10 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
     ui(new Ui_TaskWeldingSymbol),
     m_leadFeat(nullptr),
     m_weldFeat(weld),
+    m_arrowFeat(nullptr),
+    m_otherFeat(nullptr),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_createMode(false),
     m_otherDirty(false)
 {

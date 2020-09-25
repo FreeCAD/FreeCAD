@@ -267,6 +267,13 @@ void DlgExpressionInput::mousePressEvent(QMouseEvent* ev)
     }
 }
 
+void DlgExpressionInput::show()
+{
+    QDialog::show();
+    this->activateWindow();
+    ui->expression->selectAll();
+}
+
 void DlgExpressionInput::showEvent(QShowEvent* ev)
 {
     QDialog::showEvent(ev);

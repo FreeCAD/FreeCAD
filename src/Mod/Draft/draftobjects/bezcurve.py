@@ -20,17 +20,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft BezCurve.
-"""
+"""Provides the object code for the BezCurve object."""
 ## @package bezcurve
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft BezCurve.
+# \ingroup draftobjects
+# \brief Provides the object code for the BezCurve object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
-from draftutils.utils import get_param
+import draftutils.utils as utils
 
 from draftobjects.base import DraftObject
 
@@ -69,7 +69,7 @@ class BezCurve(DraftObject):
                 "The area of this object")
         obj.addProperty("App::PropertyArea", "Area", "Draft", _tip)
 
-        obj.MakeFace = get_param("fillmode", True)
+        obj.MakeFace = utils.get_param("fillmode", True)
         obj.Closed = False
         obj.Degree = 3
         obj.Continuity = []
@@ -193,4 +193,7 @@ class BezCurve(DraftObject):
         return pn + knot
 
 
+# Alias for compatibility with v0.18 and earlier
 _BezCurve = BezCurve
+
+## @}

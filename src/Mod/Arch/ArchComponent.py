@@ -537,7 +537,7 @@ class Component(ArchIFC.IfcProduct):
             elif obj.Base.isDerivedFrom("Part::Extrusion"):
                 if obj.Base.Base:
                     base,placement = self.rebase(obj.Base.Base.Shape)
-                    extrusion = FreeCAD.Vector(obj.Base.Dir)
+                    extrusion = FreeCAD.Vector(obj.Base.Dir).normalize()
                     if extrusion.Length == 0:
                         extrusion = FreeCAD.Vector(0,0,1)
                     else:
@@ -557,7 +557,7 @@ class Component(ArchIFC.IfcProduct):
                     if sub.isDerivedFrom("Part::Extrusion"):
                         if sub.Base:
                             base,placement = self.rebase(sub.Base.Shape)
-                            extrusion = FreeCAD.Vector(sub.Dir)
+                            extrusion = FreeCAD.Vector(sub.Dir).normalize()
                             if extrusion.Length == 0:
                                 extrusion = FreeCAD.Vector(0,0,1)
                             else:
@@ -758,7 +758,7 @@ class Component(ArchIFC.IfcProduct):
                 for host in link.Hosts:
                     if host == obj:
                         subs.append(link)
-            elif hasattr(link,"Host"):
+            elif hasattr(link,"Host") and Draft.getType(link) != "Rebar":
                 if link.Host == obj:
                     subs.append(link)
         for o in subs:

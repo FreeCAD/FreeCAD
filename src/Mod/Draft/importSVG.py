@@ -1876,7 +1876,7 @@ def export(exportList, filename):
         else:
             # raw-style exports do not translate the sketch
             svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
-        svg.write(Draft.getSVG(ob))
+        svg.write(Draft.get_svg(ob))
         _label_enc = str(ob.Label.encode('utf8'))
         _label = _label_enc.replace('<', '&lt;').replace('>', '&gt;')
         # replace('"', "&quot;")

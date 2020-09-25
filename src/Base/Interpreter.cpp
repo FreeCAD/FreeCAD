@@ -208,12 +208,6 @@ SystemExitException::SystemExitException()
     _exitCode = errCode;
 }
 
-SystemExitException::SystemExitException(const SystemExitException &inst)
-  : Exception(inst), _exitCode(inst._exitCode)
-{
-}
-
-
 // ---------------------------------------------------------
 
 // Fixes #0000831: python print causes File descriptor error on windows
@@ -297,6 +291,50 @@ std::string InterpreterSingleton::runString(const char *sCmd)
         PyErr_Clear();
         return std::string();
     }
+}
+
+/** runStringWithKey(psCmd, key, key_initial_value)
+ * psCmd is python script to run
+ * key is the name of a python string variable the script will have read/write
+ * access to during script execution.  It will be our return value.
+ * key_initial_value is the initial value c++ will set before calling the script
+ * If the script runs successfully it will be able to change the value of key as
+ * the return value, but if there is a runtime error key will not be changed even
+ * if the error occurs after changing it inside the script.
+ */
+
+std::string InterpreterSingleton::runStringWithKey(const char *psCmd, const char *key, const char *key_initial_value)
+{
+    PyGILStateLocker locker;
+    Py::Module module("__main__");
+    Py::Dict globalDictionary = module.getDict();
+    Py::Dict localDictionary;
+    Py::String initial_value(key_initial_value);
+    localDictionary.setItem(key, initial_value);
+
+    PyObject* presult = PyRun_String(psCmd, Py_file_input, globalDictionary.ptr(), localDictionary.ptr());
+    if (!presult) {
+        if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
+            throw SystemExitException();
+        }
+        else {
+            PyException::ThrowException();
+            return std::string(); // just to quieten code analyzers
+        }
+    }
+    Py_DECREF(presult);
+
+    Py::Object key_return_value = localDictionary.getItem(key);
+    if (!key_return_value.isString())
+        key_return_value = key_return_value.str();
+
+#if PY_MAJOR_VERSION >= 3
+    Py::Bytes str = Py::String(key_return_value).encode("utf-8", "~E~");
+    std::string result = static_cast<std::string>(str);
+#else
+    std::string result = static_cast<std::string>(Py::String(key_return_value));
+#endif
+    return result;
 }
 
 Py::Object InterpreterSingleton::runStringObject(const char *sCmd)

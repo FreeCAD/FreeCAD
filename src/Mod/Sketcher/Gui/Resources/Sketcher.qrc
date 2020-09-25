@@ -60,6 +60,7 @@
         <file>icons/Sketcher_Conics_Ellipse_3points.svg</file>
         <file>icons/Sketcher_Conics_Ellipse_Center.svg</file>
         <file>icons/Sketcher_ConnectLines.svg</file>
+        <file>icons/Sketcher_Crosshair.svg</file>
         <file>icons/Sketcher_ConstrainBlock.svg</file>
         <file>icons/Sketcher_ConstrainCoincident.svg</file>
         <file>icons/Sketcher_ConstrainDistance.svg</file>
@@ -165,6 +166,26 @@
         <file>icons/Sketcher_Move.svg</file>
         <file>icons/Sketcher_NewSketch.svg</file>
         <file alias="icons/preferences-sketcher.svg">icons/Sketcher_NewSketch.svg</file>
+        <file>icons/Sketcher_Pointer_Slot.svg</file>
+        <file>icons/Sketcher_Pointer_Create_Box.svg</file>
+        <file>icons/Sketcher_Pointer_Create_Line.svg</file>
+        <file>icons/Sketcher_Pointer_Create_Lineset.svg</file>
+        <file>icons/Sketcher_Pointer_Create_Arc.svg</file>
+        <file>icons/Sketcher_Pointer_Create_3PointArc.svg</file>
+        <file>icons/Sketcher_Pointer_Create_Circle.svg</file>
+        <file>icons/Sketcher_Pointer_Create_Ellipse.svg</file>
+        <file>icons/Sketcher_Pointer_Create_ArcOfEllipse.svg</file>
+        <file>icons/Sketcher_Pointer_Create_ArcOfHyperbola.svg</file>
+        <file>icons/Sketcher_Pointer_Create_ArcOfParabola.svg</file>
+        <file>icons/Sketcher_Pointer_Create_BSpline.svg</file>
+        <file>icons/Sketcher_Pointer_Create_3PointCircle.svg</file>
+        <file>icons/Sketcher_Pointer_Create_Point.svg</file>
+        <file>icons/Sketcher_Pointer_Create_Fillet.svg</file>
+        <file>icons/Sketcher_Pointer_Trimming.svg</file>
+        <file>icons/Sketcher_Pointer_Extension.svg</file>
+        <file>icons/Sketcher_Pointer_Regular_Polygon.svg</file>
+        <file>icons/Sketcher_Pointer_External.svg</file>
+        <file>icons/Sketcher_Pointer_CarbonCopy.svg</file>
         <file>icons/Sketcher_Parabolic_Arc.svg</file>
         <file>icons/Sketcher_Parabolic_Arc_Constr.svg</file>
         <file>icons/Sketcher_ProfilesHexagon1.svg</file>

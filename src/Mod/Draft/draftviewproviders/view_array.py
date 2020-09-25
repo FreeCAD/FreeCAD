@@ -20,12 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the view provider code for the Draft Array objects.
-"""
+"""Provides the viewprovider code for the Array object."""
 ## @package view_array
-# \ingroup DRAFT
-# \brief Provides the view provider code for the Draft Array objects.
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for the Array object.
 
+## \addtogroup draftviewproviders
+# @{
 from draftviewproviders.view_base import ViewProviderDraft
 
 
@@ -45,6 +46,8 @@ class ViewProviderDraftArray(ViewProviderDraft):
                 return ":/icons/Draft_CircularArray.svg"
         elif hasattr(self.Object, "PointList"):
             return ":/icons/Draft_PointArray.svg"
+        elif self.Object.Proxy.Type == "PathTwistedArray":
+            return ":/icons/Draft_PathTwistedArray.svg"
         else:
             return ":/icons/Draft_PathArray.svg"
 
@@ -72,4 +75,7 @@ class ViewProviderDraftArray(ViewProviderDraft):
             vobj.DiffuseColor = colors
 
 
+# Alias for compatibility with v0.18 and earlier
 _ViewProviderDraftArray = ViewProviderDraftArray
+
+## @}

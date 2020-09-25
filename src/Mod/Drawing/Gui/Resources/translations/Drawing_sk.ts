@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="482"/>
       <source>&amp;Annotation</source>
-      <translation type="unfinished">&amp;Annotation</translation>
+      <translation>&amp;Poznámky</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="483"/>
@@ -207,7 +207,7 @@
     <message>
       <location filename="../../Command.cpp" line="760"/>
       <source>&amp;Spreadsheet View</source>
-      <translation type="unfinished">&amp;Spreadsheet View</translation>
+      <translation>Tabuľkový pohľad</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="761"/>
@@ -290,7 +290,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="470"/>
       <source>PDF file</source>
-      <translation type="unfinished">PDF file</translation>
+      <translation>Súbor PDF</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="486"/>
@@ -330,7 +330,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="578"/>
       <source>Different orientation</source>
-      <translation type="unfinished">Different orientation</translation>
+      <translation>Orientácia obrazovky</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="579"/>
@@ -395,7 +395,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="340"/>
       <source>Secondary Views</source>
-      <translation type="unfinished">Secondary Views</translation>
+      <translation>Sekundárny teletext</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="412"/>
@@ -425,12 +425,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="561"/>
       <source>Show hidden lines</source>
-      <translation type="unfinished">Show hidden lines</translation>
+      <translation>Zobraziť skryté súbory</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="568"/>
       <source>Show smooth lines</source>
-      <translation type="unfinished">Show smooth lines</translation>
+      <translation>Zobraziť iba riadky</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="579"/>
@@ -505,12 +505,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="660"/>
       <source> Scale</source>
-      <translation type="unfinished"> Scale</translation>
+      <translation> Mierka</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="667"/>
       <source>View projection</source>
-      <translation type="unfinished">View projection</translation>
+      <translation>Prehľad projektov</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="674"/>
@@ -521,7 +521,7 @@ Do you want to continue?</translation>
       <location filename="../../TaskOrthoViews.ui" line="715"/>
       <location filename="../../TaskOrthoViews.ui" line="738"/>
       <source>Flip</source>
-      <translation type="unfinished">Flip</translation>
+      <translation>Otočiť</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="728"/>
@@ -741,20 +741,20 @@ Do you want to continue?</translation>
       <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="53"/>
-      <location filename="../../TaskOrthoViews.cpp" line="981"/>
+      <location filename="../../TaskOrthoViews.cpp" line="54"/>
+      <location filename="../../TaskOrthoViews.cpp" line="982"/>
       <source>Make axonometric...</source>
       <translation type="unfinished">Make axonometric...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="54"/>
-      <location filename="../../TaskOrthoViews.cpp" line="982"/>
+      <location filename="../../TaskOrthoViews.cpp" line="55"/>
+      <location filename="../../TaskOrthoViews.cpp" line="983"/>
       <source>Edit axonometric settings...</source>
       <translation type="unfinished">Edit axonometric settings...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="55"/>
-      <location filename="../../TaskOrthoViews.cpp" line="983"/>
+      <location filename="../../TaskOrthoViews.cpp" line="56"/>
+      <location filename="../../TaskOrthoViews.cpp" line="984"/>
       <source>Make orthographic</source>
       <translation type="unfinished">Make orthographic</translation>
     </message>

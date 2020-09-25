@@ -22,8 +22,14 @@
 # *                                                                         *
 # ***************************************************************************
 """Auxiliary functions for the unit tests of the Draft Workbench."""
+## @package auxiliary
+# \ingroup drafttests
+# \brief Auxiliary functions for the unit tests of the Draft Workbench.
 
+## \addtogroup drafttests
+# @{
 import traceback
+
 from draftutils.messages import _msg
 
 
@@ -69,3 +75,5 @@ def fake_function(p1=None, p2=None, p3=None, p4=None, p5=None):
     _msg("  p5={}".format(p5))
     no_test()
     return True
+
+## @}

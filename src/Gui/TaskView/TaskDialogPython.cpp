@@ -178,7 +178,7 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
 
     Gui::TaskView::TaskBox *tb = 0;
     if (watcher.hasAttr(std::string("commands"))) {
-        if (!tb) tb = new Gui::TaskView::TaskBox(icon, title, true, 0);
+        tb = new Gui::TaskView::TaskBox(icon, title, true, 0);
         Py::Sequence cmds(watcher.getAttr(std::string("commands")));
         CommandManager &mgr = Gui::Application::Instance->commandManager();
         for (Py::Sequence::iterator it = cmds.begin(); it != cmds.end(); ++it) {

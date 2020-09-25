@@ -49,7 +49,13 @@ using namespace PartDesignGui;
 namespace bp = boost::placeholders;
 
 #if 0 // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "Part Design");
+    qApp->translate("Workbench", "&Part Design");
+    qApp->translate("Workbench", "&Sketch");
+    qApp->translate("Workbench", "Create a datum");
+    qApp->translate("Workbench", "Create an additive feature");
+    qApp->translate("Workbench", "Create a subtractive feature");
+    qApp->translate("Workbench", "Apply a pattern");
+    qApp->translate("Workbench", "Apply a dress-up feature");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Face tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Sketch tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
@@ -464,48 +470,71 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* root = StdWorkbench::setupMenuBar();
     Gui::MenuItem* item = root->findItem("&Windows");
 
+    // add another top level menu left besides the Part Design menu for the Sketcher commands
+    Gui::MenuItem* sketch = new Gui::MenuItem;
+    root->insertItem(item, sketch);
+    sketch->setCommand("&Sketch");
+
+    *sketch << "PartDesign_NewSketch"
+            << "Sketcher_LeaveSketch"
+            << "Sketcher_ViewSketch"
+            << "Sketcher_MapSketch"
+            << "Sketcher_ReorientSketch"
+            << "Sketcher_ValidateSketch";
+
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part Design");
+
+    // datums
+    Gui::MenuItem* datums = new Gui::MenuItem;
+    datums->setCommand("Create a datum");
+    *datums << "PartDesign_Point" << "PartDesign_Line"
+        << "PartDesign_Plane";
+
+    // additives
+    Gui::MenuItem* additives = new Gui::MenuItem;
+    additives->setCommand("Create an additive feature");
+    *additives << "PartDesign_Pad" << "PartDesign_Revolution"
+        << "PartDesign_AdditiveLoft" << "PartDesign_AdditivePipe";
+
+    // subtractives
+    Gui::MenuItem* subtractives = new Gui::MenuItem;
+    subtractives->setCommand("Create a subtractive feature");
+    *subtractives << "PartDesign_Pocket" << "PartDesign_Hole"
+        << "PartDesign_Groove" << "PartDesign_SubtractiveLoft"
+        << "PartDesign_SubtractivePipe";
+
+    // transformations
+    Gui::MenuItem* transformations = new Gui::MenuItem;
+    transformations->setCommand("Apply a pattern");
+    *transformations << "PartDesign_Mirrored" << "PartDesign_LinearPattern"
+        << "PartDesign_PolarPattern" << "PartDesign_MultiTransform";
+        //<< "PartDesign_Scaled"
+
+    // dressups
+    Gui::MenuItem* dressups = new Gui::MenuItem;
+    dressups->setCommand("Apply a dress-up feature");
+    *dressups << "PartDesign_Fillet" << "PartDesign_Chamfer"
+        << "PartDesign_Draft" << "PartDesign_Thickness";
+
     *part << "PartDesign_Body"
-          << "PartDesign_NewSketch"
-          << "Sketcher_LeaveSketch"
-          << "Sketcher_ViewSketch"
-          << "Sketcher_MapSketch"
-          << "Sketcher_ReorientSketch"
-          << "Sketcher_ValidateSketch"
           << "Separator"
-          << "PartDesign_Point"
-          << "PartDesign_Line"
-          << "PartDesign_Plane"
+          << datums
           << "PartDesign_CoordinateSystem"
           << "PartDesign_ShapeBinder"
           << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone"
           << "Separator"
-          << "PartDesign_Pad"
-          << "PartDesign_Revolution"
-          << "PartDesign_AdditiveLoft"
-          << "PartDesign_AdditivePipe"
+          << additives
           << "PartDesign_CompPrimitiveAdditive"
           << "Separator"
-          << "PartDesign_Pocket"
-          << "PartDesign_Hole"
-          << "PartDesign_Groove"
-          << "PartDesign_SubtractiveLoft"
-          << "PartDesign_SubtractivePipe"
+          << subtractives
           << "PartDesign_CompPrimitiveSubtractive"
           << "Separator"
-          << "PartDesign_Mirrored"
-          << "PartDesign_LinearPattern"
-          << "PartDesign_PolarPattern"
-//          << "PartDesign_Scaled"
-          << "PartDesign_MultiTransform"
+          << transformations
           << "Separator"
-          << "PartDesign_Fillet"
-          << "PartDesign_Chamfer"
-          << "PartDesign_Draft"
-          << "PartDesign_Thickness"
+          << dressups
           << "Separator"
           << "PartDesign_Boolean"
           << "PartDesign_Split"

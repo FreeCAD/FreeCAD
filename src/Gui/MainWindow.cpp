@@ -866,12 +866,9 @@ bool MainWindow::event(QEvent *e)
         if (!temp)
             return true;
         View3DInventorViewer *view = temp->getViewer();
-        if (!view)
-            return true;
-        QWidget *viewWidget = view->getGLWidget();
-        if (viewWidget) {
+        if (view) {
             Spaceball::MotionEvent anotherEvent(*motionEvent);
-            qApp->sendEvent(viewWidget, &anotherEvent);
+            qApp->sendEvent(view, &anotherEvent);
         }
         return true;
     }else if(e->type() == QEvent::StatusTip) {
@@ -1387,6 +1384,15 @@ void MainWindow::appendRecentFile(const QString& filename)
     }
 }
 
+void MainWindow::appendRecentMacro(const QString& filename)
+{
+    RecentMacrosAction *recent = this->findChild<RecentMacrosAction *>
+        (QString::fromLatin1("recentMacros"));
+    if (recent) {
+        recent->appendFile(filename);
+    }
+}
+
 void MainWindow::updateActions(bool delay)
 {
     //make it safe to call before the main window is actually created
@@ -1872,10 +1878,10 @@ void MainWindow::unsetUrlHandler(const QString &scheme)
     d->urlHandler.remove(scheme);
 }
 
-void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
+void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
 {
     QStringList files;
-    for (QList<QUrl>::ConstIterator it = url.begin(); it != url.end(); ++it) {
+    for (QList<QUrl>::ConstIterator it = urls.begin(); it != urls.end(); ++it) {
         QMap<QString, QPointer<UrlHandler> >::iterator jt = d->urlHandler.find(it->scheme());
         if (jt != d->urlHandler.end() && !jt->isNull()) {
             // delegate the loading to the url handler

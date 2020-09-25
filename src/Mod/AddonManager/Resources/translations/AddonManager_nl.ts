@@ -4,9 +4,9 @@
   <context>
     <name>AddonInstaller</name>
     <message>
-      <location filename="../../addonmanager_workers.py" line="436"/>
+      <location filename="../../addonmanager_workers.py" line="444"/>
       <source>Installed location</source>
-      <translation type="unfinished">Installed location</translation>
+      <translation>Geïnstalleerde locatie</translation>
     </message>
   </context>
   <context>
@@ -87,107 +87,107 @@
       <translation>Macro kon niet worden verwijderd.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="127"/>
+      <location filename="../../addonmanager_workers.py" line="135"/>
       <source>Unable to download addon list.</source>
       <translation>Addon lijst kan niet worden opgehaald.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="132"/>
+      <location filename="../../addonmanager_workers.py" line="140"/>
       <source>Workbenches list was updated.</source>
       <translation>Werkbankenlijst is bijgewerkt.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="619"/>
+      <location filename="../../addonmanager_workers.py" line="634"/>
       <source>Outdated GitPython detected, consider upgrading with pip.</source>
       <translation>Verouderde GitPython gevonden, overweeg een upgrade met pip.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="254"/>
+      <location filename="../../addonmanager_workers.py" line="262"/>
       <source>List of macros successfully retrieved.</source>
       <translation>Lijst van macro's succesvol opgehaald.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="529"/>
+      <location filename="../../addonmanager_workers.py" line="542"/>
       <source>Retrieving description...</source>
       <translation>Omschrijving ophalen...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="347"/>
+      <location filename="../../addonmanager_workers.py" line="355"/>
       <source>Retrieving info from</source>
       <translation>Informatie ophalen van</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="434"/>
+      <location filename="../../addonmanager_workers.py" line="442"/>
       <source>An update is available for this addon.</source>
       <translation>Er is een update beschikbaar voor deze addon.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="430"/>
+      <location filename="../../addonmanager_workers.py" line="438"/>
       <source>This addon is already installed.</source>
       <translation>Deze addon is al geïnstalleerd.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="531"/>
+      <location filename="../../addonmanager_workers.py" line="544"/>
       <source>Retrieving info from git</source>
       <translation>Informatie ophalen van git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="534"/>
+      <location filename="../../addonmanager_workers.py" line="547"/>
       <source>Retrieving info from wiki</source>
       <translation>Informatie ophalen van wiki</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="583"/>
+      <location filename="../../addonmanager_workers.py" line="596"/>
       <source>GitPython not found. Using standard download instead.</source>
       <translation>GitPython niet gevonden. Standaard download wordt nu gebruikt.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="588"/>
+      <location filename="../../addonmanager_workers.py" line="601"/>
       <source>Your version of python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
       <translation>Je versie van Python lijkt geen ZIP-bestanden te ondersteunen. Verder gaan niet mogelijk.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="653"/>
+      <location filename="../../addonmanager_workers.py" line="670"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
       <translation>Werkbank succesvol geïnstalleerd. Herstart FreeCAD om de wijzigingen toe te passen.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="703"/>
+      <location filename="../../addonmanager_workers.py" line="720"/>
       <source>Missing workbench</source>
       <translation>Werkbank ontbreekt</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="712"/>
+      <location filename="../../addonmanager_workers.py" line="729"/>
       <source>Missing python module</source>
       <translation>Ontbrekende python module</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="720"/>
+      <location filename="../../addonmanager_workers.py" line="737"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
       <translation>Ontbrekende optionele python module (voorkomt niet het installeren)</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="722"/>
+      <location filename="../../addonmanager_workers.py" line="739"/>
       <source>Some errors were found that prevent to install this workbench</source>
       <translation>Er zijn enkele fouten gevonden die voorkomen dat deze werkbank wordt geïnstalleerd</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="723"/>
+      <location filename="../../addonmanager_workers.py" line="740"/>
       <source>Please install the missing components first.</source>
       <translation>Installeer eerst de ontbrekende componenten.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="747"/>
+      <location filename="../../addonmanager_workers.py" line="764"/>
       <source>Error: Unable to download</source>
       <translation>Fout: Kan niet downloaden</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="766"/>
+      <location filename="../../addonmanager_workers.py" line="783"/>
       <source>Successfully installed</source>
       <translation>Succesvol geïnstalleerd</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="270"/>
+      <location filename="../../addonmanager_workers.py" line="278"/>
       <source>GitPython not installed! Cannot retrieve macros from git</source>
       <translation>GitPython niet geïnstalleerd! Macro's kunnen niet worden opgehaald van git</translation>
     </message>
@@ -212,43 +212,63 @@
       <translation>Opnieuw opstarten vereist</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="541"/>
+      <location filename="../../addonmanager_workers.py" line="554"/>
       <source>This macro is already installed.</source>
       <translation>Deze macro is al geïnstalleerd.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="664"/>
+      <location filename="../../addonmanager_workers.py" line="681"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>Een macro is geïnstalleerd en is beschikbaar onder Macro -&gt; Macro' s menu</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="277"/>
-      <source>Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_workers.py" line="442"/>
+      <location filename="../../addonmanager_workers.py" line="450"/>
       <source>This addon is marked as obsolete</source>
-      <translation type="unfinished">This addon is marked as obsolete</translation>
+      <translation>Deze uitbreiding is gemarkeerd als verouderd</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="443"/>
+      <location filename="../../addonmanager_workers.py" line="451"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation type="unfinished">This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</translation>
+      <translation>Dit betekent gewoonlijk dat het niet meer onderhouden wordt, en een geavanceerdere uitbreidingen in deze lijst biedt dezelfde functionaliteit.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="740"/>
+      <location filename="../../addonmanager_workers.py" line="757"/>
       <source>Error: Unable to locate zip from</source>
-      <translation type="unfinished">Error: Unable to locate zip from</translation>
+      <translation>Fout: Kan zip niet vinden vanuit</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="285"/>
+      <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
+      <translation type="unfinished">Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="455"/>
+      <source>This addon is marked as Python 2 Only</source>
+      <translation type="unfinished">This addon is marked as Python 2 Only</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="456"/>
+      <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
+      <translation type="unfinished">This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="625"/>
+      <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
+      <translation type="unfinished">User requested updating a Python 2 workbench on a system running Python 3 - </translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="653"/>
+      <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
+      <translation type="unfinished">Workbench successfully updated. Please restart FreeCAD to apply the changes.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="659"/>
+      <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
+      <translation type="unfinished">User requested installing a Python 2 workbench on a system running Python 3 - </translation>
     </message>
   </context>
   <context>
     <name>Dialog</name>
-    <message>
-      <location filename="../../AddonManager.ui" line="14"/>
-      <source>Addons manager</source>
-      <translation>Uitbreidingsmanager</translation>
-    </message>
     <message>
       <location filename="../../AddonManager.ui" line="37"/>
       <source>Workbenches</source>
@@ -325,11 +345,6 @@
       <translation>Geselecteerde installeren/bijwerken</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.ui" line="157"/>
-      <source>Close the addons manager</source>
-      <translation type="unfinished">Close the addons manager</translation>
-    </message>
-    <message>
       <location filename="../../AddonManager.ui" line="160"/>
       <source>Close</source>
       <translation>Sluiten</translation>
@@ -339,41 +354,51 @@
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</translation>
+      <translation>Als deze optie geselecteerd is, zullen bij het starten van de uitbreidingsmanager 
+geïnstalleerde uitbreidingen gecontroleerd worden op beschikbare updates 
+(dit vereist het GitPython-pakket dat op uw systeem geïnstalleerd is)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires GitPython)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires GitPython)</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="42"/>
-      <source>You can use this window to specify additional addon repositories
-sto be scanned for available addons</source>
-      <translation type="unfinished">You can use this window to specify additional addon repositories
-sto be scanned for available addons</translation>
+      <translation>Controleer automatisch op updates bij het opstarten (vereist GitPython)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
-      <translation type="unfinished">Proxy </translation>
+      <translation>Proxy </translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="64"/>
       <source>No proxy</source>
-      <translation type="unfinished">No proxy</translation>
+      <translation>Geen proxy</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="71"/>
       <source>User system proxy</source>
-      <translation type="unfinished">User system proxy</translation>
+      <translation>Proxy van gebruikerssysteem</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>User defined proxy :</source>
-      <translation type="unfinished">User defined proxy :</translation>
+      <translation>Gebruikergedefinieerde proxy :</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.ui" line="14"/>
+      <source>Addon Manager</source>
+      <translation type="unfinished">Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.ui" line="157"/>
+      <source>Close the Addon Manager</source>
+      <translation type="unfinished">Close the Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="42"/>
+      <source>You can use this window to specify additional addon repositories
+to be scanned for available addons</source>
+      <translation type="unfinished">You can use this window to specify additional addon repositories
+to be scanned for available addons</translation>
     </message>
   </context>
   <context>

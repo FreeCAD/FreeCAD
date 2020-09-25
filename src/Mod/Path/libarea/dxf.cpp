@@ -1378,9 +1378,20 @@ void CDxfRead::get_line()
 	strcpy(m_str, str);
 }
 
+void dxf_strncpy(char* dst, const char* src, size_t size)
+{
+    size_t ret = strlen(src);
+
+    if (size) {
+        size_t len = (ret >= size) ? size - 1 : ret;
+        memcpy(dst, src, len);
+        dst[len] = '\0';
+    }
+}
+
 void CDxfRead::put_line(const char *value)
 {
-	strcpy( m_unused_line, value );
+    dxf_strncpy( m_unused_line, value, sizeof(m_unused_line) );
 }
 
 

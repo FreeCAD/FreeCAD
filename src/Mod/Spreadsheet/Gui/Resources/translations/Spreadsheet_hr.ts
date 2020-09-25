@@ -163,7 +163,7 @@
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>Postavite nadimak za odabrane ćelije</translation>
+      <translation>Postavite pseudonim za odabrane ćelije</translation>
     </message>
   </context>
   <context>
@@ -313,7 +313,7 @@
     </message>
     <message>
       <source>Alias for this cell</source>
-      <translation>Nadimak za ovu ćeliju</translation>
+      <translation>Pseudonim za ovu ćeliju</translation>
     </message>
   </context>
   <context>
@@ -357,12 +357,27 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>Proračunska tablica ne podržava odabir raspona prilikom umetanja.
+Odaberite samo jednu ćeliju.
+</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Copy &amp; Paste nije uspjelo</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Pseudonim sadrži nevažeće znakove!
+
+</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Referenca na ćeliju sa pseudonimom, na primjer
+Spreadsheet.my_alias_name umjesto Spreadsheet.B1
+
+</translation>
     </message>
   </context>
   <context>
@@ -447,20 +462,20 @@ Please select one cell only.</translation>
       <translation>Obrazac</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Sadržaj</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Sadržaj:</translation>
     </message>
     <message>
-      <source>&amp;Alias</source>
-      <translation type="unfinished">&amp;Alias</translation>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Pseudonim:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </translation>
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Referenca na ćeliju sa pseudonimom, na primjer
+Spreadsheet.my_alias_name umjesto Spreadsheet.B1
+
+</translation>
     </message>
   </context>
   <context>

@@ -112,7 +112,7 @@
       <location filename="../../Command.cpp" line="363"/>
       <location filename="../../Command.cpp" line="365"/>
       <source>Convert points to structured point cloud</source>
-      <translation type="unfinished">Convert points to structured point cloud</translation>
+      <translation>Punkte in strukturierte Punktwolke umwandeln</translation>
     </message>
   </context>
   <context>

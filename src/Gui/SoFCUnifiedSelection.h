@@ -621,7 +621,7 @@ protected:
     static SoFCSelectionRoot *ShapeColorNode;
     bool overrideColor = false;
     SbColor colorOverride;
-    float transOverride;
+    float transOverride = 0.0f;
     SoColorPacker shapeColorPacker;
 
     SoFCSelectionCounter selCounter;

@@ -44,6 +44,7 @@ namespace Spaceball
     public:
         MotionEvent();
         MotionEvent(const MotionEvent& in);
+        MotionEvent& operator= (const MotionEvent& in);
         void translations(int &xTransOut, int &yTransOut, int &zTransOut);
         void setTranslations(const int &xTransIn, const int &yTransIn, const int &zTransIn);
         int translationX(){return xTrans;}
@@ -72,6 +73,7 @@ namespace Spaceball
     public:
         ButtonEvent();
         ButtonEvent(const ButtonEvent& in);
+        ButtonEvent& operator= (const ButtonEvent& in);
         ButtonStateType buttonStatus();
         void setButtonStatus(const ButtonStateType &buttonStatusIn);
         int buttonNumber();

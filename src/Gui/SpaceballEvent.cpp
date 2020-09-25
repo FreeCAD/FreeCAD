@@ -50,6 +50,21 @@ MotionEvent::MotionEvent(const MotionEvent& in) : EventBase(static_cast<QEvent::
     handled = in.handled;
 }
 
+MotionEvent& MotionEvent::operator= (const MotionEvent& in)
+{
+    if (this == &in)
+        return *this;
+
+    xTrans  = in.xTrans;
+    yTrans  = in.yTrans;
+    zTrans  = in.zTrans;
+    xRot    = in.xRot;
+    yRot    = in.yRot;
+    zRot    = in.zRot;
+    handled = in.handled;
+    return *this;
+}
+
 void MotionEvent::translations(int &xTransOut, int &yTransOut, int &zTransOut)
 {
     xTransOut = xTrans;
@@ -89,6 +104,17 @@ ButtonEvent::ButtonEvent(const ButtonEvent& in) : EventBase(static_cast<QEvent::
     buttonState = in.buttonState;
     button = in.button;
     handled = in.handled;
+}
+
+ButtonEvent& ButtonEvent::operator= (const ButtonEvent& in)
+{
+    if (this == &in)
+        return *this;
+
+    buttonState = in.buttonState;
+    button = in.button;
+    handled = in.handled;
+    return *this;
 }
 
 ButtonStateType ButtonEvent::buttonStatus()

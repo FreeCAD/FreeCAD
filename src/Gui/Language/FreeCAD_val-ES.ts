@@ -418,7 +418,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Collection</source>
-      <translation type="unfinished">Collection</translation>
+      <translation>Col·lecció</translation>
     </message>
   </context>
   <context>
@@ -609,16 +609,28 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Nom</translation>
     </message>
     <message>
-      <source>Document</source>
-      <translation>Document</translation>
+      <source>Verbose description of the new property.</source>
+      <translation type="unfinished">Verbose description of the new property.</translation>
     </message>
     <message>
-      <source>Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</source>
-      <translation>Afegiu el nom del grup davant del nom de la propietat en la forma de «grup» _ «nom» per a evitar conflictes amb la propietat existent. El nom del grup prefixat es retallarà automàticament quan es mostra en l'editor de propietats.</translation>
+      <source>Documentation</source>
+      <translation>Documentació</translation>
     </message>
     <message>
-      <source>Append group name</source>
-      <translation>Afig el nom del grup</translation>
+      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
+      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+    </message>
+    <message>
+      <source>Prefix group name</source>
+      <translation type="unfinished">Prefix group name</translation>
     </message>
   </context>
   <context>
@@ -1005,6 +1017,10 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Global</source>
       <translation>Global</translation>
     </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation type="unfinished">%1 module not loaded</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -1298,6 +1314,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Font family to be used for selected code type</source>
       <translation>El tipus de lletra que s'utilitzarà per al tipus de codi seleccionat</translation>
+    </message>
+    <message>
+      <source>Color:</source>
+      <translation>Color:</translation>
     </message>
   </context>
   <context>
@@ -1814,15 +1834,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Quick search</source>
-      <translation type="unfinished">Quick search</translation>
+      <translation>Cerca ràpida</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
-      <translation type="unfinished">Type in a group name to find it</translation>
+      <translation>Escriviu un nom de grup per a trobar-lo</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Busca un grup</translation>
     </message>
   </context>
   <context>
@@ -1904,7 +1924,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Busca un grup</translation>
     </message>
   </context>
   <context>
@@ -1999,6 +2019,10 @@ Specify another directory, please.</source>
       <source>Open in browser</source>
       <translation>Obri en el navegador</translation>
     </message>
+    <message>
+      <source>Program version:</source>
+      <translation type="unfinished">Program version:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
@@ -2075,7 +2099,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be sychronize with full object hierarchy.</translation>
+      <translation>Si està activada, la selecció de la vista 3D es sincronitzarà amb la jerarquia d'objectes completa.</translation>
     </message>
     <message>
       <source>Sync sub-object selection</source>
@@ -2168,37 +2192,36 @@ en la pantalla i mostra l'error</translation>
     </message>
     <message>
       <source>Show report view on error</source>
-      <translation type="unfinished">Show report view on error</translation>
+      <translation>Mostra la vista de l'informe en cas d'error</translation>
     </message>
     <message>
       <source>When a warning has occurred, the Report View dialog becomes visible
 on-screen while displaying the warning</source>
-      <translation type="unfinished">When a warning has occurred, the Report View dialog becomes visible
-on-screen while displaying the warning</translation>
+      <translation>Quan s'ha produït un avís, el diàleg de Vista d'informes es fa visible
+en la pantalla i mostra l'avís</translation>
     </message>
     <message>
       <source>Show report view on warning</source>
-      <translation type="unfinished">Show report view on warning</translation>
+      <translation>Mostra la vista de l'informe en cas d'avís</translation>
     </message>
     <message>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation type="unfinished">When a normal message has occurred, the Report View dialog becomes visible
-on-screen while displaying the message</translation>
+      <translation>Quan s'ha produït un missatge normal, el diàleg de Vista d'informes es fa visible
+en la pantalla i mostra el missatge</translation>
     </message>
     <message>
       <source>Show report view on normal message</source>
-      <translation type="unfinished">Show report view on normal message</translation>
+      <translation>Mostra la vista de l'informe en cas d'un missatge normal</translation>
     </message>
     <message>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation type="unfinished">When a log message has occurred, the Report View dialog becomes visible
-on-screen while displaying the log message</translation>
+      <translation>Quan s'ha produït un missatge de registre, el diàleg de Vista d'informes es fa visible en la pantalla i mostra el missatge de registre</translation>
     </message>
     <message>
       <source>Show report view on log message</source>
-      <translation type="unfinished">Show report view on log message</translation>
+      <translation>Mostra la vista de l'informe en cas d'un missatge de registre</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
@@ -2227,6 +2250,22 @@ de la consola Python al tauler de Vista d'informes</translation>
 from Python console to Report view panel</source>
       <translation>Els missatges d'error interns de Python es redirigiran
 de la consola Python al tauler de Vista d'informes</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each report</source>
+      <translation type="unfinished">Include a timecode for each report</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each entry</source>
+      <translation type="unfinished">Include a timecode for each entry</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation type="unfinished">Normal messages will be recorded</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation type="unfinished">Record normal messages</translation>
     </message>
   </context>
   <context>
@@ -2352,7 +2391,7 @@ es mostrarà en el cantó inferior esquerre dels fitxers oberts</translation>
     </message>
     <message>
       <source>Rendering</source>
-      <translation type="unfinished">Rendering</translation>
+      <translation>Renderització</translation>
     </message>
     <message>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
@@ -2414,19 +2453,19 @@ Hi ha 3 opcions disponibles per a aconseguir-ho:
     </message>
     <message>
       <source>Transparent objects:</source>
-      <translation type="unfinished">Transparent objects:</translation>
+      <translation>Objectes transparents:</translation>
     </message>
     <message>
       <source>Render types of transparent objects</source>
-      <translation type="unfinished">Render types of transparent objects</translation>
+      <translation>Renderitza els tipus d'objectes transparents</translation>
     </message>
     <message>
       <source>One pass</source>
-      <translation type="unfinished">One pass</translation>
+      <translation>Una passada</translation>
     </message>
     <message>
       <source>Backface pass</source>
-      <translation type="unfinished">Backface pass</translation>
+      <translation>Passada per la cara posterior</translation>
     </message>
     <message>
       <source>Size of vertices in the Sketcher workbench</source>
@@ -2434,7 +2473,7 @@ Hi ha 3 opcions disponibles per a aconseguir-ho:
     </message>
     <message>
       <source>Eye to eye distance for stereo modes</source>
-      <translation type="unfinished">Eye to eye distance for stereo modes</translation>
+      <translation>Distància entre els ulls per a la visió estereoscòpica</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
@@ -2454,7 +2493,7 @@ mida de la caixa contenidora de l'objecte 3D que es mostra actualment. </transla
     </message>
     <message>
       <source>Intensity</source>
-      <translation type="unfinished">Intensity</translation>
+      <translation>Intensitat</translation>
     </message>
     <message>
       <source>Intensity of the backlight</source>
@@ -2467,6 +2506,16 @@ mida de la caixa contenidora de l'objecte 3D que es mostra actualment. </transla
     <message>
       <source>Objects will appear in a perspective projection</source>
       <translation>Els objectes apareixeran en una projecció en perspectiva</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation type="unfinished">Axis cross will be shown by default at file
+opening or creation</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation type="unfinished">Show axis cross by default</translation>
     </message>
   </context>
   <context>
@@ -2764,8 +2813,8 @@ executa automàticament la recuperació d’un fitxer quan s'inicie.</translatio
     <message>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512</source>
-      <translation type="unfinished">Sets the size of the thumbnail that is stored in the document.
-Common sizes are 128, 256 and 512</translation>
+      <translation>Estableix la mida de la miniatura que es guarda en el document.
+Les mides habituals són 128, 256 i 512</translation>
     </message>
     <message>
       <source>The program logo will be added to the thumbnail</source>
@@ -2778,8 +2827,8 @@ Common sizes are 128, 256 and 512</translation>
     <message>
       <source>Backup files will get extension '.FCbak' and file names
 get date suffix according to the specified format</source>
-      <translation type="unfinished">Backup files will get extension '.FCbak' and file names
-get date suffix according to the specified format</translation>
+      <translation>Els fitxers de còpia de seguretat tindran l'extensió «.FCbak» i els noms de fitxers
+tindran el sufix de data segons el format especificat</translation>
     </message>
     <message>
       <source>Use date and FCBak extension</source>
@@ -2799,11 +2848,9 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation type="unfinished">Enable partial loading of external linked documents.
-Then only referenced objects and their dependencies will be loaded
-when a linked document is auto-opened together with the main document.
-A partially loaded document cannot be edited. Double click the document
-icon in the tree view to fully reload it.</translation>
+      <translation>Habilita la càrrega parcial de documents enllaçats externs.
+Aleshores, només es carregaran els objectes referenciats i les seues dependències quan un document enllaçat s'obriga automàticament juntament amb el document principal.
+No es pot editar un document carregat parcialment. Feu doble clic a la icona del  document en la vista de l'arbre per a tornar a carregar-lo completament.</translation>
     </message>
     <message>
       <source>Disable partial loading of external linked objects</source>
@@ -3165,7 +3212,7 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
     </message>
     <message>
       <source>Navigation cube</source>
-      <translation type="unfinished">Navigation cube</translation>
+      <translation>Cub de navegació</translation>
     </message>
     <message>
       <source>Steps by turn</source>
@@ -3236,14 +3283,6 @@ Torn: la peça girarà al voltant de l’eix z.</translation>
     <message>
       <source>Trackball</source>
       <translation>Ratolí de bola</translation>
-    </message>
-    <message>
-      <source>New document camera orientation</source>
-      <translation type="unfinished">New document camera orientation</translation>
-    </message>
-    <message>
-      <source>Camera orientation for new documents</source>
-      <translation>Orientació de la càmera per als nous documents</translation>
     </message>
     <message>
       <source>New document scale</source>
@@ -3350,6 +3389,14 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Custom</source>
       <translation>Personalitzat</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation type="unfinished">Default camera orientation</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
     </message>
   </context>
   <context>
@@ -3517,11 +3564,11 @@ Un valor més gran en facilita la selecció, però pot fer que les propietats xi
     </message>
     <message>
       <source>Background color for the model view</source>
-      <translation type="unfinished">Background color for the model view</translation>
+      <translation>Color del fons per a la vista del model</translation>
     </message>
     <message>
       <source>Background will have selected color</source>
-      <translation type="unfinished">Background will have selected color</translation>
+      <translation>El fons tindrà el color seleccionat</translation>
     </message>
     <message>
       <source>Color gradient will get selected color as middle color</source>
@@ -3529,15 +3576,15 @@ Un valor més gran en facilita la selecció, però pot fer que les propietats xi
     </message>
     <message>
       <source>Bottom color</source>
-      <translation type="unfinished">Bottom color</translation>
+      <translation>Color de la part inferior</translation>
     </message>
     <message>
       <source>Background will have selected color gradient</source>
-      <translation type="unfinished">Background will have selected color gradient</translation>
+      <translation>El fons tindrà el degradat del color seleccionat</translation>
     </message>
     <message>
       <source>Top color</source>
-      <translation type="unfinished">Top color</translation>
+      <translation>Color de la part superior</translation>
     </message>
     <message>
       <source>Tree view</source>
@@ -4401,18 +4448,6 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <source>Logging</source>
-      <translation>Inici de sessió</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Avís</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Error</translation>
-    </message>
-    <message>
       <source>Options</source>
       <translation>Opcions</translation>
     </message>
@@ -4443,6 +4478,30 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
     <message>
       <source>Plain Text Files</source>
       <translation>Fitxers de text net </translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation type="unfinished">Display message types</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation type="unfinished">Normal messages</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation type="unfinished">Log messages</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation type="unfinished">Warnings</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation type="unfinished">Errors</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation type="unfinished">Show report view on</translation>
     </message>
   </context>
   <context>
@@ -5800,6 +5859,25 @@ Do you want to specify another directory?</source>
       <source>Recompute the selected object</source>
       <translation>Recalcula l'objecte seleccionat</translation>
     </message>
+    <message>
+      <source> (but must be executed)</source>
+      <translation type="unfinished"> (but must be executed)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+      <source>Vectors</source>
+      <translation type="unfinished">Vectors</translation>
+    </message>
+    <message>
+      <source>Table</source>
+      <translation type="unfinished">Table</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::View3DInventor</name>
@@ -6500,7 +6578,7 @@ guions baixos i no ha de començar amb un dígit.</translation>
     </message>
     <message>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
-      <translation type="unfinished">Documents contains cyclic dependencies. Do you still want to save them?</translation>
+      <translation>Els documents contenen dependències cícliques. Encara voleu guardar-los?</translation>
     </message>
     <message>
       <source>Undo</source>
@@ -6794,6 +6872,21 @@ Trieu «Interromp» per a interrompre</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+      <source>Tools</source>
+      <translation>Eines</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Gràfic de dependències...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Mostra el gràfic de dependències dels objectes en el document actiu</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
@@ -6908,6 +7001,10 @@ Trieu «Interromp» per a interrompre</translation>
       <source>Draw style</source>
       <translation>Estil de dibuix</translation>
     </message>
+    <message>
+      <source>Change the draw style of the objects</source>
+      <translation type="unfinished">Change the draw style of the objects</translation>
+    </message>
   </context>
   <context>
     <name>StdCmdDuplicateSelection</name>
@@ -6964,21 +7061,6 @@ Trieu «Interromp» per a interrompre</translation>
     <message>
       <source>Please select first the objects you want to export.</source>
       <translation>Seleccioneu primer els objectes que voleu exportar</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdExportGraphviz</name>
-    <message>
-      <source>Tools</source>
-      <translation>Eines</translation>
-    </message>
-    <message>
-      <source>Dependency graph...</source>
-      <translation>Gràfic de dependències...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Mostra el gràfic de dependències dels objectes en el document actiu</translation>
     </message>
   </context>
   <context>
@@ -8427,6 +8509,21 @@ Trieu «Interromp» per a interrompre</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estàndard</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation type="unfinished">Home</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation type="unfinished">Set to default home view</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Standard-View</source>
@@ -9023,16 +9120,19 @@ Segur que voleu continuar?
 </translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Aquests elements estan seleccionats per a suprimir-los, però no es troben en el document actiu.
-
-</translation>
-    </message>
-    <message>
       <source>Object dependencies</source>
       <translation>Dependències de l'objecte</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Gràfic de dependències</translation>
     </message>
   </context>
   <context>
@@ -9105,13 +9205,6 @@ Segur que voleu continuar?
 Do you want to save the document now?</source>
       <translation>Per a enllaçar amb objectes externs, el document s’ha de guardar almenys una vegada.
 Voleu guardar el document ara?</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-      <source>Dependency graph</source>
-      <translation>Gràfic de dependències</translation>
     </message>
   </context>
   <context>

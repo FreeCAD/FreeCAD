@@ -706,6 +706,7 @@ Streambuf::int_type Streambuf::uflow()
 
 Streambuf::int_type Streambuf::pbackfail( int_type ch )
 {
+    /* coverity[negative_returns] _cur is an iterator */
     if (_cur == _beg || (ch != traits_type::eof() && ch != _cur[-1]))
         return traits_type::eof();
 

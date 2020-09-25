@@ -423,7 +423,7 @@
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="220"/>
       <source>Length</source>
-      <translation>長度</translation>
+      <translation>間距</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="225"/>

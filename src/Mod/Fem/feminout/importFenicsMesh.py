@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD Fenics mesh reader and writer"
+__title__ = "Mesh import and export for Fenics mesh file format"
 __author__ = "Johannes Hartung"
 __url__ = "http://www.freecadweb.org"
 
@@ -33,6 +33,7 @@ import os
 
 import FreeCAD
 from FreeCAD import Console
+
 from . import importToolsFem
 from . import readFenicsXML
 from . import writeFenicsXML

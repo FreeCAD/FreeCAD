@@ -610,16 +610,28 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Pangalan</translation>
     </message>
     <message>
-      <source>Document</source>
-      <translation>Dokumento</translation>
+      <source>Verbose description of the new property.</source>
+      <translation type="unfinished">Verbose description of the new property.</translation>
     </message>
     <message>
-      <source>Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</source>
-      <translation type="unfinished">Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</translation>
+      <source>Documentation</source>
+      <translation>Dokumentasyon</translation>
     </message>
     <message>
-      <source>Append group name</source>
-      <translation type="unfinished">Append group name</translation>
+      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
+      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+    </message>
+    <message>
+      <source>Prefix group name</source>
+      <translation type="unfinished">Prefix group name</translation>
     </message>
   </context>
   <context>
@@ -1006,6 +1018,10 @@ while doing a left or right click and move the mouse up or down</translation>
       <source>Global</source>
       <translation>Pandaigdigan</translation>
     </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation type="unfinished">%1 module not loaded</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -1299,6 +1315,10 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>Font family to be used for selected code type</source>
       <translation type="unfinished">Font family to be used for selected code type</translation>
+    </message>
+    <message>
+      <source>Color:</source>
+      <translation>Kulay:</translation>
     </message>
   </context>
   <context>
@@ -2003,6 +2023,10 @@ mangyaring Tukuyin ang ibang direktoryo,.</translation>
       <source>Open in browser</source>
       <translation>Buksan sa browser</translation>
     </message>
+    <message>
+      <source>Program version:</source>
+      <translation type="unfinished">Program version:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
@@ -2231,6 +2255,22 @@ from Python console to Report view panel</translation>
 from Python console to Report view panel</source>
       <translation type="unfinished">Internal Python error messages will be redirected
 from Python console to Report view panel</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each report</source>
+      <translation type="unfinished">Include a timecode for each report</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each entry</source>
+      <translation type="unfinished">Include a timecode for each entry</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation type="unfinished">Normal messages will be recorded</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation type="unfinished">Record normal messages</translation>
     </message>
   </context>
   <context>
@@ -2475,6 +2515,16 @@ bounding box size of the 3D object that is currently displayed. </translation>
     <message>
       <source>Objects will appear in a perspective projection</source>
       <translation type="unfinished">Objects will appear in a perspective projection</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation type="unfinished">Axis cross will be shown by default at file
+opening or creation</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation type="unfinished">Show axis cross by default</translation>
     </message>
   </context>
   <context>
@@ -3247,14 +3297,6 @@ Turntable: the part will be rotated around the z-axis.</translation>
       <translation>Trakbol</translation>
     </message>
     <message>
-      <source>New document camera orientation</source>
-      <translation type="unfinished">New document camera orientation</translation>
-    </message>
-    <message>
-      <source>Camera orientation for new documents</source>
-      <translation type="unfinished">Camera orientation for new documents</translation>
-    </message>
-    <message>
       <source>New document scale</source>
       <translation type="unfinished">New document scale</translation>
     </message>
@@ -3361,6 +3403,14 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Custom</source>
       <translation>Custom</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation type="unfinished">Default camera orientation</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
     </message>
   </context>
   <context>
@@ -4414,18 +4464,6 @@ Ang haligi ng 'Katayuan' ay nagpapakita kung ang dokumento ay maaaring mabawi.</
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <source>Logging</source>
-      <translation>Logging</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Babala</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Kamalian</translation>
-    </message>
-    <message>
       <source>Options</source>
       <translation>Mga Pagpipilian</translation>
     </message>
@@ -4456,6 +4494,30 @@ Ang haligi ng 'Katayuan' ay nagpapakita kung ang dokumento ay maaaring mabawi.</
     <message>
       <source>Plain Text Files</source>
       <translation>Plain na mga file ng Text</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation type="unfinished">Display message types</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation type="unfinished">Normal messages</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation type="unfinished">Log messages</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation type="unfinished">Warnings</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation type="unfinished">Errors</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation type="unfinished">Show report view on</translation>
     </message>
   </context>
   <context>
@@ -5821,6 +5883,25 @@ Gusto mo bang tukuyin ang isa pang direktoryo?</translation>
       <source>Recompute the selected object</source>
       <translation type="unfinished">Recompute the selected object</translation>
     </message>
+    <message>
+      <source> (but must be executed)</source>
+      <translation type="unfinished"> (but must be executed)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+      <source>Vectors</source>
+      <translation type="unfinished">Vectors</translation>
+    </message>
+    <message>
+      <source>Table</source>
+      <translation type="unfinished">Table</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::View3DInventor</name>
@@ -6820,6 +6901,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+      <source>Tools</source>
+      <translation>Mga tool</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Graph ng Dependency...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Ipakita ang dependency graph ng mga bagay sa aktibong dokumento</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
@@ -6934,6 +7030,10 @@ Choose 'Abort' to abort</translation>
       <source>Draw style</source>
       <translation>Istilo ng Guhit</translation>
     </message>
+    <message>
+      <source>Change the draw style of the objects</source>
+      <translation type="unfinished">Change the draw style of the objects</translation>
+    </message>
   </context>
   <context>
     <name>StdCmdDuplicateSelection</name>
@@ -6990,21 +7090,6 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Please select first the objects you want to export.</source>
       <translation>Mangyaring piliin muna ang mga bagay na gusto mong i-luwas.</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdExportGraphviz</name>
-    <message>
-      <source>Tools</source>
-      <translation>Mga tool</translation>
-    </message>
-    <message>
-      <source>Dependency graph...</source>
-      <translation>Graph ng Dependency...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Ipakita ang dependency graph ng mga bagay sa aktibong dokumento</translation>
     </message>
   </context>
   <context>
@@ -8453,6 +8538,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standard-View</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation type="unfinished">Home</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation type="unfinished">Set to default home view</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Standard-View</source>
@@ -9049,16 +9149,19 @@ Are you sure you want to continue?
 </translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document. 
-
-</translation>
-    </message>
-    <message>
       <source>Object dependencies</source>
       <translation>Dependencies ng object</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Graph ng Dependency</translation>
     </message>
   </context>
   <context>
@@ -9131,13 +9234,6 @@ Are you sure you want to continue?
 Do you want to save the document now?</source>
       <translation type="unfinished">To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-      <source>Dependency graph</source>
-      <translation>Graph ng Dependency</translation>
     </message>
   </context>
   <context>

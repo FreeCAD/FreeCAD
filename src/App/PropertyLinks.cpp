@@ -847,7 +847,7 @@ void PropertyLinkList::setSize(int newSize)
 {
     for(int i=newSize;i<(int)_lValueList.size();++i) {
         auto obj = _lValueList[i];
-        if(!obj && !obj->getNameInDocument())
+        if (!obj || !obj->getNameInDocument())
             continue;
         _nameMap.erase(obj->getNameInDocument());
 #ifndef USE_OLD_DAG
@@ -1169,11 +1169,10 @@ TYPESYSTEM_SOURCE(App::PropertyLinkSubHidden, App::PropertyLinkSub)
 
 
 PropertyLinkSub::PropertyLinkSub()
-:_pcLinkSub(0)
+  : _pcLinkSub(0)
 {
 
 }
-
 
 PropertyLinkSub::~PropertyLinkSub()
 {
@@ -2799,9 +2798,19 @@ public:
             const char *filename, App::Document *pDoc, bool relative, QString *fullPath = 0) 
     {
         bool absolute;
-        // make sure the filename is aboluste path
-        QString path = QDir::cleanPath(QString::fromUtf8(filename));
-        if((absolute=QFileInfo(path).isAbsolute())) {
+        // The path could be an URI, in that case
+        // TODO: build a far much more resilient approach to test for an URI
+        QString path = QString::fromUtf8(filename);
+        if (path.startsWith(QLatin1String("https://"))) {
+            // We do have an URI
+            if (fullPath)
+                *fullPath = path;
+               return std::string(filename);
+        }
+
+        // make sure the filename is absolute path
+        path = QDir::cleanPath(path);
+        if((absolute = QFileInfo(path).isAbsolute())) {
             if(fullPath)
                 *fullPath = path;
             if(!relative)
@@ -2870,14 +2879,26 @@ public:
     }
 
     static QString getFullPath(const char *p) {
-        if(!p) return QString();
-        // return QFileInfo(QString::fromUtf8(p)).canonicalFilePath();
-        return QFileInfo(QString::fromUtf8(p)).absoluteFilePath();
+        QString path = QString::fromUtf8(p);
+        if (path.isEmpty())
+            return path;
+
+        if (path.startsWith(QLatin1String("https://")))
+            return path;
+        else {
+            // return QFileInfo(path).canonicalFilePath();
+            return QFileInfo(path).absoluteFilePath();
+        }
     }
 
     QString getFullPath() const {
-        // return QFileInfo(myPos->first).canonicalFilePath();
-        return QFileInfo(myPos->first).absoluteFilePath();
+        QString path = myPos->first;
+        if (path.startsWith(QLatin1String("https://")))
+            return path;
+        else {
+            // return QFileInfo(myPos->first).canonicalFilePath();
+            return QFileInfo(myPos->first).absoluteFilePath();
+        }
     }
 
     const char *filePath() const {
@@ -3371,6 +3392,7 @@ void PropertyXLink::setValue(std::string &&filename, std::string &&name,
     DocumentObject *pObject=0;
     DocInfoPtr info;
     if(filename.size()) {
+        owner->getDocument()->signalLinkXsetValue(filename);
         info = DocInfo::get(filename.c_str(),owner->getDocument(),this,name.c_str());
         if(info->pcDoc) 
             pObject = info->pcDoc->getObject(name.c_str());
@@ -3605,9 +3627,9 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
 {
     // read my element
     reader.readElement("XLink");
-    std::string stamp,file;
+    std::string stampAttr,file;
     if(reader.hasAttribute("stamp"))
-        stamp = reader.getAttribute("stamp");
+        stampAttr = reader.getAttribute("stamp");
     if(reader.hasAttribute("file"))
         file = reader.getAttribute("file");
     setFlag(LinkAllowPartial, 
@@ -3680,7 +3702,7 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
     }
 
     if(file.size() || (!object && name.size())) {
-        this->stamp = stamp;
+        this->stamp = stampAttr;
         setValue(std::move(file),std::move(name),std::move(subs),std::move(shadows));
     }else
         setValue(object,std::move(subs),std::move(shadows));
@@ -3937,7 +3959,6 @@ void PropertyXLink::getLinks(std::vector<App::DocumentObject *> &objs,
 {
     if((all||_pcScope!=LinkScope::Hidden) && _pcLink && _pcLink->getNameInDocument()) {
         objs.push_back(_pcLink);
-        if(subs)
         if(subs && _SubList.size()==_ShadowSubList.size())
             *subs = getSubValues(newStyle);
     }

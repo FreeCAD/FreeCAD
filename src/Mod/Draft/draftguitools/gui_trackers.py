@@ -18,28 +18,31 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide Coin based objects used for previews in the Draft Workbench.
+"""Provides Coin based objects used to preview objects being built.
 
 This module provides Coin (pivy) based objects
 that are used by the Draft Workbench to draw temporary geometry,
 that is, previews, of the real objects that will be created on the 3D view.
 """
-## @package DraftTrackers
-#  \ingroup DRAFT
-#  \brief Provide Coin based objects used for previews in the Draft Workbench.
+## @package gui_trackers
+# \ingroup draftguitools
+# \brief Provides Coin based objects used to preview objects being built.
 #
 # This module provides Coin (pivy) based objects
 # that are used by the Draft Workbench to draw temporary geometry,
 # that is, previews, of the real objects that will be created on the 3D view.
 
+## \addtogroup draftguitools
+# @{
 import math
-from pivy import coin
 import re
+import pivy.coin as coin
 
 import FreeCAD
 import FreeCADGui
 import Draft
 import DraftVecUtils
+
 from FreeCAD import Vector
 from draftutils.todo import ToDo
 from draftutils.messages import _msg
@@ -1079,6 +1082,17 @@ class gridTracker(Tracker):
                 self.text2.string = txt
                 self.textpos1.translation.setValue((-bound+self.space,-border+self.space,z))
                 self.textpos2.translation.setValue((-bound-self.space,-bound+self.space,z))
+                # human from BIM workbench
+                loc = FreeCAD.Vector(-bound+self.space/2,-bound+self.space/2,0)
+                try:
+                    import BimProject
+                    hpts = BimProject.getHuman(loc)
+                except:
+                    # BIM not installed
+                    pass
+                else:
+                    mpts.extend([tuple(p) for p in hpts])
+                    midx.append(len(hpts))
             else:
                 self.text1.string = " "
                 self.text2.string = " "
@@ -1305,3 +1319,5 @@ class archDimTracker(Tracker):
             self.setString()
         else:
             return Vector(self.dimnode.pnts.getValues()[-1].getValue())
+
+## @}

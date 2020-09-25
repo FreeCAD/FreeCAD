@@ -65,7 +65,7 @@ class MDIViewPage;
 class TileImage
 {
 public:
-    TileImage() {};
+    TileImage() { init(); }
     ~TileImage() = default;
     bool toBeSaved;
     bool arrowSide;
@@ -82,12 +82,12 @@ public:
         arrowSide = true;
         row = 0;
         col = 0;
-        leftText = "";
-        centerText = "";
-        rightText = "";
-        symbolPath= "";
-        symbolString = "";
-        tileName = "";
+        leftText.clear();
+        centerText.clear();
+        rightText.clear();
+        symbolPath.clear();
+        symbolString.clear();
+        tileName.clear();
     }
 
 };

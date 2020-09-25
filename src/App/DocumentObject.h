@@ -606,6 +606,11 @@ protected:
     /// Called after calling execute() in Document::recompute()
     virtual void afterRecompute() {}
 
+    /**
+     * Executes the extensions of a document object.
+     */
+    App::DocumentObjectExecReturn *executeExtensions();
+
     /** Status bits of the document object
      * The first 8 bits are used for the base system the rest can be used in
      * descendent classes to mark special statuses on the objects.

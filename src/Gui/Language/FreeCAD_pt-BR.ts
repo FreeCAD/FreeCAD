@@ -418,7 +418,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Collection</source>
-      <translation type="unfinished">Collection</translation>
+      <translation>Coleção</translation>
     </message>
   </context>
   <context>
@@ -609,16 +609,28 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Nome</translation>
     </message>
     <message>
-      <source>Document</source>
-      <translation>Documento</translation>
+      <source>Verbose description of the new property.</source>
+      <translation>Descrição detalhada da nova propriedade.</translation>
     </message>
     <message>
-      <source>Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</source>
-      <translation>Acrescente o nome do grupo na frente do nome da propriedade no formato de 'grupo'_'nome' para evitar conflitos com a propriedade existente. O nome do grupo prefixado será cortado automaticamente quando mostrado no editor de propriedades.</translation>
+      <source>Documentation</source>
+      <translation>Documentação</translation>
     </message>
     <message>
-      <source>Append group name</source>
-      <translation>Acrescentar nome do grupo</translation>
+      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
+      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+    </message>
+    <message>
+      <source>Prefix group name</source>
+      <translation>Nome do grupo de prefixos</translation>
     </message>
   </context>
   <context>
@@ -1005,6 +1017,10 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Global</source>
       <translation>Global</translation>
     </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation>%1 do módulo não carregado</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -1299,6 +1315,10 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Font family to be used for selected code type</source>
       <translation>Família de fonte a ser usada no tipo de código selecionado</translation>
     </message>
+    <message>
+      <source>Color:</source>
+      <translation>Cor:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneral</name>
@@ -1370,7 +1390,7 @@ Veja a Wiki do FreeCAD para mais detalhes sobre a imagem.</translation>
     </message>
     <message>
       <source>Style sheet how user interface will look like</source>
-      <translation type="unfinished">Style sheet how user interface will look like</translation>
+      <translation>Folha de estilo de como a interface do usuário será parecida</translation>
     </message>
     <message>
       <source>Choose your preference for toolbar icon size. You can adjust
@@ -1397,21 +1417,19 @@ this according to your screen size or personal taste</source>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
-      <translation type="unfinished">A Splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</translation>
+      <translation>A Tela de Abertura é exibida durante o carregamento,
+na inicialização do FreeCAD. Se esta opção estiver marcada,
+a tela de abertura será exibida</translation>
     </message>
     <message>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation type="unfinished">Choose which workbench will be activated and shown
-after FreeCAD launches</translation>
+      <translation>Escolhe qual bancada será ativada e exibida após o FreeCAD iniciar</translation>
     </message>
     <message>
       <source>Words will be wrapped when they exceed available
 horizontal space in Python console</source>
-      <translation type="unfinished">Words will be wrapped when they exceed available
-horizontal space in Python console</translation>
+      <translation>As palavras serão acomodadas se excederem o espaço horizontal do console Python</translation>
     </message>
   </context>
   <context>
@@ -1446,11 +1464,11 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
-      <translation type="unfinished">TreeView and PropertyView</translation>
+      <translation>TreeView e Propriedades</translation>
     </message>
     <message>
       <source>Both</source>
-      <translation type="unfinished">Both</translation>
+      <translation>Ambos</translation>
     </message>
   </context>
   <context>
@@ -1527,7 +1545,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Toolbar</source>
-      <translation type="unfinished">Toolbar</translation>
+      <translation>Barra de ferramentas</translation>
     </message>
   </context>
   <context>
@@ -1612,45 +1630,45 @@ Talvez um erro de permissão de arquivo?</translation>
     </message>
     <message>
       <source>Do not show again</source>
-      <translation type="unfinished">Do not show again</translation>
+      <translation>Não mostrar novamente</translation>
     </message>
     <message>
       <source>Guided Walkthrough</source>
-      <translation type="unfinished">Guided Walkthrough</translation>
+      <translation>Passo a passo</translation>
     </message>
     <message>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
 
 Note: your changes will be applied when you next switch workbenches
 </source>
-      <translation type="unfinished">This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
+      <translation>Guia para você adicionar esta macro em uma barra de ferramentas personalizada. Siga as instruções escritas em vermelho na janela.
 
-Note: your changes will be applied when you next switch workbenches
+Obs: as mudanças serão aplicadas na próxima troca de bancada
 </translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 2</translation>
+      <translation>Passo a passo, diálogo 1 de 2</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
-      <translation type="unfinished">Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</translation>
+      <translation>Instruções: complete os campos vazios (opcional) então clique em Adicionar e, por fim, Fechar</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 1</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 1</translation>
+      <translation>Passo a passo, diálogo 1 de 1</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 2 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 2 of 2</translation>
+      <translation>Passo a passo, diálogo 2 de 2</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click right arrow button (-&gt;), then Close.</translation>
+      <translation>Instruções: Clique na tecla seta para a direita (-&gt;), e depois Fechar.</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</translation>
+      <translation>Instrução: Clique Novo, então clique no botão seta para a direita (-&gt;), e depois Fechar.</translation>
     </message>
   </context>
   <context>
@@ -1811,11 +1829,11 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Sorted</source>
-      <translation type="unfinished">Sorted</translation>
+      <translation>Ordenado</translation>
     </message>
     <message>
       <source>Quick search</source>
-      <translation type="unfinished">Quick search</translation>
+      <translation>Pesquisa rápida</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
@@ -1823,7 +1841,7 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Pesquisar grupos</translation>
     </message>
   </context>
   <context>
@@ -1905,7 +1923,7 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Pesquisar grupos</translation>
     </message>
   </context>
   <context>
@@ -2000,6 +2018,10 @@ Por favor especifique outro diretório.</translation>
       <source>Open in browser</source>
       <translation>Abrir no Navegador</translation>
     </message>
+    <message>
+      <source>Program version:</source>
+      <translation>Versão do programa:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
@@ -2072,7 +2094,7 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Filter by type</source>
-      <translation type="unfinished">Filter by type</translation>
+      <translation>Filtrar por tipo</translation>
     </message>
     <message>
       <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
@@ -2080,7 +2102,7 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>Sync sub-object selection</source>
-      <translation type="unfinished">Sync sub-object selection</translation>
+      <translation>Sincronizar seleção de sub-objeto</translation>
     </message>
     <message>
       <source>Reset</source>
@@ -2229,6 +2251,22 @@ from Python console to Report view panel</source>
       <translation type="unfinished">Internal Python error messages will be redirected
 from Python console to Report view panel</translation>
     </message>
+    <message>
+      <source>Include a timecode for each report</source>
+      <translation type="unfinished">Include a timecode for each report</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each entry</source>
+      <translation type="unfinished">Include a timecode for each entry</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation type="unfinished">Normal messages will be recorded</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation type="unfinished">Record normal messages</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgRunExternal</name>
@@ -2353,7 +2391,7 @@ will be shown at the lower left corner in opened files</translation>
     </message>
     <message>
       <source>Rendering</source>
-      <translation type="unfinished">Rendering</translation>
+      <translation>Renderizando</translation>
     </message>
     <message>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
@@ -2379,11 +2417,11 @@ report this setting as enabled when seeking support on the FreeCAD forums</trans
     </message>
     <message>
       <source>Use OpenGL VBO (Vertex Buffer Object)</source>
-      <translation type="unfinished">Use OpenGL VBO (Vertex Buffer Object)</translation>
+      <translation>Usar OpenGL VBO (Vertex Buffer Object)</translation>
     </message>
     <message>
       <source>Render cache</source>
-      <translation type="unfinished">Render cache</translation>
+      <translation>Cache de renderização</translation>
     </message>
     <message>
       <source>'Render Caching' is another way to say 'Rendering Acceleration'.
@@ -2407,7 +2445,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Distributed</source>
-      <translation type="unfinished">Distributed</translation>
+      <translation>Distribuído</translation>
     </message>
     <message>
       <source>Centralized</source>
@@ -2472,6 +2510,16 @@ bounding box size of the 3D object that is currently displayed. </translation>
     <message>
       <source>Objects will appear in a perspective projection</source>
       <translation type="unfinished">Objects will appear in a perspective projection</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation type="unfinished">Axis cross will be shown by default at file
+opening or creation</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation type="unfinished">Show axis cross by default</translation>
     </message>
   </context>
   <context>
@@ -2792,7 +2840,7 @@ get date suffix according to the specified format</translation>
     </message>
     <message>
       <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
+      <translation>Formato da data</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
@@ -3243,14 +3291,6 @@ Turntable: the part will be rotated around the z-axis.</translation>
       <translation>Trackball</translation>
     </message>
     <message>
-      <source>New document camera orientation</source>
-      <translation type="unfinished">New document camera orientation</translation>
-    </message>
-    <message>
-      <source>Camera orientation for new documents</source>
-      <translation type="unfinished">Camera orientation for new documents</translation>
-    </message>
-    <message>
       <source>New document scale</source>
       <translation type="unfinished">New document scale</translation>
     </message>
@@ -3357,6 +3397,14 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Custom</source>
       <translation>Personalizado</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation>Orientação padrão da câmera</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation>Orientação padrão da câmera ao criar um novo documento ou selecionar a vista inicial</translation>
     </message>
   </context>
   <context>
@@ -4407,18 +4455,6 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <source>Logging</source>
-      <translation>Log</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Aviso</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Erro</translation>
-    </message>
-    <message>
       <source>Options</source>
       <translation>Opções</translation>
     </message>
@@ -4449,6 +4485,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Plain Text Files</source>
       <translation>Arquivos de texto sem formatação</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation type="unfinished">Display message types</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation type="unfinished">Normal messages</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation type="unfinished">Log messages</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation type="unfinished">Warnings</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation type="unfinished">Errors</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation type="unfinished">Show report view on</translation>
     </message>
   </context>
   <context>
@@ -5809,6 +5869,25 @@ Do you want to specify another directory?</source>
       <source>Recompute the selected object</source>
       <translation type="unfinished">Recompute the selected object</translation>
     </message>
+    <message>
+      <source> (but must be executed)</source>
+      <translation type="unfinished"> (but must be executed)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+      <source>Vectors</source>
+      <translation type="unfinished">Vectors</translation>
+    </message>
+    <message>
+      <source>Table</source>
+      <translation type="unfinished">Table</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::View3DInventor</name>
@@ -6803,6 +6882,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+      <source>Tools</source>
+      <translation>Ferramentas</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Gráfico de dependência...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Exibir o gráfico de dependência de objetos no documento atual</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
@@ -6917,6 +7011,10 @@ Choose 'Abort' to abort</translation>
       <source>Draw style</source>
       <translation>Estilo de desenho</translation>
     </message>
+    <message>
+      <source>Change the draw style of the objects</source>
+      <translation type="unfinished">Change the draw style of the objects</translation>
+    </message>
   </context>
   <context>
     <name>StdCmdDuplicateSelection</name>
@@ -6973,21 +7071,6 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Please select first the objects you want to export.</source>
       <translation>Por favor, primeiro selecione os objetos que você deseja exportar.</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdExportGraphviz</name>
-    <message>
-      <source>Tools</source>
-      <translation>Ferramentas</translation>
-    </message>
-    <message>
-      <source>Dependency graph...</source>
-      <translation>Gráfico de dependência...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Exibir o gráfico de dependência de objetos no documento atual</translation>
     </message>
   </context>
   <context>
@@ -8436,6 +8519,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista padrão</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation type="unfinished">Home</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation type="unfinished">Set to default home view</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Standard-View</source>
@@ -9032,16 +9130,19 @@ Are you sure you want to continue?
 </translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document. 
-
-</translation>
-    </message>
-    <message>
       <source>Object dependencies</source>
       <translation>Dependências do objeto</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Gráfico de dependência</translation>
     </message>
   </context>
   <context>
@@ -9114,13 +9215,6 @@ Are you sure you want to continue?
 Do you want to save the document now?</source>
       <translation type="unfinished">To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-      <source>Dependency graph</source>
-      <translation>Gráfico de dependência</translation>
     </message>
   </context>
   <context>

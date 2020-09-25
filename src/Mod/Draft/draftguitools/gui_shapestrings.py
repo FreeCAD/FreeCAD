@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating text shapes with the Draft Workbench.
+"""Provides GUI tools to create text shapes with a particular font.
 
 These text shapes are made of various edges and closed faces, and therefore
 can be extruded to create solid bodies that can be used in boolean
@@ -32,9 +32,11 @@ into solid bodies.
 They are more complex that simple text annotations.
 """
 ## @package gui_shapestrings
-# \ingroup DRAFT
-# \brief Provides tools for creating text shapes with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create text shapes with a particular font.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import sys
 
@@ -47,6 +49,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import drafttaskpanels.task_shapestring as task_shapestring
 import draftutils.todo as todo
+
 from draftutils.translate import translate
 from draftutils.messages import _msg, _err
 
@@ -230,3 +233,5 @@ class ShapeString(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_ShapeString', ShapeString())
+
+## @}

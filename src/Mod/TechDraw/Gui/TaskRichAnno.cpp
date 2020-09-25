@@ -75,15 +75,23 @@ using namespace TechDrawGui;
 //ctor for edit
 TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     ui(new Ui_TaskRichAnno),
+    blockUpdate(false),
+    m_view(nullptr),
     m_annoVP(annoVP),
     m_baseFeat(nullptr),
     m_basePage(nullptr),
     m_annoFeat(nullptr),
+    m_qgParent(nullptr),
     m_createMode(false),
+    m_text(nullptr),
+    m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
     m_qgAnno(nullptr),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_textDialog(nullptr),
-    m_rte(nullptr)
+    m_rte(nullptr),
+    m_haveMdi(false)
 {
 //    Base::Console().Message("TRA::TRA() - edit\n");
     if (m_annoVP == nullptr)  {
@@ -142,15 +150,24 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
                            TechDraw::DrawPage* page) :
     ui(new Ui_TaskRichAnno),
+    blockUpdate(false),
+    m_mdi(nullptr),
+    m_view(nullptr),
     m_annoVP(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(page),
     m_annoFeat(nullptr),
+    m_qgParent(nullptr),
     m_createMode(true),
+    m_text(nullptr),
+    m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
     m_qgAnno(nullptr),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_textDialog(nullptr),
-    m_rte(nullptr)
+    m_rte(nullptr),
+    m_haveMdi(false)
 {
 //    Base::Console().Message("TRA::TRA() - create\n");
     if (m_basePage == nullptr)  {
@@ -384,10 +401,12 @@ void TaskRichAnno::createAnnoFeature()
     if (m_baseFeat != nullptr) {
         m_baseFeat->touch();
     }
-    if (m_basePage != nullptr) {
-        m_basePage->touch();
+
+    m_basePage->touch();
+
+    if (m_annoFeat != nullptr) {
+        m_annoFeat->requestPaint();
     }
-    m_annoFeat->requestPaint();
 }
 
 void TaskRichAnno::updateAnnoFeature()
@@ -457,7 +476,7 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
     std::vector<Base::Vector3d> points;
     if (m_baseFeat != nullptr) {
         if (m_baseFeat->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
-            TechDraw::DrawLeaderLine* dll = dynamic_cast<TechDraw::DrawLeaderLine*>(m_baseFeat);
+            TechDraw::DrawLeaderLine* dll = static_cast<TechDraw::DrawLeaderLine*>(m_baseFeat);
             points = dll->WayPoints.getValues();
         } else {
 //            Base::Console().Message("TRA::calcTextPos - m_baseFeat is not Leader\n");

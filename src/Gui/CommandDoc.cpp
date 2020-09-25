@@ -1217,7 +1217,7 @@ void StdCmdDelete::activated(int iMsg)
                     }
                     std::string thisDoc = pGuiDoc->getDocument()->getName();
                     bodyMessageStream << qApp->translate("Std_Delete", 
-                                            "These items are selected for deletion, but are not in the active document. \n\n"); 
+                                            "These items are selected for deletion, but are not in the active document."); 
                     for (const auto &currentLabel : inactiveLabels)
                         bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
                 }
@@ -1541,6 +1541,10 @@ class StdCmdExpression : public Gui::Command
 {
 public:
     StdCmdExpression() : Command("Std_Expressions")
+                       , pcActionCopyAll(nullptr)
+                       , pcActionCopySel(nullptr)
+                       , pcActionCopyActive(nullptr)
+                       , pcActionPaste(nullptr)
     {
         sGroup        = QT_TR_NOOP("Edit");
         sMenuText     = QT_TR_NOOP("Expression actions");

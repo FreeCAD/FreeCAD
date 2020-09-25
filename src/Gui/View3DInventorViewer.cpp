@@ -1551,7 +1551,8 @@ void View3DInventorViewer::setupEditingRoot(SoNode *node, const Base::Matrix4D *
     ViewProviderLink::updateLinks(editViewProvider);
 }
 
-void View3DInventorViewer::resetEditingRoot(bool updateLinks) {
+void View3DInventorViewer::resetEditingRoot(bool updateLinks)
+{
     pcRootMaterial->setOverride(false);
     pcRootMaterial->transparency = 0.0;
 
@@ -1569,8 +1570,38 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks) {
     for(int i=1,count=pcEditingRoot->getNumChildren();i<count;++i)
         root->addChild(pcEditingRoot->getChild(i));
     pcEditingRoot->getChildren()->truncate(1);
-    if(updateLinks)
-        ViewProviderLink::updateLinks(editViewProvider);
+
+    // handle exceptions eventually raised by ViewProviderLink
+    try {
+        if (updateLinks)
+            ViewProviderLink::updateLinks(editViewProvider);
+    }
+    catch (const Py::Exception& e) {
+        /* coverity[UNCAUGHT_EXCEPT] Uncaught exception */
+        // Coverity created several reports when removeViewProvider()
+        // is used somewhere in a destructor which indirectly invokes
+        // resetEditingRoot().
+        // Now theoretically Py::type can throw an exception which nowhere
+        // will be handled and thus terminates the application. So, add an
+        // extra try/catch block here.
+        try {
+            Py::Object o = Py::type(e);
+            if (o.isString()) {
+                Py::String s(o);
+                Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
+            }
+            else {
+                Py::String s(o.repr());
+                Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
+            }
+            // Prints message to console window if we are in interactive mode
+            PyErr_Print();
+        }
+        catch (Py::Exception& e) {
+            e.clear();
+            Base::Console().Error("Unexpected exception raised in View3DInventorViewer::resetEditingRoot\n");
+        }
+    }
 }
 
 SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec2s& pos, ViewProvider* vp) const
@@ -4762,6 +4793,7 @@ void View3DInventorViewer::selectCB(void* viewer, SoPath* path)
 {
     ViewProvider* vp = static_cast<View3DInventorViewer*>(viewer)->getViewProviderByPath(path);
     if (vp && vp->useNewSelectionModel()) {
+        // do nothing here
     }
 }
 
@@ -4769,6 +4801,7 @@ void View3DInventorViewer::deselectCB(void* viewer, SoPath* path)
 {
     ViewProvider* vp = static_cast<View3DInventorViewer*>(viewer)->getViewProviderByPath(path);
     if (vp && vp->useNewSelectionModel()) {
+        // do nothing here
     }
 }
 

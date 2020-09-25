@@ -88,7 +88,7 @@ public:
      * @param params: extrusion parameters
      * @return result of extrusion
      */
-    static void extrudeShape(TopoShape &result, const TopoShape &source, ExtrusionParameters params);
+    static void extrudeShape(TopoShape &result, const TopoShape &source, const ExtrusionParameters& params);
 
     /**
      * @brief fetchAxisLink: read AxisLink to obtain the direction and
@@ -122,7 +122,7 @@ public: //mode enumerations
     static const char* eDirModeStrings[];
 
 protected:
-    static void makeDraft(ExtrusionParameters params, const TopoShape&, 
+    static void makeDraft(const ExtrusionParameters& params, const TopoShape&, 
             std::vector<TopoShape>&, App::StringHasherRef hasher);
 
 

@@ -200,6 +200,8 @@ DocumentRecovery::DocumentRecovery(const QList<QFileInfo>& dirs, QWidget* parent
             d_ptr->ui.treeWidget->addTopLevelItem(item);
         }
     }
+
+    this->adjustSize();
 }
 
 DocumentRecovery::~DocumentRecovery()
@@ -241,12 +243,10 @@ void DocumentRecovery::accept()
     if (!d->recovered) {
 
         WaitCursor wc;
-        int index = -1;
+        int index = 0;
         std::vector<int> indices;
         std::vector<std::string> filenames, paths, labels, errs;
         for (auto &info : d->recoveryInfo) {
-            ++index;
-
             QString errorInfo;
             QTreeWidgetItem* item = d_ptr->ui.treeWidget->topLevelItem(index);
 
@@ -260,6 +260,7 @@ void DocumentRecovery::accept()
                 filenames.emplace_back(info.fileName.toUtf8().constData());
                 labels.emplace_back(info.label.toUtf8().constData());
                 indices.push_back(index);
+                ++index;
             }
             catch (const std::exception& e) {
                 errorInfo = QString::fromLatin1(e.what());
@@ -294,7 +295,7 @@ void DocumentRecovery::accept()
                 // info.status = DocumentRecoveryPrivate::Failure;
                 if (item) {
                     item->setText(1, tr("Failed to recover"));
-                    item->setToolTip(1, QString::fromUtf8(errs[index].c_str()));
+                    item->setToolTip(1, QString::fromUtf8(errs[i].c_str()));
                     item->setForeground(1, QColor(170,0,0));
                 }
                 // Do not mark failure so that user can retry on next run

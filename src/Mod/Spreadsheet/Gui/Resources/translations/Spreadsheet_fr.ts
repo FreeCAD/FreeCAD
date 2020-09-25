@@ -364,6 +364,15 @@ Veuillez sélectionner une seule cellule.</translation>
       <source>Copy &amp; Paste failed</source>
       <translation>Copier-coller a failli</translation>
     </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>L'alias contient des caractères invalides!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Reportez-vous à la cellule par l'alias, par exemple Spreadsheet.my_alias_name au lieu de Spreadsheet.B1</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -447,20 +456,17 @@ Veuillez sélectionner une seule cellule.</translation>
       <translation>Forme</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Contenu</translation>
+      <source>&amp;Content:</source>
+      <translation type="unfinished">&amp;Content:</translation>
     </message>
     <message>
-      <source>&amp;Alias</source>
-      <translation type="unfinished">&amp;Alias</translation>
+      <source>&amp;Alias:</source>
+      <translation type="unfinished">&amp;Alias:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </translation>
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Reportez-vous à la cellule par l'alias, par exemple Spreadsheet.my_alias_name au lieu de Spreadsheet.B1</translation>
     </message>
   </context>
   <context>

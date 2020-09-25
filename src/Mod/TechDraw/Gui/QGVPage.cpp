@@ -858,7 +858,7 @@ void QGVPage::saveSvg(QString filename)
     m_vpPage->setFrameState(saveState);
     m_vpPage->setTemplateMarkers(saveState);
     setExporting(false);
-    if (templateVisible) {
+    if (templateVisible && svgTemplate) {
         svgTemplate->show();
     }
 

@@ -321,7 +321,7 @@ CmdTechDrawGeometricHatch::CmdTechDrawGeometricHatch()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Apply Geometric Hatch to a Face");
+    sMenuText       = QT_TR_NOOP("Apply Geometric Hatch to Face");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_GeometricHatch";
     sStatusTip      = sToolTipText;

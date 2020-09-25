@@ -20,11 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the Draft OrthoArray GuiCommand."""
+"""Provides GUI tools to create orthogonal Array objects."""
 ## @package gui_orthoarray
-# \ingroup DRAFT
-# \brief Provides the Draft OrthoArray GuiCommand.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create orthogonal Array objects.
 
+## \addtogroup draftguitools
+# @{
 from pivy import coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -130,3 +132,5 @@ class OrthoArray(gui_base.GuiCommandBase):
 
 
 Gui.addCommand('Draft_OrthoArray', OrthoArray())
+
+## @}

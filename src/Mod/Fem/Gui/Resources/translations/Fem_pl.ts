@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="129"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation>Wybierz Twarze/krawędzie/wierzchołki</translation>
+      <translation>Wybierz powierzchnie/krawędzie/wierzchołki</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
@@ -123,7 +123,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -2066,7 +2066,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="51"/>
       <source>None</source>
-      <translation>Żaden</translation>
+      <translation>Brak</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="61"/>
@@ -2344,7 +2344,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="66"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>

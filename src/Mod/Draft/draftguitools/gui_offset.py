@@ -22,15 +22,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for offsetting objects with the Draft Workbench.
+"""Provides GUI tools to create offsets from objects.
 
 It mostly works on lines, polylines, and similar objects with
 regular geometrical shapes, like rectangles.
 """
 ## @package gui_offset
-# \ingroup DRAFT
-# \brief Provides tools for offsetting objects with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create offsets from objects.
 
+## \addtogroup draftguitools
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -42,6 +44,7 @@ import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+
 from draftutils.messages import _msg, _wrn, _err
 from draftutils.translate import translate, _tr
 
@@ -97,7 +100,11 @@ class Offset(gui_base_original.Modifier):
             self.dvec = None
             self.npts = None
             self.constrainSeg = None
+
             self.ui.offsetUi()
+            occmode = utils.param.GetBool("Offset_OCC", False)
+            self.ui.occOffset.setChecked(occmode)
+
             self.linetrack = trackers.lineTracker()
             self.faces = False
             self.shape = self.sel.Shape
@@ -177,6 +184,7 @@ class Offset(gui_base_original.Modifier):
                     a = -DraftVecUtils.angle(v1, v2)
                     self.dvec = DraftVecUtils.rotate(d, a, plane.axis)
                     occmode = self.ui.occOffset.isChecked()
+                    utils.param.SetBool("Offset_OCC", occmode)
                     _wire = DraftGeomUtils.offsetWire(self.shape,
                                                       self.dvec,
                                                       occ=occmode)
@@ -217,6 +225,7 @@ class Offset(gui_base_original.Modifier):
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 copymode = False
                 occmode = self.ui.occOffset.isChecked()
+                utils.param.SetBool("Offset_OCC", occmode)
                 if (gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT)
                         or self.ui.isCopy.isChecked()):
                     copymode = True
@@ -291,6 +300,7 @@ class Offset(gui_base_original.Modifier):
                 delta = DraftVecUtils.toString(self.dvec)
             copymode = False
             occmode = self.ui.occOffset.isChecked()
+            utils.param.SetBool("Offset_OCC", occmode)
             if self.ui.isCopy.isChecked():
                 copymode = True
             Gui.addModule("Draft")
@@ -315,3 +325,5 @@ class Offset(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Offset', Offset())
+
+## @}

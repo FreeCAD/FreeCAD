@@ -82,8 +82,8 @@ void SoBrepEdgeSet::initClass()
 }
 
 SoBrepEdgeSet::SoBrepEdgeSet()
-    :selContext(std::make_shared<SelContext>())
-    ,selContext2(std::make_shared<SelContext>())
+    : selContext(std::make_shared<SelContext>())
+    , selContext2(std::make_shared<SelContext>())
 {
     SO_NODE_CONSTRUCTOR(SoBrepEdgeSet);
     SO_NODE_ADD_FIELD(highlightIndices, (-1));

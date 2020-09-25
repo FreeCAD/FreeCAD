@@ -118,13 +118,20 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 
 DocumentObjectExecReturn *DocumentObject::execute(void)
 {
-    //call all extensions
-    DocumentObjectExecReturn *ret = StdReturn;
-    foreachExtension<DocumentObjectExtension>([&ret](DocumentObjectExtension *ext) {
-        ret = ext->extensionExecute();
-        return ret != StdReturn;
-    });
-    return ret;
+    return executeExtensions();
+}
+
+App::DocumentObjectExecReturn* DocumentObject::executeExtensions()
+{
+    //execute extensions but stop on error
+    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : vector) {
+        auto ret = ext->extensionExecute();
+        if (ret != StdReturn)
+            return ret;
+    }
+
+    return StdReturn;
 }
 
 bool DocumentObject::recomputeFeature(bool recursive)
@@ -740,7 +747,7 @@ void DocumentObject::onEarlyChange(const Property *prop)
         return;
 
     if(!GetApplication().isRestoring() && 
-       prop && !prop->testStatus(Property::PartialTrigger) &&
+       !prop->testStatus(Property::PartialTrigger) &&
        getDocument() && 
        getDocument()->testStatus(Document::PartialDoc))
     {

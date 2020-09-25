@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for stretching objects with the Draft Workbench.
+"""Provides GUI tools to stretch Draft objects.
 
 It works with rectangles, wires, b-splines, bezier curves, and sketches.
 It essentially moves the points that are located within a selection area,
@@ -30,9 +30,11 @@ while keeping other points intact. This means the lines tied by the points
 that were moved are 'stretched'.
 """
 ## @package gui_stretch
-# \ingroup DRAFT
-# \brief Provides tools for stretching objects with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to stretch Draft objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -43,6 +45,7 @@ import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+
 from draftutils.messages import _msg
 from draftutils.translate import translate, _tr
 
@@ -444,12 +447,12 @@ class Stretch(gui_base_original.Modifier):
                             # otherwise create a wire copy and stretch it instead
                             _msg(translate("draft", "Turning one Rectangle into a Wire"))
                             pts = []
-                            opts = [p1, p2, p3, p4]
+                            vts = ops[0].Shape.Vertexes
                             for i in range(4):
                                 if ops[1][i] == False:
-                                    pts.append(opts[i])
+                                    pts.append(vts[i].Point)
                                 else:
-                                    pts.append(opts[i].add(self.displacement))
+                                    pts.append(vts[i].Point.add(self.displacement))
                             pts = str(pts).replace("Vector ", "FreeCAD.Vector")
                             _cmd = "Draft.makeWire"
                             _cmd += "(" + pts + ", closed=True)"
@@ -461,15 +464,6 @@ class Stretch(gui_base_original.Modifier):
                             commitops.append("w = " + _cmd)
                             commitops.append(_format)
                             commitops.append(_hide)
-                            # BUG: at this step the produced wire
-                            # doesn't seem to be in the correct position
-                            # compared to the original rectangle.
-                            # The base placement needs to be adjusted
-                            # just like with the other objects.
-                            for par in ops[0].InList:
-                                if hasattr(par, "Base") and par.Base == ops[0]:
-                                    _base = _doc + par.Name + ".Base = w"
-                                    commitops.append(_base)
                     else:
                         _pl = _doc + ops[0].Name
                         _pl += ".Placement.Base=FreeCAD."
@@ -483,3 +477,5 @@ class Stretch(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Stretch', Stretch())
+
+## @}

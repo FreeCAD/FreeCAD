@@ -4,18 +4,18 @@
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="839"/>
+      <location filename="../../Command.cpp" line="840"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="840"/>
+      <location filename="../../Command.cpp" line="841"/>
       <source>Add triangle</source>
       <translation>Añadir triángulo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="841"/>
-      <location filename="../../Command.cpp" line="843"/>
+      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="844"/>
       <source>Add triangle manually to a mesh</source>
       <translation>Añadir triángulo manualmente en una malla</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdMeshBoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1514"/>
+      <location filename="../../Command.cpp" line="1545"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1515"/>
+      <location filename="../../Command.cpp" line="1546"/>
       <source>Boundings info...</source>
       <translation>Información de los límites...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1516"/>
-      <location filename="../../Command.cpp" line="1518"/>
+      <location filename="../../Command.cpp" line="1547"/>
+      <location filename="../../Command.cpp" line="1549"/>
       <source>Shows the boundings of the selected mesh</source>
       <translation>Muestra los límites de la malla seleccionada</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1555"/>
+      <location filename="../../Command.cpp" line="1586"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1556"/>
+      <location filename="../../Command.cpp" line="1587"/>
       <source>Regular solid...</source>
       <translation>Sólido regular...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1557"/>
-      <location filename="../../Command.cpp" line="1559"/>
+      <location filename="../../Command.cpp" line="1588"/>
+      <location filename="../../Command.cpp" line="1590"/>
       <source>Builds a regular solid</source>
       <translation>Crea un sólido regular</translation>
     </message>
@@ -61,31 +61,51 @@
   <context>
     <name>CmdMeshCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1062"/>
+      <location filename="../../Command.cpp" line="1063"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1063"/>
+      <location filename="../../Command.cpp" line="1064"/>
       <source>Cross-sections...</source>
       <translation>Cortes transversales...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1064"/>
       <location filename="../../Command.cpp" line="1065"/>
+      <location filename="../../Command.cpp" line="1066"/>
       <source>Cross-sections</source>
       <translation>Cortes transversales</translation>
     </message>
   </context>
   <context>
-    <name>CmdMeshDemolding</name>
+    <name>CmdMeshDecimating</name>
     <message>
-      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="1447"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1448"/>
+      <source>Decimation...</source>
+      <translation>Diezmado...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1449"/>
+      <location filename="../../Command.cpp" line="1450"/>
+      <location filename="../../Command.cpp" line="1451"/>
+      <source>Decimates a mesh</source>
+      <translation>Diezmar una malla</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshDemolding</name>
+    <message>
       <location filename="../../Command.cpp" line="133"/>
+      <source>Mesh</source>
+      <translation>Malla</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="134"/>
       <source>Interactive demolding direction</source>
       <translation>Dirección interactiva del des-moldeo</translation>
     </message>
@@ -93,12 +113,12 @@
   <context>
     <name>CmdMeshDifference</name>
     <message>
-      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="297"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="298"/>
       <source>Difference</source>
       <translation>Diferencia</translation>
     </message>
@@ -106,18 +126,18 @@
   <context>
     <name>CmdMeshEvaluateFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="1183"/>
+      <location filename="../../Command.cpp" line="1184"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1184"/>
+      <location filename="../../Command.cpp" line="1185"/>
       <source>Face info</source>
       <translation>Información de la cara</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1185"/>
-      <location filename="../../Command.cpp" line="1187"/>
+      <location filename="../../Command.cpp" line="1186"/>
+      <location filename="../../Command.cpp" line="1188"/>
       <source>Information about face</source>
       <translation>Información de la cara</translation>
     </message>
@@ -125,18 +145,18 @@
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1347"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1348"/>
+      <location filename="../../Command.cpp" line="1349"/>
       <source>Check solid mesh</source>
       <translation>Comprobar la malla del sólido</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1349"/>
-      <location filename="../../Command.cpp" line="1351"/>
+      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1352"/>
       <source>Checks whether the mesh is a solid</source>
       <translation>Comprueba si la malla es un sólido</translation>
     </message>
@@ -144,18 +164,18 @@
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
-      <location filename="../../Command.cpp" line="1141"/>
+      <location filename="../../Command.cpp" line="1142"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../Command.cpp" line="1144"/>
       <source>Evaluate and repair mesh...</source>
       <translation>Evaluar y reparar malla...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1144"/>
-      <location filename="../../Command.cpp" line="1146"/>
+      <location filename="../../Command.cpp" line="1145"/>
+      <location filename="../../Command.cpp" line="1147"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
       <translation>Abre un diálogo para analizar y reparar una malla.</translation>
     </message>
@@ -163,18 +183,18 @@
   <context>
     <name>CmdMeshExport</name>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="488"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="488"/>
+      <location filename="../../Command.cpp" line="489"/>
       <source>Export mesh...</source>
       <translation>Exportar malla...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="489"/>
-      <location filename="../../Command.cpp" line="491"/>
+      <location filename="../../Command.cpp" line="490"/>
+      <location filename="../../Command.cpp" line="492"/>
       <source>Exports a mesh to file</source>
       <translation>Exporta la malla a un archivo</translation>
     </message>
@@ -182,18 +202,18 @@
   <context>
     <name>CmdMeshFillInteractiveHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1623"/>
+      <location filename="../../Command.cpp" line="1654"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1624"/>
+      <location filename="../../Command.cpp" line="1655"/>
       <source>Close hole</source>
       <translation>Cerrar agujero</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1625"/>
-      <location filename="../../Command.cpp" line="1627"/>
+      <location filename="../../Command.cpp" line="1656"/>
+      <location filename="../../Command.cpp" line="1658"/>
       <source>Close holes interactively</source>
       <translation>Cerrar agujeros interactiva-mente</translation>
     </message>
@@ -201,18 +221,18 @@
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
-      <location filename="../../Command.cpp" line="1586"/>
+      <location filename="../../Command.cpp" line="1617"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1587"/>
+      <location filename="../../Command.cpp" line="1618"/>
       <source>Fill holes...</source>
       <translation>Rellenar agujeros ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1588"/>
-      <location filename="../../Command.cpp" line="1590"/>
+      <location filename="../../Command.cpp" line="1619"/>
+      <location filename="../../Command.cpp" line="1621"/>
       <source>Fill holes of the mesh</source>
       <translation>Rellenar agujeros de la malla</translation>
     </message>
@@ -220,18 +240,18 @@
   <context>
     <name>CmdMeshFlipNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1480"/>
+      <location filename="../../Command.cpp" line="1511"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1481"/>
+      <location filename="../../Command.cpp" line="1512"/>
       <source>Flip normals</source>
       <translation>Invertir normales</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1482"/>
-      <location filename="../../Command.cpp" line="1484"/>
+      <location filename="../../Command.cpp" line="1513"/>
+      <location filename="../../Command.cpp" line="1515"/>
       <source>Flips the normals of the mesh</source>
       <translation>Invierte la normal de la malla</translation>
     </message>
@@ -239,18 +259,18 @@
   <context>
     <name>CmdMeshFromGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="558"/>
+      <location filename="../../Command.cpp" line="559"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="559"/>
+      <location filename="../../Command.cpp" line="560"/>
       <source>Create mesh from geometry...</source>
       <translation>Crea una malla a partir de la geometría...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="560"/>
-      <location filename="../../Command.cpp" line="562"/>
+      <location filename="../../Command.cpp" line="561"/>
+      <location filename="../../Command.cpp" line="563"/>
       <source>Create mesh from the selected geometry</source>
       <translation>Crea una malla a partir de la geometría seleccionada</translation>
     </message>
@@ -258,17 +278,17 @@
   <context>
     <name>CmdMeshFromPartShape</name>
     <message>
-      <location filename="../../Command.cpp" line="616"/>
+      <location filename="../../Command.cpp" line="617"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="617"/>
+      <location filename="../../Command.cpp" line="618"/>
       <source>Create mesh from shape...</source>
       <translation>Crear malla de forma ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="618"/>
+      <location filename="../../Command.cpp" line="619"/>
       <source>Tessellate shape</source>
       <translation>Teselar forma</translation>
     </message>
@@ -276,18 +296,18 @@
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1446"/>
+      <location filename="../../Command.cpp" line="1477"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1447"/>
+      <location filename="../../Command.cpp" line="1478"/>
       <source>Harmonize normals</source>
       <translation>Armoniza las normales</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1448"/>
-      <location filename="../../Command.cpp" line="1450"/>
+      <location filename="../../Command.cpp" line="1479"/>
+      <location filename="../../Command.cpp" line="1481"/>
       <source>Harmonizes the normals of the mesh</source>
       <translation>Armoniza las normales de la malla.</translation>
     </message>
@@ -295,18 +315,18 @@
   <context>
     <name>CmdMeshImport</name>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="437"/>
+      <location filename="../../Command.cpp" line="438"/>
       <source>Import mesh...</source>
       <translation>Importar malla...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="438"/>
-      <location filename="../../Command.cpp" line="440"/>
+      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>Imports a mesh from file</source>
       <translation>Importa una malla desde un archivo</translation>
     </message>
@@ -314,12 +334,12 @@
   <context>
     <name>CmdMeshIntersection</name>
     <message>
-      <location filename="../../Command.cpp" line="366"/>
+      <location filename="../../Command.cpp" line="367"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="368"/>
       <source>Intersection</source>
       <translation>Intersección</translation>
     </message>
@@ -327,17 +347,17 @@
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1735"/>
+      <location filename="../../Command.cpp" line="1766"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1736"/>
+      <location filename="../../Command.cpp" line="1767"/>
       <source>Merge</source>
       <translation>Fusionar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1737"/>
+      <location filename="../../Command.cpp" line="1768"/>
       <source>Merges selected meshes into one</source>
       <translation>Fusionar las mallas seleccionadas en una sola</translation>
     </message>
@@ -345,18 +365,18 @@
   <context>
     <name>CmdMeshPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="886"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="886"/>
+      <location filename="../../Command.cpp" line="887"/>
       <source>Cut mesh</source>
       <translation>Cortar malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="887"/>
-      <location filename="../../Command.cpp" line="889"/>
+      <location filename="../../Command.cpp" line="888"/>
+      <location filename="../../Command.cpp" line="890"/>
       <source>Cuts a mesh with a picked polygon</source>
       <translation>Corta una malla con un polígono designado</translation>
     </message>
@@ -364,18 +384,18 @@
   <context>
     <name>CmdMeshPolySegm</name>
     <message>
-      <location filename="../../Command.cpp" line="730"/>
+      <location filename="../../Command.cpp" line="731"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="731"/>
+      <location filename="../../Command.cpp" line="732"/>
       <source>Make segment</source>
       <translation>Hacer un segmento</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="732"/>
-      <location filename="../../Command.cpp" line="734"/>
+      <location filename="../../Command.cpp" line="733"/>
+      <location filename="../../Command.cpp" line="735"/>
       <source>Creates a mesh segment</source>
       <translation>Crea un segmento de la malla</translation>
     </message>
@@ -383,18 +403,18 @@
   <context>
     <name>CmdMeshPolySelect</name>
     <message>
-      <location filename="../../Command.cpp" line="786"/>
+      <location filename="../../Command.cpp" line="787"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="787"/>
+      <location filename="../../Command.cpp" line="788"/>
       <source>Select mesh</source>
       <translation>Seleccionar una malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="788"/>
-      <location filename="../../Command.cpp" line="790"/>
+      <location filename="../../Command.cpp" line="789"/>
+      <location filename="../../Command.cpp" line="791"/>
       <source>Select an area of the mesh</source>
       <translation>Seleccionar un área de la malla</translation>
     </message>
@@ -402,18 +422,18 @@
   <context>
     <name>CmdMeshPolySplit</name>
     <message>
-      <location filename="../../Command.cpp" line="1087"/>
+      <location filename="../../Command.cpp" line="1088"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1088"/>
+      <location filename="../../Command.cpp" line="1089"/>
       <source>Split mesh</source>
       <translation>Dividir malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1089"/>
-      <location filename="../../Command.cpp" line="1091"/>
+      <location filename="../../Command.cpp" line="1090"/>
+      <location filename="../../Command.cpp" line="1092"/>
       <source>Splits a mesh into two meshes</source>
       <translation>Divide una malla en dos mallas</translation>
     </message>
@@ -421,18 +441,18 @@
   <context>
     <name>CmdMeshPolyTrim</name>
     <message>
-      <location filename="../../Command.cpp" line="946"/>
+      <location filename="../../Command.cpp" line="947"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="947"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>Trim mesh</source>
       <translation>Recortar malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="948"/>
-      <location filename="../../Command.cpp" line="950"/>
+      <location filename="../../Command.cpp" line="949"/>
+      <location filename="../../Command.cpp" line="951"/>
       <source>Trims a mesh with a picked polygon</source>
       <translation>Recorta una malla con un polígono escogido</translation>
     </message>
@@ -440,18 +460,18 @@
   <context>
     <name>CmdMeshRemeshGmsh</name>
     <message>
-      <location filename="../../Command.cpp" line="1271"/>
+      <location filename="../../Command.cpp" line="1272"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1272"/>
+      <location filename="../../Command.cpp" line="1273"/>
       <source>Refinement...</source>
       <translation>Refinamiento...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1273"/>
       <location filename="../../Command.cpp" line="1274"/>
+      <location filename="../../Command.cpp" line="1275"/>
       <source>Refine existing mesh</source>
       <translation>Refinar malla existente</translation>
     </message>
@@ -459,18 +479,18 @@
   <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
-      <location filename="../../Command.cpp" line="1304"/>
+      <location filename="../../Command.cpp" line="1305"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1305"/>
+      <location filename="../../Command.cpp" line="1306"/>
       <source>Remove components by hand...</source>
       <translation>Elimina los componentes a mano ...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1306"/>
-      <location filename="../../Command.cpp" line="1308"/>
+      <location filename="../../Command.cpp" line="1307"/>
+      <location filename="../../Command.cpp" line="1309"/>
       <source>Mark a component to remove it from the mesh</source>
       <translation>Marcar un componente para eliminarlo de la malla</translation>
     </message>
@@ -478,18 +498,18 @@
   <context>
     <name>CmdMeshRemoveComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1226"/>
+      <location filename="../../Command.cpp" line="1227"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1227"/>
+      <location filename="../../Command.cpp" line="1228"/>
       <source>Remove components...</source>
       <translation>Eliminar componentes...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1228"/>
-      <location filename="../../Command.cpp" line="1230"/>
+      <location filename="../../Command.cpp" line="1229"/>
+      <location filename="../../Command.cpp" line="1231"/>
       <source>Remove topologic independent components from the mesh</source>
       <translation>Eliminar componentes topológicos independientes de la malla</translation>
     </message>
@@ -497,17 +517,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1777"/>
+      <location filename="../../Command.cpp" line="1808"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1778"/>
+      <location filename="../../Command.cpp" line="1809"/>
       <source>Scale...</source>
       <translation>Escala...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1779"/>
+      <location filename="../../Command.cpp" line="1810"/>
       <source>Scale selected meshes</source>
       <translation>Escalado de mallas seleccionadas</translation>
     </message>
@@ -515,18 +535,18 @@
   <context>
     <name>CmdMeshSectionByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="1034"/>
+      <location filename="../../Command.cpp" line="1035"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1035"/>
+      <location filename="../../Command.cpp" line="1036"/>
       <source>Create section from mesh and plane</source>
       <translation>Crear sección de malla y del plano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1036"/>
       <location filename="../../Command.cpp" line="1037"/>
+      <location filename="../../Command.cpp" line="1038"/>
       <source>Section from mesh and plane</source>
       <translation>Sección de la malla y del plano</translation>
     </message>
@@ -534,18 +554,18 @@
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1665"/>
+      <location filename="../../Command.cpp" line="1696"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1666"/>
+      <location filename="../../Command.cpp" line="1697"/>
       <source>Create mesh segments...</source>
       <translation>Crear segmentos de la malla...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1667"/>
-      <location filename="../../Command.cpp" line="1669"/>
+      <location filename="../../Command.cpp" line="1698"/>
+      <location filename="../../Command.cpp" line="1700"/>
       <source>Create mesh segments</source>
       <translation>Crear segmentos de la malla</translation>
     </message>
@@ -553,18 +573,18 @@
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1700"/>
+      <location filename="../../Command.cpp" line="1731"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1732"/>
       <source>Create mesh segments from best-fit surfaces...</source>
       <translation>Crear segmentos de malla a partir de superficies con mejor ajuste...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
-      <location filename="../../Command.cpp" line="1704"/>
+      <location filename="../../Command.cpp" line="1733"/>
+      <location filename="../../Command.cpp" line="1735"/>
       <source>Create mesh segments from best-fit surfaces</source>
       <translation>Crear segmentos de malla a partir de superficies con mejor ajuste</translation>
     </message>
@@ -572,18 +592,18 @@
   <context>
     <name>CmdMeshSmoothing</name>
     <message>
-      <location filename="../../Command.cpp" line="1384"/>
+      <location filename="../../Command.cpp" line="1385"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1385"/>
+      <location filename="../../Command.cpp" line="1386"/>
       <source>Smooth...</source>
       <translation>Suavizar...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1386"/>
-      <location filename="../../Command.cpp" line="1388"/>
+      <location filename="../../Command.cpp" line="1387"/>
+      <location filename="../../Command.cpp" line="1389"/>
       <source>Smooth the selected meshes</source>
       <translation>Suaviza las mallas seleccionadas</translation>
     </message>
@@ -591,18 +611,18 @@
   <context>
     <name>CmdMeshToolMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="171"/>
+      <location filename="../../Command.cpp" line="172"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="172"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Segment by tool mesh</source>
       <translation>Segmento para la herramienta de malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
-      <location filename="../../Command.cpp" line="175"/>
+      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="176"/>
       <source>Creates a segment from a given tool mesh</source>
       <translation>Crea un segmento a partir de una malla de herramienta dada</translation>
     </message>
@@ -610,18 +630,18 @@
   <context>
     <name>CmdMeshTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="93"/>
+      <location filename="../../Command.cpp" line="94"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="94"/>
+      <location filename="../../Command.cpp" line="95"/>
       <source>Transform mesh</source>
       <translation>Trasformar malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="95"/>
-      <location filename="../../Command.cpp" line="97"/>
+      <location filename="../../Command.cpp" line="96"/>
+      <location filename="../../Command.cpp" line="98"/>
       <source>Rotate or move a mesh</source>
       <translation>Rotar o mover malla</translation>
     </message>
@@ -629,18 +649,18 @@
   <context>
     <name>CmdMeshTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="1006"/>
+      <location filename="../../Command.cpp" line="1007"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1007"/>
+      <location filename="../../Command.cpp" line="1008"/>
       <source>Trim mesh with a plane</source>
       <translation>Recortar malla con un plano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1008"/>
       <location filename="../../Command.cpp" line="1009"/>
+      <location filename="../../Command.cpp" line="1010"/>
       <source>Trims a mesh with a plane</source>
       <translation>Ajusta una malla con un plano</translation>
     </message>
@@ -648,12 +668,12 @@
   <context>
     <name>CmdMeshUnion</name>
     <message>
-      <location filename="../../Command.cpp" line="226"/>
+      <location filename="../../Command.cpp" line="227"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="227"/>
+      <location filename="../../Command.cpp" line="228"/>
       <source>Union</source>
       <translation>Unión</translation>
     </message>
@@ -661,18 +681,18 @@
   <context>
     <name>CmdMeshVertexCurvature</name>
     <message>
-      <location filename="../../Command.cpp" line="642"/>
+      <location filename="../../Command.cpp" line="643"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="643"/>
+      <location filename="../../Command.cpp" line="644"/>
       <source>Curvature plot</source>
       <translation>Trazado de la curvatura</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="644"/>
-      <location filename="../../Command.cpp" line="646"/>
+      <location filename="../../Command.cpp" line="645"/>
+      <location filename="../../Command.cpp" line="647"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
       <translation>Calcula la curvatura de los vértices de una malla</translation>
     </message>
@@ -680,20 +700,59 @@
   <context>
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
-      <location filename="../../Command.cpp" line="685"/>
+      <location filename="../../Command.cpp" line="686"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="686"/>
+      <location filename="../../Command.cpp" line="687"/>
       <source>Curvature info</source>
       <translation>Información de la curvatura</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="687"/>
-      <location filename="../../Command.cpp" line="689"/>
+      <location filename="../../Command.cpp" line="688"/>
+      <location filename="../../Command.cpp" line="690"/>
       <source>Information about curvature</source>
       <translation>Información de la curvatura</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::DlgDecimating</name>
+    <message>
+      <location filename="../../DlgDecimating.ui" line="14"/>
+      <source>Decimating</source>
+      <translation>Diezmando</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.ui" line="20"/>
+      <source>Reduction</source>
+      <translation>Reducción</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.ui" line="28"/>
+      <source>None</source>
+      <translation>Ninguno</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.ui" line="57"/>
+      <source>Full</source>
+      <translation>Completo</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.ui" line="66"/>
+      <location filename="../../DlgDecimating.cpp" line="91"/>
+      <source>Absolute number</source>
+      <translation>Número absoluto</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.ui" line="102"/>
+      <source>Tolerance</source>
+      <translation>Tolerancia</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.cpp" line="85"/>
+      <source>Absolute number (Maximum: %1)</source>
+      <translation>Número absoluto (Máximo: %1)</translation>
     </message>
   </context>
   <context>
@@ -823,17 +882,19 @@
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="152"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="150"/>
       <source>Settings...</source>
       <translation>Opciones...</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="188"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="349"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="186"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="347"/>
       <source>No selection</source>
       <translation>Ninguna selección</translation>
     </message>
     <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="374"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="375"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="376"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="377"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="378"/>
@@ -843,160 +904,158 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="382"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="383"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="384"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="385"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="386"/>
       <source>No information</source>
       <translation>Ninguna información</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="448"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="446"/>
       <source>Flipped normals found</source>
       <translation>Normales invertidas encontradas</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="452"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="492"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="450"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="490"/>
       <source>Orientation</source>
       <translation>Orientación</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="451"/>
       <source>Check failed due to folds on the surface.
 Please run the command to repair folds first</source>
       <translation>La comprobación a fallado debido a unos pliegues en la superficie.
 Primero ejecute el comando para reparar los pliegues</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="461"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="459"/>
       <source>No flipped normals</source>
       <translation>Ninguna normal invertida</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="467"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="465"/>
       <source>%1 flipped normals</source>
       <translation>%1 normales invertidas</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="547"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="545"/>
       <source>No non-manifolds</source>
       <translation>Sin múltiples</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="554"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="552"/>
       <source>%1 non-manifolds</source>
       <translation>%1 sin múltiples</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="601"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="604"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="599"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="602"/>
       <source>Non-manifolds</source>
       <translation>Sin múltiples</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="604"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="602"/>
       <source>Cannot remove non-manifolds</source>
       <translation>No se pueden eliminar los múltiples</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="642"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="640"/>
       <source>Invalid face indices</source>
       <translation>índices de las caras inválidos</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="649"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="647"/>
       <source>Invalid point indices</source>
       <translation>Índices de los  puntos inválidos</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="656"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="654"/>
       <source>Multiple point indices</source>
       <translation>Índices de puntos múltiples</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="663"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="661"/>
       <source>Invalid neighbour indices</source>
       <translation>Índices cercanos inválidos</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="670"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="668"/>
       <source>No invalid indices</source>
       <translation>Sin índices inválidos</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="694"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="692"/>
       <source>Indices</source>
       <translation>Índices</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="729"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="727"/>
       <source>No degenerations</source>
       <translation>Sin degeneraciones</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="735"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="733"/>
       <source>%1 degenerated faces</source>
       <translation>%1 caras deterioradas</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="760"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="758"/>
       <source>Degenerations</source>
       <translation>Degeneraciones</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="795"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="793"/>
       <source>No duplicated faces</source>
       <translation>Ninguna cara duplicada</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="801"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="799"/>
       <source>%1 duplicated faces</source>
       <translation>%1 caras duplicadas</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="827"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="825"/>
       <source>Duplicated faces</source>
       <translation>Caras duplicadas</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="861"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="859"/>
       <source>No duplicated points</source>
       <translation>Ningún punto duplicado</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="867"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="892"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="865"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="890"/>
       <source>Duplicated points</source>
       <translation>Puntos duplicados</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="933"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="931"/>
       <source>No self-intersections</source>
       <translation>Sin auto intersecciones</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="939"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="977"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="937"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="975"/>
       <source>Self-intersections</source>
       <translation>Auto-intersecciones</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1021"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1019"/>
       <source>No folds on surface</source>
       <translation>Sin pliegues en la superficie</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1037"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1035"/>
       <source>%1 folds on surface</source>
       <translation>%1 pliegues en la superficie</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1063"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1061"/>
       <source>Folds</source>
       <translation>Pliegues</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1195"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1198"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1193"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1196"/>
       <source>Mesh repair</source>
       <translation>Reparación de la malla</translation>
     </message>
@@ -1401,48 +1460,48 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="97"/>
+      <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
       <translation>Automatico</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Adaptive</source>
       <translation>Adaptativo</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="100"/>
+      <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Frontal</source>
       <translation>Frontal</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="102"/>
+      <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal Quad</source>
       <translation>Cuadro frontal</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Parallelograms</source>
       <translation>Paralelogramos</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="174"/>
-      <location filename="../../RemeshGmsh.cpp" line="230"/>
+      <location filename="../../RemeshGmsh.cpp" line="175"/>
+      <location filename="../../RemeshGmsh.cpp" line="231"/>
       <source>Time:</source>
       <translation>Tiempo:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="219"/>
+      <location filename="../../RemeshGmsh.cpp" line="220"/>
       <source>Running gmsh...</source>
       <translation>Ejecutando gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="241"/>
+      <location filename="../../RemeshGmsh.cpp" line="242"/>
       <source>Failed to start</source>
       <translation>Fallo al iniciar</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="248"/>
+      <location filename="../../RemeshGmsh.cpp" line="249"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
@@ -1450,22 +1509,22 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="378"/>
+      <location filename="../../MeshEditor.cpp" line="379"/>
       <source>Add triangle</source>
       <translation>Añadir triángulo</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="379"/>
+      <location filename="../../MeshEditor.cpp" line="380"/>
       <source>Flip normal</source>
       <translation>Invertir normal</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="380"/>
+      <location filename="../../MeshEditor.cpp" line="381"/>
       <source>Clear</source>
       <translation>Borrar</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="395"/>
+      <location filename="../../MeshEditor.cpp" line="396"/>
       <source>Finish</source>
       <translation>Finalizar</translation>
     </message>
@@ -1473,7 +1532,7 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="731"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>Terminado</translation>
     </message>
@@ -1864,7 +1923,7 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
   <context>
     <name>Mesh_BoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1531"/>
+      <location filename="../../Command.cpp" line="1562"/>
       <source>Boundings of %1:</source>
       <translation>Límites de %1:</translation>
     </message>
@@ -1872,26 +1931,26 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
   <context>
     <name>Mesh_Union</name>
     <message>
-      <location filename="../../Command.cpp" line="271"/>
-      <location filename="../../Command.cpp" line="276"/>
-      <location filename="../../Command.cpp" line="341"/>
-      <location filename="../../Command.cpp" line="346"/>
-      <location filename="../../Command.cpp" line="411"/>
-      <location filename="../../Command.cpp" line="416"/>
+      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="342"/>
+      <location filename="../../Command.cpp" line="347"/>
+      <location filename="../../Command.cpp" line="412"/>
+      <location filename="../../Command.cpp" line="417"/>
       <source>OpenSCAD</source>
       <translation>OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="272"/>
-      <location filename="../../Command.cpp" line="342"/>
-      <location filename="../../Command.cpp" line="412"/>
+      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="413"/>
       <source>Unknown error occurred while running OpenSCAD.</source>
       <translation>Se ha producido un error desconocido al ejecutar OpenSCAD.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
-      <location filename="../../Command.cpp" line="347"/>
-      <location filename="../../Command.cpp" line="417"/>
+      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="348"/>
+      <location filename="../../Command.cpp" line="418"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>OpenSCAD no parece instalado en su sistema. Por favor visite http://www.openscad.org/index.html para instalarlo.</translation>
@@ -1900,7 +1959,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1241"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1239"/>
       <source>Evaluate &amp; Repair Mesh</source>
       <translation>Evaluar y reparar malla</translation>
     </message>
@@ -1913,146 +1972,146 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>Importar/Exportar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="448"/>
+      <location filename="../../Command.cpp" line="449"/>
       <source>All Mesh Files</source>
       <translation>Todos los archivos de las mallas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="449"/>
-      <location filename="../../Command.cpp" line="506"/>
+      <location filename="../../Command.cpp" line="450"/>
+      <location filename="../../Command.cpp" line="507"/>
       <source>Binary STL</source>
       <translation>Binario STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="450"/>
-      <location filename="../../Command.cpp" line="507"/>
+      <location filename="../../Command.cpp" line="451"/>
       <location filename="../../Command.cpp" line="508"/>
+      <location filename="../../Command.cpp" line="509"/>
       <source>ASCII STL</source>
       <translation>ASCII STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="451"/>
-      <location filename="../../Command.cpp" line="509"/>
+      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="510"/>
       <source>Binary Mesh</source>
       <translation>Malla binaria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
-      <location filename="../../Command.cpp" line="510"/>
+      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="511"/>
       <source>Alias Mesh</source>
       <translation>Alias de la malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="454"/>
+      <location filename="../../Command.cpp" line="513"/>
       <source>Object File Format</source>
       <translation>Formato de archivo del objeto</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
-      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="455"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Inventor V2.1 ascii</source>
       <translation>Inventor ascii V2.1</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>Stanford Polygon</source>
       <translation>Polígono Stanford</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
-      <location filename="../../Command.cpp" line="520"/>
+      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="521"/>
       <source>All Files</source>
       <translation>Todos los Archivos</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="461"/>
+      <location filename="../../Command.cpp" line="462"/>
       <source>Import mesh</source>
       <translation>Importar malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="512"/>
       <source>Simple Model Format</source>
       <translation>Formato de modelo simple</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>X3D Extensible 3D</source>
       <translation>Extensible X3D (*.x3d) 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="517"/>
       <source>VRML V2.0</source>
       <translation>VRML V2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="518"/>
       <source>Compressed VRML 2.0</source>
       <translation>Comprimido VRML 2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="518"/>
+      <location filename="../../Command.cpp" line="519"/>
       <source>Nastran</source>
       <translation>Nastran</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="519"/>
+      <location filename="../../Command.cpp" line="520"/>
       <source>Python module def</source>
       <translation>Módulo def de Python</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="528"/>
       <source>Export mesh</source>
       <translation>Exportar la malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="568"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>Meshing Tolerance</source>
       <translation>Tolerancia de la malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="569"/>
+      <location filename="../../Command.cpp" line="570"/>
       <source>Enter tolerance for meshing geometry:</source>
       <translation>Introduce la tolerancia para la geometría de la malla:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1361"/>
+      <location filename="../../Command.cpp" line="1362"/>
       <source>The mesh '%1' is not a solid.</source>
       <translation>La malla '%1' no es un sólido.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1364"/>
+      <location filename="../../Command.cpp" line="1365"/>
       <source>The mesh '%1' is a solid.</source>
       <translation>La malla '%1' es un sólido.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1366"/>
+      <location filename="../../Command.cpp" line="1367"/>
       <source>Solid Mesh</source>
       <translation>Malla sólida</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1536"/>
+      <location filename="../../Command.cpp" line="1567"/>
       <source>Boundings</source>
       <translation>Límites</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1597"/>
+      <location filename="../../Command.cpp" line="1628"/>
       <source>Fill holes</source>
       <translation>Llenar agujeros</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1598"/>
+      <location filename="../../Command.cpp" line="1629"/>
       <source>Fill holes with maximum number of edges:</source>
       <translation>Rellenado de los agujeros con el número máximo de los bordes:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1791"/>
+      <location filename="../../Command.cpp" line="1822"/>
       <source>Scaling</source>
       <translation>Escalado</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1792"/>
+      <location filename="../../Command.cpp" line="1823"/>
       <source>Enter scaling factor:</source>
       <translation>Introduce el factor de la escala:</translation>
     </message>

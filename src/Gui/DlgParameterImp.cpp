@@ -373,9 +373,9 @@ void DlgParameterImp::activateParameterSet(const char* config)
 }
 
 /** Switches the type of parameters either to user or system parameters. */
-void DlgParameterImp::onChangeParameterSet(int index)
+void DlgParameterImp::onChangeParameterSet(int itemPos)
 {
-    ParameterManager* rcParMngr = App::GetApplication().GetParameterSet(ui->parameterSet->itemData(index).toByteArray());
+    ParameterManager* rcParMngr = App::GetApplication().GetParameterSet(ui->parameterSet->itemData(itemPos).toByteArray());
     if (!rcParMngr)
         return;
 

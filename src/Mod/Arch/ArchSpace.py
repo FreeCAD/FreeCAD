@@ -318,7 +318,8 @@ class _Space(ArchComponent.Component):
             if hasattr(obj,"EquipmentPower"):
                 if obj.AutoPower:
                     p = 0
-                    for o in Draft.getObjectsOfType(Draft.getGroupContents(obj.Group,addgroups=True),"Equipment"):
+                    for o in Draft.getObjectsOfType(Draft.get_group_contents(obj.Group, addgroups=True),
+                                                    "Equipment"):
                         if hasattr(o,"EquipmentPower"):
                             p += o.EquipmentPower
                     if p != obj.EquipmentPower:

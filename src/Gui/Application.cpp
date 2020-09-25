@@ -72,6 +72,7 @@
 #include "GuiApplication.h"
 #include "MainWindow.h"
 #include "Document.h"
+#include "DocumentPy.h"
 #include "View.h"
 #include "View3DPy.h"
 #include "WidgetFactory.h"
@@ -98,6 +99,7 @@
 #include "TransactionObject.h"
 #include "FileDialog.h"
 #include "ExpressionBindingPy.h"
+#include "ViewProviderLinkPy.h"
 
 #include "TextDocumentEditorView.h"
 #include "SplitView3DInventor.h"
@@ -129,6 +131,7 @@
 #include "ViewProviderLink.h"
 #include "LinkViewPy.h"
 #include "AxisOriginPy.h"
+#include "CommandPy.h"
 
 #include "Language/Translator.h"
 #include "TaskView/TaskView.h"
@@ -511,6 +514,11 @@ Application::Application(bool GUIenabled)
 
         Base::Interpreter().addType(&LinkViewPy::Type,module,"LinkView");
         Base::Interpreter().addType(&AxisOriginPy::Type,module,"AxisOrigin");
+        Base::Interpreter().addType(&CommandPy::Type,module, "Command");
+        Base::Interpreter().addType(&DocumentPy::Type, module, "Document");
+        Base::Interpreter().addType(&ViewProviderPy::Type, module, "ViewProvider");
+        Base::Interpreter().addType(&ViewProviderDocumentObjectPy::Type, module, "ViewProviderDocumentObject");
+        Base::Interpreter().addType(&ViewProviderLinkPy::Type, module, "ViewProviderLink");
     }
 
     Base::PyGILStateLocker lock;
@@ -823,13 +831,8 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     pDoc->signalResetEdit.connect(boost::bind(&Gui::Application::slotResetEdit, this, bp::_1));
 
     signalNewDocument(*pDoc, isMainDoc);
-    if(isMainDoc)
+    if (isMainDoc)
         pDoc->createView(View3DInventor::getClassTypeId());
-    // FIXME: Do we really need this further? Calling processEvents() mixes up order of execution in an
-    // unpredictable way. At least it seems that with Qt5 we don't need this any more.
-#if QT_VERSION < 0x050000
-    // qApp->processEvents(); // make sure to show the window stuff on the right place
-#endif
 }
 
 void Application::slotDeleteDocument(const App::Document& Doc)
@@ -1483,9 +1486,9 @@ bool Application::activateWorkbench(const char* name)
         Workbench* newWb = WorkbenchManager::instance()->active();
         if (newWb) {
             if (!Instance->d->startingUp) {
-                std::string name = newWb->name();
+                std::string nameWb = newWb->name();
                 App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                                      SetASCII("LastModule", name.c_str());
+                                      SetASCII("LastModule", nameWb.c_str());
             }
             newWb->activated();
         }

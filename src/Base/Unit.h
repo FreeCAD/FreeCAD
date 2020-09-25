@@ -45,6 +45,9 @@ namespace Base {
 #define UnitSignatureLuminousIntensityBits 4
 #define UnitSignatureAngleBits 4
 
+// Hint:
+// https://en.cppreference.com/w/cpp/language/bit_field
+// https://stackoverflow.com/questions/33723631/signed-bit-field-in-c14
 struct UnitSignature{
     int32_t Length:UnitSignatureLengthBits;
     int32_t Mass:UnitSignatureMassBits;

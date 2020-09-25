@@ -46,8 +46,10 @@ static void print_curve(const CCurve& c)
     std::size_t nvertices = c.m_vertices.size();
 #if defined SIZEOF_SIZE_T && SIZEOF_SIZE_T == 4
     printf("number of vertices = %d\n", nvertices);
-#else
+#elif defined(_WIN32)
     printf("number of vertices = %Iu\n", nvertices);
+#else
+    printf("number of vertices = %lu\n", nvertices);
 #endif
     int i = 0;
     for(std::list<CVertex>::const_iterator It = c.m_vertices.begin(); It != c.m_vertices.end(); It++, i++)

@@ -50,7 +50,7 @@ class _Analysis(CommandManager):
     def __init__(self):
         super(_Analysis, self).__init__()
         self.menuetext = "Analysis container"
-        self.accel = "N, A"
+        self.accel = "S, A"
         self.tooltip = "Creates an analysis container with standard solver CalculiX"
         self.is_active = "with_document"
 
@@ -208,7 +208,6 @@ class _ConstraintSelfWeight(CommandManager):
     def __init__(self):
         super(_ConstraintSelfWeight, self).__init__()
         self.menuetext = "Constraint self weight"
-        self.accel = "C, W"
         self.tooltip = "Creates a FEM constraint self weight"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_noset_edit"
@@ -220,7 +219,6 @@ class _ConstraintTie(CommandManager):
     def __init__(self):
         super(_ConstraintTie, self).__init__()
         self.menuetext = "Constraint tie"
-        self.accel = "C, T"
         self.tooltip = "Creates a FEM constraint tie"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -232,7 +230,6 @@ class _ElementFluid1D(CommandManager):
     def __init__(self):
         super(_ElementFluid1D, self).__init__()
         self.menuetext = "Fluid section for 1D flow"
-        self.accel = "C, B"
         self.tooltip = "Creates a FEM fluid section for 1D flow"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -244,7 +241,6 @@ class _ElementGeometry1D(CommandManager):
     def __init__(self):
         super(_ElementGeometry1D, self).__init__()
         self.menuetext = "Beam cross section"
-        self.accel = "C, B"
         self.tooltip = "Creates a FEM beam cross section"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -256,7 +252,6 @@ class _ElementGeometry2D(CommandManager):
     def __init__(self):
         super(_ElementGeometry2D, self).__init__()
         self.menuetext = "Shell plate thickness"
-        self.accel = "C, S"
         self.tooltip = "Creates a FEM shell plate thickness"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -268,7 +263,6 @@ class _ElementRotation1D(CommandManager):
     def __init__(self):
         super(_ElementRotation1D, self).__init__()
         self.menuetext = "Beam rotation"
-        self.accel = "C, R"
         self.tooltip = "Creates a FEM beam rotation"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_noset_edit"
@@ -376,7 +370,6 @@ class _MaterialFluid(CommandManager):
     def __init__(self):
         super(_MaterialFluid, self).__init__()
         self.menuetext = "Material for fluid"
-        self.accel = "M M"
         self.tooltip = "Creates a FEM material for fluid"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -388,7 +381,6 @@ class _MaterialMechanicalNonlinear(CommandManager):
     def __init__(self):
         super(_MaterialMechanicalNonlinear, self).__init__()
         self.menuetext = "Nonlinear mechanical material"
-        self.accel = "C, W"
         self.tooltip = "Creates a nonlinear mechanical material"
         self.is_active = "with_material_solid"
 
@@ -453,7 +445,6 @@ class _MaterialReinforced(CommandManager):
     def __init__(self):
         super(_MaterialReinforced, self).__init__()
         self.menuetext = "Reinforced material (concrete)"
-        self.accel = "M, M"
         self.tooltip = "Creates a material for reinforced matrix material such as concrete"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -465,7 +456,7 @@ class _MaterialSolid(CommandManager):
     def __init__(self):
         super(_MaterialSolid, self).__init__()
         self.menuetext = "Material for solid"
-        self.accel = "M, M"
+        self.accel = "M, S"
         self.tooltip = "Creates a FEM material for solid"
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -518,7 +509,6 @@ class _MeshBoundaryLayer(CommandManager):
     def __init__(self):
         super(_MeshBoundaryLayer, self).__init__()
         self.menuetext = "FEM mesh boundary layer"
-        self.accel = "M, B"
         self.tooltip = "Creates a FEM mesh boundary layer"
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
@@ -611,7 +601,6 @@ class _MeshGroup(CommandManager):
     def __init__(self):
         super(_MeshGroup, self).__init__()
         self.menuetext = "FEM mesh group"
-        self.accel = "M, G"
         self.tooltip = "Creates a FEM mesh group"
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
@@ -662,7 +651,6 @@ class _MeshRegion(CommandManager):
     def __init__(self):
         super(_MeshRegion, self).__init__()
         self.menuetext = "FEM mesh region"
-        self.accel = "M, R"
         self.tooltip = "Creates a FEM mesh region"
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
@@ -674,7 +662,7 @@ class _ResultShow(CommandManager):
     def __init__(self):
         super(_ResultShow, self).__init__()
         self.menuetext = "Show result"
-        self.accel = "S, R"
+        self.accel = "R, S"
         self.tooltip = "Shows and visualizes selected result data"
         self.is_active = "with_selresult"
 
@@ -688,7 +676,7 @@ class _ResultsPurge(CommandManager):
     def __init__(self):
         super(_ResultsPurge, self).__init__()
         self.menuetext = "Purge results"
-        self.accel = "S, S"
+        self.accel = "R, P"
         self.tooltip = "Purges all results from active analysis"
         self.is_active = "with_results"
 
@@ -752,7 +740,7 @@ class _SolverControl(CommandManager):
     def __init__(self):
         super(_SolverControl, self).__init__()
         self.menuetext = "Solver job control"
-        self.accel = "S, C"
+        self.accel = "S, T"
         self.tooltip = "Changes solver attributes and runs the calculations for the selected solver"
         self.is_active = "with_solver"
 
@@ -778,7 +766,7 @@ class _SolverRun(CommandManager):
     def __init__(self):
         super(_SolverRun, self).__init__()
         self.menuetext = "Run solver calculations"
-        self.accel = "R, C"
+        self.accel = "S, R"
         self.tooltip = "Runs the calculations for the selected solver"
         self.is_active = "with_solver"
 

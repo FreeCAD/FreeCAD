@@ -609,16 +609,28 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Név</translation>
     </message>
     <message>
-      <source>Document</source>
-      <translation>Dokumentum</translation>
+      <source>Verbose description of the new property.</source>
+      <translation type="unfinished">Verbose description of the new property.</translation>
     </message>
     <message>
-      <source>Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</source>
-      <translation>Létező tulajdonsággal való konfliktus elkerüléséhez a tulajdonságnév elé befűzi a csoportnevet 'csoport'_'név' formában. A tulajdonságszerkesztőben az előtét csoportnév automatikusan trimmelve jelenik meg.</translation>
+      <source>Documentation</source>
+      <translation>Dokumentáció</translation>
     </message>
     <message>
-      <source>Append group name</source>
-      <translation>Csoportnév hozzáfűzése</translation>
+      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
+      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+    </message>
+    <message>
+      <source>Prefix group name</source>
+      <translation type="unfinished">Prefix group name</translation>
     </message>
   </context>
   <context>
@@ -1005,6 +1017,10 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Global</source>
       <translation>Globális</translation>
     </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation type="unfinished">%1 module not loaded</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -1298,6 +1314,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Font family to be used for selected code type</source>
       <translation>A kiválasztott kód-típushoz használandó font család</translation>
+    </message>
+    <message>
+      <source>Color:</source>
+      <translation>Szín:</translation>
     </message>
   </context>
   <context>
@@ -1809,7 +1829,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Quick search</source>
-      <translation type="unfinished">Quick search</translation>
+      <translation>Gyorskeresés</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
@@ -1993,6 +2013,10 @@ Kérem válasszon másik könyvtárat.</translation>
     <message>
       <source>Open in browser</source>
       <translation>Megnyitás böngészőben</translation>
+    </message>
+    <message>
+      <source>Program version:</source>
+      <translation type="unfinished">Program version:</translation>
     </message>
   </context>
   <context>
@@ -2221,6 +2245,22 @@ from Python console to Report view panel</source>
       <translation type="unfinished">Internal Python error messages will be redirected
 from Python console to Report view panel</translation>
     </message>
+    <message>
+      <source>Include a timecode for each report</source>
+      <translation type="unfinished">Include a timecode for each report</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each entry</source>
+      <translation type="unfinished">Include a timecode for each entry</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation type="unfinished">Normal messages will be recorded</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation type="unfinished">Record normal messages</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgRunExternal</name>
@@ -2399,7 +2439,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Distributed</source>
-      <translation type="unfinished">Distributed</translation>
+      <translation>Elosztott</translation>
     </message>
     <message>
       <source>Centralized</source>
@@ -2447,15 +2487,15 @@ bounding box size of the 3D object that is currently displayed. </translation>
     </message>
     <message>
       <source>Backlight color</source>
-      <translation type="unfinished">Backlight color</translation>
+      <translation>Háttérvilágítás színe</translation>
     </message>
     <message>
       <source>Intensity</source>
-      <translation type="unfinished">Intensity</translation>
+      <translation>Intenzitás</translation>
     </message>
     <message>
       <source>Intensity of the backlight</source>
-      <translation type="unfinished">Intensity of the backlight</translation>
+      <translation>Háttérvilágítás intenzitása</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
@@ -2464,6 +2504,16 @@ bounding box size of the 3D object that is currently displayed. </translation>
     <message>
       <source>Objects will appear in a perspective projection</source>
       <translation type="unfinished">Objects will appear in a perspective projection</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation type="unfinished">Axis cross will be shown by default at file
+opening or creation</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation type="unfinished">Show axis cross by default</translation>
     </message>
   </context>
   <context>
@@ -2739,7 +2789,7 @@ This feature may slightly increase recomputation time.</translation>
     </message>
     <message>
       <source>Allow aborting recomputation</source>
-      <translation type="unfinished">Allow aborting recomputation</translation>
+      <translation>Újraszámítás megszakításának engedélyezése</translation>
     </message>
     <message>
       <source>If there is a recovery file available the application will
@@ -3235,14 +3285,6 @@ Turntable: the part will be rotated around the z-axis.</translation>
       <translation>Trackball</translation>
     </message>
     <message>
-      <source>New document camera orientation</source>
-      <translation type="unfinished">New document camera orientation</translation>
-    </message>
-    <message>
-      <source>Camera orientation for new documents</source>
-      <translation type="unfinished">Camera orientation for new documents</translation>
-    </message>
-    <message>
       <source>New document scale</source>
       <translation type="unfinished">New document scale</translation>
     </message>
@@ -3349,6 +3391,14 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Custom</source>
       <translation>Egyéni</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation type="unfinished">Default camera orientation</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
     </message>
   </context>
   <context>
@@ -4195,7 +4245,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     </message>
     <message>
       <source>Euler angles (xy'z'')</source>
-      <translation type="unfinished">Euler angles (xy'z'')</translation>
+      <translation>Euler-szögek (xy'z'')</translation>
     </message>
   </context>
   <context>
@@ -4213,11 +4263,11 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <name>Gui::Dialog::RemoteDebugger</name>
     <message>
       <source>Attach to remote debugger</source>
-      <translation type="unfinished">Attach to remote debugger</translation>
+      <translation>Csatlakozás távoli debuggerhez</translation>
     </message>
     <message>
       <source>winpdb</source>
-      <translation type="unfinished">winpdb</translation>
+      <translation>winpdb</translation>
     </message>
     <message>
       <source>Password:</source>
@@ -4225,19 +4275,19 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     </message>
     <message>
       <source>VS Code</source>
-      <translation type="unfinished">VS Code</translation>
+      <translation>VS Code</translation>
     </message>
     <message>
       <source>Address:</source>
-      <translation type="unfinished">Address:</translation>
+      <translation>Cím:</translation>
     </message>
     <message>
       <source>Port:</source>
-      <translation type="unfinished">Port:</translation>
+      <translation>Port:</translation>
     </message>
     <message>
       <source>Redirect output</source>
-      <translation type="unfinished">Redirect output</translation>
+      <translation>Kimenet átirányítása</translation>
     </message>
   </context>
   <context>
@@ -4399,18 +4449,6 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <source>Logging</source>
-      <translation>Naplózás</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Riasztás</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Hiba</translation>
-    </message>
-    <message>
       <source>Options</source>
       <translation>Beállítások</translation>
     </message>
@@ -4441,6 +4479,30 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <message>
       <source>Plain Text Files</source>
       <translation>Egyszerű szöveges fájlok</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation type="unfinished">Display message types</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation type="unfinished">Normal messages</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation type="unfinished">Log messages</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation type="unfinished">Warnings</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation type="unfinished">Errors</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation type="unfinished">Show report view on</translation>
     </message>
   </context>
   <context>
@@ -5208,7 +5270,7 @@ Ki szeretne lépni az adatok mentése nélkül?</translation>
     </message>
     <message>
       <source>Save history</source>
-      <translation type="unfinished">Save history</translation>
+      <translation>Előzmények mentése</translation>
     </message>
     <message>
       <source>Saves Python history across %1 sessions</source>
@@ -5556,7 +5618,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <source>Korean</source>
-      <translation type="unfinished">Korean</translation>
+      <translation>Koreai</translation>
     </message>
     <message>
       <source>Russian</source>
@@ -5576,7 +5638,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <source>Portuguese, Brazilian</source>
-      <translation type="unfinished">Portuguese, Brazilian</translation>
+      <translation>Portugál, braziliai</translation>
     </message>
     <message>
       <source>Portuguese</source>
@@ -5628,23 +5690,23 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <source>Basque</source>
-      <translation type="unfinished">Basque</translation>
+      <translation>Baszk</translation>
     </message>
     <message>
       <source>Catalan</source>
-      <translation type="unfinished">Catalan</translation>
+      <translation>Katalán</translation>
     </message>
     <message>
       <source>Galician</source>
-      <translation type="unfinished">Galician</translation>
+      <translation>Galíciai</translation>
     </message>
     <message>
       <source>Kabyle</source>
-      <translation type="unfinished">Kabyle</translation>
+      <translation>Kabili</translation>
     </message>
     <message>
       <source>Filipino</source>
-      <translation type="unfinished">Filipino</translation>
+      <translation>Filippínó</translation>
     </message>
     <message>
       <source>Indonesian</source>
@@ -5806,6 +5868,25 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     <message>
       <source>Recompute the selected object</source>
       <translation type="unfinished">Recompute the selected object</translation>
+    </message>
+    <message>
+      <source> (but must be executed)</source>
+      <translation type="unfinished"> (but must be executed)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+      <source>Vectors</source>
+      <translation type="unfinished">Vectors</translation>
+    </message>
+    <message>
+      <source>Table</source>
+      <translation type="unfinished">Table</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -6400,23 +6481,23 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
     <message>
       <source>Delete failed</source>
-      <translation type="unfinished">Delete failed</translation>
+      <translation>Törlés sikertelen</translation>
     </message>
     <message>
       <source>Dependency error</source>
-      <translation type="unfinished">Dependency error</translation>
+      <translation>Függőség hiba</translation>
     </message>
     <message>
       <source>Copy selected</source>
-      <translation type="unfinished">Copy selected</translation>
+      <translation>Kijelöltek másolása</translation>
     </message>
     <message>
       <source>Copy active document</source>
-      <translation type="unfinished">Copy active document</translation>
+      <translation>Aktív dokumentum másolása</translation>
     </message>
     <message>
       <source>Copy all documents</source>
-      <translation type="unfinished">Copy all documents</translation>
+      <translation>Összes dokumentum másolása</translation>
     </message>
     <message>
       <source>Paste</source>
@@ -6424,7 +6505,7 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
     <message>
       <source>Expression error</source>
-      <translation type="unfinished">Expression error</translation>
+      <translation>Kifejezés hiba</translation>
     </message>
     <message>
       <source>Failed to parse some of the expressions.
@@ -6478,7 +6559,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Invalid name</source>
-      <translation type="unfinished">Invalid name</translation>
+      <translation>Érvénytelen név</translation>
     </message>
     <message>
       <source>The property name or group name must only contain alpha numericals,
@@ -6806,6 +6887,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+      <source>Tools</source>
+      <translation>Eszközök</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Függőségi grafikon...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Mutassa a tárgy függőségi grafikonját az aktív dokumentumban</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
@@ -6920,6 +7016,10 @@ Choose 'Abort' to abort</translation>
       <source>Draw style</source>
       <translation>Rajzolási stílus</translation>
     </message>
+    <message>
+      <source>Change the draw style of the objects</source>
+      <translation type="unfinished">Change the draw style of the objects</translation>
+    </message>
   </context>
   <context>
     <name>StdCmdDuplicateSelection</name>
@@ -6976,21 +7076,6 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Please select first the objects you want to export.</source>
       <translation>Az exportáláshoz először válasszon ki tárgyat.</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdExportGraphviz</name>
-    <message>
-      <source>Tools</source>
-      <translation>Eszközök</translation>
-    </message>
-    <message>
-      <source>Dependency graph...</source>
-      <translation>Függőségi grafikon...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Mutassa a tárgy függőségi grafikonját az aktív dokumentumban</translation>
     </message>
   </context>
   <context>
@@ -8439,6 +8524,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standard-nézet</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation type="unfinished">Home</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation type="unfinished">Set to default home view</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Standard-View</source>
@@ -9035,16 +9135,19 @@ Are you sure you want to continue?
 </translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document. 
-
-</translation>
-    </message>
-    <message>
       <source>Object dependencies</source>
       <translation>Objektumfüggőségek</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Függőségi grafikon</translation>
     </message>
   </context>
   <context>
@@ -9117,13 +9220,6 @@ Are you sure you want to continue?
 Do you want to save the document now?</source>
       <translation type="unfinished">To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-      <source>Dependency graph</source>
-      <translation>Függőségi grafikon</translation>
     </message>
   </context>
   <context>

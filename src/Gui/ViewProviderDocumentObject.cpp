@@ -74,31 +74,33 @@ using namespace Gui;
 PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
 ViewProviderDocumentObject::ViewProviderDocumentObject()
-  : pcObject(0)
-  , pcDocument(0)
+  : pcObject(nullptr)
+  , pcDocument(nullptr)
 {
-    ADD_PROPERTY(DisplayMode,((long)0));
-    ADD_PROPERTY(Visibility,(true));
-    ADD_PROPERTY(ShowInTree,(true));
-
-    ADD_PROPERTY(SelectionStyle,((long)0));
+    static const char *dogroup = "Display Options";
+    static const char *sgroup = "Selection";
+    
+    ADD_PROPERTY_TYPE(DisplayMode, ((long)0), dogroup, App::Prop_None, "Set the display mode");
+    ADD_PROPERTY_TYPE(Visibility, (true), dogroup, App::Prop_None, "Show the object in the 3d view");
+    ADD_PROPERTY_TYPE(ShowInTree, (true), dogroup, App::Prop_None, "Show the object in the tree view");
+    
+    ADD_PROPERTY_TYPE(SelectionStyle, ((long)0), sgroup, App::Prop_None, "Set the object selection style");
     static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
     SelectionStyle.setEnums(SelectionStyleEnum);
 
     static const char *ShadowStyleEnum[] = {"Cast shadow and shadowed","Cast shadow", "Shadowed", "No shadowing", 0};
     ShadowStyle.setEnums(ShadowStyleEnum);
-    ADD_PROPERTY_TYPE(ShadowStyle,((long)0), "Base", App::Prop_None,
+    ADD_PROPERTY_TYPE(ShadowStyle,((long)0), dogroup, App::Prop_None,
             "Cast shadow and shadowed: Cast shadow and receive shadows.\n"
             "Cast shadow: Only cast shadow, but not receive any shadow.\n"
             "Shadowed: Only receive shadow, but not cast any shadow.\n"
             "No shadowing: Neither cast nor receive any shadow.");
 
-    ADD_PROPERTY(Selectable,(true));
+    ADD_PROPERTY_TYPE(Selectable, (true), sgroup, App::Prop_None, "Set if the object is selectable in the 3d view");
     Selectable.setValue(ViewParams::instance()->getEnableSelection());
 
     static const char* OnTopEnum[]= {"Disabled","Enabled","Object","Element",NULL};
-    ADD_PROPERTY(OnTopWhenSelected,((long int)0));
-    ADD_PROPERTY_TYPE(OnTopWhenSelected,((long int)0), "Base", App::Prop_None, 
+    ADD_PROPERTY_TYPE(OnTopWhenSelected,((long int)0), sgroup, App::Prop_None,
             "Enabled: Display the object on top of any other object when selected\n"
             "Object: On top only if the whole object is selected\n"
             "Element: On top only if some sub-element of the object is selected");
@@ -227,9 +229,12 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             // this is undesired behaviour. So, if this change marks the document as
             // modified then it must be be reversed.
             if (!testStatus(Gui::ViewStatus::TouchDocument)) {
-                bool mod = pcDocument->isModified();
+                bool mod = false;
+                if (pcDocument)
+                    mod = pcDocument->isModified();
                 getObject()->Visibility.setValue(Visibility.getValue());
-                pcDocument->setModified(mod);
+                if (pcDocument)
+                    pcDocument->setModified(mod);
             }
             else {
                 getObject()->Visibility.setValue(Visibility.getValue());
@@ -384,8 +389,13 @@ Gui::Document* ViewProviderDocumentObject::getDocument() const
 {
     if(!pcObject)
         throw Base::RuntimeError("View provider detached");
-    App::Document* pAppDoc = pcObject->getDocument();
-    return Gui::Application::Instance->getDocument(pAppDoc);
+    if (pcDocument) {
+        return pcDocument;
+    }
+    else {
+        App::Document* pAppDoc = pcObject->getDocument();
+        return Gui::Application::Instance->getDocument(pAppDoc);
+    }
 }
 
 Gui::MDIView* ViewProviderDocumentObject::getActiveView() const

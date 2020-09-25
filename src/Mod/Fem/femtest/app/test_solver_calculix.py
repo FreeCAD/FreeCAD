@@ -25,7 +25,6 @@ __title__ = "Solver calculix FEM unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-import sys
 import unittest
 from os.path import join
 
@@ -140,11 +139,8 @@ class TestSolverCalculix(unittest.TestCase):
     def test_constraint_contact_solid_solid(
         self
     ):
-        # does not pass on travis, but on my local system it does, Bernd
+        # TODO does pass on my local machine, but not on travis
         return
-        # TODO does not pass on Python 2
-        if sys.version_info.major < 3:
-            return
 
         from femexamples.constraint_contact_solid_solid import setup
         setup(self.document, "calculix")
@@ -155,6 +151,14 @@ class TestSolverCalculix(unittest.TestCase):
         self
     ):
         from femexamples.constraint_section_print import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_constraint_selfweight_cantilever(
+        self
+    ):
+        from femexamples.constraint_selfweight_cantilever import setup
         setup(self.document, "calculix")
         self.input_file_writing_test(get_namefromdef("test_"))
 
@@ -195,6 +199,22 @@ class TestSolverCalculix(unittest.TestCase):
         self
     ):
         from femexamples.material_nl_platewithhole import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_square_pipe_end_twisted_edgeforces(
+        self
+    ):
+        from femexamples.square_pipe_end_twisted_edgeforces import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_square_pipe_end_twisted_nodeforces(
+        self
+    ):
+        from femexamples.square_pipe_end_twisted_nodeforces import setup
         setup(self.document, "calculix")
         self.input_file_writing_test(get_namefromdef("test_"))
 

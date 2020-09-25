@@ -26,14 +26,16 @@
 #include "PreCompiled.h"
 
 #include "DlgPrefsTechDrawAdvancedImp.h"
+#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDrawAdvanced.h>
 #include <Gui/PrefWidgets.h>
 
 using namespace TechDrawGui;
 
 DlgPrefsTechDrawAdvancedImp::DlgPrefsTechDrawAdvancedImp( QWidget* parent )
   : PreferencePage( parent )
+  , ui(new Ui_DlgPrefsTechDrawAdvancedImp)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 }
 
 DlgPrefsTechDrawAdvancedImp::~DlgPrefsTechDrawAdvancedImp()
@@ -43,32 +45,32 @@ DlgPrefsTechDrawAdvancedImp::~DlgPrefsTechDrawAdvancedImp()
 
 void DlgPrefsTechDrawAdvancedImp::saveSettings()
 {
-    cbEndCap->onSave();
-    cbCrazyEdges->onSave();
-    cbDebugSection->onSave();
-    cbDetectFaces->onSave();
-    cbDebugDetail->onSave();
-    cbShowSectionEdges->onSave();
-    cbFuseBeforeSection->onSave();
-    sbMaxTiles->onSave();
-    sbMaxPat->onSave();
-    cbShowLoose->onSave();
-    leFormatSpec->onSave();
+    ui->cbEndCap->onSave();
+    ui->cbCrazyEdges->onSave();
+    ui->cbDebugSection->onSave();
+    ui->cbDetectFaces->onSave();
+    ui->cbDebugDetail->onSave();
+    ui->cbShowSectionEdges->onSave();
+    ui->cbFuseBeforeSection->onSave();
+    ui->sbMaxTiles->onSave();
+    ui->sbMaxPat->onSave();
+    ui->cbShowLoose->onSave();
+    ui->leFormatSpec->onSave();
 }
 
 void DlgPrefsTechDrawAdvancedImp::loadSettings()
 {
-    cbEndCap->onRestore();
-    cbCrazyEdges->onRestore();
-    cbDebugSection->onRestore();
-    cbDetectFaces->onRestore();
-    cbDebugDetail->onRestore();
-    cbShowSectionEdges->onRestore();
-    cbFuseBeforeSection->onRestore();
-    sbMaxTiles->onRestore();
-    sbMaxPat->onRestore();
-    cbShowLoose->onRestore();
-    leFormatSpec->onRestore();
+    ui->cbEndCap->onRestore();
+    ui->cbCrazyEdges->onRestore();
+    ui->cbDebugSection->onRestore();
+    ui->cbDetectFaces->onRestore();
+    ui->cbDebugDetail->onRestore();
+    ui->cbShowSectionEdges->onRestore();
+    ui->cbFuseBeforeSection->onRestore();
+    ui->sbMaxTiles->onRestore();
+    ui->sbMaxPat->onRestore();
+    ui->cbShowLoose->onRestore();
+    ui->leFormatSpec->onRestore();
 }
 
 /**
@@ -78,7 +80,7 @@ void DlgPrefsTechDrawAdvancedImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         saveSettings();
-        retranslateUi(this);
+        ui->retranslateUi(this);
         loadSettings();
     }
     else {

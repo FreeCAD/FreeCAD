@@ -134,55 +134,55 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="139"/>
       <source>Convert Edges to Faces</source>
-      <translation>Konwersja krawędzi do lic</translation>
+      <translation>Konwertuj krawędzie na ściany</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="211"/>
+      <location filename="../../OpenSCADCommands.py" line="243"/>
       <source>Please select 3 objects first</source>
-      <translation>Proszę wybrać najpierw 3 obiekty</translation>
+      <translation>Najpierw proszę wybrać 3 obiekty</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1207"/>
+      <location filename="../../importCSG.py" line="1224"/>
       <source>Unsupported Function</source>
       <translation>Funkcja nieobsługiwana</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1207"/>
+      <location filename="../../importCSG.py" line="1224"/>
       <source>Press OK</source>
       <translation>Naciśnij przycisk OK</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="249"/>
+      <location filename="../../OpenSCADCommands.py" line="281"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="250"/>
+      <location filename="../../OpenSCADCommands.py" line="282"/>
       <source>Clear</source>
       <translation>Wyczyść</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="251"/>
+      <location filename="../../OpenSCADCommands.py" line="283"/>
       <source>as Mesh</source>
       <translation>jako Siatka (Mesh)</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="252"/>
+      <location filename="../../OpenSCADCommands.py" line="284"/>
       <source>Add OpenSCAD Element</source>
       <translation>Dodaj element OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="325"/>
+      <location filename="../../OpenSCADCommands.py" line="357"/>
       <source>Perform</source>
       <translation>Wykonaj</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="326"/>
+      <location filename="../../OpenSCADCommands.py" line="358"/>
       <source>Mesh Boolean</source>
       <translation>Boolean siatki</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="596"/>
+      <location filename="../../OpenSCADUtils.py" line="607"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>Błąd, wszystkie kształty muszą być albo 2d albo 3d</translation>
     </message>
@@ -195,12 +195,12 @@
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="366"/>
+      <location filename="../../OpenSCADCommands.py" line="398"/>
       <source>Add OpenSCAD Element...</source>
-      <translation>Dodaj element OpenSCAD...</translation>
+      <translation>Dodaj element OpenSCAD ...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="367"/>
+      <location filename="../../OpenSCADCommands.py" line="399"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>Dodaj element OpenSCAD wprowadzając i wykonując jego kod</translation>
     </message>
@@ -229,12 +229,12 @@
   <context>
     <name>OpenSCAD_ExpandPlacements</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="193"/>
+      <location filename="../../OpenSCADCommands.py" line="225"/>
       <source>Expand Placements</source>
       <translation>Rozwiń położenia</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="194"/>
+      <location filename="../../OpenSCADCommands.py" line="226"/>
       <source>Expand all placements downwards the FeatureTree</source>
       <translation>Rozwiń wszystkie miejsca docelowe w dół drzewa funkcji</translation>
     </message>
@@ -255,12 +255,12 @@
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="399"/>
+      <location filename="../../OpenSCADCommands.py" line="431"/>
       <source>Hull</source>
       <translation>Powłoka</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="400"/>
+      <location filename="../../OpenSCADCommands.py" line="432"/>
       <source>Perform Hull</source>
       <translation>Wykonaj kadłub</translation>
     </message>
@@ -268,12 +268,12 @@
   <context>
     <name>OpenSCAD_IncreaseToleranceFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="176"/>
+      <location filename="../../OpenSCADCommands.py" line="208"/>
       <source>Increase Tolerance Feature</source>
       <translation>Funkcja powiększenia tolerancji</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="177"/>
+      <location filename="../../OpenSCADCommands.py" line="209"/>
       <source>Create Feature that allows to increase the tolerance</source>
       <translation>Tworzy Funkcję, która umożliwia zwiększenie tolerancji</translation>
     </message>
@@ -281,12 +281,12 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="379"/>
+      <location filename="../../OpenSCADCommands.py" line="411"/>
       <source>Mesh Boolean...</source>
       <translation>Boolean siatki...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="380"/>
+      <location filename="../../OpenSCADCommands.py" line="412"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation>Eksportuje obiekty jako siatki i używa OpenSCAD aby wykonać operację boolean</translation>
     </message>
@@ -294,14 +294,27 @@
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="418"/>
+      <location filename="../../OpenSCADCommands.py" line="450"/>
       <source>Minkowski</source>
       <translation>Minkowski</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="419"/>
+      <location filename="../../OpenSCADCommands.py" line="451"/>
       <source>Perform Minkowski</source>
       <translation>Wykonaj Minkowskiego</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_MirrorMeshFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="188"/>
+      <source>Mirror Mesh Feature...</source>
+      <translation>Odbij właściwości siatki...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="189"/>
+      <source>Create Mirror Mesh Feature</source>
+      <translation>Twórz właściwości siatki</translation>
     </message>
   </context>
   <context>
@@ -320,12 +333,12 @@
   <context>
     <name>OpenSCAD_RemoveSubtree</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="226"/>
+      <location filename="../../OpenSCADCommands.py" line="258"/>
       <source>Remove Objects and their Children</source>
       <translation>Usuń obiekt wraz z jego potomkami</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="227"/>
+      <location filename="../../OpenSCADCommands.py" line="259"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
       <translation>Usuwa wybrane obiekty wraz ze wszystkimi potomkami, do których nie odnoszą się inne obiekty</translation>
     </message>
@@ -333,12 +346,12 @@
   <context>
     <name>OpenSCAD_ReplaceObject</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="214"/>
+      <location filename="../../OpenSCADCommands.py" line="246"/>
       <source>Replace Object</source>
-      <translation>Zamień obiekt</translation>
+      <translation>Zastąp obiekt</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="215"/>
+      <location filename="../../OpenSCADCommands.py" line="247"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
       <translation>Zmień obiekt w drzewie elementów. Wybierz stary, nowy i nadrzędny obiekt</translation>
     </message>
@@ -356,7 +369,7 @@
     <message>
       <location filename="../../InitGui.py" line="80"/>
       <source>OpenSCADTools</source>
-      <translation>OpenSCADNarzędzia</translation>
+      <translation>Narzędzia OpenSCAD</translation>
     </message>
   </context>
 </TS>

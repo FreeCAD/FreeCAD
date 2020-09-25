@@ -4,7 +4,7 @@
   <context>
     <name>AddonInstaller</name>
     <message>
-      <location filename="../../addonmanager_workers.py" line="436"/>
+      <location filename="../../addonmanager_workers.py" line="444"/>
       <source>Installed location</source>
       <translation>Ubicació instal·lada</translation>
     </message>
@@ -87,107 +87,107 @@
       <translation>No s'ha pogut eliminar la macro.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="127"/>
+      <location filename="../../addonmanager_workers.py" line="135"/>
       <source>Unable to download addon list.</source>
       <translation>No es pot baixar la llista de complements.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="132"/>
+      <location filename="../../addonmanager_workers.py" line="140"/>
       <source>Workbenches list was updated.</source>
       <translation>S'ha actualitzat la llista de bancs de treball.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="619"/>
+      <location filename="../../addonmanager_workers.py" line="634"/>
       <source>Outdated GitPython detected, consider upgrading with pip.</source>
       <translation>S'ha detectat GitPython obsolet, plantegeu-vos l'actualització amb pip.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="254"/>
+      <location filename="../../addonmanager_workers.py" line="262"/>
       <source>List of macros successfully retrieved.</source>
       <translation>La llista de macos s'ha recuperat correctament.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="529"/>
+      <location filename="../../addonmanager_workers.py" line="542"/>
       <source>Retrieving description...</source>
       <translation>S'està recuperant la descripció...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="347"/>
+      <location filename="../../addonmanager_workers.py" line="355"/>
       <source>Retrieving info from</source>
       <translation>S'està recuperant informació de</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="434"/>
+      <location filename="../../addonmanager_workers.py" line="442"/>
       <source>An update is available for this addon.</source>
       <translation>Hi ha una actualització disponible per a aquest complement.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="430"/>
+      <location filename="../../addonmanager_workers.py" line="438"/>
       <source>This addon is already installed.</source>
       <translation>Aquest complement ja s'ha instal·lat.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="531"/>
+      <location filename="../../addonmanager_workers.py" line="544"/>
       <source>Retrieving info from git</source>
       <translation>S'està recuperant informació de git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="534"/>
+      <location filename="../../addonmanager_workers.py" line="547"/>
       <source>Retrieving info from wiki</source>
       <translation>S'està recuperant informació del wiki</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="583"/>
+      <location filename="../../addonmanager_workers.py" line="596"/>
       <source>GitPython not found. Using standard download instead.</source>
       <translation>No s'ha trobat GitPython. En lloc seu s'utilitza la descàrrega estàndard.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="588"/>
+      <location filename="../../addonmanager_workers.py" line="601"/>
       <source>Your version of python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
       <translation>La vostra versió de python n&apos;o sembla ser compatible amb els fitxers ZIP. No es pot procedir.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="653"/>
+      <location filename="../../addonmanager_workers.py" line="670"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
       <translation>El banc de treball s'ha instal·lat correctament. Reinicieu FreeCAD per aplicar els canvis.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="703"/>
+      <location filename="../../addonmanager_workers.py" line="720"/>
       <source>Missing workbench</source>
       <translation>Falta el banc de treball</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="712"/>
+      <location filename="../../addonmanager_workers.py" line="729"/>
       <source>Missing python module</source>
       <translation>Falta el mòdul python</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="720"/>
+      <location filename="../../addonmanager_workers.py" line="737"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
       <translation>Falta el mòdul python opcional (n&apos;o impedeix la instal·lació)</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="722"/>
+      <location filename="../../addonmanager_workers.py" line="739"/>
       <source>Some errors were found that prevent to install this workbench</source>
       <translation>S'han trobat alguns errors que impedeixen instal·lar aquest banc de treball</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="723"/>
+      <location filename="../../addonmanager_workers.py" line="740"/>
       <source>Please install the missing components first.</source>
       <translation>Instal·leu primer els components que falten.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="747"/>
+      <location filename="../../addonmanager_workers.py" line="764"/>
       <source>Error: Unable to download</source>
       <translation>S'ha produït un error: no es pot baixar</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="766"/>
+      <location filename="../../addonmanager_workers.py" line="783"/>
       <source>Successfully installed</source>
       <translation>S'ha instal·lat correctament</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="270"/>
+      <location filename="../../addonmanager_workers.py" line="278"/>
       <source>GitPython not installed! Cannot retrieve macros from git</source>
       <translation>No s'ha instal·lat GitPython. No es poden recuperar les macros de git</translation>
     </message>
@@ -212,43 +212,63 @@
       <translation>S'ha de reiniciar</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="541"/>
+      <location filename="../../addonmanager_workers.py" line="554"/>
       <source>This macro is already installed.</source>
       <translation>Aquesta macro ja s'ha instal·lat.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="664"/>
+      <location filename="../../addonmanager_workers.py" line="681"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>S'ha instal·lat una macro i està disponible en el menú Macro -&gt; Macros</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="277"/>
-      <source>Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</source>
-      <translation>S'ha produït un error amb Git Macro Retieval, possiblement l'executable de Git no es troba en el camí</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_workers.py" line="442"/>
+      <location filename="../../addonmanager_workers.py" line="450"/>
       <source>This addon is marked as obsolete</source>
       <translation>Aquest complement està marcat com a obsolet</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="443"/>
+      <location filename="../../addonmanager_workers.py" line="451"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
       <translation>Normalment significa que ja no és mantingut i que algun complement més avançats d'aquesta llista ofereix la mateixa funcionalitat.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="740"/>
+      <location filename="../../addonmanager_workers.py" line="757"/>
       <source>Error: Unable to locate zip from</source>
       <translation>S'ha produït un error: no s'ha pogut localitzar el zip des de</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="285"/>
+      <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
+      <translation type="unfinished">Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="455"/>
+      <source>This addon is marked as Python 2 Only</source>
+      <translation type="unfinished">This addon is marked as Python 2 Only</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="456"/>
+      <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
+      <translation type="unfinished">This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="625"/>
+      <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
+      <translation type="unfinished">User requested updating a Python 2 workbench on a system running Python 3 - </translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="653"/>
+      <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
+      <translation type="unfinished">Workbench successfully updated. Please restart FreeCAD to apply the changes.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="659"/>
+      <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
+      <translation type="unfinished">User requested installing a Python 2 workbench on a system running Python 3 - </translation>
     </message>
   </context>
   <context>
     <name>Dialog</name>
-    <message>
-      <location filename="../../AddonManager.ui" line="14"/>
-      <source>Addons manager</source>
-      <translation>Gestor de complements</translation>
-    </message>
     <message>
       <location filename="../../AddonManager.ui" line="37"/>
       <source>Workbenches</source>
@@ -325,11 +345,6 @@
       <translation>Instal·la/actualitza la selecció</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.ui" line="157"/>
-      <source>Close the addons manager</source>
-      <translation>Tanca el gestor de complements</translation>
-    </message>
-    <message>
       <location filename="../../AddonManager.ui" line="160"/>
       <source>Close</source>
       <translation>Tanca</translation>
@@ -345,12 +360,6 @@ installed addons will be checked for available updates
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires GitPython)</source>
       <translation>Comprova automàticament si hi ha actualitzacions en iniciar (requereix GitPithon)</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="42"/>
-      <source>You can use this window to specify additional addon repositories
-sto be scanned for available addons</source>
-      <translation>Podeu utilitzar aquesta finestra per a especificar repositoris de complements addicionals que s'hauran d'escanejar per als components disponibles</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
@@ -371,6 +380,23 @@ sto be scanned for available addons</source>
       <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>User defined proxy :</source>
       <translation>Servidor intermediari definit per l'usuari :</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.ui" line="14"/>
+      <source>Addon Manager</source>
+      <translation type="unfinished">Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.ui" line="157"/>
+      <source>Close the Addon Manager</source>
+      <translation type="unfinished">Close the Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="42"/>
+      <source>You can use this window to specify additional addon repositories
+to be scanned for available addons</source>
+      <translation type="unfinished">You can use this window to specify additional addon repositories
+to be scanned for available addons</translation>
     </message>
   </context>
   <context>

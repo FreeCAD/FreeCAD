@@ -62,7 +62,8 @@ PyObject* GeoFeaturePy::getGlobalPlacement(PyObject * args) {
 PyObject* GeoFeaturePy::getPropertyNameOfGeometry(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
+
     GeoFeature* object = this->getGeoFeaturePtr();
     const PropertyComplexGeoData* prop = object->getPropertyOfGeometry();
     const char* name = prop ? prop->getName() : 0;
@@ -75,6 +76,19 @@ PyObject* GeoFeaturePy::getPropertyNameOfGeometry(PyObject * args)
 Py::String GeoFeaturePy::getElementMapVersion() const {
     return Py::String(getGeoFeaturePtr()->getElementMapVersion(
                 getGeoFeaturePtr()->getPropertyOfGeometry()));
+}
+
+PyObject* GeoFeaturePy::getPropertyOfGeometry(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    GeoFeature* object = this->getGeoFeaturePtr();
+    const PropertyComplexGeoData* prop = object->getPropertyOfGeometry();
+    if (prop) {
+        return const_cast<PropertyComplexGeoData*>(prop)->getPyObject();
+    }
+    return Py::new_reference_to(Py::None());
 }
 
 PyObject *GeoFeaturePy::getCustomAttributes(const char* /*attr*/) const

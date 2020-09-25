@@ -269,11 +269,6 @@ NullShapeException::NullShapeException(const std::string& sMessage)
 {
 }
 
-NullShapeException::NullShapeException(const NullShapeException &inst)
-  : ValueError(inst)
-{
-}
-
 // ------------------------------------------------
 
 BooleanException::BooleanException()
@@ -288,11 +283,6 @@ BooleanException::BooleanException(const char * sMessage)
 
 BooleanException::BooleanException(const std::string& sMessage)
   : CADKernelError(sMessage)
-{
-}
-
-BooleanException::BooleanException(const BooleanException &inst)
-  : CADKernelError(inst)
 {
 }
 

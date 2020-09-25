@@ -26,6 +26,7 @@
 
 #include <map>
 #include <QPointer>
+#include <QDialog>
 
 #include <App/Application.h>
 #include <App/Document.h>

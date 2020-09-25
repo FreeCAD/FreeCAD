@@ -51,6 +51,8 @@ public:
     DocumentT(Document*);
     /*! Constructor */
     DocumentT(const std::string&);
+    /*! Constructor */
+    DocumentT(const DocumentT&);
     /*! Destructor */
     ~DocumentT();
     /*! Assignment operator */

@@ -117,6 +117,12 @@
 #include <Base/GeometryPyCXX.h>
 #include "Link.h"
 
+#include "DocumentPy.h"
+#include "DocumentObjectGroupPy.h"
+#include "LinkBaseExtensionPy.h"
+#include "OriginGroupExtensionPy.h"
+#include "PartPy.h"
+
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
 // src/Build/Version.h. Or create your own from src/Build/Version.h.in!
@@ -129,6 +135,7 @@
 #include <boost/version.hpp>
 #include <QDir>
 #include <QFileInfo>
+#include <QProcessEnvironment>
 
 using namespace App;
 using namespace std;
@@ -312,6 +319,23 @@ Application::Application(std::map<std::string,std::string> &mConfig)
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
 
+    // Add document types
+    Base::Interpreter().addType(&App::PropertyContainerPy::Type, pAppModule, "PropertyContainer");
+    Base::Interpreter().addType(&App::ExtensionContainerPy::Type, pAppModule, "ExtensionContainer");
+    Base::Interpreter().addType(&App::DocumentPy::Type, pAppModule, "Document");
+    Base::Interpreter().addType(&App::DocumentObjectPy::Type, pAppModule, "DocumentObject");
+    Base::Interpreter().addType(&App::DocumentObjectGroupPy::Type, pAppModule, "DocumentObjectGroup");
+    Base::Interpreter().addType(&App::GeoFeaturePy::Type, pAppModule, "GeoFeature");
+    Base::Interpreter().addType(&App::PartPy::Type, pAppModule, "Part");
+
+    // Add extension types
+    Base::Interpreter().addType(&App::ExtensionPy::Type, pAppModule, "Extension");
+    Base::Interpreter().addType(&App::DocumentObjectExtensionPy::Type, pAppModule, "DocumentObjectExtension");
+    Base::Interpreter().addType(&App::GroupExtensionPy::Type, pAppModule, "GroupExtension");
+    Base::Interpreter().addType(&App::GeoFeatureGroupExtensionPy::Type, pAppModule, "GeoFeatureGroupExtension");
+    Base::Interpreter().addType(&App::OriginGroupExtensionPy::Type, pAppModule, "OriginGroupExtension");
+    Base::Interpreter().addType(&App::LinkBaseExtensionPy::Type, pAppModule, "LinkBaseExtension");
+
     //insert Base and Console
     Py_INCREF(pBaseModule);
     PyModule_AddObject(pAppModule, "Base", pBaseModule);
@@ -391,9 +415,11 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     if (!Name || Name[0] == '\0')
         Name = "Unnamed";
     string name = getUniqueDocumentName(Name, tempDoc);
-    if(tempDoc) {
+
+    // return the temporary document if it exists
+    if (tempDoc) {
         auto it = DocMap.find(name);
-        if(it != DocMap.end() && it->second->testStatus(Document::TempDoc))
+        if (it != DocMap.end() && it->second->testStatus(Document::TempDoc))
             return it->second;
     }
 
@@ -416,9 +442,10 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
 
     // create the FreeCAD document
     std::unique_ptr<Document> newDoc(new Document(name.c_str()));
-    if(tempDoc)
+    if (tempDoc)
         newDoc->setStatus(Document::TempDoc, true);
-    auto activeDoc = _pActiveDoc;
+
+    auto oldActiveDoc = _pActiveDoc;
     auto doc = newDoc.get();
 
     // add the document to the internal list
@@ -455,12 +482,15 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
         Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),active);
     }
 
-    signalNewDocument(*_pActiveDoc,createView);
+    signalNewDocument(*_pActiveDoc, createView);
 
     // set the UserName after notifying all observers
     _pActiveDoc->Label.setValue(userName);
-    if (tempDoc && activeDoc)
-        setActiveDocument(activeDoc);
+
+    // set the old document active again if the new is temporary
+    if (tempDoc && oldActiveDoc)
+        setActiveDocument(oldActiveDoc);
+
     return doc;
 }
 
@@ -546,7 +576,7 @@ std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) c
         std::vector<std::string> names;
         names.reserve(DocMap.size());
         for (pos = DocMap.begin();pos != DocMap.end();++pos) {
-            if(!tempDoc || !pos->second->testStatus(Document::TempDoc))
+            if (!tempDoc || !pos->second->testStatus(Document::TempDoc))
                 names.push_back(pos->first);
         }
         return Base::Tools::getUniqueName(CleanName, names);
@@ -599,7 +629,13 @@ public:
     ~DocOpenGuard() {
         if(flag) {
             flag = false;
-            signal();
+            try {
+                signal();
+            }
+            catch (const boost::exception&) {
+                // reported by code analyzers
+                Base::Console().Warning("~DocOpenGuard: Unexpected boost exception\n");
+            }
         }
     }
 };
@@ -883,7 +919,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
                         // multiple documents and each with a different set of
                         // objects. To partially solve this problem, we do not
                         // close and reopen the document immediately here, but
-                        // add it to_pendingDocsReopen to delay reloading.
+                        // add it to _pendingDocsReopen to delay reloading.
                         for(auto obj : doc->getObjects())
                             objNames.insert(obj->getNameInDocument());
                         _pendingDocMap[doc->FileName.getValue()] = std::move(objNames);
@@ -1006,7 +1042,13 @@ Application::TransactionSignaller::TransactionSignaller(bool abort, bool signal)
 Application::TransactionSignaller::~TransactionSignaller() {
     if(--_TransSignalCount == 0 && _TransSignalled) {
         _TransSignalled = false;
-        GetApplication().signalCloseTransaction(abort);
+        try {
+            GetApplication().signalCloseTransaction(abort);
+        }
+        catch (const boost::exception&) {
+            // reported by code analyzers
+            Base::Console().Warning("~TransactionSignaller: Unexpected boost exception\n");
+        }
     }
 }
 
@@ -2116,8 +2158,7 @@ void Application::initConfig(int argc, char ** argv)
 #endif
     }
 
-    // Set application tmp. directory
-    mConfig["AppTempPath"] = Base::FileInfo::getTempPath();
+    // Change application tmp. directory
     std::string tmpPath = _pcUserParamMngr->GetGroup("BaseApp/Preferences/General")->GetASCII("TempPath");
     Base::FileInfo di(tmpPath);
     if (di.exists() && di.isDir()) {
@@ -2794,20 +2835,70 @@ void Application::ExtractUserPath()
     mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
     mConfig["DocPath"] = mConfig["AppHomePath"] + "doc" + PATHSEP;
 
+    // Set application tmp. directory
+    mConfig["AppTempPath"] = Base::FileInfo::getTempPath();
+
+    // this is to support a portable version of FreeCAD
+    QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
+    QString userHome = env.value(QString::fromLatin1("FREECAD_USER_HOME"));
+    QString userData = env.value(QString::fromLatin1("FREECAD_USER_DATA"));
+    QString userTemp = env.value(QString::fromLatin1("FREECAD_USER_TEMP"));
+
+    // verify env. variables
+    if (!userHome.isEmpty()) {
+        QDir dir(userHome);
+        if (dir.exists())
+            userHome = QDir::toNativeSeparators(dir.canonicalPath());
+        else
+            userHome.clear();
+    }
+
+    if (!userData.isEmpty()) {
+        QDir dir(userData);
+        if (dir.exists())
+            userData = QDir::toNativeSeparators(dir.canonicalPath());
+        else
+            userData.clear();
+    }
+    else if (!userHome.isEmpty()) {
+        // if FREECAD_USER_HOME is set but not FREECAD_USER_DATA
+        userData = userHome;
+    }
+
+    // override temp directory if set by env. variable
+    if (!userTemp.isEmpty()) {
+        QDir dir(userTemp);
+        if (dir.exists()) {
+            userTemp = dir.canonicalPath();
+            userTemp += QDir::separator();
+            userTemp = QDir::toNativeSeparators(userTemp);
+            mConfig["AppTempPath"] = userTemp.toUtf8().data();
+        }
+    }
+    else if (!userHome.isEmpty()) {
+        // if FREECAD_USER_HOME is set but not FREECAD_USER_TEMP
+        QDir dir(userHome);
+        dir.mkdir(QString::fromLatin1("temp"));
+        QFileInfo fi(dir, QString::fromLatin1("temp"));
+        QString tmp(fi.absoluteFilePath());
+        tmp += QDir::separator();
+        tmp = QDir::toNativeSeparators(tmp);
+        mConfig["AppTempPath"] = tmp.toUtf8().data();
+    }
+
 #if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
     // Default paths for the user specific stuff
     struct passwd *pwd = getpwuid(getuid());
     if (pwd == NULL)
         throw Base::RuntimeError("Getting HOME path from system failed!");
     mConfig["UserHomePath"] = pwd->pw_dir;
+    if (!userHome.isEmpty()) {
+        mConfig["UserHomePath"] = userHome.toUtf8().data();
+    }
 
-    char *path = pwd->pw_dir;
-    char *fc_user_data;
-    if ((fc_user_data = getenv("FREECAD_USER_DATA"))) {
-        QString env = QString::fromUtf8(fc_user_data);
-        QDir dir(env);
-        if (!env.isEmpty() && dir.exists())
-            path = fc_user_data;
+    std::string path = pwd->pw_dir;
+    if (!userData.isEmpty()) {
+        path = userData.toUtf8().data();
     }
 
     std::string appData(path);
@@ -2862,7 +2953,14 @@ void Application::ExtractUserPath()
     if (pwd == NULL)
         throw Base::RuntimeError("Getting HOME path from system failed!");
     mConfig["UserHomePath"] = pwd->pw_dir;
+    if (!userHome.isEmpty()) {
+        mConfig["UserHomePath"] = userHome.toUtf8().data();
+    }
+
     std::string appData = pwd->pw_dir;
+    if (!userData.isEmpty()) {
+        appData = userData.toUtf8().data();
+    }
     appData += PATHSEP;
     appData += "Library";
     appData += PATHSEP;
@@ -2921,8 +3019,13 @@ void Application::ExtractUserPath()
         WideCharToMultiByte(CP_UTF8, 0, szPath, -1,dest, 256, NULL, NULL);
         mConfig["UserHomePath"] = dest;
     }
-    else
+    else {
         mConfig["UserHomePath"] = mConfig["AppHomePath"];
+    }
+
+    if (!userHome.isEmpty()) {
+        mConfig["UserHomePath"] = userHome.toUtf8().data();
+    }
 
     // In the second step we want the directory where user settings of the application can be
     // kept. There we create a directory with name of the vendor and a sub-directory with name
@@ -2932,6 +3035,9 @@ void Application::ExtractUserPath()
         WideCharToMultiByte(CP_UTF8, 0, szPath, -1,dest, 256, NULL, NULL);
 
         std::string appData = dest;
+        if (!userData.isEmpty()) {
+            appData = userData.toUtf8().data();
+        }
         Base::FileInfo fi(appData.c_str());
         if (!fi.exists()) {
             // This should never ever happen

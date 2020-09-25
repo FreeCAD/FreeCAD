@@ -364,6 +364,16 @@ Gelieve slechts één cel te kiezen.</translation>
       <source>Copy &amp; Paste failed</source>
       <translation>Kopiëren en plakken mislukt</translation>
     </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Alias bevat ongeldige tekens!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Verwijs naar cel met een alias, bijvoorbeeld
+Spreadsheet.mijn_alias_naam in plaats van Spreadsheet.B1</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -447,20 +457,18 @@ Gelieve slechts één cel te kiezen.</translation>
       <translation>Vorm</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Inhoud</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Inhoud:</translation>
     </message>
     <message>
-      <source>&amp;Alias</source>
-      <translation type="unfinished">&amp;Alias</translation>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Alias:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </translation>
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Verwijs naar cel met een alias, bijvoorbeeld
+Spreadsheet.mijn_alias_naam in plaats van Spreadsheet.B1</translation>
     </message>
   </context>
   <context>

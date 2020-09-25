@@ -21,8 +21,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Unit test for the Draft Workbench, object creation tests."""
+"""Unit tests for the Draft Workbench, object creation tests."""
+## @package test_creation
+# \ingroup drafttests
+# \brief Unit tests for the Draft Workbench, object creation tests.
 
+## \addtogroup drafttests
+# @{
 import unittest
 
 import FreeCAD as App
@@ -343,9 +348,24 @@ class DraftCreation(unittest.TestCase):
         self.doc.recompute()
         self.assertTrue(obj, "'{}' failed".format(operation))
 
+    def test_layer(self):
+        """Create a layer, and add a rectangle to it."""
+        operation = "Draft Layer"
+        _msg("  Test '{}'".format(operation))
+        length = 5
+        width = 2
+        _msg("  length={0}, width={1}".format(length, width))
+        rect = Draft.make_rectangle(length, width)
+
+        obj = Draft.make_layer()
+        obj.Proxy.addObject(obj, rect)
+        self.assertTrue(obj, "'{}' failed".format(operation))
+
     def tearDown(self):
         """Finish the test.
 
         This is executed after each test, so we close the document.
         """
         App.closeDocument(self.doc.Name)
+
+## @}

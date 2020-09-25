@@ -154,11 +154,12 @@ void TaskProjGroup::saveGroupState()
         m_saveSpacingY = multiView->spacingY.getValue();
         DrawProjGroupItem* anchor = multiView->getAnchor();
         m_saveDirection = anchor->Direction.getValue();
-    }
-    for( const auto it : multiView->Views.getValues() ) {
-        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (view != nullptr) {
-            m_saveViewNames.push_back(view->Type.getValueAsString());
+
+        for( const auto it : multiView->Views.getValues() ) {
+            auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+            if (view != nullptr) {
+                m_saveViewNames.push_back(view->Type.getValueAsString());
+            }
         }
     }
 }

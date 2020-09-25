@@ -86,7 +86,7 @@ referencing subobject.
 
     DocAndPyObject: return a tuple (object, matrix, pyobj) for each subname
 
-    Placement: return a trasformed placement of the sub-object
+    Placement: return a transformed placement of the sub-object
 
 * matrix: the initial transformation to be applied to the sub object.
 

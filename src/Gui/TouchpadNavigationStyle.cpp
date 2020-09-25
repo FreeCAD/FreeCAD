@@ -36,8 +36,6 @@
 # include <QRegExp>
 #endif
 
-#include <Inventor/sensors/SoTimerSensor.h>
-
 #include <App/Application.h>
 #include "NavigationStyle.h"
 #include "View3DInventorViewer.h"
@@ -157,11 +155,11 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
                 this->setViewing(true);
             break;
         case SoKeyboardEvent::PAGE_UP:
-            doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
+            doZoom(viewer->getSoRenderManager()->getCamera(), getDelta(), posn);
             processed = true;
             break;
         case SoKeyboardEvent::PAGE_DOWN:
-            doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
+            doZoom(viewer->getSoRenderManager()->getCamera(), -getDelta(), posn);
             processed = true;
             break;
         default:
@@ -247,14 +245,6 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
                 processed = true;
             }
             this->button2down = press;
-            break;
-        case SoMouseButtonEvent::BUTTON4:
-            doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
-            processed = true;
-            break;
-        case SoMouseButtonEvent::BUTTON5:
-            doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
-            processed = true;
             break;
         default:
             break;

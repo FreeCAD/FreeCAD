@@ -544,7 +544,7 @@ std::vector<TopoShape> TopoShape::searchSubShape(
     case TopAbs_FACE: {
         std::unique_ptr<Geometry> g;
         if(checkGeometry) {
-            g.reset(Geometry::fromShape(subshape.getShape()));
+            g = Geometry::fromShape(subshape.getShape());
             if(!g)
                 return res;
         }

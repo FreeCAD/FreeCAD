@@ -129,12 +129,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="718"/>
+      <location filename="../../BrowserView.cpp" line="727"/>
       <source>Browser</source>
       <translation>المتصفح</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="547"/>
+      <location filename="../../BrowserView.cpp" line="556"/>
       <source>File does not exist!</source>
       <translation>الملف غير موجود!</translation>
     </message>
@@ -142,18 +142,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="538"/>
-      <location filename="../../BrowserView.cpp" line="543"/>
+      <location filename="../../BrowserView.cpp" line="547"/>
+      <location filename="../../BrowserView.cpp" line="552"/>
       <source>Error</source>
       <translation>خطأ</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="543"/>
+      <location filename="../../BrowserView.cpp" line="552"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>ظهرت أخطاء أثناء تحميل الملف. ربما قد تم تعديل بعض البيانات أو أنه لم يتم استرجاعها. للمزيد من المعلومات المحددة عن العناصر المعنية يرجى الاطلاع على التقرير.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="689"/>
+      <location filename="../../BrowserView.cpp" line="698"/>
       <source>Loading %1...</source>
       <translation>تحميل %1...</translation>
     </message>
@@ -161,17 +161,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="300"/>
+      <location filename="../../BrowserView.cpp" line="304"/>
       <source>Open in External Browser</source>
       <translation>فتح في متصفح خارجي</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="304"/>
+      <location filename="../../BrowserView.cpp" line="308"/>
       <source>Open in new window</source>
       <translation>فتح في صفحة جديدة</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="336"/>
+      <location filename="../../BrowserView.cpp" line="340"/>
       <source>View source</source>
       <translation>عرض المصدر</translation>
     </message>

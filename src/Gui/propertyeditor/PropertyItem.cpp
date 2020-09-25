@@ -354,7 +354,7 @@ QVariant PropertyItem::decoration(const QVariant&) const
 
 QVariant PropertyItem::toString(const QVariant& prop) const
 {
-    if(prop != QVariant() || propertyItems.size()!=1)
+    if (prop != QVariant() || propertyItems.size()!=1)
         return prop;
 
     std::ostringstream ss;
@@ -378,7 +378,8 @@ QVariant PropertyItem::toString(const QVariant& prop) const
             if(i<seq.size())
                 ss << "...";
             ss << ']';
-        }else if(App::isPyMapping(pyobj)) {
+        }
+        else if(App::isPyMapping(pyobj)) {
             ss << '{';
             Py::Mapping map(pyobj);
             bool first = true;
@@ -394,7 +395,8 @@ QVariant PropertyItem::toString(const QVariant& prop) const
             if(it!=map.end())
                 ss << "...";
             ss << '}';
-        }else
+        }
+        else
             ss << pyobj.as_string();
 
     } catch (Py::Exception &) {
@@ -2141,8 +2143,8 @@ void PlacementEditor::updateValue(const QVariant& v, bool incr, bool data)
             QVariant u = value();
             const Base::Placement& plm = u.value<Base::Placement>();
             const Base::Placement& rel = v.value<Base::Placement>();
-            Base::Placement data = rel * plm;
-            setValue(QVariant::fromValue<Base::Placement>(data));
+            Base::Placement newp = rel * plm;
+            setValue(QVariant::fromValue<Base::Placement>(newp));
         }
         else {
             setValue(v);

@@ -20,11 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the Draft ArrayTools command to group the other array tools."""
+"""Provides GUI tools to create parametric Array objects. Grouping command."""
 ## @package gui_arrays
-# \ingroup DRAFT
-# \brief Provide the Draft ArrayTools command to group the other array tools.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create parametric Array objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -34,6 +36,7 @@ import draftguitools.gui_orthoarray
 import draftguitools.gui_patharray
 import draftguitools.gui_pointarray
 import draftguitools.gui_polararray
+import draftguitools.gui_pathtwistedarray
 
 # The module is used to prevent complaints from code checkers (flake8)
 bool(Draft_rc.__name__)
@@ -52,7 +55,8 @@ class ArrayGroup:
         return ("Draft_OrthoArray",
                 "Draft_PolarArray", "Draft_CircularArray",
                 "Draft_PathArray", "Draft_PathLinkArray",
-                "Draft_PointArray")
+                "Draft_PointArray", "Draft_PointLinkArray",
+                "Draft_PathTwistedArray", "Draft_PathTwistedLinkArray")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -73,3 +77,5 @@ class ArrayGroup:
 
 
 Gui.addCommand('Draft_ArrayTools', ArrayGroup())
+
+## @}

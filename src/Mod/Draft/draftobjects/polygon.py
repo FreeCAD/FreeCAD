@@ -20,22 +20,20 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Polygon.
-"""
+"""Provides the object code for the Polygon object."""
 ## @package polygon
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Polygon.
+# \ingroup draftobjects
+# \brief Provides the object code for the Polygon object.
 
+## \addtogroup draftobjects
+# @{
 import math
-
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 import DraftGeomUtils
 
 from draftutils.utils import get_param
-
 from draftobjects.base import DraftObject
 
 
@@ -119,4 +117,7 @@ class Polygon(DraftObject):
         obj.positionBySupport()
 
 
+# Alias for compatibility with v0.18 and earlier
 _Polygon = Polygon
+
+## @}

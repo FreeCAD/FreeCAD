@@ -119,12 +119,12 @@ PyMethodDef Application::Methods[] = {
 //   "saveDocument(string) -- Save the document to a file."},
 //  {"saveDocumentAs", (PyCFunction) Application::sSaveDocumentAs, METH_VARARGS},
     {"newDocument",    reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( Application::sNewDocument )), METH_VARARGS|METH_KEYWORDS,
-     "newDocument(name, label=None, hidden=False, tmp=False) -> object\n"
+     "newDocument(name, label=None, hidden=False, temp=False) -> object\n"
      "Create a new document with a given name.\n\n"
      "name: unique document name which is checked automatically.\n"
      "label: optional user changeable label for the document.\n"
      "hidden: whether to hide document 3D view.\n"
-     "temp: mark the document as temporary so that it will not be save"},
+     "temp: mark the document as temporary so that it will not be saved"},
     {"closeDocument",  (PyCFunction) Application::sCloseDocument, METH_VARARGS,
      "closeDocument(string) -> None\n\n"
      "Close the document with a given name."},
@@ -269,12 +269,13 @@ PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args, PyObjec
     PyObject *temp = Py_False;
     static char *kwlist[] = {"name","label","hidden","temp",0};
     if (!PyArg_ParseTupleAndKeywords(args, kwd, "|etetOO", kwlist,
-                "utf-8", &docName, "utf-8", &usrName, &hidden))
+                "utf-8", &docName, "utf-8", &usrName, &hidden, &temp))
         return NULL;
 
     PY_TRY {
         App::Document* doc = GetApplication().newDocument(docName, usrName,
-                !PyObject_IsTrue(hidden), PyObject_IsTrue(temp));
+                                                          !PyObject_IsTrue(hidden),
+                                                          PyObject_IsTrue(temp));
         PyMem_Free(docName);
         PyMem_Free(usrName);
         return doc->getPyObject();

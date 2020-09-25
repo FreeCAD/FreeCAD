@@ -739,20 +739,20 @@ Do you want to continue?</source>
       <translation>选择一个电子表格对象。</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="53"/>
-      <location filename="../../TaskOrthoViews.cpp" line="981"/>
+      <location filename="../../TaskOrthoViews.cpp" line="54"/>
+      <location filename="../../TaskOrthoViews.cpp" line="982"/>
       <source>Make axonometric...</source>
       <translation>创建轴测投影...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="54"/>
-      <location filename="../../TaskOrthoViews.cpp" line="982"/>
+      <location filename="../../TaskOrthoViews.cpp" line="55"/>
+      <location filename="../../TaskOrthoViews.cpp" line="983"/>
       <source>Edit axonometric settings...</source>
       <translation>编辑轴测图设置...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="55"/>
-      <location filename="../../TaskOrthoViews.cpp" line="983"/>
+      <location filename="../../TaskOrthoViews.cpp" line="56"/>
+      <location filename="../../TaskOrthoViews.cpp" line="984"/>
       <source>Make orthographic</source>
       <translation>创建正交投影</translation>
     </message>

@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating dimension objects with the Draft Workbench.
+"""Provides GUI tools to create dimension objects.
 
 The objects can be simple linear dimensions that measure between two arbitrary
 points, or linear dimensions linked to an edge.
@@ -32,8 +32,8 @@ And it can also be an angular dimension measuring the angle between
 two straight lines.
 """
 ## @package gui_dimensions
-# \ingroup DRAFT
-# \brief Provides tools for creating dimensions with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create dimension objects.
 
 import math
 import lazy_loader.lazy_loader as lz
@@ -54,6 +54,9 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
+
+## \addtogroup draftguitools
+# @{
 
 
 class Dimension(gui_base_original.Creator):
@@ -578,3 +581,5 @@ class Dimension(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_Dimension', Dimension())
+
+## @}

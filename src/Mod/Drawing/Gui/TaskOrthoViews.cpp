@@ -95,11 +95,11 @@ void pagesize(string & page_template, int dims[4], int block[4])
         {
             if (line.find("<!-- Working space") != string::npos)
             {
-                sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &dims[0], &dims[1], &dims[2], &dims[3]);        //eg "    <!-- Working space 10 10 410 287 -->"
+                (void)sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &dims[0], &dims[1], &dims[2], &dims[3]);        //eg "    <!-- Working space 10 10 410 287 -->"
                 getline (file,line);
 
                 if (line.find("<!-- Title block") != string::npos)
-                    sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &t0, &t1, &t2, &t3);    //eg "    <!-- Working space 10 10 410 287 -->"
+                    (void)sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &t0, &t1, &t2, &t3);    //eg "    <!-- Working space 10 10 410 287 -->"
 
                 break;
             }
@@ -230,7 +230,7 @@ void orthoview::smooth(bool state)
     this_view->ShowSmoothLines.setValue(state);
 }
 
-void orthoview::set_projection(gp_Ax2 cs)
+void orthoview::set_projection(const gp_Ax2& cs)
 {
     gp_Ax2  actual_cs;
     gp_Dir  actual_X;

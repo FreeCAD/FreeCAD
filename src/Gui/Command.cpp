@@ -712,7 +712,8 @@ void Command::_runCommand(const char *file, int line, DoCmd_Type eType, const ch
 
     try {
         Base::Interpreter().runString(sCmd);
-    }catch(Py::Exception &) {
+    }
+    catch(Py::Exception &) {
         Base::PyException::ThrowException();
     }
 }

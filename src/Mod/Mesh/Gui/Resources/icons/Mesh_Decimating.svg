@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   width="64"
+   height="64"
+   id="svg9484"
+   version="1.1">
+  <title
+     id="title3749">Mesh_Decimating</title>
+  <defs
+     id="defs9486">
+    <linearGradient
+       id="linearGradient1347">
+      <stop
+         style="stop-color:#4e9a06;stop-opacity:1"
+         offset="0"
+         id="stop1343" />
+      <stop
+         style="stop-color:#8ae234;stop-opacity:1"
+         offset="1"
+         id="stop1345" />
+    </linearGradient>
+    <marker
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path1067"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:none;stroke-width:1pt;stroke-opacity:1;fill:#8ae234;fill-opacity:1"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
+    <linearGradient
+       id="linearGradient12537">
+      <stop
+         style="stop-color:#00fd00;stop-opacity:1;"
+         offset="0"
+         id="stop12539" />
+      <stop
+         style="stop-color:#00fd00;stop-opacity:0;"
+         offset="1"
+         id="stop12541" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient12537"
+       id="linearGradient12547"
+       x1="4.5"
+       y1="14.755193"
+       x2="30.5"
+       y2="14.755193"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(35,-2)" />
+    <linearGradient
+       id="linearGradient1014">
+      <stop
+         style="stop-color:#204a87;stop-opacity:1"
+         offset="0"
+         id="stop1010" />
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1"
+         offset="1"
+         id="stop1012" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient1347"
+       id="linearGradient1349"
+       x1="25.894817"
+       y1="-1.0932833"
+       x2="11.196301"
+       y2="-19.181715"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <metadata
+     id="metadata9489">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
+        <dc:title>Mesh_Decimating</dc:title>
+        <dc:description>Green diamond faces</dc:description>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title />
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>mesh</rdf:li>
+            <rdf:li>triangles</rdf:li>
+            <rdf:li>diamond</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:relation />
+        <dc:identifier />
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>21-06-2020</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[bitacovir]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="translate(0,32)"
+     style="opacity:1">
+    <path
+       id="path877"
+       d="M 3.8064632,-10.211279 23,-10 32,28 Z"
+       style="fill:#4e9a06;stroke:#172a04;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path879"
+       d="M 32,28 60,-10 H 41 Z"
+       style="fill:#4e9a06;stroke:#172a04;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path881"
+       d="M 23,-10 H 41 L 32,28 Z"
+       style="fill:#73d216;stroke:#172a04;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path883"
+       d="M 3.8064632,-10.211279 10,-26 23,-10 Z"
+       style="fill:#73d216;stroke:#172a04;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path885"
+       d="m 23,-10 9,-16 9,16 z"
+       style="fill:#73d216;stroke:#172a04;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       id="path887"
+       d="m 41,-10 13,-16 6,16 z"
+       style="fill:#73d216;stroke:#172a04;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path889"
+       d="m 10,-26 13,16 9,-16 z"
+       style="fill:#4e9a06;stroke:#172a04;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path891"
+       d="m 32,-26 9,16 13,-16 z"
+       style="fill:#4e9a06;stroke:#172a04;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path893"
+       d="m 6.7521431,-12.161229 3.8517379,-9.884581 8.16754,10.070206 z"
+       style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="opacity:1;fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 57.109387,-11.993453 -3.735722,-10.0122 -8.155938,10.000597 z"
+       id="path893-0" />
+    <path
+       id="path910"
+       d="M 7.7673869,-8.1343652 21.406208,-8.0143693 27.809951,19.002349 Z"
+       style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path912"
+       d="m 28.732934,18.646115 -1.80877,0.806767 2.969698,3.986942 z"
+       style="fill:#8ae234;stroke:none;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="opacity:1;fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 55.940111,-8.0226002 42.672542,-7.9954172 36.219577,18.873636 Z"
+       id="path910-7" />
+    <path
+       style="opacity:1;fill:#8ae234;stroke:none;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 35.263229,18.581894 1.80877,0.806767 -2.969698,3.986942 z"
+       id="path912-1" />
+    <path
+       id="path944"
+       d="M 25.522276,-8.018349 38.469664,-7.979905 31.99398,19.223182 Z"
+       style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="opacity:1;fill:#8ae234;stroke:none;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 32.955365,19.441922 -1.936387,-0.01695 1.009024,4.126161 z"
+       id="path912-4" />
+    <path
+       style="opacity:1;fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 26.13166,-11.550201 5.87042,-10.348647 5.940029,10.348646 z"
+       id="path893-4" />
+    <path
+       style="opacity:1;fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 14.213265,-23.962597 14.352326,0.02535 -5.844182,10.595236 z"
+       id="path893-2" />
+    <path
+       id="path893-2-4"
+       d="m 49.818586,-24.004219 -14.401548,7.39e-4 5.893404,10.488589 z"
+       style="opacity:1;fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+</svg>

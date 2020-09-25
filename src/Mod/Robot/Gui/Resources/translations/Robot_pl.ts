@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="159"/>
       <source>Place robot...</source>
-      <translation>Miejsce robota...</translation>
+      <translation>Postaw robota...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="160"/>
       <source>Place a robot (experimental!)</source>
-      <translation>Miejsce robota (eksperymentalne!)</translation>
+      <translation>Postaw robota (eksperymentalne!)</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="63"/>
       <source>Create trajectory</source>
-      <translation>Utwórz trajektorię</translation>
+      <translation>Tworzenie toru pracy</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="322"/>
       <source>Generate a Trajectory from a set of edges</source>
-      <translation>Generuj trajektorię z zestawu krawędzi</translation>
+      <translation>Generuj tor pracy z zestawu krawędzi</translation>
     </message>
   </context>
   <context>
@@ -246,7 +246,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="218"/>
       <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>Ustaw domyślną orientację dla kolejnych poleceń przy tworzeniu punktów trasy</translation>
     </message>
   </context>
   <context>
@@ -264,7 +264,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="256"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+      <translation>Ustaw domyślne wartości prędkości, przyspieszenia i ciągłości dla kolejnych poleceń tworzenia punktów trasy</translation>
     </message>
   </context>
   <context>
@@ -345,12 +345,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>Robot tools</source>
-      <translation>Narzędzia Robot</translation>
+      <translation>Narzędzia Robota</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Insert Robot</source>
-      <translation>Wstaw Robot</translation>
+      <translation>Wstaw Robota</translation>
     </message>
   </context>
   <context>

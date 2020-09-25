@@ -74,12 +74,21 @@ using namespace Gui;
 //creation constructor
 TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     ui(new Ui_TaskDetail),
+    blockUpdate(false),
+    m_ghost(nullptr),
+    m_mdi(nullptr),
+    m_scene(nullptr),
+    m_view(nullptr),
     m_detailFeat(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(nullptr),
+    m_qgParent(nullptr),
     m_inProgressLock(false),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_saveAnchor(Base::Vector3d(0.0, 0.0, 0.0)),
     m_saveRadius(0.0),
+    m_saved(false),
     m_baseName(std::string()),
     m_pageName(std::string()),
     m_detailName(std::string()),
@@ -95,6 +104,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     m_basePage = m_baseFeat->findParentPage();
     if (m_basePage == nullptr) {
         Base::Console().Error("TaskDetail - bad parameters - base page.  Can not proceed.\n");
+        return;
     }
 
     m_baseName = m_baseFeat->getNameInDocument();
@@ -112,7 +122,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
 
     createDetail();
     setUiFromFeat();
-    setWindowTitle(QObject::tr("New Detail"));
+    setWindowTitle(QObject::tr("New Detail View"));
 
     connect(ui->pbDragger, SIGNAL(clicked(bool)),
             this, SLOT(onDraggerClicked(bool)));
@@ -142,12 +152,21 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
 //edit constructor
 TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     ui(new Ui_TaskDetail),
+    blockUpdate(false),
+    m_ghost(nullptr),
+    m_mdi(nullptr),
+    m_scene(nullptr),
+    m_view(nullptr),
     m_detailFeat(detailFeat),
     m_baseFeat(nullptr),
     m_basePage(nullptr),
+    m_qgParent(nullptr),
     m_inProgressLock(false),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_saveAnchor(Base::Vector3d(0.0, 0.0, 0.0)),
     m_saveRadius(0.0),
+    m_saved(false),
     m_baseName(std::string()),
     m_pageName(std::string()),
     m_detailName(std::string()),
@@ -189,7 +208,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 
     saveDetailState();
     setUiFromFeat();
-    setWindowTitle(QObject::tr("Edit Detail"));
+    setWindowTitle(QObject::tr("Edit Detail View"));
 
     connect(ui->pbDragger, SIGNAL(clicked(bool)),
             this, SLOT(onDraggerClicked(bool)));
@@ -451,7 +470,7 @@ void TaskDetail::enableTaskButtons(bool b)
 void TaskDetail::createDetail()
 {
 //    Base::Console().Message("TD::createDetail()\n");
-    Gui::Command::openCommand("Create Detail");
+    Gui::Command::openCommand("Create Detail View");
 
     m_detailName = m_doc->getUniqueObjectName("Detail");
 
@@ -460,7 +479,7 @@ void TaskDetail::createDetail()
     App::DocumentObject *docObj = m_doc->getObject(m_detailName.c_str());
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail *>(docObj);
     if (!dvd) {
-        throw Base::TypeError("TaskDetail - new detail not found\n");
+        throw Base::TypeError("TaskDetail - new detail view not found\n");
     }
     m_detailFeat = dvd;
 

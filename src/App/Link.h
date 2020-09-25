@@ -196,10 +196,10 @@ public:
         const char *doc;
 
         PropInfo(int index, const char *name,Base::Type type,const char *doc)
-            :index(index),name(name),type(type),doc(doc)
+            : index(index), name(name), type(type), doc(doc)
         {}
 
-        PropInfo() {}
+        PropInfo() : index(0), name(0), doc(0) {}
     };
 
 #define LINK_PROP_INFO(_1,_var,_param) \

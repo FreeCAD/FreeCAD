@@ -20,18 +20,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_ellipse function.
-"""
+"""Provides functions to create Ellipse objects."""
 ## @package make_ellipse
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_ellipse function.
+# \ingroup draftmake
+# \brief Provides functions to create Ellipse objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
-from draftutils.gui_utils import format_object
-from draftutils.gui_utils import select
+import draftutils.gui_utils as gui_utils
 
 from draftobjects.ellipse import Ellipse
+
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraft
 
@@ -76,10 +76,12 @@ def make_ellipse(majradius, minradius, placement=None, face=True, support=None):
         ViewProviderDraft(obj.ViewObject)
         #if not face:
         #    obj.ViewObject.DisplayMode = "Wireframe"
-        format_object(obj)
-        select(obj)
+        gui_utils.format_object(obj)
+        gui_utils.select(obj)
 
     return obj
 
 
 makeEllipse = make_ellipse
+
+## @}

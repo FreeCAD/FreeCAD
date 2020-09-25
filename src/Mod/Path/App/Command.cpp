@@ -250,7 +250,7 @@ void Command::setCenter(const Base::Vector3d &pos, bool clockwise)
     Parameters[k] = kval;
 }
 
-Command Command::transform(const Base::Placement other)
+Command Command::transform(const Base::Placement& other)
 {
     Base::Placement plac = getPlacement();
     plac *= other;

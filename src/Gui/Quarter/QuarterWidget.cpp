@@ -71,6 +71,10 @@
 #include <QOpenGLDebugLogger>
 #endif
 
+#if COIN_MAJOR_VERSION >= 4
+#include <Inventor/SbByteBuffer.h>
+#endif
+
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/events/SoEvents.h>

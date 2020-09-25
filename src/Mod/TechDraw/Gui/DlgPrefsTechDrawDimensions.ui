@@ -452,7 +452,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Use first- or third-angle mutliview projection convention</string>
+           <string>Use first- or third-angle multiview projection convention</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ProjectionAngle</cstring>

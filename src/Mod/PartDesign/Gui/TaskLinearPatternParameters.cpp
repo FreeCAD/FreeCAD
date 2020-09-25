@@ -110,9 +110,9 @@ void TaskLinearPatternParameters::setupUI()
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
     updateViewTimer->setInterval(getUpdateViewTimeout());
-
     connect(updateViewTimer, SIGNAL(timeout()),
             this, SLOT(onUpdateViewTimer()));
+
     connect(ui->comboDirection, SIGNAL(activated(int)),
             this, SLOT(onDirectionChanged(int)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),

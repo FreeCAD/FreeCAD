@@ -53,6 +53,7 @@ public:
 protected:
     GeometryExtension();
     GeometryExtension(const GeometryExtension &obj) = default;
+    GeometryExtension& operator= (const GeometryExtension &obj) = default;
 
     void restoreNameAttribute(Base::XMLReader &/*reader*/);
 

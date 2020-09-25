@@ -19,8 +19,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides all gui and tools to create and edit annotation styles."""
+"""Provides GUI tools to create and edit annotation styles."""
+## @package gui_annotationstyleeditor
+# \ingroup draftguitools
+# \brief Provides GUI tools to create and edit annotation styles.
 
+## \addtogroup draftguitools
+# @{
 import json
 import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -175,7 +180,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         for obj in self.get_annotations():
             vobj = obj.ViewObject
             try:
-                curent = vobj.AnnotationStyle
+                current = vobj.AnnotationStyle
             except AssertionError:
                 # empty annotation styles list
                 pass
@@ -348,3 +353,5 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
 
 
 Gui.addCommand('Draft_AnnotationStyleEditor', AnnotationStyleEditor())
+
+## @}

@@ -860,18 +860,19 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
             continue;
         } 
 
-        auto &info = childrenMap[obj];
-        if(info.plas.empty()) {
+        auto &childInfo = childrenMap[obj];
+        if (childInfo.plas.empty()) {
             children.push_back(obj);
             visibilities.push_back(vis);
-            info.shape = childShape;
+            childInfo.shape = childShape;
         }
-        info.vis.push_back(vis);
-        info.labels.push_back(childLabel);
-        info.plas.emplace_back(Part::TopoShape::convert(childShape.Location().Transformation()));
+
+        childInfo.vis.push_back(vis);
+        childInfo.labels.push_back(childLabel);
+        childInfo.plas.emplace_back(Part::TopoShape::convert(childShape.Location().Transformation()));
         Quantity_Color aColor;
         if (aColorTool->GetColor(childShape, XCAFDoc_ColorSurf, aColor)) {
-            auto &color = info.colors[info.plas.size()-1];
+            auto &color = childInfo.colors[childInfo.plas.size()-1];
             color.r = (float)aColor.Red();
             color.g = (float)aColor.Green();
             color.b = (float)aColor.Blue();
@@ -889,10 +890,10 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
         int i=-1;
         for(auto &child : children) {
             ++i;
-            auto &info = childrenMap[child];
-            if(info.plas.size()==1) {
-                child = loadShape(doc,info.labels.front(),info.shape);
-                getSHUOColors(info.labels.front(),shuoColors,true);
+            auto &childInfo = childrenMap[child];
+            if (childInfo.plas.size() == 1) {
+                child = loadShape(doc, childInfo.labels.front(), childInfo.shape);
+                getSHUOColors(childInfo.labels.front(), shuoColors, true);
                 continue;
             }
 
@@ -903,24 +904,24 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
             // link->Visibility.setValue(false);
             link->setLink(-1,child);
             link->ShowElement.setValue(false);
-            link->ElementCount.setValue(info.plas.size());
+            link->ElementCount.setValue(childInfo.plas.size());
             auto it = myCollapsedObjects.find(child);
             if(it!=myCollapsedObjects.end()) {
                 // child is a single component assembly that has been
                 // collapsed, so we have to honour its placement
-                for(auto &pla : info.plas)
+                for(auto &pla : childInfo.plas)
                     pla *= it->second->getValue();
             }
-            link->PlacementList.setValue(info.plas);
-            link->VisibilityList.setValue(info.vis);
+            link->PlacementList.setValue(childInfo.plas);
+            link->VisibilityList.setValue(childInfo.vis);
 
-            for(auto &v : info.colors)
+            for(auto &v : childInfo.colors)
                 applyLinkColor(link,v.first,v.second);
 
             int i=0;
             std::string name = link->getNameInDocument();
             name += '.';
-            for(auto childLabel : info.labels) {
+            for(auto childLabel : childInfo.labels) {
                 myNames.emplace(childLabel,name + std::to_string(i++));
                 getSHUOColors(childLabel,shuoColors,true);
             }
@@ -928,7 +929,7 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
             child = link;
             Info objInfo;
             objInfo.obj = child;
-            setObjectName(objInfo,info.labels.front());
+            setObjectName(objInfo, childInfo.labels.front());
         }
     }
 
@@ -1217,7 +1218,8 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     App::DocumentObject *obj;
     auto shape = Part::Feature::getTopoShape(parentObj,sub,false,0,&obj,false,!sub);
     if(!obj || shape.isNull()) {
-        FC_WARN(obj->getFullName() << " has null shape");
+        if (obj)
+            FC_WARN(obj->getFullName() << " has null shape");
         return TDF_Label();
     }
 
@@ -1331,19 +1333,19 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     auto linkArray = obj->getLinkedObject(true)->getExtensionByType<App::LinkBaseExtension>(true);
     if(linkArray && (linkArray->getShowElementValue() || !linkArray->getElementCountValue()))
         linkArray = 0;
-    for(auto &sub : subs) {
-        App::DocumentObject *parent = 0;
+    for(auto &subobj : subs) {
+        App::DocumentObject *parentGrp = 0;
         std::string childName;
-        auto sobj = obj->resolve(sub.c_str(),&parent,&childName);
+        auto sobj = obj->resolve(subobj.c_str(),&parentGrp,&childName);
         if(!sobj) {
-            FC_WARN("Cannot find object " << obj->getFullName() << '.' << sub);
+            FC_WARN("Cannot find object " << obj->getFullName() << '.' << subobj);
             continue;
         }
         int vis = -1;
-        if(parent) {
-            vis = parent->isElementVisibleEx(childName.c_str());
+        if(parentGrp) {
+            vis = parentGrp->isElementVisibleEx(childName.c_str());
             if(groupLinks.size()) {
-                auto group = App::GeoFeatureGroupExtension::getNonGeoGroup(parent);
+                auto group = App::GeoFeatureGroupExtension::getNonGeoGroup(parentGrp);
                 if(group) {
                     if(group->ExportMode.getValue()==App::GroupExtension::EXPORT_BY_CHILD_QUERY)
                         vis = 1;
@@ -1359,7 +1361,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         if(!vis && !exportHidden)
             continue;
 
-        TDF_Label childLabel = exportObject(obj,sub.c_str(),label,linkArray?childName.c_str():0);
+        TDF_Label childLabel = exportObject(obj,subobj.c_str(),label,linkArray?childName.c_str():0);
         if(childLabel.IsNull())
             continue;
 
@@ -1390,7 +1392,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         }
     }
 
-    if(groupLinks.size() && groupLinks.back()==obj)
+    if (groupLinks.size() && groupLinks.back()==obj)
         groupLinks.pop_back();
 
     // Finished adding components. Now retrieve the computed non-located shape

@@ -21,10 +21,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides various functions for offset operations."""
+"""Provides various functions to work with offsets."""
 ## @package offsets
-# \ingroup DRAFTGEOUTILS
-# \brief Provides various functions for offset operations.
+# \ingroup draftgeoutils
+# \brief Provides various functions to work with offsets.
 
 import lazy_loader.lazy_loader as lz
 
@@ -38,6 +38,9 @@ from draftgeoutils.intersections import wiresIntersect, connect
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftgeoutils
+# @{
 
 
 def pocket2d(shape, offset):
@@ -197,9 +200,10 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     - 'dvec' to be obsolete in future?
     """
     if isinstance(wire, Part.Wire) or isinstance(wire, Part.Face):
-        # Seems has repeatedly sortEdges, remark out here
-        # edges = Part.__sortEdges__(wire.Edges)
-        edges = wire.Edges
+        # Found Draft GuiOffset directly offset Sketch.Shape(wire) would fails
+        # thus need to sort its edges same order 
+        edges = Part.__sortEdges__(wire.Edges)
+        #edges = wire.Edges
     elif isinstance(wire, list):
         if isinstance(wire[0], Part.Edge):
             edges = wire.copy()
@@ -274,7 +278,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     if not firstDir:
         # need to test against Part.Circle, not Part.ArcOfCircle
         if isinstance(e.Curve, Part.Circle):
-            v0 = e.Vertexes[0].Point.sub(e.Curve.Center)
+            v0 = e.tangentAt(e.FirstParameter).cross(norm)
         else:
             v0 = vec(e).cross(norm)
         # check against dvec provided for the offset direction
@@ -315,7 +319,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         if i != 0:  # else:
             # TODO Should also calculate 1st edge direction above
             if isinstance(curredge.Curve, Part.Circle):
-                delta = curredge.Vertexes[0].Point.sub(curredge.Curve.Center)
+                delta = curredge.tangentAt(curredge.FirstParameter).cross(norm)
             else:
                 delta = vec(curredge).cross(norm)
             # TODO Could be edge.Orientation in fact
@@ -494,3 +498,5 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         return w
     else:
         return nedges
+
+## @}

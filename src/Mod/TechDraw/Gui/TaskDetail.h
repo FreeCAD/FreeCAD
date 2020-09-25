@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKCOSVERTEX_H
-#define TECHDRAWGUI_TASKCOSVERTEX_H
+#ifndef TECHDRAWGUI_TASKDETAIL_H
+#define TECHDRAWGUI_TASKDETAIL_H
 
 #include <App/DocumentObject.h>
 #include <Base/Vector3D.h>
@@ -178,4 +178,4 @@ private:
 
 } //namespace TechDrawGui
 
-#endif // #ifndef TECHDRAWGUI_TASKCOSVERTEX_H
+#endif // #ifndef TECHDRAWGUI_TASKDETAIL_H

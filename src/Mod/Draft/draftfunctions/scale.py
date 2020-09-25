@@ -20,24 +20,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft scale function.
-"""
+"""Provides functions to scale shapes."""
 ## @package scale
-# \ingroup DRAFT
-# \brief This module provides the code for Draft scale function.
+# \ingroup draftfuctions
+# \brief Provides functions to scale shapes.
 
-import math
-
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
-
 import DraftVecUtils
-
-import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
-
-from draftfunctions.join import join_wires
-
-from draftmake.make_copy import make_copy
+import draftutils.gui_utils as gui_utils
+import draftfunctions.join as join
+import draftmake.make_copy as make_copy
 
 
 def scale(objectslist, scale=App.Vector(1,1,1),
@@ -70,17 +65,15 @@ def scale(objectslist, scale=App.Vector(1,1,1),
     newobjlist = []
     for obj in objectslist:
         if copy:
-            newobj = make_copy(obj)
+            newobj = make_copy.make_copy(obj)
         else:
             newobj = obj
         if hasattr(obj,'Shape'):
             scaled_shape = obj.Shape.copy()
             m = App.Matrix()
-            m.move(obj.Placement.Base.negative())
             m.move(center.negative())
             m.scale(scale.x,scale.y,scale.z)
             m.move(center)
-            m.move(obj.Placement.Base)
             scaled_shape = scaled_shape.transformGeometry(m)
         if utils.get_type(obj) == "Rectangle":
             p = []
@@ -202,7 +195,9 @@ def copy_scaled_edges(arguments):
     for argument in arguments:
         copied_edges.append(copyScaledEdge(argument[0], argument[1],
             argument[2], argument[3]))
-    join_wires(copied_edges)
+    join.join_wires(copied_edges)
 
 
 copyScaledEdges = copy_scaled_edges
+
+## @}

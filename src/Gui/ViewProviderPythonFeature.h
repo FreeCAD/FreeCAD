@@ -506,7 +506,7 @@ protected:
                     ViewProviderT::setOverrideMode(viewerMode);
                 }
                 if(!this->testStatus(Gui::isRestoring) && 
-                    ViewProviderT::canAddToSceneGraph()!=imp->canAddToSceneGraph())
+                    ViewProviderT::canAddToSceneGraph()!=this->canAddToSceneGraph())
                 {
                     this->getDocument()->toggleInSceneGraph(this);
                 }
@@ -541,11 +541,11 @@ protected:
         }
     }
     virtual void setEditViewer(View3DInventorViewer *viewer, int ModNum) override {
-        if(!imp->setEditViewer(viewer,ModNum))
+        if (imp->setEditViewer(viewer,ModNum) == ViewProviderPythonFeatureImp::NotImplemented)
             ViewProviderT::setEditViewer(viewer,ModNum);
     }
     virtual void unsetEditViewer(View3DInventorViewer *viewer) override {
-        if(!imp->unsetEditViewer(viewer))
+        if (imp->unsetEditViewer(viewer) == ViewProviderPythonFeatureImp::NotImplemented)
             ViewProviderT::unsetEditViewer(viewer);
     }
 

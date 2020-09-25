@@ -45,8 +45,10 @@ is only required to migrate old objects created in that time
 with the 0.19 development version.
 
 Since this module is only used to migrate older objects, it is only temporary,
-and will be removed after one year of the original introduction of the tool,
-that is, in August 2020.
+and will be removed after one year, that is, in January 2021.
+
+The explanation of the migration methods is in the wiki page:
+https://wiki.freecadweb.org/Scripted_objects_migration
 """
 ## @package DraftFillet
 # \ingroup DRAFT
@@ -54,7 +56,7 @@ that is, in August 2020.
 #
 # This module is only required to migrate old objects created
 # from August 2019 to February 2020. It will be removed definitely
-# in August 2020, as the new Fillet object should be available.
+# in January 2021, as the new Fillet object should be available.
 
 import FreeCAD as App
 import draftobjects.fillet

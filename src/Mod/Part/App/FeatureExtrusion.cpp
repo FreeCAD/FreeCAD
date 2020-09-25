@@ -237,7 +237,7 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
 }
 
 void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source, 
-        Extrusion::ExtrusionParameters params)
+        const Extrusion::ExtrusionParameters& params)
 {
     gp_Vec vec = gp_Vec(params.dir).Multiplied(params.lengthFwd+params.lengthRev);//total vector of extrusion
 
@@ -310,7 +310,7 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
     }
 }
 
-void Extrusion::makeDraft(ExtrusionParameters params, const TopoShape& _shape, 
+void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoShape& _shape, 
         std::vector<TopoShape>& drafts, App::StringHasherRef hasher)
 {
     double distanceFwd = tan(params.taperAngleFwd)*params.lengthFwd;

@@ -68,12 +68,6 @@ short DressUp::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
-void DressUp::setupObject()
-{
-    SupportTransform.setValue(true);
-    Feature::setupObject();
-}
-
 void DressUp::positionByBaseFeature(void)
 {
     Part::Feature *base = static_cast<Part::Feature*>(BaseFeature.getValue());
@@ -233,7 +227,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                 // SupportTransform means transform the support together with
                 // the dressing. So we need to find the previous support
                 // feature (which must be of type FeatureAddSub), and skipping
-                // any consequtive DressUp in-between.
+                // any consecutive DressUp in-between.
                 for(Feature *current=this; ;current=static_cast<DressUp*>(base)) {
                     base = Base::freecad_dynamic_cast<FeatureAddSub>(current->getBaseObject(true));
                     if(!base)

@@ -92,6 +92,8 @@ public:
 
     void keyPressEvent(QKeyEvent *event);
     void resizeEvent(QResizeEvent *event);
+    void paintEvent(QPaintEvent *event);
+
 Q_SIGNALS:
     void valueChanged( uint value );
 
@@ -132,6 +134,7 @@ public:
 
     void keyPressEvent(QKeyEvent *event);
     void resizeEvent(QResizeEvent *event);
+    void paintEvent(QPaintEvent *event);
 
 private Q_SLOTS:
     void finishFormulaDialog();
@@ -158,6 +161,7 @@ public:
 
     void keyPressEvent(QKeyEvent *event);
     void resizeEvent(QResizeEvent *event);
+    void paintEvent(QPaintEvent *event);
 
 private Q_SLOTS:
     void finishFormulaDialog();

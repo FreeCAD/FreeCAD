@@ -46,7 +46,7 @@ def init_doc(doc=None):
 
 
 def get_information():
-    info = {"name": "Material Multiple Two Boxes",
+    info = {"name": "Multimaterial tension rod 2 boxes",
             "meshtype": "solid",
             "meshelement": "Tet10",
             "constraints": ["fixed", "pressure"],

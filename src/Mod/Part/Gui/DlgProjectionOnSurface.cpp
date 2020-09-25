@@ -367,7 +367,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
             std::string parentName = aPart->getNameInDocument();
             auto currentShape =  aPart->Shape.getShape().getSubShape(itName->c_str());
 
-            transform_shape_to_global_postion(currentShape, aPart);
+            transform_shape_to_global_position(currentShape, aPart);
 
             currentShapeStore.inputShape = currentShape;
             currentShapeStore.partName = *itName;
@@ -378,7 +378,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
         }
         else
         {
-          transform_shape_to_global_postion(currentShapeStore.inputShape,currentShapeStore.partFeature);
+          transform_shape_to_global_position(currentShapeStore.inputShape,currentShapeStore.partFeature);
           auto store = store_part_in_vector(currentShapeStore, iStoreVec);
           higlight_object(aPart, aPart->Shape.getName(), store, iColor);
         }
@@ -616,7 +616,7 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
 {
   if (!iCurrentObject) return;
   auto partenShape = iCurrentObject->Shape.getShape().getShape();
-  auto subShape = iCurrentObject->Shape.getShape().getSubShape(iShapeName.c_str());
+  auto subShape = iCurrentObject->Shape.getShape().getSubShape(iShapeName.c_str(), true);
 
   TopoDS_Shape currentShape = subShape;
   if (subShape.IsNull()) currentShape = partenShape;
@@ -807,8 +807,8 @@ TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(const std::vecto
   {
     auto aShape = TopoDS::Wire(aWireWireHandle->Value(it));
     ShapeFix_Wire aWireRepair(aShape, iFaceToProject, 0.0001);
-    aWireRepair.FixAddCurve3dMode();
-    aWireRepair.FixAddPCurveMode();
+    aWireRepair.FixAddCurve3dMode() = 1;
+    aWireRepair.FixAddPCurveMode() = 1;
     aWireRepair.Perform();
     //return aWireRepair.Wire();
     ShapeFix_Wireframe aWireFramFix(aWireRepair.Wire());
@@ -918,12 +918,12 @@ void PartGui::DlgProjectionOnSurface::set_xyz_dir_spinbox(QDoubleSpinBox* icurre
   icurrentSpinBox->setValue(newVal);
 }
 
-void PartGui::DlgProjectionOnSurface::transform_shape_to_global_postion(TopoDS_Shape& ioShape, Part::Feature* iPart)
+void PartGui::DlgProjectionOnSurface::transform_shape_to_global_position(TopoDS_Shape& ioShape, Part::Feature* iPart)
 {
   auto currentPos = iPart->Placement.getValue().getPosition();
   auto currentRotation = iPart->Placement.getValue().getRotation();
   auto globalPlacement = iPart->globalPlacement();
-  auto globalPostion = globalPlacement.getPosition();
+  auto globalPosition = globalPlacement.getPosition();
   auto globalRotation = globalPlacement.getRotation();
 
   if (currentRotation != globalRotation)
@@ -939,10 +939,10 @@ void PartGui::DlgProjectionOnSurface::transform_shape_to_global_postion(TopoDS_S
     ioShape = BRepBuilderAPI_Transform(ioShape, aAngleTransform, true).Shape();
   }
 
-  if (currentPos != globalPostion)
+  if (currentPos != globalPosition)
   {
     gp_Trsf aPosTransform;
-    aPosTransform.SetTranslation(gp_Pnt(currentPos.x, currentPos.y, currentPos.z), gp_Pnt(globalPostion.x, globalPostion.y, globalPostion.z));
+    aPosTransform.SetTranslation(gp_Pnt(currentPos.x, currentPos.y, currentPos.z), gp_Pnt(globalPosition.x, globalPosition.y, globalPosition.z));
     ioShape = BRepBuilderAPI_Transform(ioShape, aPosTransform, true).Shape();
   }
 }

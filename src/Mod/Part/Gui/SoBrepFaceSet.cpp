@@ -297,7 +297,7 @@ public:
                 const int32_t *texindices,
                 const int nbind,
                 const int mbind,
-                const int texture);
+                SbBool texture);
 
     static void context_destruction_cb(uint32_t context, void * userdata)
     {
@@ -341,6 +341,7 @@ SoBrepFaceSet::SoBrepFaceSet()
 
     selContext = std::make_shared<SelContext>();
     selContext2 = std::make_shared<SelContext>();
+    packedColor = 0;
 
     pimpl.reset(new VBO);
 
@@ -1782,7 +1783,7 @@ bool SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                                 const int32_t *texindices,
                                 const int nbind,
                                 const int mbind,
-                                const int texture)
+                                SbBool texture)
 {
     const int32_t *mindices = matindices;
 

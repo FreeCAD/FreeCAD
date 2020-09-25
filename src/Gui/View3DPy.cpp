@@ -41,6 +41,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "NavigationStyle.h"
+#include "SoMouseWheelEvent.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCOffscreenRenderer.h"
 #include "SoFCVectorizeSVGAction.h"
@@ -2031,6 +2032,10 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
             }
 
             dict.setItem("Button", Py::String(button));
+        }
+        if (e->isOfType(SoMouseWheelEvent::getClassTypeId())){
+            const SoMouseWheelEvent* mwe = static_cast<const SoMouseWheelEvent*>(e);
+            dict.setItem("Delta", Py::Long(mwe->getDelta()));
         }
         if (e->isOfType(SoSpaceballButtonEvent::getClassTypeId())) {
             const SoSpaceballButtonEvent* sbe = static_cast<const SoSpaceballButtonEvent*>(e);

@@ -23,7 +23,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating point arrays with the Draft Workbench.
+"""Provides GUI tools to create PointArray objects.
 
 The copies will be created where various points are located.
 
@@ -37,9 +37,11 @@ the explicit point and vertex objects will be used when creating
 the point array.
 """
 ## @package gui_pointarray
-# \ingroup DRAFT
-# \brief Provides tools for creating point arrays with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create PointArray objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -54,7 +56,18 @@ True if Draft_rc.__name__ else False
 
 
 class PointArray(gui_base_original.Modifier):
-    """Gui Command for the Point array tool."""
+    """Gui Command for the Point array tool.
+
+    Parameters
+    ----------
+    use_link: bool, optional
+        It defaults to `False`. If it is `True`, the created object
+        will be a `Point link array`.
+    """
+
+    def __init__(self, use_link=False):
+        super(PointArray, self).__init__()
+        self.use_link = use_link
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -76,9 +89,9 @@ class PointArray(gui_base_original.Modifier):
                 'MenuText': QT_TRANSLATE_NOOP("Draft_PointArray", _menu),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_PointArray", _tip)}
 
-    def Activated(self):
+    def Activated(self, name="Point array"):
         """Execute when the command is called."""
-        self.name = "Point array"
+        self.name = name
         super(PointArray, self).Activated(name=_tr(self.name))
         # This was deactivated because it doesn't work correctly;
         # the selection needs to be made on two objects, but currently
@@ -118,7 +131,8 @@ class PointArray(gui_base_original.Modifier):
             _cmd += "("
             _cmd += "App.ActiveDocument." + base_object.Name + ", "
             _cmd += "App.ActiveDocument." + point_object.Name + ", "
-            _cmd += "extra=" + str(extra)
+            _cmd += "extra=" + str(extra) + ", "
+            _cmd += 'use_link=' + str(self.use_link)
             _cmd += ")"
 
             _cmd_list = ["_obj_ = " + _cmd,
@@ -132,3 +146,27 @@ class PointArray(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_PointArray', PointArray())
+
+class PointLinkArray(PointArray):
+    """Gui Command for the PointLinkArray tool based on the PointArray tool."""
+
+    def __init__(self):
+        super(PointLinkArray, self).__init__(use_link=True)
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+        _tip = ("Like the PointArray tool, but creates a 'Point link array' instead.\n"
+                "A 'Point link array' is more efficient when handling many copies.")
+
+        return {'Pixmap': 'Draft_PointLinkArray',
+                'MenuText': QT_TRANSLATE_NOOP("Draft_PointLinkArray", "PointLinkArray"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_PointLinkArray", _tip)}
+
+    def Activated(self):
+        """Execute when the command is called."""
+        super(PointLinkArray, self).Activated(name="Point link array")
+
+
+Gui.addCommand('Draft_PointLinkArray', PointLinkArray())
+
+## @}

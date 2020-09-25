@@ -303,6 +303,7 @@ void DlgPreferencesImp::applyChanges()
 void DlgPreferencesImp::showEvent(QShowEvent* ev)
 {
     //canEmbedScrollArea = false;
+    this->adjustSize();
     QDialog::showEvent(ev);
 }
 

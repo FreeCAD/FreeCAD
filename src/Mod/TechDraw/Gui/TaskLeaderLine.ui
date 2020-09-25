@@ -110,7 +110,7 @@
      <item>
       <widget class="QPushButton" name="pbTracker">
        <property name="toolTip">
-        <string>First pick the start pint of the line,
+        <string>First pick the start point of the line,
 then at least a second point.
 You can pick further points to get line segments.</string>
        </property>

@@ -172,7 +172,7 @@ void GeometryObject::clear()
 
 //!set up a hidden line remover and project a shape with it
 void GeometryObject::projectShape(const TopoDS_Shape& input,
-                                  const gp_Ax2 viewAxis)
+                                  const gp_Ax2& viewAxis)
 {
 //    Base::Console().Message("GO::projectShape() - %s\n", m_parentName.c_str());
    // Clear previous Geometry
@@ -295,7 +295,7 @@ TopoDS_Shape GeometryObject::invertGeometry(const TopoDS_Shape s)
 
 //!set up a hidden line remover and project a shape with it
 void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
-                                                 const gp_Ax2 viewAxis)
+                                                 const gp_Ax2 &viewAxis)
 {
     // Clear previous Geometry
     clear();
@@ -404,7 +404,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
 }
 
 TopoDS_Shape GeometryObject::projectFace(const TopoDS_Shape &face,
-                                         const gp_Ax2 CS)
+                                         const gp_Ax2 &CS)
 {
 //    Base::Console().Message("GO::projectFace()\n");
     if(face.IsNull()) {
@@ -939,7 +939,7 @@ gp_Pnt TechDraw::findCentroid(const TopoDS_Shape &shape,
 
 //! Returns the centroid of shape, as viewed according to direction
 gp_Pnt TechDraw::findCentroid(const TopoDS_Shape &shape,
-                                      const gp_Ax2 viewAxis)
+                                      const gp_Ax2 &viewAxis)
 {
 //    Base::Console().Message("GO::findCentroid() - 2\n");
 //    Base::Vector3d origin(0.0,0.0,0.0);
@@ -976,7 +976,7 @@ Base::Vector3d TechDraw::findCentroidVec(const TopoDS_Shape &shape,
 }
 
 Base::Vector3d TechDraw::findCentroidVec(const TopoDS_Shape &shape,
-                                         const gp_Ax2 cs)
+                                         const gp_Ax2 &cs)
 {
 //    Base::Console().Message("GO::findCentroidVec() - 2\n");
     gp_Pnt p = TechDraw::findCentroid(shape,cs);

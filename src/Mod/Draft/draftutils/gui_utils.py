@@ -23,7 +23,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides GUI utility functions for the Draft Workbench.
+"""Provides utility functions that deal with GUI interactions.
 
 This module contains auxiliary functions which can be used
 in other modules of the workbench, and which require
@@ -31,17 +31,19 @@ the graphical user interface (GUI), as they access the view providers
 of the objects or the 3D view.
 """
 ## @package gui_utils
-# \ingroup DRAFT
-# \brief This module provides GUI utility functions for the Draft Workbench
+# \ingroup draftutils
+# \brief Provides utility functions that deal with GUI interactions.
 
+## \addtogroup draftutils
+# @{
 import math
 import os
 import six
 
 import FreeCAD as App
+import draftutils.utils as utils
+
 from draftutils.messages import _msg, _wrn
-from draftutils.utils import getParam
-from draftutils.utils import get_type
 from draftutils.translate import _tr, translate
 
 if App.GuiUp:
@@ -141,19 +143,19 @@ def autogroup(obj):
                 App.Console.PrintMessage(err)
                 return
             inverse_placement = App.Placement(matrix.inverse())
-            if get_type(obj) == 'Point':
+            if utils.get_type(obj) == 'Point':
                 point_vector = App.Vector(obj.X, obj.Y, obj.Z)
                 real_point = inverse_placement.multVec(point_vector)
                 obj.X = real_point.x
                 obj.Y = real_point.y
                 obj.Z = real_point.z
-            elif get_type(obj) in ["Dimension", "LinearDimension"]:
+            elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
                 obj.Start = inverse_placement.multVec(obj.Start)
                 obj.End = inverse_placement.multVec(obj.End)
                 obj.Dimline = inverse_placement.multVec(obj.Dimline)
                 obj.Normal = inverse_placement.Rotation.multVec(obj.Normal)
                 obj.Direction = inverse_placement.Rotation.multVec(obj.Direction)
-            elif get_type(obj) in ["Label"]:
+            elif utils.get_type(obj) in ["Label"]:
                 obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
                 obj.TargetPoint = inverse_placement.multVec(obj.TargetPoint)
             elif hasattr(obj,"Placement"):
@@ -193,12 +195,21 @@ def dim_symbol(symbol=None, invert=False):
         that will be used as a dimension symbol.
     """
     if symbol is None:
-        symbol = getParam("dimsymbol", 0)
+        symbol = utils.get_param("dimsymbol", 0)
 
     if symbol == 0:
-        return coin.SoSphere()
+        # marker = coin.SoMarkerSet()
+        # marker.markerIndex = 80
+
+        # Returning a sphere means that the bounding box will
+        # be 3-dimensional; a marker will always be planar seen from any
+        # orientation but it currently doesn't work correctly
+        marker = coin.SoSphere()
+        return marker
     elif symbol == 1:
         marker = coin.SoMarkerSet()
+        # Should be the same as
+        # marker.markerIndex = 10
         marker.markerIndex = Gui.getMarkerIndex("circle", 9)
         return marker
     elif symbol == 2:
@@ -340,7 +351,7 @@ def format_object(target, origin=None):
         doc = App.ActiveDocument
         if ui.isConstructionMode():
             col = fcol = ui.getDefaultColor("constr")
-            gname = getParam("constructiongroupname", "Construction")
+            gname = utils.get_param("constructiongroupname", "Construction")
             grp = doc.getObject(gname)
             if not grp:
                 grp = doc.addObject("App::DocumentObjectGroup", gname)
@@ -657,3 +668,15 @@ def load_texture(filename, size=None, gui=App.GuiUp):
 
 
 loadTexture = load_texture
+
+
+def migrate_text_display_mode(obj_type="Text", mode="3D text", doc=None):
+    """Migrate the display mode of objects of certain type."""
+    if not doc:
+        doc = App.activeDocument()
+
+    for obj in doc.Objects:
+        if utils.get_type(obj) == obj_type:
+            obj.ViewObject.DisplayMode = mode
+
+## @}

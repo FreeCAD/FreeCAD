@@ -31,6 +31,7 @@
 #endif
 
 #include <boost/algorithm/string.hpp>
+#include <boost/io/ios_state.hpp>
 
 #include <Base/Console.h>
 #include "Base/Exception.h"
@@ -918,18 +919,21 @@ void Expression::Component::set(const Expression *owner, Py::Object &pyobj, cons
 
 void Expression::Component::del(const Expression *owner, Py::Object &pyobj) const {
     try {
-        if(!e1 && !e2 && !e3) {
+        if (!e1 && !e2 && !e3) {
             comp.del(pyobj);
-        } if(!comp.isRange() && !e2 && !e3) {
+        }
+        else if (!comp.isRange() && !e2 && !e3) {
             auto index = e1->getPyValue();
-            if(pyobj.isMapping())
+            if (pyobj.isMapping()) {
                 Py::Mapping(pyobj).delItem(index);
+            }
             else {
                 Py_ssize_t i = PyNumber_AsSsize_t(pyobj.ptr(), PyExc_IndexError);
-                if(PyErr_Occurred() || PySequence_DelItem(pyobj.ptr(),i)==-1)
+                if (PyErr_Occurred() || PySequence_DelItem(pyobj.ptr(),i)==-1)
                     throw Py::Exception();
             }
-        }else{
+        }
+        else {
             Py::Object v1,v2,v3;
             if(e1) v1 = e1->getPyValue();
             if(e2) v2 = e2->getPyValue();
@@ -937,13 +941,14 @@ void Expression::Component::del(const Expression *owner, Py::Object &pyobj) cons
             PyObject *s = PySlice_New(e1?v1.ptr():nullptr,
                                       e2?v2.ptr():nullptr,
                                       e3?v3.ptr():nullptr);
-            if(!s)
+            if (!s)
                 throw Py::Exception();
             Py::Object slice(s,true);
-            if(PyObject_DelItem(pyobj.ptr(),slice.ptr())<0)
+            if (PyObject_DelItem(pyobj.ptr(),slice.ptr())<0)
                 throw Py::Exception();
         }
-    }catch(Py::Exception &) {
+    }
+    catch(Py::Exception &) {
         EXPR_PY_THROW(owner);
     }
 }
@@ -1777,6 +1782,7 @@ void NumberExpression::_toString(std::ostream &ss, bool,int) const
     // https://en.cppreference.com/w/cpp/types/numeric_limits/digits10
     // https://en.cppreference.com/w/cpp/types/numeric_limits/max_digits10
     // https://www.boost.org/doc/libs/1_63_0/libs/multiprecision/doc/html/boost_multiprecision/tut/limits/constants.html
+    boost::io::ios_flags_saver ifs(ss);
     ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << getValue();
 
     /* Trim of any extra spaces */
@@ -2744,7 +2750,6 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const Exp
 
     } case MINVERT: {
         Py::Object pyobj = args[0]->getPyValue();
-        Py::Tuple args;
         if (PyObject_TypeCheck(pyobj.ptr(),&Base::MatrixPy::Type)) {
             auto m = static_cast<Base::MatrixPy*>(pyobj.ptr())->value();
             if (fabs(m.determinant()) <= DBL_EPSILON)

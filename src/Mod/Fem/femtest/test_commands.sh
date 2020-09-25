@@ -17,6 +17,7 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_open
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88
 
 
 # classes
@@ -34,6 +35,7 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_open.TestObjectOpen
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88.TestSolverZ88
 
 
 # methods
@@ -82,18 +84,25 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalc
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_contact_shell_shell
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_contact_solid_solid
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_sectionprint
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_selfweight_cantilever
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_tie
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_material_multiple_bendingbeam_fiveboxes
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_material_multiple_bendingbeam_fivefaces
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_material_multiple_tensionrod_twoboxes
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_material_nonlinear
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_square_pipe_end_twisted_edgeforces
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_square_pipe_end_twisted_nodeforces
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_thermomech_bimetall
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_thermomech_flow1D
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_thermomech_spine
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_box_static
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_faceload
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_nodeload
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_prescribeddisplacement
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_box_static_0_mm
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_faceload_0_mm
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_faceload_1_si
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_nodeload_0_mm
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_prescribeddisplacement_0_mm
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88.TestSolverZ88.test_ccxcantilever_faceload
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88.TestSolverZ88.test_ccxcantilever_hexa20
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_z88.TestSolverZ88.test_ccxcantilever_nodeload
 
 
 # methods in FreeCAD
@@ -325,6 +334,11 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_selfweight_cantilever'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
     'femtest.app.test_solver_calculix.TestSolverCalculix.test_constraint_tie'
 ))
 
@@ -350,6 +364,16 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_square_pipe_end_twisted_edgeforces'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_square_pipe_end_twisted_nodeforces'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
     'femtest.app.test_solver_calculix.TestSolverCalculix.test_thermomech_bimetall'
 ))
 
@@ -365,20 +389,40 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_solver_elmer.TestSolverElmer.test_box_static'
+    'femtest.app.test_solver_elmer.TestSolverElmer.test_box_static_0_mm'
 ))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_faceload'
+    'femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_faceload_0_mm'
 ))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_nodeload'
+    'femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_faceload_1_si'
 ))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_prescribeddisplacement'
+    'femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_nodeload_0_mm'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_prescribeddisplacement_0_mm'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_z88.TestSolverZ88.test_ccxcantilever_faceload'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_z88.TestSolverZ88.test_ccxcantilever_hexa20'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_z88.TestSolverZ88.test_ccxcantilever_nodeload'
 ))

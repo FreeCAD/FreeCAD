@@ -357,12 +357,22 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>スプレッドシートは、貼り付けるときに選択範囲をサポートしていません。
+セルを一つだけ選択してください。</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>コピー＆ペーストに失敗しました</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>エイリアスに無効な文字が含まれています！</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Spreadsheet.B1 の代わりに
+Spreadsheet.my_alias_name のように、エイリアスでセルを参照してください。</translation>
     </message>
   </context>
   <context>
@@ -447,20 +457,18 @@ Please select one cell only.</translation>
       <translation>フォーム</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
+      <source>&amp;Content:</source>
       <translation>内容 (&amp;C)</translation>
     </message>
     <message>
-      <source>&amp;Alias</source>
-      <translation type="unfinished">&amp;Alias</translation>
+      <source>&amp;Alias:</source>
+      <translation>エイリアス (&amp;A):</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </translation>
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Spreadsheet.B1 の代わりに
+Spreadsheet.my_alias_name のように、エイリアスでセルを参照してください。</translation>
     </message>
   </context>
   <context>

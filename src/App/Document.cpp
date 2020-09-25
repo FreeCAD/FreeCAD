@@ -1407,7 +1407,8 @@ int Document::getAvailableUndos(int id) const
                 return i;
         }
         auto rit = mUndoTransactions.rbegin();
-        for(;rit!=mUndoTransactions.rend()&&*rit!=it->second;++rit,++i);
+        for(;rit!=mUndoTransactions.rend()&&*rit!=it->second;++rit)
+            ++i;
         assert(rit!=mUndoTransactions.rend());
         return i+1;
     }
@@ -1424,7 +1425,8 @@ int Document::getAvailableRedos(int id) const
         if(it == mRedoMap.end())
             return 0;
         int i = 0;
-        for(auto rit=mRedoTransactions.rbegin();*rit!=it->second;++rit,++i);
+        for(auto rit=mRedoTransactions.rbegin();*rit!=it->second;++rit)
+            ++i;
         assert(i<(int)mRedoTransactions.size());
         return i+1;
     }
@@ -3167,13 +3169,15 @@ App::Document *Document::getOwnerDocument() const {
     return const_cast<App::Document*>(this);
 }
 
-const char *Document::getFileName() const {
-    return testStatus(TempDoc)?TransientDir.getValue():FileName.getValue();
-}
-
 const char* Document::getProgramVersion() const
 {
     return d->programVersion.c_str();
+}
+
+const char* Document::getFileName() const
+{
+    return testStatus(TempDoc) ? TransientDir.getValue()
+                               : FileName.getValue();
 }
 
 /// Remove all modifications. After this call The document becomes valid again.
@@ -4046,7 +4050,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
     }
     catch(Base::AbortException &e){
         e.ReportException();
-        FC_ERR("Failed to recompute " << Feat->getFullName() << ": " << e.what());
+        FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << e.what());
         d->addRecomputeLog("User abort",Feat);
         return -1;
     }
@@ -4057,7 +4061,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
     }
     catch (Base::Exception &e) {
         e.ReportException();
-        FC_ERR("Failed to recompute " << Feat->getFullName() << ": " << e.what());
+        FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << e.what());
         d->addRecomputeLog(e.what(),Feat);
         return 1;
     }
@@ -4074,9 +4078,10 @@ int Document::_recomputeFeature(DocumentObject* Feat)
     }
 #endif
 
-    if(returnCode == DocumentObject::StdReturn) {
+    if (returnCode == DocumentObject::StdReturn) {
         Feat->resetError();
-    }else{
+    }
+    else {
         returnCode->Which = Feat;
         d->addRecomputeLog(returnCode);
 #ifdef FC_DEBUG
@@ -4542,10 +4547,11 @@ std::vector<DocumentObject*> Document::copyObject(
     else
         deps = getDependencyList(objs,DepNoXLinked|DepSort);
 
-    if(!testStatus(TempDoc) && !isSaved() && PropertyXLink::hasXLink(deps))
+    if (!testStatus(TempDoc) && !isSaved() && PropertyXLink::hasXLink(deps)) {
         throw Base::RuntimeError(
                 "Document must be saved at least once before link to external objects");
-        
+    }
+
     MergeDocuments md(this);
     // if not copying recursively then suppress possible warnings
     md.setVerbose(recursive);
@@ -4584,7 +4590,7 @@ std::vector<DocumentObject*> Document::copyObject(
         imported = md.importObjects(istr);
     }
 
-    if(returnAll || imported.size()!=deps.size())
+    if (returnAll || imported.size()!=deps.size())
         return imported;
 
     std::unordered_map<App::DocumentObject*,size_t> indices;
@@ -4678,7 +4684,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
 
     // True object move without copy is only safe when undo is off on both
     // documents.
-    if(!recursive && !d->iUndoMode && !that->d->iUndoMode) {
+    if(!recursive && !d->iUndoMode && !that->d->iUndoMode && !that->d->rollback) {
         // all object of the other document that refer to this object must be nullified
         that->breakDependency(obj, false);
         std::string objname = getUniqueObjectName(obj->getNameInDocument());

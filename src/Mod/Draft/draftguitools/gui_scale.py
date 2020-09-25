@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for scaling objects with the Draft Workbench.
+"""Provides GUI tools to scale objects in the 3D space.
 
 The scale operation can also be done with subelements.
 
@@ -31,9 +31,11 @@ because internally the functions `scaleVertex` and `scaleEdge`
 only work with polylines that have a `Points` property.
 """
 ## @package gui_scale
-# \ingroup DRAFT
-# \brief Provides tools for scaling objects with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to scale objects in the 3D space.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -41,11 +43,13 @@ import FreeCADGui as Gui
 import Draft_rc
 import DraftVecUtils
 import draftutils.utils as utils
+import draftutils.groups as groups
 import draftutils.todo as todo
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 import drafttaskpanels.task_scale as task_scale
+
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate
 
@@ -93,7 +97,8 @@ class Scale(gui_base_original.Modifier):
             self.view.removeEventCallback("SoEvent", self.call)
 
         self.selected_objects = Gui.Selection.getSelection()
-        self.selected_objects = utils.getGroupContents(self.selected_objects)
+        self.selected_objects = \
+            groups.get_group_contents(self.selected_objects)
         self.selected_subelements = Gui.Selection.getSelectionEx()
         self.refs = []
         self.ui.pointUi(self.name)
@@ -405,3 +410,5 @@ class Scale(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Scale', Scale())
+
+## @}
