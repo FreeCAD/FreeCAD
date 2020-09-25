@@ -1769,6 +1769,31 @@ PyObject*  TopoShapePy::reverse(PyObject *args)
     Py_Return;
 }
 
+PyObject*  TopoShapePy::reversed(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    TopoDS_Shape shape = getTopoShapePtr()->getShape();
+    shape = shape.Reversed();
+
+    PyTypeObject* type = this->GetType();
+    PyObject* cpy = nullptr;
+
+    // let the type object decide
+    if (type->tp_new)
+        cpy = type->tp_new(type, this, 0);
+    if (!cpy) {
+        PyErr_SetString(PyExc_TypeError, "failed to create copy of shape");
+        return nullptr;
+    }
+
+    if (!shape.IsNull()) {
+        static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->setShape(shape);
+    }
+    return cpy;
+}
+
 PyObject*  TopoShapePy::complement(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
