@@ -46,15 +46,19 @@
     </qresource>
     <qresource>
         <file>icons/Sketcher_AlterFillet.svg</file>
-        <file>icons/Sketcher_BSplineApproximate.svg</file>
-        <file>icons/Sketcher_BSplineComb.svg</file>
-        <file>icons/Sketcher_BSplineDecreaseDegree.svg</file>
-        <file>icons/Sketcher_BSplineDecreaseKnotMultiplicity.svg</file>
-        <file>icons/Sketcher_BSplineDegree.svg</file>
-        <file>icons/Sketcher_BSplineIncreaseDegree.svg</file>
-        <file>icons/Sketcher_BSplineIncreaseKnotMultiplicity.svg</file>
-        <file>icons/Sketcher_BSplineKnotMultiplicity.svg</file>
-        <file>icons/Sketcher_BSplinePolygon.svg</file>
+    </qresource>
+    <qresource>
+        <file>icons/splines/Sketcher_BSplineApproximate.svg</file>
+        <file>icons/splines/Sketcher_BSplineComb.svg</file>
+        <file>icons/splines/Sketcher_BSplineDecreaseDegree.svg</file>
+        <file>icons/splines/Sketcher_BSplineDecreaseKnotMultiplicity.svg</file>
+        <file>icons/splines/Sketcher_BSplineDegree.svg</file>
+        <file>icons/splines/Sketcher_BSplineIncreaseDegree.svg</file>
+        <file>icons/splines/Sketcher_BSplineIncreaseKnotMultiplicity.svg</file>
+        <file>icons/splines/Sketcher_BSplineKnotMultiplicity.svg</file>
+        <file>icons/splines/Sketcher_BSplinePolygon.svg</file>
+    </qresource>
+    <qresource>
         <file>icons/Sketcher_CarbonCopy.svg</file>
         <file>icons/Sketcher_CarbonCopy_Constr.svg</file>
         <file>icons/Sketcher_Clone.svg</file>
