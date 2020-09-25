@@ -1,0 +1,37 @@
+* {
+  color: palette(text);
+}
+
+Gui--OverlayToolButton {
+  background: transparent;
+  padding: 0px;
+  border: none;
+}
+
+Gui--OverlayToolButton::hover {
+  background: rgba(150,150,150,200);
+}
+
+Gui--OverlayToolButton::focus {
+  background: rgba(150,150,150,155);
+}
+
+Gui--OverlayToolButton::pressed {
+  background: rgba(50,50,50,80);
+  border: 1px inset palette(dark);
+}
+
+Gui--OverlayToolButton::checked {
+  background: rgba(50,50,50,80);
+  border: 1px inset palette(dark);
+}
+
+Gui--OverlayToolButton::checked:hover {
+  background: rgba(150,150,150,200);
+  border: 1px inset palette(dark);
+}
+
+Gui--OverlayTitleBar,
+Gui--OverlaySplitterHandle {
+  background-color: rgba(200, 200, 200, 150)
+}

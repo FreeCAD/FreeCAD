@@ -1,7 +1,6 @@
 * {
   color: palette(text);
   alternate-background-color: rgba(250,250,250,120);
-  border: transparent;
 }
 
 QComboBox,
@@ -181,4 +180,12 @@ Gui--OverlayTabWidget#OverlayBottom QSplitter Gui--OverlaySplitterHandle {
 Gui--OverlayTitleBar,
 Gui--OverlaySplitterHandle {
   background-color: rgba(200, 200, 200, 150)
+}
+
+QSint--ActionGroup QFrame[class="content"] {
+    background-color: #a0e6e6e6; /* Task Panel background color */
+}
+
+QSint--ActionGroup QFrame[class="content"] > QWidget {
+    background-color: #80e6e6e6; /* Task Panel background color */
 }
