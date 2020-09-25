@@ -378,6 +378,7 @@ CmdSketcherReorientSketch::CmdSketcherReorientSketch()
     sToolTipText    = QT_TR_NOOP("Reorient the selected sketch");
     sWhatsThis      = "Sketcher_ReorientSketch";
     sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_ReorientSketch";
 }
 
 void CmdSketcherReorientSketch::activated(int iMsg)
@@ -658,6 +659,7 @@ CmdSketcherValidateSketch::CmdSketcherValidateSketch()
     sWhatsThis      = "Sketcher_ValidateSketch";
     sStatusTip      = sToolTipText;
     eType           = 0;
+    sPixmap         = "Sketcher_ValidateSketch";
 }
 
 void CmdSketcherValidateSketch::activated(int iMsg)
