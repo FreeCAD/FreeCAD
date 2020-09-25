@@ -47,6 +47,7 @@ class SketcherWorkbench ( Workbench ):
         Gui.addIconPath(":/icons/geometry")
         # Gui.addIconPath(":/icons/obsolete")
         Gui.addIconPath(":/icons/pointers")
+        Gui.addIconPath(":/icons/splines")
         try:
             import Profiles
         except ImportError:
