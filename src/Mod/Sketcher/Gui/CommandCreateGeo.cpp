@@ -183,7 +183,8 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
                     const std::map<int, Sketcher::PointPos> coincidents = psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
 
                     if(!coincidents.empty()) {
-                        ext = coincidents.begin()->first < 0; // the keys are ordered, so if the first is negative, it is coincident with external
+                        // the keys are ordered, so if the first is negative, it is coincident with external
+                        ext = coincidents.begin()->first < 0;
 
                         std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
 
@@ -6083,7 +6084,7 @@ namespace SketcherGui {
     {
         sAppModule      = "Sketcher";
         sGroup          = QT_TR_NOOP("Sketcher");
-        sMenuText       = QT_TR_NOOP("CarbonCopy");
+        sMenuText       = QT_TR_NOOP("Carbon copy");
         sToolTipText    = QT_TR_NOOP("Copies the geometry of another sketch");
         sWhatsThis      = "Sketcher_CarbonCopy";
         sStatusTip      = sToolTipText;
