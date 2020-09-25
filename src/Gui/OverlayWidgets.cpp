@@ -496,6 +496,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     actAutoMode.setData(QString::fromLatin1("OBTN AutoMode"));
     actAutoMode.setParent(this);
     autoModeMenu.hide();
+    autoModeMenu.setToolTipsVisible(true);
     autoModeMenu.addAction(&actNoAutoMode);
     autoModeMenu.addAction(&actAutoHide);
     autoModeMenu.addAction(&actEditShow);
@@ -916,12 +917,13 @@ void OverlayTabWidget::retranslate()
 {
     actTransparent.setToolTip(tr("Toggle transparent mode"));
     actNoAutoMode.setText(tr("None"));
+    actNoAutoMode.setToolTip(tr("Turn off auto hide/show"));
     actAutoHide.setText(tr("Auto hide"));
     actAutoHide.setToolTip(tr("Auto hide docked widgets on leave"));
     actEditHide.setText(tr("Hide on edit"));
     actEditHide.setToolTip(tr("Auto hide docked widgets on editing"));
     actEditShow.setText(tr("Show on edit"));
-    actEditShow.setToolTip(tr("Auto reveal docked widgets on editing"));
+    actEditShow.setToolTip(tr("Auto show docked widgets on editing"));
     actIncrease.setToolTip(tr("Increase window size, either width or height depending on the docking site.\n"
                               "Hold CTRL key while pressing the button to change size in the other dimension.\n"
                               "Hold SHIFT key while pressing the button to move the window.\n"
