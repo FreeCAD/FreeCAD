@@ -924,7 +924,7 @@ private:
             }
 
             if (numConstraints == 0) {
-                throw Py::Exception(PartExceptionOCCError, "Failed to created face with no constraints");
+                throw Py::Exception(PartExceptionOCCError, "Failed to create face with no constraints");
             }
 
             builder.Build();
