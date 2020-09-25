@@ -3787,30 +3787,6 @@ void StdCmdDockOverlayAll::activated(int iMsg)
 }
 
 //===========================================================================
-// Std_DockOverlayAutoHideAll
-//===========================================================================
-
-DEF_STD_CMD(StdCmdDockOverlayAutoHideAll)
-
-StdCmdDockOverlayAutoHideAll::StdCmdDockOverlayAutoHideAll()
-  :Command("Std_DockOverlayAutoHideAll")
-{
-  sGroup        = QT_TR_NOOP("View");
-  sMenuText     = QT_TR_NOOP("Toggle Auto hide for all");
-  sToolTipText  = QT_TR_NOOP("Toggle auto-hide for all overlay docked window");
-  sWhatsThis    = "Std_DockOverlayAutoHideAll";
-  sStatusTip    = sToolTipText;
-  sAccel        = "CTRL+F4";
-  eType         = 0;
-}
-
-void StdCmdDockOverlayAutoHideAll::activated(int iMsg)
-{
-    Q_UNUSED(iMsg); 
-    OverlayManager::instance()->setOverlayMode(OverlayManager::ToggleAutoHideAll);
-}
-
-//===========================================================================
 // Std_DockOverlayTransparentAll
 //===========================================================================
 
@@ -3857,30 +3833,6 @@ void StdCmdDockOverlayToggle::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
     OverlayManager::instance()->setOverlayMode(OverlayManager::ToggleActive);
-}
-
-//===========================================================================
-// Std_DockOverlayToggleAutoHide
-//===========================================================================
-
-DEF_STD_CMD(StdCmdDockOverlayToggleAutoHide)
-
-StdCmdDockOverlayToggleAutoHide::StdCmdDockOverlayToggleAutoHide()
-  :Command("Std_DockOverlayToggleAutoHide")
-{
-    sGroup        = QT_TR_NOOP("Standard-View");
-    sMenuText     = QT_TR_NOOP("Toggle auto hide");
-    sToolTipText  = QT_TR_NOOP("Toggle auto hide mode for the docked widget under cursor");
-    sWhatsThis    = "Std_DockOverlayToggleAutoHide";
-    sStatusTip    = sToolTipText;
-    sAccel        = "CTRL+F3";
-    eType         = 0;
-}
-
-void StdCmdDockOverlayToggleAutoHide::activated(int iMsg)
-{
-    Q_UNUSED(iMsg); 
-    OverlayManager::instance()->setOverlayMode(OverlayManager::ToggleAutoHide);
 }
 
 //===========================================================================
@@ -4089,11 +4041,9 @@ public:
         bCanLog       = false;
 
         addCommand(new StdCmdDockOverlayAll());
-        addCommand(new StdCmdDockOverlayAutoHideAll());
         addCommand(new StdCmdDockOverlayTransparentAll());
         addCommand();
         addCommand(new StdCmdDockOverlayToggle());
-        addCommand(new StdCmdDockOverlayToggleAutoHide());
         addCommand(new StdCmdDockOverlayToggleTransparent());
         addCommand();
         addCommand(new StdCmdDockOverlayIncrease());

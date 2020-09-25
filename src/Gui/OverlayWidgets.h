@@ -32,6 +32,7 @@
 #include <QImage>
 #include <QDockWidget>
 #include <QSplitter>
+#include <QMenu>
 
 #include <Base/Parameter.h>
 
@@ -58,16 +59,12 @@ public:
 
     enum OverlayMode {
         ToggleActive,
-        ToggleAutoHide,
         ToggleTransparent,
         EnableActive,
         DisableActive,
         EnableAll,
         DisableAll,
         ToggleAll,
-        AutoHideAll,
-        AutoHideNone,
-        ToggleAutoHideAll,
         TransparentAll,
         TransparentNone,
         ToggleTransparentAll,
@@ -146,17 +143,16 @@ public:
     void removeWidget(QDockWidget *widget, QDockWidget *last=nullptr);
     void setCurrent(QDockWidget *widget);
 
-    void setAutoHide(bool enable);
-    bool isAutoHide() const {return actAutoHide.isChecked();}
-
     void setTransparent(bool enable);
     bool isTransparent() const {return actTransparent.isChecked();}
 
-    void setEditHide(bool enable);
-    bool isEditHide() const {return actEditHide.isChecked();}
-
-    void setEditShow(bool enable);
-    bool isEditShow() const {return actEditShow.isChecked();}
+    enum OverlayAutoMode {
+        NoAutoMode,
+        AutoHide,
+        EditShow,
+        EditHide,
+    };
+    void setAutoMode(OverlayAutoMode mode);
 
     void touch() {touched = true;}
     bool isTouched() const {return touched;}
@@ -169,7 +165,7 @@ public:
     bool getAutoHideRect(QRect &rect) const;
     void changeSize(int changes, bool checkModifier=true);
     void onAction(QAction *);
-    void syncAction();
+    void syncAutoMode();
 
     void setOffset(const QSize &ofs);
     const QSize &getOffset() const {return offset;}
@@ -261,16 +257,19 @@ private:
     OverlayProxyWidget *proxyWidget;
     QSplitter *splitter = nullptr;
     QWidget *titleBar = nullptr;
+    QAction actNoAutoMode;
     QAction actAutoHide;
     QAction actEditHide;
     QAction actEditShow;
     QAction actAutoMode;
+    QMenu autoModeMenu;
     QAction actTransparent;
     QAction actIncrease;
     QAction actDecrease;
     QAction actOverlay;
     QTimer timer;
     QTimer repaintTimer;
+    OverlayAutoMode autoMode = NoAutoMode;
     bool repainting = false;
     bool overlayed = false;
     bool touched = false;

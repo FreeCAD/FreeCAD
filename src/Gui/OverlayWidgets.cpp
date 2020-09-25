@@ -314,6 +314,8 @@ OverlayToolButton::OverlayToolButton(QWidget *parent)
     setCursor(Qt::ArrowCursor);
 }
 
+// --------------------------------------------------------------------
+
 OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     :QTabWidget(parent), dockArea(pos)
 {
@@ -363,11 +365,6 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     setOverlayMode(true);
     hide();
 
-    actOverlay.setIcon(QPixmap(_PixmapOverlay));
-    actOverlay.setData(QString::fromLatin1("OBTN Overlay"));
-    actOverlay.setParent(this);
-    addAction(&actOverlay);
-
     static QIcon pxTransparent;
     if(pxTransparent.isNull()) {
         const char * const bytes[]={
@@ -391,7 +388,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     actTransparent.setCheckable(true);
     actTransparent.setData(QString::fromLatin1("OBTN Transparent"));
     actTransparent.setParent(this);
-    // addAction(&actTransparent);
+    addAction(&actTransparent);
 
     QPixmap pxAutoHide;
     if(pxAutoHide.isNull()) {
@@ -428,10 +425,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     default:
         break;
     }
-    actAutoHide.setCheckable(true);
     actAutoHide.setData(QString::fromLatin1("OBTN AutoHide"));
-    actAutoHide.setParent(this);
-    addAction(&actAutoHide);
 
     static QIcon pxEditHide;
     if(pxEditHide.isNull()) {
@@ -453,10 +447,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
         pxEditHide = QIcon(QPixmap(bytes));
     }
     actEditHide.setIcon(pxEditHide);
-    actEditHide.setCheckable(true);
     actEditHide.setData(QString::fromLatin1("OBTN EditHide"));
-    actEditHide.setParent(this);
-    addAction(&actEditHide);
 
     static QIcon pxEditShow;
     if(pxEditShow.isNull()) {
@@ -478,16 +469,39 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
         pxEditShow = QIcon(QPixmap(bytes));
     }
     actEditShow.setIcon(pxEditShow);
-    actEditShow.setCheckable(true);
     actEditShow.setData(QString::fromLatin1("OBTN EditShow"));
-    actEditShow.setParent(this);
-    addAction(&actEditShow);
 
-    // actAutoMode.setCheckable(true);
-    // actAutoMode.setData(QString::fromLatin1("OBTN AutoMode"));
-    // actAutoMode.setParent(this);
-    // syncAction();
-    // addAction (&actAutoMode);
+    static QIcon pxNoAutoMode;
+    if(pxNoAutoMode.isNull()) {
+        const char * const bytes[]={
+            "10 10 2 1",
+            ". c None",
+            TITLE_BUTTON_COLOR,
+            "..........",
+            "..........",
+            ".########.",
+            ".########.",
+            "..######..",
+            "...####...",
+            "....##....",
+            "..........",
+            "..........",
+            "..........",
+        };
+        pxNoAutoMode = QIcon(QPixmap(bytes));
+    }
+    actNoAutoMode.setIcon(pxNoAutoMode);
+    actNoAutoMode.setData(QString::fromLatin1("OBTN NoAutoMode"));
+
+    actAutoMode.setData(QString::fromLatin1("OBTN AutoMode"));
+    actAutoMode.setParent(this);
+    autoModeMenu.hide();
+    autoModeMenu.addAction(&actNoAutoMode);
+    autoModeMenu.addAction(&actAutoHide);
+    autoModeMenu.addAction(&actEditShow);
+    autoModeMenu.addAction(&actEditHide);
+    syncAutoMode();
+    addAction(&actAutoMode);
 
     static QIcon pxIncrease;
     if(pxIncrease.isNull()) {
@@ -536,6 +550,11 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     actDecrease.setData(QString::fromLatin1("OBTN Decrease"));
     actDecrease.setParent(this);
     // addAction(&actDecrease);
+
+    actOverlay.setIcon(QPixmap(_PixmapOverlay));
+    actOverlay.setData(QString::fromLatin1("OBTN Overlay"));
+    actOverlay.setParent(this);
+    addAction(&actOverlay);
 
     retranslate();
 
@@ -835,10 +854,16 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
         QRect rect = geometry();
         setRect(QRect(rect.left(),rect.top(),width,height));
     }
-    setAutoHide(handle->GetBool("AutoHide", false));
+    if (handle->GetBool("AutoHide", false))
+        setAutoMode(AutoHide);
+    else if (handle->GetBool("EditHide", false))
+        setAutoMode(EditHide);
+    else if (handle->GetBool("EditShow", false))
+        setAutoMode(EditShow);
+    else
+        setAutoMode(NoAutoMode);
+
     setTransparent(handle->GetBool("Transparent", false));
-    setEditHide(handle->GetBool("EditHide", false));
-    setEditShow(handle->GetBool("EditShow", false));
 
     std::string savedSizes = handle->GetASCII("Sizes","");
     QList<int> sizes;
@@ -892,9 +917,13 @@ void OverlayTabWidget::changeEvent(QEvent *e)
 void OverlayTabWidget::retranslate()
 {
     actTransparent.setToolTip(tr("Toggle transparent mode"));
-    actAutoHide.setToolTip(tr("Toggle auto hide mode"));
-    actEditHide.setToolTip(tr("Toggle auto hide on edit mode"));
-    actEditShow.setToolTip(tr("Toggle auto show on edit mode"));
+    actNoAutoMode.setText(tr("None"));
+    actAutoHide.setText(tr("Auto hide"));
+    actAutoHide.setToolTip(tr("Auto hide docked widgets on leave"));
+    actEditHide.setText(tr("Hide on edit"));
+    actEditHide.setToolTip(tr("Auto hide docked widgets on editing"));
+    actEditShow.setText(tr("Show on edit"));
+    actEditShow.setToolTip(tr("Auto reveal docked widgets on editing"));
     actIncrease.setToolTip(tr("Increase window size, either width or height depending on the docking site.\n"
                               "Hold CTRL key while pressing the button to change size in the other dimension.\n"
                               "Hold SHIFT key while pressing the button to move the window.\n"
@@ -904,53 +933,48 @@ void OverlayTabWidget::retranslate()
                               "Hold SHIFT key while pressing the button to move the window.\n"
                               "Hold CTRL + SHIFT key to move the window in the other direction."));
     actOverlay.setToolTip(tr("Toggle overlay"));
+    syncAutoMode();
 }
 
-void OverlayTabWidget::syncAction()
+void OverlayTabWidget::syncAutoMode()
 {
-    QAction *action = &actAutoHide;
-    if (actEditShow.isChecked())
+    QAction *action = nullptr;
+    switch(autoMode) {
+    case AutoHide:
+        action = &actAutoHide;
+        break;
+    case EditShow:
         action = &actEditShow;
-    else if (actEditHide.isChecked())
+        break;
+    case EditHide:
         action = &actEditHide;
+        break;
+    default:
+        action = &actNoAutoMode;
+        break;
+    }
     actAutoMode.setIcon(action->icon());
-    actAutoMode.setToolTip(action->toolTip());
-    QSignalBlocker blocker(&actAutoMode);
-    actAutoMode.setChecked(action->isChecked());
+    if (action == &actNoAutoMode)
+        actAutoMode.setToolTip(tr("Select auto show/hide mode"));
+    else
+        actAutoMode.setToolTip(action->toolTip());
 }
 
 void OverlayTabWidget::onAction(QAction *action)
 {
     if (action == &actAutoMode) {
-        QMenu menu;
-        menu.addAction(&actAutoHide);
-        menu.addAction(&actEditShow);
-        menu.addAction(&actEditHide);
-        menu.exec(QCursor::pos());
+        action = autoModeMenu.exec(QCursor::pos());
+        if (action == &actNoAutoMode)
+            setAutoMode(NoAutoMode);
+        else if (action == &actAutoHide)
+            setAutoMode(AutoHide);
+        else if (action == &actEditShow)
+            setAutoMode(EditShow);
+        else if (action == &actEditHide)
+            setAutoMode(EditHide);
         return;
     }
-    if(action == &actEditHide) {
-        if(hGrp)
-            hGrp->SetBool("EditHide", actEditHide.isChecked());
-        if(action->isChecked()) {
-            setAutoHide(false);
-            setEditShow(false);
-        }
-    } else if(action == &actAutoHide) {
-        if(hGrp)
-            hGrp->SetBool("AutoHide", actAutoHide.isChecked());
-        if(action->isChecked()) {
-            setEditHide(false);
-            setEditShow(false);
-        }
-    } else if(action == &actEditShow) {
-        if(hGrp)
-            hGrp->SetBool("EditShow", actEditShow.isChecked());
-        if(action->isChecked()) {
-            setEditHide(false);
-            setAutoHide(false);
-        }
-    } else if(action == &actIncrease)
+    else if(action == &actIncrease)
         changeSize(5);
     else if(action == &actDecrease)
         changeSize(-5);
@@ -1018,7 +1042,7 @@ void OverlayTabWidget::setState(State state)
 
 bool OverlayTabWidget::checkAutoHide() const
 {
-    if(isAutoHide())
+    if(autoMode == AutoHide)
         return true;
 
     if(ViewParams::getDockOverlayAutoView()) {
@@ -1028,12 +1052,12 @@ bool OverlayTabWidget::checkAutoHide() const
             return true;
     }
 
-    if(isEditShow()) {
+    if(autoMode == EditShow) {
         return !Application::Instance->editDocument() 
             && (!Control().taskPanel() || Control().taskPanel()->isEmpty());
     }
 
-    if(isEditHide() && Application::Instance->editDocument())
+    if(autoMode == EditHide && Application::Instance->editDocument())
         return true;
 
     return false;
@@ -1323,21 +1347,6 @@ void OverlayTabWidget::setOverlayMode(QWidget *widget, int enable)
         setOverlayMode(qobject_cast<QWidget*>(child), enable);
 }
 
-void OverlayTabWidget::setAutoHide(bool enable)
-{
-    if(actAutoHide.isChecked() == enable)
-        return;
-    if(hGrp)
-        hGrp->SetBool("AutoHide", enable);
-    actAutoHide.setChecked(enable);
-    syncAction();
-    if(enable) {
-        setEditHide(false);
-        setEditShow(false);
-    }
-    OverlayManager::instance()->refresh(this);
-}
-
 void OverlayTabWidget::setTransparent(bool enable)
 {
     if(actTransparent.isChecked() == enable)
@@ -1348,33 +1357,32 @@ void OverlayTabWidget::setTransparent(bool enable)
     OverlayManager::instance()->refresh(this);
 }
 
-void OverlayTabWidget::setEditHide(bool enable)
+void OverlayTabWidget::setAutoMode(OverlayAutoMode mode)
 {
-    if(actEditHide.isChecked() == enable)
+    if (autoMode == mode)
         return;
-    if(hGrp)
-        hGrp->SetBool("EditHide", enable);
-    actEditHide.setChecked(enable);
-    syncAction();
-    if(enable) {
-        setAutoHide(false);
-        setEditShow(false);
-    }
-    OverlayManager::instance()->refresh(this);
-}
+    autoMode = mode;
 
-void OverlayTabWidget::setEditShow(bool enable)
-{
-    if(actEditShow.isChecked() == enable)
-        return;
-    if(hGrp)
-        hGrp->SetBool("EditShow", enable);
-    actEditShow.setChecked(enable);
-    syncAction();
-    if(enable) {
-        setAutoHide(false);
-        setEditHide(false);
+    if (hGrp) {
+        bool autohide = false, editshow = false, edithide = false;
+        switch (mode) {
+        case AutoHide:
+            autohide = true;
+            break;
+        case EditShow:
+            editshow = true;
+            break;
+        case EditHide:
+            edithide = true;
+            break;
+        default:
+            break;
+        }
+        hGrp->SetBool("AutoHide", autohide);
+        hGrp->SetBool("EditShow", editshow);
+        hGrp->SetBool("EditHide", edithide);
     }
+    syncAutoMode();
     OverlayManager::instance()->refresh(this);
 }
 
@@ -1420,7 +1428,7 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     if(!enable && isTransparent()) {
         stylesheet = OverlayStyleSheet::instance()->activeStyleSheet;
         mode = -1;
-    } else if (enable && !isTransparent() && (isEditShow() || isAutoHide())) {
+    } else if (enable && !isTransparent() && (autoMode == EditShow || autoMode == AutoHide)) {
         stylesheet = OverlayStyleSheet::instance()->offStyleSheet;
         mode = 0;
     } else {
@@ -1873,7 +1881,8 @@ void OverlayTitleBar::paintEvent(QPaintEvent *)
         return;
 
     QPainter painter(this);
-    painter.fillRect(this->rect(), painter.background());
+    if (qobject_cast<OverlayTabWidget*>(parentWidget()))
+        painter.fillRect(this->rect(), painter.background());
 
     QRect r = titleItem->geometry();
     if (vertical) {
@@ -2548,7 +2557,6 @@ enum OverlayToggleMode {
     OverlayUnset,
     OverlaySet,
     OverlayToggle,
-    OverlayToggleAutoHide,
     OverlayToggleTransparent,
     OverlayCheck,
 };
@@ -2676,9 +2684,6 @@ public:
         if(it != _overlayMap.end()) {
             auto o = it->second;
             switch(toggle) {
-            case OverlayToggleAutoHide:
-                o->tabWidget->setAutoHide(!o->tabWidget->isAutoHide());
-                break;
             case OverlayToggleTransparent:
                 o->tabWidget->setTransparent(!o->tabWidget->isTransparent());
                 break;
@@ -2718,9 +2723,7 @@ public:
         if(toggle == OverlayCheck && !o->tabWidget->count())
             return false;
         if(o->addWidget(dock)) {
-            if(toggle == OverlayToggleAutoHide)
-                o->tabWidget->setAutoHide(true);
-            else if(toggle == OverlayToggleTransparent)
+            if(toggle == OverlayToggleTransparent)
                 o->tabWidget->setTransparent(true);
         }
         refresh();
@@ -2950,30 +2953,6 @@ public:
             }
             setOverlayMode(OverlayManager::EnableAll);
             return;
-        case OverlayManager::AutoHideAll: {
-            bool found = false;
-            for(auto o : _overlayInfos) {
-                if(o->tabWidget->count())
-                    found = true;
-            }
-            if(!found)
-                setOverlayMode(OverlayManager::EnableAll);
-        }
-        // fall through
-        case OverlayManager::AutoHideNone:
-            for(auto o : _overlayInfos)
-                o->tabWidget->setAutoHide(mode == OverlayManager::AutoHideAll);
-            refresh();
-            return;
-        case OverlayManager::ToggleAutoHideAll:
-            for(auto o : _overlayInfos) {
-                if(o->tabWidget->count() && o->tabWidget->isAutoHide()) {
-                    setOverlayMode(OverlayManager::AutoHideNone);
-                    return;
-                }
-            }
-            setOverlayMode(OverlayManager::AutoHideAll);
-            return;
         case OverlayManager::TransparentAll: {
             bool found = false;
             for(auto o : _overlayInfos) {
@@ -3026,9 +3005,6 @@ public:
         switch(mode) {
         case OverlayManager::ToggleActive:
             m = OverlayToggle;
-            break;
-        case OverlayManager::ToggleAutoHide:
-            m = OverlayToggleAutoHide;
             break;
         case OverlayManager::ToggleTransparent:
             m = OverlayToggleTransparent;
