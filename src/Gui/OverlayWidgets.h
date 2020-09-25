@@ -314,6 +314,7 @@ protected:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void paintEvent(QPaintEvent*);
+    void keyPressEvent(QKeyEvent *ke);
 
 private:
     bool dragging = false;
@@ -369,6 +370,7 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent *);
     virtual void mousePressEvent(QMouseEvent *);
     virtual void mouseReleaseEvent(QMouseEvent *);
+    virtual void keyPressEvent(QKeyEvent *);
     virtual QSize sizeHint() const;
 
     void endDrag();

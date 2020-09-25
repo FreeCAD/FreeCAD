@@ -887,12 +887,10 @@ void OverlayTabWidget::saveTabs()
     }
     hGrp->SetASCII("Widgets", os.str().c_str());
 
-    if(splitter->isVisible()) {
-        os.str("");
-        for(int size : splitter->sizes())
-            os << size << ",";
-        hGrp->SetASCII("Sizes", os.str().c_str());
-    }
+    os.str("");
+    for(int size : splitter->sizes())
+        os << size << ",";
+    hGrp->SetASCII("Sizes", os.str().c_str());
 }
 
 void OverlayTabWidget::onTabMoved(int from, int to)
@@ -1838,6 +1836,7 @@ void OverlayTabWidget::onSizeGripMove(const QPoint &p)
 OverlayTitleBar::OverlayTitleBar(QWidget * parent)
     :QWidget(parent) 
 {
+    setFocusPolicy(Qt::ClickFocus);
     setMouseTracking(true);
     setCursor(Qt::OpenHandCursor);
 }
@@ -1978,6 +1977,17 @@ void OverlayTitleBar::mouseReleaseEvent(QMouseEvent *me)
         _DragFrame->hide();
 }
 
+void OverlayTitleBar::keyPressEvent(QKeyEvent *ke)
+{
+    if (dragging && ke->key() == Qt::Key_Escape) {
+        setCursor(Qt::OpenHandCursor);
+        dragging = false;
+        if (_DragFrame)
+            _DragFrame->hide();
+    }
+}
+
+
 // -----------------------------------------------------------
 
 OverlayDragFrame::OverlayDragFrame(QWidget * parent)
@@ -2093,6 +2103,8 @@ QSplitterHandle * OverlaySplitter::createHandle()
 OverlaySplitterHandle::OverlaySplitterHandle(Qt::Orientation orientation, QSplitter *parent)
     : QSplitterHandle(orientation, parent)
 {
+    setMouseTracking(true);
+    setFocusPolicy(Qt::ClickFocus);
     actFloat.setIcon(QPixmap(_PixmapFloat));
     retranslate();
     QObject::connect(&actFloat, SIGNAL(triggered(bool)), this, SLOT(onAction()));
@@ -2221,6 +2233,12 @@ void OverlaySplitterHandle::endDrag()
             ?  Qt::SizeHorCursor : Qt::SizeVerCursor);
     if (_DragFrame)
         _DragFrame->hide();
+}
+
+void OverlaySplitterHandle::keyPressEvent(QKeyEvent *ke)
+{
+    if (dragging && ke->key() == Qt::Key_Escape)
+        endDrag();
 }
 
 void OverlaySplitterHandle::mouseMoveEvent(QMouseEvent *me)
@@ -3324,16 +3342,17 @@ public:
                 if (!handle || !w)
                     continue;
                 if (handle->rect().contains(handle->mapFromGlobal(pos))) {
-                    QPoint pt = handle->mapToGlobal(w->pos());
-                    rect = QRect(pt, handle->size());
-                    if (size) {
-                        if (tabWidget != src)
-                            size /= 2;
-                        if (overlay->getSplitter()->orientation() == Qt::Vertical)
-                            rect.setHeight(rect.height() + size);
-                        else
-                            rect.setWidth(rect.width() + size);
-                    }
+                    QPoint pt = handle->mapToGlobal(QPoint());
+                    QSize s = handle->size();
+                    if (!size)
+                        size = _MinimumOverlaySize;
+                    if (tabWidget != src)
+                        size /= 2;
+                    if (overlay->getSplitter()->orientation() == Qt::Vertical)
+                        s.setHeight(s.height() + size);
+                    else
+                        s.setWidth(s.width() + size);
+                    rect = QRect(pt, s);
                     index = i;
                     break;
                 }
@@ -3690,6 +3709,8 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
         QWidget *grabber = QWidget::mouseGrabber();
         if (d->mouseTransparent || (grabber && grabber != d->_trackingOverlay))
             return false;
+        if (qobject_cast<OverlayTitleBar*>(o) || qobject_cast<OverlaySplitterHandle*>(o))
+            return false;
         if (d->_trackingView >= 0) {
             View3DInventorViewer *view = nullptr;
             if(!TreeWidget::isDragging() && d->_trackingView < d->_3dviews.size())
@@ -3742,8 +3763,7 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
                         hit = -1;
                     break;
                 }
-                if (qobject_cast<QAbstractButton*>(widget)
-                        || qobject_cast<OverlaySplitterHandle*>(widget))
+                if (qobject_cast<QAbstractButton*>(widget))
                     break;
                 auto tabWidget = qobject_cast<OverlayTabWidget*>(widget);
                 if (tabWidget) {
