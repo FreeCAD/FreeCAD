@@ -285,8 +285,74 @@ void TaskHoleParameters::threadTypeChanged(int index)
         return;
 
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
+
+    // A typical case is that users change from an ISO profile to another one.
+    // When they had e.g. the size "M3" in one profile they expect
+    // the same size in the other profile if it exists there.
+    // Besides the size also the thread class" and hole cut type are affected.
+
+    // at first check what type class is used
+    QString TypeClass = ui->ThreadType->currentText();
+    // the first 3 letters are the class name
+    if (TypeClass.indexOf(QString::fromLatin1("ISO")) > -1)
+        TypeClass = QString::fromLatin1("ISO");
+    else
+        TypeClass = QString::fromLatin1("UTS");
+
+    // store the current size
+    QString ThreadSizeString = ui->ThreadSize->currentText();
+    // store the current class
+    QString ThreadClassString = ui->ThreadClass->currentText();
+    // store the current type
+    QString CutTypeString = ui->HoleCutType->currentText();
+
+    // now set the new type, this will reset the comboboxes to item 0
     pcHole->ThreadType.setValue(index);
-}
+
+    // Size
+    // the size for ISO type has either foe form "M3x0.35" or just "M3"
+    // so we need to check if the size contains a 'x'. If yes, check if the string
+    // up to the 'x' is exists in the new list
+    if (TypeClass == QString::fromLatin1("ISO")) {
+        if (ThreadSizeString.indexOf(QString::fromLatin1("x")) > -1) {
+            // we have an ISO fine size
+            // cut of the part behind the 'x'
+            ThreadSizeString = ThreadSizeString.left(ThreadSizeString.indexOf(QString::fromLatin1("x")));
+            
+            // fractions end with a '0' in profile ISO coarse
+            // some translations might use the comma as decimal separator
+            if ((ThreadSizeString.indexOf(QString::fromLatin1(".")) > -1)
+                || (ThreadSizeString.indexOf(QString::fromLatin1(",")) > -1))
+                ThreadSizeString.append(QString::fromLatin1("0"));
+        }
+        
+        else {
+            // fractions don't end with a '0' in profile ISO fine
+            if ((ThreadSizeString.indexOf(QString::fromLatin1(".")) > -1)
+                || (ThreadSizeString.indexOf(QString::fromLatin1(",")) > -1))
+                ThreadSizeString.remove(ThreadSizeString.size()-1, 1);
+        }
+        // search if the string exists in the combobox
+        if (ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains) > -1) {
+            // we can set it
+            ui->ThreadSize->setCurrentIndex(ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains));
+        }
+    }
+    // for the UTS types the entries are the same
+    if (TypeClass == QString::fromLatin1("UTS")) {
+        if (ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains) > -1) {
+            ui->ThreadSize->setCurrentIndex(ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains));
+        }
+    }
+
+    // Class and cut type
+    // the class and cut types are the same for both TypeClass so we don't need to distinguish between ISO and UTS
+    if (ui->ThreadClass->findText(ThreadClassString, Qt::MatchContains) > -1)
+        ui->ThreadClass->setCurrentIndex(ui->ThreadClass->findText(ThreadClassString, Qt::MatchContains));
+    if (ui->HoleCutType->findText(CutTypeString, Qt::MatchContains) > -1)
+        ui->HoleCutType->setCurrentIndex(ui->HoleCutType->findText(CutTypeString, Qt::MatchContains));
+               
+ }
 
 void TaskHoleParameters::threadSizeChanged(int index)
 {
