@@ -61,10 +61,6 @@
     <qresource>
         <file>icons/Sketcher_CarbonCopy.svg</file>
         <file>icons/Sketcher_CarbonCopy_Constr.svg</file>
-        <file>icons/Sketcher_Clone.svg</file>
-        <file>icons/Sketcher_CloseShape.svg</file>
-        <file>icons/Sketcher_ConnectLines.svg</file>
-        <file>icons/Sketcher_Copy.svg</file>
     </qresource>
     <qresource>
         <file>icons/geometry/Sketcher_Conics.svg</file>
@@ -167,7 +163,6 @@
         <file>icons/Sketcher_MapSketch.svg</file>
         <file>icons/Sketcher_MergeSketch.svg</file>
         <file>icons/Sketcher_MirrorSketch.svg</file>
-        <file>icons/Sketcher_Move.svg</file>
         <file>icons/Sketcher_NewSketch.svg</file>
         <file alias="icons/preferences-sketcher.svg">icons/Sketcher_NewSketch.svg</file>
     </qresource>
@@ -194,19 +189,26 @@
         <file>icons/pointers/Sketcher_Pointer_Trimming.svg</file>
     </qresource>
     <qresource>
+        <file>icons/tools/Sketcher_Clone.svg</file>
+        <file>icons/tools/Sketcher_CloseShape.svg</file>
+        <file>icons/tools/Sketcher_ConnectLines.svg</file>
+        <file>icons/tools/Sketcher_Copy.svg</file>
+        <file>icons/tools/Sketcher_Move.svg</file>
+        <file>icons/tools/Sketcher_RectangularArray.svg</file>
+        <file>icons/tools/Sketcher_SelectConflictingConstraints.svg</file>
+        <file>icons/tools/Sketcher_SelectConstraints.svg</file>
+        <file>icons/tools/Sketcher_SelectElementsAssociatedWithConstraints.svg</file>
+        <file>icons/tools/Sketcher_SelectElementsWithDoFs.svg</file>
+        <file>icons/tools/Sketcher_SelectHorizontalAxis.svg</file>
+        <file>icons/tools/Sketcher_SelectOrigin.svg</file>
+        <file>icons/tools/Sketcher_SelectRedundantConstraints.svg</file>
+        <file>icons/tools/Sketcher_SelectVerticalAxis.svg</file>
+        <file>icons/tools/Sketcher_Symmetry.svg</file>
+    </qresource>
+    <qresource>
         <file>icons/Sketcher_ProfilesHexagon1.svg</file>
-        <file>icons/Sketcher_RectangularArray.svg</file>
-        <file>icons/Sketcher_SelectConflictingConstraints.svg</file>
-        <file>icons/Sketcher_SelectConstraints.svg</file>
-        <file>icons/Sketcher_SelectElementsAssociatedWithConstraints.svg</file>
-        <file>icons/Sketcher_SelectElementsWithDoFs.svg</file>
-        <file>icons/Sketcher_SelectHorizontalAxis.svg</file>
-        <file>icons/Sketcher_SelectOrigin.svg</file>
-        <file>icons/Sketcher_SelectRedundantConstraints.svg</file>
-        <file>icons/Sketcher_SelectVerticalAxis.svg</file>
         <file>icons/Sketcher_Sketch.svg</file>
         <file>icons/Sketcher_SwitchVirtualSpace.svg</file>
-        <file>icons/Sketcher_Symmetry.svg</file>
         <file>icons/Sketcher_ToggleActiveConstraint.svg</file>
         <file>icons/Sketcher_ToggleConstraint.svg</file>
         <file>icons/Sketcher_Toggle_Constraint_Driven.svg</file>
