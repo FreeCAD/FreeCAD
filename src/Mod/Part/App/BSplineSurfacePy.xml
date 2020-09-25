@@ -721,6 +721,13 @@
 					arguments: poles (sequence of sequence of Base.Vector), umults, vmults, [uknots, vknots, uperiodic, vperiodic, udegree, vdegree, weights (sequence of sequence of float)]
 				</UserDocu>
 			</Documentation>
-	</Methode>
+		</Methode>
+		<Methode Name="buildFromNSections">
+			<Documentation>
+				<UserDocu>
+					Builds a B-Spline from a list of control curves
+				</UserDocu>
+			</Documentation>
+		</Methode>
 	</PythonExport>
 </GenerateModel>
