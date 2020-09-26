@@ -34,6 +34,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Property.h>
+#include <App/Application.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -670,7 +671,10 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
 
         m[key] = value;
 
-        owner->getDocument()->renameObjectIdentifiers(m);
+        for (auto doc : App::GetApplication().getDocuments()) {
+            for (auto obj : doc->getObjects())
+                obj->renameObjectIdentifiers(m);
+        }
     }
 
     signaller.tryInvoke();

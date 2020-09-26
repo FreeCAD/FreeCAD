@@ -169,6 +169,13 @@ ObjectIdentifier Property::canonicalPath(const ObjectIdentifier &p) const
     ObjectIdentifier res(*this);
     for(auto &component : p.getPropertyComponents(1))
         res.addComponent(std::move(component));
+
+    if (myName) {
+        const std::string & name = p.getPropertyName();
+        // respect property name alias (used in Spreadsheet)
+        if (name != myName)
+            res.setComponent(0, ObjectIdentifier::SimpleComponent(name.c_str()));
+    }
     return res;
 }
 
