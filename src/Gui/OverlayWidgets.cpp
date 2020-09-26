@@ -1948,6 +1948,12 @@ void OverlayTitleBar::mousePressEvent(QMouseEvent *me)
         }
     }
 
+    QSize mwSize = getMainWindow()->size();
+    dragSize.setWidth(std::max(_MinimumOverlaySize,
+                               std::min(mwSize.width()/2, dragSize.width())));
+    dragSize.setHeight(std::max(_MinimumOverlaySize,
+                                std::min(mwSize.height()/2, dragSize.height())));
+
     dragOffset = me->pos();
     dragging = true;
     setCursor(Qt::ClosedHandCursor);
@@ -2289,7 +2295,7 @@ void OverlaySplitterHandle::mouseMoveEvent(QMouseEvent *me)
 
 void OverlaySplitterHandle::mousePressEvent(QMouseEvent *me)
 {
-    if (me->button() != Qt::LeftButton)
+    if (!getMainWindow() || me->button() != Qt::LeftButton)
         return;
 
     dragging = 1;
@@ -2299,6 +2305,13 @@ void OverlaySplitterHandle::mousePressEvent(QMouseEvent *me)
         dragSize = dock->size();
     else
         dragSize = QSize();
+
+    QSize mwSize = getMainWindow()->size();
+    dragSize.setWidth(std::max(_MinimumOverlaySize,
+                               std::min(mwSize.width()/2, dragSize.width())));
+    dragSize.setHeight(std::max(_MinimumOverlaySize,
+                                std::min(mwSize.height()/2, dragSize.height())));
+
 }
 
 void OverlaySplitterHandle::mouseReleaseEvent(QMouseEvent *me)
