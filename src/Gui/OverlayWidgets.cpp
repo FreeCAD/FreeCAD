@@ -3598,7 +3598,8 @@ void OverlayManager::initDockWidget(QDockWidget *dw, QWidget *widget)
 
 void OverlayManager::setupDockWidget(QDockWidget *dw, int dockArea)
 {
-    d->toggleOverlay(dw, OverlayCheck, dockArea);
+    (void)dockArea;
+    d->setupTitleBar(dw);
 }
 
 void OverlayManager::unsetupDockWidget(QDockWidget *dw)
