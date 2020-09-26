@@ -7597,7 +7597,8 @@ void SketchObject::constraintsRenamed(const std::map<App::ObjectIdentifier, App:
 {
     ExpressionEngine.renameExpressions(renamed);
 
-    getDocument()->renameObjectIdentifiers(renamed);
+    for (auto doc : App::GetApplication().getDocuments())
+        doc->renameObjectIdentifiers(renamed);
 }
 
 void SketchObject::constraintsRemoved(const std::set<App::ObjectIdentifier> &removed)
