@@ -70,7 +70,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Cone"
           << "Part_Torus"
           << "Separator"
-          << "Part_MakeTube";
+          << "Part_Tube";
 
     Gui::MenuItem* copy = new Gui::MenuItem;
     copy->setCommand("Create a copy");
@@ -183,7 +183,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
             << "Part_Sphere"
             << "Part_Cone"
             << "Part_Torus"
-            << "Part_MakeTube"
+            << "Part_Tube"
             << "Part_Primitives"
             << "Part_Builder";
 
