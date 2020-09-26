@@ -261,6 +261,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
             << "Sketcher_CompConstrainRadDia"
             << "Sketcher_ConstrainAngle"
             << "Sketcher_ConstrainSnellsLaw"
+            << "Sketcher_ConstrainInternalAlignment"
             << "Separator"
             << "Sketcher_ToggleDrivingConstraint"
             << "Sketcher_ToggleActiveConstraint";
@@ -292,7 +293,8 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel){
 }
 template <>
 inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel){
-    consaccel   << "Sketcher_CloseShape"
+    consaccel   << "Sketcher_SelectElementsWithDoFs"
+                << "Sketcher_CloseShape"
                 << "Sketcher_ConnectLines"
                 << "Sketcher_SelectConstraints"
                 << "Sketcher_SelectElementsAssociatedWithConstraints"
@@ -313,6 +315,7 @@ inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline){
         << "Sketcher_BSplineKnotMultiplicity"
         << "Sketcher_BSplineConvertToNURB"
         << "Sketcher_BSplineIncreaseDegree"
+        // << "Sketcher_BSplineDecreaseDegree" TODO: implement this
         << "Sketcher_BSplineIncreaseKnotMultiplicity"
         << "Sketcher_BSplineDecreaseKnotMultiplicity";
 }
@@ -322,6 +325,7 @@ inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bsp
     bspline << "Sketcher_CompBSplineShowHideGeometryInformation"
     << "Sketcher_BSplineConvertToNURB"
     << "Sketcher_BSplineIncreaseDegree"
+    // << "Sketcher_BSplineDecreaseDegree" TODO: implement this
     << "Sketcher_CompModifyKnotMultiplicity";
 }
 
