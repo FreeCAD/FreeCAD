@@ -198,6 +198,13 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
             std::map<std::string, App::Property*> Map;
             obj->getPropertyMap(Map);
             vp->attach(obj);
+
+            // this is needed to initialize Python-based view providers
+            App::Property* pyproxy = vp->getPropertyByName("Proxy");
+            if (pyproxy && pyproxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+                static_cast<App::PropertyPythonObject*>(pyproxy)->setValue(Py::Long(1));
+            }
+
             for (std::map<std::string, App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
                 vp->updateData(it->second);
             }
