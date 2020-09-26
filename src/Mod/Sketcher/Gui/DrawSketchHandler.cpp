@@ -155,7 +155,14 @@ void DrawSketchHandler::setCursor(const QPixmap &p,int x,int y, bool autoScale)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
             p1.setDevicePixelRatio(pRatio);
 #endif
-            cursor = QCursor(p1, x * pRatio, y * pRatio);
+#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
+            qreal hotX = x;
+            qreal hotY = y;
+#else
+            qreal hotX = x * pRatio;
+            qreal hotY = y * pRatio;
+#endif
+            cursor = QCursor(p1, hotX, hotY);
         } else {
             // already scaled
             cursor = QCursor(p1, x, y);
