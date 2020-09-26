@@ -651,8 +651,16 @@ class DocumentRecomputeCases(unittest.TestCase):
     res = self.Doc.recompute()
     FreeCAD.removeDocumentObserver(observer);
 
-    self.failUnless(res == 5)
+    # Placement change will not trigger a full recompute of a Part.Feature, so
+    # only 4 objects will be recomputed.
+    self.failUnless(res == 4)
     self.failUnless(not observer.objs)
+
+    box.Length *= 2
+    # Other property change shall trigger the recompute, so it shall be 5 this
+    # time.
+    res = self.Doc.recompute()
+    self.failUnless(res == 5)
 
   def tearDown(self):
     #closing doc
