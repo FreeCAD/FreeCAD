@@ -234,11 +234,12 @@ ObjectIdentifier::ObjectIdentifier(const Property &prop, int index)
  * @return Name
  */
 
-std::string App::ObjectIdentifier::getPropertyName() const
+const std::string & App::ObjectIdentifier::getPropertyName() const
 {
     ResolveResults result(*this);
 
-    assert(result.propertyIndex >=0 && static_cast<std::size_t>(result.propertyIndex) < components.size());
+    if (result.propertyIndex<0 || result.propertyIndex >= static_cast<int>(components.size()))
+        FC_THROWM(Base::ValueError, "Invalid property component");
 
     return components[result.propertyIndex].getName();
 }

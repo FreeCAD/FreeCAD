@@ -302,7 +302,7 @@ public:
     // Pop components from back
     void popComponents(int count=1);
 
-    std::string getPropertyName() const;
+    const std::string & getPropertyName() const;
 
     static const std::vector<std::pair<const char *, App::Property*> > &getPseudoProperties();
     static bool isPseudoProperty(const App::Property *prop);
