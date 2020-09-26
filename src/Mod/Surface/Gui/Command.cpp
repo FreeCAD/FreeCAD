@@ -261,6 +261,35 @@ bool CmdSurfaceExtendFace::isActive(void)
     return Gui::Selection().countObjectsOfType(Part::Feature::getClassTypeId()) == 1;
 }
 
+DEF_STD_CMD_A(CmdSurfaceSections)
+
+CmdSurfaceSections::CmdSurfaceSections()
+  :Command("Surface_Sections")
+{
+    sAppModule    = "Surface";
+    sGroup        = QT_TR_NOOP("Surface");
+    sMenuText     = QT_TR_NOOP("Sections...");
+    sToolTipText  = QT_TR_NOOP("Creates a surface from a series of section curves");
+    sStatusTip    = QT_TR_NOOP("Creates a surface from a series of section curves");
+    sWhatsThis    = "Surface_Sections";
+  //sPixmap       = "Surface_Sections";
+}
+
+void CmdSurfaceSections::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::string FeatName = getUniqueObjectName("Surface");
+
+    openCommand("Create surface");
+    doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::Sections\",\"%s\")", FeatName.c_str());
+    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
+}
+
+bool CmdSurfaceSections::isActive(void)
+{
+    return hasActiveDocument();
+}
+
 void CreateSurfaceCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -270,4 +299,5 @@ void CreateSurfaceCommands(void)
     rcCmdMgr.addCommand(new CmdSurfaceGeomFillSurface());
     rcCmdMgr.addCommand(new CmdSurfaceCurveOnMesh());
     rcCmdMgr.addCommand(new CmdSurfaceExtendFace());
+    rcCmdMgr.addCommand(new CmdSurfaceSections());
 }

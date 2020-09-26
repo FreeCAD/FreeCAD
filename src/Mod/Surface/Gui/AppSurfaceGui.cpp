@@ -36,6 +36,7 @@
 #include "Workbench.h"
 #include "TaskGeomFillSurface.h"
 #include "TaskFilling.h"
+#include "TaskSections.h"
 
 // use a different name to CreateCommand()
 void CreateSurfaceCommands(void);
@@ -79,6 +80,7 @@ PyMOD_INIT_FUNC(SurfaceGui)
     SurfaceGui::Workbench::init();
     SurfaceGui::ViewProviderGeomFillSurface ::init();
     SurfaceGui::ViewProviderFilling         ::init();
+    SurfaceGui::ViewProviderSections        ::init();
     
 //    SurfaceGui::ViewProviderCut::init();
 

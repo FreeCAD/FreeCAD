@@ -1514,6 +1514,7 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
 
 /*!
  * \code
+import math
 c = Part.Circle()
 c.Radius=50
 c = c.trim(0, math.pi)

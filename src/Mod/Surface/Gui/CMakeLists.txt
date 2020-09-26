@@ -28,6 +28,7 @@ set(SurfaceGui_MOC_HDRS
     TaskFillingUnbound.h
     TaskFillingVertex.h
     TaskGeomFillSurface.h
+    TaskSections.h
 )
 fc_wrap_cpp(SurfaceGui_MOC_SRCS ${SurfaceGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${SurfaceGui_MOC_SRCS})
@@ -43,6 +44,7 @@ SET(SurfaceGui_UIC_SRCS
     TaskFillingUnbound.ui
     TaskFillingVertex.ui
     TaskGeomFillSurface.ui
+    TaskSections.ui
 )
 
 if (BUILD_QT5)
@@ -62,6 +64,8 @@ SET(SurfaceGui_SRCS
     TaskFillingVertex.h
     TaskGeomFillSurface.cpp
     TaskGeomFillSurface.h
+    TaskSections.cpp
+    TaskSections.h
     AppSurfaceGui.cpp
     Command.cpp
     PreCompiled.cpp
