@@ -347,7 +347,7 @@ CmdSketcherConvertToNURB::CmdSketcherConvertToNURB()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Convert Geometry to B-spline");
     sToolTipText    = QT_TR_NOOP("Converts the given Geometry to a B-spline");
-    sWhatsThis      = "Sketcher_ConvertToNURB";
+    sWhatsThis      = "Sketcher_BSplineConvertToNURB";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_BSplineApproximate";
     sAccel          = "";
