@@ -319,7 +319,7 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(solverelmer)
         )
         self.assertEqual(
-            "Fem::FemSolverZ88",
+            "Fem::SolverZ88",
             type_of_obj(ObjectsFem.makeSolverZ88(doc))
         )
         self.assertEqual(
@@ -531,7 +531,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeSolverZ88(doc),
-            "Fem::FemSolverZ88"
+            "Fem::SolverZ88"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationElasticity(doc, solverelmer),
@@ -1210,7 +1210,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             solver_z88,
-            "Fem::FemSolverZ88"
+            "Fem::SolverZ88"
         ))
 
         # FemEquationElmerElasticity
