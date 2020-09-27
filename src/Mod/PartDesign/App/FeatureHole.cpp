@@ -468,7 +468,7 @@ Hole::Hole()
     ThreadDirection.setEnums(ThreadDirectionEnums);
 
     ADD_PROPERTY_TYPE(HoleCutType, ((long)0), "Hole", App::Prop_None, "Head cut type");
-    HoleCutType.setEnums(HoleCutType_None_Enums);
+    HoleCutType.setEnums(HoleCutType_ISOmetric_Enums);
 
     ADD_PROPERTY_TYPE(HoleCutDiameter, (0.0), "Hole", App::Prop_None, "Head cut diameter");
 
