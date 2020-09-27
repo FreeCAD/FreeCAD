@@ -1595,6 +1595,9 @@ void OverlayTabWidget::setRect(QRect rect)
 
 void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
 {
+    if (!getMainWindow() || !getMainWindow()->getMdiArea())
+        return;
+
     QRect rect = dock->geometry();
 
     getMainWindow()->removeDockWidget(dock);
@@ -1615,8 +1618,24 @@ void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
     addTab(new QWidget(this), title);
 
     dock->setFeatures(dock->features() & ~QDockWidget::DockWidgetFloatable);
-    if(count() == 1)
+    if(count() == 1) {
+        QSize sizeMain = getMainWindow()->getMdiArea()->size();
+        switch(dockArea) {
+        case Qt::LeftDockWidgetArea:
+        case Qt::RightDockWidgetArea:
+            if (rect.width() > sizeMain.width()/3)
+                rect.setWidth(sizeMain.width()/3);
+            break;
+        case Qt::TopDockWidgetArea:
+        case Qt::BottomDockWidgetArea:
+            if (rect.height() > sizeMain.height()/3)
+                rect.setHeight(sizeMain.height()/3);
+            break;
+        default:
+            break;
+        }
         setRect(rect);
+    }
 
     saveTabs();
 }
@@ -3287,6 +3306,7 @@ public:
         QRect rect;
         QRect rectMain(getMainWindow()->mapToGlobal(QPoint()),
                        getMainWindow()->size());
+        QRect rectMdi(mdi->mapToGlobal(QPoint()), mdi->size());
 
         for (OverlayTabWidget *overlay : _Overlays) {
             rect = QRect(mdi->mapToGlobal(overlay->rectOverlay.topLeft()),
@@ -3322,6 +3342,8 @@ public:
                 if (pos.x() - rect.left() < sideSize.width()) {
                     rect.setRight(rect.left() + _MinimumOverlaySize);
                     rect.setLeft(rectMain.left());
+                    rect.setTop(rectMdi.top());
+                    rect.setBottom(rectMdi.bottom());
                     break;
                 }
             }
@@ -3329,6 +3351,8 @@ public:
                 if (rect.right() - pos.x() < sideSize.width()) {
                     rect.setLeft(rect.right() - _MinimumOverlaySize);
                     rect.setRight(rectMain.right());
+                    rect.setTop(rectMdi.top());
+                    rect.setBottom(rectMdi.bottom());
                     break;
                 }
             }
@@ -3336,6 +3360,8 @@ public:
                 if (pos.y() - rect.top() < sideSize.height()) {
                     rect.setBottom(rect.top() + _MinimumOverlaySize);
                     rect.setTop(rectMain.top());
+                    rect.setLeft(rectMdi.left());
+                    rect.setRight(rectMdi.right());
                     break;
                 }
             }
@@ -3343,6 +3369,8 @@ public:
                 if (rect.bottom() - pos.y() < sideSize.height()) {
                     rect.setTop(rect.bottom() - _MinimumOverlaySize);
                     rect.setBottom(rectMain.bottom());
+                    rect.setLeft(rectMdi.left());
+                    rect.setRight(rectMdi.right());
                     break;
                 }
             }
