@@ -2899,82 +2899,78 @@ public:
 
         QRect rect;
         QRect rectBottom(0,0,0,0);
-        if(_bottom.tabWidget->count()) {
-            rect = _bottom.tabWidget->getRect();
 
-            QSize ofs = _bottom.tabWidget->getOffset();
-            int delta = _bottom.tabWidget->getSizeDelta();
-            h -= ofs.height();
-            if(naviCorner == 2)
-                ofs.setWidth(ofs.width()+naviCubeSize);
-            int bw = w-10-ofs.width()-delta;
-            if(naviCorner == 3)
-                bw -= naviCubeSize;
-            if(bw < 10)
-                bw = 10;
+        rect = _bottom.tabWidget->getRect();
 
-            // Bottom width is maintain the same to reduce QTextEdit re-layout
-            // which may be expensive if there are lots of text, e.g. for
-            // ReportView or PythonConsole.
-            _bottom.tabWidget->setRect(QRect(ofs.width(),h-rect.height(),bw,rect.height()));
+        QSize ofs = _bottom.tabWidget->getOffset();
+        int delta = _bottom.tabWidget->getSizeDelta();
+        h -= ofs.height();
+        if(naviCorner == 2)
+            ofs.setWidth(ofs.width()+naviCubeSize);
+        int bw = w-10-ofs.width()-delta;
+        if(naviCorner == 3)
+            bw -= naviCubeSize;
+        if(bw < 10)
+            bw = 10;
 
-            if (_bottom.tabWidget->isVisible() 
-                    && _bottom.tabWidget->getState() <= OverlayTabWidget::State_Normal)
-                rectBottom = _bottom.tabWidget->getRect();
-        }
+        // Bottom width is maintain the same to reduce QTextEdit re-layout
+        // which may be expensive if there are lots of text, e.g. for
+        // ReportView or PythonConsole.
+        _bottom.tabWidget->setRect(QRect(ofs.width(),h-rect.height(),bw,rect.height()));
+
+        if (_bottom.tabWidget->count()
+                && _bottom.tabWidget->isVisible() 
+                && _bottom.tabWidget->getState() <= OverlayTabWidget::State_Normal)
+            rectBottom = _bottom.tabWidget->getRect();
 
         QRect rectLeft(0,0,0,0);
-        if(_left.tabWidget->count()) {
-            rect = _left.tabWidget->getRect();
+        rect = _left.tabWidget->getRect();
 
-            auto ofs = _left.tabWidget->getOffset();
-            if(naviCorner == 0)
-                ofs.setWidth(ofs.width()+naviCubeSize);
-            int delta = _left.tabWidget->getSizeDelta()+rectBottom.height();
-            if(naviCorner == 2 && naviCubeSize > rectBottom.height())
-                delta += naviCubeSize - rectBottom.height();
-            int lh = std::max(h-ofs.width()-delta, 10);
+        ofs = _left.tabWidget->getOffset();
+        if(naviCorner == 0)
+            ofs.setWidth(ofs.width()+naviCubeSize);
+        delta = _left.tabWidget->getSizeDelta()+rectBottom.height();
+        if(naviCorner == 2 && naviCubeSize > rectBottom.height())
+            delta += naviCubeSize - rectBottom.height();
+        int lh = std::max(h-ofs.width()-delta, 10);
 
-            _left.tabWidget->setRect(QRect(ofs.height(),ofs.width(),rect.width(),lh));
+        _left.tabWidget->setRect(QRect(ofs.height(),ofs.width(),rect.width(),lh));
 
-            if (_left.tabWidget->isVisible() 
-                    && _left.tabWidget->getState() <= OverlayTabWidget::State_Normal)
-                rectLeft = _left.tabWidget->getRect();
-        }
+        if (_left.tabWidget->count()
+                && _left.tabWidget->isVisible() 
+                && _left.tabWidget->getState() <= OverlayTabWidget::State_Normal)
+            rectLeft = _left.tabWidget->getRect();
 
         QRect rectRight(0,0,0,0);
-        if(_right.tabWidget->count()) {
-            rect = _right.tabWidget->getRect();
+        rect = _right.tabWidget->getRect();
 
-            auto ofs = _right.tabWidget->getOffset();
-            if(naviCorner == 1)
-                ofs.setWidth(ofs.width()+naviCubeSize);
-            int delta = _right.tabWidget->getSizeDelta()+rectBottom.height();
-            if(naviCorner == 3 && naviCubeSize > rectBottom.height())
-                delta += naviCubeSize - rectBottom.height();
-            int rh = std::max(h-ofs.width()-delta, 10);
-            w -= ofs.height();
+         ofs = _right.tabWidget->getOffset();
+        if(naviCorner == 1)
+            ofs.setWidth(ofs.width()+naviCubeSize);
+        delta = _right.tabWidget->getSizeDelta()+rectBottom.height();
+        if(naviCorner == 3 && naviCubeSize > rectBottom.height())
+            delta += naviCubeSize - rectBottom.height();
+        int rh = std::max(h-ofs.width()-delta, 10);
+        w -= ofs.height();
 
-            _right.tabWidget->setRect(QRect(w-rect.width(),ofs.width(),rect.width(),rh));
+        _right.tabWidget->setRect(QRect(w-rect.width(),ofs.width(),rect.width(),rh));
 
-            if (_right.tabWidget->isVisible() 
-                    && _right.tabWidget->getState() <= OverlayTabWidget::State_Normal)
-                rectRight = _right.tabWidget->getRect();
-        }
+        if (_right.tabWidget->count()
+                && _right.tabWidget->isVisible() 
+                && _right.tabWidget->getState() <= OverlayTabWidget::State_Normal)
+            rectRight = _right.tabWidget->getRect();
 
-        if(_top.tabWidget->count()) {
-            rect = _top.tabWidget->getRect();
+        rect = _top.tabWidget->getRect();
 
-            auto ofs = _top.tabWidget->getOffset();
-            int delta = _top.tabWidget->getSizeDelta();
-            if(naviCorner == 0)
-                rectLeft.setWidth(std::max(rectLeft.width(), naviCubeSize));
-            else if(naviCorner == 1)
-                rectRight.setWidth(std::max(rectRight.width(), naviCubeSize));
-            int tw = w-rectLeft.width()-rectRight.width()-ofs.width()-delta;
+         ofs = _top.tabWidget->getOffset();
+        delta = _top.tabWidget->getSizeDelta();
+        if(naviCorner == 0)
+            rectLeft.setWidth(std::max(rectLeft.width(), naviCubeSize));
+        else if(naviCorner == 1)
+            rectRight.setWidth(std::max(rectRight.width(), naviCubeSize));
+        int tw = w-rectLeft.width()-rectRight.width()-ofs.width()-delta;
 
-            _top.tabWidget->setRect(QRect(rectLeft.width()-ofs.width(),ofs.height(),tw,rect.height()));
-        }
+        _top.tabWidget->setRect(QRect(rectLeft.width()-ofs.width(),ofs.height(),tw,rect.height()));
     }
 
     void setOverlayMode(OverlayMode mode)
