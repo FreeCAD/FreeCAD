@@ -98,8 +98,6 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     const SbVec2f posn((float) pos[0] / (float) std::max((int)(size[0] - 1), 1),
                        (float) pos[1] / (float) std::max((int)(size[1] - 1), 1));
 
-    this->lastmouseposition = posn;
-
     // Set to true if any event processing happened. Note that it is not
     // necessary to restrict ourselves to only do one "action" for an
     // event, we only need this flag to see if any processing happened
@@ -315,6 +313,8 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Mouse Movement handling
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
+        this->lastmouseposition = posn;
+        
         this->lockrecenter = true;
         const SoLocation2Event * const event = (const SoLocation2Event *) ev;
         if (this->currentmode == NavigationStyle::ZOOMING) {
