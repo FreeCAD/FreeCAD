@@ -76,6 +76,56 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->ThreadType->addItem(tr("UTS fine profile"), QByteArray("UTS"));
     ui->ThreadType->addItem(tr("UTS extra fine profile"), QByteArray("UTS"));
 
+    // read values from the hole properties
+    PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
+    ui->Threaded->setChecked(pcHole->Threaded.getValue());
+    ui->ModelActualThread->setChecked(pcHole->ModelActualThread.getValue());
+    ui->ThreadPitch->setValue(pcHole->ThreadPitch.getValue());
+    ui->ThreadAngle->setValue(pcHole->ThreadAngle.getValue());
+    ui->ThreadCutOffInner->setValue(pcHole->ThreadCutOffInner.getValue());
+    ui->ThreadCutOffOuter->setValue(pcHole->ThreadCutOffOuter.getValue());
+    ui->ThreadType->setCurrentIndex(pcHole->ThreadType.getValue());
+    ui->ThreadSize->clear();
+    const char** cursor = pcHole->ThreadSize.getEnums();
+    while (*cursor) {
+        ui->ThreadSize->addItem(tr(*cursor));
+        ++cursor;
+    }
+    ui->ThreadSize->setCurrentIndex(pcHole->ThreadSize.getValue());
+    ui->ThreadClass->clear();
+    cursor = pcHole->ThreadClass.getEnums();
+    while (*cursor) {
+        ui->ThreadClass->addItem(tr(*cursor));
+        ++cursor;
+    }
+    ui->ThreadClass->setCurrentIndex(pcHole->ThreadClass.getValue());
+    ui->ThreadFit->setCurrentIndex(pcHole->ThreadFit.getValue());
+    ui->Diameter->setValue(pcHole->Diameter.getValue());
+    if (pcHole->ThreadDirection.getValue() == 0L)
+        ui->directionRightHand->setChecked(true);
+    else
+        ui->directionLeftHand->setChecked(true);
+    ui->HoleCutType->clear();
+    cursor = pcHole->HoleCutType.getEnums();
+    while (*cursor) {
+        ui->HoleCutType->addItem(QString::fromLatin1(*cursor));
+        ++cursor;
+    }
+    ui->HoleCutType->setCurrentIndex(pcHole->HoleCutType.getValue());
+    ui->HoleCutDiameter->setValue(pcHole->HoleCutDiameter.getValue());
+    ui->HoleCutDepth->setValue(pcHole->HoleCutDepth.getValue());
+    ui->HoleCutCountersinkAngle->setValue(pcHole->HoleCutCountersinkAngle.getValue());
+    ui->DepthType->setCurrentIndex(pcHole->DepthType.getValue());
+    ui->Depth->setValue(pcHole->Depth.getValue());
+    if (pcHole->DrillPoint.getValue() == 0L)
+        ui->drillPointFlat->setChecked(true);
+    else
+        ui->drillPointAngled->setChecked(true);
+    ui->DrillPointAngle->setValue(pcHole->DrillPointAngle.getValue());
+    ui->Tapered->setChecked(pcHole->ModelActualThread.getValue());
+    ui->TaperedAngle->setValue(pcHole->TaperedAngle.getValue());
+    ui->Reversed->setChecked(pcHole->Reversed.getValue());
+
     connect(ui->Threaded, SIGNAL(clicked(bool)), this, SLOT(threadedChanged()));
     connect(ui->ThreadType, SIGNAL(currentIndexChanged(int)), this, SLOT(threadTypeChanged(int)));
     connect(ui->ModelActualThread, SIGNAL(clicked(bool)), this, SLOT(modelActualThreadChanged()));
@@ -101,14 +151,6 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     connect(ui->Tapered, SIGNAL(clicked(bool)), this, SLOT(taperedChanged()));
     connect(ui->Reversed, SIGNAL(clicked(bool)), this, SLOT(reversedChanged()));
     connect(ui->TaperedAngle, SIGNAL(valueChanged(double)), this, SLOT(taperedAngleChanged(double)));
-
-    PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
-
-    pcHole->updateProps();
-
-    ui->Reversed->blockSignals(true);
-    ui->Reversed->setChecked(pcHole->Reversed.getValue());
-    ui->Reversed->blockSignals(false);
 
     vp->show();
 
@@ -475,7 +517,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
 
         ui->ThreadSize->blockSignals(true);
         ui->ThreadSize->clear();
-        const char ** cursor = pcHole->ThreadSize.getEnums();
+        const char** cursor = pcHole->ThreadSize.getEnums();
         while (*cursor) {
             ui->ThreadSize->addItem(QString::fromLatin1(*cursor));
             ++cursor;
