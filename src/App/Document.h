@@ -477,7 +477,7 @@ public:
      *
      * @param links: holds the links found
      * @param obj: the linked object. If NULL, then all links are returned.
-     * @param option: @sa App::GetLinkOptions
+     * @param option: @sa App::GetLinkOption
      * @param maxCount: limit the number of links returned, 0 means no limit
      * @param objs: optional objects to search for, if empty, then all objects
      * of this document are searched.
