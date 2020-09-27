@@ -371,13 +371,15 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
     // Experiementing element color mapping in PartDesign, enable visual copy on Tip only
 #if 1
     auto feature = body->Tip.getValue();
+    if (!feature)
+        feature = body->BaseFeature.getValue();
     if(feature) {
 #else
     auto features = body->Group.getValues();
     for(auto feature : features) {
+        if(feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
 #endif
-        
-        if(feature->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        {
             //copy over the properties data
             auto vp = dynamic_cast<PartGui::ViewProviderPart*>(gdoc->getViewProvider(feature));
             if(vp) {
