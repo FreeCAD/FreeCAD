@@ -2943,7 +2943,7 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
         const DocumentObject *obj, int options, int maxCount,
         const std::vector<DocumentObject*> &objs) const 
 {
-    std::map<const App::DocumentObject*,App::DocumentObject*> linkMap;
+    std::map<const App::DocumentObject*, std::vector<App::DocumentObject*> > linkMap;
 
     for(auto o : objs.size()?objs:d->objectArray) {
         if(o == obj) continue;
@@ -2960,7 +2960,7 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
 
         if(linked && linked!=o) {
             if(options & GetLinkRecursive)
-                linkMap[linked] = o;
+                linkMap[linked].push_back(o);
             else if(linked == obj || !obj) {
                 if((options & GetLinkExternal)
                         && linked->getDocument()==o->getDocument())
@@ -2983,15 +2983,19 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
         if(!GetApplication().checkLinkDepth(depth,true))
             break;
         std::vector<const DocumentObject*> next;
-        for(auto o : current) {
+        for(const App::DocumentObject *o : current) {
             auto iter = linkMap.find(o);
-            if(iter!=linkMap.end() && links.insert(iter->second).second) {
-                if(maxCount && maxCount<=(int)links.size())
-                    return;
-                next.push_back(iter->second);
+            if(iter==linkMap.end())
+                continue;
+            for (App::DocumentObject *link : iter->second) {
+                if (links.insert(link).second) {
+                    if(maxCount && maxCount<=(int)links.size())
+                        return;
+                    next.push_back(link);
+                }
             }
         }
-        current.swap(next);
+        current = std::move(next);
     }
     return;
 }
