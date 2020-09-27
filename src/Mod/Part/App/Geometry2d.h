@@ -564,7 +564,7 @@ private:
     Handle(Geom2d_TrimmedCurve) myCurve;
 };
 
-std::unique_ptr<Geom2dCurve> getCurve2dFromGeom2d(Handle(Geom2d_Curve));
+std::unique_ptr<Geom2dCurve> makeFromCurve2d(Handle(Geom2d_Curve));
 
 }
 

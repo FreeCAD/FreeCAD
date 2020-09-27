@@ -1081,6 +1081,12 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
                                       const Base::Vector3d &center, double radius);
 PartExport
 std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface)&);
+
+PartExport
+std::unique_ptr<GeomCurve> makeFromCurve(const Handle(Geom_Curve)&);
+
+PartExport
+std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)&, double f, double l);
 }
 
 #endif // PART_GEOMETRY_H

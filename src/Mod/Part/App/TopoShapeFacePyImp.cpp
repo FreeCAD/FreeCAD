@@ -713,7 +713,7 @@ PyObject* TopoShapeFacePy::curveOnSurface(PyObject *args)
 
         Standard_Real first, last;
         Handle(Geom2d_Curve) curve = BRep_Tool::CurveOnSurface(edge, face, first, last);
-        std::unique_ptr<Part::Geom2dCurve> geo2d = getCurve2dFromGeom2d(curve);
+        std::unique_ptr<Part::Geom2dCurve> geo2d = makeFromCurve2d(curve);
         if (!geo2d)
             Py_Return;
 
