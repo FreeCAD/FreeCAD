@@ -1787,8 +1787,6 @@ void ViewProviderPartExt::updateVisual()
                 centers.emplace_back((V1+V2+V3)/3.0,g);
             }
 
-            // The sorting doesn't seem necessary
-#if 0
             // Pre-sort the tiangles. This is necessary for per-part
             // transparency sorting to work for highly curvatured surface
             std::sort(centers.begin(),centers.end(),
@@ -1804,7 +1802,7 @@ void ViewProviderPartExt::updateVisual()
                     return a.first.X() < b.first.X();
                 }
             );
-#endif
+
             int g = 0;
             for(auto &info : centers) {
                 ++g;
