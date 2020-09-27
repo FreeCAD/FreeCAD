@@ -239,6 +239,8 @@
         <file>icons/tools/Sketcher_CloseShape.svg</file>
         <file>icons/tools/Sketcher_ConnectLines.svg</file>
         <file>icons/tools/Sketcher_Copy.svg</file>
+        <file>icons/tools/Sketcher_DeleteConstraints.svg</file>
+        <file>icons/tools/Sketcher_DeleteGeometry.svg</file>
         <file>icons/tools/Sketcher_Move.svg</file>
         <file>icons/tools/Sketcher_RectangularArray.svg</file>
         <file>icons/tools/Sketcher_SelectConflictingConstraints.svg</file>
