@@ -1944,7 +1944,7 @@ CmdSketcherDeleteAllGeometry::CmdSketcherDeleteAllGeometry()
     sToolTipText    = QT_TR_NOOP("Deletes all the geometry and constraints but external geometry");
     sWhatsThis      = "Sketcher_DeleteAllGeometry";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Element_SelectionTypeInvalid";
+    sPixmap         = "Sketcher_DeleteGeometry";
     sAccel          = "";
     eType           = ForEdit;
 }
@@ -2007,7 +2007,7 @@ CmdSketcherDeleteAllConstraints::CmdSketcherDeleteAllConstraints()
     sToolTipText    = QT_TR_NOOP("Deletes all the constraints");
     sWhatsThis      = "Sketcher_DeleteAllConstraints";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Element_SelectionTypeInvalid";
+    sPixmap         = "Sketcher_DeleteConstraints";
     sAccel          = "";
     eType           = ForEdit;
 }
