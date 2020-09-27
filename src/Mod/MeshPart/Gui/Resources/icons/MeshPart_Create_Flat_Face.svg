@@ -181,7 +181,7 @@
         <dc:title>MeshPart_CreateFlatFace</dc:title>
         <cc:license
            rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
-        <dc:description>Cone surface unwraped </dc:description>
+        <dc:description>Cone surface unwrapped </dc:description>
         <dc:contributor>
           <cc:Agent>
             <dc:title />
