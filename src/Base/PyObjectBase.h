@@ -212,6 +212,11 @@ protected:
     /// destructor
     virtual ~PyObjectBase();
 
+    /// Overrides the pointer to the twin object
+    void setTwinPointer(void* ptr) {
+        _pcTwinPointer = ptr;
+    }
+
 public:  
     /** Constructor
      *  Sets the Type of the object (for inheritance) and decrease the
@@ -293,9 +298,6 @@ public:
         clearAttributes();
         _pcTwinPointer = 0;
     }
-
-    /// Overrides the pointer to the twin object
-    void setPointer(void* ptr, bool del=false);
 
     bool isValid() {
         return StatusBits.test(Valid);

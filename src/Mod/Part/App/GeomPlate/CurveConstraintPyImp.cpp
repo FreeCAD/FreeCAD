@@ -93,7 +93,7 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
             ptr.reset(new GeomPlate_CurveConstraint);
         }
 
-        setPointer(ptr.release());
+        setTwinPointer(ptr.release());
 
         return 0;
     }

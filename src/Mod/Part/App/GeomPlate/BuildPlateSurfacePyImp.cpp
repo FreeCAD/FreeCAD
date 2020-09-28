@@ -116,7 +116,7 @@ int BuildPlateSurfacePy::PyInit(PyObject* args, PyObject* kwds)
             ptr->LoadInitSurface(handle);
         }
 
-        setPointer(ptr.release());
+        setTwinPointer(ptr.release());
 
         return 0;
     }

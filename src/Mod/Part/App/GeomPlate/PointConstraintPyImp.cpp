@@ -58,7 +58,7 @@ int PointConstraintPy::PyInit(PyObject* args, PyObject* kwds)
         Base::Vector3d v = static_cast<Base::VectorPy*>(pt)->value();
 
         ptr.reset(new GeomPlate_PointConstraint(gp_Pnt(v.x, v.y, v.z), order, tolDist));
-        setPointer(ptr.release());
+        setTwinPointer(ptr.release());
 
         return 0;
     }
