@@ -2439,6 +2439,16 @@ std::unique_ptr<Geom2dCurve> makeFromCurveAdaptor2d(const Adaptor2d_Curve2d& ada
 
     if (!geoCurve)
         throw Base::TypeError("Unhandled curve type");
+
+    // Check if the curve must be trimmed
+    Handle(Geom2d_Curve) curv2d = Handle(Geom2d_Curve)::DownCast
+        (geoCurve->handle());
+    double u = curv2d->FirstParameter();
+    double v = curv2d->LastParameter();
+    if (u != adapt.FirstParameter() || v != adapt.LastParameter()) {
+        geoCurve = makeFromTrimmedCurve2d(curv2d, adapt.FirstParameter(), adapt.LastParameter());
+    }
+
     return geoCurve;
 }
 }

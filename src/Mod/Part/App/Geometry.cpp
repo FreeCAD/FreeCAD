@@ -5108,6 +5108,16 @@ std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt)
 
     if (!geoCurve)
         throw Base::TypeError("Unhandled curve type");
+
+    // Check if the curve must be trimmed
+    Handle(Geom_Curve) curv3d = Handle(Geom_Curve)::DownCast
+        (geoCurve->handle());
+    double u = curv3d->FirstParameter();
+    double v = curv3d->LastParameter();
+    if (u != adapt.FirstParameter() || v != adapt.LastParameter()) {
+        geoCurve = makeFromTrimmedCurve(curv3d, adapt.FirstParameter(), adapt.LastParameter());
+    }
+
     return geoCurve;
 }
 

@@ -94,6 +94,7 @@ generate_from_xml(BRepOffsetAPI_MakePipeShellPy)
 
 # make sure to create the directory at configure time
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Geom2d)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/GeomPlate)
 
 generate_from_xml(Geom2d/ArcOfCircle2dPy)
 generate_from_xml(Geom2d/ArcOfConic2dPy)
@@ -112,6 +113,10 @@ generate_from_xml(Geom2d/Line2dSegmentPy)
 generate_from_xml(Geom2d/Line2dPy)
 generate_from_xml(Geom2d/OffsetCurve2dPy)
 generate_from_xml(Geom2d/Parabola2dPy)
+
+generate_from_xml(GeomPlate/BuildPlateSurfacePy)
+generate_from_xml(GeomPlate/CurveConstraintPy)
+generate_from_xml(GeomPlate/PointConstraintPy)
 
 SET(Features_SRCS
     FeaturePartBoolean.cpp
@@ -341,11 +346,24 @@ SET(Geom2dPy_SRCS
 
 SOURCE_GROUP("Geom2d" FILES ${Geom2dPy_SRCS})
 
+# GeomPlate wrappers
+SET(GeomPlatePy_SRCS
+    GeomPlate/BuildPlateSurfacePy.xml
+    GeomPlate/BuildPlateSurfacePyImp.cpp
+    GeomPlate/CurveConstraintPy.xml
+    GeomPlate/CurveConstraintPyImp.cpp
+    GeomPlate/PointConstraintPy.xml
+    GeomPlate/PointConstraintPyImp.cpp
+)
+
+SOURCE_GROUP("GeomPlate" FILES ${GeomPlatePy_SRCS})
+
 SET(Part_SRCS
     ${Features_SRCS}
     ${Properties_SRCS}
     ${Python_SRCS}
     ${Geom2dPy_SRCS}
+    ${GeomPlatePy_SRCS}
     Attacher.cpp
     Attacher.h
     AppPart.cpp
