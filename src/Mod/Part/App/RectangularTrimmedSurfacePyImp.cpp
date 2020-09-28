@@ -86,6 +86,41 @@ int RectangularTrimmedSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
+PyObject* RectangularTrimmedSurfacePy::setTrim(PyObject *args)
+{
+    double u1, u2, v1, v2;
+    if (!PyArg_ParseTuple(args, "dddd", &u1, &u2, &v1, &v2))
+        return nullptr;
+
+    try {
+        Handle(Geom_RectangularTrimmedSurface) surf = Handle(Geom_RectangularTrimmedSurface)::DownCast
+            (getGeometryPtr()->handle());
+        if (surf.IsNull()) {
+            PyErr_SetString(PyExc_TypeError, "geometry is not a surface");
+            return nullptr;
+        }
+
+        surf->SetTrim(u1, u2, v1, v2);
+        Py_Return;
+    }
+    catch (const Standard_Failure& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
+        return nullptr;
+    }
+}
+
+Py::Object RectangularTrimmedSurfacePy::getBasisSurface() const
+{
+    Handle(Geom_RectangularTrimmedSurface) surf = Handle(Geom_RectangularTrimmedSurface)::DownCast
+        (getGeometryPtr()->handle());
+    if (surf.IsNull()) {
+        throw Py::TypeError("geometry is not a surface");
+    }
+
+    std::unique_ptr<GeomSurface> geo(makeFromSurface(surf->BasisSurface()));
+    return Py::asObject(geo->getPyObject());
+}
+
 PyObject *RectangularTrimmedSurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
