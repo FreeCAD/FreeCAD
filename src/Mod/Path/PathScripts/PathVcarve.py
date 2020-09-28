@@ -45,7 +45,7 @@ EXTERIOR1 = 1
 EXTERIOR2 = 4
 TWIN = 2
 COLINEAR = 3
-OTHER = 5
+SECONDARY = 5
 
 if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -58,6 +58,7 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+VD = []
 
 class ObjectVcarve(PathEngraveBase.ObjectOp):
     '''Proxy class for Vcarve operation.'''
@@ -215,6 +216,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
             return path
 
+        VD.clear()
         pathlist = []
         pathlist.append(Path.Command("(starting)"))
         for f in Faces:
@@ -224,7 +226,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             vd.construct()
 
             for e in vd.Edges:
-                e.Color = PRIMARY if e.isPrimary() else OTHER
+                e.Color = PRIMARY if e.isPrimary() else SECONDARY
             vd.colorExterior(EXTERIOR1)
             vd.colorExterior(EXTERIOR2,
                 lambda v: not f.isInside(v.toGeom(f.BoundBox.ZMin),
@@ -236,6 +238,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
             for wire in getWires(edgelist):
                 pathlist.extend(cutWire(wire))
+            VD.append((f, vd, getWires(edgelist)))
 
         self.commandlist = pathlist
 
