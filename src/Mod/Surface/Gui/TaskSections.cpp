@@ -100,7 +100,7 @@ void ViewProviderSections::unsetEdit(int ModNum)
 
 QIcon ViewProviderSections::getIcon(void) const
 {
-    return Gui::BitmapFactory().pixmap("BSplineSurf");
+    return Gui::BitmapFactory().pixmap("Surface_Sections");
 }
 
 void ViewProviderSections::highlightReferences(ShapeType type, const References& refs, bool on)
