@@ -24,6 +24,7 @@
 #ifndef PART_GEOMETRY_H
 #define PART_GEOMETRY_H
 
+#include <Adaptor3d_Curve.hxx>
 #include <Geom_CartesianPoint.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Geom_BSplineCurve.hxx>
@@ -1087,6 +1088,9 @@ std::unique_ptr<GeomCurve> makeFromCurve(const Handle(Geom_Curve)&);
 
 PartExport
 std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)&, double f, double l);
+
+PartExport
+std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve&);
 }
 
 #endif // PART_GEOMETRY_H

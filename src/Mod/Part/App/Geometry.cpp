@@ -5039,4 +5039,76 @@ std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)& c, dou
     }
 }
 
+std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt)
+{
+    std::unique_ptr<GeomCurve> geoCurve;
+    switch (adapt.GetType())
+    {
+    case GeomAbs_Line:
+        {
+            geoCurve.reset(new GeomLine());
+            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
+                (geoCurve->handle());
+            this_curv->SetLin(adapt.Line());
+            break;
+        }
+    case GeomAbs_Circle:
+        {
+            geoCurve.reset(new GeomCircle());
+            Handle(Geom_Circle) this_curv = Handle(Geom_Circle)::DownCast
+                (geoCurve->handle());
+            this_curv->SetCirc(adapt.Circle());
+            break;
+        }
+    case GeomAbs_Ellipse:
+        {
+            geoCurve.reset(new GeomEllipse());
+            Handle(Geom_Ellipse) this_curv = Handle(Geom_Ellipse)::DownCast
+                (geoCurve->handle());
+            this_curv->SetElips(adapt.Ellipse());
+            break;
+        }
+    case GeomAbs_Hyperbola:
+        {
+            geoCurve.reset(new GeomHyperbola());
+            Handle(Geom_Hyperbola) this_curv = Handle(Geom_Hyperbola)::DownCast
+                (geoCurve->handle());
+            this_curv->SetHypr(adapt.Hyperbola());
+            break;
+        }
+    case GeomAbs_Parabola:
+        {
+            geoCurve.reset(new GeomParabola());
+            Handle(Geom_Parabola) this_curv = Handle(Geom_Parabola)::DownCast
+                (geoCurve->handle());
+            this_curv->SetParab(adapt.Parabola());
+            break;
+        }
+    case GeomAbs_BezierCurve:
+        {
+            geoCurve.reset(new GeomBezierCurve(adapt.Bezier()));
+            break;
+        }
+    case GeomAbs_BSplineCurve:
+        {
+            geoCurve.reset(new GeomBSplineCurve(adapt.BSpline()));
+            break;
+        }
+#if OCC_VERSION_HEX >= 0x070000
+    case GeomAbs_OffsetCurve:
+        {
+            geoCurve.reset(new GeomOffsetCurve(adapt.OffsetCurve()));
+            break;
+        }
+#endif
+    case GeomAbs_OtherCurve:
+    default:
+        break;
+    }
+
+    if (!geoCurve)
+        throw Base::TypeError("Unhandled curve type");
+    return geoCurve;
+}
+
 }
