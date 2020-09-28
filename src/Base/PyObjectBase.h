@@ -294,6 +294,9 @@ public:
         _pcTwinPointer = 0;
     }
 
+    /// Overrides the pointer to the twin object
+    void setPointer(void* ptr, bool del=false);
+
     bool isValid() {
         return StatusBits.test(Valid);
     }

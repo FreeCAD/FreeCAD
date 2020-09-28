@@ -62,6 +62,16 @@ PyObjectBase::~PyObjectBase()
     Py_XDECREF(attrDict);
 }
 
+void PyObjectBase::setPointer(void* ptr, bool del)
+{
+    if (_pcTwinPointer == ptr)
+        return;
+
+    if (del)
+        delete _pcTwinPointer;
+    _pcTwinPointer = ptr;
+}
+
 /*------------------------------
  * PyObjectBase Type		-- Every class, even the abstract one should have a Type
 ------------------------------*/
