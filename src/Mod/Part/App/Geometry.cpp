@@ -4566,7 +4566,7 @@ void         GeomTrimmedSurface::Restore    (Base::XMLReader &/*reader*/)    {as
 
 PyObject *GeomTrimmedSurface::getPyObject(void)
 {
-    return 0;
+    return new RectangularTrimmedSurfacePy(static_cast<GeomTrimmedSurface*>(this->clone()));
 }
 
 // -------------------------------------------------
