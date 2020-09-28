@@ -102,7 +102,7 @@ void ViewProviderFilling::unsetEdit(int ModNum)
 
 QIcon ViewProviderFilling::getIcon(void) const
 {
-    return Gui::BitmapFactory().pixmap("BSplineSurf");
+    return Gui::BitmapFactory().pixmap("Surface_Filling");
 }
 
 void ViewProviderFilling::highlightReferences(ShapeType type, const References& refs, bool on)
@@ -529,7 +529,7 @@ void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
                 const TopTools_ListOfShape& adj_faces = edge2Face.FindFromKey(edge);
                 if (adj_faces.Extent() > 0) {
                     int n = adj_faces.Extent();
-                    ui->statusLabel->setText(tr("Edge has %n adjacent face(s)", 0, n));
+                    ui->statusLabel->setText(tr("Edge has %n adjacent faces", 0, n));
 
                     // fill up the combo boxes
                     modifyBoundary(true);
@@ -818,7 +818,7 @@ TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
     // first task box
     widget1 = new FillingPanel(vp, obj);
     Gui::TaskView::TaskBox* taskbox1 = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("BezSurf"),
+        Gui::BitmapFactory().pixmap("Surface_Filling"),
         widget1->windowTitle(), true, 0);
     taskbox1->groupLayout()->addWidget(widget1);
     Content.push_back(taskbox1);

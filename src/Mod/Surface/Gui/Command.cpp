@@ -169,7 +169,7 @@ CmdSurfaceGeomFillSurface::CmdSurfaceGeomFillSurface()
     sToolTipText  = QT_TR_NOOP("Creates a surface from two, three or four boundary edges");
     sWhatsThis    = "Surface_GeomFillSurface";
     sStatusTip    = sToolTipText;
-    sPixmap       = "BSplineSurf";
+    sPixmap       = "Surface_BSplineSurface";
 }
 
 bool CmdSurfaceGeomFillSurface::isActive(void)
