@@ -87,38 +87,6 @@ static const int _MinimumOverlaySize = 30;
 
 #define TITLE_BUTTON_COLOR "# c #202020"
 
-static const char *_PixmapOverlay[]={
-    "10 10 2 1",
-    ". c None",
-    TITLE_BUTTON_COLOR,
-    "##########",
-    "#........#",
-    "#........#",
-    "##########",
-    "#........#",
-    "#........#",
-    "#........#",
-    "#........#",
-    "#........#",
-    "##########",
-};
-
-const char * const _PixmapFloat[]={
-    "10 10 2 1",
-    ". c None",
-    TITLE_BUTTON_COLOR,
-    "...#######",
-    "...#.....#",
-    "...#.....#",
-    "#######..#",
-    "#.....#..#",
-    "#.....#..#",
-    "#.....####",
-    "#.....#...",
-    "#.....#...",
-    "#######...",
-};
-
 static QWidget *createTitleButton(QAction *action)
 {
     auto button = new OverlayToolButton(nullptr);
@@ -367,50 +335,13 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     setOverlayMode(true);
     hide();
 
-    static QIcon pxTransparent;
-    if(pxTransparent.isNull()) {
-        const char * const bytes[]={
-            "10 10 2 1",
-            ". c None",
-            TITLE_BUTTON_COLOR,
-            "..........",
-            "...####...",
-            ".##....##.",
-            "##..##..##",
-            "#..####..#",
-            "#..####..#",
-            "##..##..##",
-            ".##....##.",
-            "...####...",
-            "..........",
-        };
-        pxTransparent = QIcon(QPixmap(bytes));
-    }
-    actTransparent.setIcon(pxTransparent);
+    actTransparent.setIcon(BitmapFactory().pixmap("qss:overlay/transparent.svg"));
     actTransparent.setCheckable(true);
     actTransparent.setData(QString::fromLatin1("OBTN Transparent"));
     actTransparent.setParent(this);
     addAction(&actTransparent);
 
-    QPixmap pxAutoHide;
-    if(pxAutoHide.isNull()) {
-        const char * const bytes[]={
-            "10 10 2 1",
-            ". c None",
-            TITLE_BUTTON_COLOR,
-            "...#######",
-            ".........#",
-            "..##.....#",
-            ".##......#",
-            "#######..#",
-            "#######..#",
-            ".##......#",
-            "..##.....#",
-            ".........#",
-            "...#######",
-        };
-        pxAutoHide = QPixmap(bytes);
-    }
+    QPixmap pxAutoHide = BitmapFactory().pixmap("qss:overlay/autohide.svg");
     switch(dockArea) {
     case Qt::LeftDockWidgetArea:
         actAutoHide.setIcon(pxAutoHide);
@@ -429,70 +360,13 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     }
     actAutoHide.setData(QString::fromLatin1("OBTN AutoHide"));
 
-    static QIcon pxEditHide;
-    if(pxEditHide.isNull()) {
-        const char * const bytes[]={
-            "10 10 2 1",
-            ". c None",
-            TITLE_BUTTON_COLOR,
-            "##....##..",
-            "###..#.##.",
-            ".####..###",
-            "..###.#..#",
-            "..####..#.",
-            ".#..####..",
-            "##...###..",
-            "##...####.",
-            "#####..###",
-            "####....##",
-        };
-        pxEditHide = QIcon(QPixmap(bytes));
-    }
-    actEditHide.setIcon(pxEditHide);
+    actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/edithide.svg"));
     actEditHide.setData(QString::fromLatin1("OBTN EditHide"));
 
-    static QIcon pxEditShow;
-    if(pxEditShow.isNull()) {
-        const char * const bytes[]={
-            "10 10 2 1",
-            ". c None",
-            TITLE_BUTTON_COLOR,
-            "......##..",
-            ".....#.##.",
-            "....#..###",
-            "...#..#..#",
-            "..##.#..#.",
-            ".#.##..#..",
-            "##..###...",
-            "##...#....",
-            "#####.....",
-            "####......",
-        };
-        pxEditShow = QIcon(QPixmap(bytes));
-    }
-    actEditShow.setIcon(pxEditShow);
+    actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/editshow.svg"));
     actEditShow.setData(QString::fromLatin1("OBTN EditShow"));
 
-    static QIcon pxNoAutoMode;
-    if(pxNoAutoMode.isNull()) {
-        const char * const bytes[]={
-            "10 10 2 1",
-            ". c None",
-            TITLE_BUTTON_COLOR,
-            "..........",
-            "..........",
-            ".########.",
-            ".########.",
-            "..######..",
-            "...####...",
-            "....##....",
-            "..........",
-            "..........",
-            "..........",
-        };
-        pxNoAutoMode = QIcon(QPixmap(bytes));
-    }
-    actNoAutoMode.setIcon(pxNoAutoMode);
+    actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/mode.svg"));
     actNoAutoMode.setData(QString::fromLatin1("OBTN NoAutoMode"));
 
     actAutoMode.setData(QString::fromLatin1("OBTN AutoMode"));
@@ -554,7 +428,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     actDecrease.setParent(this);
     // addAction(&actDecrease);
 
-    actOverlay.setIcon(QPixmap(_PixmapOverlay));
+    actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/overlay.svg"));
     actOverlay.setData(QString::fromLatin1("OBTN Overlay"));
     actOverlay.setParent(this);
     addAction(&actOverlay);
@@ -2056,16 +1930,26 @@ void OverlayDragFrame::paintEvent(QPaintEvent *)
 // -----------------------------------------------------------
 
 OverlaySizeGrip::OverlaySizeGrip(QWidget * parent, bool vertical)
-    :QWidget(parent)
+    :QWidget(parent), vertical(vertical)
 {
+    if (vertical) {
+        this->setFixedHeight(6);
+        this->setMinimumWidth(_TitleButtonSize);
+        this->setCursor(Qt::SizeVerCursor);
+    }
+    else {
+        this->setFixedWidth(6);
+        this->setMinimumHeight(_TitleButtonSize);
+        this->setCursor(Qt::SizeHorCursor);
+    }
     setMouseTracking(true);
-    setCursor(vertical ? Qt::SizeHorCursor : Qt::SizeVerCursor);
 }
 
 void OverlaySizeGrip::paintEvent(QPaintEvent*)
 {
     QPainter painter(this);
     painter.setPen(Qt::transparent);
+    painter.setOpacity(0.5);
     painter.setBrush(QBrush(Qt::black, Qt::Dense6Pattern));
     QRect rect(this->rect());
     painter.drawRect(rect);
@@ -2130,14 +2014,7 @@ QSplitterHandle * OverlaySplitter::createHandle()
     layout->addWidget(createTitleButton(&widget->actFloat));
 
     if (tabWidget) {
-        auto grip = new OverlaySizeGrip(tabWidget, !vertical);
-        if (vertical) {
-            grip->setFixedHeight(6);
-            grip->setMinimumWidth(_TitleButtonSize);
-        } else {
-            grip->setFixedWidth(6);
-            grip->setMinimumHeight(_TitleButtonSize);
-        }
+        auto grip = new OverlaySizeGrip(tabWidget, vertical);
         QObject::connect(grip, SIGNAL(dragMove(QPoint)),
                         tabWidget, SLOT(onSizeGripMove(QPoint)));
         layout->addWidget(grip);
@@ -2154,7 +2031,7 @@ OverlaySplitterHandle::OverlaySplitterHandle(Qt::Orientation orientation, QSplit
 {
     setMouseTracking(true);
     setFocusPolicy(Qt::ClickFocus);
-    actFloat.setIcon(QPixmap(_PixmapFloat));
+    actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/float.svg"));
     retranslate();
     QObject::connect(&actFloat, SIGNAL(triggered(bool)), this, SLOT(onAction()));
 }
@@ -2692,28 +2569,13 @@ public:
             refresh();
         });
 
-        _actOverlay.setIcon(QPixmap(_PixmapOverlay));
+        _actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/overlay.svg"));
         _actOverlay.setData(QString::fromLatin1("OBTN Overlay"));
 
-        _actFloat.setIcon(QPixmap(_PixmapFloat));
+        _actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/float.svg"));
         _actFloat.setData(QString::fromLatin1("OBTN Float"));
 
-        const char * const pixmapClose[]={
-            "10 10 2 1",
-            ". c None",
-            TITLE_BUTTON_COLOR,
-            "##......##",
-            "###....###",
-            ".###..###.",
-            "..######..",
-            "...####...",
-            "...####...",
-            "..######..",
-            ".###..###.",
-            "###....###",
-            "##......##",
-        };
-        _actClose.setIcon(QPixmap(pixmapClose));
+        _actClose.setIcon(BitmapFactory().pixmap("qss:overlay/close.svg"));
         _actClose.setData(QString::fromLatin1("OBTN Close"));
 
         retranslate();
@@ -3228,14 +3090,7 @@ public:
         }
 
         if (tabWidget) {
-            auto grip = new OverlaySizeGrip(tabWidget, !vertical);
-            if (vertical) {
-                grip->setFixedHeight(6);
-                grip->setMinimumWidth(_TitleButtonSize);
-            } else {
-                grip->setFixedWidth(6);
-                grip->setMinimumHeight(_TitleButtonSize);
-            }
+            auto grip = new OverlaySizeGrip(tabWidget, vertical);
             QObject::connect(grip, SIGNAL(dragMove(QPoint)),
                     tabWidget, SLOT(onSizeGripMove(QPoint)));
             layout->addWidget(grip);

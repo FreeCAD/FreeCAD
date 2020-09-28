@@ -338,6 +338,10 @@ protected:
     void mouseMoveEvent(QMouseEvent *);
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
+    const QPixmap &pixmap() const;
+
+private:
+    bool vertical;
 };
 
 class OverlaySplitter : public QSplitter

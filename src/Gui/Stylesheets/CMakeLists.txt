@@ -19,6 +19,14 @@ SET(Overlay_Stylesheets_Files
     "overlay/Light-Outline.qss"
     "overlay/Dark-off.qss"
     "overlay/Light-off.qss"
+    "overlay/close.svg"
+    "overlay/overlay.svg"
+    "overlay/float.svg"
+    "overlay/autohide.svg"
+    "overlay/editshow.svg"
+    "overlay/edithide.svg"
+    "overlay/mode.svg"
+    "overlay/transparent.svg"
 )
 
 SET(Menu_Stylesheets_Files
