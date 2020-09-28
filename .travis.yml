@@ -327,11 +327,15 @@ script:
         # if [ "${TRAVIS_OS_NAME}" == "osx" ]; then sudo gtimeout -s KILL  make -j2 install; fi
         cat $HOME/.ccache/ccache.conf
         ccache -z -s
-        if [ "${TRAVIS_OS_NAME}" == "osx" ]; then export PATH="/usr/local/opt/ccacche/libexec:$PATH"; sudo gtimeout -s KILL 3600 make -j2 install; fi
+        if [ "${TRAVIS_OS_NAME}" == "osx" ]; then export PATH="/usr/local/opt/ccacche/libexec:$PATH"; sudo gtimeout -s KILL 7200 make -j2 install; fi
         if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
         # sudo make -j2 install
-
         ccache -s
+        ${INSTALLED_APP_PATH} --console --run-test 0 || travis_terminate 1
+        ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
+        sleep 10 && pkill FreeCAD
+        cat /tmp/FreeCAD_installed.log
+        grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
     fi
 
 #after_success:
