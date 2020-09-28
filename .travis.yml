@@ -257,7 +257,9 @@ before_install:
 
        export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON"
        brew link --overwrite matplotlib
-       sed '1,$s/\[\[nodiscard\]\]//' /usr/local/Cellar/opencascade/7.4.0_1/include/opencascade/Standard_Macro.hxx > /tmp/Standard_Macro.hxx && cp /tmp/Standard_Macro.hxx /usr/local/Cellar/opencascade/7.4.0_1/include/opencascade/Standard_Macro.hxx
+       if [ -f "/usr/local/Cellar/opencascade/7.4.0_1/include/opencascade/Standard_Macro.hxx" ]; then
+          sed '1,$s/\[\[nodiscard\]\]//' /usr/local/Cellar/opencascade/7.4.0_1/include/opencascade/Standard_Macro.hxx > /tmp/Standard_Macro.hxx && cp /tmp/Standard_Macro.hxx /usr/local/Cellar/opencascade/7.4.0_1/include/opencascade/Standard_Macro.hxx ;
+       fi
        ;;
 
    "windows")
