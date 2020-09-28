@@ -1216,7 +1216,7 @@ public:
                 "Gui--PropertyEditor--PropertyEditor QLabel "
                     "{background : palette(base);}"
 
-                "QScrollBar { background: transparent;}"
+                "QScrollBar { background: rgba(0,0,0,10);}"
                 "QTabWidget::pane { background-color: transparent; border: transparent }"
                 "Gui--OverlayTabWidget { qproperty-effectColor: rgba(0,0,0,0) }"
                 "Gui--OverlayTabWidget::pane { background-color: rgba(250,250,250,80) }"
