@@ -147,7 +147,7 @@ bool OverlayProxyWidget::isActivated() const
 
 bool OverlayProxyWidget::hitTest(QPoint pt, bool delay)
 {
-    if (!isVisible())
+    if (!isVisible() || !owner->count())
         return false;
 
     QTabBar *tabbar = owner->tabBar();
@@ -323,6 +323,8 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     // otherwise the lost focus will leak to the parent, i.e. MdiArea, which may
     // cause unexpected Mdi sub window switching.
     setFocusPolicy(Qt::StrongFocus);
+
+    _imageScale = 0.0;
 
     splitter = new OverlaySplitter(this);
 
@@ -837,6 +839,8 @@ bool OverlayTabWidget::eventFilter(QObject *o, QEvent *ev)
 
 void OverlayTabWidget::restore(ParameterGrp::handle handle)
 {
+    if (!parentWidget())
+        return;
     std::string widgets = handle->GetASCII("Widgets","");
     for(auto &name : QString::fromLatin1(widgets.c_str()).split(QLatin1Char(','))) {
         if(name.isEmpty())
@@ -852,8 +856,18 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
     setOffset(QSize(offset1,offset2));
     setSizeDelta(handle->GetInt("Offset2", 0));
     if(width && height) {
-        QRect rect = geometry();
-        setRect(QRect(rect.left(),rect.top(),width,height));
+        QRect rect(0, 0, width, height);
+        switch(dockArea) {
+        case Qt::RightDockWidgetArea:
+            rect.moveRight(parentWidget()->size().width());
+            break;
+        case Qt::BottomDockWidgetArea:
+            rect.moveBottom(parentWidget()->size().height());
+            break;
+        default:
+            break;
+        }
+        setRect(rect);
     }
     if (handle->GetBool("AutoHide", false))
         setAutoMode(AutoHide);
@@ -1005,7 +1019,7 @@ void OverlayTabWidget::setState(State state)
             setTabPosition(East);
         else if (dockArea == Qt::BottomDockWidgetArea)
             setTabPosition(South);
-        if (count() == 1)
+        if (this->count() == 1)
             tabBar()->hide();
         _graphicsEffectTab->setEnabled(false);
         titleBar->show();
@@ -1015,7 +1029,7 @@ void OverlayTabWidget::setState(State state)
         if (_state == State_HintHidden)
             break;
         _state = state;
-        if (ViewParams::getDockOverlayHintTabBar()) {
+        if (this->count() && ViewParams::getDockOverlayHintTabBar()) {
             tabBar()->show();
             titleBar->hide();
             splitter->hide();
@@ -1514,11 +1528,17 @@ void OverlayTabWidget::setSizeDelta(int delta)
 
 void OverlayTabWidget::setRect(QRect rect)
 {
-    if(busy || rect.width()<=0 || rect.height()<=0)
+    if(busy || !parentWidget())
         return;
+
+    if (rect.width() == 0)
+        rect.setWidth(_MinimumOverlaySize*3);
+    if (rect.height() == 0)
+        rect.setHeight(_MinimumOverlaySize*3);
 
     switch(dockArea) {
     case Qt::LeftDockWidgetArea:
+        rect.moveLeft(0);
         if (rect.width() < _MinimumOverlaySize)
             rect.setWidth(_MinimumOverlaySize);
         break;
@@ -1527,12 +1547,15 @@ void OverlayTabWidget::setRect(QRect rect)
             rect.setLeft(rect.right()-_MinimumOverlaySize);
         break;
     case Qt::TopDockWidgetArea:
+        rect.moveTop(0);
         if (rect.height() < _MinimumOverlaySize)
             rect.setHeight(_MinimumOverlaySize);
         break;
-    default:
+    case Qt::BottomDockWidgetArea:
         if (rect.height() < _MinimumOverlaySize)
             rect.setTop(rect.bottom()-_MinimumOverlaySize);
+        break;
+    default:
         break;
     }
 
@@ -1598,8 +1621,6 @@ void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
     if (!getMainWindow() || !getMainWindow()->getMdiArea())
         return;
 
-    QRect rect = dock->geometry();
-
     getMainWindow()->removeDockWidget(dock);
 
     auto titleWidget = dock->titleBarWidget();
@@ -1619,6 +1640,7 @@ void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
 
     dock->setFeatures(dock->features() & ~QDockWidget::DockWidgetFloatable);
     if(count() == 1) {
+        QRect rect = dock->geometry();
         QSize sizeMain = getMainWindow()->getMdiArea()->size();
         switch(dockArea) {
         case Qt::LeftDockWidgetArea:
@@ -2893,7 +2915,7 @@ public:
         if(tabbar)
             h -= tabbar->height();
 
-        int naviCubeSize = ViewParams::getNaviWidgetSize()+10;
+        int naviCubeSize = ViewParams::getNaviWidgetSize();
         int naviCorner = ViewParams::getDockOverlayCheckNaviCube() ?
             ViewParams::getCornerNaviCube() : -1;
 
@@ -2905,11 +2927,23 @@ public:
         QSize ofs = _bottom.tabWidget->getOffset();
         int delta = _bottom.tabWidget->getSizeDelta();
         h -= ofs.height();
+
+        auto getCubeSize = [naviCubeSize](OverlayInfo &info) -> int {
+            float scale = info.tabWidget->_imageScale;
+            if (scale == 0.0) {
+                scale = info.tabWidget->titleBar->grab().devicePixelRatio();
+                if (scale == 0.0)
+                    scale = 1.0;
+            }
+            return naviCubeSize/scale + 10;
+        };
+
+        int cubeSize = getCubeSize(_bottom);
         if(naviCorner == 2)
-            ofs.setWidth(ofs.width()+naviCubeSize);
+            ofs.setWidth(ofs.width()+cubeSize);
         int bw = w-10-ofs.width()-delta;
         if(naviCorner == 3)
-            bw -= naviCubeSize;
+            bw -= cubeSize;
         if(bw < 10)
             bw = 10;
 
@@ -2927,11 +2961,12 @@ public:
         rect = _left.tabWidget->getRect();
 
         ofs = _left.tabWidget->getOffset();
+        cubeSize = getCubeSize(_left);
         if(naviCorner == 0)
-            ofs.setWidth(ofs.width()+naviCubeSize);
+            ofs.setWidth(ofs.width()+cubeSize);
         delta = _left.tabWidget->getSizeDelta()+rectBottom.height();
-        if(naviCorner == 2 && naviCubeSize > rectBottom.height())
-            delta += naviCubeSize - rectBottom.height();
+        if(naviCorner == 2 && cubeSize > rectBottom.height())
+            delta += cubeSize - rectBottom.height();
         int lh = std::max(h-ofs.width()-delta, 10);
 
         _left.tabWidget->setRect(QRect(ofs.height(),ofs.width(),rect.width(),lh));
@@ -2944,12 +2979,13 @@ public:
         QRect rectRight(0,0,0,0);
         rect = _right.tabWidget->getRect();
 
-         ofs = _right.tabWidget->getOffset();
+        ofs = _right.tabWidget->getOffset();
+        cubeSize = getCubeSize(_right);
         if(naviCorner == 1)
-            ofs.setWidth(ofs.width()+naviCubeSize);
+            ofs.setWidth(ofs.width()+cubeSize);
         delta = _right.tabWidget->getSizeDelta()+rectBottom.height();
-        if(naviCorner == 3 && naviCubeSize > rectBottom.height())
-            delta += naviCubeSize - rectBottom.height();
+        if(naviCorner == 3 && cubeSize > rectBottom.height())
+            delta += cubeSize - rectBottom.height();
         int rh = std::max(h-ofs.width()-delta, 10);
         w -= ofs.height();
 
@@ -2962,12 +2998,13 @@ public:
 
         rect = _top.tabWidget->getRect();
 
-         ofs = _top.tabWidget->getOffset();
+        ofs = _top.tabWidget->getOffset();
+        cubeSize = getCubeSize(_top);
         delta = _top.tabWidget->getSizeDelta();
         if(naviCorner == 0)
-            rectLeft.setWidth(std::max(rectLeft.width(), naviCubeSize));
+            rectLeft.setWidth(std::max(rectLeft.width(), cubeSize));
         else if(naviCorner == 1)
-            rectRight.setWidth(std::max(rectRight.width(), naviCubeSize));
+            rectRight.setWidth(std::max(rectRight.width(), cubeSize));
         int tw = w-rectLeft.width()-rectRight.width()-ofs.width()-delta;
 
         _top.tabWidget->setRect(QRect(rectLeft.width()-ofs.width(),ofs.height(),tw,rect.height()));
@@ -3308,12 +3345,56 @@ public:
             rect = QRect(mdi->mapToGlobal(overlay->rectOverlay.topLeft()),
                                           overlay->rectOverlay.size());
 
-            QSize size(std::max(_MinimumOverlaySize, rect.width()*3/4),
-                       std::max(_MinimumOverlaySize, rect.height()*3/4));
-
+            QSize size(rect.width()*3/4, rect.height()*3/4);
             QSize sideSize(rect.width()/4, rect.height()/4);
 
             int dockArea = overlay->getDockArea();
+
+            if (dockArea == Qt::BottomDockWidgetArea) {
+                if (rect.bottom() - pos.y() < sideSize.height()) {
+                    rect.setTop(rect.bottom() - _MinimumOverlaySize);
+                    rect.setBottom(rectMain.bottom());
+                    rect.setLeft(rectMdi.left());
+                    rect.setRight(rectMdi.right());
+                    tabWidget = overlay;
+                    index = -2;
+                    break;
+                }
+            }
+            if (dockArea == Qt::LeftDockWidgetArea) {
+                if (pos.x() - rect.left() < sideSize.width()) {
+                    rect.setRight(rect.left() + _MinimumOverlaySize);
+                    rect.setLeft(rectMain.left());
+                    rect.setTop(rectMdi.top());
+                    rect.setBottom(rectMdi.bottom());
+                    tabWidget = overlay;
+                    index = -2;
+                    break;
+                }
+            }
+            else if (dockArea == Qt::RightDockWidgetArea) {
+                if (rect.right() - pos.x() < sideSize.width()) {
+                    rect.setLeft(rect.right() - _MinimumOverlaySize);
+                    rect.setRight(rectMain.right());
+                    rect.setTop(rectMdi.top());
+                    rect.setBottom(rectMdi.bottom());
+                    tabWidget = overlay;
+                    index = -2;
+                    break;
+                }
+            }
+            else if (dockArea == Qt::TopDockWidgetArea) {
+                if (pos.y() - rect.top() < sideSize.height()) {
+                    rect.setBottom(rect.top() + _MinimumOverlaySize);
+                    rect.setTop(rectMain.top());
+                    rect.setLeft(rectMdi.left());
+                    rect.setRight(rectMdi.right());
+                    tabWidget = overlay;
+                    index = -2;
+                    break;
+                }
+            }
+
             switch(dockArea) {
             case Qt::LeftDockWidgetArea:
                 rect.setWidth(size.width());
@@ -3332,45 +3413,7 @@ public:
             if (!rect.contains(pos))
                 continue;
 
-            index = -2;
             tabWidget = overlay;
-            if (dockArea == Qt::LeftDockWidgetArea) {
-                if (pos.x() - rect.left() < sideSize.width()) {
-                    rect.setRight(rect.left() + _MinimumOverlaySize);
-                    rect.setLeft(rectMain.left());
-                    rect.setTop(rectMdi.top());
-                    rect.setBottom(rectMdi.bottom());
-                    break;
-                }
-            }
-            else if (dockArea == Qt::RightDockWidgetArea) {
-                if (rect.right() - pos.x() < sideSize.width()) {
-                    rect.setLeft(rect.right() - _MinimumOverlaySize);
-                    rect.setRight(rectMain.right());
-                    rect.setTop(rectMdi.top());
-                    rect.setBottom(rectMdi.bottom());
-                    break;
-                }
-            }
-            else if (dockArea == Qt::TopDockWidgetArea) {
-                if (pos.y() - rect.top() < sideSize.height()) {
-                    rect.setBottom(rect.top() + _MinimumOverlaySize);
-                    rect.setTop(rectMain.top());
-                    rect.setLeft(rectMdi.left());
-                    rect.setRight(rectMdi.right());
-                    break;
-                }
-            }
-            else {
-                if (rect.bottom() - pos.y() < sideSize.height()) {
-                    rect.setTop(rect.bottom() - _MinimumOverlaySize);
-                    rect.setBottom(rectMain.bottom());
-                    rect.setLeft(rectMdi.left());
-                    rect.setRight(rectMdi.right());
-                    break;
-                }
-            }
-
             index = -1;
             int i = -1;
 
