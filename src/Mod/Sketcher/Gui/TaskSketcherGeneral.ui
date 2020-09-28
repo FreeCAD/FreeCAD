@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>275</width>
-    <height>234</height>
+    <width>277</width>
+    <height>266</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -95,6 +95,16 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
      </property>
      <property name="prefPath" stdset="0">
       <cstring>Mod/Sketcher/General</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxGridAutoScale">
+     <property name="toolTip">
+      <string>Auto change grid size depending on the zoom level of the current view.</string>
+     </property>
+     <property name="text">
+      <string>Grid auto scale</string>
      </property>
     </widget>
    </item>

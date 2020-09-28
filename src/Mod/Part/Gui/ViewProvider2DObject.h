@@ -73,6 +73,9 @@ public:
     virtual void attach(App::DocumentObject *);
     virtual void updateData(const App::Property*);
 
+    virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum);
+    virtual void unsetEditViewer(Gui::View3DInventorViewer*);
+
     /// creates the grid
     SoSeparator* createGrid(void);
 
@@ -91,11 +94,15 @@ protected:
     static const char* GridStyleEnums[];
     static App::PropertyQuantityConstraint::Constraints GridSizeRange;
 
+    void updateGridScale(Gui::View3DInventorViewer *);
+
 private:
     float MinX;
     float MaxX;
     float MinY;
     float MaxY;
+    SoNodeSensor *CameraSensor;
+    float GridScale;
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProvider2DObject> ViewProvider2DObjectPython;

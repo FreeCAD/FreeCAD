@@ -6308,6 +6308,8 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     rubberband->setViewer(viewer);
 
     viewer->setupEditingRoot();
+
+    ViewProvider2DObjectGrid::setEditViewer(viewer, ModNum);
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
@@ -6316,6 +6318,8 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     viewer->setEditing(false);
     SoNode* root = viewer->getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+
+    ViewProvider2DObjectGrid::unsetEditViewer(viewer);
 }
 
 void ViewProviderSketch::setPositionText(const Base::Vector2d &Pos, const SbString &text)

@@ -35,6 +35,8 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoVertexProperty.h>
 # include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoCamera.h>
+# include <Inventor/sensors/SoNodeSensor.h>
 # include <cfloat>
 #endif
 
@@ -44,10 +46,15 @@
 #include <Base/Reader.h>
 #include <Base/ViewProj.h>
 #include <App/Application.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Gui/SoFCBoundingBox.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include "ViewProvider2DObject.h"
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/Gui/PartParams.h>
 
 
 using namespace PartGui;
@@ -84,11 +91,15 @@ ViewProvider2DObjectGrid::ViewProvider2DObjectGrid()
     pcRoot->addChild(GridRoot);
 
     sPixmap = "Tree_Part2D";
+
+    CameraSensor = nullptr;
+    GridScale = 1.0f;
 }
 
 ViewProvider2DObjectGrid::~ViewProvider2DObjectGrid()
 {
      GridRoot->unref();
+     delete CameraSensor;
 }
 
 
@@ -304,6 +315,82 @@ void ViewProvider2DObjectGrid::attach(App::DocumentObject *pcFeat)
 
     if (ShowGrid.getValue() && !(ShowOnlyInEditMode.getValue() && !this->isEditing()))
         createGrid();
+}
+
+void ViewProvider2DObjectGrid::updateGridScale(Gui::View3DInventorViewer *viewer)
+{
+    bool init = false;
+    Gui::Document *gdoc;
+    if (viewer) {
+        init = true;
+        gdoc = viewer->getDocument();
+    } else
+        gdoc  = Gui::Application::Instance->editDocument();
+    if (!gdoc)
+        return;
+
+    if (!viewer) {
+        auto view = static_cast<Gui::View3DInventor*>(
+                Gui::Application::Instance->editViewOfNode(this->getRoot()));
+        if (!view)
+            return;
+        viewer = view->getViewer();
+    }
+
+    SoNode *node = CameraSensor->getAttachedNode();
+    if (!node || !node->isOfType(SoCamera::getClassTypeId()))
+        return;
+    SoCamera *camera = static_cast<SoCamera*>(node);
+    const Base::Matrix4D &mat = gdoc->getEditingTransform();
+    Base::Vector3d pos(0,0,0);
+    mat.multVec(pos, pos);
+    SbViewVolume vv = camera->getViewVolume();
+    // float aspectRatio = viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
+    double scale = vv.getDPViewVolume().getWorldToScreenScale(
+            SbVec3d(pos.x, pos.y, pos.z), 0.1);
+    if (init || !PartParams::AutoGridScale()) {
+        GridScale = scale;
+        return;
+    }
+
+    double scaledSize = GridSize.getValue() * scale / GridScale;
+    double size = GridSize.getValue();
+    if (scaledSize < size) {
+        while(size * 0.5 >= scaledSize)
+            size *= 0.5;
+    }
+    else {
+        while(size * 2 <= scaledSize)
+            size *= 2;
+    }
+    if (GridSize.getValue() != size
+            && size >= GridSizeRange.LowerBound 
+            && size <= GridSizeRange.UpperBound ) {
+        GridSize.setValue(size);
+        GridScale = GridSize.getValue() * scale / size;
+    }
+}
+
+void ViewProvider2DObjectGrid::setEditViewer(Gui::View3DInventorViewer *viewer, int ModNum)
+{
+    if (!CameraSensor) {
+        CameraSensor = new SoNodeSensor;
+        CameraSensor->setData(this);
+        CameraSensor->setFunction([](void *data, SoSensor *) {
+            ViewProvider2DObjectGrid *self = reinterpret_cast<ViewProvider2DObjectGrid*>(data);
+            self->updateGridScale(nullptr);
+        });
+    }
+    CameraSensor->attach(viewer->getSoRenderManager()->getCamera());
+    updateGridScale(viewer);
+    ViewProvider2DObject::setEditViewer(viewer, ModNum);
+}
+
+void ViewProvider2DObjectGrid::unsetEditViewer(Gui::View3DInventorViewer *viewer)
+{
+    if (CameraSensor)
+        CameraSensor->detach();
+    ViewProvider2DObject::unsetEditViewer(viewer);
 }
 
 bool ViewProvider2DObjectGrid::setEdit(int)

@@ -39,6 +39,7 @@
 
 #include <QEvent>
 
+#include <Mod/Part/Gui/PartParams.h>
 #include "ViewProviderSketch.h"
 
 using namespace SketcherGui;
@@ -52,6 +53,9 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
 #if QT_VERSION >= 0x050200
     ui->renderingOrder->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
 #endif
+    ui->checkBoxGridAutoScale->setChecked(PartGui::PartParams::AutoGridScale());
+    connect(ui->checkBoxGridAutoScale, SIGNAL(toggled(bool)),
+            this, SLOT(onToggleGridAutoScale(bool)));
 
     // connecting the needed signals
     connect(ui->checkBoxShowGrid, SIGNAL(toggled(bool)),
@@ -70,6 +74,11 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
 SketcherGeneralWidget::~SketcherGeneralWidget()
 {
     delete ui;
+}
+
+void SketcherGeneralWidget::onToggleGridAutoScale(bool checked)
+{
+    PartGui::PartParams::set_AutoGridScale(checked);
 }
 
 bool SketcherGeneralWidget::eventFilter(QObject *object, QEvent *event)

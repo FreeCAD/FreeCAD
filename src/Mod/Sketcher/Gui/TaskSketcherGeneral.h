@@ -72,6 +72,9 @@ Q_SIGNALS:
     void emitToggleAvoidRedundant(bool);
     void emitRenderOrderChanged();
 
+protected Q_SLOTS:
+    void onToggleGridAutoScale(bool);
+
 protected:
     void changeEvent(QEvent *e);
 
