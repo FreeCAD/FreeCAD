@@ -60,6 +60,7 @@ def translate(context, text, disambig=None):
 
 VD = []
 
+
 class ObjectVcarve(PathEngraveBase.ObjectOp):
     '''Proxy class for Vcarve operation.'''
 
