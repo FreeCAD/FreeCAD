@@ -212,6 +212,11 @@ protected:
     /// destructor
     virtual ~PyObjectBase();
 
+    /// Overrides the pointer to the twin object
+    void setTwinPointer(void* ptr) {
+        _pcTwinPointer = ptr;
+    }
+
 public:  
     /** Constructor
      *  Sets the Type of the object (for inheritance) and decrease the

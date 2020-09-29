@@ -272,7 +272,7 @@ CmdSurfaceSections::CmdSurfaceSections()
     sToolTipText  = QT_TR_NOOP("Creates a surface from a series of section curves");
     sStatusTip    = QT_TR_NOOP("Creates a surface from a series of section curves");
     sWhatsThis    = "Surface_Sections";
-  //sPixmap       = "Surface_Sections";
+    sPixmap       = "Surface_Sections";
 }
 
 void CmdSurfaceSections::activated(int iMsg)

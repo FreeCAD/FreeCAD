@@ -24,6 +24,7 @@
 #ifndef PART_GEOMETRY2D_H
 #define PART_GEOMETRY2D_H
 
+#include <Adaptor2d_Curve2d.hxx>
 #include <Geom2d_CartesianPoint.hxx>
 #include <Geom2d_BezierCurve.hxx>
 #include <Geom2d_BSplineCurve.hxx>
@@ -565,6 +566,8 @@ private:
 };
 
 std::unique_ptr<Geom2dCurve> makeFromCurve2d(Handle(Geom2d_Curve));
+std::unique_ptr<Geom2dCurve> makeFromTrimmedCurve2d(const Handle(Geom2d_Curve)&, double f, double l);
+std::unique_ptr<Geom2dCurve> makeFromCurveAdaptor2d(const Adaptor2d_Curve2d&);
 
 }
 

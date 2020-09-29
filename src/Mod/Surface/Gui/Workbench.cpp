@@ -70,7 +70,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* surface = new Gui::ToolBarItem(root);
     surface->setCommand( "Surface" );
     *surface << "Surface_Filling"
-             << "Surface_GeomFillSurface";
+             << "Surface_GeomFillSurface"
+             << "Surface_Sections";
 /*  *surface << "Surface_Cut"; */
 
     return root;

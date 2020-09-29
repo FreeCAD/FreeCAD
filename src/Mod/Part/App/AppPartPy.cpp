@@ -271,8 +271,20 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
 }
 
 namespace Part {
+class GeomPlateModule : public Py::ExtensionModule<GeomPlateModule>
+{
+public:
+    GeomPlateModule() : Py::ExtensionModule<GeomPlateModule>("GeomPlate")
+    {
+        initialize("This is a module working with the GeomPlate framework."); // register with Python
+    }
+
+    virtual ~GeomPlateModule() {}
+};
+
 class Module : public Py::ExtensionModule<Module>
 {
+    GeomPlateModule geomPlate;
 public:
     Module() : Py::ExtensionModule<Module>("Part")
     {
@@ -488,6 +500,8 @@ public:
             "joinSubname(sub,mapped,subElement) -> subname\n"
         );
         initialize("This is a module working with shapes."); // register with Python
+
+        PyModule_AddObject(m_module, "GeomPlate", geomPlate.module().ptr());
     }
 
     virtual ~Module() {}

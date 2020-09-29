@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="PyObjectBase" 
+      Name="BuildPlateSurfacePy" 
+      PythonName="Part.GeomPlate.BuildPlateSurfacePy"
+      Twin="GeomPlate_BuildPlateSurface" 
+      TwinPointer="GeomPlate_BuildPlateSurface" 
+      Include="GeomPlate_BuildPlateSurface.hxx" 
+      Namespace="Part" 
+      FatherInclude="Base/PyObjectBase.h" 
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>This class provides an algorithm for constructing such a plate surface.</UserDocu>
+    </Documentation>
+    <Methode Name="init">
+      <Documentation>
+        <UserDocu>Resets all constraints</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setNbBounds">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="loadInitSurface">
+      <Documentation>
+        <UserDocu> Loads the initial surface</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="surfInit" Const="true">
+      <Documentation>
+        <UserDocu> Returns the initial surface</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="surface" Const="true">
+      <Documentation>
+        <UserDocu>Returns the plate surface</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="add">
+      <Documentation>
+        <UserDocu>Adds a linear or point constraint</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="perform">
+      <Documentation>
+        <UserDocu>Calls the algorithm and computes the plate surface</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isDone" Const="true">
+      <Documentation>
+        <UserDocu>Tests whether computation of the plate has been completed</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="sense" Const="true">
+      <Documentation>
+        <UserDocu>Returns the orientation of the curves in the the array returned by curves2d</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="order" Const="true">
+      <Documentation>
+        <UserDocu>Returns the order of the curves in the array returned by curves2d</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="curves2d" Const="true">
+      <Documentation>
+        <UserDocu>Extracts the array of curves on the plate surface which
+        correspond to the curve constraints set in add()
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="curveConstraint" Const="true">
+      <Documentation>
+        <UserDocu>Returns the curve constraint of order</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="pointConstraint" Const="true">
+      <Documentation>
+        <UserDocu>Returns the point constraint of order</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="disc2dContour">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="disc3dContour">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="G0Error" Const="true">
+      <Documentation>
+        <UserDocu>Returns the max distance betwen the result and the constraints</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="G1Error" Const="true">
+      <Documentation>
+        <UserDocu>Returns the max angle betwen the result and the constraints</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="G2Error" Const="true">
+      <Documentation>
+        <UserDocu>Returns the max difference of curvature betwen the result and the constraints</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

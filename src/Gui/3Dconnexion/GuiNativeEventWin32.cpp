@@ -911,37 +911,49 @@ bool Gui::GuiNativeEvent::ParseRawInput(UINT nInputCode, PRAWINPUT pRawInput)
             switch(pValueCaps[i].Range.UsageMin)
             {
             case HID_USAGE_GENERIC_X:	// X-axis
+#ifdef _TRACE_RI_RAWDATA
                 qDebug("X-Axis: %d\n", svalue);
+#endif
                 deviceData.fAxes[0] = static_cast<float>(svalue);
                 deviceData.fIsDirty = true;
                 break;
 
             case HID_USAGE_GENERIC_Y:	// Y-axis
+#ifdef _TRACE_RI_RAWDATA
                 qDebug("Y-Axis: %d\n", svalue);
+#endif
                 deviceData.fAxes[1] = static_cast<float>(svalue);
                 deviceData.fIsDirty = true;
                 break;
 
             case HID_USAGE_GENERIC_Z: // Z-axis
+#ifdef _TRACE_RI_RAWDATA
                 qDebug("Z-Axis: %d\n", svalue);
+#endif
                 deviceData.fAxes[2] = static_cast<float>(svalue);
                 deviceData.fIsDirty = true;
                 break;
 
             case HID_USAGE_GENERIC_RX: // Rotate-X
+#ifdef _TRACE_RI_RAWDATA
                 qDebug("X-Rotate: %d\n", svalue);
+#endif
                 deviceData.fAxes[3] = static_cast<float>(svalue);
                 deviceData.fIsDirty = true;
                 break;
 
             case HID_USAGE_GENERIC_RY: // Rotate-Y
+#ifdef _TRACE_RI_RAWDATA
                 qDebug("Y-Rotate: %d\n", svalue);
+#endif
                 deviceData.fAxes[4] = static_cast<float>(svalue);
                 deviceData.fIsDirty = true;
                 break;
 
             case HID_USAGE_GENERIC_RZ: // Rotate-Z
+#ifdef _TRACE_RI_RAWDATA
                 qDebug("Z-Rotate: %d\n", svalue);
+#endif
                 deviceData.fAxes[5] = static_cast<float>(svalue);
                 deviceData.fIsDirty = true;
                 break;
@@ -955,7 +967,9 @@ bool Gui::GuiNativeEvent::ParseRawInput(UINT nInputCode, PRAWINPUT pRawInput)
         // Zero out the data if the app is not in foreground
         deviceData.fAxes.assign(6, 0.f);
         deviceData.fIsDirty = true;
+#ifdef _TRACE_RI_RAWDATA
         qDebug("Not in foreground\n");
+#endif
     }
 
     //

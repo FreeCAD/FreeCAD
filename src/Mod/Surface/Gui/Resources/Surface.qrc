@@ -4,6 +4,7 @@
         <file>icons/BSplineSurf.svg</file>
         <file>icons/Surface_Cut.svg</file>
         <file>icons/Surface_Filling.svg</file>
+        <file>icons/Surface_Sections.svg</file>
         <file>icons/Sewing.svg</file>
     </qresource>
 </RCC> 

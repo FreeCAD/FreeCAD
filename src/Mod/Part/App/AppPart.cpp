@@ -124,6 +124,9 @@
 #include <Mod/Part/App/Geom2d/Line2dPy.h>
 #include <Mod/Part/App/Geom2d/OffsetCurve2dPy.h>
 #include <Mod/Part/App/Geom2d/Parabola2dPy.h>
+#include <Mod/Part/App/GeomPlate/BuildPlateSurfacePy.h>
+#include <Mod/Part/App/GeomPlate/CurveConstraintPy.h>
+#include <Mod/Part/App/GeomPlate/PointConstraintPy.h>
 #include "PropertyGeometryList.h"
 #include "DatumFeature.h"
 #include "Attacher.h"
@@ -415,6 +418,12 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::Line2dSegmentPy::Type,geom2dModule,"Line2dSegment");
     Base::Interpreter().addType(&Part::Line2dPy::Type,geom2dModule,"Line2d");
     Base::Interpreter().addType(&Part::OffsetCurve2dPy::Type,geom2dModule,"OffsetCurve2d");
+
+    // GeomPlate sub-module
+    PyObject* geomPlate(module.getAttr("GeomPlate").ptr());
+    Base::Interpreter().addType(&Part::BuildPlateSurfacePy::Type, geomPlate, "BuildPlateSurface");
+    Base::Interpreter().addType(&Part::CurveConstraintPy::Type, geomPlate, "CurveConstraint");
+    Base::Interpreter().addType(&Part::PointConstraintPy::Type, geomPlate, "PointConstraint");
 
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();
