@@ -130,12 +130,12 @@ VoronoiEdge* getVoronoiEdgeFromPy(const VoronoiEdgePy *e, PyObject *args = 0) {
   return self;
 }
 
-Py::Int VoronoiEdgePy::getIndex(void) const {
+Py::Long VoronoiEdgePy::getIndex(void) const {
   VoronoiEdge *e = getVoronoiEdgePtr();
   if (e->isBound()) {
-    return Py::Int(e->dia->index(e->ptr));
+    return Py::Long(e->dia->index(e->ptr));
   }
-  return Py::Int(-1);
+  return Py::Long(-1);
 }
 
 Py::Long VoronoiEdgePy::getColor(void) const {

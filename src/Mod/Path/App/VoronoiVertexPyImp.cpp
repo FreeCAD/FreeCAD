@@ -113,12 +113,12 @@ VoronoiVertex* getVoronoiVertexFromPy(const VoronoiVertexPy *v, PyObject *args =
 }
 
 
-Py::Int VoronoiVertexPy::getIndex(void) const {
+Py::Long VoronoiVertexPy::getIndex(void) const {
   VoronoiVertex *v = getVoronoiVertexPtr();
   if (v->isBound()) {
-    return Py::Int(v->dia->index(v->ptr));
+    return Py::Long(v->dia->index(v->ptr));
   }
-  return Py::Int(-1);
+  return Py::Long(-1);
 }
 
 Py::Long VoronoiVertexPy::getColor(void) const {

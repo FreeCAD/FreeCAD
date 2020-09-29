@@ -20,13 +20,13 @@
             <Documentation>
                 <UserDocu>Internal id of the element.</UserDocu>
             </Documentation>
-            <Parameter Name="Index" Type="Int"/>
+            <Parameter Name="Index" Type="Long"/>
         </Attribute>
         <Attribute Name="Color" ReadOnly="false">
             <Documentation>
                 <UserDocu>Assigned color of the receiver.</UserDocu>
             </Documentation>
-            <Parameter Name="Color" Type="Int"/>
+            <Parameter Name="Color" Type="Long"/>
         </Attribute>
         <Attribute Name="X" ReadOnly="true">
             <Documentation>

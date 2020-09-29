@@ -111,12 +111,12 @@ VoronoiCell* getVoronoiCellFromPy(const VoronoiCellPy *c, PyObject *args = 0) {
   return self;
 }
 
-Py::Int VoronoiCellPy::getIndex(void) const {
+Py::Long VoronoiCellPy::getIndex(void) const {
   VoronoiCell *c = getVoronoiCellPtr();
   if (c->isBound()) {
-    return Py::Int(c->dia->index(c->ptr));
+    return Py::Long(c->dia->index(c->ptr));
   }
-  return Py::Int(-1);
+  return Py::Long(-1);
 }
 
 Py::Long VoronoiCellPy::getColor(void) const {
@@ -131,10 +131,10 @@ void VoronoiCellPy::setColor(Py::Long color) {
   getCellFromPy(this)->color(int(color) & Voronoi::ColorMask);
 }
 
-Py::Int VoronoiCellPy::getSourceIndex(void) const
+Py::Long VoronoiCellPy::getSourceIndex(void) const
 {
   VoronoiCell *c = getVoronoiCellFromPy(this);
-  return Py::Int(c->ptr->source_index());
+  return Py::Long(c->ptr->source_index());
 }
 
 Py::Int VoronoiCellPy::getSourceCategory(void) const
