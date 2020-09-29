@@ -1941,14 +1941,15 @@ QIcon ViewProviderLink::getIcon() const {
 
 QPixmap ViewProviderLink::getOverlayPixmap() const {
     auto ext = getLinkExtension();
+    QSizeF size(8,8);
     if(ext && ext->getLinkedObjectProperty() && ext->_getElementCountValue())
-        return BitmapFactory().pixmap("LinkArrayOverlay");
+        return BitmapFactory().pixmapFromSvg("LinkArrayOverlay", size);
     else if(hasSubElement)
-        return BitmapFactory().pixmap("LinkSubElement");
+        return BitmapFactory().pixmapFromSvg("LinkSubElement", size);
     else if(hasSubName)
-        return BitmapFactory().pixmap("LinkSubOverlay");
+        return BitmapFactory().pixmapFromSvg("LinkSubOverlay", size);
     else
-        return BitmapFactory().pixmap("LinkOverlay");
+        return BitmapFactory().pixmapFromSvg("LinkOverlay", size);
 }
 
 void ViewProviderLink::onChanged(const App::Property* prop) {

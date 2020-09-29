@@ -116,168 +116,36 @@ struct SelUpMenuGuard
 
 //--------------------------------------------------------------------------
 
-// Default cursor shapes copied from Qt4. Qt5 no longer uses these, but
-// obtain the shape from style plugin, and offers no way for extracting the
-// pixmap.
-
-static const char * const move_xpm[] = {
-"11 20 3 1",
-".        c None",
-#if defined(Q_WS_WIN)
-"a        c #000000",
-"X        c #FFFFFF", // Windows cursor is traditionally white
-#else
-"a        c #FFFFFF",
-"X        c #000000", // X11 cursor is traditionally black
-#endif
-"aa.........",
-"aXa........",
-"aXXa.......",
-"aXXXa......",
-"aXXXXa.....",
-"aXXXXXa....",
-"aXXXXXXa...",
-"aXXXXXXXa..",
-"aXXXXXXXXa.",
-"aXXXXXXXXXa",
-"aXXXXXXaaaa",
-"aXXXaXXa...",
-"aXXaaXXa...",
-"aXa..aXXa..",
-"aa...aXXa..",
-"a.....aXXa.",
-"......aXXa.",
-".......aXXa",
-".......aXXa",
-"........aa."};
-
-/* XPM */
-static const char * const copy_xpm[] = {
-"24 30 3 1",
-".        c None",
-"a        c #000000",
-"X        c #FFFFFF",
-#if defined(Q_WS_WIN) // Windows cursor is traditionally white
-"aa......................",
-"aXa.....................",
-"aXXa....................",
-"aXXXa...................",
-"aXXXXa..................",
-"aXXXXXa.................",
-"aXXXXXXa................",
-"aXXXXXXXa...............",
-"aXXXXXXXXa..............",
-"aXXXXXXXXXa.............",
-"aXXXXXXaaaa.............",
-"aXXXaXXa................",
-"aXXaaXXa................",
-"aXa..aXXa...............",
-"aa...aXXa...............",
-"a.....aXXa..............",
-"......aXXa..............",
-".......aXXa.............",
-".......aXXa.............",
-"........aa...aaaaaaaaaaa",
-#else
-"XX......................",
-"XaX.....................",
-"XaaX....................",
-"XaaaX...................",
-"XaaaaX..................",
-"XaaaaaX.................",
-"XaaaaaaX................",
-"XaaaaaaaX...............",
-"XaaaaaaaaX..............",
-"XaaaaaaaaaX.............",
-"XaaaaaaXXXX.............",
-"XaaaXaaX................",
-"XaaXXaaX................",
-"XaX..XaaX...............",
-"XX...XaaX...............",
-"X.....XaaX..............",
-"......XaaX..............",
-".......XaaX.............",
-".......XaaX.............",
-"........XX...aaaaaaaaaaa",
-#endif
-".............aXXXXXXXXXa",
-".............aXXXXXXXXXa",
-".............aXXXXaXXXXa",
-".............aXXXXaXXXXa",
-".............aXXaaaaaXXa",
-".............aXXXXaXXXXa",
-".............aXXXXaXXXXa",
-".............aXXXXXXXXXa",
-".............aXXXXXXXXXa",
-".............aaaaaaaaaaa"};
-
-/* XPM */
-static const char * const link_xpm[] = {
-"24 30 3 1",
-".        c None",
-"a        c #000000",
-"X        c #FFFFFF",
-#if defined(Q_WS_WIN) // Windows cursor is traditionally white
-"aa......................",
-"aXa.....................",
-"aXXa....................",
-"aXXXa...................",
-"aXXXXa..................",
-"aXXXXXa.................",
-"aXXXXXXa................",
-"aXXXXXXXa...............",
-"aXXXXXXXXa..............",
-"aXXXXXXXXXa.............",
-"aXXXXXXaaaa.............",
-"aXXXaXXa................",
-"aXXaaXXa................",
-"aXa..aXXa...............",
-"aa...aXXa...............",
-"a.....aXXa..............",
-"......aXXa..............",
-".......aXXa.............",
-".......aXXa.............",
-"........aa...aaaaaaaaaaa",
-#else
-"XX......................",
-"XaX.....................",
-"XaaX....................",
-"XaaaX...................",
-"XaaaaX..................",
-"XaaaaaX.................",
-"XaaaaaaX................",
-"XaaaaaaaX...............",
-"XaaaaaaaaX..............",
-"XaaaaaaaaaX.............",
-"XaaaaaaXXXX.............",
-"XaaaXaaX................",
-"XaaXXaaX................",
-"XaX..XaaX...............",
-"XX...XaaX...............",
-"X.....XaaX..............",
-"......XaaX..............",
-".......XaaX.............",
-".......XaaX.............",
-"........XX...aaaaaaaaaaa",
-#endif
-".............aXXXXXXXXXa",
-".............aXXXaaaaXXa",
-".............aXXXXaaaXXa",
-".............aXXXaaaaXXa",
-".............aXXaaaXaXXa",
-".............aXXaaXXXXXa",
-".............aXXaXXXXXXa",
-".............aXXXaXXXXXa",
-".............aXXXXXXXXXa",
-".............aaaaaaaaaaa"};
-
-//--------------------------------------------------------------------------
-
 class TreeWidget::Private
 {
 public:
-    void setOverrideCursor(Qt::CursorShape shape)
+    void setOverrideCursor(Qt::CursorShape shape, bool replace=true)
     {
+#if QT_VERSION >= 0x050000
+        qreal devicePixelRatio = qApp->devicePixelRatio();
+#else
+        qreal devicePixelRatio = 1.0;
+#endif
+        int cursorSize = 32;
+        int iconSize = 24;
+        int iconSize2 = 30;
+        int hotX=0, hotY=1;
+        if (devicePixelRatio != 1.0) {
+            cursorSize *= 2;
+            iconSize *= 2;
+            iconSize2 *= 2;
+            hotX *= 2;
+            hotY *= 2;
+        }
+#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
+#else
+        hotX = static_cast<int>(hotX*devicePixelRatio);
+        hotY = static_cast<int>(hotY*devicePixelRatio);
+#endif
+        iconSize = static_cast<int>(iconSize * devicePixelRatio);
+        cursorSize = static_cast<int>(cursorSize * devicePixelRatio);
+        QSizeF size(cursorSize, cursorSize);
+
         if (!_DraggingActive) {
             QPixmap pxObj, pxObj2;
             int count = 0;
@@ -286,43 +154,76 @@ public:
                 if (!vp)
                     continue;
                 if (count++ == 0)
-                    pxObj = vp->getIcon().pixmap(24,24);
+                    pxObj = vp->getIcon().pixmap(iconSize);
                 else {
-                    pxObj2 = vp->getIcon().pixmap(24,24);
+                    pxObj2 = vp->getIcon().pixmap(iconSize);
                     break;
                 }
             }
 
+            if (pixmapMove.isNull()) {
+                QSizeF size(32,32);
+#if defined(Q_WS_WIN)
+                std::map<unsigned long, unsigned long> colorMap;
+                colorMap[0] = 0xffffff;
+                colorMap[0xffffff] = 0;
+                pixmapMove = BitmapFactory().pixmapFromSvg("TreeDragMove", size, colorMap);
+                pixmapCopy = BitmapFactory().pixmapFromSvg("TreeDragCopy", size, colorMap);
+                pixmapLink = BitmapFactory().pixmapFromSvg("TreeDragLink", size, colorMap);
+                pixmapReplace = BitmapFactory().pixmapFromSvg("TreeDragReplace", size, colorMap);
+#else
+                pixmapMove = BitmapFactory().pixmapFromSvg("TreeDragMove", size);
+                pixmapCopy = BitmapFactory().pixmapFromSvg("TreeDragCopy", size);
+                pixmapLink = BitmapFactory().pixmapFromSvg("TreeDragLink", size);
+                pixmapReplace = BitmapFactory().pixmapFromSvg("TreeDragReplace", size);
+            }
+#endif
+
+
             pxMove = QPixmap();
             pxCopy = QPixmap();
             pxLink = QPixmap();
+            pxReplace = QPixmap();
 
             if (!pxObj.isNull()) {
                 if (!pxObj2.isNull()) {
-                    QPixmap px(30,30);
+                    QPixmap px(iconSize2, iconSize2);
                     px.fill(Qt::transparent);
                     px = BitmapFactory().merge(px, pxObj2, BitmapFactoryInst::BottomRight);
                     px = BitmapFactory().merge(px, pxObj, BitmapFactoryInst::TopLeft);
                     pxObj = px;
                 }
 
-                QPixmap pxCursor(32,32);
+                QPixmap pxCursor(cursorSize, cursorSize);
                 pxCursor.fill(Qt::transparent);
                 pxCursor = BitmapFactory().merge(pxCursor, pxObj, BitmapFactoryInst::BottomRight);
-                pxCursor = BitmapFactory().merge(pxCursor, QPixmap(move_xpm), BitmapFactoryInst::TopLeft);
+                pxCursor = BitmapFactory().merge(pxCursor, pixmapMove, BitmapFactoryInst::TopLeft);
                 pxMove = pxCursor;
 
-                pxCursor = QPixmap(32,32);
+                pxCursor = QPixmap(cursorSize, cursorSize);
                 pxCursor.fill(Qt::transparent);
                 pxCursor = BitmapFactory().merge(pxCursor, pxObj, BitmapFactoryInst::BottomRight);
-                pxCursor = BitmapFactory().merge(pxCursor, QPixmap(copy_xpm), BitmapFactoryInst::TopLeft);
+                pxCursor = BitmapFactory().merge(pxCursor, pixmapCopy, BitmapFactoryInst::TopLeft);
                 pxCopy = pxCursor;
 
-                pxCursor = QPixmap(32,32);
+                pxCursor = QPixmap(cursorSize, cursorSize);
                 pxCursor.fill(Qt::transparent);
                 pxCursor = BitmapFactory().merge(pxCursor, pxObj, BitmapFactoryInst::BottomRight);
-                pxCursor = BitmapFactory().merge(pxCursor, QPixmap(link_xpm), BitmapFactoryInst::TopLeft);
+                pxCursor = BitmapFactory().merge(pxCursor, pixmapLink, BitmapFactoryInst::TopLeft);
                 pxLink = pxCursor;
+
+                pxCursor = QPixmap(cursorSize, cursorSize);
+                pxCursor.fill(Qt::transparent);
+                pxCursor = BitmapFactory().merge(pxCursor, pxObj, BitmapFactoryInst::BottomRight);
+                pxCursor = BitmapFactory().merge(pxCursor, pixmapReplace, BitmapFactoryInst::TopLeft);
+                pxReplace = pxCursor;
+
+#if QT_VERSION >= 0x050000
+                pxMove.setDevicePixelRatio(devicePixelRatio);
+                pxCopy.setDevicePixelRatio(devicePixelRatio);
+                pxMove.setDevicePixelRatio(devicePixelRatio);
+                pxReplace.setDevicePixelRatio(devicePixelRatio);
+#endif
             }
         }
 
@@ -330,15 +231,15 @@ public:
         switch(shape) {
         case Qt::DragMoveCursor:
             if (!pxMove.isNull())
-                cursor = QCursor(pxMove,0,0);
+                cursor = QCursor(pxMove,hotX,hotY);
             break;
         case Qt::DragCopyCursor:
             if (!pxCopy.isNull())
-                cursor = QCursor(pxCopy,0,0);
+                cursor = QCursor(pxCopy,hotX,hotY);
             break;
         case Qt::DragLinkCursor:
             if (!pxLink.isNull())
-                cursor = QCursor(pxLink,0,0);
+                cursor = QCursor(replace?pxReplace:pxLink,hotX,hotY);
             break;
         default:
             break;
@@ -352,6 +253,11 @@ public:
     QPixmap pxMove;
     QPixmap pxCopy;
     QPixmap pxLink;
+    QPixmap pxReplace;
+    QPixmap pixmapMove;
+    QPixmap pixmapCopy;
+    QPixmap pixmapLink;
+    QPixmap pixmapReplace;
 };
 
 //--------------------------------------------------------------------------
@@ -1747,10 +1653,10 @@ bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
                 // Qt 5 only recheck key modifier on mouse move, so generate a fake
                 // event to trigger drag cursor change
                 QMouseEvent me(QEvent::MouseMove, 
-                        tree->mapFromGlobal(cpos), cpos,
+                        pos, cpos,
                         Qt::NoButton, QApplication::mouseButtons(),
                         QApplication::queryKeyboardModifiers());
-                qApp->sendEvent(tree, &me);
+                tree->mouseMoveEvent(&me);
                 break;
             }
         }
@@ -1910,7 +1816,8 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
         auto pos = viewport()->mapFromGlobal(event->globalPos());
         QDragMoveEvent de(pos, _DropActions,
                 nullptr, event->buttons(), event->modifiers());
-        _dragMoveEvent(&de);
+        bool replace = true;
+        _dragMoveEvent(&de, &replace);
         Qt::CursorShape cursor;
         if(!de.isAccepted()) {
             cursor = Qt::ForbiddenCursor;
@@ -1930,7 +1837,7 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
                 break;
             }
         }
-        pimpl->setOverrideCursor(cursor);
+        pimpl->setOverrideCursor(cursor, replace);
         return;
     }
     QTreeWidget::mouseMoveEvent(event);
@@ -2032,9 +1939,10 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
     _dragMoveEvent(event);
 }
 
-void TreeWidget::_dragMoveEvent(QDragMoveEvent *event)
+void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
 {
-    auto modifier = QApplication::queryKeyboardModifiers();
+    auto modifier = (event->keyboardModifiers()
+            & (Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier));
     QTreeWidgetItem* targetItem = nullptr;
     QAction *action = nullptr;
     if (_DraggingActive && _SelUpMenus.size()) {
@@ -2062,9 +1970,11 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event)
         leaveEvent(0);
         if(modifier== Qt::ControlModifier)
             event->setDropAction(Qt::CopyAction);
-        else if(modifier== Qt::AltModifier)
+        else if(modifier== Qt::AltModifier) {
             event->setDropAction(Qt::LinkAction);
-        else
+            if (replace)
+                *replace = false;
+        } else
             event->setDropAction(Qt::MoveAction);
     }
     else if (targetItem->type() == TreeWidget::ObjectType) {
@@ -2250,9 +2160,11 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
     std::string errMsg;
 
-    if(QApplication::keyboardModifiers()== Qt::ControlModifier)
+    auto modifier = (event->keyboardModifiers()
+        & (Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier));
+    if(modifier == Qt::ControlModifier)
         event->setDropAction(Qt::CopyAction);
-    else if(QApplication::keyboardModifiers()== Qt::AltModifier 
+    else if(modifier == Qt::AltModifier 
             && (itemInfo.size()==1||targetItem->type()==TreeWidget::DocumentType))
         event->setDropAction(Qt::LinkAction);
     else
@@ -3998,7 +3910,8 @@ QTreeWidgetItem *TreeWidget::selectUp(QAction *action, QMenu *parentMenu, bool s
             if (!select)
                 return it->second;
 
-            auto modifier = QApplication::queryKeyboardModifiers();
+            auto modifier = (QApplication::queryKeyboardModifiers()
+                    & (Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier));
             if (parentMenu) {
                 tree->_setupSelUpSubMenu(parentMenu, it->second);
             } else {
@@ -4056,8 +3969,8 @@ QTreeWidgetItem *TreeWidget::selectUp(const App::SubObjectT &objT,
         return item;
 
     if (!parentMenu) {
-        auto modifier = QApplication::queryKeyboardModifiers();
-
+        auto modifier = (QApplication::queryKeyboardModifiers()
+                & (Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier));
         if (modifier != Qt::ControlModifier) {
             Gui::Selection().selStackPush();
             Gui::Selection().clearCompleteSelection();
@@ -4082,7 +3995,9 @@ void TreeWidget::_setupSelUpSubMenu(QMenu *parentMenu,
 {
     SelUpMenu menu(parentMenu);
 
-    if(QApplication::queryKeyboardModifiers() == Qt::ShiftModifier) {
+    auto modifier = (QApplication::queryKeyboardModifiers()
+            & (Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier));
+    if(modifier == Qt::ShiftModifier) {
         if (item && item->type() == ObjectType)
             _setupObjectMenu(static_cast<DocumentObjectItem*>(item), menu);
         else
@@ -5652,46 +5567,14 @@ static QIcon getItemIcon(int currentStatus, const QIcon &icon_orig, QIcon::Mode 
     QPixmap px;
     if (currentStatus & 4) {
         static QPixmap pxError;
-        if(pxError.isNull()) {
-        // object is in error state
-            const char * const feature_error_xpm[]={
-                "9 9 3 1",
-                ". c None",
-                "# c #ff0000",
-                "a c #ffffff",
-                "...###...",
-                ".##aaa##.",
-                ".##aaa##.",
-                "###aaa###",
-                "###aaa###",
-                "#########",
-                ".##aaa##.",
-                ".##aaa##.",
-                "...###..."};
-            pxError = QPixmap(feature_error_xpm);
-        }
+        if(pxError.isNull())
+            pxError = BitmapFactory().pixmapFromSvg("TreeError", QSizeF(9,9));
         px = pxError;
     }
     else if (currentStatus & 2) {
         static QPixmap pxRecompute;
-        if(pxRecompute.isNull()) {
-            // object must be recomputed
-            const char * const feature_recompute_xpm[]={
-                "9 9 3 1",
-                ". c None",
-                "# c #0000ff",
-                "a c #ffffff",
-                "...###...",
-                ".######aa",
-                ".#####aa.",
-                "#####aa##",
-                "#aa#aa###",
-                "#aaaa####",
-                ".#aa####.",
-                ".#######.",
-                "...###..."};
-            pxRecompute = QPixmap(feature_recompute_xpm);
-        }
+        if(pxRecompute.isNull()) 
+            pxRecompute = BitmapFactory().pixmapFromSvg("TreeRecompute", QSizeF(9,9));
         px = pxRecompute;
     }
 
@@ -5714,42 +5597,16 @@ static QIcon getItemIcon(int currentStatus, const QIcon &icon_orig, QIcon::Mode 
 
     if(currentStatus & 8)  {// hidden item
         static QPixmap pxHidden;
-        if(pxHidden.isNull()) {
-            const char * const feature_hidden_xpm[]={
-                "9 7 3 1",
-                ". c None",
-                "# c #000000",
-                "a c #ffffff",
-                "...###...",
-                "..#aaa#..",
-                ".#a###a#.",
-                "#aa###aa#",
-                ".#a###a#.",
-                "..#aaa#..",
-                "...###..."};
-            pxHidden = QPixmap(feature_hidden_xpm);
-        }
+        if(pxHidden.isNull()) 
+            pxHidden = BitmapFactory().pixmapFromSvg("TreeHidden", QSizeF(9,9));
         pxOff = BitmapFactory().merge(pxOff, pxHidden, BitmapFactoryInst::TopLeft);
         pxOn = BitmapFactory().merge(pxOn, pxHidden, BitmapFactoryInst::TopLeft);
     }
 
     if(currentStatus & (1<<4)) {// external item
         static QPixmap pxExternal;
-        if(pxExternal.isNull()) {
-            const char * const feature_external_xpm[]={
-                "7 7 3 1",
-                ". c None",
-                "# c #000000",
-                "a c #ffffff",
-                "..###..",
-                ".#aa##.",
-                "..#aa##",
-                "..##aa#",
-                "..#aa##",
-                ".#aa##.",
-                "..###.."};
-            pxExternal = QPixmap(feature_external_xpm);
-        }
+        if(pxExternal.isNull())
+            pxExternal = BitmapFactory().pixmapFromSvg("TreeExternal", QSizeF(9,9));
         pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
         pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
     }

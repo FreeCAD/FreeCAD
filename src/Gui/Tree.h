@@ -196,7 +196,7 @@ protected:
     void hideEvent(QHideEvent *) override;
     void leaveEvent(QEvent *) override;
     void _updateStatus(bool delay=true);
-    void _dragMoveEvent(QDragMoveEvent *event);
+    void _dragMoveEvent(QDragMoveEvent *event, bool *replace = nullptr);
     bool onDoubleClickItem(QTreeWidgetItem *);
 
 protected Q_SLOTS:

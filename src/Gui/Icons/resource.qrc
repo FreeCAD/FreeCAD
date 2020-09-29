@@ -87,6 +87,14 @@
         <file>tree-doc-single.svg</file>
         <file>tree-doc-multi.svg</file>
         <file>tree-doc-collapse.svg</file>
+        <file>TreeDragMove.svg</file>
+        <file>TreeDragCopy.svg</file>
+        <file>TreeDragLink.svg</file>
+        <file>TreeDragReplace.svg</file>
+        <file>TreeError.svg</file>
+        <file>TreeRecompute.svg</file>
+        <file>TreeHidden.svg</file>
+        <file>TreeExternal.svg</file>
         <file>sel-back.svg</file>
         <file>sel-forward.svg</file>
         <file>sel-up.svg</file>
@@ -191,10 +199,10 @@
         <file>LinkArray.svg</file>
         <file>LinkElement.svg</file>
         <file>LinkGroup.svg</file>
-        <file>LinkOverlay.xpm</file>
-        <file>LinkArrayOverlay.xpm</file>
-        <file>LinkSubOverlay.xpm</file>
-        <file>LinkSubElement.xpm</file>
+        <file>LinkOverlay.svg</file>
+        <file>LinkArrayOverlay.svg</file>
+        <file>LinkSubOverlay.svg</file>
+        <file>LinkSubElement.svg</file>
         <file>LinkSub.svg</file>
         <file>LinkReplace.svg</file>
         <file>LinkImport.svg</file>
