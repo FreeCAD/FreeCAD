@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Vertexes</string>
+   <string>Vertices</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Unbound vertexes</string>
+      <string>Unbound vertices</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
