@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,54 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_FEATUREEXTEND_H
-#define SURFACE_FEATUREEXTEND_H
+#ifndef SURFACEGUI_VIEWPROVIDEREXTEND_H
+#define SURFACEGUI_VIEWPROVIDEREXTEND_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
-#include <Mod/Part/App/FeaturePartSpline.h>
+#include <Mod/Part/Gui/ViewProviderSpline.h>
+#include <Mod/Surface/App/FeatureExtend.h>
 
-namespace Surface
+namespace SurfaceGui
 {
 
-class SurfaceExport Extend :  public Part::Spline
+class ViewProviderExtend : public PartGui::ViewProviderSpline
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(Surface::Extend);
+    PROPERTY_HEADER(SurfaceGui::ViewProviderExtend);
 
 public:
-    Extend();
-    ~Extend();
-
-    App::PropertyLinkSub Face;
-    App::PropertyFloatConstraint Tolerance;
-    App::PropertyFloatConstraint ExtendUNeg;
-    App::PropertyFloatConstraint ExtendUPos;
-    App::PropertyBool            ExtendUSymetric;
-    App::PropertyFloatConstraint ExtendVNeg;
-    App::PropertyFloatConstraint ExtendVPos;
-    App::PropertyBool            ExtendVSymetric;
-    App::PropertyIntegerConstraint SampleU;
-    App::PropertyIntegerConstraint SampleV;
-
-    // recalculate the feature
-    App::DocumentObjectExecReturn *execute(void) override;
-    short mustExecute() const override;
-    /// returns the type name of the view provider
-    const char* getViewProviderName(void) const override {
-        return "SurfaceGui::ViewProviderExtend";
-    }
-
-protected:
-    virtual void onChanged(const App::Property* prop) override;
-    virtual void handleChangedPropertyName(Base::XMLReader &reader,
-                                           const char * TypeName,
-                                           const char *PropName) override;
-
-private:
-    bool lockOnChangeMutex;
+    QIcon getIcon(void) const;
 };
 
-}//Namespace Surface
+} //namespace SurfaceGui
 
-#endif
+#endif // SURFACEGUI_VIEWPROVIDEREXTEND_H

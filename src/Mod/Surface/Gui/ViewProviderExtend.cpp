@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,54 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_FEATUREEXTEND_H
-#define SURFACE_FEATUREEXTEND_H
+#include "PreCompiled.h"
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
-#include <Mod/Part/App/FeaturePartSpline.h>
+#include <Gui/BitmapFactory.h>
+#include <Mod/Part/Gui/ViewProvider.h>
 
-namespace Surface
+#include "ViewProviderExtend.h"
+
+using namespace SurfaceGui;
+
+PROPERTY_SOURCE(SurfaceGui::ViewProviderExtend, PartGui::ViewProviderSpline)
+
+namespace SurfaceGui {
+
+QIcon ViewProviderExtend::getIcon(void) const
 {
+    return Gui::BitmapFactory().pixmap("Surface_Extend");
+}
 
-class SurfaceExport Extend :  public Part::Spline
-{
-    PROPERTY_HEADER_WITH_OVERRIDE(Surface::Extend);
-
-public:
-    Extend();
-    ~Extend();
-
-    App::PropertyLinkSub Face;
-    App::PropertyFloatConstraint Tolerance;
-    App::PropertyFloatConstraint ExtendUNeg;
-    App::PropertyFloatConstraint ExtendUPos;
-    App::PropertyBool            ExtendUSymetric;
-    App::PropertyFloatConstraint ExtendVNeg;
-    App::PropertyFloatConstraint ExtendVPos;
-    App::PropertyBool            ExtendVSymetric;
-    App::PropertyIntegerConstraint SampleU;
-    App::PropertyIntegerConstraint SampleV;
-
-    // recalculate the feature
-    App::DocumentObjectExecReturn *execute(void) override;
-    short mustExecute() const override;
-    /// returns the type name of the view provider
-    const char* getViewProviderName(void) const override {
-        return "SurfaceGui::ViewProviderExtend";
-    }
-
-protected:
-    virtual void onChanged(const App::Property* prop) override;
-    virtual void handleChangedPropertyName(Base::XMLReader &reader,
-                                           const char * TypeName,
-                                           const char *PropName) override;
-
-private:
-    bool lockOnChangeMutex;
-};
-
-}//Namespace Surface
-
-#endif
+} //namespace SurfaceGui

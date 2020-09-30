@@ -70,6 +70,8 @@ SET(SurfaceGui_SRCS
     Command.cpp
     PreCompiled.cpp
     PreCompiled.h
+    ViewProviderExtend.cpp
+    ViewProviderExtend.h
     Workbench.cpp
     Workbench.h
 #    ViewProviderCut.cpp
