@@ -847,10 +847,17 @@ public:
         cursorPainter.begin(&cursorPixmap);
         cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
         cursorPainter.end();
+        int hotX = 8;
+        int hotY = 8;
 #if QT_VERSION >= 0x050000
         cursorPixmap.setDevicePixelRatio(pixelRatio);
+        // only X11 needs hot point coordinates to be scaled
+        if (qGuiApp->platformName == "xcb")) {
+            hotX *= pixelRatio;
+            hotY *= pixelRatio;
+        }
 #endif
-        setCursor(cursorPixmap, 7 * pixelRatio, 7 * pixelRatio, false);
+        setCursor(cursorPixmap, hotX, hotY, false);
     }
 
     virtual void mouseMove(Base::Vector2d /*onSketchPos*/) {}
@@ -1853,7 +1860,9 @@ public:
         GenericConstraintSelection* selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
         selFilterGate->setAllowedSelTypes(SelVertex|SelRoot);
         Gui::Selection().addSelectionGate(selFilterGate);
-        setCursor(QPixmap(cursor_createcoincident), 7, 7);
+        int hotX = 8;
+        int hotY = 8;
+        setCursor(QPixmap(cursor_createcoincident), hotX, hotY);
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos) {Q_UNUSED(onSketchPos);}
