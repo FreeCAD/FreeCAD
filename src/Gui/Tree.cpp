@@ -2828,8 +2828,22 @@ void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::P
     {
         const auto &vpd = static_cast<const ViewProviderDocumentObject&>(vp);
         if(&prop == &vpd.ShowInTree) {
-            ChangedObjects.insert(std::make_pair(vpd.getObject(),0));
-            _updateStatus();
+            auto iter = ObjectTable.find(vpd.getObject());
+            if(iter != ObjectTable.end() && iter->second.size()) {
+                auto data = *iter->second.begin();
+                bool itemHidden = !data->viewObject->showInTree();
+                if(data->itemHidden != itemHidden) {
+                    for(auto &data : iter->second) {
+                        data->itemHidden = itemHidden;
+                        if(data->docItem->showHidden()) 
+                            continue;
+                        for(auto item : data->items) {
+                            item->setHidden(itemHidden);
+                            static_cast<DocumentObjectItem*>(item)->testStatus(false);
+                        }
+                    }
+                }
+            }
         }
     }
 }
