@@ -105,6 +105,7 @@
 #include "Mod/Part/App/SurfaceOfRevolutionPy.h"
 #include "Mod/Part/App/ToroidPy.h"
 #include "Mod/Part/App/BRepOffsetAPI_MakePipeShellPy.h"
+#include "Mod/Part/App/BRepOffsetAPI_MakeFillingPy.h"
 #include "Mod/Part/App/PartFeaturePy.h"
 #include "Mod/Part/App/AttachEnginePy.h"
 #include <Mod/Part/App/Geom2d/ArcOfCircle2dPy.h>
@@ -387,6 +388,7 @@ PyMOD_INIT_FUNC(Part)
     Py_INCREF(brepModule);
     PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
     Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepModule,"MakePipeShell");
+    Base::Interpreter().addType(&Part::BRepOffsetAPI_MakeFillingPy::Type,brepModule,"MakeFilling");
 
     // Geom2d package
 #if PY_MAJOR_VERSION >= 3

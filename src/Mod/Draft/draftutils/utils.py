@@ -526,7 +526,7 @@ def is_clone(obj, objtype, recursive=False):
 isClone = is_clone
 
 
-def get_clone_base(obj, strict=False):
+def get_clone_base(obj, strict=False, recursive=True):
     """Return the object cloned by this object, if any.
 
     Parameters
@@ -538,6 +538,13 @@ def get_clone_base(obj, strict=False):
         It defaults to `False`.
         If it is `True`, and this object is not a clone,
         this function will return `False`.
+
+    recursive: bool, optional
+        It defaults to `True`
+        If it is `True`, it call recursively to itself to
+        get base object and if it is `False` then it just
+        return base object, not call recursively to find
+        base object.
 
     Returns
     -------
@@ -556,10 +563,13 @@ def get_clone_base(obj, strict=False):
         It will return `False` if `obj` is not a clone,
         and `strict` is `True`.
     """
-    if hasattr(obj, "CloneOf"):
-        if obj.CloneOf:
+    if hasattr(obj, "CloneOf") and obj.CloneOf:
+        if recursive:
             return get_clone_base(obj.CloneOf)
+        return obj.CloneOf
     if get_type(obj) == "Clone" and obj.Objects:
+        if recursive:
+            return get_clone_base(obj.Objects[0])
         return obj.Objects[0]
     if strict:
         return False
