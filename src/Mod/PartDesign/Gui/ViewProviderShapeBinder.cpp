@@ -266,14 +266,30 @@ void ViewProviderSubShapeBinder::onChanged(const App::Property *prop) {
 
         setProperty(LineColor, lineColor);
         setProperty(PointColor, pointColor);
+        setProperty(ShapeColor, shapeColor);
         setProperty(Transparency, transparency);
         setProperty(LineWidth, linewidth);
         setProperty(MapFaceColor, mapFace);
         setProperty(MapLineColor, mapLine);
         setProperty(MapPointColor, mapPoint);
         setProperty(MapTransparency, mapTrans);
-        // This will trigger PartGui::ViewProviderExt::updateColors()
-        ShapeColor.setValue(shapeColor);
+        updateColors();
+    }
+    else if (prop == &ShapeColor) {
+        if (!prop->testStatus(App::Property::User3))
+            setProperty(MapFaceColor, false);
+    }
+    else if (prop == &LineColor) {
+        if (!prop->testStatus(App::Property::User3))
+            setProperty(MapLineColor, false);
+    }
+    else if (prop == &PointColor) {
+        if (!prop->testStatus(App::Property::User3))
+            setProperty(MapPointColor, false);
+    }
+    else if (prop == &Transparency) {
+        if (!prop->testStatus(App::Property::User3))
+            setProperty(MapTransparency, false);
     }
 
     ViewProviderPart::onChanged(prop);
