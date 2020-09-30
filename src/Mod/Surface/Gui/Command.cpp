@@ -232,6 +232,7 @@ CmdSurfaceExtendFace::CmdSurfaceExtendFace()
     sToolTipText  = QT_TR_NOOP("Extend face");
     sWhatsThis    = "Surface_ExtendFace";
     sStatusTip    = sToolTipText;
+    sPixmap       = "Surface_Extend";
 }
 
 void CmdSurfaceExtendFace::activated(int)

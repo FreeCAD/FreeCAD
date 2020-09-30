@@ -71,7 +71,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     surface->setCommand( "Surface" );
     *surface << "Surface_Filling"
              << "Surface_GeomFillSurface"
-             << "Surface_Sections";
+             << "Surface_Sections"
+             << "Surface_ExtendFace";
 /*  *surface << "Surface_Cut"; */
 
     return root;
