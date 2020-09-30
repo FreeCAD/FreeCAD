@@ -260,19 +260,6 @@ Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to
     </message>
 </context>
 <context>
-    <name>Part_MakeTube</name>
-    <message>
-        <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-        <source>Create tube</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-        <source>Creates a tube</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Part_SplitFeatures</name>
     <message>
         <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
@@ -341,6 +328,32 @@ Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to
     <message>
         <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
         <source>Remove intersection fragments</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part_Tube</name>
+    <message>
+        <location filename="../../../BasicShapes/Shapes.py" line="85"/>
+        <source>Create tube</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BasicShapes/Shapes.py" line="89"/>
+        <source>Creates a tube</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part_MakeTube</name>
+    <message>
+        <location filename="../../../BasicShapes/Shapes.py" line="59"/>
+        <source>Create tube</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+        <source>Creates a tube</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
