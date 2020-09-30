@@ -201,32 +201,32 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
       <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
-      <translation type="unfinished">The distance that the extension lines are additionally extended beyond the dimension line</translation>
+      <translation>Luzapen-lerroak zein distantziara luzatzen diren kota-lerrotik haratago</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
       <source>The size of the dimension arrows or markers in system units</source>
-      <translation type="unfinished">The size of the dimension arrows or markers in system units</translation>
+      <translation>Kota-gezien edo -markatzaileen tamaina sistema-unitatetan</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="361"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation type="unfinished">If it is checked it will display the dimension line</translation>
+      <translation>Markatuta badago, kota-lerroa bistaratuko da</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
       <source>The distance that the dimension line is additionally extended</source>
-      <translation type="unfinished">The distance that the dimension line is additionally extended</translation>
+      <translation>Kota-lerroa zein distantziara luzatzen den</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
       <source>The length of the extension lines</source>
-      <translation type="unfinished">The length of the extension lines</translation>
+      <translation>Luzatze-lerroen luzera</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="404"/>
       <source>The type of arrows or markers to use at the end of dimension lines</source>
-      <translation type="unfinished">The type of arrows or markers to use at the end of dimension lines</translation>
+      <translation>Kota-lerroen amaieran erabiliko diren gezien edo markatzaileen mota</translation>
     </message>
   </context>
   <context>
@@ -2208,12 +2208,12 @@ Balio hau segmentu-luzera maximoa da. </translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="310"/>
       <source>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</source>
-      <translation type="unfinished">If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</translation>
+      <translation>Markatuta badago, ertz gehigarria bistaratuko da saretaren inguruan, lauki nagusiaren tamaina beheko ezkerreko ertzean erakutsita</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="313"/>
       <source>Show grid border</source>
-      <translation type="unfinished">Show grid border</translation>
+      <translation>Erakutsi saretaren ertza</translation>
     </message>
   </context>
   <context>
@@ -2235,6 +2235,11 @@ Balio hau segmentu-luzera maximoa da. </translation>
       <location filename="../../importSVG.py" line="1807"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>SVGa esportatzeko estilo ezezaguna, 'Itzulia' aukerara aldatuko da</translation>
+    </message>
+    <message>
+      <location filename="../../importSVG.py" line="1826"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
     </message>
   </context>
   <context>

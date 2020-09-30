@@ -2245,6 +2245,11 @@ Este valor es la longitud máxima del segmento. </translation>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Estilo de exportación SVG desconocido, cambiando a Traducido</translation>
     </message>
+    <message>
+      <location filename="../../importSVG.py" line="1826"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
+    </message>
   </context>
   <context>
     <name>draft</name>

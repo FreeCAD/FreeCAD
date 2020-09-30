@@ -111,7 +111,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="314"/>
       <source>Show lines</source>
-      <translation type="unfinished">Show lines</translation>
+      <translation>Mostrar linhas</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="324"/>
@@ -121,7 +121,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="334"/>
       <source>Extension lines</source>
-      <translation type="unfinished">Extension lines</translation>
+      <translation>Linhas de extensão</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="344"/>
@@ -131,7 +131,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="354"/>
       <source>Line / text color</source>
-      <translation type="unfinished">Line / text color</translation>
+      <translation>Cor da linha / texto</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="377"/>
@@ -181,12 +181,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation type="unfinished">A multiplier factor that affects the size of texts and markers</translation>
+      <translation>Um fator multiplicador que afeta o tamanho dos textos e marcadores</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="249"/>
       <source>The number of decimals to show for dimension values</source>
-      <translation type="unfinished">The number of decimals to show for dimension values</translation>
+      <translation>O número de casas decimais a mostrar para os valores de dimensão</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="242"/>
@@ -221,7 +221,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
       <source>The length of the extension lines</source>
-      <translation type="unfinished">The length of the extension lines</translation>
+      <translation>O comprimento das linhas de extensão</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="404"/>
@@ -357,7 +357,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="161"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Matriz de links</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="186"/>
@@ -428,7 +428,7 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="49"/>
       <source>Z intervals</source>
-      <translation type="unfinished">Z intervals</translation>
+      <translation>Intervalos de Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="385"/>
@@ -448,7 +448,7 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="353"/>
       <source>Reset the distances.</source>
-      <translation type="unfinished">Reset the distances.</translation>
+      <translation>Redefinir as distâncias.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="125"/>
@@ -477,7 +477,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="152"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Matriz de links</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="177"/>
@@ -496,7 +496,7 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="189"/>
       <source>X intervals</source>
-      <translation type="unfinished">X intervals</translation>
+      <translation>Intervalos de X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="265"/>
@@ -515,7 +515,7 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="280"/>
       <source>Y intervals</source>
-      <translation type="unfinished">Y intervals</translation>
+      <translation>Intervalos de Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="356"/>
@@ -601,7 +601,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="161"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Matriz de links</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="187"/>
@@ -1970,7 +1970,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="14"/>
       <source>User interface settings</source>
-      <translation type="unfinished">User interface settings</translation>
+      <translation>Configurações de interface do usuário</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="884"/>
@@ -2247,6 +2247,11 @@ Esse valor é o comprimento máximo do segmento. </translation>
       <location filename="../../importSVG.py" line="1807"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Estilo de exportação SVG desconhecido, mudando para Traduzido</translation>
+    </message>
+    <message>
+      <location filename="../../importSVG.py" line="1826"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
     </message>
   </context>
   <context>

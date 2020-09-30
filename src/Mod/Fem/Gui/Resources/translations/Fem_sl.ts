@@ -1133,7 +1133,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Create FEM constraint for a fixed geometric entity</source>
-      <translation>Ustvari omejitev MKE za pritrjeno geometrično prvino</translation>
+      <translation>Ustvari omejilo MKE za nepremično geometrično prvino</translation>
     </message>
   </context>
   <context>
@@ -1411,7 +1411,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="195"/>
       <source>You must specify at least one reference</source>
-      <translation>Navesti morate vsaj eno osnovo</translation>
+      <translation>Navesti morate vsaj en sklic</translation>
     </message>
   </context>
   <context>
@@ -1523,7 +1523,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="174"/>
       <source>Please use only a single reference for bearing constraint</source>
-      <translation>Uporabite samo en osnovo za ležajno omejitev</translation>
+      <translation>Uporabite samo en sklic za ležajno omejitev</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="178"/>
@@ -1595,12 +1595,12 @@
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="135"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation>Mešane vrste oblik niso mogoče. Raje uporabite dodatno omejitev</translation>
+      <translation>Mešane vrste oblik niso mogoče. Raje uporabite dodatno omejilo</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="140"/>
       <source>Only faces, edges and vertices can be picked</source>
-      <translation>Izberete lahko samo ploskve, robove in temena</translation>
+      <translation>Izberete lahko le ploskve, robove in oglišča</translation>
     </message>
   </context>
   <context>
@@ -1637,12 +1637,12 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation>Mešane vrste oblik niso mogoče. Raje uporabite dodatno omejitev</translation>
+      <translation>Mešane vrste oblik niso mogoče. Raje uporabite dodatno omejilo</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="182"/>
       <source>Only faces, edges and vertices can be picked</source>
-      <translation>Izberete lahko samo ploskve, robove in temena</translation>
+      <translation>Izberete lahko le ploskve, robove in oglišča</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="213"/>
@@ -1967,7 +1967,7 @@
       <location filename="../../Command.cpp" line="123"/>
       <location filename="../../Command.cpp" line="185"/>
       <source>Select an edge, face or body. Only one body is allowed.</source>
-      <translation>Izberi rob, ploskev ali telo. Dovoljeno je izbrati samo eno telo.</translation>
+      <translation>Izberite rob, ploskev ali telo. Dovoljeno je izbrati samo eno telo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="128"/>
@@ -2369,7 +2369,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="295"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="340"/>
       <source>Fixed</source>
-      <translation>Pritrjen</translation>
+      <translation>Nepremičen</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>

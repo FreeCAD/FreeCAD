@@ -29,7 +29,7 @@
       <translation>Stilul de numerotare</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="277"/>
+      <location filename="../../ArchBuildingPart.py" line="262"/>
       <source>The type of this building</source>
       <translation>Tipul contrucției</translation>
     </message>
@@ -114,7 +114,7 @@
       <translation>Aria calculata a acestei podele</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="873"/>
+      <location filename="../../ArchSectionPlane.py" line="908"/>
       <source>The placement of this object</source>
       <translation>Amplasarea acestui obiect</translation>
     </message>
@@ -204,12 +204,12 @@
       <translation>Direcția normala de extrudare a acestui obiect (păstrează (0,0,0) pentru normare automata)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1212"/>
       <source>The linked object</source>
       <translation>Obiectul corelat</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1187"/>
+      <location filename="../../ArchSectionPlane.py" line="1222"/>
       <source>The line width of the rendered objects</source>
       <translation>Lățimea liniei ale obiectelor redate</translation>
     </message>
@@ -504,37 +504,37 @@
       <translation>Grosime flanșă</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="173"/>
+      <location filename="../../ArchRebar.py" line="174"/>
       <source>The diameter of the bar</source>
       <translation>Diametrul barei</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="175"/>
+      <location filename="../../ArchRebar.py" line="176"/>
       <source>The distance between the border of the beam and the first bar (concrete cover).</source>
       <translation>Distanța între margine grinzii și prima bară încastrată în beton.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="177"/>
+      <location filename="../../ArchRebar.py" line="178"/>
       <source>The distance between the border of the beam and the last bar (concrete cover).</source>
       <translation>Distanța între marginea grinzii și ultima bară (încastrată în beton).</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="179"/>
+      <location filename="../../ArchRebar.py" line="180"/>
       <source>The amount of bars</source>
       <translation>Numărul barelor</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="181"/>
+      <location filename="../../ArchRebar.py" line="182"/>
       <source>The spacing between the bars</source>
       <translation>Spațiul dintre bare</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="186"/>
+      <location filename="../../ArchRebar.py" line="187"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
       <translation>Direcția în care pleacă barele. Lăsați la (0,0,0) pentru direcție implicită.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="188"/>
+      <location filename="../../ArchRebar.py" line="189"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
       <translation>Fileul de aplicat unghiului profilului de bază. Această valoare este înmulțită cu diametrul barei.</translation>
     </message>
@@ -614,52 +614,52 @@
       <translation>Foaia de calcul unde se tipăresc rezultatele</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="879"/>
+      <location filename="../../ArchSectionPlane.py" line="914"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Dacă valoarea este &lt;&lt;false&gt;&gt;, elementele non solide vor fi de asemenea secționate, posibil să se obțină rezultate imprevizibile.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="949"/>
+      <location filename="../../ArchSectionPlane.py" line="984"/>
       <source>The display length of this section plane</source>
       <translation>Lungimea vederii de afișare al acestui plan de secționare</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="955"/>
+      <location filename="../../ArchSectionPlane.py" line="990"/>
       <source>The display height of this section plane</source>
       <translation>Înălțimea vederii de afișare a acestui plan de secționare</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="961"/>
+      <location filename="../../ArchSectionPlane.py" line="996"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Dimensiunea săgeţilor acestui plan de secțiune</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="975"/>
+      <location filename="../../ArchSectionPlane.py" line="1010"/>
       <source>Show the cut in the 3D view</source>
       <translation>Arată secțiunea în vizualizarea 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1179"/>
+      <location filename="../../ArchSectionPlane.py" line="1214"/>
       <source>The rendering mode to use</source>
       <translation>Modul de redare de utilizat</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1183"/>
+      <location filename="../../ArchSectionPlane.py" line="1218"/>
       <source>If cut geometry is shown or not</source>
       <translation>Dacă geometria secțiunii este afișată sau nu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1185"/>
+      <location filename="../../ArchSectionPlane.py" line="1220"/>
       <source>If cut geometry is filled or not</source>
       <translation>Dacă geometria secțiunii este umplută sau nu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1190"/>
+      <location filename="../../ArchSectionPlane.py" line="1225"/>
       <source>The size of the texts inside this object</source>
       <translation>Dimensiunea textelor în interiorul acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1193"/>
+      <location filename="../../ArchSectionPlane.py" line="1228"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>În cazul în care bifat, sursa de obiecte sunt afişată indiferent dacă sunt vizibile sau nu în modelul 3D</translation>
     </message>
@@ -1084,12 +1084,12 @@
       <translation>Lista de grosimi de strat</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1195"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
       <source>The line color of the projected objects</source>
       <translation>Culoarea obiectelor proiectate</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1197"/>
+      <location filename="../../ArchSectionPlane.py" line="1232"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Culoarea tăiate feţele (dacă este activată)</translation>
     </message>
@@ -1169,27 +1169,27 @@
       <translation>Active ou désactive l’affichage de la texture de grain de bois</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="184"/>
+      <location filename="../../ArchRebar.py" line="185"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
       <translation>Distanța totală pentru a trece peste armatura. Păstraţi 0 pentru a utiliza automat dimensiunea de forma gazdă.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="190"/>
+      <location filename="../../ArchRebar.py" line="191"/>
       <source>List of placement of all the bars</source>
       <translation>Listă de plasare de toate armăturile</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="192"/>
+      <location filename="../../ArchRebar.py" line="193"/>
       <source>The structure object that hosts this rebar</source>
       <translation>Structura obiectului care găzduieşte această armare</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="194"/>
+      <location filename="../../ArchRebar.py" line="195"/>
       <source>The custom spacing of rebar</source>
       <translation>Spațiere particularizată de armare</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="501"/>
+      <location filename="../../ArchRebar.py" line="502"/>
       <source>Shape of rebar</source>
       <translation>Forma armaturii</translation>
     </message>
@@ -1264,12 +1264,12 @@
       <translation>Nivelul punctului (0,0,0) la acest nivel</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="875"/>
+      <location filename="../../ArchSectionPlane.py" line="910"/>
       <source>The shape of this object</source>
       <translation>Forma acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="967"/>
+      <location filename="../../ArchSectionPlane.py" line="1002"/>
       <source>The line width of this object</source>
       <translation>Lățimea liniei acestui obiect</translation>
     </message>
@@ -1364,12 +1364,12 @@
       <translation>O valoare offset pentru a muta planul de tăiere de la punctul de centru</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="196"/>
+      <location filename="../../ArchRebar.py" line="197"/>
       <source>Length of a single rebar</source>
       <translation>Lungimea unei singure armături</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="199"/>
+      <location filename="../../ArchRebar.py" line="200"/>
       <source>Total length of all rebars</source>
       <translation>Longueur totale de toutes les armatures</translation>
     </message>
@@ -1394,22 +1394,22 @@
       <translation>Dacă este adevărat, culorile din fişierul conectat vor fi actualizate</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="877"/>
+      <location filename="../../ArchSectionPlane.py" line="912"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Obiectele care trebuiesc luate în considerare de acest plan de secționare. Gol înseamnă tot documentul.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="964"/>
+      <location filename="../../ArchSectionPlane.py" line="999"/>
       <source>The transparency of this object</source>
       <translation>Transparenţa acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="972"/>
+      <location filename="../../ArchSectionPlane.py" line="1007"/>
       <source>The color of this object</source>
       <translation>Culoare acest obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="977"/>
+      <location filename="../../ArchSectionPlane.py" line="1012"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Distanța dintre planul de secțiune și planul actual de vedere (păstrează o valoare foarte mică, dar nu zero)</translation>
     </message>
@@ -1629,12 +1629,12 @@
       <translation>Descrierea atributelor IFC nu este deocamdată implementat</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="882"/>
+      <location filename="../../ArchSectionPlane.py" line="917"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Dacă este Adevărat, vederile rezultate vor fi restrânse la zona planului de secțiune.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="884"/>
+      <location filename="../../ArchSectionPlane.py" line="919"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Dacă este Adevărat, culoarea materialului obiectului va fi folosit pentru a umple zonele secțiunii.</translation>
     </message>
@@ -1999,7 +1999,7 @@
       <translation type="unfinished">Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="202"/>
+      <location filename="../../ArchRebar.py" line="203"/>
       <source>The rebar mark</source>
       <translation type="unfinished">The rebar mark</translation>
     </message>
@@ -2142,7 +2142,7 @@
       <translation>Vedere a</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="852"/>
+      <location filename="../../ArchSectionPlane.py" line="887"/>
       <source>Create Section Plane</source>
       <translation>Creare plan de secționare</translation>
     </message>
@@ -2262,7 +2262,7 @@
       <translation>Crează cadru</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="145"/>
+      <location filename="../../ArchRebar.py" line="146"/>
       <source>Create Rebar</source>
       <translation>Crează bară de armare</translation>
     </message>
@@ -3212,7 +3212,7 @@ Floor creation aborted.</source>
       <translation>Profil</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="152"/>
+      <location filename="../../ArchRebar.py" line="153"/>
       <source>Please select a base face on a structural object</source>
       <translation>Vă rugăm să selectaţi o faţă bază pe un obiect structural</translation>
     </message>
@@ -3222,37 +3222,37 @@ Floor creation aborted.</source>
       <translation>Creează o referință externă</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1434"/>
+      <location filename="../../ArchSectionPlane.py" line="1448"/>
       <source>Section plane settings</source>
       <translation>Reglarea planului de secțiune</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1439"/>
+      <location filename="../../ArchSectionPlane.py" line="1453"/>
       <source>Objects seen by this section plane:</source>
       <translation>Obiect vizualizat în acest plan:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1440"/>
+      <location filename="../../ArchSectionPlane.py" line="1454"/>
       <source>Section plane placement:</source>
       <translation>Amplasamentul planului de secțiune:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1441"/>
+      <location filename="../../ArchSectionPlane.py" line="1455"/>
       <source>Rotate X</source>
       <translation>Rotaţie X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1443"/>
+      <location filename="../../ArchSectionPlane.py" line="1457"/>
       <source>Rotate Y</source>
       <translation>Rotaţie Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1445"/>
+      <location filename="../../ArchSectionPlane.py" line="1459"/>
       <source>Rotate Z</source>
       <translation>Rotaţie Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1447"/>
+      <location filename="../../ArchSectionPlane.py" line="1461"/>
       <source>Resize</source>
       <translation>Redimensionați</translation>
     </message>
@@ -3403,42 +3403,42 @@ You can change that in the preferences.</source>
       <translation>Puteți pune orice, în afară de Site, Obiecte de construcție, într-un obiect Construcție. Obiectele Construcție nu au voie să accepte un obiect Site sau obiecte Construcție. Site-ul și Obiectele Construcția vor fi eliminate din selecție. Puteți modifica acest lucru în preferințe.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1436"/>
+      <location filename="../../ArchSectionPlane.py" line="1450"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Eliminați obiectele evidențiate din lista de mai sus</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1437"/>
+      <location filename="../../ArchSectionPlane.py" line="1451"/>
       <source>Add selected</source>
       <translation>Adaugă Selecția</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1438"/>
+      <location filename="../../ArchSectionPlane.py" line="1452"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Adăugați obiectul(ele) selectate la spațiul planului de sețiune</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1442"/>
+      <location filename="../../ArchSectionPlane.py" line="1456"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Rotiți planul în jurul axei Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1444"/>
+      <location filename="../../ArchSectionPlane.py" line="1458"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Rotiți planul în jurul axei X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1446"/>
+      <location filename="../../ArchSectionPlane.py" line="1460"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Rotiți planul în jurul axei Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1448"/>
+      <location filename="../../ArchSectionPlane.py" line="1462"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Redimensionează planul pentru a se potrivi la obiectele din lista de mai sus</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1450"/>
+      <location filename="../../ArchSectionPlane.py" line="1464"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centrează planul pentru a se potrivi pe obiectele din lista de mai sus</translation>
     </message>
@@ -4276,12 +4276,12 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="../../ArchRebar.py" line="107"/>
+      <location filename="../../ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Creează o bară de armare din fața selectată a unui obiect structural</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="105"/>
+      <location filename="../../ArchRebar.py" line="106"/>
       <source>Custom Rebar</source>
       <translation>Armatură personalizată</translation>
     </message>
@@ -4354,12 +4354,12 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="836"/>
+      <location filename="../../ArchSectionPlane.py" line="871"/>
       <source>Section Plane</source>
       <translation>Planul de selecţie</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="837"/>
+      <location filename="../../ArchSectionPlane.py" line="872"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Crează un obiect - secţiune plană incluzând obiectele selectate</translation>
     </message>

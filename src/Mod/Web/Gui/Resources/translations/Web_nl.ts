@@ -128,8 +128,8 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="727"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="741"/>
       <source>Browser</source>
       <translation>Browser</translation>
     </message>
@@ -153,7 +153,7 @@
       <translation>Er zijn fouten opgetreden tijdens het laden van het bestand. Sommige gegevens zijn misschien gewijzigd of helemaal hersteld. Kijk in de rapportweergave voor meer specifieke informatie over de objecten die hierbij zijn betrokken.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="698"/>
+      <location filename="../../BrowserView.cpp" line="712"/>
       <source>Loading %1...</source>
       <translation>Laden %1...</translation>
     </message>

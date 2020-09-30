@@ -128,8 +128,8 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="727"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="741"/>
       <source>Browser</source>
       <translation>浏览器</translation>
     </message>
@@ -153,7 +153,7 @@
       <translation>加载文件时出错。有些数据可能已经修改或未全部恢复。在报告视图中查看有关对象的更具体信息。</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="698"/>
+      <location filename="../../BrowserView.cpp" line="712"/>
       <source>Loading %1...</source>
       <translation>正在加载 %1...</translation>
     </message>

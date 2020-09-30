@@ -128,8 +128,8 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="727"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="741"/>
       <source>Browser</source>
       <translation>Webbläsare</translation>
     </message>
@@ -153,7 +153,7 @@
       <translation>Det uppstod ett fel under inläsning av filen. Viss data kan ha ändrats eller inte återställts alls. Titta i rapportvyn för mer specifik information om de inblandade objekten.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="698"/>
+      <location filename="../../BrowserView.cpp" line="712"/>
       <source>Loading %1...</source>
       <translation>Laddar %1...</translation>
     </message>

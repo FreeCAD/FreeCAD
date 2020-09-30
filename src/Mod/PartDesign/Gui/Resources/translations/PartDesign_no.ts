@@ -2940,7 +2940,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <location filename="../../ViewProviderDatum.cpp" line="129"/>
       <location filename="../../ViewProviderDatum.cpp" line="215"/>
       <source>Point</source>
-      <translation type="unfinished">Point</translation>
+      <translation>Punkt</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="133"/>

@@ -102,22 +102,22 @@
     <name>CmdViewMeasureClearAll</name>
     <message>
       <source>Measure</source>
-      <translation>Pomiary</translation>
+      <translation>Wymiarowanie</translation>
     </message>
     <message>
       <source>Clear measurement</source>
-      <translation>Wyczyść pomiar</translation>
+      <translation>Wyczyść wymiary</translation>
     </message>
   </context>
   <context>
     <name>CmdViewMeasureToggleAll</name>
     <message>
       <source>Measure</source>
-      <translation>Pomiary</translation>
+      <translation>Wymiarowanie</translation>
     </message>
     <message>
       <source>Toggle measurement</source>
-      <translation>Włącz/wyłącz pomiary</translation>
+      <translation>Przełącz wymiarowanie</translation>
     </message>
   </context>
   <context>
@@ -265,7 +265,7 @@
     <name>Gui::AutoSaver</name>
     <message>
       <source>Please wait until the AutoRecovery file has been saved...</source>
-      <translation>Proszę czakać aż plik AutoOdzyskiwania zostanie zapisany...</translation>
+      <translation>Proszę czekać aż plik Automatycznego Odzyskiwania zostanie zapisany...</translation>
     </message>
   </context>
   <context>
@@ -430,6 +430,14 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Poza zakresem</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation type="unfinished"> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation type="unfinished">"</translation>
     </message>
   </context>
   <context>
@@ -1059,16 +1067,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Przyciski</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Wyczyść</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Wydrukuj Odnośniki</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Przyciski Spaceball'a</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Reset</translation>
     </message>
   </context>
   <context>
@@ -1336,7 +1344,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Auto load module after start up:</source>
-      <translation>Po uruchomieniu, załaduj automatycznie moduł:</translation>
+      <translation>Po uruchomieniu, załaduj automatycznie środowisko pracy:</translation>
     </message>
     <message>
       <source>Language</source>
@@ -1368,7 +1376,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Python console</source>
-      <translation>Konsola Pythona</translation>
+      <translation>Konsola Python</translation>
     </message>
     <message>
       <source>Enable word wrap</source>
@@ -2103,10 +2111,6 @@ Proszę podać inny katalog.</translation>
       <translation>Filtruj według typu</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation>Jeśli włączone, to widok 3D będzie synchroniczny z pełną hierarchią obiektów.</translation>
-    </message>
-    <message>
       <source>Sync sub-object selection</source>
       <translation>Synchronizuj wybór obiektu podrzędnego</translation>
     </message>
@@ -2117,6 +2121,10 @@ Proszę podać inny katalog.</translation>
     <message>
       <source>Clear</source>
       <translation>Wyczyść</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
     </message>
   </context>
   <context>
@@ -2267,11 +2275,11 @@ z konsoli Pythona do panelu Widoku Raportu</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>Zwykłe wiadomości o błędach będą rejestrowane</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>Nagrywaj zwykłe wiadomości</translation>
     </message>
   </context>
   <context>
@@ -2769,7 +2777,7 @@ opening or creation</source>
     </message>
     <message>
       <source>Save AutoRecovery information every</source>
-      <translation>Zapisz informacje AutoOdzyskiwania co</translation>
+      <translation>Zapisz informacje Automatycznego Odzyskiwania co</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
@@ -3041,19 +3049,19 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     </message>
     <message>
       <source>Icon       32  x 32</source>
-      <translation>Ikona 32 x 32</translation>
+      <translation>Ikonka 32 x 32</translation>
     </message>
     <message>
       <source>Icon       64 x 64</source>
-      <translation>Ikona 64 x 64</translation>
+      <translation>Ikonka 64 x 64</translation>
     </message>
     <message>
       <source>Icon       128 x 128</source>
-      <translation>Ikona 128 x 128</translation>
+      <translation>Ikonka 128 x 128</translation>
     </message>
     <message>
       <source>Standard sizes:</source>
-      <translation>Standardowe wymiary:</translation>
+      <translation>Rozmiary standardowe:</translation>
     </message>
     <message>
       <source>&amp;Height:</source>
@@ -3213,6 +3221,34 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
       <source>The directory in which the application will search for macros</source>
       <translation>Folder, w którym aplikacja będzie poszukiwać makrodefinicji</translation>
     </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation type="unfinished">Recent macros menu</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation type="unfinished">Size of recent macro list</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation type="unfinished">Shortcut count</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation type="unfinished">Keyboard Modifiers</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
@@ -3292,7 +3328,7 @@ Turntable: część będzie obracana wokół osi z.</translation>
     </message>
     <message>
       <source>Trackball</source>
-      <translation>Manipulator kulkowy</translation>
+      <translation>Trackball</translation>
     </message>
     <message>
       <source>New document scale</source>
@@ -3419,7 +3455,7 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
     </message>
     <message>
       <source>Units settings</source>
-      <translation>Jednostki-Ustawienia</translation>
+      <translation>Ustawienia jednostek</translation>
     </message>
     <message>
       <source>Standard (mm/kg/s/degree)</source>
@@ -3507,11 +3543,15 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cft)</source>
-      <translation type="unfinished">Building US (ft-in/sqft/cft)</translation>
+      <translation>Budowlany US (ft-in/sqft/cft)</translation>
     </message>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
+    </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation type="unfinished">FEM (mm, N, sec)</translation>
     </message>
   </context>
   <context>
@@ -3576,7 +3616,7 @@ Większa wartość ułatwia wybieranie, ale może uniemożliwić wybór małych 
     </message>
     <message>
       <source>Background color for the model view</source>
-      <translation type="unfinished">Background color for the model view</translation>
+      <translation>Kolor tła widoku modelu</translation>
     </message>
     <message>
       <source>Background will have selected color</source>
@@ -3646,11 +3686,11 @@ Większa wartość ułatwia wybieranie, ale może uniemożliwić wybór małych 
     </message>
     <message>
       <source>Input the source value and unit</source>
-      <translation type="unfinished">Input the source value and unit</translation>
+      <translation>Wprowadź wartość i jednostkę</translation>
     </message>
     <message>
       <source>Input here the unit for the result</source>
-      <translation type="unfinished">Input here the unit for the result</translation>
+      <translation>Wprowadź jednostkę dla wyniku</translation>
     </message>
     <message>
       <source>Result</source>
@@ -3678,19 +3718,19 @@ System preferencji to ten, który jest ustawiony w preferencjach ogólnych.</tra
     </message>
     <message>
       <source>Decimals:</source>
-      <translation type="unfinished">Decimals:</translation>
+      <translation>Miejsca po przecinku:</translation>
     </message>
     <message>
       <source>Decimals for the Quantity</source>
-      <translation type="unfinished">Decimals for the Quantity</translation>
+      <translation>Miejsca dziesiętne dla ilości</translation>
     </message>
     <message>
       <source>Unit category:</source>
-      <translation type="unfinished">Unit category:</translation>
+      <translation>Kategoria jednostki:</translation>
     </message>
     <message>
       <source>Unit category for the Quantity</source>
-      <translation type="unfinished">Unit category for the Quantity</translation>
+      <translation>Kategoria jednostki dla ilości</translation>
     </message>
     <message>
       <source>Copy the result into the clipboard</source>
@@ -3768,7 +3808,7 @@ System preferencji to ten, który jest ustawiony w preferencjach ogólnych.</tra
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Uwaga:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt;Zmiany zostaną wprowadzone przy następnym uruchomieniu programu</translation>
     </message>
   </context>
   <context>
@@ -4233,15 +4273,15 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <translation>W okolicy osi Y:</translation>
     </message>
     <message>
       <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <translation>W okolicy osi Z:</translation>
     </message>
     <message>
       <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <translation>W okolicy osi X:</translation>
     </message>
     <message>
       <source>Rotation around the x-axis</source>
@@ -4279,7 +4319,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>winpdb</source>
-      <translation type="unfinished">winpdb</translation>
+      <translation>winpdb</translation>
     </message>
     <message>
       <source>Password:</source>
@@ -4287,7 +4327,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>VS Code</source>
-      <translation type="unfinished">VS Code</translation>
+      <translation>VS Code</translation>
     </message>
     <message>
       <source>Address:</source>
@@ -4295,11 +4335,11 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>Port:</source>
-      <translation type="unfinished">Port:</translation>
+      <translation>Port:</translation>
     </message>
     <message>
       <source>Redirect output</source>
-      <translation type="unfinished">Redirect output</translation>
+      <translation>Przekieruj wyjście</translation>
     </message>
   </context>
   <context>
@@ -4386,15 +4426,15 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     <name>Gui::DlgObjectSelection</name>
     <message>
       <source>Object selection</source>
-      <translation type="unfinished">Object selection</translation>
+      <translation>Wybór obiektu</translation>
     </message>
     <message>
       <source>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</source>
-      <translation type="unfinished">The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</translation>
+      <translation>Wybrane obiekty zawierają inne zależności. Proszę wybrać obiekty do eksportu. Wszystkie zależności są domyślnie wybrane.</translation>
     </message>
     <message>
       <source>Dependency</source>
-      <translation type="unfinished">Dependency</translation>
+      <translation>Zależność</translation>
     </message>
     <message>
       <source>Document</source>
@@ -4406,11 +4446,11 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>State</source>
-      <translation type="unfinished">State</translation>
+      <translation>Stan</translation>
     </message>
     <message>
       <source>Hierarchy</source>
-      <translation type="unfinished">Hierarchy</translation>
+      <translation>Hierarchia</translation>
     </message>
     <message>
       <source>Selected</source>
@@ -4418,7 +4458,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>Partial</source>
-      <translation type="unfinished">Partial</translation>
+      <translation>Częściowo</translation>
     </message>
   </context>
   <context>
@@ -4494,27 +4534,27 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>Display message types</source>
-      <translation type="unfinished">Display message types</translation>
+      <translation>Wyświetl typy wiadomości</translation>
     </message>
     <message>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Zwykłe wiadomości</translation>
     </message>
     <message>
       <source>Log messages</source>
-      <translation type="unfinished">Log messages</translation>
+      <translation>Wiadomości dziennika</translation>
     </message>
     <message>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Ostrzeżenia</translation>
     </message>
     <message>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Błędy</translation>
     </message>
     <message>
       <source>Show report view on</source>
-      <translation type="unfinished">Show report view on</translation>
+      <translation>Pokaż widok raportu na</translation>
     </message>
   </context>
   <context>
@@ -4525,7 +4565,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Konsola Pythona</translation>
+      <translation>Konsola Python</translation>
     </message>
   </context>
   <context>
@@ -4608,7 +4648,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>Picked object list</source>
-      <translation type="unfinished">Picked object list</translation>
+      <translation>Wybrana lista obiektów</translation>
     </message>
   </context>
   <context>
@@ -4674,6 +4714,20 @@ Do you want to save your changes?</source>
     <message>
       <source>PDF file</source>
       <translation>Plik PDF</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
     </message>
   </context>
   <context>
@@ -4936,7 +4990,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation type="unfinished">The exported object contains external link. Please save the documentat least once before exporting.</translation>
+      <translation>Wyeksportowany obiekt zawiera link zewnętrzny. Proszę zapisać dokument przynajmniej raz przed wyeksportowaniem.</translation>
     </message>
     <message>
       <source>To link to external objects, the document must be saved at least once.
@@ -5149,7 +5203,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>property</source>
-      <translation type="unfinished">property</translation>
+      <translation>właściwość</translation>
     </message>
     <message>
       <source>Show all</source>
@@ -5203,7 +5257,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Konsola Pythona</translation>
+      <translation>Konsola Python</translation>
     </message>
     <message>
       <source>Unhandled PyCXX exception.</source>
@@ -5298,6 +5352,21 @@ Do you want to exit without saving your data?</source>
     <message>
       <source>Open file %1</source>
       <translation>Otwórz plik %1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Nie znaleziono pliku</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>Plik '%1' nie może być otwarty.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -5472,7 +5541,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Box select</source>
-      <translation type="unfinished">Box select</translation>
+      <translation>Zaznacz obszar</translation>
     </message>
     <message>
       <source>On-top when selected</source>
@@ -5483,7 +5552,7 @@ Do you want to specify another directory?</source>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
       <source>Plot mode:</source>
-      <translation>Tryb kreślenia:</translation>
+      <translation>Tryb rysowania:</translation>
     </message>
     <message>
       <source>Point size:</source>
@@ -5499,7 +5568,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Appearance</source>
-      <translation>Wygląd</translation>
+      <translation>Wygląd zewnętrzny</translation>
     </message>
     <message>
       <source>Document window:</source>
@@ -5524,7 +5593,7 @@ Do you want to specify another directory?</source>
     <name>Gui::TaskView::TaskSelectLinkProperty</name>
     <message>
       <source>Appearance</source>
-      <translation>Wygląd</translation>
+      <translation>Wygląd zewnętrzny</translation>
     </message>
     <message>
       <source>...</source>
@@ -5750,7 +5819,7 @@ Do you want to specify another directory?</source>
     <name>Gui::TreeWidget</name>
     <message>
       <source>Create group...</source>
-      <translation>Tworzenie grup...</translation>
+      <translation>Utwórz grupę...</translation>
     </message>
     <message>
       <source>Create a group</source>
@@ -5858,7 +5927,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Allow partial recomputes</source>
-      <translation type="unfinished">Allow partial recomputes</translation>
+      <translation>Zezwalaj na częściowe przeliczanie</translation>
     </message>
     <message>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
@@ -5866,11 +5935,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Recompute object</source>
-      <translation type="unfinished">Recompute object</translation>
+      <translation>Przelicz obiekt</translation>
     </message>
     <message>
       <source>Recompute the selected object</source>
-      <translation type="unfinished">Recompute the selected object</translation>
+      <translation>Przelicz wybrany obiekt</translation>
     </message>
     <message>
       <source> (but must be executed)</source>
@@ -6078,7 +6147,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Konsola Pythona</translation>
+      <translation>Konsola Python</translation>
     </message>
     <message>
       <source>Display properties</source>
@@ -6475,27 +6544,27 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation type="unfinished">The exported object contains external link. Please save the documentat least once before exporting.</translation>
+      <translation>Wyeksportowany obiekt zawiera link zewnętrzny. Proszę zapisać dokument przynajmniej raz przed wyeksportowaniem.</translation>
     </message>
     <message>
       <source>Delete failed</source>
-      <translation type="unfinished">Delete failed</translation>
+      <translation>Usunięcie nie powiodło się</translation>
     </message>
     <message>
       <source>Dependency error</source>
-      <translation type="unfinished">Dependency error</translation>
+      <translation>Błąd zależności</translation>
     </message>
     <message>
       <source>Copy selected</source>
-      <translation type="unfinished">Copy selected</translation>
+      <translation>Kopiuj zaznaczone</translation>
     </message>
     <message>
       <source>Copy active document</source>
-      <translation type="unfinished">Copy active document</translation>
+      <translation>Kopiuj aktywny dokument</translation>
     </message>
     <message>
       <source>Copy all documents</source>
-      <translation type="unfinished">Copy all documents</translation>
+      <translation>Kopiuj wszystkie dokumenty</translation>
     </message>
     <message>
       <source>Paste</source>
@@ -6503,7 +6572,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Expression error</source>
-      <translation type="unfinished">Expression error</translation>
+      <translation>Błąd wyrażenia</translation>
     </message>
     <message>
       <source>Failed to parse some of the expressions.
@@ -6529,11 +6598,11 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Create link group failed</source>
-      <translation type="unfinished">Create link group failed</translation>
+      <translation>Tworzenie grupy łaczy nie powiodło się</translation>
     </message>
     <message>
       <source>Create link failed</source>
-      <translation type="unfinished">Create link failed</translation>
+      <translation>Tworzenie odnośnika nie powiodło się</translation>
     </message>
     <message>
       <source>Failed to create relative link</source>
@@ -6557,7 +6626,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Invalid name</source>
-      <translation type="unfinished">Invalid name</translation>
+      <translation>Nieprawidłowa nazwa</translation>
     </message>
     <message>
       <source>The property name or group name must only contain alpha numericals,
@@ -6579,7 +6648,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Save dependent files</source>
-      <translation type="unfinished">Save dependent files</translation>
+      <translation>Zapisz zależne pliki</translation>
     </message>
     <message>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
@@ -6587,7 +6656,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Failed to save document</source>
-      <translation type="unfinished">Failed to save document</translation>
+      <translation>Nie udało się zapisać dokumentu</translation>
     </message>
     <message>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
@@ -6619,7 +6688,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Apply answer to all</source>
-      <translation type="unfinished">Apply answer to all</translation>
+      <translation>Zastosuj odpowiedź dla wszystkich</translation>
     </message>
     <message>
       <source>Drag &amp; drop failed</source>
@@ -6627,7 +6696,51 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Override colors...</source>
-      <translation type="unfinished">Override colors...</translation>
+      <translation>Zastąp kolory...</translation>
+    </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Czy na pewno chcesz kontynuować?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation type="unfinished">
+
+Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>
+
+Pyhsical path: </source>
+      <translation type="unfinished">
+
+Pyhsical path: </translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation type="unfinished">
+Document: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation type="unfinished">
+  Path: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation type="unfinished">Identical physical path</translation>
     </message>
   </context>
   <context>
@@ -6660,7 +6773,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Box selection</source>
-      <translation>Pole wyboru</translation>
+      <translation>Zaznacz obszar</translation>
     </message>
   </context>
   <context>
@@ -7084,7 +7197,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Expression actions</source>
-      <translation type="unfinished">Expression actions</translation>
+      <translation>Akcje z wyrażeniami</translation>
     </message>
   </context>
   <context>
@@ -7280,7 +7393,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Link actions</source>
-      <translation type="unfinished">Link actions</translation>
+      <translation>Akcje z łączami</translation>
     </message>
   </context>
   <context>
@@ -7291,11 +7404,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Import links</source>
-      <translation type="unfinished">Import links</translation>
+      <translation>Importuj łącza</translation>
     </message>
     <message>
       <source>Import selected external link(s)</source>
-      <translation type="unfinished">Import selected external link(s)</translation>
+      <translation>Importuj wybrane łącza zewnętrzne</translation>
     </message>
   </context>
   <context>
@@ -7306,11 +7419,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Import all links</source>
-      <translation type="unfinished">Import all links</translation>
+      <translation>Importuj wszystkie łącza</translation>
     </message>
     <message>
       <source>Import all links of the active document</source>
-      <translation type="unfinished">Import all links of the active document</translation>
+      <translation>Importuj wszystkie łącza aktywnego dokumentu</translation>
     </message>
   </context>
   <context>
@@ -7321,11 +7434,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Make link</source>
-      <translation type="unfinished">Make link</translation>
+      <translation>Utwórz łącze</translation>
     </message>
     <message>
       <source>Create a link to the selected object(s)</source>
-      <translation type="unfinished">Create a link to the selected object(s)</translation>
+      <translation>Utwórz łącze do zaznaczonych obiektów</translation>
     </message>
   </context>
   <context>
@@ -7336,11 +7449,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>Stwórz grupę łączy</translation>
     </message>
     <message>
       <source>Create a group of links</source>
-      <translation type="unfinished">Create a group of links</translation>
+      <translation>Utwórz grupę łączy</translation>
     </message>
   </context>
   <context>
@@ -7351,11 +7464,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation type="unfinished">Make sub-link</translation>
+      <translation>Stwórz łącze podrzędne</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>
-      <translation type="unfinished">Create a sub-object or sub-element link</translation>
+      <translation>Utwórz obiekt zależny lub łącze do elementu podrzędnego</translation>
     </message>
   </context>
   <context>
@@ -7366,11 +7479,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Replace with link</source>
-      <translation type="unfinished">Replace with link</translation>
+      <translation>Zastąp przez łącze</translation>
     </message>
     <message>
       <source>Replace the selected object(s) with link</source>
-      <translation type="unfinished">Replace the selected object(s) with link</translation>
+      <translation>Zastąp zaznaczone obiekty łączem</translation>
     </message>
   </context>
   <context>
@@ -7396,7 +7509,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Select all links</source>
-      <translation type="unfinished">Select all links</translation>
+      <translation>Zaznacz wszystkie łącza</translation>
     </message>
     <message>
       <source>Select all links to the current selected object</source>
@@ -7411,11 +7524,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Go to linked object</source>
-      <translation type="unfinished">Go to linked object</translation>
+      <translation>Przejdź do połączonego obiektu</translation>
     </message>
     <message>
       <source>Select the linked object and switch to its owner document</source>
-      <translation type="unfinished">Select the linked object and switch to its owner document</translation>
+      <translation>Wybierz połączony obiekt i przełącz się na dokument źródłowy</translation>
     </message>
   </context>
   <context>
@@ -7426,7 +7539,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Go to the deepest linked object</source>
-      <translation type="unfinished">Go to the deepest linked object</translation>
+      <translation>Przejdź do najgłębszego połączonego obiektu</translation>
     </message>
     <message>
       <source>Select the deepest linked object and switch to its owner document</source>
@@ -7549,7 +7662,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Measures distance between two selected objects</source>
-      <translation>Zmierz odległość między dwoma wybranymi obiektami</translation>
+      <translation>Zwymiaruj odległość między dwoma wybranymi obiektami</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -7836,6 +7949,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Makro</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation type="unfinished">Recent macros</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation type="unfinished">Recent macro list</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -8053,7 +8181,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Appearance...</source>
-      <translation>Wygląd...</translation>
+      <translation>Wygląd zewnętrzny...</translation>
     </message>
     <message>
       <source>Sets the display properties of the selected object</source>
@@ -8338,7 +8466,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>TreeView behavior options and actions</source>
-      <translation type="unfinished">TreeView behavior options and actions</translation>
+      <translation>Opcje i działania na Widoku drzewa</translation>
     </message>
   </context>
   <context>
@@ -8698,7 +8826,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Rotate the view by 90° counter-clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° counter-clockwise</translation>
+      <translation>Obróć widok w lewo o 90°</translation>
     </message>
   </context>
   <context>
@@ -8713,7 +8841,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Rotate the view by 90° clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° clockwise</translation>
+      <translation>Obróć widok w prawo o 90°</translation>
     </message>
   </context>
   <context>
@@ -8885,11 +9013,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Initiate dragging</source>
-      <translation type="unfinished">Initiate dragging</translation>
+      <translation>Rozpocznij przeciąganie</translation>
     </message>
     <message>
       <source>Initiate dragging of current selected tree items</source>
-      <translation type="unfinished">Initiate dragging of current selected tree items</translation>
+      <translation>Rozpocznij przeciąganie zaznaczonych elementów drzewa</translation>
     </message>
   </context>
   <context>
@@ -8915,11 +9043,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Pre-selection</source>
-      <translation type="unfinished">Pre-selection</translation>
+      <translation>Wybór wstępny</translation>
     </message>
     <message>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
-      <translation type="unfinished">Preselect the object in 3D view when mouse over the tree item</translation>
+      <translation>Zaznacz obiekt w widoku 3D kiedy kursor myszki znajduje się nad pozycją drzewa</translation>
     </message>
   </context>
   <context>
@@ -8964,7 +9092,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Single document</source>
-      <translation type="unfinished">Single document</translation>
+      <translation>Pojedynczy dokument</translation>
     </message>
   </context>
   <context>
@@ -8979,7 +9107,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
-      <translation type="unfinished">Auto adjust placement on drag and drop objects across coordinate systems</translation>
+      <translation>Automatyczne dostosowywanie położenia obiektów w układach współrzędnych podczas przeciągania i upuszczania</translation>
     </message>
   </context>
   <context>
@@ -8990,11 +9118,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Sync selection</source>
-      <translation type="unfinished">Sync selection</translation>
+      <translation>Synchronizuj wybrane</translation>
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
-      <translation type="unfinished">Auto expand tree item when the corresponding object is selected in 3D view</translation>
+      <translation>Automatycznie rozwiń drzewko gdy odpowiedni obiekt jest zaznaczony w oknie widoku 3D</translation>
     </message>
   </context>
   <context>

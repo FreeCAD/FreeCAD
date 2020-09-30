@@ -132,62 +132,62 @@
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="139"/>
+      <location filename="../../OpenSCADCommands.py" line="147"/>
       <source>Convert Edges to Faces</source>
       <translation>Versti kraštines į daugiakampius</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="243"/>
+      <location filename="../../OpenSCADCommands.py" line="309"/>
       <source>Please select 3 objects first</source>
       <translation>Prašome pirma pasirinkti 3 kūnus</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1224"/>
+      <location filename="../../importCSG.py" line="1226"/>
       <source>Unsupported Function</source>
       <translation>Nepalaikoma funkcija</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1224"/>
+      <location filename="../../importCSG.py" line="1226"/>
       <source>Press OK</source>
       <translation>Paspauskite „Gerai“</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="281"/>
+      <location filename="../../OpenSCADCommands.py" line="347"/>
       <source>Add</source>
       <translation>Pridėti</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="282"/>
+      <location filename="../../OpenSCADCommands.py" line="348"/>
       <source>Clear</source>
       <translation>Išvalyti</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="283"/>
+      <location filename="../../OpenSCADCommands.py" line="349"/>
       <source>as Mesh</source>
       <translation>kaip tinklas</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="284"/>
+      <location filename="../../OpenSCADCommands.py" line="350"/>
       <source>Add OpenSCAD Element</source>
       <translation>Pridėti OpenSCAD elementą</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="357"/>
+      <location filename="../../OpenSCADCommands.py" line="423"/>
       <source>Perform</source>
       <translation>Atlikti</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="358"/>
+      <location filename="../../OpenSCADCommands.py" line="424"/>
       <source>Mesh Boolean</source>
       <translation>Veiksmai su tinklais</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="607"/>
+      <location filename="../../OpenSCADUtils.py" line="622"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>Klaida. Visi kūnai turi būti arba tik dvimačiai, arba tik trimačiai</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="94"/>
+      <location filename="../../OpenSCADCommands.py" line="102"/>
       <source>Unable to explode %s</source>
       <translation>Neįmanoma išskleisti %s</translation>
     </message>
@@ -195,12 +195,12 @@
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="398"/>
+      <location filename="../../OpenSCADCommands.py" line="464"/>
       <source>Add OpenSCAD Element...</source>
       <translation>Pridėti OpenSCAD elementą...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="399"/>
+      <location filename="../../OpenSCADCommands.py" line="465"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>Pridėti OpenSCAD elementą įvedant OpenSCAD kodą ir įvykdžius OpenSCAD dvejetainį kodą</translation>
     </message>
@@ -208,12 +208,12 @@
   <context>
     <name>OpenSCAD_ColorCodeShape</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="118"/>
+      <location filename="../../OpenSCADCommands.py" line="126"/>
       <source>Color Shapes</source>
       <translation>Išskyrimas spalva</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="119"/>
+      <location filename="../../OpenSCADCommands.py" line="127"/>
       <source>Color Shapes by validity and type</source>
       <translation>Nuspalvinti kūnus pagal tinkamumą ir rūšį</translation>
     </message>
@@ -221,7 +221,7 @@
   <context>
     <name>OpenSCAD_Edgestofaces</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="138"/>
+      <location filename="../../OpenSCADCommands.py" line="146"/>
       <source>Convert Edges To Faces</source>
       <translation>Versti kraštines į daugiakampius</translation>
     </message>
@@ -229,12 +229,12 @@
   <context>
     <name>OpenSCAD_ExpandPlacements</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="225"/>
+      <location filename="../../OpenSCADCommands.py" line="291"/>
       <source>Expand Placements</source>
       <translation>Išplėsti išdėstymą</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="226"/>
+      <location filename="../../OpenSCADCommands.py" line="292"/>
       <source>Expand all placements downwards the FeatureTree</source>
       <translation>Išskleisti visus gilesnius išdėstymus savybių medyje</translation>
     </message>
@@ -242,12 +242,12 @@
   <context>
     <name>OpenSCAD_ExplodeGroup</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="102"/>
+      <location filename="../../OpenSCADCommands.py" line="110"/>
       <source>Explode Group</source>
       <translation>Išgrupuoti</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="103"/>
+      <location filename="../../OpenSCADCommands.py" line="111"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
       <translation>Pašalinti sąlają, pritaikyti atsitiktinį pavaldžiųjų ir spalvų išdėstymą</translation>
     </message>
@@ -255,12 +255,12 @@
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="431"/>
+      <location filename="../../OpenSCADCommands.py" line="497"/>
       <source>Hull</source>
       <translation>Kevalas</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="432"/>
+      <location filename="../../OpenSCADCommands.py" line="498"/>
       <source>Perform Hull</source>
       <translation>Padaryti kiautą</translation>
     </message>
@@ -268,12 +268,12 @@
   <context>
     <name>OpenSCAD_IncreaseToleranceFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="208"/>
+      <location filename="../../OpenSCADCommands.py" line="274"/>
       <source>Increase Tolerance Feature</source>
       <translation>Padidinti leistiną dydžio nuokrypą</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="209"/>
+      <location filename="../../OpenSCADCommands.py" line="275"/>
       <source>Create Feature that allows to increase the tolerance</source>
       <translation>Sukurti dydį, leidžiantį padidinti leidžiamojo nuokrypio vertę</translation>
     </message>
@@ -281,12 +281,12 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="411"/>
+      <location filename="../../OpenSCADCommands.py" line="477"/>
       <source>Mesh Boolean...</source>
       <translation>Veiksmai su tinklais...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="412"/>
+      <location filename="../../OpenSCADCommands.py" line="478"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation>Eksportuoti daiktus kaip tinklus ir naudoti OpenSCAD, kad loginiams veiksmams su jais atlikti</translation>
     </message>
@@ -294,12 +294,12 @@
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="450"/>
+      <location filename="../../OpenSCADCommands.py" line="516"/>
       <source>Minkowski</source>
       <translation>Minkovskio metrika</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="451"/>
+      <location filename="../../OpenSCADCommands.py" line="517"/>
       <source>Perform Minkowski</source>
       <translation>Atlikti Minkovskio metriką</translation>
     </message>
@@ -307,12 +307,12 @@
   <context>
     <name>OpenSCAD_MirrorMeshFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="188"/>
+      <location filename="../../OpenSCADCommands.py" line="195"/>
       <source>Mirror Mesh Feature...</source>
       <translation type="unfinished">Mirror Mesh Feature...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="189"/>
+      <location filename="../../OpenSCADCommands.py" line="196"/>
       <source>Create Mirror Mesh Feature</source>
       <translation type="unfinished">Create Mirror Mesh Feature</translation>
     </message>
@@ -320,12 +320,12 @@
   <context>
     <name>OpenSCAD_RefineShapeFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="157"/>
+      <location filename="../../OpenSCADCommands.py" line="165"/>
       <source>Refine Shape Feature</source>
       <translation>Patobulinti figūros pavidalą</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="158"/>
+      <location filename="../../OpenSCADCommands.py" line="166"/>
       <source>Create Refine Shape Feature</source>
       <translation>Sukurti patobulintą pavidalą</translation>
     </message>
@@ -333,12 +333,12 @@
   <context>
     <name>OpenSCAD_RemoveSubtree</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="258"/>
+      <location filename="../../OpenSCADCommands.py" line="324"/>
       <source>Remove Objects and their Children</source>
       <translation>Panaikinti objektus ir pavaldžius jiems</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="259"/>
+      <location filename="../../OpenSCADCommands.py" line="325"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
       <translation>Pašalina pažymėtus objektus ir visus pavaldžius jiems, kurie nesusieti su kitais objektais</translation>
     </message>
@@ -346,20 +346,46 @@
   <context>
     <name>OpenSCAD_ReplaceObject</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="246"/>
+      <location filename="../../OpenSCADCommands.py" line="312"/>
       <source>Replace Object</source>
       <translation>Pakeisti objektą</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="247"/>
+      <location filename="../../OpenSCADCommands.py" line="313"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
       <translation>Pakeisti daiktą savybių medyje. Pasirinkite senus, naujus ir tėvinius daiktus</translation>
     </message>
   </context>
   <context>
+    <name>OpenSCAD_ResizeMeshFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="254"/>
+      <source>Resize Mesh Feature...</source>
+      <translation type="unfinished">Resize Mesh Feature...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="255"/>
+      <source>Create Resize Mesh Feature</source>
+      <translation type="unfinished">Create Resize Mesh Feature</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ScaleMeshFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="224"/>
+      <source>Scale Mesh Feature...</source>
+      <translation type="unfinished">Scale Mesh Feature...</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="225"/>
+      <source>Create Scale Mesh Feature</source>
+      <translation type="unfinished">Create Scale Mesh Feature</translation>
+    </message>
+  </context>
+  <context>
     <name>Workbech</name>
     <message>
-      <location filename="../../InitGui.py" line="82"/>
+      <location filename="../../InitGui.py" line="83"/>
       <source>OpenSCAD Part tools</source>
       <translation>OpenSCAD dalių įrankiai</translation>
     </message>
@@ -367,7 +393,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="80"/>
+      <location filename="../../InitGui.py" line="81"/>
       <source>OpenSCADTools</source>
       <translation>OpenSCAD įrankiai</translation>
     </message>

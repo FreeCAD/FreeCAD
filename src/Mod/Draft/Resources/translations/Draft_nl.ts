@@ -2247,6 +2247,11 @@ Deze waarde is de maximale segmentlengte. </translation>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Onbekende SVG-exportstijl, overschakelen naar Vertaald</translation>
     </message>
+    <message>
+      <location filename="../../importSVG.py" line="1826"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
+    </message>
   </context>
   <context>
     <name>draft</name>

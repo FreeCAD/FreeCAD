@@ -2249,6 +2249,11 @@ Questo valore è la lunghezza massima del segmento. </translation>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Stile di esportazione SVG sconosciuto, verrà esportato come Tradotto</translation>
     </message>
+    <message>
+      <location filename="../../importSVG.py" line="1826"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation>L'elenco di esportazione non contiene alcun oggetto con un contenitore di delimitazione valido</translation>
+    </message>
   </context>
   <context>
     <name>draft</name>
@@ -2806,7 +2811,7 @@ Per abilitare FreeCAD a  scaricare queste librerie, rispondere Sì.</translation
     <message>
       <location filename="../../DraftGui.py" line="679"/>
       <source>Current working plane</source>
-      <translation>Piano di lavoro corrente</translation>
+      <translation>Piano di lavoro attuale</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="618"/>

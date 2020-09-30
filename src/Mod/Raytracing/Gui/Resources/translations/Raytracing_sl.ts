@@ -181,7 +181,7 @@
       <location filename="../../Command.cpp" line="338"/>
       <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation>Kamera trenutnega pogleda ni perspektivna in zato bo rezultat slike POV-Ray morda kasneje izgledal drugače kot pričakovano.
+      <translation>Kamera trenutnega pogleda ni perspektivna in zato bo rezultat slike POV-Ray morda kasneje videti drugače, kot pričakovano.
 Ali želite nadaljevati?</translation>
     </message>
     <message>
@@ -215,7 +215,7 @@ Ali želite nadaljevati?</translation>
       <location filename="../../Command.cpp" line="773"/>
       <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation>Kamera trenutnega pogleda ni perspektivna in zato bo rezultat slike Luxrender morda kasneje izgledal drugače kot pričakovano.
+      <translation>Kamera trenutnega pogleda ni perspektivna in zato bo rezultat slike Luxrender morda kasneje videti drugače, kot pričakovano.
 Ali želite nadaljevati?</translation>
     </message>
   </context>
@@ -296,12 +296,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../Command.cpp" line="622"/>
       <source>Please set the path to the POV-Ray executable in the preferences.</source>
-      <translation>Nastavite pot do izvedljive datoteke POV-Ray v možnostih.</translation>
+      <translation>Nastavite pot do izvedljive datoteke POV-Ray v prednastavitvah.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="628"/>
       <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-      <translation>Popravite pot do izvedljive datoteke POV-Ray v možnostih.</translation>
+      <translation>Popravite pot do izvedljive datoteke POV-Ray v prednastavitvah.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="635"/>
@@ -312,12 +312,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../Command.cpp" line="636"/>
       <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation>Nastavite pot do izvedljive datoteke Luxrender ali Luxconsole v možnostih.</translation>
+      <translation>Nastavite pot do izvedljive datoteke Luxrender ali Luxconsole v prednastavitvah.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="642"/>
       <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation>Popravite pot do izvedljive datoteke Luxrender ali Luxconsole v možnostih.</translation>
+      <translation>Popravite pot do izvedljive datoteke Luxrender ali Luxconsole v prednastavitvah.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="654"/>

@@ -128,8 +128,8 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="727"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="741"/>
       <source>Browser</source>
       <translation>Navegador</translation>
     </message>
@@ -153,7 +153,7 @@
       <translation>Hi hagué errors quan es carregava el fitxer. Algunes dades s'han pogut modificar o no s'han recuperat. Busqueu en la vista d'informes per a obtindre informació més específica sobre els objectes implicats.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="698"/>
+      <location filename="../../BrowserView.cpp" line="712"/>
       <source>Loading %1...</source>
       <translation>S'està carregant 1%...</translation>
     </message>

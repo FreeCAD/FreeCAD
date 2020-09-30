@@ -29,7 +29,7 @@
       <translation>Le style de numérotation</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="277"/>
+      <location filename="../../ArchBuildingPart.py" line="262"/>
       <source>The type of this building</source>
       <translation>Le type de ce bâtiment</translation>
     </message>
@@ -114,7 +114,7 @@
       <translation>La surface de plancher calculée de cet étage</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="873"/>
+      <location filename="../../ArchSectionPlane.py" line="908"/>
       <source>The placement of this object</source>
       <translation>Le positionnement de cet objet</translation>
     </message>
@@ -204,12 +204,12 @@
       <translation>La direction d'extrusion normale de cet objet (mettre (0,0,0) pour normale automatique)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1212"/>
       <source>The linked object</source>
       <translation>L’objet lié</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1187"/>
+      <location filename="../../ArchSectionPlane.py" line="1222"/>
       <source>The line width of the rendered objects</source>
       <translation>La largeur de la ligne des objets rendus</translation>
     </message>
@@ -504,37 +504,37 @@
       <translation>Épaisseur de la bride</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="173"/>
+      <location filename="../../ArchRebar.py" line="174"/>
       <source>The diameter of the bar</source>
       <translation>Le diamètre de la barre</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="175"/>
+      <location filename="../../ArchRebar.py" line="176"/>
       <source>The distance between the border of the beam and the first bar (concrete cover).</source>
       <translation>La distance entre le bord de la poutre et la première barre (enrobage en béton).</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="177"/>
+      <location filename="../../ArchRebar.py" line="178"/>
       <source>The distance between the border of the beam and the last bar (concrete cover).</source>
       <translation>La distance entre le bord de la poutre et la dernière barre (enrobage en béton).</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="179"/>
+      <location filename="../../ArchRebar.py" line="180"/>
       <source>The amount of bars</source>
       <translation>La quantité de barres</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="181"/>
+      <location filename="../../ArchRebar.py" line="182"/>
       <source>The spacing between the bars</source>
       <translation>L’espacement entre les barres</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="186"/>
+      <location filename="../../ArchRebar.py" line="187"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
       <translation>La direction dans laquelle répartir les barres. Laisser à (0,0,0) pour la direction automatique.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="188"/>
+      <location filename="../../ArchRebar.py" line="189"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
       <translation>Le congé à appliquer à l’angle du profil de base. Cette valeur est multipliée par le diamètre de la barre.</translation>
     </message>
@@ -614,52 +614,52 @@
       <translation>La feuille de calcul où imprimer les résultats</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="879"/>
+      <location filename="../../ArchSectionPlane.py" line="914"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Si « false », les éléments non pleins seront également coupés, avec de possibles mauvais résultats.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="949"/>
+      <location filename="../../ArchSectionPlane.py" line="984"/>
       <source>The display length of this section plane</source>
       <translation>La longueur d'affichage de ce plan de coupe</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="955"/>
+      <location filename="../../ArchSectionPlane.py" line="990"/>
       <source>The display height of this section plane</source>
       <translation>La hauteur affichée de ce plan de coupe</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="961"/>
+      <location filename="../../ArchSectionPlane.py" line="996"/>
       <source>The size of the arrows of this section plane</source>
       <translation>La taille des flèches de ce plan de coupe</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="975"/>
+      <location filename="../../ArchSectionPlane.py" line="1010"/>
       <source>Show the cut in the 3D view</source>
       <translation>Montrer la coupe dans la vue 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1179"/>
+      <location filename="../../ArchSectionPlane.py" line="1214"/>
       <source>The rendering mode to use</source>
       <translation>Le mode de rendu à utiliser</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1183"/>
+      <location filename="../../ArchSectionPlane.py" line="1218"/>
       <source>If cut geometry is shown or not</source>
       <translation>Si la géométrie de la coupe est affichée ou non</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1185"/>
+      <location filename="../../ArchSectionPlane.py" line="1220"/>
       <source>If cut geometry is filled or not</source>
       <translation>Si la géométrie de la coupe est remplie ou non</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1190"/>
+      <location filename="../../ArchSectionPlane.py" line="1225"/>
       <source>The size of the texts inside this object</source>
       <translation>La taille des textes à l’intérieur de cet objet</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1193"/>
+      <location filename="../../ArchSectionPlane.py" line="1228"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Si cochée, les objets source sont affichés quelle que soit leur visibilité dans le modèle 3D</translation>
     </message>
@@ -1084,12 +1084,12 @@
       <translation>La liste des épaisseurs de couche</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1195"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
       <source>The line color of the projected objects</source>
       <translation>La couleur de la ligne des objets projetés</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1197"/>
+      <location filename="../../ArchSectionPlane.py" line="1232"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>La couleur des faces coupées (si activé)</translation>
     </message>
@@ -1169,27 +1169,27 @@
       <translation>Active ou désactive l’affichage de la texture de grain de bois</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="184"/>
+      <location filename="../../ArchRebar.py" line="185"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
       <translation>La distance totale pour passer par dessus les ronds à béton. Garder le 0 pour utiliser automatiquement la taille de la forme hôte.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="190"/>
+      <location filename="../../ArchRebar.py" line="191"/>
       <source>List of placement of all the bars</source>
       <translation>Liste de placement de toutes les barres</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="192"/>
+      <location filename="../../ArchRebar.py" line="193"/>
       <source>The structure object that hosts this rebar</source>
       <translation>La structure objet qui héberge cette armature</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="194"/>
+      <location filename="../../ArchRebar.py" line="195"/>
       <source>The custom spacing of rebar</source>
       <translation>L’espacement personnalisé de l'armature</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="501"/>
+      <location filename="../../ArchRebar.py" line="502"/>
       <source>Shape of rebar</source>
       <translation>Forme de l'armature</translation>
     </message>
@@ -1264,12 +1264,12 @@
       <translation>Le niveau du point (0,0,0) de cet étage</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="875"/>
+      <location filename="../../ArchSectionPlane.py" line="910"/>
       <source>The shape of this object</source>
       <translation>La forme de cet objet</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="967"/>
+      <location filename="../../ArchSectionPlane.py" line="1002"/>
       <source>The line width of this object</source>
       <translation>La largeur de la ligne des objets</translation>
     </message>
@@ -1364,12 +1364,12 @@
       <translation>Une valeur de décalage pour déplacer le plan de coupe depuis le point central</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="196"/>
+      <location filename="../../ArchRebar.py" line="197"/>
       <source>Length of a single rebar</source>
       <translation>Longueur d’une seule armature</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="199"/>
+      <location filename="../../ArchRebar.py" line="200"/>
       <source>Total length of all rebars</source>
       <translation>Longueur totale de toutes les armatures</translation>
     </message>
@@ -1394,22 +1394,22 @@
       <translation>Si vrai, les couleurs du fichier lié resteront mises à jour</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="877"/>
+      <location filename="../../ArchSectionPlane.py" line="912"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Les objets qui doivent être pris en compte par ce plan de coupe. Vide signifie tous les objets du document.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="964"/>
+      <location filename="../../ArchSectionPlane.py" line="999"/>
       <source>The transparency of this object</source>
       <translation>La transparence de cet objet</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="972"/>
+      <location filename="../../ArchSectionPlane.py" line="1007"/>
       <source>The color of this object</source>
       <translation>La couleur de cet objet</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="977"/>
+      <location filename="../../ArchSectionPlane.py" line="1012"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>La distance entre le plan de coupe et de la vue réelle coupé (cela garde une valeur très faible mais pas nulle)</translation>
     </message>
@@ -1629,12 +1629,12 @@
       <translation>La description des attributs IFC n'est pas encore implémentée</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="882"/>
+      <location filename="../../ArchSectionPlane.py" line="917"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Si vrai, les vues résultantes seront restreintes à la zone du plan de section.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="884"/>
+      <location filename="../../ArchSectionPlane.py" line="919"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Si vrai, la couleur des objets sera utilisée pour remplir des zones coupées.</translation>
     </message>
@@ -1999,7 +1999,7 @@
       <translation>Affiche ou non le diagramme de la rose des vents. Utilise l'échelle du diagramme solaire. Nécessite le module Ladybug</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="202"/>
+      <location filename="../../ArchRebar.py" line="203"/>
       <source>The rebar mark</source>
       <translation>La marque des barres d'armature</translation>
     </message>
@@ -2142,7 +2142,7 @@
       <translation>Vue de</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="852"/>
+      <location filename="../../ArchSectionPlane.py" line="887"/>
       <source>Create Section Plane</source>
       <translation>Création d'un plan de coupe</translation>
     </message>
@@ -2262,7 +2262,7 @@
       <translation>Créer une ossature</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="145"/>
+      <location filename="../../ArchRebar.py" line="146"/>
       <source>Create Rebar</source>
       <translation>Créer des barres d'armature</translation>
     </message>
@@ -3212,7 +3212,7 @@ Création de plancher abandonnée.</translation>
       <translation>Profil</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="152"/>
+      <location filename="../../ArchRebar.py" line="153"/>
       <source>Please select a base face on a structural object</source>
       <translation>Veuillez sélectionner une face support sur un objet de structure</translation>
     </message>
@@ -3222,37 +3222,37 @@ Création de plancher abandonnée.</translation>
       <translation>Créer une référence externe</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1434"/>
+      <location filename="../../ArchSectionPlane.py" line="1448"/>
       <source>Section plane settings</source>
       <translation>Réglage du plan de coupe</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1439"/>
+      <location filename="../../ArchSectionPlane.py" line="1453"/>
       <source>Objects seen by this section plane:</source>
       <translation>Objets vus dans ce plan de coupe :</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1440"/>
+      <location filename="../../ArchSectionPlane.py" line="1454"/>
       <source>Section plane placement:</source>
       <translation>Emplacement du plan de coupe :</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1441"/>
+      <location filename="../../ArchSectionPlane.py" line="1455"/>
       <source>Rotate X</source>
       <translation>Rotation X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1443"/>
+      <location filename="../../ArchSectionPlane.py" line="1457"/>
       <source>Rotate Y</source>
       <translation>Rotation Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1445"/>
+      <location filename="../../ArchSectionPlane.py" line="1459"/>
       <source>Rotate Z</source>
       <translation>Rotation Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1447"/>
+      <location filename="../../ArchSectionPlane.py" line="1461"/>
       <source>Resize</source>
       <translation>Redimensionner</translation>
     </message>
@@ -3403,42 +3403,42 @@ You can change that in the preferences.</source>
       <translation>Vous pouvez mettre n’importe quoi sauf les objets Emplacement et Bâtiment dans un objet Bâtiment. Les objets Bâtiment ne sont pas autorisés à accepter un objet Emplacement ou Bâtiment. Les objets Site ou Bâtiment seront supprimés de la sélection. Vous pouvez modifier cela dans les préférences.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1436"/>
+      <location filename="../../ArchSectionPlane.py" line="1450"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Supprimer les objets en surbrillance de la liste ci-dessus</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1437"/>
+      <location filename="../../ArchSectionPlane.py" line="1451"/>
       <source>Add selected</source>
       <translation>Ajouter la sélection</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1438"/>
+      <location filename="../../ArchSectionPlane.py" line="1452"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Ajouter un(des) objet(s) sélectionné(s) au champ d'application de ce plan de coupe</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1442"/>
+      <location filename="../../ArchSectionPlane.py" line="1456"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Rotation du plan autour de l'axe X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1444"/>
+      <location filename="../../ArchSectionPlane.py" line="1458"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Rotation du plan autour de l'axe Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1446"/>
+      <location filename="../../ArchSectionPlane.py" line="1460"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Rotation du plan autour de l'axe Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1448"/>
+      <location filename="../../ArchSectionPlane.py" line="1462"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Redimensionner le plan pour l'adapter aux objets de la liste ci-dessus</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1450"/>
+      <location filename="../../ArchSectionPlane.py" line="1464"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centrer le plan sur les objets de la liste ci-dessus</translation>
     </message>
@@ -3610,17 +3610,17 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../InitGui.py" line="92"/>
       <source>Rebar tools</source>
-      <translation>Outils de barre latérale</translation>
+      <translation>Outils pour les armatures</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="134"/>
       <source>Create profile</source>
-      <translation>Créer un profil</translation>
+      <translation>Créer un profilé</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="142"/>
       <source>Profile settings</source>
-      <translation>Paramètres du profil</translation>
+      <translation>Paramètres du profilé</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="188"/>
@@ -3848,7 +3848,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchAxis.py" line="1551"/>
       <source>Axis tools</source>
-      <translation>Outils de l’axe</translation>
+      <translation>Outils pour les axes</translation>
     </message>
   </context>
   <context>
@@ -3983,12 +3983,12 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchFence.py" line="365"/>
       <source>Fence</source>
-      <translation>Barrière</translation>
+      <translation>Clôture</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="366"/>
       <source>Creates a fence object from a selected section, post and path</source>
-      <translation>Créer un objet barrière à partir de la section sélectionnée, du poteau et du chemin</translation>
+      <translation>Créer un objet clôture à partir de la section sélectionnée, du poteau et du chemin</translation>
     </message>
   </context>
   <context>
@@ -4111,7 +4111,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchMaterial.py" line="938"/>
       <source>Material tools</source>
-      <translation>Outils matériaux</translation>
+      <translation>Outils pour les matériaux</translation>
     </message>
   </context>
   <context>
@@ -4184,7 +4184,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchPanel.py" line="1686"/>
       <source>Panel tools</source>
-      <translation>Outils de panneau</translation>
+      <translation>Outils pour panneaux</translation>
     </message>
   </context>
   <context>
@@ -4244,7 +4244,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchPipe.py" line="513"/>
       <source>Pipe tools</source>
-      <translation>Outils tuyauterie</translation>
+      <translation>Outils pour la tuyauterie</translation>
     </message>
   </context>
   <context>
@@ -4257,7 +4257,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchProfile.py" line="120"/>
       <source>Creates a profile object</source>
-      <translation>Crée un objet profil</translation>
+      <translation>Crée un objet profilé</translation>
     </message>
   </context>
   <context>
@@ -4276,12 +4276,12 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="../../ArchRebar.py" line="107"/>
+      <location filename="../../ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Crée une barre de renfort par rapport à la face sélectionnée d'un objet structurel</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="105"/>
+      <location filename="../../ArchRebar.py" line="106"/>
       <source>Custom Rebar</source>
       <translation>Armature personnalisée</translation>
     </message>
@@ -4354,12 +4354,12 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="836"/>
+      <location filename="../../ArchSectionPlane.py" line="871"/>
       <source>Section Plane</source>
       <translation>Plan de section</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="837"/>
+      <location filename="../../ArchSectionPlane.py" line="872"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Crée un plan de coupe à partir des objets sélectionnés</translation>
     </message>

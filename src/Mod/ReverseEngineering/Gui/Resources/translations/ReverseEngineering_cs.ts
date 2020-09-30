@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="111"/>
       <source>Plane...</source>
-      <translation type="unfinished">Plane...</translation>
+      <translation>Rovina...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="112"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="325"/>
       <source>Polynomial surface</source>
-      <translation type="unfinished">Polynomial surface</translation>
+      <translation>Polynomický povrch</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="326"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="279"/>
       <source>Approximate a sphere</source>
-      <translation type="unfinished">Approximate a sphere</translation>
+      <translation>Přibližná koule</translation>
     </message>
   </context>
   <context>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>From components</source>
-      <translation type="unfinished">From components</translation>
+      <translation>Z komponentů</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="442"/>
@@ -473,7 +473,7 @@
       <location filename="../../SegmentationManual.ui" line="218"/>
       <location filename="../../SegmentationManual.ui" line="271"/>
       <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
+      <translation>Detekovat</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -503,17 +503,17 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>Segmentace</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
       <source>Cut segment from mesh</source>
-      <translation type="unfinished">Cut segment from mesh</translation>
+      <translation>Vyjmout segment z sítě</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
       <source>Hide segment</source>
-      <translation type="unfinished">Hide segment</translation>
+      <translation>Skrýt segment</translation>
     </message>
   </context>
   <context>

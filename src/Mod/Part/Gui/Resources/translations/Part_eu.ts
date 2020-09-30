@@ -272,19 +272,6 @@ Egin klik 'Jarraitu' aukeran eginbidea sortzeko, edo 'Abortatu' bertan behera uz
     </message>
   </context>
   <context>
-    <name>Part_MakeTube</name>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-      <source>Create tube</source>
-      <translation>Sortu tutua</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-      <source>Creates a tube</source>
-      <translation>Tutu bat sortzen du</translation>
-    </message>
-  </context>
-  <context>
     <name>Part_SplitFeatures</name>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
@@ -358,6 +345,32 @@ Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translat
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
       <translation>Kendu ebakidura-zatiak</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Tube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="85"/>
+      <source>Create tube</source>
+      <translation>Sortu tutua</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="89"/>
+      <source>Creates a tube</source>
+      <translation>Tutu bat sortzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
+      <source>Create tube</source>
+      <translation>Sortu tutua</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation>Tutu bat sortzen du</translation>
     </message>
   </context>
   <context>

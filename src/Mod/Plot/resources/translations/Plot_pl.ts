@@ -120,7 +120,7 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="213"/>
       <source>Apply to all axes</source>
-      <translation>Zastosuj do wszystkich osi</translation>
+      <translation>Zastosuj dla wszystkich osi</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="217"/>

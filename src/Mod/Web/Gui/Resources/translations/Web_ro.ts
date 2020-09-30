@@ -128,8 +128,8 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="727"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="741"/>
       <source>Browser</source>
       <translation>Navigator</translation>
     </message>
@@ -153,7 +153,7 @@
       <translation>Au existat erori în timpul încărcării fişierului. Unele date s-ar putea să fi fost modificate sau să se nu recupereze deloc. Uitați-vă în raportul vizualizării pentru mai multe informaţii specifice despre obiectele implicate.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="698"/>
+      <location filename="../../BrowserView.cpp" line="712"/>
       <source>Loading %1...</source>
       <translation>Se încarcă %1...</translation>
     </message>

@@ -128,8 +128,8 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="727"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="741"/>
       <source>Browser</source>
       <translation>브라우저</translation>
     </message>
@@ -153,7 +153,7 @@
       <translation>파일을 불러오는 도중 문제가 생겼습니다. 일부 데이터가 수정되거나 전혀 복구되지 않았을 수 있습니다. 해당 개체에 대한 보다 구체적인 정보를 확인하려면 보고서를 보세요.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="698"/>
+      <location filename="../../BrowserView.cpp" line="712"/>
       <source>Loading %1...</source>
       <translation>%1 로딩 중...</translation>
     </message>

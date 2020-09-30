@@ -4,7 +4,7 @@
   <context>
     <name>AddonInstaller</name>
     <message>
-      <location filename="../../addonmanager_workers.py" line="444"/>
+      <location filename="../../addonmanager_workers.py" line="445"/>
       <source>Installed location</source>
       <translation>Percorso di installazione</translation>
     </message>
@@ -97,7 +97,7 @@
       <translation>Elenco degli ambienti di lavoro aggiornato.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="634"/>
+      <location filename="../../addonmanager_workers.py" line="635"/>
       <source>Outdated GitPython detected, consider upgrading with pip.</source>
       <translation>Rilevato GitPython obsoleto, considerare di aggiornarlo con pip.</translation>
     </message>
@@ -107,82 +107,82 @@
       <translation>Lista delle macro recuperata con successo.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="542"/>
+      <location filename="../../addonmanager_workers.py" line="543"/>
       <source>Retrieving description...</source>
       <translation>Recupero descrizione...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="355"/>
+      <location filename="../../addonmanager_workers.py" line="356"/>
       <source>Retrieving info from</source>
       <translation>Recupero informazioni da</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="442"/>
+      <location filename="../../addonmanager_workers.py" line="443"/>
       <source>An update is available for this addon.</source>
       <translation>Per questo addon è disponibile un aggiornamento.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="438"/>
+      <location filename="../../addonmanager_workers.py" line="439"/>
       <source>This addon is already installed.</source>
       <translation>Questo addon è già installato.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="544"/>
+      <location filename="../../addonmanager_workers.py" line="545"/>
       <source>Retrieving info from git</source>
       <translation>Recupero informazioni da git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="547"/>
+      <location filename="../../addonmanager_workers.py" line="548"/>
       <source>Retrieving info from wiki</source>
       <translation>Recupero informazioni dal wiki</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="596"/>
+      <location filename="../../addonmanager_workers.py" line="597"/>
       <source>GitPython not found. Using standard download instead.</source>
       <translation>GitPython non trovato. In sostituzione, usare il download standard.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="601"/>
+      <location filename="../../addonmanager_workers.py" line="602"/>
       <source>Your version of python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
       <translation>Sembra che la versione di python non supporti i file ZIP. Impossibile procedere.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="670"/>
+      <location filename="../../addonmanager_workers.py" line="671"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
       <translation>Ambiente di lavoro installato correttamente. Riavviare FreeCAD per applicare le modifiche.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="720"/>
+      <location filename="../../addonmanager_workers.py" line="721"/>
       <source>Missing workbench</source>
       <translation>Ambiente di lavoro mancante</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="729"/>
+      <location filename="../../addonmanager_workers.py" line="730"/>
       <source>Missing python module</source>
       <translation>Modulo python mancante</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="737"/>
+      <location filename="../../addonmanager_workers.py" line="738"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
       <translation>Modulo Python opzionale mancante (ma non impedisce l'installazione)</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="739"/>
+      <location filename="../../addonmanager_workers.py" line="740"/>
       <source>Some errors were found that prevent to install this workbench</source>
       <translation>Sono stati trovati alcuni errori che impediscono di installare questo ambiente di lavoro</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="740"/>
+      <location filename="../../addonmanager_workers.py" line="741"/>
       <source>Please install the missing components first.</source>
       <translation>Si prega di installare prima i componenti mancanti.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="764"/>
+      <location filename="../../addonmanager_workers.py" line="765"/>
       <source>Error: Unable to download</source>
       <translation>Errore: download impossibile</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="783"/>
+      <location filename="../../addonmanager_workers.py" line="784"/>
       <source>Successfully installed</source>
       <translation>Installazione riuscita</translation>
     </message>
@@ -212,27 +212,27 @@
       <translation>Riavvio richiesto</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="554"/>
+      <location filename="../../addonmanager_workers.py" line="555"/>
       <source>This macro is already installed.</source>
       <translation>Questa macro è già installata.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="681"/>
+      <location filename="../../addonmanager_workers.py" line="682"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>Una macro è stata installata ed è disponibile sotto Macro -&gt; menu Macros</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="450"/>
+      <location filename="../../addonmanager_workers.py" line="451"/>
       <source>This addon is marked as obsolete</source>
       <translation>Questo addon è contrassegnato come obsoleto</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="451"/>
+      <location filename="../../addonmanager_workers.py" line="452"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
       <translation>Questo di solito significa che non è più mantenuto e alcuni addon in questa lista forniscono la stessa funzionalità.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="757"/>
+      <location filename="../../addonmanager_workers.py" line="758"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Errore: Impossibile individuare zip da</translation>
     </message>
@@ -242,29 +242,34 @@
       <translation>Qualcosa è andato storto con il recupero della macro da Git, forse l'eseguibile Git non è nel percorso</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="455"/>
+      <location filename="../../addonmanager_workers.py" line="456"/>
       <source>This addon is marked as Python 2 Only</source>
       <translation>Questo componente aggiuntivo è contrassegnato come solo con Python 2</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="456"/>
+      <location filename="../../addonmanager_workers.py" line="457"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
       <translation>Questo ambiente potrebbe non essere più mantenuto e installarlo su un sistema Python 3 causerà probabilmente errori all'avvio o durante l'uso.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="625"/>
+      <location filename="../../addonmanager_workers.py" line="626"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
       <translation>L'utente ha richiesto l'aggiornamento di un ambiente di lavoro in Python 2 su un sistema che esegue Python 3 - </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="653"/>
+      <location filename="../../addonmanager_workers.py" line="654"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
       <translation>Ambiente di lavoro aggiornato correttamente. Riavviare FreeCAD per applicare le modifiche.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="659"/>
+      <location filename="../../addonmanager_workers.py" line="660"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
       <translation>L'utente ha richiesto l'installazione di un ambiente di lavoro in Python 2 su un sistema che esegue Python 3 - </translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="308"/>
+      <source>Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</source>
+      <translation type="unfinished">Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</translation>
     </message>
   </context>
   <context>
@@ -398,7 +403,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
       <source>You can use this window to specify additional addon repositories
 to be scanned for available addons</source>
       <translation>È possibile utilizzare questa finestra per specificare ulteriori repository di addon
-da scansionare per gli addons disponibili</translation>
+da scansionare per gli addon disponibili</translation>
     </message>
   </context>
   <context>

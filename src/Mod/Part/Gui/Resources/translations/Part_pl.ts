@@ -161,11 +161,11 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Obliczenie wyniku zakończyło się błędem: 
 
 {errstr}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Kliknij "Kontynuuj", aby i tak utworzyć element, lub "Przerwij", aby anulować.</translation>
     </message>
   </context>
   <context>
@@ -201,7 +201,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
       <source>Fuses objects, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses objects, taking care to preserve voids.</translation>
+      <translation>Łączy obiekty, dbając o zachowanie pustych przestrzeni.</translation>
     </message>
   </context>
   <context>
@@ -222,12 +222,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
       <source>Embed object</source>
-      <translation type="unfinished">Embed object</translation>
+      <translation>Osadź obiekt</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
       <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
+      <translation>Łączy jeden obiekt z drugim, dbając o zachowanie pustych przestrzeni.</translation>
     </message>
   </context>
   <context>
@@ -239,11 +239,11 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
 {err}
 
  Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Obliczenie wyniku zakończyło się błędem: 
 
 {err}
 
- Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Kliknij "Kontynuuj", aby i tak utworzyć element, lub "Przerwij", aby anulować.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
@@ -258,30 +258,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
       <source>Select at least two objects, or one or more compounds, first!</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds, first!</translation>
+      <translation>Wybierz co najmniej dwa obiekty, lub najpierw jeden lub więcej komponentów!</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
       <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and invoke this tool.</translation>
+      <translation>Wybierz obiekt główny, a następnie obiekt do osadzenia i uruchom to narzędzie.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
       <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_MakeTube</name>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-      <source>Create tube</source>
-      <translation>Utwórz rurę</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-      <source>Creates a tube</source>
-      <translation>Utwórz rurę</translation>
     </message>
   </context>
   <context>
@@ -327,7 +314,7 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
-      <translation type="unfinished">Slice to compound</translation>
+      <translation>Krojenie na kształty złożone</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
@@ -357,7 +344,33 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
-      <translation type="unfinished">Remove intersection fragments</translation>
+      <translation>Usuń fragmenty przecięcia</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Tube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="85"/>
+      <source>Create tube</source>
+      <translation>Utwórz rurę</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="89"/>
+      <source>Creates a tube</source>
+      <translation>Utwórz rurę</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
+      <source>Create tube</source>
+      <translation>Utwórz rurę</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation>Utwórz rurę</translation>
     </message>
   </context>
   <context>
@@ -1212,13 +1225,13 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
       <location filename="../../AttacherTexts.cpp" line="89"/>
       <source>XY plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Płaszczyzna XY przez 3 punkty</translation>
+      <translation>Płaszczyzna XY wyznaczona przez 3 punkty</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="90"/>
       <source>Align XY plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Wyrównaj płaszczyznę XY do przejścia przez trzy wierzchołki.</translation>
+      <translation>Wyrównaj płaszczyznę XY by przechodziła przez trzy wierzchołki.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="92"/>
@@ -1407,7 +1420,7 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
       <location filename="../../DlgBlock.ui" line="40"/>
       <location filename="../../DlgBlock.ui" line="221"/>
       <source>Type:</source>
-      <translation>Typ:</translation>
+      <translation>Rodzaj:</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="47"/>
@@ -1518,7 +1531,7 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
       <location filename="../../Command.cpp" line="2357"/>
       <location filename="../../Command.cpp" line="2359"/>
       <source>Box selection</source>
-      <translation>Pole wyboru</translation>
+      <translation>Zaznacz obszar</translation>
     </message>
   </context>
   <context>
@@ -1694,7 +1707,7 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
     <message>
       <location filename="../../Command.cpp" line="137"/>
       <source>Create a box solid without dialog</source>
-      <translation>Tworzenie pola bryły bez okna dialogowego</translation>
+      <translation>Utwórz bryłę prostokątną bez użycia okna dialogowego</translation>
     </message>
   </context>
   <context>
@@ -1712,7 +1725,7 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
     <message>
       <location filename="../../Command.cpp" line="178"/>
       <source>Create a box solid without dialog</source>
-      <translation>Tworzenie pola bryły bez okna dialogowego</translation>
+      <translation>Utwórz bryłę prostokątną bez użycia okna dialogowego</translation>
     </message>
   </context>
   <context>
@@ -1748,7 +1761,7 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
     <message>
       <location filename="../../Command.cpp" line="1441"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Sfazuj wybrane krawędzie obiektu</translation>
+      <translation>Fazowanie zaznaczonych krawędzi kształtu</translation>
     </message>
   </context>
   <context>
@@ -1779,12 +1792,12 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
     <message>
       <location filename="../../Command.cpp" line="783"/>
       <source>Counpound tools</source>
-      <translation type="unfinished">Counpound tools</translation>
+      <translation>Narzędzia złożeń</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="784"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation type="unfinished">Compound tools: working with lists of shapes.</translation>
+      <translation>Narzędzia złożeń: praca z listami kształtów.</translation>
     </message>
   </context>
   <context>
@@ -1945,7 +1958,7 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
     <message>
       <location filename="../../CommandSimple.cpp" line="272"/>
       <source>Defeaturing</source>
-      <translation type="unfinished">Defeaturing</translation>
+      <translation>Pogorszenie</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="273"/>
@@ -2071,12 +2084,12 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
     <message>
       <location filename="../../Command.cpp" line="1565"/>
       <source>Loft...</source>
-      <translation>Wyciągnij...</translation>
+      <translation>Wyciągnij po profilach...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Utility to loft</source>
-      <translation>Narzędzie wyciągania</translation>
+      <translation>Narzędzie wyciągnięcia po profilach</translation>
     </message>
   </context>
   <context>
@@ -2112,7 +2125,7 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
     <message>
       <location filename="../../Command.cpp" line="1144"/>
       <source>Create solid from a shell or compound</source>
-      <translation>Tworzenie  brył z powłoki shell lub z kombinacji</translation>
+      <translation>Stwórz bryłę z powłoki lub złożenia</translation>
     </message>
   </context>
   <context>
@@ -2148,7 +2161,7 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
     <message>
       <location filename="../../Command.cpp" line="1624"/>
       <source>Utility to offset in 3D</source>
-      <translation type="unfinished">Utility to offset in 3D</translation>
+      <translation>Narzędzie tworzące odsunięcie w przestrzeni 3D</translation>
     </message>
   </context>
   <context>
@@ -2166,7 +2179,7 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <translation>Narzędzie do odsuwania płaskich kształtów</translation>
     </message>
   </context>
   <context>
@@ -2871,9 +2884,7 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
       <source>Extrusion direction link is invalid.
 
 %1</source>
-      <translation type="unfinished">Extrusion direction link is invalid.
-
-%1</translation>
+      <translation>Odniesienie kierunek wytłaczania jest nieprawidłowe</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="627"/>
@@ -3804,7 +3815,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="254"/>
       <source>Select a shape for revolution, first.</source>
-      <translation type="unfinished">Select a shape for revolution, first.</translation>
+      <translation>Najpierw wybierz kształt do przekształcenia przez obrót.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="270"/>
@@ -3921,7 +3932,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="52"/>
       <source>Automatically refine model after sketch-based operation</source>
-      <translation>Automatycznie oczyść model po operacji z użyciem szkicu</translation>
+      <translation>Automatycznie udoskonalaj model po operacji opartej na szkicu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="68"/>
@@ -4071,7 +4082,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation>Wymagane są co najmniej dwa wierzchołki, krawędzie, linie lub płaszczyzny.</translation>
+      <translation>Wymagane są co najmniej dwa wierzchołki, krawędzie, linie lub powierzchnie.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="214"/>
@@ -4081,12 +4092,12 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>Wierzchołek/Krawędź/Linia/Płaszczyzna</translation>
+      <translation>Wierzchołek/Krawędź/Linia/Powierzchnia</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
-      <translation>Poszycie</translation>
+      <translation>Wyciągnij po profilach</translation>
     </message>
   </context>
   <context>
@@ -4538,7 +4549,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="66"/>
       <source>Box selection</source>
-      <translation>Pole wyboru</translation>
+      <translation>Zaznacz obszar</translation>
     </message>
   </context>
   <context>
@@ -4546,7 +4557,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
       <source>Loft</source>
-      <translation>Poszycie</translation>
+      <translation>Wyciągnięcie po profilach</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
@@ -4690,7 +4701,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="116"/>
       <source>Wire from edges</source>
-      <translation type="unfinished">Wire from edges</translation>
+      <translation>Linia łamana z krawędzi</translation>
     </message>
   </context>
   <context>
@@ -5283,7 +5294,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Primitives</source>
-      <translation>Prymitywy</translation>
+      <translation>Bryła pierwotna</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>

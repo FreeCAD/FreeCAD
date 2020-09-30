@@ -128,8 +128,8 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="727"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="741"/>
       <source>Browser</source>
       <translation>ブラウザー</translation>
     </message>
@@ -153,7 +153,7 @@
       <translation>ファイルの読み込み中にエラーが発生しました。一部のデータが変更、または完全に復元されていない可能性があります。関連するオブジェクトのより詳細な情報についてはレポートビューを確認してください。</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="698"/>
+      <location filename="../../BrowserView.cpp" line="712"/>
       <source>Loading %1...</source>
       <translation>%1 を読み込み中・・・</translation>
     </message>

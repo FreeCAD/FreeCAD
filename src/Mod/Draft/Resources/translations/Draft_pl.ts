@@ -724,7 +724,7 @@ Or choose one of the options below</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="41"/>
       <source>Sets the working plane to the XZ plane (front plane)</source>
-      <translation type="unfinished">Sets the working plane to the XZ plane (front plane)</translation>
+      <translation>Ustawia płaszczyznę roboczą na płaszczyznę XZ (od przodu)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="44"/>
@@ -768,9 +768,9 @@ view each time a command is started</translation>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation type="unfinished">An optional offset to give to the working plane
-above its base position. Use this together with one
-of the buttons above</translation>
+      <translation>Opcjonalne odsunięcie do płaszczyzny roboczej
+powyżej pozycji bazowej. Użyj tej opcji razem z jednym
+z przycisków powyżej</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="99"/>
@@ -914,17 +914,17 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="72"/>
       <source>XY (Top)</source>
-      <translation>XY (góra)</translation>
+      <translation>XY (od góry)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="77"/>
       <source>XZ (Front)</source>
-      <translation>XZ (przód)</translation>
+      <translation>XZ (od przodu)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="82"/>
       <source>YZ (Side)</source>
-      <translation>YZ (strona)</translation>
+      <translation>YZ (od boku)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="89"/>
@@ -1072,7 +1072,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="94"/>
       <source>Internal precision level</source>
-      <translation>Wewnętrzny poziom precyzji</translation>
+      <translation>Wewnętrzny poziom dokładności</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="395"/>
@@ -2247,6 +2247,11 @@ This value is the maximum segment length. </translation>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation type="unfinished">Unknown SVG export style, switching to Translated</translation>
     </message>
+    <message>
+      <location filename="../../importSVG.py" line="1826"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
+    </message>
   </context>
   <context>
     <name>draft</name>
@@ -2831,7 +2836,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../DraftGui.py" line="656"/>
       <source>Create text</source>
-      <translation>Tworzenie tekstu</translation>
+      <translation>Utwórz tekst</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="657"/>

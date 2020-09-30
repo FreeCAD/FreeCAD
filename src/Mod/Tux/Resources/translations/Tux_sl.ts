@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or H key.</source>
-      <translation>Srednji gumb miške ali tipka H.</translation>
+      <translation>Srednja miškina tipka ali tipka H.</translation>
     </message>
   </context>
 </TS>

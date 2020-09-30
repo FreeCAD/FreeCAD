@@ -769,9 +769,9 @@ view each time a command is started</translation>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation type="unfinished">An optional offset to give to the working plane
-above its base position. Use this together with one
-of the buttons above</translation>
+      <translation>Odmik, ki ga po želji lahko določite delavni ravnini
+od njenega izhodiščnega položaja. Uporabite to skupaj z enim
+od zgornjih gumbov</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="99"/>
@@ -818,7 +818,7 @@ will be moved to the center of the view</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="171"/>
       <source>The spacing between the smaller grid lines</source>
-      <translation type="unfinished">The spacing between the smaller grid lines</translation>
+      <translation>Razmik med manjšimi mrežnimi črtami</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="164"/>
@@ -1246,7 +1246,7 @@ stalno širno"), družina (npr. "Arial,Helvetica,sans") ali ime s slogom (npr.
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="237"/>
       <source>Hatch patterns resolution</source>
-      <translation>Ločljivost vzorca črtkanja</translation>
+      <translation>Ločljivost vzorcev črtkanja</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="263"/>
@@ -1501,7 +1501,7 @@ stalno širno"), družina (npr. "Arial,Helvetica,sans") ali ime s slogom (npr.
     <message>
       <location filename="../ui/preferences-dxf.ui" line="46"/>
       <source>Use legacy python importer</source>
-      <translation>Uporabi zastarel uvozilnik Python</translation>
+      <translation>Uporabi zastarel python uvoznik</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="107"/>
@@ -1586,7 +1586,7 @@ stalno širno"), družina (npr. "Arial,Helvetica,sans") ali ime s slogom (npr.
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="458"/>
       <source>The number of horizontal or vertical lines of the grid</source>
-      <translation>Število vodoravnih in navpičnih črt mreže</translation>
+      <translation>Število vodoravnih in navpičnih mrežnih črt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="507"/>
@@ -1698,7 +1698,7 @@ Vrednosti z odstopanjem, manjšim od te vrednosti bodo obravnavane kot enake. Ta
     <message>
       <location filename="../ui/preferences-dxf.ui" line="67"/>
       <source>Use legacy python exporter</source>
-      <translation>Uporabi zastarel izvozilnik Python</translation>
+      <translation>Uporabi zastarel python izvoznik</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="247"/>
@@ -1946,15 +1946,15 @@ This allows to point the direction and type the distance.</translation>
       <location filename="../ui/preferences-draft.ui" line="263"/>
       <source>If this is checked, objects will appear as filled by default.
 Otherwise, they will appear as wireframe</source>
-      <translation type="unfinished">If this is checked, objects will appear as filled by default.
-Otherwise, they will appear as wireframe</translation>
+      <translation>Če je to označeno, bodo predmeti privzeto prikazani zapolnjeno.
+V nasprotnem primeru bodo prikazani kot žični model</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="283"/>
       <source>Normally, after copying objects, the copies get selected.
 If this option is checked, the base objects will be selected instead.</source>
-      <translation type="unfinished">Normally, after copying objects, the copies get selected.
-If this option is checked, the base objects will be selected instead.</translation>
+      <translation>Običajno po kopiranju predmetov postanejo izbrane kopije.
+Če je ta možnost označena, bo namesto tega izbran izhodiščni predmet.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="300"/>
@@ -1973,7 +1973,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="14"/>
       <source>User interface settings</source>
-      <translation type="unfinished">User interface settings</translation>
+      <translation>Nastavitve uporabniškega vmesnika</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="884"/>
@@ -2008,7 +2008,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="532"/>
       <source>Draft Edit preferences</source>
-      <translation type="unfinished">Draft Edit preferences</translation>
+      <translation>Prednastavitve urejanja osnutka</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="535"/>
@@ -2043,7 +2043,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
-      <translation type="unfinished">This preferences dialog will be shown when importing/ exporting DXF files</translation>
+      <translation>Pri uvažanju in izvažanju datotek DXF bo prikazano pogovorno okno s prednastavitvami</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="42"/>
@@ -2088,12 +2088,12 @@ from the Addon Manager.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation type="unfinished">If you want the non-named blocks (beginning with a *) to be imported too</translation>
+      <translation>Če želite, da se uvozijo tudi brezimni zbiri (začnejo se z *)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="214"/>
       <source>Only standard Part objects will be created (fastest)</source>
-      <translation type="unfinished">Only standard Part objects will be created (fastest)</translation>
+      <translation>Samo običajni predmeti delov bodo ustvarjeni (najhitrejše)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="233"/>
@@ -2127,8 +2127,7 @@ Otherwise default colors will be applied. </translation>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
-      <translation type="unfinished">FreeCAD will try to join coincident objects into wires.
-Note that this can take a while!</translation>
+      <translation>FreeCAD bo poskusil spojiti sovpadajoče predmete v črtovja. Vedite, da to lahko traja dlje časa!</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="363"/>
@@ -2141,8 +2140,8 @@ turning the display faster, but making them less easily editable </translation>
       <location filename="../ui/preferences-dxf.ui" line="384"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
-      <translation type="unfinished">Imported texts will get the standard Draft Text size,
-instead of the size they have in the DXF document</translation>
+      <translation>Uvožena besedila bodo namesto velikosti, ki jo imajo v
+dokumentu DXF, prevzela privzeto velikost besedila v osnutkih</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="405"/>
@@ -2157,7 +2156,7 @@ instead of the size they have in the DXF document</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="428"/>
       <source>Hatches will be converted into simple wires</source>
-      <translation type="unfinished">Hatches will be converted into simple wires</translation>
+      <translation>Črtkanja bodo pretvorjena v enostavna črtovja</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
@@ -2181,8 +2180,8 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
       <source>Drawing Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
-      <translation type="unfinished">Drawing Views will be exported as blocks.
-This might fail for post DXF R12 templates.</translation>
+      <translation>Risalne poglede se bo izvozilo kot zbire.
+To lahko spodleti pri predlogah novejših od DXF R12.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="594"/>
@@ -2250,6 +2249,11 @@ This value is the maximum segment length. </translation>
       <location filename="../../importSVG.py" line="1807"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation type="unfinished">Unknown SVG export style, switching to Translated</translation>
+    </message>
+    <message>
+      <location filename="../../importSVG.py" line="1826"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
     </message>
   </context>
   <context>
@@ -2771,7 +2775,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="../../DraftGui.py" line="645"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
-      <translation>Če je označeno, se predmete kopira namesto premika. Lastnosti -&gt; Osnutek -&gt; Splošni način kopiranja, da ohranite ta način pri sledečih ukazih</translation>
+      <translation>Če je označeno, se predmete kopira namesto premika. Prednastavitve -&gt; Osnutek -&gt; Splošni način kopiranja, da ohranite ta način pri sledečih ukazih</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="59"/>

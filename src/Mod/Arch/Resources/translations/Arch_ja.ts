@@ -29,7 +29,7 @@
       <translation>番号付けのスタイル</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="277"/>
+      <location filename="../../ArchBuildingPart.py" line="262"/>
       <source>The type of this building</source>
       <translation>この建物の種類</translation>
     </message>
@@ -114,7 +114,7 @@
       <translation>このフロアの床面積の計算</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="873"/>
+      <location filename="../../ArchSectionPlane.py" line="908"/>
       <source>The placement of this object</source>
       <translation>このオブジェクトの配置</translation>
     </message>
@@ -204,12 +204,12 @@
       <translation>このオブジェクトの法線押し出し方向（法線自動設定を行う場合は（0,0,0）のままにしてください）</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1212"/>
       <source>The linked object</source>
       <translation>リンクされたオブジェクト</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1187"/>
+      <location filename="../../ArchSectionPlane.py" line="1222"/>
       <source>The line width of the rendered objects</source>
       <translation>描画オブジェクトの線の幅</translation>
     </message>
@@ -504,37 +504,37 @@
       <translation>フランジの厚み</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="173"/>
+      <location filename="../../ArchRebar.py" line="174"/>
       <source>The diameter of the bar</source>
       <translation>バーの直径</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="175"/>
+      <location filename="../../ArchRebar.py" line="176"/>
       <source>The distance between the border of the beam and the first bar (concrete cover).</source>
       <translation>梁の縁と最初のバー（コンクリートカバー）の間の距離</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="177"/>
+      <location filename="../../ArchRebar.py" line="178"/>
       <source>The distance between the border of the beam and the last bar (concrete cover).</source>
       <translation>梁の縁と最後のバー（コンクリートカバー）の間の距離</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="179"/>
+      <location filename="../../ArchRebar.py" line="180"/>
       <source>The amount of bars</source>
       <translation>バーの総数</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="181"/>
+      <location filename="../../ArchRebar.py" line="182"/>
       <source>The spacing between the bars</source>
       <translation>バーの間隔</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="186"/>
+      <location filename="../../ArchRebar.py" line="187"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
       <translation>バーを広げるときに使用する方向。自動設定する場合は (0,0,0) としてください。</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="188"/>
+      <location filename="../../ArchRebar.py" line="189"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
       <translation>ベースプロファイルの角に適用されるフィレット。この値にはバーの直径が乗じられます。</translation>
     </message>
@@ -614,52 +614,52 @@
       <translation>結果出力先のスプレッドシート</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="879"/>
+      <location filename="../../ArchSectionPlane.py" line="914"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>False の場合、非ソリッドも切断され、不正な結果となる可能性があります。</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="949"/>
+      <location filename="../../ArchSectionPlane.py" line="984"/>
       <source>The display length of this section plane</source>
       <translation>この断面平面の表示長さ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="955"/>
+      <location filename="../../ArchSectionPlane.py" line="990"/>
       <source>The display height of this section plane</source>
       <translation>この断面平面の表示高さ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="961"/>
+      <location filename="../../ArchSectionPlane.py" line="996"/>
       <source>The size of the arrows of this section plane</source>
       <translation>この断面平面の矢印のサイズ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="975"/>
+      <location filename="../../ArchSectionPlane.py" line="1010"/>
       <source>Show the cut in the 3D view</source>
       <translation>3Dビューでカットを表示</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1179"/>
+      <location filename="../../ArchSectionPlane.py" line="1214"/>
       <source>The rendering mode to use</source>
       <translation>使用するレンダリングモード</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1183"/>
+      <location filename="../../ArchSectionPlane.py" line="1218"/>
       <source>If cut geometry is shown or not</source>
       <translation>カット・ジオメトリーを表示するかどうか</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1185"/>
+      <location filename="../../ArchSectionPlane.py" line="1220"/>
       <source>If cut geometry is filled or not</source>
       <translation>カット・ジオメトリーを塗りつぶすかどうか</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1190"/>
+      <location filename="../../ArchSectionPlane.py" line="1225"/>
       <source>The size of the texts inside this object</source>
       <translation>このオブジェクト内部のテキストの幅</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1193"/>
+      <location filename="../../ArchSectionPlane.py" line="1228"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>チェックされている場合、ソースオブジェクトが3Dモデル内で表示されているかどうかに関わらず表示されます。</translation>
     </message>
@@ -1084,12 +1084,12 @@
       <translation>レイヤー厚みのリスト</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1195"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
       <source>The line color of the projected objects</source>
       <translation>投影オブジェクトの線の色</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1197"/>
+      <location filename="../../ArchSectionPlane.py" line="1232"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>カット面の色（有効な場合）</translation>
     </message>
@@ -1169,27 +1169,27 @@
       <translation>木目テクスチャ表示のオン/オフを切り替え</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="184"/>
+      <location filename="../../ArchRebar.py" line="185"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
       <translation>鉄筋が覆う長さの合計距離。ホスト形状のサイズを自動で使用する場合は0のままにしてください。</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="190"/>
+      <location filename="../../ArchRebar.py" line="191"/>
       <source>List of placement of all the bars</source>
       <translation>すべてのバーの配置のリスト</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="192"/>
+      <location filename="../../ArchRebar.py" line="193"/>
       <source>The structure object that hosts this rebar</source>
       <translation>この鉄筋を持つ構造オブジェクト</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="194"/>
+      <location filename="../../ArchRebar.py" line="195"/>
       <source>The custom spacing of rebar</source>
       <translation>鉄筋のユーザー設定間隔</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="501"/>
+      <location filename="../../ArchRebar.py" line="502"/>
       <source>Shape of rebar</source>
       <translation>鉄筋の形状</translation>
     </message>
@@ -1264,12 +1264,12 @@
       <translation>このレベルの (0,0,0) 点レベル</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="875"/>
+      <location filename="../../ArchSectionPlane.py" line="910"/>
       <source>The shape of this object</source>
       <translation>このオブジェクトの形</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="967"/>
+      <location filename="../../ArchSectionPlane.py" line="1002"/>
       <source>The line width of this object</source>
       <translation>オブジェクトの線幅</translation>
     </message>
@@ -1364,12 +1364,12 @@
       <translation>このオフセット値は、中心点から断面まで（を、どれくらい離すか）の距離です。</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="196"/>
+      <location filename="../../ArchRebar.py" line="197"/>
       <source>Length of a single rebar</source>
       <translation>ひとつの鉄筋の長さ</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="199"/>
+      <location filename="../../ArchRebar.py" line="200"/>
       <source>Total length of all rebars</source>
       <translation>すべての鉄筋の合計長さ</translation>
     </message>
@@ -1394,22 +1394,22 @@
       <translation>ここをTrueにした場合に、リンクしているファイルの色は更新された状態になります</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="877"/>
+      <location filename="../../ArchSectionPlane.py" line="912"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>この切断面の対象となるオブジェクト。空はドキュメント全体が対象。</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="964"/>
+      <location filename="../../ArchSectionPlane.py" line="999"/>
       <source>The transparency of this object</source>
       <translation>オブジェクトの透過度</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="972"/>
+      <location filename="../../ArchSectionPlane.py" line="1007"/>
       <source>The color of this object</source>
       <translation>このオブジェクトの色</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="977"/>
+      <location filename="../../ArchSectionPlane.py" line="1012"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>切断面と実際のビュー切断面の間の距離（ゼロでない非常に小さな値を設定してください）</translation>
     </message>
@@ -1629,12 +1629,12 @@
       <translation>IFC属性の説明はまだ実装されていません</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="882"/>
+      <location filename="../../ArchSectionPlane.py" line="917"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>ここがTrue の場合、結果ビューは断面平面エリアでクリップされます。</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="884"/>
+      <location filename="../../ArchSectionPlane.py" line="919"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>ここがtrue の場合、オブジェクト素材の色がカット領域の塗りつぶしに用いられます。</translation>
     </message>
@@ -1836,7 +1836,7 @@
     <message>
       <location filename="../../ArchCurtainWall.py" line="262"/>
       <source>The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</source>
-      <translation type="unfinished">The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</translation>
+      <translation>このオブジェクトで使用される垂直方向の参照は、垂直／水平の方向を推定します。それには帳壁をほぼ垂直方向に近づけておきます。</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="209"/>
@@ -1941,17 +1941,17 @@
     <message>
       <location filename="../../ArchWall.py" line="717"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</source>
-      <translation type="unfinished">This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</translation>
+      <translation>これは Width 属性をオーバーライドして、壁の各セグメントの幅を設定します。Base オブジェクトの幅の情報がgetWidths() メソッドによって決定される場合は無視されます。 (1 番目の値は壁の 1 番目のセグメントの 'Width' 属性を上書きします。もし値が0（零） の場合、'OverrideWidth' の 1 番目の値に従います)</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="720"/>
       <source>This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</source>
-      <translation type="unfinished">This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</translation>
+      <translation>これにより、壁の各セグメントのAlign 属性をAlign に設定します。 Base オブジェクトのアライメント情報をgetAligns() メソッドによって決定される場合は無視します。 (1 番目の値は壁の 1 番目のセグメントの 'Align' 属性を上書きします; 値が 'Left, Right, Center' でない場合、'OverrideAlign' の1番目の値に従います)</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="725"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
-      <translation type="unfinished">The area of this wall as a simple Height * Length calculation</translation>
+      <translation>この壁の面積 (area) は、単純に「高さ×長さ」の計算となります</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="540"/>
@@ -1961,7 +1961,7 @@
     <message>
       <location filename="../../ArchCurtainWall.py" line="175"/>
       <source>An optional host object for this curtain wall</source>
-      <translation type="unfinished">An optional host object for this curtain wall</translation>
+      <translation>この帳壁におけるオプションのホストオブジェクト</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="177"/>
@@ -1999,7 +1999,7 @@
       <translation>風配図を表示するか否か。 太陽線図の尺度が用いられます。これには Ladybugモジュールを必要とします。</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="202"/>
+      <location filename="../../ArchRebar.py" line="203"/>
       <source>The rebar mark</source>
       <translation type="unfinished">The rebar mark</translation>
     </message>
@@ -2142,7 +2142,7 @@
       <translation>表示 </translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="852"/>
+      <location filename="../../ArchSectionPlane.py" line="887"/>
       <source>Create Section Plane</source>
       <translation>断面平面を作成</translation>
     </message>
@@ -2262,7 +2262,7 @@
       <translation>軸組の作成</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="145"/>
+      <location filename="../../ArchRebar.py" line="146"/>
       <source>Create Rebar</source>
       <translation>異形鉄筋を作成</translation>
     </message>
@@ -3217,7 +3217,7 @@ Floor creation aborted.</source>
       <translation>プロファイル</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="152"/>
+      <location filename="../../ArchRebar.py" line="153"/>
       <source>Please select a base face on a structural object</source>
       <translation>構造オブジェクト上から基準面を選択してください</translation>
     </message>
@@ -3227,37 +3227,37 @@ Floor creation aborted.</source>
       <translation>外部参照を作成</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1434"/>
+      <location filename="../../ArchSectionPlane.py" line="1448"/>
       <source>Section plane settings</source>
-      <translation type="unfinished">Section plane settings</translation>
+      <translation>断面平面の設定</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1439"/>
+      <location filename="../../ArchSectionPlane.py" line="1453"/>
       <source>Objects seen by this section plane:</source>
       <translation type="unfinished">Objects seen by this section plane:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1440"/>
+      <location filename="../../ArchSectionPlane.py" line="1454"/>
       <source>Section plane placement:</source>
       <translation type="unfinished">Section plane placement:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1441"/>
+      <location filename="../../ArchSectionPlane.py" line="1455"/>
       <source>Rotate X</source>
       <translation>X軸で回転</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1443"/>
+      <location filename="../../ArchSectionPlane.py" line="1457"/>
       <source>Rotate Y</source>
       <translation>Y軸で回転</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1445"/>
+      <location filename="../../ArchSectionPlane.py" line="1459"/>
       <source>Rotate Z</source>
       <translation>Z軸で回転</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1447"/>
+      <location filename="../../ArchSectionPlane.py" line="1461"/>
       <source>Resize</source>
       <translation>リサイズ</translation>
     </message>
@@ -3411,42 +3411,42 @@ You can change that in the preferences.</source>
 この動作はユーザー設定から変更できます。</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1436"/>
+      <location filename="../../ArchSectionPlane.py" line="1450"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>リスト上からハイライトしたオブジェクトを削除します</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1437"/>
+      <location filename="../../ArchSectionPlane.py" line="1451"/>
       <source>Add selected</source>
       <translation>選択追加</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1438"/>
+      <location filename="../../ArchSectionPlane.py" line="1452"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>選択したオブジェクト(複数可) をこの断面平面のスコープに追加</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1442"/>
+      <location filename="../../ArchSectionPlane.py" line="1456"/>
       <source>Rotates the plane along the X axis</source>
       <translation>X軸に沿って平面を回転</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1444"/>
+      <location filename="../../ArchSectionPlane.py" line="1458"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Y軸に沿って平面を回転</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1446"/>
+      <location filename="../../ArchSectionPlane.py" line="1460"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Z軸に沿って平面を回転</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1448"/>
+      <location filename="../../ArchSectionPlane.py" line="1462"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>リスト上のオブジェクトがフィットするように平面のサイズを変更します</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1450"/>
+      <location filename="../../ArchSectionPlane.py" line="1464"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation type="unfinished">Centers the plane on the objects in the list above</translation>
     </message>
@@ -3473,7 +3473,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchStructure.py" line="370"/>
       <source>Drawing mode</source>
-      <translation type="unfinished">Drawing mode</translation>
+      <translation>ドローイング・モード</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="371"/>
@@ -3558,7 +3558,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchWindow.py" line="331"/>
       <source>Auto include in host object</source>
-      <translation type="unfinished">Auto include in host object</translation>
+      <translation>ホストオブジェクトへ自動的に含める</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="337"/>
@@ -3573,7 +3573,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchTruss.py" line="98"/>
       <source>Please select only one base object or none</source>
-      <translation type="unfinished">Please select only one base object or none</translation>
+      <translation>ベースオブジェクトを1つだけ選択するか、何も選択しないでください。</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="147"/>
@@ -3588,7 +3588,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchMaterial.py" line="882"/>
       <source>depends on the object</source>
-      <translation type="unfinished">depends on the object</translation>
+      <translation>オブジェクトによって異なる</translation>
     </message>
     <message>
       <location filename="../../ArchProject.py" line="127"/>
@@ -3598,7 +3598,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchSchedule.py" line="556"/>
       <source>Unable to recognize that file type</source>
-      <translation type="unfinished">Unable to recognize that file type</translation>
+      <translation>そのファイルの種類を認識できません</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="68"/>
@@ -3781,7 +3781,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="180"/>
       <source>Opens a browser dialog to choose a class from a BIM standard</source>
-      <translation type="unfinished">Opens a browser dialog to choose a class from a BIM standard</translation>
+      <translation>ブラウザダイアログを開き、BIM標準からクラスを選択します。</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="244"/>
@@ -3947,7 +3947,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchCurtainWall.py" line="106"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
-      <translation type="unfinished">Creates a curtain wall object from selected line or from scratch</translation>
+      <translation>選択した線またはスクラッチから帳壁ブジェクトを作成</translation>
     </message>
   </context>
   <context>
@@ -3965,12 +3965,12 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchCutPlane.py" line="80"/>
       <source>Cut with a line</source>
-      <translation type="unfinished">Cut with a line</translation>
+      <translation>平面で切断</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="81"/>
       <source>Cut an object with a line with normal workplane</source>
-      <translation type="unfinished">Cut an object with a line with normal workplane</translation>
+      <translation>通常のワークプレーンを持つ線でオブジェクトを切断</translation>
     </message>
   </context>
   <context>
@@ -4009,7 +4009,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchFloor.py" line="116"/>
       <source>Creates a Building Part object that represents a level, including selected objects</source>
-      <translation type="unfinished">Creates a Building Part object that represents a level, including selected objects</translation>
+      <translation>選択したオブジェクトを含むレベルを代表するビルディング部品のオブジェクトを作成します。</translation>
     </message>
   </context>
   <context>
@@ -4265,7 +4265,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchProfile.py" line="120"/>
       <source>Creates a profile object</source>
-      <translation type="unfinished">Creates a profile object</translation>
+      <translation>プロファイル・オブジェクトを作成</translation>
     </message>
   </context>
   <context>
@@ -4278,18 +4278,18 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../../ArchProject.py" line="100"/>
       <source>Creates a project entity aggregating the selected sites.</source>
-      <translation type="unfinished">Creates a project entity aggregating the selected sites.</translation>
+      <translation>選択したサイトを集約しているプロジェクト・エンティティーを作成します。</translation>
     </message>
   </context>
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="../../ArchRebar.py" line="107"/>
+      <location filename="../../ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>構造オブジェクトの選択した面から異形鉄筋を作成します</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="105"/>
+      <location filename="../../ArchRebar.py" line="106"/>
       <source>Custom Rebar</source>
       <translation>ユーザー設定による鉄筋</translation>
     </message>
@@ -4362,12 +4362,12 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="836"/>
+      <location filename="../../ArchSectionPlane.py" line="871"/>
       <source>Section Plane</source>
       <translation>断面</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="837"/>
+      <location filename="../../ArchSectionPlane.py" line="872"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>選択されたオブジェクトを含む断面オブジェクトを作成します</translation>
     </message>
@@ -4721,7 +4721,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="29"/>
       <source>Leave this empty to generate one at export</source>
-      <translation type="unfinished">Leave this empty to generate one at export</translation>
+      <translation>ここを空欄のままにしておくと、エクスポートする都度に生成されます</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="38"/>
@@ -4761,7 +4761,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="107"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
-      <translation type="unfinished">If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</translation>
+      <translation>ここを有効にすると、関連するスプレッドシートに含められる結果が、スケジュールオブジェクトと共に保持されるようになります</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="110"/>
@@ -4771,7 +4771,7 @@ You can change that in the preferences.</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="117"/>
       <source>If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>ここをオンにすると、追加の行は各オブジェクトで満されると見なされます。そうでない場合は、合計のみです。</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="120"/>
@@ -5673,7 +5673,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="280"/>
       <source>The IFC version will change which attributes and products are supported</source>
-      <translation type="unfinished">The IFC version will change which attributes and products are supported</translation>
+      <translation>IFCバージョンによっては、サポートされている属性および製品が変わります</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="290"/>
@@ -5723,7 +5723,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="450"/>
       <source>Import full FreeCAD parametric definitions if available</source>
-      <translation type="unfinished">Import full FreeCAD parametric definitions if available</translation>
+      <translation>利用可能な場合は、完全な FreeCAD パラメトリック定義をインポート</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="283"/>
@@ -5831,9 +5831,7 @@ Use this to force all objects to be exported as BREP geometry.</source>
       <source>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</source>
-      <translation type="unfinished">When exporting objects without unique ID (UID), the generated UID
-will be stored inside the FreeCAD object for reuse next time that object
-is exported. This leads to smaller differences between file versions.</translation>
+      <translation>一意のID (UID) の無いオブジェクトをエクスポートする場合、生成されたUIDがFreeCADオブジェクトの内部に保存され、そのオブジェクトを次回エクスポートする場合に再使用されます。これによってバージョン間の差分を小さくできます。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="167"/>
@@ -5912,7 +5910,7 @@ However, at FreeCAD, we believe having a building should not be mandatory, and t
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="318"/>
       <source>Add default building if one is not found in the document (no standard)</source>
-      <translation type="unfinished">Add default building if one is not found in the document (no standard)</translation>
+      <translation>ドキュメントに未記載の場合は、既定のビルディングを付加します。(標準ではない)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="334"/>
@@ -6015,7 +6013,7 @@ they will be treated as one.</source>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="383"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
-      <translation type="unfinished">IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</translation>
+      <translation>IFCファイルには、妥当でなかったり非ソリッドのジオメトリーが含まれていることがあります。このオプションにチェックが入っている場合、妥当性に関係なくすべてのジオメトリーがインポートされます。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="386"/>
@@ -6038,8 +6036,7 @@ This will slow down the import, but one can watch the import.</translation>
       <location filename="../ui/preferences-ifc.ui" line="446"/>
       <source>Creates a full parametric model on import using stored
 FreeCAD object properties</source>
-      <translation type="unfinished">Creates a full parametric model on import using stored
-FreeCAD object properties</translation>
+      <translation>インポート時に読み込まれたFreeCADオブジェクトのプロパティを使用して、完全なパラメトリックモデルを作成します</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="71"/>

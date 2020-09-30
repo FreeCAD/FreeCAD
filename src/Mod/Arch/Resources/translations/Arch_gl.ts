@@ -29,7 +29,7 @@
       <translation>O estilo de numeración</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="277"/>
+      <location filename="../../ArchBuildingPart.py" line="262"/>
       <source>The type of this building</source>
       <translation>O tipo desta construción</translation>
     </message>
@@ -114,7 +114,7 @@
       <translation>A área de chan calculada para este andar</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="873"/>
+      <location filename="../../ArchSectionPlane.py" line="908"/>
       <source>The placement of this object</source>
       <translation>A situación deste obxecto</translation>
     </message>
@@ -204,12 +204,12 @@
       <translation>A dirección de extrusión normal deste obxecto (manter (0,0,0) para normal automática)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1212"/>
       <source>The linked object</source>
       <translation>O obxecto ligado</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1187"/>
+      <location filename="../../ArchSectionPlane.py" line="1222"/>
       <source>The line width of the rendered objects</source>
       <translation>A largura da liña dos obxectos renderizados</translation>
     </message>
@@ -504,37 +504,37 @@
       <translation>Grosor do flanco</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="173"/>
+      <location filename="../../ArchRebar.py" line="174"/>
       <source>The diameter of the bar</source>
       <translation>O diámetro da barra</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="175"/>
+      <location filename="../../ArchRebar.py" line="176"/>
       <source>The distance between the border of the beam and the first bar (concrete cover).</source>
       <translation>A distancia entre o bordo da trabe e a primeira correa (cuberta de formigón).</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="177"/>
+      <location filename="../../ArchRebar.py" line="178"/>
       <source>The distance between the border of the beam and the last bar (concrete cover).</source>
       <translation>A distancia entre o bordo da trabe e a derradeira correa (cuberta de formigón).</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="179"/>
+      <location filename="../../ArchRebar.py" line="180"/>
       <source>The amount of bars</source>
       <translation>A cantidade de correas</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="181"/>
+      <location filename="../../ArchRebar.py" line="182"/>
       <source>The spacing between the bars</source>
       <translation>O espazado entre correas</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="186"/>
+      <location filename="../../ArchRebar.py" line="187"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
       <translation>A dirección a usar para estender as correas. Manteña (0,0,0) para a dirección automática.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="188"/>
+      <location filename="../../ArchRebar.py" line="189"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
       <translation>O arredondado a aplicar para o ángulo do perfil de base. Este valor multiplícase polo diámetro da barra.</translation>
     </message>
@@ -614,52 +614,52 @@
       <translation>A folla de cálculo para imprimir os resultados</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="879"/>
+      <location filename="../../ArchSectionPlane.py" line="914"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Se é falso, os non-sólidos serán cortados tamén, con posibles resultados errados.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="949"/>
+      <location filename="../../ArchSectionPlane.py" line="984"/>
       <source>The display length of this section plane</source>
       <translation>A lonxitude visualizada deste plano de corte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="955"/>
+      <location filename="../../ArchSectionPlane.py" line="990"/>
       <source>The display height of this section plane</source>
       <translation>A altura visualizada deste plano de corte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="961"/>
+      <location filename="../../ArchSectionPlane.py" line="996"/>
       <source>The size of the arrows of this section plane</source>
       <translation>O tamaño das frechas deste plano de corte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="975"/>
+      <location filename="../../ArchSectionPlane.py" line="1010"/>
       <source>Show the cut in the 3D view</source>
       <translation>Amosar o corte na visualización 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1179"/>
+      <location filename="../../ArchSectionPlane.py" line="1214"/>
       <source>The rendering mode to use</source>
       <translation>O xeito de renderización para usar</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1183"/>
+      <location filename="../../ArchSectionPlane.py" line="1218"/>
       <source>If cut geometry is shown or not</source>
       <translation>Se se amosa ou non a xeometría do corte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1185"/>
+      <location filename="../../ArchSectionPlane.py" line="1220"/>
       <source>If cut geometry is filled or not</source>
       <translation>Se se enche ou non a xeometría do corte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1190"/>
+      <location filename="../../ArchSectionPlane.py" line="1225"/>
       <source>The size of the texts inside this object</source>
       <translation>O tamaño dos textos dentro deste obxecto</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1193"/>
+      <location filename="../../ArchSectionPlane.py" line="1228"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Se é marcada, os obxectos de orixe amósanse independentemente de seren visibles no modelo 3D</translation>
     </message>
@@ -1084,12 +1084,12 @@
       <translation>Lista dos grosores de capa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1195"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
       <source>The line color of the projected objects</source>
       <translation>Cor de liña dos obxectos proxectados</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1197"/>
+      <location filename="../../ArchSectionPlane.py" line="1232"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Cor das caras talladas (se está activado)</translation>
     </message>
@@ -1169,27 +1169,27 @@
       <translation>Activa e amosa a textura da vea da madeira on/off</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="184"/>
+      <location filename="../../ArchRebar.py" line="185"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
       <translation>Distancia total onde se colocarán as barras de reforzo. Manter 0 para usar automaticamente a xeometría do obxecto pai.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="190"/>
+      <location filename="../../ArchRebar.py" line="191"/>
       <source>List of placement of all the bars</source>
       <translation>Lista de colocación de tódalas barras</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="192"/>
+      <location filename="../../ArchRebar.py" line="193"/>
       <source>The structure object that hosts this rebar</source>
       <translation>Obxecto de estrutura que contén esta barra de reforzo</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="194"/>
+      <location filename="../../ArchRebar.py" line="195"/>
       <source>The custom spacing of rebar</source>
       <translation>Espazo persoalizado da barra corrugada</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="501"/>
+      <location filename="../../ArchRebar.py" line="502"/>
       <source>Shape of rebar</source>
       <translation>Forma da barra</translation>
     </message>
@@ -1264,12 +1264,12 @@
       <translation>O nivel do punto (0,0,0) deste nivel</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="875"/>
+      <location filename="../../ArchSectionPlane.py" line="910"/>
       <source>The shape of this object</source>
       <translation>A forma desde obxecto</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="967"/>
+      <location filename="../../ArchSectionPlane.py" line="1002"/>
       <source>The line width of this object</source>
       <translation>Largura da lixa desde obxecto</translation>
     </message>
@@ -1364,12 +1364,12 @@
       <translation>Un valor de desprazamento para mover un plano de tallada dende o punto central</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="196"/>
+      <location filename="../../ArchRebar.py" line="197"/>
       <source>Length of a single rebar</source>
       <translation>Lonxitude dunha barra de reforzo senlleira</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="199"/>
+      <location filename="../../ArchRebar.py" line="200"/>
       <source>Total length of all rebars</source>
       <translation>Lonxitude dotal de tódolos reforzos</translation>
     </message>
@@ -1394,22 +1394,22 @@
       <translation>Se é certo, as cores dende o ficheiro ligado manteranse actualizadas</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="877"/>
+      <location filename="../../ArchSectionPlane.py" line="912"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Os obxectos que deben ser considerados por este plano de corte. Baleiro significa todo o documento.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="964"/>
+      <location filename="../../ArchSectionPlane.py" line="999"/>
       <source>The transparency of this object</source>
       <translation>A transparencia deste obxecto</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="972"/>
+      <location filename="../../ArchSectionPlane.py" line="1007"/>
       <source>The color of this object</source>
       <translation>A cor deste obxecto</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="977"/>
+      <location filename="../../ArchSectionPlane.py" line="1012"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>A distancia entre o plano de corte mais a vista actual de corte (mantén isto nun valor baixo pero non cero)</translation>
     </message>
@@ -1629,12 +1629,12 @@
       <translation>Descrición dos atributos IFC aínda non estando implementados</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="882"/>
+      <location filename="../../ArchSectionPlane.py" line="917"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Se é Certo, os resultados das vistas serán recortados á área do plano de corte.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="884"/>
+      <location filename="../../ArchSectionPlane.py" line="919"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Se é verdadeiro, a cor dos obxectos materiais será usada para raiar áreas de tallada.</translation>
     </message>
@@ -1999,7 +1999,7 @@
       <translation type="unfinished">Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="202"/>
+      <location filename="../../ArchRebar.py" line="203"/>
       <source>The rebar mark</source>
       <translation type="unfinished">The rebar mark</translation>
     </message>
@@ -2142,7 +2142,7 @@
       <translation>Vista de</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="852"/>
+      <location filename="../../ArchSectionPlane.py" line="887"/>
       <source>Create Section Plane</source>
       <translation>Facer plano de corte</translation>
     </message>
@@ -2262,7 +2262,7 @@
       <translation>Crear estrutura</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="145"/>
+      <location filename="../../ArchRebar.py" line="146"/>
       <source>Create Rebar</source>
       <translation>Crear armazón</translation>
     </message>
@@ -3203,7 +3203,7 @@ Floor creation aborted.</source>
       <translation>Perfil</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="152"/>
+      <location filename="../../ArchRebar.py" line="153"/>
       <source>Please select a base face on a structural object</source>
       <translation>Por favor escolme unha face base nun obxecto estrutural</translation>
     </message>
@@ -3213,37 +3213,37 @@ Floor creation aborted.</source>
       <translation>Crear referencia externa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1434"/>
+      <location filename="../../ArchSectionPlane.py" line="1448"/>
       <source>Section plane settings</source>
       <translation>Axustes do plano de corte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1439"/>
+      <location filename="../../ArchSectionPlane.py" line="1453"/>
       <source>Objects seen by this section plane:</source>
       <translation>Obxectos vistos por este plano de corte:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1440"/>
+      <location filename="../../ArchSectionPlane.py" line="1454"/>
       <source>Section plane placement:</source>
       <translation>Situación do Plano de corte:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1441"/>
+      <location filename="../../ArchSectionPlane.py" line="1455"/>
       <source>Rotate X</source>
       <translation>Rotar X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1443"/>
+      <location filename="../../ArchSectionPlane.py" line="1457"/>
       <source>Rotate Y</source>
       <translation>Rotar Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1445"/>
+      <location filename="../../ArchSectionPlane.py" line="1459"/>
       <source>Rotate Z</source>
       <translation>Rotar Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1447"/>
+      <location filename="../../ArchSectionPlane.py" line="1461"/>
       <source>Resize</source>
       <translation>Redimensionar</translation>
     </message>
@@ -3399,42 +3399,42 @@ Obxectos Sitio e Edificio serán removidos dende a selección.
 Podes trocar esas preferencias.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1436"/>
+      <location filename="../../ArchSectionPlane.py" line="1450"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Remover obxectos destacados dende a lista de enriba</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1437"/>
+      <location filename="../../ArchSectionPlane.py" line="1451"/>
       <source>Add selected</source>
       <translation>Engadir escolma</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1438"/>
+      <location filename="../../ArchSectionPlane.py" line="1452"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Engadir obxecto(s) escolmados ao ámbito de aplicación deste plano de sección</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1442"/>
+      <location filename="../../ArchSectionPlane.py" line="1456"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Rotar o plano ao longo do eixe X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1444"/>
+      <location filename="../../ArchSectionPlane.py" line="1458"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Rotar o plano ao longo do eixe Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1446"/>
+      <location filename="../../ArchSectionPlane.py" line="1460"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Rotar o plano ao longo do eixe Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1448"/>
+      <location filename="../../ArchSectionPlane.py" line="1462"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Redimensiona o plano para que os obxectos da lista de enriba collan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1450"/>
+      <location filename="../../ArchSectionPlane.py" line="1464"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centra o plano na lista de obxectos de enriba</translation>
     </message>
@@ -4272,12 +4272,12 @@ Podes trocar esas preferencias.</translation>
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="../../ArchRebar.py" line="107"/>
+      <location filename="../../ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Crea unha armazón de reforzo da cara escolmada dun obxecto estrutural</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="105"/>
+      <location filename="../../ArchRebar.py" line="106"/>
       <source>Custom Rebar</source>
       <translation>Barra de reforzo personalizada</translation>
     </message>
@@ -4350,12 +4350,12 @@ Podes trocar esas preferencias.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="836"/>
+      <location filename="../../ArchSectionPlane.py" line="871"/>
       <source>Section Plane</source>
       <translation>Plano de corte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="837"/>
+      <location filename="../../ArchSectionPlane.py" line="872"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Crea un obxecto Plano de corte, incluíndo os obxectos escolmados</translation>
     </message>

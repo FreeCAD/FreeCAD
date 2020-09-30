@@ -431,6 +431,14 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Out Of Range</source>
       <translation>Fóra de rango</translation>
     </message>
+    <message>
+      <source> "</source>
+      <translation type="unfinished"> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation type="unfinished">"</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
@@ -1059,16 +1067,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Botóns</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Baleirar</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Impresionar referencia</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Botóns do SpaceBall</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Restaurar</translation>
     </message>
   </context>
   <context>
@@ -2103,10 +2111,6 @@ Por favor, especifique outro directorio.</translation>
       <translation type="unfinished">Filter by type</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be sychronize with full object hierarchy.</translation>
-    </message>
-    <message>
       <source>Sync sub-object selection</source>
       <translation type="unfinished">Sync sub-object selection</translation>
     </message>
@@ -2117,6 +2121,10 @@ Por favor, especifique outro directorio.</translation>
     <message>
       <source>Clear</source>
       <translation>Baleirar</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
     </message>
   </context>
   <context>
@@ -3216,6 +3224,34 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
       <source>The directory in which the application will search for macros</source>
       <translation type="unfinished">The directory in which the application will search for macros</translation>
     </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation type="unfinished">Recent macros menu</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation type="unfinished">Size of recent macro list</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation type="unfinished">Shortcut count</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation type="unfinished">Keyboard Modifiers</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
@@ -3515,6 +3551,10 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
+    </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation type="unfinished">FEM (mm, N, sec)</translation>
     </message>
   </context>
   <context>
@@ -4683,6 +4723,20 @@ Quere gardar os cambios?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::FileChooser</name>
     <message>
       <source>Select a file</source>
@@ -5308,6 +5362,21 @@ Quere saír sen gardar os seus datos?</translation>
     <message>
       <source>Open file %1</source>
       <translation>Abrir o ficheiro %1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Ficheiro non atopado</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>O ficheiro '%1', non se pode abrir.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6646,6 +6715,50 @@ Choose 'Abort' to abort</translation>
       <source>Override colors...</source>
       <translation type="unfinished">Override colors...</translation>
     </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation type="unfinished">
+
+Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>
+
+Pyhsical path: </source>
+      <translation type="unfinished">
+
+Pyhsical path: </translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation type="unfinished">
+Document: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation type="unfinished">
+  Path: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation type="unfinished">Identical physical path</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -7850,6 +7963,21 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Recent file list</source>
       <translation>Listaxe de ficheiros recentes</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Macro</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation type="unfinished">Recent macros</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation type="unfinished">Recent macro list</translation>
     </message>
   </context>
   <context>

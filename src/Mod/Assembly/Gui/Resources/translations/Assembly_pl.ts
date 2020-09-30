@@ -6,7 +6,7 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.cpp" line="52"/>
       <source>Constraints</source>
-      <translation>Ograniczenia</translation>
+      <translation>Wiązania</translation>
     </message>
   </context>
   <context>

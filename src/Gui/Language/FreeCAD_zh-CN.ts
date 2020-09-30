@@ -418,7 +418,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Collection</source>
-      <translation type="unfinished">Collection</translation>
+      <translation>集合</translation>
     </message>
   </context>
   <context>
@@ -430,6 +430,14 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>超出范围</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation type="unfinished"> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation type="unfinished">"</translation>
     </message>
   </context>
   <context>
@@ -1019,7 +1027,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
+      <translation>%1 模块未加载</translation>
     </message>
   </context>
   <context>
@@ -1059,16 +1067,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>按钮</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>清除</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>打印参考</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>三维鼠标按键</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>重设</translation>
     </message>
   </context>
   <context>
@@ -1641,9 +1649,9 @@ Perhaps a file permission error?</source>
 
 Note: your changes will be applied when you next switch workbenches
 </source>
-      <translation type="unfinished">This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
+      <translation>这将引导您在自定义的全局工具栏中设置此宏。指示将以红色文本显示在对话框中。
 
-Note: your changes will be applied when you next switch workbenches
+注意：当您下次切换工作台时，您的更改将被应用
 </translation>
     </message>
     <message>
@@ -2096,10 +2104,6 @@ Specify another directory, please.</source>
       <translation>按类型筛选</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be sychronize with full object hierarchy.</translation>
-    </message>
-    <message>
       <source>Sync sub-object selection</source>
       <translation type="unfinished">Sync sub-object selection</translation>
     </message>
@@ -2110,6 +2114,10 @@ Specify another directory, please.</source>
     <message>
       <source>Clear</source>
       <translation>清除</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
     </message>
   </context>
   <context>
@@ -2194,8 +2202,7 @@ on-screen while displaying the error</source>
     <message>
       <source>When a warning has occurred, the Report View dialog becomes visible
 on-screen while displaying the warning</source>
-      <translation type="unfinished">When a warning has occurred, the Report View dialog becomes visible
-on-screen while displaying the warning</translation>
+      <translation>当警告发生时，当显示警告时，报告视图对话框会在屏幕上显示</translation>
     </message>
     <message>
       <source>Show report view on warning</source>
@@ -2231,11 +2238,11 @@ on-screen while displaying the log message</translation>
     </message>
     <message>
       <source>Font color for warning messages in Report view panel</source>
-      <translation type="unfinished">Font color for warning messages in Report view panel</translation>
+      <translation>报告视图面板中警告信息的字体颜色</translation>
     </message>
     <message>
       <source>Font color for error messages in Report view panel</source>
-      <translation type="unfinished">Font color for error messages in Report view panel</translation>
+      <translation>报表视图面板错误消息的字体颜色</translation>
     </message>
     <message>
       <source>Internal Python output will be redirected
@@ -2370,8 +2377,8 @@ from Python console to Report view panel</translation>
     <message>
       <source>Main coordinate system will always be shown in
 lower right corner within opened files</source>
-      <translation type="unfinished">Main coordinate system will always be shown in
-lower right corner within opened files</translation>
+      <translation>主坐标系统将始终显示在打开文件的
+右下角</translation>
     </message>
     <message>
       <source>Time needed for last operation and resulting frame rate
@@ -2475,7 +2482,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Eye to eye distance for stereo modes</source>
-      <translation type="unfinished">Eye to eye distance for stereo modes</translation>
+      <translation>立体模式的双眼距离</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
@@ -2487,27 +2494,27 @@ bounding box size of the 3D object that is currently displayed. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
-      <translation type="unfinished">Backlight is enabled with the defined color</translation>
+      <translation>已启用带有定义颜色的背光</translation>
     </message>
     <message>
       <source>Backlight color</source>
-      <translation type="unfinished">Backlight color</translation>
+      <translation>背光颜色</translation>
     </message>
     <message>
       <source>Intensity</source>
-      <translation type="unfinished">Intensity</translation>
+      <translation>强度</translation>
     </message>
     <message>
       <source>Intensity of the backlight</source>
-      <translation type="unfinished">Intensity of the backlight</translation>
+      <translation>背光强度</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
-      <translation type="unfinished">Objects will be projected in orthographic projection</translation>
+      <translation>对象将以正投影法投射。</translation>
     </message>
     <message>
       <source>Objects will appear in a perspective projection</source>
-      <translation type="unfinished">Objects will appear in a perspective projection</translation>
+      <translation>对象将以透视投影法显示</translation>
     </message>
     <message>
       <source>Axis cross will be shown by default at file
@@ -3207,6 +3214,34 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
       <source>The directory in which the application will search for macros</source>
       <translation type="unfinished">The directory in which the application will search for macros</translation>
     </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation type="unfinished">Recent macros menu</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation type="unfinished">Size of recent macro list</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation type="unfinished">Shortcut count</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation type="unfinished">Keyboard Modifiers</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
@@ -3506,6 +3541,10 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
+    </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation type="unfinished">FEM (mm, N, sec)</translation>
     </message>
   </context>
   <context>
@@ -4672,6 +4711,20 @@ Do you want to save your changes?</source>
     </message>
   </context>
   <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::FileChooser</name>
     <message>
       <source>Select a file</source>
@@ -5292,6 +5345,21 @@ Do you want to exit without saving your data?</source>
     <message>
       <source>Open file %1</source>
       <translation>打开文件%1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>文件未找到</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>无法打开文件'%1'.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6556,7 +6624,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Invalid name</source>
-      <translation type="unfinished">Invalid name</translation>
+      <translation>名称无效</translation>
     </message>
     <message>
       <source>The property name or group name must only contain alpha numericals,
@@ -6627,6 +6695,50 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Override colors...</source>
       <translation type="unfinished">Override colors...</translation>
+    </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation type="unfinished">
+
+Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>
+
+Pyhsical path: </source>
+      <translation type="unfinished">
+
+Pyhsical path: </translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation type="unfinished">
+Document: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation type="unfinished">
+  Path: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation type="unfinished">Identical physical path</translation>
     </message>
   </context>
   <context>
@@ -7835,6 +7947,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>宏</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation type="unfinished">Recent macros</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation type="unfinished">Recent macro list</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -7902,7 +8029,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Save All</source>
-      <translation type="unfinished">Save All</translation>
+      <translation>全部保存</translation>
     </message>
     <message>
       <source>Save all opened document</source>
@@ -8112,7 +8239,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Add text document</source>
-      <translation type="unfinished">Add text document</translation>
+      <translation>添加文本文档</translation>
     </message>
     <message>
       <source>Add text document to active document</source>
@@ -8288,7 +8415,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Collapse selected item</source>
-      <translation type="unfinished">Collapse selected item</translation>
+      <translation>折叠所选项</translation>
     </message>
     <message>
       <source>Collapse currently selected tree items</source>
@@ -8303,7 +8430,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Expand selected item</source>
-      <translation type="unfinished">Expand selected item</translation>
+      <translation>展开所选项</translation>
     </message>
     <message>
       <source>Expand currently selected tree items</source>
@@ -8528,11 +8655,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Home</source>
-      <translation type="unfinished">Home</translation>
+      <translation>主页</translation>
     </message>
     <message>
       <source>Set to default home view</source>
-      <translation type="unfinished">Set to default home view</translation>
+      <translation>设置为默认主视图</translation>
     </message>
   </context>
   <context>

@@ -11,17 +11,17 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
       <source>Style name</source>
-      <translation type="unfinished">Style name</translation>
+      <translation>Namn på stil</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>Add new...</source>
-      <translation type="unfinished">Add new...</translation>
+      <translation>Lägg till ny...</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="61"/>
       <source>Renames the selected style</source>
-      <translation type="unfinished">Renames the selected style</translation>
+      <translation>Döper om den valda stilen</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="64"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="86"/>
       <source>Deletes the selected style</source>
-      <translation type="unfinished">Deletes the selected style</translation>
+      <translation>Tar bort den valda stilen</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="89"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
       <source>Decimals</source>
-      <translation type="unfinished">Decimals</translation>
+      <translation>Decimaler</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="212"/>
@@ -86,12 +86,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
       <source>Show unit</source>
-      <translation type="unfinished">Show unit</translation>
+      <translation>Visa enhet</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="275"/>
       <source>Line and arrows</source>
-      <translation type="unfinished">Line and arrows</translation>
+      <translation>Rad och pilar</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="284"/>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="314"/>
       <source>Show lines</source>
-      <translation type="unfinished">Show lines</translation>
+      <translation>Visa rader</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="324"/>
@@ -171,7 +171,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="163"/>
       <source>Font size in the system units</source>
-      <translation type="unfinished">Font size in the system units</translation>
+      <translation>Storlek på teckensnitt i systemenheter</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="136"/>
@@ -181,17 +181,17 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation type="unfinished">A multiplier factor that affects the size of texts and markers</translation>
+      <translation>En multipel som påverkar storleken på texter och markörer</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="249"/>
       <source>The number of decimals to show for dimension values</source>
-      <translation type="unfinished">The number of decimals to show for dimension values</translation>
+      <translation>Antalet decimaler som ska visas för dimensionsvärden</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="242"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation type="unfinished">Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</translation>
+      <translation>Ange en giltig längdenhet som mm, m, in, ft, för att tvinga fram dimensionsvärdet i denna enhet</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="259"/>
@@ -258,7 +258,7 @@ menyverktyg -&gt; Insticksmodulshanterare</translation>
     <message>
       <location filename="../../InitGui.py" line="107"/>
       <source>Draft utility tools</source>
-      <translation type="unfinished">Draft utility tools</translation>
+      <translation>Verktyg för utkast</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="110"/>
@@ -308,7 +308,7 @@ Change the direction of the axis itself in the property editor.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="61"/>
       <source>Center of rotation</source>
-      <translation type="unfinished">Center of rotation</translation>
+      <translation>Rotationscentrum</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="69"/>
@@ -333,7 +333,7 @@ Change the direction of the axis itself in the property editor.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="134"/>
       <source>Reset point</source>
-      <translation type="unfinished">Reset point</translation>
+      <translation>Återställningspunkt</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="146"/>
@@ -396,7 +396,7 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="254"/>
       <source>Number of circular layers</source>
-      <translation type="unfinished">Number of circular layers</translation>
+      <translation>Antal cirkulära lager</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="264"/>
@@ -406,7 +406,7 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="273"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(Platshållare för ikonen)</translation>
     </message>
   </context>
   <context>
@@ -453,7 +453,7 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="125"/>
       <source>Reset Z</source>
-      <translation type="unfinished">Reset Z</translation>
+      <translation>Återställ Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="137"/>
@@ -482,7 +482,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="177"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(Platshållare för ikonen)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="184"/>
@@ -496,12 +496,12 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="189"/>
       <source>X intervals</source>
-      <translation type="unfinished">X intervals</translation>
+      <translation>X intervall</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="265"/>
       <source>Reset X</source>
-      <translation type="unfinished">Reset X</translation>
+      <translation>Återställ X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="275"/>
@@ -552,7 +552,7 @@ Change the direction of the axis itself in the property editor.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="61"/>
       <source>Center of rotation</source>
-      <translation type="unfinished">Center of rotation</translation>
+      <translation>Rotationscentrum</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="69"/>
@@ -577,7 +577,7 @@ Change the direction of the axis itself in the property editor.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="134"/>
       <source>Reset point</source>
-      <translation type="unfinished">Reset point</translation>
+      <translation>Återställningspunkt</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="146"/>
@@ -632,7 +632,7 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="235"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(Platshållare för ikonen)</translation>
     </message>
   </context>
   <context>
@@ -735,7 +735,7 @@ Eller markera ett av alternativen nedan</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="51"/>
       <source>Sets the working plane to the YZ plane (side plane)</source>
-      <translation type="unfinished">Sets the working plane to the YZ plane (side plane)</translation>
+      <translation>Ställer in arbetsplanet till YZ-planet (sidoplan)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="54"/>
@@ -745,7 +745,7 @@ Eller markera ett av alternativen nedan</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="61"/>
       <source>Sets the working plane facing the current view</source>
-      <translation type="unfinished">Sets the working plane facing the current view</translation>
+      <translation>Ställer in arbetsplanet som vetter mot den aktuella vyn</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="64"/>
@@ -1376,7 +1376,7 @@ som "Arial:Bold"</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="149"/>
       <source> text inside (3D)</source>
-      <translation>Text inuti (3D)</translation>
+      <translation> text inuti (3D)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="326"/>
@@ -1973,7 +1973,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="14"/>
       <source>User interface settings</source>
-      <translation type="unfinished">User interface settings</translation>
+      <translation>Inställningar för användargränssnitt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="884"/>
@@ -1983,7 +1983,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="887"/>
       <source>Draft Statusbar</source>
-      <translation type="unfinished">Draft Statusbar</translation>
+      <translation>Statusfält för utkast</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="907"/>
@@ -2152,7 +2152,7 @@ instead of the size they have in the DXF document</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="408"/>
       <source>Use Layers</source>
-      <translation type="unfinished">Use Layers</translation>
+      <translation>Använd lager</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="428"/>
@@ -2237,12 +2237,12 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../../importDWG.py" line="275"/>
       <source>Converting: </source>
-      <translation type="unfinished">Converting: </translation>
+      <translation>Konverterar: </translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="231"/>
       <source>Conversion successful</source>
-      <translation type="unfinished">Conversion successful</translation>
+      <translation>Konverteringen lyckades</translation>
     </message>
   </context>
   <context>
@@ -2251,6 +2251,11 @@ This value is the maximum segment length. </translation>
       <location filename="../../importSVG.py" line="1807"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation type="unfinished">Unknown SVG export style, switching to Translated</translation>
+    </message>
+    <message>
+      <location filename="../../importSVG.py" line="1826"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
     </message>
   </context>
   <context>
@@ -2886,7 +2891,7 @@ För att tillåta FreeCAD att ladda ned dessa bibliotek, svara Ja.</translation>
     <message>
       <location filename="../../importOCA.py" line="490"/>
       <source>successfully exported </source>
-      <translation type="unfinished">successfully exported </translation>
+      <translation>exporteringen lyckades</translation>
     </message>
   </context>
 </TS>

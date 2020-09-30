@@ -29,7 +29,7 @@
       <translation>編號樣式</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="277"/>
+      <location filename="../../ArchBuildingPart.py" line="262"/>
       <source>The type of this building</source>
       <translation>這個建築的類型</translation>
     </message>
@@ -114,7 +114,7 @@
       <translation>這個樓層的計算樓面面積</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="873"/>
+      <location filename="../../ArchSectionPlane.py" line="908"/>
       <source>The placement of this object</source>
       <translation>這個對象的位置</translation>
     </message>
@@ -204,12 +204,12 @@
       <translation>該對象的法向拉伸方向(保持 (0,0,0) 表示自動法向)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1212"/>
       <source>The linked object</source>
       <translation>鏈接的對象</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1187"/>
+      <location filename="../../ArchSectionPlane.py" line="1222"/>
       <source>The line width of the rendered objects</source>
       <translation>著色對象的線寬</translation>
     </message>
@@ -504,37 +504,37 @@
       <translation>法蘭盤厚度</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="173"/>
+      <location filename="../../ArchRebar.py" line="174"/>
       <source>The diameter of the bar</source>
       <translation>欄的直徑</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="175"/>
+      <location filename="../../ArchRebar.py" line="176"/>
       <source>The distance between the border of the beam and the first bar (concrete cover).</source>
       <translation>梁與第一個欄之間的距離 (混凝土保護層)。</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="177"/>
+      <location filename="../../ArchRebar.py" line="178"/>
       <source>The distance between the border of the beam and the last bar (concrete cover).</source>
       <translation>梁的邊界和最後一個欄 (混凝土保護層) 之間的距離。</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="179"/>
+      <location filename="../../ArchRebar.py" line="180"/>
       <source>The amount of bars</source>
       <translation>欄的數量</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="181"/>
+      <location filename="../../ArchRebar.py" line="182"/>
       <source>The spacing between the bars</source>
       <translation>欄之間的間距</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="186"/>
+      <location filename="../../ArchRebar.py" line="187"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
       <translation>用於延伸欄的方向。保持 (0,0,0) 自動方向。</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="188"/>
+      <location filename="../../ArchRebar.py" line="189"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
       <translation>要應用在底部輪廓角度的圓角。此值是欄直徑的倍數。</translation>
     </message>
@@ -614,52 +614,52 @@
       <translation>要將結果列印到的試算表上</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="879"/>
+      <location filename="../../ArchSectionPlane.py" line="914"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>如果是假的，非固態的也會被剪切，可能會有錯誤的結果。</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="949"/>
+      <location filename="../../ArchSectionPlane.py" line="984"/>
       <source>The display length of this section plane</source>
       <translation>此剖面的顯示長度</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="955"/>
+      <location filename="../../ArchSectionPlane.py" line="990"/>
       <source>The display height of this section plane</source>
       <translation>此剖面的顯示高度</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="961"/>
+      <location filename="../../ArchSectionPlane.py" line="996"/>
       <source>The size of the arrows of this section plane</source>
       <translation>此剖面箭頭的大小</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="975"/>
+      <location filename="../../ArchSectionPlane.py" line="1010"/>
       <source>Show the cut in the 3D view</source>
       <translation>在3 D 視圖中顯示修剪</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1179"/>
+      <location filename="../../ArchSectionPlane.py" line="1214"/>
       <source>The rendering mode to use</source>
       <translation>要使用的渲染模式</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1183"/>
+      <location filename="../../ArchSectionPlane.py" line="1218"/>
       <source>If cut geometry is shown or not</source>
       <translation>是否顯示修剪幾何</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1185"/>
+      <location filename="../../ArchSectionPlane.py" line="1220"/>
       <source>If cut geometry is filled or not</source>
       <translation>修剪幾何是否填充</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1190"/>
+      <location filename="../../ArchSectionPlane.py" line="1225"/>
       <source>The size of the texts inside this object</source>
       <translation>此對象內文本的大小</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1193"/>
+      <location filename="../../ArchSectionPlane.py" line="1228"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>如果選中，則無論在 3D 模型中是否可見，都將顯示源對象</translation>
     </message>
@@ -1084,12 +1084,12 @@
       <translation>層厚度清單</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1195"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
       <source>The line color of the projected objects</source>
       <translation type="unfinished">The line color of the projected objects</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1197"/>
+      <location filename="../../ArchSectionPlane.py" line="1232"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>修剪面的顏色 (如果打開)</translation>
     </message>
@@ -1169,27 +1169,27 @@
       <translation type="unfinished">Turns the display of the wood grain texture on/off</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="184"/>
+      <location filename="../../ArchRebar.py" line="185"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
       <translation type="unfinished">The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="190"/>
+      <location filename="../../ArchRebar.py" line="191"/>
       <source>List of placement of all the bars</source>
       <translation type="unfinished">List of placement of all the bars</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="192"/>
+      <location filename="../../ArchRebar.py" line="193"/>
       <source>The structure object that hosts this rebar</source>
       <translation type="unfinished">The structure object that hosts this rebar</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="194"/>
+      <location filename="../../ArchRebar.py" line="195"/>
       <source>The custom spacing of rebar</source>
       <translation type="unfinished">The custom spacing of rebar</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="501"/>
+      <location filename="../../ArchRebar.py" line="502"/>
       <source>Shape of rebar</source>
       <translation type="unfinished">Shape of rebar</translation>
     </message>
@@ -1264,12 +1264,12 @@
       <translation type="unfinished">The level of the (0,0,0) point of this level</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="875"/>
+      <location filename="../../ArchSectionPlane.py" line="910"/>
       <source>The shape of this object</source>
       <translation type="unfinished">The shape of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="967"/>
+      <location filename="../../ArchSectionPlane.py" line="1002"/>
       <source>The line width of this object</source>
       <translation type="unfinished">The line width of this object</translation>
     </message>
@@ -1364,12 +1364,12 @@
       <translation type="unfinished">An offset value to move the cut plane from the center point</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="196"/>
+      <location filename="../../ArchRebar.py" line="197"/>
       <source>Length of a single rebar</source>
       <translation type="unfinished">Length of a single rebar</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="199"/>
+      <location filename="../../ArchRebar.py" line="200"/>
       <source>Total length of all rebars</source>
       <translation type="unfinished">Total length of all rebars</translation>
     </message>
@@ -1394,22 +1394,22 @@
       <translation type="unfinished">If true, the colors from the linked file will be kept updated</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="877"/>
+      <location filename="../../ArchSectionPlane.py" line="912"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation type="unfinished">The objects that must be considered by this section plane. Empty means the whole document.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="964"/>
+      <location filename="../../ArchSectionPlane.py" line="999"/>
       <source>The transparency of this object</source>
       <translation type="unfinished">The transparency of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="972"/>
+      <location filename="../../ArchSectionPlane.py" line="1007"/>
       <source>The color of this object</source>
       <translation type="unfinished">The color of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="977"/>
+      <location filename="../../ArchSectionPlane.py" line="1012"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation type="unfinished">The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</translation>
     </message>
@@ -1629,12 +1629,12 @@
       <translation type="unfinished">Description of IFC attributes are not yet implemented</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="882"/>
+      <location filename="../../ArchSectionPlane.py" line="917"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation type="unfinished">If True, resulting views will be clipped to the section plane area.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="884"/>
+      <location filename="../../ArchSectionPlane.py" line="919"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation type="unfinished">If true, the color of the objects material will be used to fill cut areas.</translation>
     </message>
@@ -1999,7 +1999,7 @@
       <translation type="unfinished">Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="202"/>
+      <location filename="../../ArchRebar.py" line="203"/>
       <source>The rebar mark</source>
       <translation>螺紋符號</translation>
     </message>
@@ -2142,7 +2142,7 @@
       <translation>視圖</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="852"/>
+      <location filename="../../ArchSectionPlane.py" line="887"/>
       <source>Create Section Plane</source>
       <translation>建立剖面</translation>
     </message>
@@ -2262,7 +2262,7 @@
       <translation type="unfinished">Create Frame</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="145"/>
+      <location filename="../../ArchRebar.py" line="146"/>
       <source>Create Rebar</source>
       <translation>建立鋼筋</translation>
     </message>
@@ -3216,7 +3216,7 @@ Floor creation aborted.</translation>
       <translation>外觀</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="152"/>
+      <location filename="../../ArchRebar.py" line="153"/>
       <source>Please select a base face on a structural object</source>
       <translation type="unfinished">Please select a base face on a structural object</translation>
     </message>
@@ -3226,37 +3226,37 @@ Floor creation aborted.</translation>
       <translation type="unfinished">Create external reference</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1434"/>
+      <location filename="../../ArchSectionPlane.py" line="1448"/>
       <source>Section plane settings</source>
       <translation type="unfinished">Section plane settings</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1439"/>
+      <location filename="../../ArchSectionPlane.py" line="1453"/>
       <source>Objects seen by this section plane:</source>
       <translation type="unfinished">Objects seen by this section plane:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1440"/>
+      <location filename="../../ArchSectionPlane.py" line="1454"/>
       <source>Section plane placement:</source>
       <translation type="unfinished">Section plane placement:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1441"/>
+      <location filename="../../ArchSectionPlane.py" line="1455"/>
       <source>Rotate X</source>
       <translation type="unfinished">Rotate X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1443"/>
+      <location filename="../../ArchSectionPlane.py" line="1457"/>
       <source>Rotate Y</source>
       <translation type="unfinished">Rotate Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1445"/>
+      <location filename="../../ArchSectionPlane.py" line="1459"/>
       <source>Rotate Z</source>
       <translation type="unfinished">Rotate Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1447"/>
+      <location filename="../../ArchSectionPlane.py" line="1461"/>
       <source>Resize</source>
       <translation type="unfinished">Resize</translation>
     </message>
@@ -3413,42 +3413,42 @@ Site and Building objects will be removed from the selection.
 You can change that in the preferences.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1436"/>
+      <location filename="../../ArchSectionPlane.py" line="1450"/>
       <source>Remove highlighted objects from the list above</source>
       <translation type="unfinished">Remove highlighted objects from the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1437"/>
+      <location filename="../../ArchSectionPlane.py" line="1451"/>
       <source>Add selected</source>
       <translation type="unfinished">Add selected</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1438"/>
+      <location filename="../../ArchSectionPlane.py" line="1452"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1442"/>
+      <location filename="../../ArchSectionPlane.py" line="1456"/>
       <source>Rotates the plane along the X axis</source>
       <translation type="unfinished">Rotates the plane along the X axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1444"/>
+      <location filename="../../ArchSectionPlane.py" line="1458"/>
       <source>Rotates the plane along the Y axis</source>
       <translation type="unfinished">Rotates the plane along the Y axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1446"/>
+      <location filename="../../ArchSectionPlane.py" line="1460"/>
       <source>Rotates the plane along the Z axis</source>
       <translation type="unfinished">Rotates the plane along the Z axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1448"/>
+      <location filename="../../ArchSectionPlane.py" line="1462"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1450"/>
+      <location filename="../../ArchSectionPlane.py" line="1464"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation type="unfinished">Centers the plane on the objects in the list above</translation>
     </message>
@@ -4286,12 +4286,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="../../ArchRebar.py" line="107"/>
+      <location filename="../../ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation type="unfinished">Creates a Reinforcement bar from the selected face of a structural object</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="105"/>
+      <location filename="../../ArchRebar.py" line="106"/>
       <source>Custom Rebar</source>
       <translation type="unfinished">Custom Rebar</translation>
     </message>
@@ -4364,12 +4364,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="836"/>
+      <location filename="../../ArchSectionPlane.py" line="871"/>
       <source>Section Plane</source>
       <translation>剖面</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="837"/>
+      <location filename="../../ArchSectionPlane.py" line="872"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>建立剖面物件,包含選擇的物件</translation>
     </message>

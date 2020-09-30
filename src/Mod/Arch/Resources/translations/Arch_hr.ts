@@ -29,7 +29,7 @@
       <translation>Stil numeriranja</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="277"/>
+      <location filename="../../ArchBuildingPart.py" line="262"/>
       <source>The type of this building</source>
       <translation>Vrsta ove zgrade</translation>
     </message>
@@ -114,7 +114,7 @@
       <translation>izracun poda  i povrsine poda</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="873"/>
+      <location filename="../../ArchSectionPlane.py" line="908"/>
       <source>The placement of this object</source>
       <translation>polozaj objekta</translation>
     </message>
@@ -204,12 +204,12 @@
       <translation>Smjer normalnog istiskivanja objekta (zadrži (0,0,0) za automatsko normalno)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1212"/>
       <source>The linked object</source>
       <translation>Povezani objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1187"/>
+      <location filename="../../ArchSectionPlane.py" line="1222"/>
       <source>The line width of the rendered objects</source>
       <translation>Širine crte iscrtanih objekata</translation>
     </message>
@@ -504,37 +504,37 @@
       <translation>Debljina prirubnice</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="173"/>
+      <location filename="../../ArchRebar.py" line="174"/>
       <source>The diameter of the bar</source>
       <translation>Promjer šipke</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="175"/>
+      <location filename="../../ArchRebar.py" line="176"/>
       <source>The distance between the border of the beam and the first bar (concrete cover).</source>
       <translation>Udaljenost od ruba grede i prve (armaturne) šipke (betonski poklopac).</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="177"/>
+      <location filename="../../ArchRebar.py" line="178"/>
       <source>The distance between the border of the beam and the last bar (concrete cover).</source>
       <translation>Udaljenost od ruba nosača i zadnje (armaturne) šipke (betonski poklopac).</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="179"/>
+      <location filename="../../ArchRebar.py" line="180"/>
       <source>The amount of bars</source>
       <translation>Količina šipki</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="181"/>
+      <location filename="../../ArchRebar.py" line="182"/>
       <source>The spacing between the bars</source>
       <translation>Razmak između šipki</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="186"/>
+      <location filename="../../ArchRebar.py" line="187"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
       <translation>Smjer kojim će se širiti šipke. Zadrži (0,0,0) za automatski smjer.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="188"/>
+      <location filename="../../ArchRebar.py" line="189"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
       <translation>Obrubi za primjenu na kutu osnovnog profila. Ova vrijednost se množi sa promjerom šipke.</translation>
     </message>
@@ -614,52 +614,52 @@
       <translation>Proračunska tablica za ispis rezultata na</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="879"/>
+      <location filename="../../ArchSectionPlane.py" line="914"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Ako je netočno, ne krute tvari će se rezati također, s moguće lošim rezultatom.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="949"/>
+      <location filename="../../ArchSectionPlane.py" line="984"/>
       <source>The display length of this section plane</source>
       <translation>Dužina prikaza ovog djela ravni</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="955"/>
+      <location filename="../../ArchSectionPlane.py" line="990"/>
       <source>The display height of this section plane</source>
       <translation>Visina prikaza ovog djela ravni</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="961"/>
+      <location filename="../../ArchSectionPlane.py" line="996"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Veličina strelica ovog dijela ravni</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="975"/>
+      <location filename="../../ArchSectionPlane.py" line="1010"/>
       <source>Show the cut in the 3D view</source>
       <translation>Prikaži presjek u 3D pogledu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1179"/>
+      <location filename="../../ArchSectionPlane.py" line="1214"/>
       <source>The rendering mode to use</source>
       <translation>Mod iscrtavanja koji se koristi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1183"/>
+      <location filename="../../ArchSectionPlane.py" line="1218"/>
       <source>If cut geometry is shown or not</source>
       <translation>Da li je geometrija rezanja prikazana ili ne</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1185"/>
+      <location filename="../../ArchSectionPlane.py" line="1220"/>
       <source>If cut geometry is filled or not</source>
       <translation>Da li je geometrija rezanja ispunjena ili ne</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1190"/>
+      <location filename="../../ArchSectionPlane.py" line="1225"/>
       <source>The size of the texts inside this object</source>
       <translation>Veličina tekstova unutar ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1193"/>
+      <location filename="../../ArchSectionPlane.py" line="1228"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Ako je označeno, izvorni objekti prikazuju se bez obzira jesu li vidljivi u 3D modelu</translation>
     </message>
@@ -1084,12 +1084,12 @@
       <translation>Lista debljina slojeva</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1195"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
       <source>The line color of the projected objects</source>
       <translation>Boja linije projiciranih objekata</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1197"/>
+      <location filename="../../ArchSectionPlane.py" line="1232"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Boja za lice rezanja (ako je uključeno)</translation>
     </message>
@@ -1169,27 +1169,27 @@
       <translation>Prebacuje prikazivanje tekstura zrna drva na uključeno/isključeno</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="184"/>
+      <location filename="../../ArchRebar.py" line="185"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
       <translation>Ukupna udaljenost raspona u čelićnoj u konstrukciji. Držite 0 za automatsku veličinu.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="190"/>
+      <location filename="../../ArchRebar.py" line="191"/>
       <source>List of placement of all the bars</source>
       <translation>Lista položaja svih šipki</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="192"/>
+      <location filename="../../ArchRebar.py" line="193"/>
       <source>The structure object that hosts this rebar</source>
       <translation>Struktura objekta koji sadrži ovu čeličnu armaturu</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="194"/>
+      <location filename="../../ArchRebar.py" line="195"/>
       <source>The custom spacing of rebar</source>
       <translation>Korisničko prilagođeni razmak čelične armature</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="501"/>
+      <location filename="../../ArchRebar.py" line="502"/>
       <source>Shape of rebar</source>
       <translation>Oblik čelične armature</translation>
     </message>
@@ -1264,12 +1264,12 @@
       <translation>Nivo (0,0,0) točke ovog Nivoa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="875"/>
+      <location filename="../../ArchSectionPlane.py" line="910"/>
       <source>The shape of this object</source>
       <translation>Oblik ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="967"/>
+      <location filename="../../ArchSectionPlane.py" line="1002"/>
       <source>The line width of this object</source>
       <translation>Debljina linije ovog objekta</translation>
     </message>
@@ -1364,12 +1364,12 @@
       <translation>Vrijednost pomaka za pomicanje ravnine skraćivanja od središnje točke</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="196"/>
+      <location filename="../../ArchRebar.py" line="197"/>
       <source>Length of a single rebar</source>
       <translation>Dužina (jedne) armature</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="199"/>
+      <location filename="../../ArchRebar.py" line="200"/>
       <source>Total length of all rebars</source>
       <translation>Ukupna dužina armature</translation>
     </message>
@@ -1394,22 +1394,22 @@
       <translation>Ako je istina, boje iz povezane datoteke će biti automatski ažurirane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="877"/>
+      <location filename="../../ArchSectionPlane.py" line="912"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Objekti koji se razmatraju po dijelu ravni. Prazno znači čitav dokument.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="964"/>
+      <location filename="../../ArchSectionPlane.py" line="999"/>
       <source>The transparency of this object</source>
       <translation>Prozirnost ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="972"/>
+      <location filename="../../ArchSectionPlane.py" line="1007"/>
       <source>The color of this object</source>
       <translation>Boja ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="977"/>
+      <location filename="../../ArchSectionPlane.py" line="1012"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Udaljenost između ravnine rezanja i aktualnog pogleda rezanja (mala vrijednost ali ne nula)</translation>
     </message>
@@ -1629,12 +1629,12 @@
       <translation>Opis IFC atributa još nije ugrađeno</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="882"/>
+      <location filename="../../ArchSectionPlane.py" line="917"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Ako je točno, rezultirajući prikazi bit će izrezani na područje ravnine odjeljka.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="884"/>
+      <location filename="../../ArchSectionPlane.py" line="919"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Ako je istina, boja predmeta materijala upotrijebit će se za popunjavanje izrezanih područja.</translation>
     </message>
@@ -1961,52 +1961,66 @@
     <message>
       <location filename="../../ArchBuildingPart.py" line="540"/>
       <source>If True, double-clicking this object in the tree activates it</source>
-      <translation type="unfinished">If True, double-clicking this object in the tree activates it</translation>
+      <translation>Ako je točno, dvostrukim klikom na ovaj objekt u stablu aktivira se
+
+</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="175"/>
       <source>An optional host object for this curtain wall</source>
-      <translation type="unfinished">An optional host object for this curtain wall</translation>
+      <translation>Opcionalni domaćin objekt za ovu viseću vanjsku fasadu
+
+</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="177"/>
       <source>The height of the curtain wall, if based on an edge</source>
-      <translation type="unfinished">The height of the curtain wall, if based on an edge</translation>
+      <translation>Visina viseće vanjske fasade, ako se temelji na rubu
+
+</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="196"/>
       <source>The height of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the vertical mullions profile, if no profile is used</translation>
+      <translation>Visina profila vertikalnih mullionsa, ako se ne koristi profil
+
+</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="200"/>
       <source>The width of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the vertical mullions profile, if no profile is used</translation>
+      <translation>Širina profila vertikalnih mullionsa, ako se ne koristi profil
+
+</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="222"/>
       <source>The height of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the horizontal mullions profile, if no profile is used</translation>
+      <translation>Visina profila horizontalnih mullionsa, ako se ne koristi profil
+
+</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="226"/>
       <source>The width of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the horizontal mullions profile, if no profile is used</translation>
+      <translation>Širina profila horizontalnih mullionsa, ako se ne koristi profil</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="643"/>
       <source>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</source>
-      <translation type="unfinished">An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</translation>
+      <translation>Neobvezna EPW datoteka za lokaciju ove web stranice. Pogledajte dokumentaciju web mjesta kako biste saznali kako je dobiti</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="837"/>
       <source>Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</source>
-      <translation type="unfinished">Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</translation>
+      <translation>Prikaži dijagram  wind rose ili ne. Koristi solarnu ljestvicu dijagrama. Potreban je modul Ladybug
+
+</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="202"/>
+      <location filename="../../ArchRebar.py" line="203"/>
       <source>The rebar mark</source>
-      <translation type="unfinished">The rebar mark</translation>
+      <translation>Oznaka čelične armature</translation>
     </message>
   </context>
   <context>
@@ -2147,7 +2161,7 @@
       <translation>Pogled od</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="852"/>
+      <location filename="../../ArchSectionPlane.py" line="887"/>
       <source>Create Section Plane</source>
       <translation>Izradi ravninu presjeka</translation>
     </message>
@@ -2267,7 +2281,7 @@
       <translation>Izradi okvir</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="145"/>
+      <location filename="../../ArchRebar.py" line="146"/>
       <source>Create Rebar</source>
       <translation>Izgradi Građevinsko željezo</translation>
     </message>
@@ -3221,7 +3235,7 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Profil</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="152"/>
+      <location filename="../../ArchRebar.py" line="153"/>
       <source>Please select a base face on a structural object</source>
       <translation>Odaberite osnovno lice na strukturni objekt</translation>
     </message>
@@ -3231,37 +3245,37 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Stvaranje vanjske reference</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1434"/>
+      <location filename="../../ArchSectionPlane.py" line="1448"/>
       <source>Section plane settings</source>
       <translation>Postavke odsječka ravni</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1439"/>
+      <location filename="../../ArchSectionPlane.py" line="1453"/>
       <source>Objects seen by this section plane:</source>
       <translation>Objekti viđeni sa ovog djela ravni:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1440"/>
+      <location filename="../../ArchSectionPlane.py" line="1454"/>
       <source>Section plane placement:</source>
       <translation>Položaj odsječka ravni:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1441"/>
+      <location filename="../../ArchSectionPlane.py" line="1455"/>
       <source>Rotate X</source>
       <translation>Rotiraj X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1443"/>
+      <location filename="../../ArchSectionPlane.py" line="1457"/>
       <source>Rotate Y</source>
       <translation>Rotiraj Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1445"/>
+      <location filename="../../ArchSectionPlane.py" line="1459"/>
       <source>Rotate Z</source>
       <translation>Rotiraj Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1447"/>
+      <location filename="../../ArchSectionPlane.py" line="1461"/>
       <source>Resize</source>
       <translation>Promjena veličine</translation>
     </message>
@@ -3418,42 +3432,42 @@ Parcela i Zgrada uklanjaju se iz odabira.
 To možete promijeniti u postavkama.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1436"/>
+      <location filename="../../ArchSectionPlane.py" line="1450"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Ukloni istaknute objekte sa liste iznad</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1437"/>
+      <location filename="../../ArchSectionPlane.py" line="1451"/>
       <source>Add selected</source>
       <translation>Dodaj odabrano</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1438"/>
+      <location filename="../../ArchSectionPlane.py" line="1452"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Dodajte odabrane objekte u područje ovog djela ravni</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1442"/>
+      <location filename="../../ArchSectionPlane.py" line="1456"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Rotiraj ravninu uzduž X osi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1444"/>
+      <location filename="../../ArchSectionPlane.py" line="1458"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Rotiraj ravninu uzduž Y osi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1446"/>
+      <location filename="../../ArchSectionPlane.py" line="1460"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Rotiraj ravninu uzduž Z osi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1448"/>
+      <location filename="../../ArchSectionPlane.py" line="1462"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Promijeni veličinu ravnine radi postavljanja objekata na gornji popis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1450"/>
+      <location filename="../../ArchSectionPlane.py" line="1464"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centrira ravninu na objekte na gornjem popisu</translation>
     </message>
@@ -3630,12 +3644,12 @@ To možete promijeniti u postavkama.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="134"/>
       <source>Create profile</source>
-      <translation type="unfinished">Create profile</translation>
+      <translation>Izradi profil</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="142"/>
       <source>Profile settings</source>
-      <translation type="unfinished">Profile settings</translation>
+      <translation>Postavke profila</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="188"/>
@@ -3645,52 +3659,60 @@ To možete promijeniti u postavkama.</translation>
     <message>
       <location filename="../../importSHP.py" line="71"/>
       <source>Shapes elevation</source>
-      <translation type="unfinished">Shapes elevation</translation>
+      <translation>Podizanje oblika</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="71"/>
       <source>Choose which field provides shapes elevations:</source>
-      <translation type="unfinished">Choose which field provides shapes elevations:</translation>
+      <translation>Odaberite koje polje pruža podizanje oblika
+
+</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="114"/>
       <source>No shape found in this file</source>
-      <translation type="unfinished">No shape found in this file</translation>
+      <translation>U ovoj datoteci nije pronađen oblik</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="138"/>
       <source>Shapefile module not found</source>
-      <translation type="unfinished">Shapefile module not found</translation>
+      <translation>Modul Datoteka Oblika nije pronađen</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="146"/>
       <source>Error: Unable to download from:</source>
-      <translation type="unfinished">Error: Unable to download from:</translation>
+      <translation>Pogreška: Preuzimanje nije moguće s:</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="158"/>
       <source>Could not download shapefile module. Aborting.</source>
-      <translation type="unfinished">Could not download shapefile module. Aborting.</translation>
+      <translation>Nije moguće preuzeti modul Datoteka Oblika. Prekid.
+
+</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="161"/>
       <source>Shapefile module not downloaded. Aborting.</source>
-      <translation type="unfinished">Shapefile module not downloaded. Aborting.</translation>
+      <translation>Datoteka Oblika modul nije učitan. Prekid.</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="164"/>
       <source>Shapefile module not found. Aborting.</source>
-      <translation type="unfinished">Shapefile module not found. Aborting.</translation>
+      <translation>Datoteka Oblika modul nije pronađen. Prekid.</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="165"/>
       <source>The shapefile library can be downloaded from the following URL and installed in your macros folder:</source>
-      <translation type="unfinished">The shapefile library can be downloaded from the following URL and installed in your macros folder:</translation>
+      <translation>Biblioteka Datoteka Oblika može se preuzeti sa sljedećeg URL-a i instalirati u mapu makronaredbi:
+
+</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="138"/>
       <source>The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</source>
-      <translation type="unfinished">The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
+      <translation>Python biblioteka Datoteke Oblika nije pronađena u vašem sustavu. Želite li je sada preuzeti sa &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? Bit će smještena u mapi makronaredbi.
+
+</translation>
     </message>
   </context>
   <context>
@@ -4272,7 +4294,7 @@ To možete promijeniti u postavkama.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="120"/>
       <source>Creates a profile object</source>
-      <translation type="unfinished">Creates a profile object</translation>
+      <translation>Napravi objekt profila</translation>
     </message>
   </context>
   <context>
@@ -4291,12 +4313,12 @@ To možete promijeniti u postavkama.</translation>
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="../../ArchRebar.py" line="107"/>
+      <location filename="../../ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Stvara šipku armature na osnovu odabranog lica od strukturnog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="105"/>
+      <location filename="../../ArchRebar.py" line="106"/>
       <source>Custom Rebar</source>
       <translation>Prilagođeno građevinsko željezo</translation>
     </message>
@@ -4369,12 +4391,12 @@ To možete promijeniti u postavkama.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="836"/>
+      <location filename="../../ArchSectionPlane.py" line="871"/>
       <source>Section Plane</source>
       <translation>Ravnina odjeljka</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="837"/>
+      <location filename="../../ArchSectionPlane.py" line="872"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Kreira plohu presjeka, ukljućujući odabrane objekte</translation>
     </message>
@@ -4813,10 +4835,12 @@ To možete promijeniti u postavkama.</translation>
 Can be "Count" to count the objects, or property names
 like "Length" or "Shape.Volume" to retrieve
 a certain property.</source>
-      <translation type="unfinished">The property to retrieve from each object.
-Can be "Count" to count the objects, or property names
-like "Length" or "Shape.Volume" to retrieve
-a certain property.</translation>
+      <translation>Svojstvo dohvaćanja iz svakog objekta.
+Može se "Brojati" za brojanje objekata ili imena svojstava
+poput "Duljina" ili "Oblik.Volume" za dohvaćanje
+određeno svojstvo.
+
+</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="86"/>
@@ -4824,15 +4848,16 @@ a certain property.</translation>
 (internal names, not labels), to be considered by this operation.
 If the list contains groups, children will be added.
 Leave blank to use all objects from the document</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
-Leave blank to use all objects from the document</translation>
+      <translation>Neobvezna točka zarez (;) odvojena popisom naziva objekata
+(unutarnja imena, a ne oznake) koje treba uzeti u obzir u ovoj operaciji.
+Ako popis sadrži grupe, bit će dodani potomci.
+Ostavite prazno da biste koristili sve predmete iz dokumenta</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="97"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opcionalna točka zarez (;) lista odvajanja vrijednosti :filtri vrijednosti. Dodaj! na ime svojstva, za invertiranje učinka filtara (izuzeti objekte koji se podudaraju s filtrom). Objekti čije svojstvo sadrži vrijednost će se uskladiti. Primjeri valjanih filtara (neosjetljivo na velika i mala slova):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Ime:Zid&lt;/span&gt;- Razmatrat će samo predmete sa&amp;quot;Zid&amp;quot; u svom imenu (interni naziv)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Ime:Zid&lt;/span&gt;- Razmotrit će samo predmete kod kojih NEMA &amp;quot;zid&amp;quot; u svom imenu (interni naziv)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Opis:Dobitak&lt;/span&gt;- Razmatrat će samo predmete sa &amp;quot;dobitak&amp;quot; u svom opisu&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Opis:Dobitak&lt;/span&gt;- Razmotrit će samo predmete kojih NEMAJU &amp;quot;dobitak&amp;quot; u njihovoj oznaci&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcTip:Zid&lt;/span&gt;- Razmotrit će samo predmete čiji  Ifc Tip je &amp;quot;Zid&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Oznaka:Zid&lt;/span&gt; - Razmotrit će samo predmete čija oznaka NIJE &amp;quot;Zid&amp;quot;&lt;/p&gt;&lt;p&gt;Ako ovo polje ostavite prazno, filtriranje se ne primjenjuje
+&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -5829,7 +5854,9 @@ Gradijent veličine lokalne mreže h (x) vezan je | Δh (x) | ≤ 1 / vrijednost
     <message>
       <location filename="../ui/preferences-dae.ui" line="290"/>
       <source>Allow quadrilateral faces</source>
-      <translation type="unfinished">Allow quadrilateral faces</translation>
+      <translation>Dopustite četverokutna lica
+
+</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="14"/>
@@ -6072,31 +6099,31 @@ Svojstva objekta FreeCAD-a</translation>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="71"/>
       <source>Export type</source>
-      <translation type="unfinished">Export type</translation>
+      <translation>Tip izvoza</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="91"/>
       <source>Standard model</source>
-      <translation type="unfinished">Standard model</translation>
+      <translation>Standardni model</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="96"/>
       <source>Structural analysis</source>
-      <translation type="unfinished">Structural analysis</translation>
+      <translation>Analiza strukture</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="101"/>
       <source>Standard + structural</source>
-      <translation type="unfinished">Standard + structural</translation>
+      <translation>Standardno + strukturno</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="144"/>
       <source>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
-      <translation type="unfinished">Curved shapes that cannot be represented as curves in IFC
-are decomposed into flat facets.
-If this is checked, an additional calculation is done to join coplanar facets.</translation>
+      <translation>Zakrivljeni oblici koji se ne mogu prikazati kao krivulje u IFC-u
+raspadaju se u ravne plohe.
+Ako je to potvrđeno, radi se dodatni izračun za pridruživanje koplanarnim plohama.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="78"/>
@@ -6104,10 +6131,12 @@ If this is checked, an additional calculation is done to join coplanar facets.</
 - Standard model: solid objects.
 - Structural analysis: wireframe model for structural calculations.
 - Standard + structural: both types of models.</source>
-      <translation type="unfinished">The type of objects that you wish to export:
-- Standard model: solid objects.
-- Structural analysis: wireframe model for structural calculations.
-- Standard + structural: both types of models.</translation>
+      <translation>Vrsta objekata koje želite izvesti:
+- Standardni model: kruti predmeti.
+- Strukturna analiza: žičani okvir za strukturne proračune.
+- Standard + strukturni: obje vrste modela.
+
+</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="368"/>
@@ -6117,12 +6146,13 @@ Note that IFC files are ALWAYS written in metric units; imperial units
 are only a conversion factor applied on top of them.
 However, some BIM applications will use this factor to choose which
 unit to work with when opening the file.</source>
-      <translation type="unfinished">The units you want your IFC file to be exported to.
+      <translation>Jedinice u koje želite izvesti svoju IFC datoteku.
 
-Note that IFC files are ALWAYS written in metric units; imperial units
-are only a conversion factor applied on top of them.
-However, some BIM applications will use this factor to choose which
-unit to work with when opening the file.</translation>
+Imajte na umu da su IFC datoteke UVIJEK napisane u mjernim jedinicama; zadane jedinice su samo faktor konverzije primijenjen na vrhu njih.
+Međutim, neke BIM aplikacije koristit će ovaj faktor za odabir
+jedinice s kojom treba raditi prilikom otvaranja datoteke.
+
+</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="119"/>
@@ -6134,19 +6164,20 @@ for example, 3 if you have a 4-core CPU.
 
 Set it to 1 to use multicore mode in single-core mode; this is safer
 if you start getting crashes when you set multiple cores.</source>
-      <translation type="unfinished">EXPERIMENTAL
-The number of cores to use in multicore mode.
-Keep 0 to disable multicore mode.
-The maximum value should be your number of cores minus 1,
-for example, 3 if you have a 4-core CPU.
+      <translation>EKSPERIMENTALNI DIO
+Broj jezgara koje se koriste u višekutnom načinu.
+Držite 0 da biste onemogućili višekutni način rada.
+Maksimalna vrijednost treba biti vaš broj jezgara minus 1,
+na primjer, 3 ako imate 4-jezgreni CPU.
 
-Set it to 1 to use multicore mode in single-core mode; this is safer
-if you start getting crashes when you set multiple cores.</translation>
+Postavite ga na 1 za upotrebu multicore načina u single-core načinu; to je sigurnije ako pokrenete rušenje kod postavljanja više jezgara.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="129"/>
       <source>Number of cores to use (experimental)</source>
-      <translation type="unfinished">Number of cores to use (experimental)</translation>
+      <translation>Broj jezgara koje se koriste (eksperimentalno)
+
+</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="463"/>
@@ -6154,15 +6185,16 @@ if you start getting crashes when you set multiple cores.</translation>
 objects that are usually found in an IFC file are not imported, and all objects
 are placed in a 'Group' instead.
 'Buildings' and 'Storeys' are still imported if there is more than one.</source>
-      <translation type="unfinished">If this option is checked, the default 'Project', 'Site', 'Building', and 'Storeys'
-objects that are usually found in an IFC file are not imported, and all objects
-are placed in a 'Group' instead.
-'Buildings' and 'Storeys' are still imported if there is more than one.</translation>
+      <translation>Ako je ova opcija potvrđena, zadane postavke "Projekt", "Web mjesto", "Zgrada" i "Etaže" objekti koji se obično nalaze u IFC datoteci se ne uvoze, a svi objekti
+umjesto toga smješteni su u "Grupu".
+"Zgrade" i "Etaže" i dalje se uvoze ako ih ima više.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="469"/>
       <source>Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</source>
-      <translation type="unfinished">Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</translation>
+      <translation>Zamijenite "Projekt", "Mjesto", "Zgrada" i "Etaža" s "Grupa"
+
+</translation>
     </message>
   </context>
   <context>

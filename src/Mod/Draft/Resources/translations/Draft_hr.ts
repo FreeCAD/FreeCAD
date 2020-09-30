@@ -166,67 +166,81 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="26"/>
       <source>The name of your style. Existing style names can be edited.</source>
-      <translation type="unfinished">The name of your style. Existing style names can be edited.</translation>
+      <translation>Ime vašeg stila. Postojeća imena stilova mogu se uređivati.
+
+</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="163"/>
       <source>Font size in the system units</source>
-      <translation type="unfinished">Font size in the system units</translation>
+      <translation>Veličina pisma u jedinicama sustava</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="136"/>
       <source>Line spacing in system units</source>
-      <translation type="unfinished">Line spacing in system units</translation>
+      <translation>Razmak linija u jedinicama sustava</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation type="unfinished">A multiplier factor that affects the size of texts and markers</translation>
+      <translation>Faktor množenja koji utječe na veličinu teksta i markera</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="249"/>
       <source>The number of decimals to show for dimension values</source>
-      <translation type="unfinished">The number of decimals to show for dimension values</translation>
+      <translation>Broj decimala koji će se prikazati za vrijednosti dimenzija
+
+</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="242"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation type="unfinished">Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</translation>
+      <translation>Navedite važeću jedinicu duljine kao što su mm, m, in, ft, da biste prisilili na prikaz vrijednosti dimenzija u ovoj jedinici
+
+</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="259"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation type="unfinished">If it is checked it will show the unit next to the dimension value</translation>
+      <translation>Ako je označen, prikazat će se jedinica pored vrijednosti dimenzije</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
       <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
-      <translation type="unfinished">The distance that the extension lines are additionally extended beyond the dimension line</translation>
+      <translation>Udaljenost koju produžne crte dodatno produžuju izvan dimenzijske crte
+
+</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
       <source>The size of the dimension arrows or markers in system units</source>
-      <translation type="unfinished">The size of the dimension arrows or markers in system units</translation>
+      <translation>Veličina strelica ili markera dimenzija u jedinicama sustava
+
+</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="361"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation type="unfinished">If it is checked it will display the dimension line</translation>
+      <translation>Ako je označen, prikazat će  liniju dimenzije</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
       <source>The distance that the dimension line is additionally extended</source>
-      <translation type="unfinished">The distance that the dimension line is additionally extended</translation>
+      <translation>Udaljenost koju linija dodatno produžuje
+
+</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
       <source>The length of the extension lines</source>
-      <translation type="unfinished">The length of the extension lines</translation>
+      <translation>Duljina linija produžetka</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="404"/>
       <source>The type of arrows or markers to use at the end of dimension lines</source>
-      <translation type="unfinished">The type of arrows or markers to use at the end of dimension lines</translation>
+      <translation>Vrsta strelica ili markera koje treba koristiti na kraju dimenzijskih linija
+
+</translation>
     </message>
   </context>
   <context>
@@ -2254,12 +2268,14 @@ Ova vrijednost je maksimalna duljina segmenta.
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="310"/>
       <source>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</source>
-      <translation type="unfinished">If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</translation>
+      <translation>Ako je potvrđeno, oko rešetke se prikazuje dodatan obrub koji u donjem lijevom obrubu prikazuje veličinu glavnog kvadrata
+
+</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="313"/>
       <source>Show grid border</source>
-      <translation type="unfinished">Show grid border</translation>
+      <translation>Pokaži obrub rešetke</translation>
     </message>
   </context>
   <context>
@@ -2281,6 +2297,11 @@ Ova vrijednost je maksimalna duljina segmenta.
       <location filename="../../importSVG.py" line="1807"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Nepoznati SVG stil izvoza, prebacivanje na Prevedeno</translation>
+    </message>
+    <message>
+      <location filename="../../importSVG.py" line="1826"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
     </message>
   </context>
   <context>

@@ -272,19 +272,6 @@ Klik op 'Doorgaan' om de functie toch te maken, of op 'Afbreken' als u wilt annu
     </message>
   </context>
   <context>
-    <name>Part_MakeTube</name>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-      <source>Create tube</source>
-      <translation>Buis aanmaken</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-      <source>Creates a tube</source>
-      <translation>Maakt een Buis</translation>
-    </message>
-  </context>
-  <context>
     <name>Part_SplitFeatures</name>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
@@ -358,6 +345,32 @@ Klik op 'Doorgaan' om de functie toch te maken, of op 'Afbreken' als u wilt annu
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
       <translation>Verwijder fragmenten van snijpunten</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Tube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="85"/>
+      <source>Create tube</source>
+      <translation>Buis aanmaken</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="89"/>
+      <source>Creates a tube</source>
+      <translation>Maakt een Buis</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
+      <source>Create tube</source>
+      <translation>Buis aanmaken</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation>Maakt een Buis</translation>
     </message>
   </context>
   <context>

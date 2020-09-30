@@ -4,7 +4,7 @@
   <context>
     <name>Cmd2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="641"/>
+      <location filename="../../CommandAnnotate.cpp" line="651"/>
       <source>Add Centerline between 2 Lines</source>
       <translation>Добавить осевую линию между 2 линиями</translation>
     </message>
@@ -12,7 +12,7 @@
   <context>
     <name>Cmd2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="645"/>
+      <location filename="../../CommandAnnotate.cpp" line="655"/>
       <source>Add Centerline between 2 Points</source>
       <translation>Добавить осевую линию между 2 точками</translation>
     </message>
@@ -20,28 +20,28 @@
   <context>
     <name>CmdMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="287"/>
+      <location filename="../../CommandAnnotate.cpp" line="295"/>
       <source>Add Midpoint Vertices</source>
-      <translation>Добавить вершины средней точки</translation>
+      <translation>Добавить Средние Вершины</translation>
     </message>
   </context>
   <context>
     <name>CmdQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="291"/>
+      <location filename="../../CommandAnnotate.cpp" line="299"/>
       <source>Add Quadrant Vertices</source>
-      <translation>Добавить вершины в четвертях</translation>
+      <translation>Добавить Вершины Квадрантов</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDraw2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="776"/>
+      <location filename="../../CommandAnnotate.cpp" line="786"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="777"/>
+      <location filename="../../CommandAnnotate.cpp" line="787"/>
       <source>Add Centerline between 2 Lines</source>
       <translation>Добавить осевую линию между 2 линиями</translation>
     </message>
@@ -49,25 +49,38 @@
   <context>
     <name>CmdTechDraw2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="853"/>
+      <location filename="../../CommandAnnotate.cpp" line="863"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="854"/>
+      <location filename="../../CommandAnnotate.cpp" line="864"/>
       <source>Add Centerline between 2 Points</source>
       <translation>Добавить осевую линию между 2 точками</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDraw3PtAngleDimension</name>
+    <name>CmdTechDraw2PointCosmeticLine</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="921"/>
+      <location filename="../../CommandAnnotate.cpp" line="976"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="922"/>
+      <location filename="../../CommandAnnotate.cpp" line="977"/>
+      <source>Add Cosmetic Line Through 2 Points</source>
+      <translation type="unfinished">Add Cosmetic Line Through 2 Points</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDraw3PtAngleDimension</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="884"/>
+      <source>TechDraw</source>
+      <translation>Технический чертёж</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="885"/>
       <source>Insert 3-Point Angle Dimension</source>
       <translation>Вставить Угловой размер по 3 точкам</translation>
     </message>
@@ -88,12 +101,12 @@
   <context>
     <name>CmdTechDrawAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="833"/>
+      <location filename="../../CommandCreateDims.cpp" line="796"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="834"/>
+      <location filename="../../CommandCreateDims.cpp" line="797"/>
       <source>Insert Angle Dimension</source>
       <translation>Вставить Угловой размер</translation>
     </message>
@@ -101,12 +114,12 @@
   <context>
     <name>CmdTechDrawAnnotation</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="523"/>
+      <location filename="../../CommandAnnotate.cpp" line="533"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="524"/>
+      <location filename="../../CommandAnnotate.cpp" line="534"/>
       <source>Insert Annotation</source>
       <translation>Вставить заметку</translation>
     </message>
@@ -126,7 +139,7 @@
     <message>
       <location filename="../../Command.cpp" line="1127"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
-      <translation>Вставить вид Секущей плоскости из верстака Arch</translation>
+      <translation>Вставить вид Плоскости Сечения из верстака Arch</translation>
     </message>
   </context>
   <context>
@@ -139,25 +152,25 @@
     <message>
       <location filename="../../Command.cpp" line="755"/>
       <source>Insert Balloon Annotation</source>
-      <translation>Вставить примечание в баллоне</translation>
+      <translation>Вставить примечание в выноске</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawCenterLineGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="563"/>
+      <location filename="../../CommandAnnotate.cpp" line="573"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="564"/>
+      <location filename="../../CommandAnnotate.cpp" line="574"/>
       <source>Insert Center Line</source>
       <translation>Вставить осевую линию</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="637"/>
+      <location filename="../../CommandAnnotate.cpp" line="647"/>
       <source>Add Centerline to Faces</source>
-      <translation>Добавить осевую линию к грани</translation>
+      <translation>Добавить осевую линию к Граням</translation>
     </message>
   </context>
   <context>
@@ -202,12 +215,12 @@
   <context>
     <name>CmdTechDrawCosmeticEraser</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="965"/>
+      <location filename="../../CommandAnnotate.cpp" line="1128"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="966"/>
+      <location filename="../../CommandAnnotate.cpp" line="1129"/>
       <source>Remove Cosmetic Object</source>
       <translation>Удалить косметический объект</translation>
     </message>
@@ -215,12 +228,12 @@
   <context>
     <name>CmdTechDrawCosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="386"/>
+      <location filename="../../CommandAnnotate.cpp" line="394"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="387"/>
+      <location filename="../../CommandAnnotate.cpp" line="395"/>
       <source>Add Cosmetic Vertex</source>
       <translation>Добавить Косметическую вершину</translation>
     </message>
@@ -228,17 +241,17 @@
   <context>
     <name>CmdTechDrawCosmeticVertexGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="209"/>
+      <location filename="../../CommandAnnotate.cpp" line="215"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="210"/>
+      <location filename="../../CommandAnnotate.cpp" line="216"/>
       <source>Insert Cosmetic Vertex</source>
       <translation>Вставить косметическую вершину</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="283"/>
+      <location filename="../../CommandAnnotate.cpp" line="291"/>
       <source>Add Cosmetic Vertex</source>
       <translation>Добавить Косметическую вершину</translation>
     </message>
@@ -246,14 +259,14 @@
   <context>
     <name>CmdTechDrawDecorateLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1092"/>
+      <location filename="../../CommandAnnotate.cpp" line="1255"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1093"/>
+      <location filename="../../CommandAnnotate.cpp" line="1256"/>
       <source>Change Appearance of Lines</source>
-      <translation>Изменить тип Линии</translation>
+      <translation>Изменить внешний вид линий</translation>
     </message>
   </context>
   <context>
@@ -352,22 +365,22 @@
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1091"/>
+      <location filename="../../CommandCreateDims.cpp" line="1054"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1092"/>
+      <location filename="../../CommandCreateDims.cpp" line="1055"/>
       <source>Insert Extent Dimension</source>
       <translation>Вставить размер габаритов</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1158"/>
+      <location filename="../../CommandCreateDims.cpp" line="1121"/>
       <source>Horizontal Extent</source>
       <translation>Горизонтальный габарит</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1162"/>
+      <location filename="../../CommandCreateDims.cpp" line="1125"/>
       <source>Vertical Extent</source>
       <translation>Вертикальный габарит</translation>
     </message>
@@ -375,14 +388,14 @@
   <context>
     <name>CmdTechDrawFaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="666"/>
+      <location filename="../../CommandAnnotate.cpp" line="676"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="667"/>
+      <location filename="../../CommandAnnotate.cpp" line="677"/>
       <source>Add Centerline to Faces</source>
-      <translation>Добавить осевую линию к грани</translation>
+      <translation>Добавить осевую линию к Граням</translation>
     </message>
   </context>
   <context>
@@ -414,12 +427,12 @@
   <context>
     <name>CmdTechDrawHorizontalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="606"/>
+      <location filename="../../CommandCreateDims.cpp" line="593"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="607"/>
+      <location filename="../../CommandCreateDims.cpp" line="594"/>
       <source>Insert Horizontal Dimension</source>
       <translation>Вставить Горизонтальный размер</translation>
     </message>
@@ -427,12 +440,12 @@
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1184"/>
+      <location filename="../../CommandCreateDims.cpp" line="1147"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1185"/>
+      <location filename="../../CommandCreateDims.cpp" line="1148"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Вставить Горизонтальный размер габарита</translation>
     </message>
@@ -469,12 +482,12 @@
   <context>
     <name>CmdTechDrawLandmarkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1354"/>
+      <location filename="../../CommandCreateDims.cpp" line="1317"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1355"/>
+      <location filename="../../CommandCreateDims.cpp" line="1318"/>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
       <translation>Вставить Размер знака - ЭКСПЕРИМЕНТАЛЬНО</translation>
     </message>
@@ -482,12 +495,12 @@
   <context>
     <name>CmdTechDrawLeaderLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="99"/>
+      <location filename="../../CommandAnnotate.cpp" line="101"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="100"/>
+      <location filename="../../CommandAnnotate.cpp" line="102"/>
       <source>Add Leaderline to View</source>
       <translation>Добавить Указательную линию на Вид</translation>
     </message>
@@ -508,12 +521,12 @@
   <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1013"/>
+      <location filename="../../CommandCreateDims.cpp" line="976"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1014"/>
+      <location filename="../../CommandCreateDims.cpp" line="977"/>
       <source>Link Dimension to 3D Geometry</source>
       <translation>Связать размер с 3D геометрией</translation>
     </message>
@@ -521,14 +534,14 @@
   <context>
     <name>CmdTechDrawMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="445"/>
+      <location filename="../../CommandAnnotate.cpp" line="455"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="446"/>
+      <location filename="../../CommandAnnotate.cpp" line="456"/>
       <source>Add Midpoint Vertices</source>
-      <translation>Добавить вершины средней точки</translation>
+      <translation>Добавить Средние Вершины</translation>
     </message>
   </context>
   <context>
@@ -582,20 +595,20 @@
     <message>
       <location filename="../../Command.cpp" line="535"/>
       <source>Insert multiple linked views of drawable object(s)</source>
-      <translation>Вставить несколько связанных видов чертежного(ых) объекта(ов)</translation>
+      <translation>Вставка нескольких связанных видов объектов чертежа</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="484"/>
+      <location filename="../../CommandAnnotate.cpp" line="494"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="485"/>
+      <location filename="../../CommandAnnotate.cpp" line="495"/>
       <source>Add Quadrant Vertices</source>
-      <translation>Добавить вершины в четвертях</translation>
+      <translation>Добавить Вершины Квадрантов</translation>
     </message>
   </context>
   <context>
@@ -627,14 +640,14 @@
   <context>
     <name>CmdTechDrawRichTextAnnotation</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="159"/>
+      <location filename="../../CommandAnnotate.cpp" line="163"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="160"/>
+      <location filename="../../CommandAnnotate.cpp" line="164"/>
       <source>Insert Rich Text Annotation</source>
-      <translation>Вставить расширенную текстовую Аннотацию</translation>
+      <translation>Вставка аннотаций форматированным текстом</translation>
     </message>
   </context>
   <context>
@@ -653,12 +666,12 @@
   <context>
     <name>CmdTechDrawShowAll</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1169"/>
+      <location filename="../../CommandAnnotate.cpp" line="1334"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1170"/>
+      <location filename="../../CommandAnnotate.cpp" line="1335"/>
       <source>Show/Hide Invisible Edges</source>
       <translation>Показать/скрыть невидимые края</translation>
     </message>
@@ -716,25 +729,25 @@
   <context>
     <name>CmdTechDrawVerticalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="720"/>
+      <location filename="../../CommandCreateDims.cpp" line="695"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="721"/>
+      <location filename="../../CommandCreateDims.cpp" line="696"/>
       <source>Insert Vertical Dimension</source>
-      <translation>Вставить вертикальный размер</translation>
+      <translation>Задать вертикальный размер</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1271"/>
+      <location filename="../../CommandCreateDims.cpp" line="1234"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1272"/>
+      <location filename="../../CommandCreateDims.cpp" line="1235"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Вставить Вертикальный размер габарита</translation>
     </message>
@@ -760,12 +773,12 @@
   <context>
     <name>CmdTechDrawWeldSymbol</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1234"/>
+      <location filename="../../CommandAnnotate.cpp" line="1399"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1235"/>
+      <location filename="../../CommandAnnotate.cpp" line="1400"/>
       <source>Add Welding Information to Leaderline</source>
       <translation>Добавить информацию о сварке в указательную линию</translation>
     </message>
@@ -1028,16 +1041,16 @@
       <location filename="../../Command.cpp" line="1154"/>
       <location filename="../../Command.cpp" line="1160"/>
       <location filename="../../Command.cpp" line="1203"/>
-      <location filename="../../CommandAnnotate.cpp" line="319"/>
-      <location filename="../../CommandAnnotate.cpp" line="412"/>
-      <location filename="../../CommandAnnotate.cpp" line="991"/>
-      <location filename="../../CommandAnnotate.cpp" line="1005"/>
-      <location filename="../../CommandAnnotate.cpp" line="1055"/>
-      <location filename="../../CommandAnnotate.cpp" line="1197"/>
-      <location filename="../../CommandAnnotate.cpp" line="1202"/>
-      <location filename="../../CommandAnnotate.cpp" line="1266"/>
-      <location filename="../../CommandCreateDims.cpp" line="1372"/>
-      <location filename="../../CommandCreateDims.cpp" line="1380"/>
+      <location filename="../../CommandAnnotate.cpp" line="327"/>
+      <location filename="../../CommandAnnotate.cpp" line="420"/>
+      <location filename="../../CommandAnnotate.cpp" line="1154"/>
+      <location filename="../../CommandAnnotate.cpp" line="1168"/>
+      <location filename="../../CommandAnnotate.cpp" line="1218"/>
+      <location filename="../../CommandAnnotate.cpp" line="1362"/>
+      <location filename="../../CommandAnnotate.cpp" line="1367"/>
+      <location filename="../../CommandAnnotate.cpp" line="1431"/>
+      <location filename="../../CommandCreateDims.cpp" line="1335"/>
+      <location filename="../../CommandCreateDims.cpp" line="1343"/>
       <source>Wrong selection</source>
       <translation>Неправильный выбор</translation>
     </message>
@@ -1111,7 +1124,7 @@
     <message>
       <location filename="../../Command.cpp" line="1155"/>
       <source>Please select only 1 Arch Section.</source>
-      <translation type="unfinished">Please select only 1 Arch Section.</translation>
+      <translation>Выберите только одно архитектурное сечение.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1161"/>
@@ -1144,25 +1157,19 @@
       <translation>Открыть вид чертежа перед экспортом в SVG.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="208"/>
       <location filename="../../CommandCreateDims.cpp" line="328"/>
       <location filename="../../CommandCreateDims.cpp" line="450"/>
-      <location filename="../../CommandCreateDims.cpp" line="560"/>
-      <location filename="../../CommandCreateDims.cpp" line="673"/>
-      <location filename="../../CommandCreateDims.cpp" line="787"/>
-      <location filename="../../CommandCreateDims.cpp" line="878"/>
-      <location filename="../../CommandCreateDims.cpp" line="967"/>
-      <location filename="../../CommandCreateDims.cpp" line="1052"/>
-      <location filename="../../CommandCreateDims.cpp" line="1058"/>
+      <location filename="../../CommandCreateDims.cpp" line="547"/>
+      <location filename="../../CommandCreateDims.cpp" line="648"/>
+      <location filename="../../CommandCreateDims.cpp" line="750"/>
+      <location filename="../../CommandCreateDims.cpp" line="841"/>
+      <location filename="../../CommandCreateDims.cpp" line="930"/>
+      <location filename="../../CommandCreateDims.cpp" line="1015"/>
+      <location filename="../../CommandCreateDims.cpp" line="1021"/>
       <location filename="../../CommandDecorate.cpp" line="524"/>
       <location filename="../../CommandDecorate.cpp" line="530"/>
       <source>Incorrect Selection</source>
       <translation>Некорректный выбор</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="209"/>
-      <source>Can not make a Dimension from this selection</source>
-      <translation>Не удается создать размер из выбранного</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="294"/>
@@ -1201,38 +1208,38 @@
       <translation>Выбранная грань - BSpline. Диаметр будет приблизительным. Продолжить?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="879"/>
+      <location filename="../../CommandCreateDims.cpp" line="842"/>
       <source>Need two straight edges to make an Angle Dimension</source>
       <translation>Необходимы две прямых линии, чтобы создать угловой размер</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="968"/>
+      <location filename="../../CommandCreateDims.cpp" line="931"/>
       <source>Need three points to make a 3 point Angle Dimension</source>
       <translation>Необходимы три точки, чтобы создать угловой размер по точкам</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1053"/>
+      <location filename="../../CommandCreateDims.cpp" line="1016"/>
       <source>There is no 3D object in your selection</source>
       <translation>В вашем выборе нет 3D объекта</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1059"/>
+      <location filename="../../CommandCreateDims.cpp" line="1022"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
       <translation>Вы вашем выборе нет ребер или вершин</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1231"/>
-      <location filename="../../CommandCreateDims.cpp" line="1318"/>
+      <location filename="../../CommandCreateDims.cpp" line="1194"/>
+      <location filename="../../CommandCreateDims.cpp" line="1281"/>
       <source>Please select a View [and Edges].</source>
       <translation>Пожалуйста, выберите Вид [и Грани].</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1373"/>
+      <location filename="../../CommandCreateDims.cpp" line="1336"/>
       <source>Select 2 point objects and 1 View. (1)</source>
       <translation>Выберите 2 точечные объекты и 1 Вид. (1)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1381"/>
+      <location filename="../../CommandCreateDims.cpp" line="1344"/>
       <source>Select 2 point objects and 1 View. (2)</source>
       <translation>Выберите 2 точечные объекты и 1 Вид. (2)</translation>
     </message>
@@ -1241,11 +1248,11 @@
       <location filename="../../Command.cpp" line="722"/>
       <location filename="../../Command.cpp" line="729"/>
       <location filename="../../Command.cpp" line="741"/>
-      <location filename="../../CommandCreateDims.cpp" line="1470"/>
-      <location filename="../../CommandCreateDims.cpp" line="1477"/>
-      <location filename="../../CommandCreateDims.cpp" line="1484"/>
-      <location filename="../../CommandCreateDims.cpp" line="1496"/>
-      <location filename="../../CommandCreateDims.cpp" line="1513"/>
+      <location filename="../../CommandCreateDims.cpp" line="1433"/>
+      <location filename="../../CommandCreateDims.cpp" line="1440"/>
+      <location filename="../../CommandCreateDims.cpp" line="1447"/>
+      <location filename="../../CommandCreateDims.cpp" line="1459"/>
+      <location filename="../../CommandCreateDims.cpp" line="1476"/>
       <location filename="../../CommandDecorate.cpp" line="503"/>
       <location filename="../../CommandDecorate.cpp" line="510"/>
       <location filename="../../CommandDecorate.cpp" line="517"/>
@@ -1254,196 +1261,224 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="716"/>
-      <location filename="../../CommandCreateDims.cpp" line="1471"/>
+      <location filename="../../CommandCreateDims.cpp" line="1434"/>
       <source>Select an object first</source>
       <translation>Сначала выберите объект</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="723"/>
-      <location filename="../../CommandCreateDims.cpp" line="1478"/>
+      <location filename="../../CommandCreateDims.cpp" line="1441"/>
       <source>Too many objects selected</source>
       <translation>Выбрано слишком много объектов</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="730"/>
-      <location filename="../../CommandCreateDims.cpp" line="1485"/>
+      <location filename="../../CommandCreateDims.cpp" line="1448"/>
       <source>Create a page first.</source>
       <translation>Сначала создайте страницу.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="742"/>
-      <location filename="../../CommandCreateDims.cpp" line="1497"/>
+      <location filename="../../CommandCreateDims.cpp" line="1460"/>
       <source>No View of a Part in selection.</source>
       <translation>Нет видов детали в выбранном.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1514"/>
+      <location filename="../../CommandCreateDims.cpp" line="1477"/>
       <source>No Feature with Shape in selection.</source>
       <translation>Нет элемента с формой в выбранном.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="113"/>
-      <location filename="../../CommandAnnotate.cpp" line="172"/>
-      <location filename="../../CommandAnnotate.cpp" line="222"/>
-      <location filename="../../CommandAnnotate.cpp" line="399"/>
-      <location filename="../../CommandAnnotate.cpp" line="458"/>
-      <location filename="../../CommandAnnotate.cpp" line="497"/>
-      <location filename="../../CommandAnnotate.cpp" line="576"/>
-      <location filename="../../CommandAnnotate.cpp" line="680"/>
-      <location filename="../../CommandAnnotate.cpp" line="790"/>
-      <location filename="../../CommandAnnotate.cpp" line="867"/>
-      <location filename="../../CommandAnnotate.cpp" line="978"/>
-      <location filename="../../CommandAnnotate.cpp" line="1106"/>
-      <location filename="../../CommandAnnotate.cpp" line="1182"/>
-      <location filename="../../CommandAnnotate.cpp" line="1248"/>
-      <location filename="../../CommandCreateDims.cpp" line="1104"/>
-      <location filename="../../CommandCreateDims.cpp" line="1198"/>
-      <location filename="../../CommandCreateDims.cpp" line="1285"/>
+      <location filename="../../CommandAnnotate.cpp" line="115"/>
+      <location filename="../../CommandAnnotate.cpp" line="176"/>
+      <location filename="../../CommandAnnotate.cpp" line="228"/>
+      <location filename="../../CommandAnnotate.cpp" line="407"/>
+      <location filename="../../CommandAnnotate.cpp" line="468"/>
+      <location filename="../../CommandAnnotate.cpp" line="507"/>
+      <location filename="../../CommandAnnotate.cpp" line="586"/>
+      <location filename="../../CommandAnnotate.cpp" line="690"/>
+      <location filename="../../CommandAnnotate.cpp" line="800"/>
+      <location filename="../../CommandAnnotate.cpp" line="877"/>
+      <location filename="../../CommandAnnotate.cpp" line="990"/>
+      <location filename="../../CommandAnnotate.cpp" line="1141"/>
+      <location filename="../../CommandAnnotate.cpp" line="1269"/>
+      <location filename="../../CommandAnnotate.cpp" line="1347"/>
+      <location filename="../../CommandAnnotate.cpp" line="1413"/>
+      <location filename="../../CommandCreateDims.cpp" line="1067"/>
+      <location filename="../../CommandCreateDims.cpp" line="1161"/>
+      <location filename="../../CommandCreateDims.cpp" line="1248"/>
       <source>Task In Progress</source>
       <translation>Задача в процессе</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="114"/>
-      <location filename="../../CommandAnnotate.cpp" line="173"/>
-      <location filename="../../CommandAnnotate.cpp" line="223"/>
-      <location filename="../../CommandAnnotate.cpp" line="400"/>
-      <location filename="../../CommandAnnotate.cpp" line="459"/>
-      <location filename="../../CommandAnnotate.cpp" line="498"/>
-      <location filename="../../CommandAnnotate.cpp" line="577"/>
-      <location filename="../../CommandAnnotate.cpp" line="681"/>
-      <location filename="../../CommandAnnotate.cpp" line="791"/>
-      <location filename="../../CommandAnnotate.cpp" line="868"/>
-      <location filename="../../CommandAnnotate.cpp" line="979"/>
-      <location filename="../../CommandAnnotate.cpp" line="1107"/>
-      <location filename="../../CommandAnnotate.cpp" line="1183"/>
-      <location filename="../../CommandAnnotate.cpp" line="1249"/>
-      <location filename="../../CommandCreateDims.cpp" line="1105"/>
-      <location filename="../../CommandCreateDims.cpp" line="1199"/>
-      <location filename="../../CommandCreateDims.cpp" line="1286"/>
+      <location filename="../../CommandAnnotate.cpp" line="116"/>
+      <location filename="../../CommandAnnotate.cpp" line="177"/>
+      <location filename="../../CommandAnnotate.cpp" line="229"/>
+      <location filename="../../CommandAnnotate.cpp" line="408"/>
+      <location filename="../../CommandAnnotate.cpp" line="469"/>
+      <location filename="../../CommandAnnotate.cpp" line="508"/>
+      <location filename="../../CommandAnnotate.cpp" line="587"/>
+      <location filename="../../CommandAnnotate.cpp" line="691"/>
+      <location filename="../../CommandAnnotate.cpp" line="801"/>
+      <location filename="../../CommandAnnotate.cpp" line="878"/>
+      <location filename="../../CommandAnnotate.cpp" line="991"/>
+      <location filename="../../CommandAnnotate.cpp" line="1142"/>
+      <location filename="../../CommandAnnotate.cpp" line="1270"/>
+      <location filename="../../CommandAnnotate.cpp" line="1348"/>
+      <location filename="../../CommandAnnotate.cpp" line="1414"/>
+      <location filename="../../CommandCreateDims.cpp" line="1068"/>
+      <location filename="../../CommandCreateDims.cpp" line="1162"/>
+      <location filename="../../CommandCreateDims.cpp" line="1249"/>
       <source>Close active task dialog and try again.</source>
       <translation>Закройте окно активной задачи и повторите снова.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1225"/>
-      <location filename="../../CommandCreateDims.cpp" line="1230"/>
-      <location filename="../../CommandCreateDims.cpp" line="1312"/>
-      <location filename="../../CommandCreateDims.cpp" line="1317"/>
+      <location filename="../../CommandCreateDims.cpp" line="1188"/>
+      <location filename="../../CommandCreateDims.cpp" line="1193"/>
+      <location filename="../../CommandCreateDims.cpp" line="1275"/>
+      <location filename="../../CommandCreateDims.cpp" line="1280"/>
       <source>Selection Error</source>
       <translation>Ошибка выбора</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="128"/>
-      <location filename="../../CommandAnnotate.cpp" line="133"/>
-      <location filename="../../CommandAnnotate.cpp" line="707"/>
-      <location filename="../../CommandAnnotate.cpp" line="712"/>
-      <location filename="../../CommandAnnotate.cpp" line="739"/>
+      <location filename="../../CommandAnnotate.cpp" line="130"/>
+      <location filename="../../CommandAnnotate.cpp" line="135"/>
+      <location filename="../../CommandAnnotate.cpp" line="717"/>
+      <location filename="../../CommandAnnotate.cpp" line="722"/>
       <location filename="../../CommandAnnotate.cpp" line="749"/>
-      <location filename="../../CommandAnnotate.cpp" line="755"/>
-      <location filename="../../CommandAnnotate.cpp" line="827"/>
+      <location filename="../../CommandAnnotate.cpp" line="759"/>
+      <location filename="../../CommandAnnotate.cpp" line="765"/>
       <location filename="../../CommandAnnotate.cpp" line="837"/>
-      <location filename="../../CommandAnnotate.cpp" line="894"/>
-      <location filename="../../CommandAnnotate.cpp" line="899"/>
-      <location filename="../../CommandAnnotate.cpp" line="926"/>
+      <location filename="../../CommandAnnotate.cpp" line="847"/>
+      <location filename="../../CommandAnnotate.cpp" line="906"/>
+      <location filename="../../CommandAnnotate.cpp" line="911"/>
       <location filename="../../CommandAnnotate.cpp" line="938"/>
-      <location filename="../../CommandAnnotate.cpp" line="948"/>
-      <location filename="../../CommandAnnotate.cpp" line="1121"/>
-      <location filename="../../CommandAnnotate.cpp" line="1126"/>
-      <location filename="../../CommandAnnotate.cpp" line="1332"/>
-      <location filename="../../CommandAnnotate.cpp" line="1346"/>
+      <location filename="../../CommandAnnotate.cpp" line="950"/>
+      <location filename="../../CommandAnnotate.cpp" line="960"/>
+      <location filename="../../CommandAnnotate.cpp" line="1037"/>
+      <location filename="../../CommandAnnotate.cpp" line="1043"/>
+      <location filename="../../CommandAnnotate.cpp" line="1051"/>
+      <location filename="../../CommandAnnotate.cpp" line="1071"/>
+      <location filename="../../CommandAnnotate.cpp" line="1108"/>
+      <location filename="../../CommandAnnotate.cpp" line="1284"/>
+      <location filename="../../CommandAnnotate.cpp" line="1289"/>
+      <location filename="../../CommandAnnotate.cpp" line="1500"/>
+      <location filename="../../CommandAnnotate.cpp" line="1514"/>
       <source>Wrong Selection</source>
       <translation>Неправильный выбор</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="129"/>
+      <location filename="../../CommandAnnotate.cpp" line="131"/>
       <source>Can not attach leader.  No base View selected.</source>
       <translation>Не могу прикрепить указательную линию. Базовый вид не выбран.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="134"/>
-      <location filename="../../CommandAnnotate.cpp" line="713"/>
-      <location filename="../../CommandAnnotate.cpp" line="900"/>
+      <location filename="../../CommandAnnotate.cpp" line="136"/>
+      <location filename="../../CommandAnnotate.cpp" line="723"/>
+      <location filename="../../CommandAnnotate.cpp" line="912"/>
+      <location filename="../../CommandAnnotate.cpp" line="1044"/>
       <source>You must select a base View for the line.</source>
       <translation>Необходимо выбрать базовый вид для линии.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="320"/>
-      <location filename="../../CommandAnnotate.cpp" line="413"/>
+      <location filename="../../CommandAnnotate.cpp" line="328"/>
+      <location filename="../../CommandAnnotate.cpp" line="421"/>
       <source>No DrawViewPart objects in this selection</source>
       <translation>Нет объектов DrawViewPart в выбранном</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="708"/>
-      <location filename="../../CommandAnnotate.cpp" line="895"/>
-      <location filename="../../CommandCreateDims.cpp" line="1226"/>
-      <location filename="../../CommandCreateDims.cpp" line="1313"/>
+      <location filename="../../CommandAnnotate.cpp" line="718"/>
+      <location filename="../../CommandAnnotate.cpp" line="907"/>
+      <location filename="../../CommandCreateDims.cpp" line="1189"/>
+      <location filename="../../CommandCreateDims.cpp" line="1276"/>
       <source>No base View in Selection.</source>
       <translation>Нет базового вида в выбранном.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="740"/>
+      <location filename="../../CommandAnnotate.cpp" line="750"/>
       <source>You must select Faces or an existing CenterLine.</source>
-      <translation type="unfinished">You must select Faces or an existing CenterLine.</translation>
+      <translation>Вы должны выбрать Грани или существующую Осевую Линию.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="750"/>
+      <location filename="../../CommandAnnotate.cpp" line="760"/>
       <source>No CenterLine in selection.</source>
       <translation>В выбранном нет ОсевойЛинии.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="756"/>
-      <location filename="../../CommandAnnotate.cpp" line="828"/>
-      <location filename="../../CommandAnnotate.cpp" line="939"/>
+      <location filename="../../CommandAnnotate.cpp" line="766"/>
+      <location filename="../../CommandAnnotate.cpp" line="838"/>
+      <location filename="../../CommandAnnotate.cpp" line="951"/>
       <source>Selection is not a CenterLine.</source>
       <translation>Выделение не является центральной линией.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="838"/>
+      <location filename="../../CommandAnnotate.cpp" line="848"/>
       <source>Selection not understood.</source>
       <translation>Выделение не понятно.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="927"/>
+      <location filename="../../CommandAnnotate.cpp" line="939"/>
       <source>You must select 2 Vertexes or an existing CenterLine.</source>
       <translation>Вы должны выбрать 2 Вершины или существующую ОсевуюЛинию.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="949"/>
+      <location filename="../../CommandAnnotate.cpp" line="961"/>
       <source>Need 2 Vertices or 1 CenterLine.</source>
       <translation>Требуется две вершины или одна центральная линия.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1122"/>
+      <location filename="../../CommandAnnotate.cpp" line="1038"/>
+      <source>Selection is empty.</source>
+      <translation type="unfinished">Selection is empty.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1052"/>
+      <source>Not enough points in selection.</source>
+      <translation type="unfinished">Not enough points in selection.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1072"/>
+      <source>Selection is not a Cosmetic Line.</source>
+      <translation type="unfinished">Selection is not a Cosmetic Line.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1109"/>
+      <source>You must select 2 Vertexes.</source>
+      <translation type="unfinished">You must select 2 Vertexes.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1285"/>
       <source>No View in Selection.</source>
       <translation>Нет Вида в выделенном.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1127"/>
+      <location filename="../../CommandAnnotate.cpp" line="1290"/>
       <source>You must select a View and/or lines.</source>
       <translation>Вы должны выбрать Вид и/или линии.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1198"/>
+      <location filename="../../CommandAnnotate.cpp" line="1363"/>
       <source>No Part Views in this selection</source>
       <translation>Нет видов Детали в этом выборе</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1267"/>
+      <location filename="../../CommandAnnotate.cpp" line="1432"/>
       <source>Select exactly one Leader line or one Weld symbol.</source>
       <translation>Выберите только одну Указательную линию или один символ Сварки.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="992"/>
-      <location filename="../../CommandAnnotate.cpp" line="1203"/>
+      <location filename="../../CommandAnnotate.cpp" line="1155"/>
+      <location filename="../../CommandAnnotate.cpp" line="1368"/>
       <source>Nothing selected</source>
       <translation>Ничего не выбрано</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1006"/>
+      <location filename="../../CommandAnnotate.cpp" line="1169"/>
       <source>At least 1 object in selection is not a part view</source>
       <translation>Минимум 1 объект в выбранном не является местным видом</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1056"/>
+      <location filename="../../CommandAnnotate.cpp" line="1219"/>
       <source>Unknown object type in selection</source>
       <translation>Неизвестный тип объекта в выбранном</translation>
     </message>
@@ -1549,7 +1584,7 @@
       <location filename="../../ViewProviderProjGroup.cpp" line="214"/>
       <location filename="../../ViewProviderTemplate.cpp" line="200"/>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>Вы уверены, что хотите продолжить?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="249"/>
@@ -1644,6 +1679,16 @@
       <translation>Изменить символ сварки</translation>
     </message>
     <message>
+      <location filename="../../TaskCosmeticLine.cpp" line="151"/>
+      <source>Create Cosmetic Line</source>
+      <translation type="unfinished">Create Cosmetic Line</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticLine.cpp" line="186"/>
+      <source>Edit Cosmetic Line</source>
+      <translation type="unfinished">Edit Cosmetic Line</translation>
+    </message>
+    <message>
       <location filename="../../TaskDetail.cpp" line="125"/>
       <source>New Detail View</source>
       <translation>Новый подробный вид</translation>
@@ -1707,27 +1752,27 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderPage.cpp" line="224"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
-      <translation type="unfinished">The page is not empty, therefore the
-following referencing objects might be lost:</translation>
+      <translation>Страница не пуста, поэтому
+следующие ссылки на объекты могут быть потеряны:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroup.cpp" line="195"/>
       <source>The group cannot be deleted because its items have the following
 section or detail views, or leader lines that would get broken:</source>
-      <translation type="unfinished">The group cannot be deleted because its items have the following
-section or detail views, or leader lines that would get broken:</translation>
+      <translation>Группа не может быть удалена, потому что её элементы имеют следующие
+сечения или подробные виды, или размерные линии, которые могут быть повреждены:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroup.cpp" line="209"/>
       <source>The projection group is not empty, therefore
 the following referencing objects might be lost:</source>
-      <translation type="unfinished">The projection group is not empty, therefore
-the following referencing objects might be lost:</translation>
+      <translation>Группа Проекции не пуста, поэтому
+следующие ссылки на объекты могут быть потеряны:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTemplate.cpp" line="197"/>
       <source>The following referencing object might break:</source>
-      <translation type="unfinished">The following referencing object might break:</translation>
+      <translation>Следующие ссылки на объекты могут быть разорваны:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderWeld.cpp" line="194"/>
@@ -1799,7 +1844,7 @@ the top and left view border</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="184"/>
       <source>Width of lines in generated view</source>
-      <translation type="unfinished">Width of lines in generated view</translation>
+      <translation>Ширина линий на сгенерированном виде</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="206"/>
@@ -1829,7 +1874,7 @@ the top and left view border</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="232"/>
       <source>Wireframe overlay</source>
-      <translation type="unfinished">Wireframe overlay</translation>
+      <translation>Каркасное наложение</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="237"/>
@@ -1839,7 +1884,7 @@ the top and left view border</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="242"/>
       <source>Bounding box</source>
-      <translation type="unfinished">Bounding box</translation>
+      <translation>Ограничительная рамка</translation>
     </message>
   </context>
   <context>
@@ -1893,12 +1938,12 @@ the top and left view border</source>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="166"/>
       <source>Flips the sides</source>
-      <translation type="unfinished">Flips the sides</translation>
+      <translation>‎Перевернуть‎‎ стороны‎</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="169"/>
       <source>Flip Sides</source>
-      <translation type="unfinished">Flip Sides</translation>
+      <translation>Перевернутые Стороны</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="176"/>
@@ -1919,8 +1964,7 @@ the top and left view border</source>
       <location filename="../../TaskWeldingSymbol.ui" line="232"/>
       <source>Adds the &apos;Field Weld&apos; symbol (flag)
 at the kink in the leader line</source>
-      <translation type="unfinished">Adds the &apos;Field Weld&apos; symbol (flag)
-at the kink in the leader line</translation>
+      <translation>Добавить символ (флаг) &apos;Field Weld&apos; на линию выноски</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="236"/>
@@ -1931,8 +1975,7 @@ at the kink in the leader line</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="243"/>
       <source>Adds the &apos;All Around&apos; symbol (circle)
 at the kink in the leader line</source>
-      <translation type="unfinished">Adds the &apos;All Around&apos; symbol (circle)
-at the kink in the leader line</translation>
+      <translation>Добавить символ (окружность) &apos;Field Weld&apos; на линию выноски</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="247"/>
@@ -1942,7 +1985,7 @@ at the kink in the leader line</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="254"/>
       <source>Offsets the lower symbol to indicate alternating welds</source>
-      <translation type="unfinished">Offsets the lower symbol to indicate alternating welds</translation>
+      <translation>Смещение нижнего символа для обозначения чередования сварки</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="257"/>
@@ -1953,8 +1996,8 @@ at the kink in the leader line</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="268"/>
       <source>Directory to welding symbols.
 This directory will be used for the symbol selection.</source>
-      <translation type="unfinished">Directory to welding symbols.
-This directory will be used for the symbol selection.</translation>
+      <translation>Каталог для символов сварки.
+Этот каталог будет использоваться для выбора символа.</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="275"/>
@@ -1989,13 +2032,13 @@ This directory will be used for the symbol selection.</translation>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="63"/>
       <source>Shape of line end caps.
 Only change unless you know what you are doing!</source>
-      <translation type="unfinished">Shape of line end caps.
-Only change unless you know what you are doing!</translation>
+      <translation>Форма концов линий.
+Изменяйте только, если вы знаете, что делаете!</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="74"/>
       <source>Round</source>
-      <translation type="unfinished">Round</translation>
+      <translation>Круглый</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="79"/>
@@ -2012,14 +2055,14 @@ Only change unless you know what you are doing!</translation>
       <source>Limit of 64x64 pixel SVG tiles used to hatch a single face.
 For large scalings you might get an error about to many SVG tiles.
 Then you need to increase the tile limit.</source>
-      <translation type="unfinished">Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings you might get an error about to many SVG tiles.
-Then you need to increase the tile limit.</translation>
+      <translation>Ограничение в 64x64 пикселей для SVG фрагментов, используемых в штриховке одной грани.
+При больших масштабах может возникнуть ошибка из-за большого количества SVG фрагментов.
+Тогда вам нужно увеличить это ограничение.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="140"/>
       <source>Dump intermediate results during Detail view processing</source>
-      <translation type="unfinished">Dump intermediate results during Detail view processing</translation>
+      <translation>Дамп промежуточных результатов во время обработки Подробного вида</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="143"/>
@@ -2039,7 +2082,7 @@ Then you need to increase the tile limit.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="187"/>
       <source>Dump intermediate results during Section view processing</source>
-      <translation type="unfinished">Dump intermediate results during Section view processing</translation>
+      <translation>Дамп промежуточных результатов при обработке вида Сечение</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="190"/>
@@ -2049,7 +2092,7 @@ Then you need to increase the tile limit.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="220"/>
       <source>Perform a fuse operation on input shape(s) before Section view processing</source>
-      <translation type="unfinished">Perform a fuse operation on input shape(s) before Section view processing</translation>
+      <translation>Перед обработкой вида Сечение выполнить операцию слияния исходных форм</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="223"/>
@@ -2059,7 +2102,7 @@ Then you need to increase the tile limit.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="248"/>
       <source>Highlights border of section cut in section views</source>
-      <translation type="unfinished">Highlights border of section cut in section views</translation>
+      <translation>Выделение границы сечения на видах сечения</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="251"/>
@@ -2067,67 +2110,66 @@ Then you need to increase the tile limit.</translation>
       <translation>Показать рёбра Сечения</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="270"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="273"/>
       <source>Maximum hatch line segments to use
 when hatching a face with a PAT pattern</source>
-      <translation type="unfinished">Maximum hatch line segments to use
-when hatching a face with a PAT pattern</translation>
+      <translation>Максимальное количество используемых сегментов линий штриховки
+при штриховке грани с помощью шаблона PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="304"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="307"/>
       <source>Line End Cap Shape</source>
-      <translation type="unfinished">Line End Cap Shape</translation>
+      <translation>Форма конца линии</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="317"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="320"/>
       <source>If checked, TechDraw will attempt to build faces using the
 line segments returned by the hidden line removal algorithm.
 Faces must be detected in order to use hatching, but there
 can be a performance penalty in complex models.</source>
-      <translation type="unfinished">If checked, TechDraw will attempt to build faces using the
-line segments returned by the hidden line removal algorithm.
-Faces must be detected in order to use hatching, but there
-can be a performance penalty in complex models.</translation>
+      <translation>Если флажок установлен, TechDraw попытается построить грани с помощью
+сегментов линии, возвращаемых алгоритмом Удаления скрытой линии.
+Для использования штриховки грани должны быть обнаружены, однако возможно снижение производительности на сложных моделях.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="323"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="326"/>
       <source>Detect Faces</source>
       <translation>Обнаружить грани</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="358"/>
-      <source>Include edges with unexpected geometry (zero length etc.) in results</source>
-      <translation type="unfinished">Include edges with unexpected geometry (zero length etc.) in results</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="361"/>
+      <source>Include edges with unexpected geometry (zero length etc.) in results</source>
+      <translation>Добавить в результаты ребера с неожиданной геометрией (нулевой длиной и т. д.)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="364"/>
       <source>Allow Crazy Edges</source>
-      <translation type="unfinished">Allow Crazy Edges</translation>
+      <translation>Разрешить безумные края</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="374"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="377"/>
       <source>Max SVG Hatch Tiles</source>
-      <translation type="unfinished">Max SVG Hatch Tiles</translation>
+      <translation>Максимум фрагментов штриховки SVG</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="381"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="384"/>
       <source>Max PAT Hatch Segments</source>
-      <translation type="unfinished">Max PAT Hatch Segments</translation>
+      <translation>Максимум сегментов штриховки PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="393"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="396"/>
       <source>Dimension Format</source>
       <translation>Формат размера</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="406"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="409"/>
       <source>Override automatic dimension format</source>
-      <translation type="unfinished">Override automatic dimension format</translation>
+      <translation>Переопределить автоматический формат размера</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="433"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="436"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Примечание:&lt;/span&gt; Элементы выделенные &lt;span style=&quot; font-style:italic;&quot;&gt;курсивом&lt;/span&gt; являются значениями по умолчанию для новых объектов. Они не влияют на существующие объекты.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -2228,17 +2270,17 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="212"/>
       <source>Forces last leader line segment to be horizontal</source>
-      <translation type="unfinished">Forces last leader line segment to be horizontal</translation>
+      <translation>Приводит последний сегмент линии выноски в горизонтальное положение</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="215"/>
       <source>Leader Line Auto Horizontal</source>
-      <translation type="unfinished">Leader Line Auto Horizontal</translation>
+      <translation>Автоматическая горизонтальность линии выноски</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="243"/>
       <source>Length of balloon leader line kink</source>
-      <translation type="unfinished">Length of balloon leader line kink</translation>
+      <translation>Длина изгиба линии выноски</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="274"/>
@@ -2248,7 +2290,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="356"/>
       <source>Shape of balloon annotations</source>
-      <translation type="unfinished">Shape of balloon annotations</translation>
+      <translation>Форма всплывающего примечания</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="366"/>
@@ -2289,12 +2331,12 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="437"/>
       <source>Balloon Leader End</source>
-      <translation type="unfinished">Balloon Leader End</translation>
+      <translation>Форма Конца Выноски</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="456"/>
       <source>Standard to be used to draw section lines</source>
-      <translation type="unfinished">Standard to be used to draw section lines</translation>
+      <translation>Стандарт, используемый для построения линий сечения</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="469"/>
@@ -2309,7 +2351,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="507"/>
       <source>Outline shape for detail views</source>
-      <translation type="unfinished">Outline shape for detail views</translation>
+      <translation>Форма контура для детального вида</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="517"/>
@@ -2334,37 +2376,37 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="595"/>
       <source>Default name in LineGroup CSV file</source>
-      <translation type="unfinished">Default name in LineGroup CSV file</translation>
+      <translation>Имя по умолчанию в CSV-файле LineGroup</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="619"/>
       <source>Detail View Outline Shape</source>
-      <translation type="unfinished">Detail View Outline Shape</translation>
+      <translation>Детальный вид формы контура</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="638"/>
       <source>Style for balloon leader line ends</source>
-      <translation type="unfinished">Style for balloon leader line ends</translation>
+      <translation>Стиль для концов линий выноски</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="656"/>
       <source>Length of horizontal portion of Balloon leader</source>
-      <translation type="unfinished">Length of horizontal portion of Balloon leader</translation>
+      <translation>Длина горизонтальной части выноски</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="659"/>
       <source>Ballon Leader Kink Length</source>
-      <translation type="unfinished">Ballon Leader Kink Length</translation>
+      <translation>Длина перегиба выноски</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="678"/>
       <source>Restrict Filled Triangle line end to vertical or horizontal directions</source>
-      <translation type="unfinished">Restrict Filled Triangle line end to vertical or horizontal directions</translation>
+      <translation>Ограничить конец линии закрашенного треугольника в вертикальном или горизонтальном направлении</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="681"/>
       <source>Balloon Orthogonal Triangle</source>
-      <translation type="unfinished">Balloon Orthogonal Triangle</translation>
+      <translation>Ортогональный треугольник выноски</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="702"/>
@@ -2374,7 +2416,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="714"/>
       <source>Balloon Shape</source>
-      <translation type="unfinished">Balloon Shape</translation>
+      <translation>Форма всплывающего примечания</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="733"/>
@@ -2384,7 +2426,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="736"/>
       <source>Print Center Marks</source>
-      <translation type="unfinished">Print Center Marks</translation>
+      <translation>Печатать Центральные Метки</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="754"/>
@@ -2394,12 +2436,12 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="757"/>
       <source>Detail Highlight Style</source>
-      <translation type="unfinished">Detail Highlight Style</translation>
+      <translation>Стиль Выделения Подробностей</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="848"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Примечание:&lt;/span&gt; Элементы выделенные &lt;span style=&quot; font-style:italic;&quot;&gt;курсивом&lt;/span&gt; являются значениями по умолчанию для новых объектов. Они не влияют на существующие объекты.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -2418,7 +2460,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="67"/>
       <source>Normal line color</source>
-      <translation type="unfinished">Normal line color</translation>
+      <translation>Обычный цвет линии</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="105"/>
@@ -2553,7 +2595,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="496"/>
       <source>Leaderline</source>
-      <translation type="unfinished">Leaderline</translation>
+      <translation>Линия выноски</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="503"/>
@@ -2563,7 +2605,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="551"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Примечание:&lt;/span&gt; Элементы выделенные &lt;span style=&quot; font-style:italic;&quot;&gt;курсивом&lt;/span&gt; являются значениями по умолчанию для новых объектов. Они не влияют на существующие объекты.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -2577,47 +2619,47 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="58"/>
       <source>Standard and Style</source>
-      <translation type="unfinished">Standard and Style</translation>
+      <translation>‎Стандарт и ‎‎стиль‎</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="77"/>
       <source>Standard to be used for dimensional values</source>
-      <translation type="unfinished">Standard to be used for dimensional values</translation>
+      <translation>Стандарт, используемый для размерных значений</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="87"/>
       <source>ISO Oriented</source>
-      <translation type="unfinished">ISO Oriented</translation>
+      <translation>Ориентирован на ISO</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="92"/>
       <source>ISO Referencing</source>
-      <translation type="unfinished">ISO Referencing</translation>
+      <translation>Ссылка на ISO</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="97"/>
       <source>ASME Inlined</source>
-      <translation type="unfinished">ASME Inlined</translation>
+      <translation>Интегрированный ASME</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="102"/>
       <source>ASME Referencing</source>
-      <translation type="unfinished">ASME Referencing</translation>
+      <translation>Ссылка на ASME</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="116"/>
       <source>Use system setting for number of decimals</source>
-      <translation type="unfinished">Use system setting for number of decimals</translation>
+      <translation>Использовать системные настройки для количества десятичных знаков</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="119"/>
       <source>Use Global Decimals</source>
-      <translation type="unfinished">Use Global Decimals</translation>
+      <translation>Использовать глобальную десятичную точность</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="147"/>
       <source>Append unit to dimension values</source>
-      <translation type="unfinished">Append unit to dimension values</translation>
+      <translation>Добавить единицы измерения к значениям размеров</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="150"/>
@@ -2627,12 +2669,12 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="163"/>
       <source>Alternate Decimals</source>
-      <translation type="unfinished">Alternate Decimals</translation>
+      <translation>Альтернативные десятичные</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="185"/>
       <source>Number of decimals if &apos;Use Global Decimals&apos; is not used</source>
-      <translation type="unfinished">Number of decimals if &apos;Use Global Decimals&apos; is not used</translation>
+      <translation>Количество десятичных разрядов, если &apos; Use Global Decimal&apos; не используется</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="209"/>
@@ -2642,22 +2684,22 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="241"/>
       <source>Dimension text font size</source>
-      <translation type="unfinished">Dimension text font size</translation>
+      <translation>Размер шрифта текста размера</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="260"/>
       <source>Diameter Symbol</source>
-      <translation type="unfinished">Diameter Symbol</translation>
+      <translation>Символ диаметра</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="284"/>
       <source>Character used to indicate diameter dimensions</source>
-      <translation type="unfinished">Character used to indicate diameter dimensions</translation>
+      <translation>Символ, используемый для указания размеров диаметра</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="287"/>
       <source>⌀</source>
-      <translation type="unfinished">⌀</translation>
+      <translation>⌀</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="308"/>
@@ -2712,12 +2754,12 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="483"/>
       <source>Hidden Line Style</source>
-      <translation type="unfinished">Hidden Line Style</translation>
+      <translation>Стиль скрытой линии</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="502"/>
       <source>Style for hidden lines</source>
-      <translation type="unfinished">Style for hidden lines</translation>
+      <translation>Стиль для скрытых линий</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="512"/>
@@ -2732,7 +2774,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="544"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Примечание:&lt;/span&gt; Элементы выделенные &lt;span style=&quot; font-style:italic;&quot;&gt;курсивом&lt;/span&gt; являются значениями по умолчанию для новых объектов. Они не влияют на существующие объекты.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -2745,29 +2787,29 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="47"/>
       <source>Drawing Update</source>
-      <translation type="unfinished">Drawing Update</translation>
+      <translation>Обновление чертежа</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="61"/>
       <source>Whether or not pages are updated every time the 3D model is changed</source>
-      <translation type="unfinished">Whether or not pages are updated every time the 3D model is changed</translation>
+      <translation>Обновляются ли страницы при каждом изменении 3D модели </translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="64"/>
       <source>Update With 3D (global policy)</source>
-      <translation type="unfinished">Update With 3D (global policy)</translation>
+      <translation>Обновить с 3D (глобальная политика)</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="92"/>
       <source>Whether or not a page&apos;s &apos;Keep Updated&apos; property
 can override the global &apos;Update With 3D&apos; parameter</source>
-      <translation type="unfinished">Whether or not a page&apos;s &apos;Keep Updated&apos; property
-can override the global &apos;Update With 3D&apos; parameter</translation>
+      <translation>Независимо от свойства страницы &apos;Сохранить обновление&apos;
+ переопределить глобальный параметр &apos;Обновление с 3D&apos;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="96"/>
       <source>Allow Page Override (global policy)</source>
-      <translation type="unfinished">Allow Page Override (global policy)</translation>
+      <translation>Разрешить переопределение страницы (глобальная политика)</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="123"/>
@@ -2780,44 +2822,44 @@ This can slow down the response time.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="127"/>
       <source>Keep Page Up To Date</source>
-      <translation type="unfinished">Keep Page Up To Date</translation>
+      <translation>Поддерживать актуальность страниц</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="160"/>
       <source>Automatically distribute secondary views
 for ProjectionGroups</source>
-      <translation type="unfinished">Automatically distribute secondary views
-for ProjectionGroups</translation>
+      <translation>Автоматическое распределение вторичных видов
+для ProjureGroups</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="164"/>
       <source>Auto-distribute Secondary Views</source>
-      <translation type="unfinished">Auto-distribute Secondary Views</translation>
+      <translation>Автораспределение Вторичных Видов</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="197"/>
       <source>Labels</source>
-      <translation type="unfinished">Labels</translation>
+      <translation>Метки</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="233"/>
       <source>Label Font</source>
-      <translation type="unfinished">Label Font</translation>
+      <translation>Шрифт метки</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="240"/>
       <source>Label Size</source>
-      <translation type="unfinished">Label Size</translation>
+      <translation>Размер метки</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="271"/>
       <source>Font for labels</source>
-      <translation type="unfinished">Font for labels</translation>
+      <translation>Шрифт для меток</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="308"/>
       <source>Label size</source>
-      <translation type="unfinished">Label size</translation>
+      <translation>Размер метки</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="344"/>
@@ -2842,47 +2884,47 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="422"/>
       <source>Starting directory for menu &apos;Insert Page using Template&apos;</source>
-      <translation type="unfinished">Starting directory for menu &apos;Insert Page using Template&apos;</translation>
+      <translation>Начальный каталог для меню &apos;Вставка страницы с помощью шаблона&apos;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="449"/>
       <source>Hatch Pattern File</source>
-      <translation type="unfinished">Hatch Pattern File</translation>
+      <translation>Файл образца штриховки</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="462"/>
       <source>Default SVG or bitmap file for hatching</source>
-      <translation type="unfinished">Default SVG or bitmap file for hatching</translation>
+      <translation>Файл SVG или растрового изображения для штриховки по умолчанию</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="486"/>
       <source>Line Group File</source>
-      <translation type="unfinished">Line Group File</translation>
+      <translation>Файл группы линий</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="499"/>
       <source>Alternate file for personal LineGroup definition</source>
-      <translation type="unfinished">Alternate file for personal LineGroup definition</translation>
+      <translation>Альтернативный файл для определения персонального LineGroup</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="523"/>
       <source>Welding Directory</source>
-      <translation type="unfinished">Welding Directory</translation>
+      <translation>Папка для сварки</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="536"/>
       <source>Default directory for welding symbols</source>
-      <translation type="unfinished">Default directory for welding symbols</translation>
+      <translation>Каталог символов сварки по умолчанию</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="563"/>
       <source>PAT File</source>
-      <translation type="unfinished">PAT File</translation>
+      <translation>PAT файл</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="576"/>
       <source>Default PAT pattern definition file for geometric hatching</source>
-      <translation type="unfinished">Default PAT pattern definition file for geometric hatching</translation>
+      <translation>Файл определения шаблона PAT по умолчанию для геометрической штриховки</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="600"/>
@@ -2892,7 +2934,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="619"/>
       <source>Name of the default PAT pattern</source>
-      <translation type="unfinished">Name of the default PAT pattern</translation>
+      <translation>Название шаблона PAT по умолчанию</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="622"/>
@@ -2902,7 +2944,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="649"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Примечание:&lt;/span&gt; Элементы выделенные &lt;span style=&quot; font-style:italic;&quot;&gt;курсивом&lt;/span&gt; являются значениями по умолчанию для новых объектов. Они не влияют на существующие объекты.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -2910,23 +2952,23 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="20"/>
       <source>HLR</source>
-      <translation type="unfinished">HLR</translation>
+      <translation>HLR</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="47"/>
       <source>Hidden Line Removal</source>
-      <translation type="unfinished">Hidden Line Removal</translation>
+      <translation>Удаление скрытой линии</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="66"/>
       <source>Show seam lines</source>
-      <translation type="unfinished">Show seam lines</translation>
+      <translation>Показать линии шва</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="69"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="250"/>
       <source>Show Seam Lines</source>
-      <translation type="unfinished">Show Seam Lines</translation>
+      <translation>Показать Линии Шва</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="96"/>
@@ -2937,56 +2979,55 @@ for ProjectionGroups</translation>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="99"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="223"/>
       <source>Show Smooth Lines</source>
-      <translation type="unfinished">Show Smooth Lines</translation>
+      <translation>Показать Сглаженные Линии</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="132"/>
       <source>Show hard and outline edges (always shown)</source>
-      <translation type="unfinished">Show hard and outline edges (always shown)</translation>
+      <translation>Показать жесткие и контурные края (всегда показаны)</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="135"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="318"/>
       <source>Show Hard Lines</source>
-      <translation type="unfinished">Show Hard Lines</translation>
+      <translation>Показать жесткие линии</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="165"/>
       <source>Use an approximation to find hidden lines.
 Fast, but result is a collection of short straight lines.</source>
-      <translation type="unfinished">Use an approximation to find hidden lines.
-Fast, but result is a collection of short straight lines.</translation>
+      <translation>Использовать аппроксимацию для поиска скрытых линий. Быстро, но результат - это коллекция коротких прямых линий.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="169"/>
       <source>Use Polygon Approximation</source>
-      <translation type="unfinished">Use Polygon Approximation</translation>
+      <translation>Использовать Полигональную аппроксимацию</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="193"/>
       <source>Make lines of equal parameterization</source>
-      <translation type="unfinished">Make lines of equal parameterization</translation>
+      <translation>Сделать линии с равными параметрами</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="196"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="277"/>
       <source>Show UV ISO Lines</source>
-      <translation type="unfinished">Show UV ISO Lines</translation>
+      <translation>Показать линии UV ISO</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="220"/>
       <source>Show hidden smooth edges</source>
-      <translation type="unfinished">Show hidden smooth edges</translation>
+      <translation>Показать скрытые сглаженные рёбра</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="247"/>
       <source>Show hidden seam lines</source>
-      <translation type="unfinished">Show hidden seam lines</translation>
+      <translation>Показать скрытые линии шва</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="274"/>
       <source>Show hidden equal parameterization lines</source>
-      <translation type="unfinished">Show hidden equal parameterization lines</translation>
+      <translation>Показать скрытые линии с одинаковыми параметрами</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="290"/>
@@ -2996,27 +3037,27 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="297"/>
       <source>Hidden</source>
-      <translation type="unfinished">Hidden</translation>
+      <translation>Скрыто</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="315"/>
       <source>Show hidden hard and outline edges</source>
-      <translation type="unfinished">Show hidden hard and outline edges</translation>
+      <translation>Показать скрытые жесткие и контурные ребра</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="342"/>
       <source>ISO Count</source>
-      <translation type="unfinished">ISO Count</translation>
+      <translation>Количество изопараметрических линий</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="361"/>
       <source>Number of ISO lines per face edge</source>
-      <translation type="unfinished">Number of ISO lines per face edge</translation>
+      <translation>Количество изопараметрических линий на ребро грани</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="388"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Примечание:&lt;/span&gt; Элементы выделенные &lt;span style=&quot; font-style:italic;&quot;&gt;курсивом&lt;/span&gt; являются значениями по умолчанию для новых объектов. Они не влияют на существующие объекты.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3030,22 +3071,22 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="60"/>
       <source>Page Scale</source>
-      <translation type="unfinished">Page Scale</translation>
+      <translation>Масштаб страницы</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="79"/>
       <source>Default scale for new pages</source>
-      <translation type="unfinished">Default scale for new pages</translation>
+      <translation>Масштаб по умолчанию для новых страниц</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="106"/>
       <source>View Scale Type</source>
-      <translation type="unfinished">View Scale Type</translation>
+      <translation>Тип масштаба Вида</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="128"/>
       <source>Default scale for new views</source>
-      <translation type="unfinished">Default scale for new views</translation>
+      <translation>Масштаб по умолчанию для новых видов</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="138"/>
@@ -3065,12 +3106,12 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="161"/>
       <source>View Custom Scale</source>
-      <translation type="unfinished">View Custom Scale</translation>
+      <translation>Пользовательский масштаб</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="196"/>
       <source>Default scale for views if &apos;View Scale Type&apos; is &apos;Custom&apos;</source>
-      <translation type="unfinished">Default scale for views if &apos;View Scale Type&apos; is &apos;Custom&apos;</translation>
+      <translation>Масштаб по умолчанию для видов, если параметр &apos;Тип масштаба вида&apos; имеет значение &apos;Пользовательский&apos;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="244"/>
@@ -3081,85 +3122,85 @@ Fast, but result is a collection of short straight lines.</translation>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="283"/>
       <source>Selection area around center marks
 Each unit is approx. 0.1 mm wide</source>
-      <translation type="unfinished">Selection area around center marks
-Each unit is approx. 0.1 mm wide</translation>
+      <translation>Область выбора вокруг центральной отметки
+Ширина каждой единицы приблизительно 0,1 мм</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="324"/>
       <source>Size of selection area around edges
 Each unit is approx. 0.1 mm wide</source>
-      <translation type="unfinished">Size of selection area around edges
-Each unit is approx. 0.1 mm wide</translation>
+      <translation>Размер области выбора по краям
+Ширина каждого блока приблизительно 0,1 мм</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="353"/>
       <source>Mark Fuzz</source>
-      <translation type="unfinished">Mark Fuzz</translation>
+      <translation>Область выбора вокруг центральных маркеров</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="372"/>
       <source>Edge Fuzz</source>
-      <translation type="unfinished">Edge Fuzz</translation>
+      <translation>Размер области выделения вокруг ребра</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="396"/>
       <source>Size Adjustments</source>
-      <translation type="unfinished">Size Adjustments</translation>
+      <translation>Корректировки размера</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="422"/>
       <source>Tolerance font size adjustment. Multiplier of dimension font size.</source>
-      <translation type="unfinished">Tolerance font size adjustment. Multiplier of dimension font size.</translation>
+      <translation>Допустимое изменение размера шрифта. Множитель размера шрифта.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="456"/>
       <source>Size of template field click handles</source>
-      <translation type="unfinished">Size of template field click handles</translation>
+      <translation>Размер области клика в шаблоне</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="475"/>
       <source>Vertex Scale</source>
-      <translation type="unfinished">Vertex Scale</translation>
+      <translation>Масштаб вершины</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="507"/>
       <source>Size of center marks. Multiplier of vertex size.</source>
-      <translation type="unfinished">Size of center marks. Multiplier of vertex size.</translation>
+      <translation>Размер центральных меток. Множитель размера вершины.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="541"/>
       <source>Scale of vertex dots. Multiplier of line width.</source>
-      <translation type="unfinished">Scale of vertex dots. Multiplier of line width.</translation>
+      <translation>‎Масштаб‎‎ ‎‎точек вершины‎‎ ‎‎. Множитель ‎‎ширины линии.‎.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="568"/>
       <source>Center Mark Scale</source>
-      <translation type="unfinished">Center Mark Scale</translation>
+      <translation>Масштаб Центральной метки</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="592"/>
       <source>Tolerance Text Scale</source>
-      <translation type="unfinished">Tolerance Text Scale</translation>
+      <translation>Допустимый Масштаб Текста</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="599"/>
       <source>Template Edit Mark</source>
-      <translation type="unfinished">Template Edit Mark</translation>
+      <translation>Метка редактирования шаблона</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="606"/>
       <source>Welding Symbol Scale</source>
-      <translation type="unfinished">Welding Symbol Scale</translation>
+      <translation>Масштаб символа сварки</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="613"/>
       <source>Multiplier for size of welding symbols</source>
-      <translation type="unfinished">Multiplier for size of welding symbols</translation>
+      <translation>Множитель для размера символов сварки</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="643"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Примечание:&lt;/span&gt; Элементы выделенные &lt;span style=&quot; font-style:italic;&quot;&gt;курсивом&lt;/span&gt; являются значениями по умолчанию для новых объектов. Они не влияют на существующие объекты.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3354,7 +3395,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="185"/>
       <source>Scale factor for the &apos;Shape&apos;</source>
-      <translation type="unfinished">Scale factor for the &apos;Shape&apos;</translation>
+      <translation>Коэффициент масштабирования для &apos;Формы&apos;</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="204"/>
@@ -3374,17 +3415,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="237"/>
       <source>Leader line width</source>
-      <translation type="unfinished">Leader line width</translation>
+      <translation>Толщина линии выноски</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="256"/>
       <source>Leader Kink Length:</source>
-      <translation type="unfinished">Leader Kink Length:</translation>
+      <translation>Длина изгиба выноски:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="275"/>
       <source>Length of balloon leader line kink</source>
-      <translation type="unfinished">Length of balloon leader line kink</translation>
+      <translation>Длина изгиба линии выноски</translation>
     </message>
   </context>
   <context>
@@ -3435,10 +3476,10 @@ Do you want to continue?</source>
 - lines: in equal distance to the lines and with
   half of the angle the lines have to each other
 - points: in equal distance to the points</source>
-      <translation type="unfinished">centerline between
-- lines: in equal distance to the lines and with
-  half of the angle the lines have to each other
-- points: in equal distance to the points</translation>
+      <translation>осевая линия между
+- линиями: на равном расстоянии от линий и
+   с половиной угла между линиями
+- точки: на равном расстоянии от точек</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="142"/>
@@ -3499,8 +3540,8 @@ Do you want to continue?</source>
       <location filename="../../TaskCenterLine.ui" line="380"/>
       <source>Flips endpoints of selected lines for centerline creation,
 see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</source>
-      <translation type="unfinished">Flips endpoints of selected lines for centerline creation,
-see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
+      <translation>Разворот конечных точек выбранных линий для создания осевых линий,
+описание см. в Wiki FreeCAD &apos;2LineCenterLine &apos;</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="384"/>
@@ -3563,7 +3604,7 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskCosVertex.ui" line="107"/>
       <source>Position from the view center</source>
-      <translation type="unfinished">Position from the view center</translation>
+      <translation>Позиция из центра вида</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="110"/>
@@ -3597,11 +3638,54 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     </message>
   </context>
   <context>
+    <name>TechDrawGui::TaskCosmeticLine</name>
+    <message>
+      <location filename="../../TaskCosmeticLine.ui" line="26"/>
+      <source>Cosmetic Line</source>
+      <translation type="unfinished">Cosmetic Line</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticLine.ui" line="34"/>
+      <source>View</source>
+      <translation>Вид</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticLine.ui" line="61"/>
+      <location filename="../../TaskCosmeticLine.ui" line="134"/>
+      <source>2d Point</source>
+      <translation type="unfinished">2d Point</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticLine.ui" line="74"/>
+      <location filename="../../TaskCosmeticLine.ui" line="147"/>
+      <source>3d Point</source>
+      <translation type="unfinished">3d Point</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticLine.ui" line="88"/>
+      <location filename="../../TaskCosmeticLine.ui" line="168"/>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticLine.ui" line="95"/>
+      <location filename="../../TaskCosmeticLine.ui" line="175"/>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticLine.ui" line="109"/>
+      <location filename="../../TaskCosmeticLine.ui" line="189"/>
+      <source>Z:</source>
+      <translation>Z:</translation>
+    </message>
+  </context>
+  <context>
     <name>TechDrawGui::TaskDetail</name>
     <message>
       <location filename="../../TaskDetail.ui" line="26"/>
       <source>Detail Anchor</source>
-      <translation type="unfinished">Detail Anchor</translation>
+      <translation>Подробная привязка</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="54"/>
@@ -3616,12 +3700,12 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="92"/>
       <source>Click to drag detail highlight to new position</source>
-      <translation type="unfinished">Click to drag detail highlight to new position</translation>
+      <translation>Щелкните, чтобы перетащить подсветку в новое положение</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="95"/>
       <source>Drag Highlight</source>
-      <translation type="unfinished">Drag Highlight</translation>
+      <translation>Перетащить выделение</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="168"/>
@@ -3631,7 +3715,7 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="197"/>
       <source>size of detail view</source>
-      <translation type="unfinished">size of detail view</translation>
+      <translation>размер подробного вида</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="263"/>
@@ -3639,10 +3723,10 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
 Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
 Custom: custom scale factor is used</source>
-      <translation type="unfinished">Page: scale factor of page is used
-Automatic: if the detail view is larger than the page,
-                   it will be scaled down to fit into the page
-Custom: custom scale factor is used</translation>
+      <translation>Страница: используется коэффициент масштабирования страницы
+Автоматический: если подробный вид больше страницы,
+                    он будет уменьшен, чтобы вписаться в страницу
+Пользовательский: используется пользовательский коэффициент масштабирования</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="270"/>
@@ -3662,7 +3746,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="288"/>
       <source>Scale Type</source>
-      <translation type="unfinished">Scale Type</translation>
+      <translation>Тип масштабирования</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="190"/>
@@ -3682,17 +3766,17 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="146"/>
       <source>x position of detail highlight within view</source>
-      <translation type="unfinished">x position of detail highlight within view</translation>
+      <translation>x положение выделения деталей в пределах вида</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="237"/>
       <source>reference label</source>
-      <translation type="unfinished">reference label</translation>
+      <translation>ссылочная метка</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="247"/>
       <source>y position of detail highlight within view</source>
-      <translation type="unfinished">y position of detail highlight within view</translation>
+      <translation>y позиция выделения детали на виде</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="230"/>
@@ -3781,7 +3865,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="26"/>
       <source>Apply Hatch to Face</source>
-      <translation type="unfinished">Apply Hatch to Face</translation>
+      <translation>Применить штриховку к грани</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="38"/>
@@ -4245,33 +4329,33 @@ You can pick further points to get line segments.</source>
       <location filename="../../TaskProjGroup.ui" line="653"/>
       <source>Distributes projections automatically
 using the given X/Y Spacing</source>
-      <translation type="unfinished">Distributes projections automatically
-using the given X/Y Spacing</translation>
+      <translation>Автоматическое распределение проекций
+с использованием заданного интервала X/Y</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="657"/>
       <source>Auto Distribute</source>
-      <translation type="unfinished">Auto Distribute</translation>
+      <translation>Автораспределение</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="691"/>
       <source>Horizontal space between border of projections</source>
-      <translation type="unfinished">Horizontal space between border of projections</translation>
+      <translation>Горизонтальное пространство между границами проекций</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="719"/>
       <source>X Spacing</source>
-      <translation type="unfinished">X Spacing</translation>
+      <translation>Отступ по горизонтали</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="738"/>
       <source>Y Spacing</source>
-      <translation type="unfinished">Y Spacing</translation>
+      <translation>Отступ по вертикали</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="757"/>
       <source>Vertical space between border of projections</source>
-      <translation type="unfinished">Vertical space between border of projections</translation>
+      <translation>Вертикальное пространство между границами проекций</translation>
     </message>
   </context>
   <context>
@@ -4453,7 +4537,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="106"/>
       <source>Scale factor for the section view</source>
-      <translation type="unfinished">Scale factor for the section view</translation>
+      <translation>Коэффициент масштабирования для вида сечения</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="137"/>
@@ -4468,7 +4552,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="283"/>
       <source>Position from the 3D origin of the object in the view</source>
-      <translation type="unfinished">Position from the 3D origin of the object in the view</translation>
+      <translation>Положение от нулевой 3D координаты объекта на виде</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="286"/>
@@ -4499,12 +4583,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.cpp" line="339"/>
       <source>Nothing to apply. No section direction picked yet</source>
-      <translation type="unfinished">Nothing to apply. No section direction picked yet</translation>
+      <translation>Нечего применять. Направление раздела пока не выбрано</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="478"/>
       <source>Can not continue. Object * %1 * not found.</source>
-      <translation type="unfinished">Can not continue. Object * %1 * not found.</translation>
+      <translation>Невозможно продолжить. Объект * %1 * не найден.</translation>
     </message>
   </context>
   <context>
@@ -4558,7 +4642,7 @@ using the given X/Y Spacing</translation>
   <context>
     <name>TechDraw_2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="642"/>
+      <location filename="../../CommandAnnotate.cpp" line="652"/>
       <source>Adds a Centerline between 2 Lines</source>
       <translation>Добавить ОсевуюЛинию между 2 Линиями</translation>
     </message>
@@ -4566,7 +4650,7 @@ using the given X/Y Spacing</translation>
   <context>
     <name>TechDraw_2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="646"/>
+      <location filename="../../CommandAnnotate.cpp" line="656"/>
       <source>Adds a Centerline between 2 Points</source>
       <translation>Добавить ОсевуюЛинию между 2 Точками</translation>
     </message>
@@ -4574,7 +4658,7 @@ using the given X/Y Spacing</translation>
   <context>
     <name>TechDraw_CosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="284"/>
+      <location filename="../../CommandAnnotate.cpp" line="292"/>
       <source>Inserts a Cosmetic Vertex into a View</source>
       <translation>Вставить косметическую вершину в вид</translation>
     </message>
@@ -4582,7 +4666,7 @@ using the given X/Y Spacing</translation>
   <context>
     <name>TechDraw_FaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="638"/>
+      <location filename="../../CommandAnnotate.cpp" line="648"/>
       <source>Adds a Centerline to Faces</source>
       <translation>Добавить Осевую линию к Граням</translation>
     </message>
@@ -4590,7 +4674,7 @@ using the given X/Y Spacing</translation>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1159"/>
+      <location filename="../../CommandCreateDims.cpp" line="1122"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Вставить Горизонтальный размер габарита</translation>
     </message>
@@ -4598,15 +4682,15 @@ using the given X/Y Spacing</translation>
   <context>
     <name>TechDraw_Midpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="288"/>
+      <location filename="../../CommandAnnotate.cpp" line="296"/>
       <source>Inserts Cosmetic Vertices at Midpoint of selected Edges</source>
-      <translation type="unfinished">Inserts Cosmetic Vertices at Midpoint of selected Edges</translation>
+      <translation>Вставить косметические вершины в середину выбранных ребер</translation>
     </message>
   </context>
   <context>
     <name>TechDraw_Quadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="292"/>
+      <location filename="../../CommandAnnotate.cpp" line="300"/>
       <source>Inserts Cosmetic Vertices at Quadrant Points of selected Circles</source>
       <translation>Вставить косметическую Вершину на точках четверти выбранной Окружности</translation>
     </message>
@@ -4614,7 +4698,7 @@ using the given X/Y Spacing</translation>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1163"/>
+      <location filename="../../CommandCreateDims.cpp" line="1126"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Вставить Вертикальный размер габарита</translation>
     </message>

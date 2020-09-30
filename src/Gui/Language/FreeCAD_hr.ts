@@ -431,6 +431,14 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Out Of Range</source>
       <translation>Izvan dometa</translation>
     </message>
+    <message>
+      <source> "</source>
+      <translation type="unfinished"> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation type="unfinished">"</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
@@ -1059,16 +1067,16 @@ Ako se to ne označi, osobina mora biti jedinstveno imenovana i njoj se pristupa
       <translation>Tipke</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Brisanje</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Ispis Reference</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Spaceball Tipke</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Odbaci</translation>
     </message>
   </context>
   <context>
@@ -2104,10 +2112,6 @@ Specify another directory, please.</source>
       <translation>Filtriraj prema tipu</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation>Ako je omogućeno, odabir 3D prikaza sinkronizirati će se s hijerarhijom kompletnih objekata.</translation>
-    </message>
-    <message>
       <source>Sync sub-object selection</source>
       <translation>Sinkroniziranje odabira pod-objekta</translation>
     </message>
@@ -2118,6 +2122,10 @@ Specify another directory, please.</source>
     <message>
       <source>Clear</source>
       <translation>Brisanje</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
     </message>
   </context>
   <context>
@@ -2278,11 +2286,13 @@ od Python konzole na ploču prikaza izvješća
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>Snimit će se uobičajene poruke
+
+</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>Snima normalne poruke</translation>
     </message>
   </context>
   <context>
@@ -3239,6 +3249,34 @@ Možete koristiti i obrazac: John Doe &lt;john@doe.com&gt;
       <source>The directory in which the application will search for macros</source>
       <translation>Imenik u kojem će aplikacija tražiti makronaredbe</translation>
     </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation type="unfinished">Recent macros menu</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation type="unfinished">Size of recent macro list</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation type="unfinished">Shortcut count</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation type="unfinished">Keyboard Modifiers</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
@@ -3544,6 +3582,10 @@ Naginjanje miša nije onemogućeno ovom postavkom.</translation>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation>Imperijal za civilno Eng (ft, ft/sec)</translation>
+    </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation type="unfinished">FEM (mm, N, sec)</translation>
     </message>
   </context>
   <context>
@@ -4531,27 +4573,27 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Display message types</source>
-      <translation type="unfinished">Display message types</translation>
+      <translation>Prikažite vrste poruka</translation>
     </message>
     <message>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Normalne poruke</translation>
     </message>
     <message>
       <source>Log messages</source>
-      <translation type="unfinished">Log messages</translation>
+      <translation>Log poruke</translation>
     </message>
     <message>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Upozorenja</translation>
     </message>
     <message>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Greške</translation>
     </message>
     <message>
       <source>Show report view on</source>
-      <translation type="unfinished">Show report view on</translation>
+      <translation>Prikaži izvješća o pogrešci</translation>
     </message>
   </context>
   <context>
@@ -4712,6 +4754,20 @@ Do you want to save your changes?</source>
     <message>
       <source>PDF file</source>
       <translation>PDF Datoteka</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
     </message>
   </context>
   <context>
@@ -5339,6 +5395,21 @@ Do you want to exit without saving your data?</source>
     <message>
       <source>Open file %1</source>
       <translation>Otvoriti datoteku %1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Datoteka nije pronađena</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>Datoteka '%1' ne može biti otvorena.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6683,6 +6754,50 @@ Odaberite "Prekini" za prekid
       <source>Override colors...</source>
       <translation>Nadjačava boje...</translation>
     </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Jeste li sigurni da želite nastaviti?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation type="unfinished">
+
+Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>
+
+Pyhsical path: </source>
+      <translation type="unfinished">
+
+Pyhsical path: </translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation type="unfinished">
+Document: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation type="unfinished">
+  Path: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation type="unfinished">Identical physical path</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -7892,6 +8007,21 @@ Odaberite "Prekini" za prekid
     <message>
       <source>Recent file list</source>
       <translation>Popis nedavnih datoteka</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Makro</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation type="unfinished">Recent macros</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation type="unfinished">Recent macro list</translation>
     </message>
   </context>
   <context>

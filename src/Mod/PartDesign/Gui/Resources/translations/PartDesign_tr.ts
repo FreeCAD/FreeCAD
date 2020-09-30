@@ -574,7 +574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1723"/>
       <source>Make a thick solid</source>
-      <translation>Kalın bir katı yapınız</translation>
+      <translation>Katılama için et kalınlığı belirtin</translation>
     </message>
   </context>
   <context>

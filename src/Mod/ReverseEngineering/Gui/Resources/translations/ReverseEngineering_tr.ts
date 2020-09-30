@@ -277,7 +277,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="359"/>
       <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
+      <translation>Yerleşim oluşturun</translation>
     </message>
   </context>
   <context>

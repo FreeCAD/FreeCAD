@@ -136,7 +136,7 @@
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="26"/>
       <source>XY-Plane</source>
-      <translation>Płaszczyzna X-Y</translation>
+      <translation>Płaszczyzna XY</translation>
     </message>
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="36"/>

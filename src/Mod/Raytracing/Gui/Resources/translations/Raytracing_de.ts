@@ -121,7 +121,7 @@
     <message>
       <location filename="../../Command.cpp" line="870"/>
       <source>&amp;Reset Camera</source>
-      <translation>Kamera zurücksetzen</translation>
+      <translation>Kamera zu&amp;rücksetzen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="871"/>

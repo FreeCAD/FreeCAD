@@ -31,7 +31,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Fortsett</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
@@ -253,7 +253,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Fortsett</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
@@ -269,19 +269,6 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
       <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_MakeTube</name>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-      <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-      <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
     </message>
   </context>
   <context>
@@ -307,7 +294,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Fortsett</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
@@ -358,6 +345,32 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
       <translation type="unfinished">Remove intersection fragments</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Tube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="85"/>
+      <source>Create tube</source>
+      <translation type="unfinished">Create tube</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="89"/>
+      <source>Creates a tube</source>
+      <translation type="unfinished">Creates a tube</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
+      <source>Create tube</source>
+      <translation type="unfinished">Create tube</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation type="unfinished">Creates a tube</translation>
     </message>
   </context>
   <context>
@@ -776,7 +789,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="239"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Tangent to surface (V)</translation>
+      <translation>Tangent til overflate (V)</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="242"/>
@@ -941,7 +954,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="143"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Tangent to surface</translation>
+      <translation>Tangent til overflate</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="144"/>
@@ -3108,7 +3121,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="94"/>
       <source>Import</source>
-      <translation type="unfinished">Import</translation>
+      <translation>Importer</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
@@ -3201,7 +3214,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="153"/>
       <source>Import</source>
-      <translation type="unfinished">Import</translation>
+      <translation>Importer</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="159"/>
@@ -3465,7 +3478,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="150"/>
       <source>Point</source>
-      <translation type="unfinished">Point</translation>
+      <translation>Punkt</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="159"/>
@@ -4028,7 +4041,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskFaceColors.cpp" line="416"/>
       <source>Do you really want to cancel?</source>
-      <translation type="unfinished">Do you really want to cancel?</translation>
+      <translation>Vil du virkelig avbryte?</translation>
     </message>
   </context>
   <context>
@@ -4972,17 +4985,17 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>No Curve On Surface</source>
-      <translation type="unfinished">No Curve On Surface</translation>
+      <translation>Ingen kurve på overflaten</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="109"/>
       <source>Invalid Curve On Surface</source>
-      <translation type="unfinished">Invalid Curve On Surface</translation>
+      <translation>Ugyldig Kurve på overflaten</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>Invalid Curve On Closed Surface</source>
-      <translation type="unfinished">Invalid Curve On Closed Surface</translation>
+      <translation>Ugyldig Curve på lukket overflate</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="111"/>
@@ -5032,7 +5045,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>No Surface</source>
-      <translation type="unfinished">No Surface</translation>
+      <translation>Ingen Overflate</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="121"/>

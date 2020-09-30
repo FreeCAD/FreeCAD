@@ -2230,6 +2230,11 @@ This value is the maximum segment length. </source>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Неизвестный стиль экспорта SVG, переключение на Translated</translation>
     </message>
+    <message>
+      <location filename="../../importSVG.py" line="1826"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation>Список экспорта не содержит объектов с допустимым диапазоном</translation>
+    </message>
   </context>
   <context>
     <name>draft</name>
@@ -2699,7 +2704,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../DraftGui.py" line="617"/>
       <source>Filled</source>
-      <translation>Заполнено</translation>
+      <translation>Заполненный</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="619"/>

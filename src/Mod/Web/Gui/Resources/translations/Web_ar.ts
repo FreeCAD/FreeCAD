@@ -128,8 +128,8 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="727"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="741"/>
       <source>Browser</source>
       <translation>المتصفح</translation>
     </message>
@@ -153,7 +153,7 @@
       <translation>ظهرت أخطاء أثناء تحميل الملف. ربما قد تم تعديل بعض البيانات أو أنه لم يتم استرجاعها. للمزيد من المعلومات المحددة عن العناصر المعنية يرجى الاطلاع على التقرير.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="698"/>
+      <location filename="../../BrowserView.cpp" line="712"/>
       <source>Loading %1...</source>
       <translation>تحميل %1...</translation>
     </message>

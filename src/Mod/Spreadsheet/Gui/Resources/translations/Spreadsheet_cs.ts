@@ -362,7 +362,7 @@ Please select one cell only.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Kopírování a vložení se nezdařilo</translation>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>

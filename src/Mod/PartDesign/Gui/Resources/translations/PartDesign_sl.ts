@@ -715,7 +715,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="50"/>
       <source>Base plane</source>
-      <translation>Osnovna ravniva</translation>
+      <translation>Osnovna ravnina</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="51"/>
@@ -1348,7 +1348,7 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="72"/>
       <source>Base plane</source>
-      <translation>Osnovna ravniva</translation>
+      <translation>Osnovna ravnina</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="73"/>
@@ -1771,7 +1771,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation>Pritrjen</translation>
+      <translation>Nepremičen</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>

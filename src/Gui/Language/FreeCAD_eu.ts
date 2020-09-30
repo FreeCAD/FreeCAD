@@ -431,6 +431,14 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Out Of Range</source>
       <translation>Barrutitik kanpo</translation>
     </message>
+    <message>
+      <source> "</source>
+      <translation type="unfinished"> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation type="unfinished">"</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
@@ -610,7 +618,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Verbose description of the new property.</source>
-      <translation type="unfinished">Verbose description of the new property.</translation>
+      <translation>Propietate berriaren deskribapen xehea.</translation>
     </message>
     <message>
       <source>Documentation</source>
@@ -1019,7 +1027,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
+      <translation>%1 modulua ez dago kargatuta</translation>
     </message>
   </context>
   <context>
@@ -1059,16 +1067,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Botoiak</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Garbitu</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Inprimaketa-erreferentzia</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Spaceballen botoiak</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Berrezarri</translation>
     </message>
   </context>
   <context>
@@ -2102,10 +2110,6 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Motaren arabera iragazita</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation>Aktiboa badago, 3D bistaren hautapena objektuaren hierarkia osoarekin sinkronizatuko da.</translation>
-    </message>
-    <message>
       <source>Sync sub-object selection</source>
       <translation>Sinkronizatu azpiobjektuen hautapena</translation>
     </message>
@@ -2116,6 +2120,10 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <source>Clear</source>
       <translation>Garbitu</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
     </message>
   </context>
   <context>
@@ -2266,11 +2274,11 @@ txosten-bistaren panelera birzuzenduko da</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>Mezu normalak grabatuko dira</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>Grabatu mezu normalak</translation>
     </message>
   </context>
   <context>
@@ -3216,6 +3224,34 @@ Honako forma ere erabili dezakezu: Jon Inor &lt;jon@inor.com&gt;</translation>
       <source>The directory in which the application will search for macros</source>
       <translation>Aplikazioak makroak bilatuko dituen direktorioa</translation>
     </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation type="unfinished">Recent macros menu</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation type="unfinished">Size of recent macro list</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation type="unfinished">Shortcut count</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation type="unfinished">Keyboard Modifiers</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
@@ -3407,11 +3443,11 @@ Ezarpen honek ez du desgaitzen sagu bidezko inklinazioa.</translation>
     </message>
     <message>
       <source>Default camera orientation</source>
-      <translation type="unfinished">Default camera orientation</translation>
+      <translation>Kameraren orientazio lehenetsia</translation>
     </message>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
-      <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+      <translation>Kameraren orientazio lehenetsia dokumentu bat sortzean edo bista nagusia hautatzean</translation>
     </message>
   </context>
   <context>
@@ -3515,6 +3551,10 @@ Ezarpen honek ez du desgaitzen sagu bidezko inklinazioa.</translation>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation>Inperiala ingeniaritza zibilerako (ft, ft/sec)</translation>
+    </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation type="unfinished">FEM (mm, N, sec)</translation>
     </message>
   </context>
   <context>
@@ -4497,23 +4537,23 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Display message types</source>
-      <translation type="unfinished">Display message types</translation>
+      <translation>Bistaratze-mezuen motak</translation>
     </message>
     <message>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Mezu normalak</translation>
     </message>
     <message>
       <source>Log messages</source>
-      <translation type="unfinished">Log messages</translation>
+      <translation>Egunkari-mezuak</translation>
     </message>
     <message>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Abisuak</translation>
     </message>
     <message>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Erroreak</translation>
     </message>
     <message>
       <source>Show report view on</source>
@@ -4680,6 +4720,20 @@ Aldaketak gorde nahi dituzu?</translation>
     <message>
       <source>PDF file</source>
       <translation>PDF fitxategia</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
     </message>
   </context>
   <context>
@@ -5306,6 +5360,21 @@ Datuak gorde gabe irten nahi duzu?</translation>
     <message>
       <source>Open file %1</source>
       <translation>Ireki %1 fitxategia</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Fitxategia ez da aurkitu</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>'%1' fitxategia ezin da ireki.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6647,6 +6716,50 @@ Aukeratu 'Abortatu' abortatzeko.</translation>
       <source>Override colors...</source>
       <translation>Gainidatzi koloreak...</translation>
     </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation type="unfinished">
+
+Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>
+
+Pyhsical path: </source>
+      <translation type="unfinished">
+
+Pyhsical path: </translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation type="unfinished">
+Document: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation type="unfinished">
+  Path: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation type="unfinished">Identical physical path</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -7854,6 +7967,21 @@ Aukeratu 'Abortatu' abortatzeko.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Makroa</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation type="unfinished">Recent macros</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation type="unfinished">Recent macro list</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -8547,11 +8675,11 @@ Aukeratu 'Abortatu' abortatzeko.</translation>
     </message>
     <message>
       <source>Home</source>
-      <translation type="unfinished">Home</translation>
+      <translation>Hasiera</translation>
     </message>
     <message>
       <source>Set to default home view</source>
-      <translation type="unfinished">Set to default home view</translation>
+      <translation>Ezarri hasierako bista lehenetsira</translation>
     </message>
   </context>
   <context>
@@ -9156,7 +9284,7 @@ Ziur zaude jarraitu nahi duzula?
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+      <translation>Elementu hauek ezabatzeko hautatu dira, baina ez daude dokumentu aktiboan.</translation>
     </message>
   </context>
   <context>

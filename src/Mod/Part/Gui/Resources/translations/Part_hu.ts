@@ -161,11 +161,11 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Az eredmény kiszámítása hibába ütközött:
 
 {errstr}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Kattintson a “Folytatás” gombra hogy a hiba ellenére létrehozza a funkciót, vagy a “Megszakítás” gombra hogy visszalépjen.</translation>
     </message>
   </context>
   <context>
@@ -272,19 +272,6 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
     </message>
   </context>
   <context>
-    <name>Part_MakeTube</name>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-      <source>Create tube</source>
-      <translation>Cső létrehozása</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-      <source>Creates a tube</source>
-      <translation>Cső létrehozása</translation>
-    </message>
-  </context>
-  <context>
     <name>Part_SplitFeatures</name>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
@@ -358,6 +345,32 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
       <translation>Kereszteződési töredékek törlése</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Tube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="85"/>
+      <source>Create tube</source>
+      <translation>Cső létrehozása</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="89"/>
+      <source>Creates a tube</source>
+      <translation>Cső létrehozása</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
+      <source>Create tube</source>
+      <translation>Cső létrehozása</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation>Cső létrehozása</translation>
     </message>
   </context>
   <context>

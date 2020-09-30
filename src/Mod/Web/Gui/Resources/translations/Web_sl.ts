@@ -128,8 +128,8 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="727"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="741"/>
       <source>Browser</source>
       <translation>Brskalnik</translation>
     </message>
@@ -153,7 +153,7 @@
       <translation>Med nalaganjem datoteke je prišlo do napake. Nekateri podatki so se lahko spremenili ali pa se sploh niso obnovili. Poglej v okno poročil za podrobnejše informacije o vpletenih objektih.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="698"/>
+      <location filename="../../BrowserView.cpp" line="712"/>
       <source>Loading %1...</source>
       <translation>Nalaganje %1 …</translation>
     </message>

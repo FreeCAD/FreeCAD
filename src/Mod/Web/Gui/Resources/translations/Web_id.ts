@@ -128,8 +128,8 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="727"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="741"/>
       <source>Browser</source>
       <translation>Browser</translation>
     </message>
@@ -153,7 +153,7 @@
       <translation>Ada kesalahan saat memuat file. Beberapa data mungkin telah dimodifikasi atau tidak dipulihkan sama sekali. Lihat di tampilan laporan untuk informasi yang lebih spesifik tentang objek yang terlibat.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="698"/>
+      <location filename="../../BrowserView.cpp" line="712"/>
       <source>Loading %1...</source>
       <translation>Memuat %1...</translation>
     </message>
