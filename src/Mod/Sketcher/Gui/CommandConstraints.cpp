@@ -852,7 +852,7 @@ public:
 #if QT_VERSION >= 0x050000
         cursorPixmap.setDevicePixelRatio(pixelRatio);
         // only X11 needs hot point coordinates to be scaled
-        if (qGuiApp->platformName == "xcb")) {
+        if (qGuiApp->platformName == QString("xcb")) {
             hotX *= pixelRatio;
             hotY *= pixelRatio;
         }
