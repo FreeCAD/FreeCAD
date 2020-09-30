@@ -70,11 +70,13 @@ class CommandPathSanity:
 
     def Activated(self):
         # if everything is ok, execute
+        self.squawkData["items"] = []
+
         obj = FreeCADGui.Selection.getSelectionEx()[0].Object
         data = self.__summarize(obj)
         html = self.__report(data)
         if html is not None:
-            print(html)
+            print("HTML report written to {}".format(html))
             webbrowser.open(html)
 
     def __makePicture(self, obj, imageName):
@@ -116,10 +118,6 @@ class CommandPathSanity:
         obj.Visibility = False
         for o in visible:
             o.Visibility = True
-
-        # with open(imagepath, 'wb') as fd:
-        #     fd.write(imagedata)
-        #     fd.close()
 
         return "{}_t.png".format(imagepath)
 
@@ -164,12 +162,6 @@ class CommandPathSanity:
 {outTable}
 |===
 
-== Coolant
-
-|===
-{coolantTable}
-|===
-
 == Fixtures and Workholding
 
 |===
@@ -189,6 +181,7 @@ class CommandPathSanity:
 
         PartLabel = translate("Path_Sanity", "Base Object(s)")
         SequenceLabel = translate("Path_Sanity", "Job Sequence")
+        DescriptionLabel = translate("Path_Sanity", "Job Description")
         JobTypeLabel = translate("Path_Sanity", "Job Type")
         CADLabel = translate("Path_Sanity", "CAD File Name")
         LastSaveLabel = translate("Path_Sanity", "Last Save Date")
@@ -210,6 +203,7 @@ class CommandPathSanity:
             "image::" + b['baseimage'] + "[" + PartLabel + "]\n"
         infoTable += "|*" + SequenceLabel + "*|" + d['Sequence']
         infoTable += "|*" + JobTypeLabel + "*|" + d['JobType']
+        infoTable += "|*" + DescriptionLabel + "*|" + d['JobDescription']
         infoTable += "|*" + CADLabel + "*|" + d['FileName']
         infoTable += "|*" + LastSaveLabel + "*|" + d['LastModifiedDate']
         infoTable += "|*" + CustomerLabel + "*|" + d['Customer']
@@ -222,17 +216,19 @@ class CommandPathSanity:
         zMinLabel = translate("Path_Sanity", "Minimum Z Height")
         zMaxLabel = translate("Path_Sanity", "Maximum Z Height")
         cycleTimeLabel = translate("Path_Sanity", "Cycle Time")
+        coolantLabel = translate("Path_Sanity", "Coolant")
         jobTotalLabel = translate("Path_Sanity", "TOTAL JOB")
 
         d = data['runData']
 
         runTable += "|*" + opLabel + "*|*" + zMinLabel + "*|*" + zMaxLabel + \
-            "*|*" + cycleTimeLabel + "*\n"
+            "*|*" + coolantLabel + "*|*" + cycleTimeLabel + "*\n"
 
         for i in d['items']:
             runTable += "|{}".format(i['opName'])
             runTable += "|{}".format(i['minZ'])
             runTable += "|{}".format(i['maxZ'])
+            runTable += "|{}".format(i['coolantMode'])
             runTable += "|{}".format(i['cycleTime'])
 
         runTable += "|*" + jobTotalLabel + "* |{} |{} |{}".format(
@@ -263,15 +259,13 @@ class CommandPathSanity:
 
             toolTables += "|===\n"
 
-            # toolTables += "|*" + toolLabel + "*| T" + key + " .2+a|" + "image::" + value['imagepath'] + "[" + key + "]|\n"
-
-            toolTables += "|*" + descriptionLabel + "*|" + value['description'] + " a|" + "image::" + value['imagepath'] + "[" + key + "]\n"
-            toolTables += "|*" + manufLabel + "* 2+|" + value['manufacturer'] + "\n"
-            toolTables += "|*" + partNumberLabel + "* 2+|" + value['partNumber'] + "\n"
-            toolTables += "|*" + urlLabel + "* 2+|" + value['url'] + "\n"
-            toolTables += "|*" + inspectionNotesLabel + "* 2+|" + value['inspectionNotes'] + "\n"
-            toolTables += "|*" + shapeLabel + "* 2+|" + value['shape'] + "\n"
-            toolTables += "|*" + diameterLabel + "* 2+|" + value['diameter'] + "\n"
+            toolTables += "|*{}*| {} a| image::{}[{}]\n".format(descriptionLabel, value['description'], value['imagepath'], key)
+            toolTables += "|*{}* 2+| {}\n".format(manufLabel, value['manufacturer'])
+            toolTables += "|*{}* 2+| {}\n".format(partNumberLabel, value['partNumber'])
+            toolTables += "|*{}* 2+| {}\n".format(urlLabel, value['url'])
+            toolTables += "|*{}* 2+| {}\n".format(inspectionNotesLabel, value['inspectionNotes'])
+            toolTables += "|*{}* 2+| {}\n".format(shapeLabel, value['shape'])
+            toolTables += "|*{}* 2+| {}\n".format(diameterLabel, value['diameter'])
             toolTables += "|===\n"
 
             toolTables += "|===\n"
@@ -291,11 +285,13 @@ class CommandPathSanity:
 
         d = data['stockData']
 
-        stockTable += "|*" + materialLabel + "*|" + d['material'] + \
-            " .4+a|" + "image::" + d['stockImage'] + "[stock]\n"
-        stockTable += "|*" + xDimLabel + "*|" + d['xLen']
-        stockTable += "|*" + yDimLabel + "*|" + d['yLen']
-        stockTable += "|*" + zDimLabel + "*|" + d['zLen']
+        stockTable += "|*{}*|{} .4+a|image::{}[stock]\n".format(
+                materialLabel,
+                d['material'],
+                d['stockImage'])
+        stockTable += "|*{}*|{}".format(xDimLabel, d['xLen'])
+        stockTable += "|*{}*|{}".format(yDimLabel, d['yLen'])
+        stockTable += "|*{}*|{}".format(zDimLabel, d['zLen'])
 
         # Generate the markup for the Fixture Section
 
@@ -306,24 +302,9 @@ class CommandPathSanity:
 
         d = data['fixtureData']
 
-        fixtureTable += "|*" + offsetsLabel + "*|" + d['fixtures'] + "\n"
-        fixtureTable += "|*" + orderByLabel + "*|" + d['orderBy']
-        fixtureTable += "|*" + datumLabel + "* a|image::" + d['datumImage'] + "[]"
-
-        # Generate the markup for the Coolant Section
-
-        coolantTable = ""
-
-        opLabel = translate("Path_Sanity", "Operation")
-        coolantLabel = translate("Path_Sanity", "Coolant Mode")
-
-        d = data['coolantData']['items']
-
-        coolantTable += "|*" + opLabel + "*|*" + coolantLabel + "*\n"
-
-        for i in d:
-            coolantTable += "|" + i['opName']
-            coolantTable += "|" + i['CoolantMode']
+        fixtureTable += "|*{}*|{}\n".format(offsetsLabel, d['fixtures'])
+        fixtureTable += "|*{}*|{}\n".format(orderByLabel, d['orderBy'])
+        fixtureTable += "|*{}* a| image::{}[]".format(datumLabel, d['datumImage'])
 
         # Generate the markup for the Output Section
 
@@ -340,15 +321,15 @@ class CommandPathSanity:
         fileSizeLabel = translate("Path_Sanity", "File Size (kbs)")
         lineCountLabel = translate("Path_Sanity", "Line Count")
 
-        outTable += "|*" + gcodeFileLabel + "*|" + d['lastgcodefile'] + "\n"
-        outTable += "|*" + lastpostLabel + "*|" + d['lastpostprocess'] + "\n"
-        outTable += "|*" + stopsLabel + "*|" + d['optionalstops'] + "\n"
-        outTable += "|*" + programmerLabel + "*|" + d['programmer'] + "\n"
-        outTable += "|*" + machineLabel + "*|" + d['machine'] + "\n"
-        outTable += "|*" + postLabel + "*|" + d['postprocessor'] + "\n"
-        outTable += "|*" + flagsLabel + "*|" + d['postprocessorFlags'] + "\n"
-        outTable += "|*" + fileSizeLabel + "*|" + d['filesize'] + "\n"
-        outTable += "|*" + lineCountLabel + "*|" + d['linecount'] + "\n"
+        outTable += "|*{}*|{}\n".format(gcodeFileLabel, d['lastgcodefile'])
+        outTable += "|*{}*|{}\n".format(lastpostLabel, d['lastpostprocess'])
+        outTable += "|*{}*|{}\n".format(stopsLabel, d['optionalstops'])
+        outTable += "|*{}*|{}\n".format(programmerLabel, d['programmer'])
+        outTable += "|*{}*|{}\n".format(machineLabel, d['machine'])
+        outTable += "|*{}*|{}\n".format(postLabel, d['postprocessor'])
+        outTable += "|*{}*|{}\n".format(flagsLabel, d['postprocessorFlags'])
+        outTable += "|*{}*|{}\n".format(fileSizeLabel, d['filesize'])
+        outTable += "|*{}*|{}\n".format(lineCountLabel, d['linecount'])
 
         # Generate the markup for the Squawk Section
 
@@ -356,8 +337,9 @@ class CommandPathSanity:
         operatorLabel = translate("Path_Sanity", "Operator")
         dateLabel = translate("Path_Sanity", "Date")
 
-        squawkTable = ""
-        squawkTable += "|*" + noteLabel + "*|*" + operatorLabel + "*|*" + dateLabel + "*\n"
+        squawkTable = "|*{}*|*{}*|*{}*\n".format(noteLabel,
+                                                 operatorLabel,
+                                                 dateLabel)
 
         d = data['squawkData']
         for i in d['items']:
@@ -376,7 +358,6 @@ class CommandPathSanity:
             stockTable=stockTable,
             fixtureTable=fixtureTable,
             outTable=outTable,
-            coolantTable=coolantTable,
             squawkTable=squawkTable)
 
         # Save the report
@@ -388,7 +369,8 @@ class CommandPathSanity:
             fd.close()
 
         try:
-            result = os.system('asciidoctor {} -o {}'.format(reportraw, reporthtml))
+            result = os.system('asciidoctor {} -o {}'.format(reportraw,
+                reporthtml))
             if str(result) == "32512":
                 print('asciidoctor not found')
                 reporthtml = None
@@ -408,7 +390,6 @@ class CommandPathSanity:
         data['designData'] = self.__designData(obj)
         data['toolData'] = self.__toolData(obj)
         data['runData'] = self.__runData(obj)
-        data['coolantData'] = self.__coolantData(obj)
         data['outputData'] = self.__outputData(obj)
         data['fixtureData'] = self.__fixtureData(obj)
         data['stockData'] = self.__stockData(obj)
@@ -416,7 +397,8 @@ class CommandPathSanity:
         return data
 
     def squawk(self, operator, note, date=datetime.now(), squawkType="NOTE"):
-        squawkType = squawkType if squawkType in ["NOTE", "WARNING", "ERROR", "TIP"] else "NOTE"
+        squawkType = squawkType if squawkType in \
+            ["NOTE", "WARNING", "CAUTION", "TIP"] else "NOTE"
 
         self.squawkData['items'].append({"Date": str(date),
                                          "Operator": operator,
@@ -424,7 +406,8 @@ class CommandPathSanity:
                                          "squawkType": squawkType})
 
     def __baseObjectData(self, obj):
-        data = {}
+        data = {'baseimage': '',
+                'bases': ''}
         try:
             bases = {}
             for name, count in \
@@ -437,6 +420,7 @@ class CommandPathSanity:
 
         except Exception as e:
             data['errors'] = e
+            self.squawk("PathSanity(__baseObjectData)", e, squawkType="CAUTION")
 
         return data
 
@@ -446,13 +430,20 @@ class CommandPathSanity:
         Returns information about issues and concerns (squawks)
         """
 
-        data = {}
+        data = {'FileName': '',
+                'LastModifiedDate': '',
+                'Customer': '',
+                'Designer': '',
+                'JobDescription': '',
+                'JobLabel': '',
+                'Sequence': '',
+                'JobType': ''}
         try:
             data['FileName'] = obj.Document.FileName
             data['LastModifiedDate'] = str(obj.Document.LastModifiedDate)
             data['Customer'] = obj.Document.Company
             data['Designer'] = obj.Document.LastModifiedBy
-            data['JobNotes'] = obj.Description
+            data['JobDescription'] = obj.Description
             data['JobLabel'] = obj.Label
 
             n = 0
@@ -468,6 +459,7 @@ class CommandPathSanity:
 
         except Exception as e:
             data['errors'] = e
+            self.squawk("PathSanity(__designData)", e, squawkType="CAUTION")
 
         return data
 
@@ -477,19 +469,22 @@ class CommandPathSanity:
         toolcontrollers
         Returns information about issues and problems with the tools (squawks)
         """
-
         data = {}
 
         try:
             for TC in obj.ToolController:
                 if not hasattr(TC.Tool, 'BitBody'):
+                    self.squawk("PathSanity",
+                    "Tool number {} is a legacy tool. Legacy tools not \
+                        supported by Path-Sanity".format(TC.ToolNumber),
+                    squawkType="WARNING")
                     continue  # skip old-style tools
                 tooldata = data.setdefault(str(TC.ToolNumber), {})
                 bitshape = tooldata.setdefault('BitShape', "")
                 if bitshape not in ["", TC.Tool.BitShape]:
                     self.squawk("PathSanity",
                     "Tool number {} used by multiple tools".format(TC.ToolNumber),
-                    squawkType="ERROR")
+                    squawkType="CAUTION")
                 tooldata['bitShape'] = TC.Tool.BitShape
                 tooldata['description'] = TC.Tool.Label
                 tooldata['manufacturer'] = ""
@@ -520,11 +515,11 @@ class CommandPathSanity:
 
                 used = False
                 for op in obj.Operations.Group:
-                    if op.ToolController is TC:
+                    if hasattr(op, "ToolController") and op.ToolController is TC:
                         used = True
                         tooldata.setdefault('ops', []).append(
                             {"Operation": op.Label,
-                             "ToolController": TC.Name,
+                             "ToolController": TC.Label,
                              "Feed": str(TC.HorizFeed),
                              "Speed": str(TC.SpindleSpeed)})
 
@@ -536,37 +531,71 @@ class CommandPathSanity:
 
         except Exception as e:
             data['errors'] = e
+            self.squawk("PathSanity(__toolData)", e, squawkType="CAUTION")
 
         return data
 
     def __runData(self, obj):
-        data = {}
+        data = {'cycletotal': '',
+                'jobMinZ': '',
+                'jobMaxZ': '',
+                'jobDescription': '',
+                'items': []}
         try:
             data['cycletotal'] = str(obj.CycleTime)
             data['jobMinZ'] = FreeCAD.Units.Quantity(obj.Path.BoundBox.ZMin,
                     FreeCAD.Units.Length).UserString
             data['jobMaxZ'] = FreeCAD.Units.Quantity(obj.Path.BoundBox.ZMax,
                     FreeCAD.Units.Length).UserString
+            data['jobDescription'] = obj.Description
 
             data['items'] = []
             for op in obj.Operations.Group:
-                oplabel = op.Label if op.Active else op.Label + " (INACTIVE)"
+
+                oplabel = op.Label
+                ctime = op.CycleTime if hasattr(op, "CycleTime") else 0.0
+                cool = op.CoolantMode if hasattr(op, "CoolantMode") else "N/A"
+
+                o = op
+                while len(o.ViewObject.claimChildren()) != 0:  # dressup
+                    oplabel = "{}:{}".format(oplabel, o.Base.Label)
+                    o = o.Base
+                    if hasattr(o, 'CycleTime'):
+                        ctime = o.CycleTime
+                    cool = o.CoolantMode if hasattr(o, "CoolantMode") else cool
+
+                if hasattr(op, 'Active') and not op.Active:
+                    oplabel = "{} (INACTIVE)".format(oplabel)
+                    ctime = 0.0
+
+                if op.Path.BoundBox.isValid():
+                    zmin = FreeCAD.Units.Quantity(op.Path.BoundBox.ZMin,
+                              FreeCAD.Units.Length).UserString
+                    zmax = FreeCAD.Units.Quantity(op.Path.BoundBox.ZMax,
+                              FreeCAD.Units.Length).UserString
+                else:
+                    zmin = ''
+                    zmax = ''
+
                 opdata = {"opName": oplabel,
-                          "minZ": FreeCAD.Units.Quantity(op.Path.BoundBox.ZMin,
-                              FreeCAD.Units.Length).UserString,
-                          "maxZ": FreeCAD.Units.Quantity(op.Path.BoundBox.ZMax,
-                              FreeCAD.Units.Length).UserString,
-                          #"maxZ": str(op.Path.BoundBox.ZMax),
-                          "cycleTime": str(op.CycleTime)}
+                          "minZ": zmin,
+                          "maxZ": zmax,
+                          "cycleTime": ctime,
+                          "coolantMode": cool}
                 data['items'].append(opdata)
 
         except Exception as e:
             data['errors'] = e
+            self.squawk("PathSanity(__runData)", e, squawkType="CAUTION")
 
         return data
 
     def __stockData(self, obj):
-        data = {}
+        data = {'xLen': '',
+                'yLen': '',
+                'zLen': '',
+                'material': '',
+                'stockImage': ''}
 
         try:
             bb = obj.Stock.Shape.BoundBox
@@ -585,31 +614,12 @@ class CommandPathSanity:
             data['stockImage'] = self.__makePicture(obj.Stock, "stockImage")
         except Exception as e:
             data['errors'] = e
-            print(e)
-
-        return data
-
-    def __coolantData(self, obj):
-        data = {"items": []}
-
-        try:
-            for op in obj.Operations.Group:
-                opLabel = op.Label if op.Active else op.Label + " (INACTIVE)"
-                if hasattr(op, "CoolantMode"):
-                    opdata = {"opName": opLabel,
-                            "coolantMode": op.eCoolantMode}
-                else:
-                    opdata = {"opName": opLabel,
-                            "coolantMode": "N/A"}
-                data['items'].append(opdata)
-
-        except Exception as e:
-            data['errors'] = e
+            self.squawk("PathSanity(__stockData)", e, squawkType="CAUTION")
 
         return data
 
     def __fixtureData(self, obj):
-        data = {}
+        data = {'fixtures': '', 'orderBy': '', 'datumImage': ''}
         try:
             data['fixtures'] = str(obj.Fixtures)
             data['orderBy'] = str(obj.OrderOutputBy)
@@ -649,11 +659,20 @@ class CommandPathSanity:
 
         except Exception as e:
             data['errors'] = e
+            self.squawk("PathSanity(__fixtureData)", e, squawkType="CAUTION")
 
         return data
 
     def __outputData(self, obj):
-        data = {}
+        data = {'lastpostprocess': '',
+                'lastgcodefile': '',
+                'optionalstops': '',
+                'programmer': '',
+                'machine': '',
+                'postprocessor': '',
+                'postprocessorFlags': '',
+                'filesize': '',
+                'linecount': ''}
         try:
             data['lastpostprocess'] = str(obj.LastPostProcessDate)
             data['lastgcodefile'] = str(obj.LastPostProcessOutput)
@@ -677,18 +696,9 @@ class CommandPathSanity:
 
         except Exception as e:
             data['errors'] = e
+            self.squawk("PathSanity(__outputData)", e, squawkType="CAUTION")
 
         return data
-
-    # def __inspectionData(self, obj):
-    #     data = {}
-    #     try:
-    #         pass
-
-    #     except Exception as e:
-    #         data['errors'] = e
-
-    #     return data
 
 
 if FreeCAD.GuiUp:
