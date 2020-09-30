@@ -130,7 +130,7 @@ Py::Long VoronoiVertexPy::getColor(void) const {
 }
 
 void VoronoiVertexPy::setColor(Py::Long color) {
-  getVertexFromPy(this)->color(int(color) & Voronoi::ColorMask);
+  getVertexFromPy(this)->color(long(color) & Voronoi::ColorMask);
 }
 
 Py::Float VoronoiVertexPy::getX(void) const

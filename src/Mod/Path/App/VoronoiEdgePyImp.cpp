@@ -147,7 +147,7 @@ Py::Long VoronoiEdgePy::getColor(void) const {
 }
 
 void VoronoiEdgePy::setColor(Py::Long color) {
-  getEdgeFromPy(this)->color(int(color) & Voronoi::ColorMask);
+  getEdgeFromPy(this)->color(long(color) & Voronoi::ColorMask);
 }
 
 Py::List VoronoiEdgePy::getVertices(void) const

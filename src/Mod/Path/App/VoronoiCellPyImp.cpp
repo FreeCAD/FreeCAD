@@ -128,7 +128,7 @@ Py::Long VoronoiCellPy::getColor(void) const {
 }
 
 void VoronoiCellPy::setColor(Py::Long color) {
-  getCellFromPy(this)->color(int(color) & Voronoi::ColorMask);
+  getCellFromPy(this)->color(long(color) & Voronoi::ColorMask);
 }
 
 Py::Long VoronoiCellPy::getSourceIndex(void) const
