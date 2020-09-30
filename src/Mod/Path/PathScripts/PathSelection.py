@@ -47,6 +47,34 @@ class MESHGate(PathBaseGate):
     def allow(self, doc, obj, sub): # pylint: disable=unused-argument
         return obj.TypeId[0:4] == 'Mesh'
 
+class VCARVEGate:
+    def allow(self, doc, obj, sub):
+        try:
+            shape = obj.Shape
+        except Exception: # pylint: disable=broad-except
+            return False
+
+        if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
+            return True
+
+        if shape.ShapeType == 'Face':
+            return True
+
+        elif shape.ShapeType == 'Solid':
+            if sub and sub[0:4] == 'Face':
+                return True
+
+        elif shape.ShapeType == 'Compound':
+            if sub and sub[0:4] == 'Face':
+                return True
+
+        if sub:
+            subShape = shape.getElement(sub)
+            if subShape.ShapeType == 'Edge':
+                return False
+
+        return False
+
 
 class ENGRAVEGate(PathBaseGate):
     def allow(self, doc, obj, sub): # pylint: disable=unused-argument
@@ -300,6 +328,10 @@ def surfaceselect():
     FreeCADGui.Selection.addSelectionGate(gate)
     FreeCAD.Console.PrintWarning("Surfacing Select Mode\n")
 
+def vcarveselect():
+    FreeCADGui.Selection.addSelectionGate(VCARVEGate())
+    FreeCAD.Console.PrintWarning("Vcarve Select Mode\n")
+
 
 def probeselect():
     FreeCADGui.Selection.addSelectionGate(PROBEGate())
@@ -328,6 +360,7 @@ def select(op):
     opsel['Surface'] = surfaceselect
     opsel['Waterline'] = surfaceselect
     opsel['Adaptive'] = adaptiveselect
+    opsel['Vcarve'] = vcarveselect
     opsel['Probe'] = probeselect
     opsel['Custom'] = customselect
     return opsel[op]

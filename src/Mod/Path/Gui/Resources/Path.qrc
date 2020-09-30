@@ -66,6 +66,7 @@
         <file>icons/Path-ToolController.svg</file>
         <file>icons/Path-Toolpath.svg</file>
         <file>icons/Path-ToolTable.svg</file>
+        <file>icons/Path-Vcarve.svg</file>
         <file>icons/Path-Waterline.svg</file>
         <file>icons/arrow-ccw.svg</file>
         <file>icons/arrow-cw.svg</file>
@@ -111,6 +112,7 @@
         <file>panels/PageOpSlotEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>
         <file>panels/PageOpWaterlineEdit.ui</file>
+        <file>panels/PageOpVcarveEdit.ui</file>
         <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
         <file>panels/SetupGlobal.ui</file>

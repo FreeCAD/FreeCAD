@@ -97,7 +97,7 @@ class PathWorkbench (Workbench):
                          "Path_MillFace", "Path_Helix", "Path_Adaptive",
                          "Path_Slot"]
         threedopcmdlist = ["Path_Pocket_3D"]
-        engravecmdlist = ["Path_Engrave", "Path_Deburr"]
+        engravecmdlist = ["Path_Engrave", "Path_Deburr", "Path_Vcarve"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy"]
         dressupcmdlist = ["Path_DressupAxisMap", "Path_DressupPathBoundary",
                           "Path_DressupDogbone", "Path_DressupDragKnife",
