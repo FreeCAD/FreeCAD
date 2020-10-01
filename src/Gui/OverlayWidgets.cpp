@@ -1355,7 +1355,7 @@ bool OverlayTabWidget::getAutoHideRect(QRect &rect) const
     switch(dockArea) {
     case Qt::LeftDockWidgetArea:
     case Qt::RightDockWidgetArea:
-        if (_TopOverlay->isVisible())
+        if (_TopOverlay->isVisible() && _TopOverlay->_state <= State_Normal)
             rect.setTop(std::max(rect.top(), _TopOverlay->rectOverlay.bottom()));
         if (dockArea == Qt::RightDockWidgetArea)
             rect.setLeft(rect.left() + std::max(rect.width()-hintWidth,0));
@@ -1364,13 +1364,13 @@ bool OverlayTabWidget::getAutoHideRect(QRect &rect) const
         break;
     case Qt::TopDockWidgetArea:
     case Qt::BottomDockWidgetArea:
-        if (_LeftOverlay->isVisible())
+        if (_LeftOverlay->isVisible() && _LeftOverlay->_state <= State_Normal)
             rect.setLeft(std::max(rect.left(),_LeftOverlay->rectOverlay.right()));
         if (dockArea == Qt::TopDockWidgetArea)
             rect.setBottom(rect.bottom() - std::max(rect.height()-hintWidth,0));
         else {
             rect.setTop(rect.top() + std::max(rect.height()-hintWidth,0));
-            if (_RightOverlay->isVisible())
+            if (_RightOverlay->isVisible() && _RightOverlay->_state <= State_Normal)
                 rect.setRight(std::min(rect.right(), _RightOverlay->x()));
         }
         break;
