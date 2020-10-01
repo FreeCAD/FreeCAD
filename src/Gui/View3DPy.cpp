@@ -51,6 +51,7 @@
 #include "View3DInventorViewer.h"
 #include "View3DViewerPy.h"
 #include "ActiveObjectList.h"
+#include "WidgetFactory.h"
 
 
 #include <Base/Console.h>
@@ -203,6 +204,8 @@ void View3DInventorPy::init_type()
         "pla: clipping plane placement");
     add_varargs_method("hasClippingPlane",&View3DInventorPy::hasClippingPlane,
         "hasClippingPlane(): check whether this clipping plane is active");
+    add_varargs_method("graphicsView",&View3DInventorPy::graphicsView,
+        "graphicsView(): Access this view as QGraphicsView");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -2596,4 +2599,14 @@ Py::Object View3DInventorPy::hasClippingPlane(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     return Py::Boolean(_view->getViewer()->hasClippingPlane());
+}
+
+Py::Object View3DInventorPy::graphicsView(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    PythonWrapper wrap;
+    wrap.loadWidgetsModule();
+    return wrap.fromQWidget(_view->getViewer(), "QGraphicsView");
 }
