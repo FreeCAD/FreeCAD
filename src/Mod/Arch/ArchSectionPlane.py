@@ -137,7 +137,7 @@ def getSectionData(source):
 
 
 def looksLikeDraft(o):
-    
+
     """Does this object look like a Draft shape? (flat, no solid, etc)"""
 
     # If there is no shape at all ignore it
@@ -152,9 +152,9 @@ def looksLikeDraft(o):
 
 
 def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesByObject=False):
-    
+
     """
-    returns a list of shapes (visible, hidden, cut lines...) 
+    returns a list of shapes (visible, hidden, cut lines...)
     obtained from performing a series of booleans against the given cut plane
     """
 
@@ -249,7 +249,7 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
 
 
 def getFillForObject(o, defaultFill, source):
-    
+
     """returns a color tuple from an object's material"""
 
     if hasattr(source, 'UseMaterialColorForFill') and source.UseMaterialColorForFill:
@@ -265,7 +265,7 @@ def getFillForObject(o, defaultFill, source):
 
 
 def isOriented(obj,plane):
-    
+
     """determines if an annotation is facing the cutplane or not"""
 
     norm1 = plane.normalAt(0,0)
@@ -370,7 +370,7 @@ def getSVG(source,
             spaces.append(o)
         elif Draft.getType(o) in ["AngularDimension","LinearDimension","Annotation","Label","Text"]:
             if isOriented(o,cutplane):
-                drafts.append(o) 
+                drafts.append(o)
         elif o.isDerivedFrom("Part::Part2DObject"):
             drafts.append(o)
         elif looksLikeDraft(o):
@@ -680,7 +680,7 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
     global ISRENDERING
     while ISRENDERING:
         time.sleep(0.1)
-    
+
     ISRENDERING = True
 
     # a name to save a temp file
@@ -850,9 +850,9 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
 
 
 def closeViewer(name):
-    
+
     """Close temporary viewers"""
-    
+
     mw = FreeCADGui.getMainWindow()
     for sw in mw.findChildren(QtGui.QMdiSubWindow):
         if sw.windowTitle() == name:
@@ -1011,6 +1011,9 @@ class _ViewProviderSectionPlane:
         if not "CutMargin" in pl:
             vobj.addProperty("App::PropertyLength","CutMargin","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The distance between the cut plane and the actual view cut (keep this a very small value but not zero)"))
             vobj.CutMargin = 1
+        if not "ShowLabel" in pl:
+            vobj.addProperty("App::PropertyBool","ShowLabel","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the label in the 3D view"))
+
 
     def onDocumentRestored(self,vobj):
 
@@ -1042,9 +1045,16 @@ class _ViewProviderSectionPlane:
         self.lcoords = coin.SoCoordinate3()
         ls = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         ls.coordIndex.setValues(0,57,[0,1,-1,2,3,4,5,-1,6,7,8,9,-1,10,11,-1,12,13,14,15,-1,16,17,18,19,-1,20,21,-1,22,23,24,25,-1,26,27,28,29,-1,30,31,-1,32,33,34,35,-1,36,37,38,39,-1,40,41,42,43,44])
+        self.txtcoords = coin.SoTransform()
+        self.txtfont = coin.SoFont()
+        self.txtfont.name = "Sans"
+        self.txt = coin.SoAsciiText()
+        self.txt.justification = coin.SoText2.LEFT
+        self.txt.string.setValue(" ")
         sep = coin.SoSeparator()
         psep = coin.SoSeparator()
         fsep = coin.SoSeparator()
+        tsep = coin.SoSeparator()
         fsep.addChild(self.mat2)
         fsep.addChild(self.fcoords)
         fsep.addChild(fs)
@@ -1052,8 +1062,13 @@ class _ViewProviderSectionPlane:
         psep.addChild(self.drawstyle)
         psep.addChild(self.lcoords)
         psep.addChild(ls)
+        tsep.addChild(self.mat1)
+        tsep.addChild(self.txtcoords)
+        tsep.addChild(self.txtfont)
+        tsep.addChild(self.txt)
         sep.addChild(fsep)
         sep.addChild(psep)
+        sep.addChild(tsep)
         vobj.addDisplayMode(sep,"Default")
         self.onChanged(vobj,"DisplayLength")
         self.onChanged(vobj,"LineColor")
@@ -1075,8 +1090,13 @@ class _ViewProviderSectionPlane:
     def updateData(self,obj,prop):
 
         if prop in ["Placement"]:
+            # for some reason the text doesn't rotate with the host placement??
+            self.txtcoords.rotation.setValue(obj.Placement.Rotation.Q)
             self.onChanged(obj.ViewObject,"DisplayLength")
             self.onChanged(obj.ViewObject,"CutView")
+        elif prop == "Label":
+            if hasattr(obj.ViewObject,"ShowLabel") and obj.ViewObject.ShowLabel:
+                self.txt.string = obj.Label
         return
 
     def onChanged(self,vobj,prop):
@@ -1102,13 +1122,13 @@ class _ViewProviderSectionPlane:
                 hd = 1
             verts = []
             fverts = []
+            pl = FreeCAD.Placement(vobj.Object.Placement)
+            if hasattr(vobj,"ArrowSize"):
+                l1 = vobj.ArrowSize.Value if vobj.ArrowSize.Value > 0 else 0.1
+            else:
+                l1 = 0.1
+            l2 = l1/3
             for v in [[-ld,-hd],[ld,-hd],[ld,hd],[-ld,hd]]:
-                if hasattr(vobj,"ArrowSize"):
-                    l1 = vobj.ArrowSize.Value if vobj.ArrowSize.Value > 0 else 0.1
-                else:
-                    l1 = 0.1
-                l2 = l1/3
-                pl = FreeCAD.Placement(vobj.Object.Placement)
                 p1 = pl.multVec(Vector(v[0],v[1],0))
                 p2 = pl.multVec(Vector(v[0],v[1],-l1))
                 p3 = pl.multVec(Vector(v[0]-l2,v[1],-l1+l2))
@@ -1119,9 +1139,12 @@ class _ViewProviderSectionPlane:
                 fverts.append([p1.x,p1.y,p1.z])
                 verts.extend([[p2.x,p2.y,p2.z],[p3.x,p3.y,p3.z],[p4.x,p4.y,p4.z],[p2.x,p2.y,p2.z]])
                 verts.extend([[p2.x,p2.y,p2.z],[p5.x,p5.y,p5.z],[p6.x,p6.y,p6.z],[p2.x,p2.y,p2.z]])
+            p7 = pl.multVec(Vector(-ld+l2,-hd+l2,0)) # text pos
             verts.extend(fverts+[fverts[0]])
             self.lcoords.point.setValues(verts)
             self.fcoords.point.setValues(fverts)
+            self.txtcoords.translation.setValue([p7.x,p7.y,p7.z])
+            self.txtfont.size = l1
         elif prop == "LineWidth":
             self.drawstyle.lineWidth = vobj.LineWidth
         elif prop in ["CutView","CutMargin"]:
@@ -1157,6 +1180,11 @@ class _ViewProviderSectionPlane:
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
+        elif prop == "ShowLabel":
+            if vobj.ShowLabel:
+                self.txt.string = vobj.Object.Label or " "
+            else:
+                self.txt.string = " "
         return
 
     def __getstate__(self):
@@ -1190,12 +1218,12 @@ class _ViewProviderSectionPlane:
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Edit.svg"),"Toggle Cutview",menu)
         action1.triggered.connect(lambda f=self.contextCutview, arg=vobj:f(arg))
         menu.addAction(action1)
-    
+
     def contextCutview(self,vobj):
         """CONTEXT MENU command to toggle CutView property on and off"""
         if vobj.CutView:
             vobj.CutView = False
-        else: vobj.CutView = True        
+        else: vobj.CutView = True
 
 
 class _ArchDrawingView:
