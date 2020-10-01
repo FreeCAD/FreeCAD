@@ -536,20 +536,27 @@ class ArchScheduleTaskPanel:
         if not self.obj.Proxy.data:
             return
 
-        filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(), translate("Arch","Export CSV File"), None, "CSV (*.csv);;Markdown (*.md)");
+        filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),
+                                                     translate("Arch","Export CSV File"),
+                                                     None,
+                                                     "Comma-separated values (*.csv);;TAB-separated values (*.tsv);;Markdown (*.md)");
         if filename:
             filt = filename[1]
             filename = filename[0]
             if sys.version_info.major < 3:
                 filename = filename.encode("utf8")
             # add missing extension
-            if (not filename.lower().endswith(".csv")) and (not filename.lower().endswith(".md")):
+            if (not filename.lower().endswith(".csv")) and (not filename.lower().endswith(".tsv")) and (not filename.lower().endswith(".md")):
                 if "csv" in filt:
                     filename += ".csv"
+                elif "tsv" in filt:
+                    filename += ".tsv"
                 else:
                     filename += ".md"
             if filename.lower().endswith(".csv"):
-                self.exportCSV(filename)
+                self.exportCSV(filename,delimiter=",")
+            elif filename.lower().endswith(".tsv"):
+                self.exportCSV(filename,delimiter="\t")
             elif filename.lower().endswith(".md"):
                 self.exportMD(filename)
             else:
@@ -568,16 +575,13 @@ class ArchScheduleTaskPanel:
         rows.sort(key=int)
         return rows
 
-    def exportCSV(self,filename):
+    def exportCSV(self,filename,delimiter="\t"):
 
-        """Exports the results as a CSV file"""
-
-        # use TAB to separate values
-        DELIMITER = "\t"
+        """Exports the results as a CSV/TSV file"""
 
         import csv
         with open(filename, 'w') as csvfile:
-            csvfile = csv.writer(csvfile,delimiter=DELIMITER)
+            csvfile = csv.writer(csvfile,delimiter=delimiter)
             csvfile.writerow([translate("Arch","Description"),translate("Arch","Value"),translate("Arch","Unit")])
             if self.obj.DetailedResults:
                 csvfile.writerow(["","",""])
