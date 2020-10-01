@@ -42,14 +42,7 @@ class SketcherWorkbench ( Workbench ):
         # load the module
         import SketcherGui
         import Sketcher
-        Gui.addIconPath(":/icons/constraints")
-        Gui.addIconPath(":/icons/elements")
-        Gui.addIconPath(":/icons/general")
-        Gui.addIconPath(":/icons/geometry")
-        # Gui.addIconPath(":/icons/obsolete")
-        Gui.addIconPath(":/icons/pointers")
-        Gui.addIconPath(":/icons/splines")
-        Gui.addIconPath(":/icons/tools")
+
         try:
             import Profiles
         except ImportError:
