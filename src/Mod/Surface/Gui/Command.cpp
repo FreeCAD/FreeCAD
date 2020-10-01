@@ -63,7 +63,6 @@
 #include <App/PropertyLinks.h>
 #include "Mod/Part/App/PartFeature.h"
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //===========================================================================
 // CmdSurfaceCut THIS IS THE SURFACE CUT COMMAND
@@ -199,6 +198,7 @@ CmdSurfaceCurveOnMesh::CmdSurfaceCurveOnMesh()
     sToolTipText  = QT_TR_NOOP("Curve on mesh");
     sWhatsThis    = "Surface_CurveOnMesh";
     sStatusTip    = sToolTipText;
+    sPixmap       = "Surface_CurveOnMesh";
 }
 
 void CmdSurfaceCurveOnMesh::activated(int)
@@ -294,11 +294,12 @@ bool CmdSurfaceSections::isActive(void)
 void CreateSurfaceCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-/*  rcCmdMgr.addCommand(new CmdSurfaceFilling());
-    rcCmdMgr.addCommand(new CmdSurfaceCut());*/
+/*
+    rcCmdMgr.addCommand(new CmdSurfaceCut());
+*/
     rcCmdMgr.addCommand(new CmdSurfaceFilling());
     rcCmdMgr.addCommand(new CmdSurfaceGeomFillSurface());
-    rcCmdMgr.addCommand(new CmdSurfaceCurveOnMesh());
-    rcCmdMgr.addCommand(new CmdSurfaceExtendFace());
     rcCmdMgr.addCommand(new CmdSurfaceSections());
+    rcCmdMgr.addCommand(new CmdSurfaceExtendFace());
+    rcCmdMgr.addCommand(new CmdSurfaceCurveOnMesh());
 }
