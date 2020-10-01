@@ -46,6 +46,7 @@
 # include <QWindow>
 #endif
 
+#include <QPainterPath>
 #include <QPropertyAnimation>
 
 #include <array>
