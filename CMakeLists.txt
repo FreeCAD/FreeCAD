@@ -84,4 +84,6 @@ add_subdirectory(data)
 
 CreatePackagingTargets()
 
+ConfigurePackageVariables()
+
 PrintFinalReport()

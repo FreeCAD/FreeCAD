@@ -1,0 +1,5 @@
+FreeCAD is a free and open-source general-purpose parametric 3D computer-aided design modeler and a building information modeling software with finite element method support.
+FreeCAD is intended for mechanical engineering product design but also expands to a wider range of uses around engineering, such as architecture or electrical engineering.
+It features some key concepts like macro recording, workbenches, ability to run as a server and dynamically loadable application extensions and it is designed to be platform independent.
+.
+Besides FreeCAD own file format .FCStd, files can be exported and imported in the following file formats: DXF, SVG, STEP, IGES, STL, OBJ, DAE, SCAD, IV and IFC.
