@@ -985,19 +985,43 @@ class ObjectOp(PathOp.ObjectOp):
             return False
 
     def isFaceUp(self, base, face):
+        '''isFaceUp(base, face) ...
+        When passed a base object and face shape, returns True if face is up.
+        This method is used to identify correct rotation of a model.
+        '''
+        # verify face is normal to Z+-
+        (norm, surf) = self.getFaceNormAndSurf(face)
+        if round(abs(norm.z), 8) != 1.0 or round(abs(surf.z), 8) != 1.0:
+            PathLog.debug('isFaceUp - face not oriented normal to Z+-')
+            return False
+
         up = face.extrude(FreeCAD.Vector(0.0, 0.0, 5.0))
         dwn = face.extrude(FreeCAD.Vector(0.0, 0.0, -5.0))
         upCmn = base.Shape.common(up)
         dwnCmn = base.Shape.common(dwn)
+
         # Identify orientation based on volumes of common() results
-        if len(upCmn.Edges) > 0 and round(upCmn.Volume, 6) == 0.0:
+        if len(upCmn.Edges) > 0:
+            PathLog.debug('isFaceUp - HAS up edges\n')
+            if len(dwnCmn.Edges) > 0:
+                PathLog.debug('isFaceUp - up and dwn edges\n')
+                dVol = round(dwnCmn.Volume, 6)
+                uVol = round(upCmn.Volume, 6)
+                if uVol > dVol:
+                    return False
+                return True
+            else:
+                if round(upCmn.Volume, 6) == 0.0:
+                    return True
+                return False
+        elif len(dwnCmn.Edges) > 0:
+            PathLog.debug('isFaceUp - HAS dwn edges only\n')
+            dVol = round(dwnCmn.Volume, 6)
+            if dVol == 0.0:
+                return False
             return True
-        elif len(dwnCmn.Edges) > 0 and round(dwnCmn.Volume, 6) == 0.0:
-            return False
-        if (len(upCmn.Edges) > 0 and len(dwnCmn.Edges) > 0 and
-                round(dwnCmn.Volume, 6) > round(upCmn.Volume, 6)):
-            return True
-        return False
+        PathLog.debug('isFaceUp - exit True\n')
+        return True
 
     def _customDepthParams(self, obj, strDep, finDep):
         finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
