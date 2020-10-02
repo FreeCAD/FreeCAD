@@ -645,48 +645,55 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     else:
                         self.horizontal.append(shape)
 
+                # move all horizontal faces to FinalDepth
                 # extrude all faces up to StartDepth and those are the removal shapes
                 start_dep = obj.StartDepth.Value
                 clrnc = 0.5
                 for face in self.horizontal:
-                    adj_final_dep = obj.FinalDepth.Value
+                    isFaceUp = True
+                    invZ = 0.0
                     useAngle = angle
-                    shpZMin = face.BoundBox.ZMin
-                    shpZMinVal = shpZMin
-                    PathLog.debug('self.horizontal pre-shpZMin: {}'.format(shpZMin))
-                    isFaceUp = self.isFaceUp(subBase, face)
-                    if not isFaceUp:
-                        useAngle += 180.0
-                        invZ = (-2 * shpZMin) - clrnc
-                        face.translate(FreeCAD.Vector(0.0, 0.0, invZ))
-                        shpZMin = -1 * shpZMin
-                    else:
-                        face.translate(FreeCAD.Vector(0.0, 0.0, -1 * clrnc))
-                    PathLog.debug('self.horizontal post-shpZMin: {}'.format(shpZMin))
+                    faceZMin = face.BoundBox.ZMin
+                    adj_final_dep = obj.FinalDepth.Value
+                    trans = obj.FinalDepth.Value - face.BoundBox.ZMin
+                    PathLog.debug('face.BoundBox.ZMin: {}'.format(face.BoundBox.ZMin))
 
-                    if obj.LimitDepthToFace is True and obj.EnableRotation != 'Off':
-                        if shpZMinVal > obj.FinalDepth.Value:
-                            PathLog.debug('shpZMin > obj.FinalDepth.Value')
-                            adj_final_dep = shpZMinVal  # shpZMin
-                            if start_dep <= adj_final_dep:
-                                start_dep = adj_final_dep + 1.0
-                                msg = translate('PathPocketShape', 'Start Depth is lower than face depth. Setting to ')
-                                PathLog.warning(msg + ' {} mm.'.format(start_dep))
-                            PathLog.debug('LimitDepthToFace adj_final_dep: {}'.format(adj_final_dep))
-                    else:
-                        translation = obj.FinalDepth.Value - shpZMin
+                    if obj.EnableRotation != 'Off':
+                        PathLog.debug('... running isFaceUp()')
+                        isFaceUp = self.isFaceUp(subBase, face)
+                        # Determine if face is really oriented toward Z+ (rotational purposes)
+                        # ignore for cylindrical faces
                         if not isFaceUp:
-                            # Check if the `isFaceUp` returned correctly
-                            zDestination = face.BoundBox.ZMin + translation
-                            if (round(start_dep - obj.FinalDepth.Value, 6) !=
-                                round(start_dep - zDestination, 6)):
-                                shpZMin = -1 * shpZMin
-                        face.translate(FreeCAD.Vector(0, 0, translation))
+                            PathLog.debug('... NOT isFaceUp')
+                            useAngle += 180.0
+                            invZ = (-2 * face.BoundBox.ZMin)
+                            face.translate(FreeCAD.Vector(0.0, 0.0, invZ))
+                            faceZMin = face.BoundBox.ZMin  # reset faceZMin
+                            PathLog.debug('... face.BoundBox.ZMin: {}'.format(face.BoundBox.ZMin))
+                        else:
+                            PathLog.debug('... isFaceUp')
+                        if useAngle > 180.0:
+                            useAngle -= 360.0
 
-                    extent = FreeCAD.Vector(0, 0, abs(start_dep - shpZMin) + clrnc)  # adj_final_dep + clrnc)
-                    extShp = face.removeSplitter().extrude(extent)
+                        # Apply LimitDepthToFace property for rotational operations
+                        if obj.LimitDepthToFace is True:
+                            if face.BoundBox.ZMin > obj.FinalDepth.Value:
+                                PathLog.debug('face.BoundBox.ZMin > obj.FinalDepth.Value')
+                                # Raise FinalDepth to face depth
+                                adj_final_dep = faceZMin  # face.BoundBox.ZMin
+                                # Ensure StartDepth is above FinalDepth
+                                if start_dep <= adj_final_dep:
+                                    start_dep = adj_final_dep + 1.0
+                                    msg = translate('PathPocketShape', 'Start Depth is lower than face depth. Setting to ')
+                                    PathLog.warning(msg + ' {} mm.'.format(start_dep))
+                                PathLog.debug('LimitDepthToFace adj_final_dep: {}'.format(adj_final_dep))
+                    # Eif
+
+                    face.translate(FreeCAD.Vector(0.0, 0.0, adj_final_dep - faceZMin - clrnc))
+                    zExtVal = start_dep - adj_final_dep + (2 * clrnc)
+                    extShp = face.removeSplitter().extrude(FreeCAD.Vector(0, 0, zExtVal))
                     self.removalshapes.append((extShp, False, 'pathPocketShape', useAngle, axis, start_dep, adj_final_dep))
-                    PathLog.debug("Extent values are strDep: {}, finDep: {},  extrd: {}".format(start_dep, adj_final_dep, extent))
+                    PathLog.debug("Extent values are strDep: {}, finDep: {},  extrd: {}".format(start_dep, adj_final_dep, zExtVal))
                 # Efor face
             # Efor
 
