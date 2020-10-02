@@ -483,11 +483,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                             finalDep = obj.FinalDepth.Value
                             custDepthparams = self.depthparams
                             self._addDebugObject('Rotation_Indiv_Shp', shape)
-                            if obj.Side == 'Inside':
-                                if finalDep < shape.BoundBox.ZMin:
-                                    # Recalculate depthparams
-                                    finalDep = shape.BoundBox.ZMin
-                                    custDepthparams = self._customDepthParams(obj, strDep + 0.5, finalDep)
 
                             if self.expandProfile:
                                 shapeEnv = self._getExpandedProfileEnvelope(obj, shape, False, obj.StartDepth.Value, finalDep)
