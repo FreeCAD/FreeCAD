@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>313</width>
-    <height>247</height>
+    <width>343</width>
+    <height>305</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Snap tolerance to vertexes</string>
+         <string>Snap tolerance to vertices</string>
         </property>
        </widget>
       </item>

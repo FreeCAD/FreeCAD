@@ -6,18 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>273</width>
+    <width>390</width>
     <height>329</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Vertices</string>
+   <string>Vertex constraints</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
+     <property name="toolTip">
+      <string>Add vertices that will be used to constrain the surface,
+that is, the surface will be forced to pass through these points.</string>
+     </property>
      <property name="title">
-      <string>Unbound vertices</string>
+      <string>Non-boundary vertices</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
