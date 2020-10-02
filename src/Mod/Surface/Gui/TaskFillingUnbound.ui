@@ -17,13 +17,17 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Unbound Edges</string>
+   <string>Curvature: non-boundary edges</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
+     <property name="toolTip">
+      <string>Add edges that will be used to control the curvature of the surface,
+that is, the surface will be forced to pass through these edges.</string>
+     </property>
      <property name="title">
-      <string>Unbound Edges</string>
+      <string>Non-boundary edges</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0" colspan="3">

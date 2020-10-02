@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Filling</string>
+   <string>Boundary</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
@@ -40,8 +40,11 @@
    </item>
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
+     <property name="toolTip">
+      <string>Add the edges that will limit the surface.</string>
+     </property>
      <property name="title">
-      <string>Boundary</string>
+      <string>Boundary edges</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0" colspan="3">
