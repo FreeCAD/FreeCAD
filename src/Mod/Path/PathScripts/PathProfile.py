@@ -482,7 +482,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         for shape in faces:
                             finalDep = obj.FinalDepth.Value
                             custDepthparams = self.depthparams
-
+                            self._addDebugObject('Rotation_Indiv_Shp', shape)
                             if obj.Side == 'Inside':
                                 if finalDep < shape.BoundBox.ZMin:
                                     # Recalculate depthparams
@@ -557,13 +557,16 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         (norm, surf) = self.getFaceNormAndSurf(shape)
         (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
         PathLog.debug("initial faceRotationAnalysis: {}".format(praInfo))
+
         if rtn is True:
+            # Rotational alignment is suggested from analysis
             (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, subCount)
             # Verify faces are correctly oriented - InverseAngle might be necessary
             faceIA = getattr(clnBase.Shape, sub)
             (norm, surf) = self.getFaceNormAndSurf(faceIA)
             (rtn, praAngle, praAxis, praInfo2) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
             PathLog.debug("follow-up faceRotationAnalysis: {}".format(praInfo2))
+            PathLog.debug("praAngle: {}".format(praAngle))
 
             if abs(praAngle) == 180.0:
                 rtn = False
