@@ -111,11 +111,10 @@ bool TaskHeader::eventFilter(QObject *obj, QEvent *event)
 }
 
 void TaskHeader::setScheme(ActionPanelScheme *scheme)
-{
+{  
   if (scheme) {
     myScheme = scheme;
     //myLabelScheme = &(scheme->headerLabelScheme);
-    setStyleSheet(myScheme->actionStyle);
 
     if (myExpandable) {
       //setCursor(myLabelScheme->cursorOver ? Qt::PointingHandCursor : cursor());
@@ -126,6 +125,7 @@ void TaskHeader::setScheme(ActionPanelScheme *scheme)
 
     update();
   }
+  
 }
 
 void TaskHeader::paintEvent ( QPaintEvent * event )

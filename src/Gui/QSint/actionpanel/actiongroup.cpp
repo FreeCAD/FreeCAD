@@ -67,7 +67,6 @@ void ActionGroup::setScheme(ActionPanelScheme *pointer)
 {
   myScheme = pointer;
   myHeader->setScheme(pointer);
-  myGroup->setScheme(pointer);
   update();
 }
 
