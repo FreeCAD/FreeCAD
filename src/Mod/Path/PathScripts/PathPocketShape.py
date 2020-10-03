@@ -323,262 +323,25 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         self.isDebug = True if PathLog.getLevel(PathLog.thisModule()) == 4 else False
         baseSubsTuples = []
-        subCount = 0
         allTuples = []
-
-        def planarFaceFromExtrusionEdges(face, trans):
-            useFace = 'useFaceName'
-            minArea = 0.0
-            fCnt = 0
-            clsd = []
-            planar = False
-            # Identify closed edges
-            for edg in face.Edges:
-                if edg.isClosed():
-                    PathLog.debug('  -e.isClosed()')
-                    clsd.append(edg)
-                    planar = True
-
-            # Attempt to create planar faces and select that with smallest area for use as pocket base
-            if planar is True:
-                planar = False
-                for edg in clsd:
-                    fCnt += 1
-                    fName = sub + '_face_' + str(fCnt)
-                    # Create planar face from edge
-                    mFF = Part.Face(Part.Wire(Part.__sortEdges__([edg])))
-                    if mFF.isNull():
-                        PathLog.debug('Face(Part.Wire()) failed')
-                    else:
-                        if trans is True:
-                            mFF.translate(FreeCAD.Vector(0, 0, face.BoundBox.ZMin - mFF.BoundBox.ZMin))
-
-                        if FreeCAD.ActiveDocument.getObject(fName):
-                            FreeCAD.ActiveDocument.removeObject(fName)
-
-                        tmpFace = FreeCAD.ActiveDocument.addObject('Part::Feature', fName).Shape = mFF
-                        tmpFace = FreeCAD.ActiveDocument.getObject(fName)
-                        tmpFace.purgeTouched()
-
-                        if minArea == 0.0:
-                            minArea = tmpFace.Shape.Face1.Area
-                            useFace = fName
-                            planar = True
-                        elif tmpFace.Shape.Face1.Area < minArea:
-                            minArea = tmpFace.Shape.Face1.Area
-                            FreeCAD.ActiveDocument.removeObject(useFace)
-                            useFace = fName
-                        else:
-                            FreeCAD.ActiveDocument.removeObject(fName)
-
-            if useFace != 'useFaceName':
-                self.useTempJobClones(useFace)
-
-            return (planar, useFace)
-
-        def clasifySub(self, bs, sub):
-            face = bs.Shape.getElement(sub)
-
-            if type(face.Surface) == Part.Plane:
-                PathLog.debug('type() == Part.Plane')
-                if PathGeom.isVertical(face.Surface.Axis):
-                    PathLog.debug('  -isVertical()')
-                    # it's a flat horizontal face
-                    self.horiz.append(face)
-                    return True
-
-                elif PathGeom.isHorizontal(face.Surface.Axis):
-                    PathLog.debug('  -isHorizontal()')
-                    self.vert.append(face)
-                    return True
-
-                else:
-                    return False
-
-            elif type(face.Surface) == Part.Cylinder and PathGeom.isVertical(face.Surface.Axis):
-                PathLog.debug('type() == Part.Cylinder')
-                # vertical cylinder wall
-                if any(e.isClosed() for e in face.Edges):
-                    PathLog.debug('  -e.isClosed()')
-                    # complete cylinder
-                    circle = Part.makeCircle(face.Surface.Radius, face.Surface.Center)
-                    disk = Part.Face(Part.Wire(circle))
-                    disk.translate(FreeCAD.Vector(0, 0, face.BoundBox.ZMin - disk.BoundBox.ZMin))
-                    self.horiz.append(disk)
-                    return True
-
-                else:
-                    PathLog.debug('  -none isClosed()')
-                    # partial cylinder wall
-                    self.vert.append(face)
-                    return True
-
-            elif type(face.Surface) == Part.SurfaceOfExtrusion:
-                # extrusion wall
-                PathLog.debug('type() == Part.SurfaceOfExtrusion')
-                # Attempt to extract planar face from surface of extrusion
-                (planar, useFace) = planarFaceFromExtrusionEdges(face, trans=True)
-                # Save face object to self.horiz for processing or display error
-                if planar is True:
-                    uFace = FreeCAD.ActiveDocument.getObject(useFace)
-                    self.horiz.append(uFace.Shape.Faces[0])
-                    msg = translate('Path', "<b>Verify depth of pocket for '{}'.</b>".format(sub))
-                    msg += translate('Path', "\n<br>Pocket is based on extruded surface.")
-                    msg += translate('Path', "\n<br>Bottom of pocket might be non-planar and/or not normal to spindle axis.")
-                    msg += translate('Path', "\n<br>\n<br><i>3D pocket bottom is NOT available in this operation</i>.")
-                    PathLog.warning(msg)
-                else:
-                    PathLog.error(translate("Path", "Failed to create a planar face from edges in {}.".format(sub)))
-
-            else:
-                PathLog.debug('  -type(face.Surface): {}'.format(type(face.Surface)))
-                return False
+        subCount = 0
 
         if obj.Base:
-            PathLog.debug('Processing... obj.Base')
+            PathLog.debug('Processing obj.Base')
             self.removalshapes = []  # pylint: disable=attribute-defined-outside-init
 
             if obj.EnableRotation == 'Off':
                 stock = PathUtils.findParentJob(obj).Stock
                 for (base, subList) in obj.Base:
-                    baseSubsTuples.append((base, subList, 0.0, 'X', stock))
+                    tup = (base, subList, 0.0, 'X', stock)
+                    baseSubsTuples.append(tup)
             else:
-                PathLog.debug('Rotation is active...')
+                PathLog.debug('... Rotation is active')
+                # method call here
                 for p in range(0, len(obj.Base)):
-                    (base, subsList) = obj.Base[p]
-                    isLoop = False
-
-                    # First, check all subs collectively for loop of faces
-                    if len(subsList) > 2:
-                        (isLoop, norm, surf) = self.checkForFacesLoop(base, subsList)
-
-                    if isLoop is True:
-                        PathLog.debug("Common Surface.Axis or normalAt() value found for loop faces.")
-                        rtn = False
-                        subCount += 1
-                        (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
-                        PathLog.debug("angle: {};  axis: {}".format(angle, axis))
-
-                        if rtn is True:
-                            faceNums = ""
-                            for f in subsList:
-                                faceNums += '_' + f.replace('Face', '')
-                            (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, faceNums)  # pylint: disable=unused-variable
-
-                            # Verify faces are correctly oriented - InverseAngle might be necessary
-                            PathLog.debug("Checking if faces are oriented correctly after rotation...")
-                            for sub in subsList:
-                                face = clnBase.Shape.getElement(sub)
-                                if type(face.Surface) == Part.Plane:
-                                    if not PathGeom.isHorizontal(face.Surface.Axis):
-                                        rtn = False
-                                        PathLog.warning(translate("PathPocketShape", "Face appears to NOT be horizontal AFTER rotation applied."))
-                                        break
-
-                            if rtn is False:
-                                PathLog.debug(translate("Path", "Face appears misaligned after initial rotation.") + ' 1')
-                                if obj.InverseAngle:
-                                    (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
-                                else:
-                                    if obj.AttemptInverseAngle is True:
-                                        (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
-                                    else:
-                                        msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
-                                        PathLog.warning(msg)
-
-                            if angle < 0.0:
-                                angle += 360.0
-
-                            tup = clnBase, subsList, angle, axis, clnStock
-                        else:
-                            if self.warnDisabledAxis(obj, axis) is False:
-                                PathLog.debug("No rotation used")
-                            axis = 'X'
-                            angle = 0.0
-                            stock = PathUtils.findParentJob(obj).Stock
-                            tup = base, subsList, angle, axis, stock
-                        # Eif
-
-                        allTuples.append(tup)
-                        baseSubsTuples.append(tup)
-                    # Eif
-
-                    if isLoop is False:
-                        PathLog.debug(translate('Path', "Processing subs individually ..."))
-                        for sub in subsList:
-                            subCount += 1
-                            if 'Face' in sub:
-                                rtn = False
-                                face = base.Shape.getElement(sub)
-                                if type(face.Surface) == Part.SurfaceOfExtrusion:
-                                    # extrusion wall
-                                    PathLog.debug('analyzing type() == Part.SurfaceOfExtrusion')
-                                    # Attempt to extract planar face from surface of extrusion
-                                    (planar, useFace) = planarFaceFromExtrusionEdges(face, trans=False)
-                                    # Save face object to self.horiz for processing or display error
-                                    if planar is True:
-                                        base = FreeCAD.ActiveDocument.getObject(useFace)
-                                        sub = 'Face1'
-                                        PathLog.debug('  -successful face created: {}'.format(useFace))
-                                    else:
-                                        PathLog.error(translate("Path", "Failed to create a planar face from edges in {}.".format(sub)))
-
-                                (norm, surf) = self.getFaceNormAndSurf(face)
-                                (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
-                                PathLog.debug("initial {}".format(praInfo))
-
-                                if rtn is True:
-                                    faceNum = sub.replace('Face', '')
-                                    (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, faceNum)
-                                    # Verify faces are correctly oriented - InverseAngle might be necessary
-                                    faceIA = clnBase.Shape.getElement(sub)
-                                    (norm, surf) = self.getFaceNormAndSurf(faceIA)
-                                    (rtn, praAngle, praAxis, praInfo2) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
-                                    PathLog.debug("follow-up {}".format(praInfo2))
-
-                                    if abs(praAngle) == 180.0:
-                                        rtn = False
-                                        if self.isFaceUp(clnBase, faceIA) is False:
-                                            PathLog.debug('isFaceUp is False')
-                                            angle -= 180.0
-
-                                    if rtn is True:
-                                        PathLog.debug(translate("Path", "Face appears misaligned after initial rotation.") + ' 2')
-                                        if obj.InverseAngle:
-                                            (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
-                                            if self.isFaceUp(clnBase, faceIA) is False:
-                                                PathLog.debug('isFaceUp is False')
-                                                angle += 180.0
-                                        else:
-                                            if obj.AttemptInverseAngle is True:
-                                                (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
-                                            else:
-                                                msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
-                                                PathLog.warning(msg)
-
-                                            if self.isFaceUp(clnBase, faceIA) is False:
-                                                PathLog.debug('isFaceUp is False')
-                                                angle += 180.0
-                                    else:
-                                        PathLog.debug("Face appears to be oriented correctly.")
-
-                                    if angle < 0.0:
-                                        angle += 360.0
-
-                                    tup = clnBase, [sub], angle, axis, clnStock
-                                else:
-                                    if self.warnDisabledAxis(obj, axis) is False:
-                                        PathLog.debug(str(sub) + ": No rotation used")
-                                    axis = 'X'
-                                    angle = 0.0
-                                    stock = PathUtils.findParentJob(obj).Stock
-                                    tup = base, [sub], angle, axis, stock
-                                # Eif
-                                allTuples.append(tup)
-                                baseSubsTuples.append(tup)
-                            else:
-                                ignoreSub = base.Name + '.' + sub
-                                PathLog.error(translate('Path', "Selected feature is not a Face. Ignoring: {}".format(ignoreSub)))
+                    (bst, at) = self.process_base_geometry_with_rotation(obj, p, subCount)
+                    allTuples.extend(at)
+                    baseSubsTuples.extend(bst)
 
             for o in baseSubsTuples:
                 self.horiz = []  # pylint: disable=attribute-defined-outside-init
@@ -591,7 +354,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
                 for sub in subsList:
                     if 'Face' in sub:
-                        if clasifySub(self, subBase, sub) is False:
+                        if not self.clasifySub(subBase, sub):
                             PathLog.error(translate('PathPocket', 'Pocket does not support shape %s.%s') % (subBase.Label, sub))
                             if obj.EnableRotation != 'Off':
                                 PathLog.warning(translate('PathPocket', 'Face might not be within rotation accessibility limits.'))
@@ -649,6 +412,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 # extrude all faces up to StartDepth and those are the removal shapes
                 start_dep = obj.StartDepth.Value
                 clrnc = 0.5
+                # self._addDebugObject('subBase', subBase.Shape)
                 for face in self.horizontal:
                     isFaceUp = True
                     invZ = 0.0
@@ -676,11 +440,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             useAngle -= 360.0
 
                         # Apply LimitDepthToFace property for rotational operations
-                        if obj.LimitDepthToFace is True:
-                            if face.BoundBox.ZMin > obj.FinalDepth.Value:
-                                PathLog.debug('face.BoundBox.ZMin > obj.FinalDepth.Value')
+                        if obj.LimitDepthToFace:
+                            if obj.FinalDepth.Value < face.BoundBox.ZMin:
+                                PathLog.debug('obj.FinalDepth.Value < face.BoundBox.ZMin')
                                 # Raise FinalDepth to face depth
-                                adj_final_dep = faceZMin  # face.BoundBox.ZMin
+                                adj_final_dep = faceZMin  # face.BoundBox.ZMin  # faceZMin
                                 # Ensure StartDepth is above FinalDepth
                                 if start_dep <= adj_final_dep:
                                     start_dep = adj_final_dep + 1.0
@@ -908,8 +672,305 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         return (go, norm, surf)
 
+    def planarFaceFromExtrusionEdges(self, face, trans):
+        '''planarFaceFromExtrusionEdges(face, trans)...
+        Use closed edges to create a temporary face for use in the pocketing operation.
+        '''
+        useFace = 'useFaceName'
+        minArea = 0.0
+        fCnt = 0
+        clsd = []
+        planar = False
+        # Identify closed edges
+        for edg in face.Edges:
+            if edg.isClosed():
+                PathLog.debug('  -e.isClosed()')
+                clsd.append(edg)
+                planar = True
+
+        # Attempt to create planar faces and select that with smallest area for use as pocket base
+        if planar is True:
+            planar = False
+            for edg in clsd:
+                fCnt += 1
+                fName = sub + '_face_' + str(fCnt)
+                # Create planar face from edge
+                mFF = Part.Face(Part.Wire(Part.__sortEdges__([edg])))
+                if mFF.isNull():
+                    PathLog.debug('Face(Part.Wire()) failed')
+                else:
+                    if trans is True:
+                        mFF.translate(FreeCAD.Vector(0, 0, face.BoundBox.ZMin - mFF.BoundBox.ZMin))
+
+                    if FreeCAD.ActiveDocument.getObject(fName):
+                        FreeCAD.ActiveDocument.removeObject(fName)
+
+                    tmpFace = FreeCAD.ActiveDocument.addObject('Part::Feature', fName).Shape = mFF
+                    tmpFace = FreeCAD.ActiveDocument.getObject(fName)
+                    tmpFace.purgeTouched()
+
+                    if minArea == 0.0:
+                        minArea = tmpFace.Shape.Face1.Area
+                        useFace = fName
+                        planar = True
+                    elif tmpFace.Shape.Face1.Area < minArea:
+                        minArea = tmpFace.Shape.Face1.Area
+                        FreeCAD.ActiveDocument.removeObject(useFace)
+                        useFace = fName
+                    else:
+                        FreeCAD.ActiveDocument.removeObject(fName)
+
+        if useFace != 'useFaceName':
+            self.useTempJobClones(useFace)
+
+        return (planar, useFace)
+
+    def clasifySub(self, bs, sub):
+        '''clasifySub(bs, sub)...
+        Given a base and a sub-feature name, returns True
+        if the sub-feature is a horizontally oriented flat face.
+        '''
+        face = bs.Shape.getElement(sub)
+
+        if type(face.Surface) == Part.Plane:
+            PathLog.debug('type() == Part.Plane')
+            if PathGeom.isVertical(face.Surface.Axis):
+                PathLog.debug('  -isVertical()')
+                # it's a flat horizontal face
+                self.horiz.append(face)
+                return True
+
+            elif PathGeom.isHorizontal(face.Surface.Axis):
+                PathLog.debug('  -isHorizontal()')
+                self.vert.append(face)
+                return True
+
+            else:
+                return False
+
+        elif type(face.Surface) == Part.Cylinder and PathGeom.isVertical(face.Surface.Axis):
+            PathLog.debug('type() == Part.Cylinder')
+            # vertical cylinder wall
+            if any(e.isClosed() for e in face.Edges):
+                PathLog.debug('  -e.isClosed()')
+                # complete cylinder
+                circle = Part.makeCircle(face.Surface.Radius, face.Surface.Center)
+                disk = Part.Face(Part.Wire(circle))
+                disk.translate(FreeCAD.Vector(0, 0, face.BoundBox.ZMin - disk.BoundBox.ZMin))
+                self.horiz.append(disk)
+                return True
+
+            else:
+                PathLog.debug('  -none isClosed()')
+                # partial cylinder wall
+                self.vert.append(face)
+                return True
+
+        elif type(face.Surface) == Part.SurfaceOfExtrusion:
+            # extrusion wall
+            PathLog.debug('type() == Part.SurfaceOfExtrusion')
+            # Attempt to extract planar face from surface of extrusion
+            (planar, useFace) = self.planarFaceFromExtrusionEdges(face, trans=True)
+            # Save face object to self.horiz for processing or display error
+            if planar is True:
+                uFace = FreeCAD.ActiveDocument.getObject(useFace)
+                self.horiz.append(uFace.Shape.Faces[0])
+                msg = translate('Path', "<b>Verify depth of pocket for '{}'.</b>".format(sub))
+                msg += translate('Path', "\n<br>Pocket is based on extruded surface.")
+                msg += translate('Path', "\n<br>Bottom of pocket might be non-planar and/or not normal to spindle axis.")
+                msg += translate('Path', "\n<br>\n<br><i>3D pocket bottom is NOT available in this operation</i>.")
+                PathLog.warning(msg)
+            else:
+                PathLog.error(translate("Path", "Failed to create a planar face from edges in {}.".format(sub)))
+
+        else:
+            PathLog.debug('  -type(face.Surface): {}'.format(type(face.Surface)))
+            return False
+
+    # Process obj.Base with rotation enabled
+    def process_base_geometry_with_rotation(self, obj, p, subCount):
+        '''process_base_geometry_with_rotation(obj, p, subCount)...
+        This method is the control method for analyzing the selected features,
+        determining their rotational needs, and creating clones as needed
+        for rotational access for the pocketing operation.
+
+        Requires the object, obj.Base index (p), and subCount reference arguments.
+        Returns two lists of tuples for continued processing into pocket paths.
+        '''
+        baseSubsTuples = []
+        allTuples = []
+        isLoop = False
+
+        (base, subsList) = obj.Base[p]
+
+        # First, check all subs collectively for loop of faces
+        if len(subsList) > 2:
+            (isLoop, norm, surf) = self.checkForFacesLoop(base, subsList)
+
+        if isLoop:
+            PathLog.debug("Common Surface.Axis or normalAt() value found for loop faces.")
+            subCount += 1
+            tup = self.process_looped_sublist(obj, norm, surf)
+            if tup:
+                allTuples.append(tup)
+                baseSubsTuples.append(tup)
+        # Eif
+
+        if not isLoop:
+            PathLog.debug(translate('Path', "Processing subs individually ..."))
+            for sub in subsList:
+                subCount += 1
+                tup = self.process_nonloop_sublist(obj, base, sub)
+                if tup:
+                    allTuples.append(tup)
+                    baseSubsTuples.append(tup)
+        # Eif
+
+        return (baseSubsTuples, allTuples)
+
+    def process_looped_sublist(self, obj, norm, surf):
+        '''process_looped_sublist(obj, norm, surf)...
+        Process set of looped faces when rotation is enabled.
+        '''
+        PathLog.debug(translate("Path", "Selected faces form loop. Processing looped faces."))
+        rtn = False
+        (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
+
+        if rtn is True:
+            faceNums = ""
+            for f in subsList:
+                faceNums += '_' + f.replace('Face', '')
+            (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, faceNums)  # pylint: disable=unused-variable
+
+            # Verify faces are correctly oriented - InverseAngle might be necessary
+            PathLog.debug("Checking if faces are oriented correctly after rotation.")
+            for sub in subsList:
+                face = clnBase.Shape.getElement(sub)
+                if type(face.Surface) == Part.Plane:
+                    if not PathGeom.isHorizontal(face.Surface.Axis):
+                        rtn = False
+                        PathLog.warning(translate("PathPocketShape", "Face appears to NOT be horizontal AFTER rotation applied."))
+                        break
+
+            if rtn is False:
+                PathLog.debug(translate("Path", "Face appears misaligned after initial rotation.") + ' 1')
+                if obj.InverseAngle:
+                    (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
+                else:
+                    if obj.AttemptInverseAngle is True:
+                        (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
+                    else:
+                        msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
+                        PathLog.warning(msg)
+
+            if angle < 0.0:
+                angle += 360.0
+
+            tup = clnBase, subsList, angle, axis, clnStock
+        else:
+            if self.warnDisabledAxis(obj, axis) is False:
+                PathLog.debug("No rotation used")
+            axis = 'X'
+            angle = 0.0
+            stock = PathUtils.findParentJob(obj).Stock
+            tup = base, subsList, angle, axis, stock
+        # Eif
+        return tup
+
+    def process_nonloop_sublist(self, obj, base, sub):
+        '''process_nonloop_sublist(obj, sub)...
+        Process sublist with non-looped set of features when rotation is enabled.
+        '''
+
+        if sub[:4] != 'Face':
+            ignoreSub = base.Name + '.' + sub
+            PathLog.error(translate('Path', "Selected feature is not a Face. Ignoring: {}".format(ignoreSub)))
+            return False
+
+        rtn = False
+        face = base.Shape.getElement(sub)
+        if type(face.Surface) == Part.SurfaceOfExtrusion:
+            # extrusion wall
+            PathLog.debug('analyzing type() == Part.SurfaceOfExtrusion')
+            # Attempt to extract planar face from surface of extrusion
+            (planar, useFace) = self.planarFaceFromExtrusionEdges(face, trans=False)
+            # Save face object to self.horiz for processing or display error
+            if planar is True:
+                base = FreeCAD.ActiveDocument.getObject(useFace)
+                sub = 'Face1'
+                PathLog.debug('  -successful face created: {}'.format(useFace))
+            else:
+                PathLog.error(translate("Path", "Failed to create a planar face from edges in {}.".format(sub)))
+
+        (norm, surf) = self.getFaceNormAndSurf(face)
+        (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
+        PathLog.debug("initial {}".format(praInfo))
+
+        clnBase = base
+        faceIA = clnBase.Shape.getElement(sub)
+
+        if rtn is True:
+            faceNum = sub.replace('Face', '')
+            PathLog.debug("initial applyRotationalAnalysis")
+            (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, faceNum)
+            # Verify faces are correctly oriented - InverseAngle might be necessary
+            faceIA = clnBase.Shape.getElement(sub)
+            (norm, surf) = self.getFaceNormAndSurf(faceIA)
+            (rtn, praAngle, praAxis, praInfo2) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
+            PathLog.debug("follow-up {}".format(praInfo2))
+
+            isFaceUp = self.isFaceUp(clnBase, faceIA)
+            if isFaceUp:
+                rtn = False
+
+            if round(abs(praAngle), 8) == 180.0:
+                rtn = False
+                if not isFaceUp:
+                    PathLog.debug('initial isFaceUp is False')
+                    angle = 0.0
+        # Eif
+
+        if rtn:
+            # initial rotation failed, attempt inverse rotation if user requests it
+            PathLog.debug(translate("Path", "Face appears misaligned after initial rotation.") + ' 2')
+            if obj.AttemptInverseAngle:
+                PathLog.debug(translate("Path", "Applying inverse angle automatically."))
+                (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
+            else:
+                if obj.InverseAngle:
+                    PathLog.debug(translate("Path", "Applying inverse angle manually."))
+                    (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
+                else:
+                    msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
+                    PathLog.warning(msg)
+
+            faceIA = clnBase.Shape.getElement(sub)
+            if not self.isFaceUp(clnBase, faceIA):
+                angle += 180.0
+
+            # Normalize rotation angle
+            if angle < 0.0:
+                angle += 360.0
+            elif angle > 360.0:
+                angle -= 360.0
+
+            return (clnBase, [sub], angle, axis, clnStock)
+
+        if not self.warnDisabledAxis(obj, axis):
+            PathLog.debug(str(sub) + ": No rotation used")
+        axis = 'X'
+        angle = 0.0
+        stock = PathUtils.findParentJob(obj).Stock
+        return (base, [sub], angle, axis, stock)
+
     # Method to add temporary debug object
     def _addDebugObject(self, objName, objShape):
+        '''_addDebugObject(objName, objShape)...
+        Is passed a desired debug object's desired name and shape.
+        This method creates a FreeCAD object for debugging purposes.
+        The created object must be deleted manually from the object tree
+        by the user.
+        '''
         if self.isDebug:
             O = FreeCAD.ActiveDocument.addObject('Part::Feature', 'debug_' + objName)
             O.Shape = objShape
