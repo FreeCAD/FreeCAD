@@ -51,6 +51,7 @@
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Gui/ActionFunction.h>
+#include <Gui/BitmapFactory.h>
 #include "SoFCShapeObject.h"
 #include "ViewProviderSpline.h"
 
@@ -69,6 +70,11 @@ ViewProviderSpline::ViewProviderSpline()
 
 ViewProviderSpline::~ViewProviderSpline()
 {
+}
+
+QIcon ViewProviderSpline::getIcon(void) const
+{
+    return Gui::BitmapFactory().pixmap("Part_Spline_Parametric");
 }
 
 void ViewProviderSpline::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
