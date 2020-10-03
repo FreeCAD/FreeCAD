@@ -97,7 +97,7 @@ pages might help you get started:
 
 - [Getting started](http://www.freecadweb.org/wiki/Getting_started)
 - [Features list](http://www.freecadweb.org/wiki/Feature_list)
-- [Frequent questions](http://www.freecadweb.org/wiki/FAQ)
+- [Frequent questions](http://www.freecadweb.org/wiki/FAQ/en)
 - [Workbenches](http://www.freecadweb.org/wiki/Workbench_Concept)
 - [Scripting](http://www.freecadweb.org/wiki/Power_users_hub)
 - [Development](http://www.freecadweb.org/wiki/Developer_hub)
