@@ -321,6 +321,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         PathLog.track()
         PathLog.debug("----- areaOpShapes() in PathPocketShape.py")
 
+        self.isDebug = True if PathLog.getLevel(PathLog.thisModule()) == 4 else False
         baseSubsTuples = []
         subCount = 0
         allTuples = []
@@ -426,8 +427,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     msg += translate('Path', "\n<br>Bottom of pocket might be non-planar and/or not normal to spindle axis.")
                     msg += translate('Path', "\n<br>\n<br><i>3D pocket bottom is NOT available in this operation</i>.")
                     PathLog.warning(msg)
-                    # title = translate('Path', 'Depth Warning')
-                    # self.guiMessage(title, msg, False)
                 else:
                     PathLog.error(translate("Path", "Failed to create a planar face from edges in {}.".format(sub)))
 
@@ -614,15 +613,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         if PathGeom.isRoughly(face.Area, 0):
                             msg = translate('PathPocket', 'Vertical faces do not form a loop - ignoring')
                             PathLog.error(msg)
-                            # title = translate("Path", "Face Selection Warning")
-                            # self.guiMessage(title, msg, True)
                         else:
                             face.translate(FreeCAD.Vector(0, 0, vFinDep - face.BoundBox.ZMin))
                             self.horiz.append(face)
                             msg = translate('Path', 'Verify final depth of pocket shaped by vertical faces.')
                             PathLog.warning(msg)
-                            # title = translate('Path', 'Depth Warning')
-                            # self.guiMessage(title, msg, False)
 
                 # add faces for extensions
                 self.exts = [] # pylint: disable=attribute-defined-outside-init
@@ -632,10 +627,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         face = Part.Face(wire)
                         self.horiz.append(face)
                         self.exts.append(face)
-
-                # move all horizontal faces to FinalDepth
-                # for f in self.horiz:
-                #     f.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - f.BoundBox.ZMin))
 
                 # check all faces and see if they are touching/overlapping and combine those into a compound
                 self.horizontal = [] # pylint: disable=attribute-defined-outside-init
@@ -909,6 +900,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 FreeCAD.ActiveDocument.removeObject(tmpNm)
 
         return (go, norm, surf)
+
+    # Method to add temporary debug object
+    def _addDebugObject(self, objName, objShape):
+        if self.isDebug:
+            O = FreeCAD.ActiveDocument.addObject('Part::Feature', 'debug_' + objName)
+            O.Shape = objShape
+            O.purgeTouched()
 
 
 def SetupProperties():
