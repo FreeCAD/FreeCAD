@@ -570,9 +570,13 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     angle -= 180.0
 
             if rtn is True:
-                PathLog.debug(translate("Path", "Face appears misaligned after initial rotation."))
-                if obj.InverseAngle is False:
-                    if obj.AttemptInverseAngle is True:
+                PathLog.debug(translate("Path", "Face appears misaligned after initial rotation."))                    
+                if obj.AttemptInverseAngle is True:
+                    PathLog.debug(translate("Path", "Applying inverse angle automatically."))
+                    (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
+                else:
+                    if obj.InverseAngle:
+                        PathLog.debug(translate("Path", "Applying inverse angle manually."))
                         (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
                     else:
                         msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
