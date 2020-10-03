@@ -162,7 +162,7 @@ def cmdCreateImageScaling(name):
                 s=d/self.distance
                 sel[0].XSize.Value=sel[0].XSize.Value*s
                 sel[0].YSize.Value=sel[0].YSize.Value*s
-                FreeCAD.Console.PrintMessage("Scale="+str(s))
+                FreeCAD.Console.PrintMessage("Image: Scale="+str(s)+"\n")
                 self.tracker.off()
                 self.tracker.finalize()
                 self.dialog.hide()
