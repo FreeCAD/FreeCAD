@@ -111,7 +111,7 @@ bool TaskHeader::eventFilter(QObject *obj, QEvent *event)
 }
 
 void TaskHeader::setScheme(ActionPanelScheme *scheme)
-{  
+{
   if (scheme) {
     myScheme = scheme;
     //myLabelScheme = &(scheme->headerLabelScheme);
@@ -125,7 +125,6 @@ void TaskHeader::setScheme(ActionPanelScheme *scheme)
 
     update();
   }
-  
 }
 
 void TaskHeader::paintEvent ( QPaintEvent * event )
