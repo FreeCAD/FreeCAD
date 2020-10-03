@@ -1736,7 +1736,7 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
 
                         SbViewVolume vol = pCam->getViewVolume();
 
-                        getCoordsOnSketchPlane(x,y,absPos+trans,vol.getProjectionDirection());
+                        getCoordsOnSketchPlane(x,y,absPos+trans*getScaleFactor(),vol.getProjectionDirection());
 
                         Gui::ViewVolumeProjection proj(viewer->getSoRenderManager()->getCamera()->getViewVolume());
 
