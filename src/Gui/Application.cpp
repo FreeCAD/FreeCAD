@@ -669,6 +669,8 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     activeDocument()->setModified(false);
             }
             else {
+                if (activeDocument())
+                    activeDocument()->openCommand("Import");
                 if (DocName) {
                     Command::doCommand(Command::App, "%s.insert(u\"%s\",\"%s\")"
                                                    , Module, unicodepath.c_str(), DocName);
@@ -677,6 +679,8 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     Command::doCommand(Command::App, "%s.insert(u\"%s\")"
                                                    , Module, unicodepath.c_str());
                 }
+                if (activeDocument())
+                    activeDocument()->commitCommand();
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
                     ("User parameter:BaseApp/Preferences/View");
                 if (hGrp->GetBool("AutoFitToView", true))
