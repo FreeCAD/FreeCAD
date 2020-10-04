@@ -57,6 +57,11 @@ try:
 except ImportError:
     pass
 
+try:
+    from io import BytesIO as _stringio
+except ImportError:
+    from io import StringIO as _stringio
+
 #  @package AddonManager_workers
 #  \ingroup ADDONMANAGER
 #  \brief Multithread workers for the addon manager
