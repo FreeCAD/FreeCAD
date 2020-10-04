@@ -157,15 +157,11 @@ void CommandPy::setName(Py::String arg)
 
 Py::Dict CommandPy::getParameters(void) const
 {
-    PyObject *dict = PyDict_New();
+    Py::Dict dict;
     for(std::map<std::string,double>::iterator i = getCommandPtr()->Parameters.begin(); i != getCommandPtr()->Parameters.end(); ++i) {
-#if PY_MAJOR_VERSION >= 3
-        PyDict_SetItem(dict,PyUnicode_FromString(i->first.c_str()),PyFloat_FromDouble(i->second));
-#else
-        PyDict_SetItem(dict,PyString_FromString(i->first.c_str()),PyFloat_FromDouble(i->second));
-#endif
+        dict.setItem(i->first, Py::Float(i->second));
     }
-    return Py::Dict(dict);
+    return dict;
 }
 
 void CommandPy::setParameters(Py::Dict arg)
