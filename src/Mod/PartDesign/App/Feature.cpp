@@ -64,6 +64,9 @@ Feature::Feature()
 
     Placement.setStatus(App::Property::Hidden, true);
     BaseFeature.setStatus(App::Property::Hidden, true);
+
+    ADD_PROPERTY_TYPE(NewSolid,(false),"Base",App::Prop_None,
+                     "Create a new separated solid from this feature");
 }
 
 short Feature::mustExecute() const
@@ -92,6 +95,23 @@ TopoShape Feature::getSolid(const TopoShape& shape)
     if(count)
         return shape.getSubTopoShape(TopAbs_SOLID,1);
     return TopoShape();
+}
+
+void Feature::onChanged(const App::Property *prop)
+{
+    if (prop == &NewSolid) {
+        if (!NewSolid.getValue() && !BaseFeature.getValue()) {
+            auto body = getFeatureBody();
+            if (body) {
+                auto prev = body->getPrevSolidFeature(this);
+                if (prev)
+                    BaseFeature.setValue(prev);
+            }
+        }
+        else if(NewSolid.getValue() && BaseFeature.getValue())
+            BaseFeature.setValue(nullptr);
+    }
+    Part::Feature::onChanged(prop);
 }
 
 const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
@@ -228,12 +248,14 @@ Body* Feature::getFeatureBody() const {
     if(body)
         return body;
 
-    auto list = getInList();
-    for (auto in : list) {
-        if(in->isDerivedFrom(Body::getClassTypeId()) && //is Body?
-           static_cast<Body*>(in)->hasObject(this)) {    //is part of this Body?
-               
-               return static_cast<Body*>(in);
+    for (auto in : this->getInList()) {
+        if(!in->isDerivedFrom(Body::getClassTypeId()))
+            continue;
+        body = static_cast<Body*>(in);
+        if (body->Group.find(getNameInDocument())) {
+            if (!_Body.getValue())
+                _Body.setValue(body);
+            return body;
         }
     }
     

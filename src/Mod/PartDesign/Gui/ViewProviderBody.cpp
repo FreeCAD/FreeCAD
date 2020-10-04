@@ -27,6 +27,7 @@
 # include <boost_bind_bind.hpp>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/SbColor.h>
 # include <Precision.hxx>
 # include <QMenu>
 #endif
@@ -47,6 +48,7 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureSolid.h>
+#include <Mod/PartDesign/App/FeatureExtrusion.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
@@ -202,19 +204,79 @@ bool ViewProviderBody::onDelete ( const std::vector<std::string> &) {
     return true;
 }
 
+unsigned long ViewProviderBody::generateIconColor(App::DocumentObject *feat) const
+{
+    auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+    if (!body || (feat && !PartDesign::Body::isSolidFeature(feat)))
+        return 0;
+
+    if (feat) {
+        PartDesignGui::ViewProvider *vp = nullptr;
+        unsigned long color = 0;
+        for (auto o : body->getSiblings(feat)) {
+            if (o == feat)
+                break;
+            vp = Base::freecad_dynamic_cast<PartDesignGui::ViewProvider>(
+                    Gui::Application::Instance->getViewProvider(o));
+        }
+        if (vp) {
+            color = vp->IconColor.getValue().getPackedValue();
+            if (color)
+                return color;
+        }
+    }
+
+    std::set<unsigned long> colors;
+    colors.insert(0x00ff00ff);
+    colors.insert(0xff);
+    colors.insert(0xffffffff);
+    for (auto o : body->Group.getValue()) {
+        auto vp = Base::freecad_dynamic_cast<PartDesignGui::ViewProvider>(
+                Gui::Application::Instance->getViewProvider(o));
+        if (vp)
+            colors.insert(vp->IconColor.getValue().getPackedValue() | 0xff);
+    }
+    std::vector<SbVec3f> hsvs;
+    for (unsigned long color : colors) {
+        SbColor c;
+        float t;
+        c.setPackedValue(color, t);
+        hsvs.emplace_back();
+        c.getHSVValue(hsvs.back()[0], hsvs.back()[1], hsvs.back()[2]);
+    }
+    float h, s, v;
+    for(int retry=0; retry<100; ++retry) {
+        h = ((float)rand())/(float(RAND_MAX));
+        s = 1.0;
+        v = ((float)rand())/(float(RAND_MAX)) * 0.5f + 0.25f;
+        bool done = true;
+        for (auto hsv : hsvs) {
+            if(fabs(h-hsv[0]) + fabs(v-hsv[2]) < 0.2f) {
+                done = false;
+                break;
+            }
+        }
+        if (done)
+            break;
+    }
+    float t = 0.0f;
+    SbColor c;
+    c.setHSVValue(h, s, v);
+    return c.getPackedValue(t);
+}
+
 void ViewProviderBody::updateData(const App::Property* prop)
 {
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
 
-    if (prop == &body->Group)
+    if (prop == &body->Group) {
         setVisualBodyMode(true);
-    else if (prop == &body->BaseFeature) {
+    } else if (prop == &body->BaseFeature) {
         //ensure all model features are in visual body mode
         setVisualBodyMode(true);
     } else if (prop == &body->Tip) {
         // We changed Tip
         App::DocumentObject* tip = body->Tip.getValue();
-
         auto features = body->Group.getValues();
 
         // restore icons

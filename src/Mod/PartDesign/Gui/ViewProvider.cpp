@@ -40,13 +40,14 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/CommandT.h>
-#include <Gui/Tree.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 #include <Mod/Part/Gui/SoBrepPointSet.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
+#include <Mod/PartDesign/App/FeatureExtrusion.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "Utils.h"
@@ -63,6 +64,7 @@ ViewProvider::ViewProvider()
 :oldWb(""), oldTip(NULL), isSetTipIcon(false)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
+    ADD_PROPERTY(IconColor,((long)0));
 }
 
 ViewProvider::~ViewProvider()
@@ -106,6 +108,11 @@ void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* 
         QAction* act = menu->addAction(QObject::tr(feat->Suppress.getValue()?"Unsuppress":"Suppress"),
                 receiver, member);
         act->setData(QVariant((int)ViewProvider::UserEditMode+1));
+
+        if (IconColor.getValue().getPackedValue()) {
+            QAction* act = menu->addAction(QObject::tr("Select siblings"), receiver, member);
+            act->setData(QVariant((int)ViewProvider::UserEditMode+2));
+        }
     }
     QAction* act = menu->addAction(QObject::tr("Set colors..."), receiver, member);
     act->setData(QVariant((int)ViewProvider::Color));
@@ -169,6 +176,30 @@ bool ViewProvider::setEdit(int ModNum)
                 e.ReportException();
             }
             App::GetApplication().closeActiveTransaction();
+        }
+        return false;
+    } else if (ModNum == ViewProvider::UserEditMode+2 ) {
+        auto body = PartDesign::Body::findBodyOf(getObject());
+        if (body) {
+            ViewProviderDocumentObject *vpParent = 0;
+            std::string subname;
+            auto doc = Gui::Application::Instance->editDocument();
+            if(!doc) 
+                return false;
+            doc->getInEdit(&vpParent,&subname);
+            if (!vpParent)
+                return false;
+
+            App::SubObjectT objT(vpParent->getObject(), subname.c_str());
+            objT = objT.getParent();
+
+            for (auto obj : body->Group.getValues()) {
+                auto vp = Base::freecad_dynamic_cast<PartDesignGui::ViewProvider>(
+                        Gui::Application::Instance->getViewProvider(obj));
+                if (!vp || vp->IconColor.getValue() != IconColor.getValue())
+                    continue;
+                Gui::Selection().addSelection(objT.getChild(obj));
+            }
         }
         return false;
     } else {
@@ -256,6 +287,41 @@ void ViewProvider::updateData(const App::Property* prop)
 
     } else if (prop == &feature->Suppress) {
         signalChangeIcon();
+    } else if (prop == &feature->Shape) {
+        if (!IconColor.getValue().getPackedValue()) {
+            auto body = Base::freecad_dynamic_cast<ViewProviderBody>(
+                    Gui::Application::Instance->getViewProvider(
+                        PartDesign::Body::findBodyOf(getObject())));
+            if (body) {
+                unsigned long color = body->generateIconColor(getObject());
+                if (color)
+                    IconColor.setValue(color);
+            }
+        }
+    } else if (prop == &feature->NewSolid) {
+        PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
+        auto bodyVp = Base::freecad_dynamic_cast<ViewProviderBody>(
+                Gui::Application::Instance->getViewProvider(body));
+        if (bodyVp && IconColor.getValue().getPackedValue()) {
+            unsigned long color = 0;
+            if (!PartDesign::Body::isSolidFeature(getObject()))
+                this->IconColor.setValue(0);
+            else {
+                if (feature->NewSolid.getValue())
+                    color = bodyVp->generateIconColor();
+                for (auto obj : body->getSiblings(feature)) {
+                    auto vp = Base::freecad_dynamic_cast<ViewProvider>(
+                            Gui::Application::Instance->getViewProvider(obj));
+                    if (!vp)
+                        continue;
+                    if (!color) { 
+                        color = vp->IconColor.getValue().getPackedValue();
+                        continue;
+                    }
+                    vp->IconColor.setValue(color);
+                }
+            }
+        }
     }
 
     inherited::updateData(prop);
@@ -281,73 +347,45 @@ void ViewProvider::updateVisual()
 }
 
 void ViewProvider::onChanged(const App::Property* prop) {
-
-    //if the object is inside of a body we make sure it is the only visible one on activation
-    if(prop == &Visibility && Visibility.getValue()) {
-
-        Part::BodyBase* body = Part::BodyBase::findBodyOf(getObject());
-        if(body) {
-
-            //hide all features in the body other than this object
-            for(App::DocumentObject* obj : body->Group.getValues()) {
-                if(obj == getObject())
-                    continue;
-                if(body->BaseFeature.getValue()==obj
-                        || obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
-                {
-                   auto vpd = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
-                           Gui::Application::Instance->getViewProvider(obj));
-                   if(vpd && vpd->Visibility.getValue())
-                       vpd->Visibility.setValue(false);
-                }
-            }
-        }
+    if (prop == &IconColor) {
+        pxTipIcon = QPixmap();
+        signalChangeIcon();
     }
 
     PartGui::ViewProviderPartExt::onChanged(prop);
 }
 
-void ViewProvider::setTipIcon(bool onoff) {
-    isSetTipIcon = onoff;
-
-    signalChangeIcon();
+void ViewProvider::setTipIcon(bool onoff)
+{
+    if (isSetTipIcon != onoff) {
+        isSetTipIcon = onoff;
+        pxTipIcon = QPixmap();
+        signalChangeIcon();
+    }
 }
 
-QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
+void ViewProvider::getExtraIcons(std::vector<QPixmap> &icons) const
 {
-    QIcon mergedicon = orig;
-
     auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
-    if(feat && feat->Suppress.getValue()) {
-        int w = Gui::treeViewIconSize();
-        QIcon overlay(Gui::BitmapFactory().pixmap("disabled").scaledToWidth(w));
-        QPixmap pixmap = mergedicon.pixmap(w,w,QIcon::Disabled);
-        QPainter painter(&pixmap);
-        overlay.paint(&painter,0,0,w,w,Qt::AlignCenter);
-        mergedicon = QIcon(pixmap);
+    if (!feat)
+        return;
+
+    unsigned long color = IconColor.getValue().getPackedValue();
+    if (color) {
+        if(pxTipIcon.isNull()) {
+            std::map<unsigned long, unsigned long> colormap;
+            colormap[0xffffff] = color >> 8;
+            if (isSetTipIcon)
+                colormap[0xf0f0f0] = 0x00ff00;
+            pxTipIcon = Gui::BitmapFactory().pixmapFromSvg("PartDesign_Overlay.svg",
+                                                           QSizeF(64,64),
+                                                           colormap);
+        }
+        icons.push_back(pxTipIcon);
     }
 
-    if(isSetTipIcon) {
-        QPixmap px;
-
-        static const char * const feature_tip_xpm[]={
-            "8 6 3 1",
-            ". c None",
-            "# c #00cc00",
-            "a c #ffffff",
-            "..####..",
-            ".##aa##.",
-            "##aaaa##",
-            "##aaaa##",
-            ".##aa##.",
-            "..####.."};
-        px = QPixmap(feature_tip_xpm);
-
-        mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
-
-    }
-
-    return Gui::ViewProvider::mergeOverlayIcons(mergedicon);
+    if(feat->Suppress.getValue())
+        icons.push_back(Gui::BitmapFactory().pixmap("PartDesign_Suppressed.svg"));
 }
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)

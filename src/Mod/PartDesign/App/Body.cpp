@@ -26,6 +26,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <stack>
+
 #include <Base/Console.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
@@ -38,6 +40,7 @@
 #include <Mod/Part/App/PartFeature.h>
 
 #include "Feature.h"
+#include "FeatureExtrusion.h"
 #include "FeatureSolid.h"
 #include "FeatureSketchBased.h"
 #include "FeatureTransformed.h"
@@ -49,6 +52,8 @@
 #include "Body.h"
 #include "FeatureBase.h"
 #include "BodyPy.h"
+
+FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
 using namespace PartDesign;
 
@@ -126,23 +131,18 @@ App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
         start = Tip.getValue();
     }
 
-    if (!start) { // No Tip
+    int index;
+    if (!start || !start->getNameInDocument()
+               || start->isDerivedFrom(PartDesign::Extrusion::getClassTypeId())
+               || start->isDerivedFrom(PartDesign::Solid::getClassTypeId())
+               || !this->Group.find(start->getNameInDocument(), &index)) { // No Tip
         return nullptr;
     }
 
-    if (!hasObject(start))
-        return nullptr;
-
-    const std::vector<App::DocumentObject*> & features = Group.getValues();
-
-    auto startIt = std::find (features.rbegin(), features.rend(), start);
-    if (startIt == features.rend()) { // object not found
-        return nullptr;
-    }
-
-    auto rvIt = std::find_if (startIt + 1, features.rend(), isSolidFeature);
-    if (rvIt != features.rend()) { // the solid found in model list
-        return *rvIt;
+    const auto & objs = this->Group.getValues();
+    for (--index; index>=0; --index) {
+        if (isSolidFeature(objs[index]))
+            return objs[index];
     }
 
     if(BaseFeature.getValue() && BaseFeature.getValue()!=start)
@@ -157,26 +157,17 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
         start = Tip.getValue();
     }
 
-    if (!start || !hasObject(start)) { // no or faulty tip
+    int index;
+    if (!start || !start->getNameInDocument()
+               || !this->Group.find(start->getNameInDocument(), &index)) { // No Tip
         return nullptr;
     }
 
-    const std::vector<App::DocumentObject*> & features = Group.getValues();
-    std::vector<App::DocumentObject*>::const_iterator startIt;
-
-    startIt = std::find (features.begin(), features.end(), start);
-    if (startIt == features.end()) { // object not found
-        return nullptr;
-    }
-
-    startIt++;
-    if (startIt == features.end()) { // features list has only one element
-        return nullptr;
-    }
-
-    auto rvIt = std::find_if (startIt, features.end(), isSolidFeature);
-    if (rvIt != features.end()) { // the solid found in model list
-        return *rvIt;
+    const auto & objs = this->Group.getValues();
+    int count = this->Group.getSize();
+    for (++index; index<count; ++index) {
+        if (isSolidFeature(objs[index]))
+            return objs[index];
     }
 
     return nullptr;
@@ -220,8 +211,11 @@ bool Body::isSolidFeature(const App::DocumentObject* f)
     if (f == NULL)
         return false;
 
-    if (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) &&
-        !PartDesign::Feature::isDatum(f)) {
+    if (f->isDerivedFrom(PartDesign::Extrusion::getClassTypeId()))
+        return static_cast<const PartDesign::Extrusion*>(f)->NewSolid.getValue();
+
+    if (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())
+            && !PartDesign::Feature::isDatum(f)) {
         // Transformed Features inside a MultiTransform are not solid features
         return !isMemberOfMultiTransform(f);
     }
@@ -232,18 +226,22 @@ bool Body::isAllowed(const App::DocumentObject* f)
 {
     if (f == NULL)
         return false;
+    return isAllowed(f->getTypeId());
+}
 
+bool Body::isAllowed(const Base::Type &type)
+{
     // TODO: Should we introduce a PartDesign::FeaturePython class? This should then also return true for isSolidFeature()
-    return (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
-            f->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())   ||
-            f->getTypeId().isDerivedFrom(PartDesign::Solid::getClassTypeId())   ||
+    return (type.isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
+            type.isDerivedFrom(Part::Datum::getClassTypeId())   ||
+            type.isDerivedFrom(PartDesign::Solid::getClassTypeId())   ||
             // TODO Shouldn't we replace it with Sketcher::SketchObject? (2015-08-13, Fat-Zer)
-            f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
-            f->getTypeId().isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
-            f->getTypeId().isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())
+            type.isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
+            type.isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
+            type.isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())
             // TODO Why this lines was here? why should we allow anything of those? (2015-08-13, Fat-Zer)
-            //f->getTypeId().isDerivedFrom(Part::FeaturePython::getClassTypeId()) // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
-            //f->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())
+            //type.isDerivedFrom(Part::FeaturePython::getClassTypeId()) // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
+            //type.isDerivedFrom(Part::Feature::getClassTypeId())
             );
 }
 
@@ -252,8 +250,11 @@ Body* Body::findBodyOf(const App::DocumentObject* feature)
 {
     if(!feature)
         return nullptr;
+
+    if (feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        return static_cast<const PartDesign::Feature*>(feature)->getFeatureBody();
     
-    return static_cast<Body*>(BodyBase::findBodyOf(feature));
+    return Base::freecad_dynamic_cast<Body>(BodyBase::findBodyOf(feature));
 }
 
 
@@ -269,29 +270,60 @@ std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
     if(group && group != getExtendedObject())
         group->getExtensionByType<GroupExtension>()->removeObject(feature);
       
-    
-    insertObject (feature, getNextSolidFeature (), /*after = */ false);
-    // Move the Tip if we added a solid
-    if (isSolidFeature(feature)) {
-        Tip.setValue (feature);
+    // It is not safe to insert after tip (which is what we get by calling
+    // getNextSolidFeature(nullptr)). For example, padding from a sketch, but
+    // the sketch is based on a feature after the tip.
+    //
+    // It is only absolutely safe to insert at the very end. We'll have to rely
+    // up on PartGui commands to determin the new object insertion point based
+    // on user selection at the time of command invoking.
+    //
+    // insertObject (feature, getNextSolidFeature (), [>after = <] false);
+    //
+    insertObject (feature, nullptr, false);
+    setTip(feature);
+    return {feature};
+}
+
+void Body::checkChild(const App::Property &prop)
+{
+    auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(prop.getContainer());
+    if (!feature || !feature->Visibility.getValue() || !isSolidFeature(feature))
+        return;
+    for (auto obj : getSiblings(feature)) {
+        if (obj != feature && obj->Visibility.getValue() && isSolidFeature(obj))
+            obj->Visibility.setValue(false);
+    }
+}
+
+void Body::checkChildren()
+{
+    ++childrenFlag;
+    for (auto obj : Group.getValue()) {
+        auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
+        if (!feature)
+            continue;
+
+        auto &info = this->childrenConns[feature];
+        info.flag = childrenFlag;
+
+        if (info.visibilityConn.connected())
+            continue;
+
+        info.visibilityConn = feature->Visibility.signalChanged.connect(
+                boost::bind(&Body::checkChild, this, _1));
+        info.baseFeatureConn = feature->BaseFeature.signalChanged.connect(
+                boost::bind(&Body::checkChild, this, _1));
+
+        checkChild(feature->Visibility);
     }
 
-    if(feature->Visibility.getValue()
-        && feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
-    {
-        for(auto obj : Group.getValues()) {
-            if(obj->Visibility.getValue() 
-                    && obj!=feature 
-                    && (obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())
-                            || obj == BaseFeature.getValue()))
-            {
-                obj->Visibility.setValue(false);
-            }
-        }
+    for (auto it=childrenConns.begin(); it!=childrenConns.end();) {
+        if (it->second.flag != childrenFlag)
+            it = childrenConns.erase(it);
+        else
+            ++it;
     }
-    
-    std::vector<App::DocumentObject*> result = {feature};
-    return result;
 }
 
 std::vector< App::DocumentObject* > Body::addObjects(std::vector< App::DocumentObject* > objs) {
@@ -302,11 +334,62 @@ std::vector< App::DocumentObject* > Body::addObjects(std::vector< App::DocumentO
     return objs;
 }
 
+App::DocumentObject *
+Body::getInsertionPosition(const std::vector<App::DocumentObject*> &objs)
+{
+    App::DocumentObject * tip = this->Tip.getValue();
+    if (objs.empty() || !tip)
+        return getNextSolidFeature();
 
+    // Use the tip to determine which sibling group to insert the new feature
+    const auto siblings = getSiblings(tip);
+
+    int index = -1;
+    for (auto obj : App::Document::getDependencyList(objs)) {
+        int idx;
+        if (!obj || !Group.find(obj->getNameInDocument(), &idx) || index>=idx)
+            continue;
+        // Only consider dependency within the same sibling group, and use the
+        // last feature for insertion point.
+        if (std::find(siblings.begin(), siblings.end(), obj) != siblings.end())
+            index = idx;
+    }
+
+    if (index < 0)
+        return getNextSolidFeature();
+    return getNextSolidFeature(Group.getValues()[index]);
+}
+
+App::DocumentObject *
+Body::newObjectAt(const char *type,
+                  const char *name,
+                  const std::vector<App::DocumentObject *> &deps)
+{
+    if (!isAllowed(Base::Type::fromName(type)))
+        FC_THROWM(Base::TypeError, "Type '" << (type?type:"?")  << "' is not allowed in Body");
+
+    App::DocumentObject *obj = getDocument()->addObject(type, name);
+    if (!obj)
+        FC_THROWM(Base::RuntimeError, "Failed to create object");
+    insertObject(obj, getInsertionPosition(deps));
+
+    auto tip = Tip.getValue();
+    if (!tip || !isSibling(obj, tip))
+        setTip(obj);
+    else {
+        int i=-1, j=-1;
+        Group.find(tip->getNameInDocument(), &i);
+        Group.find(obj->getNameInDocument(), &j);
+        if (i < j)
+            setTip(obj);
+    }
+    obj->Visibility.setValue(true);
+    return obj;
+}
 
 void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* target, bool after)
 {
-    if (target && !hasObject (target)) {
+    if (target && !Group.find(target->getNameInDocument())) {
         throw Base::ValueError("Body: the feature we should insert relative to is not part of that body");
     }
     
@@ -350,19 +433,45 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
     setBaseProperty(feature);
 }
 
+void Body::setTip(App::DocumentObject *feature)
+{
+    if (!feature || Tip.getValue() == feature
+                 || !isSolidFeature(feature)
+                 || !Group.find(feature->getNameInDocument()))
+        return;
+
+    Tip.setValue(feature);
+}
+
 void Body::setBaseProperty(App::DocumentObject* feature)
 {
-    if (Body::isSolidFeature(feature)) {
+    int index;
+    if (!feature || !this->Group.find(feature->getNameInDocument(), &index))
+        throw Base::RuntimeError("Feature not found in body");
+
+    if (feature->isDerivedFrom(PartDesign::Feature::getClassTypeId())
+        && !static_cast<PartDesign::Feature*>(feature)->NewSolid.getValue()
+        && Body::isSolidFeature(feature))
+    {
         // Set BaseFeature property to previous feature (this might be the Tip feature)
         App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature);
+
         // NULL is ok here, it just means we made the current one fiature the base solid
         static_cast<PartDesign::Feature*>(feature)->BaseFeature.setValue(prevSolidFeature);
 
-        // Reroute the next solid feature's BaseFeature property to this feature
-        App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature);
-        if (nextSolidFeature) {
-            assert ( nextSolidFeature->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) );
-            static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(feature);
+        // Set the next feature's base to this feature
+        for (int i=index+1, count=Group.getSize(); i<count; ++i) {
+            auto obj = Group.getValues()[i];
+            if (!obj || !obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())
+                     || !isSolidFeature(obj))
+                continue;
+            auto feat = static_cast<PartDesign::Feature*>(obj);
+            if (!feat->NewSolid.getValue()
+                    && feat->BaseFeature.getValue() == prevSolidFeature)
+            {
+                feat->BaseFeature.setValue(feature);
+                break;
+            }
         }
     }
 }
@@ -488,6 +597,7 @@ void Body::onChanged (const App::Property* prop) {
                 bf->BaseFeature.setValue(BaseFeature.getValue());
         }
         else if( prop == &Group ) {
+            checkChildren();
 
             //if the FeatureBase was deleted we set the BaseFeature link to nullptr
             if (BaseFeature.getValue() &&
@@ -503,6 +613,9 @@ void Body::onChanged (const App::Property* prop) {
                 if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
                     obj->touch();
             }
+        }
+        else if (prop == &Tip) {
+            FC_TRACE("tip changed");
         }
     }
 
@@ -571,19 +684,101 @@ App::DocumentObject *Body::getSubObject(const char *subname,
 
 void Body::onDocumentRestored()
 {
+    ++childrenFlag;
     for(auto obj : Group.getValues()) {
-        if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
-            static_cast<PartDesign::Feature*>(obj)->_Body.setValue(this);
+        auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
+        if (!feature)
+            continue;
+
+        feature->_Body.setValue(this);
+
+        auto &info = this->childrenConns[feature];
+        info.visibilityConn = feature->Visibility.signalChanged.connect(
+                boost::bind(&Body::checkChild, this, _1));
+        info.baseFeatureConn = feature->BaseFeature.signalChanged.connect(
+                boost::bind(&Body::checkChild, this, _1));
+        info.flag = childrenFlag;
     }
     _GroupTouched.setStatus(App::Property::Output,true);
     DocumentObject::onDocumentRestored();
 }
 
-void Body::addSolidBody(App::DocumentObject *obj) {
-    (void)obj;
+Body::Relation
+Body::getRelation(const App::DocumentObject *obj, const App::DocumentObject *other) const
+{
+    if (!obj || !obj->getNameInDocument() || !other || !other->getNameInDocument())
+        return RelationStranger;
+
+    if (obj == other)
+        return RelationSibling;
+
+    int index;
+    if (!Group.find(obj->getNameInDocument(), &index))
+        return RelationStranger;
+
+    int otherIndex;
+    if (!Group.find(other->getNameInDocument(), &otherIndex))
+        return RelationStranger;
+    
+    if (index < otherIndex) {
+        std::swap(obj, other);
+        std::swap(index, otherIndex);
+    }
+
+    if (isSolidFeature(obj)) {
+        auto feature = Base::freecad_dynamic_cast<const PartDesign::Feature>(obj);
+        while (feature) {
+            auto base = feature->BaseFeature.getValue();
+            if (base == other)
+                return RelationSibling;
+            if (!base)
+                break;
+            if (!isSolidFeature(base))
+                break;
+            feature = Base::freecad_dynamic_cast<PartDesign::Feature>(base);
+        }
+    }
+    return RelationCousin;
 }
 
-bool Body::inSameSolidBody(const App::DocumentObject *obj, const App::DocumentObject *other) {
-    return App::GroupExtension::getGroupOfObject(obj) ==
-            App::GroupExtension::getGroupOfObject(other);
+std::deque<App::DocumentObject*>
+Body::getSiblings(App::DocumentObject *obj) const
+{
+    std::deque<App::DocumentObject *> res;
+    if (!obj || !obj->getNameInDocument()
+             || !obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        return res;
+
+    int index = -1;
+    if (!Group.find(obj->getNameInDocument(), &index))
+        return res;
+
+    if (isSolidFeature(obj)) {
+        auto feature = static_cast<PartDesign::Feature*>(obj);
+        while (feature) {
+            auto base = feature->BaseFeature.getValue();
+            if (!base)
+                break;
+            res.push_front(base);
+            if (!isSolidFeature(base))
+                break;
+            feature = Base::freecad_dynamic_cast<PartDesign::Feature>(base);
+        }
+        res.push_back(obj);
+    }
+
+    const auto & objs = Group.getValues();
+    for (int count=Group.getSize(); index<count; ++index) {
+        App::DocumentObject * o = objs[index];
+        if(!o || !o->getNameInDocument()
+                || !o->isDerivedFrom(PartDesign::Feature::getClassTypeId())
+                || !isSolidFeature(o))
+            continue;
+
+        if (static_cast<PartDesign::Feature*>(o)->getBaseObject(true) == obj) {
+            obj = o;
+            res.push_back(o);
+        }
+    }
+    return res;
 }

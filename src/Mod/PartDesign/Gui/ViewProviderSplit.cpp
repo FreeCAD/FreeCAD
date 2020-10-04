@@ -72,12 +72,8 @@ void ViewProviderSplit::setupContextMenu(QMenu* menu, QObject* receiver, const c
 
 bool ViewProviderSplit::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default) {
-        auto body = PartDesign::Body::findBodyOf(getObject());
-        if(body)
-            body->addSolidBody(getObject());
+    if (ModNum == ViewProvider::Default )
         return false;
-    }
     return PartDesignGui::ViewProvider::setEdit(ModNum);
 }
 

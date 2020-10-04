@@ -91,6 +91,8 @@ public:
 
     virtual std::vector<App::DocumentObject*> claimChildren3D(void) const override;
 
+    unsigned long generateIconColor(App::DocumentObject * feat = nullptr) const;
+
 protected:
     /// Copy over all visual properties to the child features
     void unifyVisualProperty(const App::Property* prop);

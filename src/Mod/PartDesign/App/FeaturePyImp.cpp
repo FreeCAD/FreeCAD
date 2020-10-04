@@ -67,3 +67,13 @@ Py::Object FeaturePy::getBody() const {
     return Py::Object();
 }
 
+Py::List FeaturePy::getSiblings() const {
+    auto body = getFeaturePtr()->getFeatureBody();
+    Py::List res;
+    if(body) {
+        for (auto obj : body->getSiblings(getFeaturePtr()))
+            res.append(Py::asObject(obj->getPyObject()));
+    }
+    return res;
+}
+

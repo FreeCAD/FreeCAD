@@ -24,5 +24,11 @@
         </Documentation>
 		<Parameter Name="Body" Type="Object" />
     </Attribute>
+    <Attribute Name="Siblings" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Return a list of siblings of this feature that constructs a solid</UserDocu>
+        </Documentation>
+		<Parameter Name="Siblings" Type="List" />
+    </Attribute>
   </PythonExport>
 </GenerateModel>

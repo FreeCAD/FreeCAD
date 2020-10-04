@@ -56,6 +56,8 @@
         <file>icons/PartDesign_Subtractive_Torus.svg</file>
         <file>icons/PartDesign_Subtractive_Wedge.svg</file>
         <file>icons/PartDesign_Thickness.svg</file>
+        <file>icons/PartDesign_Overlay.svg</file>
+        <file>icons/PartDesign_Suppressed.svg</file>
         <file>icons/PartDesignWorkbench.svg</file>
         <file>icons/Tree_PartDesign_Pad.svg</file>
         <file>icons/Tree_PartDesign_Revolution.svg</file>

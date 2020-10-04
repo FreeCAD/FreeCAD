@@ -28,6 +28,16 @@
                     </UserDocu>
             </Documentation>
     </Methode>
+    <Methode Name="newObjectAt">
+        <Documentation>
+            <UserDocu>
+newObjectAt(type, name, deps=[])
+
+Add a new object with type 'type' and name 'name' at a position calculated from 
+the given dependencies.
+            </UserDocu>
+        </Documentation>
+    </Methode>
     <Attribute Name="VisibleFeature" ReadOnly="true">
         <Documentation>
             <UserDocu>Return the the visible feature of this body</UserDocu>

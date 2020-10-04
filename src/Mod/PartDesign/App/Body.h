@@ -24,10 +24,13 @@
 #ifndef PARTDESIGN_Body_H
 #define PARTDESIGN_Body_H
 
+#include <deque>
+#include <array>
+#include <unordered_map>
+#include <boost/signals2.hpp>
+
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/BodyBase.h>
-
-#include <boost/signals2.hpp>
 
 namespace App {
     class Origin;
@@ -81,7 +84,20 @@ public:
      *
      * @note the method doesn't modify the Tip unlike addObject()
      */
-    void insertObject(App::DocumentObject* feature, App::DocumentObject* target, bool after=false);
+    void insertObject(App::DocumentObject* feature,
+                      App::DocumentObject* target,
+                      bool after = false);
+
+    /// Obtain an insersion point based on dependencies
+    App::DocumentObject *getInsertionPosition(const std::vector<App::DocumentObject *> & deps);
+
+    /// Create a new object and insert it according to its dependencies
+    App::DocumentObject *newObjectAt(const char *type,
+                                     const char *name,
+                                     const std::vector<App::DocumentObject *> & deps);
+
+    /// Set new tip
+    void setTip(App::DocumentObject *);
 
     void setBaseProperty(App::DocumentObject* feature);
 
@@ -109,6 +125,7 @@ public:
       * all features derived from PartDesign::Feature and Part::Datum and sketches
       */
     static bool isAllowed(const App::DocumentObject* f);
+    static bool isAllowed(const Base::Type &type);
     virtual bool allowObject(DocumentObject* f) override {return isAllowed(f);}
 
     /**
@@ -139,9 +156,23 @@ public:
       */
     App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = NULL);
 
-    void addSolidBody(App::DocumentObject *);
+    /// Describes the relation of two feature within the body
+    enum Relation {
+        /// One of the features is (or both are) not contained in this body
+        RelationStranger,
+        /// Both belong to the history of some solid
+        RelationSibling,
+        /// Do not belong to the same history of some solid
+        RelationCousin,
+    };
+    /// Obtain the relationship between two features within the body
+    Relation getRelation(const App::DocumentObject *, const App::DocumentObject *) const;
 
-    static bool inSameSolidBody(const App::DocumentObject *, const App::DocumentObject *);
+    bool isSibling(const App::DocumentObject *a, const App::DocumentObject *b) const {
+        return getRelation(a, b) == RelationSibling;
+    }
+
+    std::deque<App::DocumentObject*> getSiblings(App::DocumentObject *) const;
 
 protected:
     virtual void onSettingDocument() override;
@@ -156,8 +187,19 @@ protected:
 
     virtual void onDocumentRestored() override;
 
+    void checkChildren();
+    void checkChild(const App::Property &);
+
 private:
     bool showTip = false;
+
+    struct ChildInfo {
+        boost::signals2::scoped_connection visibilityConn;
+        boost::signals2::scoped_connection baseFeatureConn;
+        int flag;
+    };
+    std::unordered_map<App::DocumentObject *, ChildInfo> childrenConns;
+    int childrenFlag = 0;
 };
 
 } //namespace PartDesign

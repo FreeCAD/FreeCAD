@@ -44,6 +44,8 @@
 #include <App/Document.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 
+FC_LOG_LEVEL_INIT("PartDesign", true, true);
+
 using namespace PartDesign;
 
 namespace PartDesign {
@@ -78,63 +80,82 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
     std::string type = Type.getValueAsString();
    
     std::vector<App::DocumentObject*> tools = Group.getValues();
-    if (tools.empty())
-        return App::DocumentObject::StdReturn;
+    auto itBegin = tools.begin();
+    auto itEnd = tools.end();
 
     // Get the base shape to operate on
     TopoShape baseTopShape;
     try {
-        baseTopShape = getBaseShape();
+        if (!NewSolid.getValue()) {
+            App::DocumentObject * base = getBaseObject(true);
+            // In case the base is inside the tools, just ignore the base for now.
+            if (std::find(tools.begin(), tools.end(), base) == tools.end())
+                baseTopShape = getBaseShape();
+        }
     } catch (const Base::Exception&) {
         if (type == "Cut")
             return new App::DocumentObjectExecReturn("Cannot do boolean cut without BaseFeature");
     }
+
+    // If not base shape, use the first tool shape as base
     if(baseTopShape.isNull()) {
-        auto feature = tools.back();
+        if (tools.empty())
+            return new App::DocumentObjectExecReturn("No tool objects");
+
+        App::DocumentObject *feature;
+        if (type == "Cut") {
+            feature = tools.front();
+            ++itBegin;
+        }
+        else {
+            feature = tools.back();
+            if (tools.size() > 1)
+                --itEnd;
+            else
+                ++itBegin;
+        }
         baseTopShape = getTopoShape(feature);
-        tools.pop_back();
+        if (baseTopShape.isNull()) {
+            return new App::DocumentObjectExecReturn(
+                    "Cannot do boolean operation with invalid base shape");
+        }
     }
         
-    if (baseTopShape.getShape().IsNull())
-        return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid base shape");
-
-    //get the body this boolean feature belongs to
-    Part::BodyBase* baseBody = Part::BodyBase::findBodyOf(this);
-
-    if(!baseBody)
-         return new App::DocumentObjectExecReturn("Cannot do boolean on feature which is not in a body");
-
-    TopoShape result(0,getDocument()->getStringHasher());
-    for (auto tool : tools)
-    {
-        auto shape = getTopoShape(tool);
-        // Must not pass null shapes to the boolean operations
-        if (baseTopShape.isNull())
-            return new App::DocumentObjectExecReturn("Base shape is null");
+    std::vector<TopoShape> shapes;
+    shapes.push_back(baseTopShape);
+    for(auto it=itBegin; it<itEnd; ++it) {
+        auto shape = getTopoShape(*it);
         if (shape.isNull())
             return new App::DocumentObjectExecReturn("Tool shape is null");
-
-        const char *op = 0;
-        if (type == "Fuse")
-            op = TOPOP_FUSE;
-        else if(type == "Cut")
-            op = TOPOP_CUT;
-        else if(type == "Common")
-            op = TOPOP_COMMON;
-        else
-            continue;
-
-        try {
-            result.makEShape(op,{baseTopShape,shape});
-        }catch (Standard_Failure&) {
-            return new App::DocumentObjectExecReturn((type + " of tools failed").c_str());
-        }
-        result = this->getSolid(result);
-            // lets check if the result is a solid
-        if (result.isNull())
-            return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-        baseTopShape = result; // Use result of this operation for fuse/cut of next body
+        shapes.push_back(shape);
     }
+
+    if (shapes.size() == 1) {
+        this->Shape.setValue(shapes.front());
+        return App::DocumentObject::StdReturn;
+    }
+
+    const char *op = 0;
+    if (type == "Fuse")
+        op = TOPOP_FUSE;
+    else if(type == "Cut")
+        op = TOPOP_CUT;
+    else if(type == "Common")
+        op = TOPOP_COMMON;
+    else
+        return new App::DocumentObjectExecReturn("Unsupported boolean operation");
+
+    TopoShape result(0,getDocument()->getStringHasher());
+    try {
+        result.makEShape(op, shapes);
+    } catch (Standard_Failure &e) {
+        FC_ERR("Boolean operation failed: " << e.GetMessageString());
+        return new App::DocumentObjectExecReturn("Boolean operation failed");
+    }
+    result = this->getSolid(result);
+        // lets check if the result is a solid
+    if (result.isNull())
+        return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
     if (this->Refine.getValue())
         result = result.makERefine();

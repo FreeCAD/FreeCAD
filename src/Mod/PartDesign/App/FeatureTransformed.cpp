@@ -188,11 +188,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         originals.emplace_back(BaseFeature.getValue(),subs);
     }
 
+    auto body = getFeatureBody();
     if(!this->BaseFeature.getValue()) {
-        auto body = getFeatureBody();
-        if(body) {
+        if(body)
             body->setBaseProperty(this);
-        }
     }
 
     this->positionBySupport();
@@ -203,6 +202,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
 
     auto trsfInv = support.getShape().Location().Transformation().Inverted();
+    if (!Offset.getValue().isIdentity())
+        trsfInv.Multiply(TopoShape::convert(Offset.getValue().toMatrix()));
 
     // create an untransformed copy of the support shape
     support.setTransform(Base::Matrix4D());
@@ -213,10 +214,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     std::vector<TopoShape> originalShapes;
     std::vector<std::string> originalSubs;
     std::vector<bool> fuses;
+    std::vector<int> startIndices;
     for(auto &v : originals) {
         auto obj = Base::freecad_dynamic_cast<PartDesign::Feature>(v.first);
         if(!obj) 
             continue;
+
+        int startIndex = body && body->isSibling(this, obj) ? 1 : 0;
 
         if (!SubTransform.getValue() 
                 || !obj->isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) 
@@ -240,6 +244,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 originalShapes.push_back(shape.makETransform(trsf));
                 originalSubs.push_back(feature->getFullName());
                 fuses.push_back(fuse);
+                startIndices.push_back(startIndex);
             };
             addShape(fuseShape, true);
             addShape(cutShape, false);
@@ -271,6 +276,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 else
                     originalSubs.push_back(obj->getFullName());
                 fuses.push_back(true);
+                startIndices.push_back(startIndex);
             }
         }
     }
@@ -304,13 +310,20 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         int i=0;
         for (const TopoShape &shape : originalShapes) {
             auto &sub = originalSubs[i];
+            int idx = startIndices[i];
             bool fuse = fuses[i++];
 
             std::vector<gp_Trsf>::const_iterator t = transformations.begin();
-            ++t; // Skip first transformation, which is always the identity transformation
-            for (int idx=1; t != transformations.end(); ++t,++idx) {
+            if (idx) {
+                // Skip first transformation in case we do not transform the
+                // first instance (i.e. original feature belongs to the same
+                // sibling group)
+                ++t; 
+            }
+            for (; t != transformations.end(); ++t,++idx) {
                 ss.str("");
-                ss << 'I' << idx;
+                if (idx)
+                    ss << 'I' << idx;
                 auto shapeCopy = CopyShape.getValue()?shape.makECopy():shape;
                 if (shapeCopy.isNull())
                     return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");

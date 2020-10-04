@@ -24,6 +24,9 @@
 #ifndef PARTGUI_ViewProvider_H
 #define PARTGUI_ViewProvider_H
 
+#include <map>
+#include <QPixmap>
+
 #include <Mod/Part/Gui/ViewProvider.h>
 #include "ViewProviderBody.h"
 #include <Gui/ViewProviderPythonFeature.h>
@@ -43,6 +46,8 @@ class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart, PartG
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProvider);
 
 public:
+    App::PropertyColor IconColor;
+
     /// constructor
     ViewProvider();
     /// destructor
@@ -70,6 +75,8 @@ public:
 
     virtual PyObject* getPyObject(void) override;
 
+    virtual void getExtraIcons(std::vector<QPixmap> &) const override;
+
 protected:
 
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
@@ -80,8 +87,6 @@ protected:
 
     virtual bool hasBaseFeature() const override;
     
-    virtual QIcon mergeOverlayIcons (const QIcon & orig) const override;
-
     virtual void updateVisual() override;
 
     /**
@@ -93,6 +98,7 @@ protected:
     std::string oldWb;
     App::DocumentObject* oldTip;
     bool isSetTipIcon;
+    mutable QPixmap pxTipIcon;
 
     std::unique_ptr<PartGui::ViewProviderPart> pSuppressedView;
 };

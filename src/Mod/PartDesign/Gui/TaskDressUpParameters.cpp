@@ -668,24 +668,15 @@ std::vector<std::string> TaskDressUpParameters::getReferences() const
 
 void TaskDressUpParameters::hideObject()
 {
-    if(!DressUpView)
-        return;
     App::DocumentObject* base = getBase();
-    if(base) {
-        DressUpView->getObject()->Visibility.setValue(false);
+    if(base)
         base->Visibility.setValue(true);
-    }
 }
 
 void TaskDressUpParameters::showObject()
 {
-    if(!DressUpView)
-        return;
-    App::DocumentObject* base = getBase();
-    if (base) {
+    if(DressUpView)
         DressUpView->getObject()->Visibility.setValue(true);
-        base->Visibility.setValue(false);
-    }
 }
 
 Part::Feature* TaskDressUpParameters::getBase(void) const

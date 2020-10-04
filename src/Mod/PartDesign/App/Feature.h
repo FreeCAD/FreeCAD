@@ -53,9 +53,10 @@ public:
 
     /// Base feature which this feature will be fused into or cut out of
     App::PropertyLink   BaseFeature;
-    App::PropertyLinkHidden _Body;
+    mutable App::PropertyLinkHidden _Body;
     App::PropertyBool Suppress;
     Part::PropertyPartShape SuppressedShape;
+    App::PropertyBool NewSolid;
 
     short mustExecute() const;
 
@@ -87,6 +88,8 @@ public:
     virtual void getGeneratedIndices(std::vector<int> &faces,
                                      std::vector<int> &edges,
                                      std::vector<int> &vertices) const;
+
+    virtual void onChanged(const App::Property* prop);
 
 protected:
 

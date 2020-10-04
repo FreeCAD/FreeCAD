@@ -287,7 +287,7 @@ bool Split::isToolAllowed(App::DocumentObject *obj, bool inside) const {
         return false;
     if(!Body::isSolidFeature(obj))
         return true;
-    return !Body::inSameSolidBody(this,obj);
+    return !body->isSibling(this,obj);
 }
 
 void Split::onChanged(const App::Property* prop) {

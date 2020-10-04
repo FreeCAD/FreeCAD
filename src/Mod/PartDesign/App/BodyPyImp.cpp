@@ -62,7 +62,7 @@ PyObject* BodyPy::insertObject(PyObject *args)
     PyObject* targetPy;
     PyObject* afterPy = Py_False;
     if (!PyArg_ParseTuple(args, "O!O|O!", &(App::DocumentObjectPy::Type), &featurePy,
-                                          &targetPy, &PyBool_Type, &afterPy)) {
+                            &targetPy, &PyBool_Type, &afterPy)) {
         return 0;
     }
 
@@ -70,6 +70,18 @@ PyObject* BodyPy::insertObject(PyObject *args)
     App::DocumentObject* target = nullptr;
     if (PyObject_TypeCheck(targetPy, &(App::DocumentObjectPy::Type))) {
         target = static_cast<App::DocumentObjectPy*>(targetPy)->getDocumentObjectPtr();
+    }
+    else if (PySequence_Check(targetPy)) {
+        Py::Sequence seq(targetPy);
+        std::vector<App::DocumentObject*> objs;
+        for (int i=0, count=seq.size(); i<count; ++i) {
+            if (!PyObject_TypeCheck(seq[i].ptr(), &(App::DocumentObjectPy::Type))) {
+                PyErr_SetString(PyExc_TypeError, "Expects document object in sequence");
+                return 0;
+            }
+            objs.push_back(static_cast<App::DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
+        }
+        target = getBodyPtr()->getInsertionPosition(objs);
     }
 
     if (!Body::isAllowed(feature)) {
@@ -89,6 +101,45 @@ PyObject* BodyPy::insertObject(PyObject *args)
     }
 
     Py_Return;
+}
+
+PyObject* BodyPy::newObjectAt(PyObject *args)
+{
+    const char *type;
+    const char *name;
+    PyObject* targetPy = Py_None;
+    if (!PyArg_ParseTuple(args, "ss|O", &type, &name, &targetPy)) {
+        return 0;
+    }
+
+    std::vector<App::DocumentObject*> objs;
+    if (targetPy != Py_None) {
+        if (PyObject_TypeCheck(targetPy, &(App::DocumentObjectPy::Type))) {
+            objs.push_back(static_cast<App::DocumentObjectPy*>(targetPy)->getDocumentObjectPtr());
+        }
+        else if (PySequence_Check(targetPy)) {
+            Py::Sequence seq(targetPy);
+            for (int i=0, count=seq.size(); i<count; ++i) {
+                if (!PyObject_TypeCheck(seq[i].ptr(), &(App::DocumentObjectPy::Type))) {
+                    PyErr_SetString(PyExc_TypeError, "Expects document object in sequence");
+                    return 0;
+                }
+                objs.push_back(static_cast<App::DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
+            }
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, 
+                    "Expects either a document object or a sequence of document objects");
+            return 0;
+        }
+    }
+
+    PY_TRY {
+        auto res = getBodyPtr()->newObjectAt(type, name, objs);
+        if (res)
+            return res->getPyObject();
+        Py_Return;
+    } PY_CATCH;
 }
 
 Py::Object BodyPy::getVisibleFeature() const {
