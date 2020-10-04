@@ -1502,10 +1502,18 @@ void SelectionSingleton::setVisible(VisibleState vis, const std::vector<App::Sub
                 }
 
                 if(!visElement)
-                    updateSelection(false,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
-                parent->setElementVisible(elementName.c_str(),vis?true:false);
+                    updateSelection(false,
+                                    sel.getDocumentName().c_str(),
+                                    sel.getObjectName().c_str(),
+                                    sel.getSubName().c_str());
+
+                parent->setElementVisible(elementName.c_str(),visElement?true:false);
+
                 if(visElement && ViewParams::instance()->getUpdateSelectionVisual())
-                    updateSelection(true,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
+                    updateSelection(true,
+                                    sel.getDocumentName().c_str(),
+                                    sel.getObjectName().c_str(),
+                                    sel.getSubName().c_str());
                 continue;
             }
 
@@ -1528,9 +1536,15 @@ void SelectionSingleton::setVisible(VisibleState vis, const std::vector<App::Sub
             if(visObject) {
                 vp->show();
                 if(ViewParams::instance()->getUpdateSelectionVisual())
-                    updateSelection(vis,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
+                    updateSelection(true,
+                                    sel.getDocumentName().c_str(),
+                                    sel.getObjectName().c_str(),
+                                    sel.getSubName().c_str());
             } else {
-                updateSelection(vis,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
+                updateSelection(false,
+                                sel.getDocumentName().c_str(),
+                                sel.getObjectName().c_str(),
+                                sel.getSubName().c_str());
                 vp->hide();
             }
         }
