@@ -170,7 +170,8 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
 
     Gui::FCDepthFunc depthGuard;
     if(!action->isRenderingDelayedPaths()) {
-        if (ctx && (ctx->isSelected() || ctx->isHighlighted())) {
+        if (ctx && ((!Gui::ViewParams::getShowSelectionOnTop() && ctx->isSelected())
+                    || ctx->isHighlighted())) {
             action->addDelayedPath(action->getCurPath()->copy());
             if (ctx->isHighlightAll() || ctx->isSelectAll())
                 return;
