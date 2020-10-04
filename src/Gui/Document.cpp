@@ -1436,14 +1436,8 @@ void Document::RestoreDocFile(Base::Reader &reader)
     bool split = !!xmlReader.getAttributeAsInteger(FC_ATTR_SPLIT_XML,"0");
 
     d->_hasExpansion = !!xmlReader.getAttributeAsInteger(FC_ATTR_TREE_EXPANSION,"0");
-    if(d->_hasExpansion) {
-        auto tree = TreeWidget::instance();
-        if(tree) {
-            auto docItem = tree->getDocumentItem(this);
-            if(docItem)
-                docItem->Restore(xmlReader);
-        }
-    }
+    if(d->_hasExpansion)
+        TreeWidget::restoreDocumentItem(this, xmlReader);
 
     // At this stage all the document objects and their associated view providers exist.
     // Now we must restore the properties of the view providers only.
@@ -1639,17 +1633,7 @@ void Document::SaveDocFile (Base::Writer &writer) const
         << "\" FileVersion=\"" << writer.getFileVersion() << "\" "
         << FC_ATTR_SPLIT_XML "=\"" << (writer.isSplitXML()?1:0) << "\"";
 
-    auto tree = TreeWidget::instance();
-    bool hasExpansion = false;
-    if(tree) {
-        auto docItem = tree->getDocumentItem(this);
-        if(docItem) {
-            hasExpansion = true;
-            writer.Stream() << " " FC_ATTR_TREE_EXPANSION "=\"1\">\n";
-            docItem->Save(writer);
-        }
-    }
-    if(!hasExpansion)
+    if (TreeWidget::saveDocumentItem(this, writer, FC_ATTR_TREE_EXPANSION))
         writer.Stream() << ">\n";
 
     if(writer.isSplitXML()) {

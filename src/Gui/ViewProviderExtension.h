@@ -97,6 +97,8 @@ public:
 
     virtual void extensionMergeOverlayIcons(QIcon &) const {}
 
+    virtual void extensionGetExtraIcons(std::vector<QPixmap> &) const {}
+
     virtual void extensionStartRestoring() {}
     virtual void extensionFinishRestoring() {}
 

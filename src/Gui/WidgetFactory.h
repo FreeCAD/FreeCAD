@@ -59,6 +59,7 @@ public:
      */
     Py::Object fromQIcon(const QIcon*);
     QIcon *toQIcon(PyObject *pyobj);
+    QPixmap *toQPixmap(PyObject *pyobj);
     static void createChildrenNameAttributes(PyObject* root, QObject* object);
     static void setParent(PyObject* pyWdg, QObject* parent);
 };

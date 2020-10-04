@@ -30,6 +30,7 @@
 #include <memory>
 #include <bitset>
 #include <QIcon>
+#include <QPixmap>
 #include <boost/signals2.hpp>
 
 #include <App/TransactionalObject.h>
@@ -233,6 +234,9 @@ public:
     //@{
     /// deliver the icon shown in the tree view
     virtual QIcon getIcon(void) const;
+
+    /// deliver extra icons shown in the tree view
+    virtual void getExtraIcons(std::vector<QPixmap> &) const;
 
     /** deliver the children belonging to this object
       * this method is used to deliver the objects to

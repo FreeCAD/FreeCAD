@@ -311,6 +311,11 @@ QIcon ViewProvider::getIcon(void) const
     return mergeOverlayIcons (Gui::BitmapFactory().pixmap(sPixmap));
 }
 
+void ViewProvider::getExtraIcons(std::vector<QPixmap> &icons) const
+{
+    callExtension(&ViewProviderExtension::extensionGetExtraIcons,icons);
+}
+
 QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
 {
     QIcon overlayedIcon = orig;

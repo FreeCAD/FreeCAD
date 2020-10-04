@@ -15,7 +15,7 @@
    id="svg2816"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="Invisible.svg">
+   sodipodi:docname="TreeItemInvisible.svg">
   <defs
      id="defs2818">
     <linearGradient
@@ -508,9 +508,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.8890873"
-     inkscape:cx="57.18148"
-     inkscape:cy="7.8613012"
+     inkscape:zoom="5.5"
+     inkscape:cx="35.267952"
+     inkscape:cy="19.835481"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
@@ -574,12 +574,12 @@
      inkscape:groupmode="layer">
     <g
        id="g4783"
-       transform="matrix(1.2402271,0,0,1.2577597,-0.4211963,8.3519239)">
+       transform="matrix(0.9691016,0,0,0.87415975,6.6067169,15.530249)">
       <path
          inkscape:connector-curvature="0"
          d="m 26.202906,1.6813301 c -9.673905,0 -20.9601314,6.2397496 -25.79708379,18.7192689 C 5.2427746,29.76025 14.916679,36 26.202906,36 37.489143,36 47.163048,29.76025 52,20.400599 47.163048,7.9210797 35.876821,1.6813301 26.202906,1.6813301 Z m 0,31.1987859 c -9.673905,0 -17.7354897,-6.23975 -19.3478099,-12.479517 C 8.4674163,14.160848 16.529001,7.9210797 26.202906,7.9210797 c 9.673915,0 17.7355,6.2397683 19.34782,12.4795193 -1.61232,6.239767 -9.673905,12.479517 -19.34782,12.479517 z m 0,-21.839152 c -1.007692,0 -1.914621,0.194993 -2.821549,0.438734 1.662698,0.731222 2.821549,2.339912 2.821549,4.241091 0,2.583655 -2.166544,4.67981 -4.836953,4.67981 -1.965006,0 -3.627715,-1.121208 -4.383483,-2.729881 -0.251923,0.877467 -0.453469,1.754917 -0.453469,2.729881 0,5.167306 4.333107,9.359651 9.673905,9.359651 5.340808,0 9.673915,-4.192345 9.673915,-9.359651 0,-5.167292 -4.333107,-9.359635 -9.673915,-9.359635 z"
          id="path3599"
-         style="fill:#5f5f5f;fill-opacity:1" />
+         style="fill:#808080;fill-opacity:1" />
       <path
          inkscape:connector-curvature="0"
          id="path3630"
@@ -587,12 +587,12 @@
          style="opacity:0.8479996;fill:#ffffff;stroke:none;stroke-width:0.18025407;stroke-opacity:1" />
     </g>
     <rect
-       style="opacity:1;fill:#ff0000;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#ff0000;fill-opacity:1;stroke:#ffffff;stroke-width:2.00000024;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4909"
-       width="7.8005085"
-       height="75.651375"
-       x="-5.9955268"
-       y="7.3806157"
-       transform="matrix(0.67360985,-0.73908712,0.73908712,0.67360985,0,0)" />
+       width="6.1190372"
+       height="59.347763"
+       x="-1.1544952"
+       y="15.539548"
+       transform="matrix(0.73670431,-0.67621503,0.67671401,0.73624598,0,0)" />
   </g>
 </svg>

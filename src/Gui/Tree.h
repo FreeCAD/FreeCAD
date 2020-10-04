@@ -175,7 +175,6 @@ protected:
     /// Observer message from the Selection
     void onSelectionChanged(const SelectionChanges& msg) override;
     void contextMenuEvent (QContextMenuEvent * e) override;
-    void drawRow(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
     /** @name Drag and drop */
     //@{
     void startDrag(Qt::DropActions supportedActions) override;
@@ -301,6 +300,7 @@ private:
     friend class DocumentItem;
     friend class DocumentObjectItem;
     friend class TreeParams;
+    friend class TreeWidgetItemDelegate;
 
     typedef boost::signals2::connection Connection;
     Connection connectNewDocument;

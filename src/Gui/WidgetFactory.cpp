@@ -449,6 +449,23 @@ QIcon *PythonWrapper::toQIcon(PyObject *pyobj)
     return 0;
 }
 
+QPixmap *PythonWrapper::toQPixmap(PyObject *pyobj)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    PyTypeObject * type = getPyTypeObjectForTypeName<QPixmap>();
+    if(type) {
+        if (Shiboken::Object::checkType(pyobj)) {
+            SbkObject* sbkobject = reinterpret_cast<SbkObject *>(pyobj);
+            void* cppobject = Shiboken::Object::cppPointer(sbkobject, type);
+            return reinterpret_cast<QPixmap*>(cppobject);
+        }
+    }
+#else
+    Q_UNUSED(pyobj);
+#endif
+    return 0;
+}
+
 Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)

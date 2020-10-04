@@ -54,6 +54,7 @@ public:
 
     // Returns the icon
     QIcon getIcon() const;
+    void getExtraIcons(std::vector<QPixmap> &) const;
     bool claimChildren(std::vector<App::DocumentObject*>&) const;
     ValueT useNewSelectionModel() const;
     ValueT getElementPicked(const SoPickedPoint *pp, std::string &subname) const;
@@ -133,6 +134,7 @@ private:
 
 #define FC_PY_VIEW_OBJECT \
     FC_PY_ELEMENT(getIcon) \
+    FC_PY_ELEMENT(getExtraIcons) \
     FC_PY_ELEMENT(claimChildren) \
     FC_PY_ELEMENT(useNewSelectionModel) \
     FC_PY_ELEMENT(getElementPicked) \
@@ -214,6 +216,11 @@ public:
         if (icon.isNull())
             icon = ViewProviderT::getIcon();
         return icon;
+    }
+
+    void getExtraIcons(std::vector<QPixmap> &icons) const override {
+        ViewProviderT::getExtraIcons(icons);
+        imp->getExtraIcons(icons);
     }
 
     std::vector<App::DocumentObject*> claimChildren() const override {
