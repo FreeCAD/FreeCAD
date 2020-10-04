@@ -223,7 +223,7 @@ bool SketcherGui::isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, P
     if (PosId == Sketcher::start && (GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis))
         return true;
     const Part::Geometry *geo = Obj->getGeometry(GeoId);
-    if (geo->getTypeId() == Part::GeomPoint::getClassTypeId())
+    if (geo && geo->getTypeId() == Part::GeomPoint::getClassTypeId())
         return true;
     else if (PosId == Sketcher::mid)
         return true;
