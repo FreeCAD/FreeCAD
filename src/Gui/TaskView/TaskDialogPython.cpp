@@ -90,30 +90,41 @@ Py::Object ControlPy::repr()
 
 Py::Object ControlPy::showDialog(const Py::Tuple& args)
 {
+    PyObject* arg0;
+    if (!PyArg_ParseTuple(args.ptr(), "O", &arg0))
+        throw Py::Exception();
     Gui::TaskView::TaskDialog* act = Gui::Control().activeDialog();
     if (act)
         throw Py::RuntimeError("Active task dialog found");
-    TaskDialogPython* dlg = new TaskDialogPython(args[0]);
+    TaskDialogPython* dlg = new TaskDialogPython(Py::Object(arg0));
     Gui::Control().showDialog(dlg);
     return Py::None();
 }
 
-Py::Object ControlPy::activeDialog(const Py::Tuple&)
+Py::Object ControlPy::activeDialog(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     return Py::Boolean(dlg!=0);
 }
 
-Py::Object ControlPy::closeDialog(const Py::Tuple&)
+Py::Object ControlPy::closeDialog(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     Gui::Control().closeDialog();
     return Py::None();
 }
 
 Py::Object ControlPy::addTaskWatcher(const Py::Tuple& args)
 {
+    PyObject* arg0;
+    if (!PyArg_ParseTuple(args.ptr(), "O", &arg0))
+        throw Py::Exception();
+
     std::vector<Gui::TaskView::TaskWatcher*> watcher;
-    Py::Sequence list(args[0]);
+    Py::Sequence list(arg0);
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         TaskWatcherPython* w = new TaskWatcherPython(*it);
         watcher.push_back(w);
@@ -125,34 +136,44 @@ Py::Object ControlPy::addTaskWatcher(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object ControlPy::clearTaskWatcher(const Py::Tuple&)
+Py::Object ControlPy::clearTaskWatcher(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
     if (taskView)
         taskView->clearTaskWatcher();
     return Py::None();
 }
 
-Py::Object ControlPy::isAllowedAlterDocument(const Py::Tuple&)
+Py::Object ControlPy::isAllowedAlterDocument(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     bool ok = Gui::Control().isAllowedAlterDocument();
     return Py::Boolean(ok);
 }
 
-Py::Object ControlPy::isAllowedAlterView(const Py::Tuple&)
+Py::Object ControlPy::isAllowedAlterView(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     bool ok = Gui::Control().isAllowedAlterView();
     return Py::Boolean(ok);
 }
 
-Py::Object ControlPy::isAllowedAlterSelection(const Py::Tuple&)
+Py::Object ControlPy::isAllowedAlterSelection(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     bool ok = Gui::Control().isAllowedAlterSelection();
     return Py::Boolean(ok);
 }
 
-Py::Object ControlPy::showTaskView(const Py::Tuple&)
+Py::Object ControlPy::showTaskView(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     Gui::Control().showTaskView();
     return Py::None();
 }
