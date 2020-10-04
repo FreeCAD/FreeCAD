@@ -28,7 +28,7 @@ import stat
 import sys
 import tempfile
 
-from PySide import QtCore
+from PySide import QtCore, QtGui
 
 import FreeCAD
 
