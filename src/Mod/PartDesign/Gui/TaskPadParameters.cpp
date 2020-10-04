@@ -44,9 +44,11 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeaturePad.h>
+#include <Mod/PartDesign/App/FeatureExtrusion.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include "TaskSketchBasedParameters.h"
 #include "ReferenceSelection.h"
+#include "ViewProviderExtrusion.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -54,15 +56,35 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskPadParameters */
 
 TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, bool newObj)
-    : TaskSketchBasedParameters(PadView, parent, "PartDesign_Pad",tr("Pad parameters"))
+    : TaskSketchBasedParameters(PadView, parent, "PartDesign_Pad",tr("Pad parameters")), useElement(false)
+{
+    setupUI(newObj);
+}
+
+TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, bool newObj,
+                                     const std::string& pixmapname, const QString& parname)
+    : TaskSketchBasedParameters(PadView, parent, pixmapname, parname), useElement(true)
+{
+    setupUI(newObj);
+}
+
+void TaskPadParameters::setupUI(bool newObj)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui = new Ui_TaskPadParameters();
     ui->setupUi(proxy);
+    if (useElement) {
+        ui->buttonFace->setText(tr("Element"));
 #if QT_VERSION >= 0x040700
-    ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+        ui->lineFaceName->setPlaceholderText(tr("No element selected"));
 #endif
+    }
+    else {
+#if QT_VERSION >= 0x040700
+        ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+#endif
+    }
 
     this->groupLayout()->addWidget(proxy);
 
@@ -83,15 +105,6 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     bool midplane = pcPad->Midplane.getValue();
     bool reversed = pcPad->Reversed.getValue();
     int index = pcPad->Type.getValue(); // must extract value here, clear() kills it!
-    App::DocumentObject* obj = pcPad->UpToFace.getValue();
-    std::vector<std::string> subStrings = pcPad->UpToFace.getSubValues();
-    std::string upToFace;
-    int faceId = -1;
-    if ((obj != NULL) && !subStrings.empty()) {
-        upToFace = subStrings.front();
-        if (upToFace.substr(0,4) == "Face")
-            faceId = std::atoi(&upToFace[4]);
-    }
 
     // Fill data into dialog elements
     ui->lengthEdit->setValue(l);
@@ -123,29 +136,33 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     ui->ZDirectionEdit->setDecimals(UserDecimals);
 
     // Set object labels
-    if (obj && PartDesign::Feature::isDatum(obj)) {
+    App::DocumentObject* obj = pcPad->UpToFace.getValue();
+    std::vector<std::string> subStrings = pcPad->UpToFace.getSubValues(false);
+    if (obj && subStrings.empty()) {
         ui->lineFaceName->setText(QString::fromUtf8(obj->Label.getValue()));
         ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
     }
-    else if (obj && faceId >= 0) {
-        ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
+    else if (obj) {
+        ui->lineFaceName->setText(QString::fromLatin1("%1:%2")
                                   .arg(QString::fromUtf8(obj->Label.getValue()))
-                                  .arg(tr("Face"))
-                                  .arg(faceId));
+                                  .arg(QString::fromLatin1(subStrings.front().c_str())));
         ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
+        ui->lineFaceName->setProperty("FaceName", QByteArray(subStrings.front().c_str()));
+
     }
     else {
         ui->lineFaceName->clear();
         ui->lineFaceName->setProperty("FeatureName", QVariant());
     }
 
-    ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
-
     ui->changeMode->clear();
     ui->changeMode->insertItem(0, tr("Dimension"));
     ui->changeMode->insertItem(1, tr("To last"));
     ui->changeMode->insertItem(2, tr("To first"));
-    ui->changeMode->insertItem(3, tr("Up to face"));
+    if (useElement)
+        ui->changeMode->insertItem(3, tr("Up to Element"));
+    else
+        ui->changeMode->insertItem(3, tr("Up to face"));
     ui->changeMode->insertItem(4, tr("Two dimensions"));
     ui->changeMode->setCurrentIndex(index);
 
@@ -177,6 +194,8 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
             this, SLOT(onFaceName(QString)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
+    connect(ui->checkBoxNewSolid, SIGNAL(toggled(bool)),
+            this, SLOT(onNewSolidChanged(bool)));
 
     // Due to signals attached after changes took took into effect we should update the UI now.
     updateUI(index);
@@ -366,6 +385,18 @@ void TaskPadParameters::onReversedChanged(bool on)
     recomputeFeature();
 }
 
+void TaskPadParameters::onNewSolidChanged(bool on)
+{
+    if (vp) {
+        PartDesign::Feature* pc =
+            Base::freecad_dynamic_cast<PartDesign::Feature>(vp->getObject());
+        if (pc) {
+            pc->NewSolid.setValue(on);
+            recomputeFeature();
+        }
+    }
+}
+
 void TaskPadParameters::onModeChanged(int index)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
@@ -391,7 +422,19 @@ void TaskPadParameters::onButtonFace(const bool pressed)
 {
     this->blockConnection(!pressed);
 
-    TaskSketchBasedParameters::onSelectReference(pressed, false, true, false);
+    if (vp && vp->getObject()
+           && vp->getObject()->isDerivedFrom(PartDesign::Extrusion::getClassTypeId()))
+    {
+        if (pressed) {
+            Gui::Selection().clearSelection();
+            Gui::Selection().addSelectionGate(
+                    new ReferenceSelection(vp->getObject(), true, true, false, true));
+        }
+        else
+            Gui::Selection().rmvSelectionGate();
+    }
+    else
+        TaskSketchBasedParameters::onSelectReference(pressed, false, true, false);
 
     // Update button if onButtonFace() is called explicitly
     ui->buttonFace->setChecked(pressed);
@@ -462,6 +505,11 @@ bool   TaskPadParameters::getReversed(void) const
     return ui->checkBoxReversed->isChecked();
 }
 
+bool   TaskPadParameters::getNewSolid(void) const
+{
+    return ui->checkBoxNewSolid->isChecked();
+}
+
 bool   TaskPadParameters::getMidplane(void) const
 {
     return ui->checkBoxMidplane->isChecked();
@@ -508,32 +556,23 @@ void TaskPadParameters::changeEvent(QEvent *e)
         ui->changeMode->addItem(tr("Dimension"));
         ui->changeMode->addItem(tr("To last"));
         ui->changeMode->addItem(tr("To first"));
-        ui->changeMode->addItem(tr("Up to face"));
+        if (useElement)
+            ui->changeMode->addItem(tr("Up to Element"));
+        else
+            ui->changeMode->addItem(tr("Up to face"));
         ui->changeMode->addItem(tr("Two dimensions"));
         ui->changeMode->setCurrentIndex(index);
 
+        if (useElement) {
+            ui->buttonFace->setText(tr("Element"));
 #if QT_VERSION >= 0x040700
-        ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+            ui->lineFaceName->setPlaceholderText(tr("No element selected"));
 #endif
-        QVariant featureName = ui->lineFaceName->property("FeatureName");
-        if (featureName.isValid()) {
-            QStringList parts = ui->lineFaceName->text().split(QChar::fromLatin1(':'));
-            QByteArray upToFace = ui->lineFaceName->property("FaceName").toByteArray();
-            int faceId = -1;
-            bool ok = false;
-            if (upToFace.indexOf("Face") == 0) {
-                faceId = upToFace.remove(0,4).toInt(&ok);
-            }
-
-            if (ok) {
-                ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
-                                          .arg(parts[0])
-                                          .arg(tr("Face"))
-                                          .arg(faceId));
-            }
-            else {
-                ui->lineFaceName->setText(parts[0]);
-            }
+        }
+        else {
+#if QT_VERSION >= 0x040700
+            ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+#endif
         }
 
         ui->lengthEdit->blockSignals(false);
@@ -570,6 +609,7 @@ void TaskPadParameters::apply()
     FCMD_OBJ_CMD(obj,"Reversed = " << (getReversed()?1:0));
     FCMD_OBJ_CMD(obj,"Midplane = " << (getMidplane()?1:0));
     FCMD_OBJ_CMD(obj,"Offset = " << getOffset());
+    FCMD_OBJ_CMD(obj,"NewSolid = " << getNewSolid());
 }
 
 //**************************************************************************
@@ -582,6 +622,20 @@ TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView, bool /*newO
 {
     assert(vp);
     Content.push_back ( new TaskPadParameters(PadView ) );
+}
+
+TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj,
+                                           const std::string& pixmapname, const QString& parname)
+    : TaskDlgSketchBasedParameters(PadView)
+{
+    assert(vp);
+    Content.push_back ( new TaskPadParameters(PadView, nullptr, newObj, pixmapname, parname ) );
+}
+
+bool TaskDlgPadParameters::accept() {
+    if (vp && vp->isDerivedFrom(ViewProviderExtrusion::getClassTypeId()))
+        return TaskDlgFeatureParameters::accept();
+    return TaskDlgSketchBasedParameters::accept();
 }
 
 //==== calls from the TaskView ===============================================================

@@ -31,6 +31,7 @@
 #include <Base/Interpreter.h>
 
 #include "FeaturePad.h"
+#include "FeatureExtrusion.h"
 #include "FeatureSolid.h"
 #include "FeaturePocket.h"
 #include "FeatureFillet.h"
@@ -104,6 +105,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::Hole                        ::init();
     PartDesign::Body                        ::init();
     PartDesign::Pad                         ::init();
+    PartDesign::Extrusion                   ::init();
     PartDesign::Pocket                      ::init();
     PartDesign::Fillet                      ::init();
     PartDesign::Revolution                  ::init();

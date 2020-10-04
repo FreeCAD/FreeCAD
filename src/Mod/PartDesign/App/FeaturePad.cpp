@@ -30,6 +30,7 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepFeat_MakePrism.hxx>
 # include <BRepLProp_SLProps.hxx>
 # include <BRepPrimAPI_MakeHalfSpace.hxx>
@@ -94,28 +95,64 @@ short Pad::mustExecute() const
 
 App::DocumentObjectExecReturn *Pad::execute(void)
 {
+    return _execute(true, true);
+}
+
+App::DocumentObjectExecReturn *Pad::_execute(bool makesolid, bool fuse)
+{
     // Validate parameters
     double L = Length.getValue();
     if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn("Length of pad too small");
+        return new App::DocumentObjectExecReturn("Length too small");
     double L2 = Length2.getValue();
     if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn("Second length of pad too small");
+        return new App::DocumentObjectExecReturn("Second length too small");
 
     Part::Feature* obj = 0;
     TopoShape sketchshape;
     try {
         obj = getVerifiedObject();
-        sketchshape = getVerifiedFace();
+        if (makesolid) {
+            sketchshape = getVerifiedFace();
+        } else {
+            std::vector<TopoShape> shapes;
+            bool hasEdges = false;
+            auto subs = Profile.getSubValues(false);
+            if (subs.empty())
+                subs.emplace_back("");
+            bool failed = false;
+            for (auto & sub : subs) {
+                if (sub.empty() && subs.size()>1)
+                    continue;
+                TopoShape shape = Part::Feature::getTopoShape(obj, sub.c_str(), true);
+                if (shape.isNull()) {
+                    FC_ERR(getFullName() << ": failed to get profile shape "
+                                        << obj->getFullName() << "." << sub);
+                    failed = true;
+                }
+                hasEdges = hasEdges || shape.hasSubShape(TopAbs_EDGE);
+                shapes.push_back(shape);
+            }
+            if (failed)
+                return new App::DocumentObjectExecReturn("Failed to obtain profile shape");
+            if (hasEdges)
+                sketchshape.makEWires(shapes);
+            else
+                sketchshape.makECompound(shapes, nullptr, false);
+        }
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
+    } catch (const Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
     // if the Base property has a valid shape, fuse the prism into it
     TopoShape base;
-    try {
-        base = getBaseShape();
-    } catch (const Base::Exception&) {
+    if (!this->NewSolid.getValue()) {
+        try {
+            base = getBaseShape();
+        } catch (const Base::Exception&) {
+        }
     }
 
     // get the Sketch plane
@@ -164,7 +201,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
         // factor would be zero if vectors are orthogonal
         if (factor < Precision::Confusion())
-            return new App::DocumentObjectExecReturn("Pad: Creation failed because direction is orthogonal to sketch's normal vector");
+            return new App::DocumentObjectExecReturn("Creation failed because direction is orthogonal to sketch's normal vector");
 
         // perform the length correction
         L = L / factor;
@@ -173,12 +210,40 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         dir.Transform(invTrsf);
 
         if (sketchshape.isNull())
-            return new App::DocumentObjectExecReturn("Pad: Creating a face from sketch failed");
+            return new App::DocumentObjectExecReturn("Creating a face from sketch failed");
         sketchshape.move(invObjLoc);
 
         TopoShape prism(0,getDocument()->getStringHasher());
         std::string method(Type.getValueAsString());                
+
         if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
+
+            // Special handling of extrusion of vertex 
+            if (!sketchshape.hasSubShape(TopAbs_EDGE)
+                    && sketchshape.countSubShapes(TopAbs_VERTEX)==1)
+            {
+                if (method == "UpToFace") {
+                    const auto &subs = UpToFace.getSubValues();
+                    TopoShape upto = Part::Feature::getTopoShape(
+                            UpToFace.getValue(), subs.size()?subs[0].c_str():nullptr,true);
+                    if (!upto.hasSubShape(TopAbs_EDGE) && upto.countSubShapes(TopAbs_VERTEX)==1) {
+                        TopoShape pt1 = sketchshape.getSubTopoShape(TopAbs_VERTEX, 1);
+                        TopoShape pt2 = upto.getSubTopoShape(TopAbs_VERTEX, 1);
+                        pt2.move(invObjLoc);
+                        BRepBuilderAPI_MakeEdge builder(
+                            BRep_Tool::Pnt(TopoDS::Vertex(pt1.getShape())),
+                            BRep_Tool::Pnt(TopoDS::Vertex(pt2.getShape())));
+
+                        TopoShape result(0,getDocument()->getStringHasher());
+                        result.setShape(builder.Shape(), false);
+                        result.mapSubElement({pt1, pt2});
+                        this->AddSubShape.setValue(result);
+                        this->Shape.setValue(result);
+                        return App::DocumentObject::StdReturn;
+                    }
+                }
+            }
+
               // Note: This will return an unlimited planar face if support is a datum plane
             TopoShape supportface = getSupportFace();
             supportface.move(invObjLoc);
@@ -310,7 +375,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         this->AddSubShape.setValue(prism);
         // prism.Tag = -this->getID();
 
-        if (!base.isNull()) {
+        if (!base.isNull() && fuse) {
 //             auto obj = getDocument()->addObject("Part::Feature", "prism");
 //             static_cast<Part::Feature*>(obj)->Shape.setValue(getSolid(prism));
             // Let's call algorithm computing a fuse operation:
@@ -318,19 +383,20 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             try {
                 result.makEFuse({base,prism});
             }catch(Standard_Failure &){
-                return new App::DocumentObjectExecReturn("Pad: Fusion with base feature failed");
+                return new App::DocumentObjectExecReturn("Fusion with base feature failed");
             }
             // we have to get the solids (fuse sometimes creates compounds)
             auto solRes = this->getSolid(result);
             // lets check if the result is a solid
             if (solRes.isNull())
-                return new App::DocumentObjectExecReturn("Pad: Resulting shape is not a solid");
+                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
             solRes = refineShapeIfActive(solRes);
             this->Shape.setValue(getSolid(solRes));
-        } else {
+        } else if (prism.hasSubShape(TopAbs_SOLID)) {
            this->Shape.setValue(getSolid(prism));
-        }
+        } else
+           this->Shape.setValue(prism);
 
         return App::DocumentObject::StdReturn;
     }

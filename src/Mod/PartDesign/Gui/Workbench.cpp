@@ -259,6 +259,7 @@ void Workbench::activated()
     std::vector<Gui::TaskView::TaskWatcher*> Watcher;
 
     const char* Vertex[] = {
+        "PartDesign_Extrusion",
         "PartDesign_Point",
         "PartDesign_Line",
         "PartDesign_Plane",
@@ -272,6 +273,7 @@ void Workbench::activated()
     ));
 
     const char* Edge[] = {
+        "PartDesign_Extrusion",
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
         "PartDesign_Point",
@@ -288,10 +290,13 @@ void Workbench::activated()
 
     const char* Face[] = {
         "PartDesign_NewSketch",
+        "PartDesign_Pad",
+        "PartDesign_Pocket",
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
         "PartDesign_Draft",
         "PartDesign_Thickness",
+        "PartDesign_Extrusion",
         "PartDesign_Point",
         "PartDesign_Line",
         "PartDesign_Plane",
@@ -378,6 +383,7 @@ void Workbench::activated()
 
     const char* NoSel[] = {
         "PartDesign_Body",
+        "PartDesign_NewSketch",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
         NoSel,
@@ -386,10 +392,13 @@ void Workbench::activated()
     ));
 
     const char* Faces[] = {
+        "PartDesign_Pad",
+        "PartDesign_Pocket",
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
         "PartDesign_Draft",
         "PartDesign_Thickness",
+        "PartDesign_Extrusion",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 2..",
@@ -409,6 +418,7 @@ void Workbench::activated()
         "PartDesign_SubtractivePipe",
         "PartDesign_AdditiveLoft",
         "PartDesign_SubtractiveLoft",
+        "PartDesign_Extrusion",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Sketcher::SketchObject COUNT 1",
@@ -538,6 +548,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Separator"
           << "PartDesign_Boolean"
           << "PartDesign_Split"
+          << "PartDesign_Extrusion"
           << "Separator"
           //<< "PartDesign_Hole"
           << "PartDesign_Migrate"
@@ -608,7 +619,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Thickness"
           << "Separator"
           << "PartDesign_Boolean"
-          << "PartDesign_Split";
+          << "PartDesign_Split"
+          << "PartDesign_Extrusion";
 
     return root;
 }

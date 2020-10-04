@@ -50,6 +50,10 @@ class TaskPadParameters : public TaskSketchBasedParameters
 
 public:
     TaskPadParameters(ViewProviderPad *PadView, QWidget *parent = 0, bool newObj=false);
+
+    TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, bool newObj,
+                      const std::string& pixmapname, const QString& parname);
+
     ~TaskPadParameters();
 
     virtual void saveHistory() override;
@@ -67,6 +71,7 @@ private Q_SLOTS:
     void onReversedChanged(bool);
     void onButtonFace(const bool pressed = true);
     void onFaceName(const QString& text);
+    void onNewSolidChanged(bool);
     void onModeChanged(int);
 
 protected:
@@ -82,15 +87,18 @@ private:
     double getOffset(void) const;
     bool   getReversed(void) const;
     bool   getMidplane(void) const;
+    bool   getNewSolid(void) const;
     int    getMode(void) const;
     QString getFaceName(void) const;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI(int index);
     void updateDirectionEdits(void);
+    void setupUI(bool newObj);
 
 private:
     QWidget* proxy;
     Ui_TaskPadParameters* ui;
+    bool useElement;
 };
 
 /// simulation dialog for the TaskView
@@ -100,6 +108,9 @@ class TaskDlgPadParameters : public TaskDlgSketchBasedParameters
 
 public:
     TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
+    TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj,
+                         const std::string& pixmapname, const QString& parname);
+    virtual bool accept();
 
     ViewProviderPad* getPadView() const
     { return static_cast<ViewProviderPad*>(vp); }

@@ -70,7 +70,10 @@ public:
     }
     //@}
 
-private:
+protected:
+    App::DocumentObjectExecReturn * _execute(bool makesolid, bool fuse);
+
+protected:
     static const char* TypeEnums[];
     //static const char* SideEnums[];
 };

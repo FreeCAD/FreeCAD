@@ -31,6 +31,8 @@
 # include <Precision.hxx>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -46,6 +48,7 @@
 
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/PartDesign/App/FeatureExtrusion.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
 
@@ -76,16 +79,33 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     std::string subname = msg.pSubName;
     QString refStr;
 
+    std::vector<std::string> upToFaces;
+
     // Remove subname for planes and datum features
     if (PartDesign::Feature::isDatum(selObj)) {
         subname = "";
         refStr = QString::fromLatin1(selObj->getNameInDocument());
-    } else if (subname.size() > 4) {
+    } else if (boost::starts_with(subname, "Face")) {
         int faceId = std::atoi(&subname[4]);
-        refStr = QString::fromLatin1(selObj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(faceId);
+        if (faceId > 0) {
+            refStr = QString::fromLatin1("%1:%2%3").arg(
+                    QString::fromLatin1(selObj->getNameInDocument()),
+                    QObject::tr("Face"),
+                    QString::number(faceId));
+            upToFaces.push_back(subname);
+        }
     }
 
-    std::vector<std::string> upToFaces(1,subname);
+    if (refStr.isEmpty()) {
+        if (subname.size()) {
+            refStr = QString::fromLatin1("%1:%2").arg(
+                    QString::fromLatin1(selObj->getNameInDocument()),
+                    QString::fromLatin1(subname.c_str()));
+            upToFaces.push_back(subname);
+        } else
+            refStr = QString::fromLatin1(selObj->getNameInDocument());
+    }
+
     pcSketchBased->UpToFace.setValue(selObj, upToFaces);
     recomputeFeature();
 
@@ -154,21 +174,23 @@ QVariant TaskSketchBasedParameters::setUpToFace(const QString& text)
         QString name;
         QTextStream str(&name);
         str << "^" << tr("Face") << "(\\d+)$";
+
+        std::string upToFace;
         QRegExp rx(name);
-        if (parts[1].indexOf(rx) < 0) {
-            return QVariant();
+        if (parts[1].indexOf(rx) > 0) {
+            int faceId = rx.cap(1).toInt();
+            std::stringstream ss;
+            ss << "Face" << faceId;
+            upToFace = ss.str();
         }
+        else
+            upToFace = parts[1].toLatin1().constData();
 
-        int faceId = rx.cap(1).toInt();
-        std::stringstream ss;
-        ss << "Face" << faceId;
-
-        std::vector<std::string> upToFaces(1,ss.str());
         PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
-        pcSketchBased->UpToFace.setValue(obj, upToFaces);
+        pcSketchBased->UpToFace.setValue(obj, {upToFace});
         recomputeFeature();
 
-        return QByteArray(ss.str().c_str());
+        return QByteArray(upToFace.c_str());
     }
 }
 

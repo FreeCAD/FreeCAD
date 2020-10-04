@@ -1273,6 +1273,57 @@ bool CmdPartDesignPad::isActive(void)
 }
 
 //===========================================================================
+// PartDesign_Extrusion
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignExtrusion)
+
+CmdPartDesignExtrusion::CmdPartDesignExtrusion()
+  : Command("PartDesign_Extrusion")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Extrusion");
+    sToolTipText  = QT_TR_NOOP("Extrude a vertex/edge/face/sketch.\n"
+                               "The resulting shape standalone and not merged into tip.");
+    sWhatsThis    = "PartDesign_Extrusion";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Extrusion";
+}
+
+void CmdPartDesignExtrusion::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
+
+    Gui::Command* cmd = this;
+    auto worker = [cmd](Part::Feature* profile, App::DocumentObject *Feat) {
+
+        if (!Feat) return;
+
+        Gui::cmdAppObject(Feat, std::ostringstream() <<"Length = 10.0");
+        Gui::Command::updateActive();
+
+        (void)profile;
+        finishFeature(cmd, Feat, nullptr, false, false);
+        cmd->adjustCameraPosition();
+    };
+
+    prepareProfileBased(pcActiveBody, this, "Extrusion", worker, true);
+}
+
+bool CmdPartDesignExtrusion::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
 // PartDesign_Pocket
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignPocket)
@@ -2595,6 +2646,7 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignNewSketch());
 
     rcCmdMgr.addCommand(new CmdPartDesignPad());
+    rcCmdMgr.addCommand(new CmdPartDesignExtrusion());
     rcCmdMgr.addCommand(new CmdPartDesignPocket());
     rcCmdMgr.addCommand(new CmdPartDesignHole());
     rcCmdMgr.addCommand(new CmdPartDesignRevolution());

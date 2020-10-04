@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>280</width>
-    <height>350</height>
+    <height>419</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,11 +44,11 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit">
-       <property name="keyboardTracking">
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
       </widget>
@@ -186,11 +186,11 @@ the sketch plane's normal vector will be used</string>
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit">
+      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit" native="true">
        <property name="toolTip">
         <string>Offset from face in which pad will end</string>
        </property>
-       <property name="keyboardTracking">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
       </widget>
@@ -221,6 +221,16 @@ the sketch plane's normal vector will be used</string>
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkBoxNewSolid">
+     <property name="toolTip">
+      <string>Make a separate solid using the extrusion</string>
+     </property>
+     <property name="text">
+      <string>New solid</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <widget class="QLabel" name="labelLength2">
@@ -230,11 +240,11 @@ the sketch plane's normal vector will be used</string>
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2">
-       <property name="keyboardTracking">
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
       </widget>
