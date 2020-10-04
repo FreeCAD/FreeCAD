@@ -88,6 +88,198 @@ namespace Gui {
 int treeViewIconSize() {
     return TreeWidget::iconSize();
 }
+
+/** The link between the tree and a document.
+ * Every document in the application gets its associated DocumentItem which controls
+ * the visibility and the functions of the document.
+ * \author Jürgen Riegel
+ */
+class DocumentItem : public QTreeWidgetItem, public Base::Persistence
+{
+public:
+    DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent);
+    ~DocumentItem();
+
+    Gui::Document* document() const;
+    void clearSelection(DocumentObjectItem *exclude=0);
+    void updateSelection(QTreeWidgetItem *, bool unselect=false);
+    void updateSelection();
+    void updateItemSelection(DocumentObjectItem *);
+
+    enum SelectionReason {
+        SR_SELECT, // only select, no expansion
+        SR_EXPAND, // select and expand but respect ObjectStatus::NoAutoExpand
+        SR_FORCE_EXPAND, // select and force expansion
+    };
+    void selectItems(SelectionReason reason=SR_SELECT);
+
+    void testStatus(void);
+    void setData(int column, int role, const QVariant & value) override;
+    void populateItem(DocumentObjectItem *item, bool refresh=false, bool delayUpdate=true);
+    void forcePopulateItem(QTreeWidgetItem *item);
+    bool populateObject(App::DocumentObject *obj, bool delay=false);
+    void selectAllInstances(const ViewProviderDocumentObject &vpd);
+    bool showItem(DocumentObjectItem *item, bool select, bool force=false);
+    void updateItemsVisibility(QTreeWidgetItem *item, bool show);
+    void updateLinks(const ViewProviderDocumentObject &view);
+    ViewProviderDocumentObject *getViewProvider(App::DocumentObject *);
+
+    bool showHidden() const;
+    void setShowHidden(bool show);
+
+    TreeWidget *getTree() const;
+    const char *getTreeName() const;
+
+    virtual unsigned int getMemSize (void) const override;
+    virtual void Save (Base::Writer &) const override;
+    virtual void Restore(Base::XMLReader &) override;
+
+    class ExpandInfo;
+    typedef std::shared_ptr<ExpandInfo> ExpandInfoPtr;
+
+protected:
+    /** Adds a view provider to the document item.
+     * If this view provider is already added nothing happens.
+     */
+    void slotNewObject(const Gui::ViewProviderDocumentObject&);
+    /** Removes a view provider from the document item.
+     * If this view provider is not added nothing happens.
+     */
+    void slotInEdit          (const Gui::ViewProviderDocumentObject&);
+    void slotResetEdit       (const Gui::ViewProviderDocumentObject&);
+    void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool,
+                              const App::DocumentObject *parent, const char *subname);
+    void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&,
+                              const App::DocumentObject *parent, const char *subname);
+    void slotScrollToObject  (const Gui::ViewProviderDocumentObject&);
+    void slotRecomputed      (const App::Document &doc, const std::vector<App::DocumentObject*> &objs);
+    void slotRecomputedObject(const App::DocumentObject &);
+
+    bool updateObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
+
+    bool createNewItem(const Gui::ViewProviderDocumentObject&, 
+                    QTreeWidgetItem *parent=0, int index=-1, 
+                    DocumentObjectDataPtr ptrs = DocumentObjectDataPtr());
+
+    int findRootIndex(App::DocumentObject *childObj);
+
+    DocumentObjectItem *findItemByObject(bool sync, 
+            App::DocumentObject *obj, const char *subname, bool select=false);
+
+    DocumentObjectItem *findItem(bool sync, DocumentObjectItem *item, const char *subname, bool select=true);
+
+    App::DocumentObject *getTopParent(
+            App::DocumentObject *obj, std::string &subname, DocumentObjectItem **item=0);
+
+    void populateParents(const ViewProviderDocumentObject *vp);
+    void setDocumentLabel();
+
+private:
+    const char *treeName; // for debugging purpose
+    Gui::Document* pDocument;
+    std::unordered_map<App::DocumentObject*,DocumentObjectDataPtr> ObjectMap;
+    std::vector<App::DocumentObject*> PopulateObjects;
+
+    ExpandInfoPtr _ExpandInfo;
+    void restoreItemExpansion(const ExpandInfoPtr &, DocumentObjectItem *);
+
+    typedef boost::signals2::connection Connection;
+    Connection connectNewObject;
+    Connection connectDelObject;
+    Connection connectChgObject;
+    Connection connectTouchedObject;
+    Connection connectEdtObject;
+    Connection connectResObject;
+    Connection connectHltObject;
+    Connection connectExpObject;
+    Connection connectScrObject;
+    Connection connectRecomputed;
+    Connection connectRecomputedObj;
+    Connection connectChangedModified;
+    Connection connectDetachView;
+
+    friend class TreeWidget;
+    friend class DocumentObjectData;
+    friend class DocumentObjectItem;
+};
+
+/** The link between the tree and a document object.
+ * Every object in the document gets its associated DocumentObjectItem which controls
+ * the visibility and the functions of the object.
+ * @author Werner Mayer
+ */
+class DocumentObjectItem : public QTreeWidgetItem
+{
+public:
+    DocumentObjectItem(DocumentItem *ownerDocItem, DocumentObjectDataPtr data);
+    ~DocumentObjectItem();
+
+    Gui::ViewProviderDocumentObject* object() const;
+    void testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2);
+    void testStatus(bool resetStatus);
+    void displayStatusInfo();
+    void setExpandedStatus(bool);
+    void setData(int column, int role, const QVariant & value);
+    bool isChildOfItem(DocumentObjectItem*);
+
+    void restoreBackground();
+
+    // Get the parent document (where the object is stored) of this item
+    DocumentItem *getParentDocument() const;
+    // Get the owner document (where the object is displayed, either stored or
+    // linked in) of this object
+    DocumentItem *getOwnerDocument() const;
+
+    // check if a new item is required at root
+    bool requiredAtRoot(bool excludeSelf=true, bool delay=false) const;
+    
+    // return the owner, and full quanlified subname
+    App::DocumentObject *getFullSubName(std::ostringstream &str,
+            DocumentObjectItem *parent = 0) const;
+
+    // return the immediate descendent of the common ancestor of this item and
+    // 'cousin'.
+    App::DocumentObject *getRelativeParent(
+            std::ostringstream &str,
+            DocumentObjectItem *cousin, 
+            App::DocumentObject **topParent=0,
+            std::string *topSubname=0) const;
+
+    // return the top most linked group owner's name, and subname.  This method
+    // is necessary despite have getFullSubName above is because native geo group
+    // cannot handle selection with sub name. So only a linked group can have
+    // subname in selection
+    int getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
+
+    void setHighlight(bool set, HighlightMode mode = HighlightMode::LightBlue);
+
+    const char *getName() const;
+    const char *getTreeName() const;
+
+    bool isLink() const;
+    bool isLinkFinal() const;
+    bool isParentLink() const;
+    int isGroup() const;
+    int isParentGroup() const;
+
+    DocumentObjectItem *getParentItem() const;
+    TreeWidget *getTree() const;
+
+private:
+    QBrush bgBrush;
+    DocumentItem *myOwner;
+    DocumentObjectDataPtr myData;
+    std::vector<std::string> mySubs;
+    typedef boost::signals2::connection Connection;
+    int previousStatus;
+    int selected;
+    bool populated;
+
+    friend class TreeWidget;
+    friend class TreeWidgetItemDelegate;
+    friend class DocumentItem;
+};
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -3236,6 +3428,31 @@ void TreeWidget::scrollItemToTop()
             tree->blockConnection(false);
         }
     }
+}
+
+void TreeWidget::restoreDocumentItem(Gui::Document *gdoc, Base::XMLReader &reader)
+{
+    auto tree = TreeWidget::instance();
+    if(!tree)
+        return;
+    auto docItem = tree->getDocumentItem(gdoc);
+    if (docItem)
+        docItem->Restore(reader);
+}
+
+bool TreeWidget::saveDocumentItem(const Gui::Document *gdoc,
+                                  Base::Writer &writer,
+                                  const char *key)
+{
+    auto tree = TreeWidget::instance();
+    if(!tree)
+        return false;
+    auto docItem = tree->getDocumentItem(gdoc);
+    if (!docItem)
+        return false;
+    writer.Stream() << " " << key << "=\"1\">\n";
+    docItem->Save(writer);
+    return true;
 }
 
 void TreeWidget::expandSelectedItems(TreeItemMode mode)
