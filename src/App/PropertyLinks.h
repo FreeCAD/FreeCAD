@@ -747,16 +747,13 @@ public:
     virtual void purgeTouched() override;
 
     DocumentObject *find(const std::string &, int *pindex=0) const;
-    DocumentObject *find(const char *sub, int *pindex=0) const {
-        if(!sub) return 0;
-        return find(std::string(sub),pindex);
-    }
+    DocumentObject *find(const char *sub, int *pindex=0) const;
 
 protected:
     DocumentObject *getPyValue(PyObject *item) const override;
 
 protected:
-    mutable std::map<std::string, int> _nameMap;
+    mutable std::unordered_map<std::string, int> _nameMap;
     std::vector<int> _revisions;
 };
 

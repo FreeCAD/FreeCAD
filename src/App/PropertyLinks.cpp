@@ -1092,19 +1092,22 @@ unsigned int PropertyLinkList::getMemSize(void) const
     return static_cast<unsigned int>(_lValueList.size() * sizeof(App::DocumentObject *));
 }
 
-DocumentObject *PropertyLinkList::find(const std::string &name, int *pindex) const {
+DocumentObject *PropertyLinkList::find(const char *name, int *pindex) const {
+    if (!name)
+        return nullptr;
     if(_lValueList.size() <= 10) {
         for(int i=0;i<(int)_lValueList.size();++i) {
             auto obj = _lValueList[i];
-            if(obj && obj->getNameInDocument() && name==obj->getNameInDocument()) {
+            if(obj && obj->getNameInDocument()
+                   && boost::equals(name, obj->getNameInDocument())) {
                 if(pindex)
                     *pindex = i;
                 return obj;
             }
         }
-        return 0;
+        return nullptr;
     }
-    
+
     if(_nameMap.empty() || _nameMap.size()>_lValueList.size()) {
         _nameMap.clear();
         for(int i=0;i<(int)_lValueList.size();++i) {
@@ -1115,9 +1118,20 @@ DocumentObject *PropertyLinkList::find(const std::string &name, int *pindex) con
     }
     auto it = _nameMap.find(name);
     if(it == _nameMap.end())
-        return 0;
+        return nullptr;
     if(pindex) *pindex = it->second;
     return _lValueList[it->second];
+}
+
+DocumentObject *PropertyLinkList::find(const std::string &name, int *pindex) const {
+    if (_nameMap.size() == _lValueList.size()) {
+        auto it = _nameMap.find(name);
+        if(it == _nameMap.end())
+            return nullptr;
+        if(pindex) *pindex = it->second;
+        return _lValueList[it->second];
+    }
+    return find(name.c_str(), pindex);
 }
 
 void PropertyLinkList::getLinks(std::vector<App::DocumentObject *> &objs, 
