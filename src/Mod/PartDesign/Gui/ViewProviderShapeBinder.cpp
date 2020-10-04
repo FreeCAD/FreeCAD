@@ -295,6 +295,33 @@ void ViewProviderSubShapeBinder::onChanged(const App::Property *prop) {
     ViewProviderPart::onChanged(prop);
 }
 
+void ViewProviderSubShapeBinder::updateData(const App::Property *prop)
+{
+    auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(getObject());
+    if (binder) {
+        if (prop == &binder->Support) {
+            iconChangeConns.clear();
+            std::set<App::SubObjectT> objs;
+            for(auto &l : binder->Support.getSubListValues()) {
+                for (auto & sub : l.getSubValues()) {
+                    auto res = objs.emplace(l.getValue(), sub.c_str());
+                    if (!res.second)
+                        continue;
+                    auto vp = Gui::Application::Instance->getViewProvider(res.first->getSubObject());
+                    if (vp) {
+                        iconChangeConns.push_back(vp->signalChangeIcon.connect(this->signalChangeIcon));
+                        if (iconChangeConns.size() >= 3)
+                            break;
+                    }
+                }
+                if (iconChangeConns.size() >= 3)
+                    break;
+            }
+        }
+    }
+    ViewProviderPart::updateData(prop);
+}
+
 bool ViewProviderSubShapeBinder::canDropObjectEx(App::DocumentObject *, 
         App::DocumentObject *, const char *, const std::vector<std::string> &) const
 {
@@ -449,6 +476,30 @@ std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren(void
         }
     }
     return ret;
+}
+
+void ViewProviderSubShapeBinder::getExtraIcons(std::vector<QPixmap> &icons) const
+{
+    auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(getObject());
+    if (!binder)
+        return;
+
+    std::set<App::SubObjectT> objs;
+    for(auto &l : binder->Support.getSubListValues()) {
+        for (auto & sub : l.getSubValues()) {
+            auto res = objs.emplace(l.getValue(), sub.c_str());
+            if (!res.second)
+                continue;
+            auto vp = Gui::Application::Instance->getViewProvider(res.first->getSubObject());
+            if (vp) {
+                icons.push_back(vp->getIcon().pixmap(64));
+                if (icons.size() >= 3)
+                    break;
+            }
+        }
+        if (icons.size() >= 3)
+            break;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////

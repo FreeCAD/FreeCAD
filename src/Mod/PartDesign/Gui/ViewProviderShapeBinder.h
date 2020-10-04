@@ -24,6 +24,7 @@
 #ifndef PARTGUI_ViewProviderShapeBinder_H
 #define PARTGUI_ViewProviderShapeBinder_H
 
+#include <boost/signals2.hpp>
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
@@ -75,9 +76,14 @@ public:
     virtual bool setEdit(int ModNum) override;
     virtual void attach(App::DocumentObject *obj) override;
     virtual void onChanged(const App::Property *prop) override;
+    virtual void getExtraIcons(std::vector<QPixmap> &) const override;
+    virtual void updateData(const App::Property*) override;
 
 private:
     void updatePlacement(bool transaction);
+
+private:
+    std::vector<boost::signals2::scoped_connection> iconChangeConns;
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProviderSubShapeBinder> ViewProviderSubShapeBinderPython;
