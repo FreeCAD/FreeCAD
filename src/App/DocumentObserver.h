@@ -221,6 +221,7 @@ public:
     std::string getSubObjectPython(bool force=true) const;
 
     SubObjectT getParent() const;
+    SubObjectT getChild(const App::DocumentObject *) const;
 
 private:
     std::string subname;

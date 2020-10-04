@@ -422,6 +422,12 @@ SubObjectT SubObjectT::getParent() const {
     return SubObjectT(getDocumentName().c_str(), getObjectName().c_str(), nullptr);
 }
 
+SubObjectT SubObjectT::getChild(const App::DocumentObject *child) const
+{
+    SubObjectT res = *this;
+    res.setSubName(getSubNameNoElement() + child->getNameInDocument() + ".");
+    return res;
+}
 // -----------------------------------------------------------------------------
 
 class DocumentWeakPtrT::Private {
