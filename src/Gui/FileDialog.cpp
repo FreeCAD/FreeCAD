@@ -50,7 +50,6 @@
 
 using namespace Gui;
 
-namespace Gui {
 bool dontUseNativeDialog()
 {
 #if defined(USE_QT_FILEDIALOG)
@@ -63,7 +62,6 @@ bool dontUseNativeDialog()
           GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Dialog");
     notNativeDialog = group->GetBool("DontUseNativeDialog", notNativeDialog);
     return notNativeDialog;
-}
 }
 
 /* TRANSLATOR Gui::FileDialog */
