@@ -124,12 +124,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.Threshold != self.form.threshold.value():
             obj.Threshold = self.form.threshold.value()
         self.updateToolController(obj, self.form.toolController)
+        self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
         self.form.discretize.setValue(obj.Discretize)
         self.form.threshold.setValue(obj.Threshold)
         self.setupToolController(obj, self.form.toolController)
+        self.setupCoolant(obj, self.form.coolantController)
 
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
@@ -137,6 +139,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.discretize.editingFinished)
         signals.append(self.form.threshold.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
+        signals.append(self.form.coolantController.currentIndexChanged)
         return signals
 
     def taskPanelBaseGeometryPage(self, obj, features):
