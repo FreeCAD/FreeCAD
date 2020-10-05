@@ -220,7 +220,7 @@ CmdPartPrimitives::CmdPartPrimitives()
     sToolTipText  = QT_TR_NOOP("Creation of parametrized geometric primitives");
     sWhatsThis    = "Part_Primitives";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_CreatePrimitives";
+    sPixmap       = "Part_Primitives";
 }
 
 void CmdPartPrimitives::activated(int iMsg)
