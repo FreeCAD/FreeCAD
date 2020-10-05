@@ -92,6 +92,7 @@ void DlgSettings3DViewImp::saveSettings()
     ui->CheckBox_ShowAxisCross->onSave();
     ui->CheckBox_WbByTab->onSave();
     ui->CheckBox_ShowFPS->onSave();
+    ui->spinPickRadius->onSave();
     ui->CheckBox_useVBO->onSave();
     ui->FloatSpinBox_EyeDistance->onSave();
     ui->checkBoxBacklight->onSave();
@@ -107,6 +108,7 @@ void DlgSettings3DViewImp::loadSettings()
     ui->CheckBox_ShowAxisCross->onRestore();
     ui->CheckBox_WbByTab->onRestore();
     ui->CheckBox_ShowFPS->onRestore();
+    ui->spinPickRadius->onRestore();
     ui->CheckBox_useVBO->onRestore();
     ui->FloatSpinBox_EyeDistance->onRestore();
     ui->checkBoxBacklight->onRestore();
