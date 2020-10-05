@@ -96,6 +96,7 @@ generate_from_xml(BRepOffsetAPI_MakeFillingPy)
 # make sure to create the directory at configure time
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Geom2d)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/GeomPlate)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ShapeUpgrade)
 
 generate_from_xml(Geom2d/ArcOfCircle2dPy)
 generate_from_xml(Geom2d/ArcOfConic2dPy)
@@ -118,6 +119,8 @@ generate_from_xml(Geom2d/Parabola2dPy)
 generate_from_xml(GeomPlate/BuildPlateSurfacePy)
 generate_from_xml(GeomPlate/CurveConstraintPy)
 generate_from_xml(GeomPlate/PointConstraintPy)
+
+generate_from_xml(ShapeUpgrade/UnifySameDomainPy)
 
 SET(Features_SRCS
     FeaturePartBoolean.cpp
@@ -361,12 +364,21 @@ SET(GeomPlatePy_SRCS
 
 SOURCE_GROUP("GeomPlate" FILES ${GeomPlatePy_SRCS})
 
+# ShapeUpgrade wrappers
+SET(ShapeUpgradePy_SRCS
+    ShapeUpgrade/UnifySameDomainPy.xml
+    ShapeUpgrade/UnifySameDomainPyImp.cpp
+)
+
+SOURCE_GROUP("ShapeUpgrade" FILES ${ShapeUpgradePy_SRCS})
+
 SET(Part_SRCS
     ${Features_SRCS}
     ${Properties_SRCS}
     ${Python_SRCS}
     ${Geom2dPy_SRCS}
     ${GeomPlatePy_SRCS}
+    ${ShapeUpgradePy_SRCS}
     Attacher.cpp
     Attacher.h
     AppPart.cpp

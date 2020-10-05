@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="PyObjectBase"
+      Name="UnifySameDomainPy"
+      PythonName="Part.ShapeUpgrade.UnifySameDomain"
+      Twin="ShapeUpgrade_UnifySameDomain" 
+      TwinPointer="ShapeUpgrade_UnifySameDomain"
+      Include="ShapeUpgrade_UnifySameDomain.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>This tool tries to unify faces and edges of the shape which lie on the same geometry.</UserDocu>
+    </Documentation>
+    <Methode Name="initialize" Keyword="true">
+      <Documentation>
+        <UserDocu>Initializes with a shape and necessary flags</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="allowInternalEdges">
+      <Documentation>
+        <UserDocu>Sets the flag defining whether it is allowed to create
+internal edges inside merged faces in the case of non-manifold
+topology. Without this flag merging through multi connected edge
+is forbidden. Default value is false.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="keepShape">
+      <Documentation>
+        <UserDocu>Sets the shape for avoid merging of the faces/edges.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="keepShapes">
+      <Documentation>
+        <UserDocu>Sets the map of shapes for avoid merging of the faces/edges.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setSafeInputMode">
+      <Documentation>
+        <UserDocu>Sets the flag defining the behavior of the algorithm regarding
+modification of input shape.
+If this flag is equal to True then the input (original) shape can't be
+modified during modification process. Default value is true.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setLinearTolerance">
+      <Documentation>
+        <UserDocu>Sets the linear tolerance</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setAngularTolerance">
+      <Documentation>
+        <UserDocu>Sets the angular tolerance</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="build">
+      <Documentation>
+        <UserDocu>Performs unification and builds the resulting shape</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="shape" Const="true">
+      <Documentation>
+        <UserDocu>Gives the resulting shape</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>
