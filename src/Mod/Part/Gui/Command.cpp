@@ -2158,9 +2158,18 @@ CmdColorPerFace::CmdColorPerFace()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Color per face");
-    sToolTipText  = QT_TR_NOOP("Set color per face");
+    sToolTipText  = QT_TR_NOOP("Set the color of each individual face "
+                               "of the selected object.\n"
+                               "\n"
+                               "At the moment, this command only works "
+                               "with objects which have not reimplemented\n"
+                               "their 'edit modes'; this means, it works "
+                               "with Part and PartDesign created objects,\n"
+                               "but not with most Draft or Arch objects. "
+                               "See issues #0477 and #1954 in the tracker.");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Part_ColorPerFace";
+    sPixmap       = "Part_ColorFace";
 }
 
 void CmdColorPerFace::activated(int iMsg)
