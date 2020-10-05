@@ -10,11 +10,24 @@
         <file>icons/create/Part_Tube.svg</file>
     </qresource>
     <qresource>
+        <file>icons/tools/Part_Chamfer.svg</file>
+        <file>icons/tools/Part_Extrude.svg</file>
+        <file>icons/tools/Part_Fillet.svg</file>
+        <file>icons/tools/Part_Loft.svg</file>
+        <file>icons/tools/Part_Mirror.svg</file>
+        <file>icons/tools/Part_Offset.svg</file>
+        <file>icons/tools/Part_Offset2D.svg</file>
+        <file>icons/tools/Part_ProjectionOnSurface.svg</file>
+        <file>icons/tools/Part_Revolve.svg</file>
+        <file>icons/tools/Part_RuledSurface.svg</file>
+        <file>icons/tools/Part_Sweep.svg</file>
+        <file>icons/tools/Part_Thickness.svg</file>
+    </qresource>
+    <qresource>
         <file>icons/Part_Attachment.svg</file>
         <file>icons/Part_BooleanFragments.svg</file>
         <file>icons/Part_Booleans.svg</file>
         <file>icons/Part_BoxSelection.svg</file>
-        <file>icons/Part_Chamfer.svg</file>
         <file>icons/Part_CheckGeometry.svg</file>
         <file>icons/Part_Circle_Parametric.svg</file>
         <file>icons/Part_Common.svg</file>
@@ -27,10 +40,8 @@
         <file>icons/Part_Ellipse_Parametric.svg</file>
         <file>icons/Part_ExplodeCompound.svg</file>
         <file>icons/Part_Export.svg</file>
-        <file>icons/Part_Extrude.svg</file>
         <file>icons/Part_Feature.svg</file>
         <file>icons/Part_FeatureImport.svg</file>
-        <file>icons/Part_Fillet.svg</file>
         <file>icons/Part_Fuse.svg</file>
         <file>icons/Part_Helix_Parametric.svg</file>
         <file>icons/Part_Import.svg</file>
@@ -39,7 +50,6 @@
         <file>icons/Part_JoinCutout.svg</file>
         <file>icons/Part_JoinEmbed.svg</file>
         <file>icons/Part_Line_Parametric.svg</file>
-        <file>icons/Part_Loft.svg</file>
         <file>icons/Part_Measure_Angular.svg</file>
         <file>icons/Part_Measure_Linear.svg</file>
         <file>icons/Part_Measure_Refresh.svg</file>
@@ -47,17 +57,11 @@
         <file>icons/Part_Measure_Step_Done.svg</file>
         <file>icons/Part_Measure_Toggle_3d.svg</file>
         <file>icons/Part_Measure_Toggle_Delta.svg</file>
-        <file>icons/Part_Mirror.svg</file>
-        <file>icons/Part_Offset.svg</file>
-        <file>icons/Part_Offset2D.svg</file>
         <file>icons/Part_Point_Parametric.svg</file>
         <file>icons/Part_Points_from_Mesh.svg</file>
         <file>icons/Part_Polygon_Parametric.svg</file>
-        <file>icons/Part_ProjectionOnSurface.svg</file>
         <file>icons/Part_Refine_Shape.svg</file>
         <file>icons/Part_Reverse_Shape.svg</file>
-        <file>icons/Part_Revolve.svg</file>
-        <file>icons/Part_RuledSurface.svg</file>
         <file>icons/Part_Section.svg</file>
         <file>icons/Part_Shape_from_Mesh.svg</file>
         <file>icons/Part_ShapeInfo.svg</file>
@@ -65,8 +69,6 @@
         <file>icons/Part_SliceApart.svg</file>
         <file>icons/Part_Spiral_Parametric.svg</file>
         <file>icons/Part_Spline_Parametric.svg</file>
-        <file>icons/Part_Sweep.svg</file>
-        <file>icons/Part_Thickness.svg</file>
         <file>icons/Part_Transformed_Copy.svg</file>
         <file>icons/PartWorkbench.svg</file>
         <file>icons/Part_XOR.svg</file>
