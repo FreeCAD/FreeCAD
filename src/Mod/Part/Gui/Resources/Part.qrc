@@ -62,6 +62,7 @@
     <qresource>
         <file>icons/tools/Part_Attachment.svg</file>
         <file>icons/tools/Part_Chamfer.svg</file>
+        <file>icons/tools/Part_ColorFace.svg</file>
         <file>icons/tools/Part_Element_Copy.svg</file>
         <file>icons/tools/Part_Extrude.svg</file>
         <file>icons/tools/Part_Fillet.svg</file>
