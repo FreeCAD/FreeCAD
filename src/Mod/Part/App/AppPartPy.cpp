@@ -282,9 +282,21 @@ public:
     virtual ~GeomPlateModule() {}
 };
 
+class ShapeUpgradeModule : public Py::ExtensionModule<ShapeUpgradeModule>
+{
+public:
+    ShapeUpgradeModule() : Py::ExtensionModule<ShapeUpgradeModule>("ShapeUpgrade")
+    {
+        initialize("This is a module working with the ShapeUpgrade framework."); // register with Python
+    }
+
+    virtual ~ShapeUpgradeModule() {}
+};
+
 class Module : public Py::ExtensionModule<Module>
 {
     GeomPlateModule geomPlate;
+    ShapeUpgradeModule shapeUpgrade;
 public:
     Module() : Py::ExtensionModule<Module>("Part")
     {
@@ -502,6 +514,7 @@ public:
         initialize("This is a module working with shapes."); // register with Python
 
         PyModule_AddObject(m_module, "GeomPlate", geomPlate.module().ptr());
+        PyModule_AddObject(m_module, "ShapeUpgrade", shapeUpgrade.module().ptr());
     }
 
     virtual ~Module() {}
