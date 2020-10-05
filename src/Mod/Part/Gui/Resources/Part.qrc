@@ -1,9 +1,18 @@
 <RCC>
     <qresource>
+        <file>icons/create/Part_Box.svg</file>
+        <file>icons/create/Part_Cone.svg</file>
+        <file>icons/create/Part_Cylinder.svg</file>
+        <file>icons/create/Part_Primitives.svg</file>
+        <file>icons/create/Part_Shapebuilder.svg</file>
+        <file>icons/create/Part_Sphere.svg</file>
+        <file>icons/create/Part_Torus.svg</file>
+        <file>icons/create/Part_Tube.svg</file>
+    </qresource>
+    <qresource>
         <file>icons/Part_Attachment.svg</file>
         <file>icons/Part_BooleanFragments.svg</file>
         <file>icons/Part_Booleans.svg</file>
-        <file>icons/Part_Box.svg</file>
         <file>icons/Part_BoxSelection.svg</file>
         <file>icons/Part_Chamfer.svg</file>
         <file>icons/Part_CheckGeometry.svg</file>
@@ -11,11 +20,8 @@
         <file>icons/Part_Common.svg</file>
         <file>icons/Part_Compound.svg</file>
         <file>icons/Part_CompoundFilter.svg</file>
-        <file>icons/Part_Cone.svg</file>
-        <file>icons/Part_CreatePrimitives.svg</file>
         <file>icons/Part_CrossSections.svg</file>
         <file>icons/Part_Cut.svg</file>
-        <file>icons/Part_Cylinder.svg</file>
         <file>icons/Part_Defeaturing.svg</file>
         <file>icons/Part_Element_Copy.svg</file>
         <file>icons/Part_Ellipse_Parametric.svg</file>
@@ -53,19 +59,15 @@
         <file>icons/Part_Revolve.svg</file>
         <file>icons/Part_RuledSurface.svg</file>
         <file>icons/Part_Section.svg</file>
-        <file>icons/Part_Shapebuilder.svg</file>
         <file>icons/Part_Shape_from_Mesh.svg</file>
         <file>icons/Part_ShapeInfo.svg</file>
         <file>icons/Part_Slice.svg</file>
         <file>icons/Part_SliceApart.svg</file>
-        <file>icons/Part_Sphere.svg</file>
         <file>icons/Part_Spiral_Parametric.svg</file>
         <file>icons/Part_Spline_Parametric.svg</file>
         <file>icons/Part_Sweep.svg</file>
         <file>icons/Part_Thickness.svg</file>
-        <file>icons/Part_Torus.svg</file>
         <file>icons/Part_Transformed_Copy.svg</file>
-        <file>icons/Part_Tube.svg</file>
         <file>icons/PartWorkbench.svg</file>
         <file>icons/Part_XOR.svg</file>
         <file>icons/preferences-part_design.svg</file>
