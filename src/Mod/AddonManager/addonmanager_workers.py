@@ -31,6 +31,8 @@ import tempfile
 from PySide import QtCore
 
 import FreeCAD
+if FreeCAD.GuiUp:
+    import FreeCADGui
 
 import addonmanager_utilities as utils
 from addonmanager_utilities import translate  # this needs to be as is for pylupdate
