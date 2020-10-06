@@ -445,9 +445,9 @@ def getColorFromStyledItem(styled_item):
     # print(ifcfile[p])
     # print(styled_item)
     # print(styled_item.Styles)
-    if len(styled_item.Styles) == 1:
+    if len(styled_item.Styles) == 0:
         # IN IFC2x3, only one element in `Styles` should be available.
-        _wrn("More than one 'Style' in 'IfcStyleItem', do nothing.")
+        _wrn("No 'Style' in 'IfcStyleItem', do nothing.")
         # ca 100x in 210_King_Merged.ifc
         # Empty styles, #4952778=IfcStyledItem(#4952779,(),$)
         # this is an error in the IFC file in my opinion
