@@ -1248,10 +1248,13 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     # Materials
 
     if preferences['DEBUG'] and materials: print("Creating materials...",end="")
+    # print("\n")
+    # print("colors:",colors)
     # print("mattable:",mattable)
     # print("materials:",materials)
     fcmats = {}
     for material in materials:
+        # print(material.id())
         # get and set material name
         name = "Material"
         if material.Name:
@@ -1259,13 +1262,16 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             if six.PY2:
                 name = name.encode("utf8")
         # get material color
+        # the "DiffuseColor" of a material should never be 'None'
+        # values in colors are None if something went wrong
+        # thus the "DiffuseColor" will only be set if the color is not None
         mdict = {}
-        if material.id() in colors:
+        if material.id() in colorscolors and colors[material.id()] is not None:
             mdict["DiffuseColor"] = str(colors[material.id()])
         else:
             for o,m in mattable.items():
                 if m == material.id():
-                    if o in colors:
+                    if o in colors and colors[o] is not None:
                         mdict["DiffuseColor"] = str(colors[o])
         # merge materials with same name and color if setting in prefs is True
         add_material = True
