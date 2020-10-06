@@ -198,6 +198,8 @@ TaskBox::TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWi
     : iisTaskBox(icon, title, expandable, parent), wasShown(false)
 {
     setScheme(iisFreeCADTaskPanelScheme::defaultScheme());
+	connect(myHeader, SIGNAL(activated()), this, SIGNAL(toggledExpansion()));
+    m_foldDirection = 1;
 }
 #else
 TaskBox::TaskBox(QWidget *parent)
@@ -206,6 +208,8 @@ TaskBox::TaskBox(QWidget *parent)
     // override vertical size policy because otherwise task dialogs
     // whose needsFullSpace() returns true won't take full space.
     myGroup->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+	connect(myHeader, SIGNAL(activated()), this, SIGNAL(toggledExpansion()));
+    m_foldDirection = 1;
 }
 
 TaskBox::TaskBox(const QString &title, bool expandable, QWidget *parent)
@@ -214,6 +218,8 @@ TaskBox::TaskBox(const QString &title, bool expandable, QWidget *parent)
     // override vertical size policy because otherwise task dialogs
     // whose needsFullSpace() returns true won't take full space.
     myGroup->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+	connect(myHeader, SIGNAL(activated()), this, SIGNAL(toggledExpansion()));
+    m_foldDirection = 1;
 }
 
 TaskBox::TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWidget *parent)
@@ -222,6 +228,8 @@ TaskBox::TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWi
     // override vertical size policy because otherwise task dialogs
     // whose needsFullSpace() returns true won't take full space.
     myGroup->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+	connect(myHeader, SIGNAL(activated()), this, SIGNAL(toggledExpansion()));
+    m_foldDirection = 1;
 }
 
 QSize TaskBox::minimumSizeHint() const
@@ -289,6 +297,13 @@ void TaskBox::hideGroupBox()
     m_foldPixmap = QPixmap();
     setFixedHeight(myHeader->height());
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+
+    Q_EMIT toggledExpansion();
+}
+
+int TaskBox::foldDirection() const
+{
+    return m_foldDirection;
 }
 
 bool TaskBox::isGroupVisible() const

@@ -132,6 +132,10 @@ public:
     ~TaskBox();
     void hideGroupBox();
     bool isGroupVisible() const;
+    int foldDirection() const;
+
+Q_SIGNALS:
+    void toggledExpansion();
 
 protected:
     void showEvent(QShowEvent*);
