@@ -51,7 +51,7 @@ if FreeCAD.GuiUp:
 #--------------------------/translation-related code ----------------------------------------
 
 def getIconPath(icon_dot_svg):
-    return ":/icons/" + icon_dot_svg
+    return icon_dot_svg
 
 # -------------------------- /common stuff --------------------------------------------------
 
