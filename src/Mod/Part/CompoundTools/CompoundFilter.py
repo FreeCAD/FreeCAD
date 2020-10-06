@@ -185,7 +185,7 @@ class _ViewProviderCompoundFilter:
         vobj.setEditorMode("DontUnhideOnDelete", 2)  # set hidden
 
     def getIcon(self):
-        return ":/icons/Part_CompoundFilter.svg"
+        return "Part_CompoundFilter"
 
     def attach(self, vobj):
         self.ViewObject = vobj
@@ -240,3 +240,4 @@ def getNullShapeShape(scale=1.0):
     if scale != 1.0:
         ret = _nullShapeShape.copy()
         ret.scale(scale)
+

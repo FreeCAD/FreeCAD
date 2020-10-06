@@ -100,7 +100,7 @@ def cmdCreateJoinFeature(name, mode):
     FreeCAD.ActiveDocument.commitTransaction()
 
 def getIconPath(icon_dot_svg):
-    return ":/icons/" + icon_dot_svg
+    return icon_dot_svg
 
 # -------------------------- /common stuff --------------------------------------------------
 

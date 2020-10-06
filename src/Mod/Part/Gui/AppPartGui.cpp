@@ -125,6 +125,7 @@ PyMOD_INIT_FUNC(PartGui)
 
     Base::Console().Log("Loading GUI of Part module... done\n");
 
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/booleans"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/create"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/tools"));
 

@@ -53,7 +53,7 @@ if FreeCAD.GuiUp:
 class _CommandCompoundFilter:
     "Command to create CompoundFilter feature"
     def GetResources(self):
-        return {'Pixmap': ":/icons/Part_CompoundFilter.svg",
+        return {'Pixmap': "Part_CompoundFilter",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_CompoundFilter", "Compound Filter"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_CompoundFilter", "Compound Filter: remove some childs from a compound")}

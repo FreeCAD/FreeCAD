@@ -52,7 +52,7 @@ if FreeCAD.GuiUp:
 class _CommandExplodeCompound:
     "Command to explode a compound"
     def GetResources(self):
-        return {'Pixmap': ":/icons/Part_ExplodeCompound.svg",
+        return {'Pixmap': "Part_ExplodeCompound",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_ExplodeCompound", "Explode compound"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_ExplodeCompound", "Explode compound: split up a list of shapes into separate objects")}
