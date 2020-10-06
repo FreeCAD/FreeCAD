@@ -41,7 +41,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderEllipseParametric, PartGui::ViewProviderPar
 
 ViewProviderEllipseParametric::ViewProviderEllipseParametric()
 {
-  sPixmap = "Part_Ellipse_Parametric.svg";
+  sPixmap = "Part_Ellipse_Parametric";
 }
 
 ViewProviderEllipseParametric::~ViewProviderEllipseParametric()

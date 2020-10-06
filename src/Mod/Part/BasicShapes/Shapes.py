@@ -70,7 +70,7 @@ if FreeCAD.GuiUp:
             return
 
         def getIcon(self):
-            return ":/icons/Tree_Part_Tube_Parametric.svg"
+            return ":/icons/parametric/Part_Tube_Parametric.svg"
 
         def __getstate__(self):
             return None

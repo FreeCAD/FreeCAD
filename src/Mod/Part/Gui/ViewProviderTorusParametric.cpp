@@ -41,7 +41,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderTorusParametric, PartGui::ViewProviderPart)
 
 ViewProviderTorusParametric::ViewProviderTorusParametric()
 {
-  sPixmap = "Tree_Part_Torus_Parametric.svg";
+  sPixmap = "Part_Torus_Parametric";
 }
 
 ViewProviderTorusParametric::~ViewProviderTorusParametric()

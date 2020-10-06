@@ -41,7 +41,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderCircleParametric, PartGui::ViewProviderPart
 
 ViewProviderCircleParametric::ViewProviderCircleParametric()
 {
-  sPixmap = "Part_Circle_Parametric.svg";
+  sPixmap = "Part_Circle_Parametric";
 }
 
 ViewProviderCircleParametric::~ViewProviderCircleParametric()
