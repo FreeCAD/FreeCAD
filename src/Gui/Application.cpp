@@ -2345,8 +2345,14 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 #endif
     }
 
-    if (mdi->style())
-        mdi->style()->unpolish(qApp);
+    // At startup time unpolish() mustn't be executed because otherwise the QSint widget
+    // appear incorrect due to an outdated cache.
+    // See https://doc.qt.io/qt-5/qstyle.html#unpolish-1
+    // See https://forum.freecadweb.org/viewtopic.php?f=17&t=50783
+    if (d->startingUp == false) {
+        if (mdi->style())
+            mdi->style()->unpolish(qApp);
+    }
 }
 
 void Application::checkForPreviousCrashes()
