@@ -34,6 +34,12 @@
 #include <boost/polygon/segment_concept.hpp>
 #include <boost/polygon/voronoi.hpp>
 
+#if (SIZE_MAX == UINT_MAX)
+# define PATH_VORONOI_COLOR_MASK 0x07FFFFFFul
+#else
+# define PATH_VORONOI_COLOR_MASK 0x07FFFFFFFFFFFFFFul
+#endif
+
 namespace Path
 {
   class PathExport Voronoi
@@ -48,7 +54,7 @@ namespace Path
 
     typedef std::size_t   color_type;
     static const int        InvalidIndex = INT_MAX;
-    static const color_type ColorMask    = 0x07FFFFFFFFFFFFFFul; // top 5 bits reserved internally
+    static const color_type ColorMask    = PATH_VORONOI_COLOR_MASK;
 
     // types
     typedef double coordinate_type;
