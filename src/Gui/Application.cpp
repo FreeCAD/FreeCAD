@@ -669,8 +669,15 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     activeDocument()->setModified(false);
             }
             else {
-                if (activeDocument())
-                    activeDocument()->openCommand("Import");
+                // Open transaction when importing a file
+                Gui::Document* doc = DocName ? getDocument(DocName) : activeDocument();
+                bool pendingCommand = false;
+                if (doc) {
+                    pendingCommand = doc->hasPendingCommand();
+                    if (!pendingCommand)
+                        doc->openCommand("Import");
+                }
+
                 if (DocName) {
                     Command::doCommand(Command::App, "%s.insert(u\"%s\",\"%s\")"
                                                    , Module, unicodepath.c_str(), DocName);
@@ -679,16 +686,33 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     Command::doCommand(Command::App, "%s.insert(u\"%s\")"
                                                    , Module, unicodepath.c_str());
                 }
-                if (activeDocument())
-                    activeDocument()->commitCommand();
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-                    ("User parameter:BaseApp/Preferences/View");
-                if (hGrp->GetBool("AutoFitToView", true))
-                    Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
-                Gui::Document* doc = activeDocument();
-                if (DocName) doc = getDocument(DocName);
-                if (doc)
+
+                // Commit the transaction
+                if (doc && !pendingCommand) {
+                    doc->commitCommand();
+                }
+
+                // It's possible that before importing a file the document with the
+                // given name doesn't exist or there is no active document.
+                // The import function then may create a new document.
+                if (!doc) {
+                    doc = activeDocument();
+                }
+
+                if (doc) {
                     doc->setModified(true);
+
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+                        ("User parameter:BaseApp/Preferences/View");
+                    if (hGrp->GetBool("AutoFitToView", true)) {
+                        MDIView* view = doc->getActiveView();
+                        if (view) {
+                            const char* ret = nullptr;
+                            if (view->onMsg("ViewFit", &ret))
+                                getMainWindow()->updateActions(true);
+                        }
+                    }
+                }
             }
 
             // the original file name is required
