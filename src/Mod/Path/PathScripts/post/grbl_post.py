@@ -213,13 +213,13 @@ def export(objectslist, filename, argstring):
   global SUPPRESS_COMMANDS
 
   print("Post Processor: " + __name__ + " postprocessing...")
-  gcode = ""
+  gcode = []
 
   # write header
   if OUTPUT_HEADER:
-    gcode += linenumber() + "(Exported by FreeCAD)\n"
-    gcode += linenumber() + "(Post Processor: " + __name__ + ")\n"
-    gcode += linenumber() + "(Output Time:" + str(datetime.datetime.now()) + ")\n"
+    gcode.append( linenumber() + "(Exported by FreeCAD)\n" )
+    gcode.append( linenumber() + "(Post Processor: " + __name__ + ")\n" )
+    gcode.append( linenumber() + "(Output Time:" + str(datetime.datetime.now()) + ")\n" )
   
   # Check canned cycles for drilling
   if TRANSLATE_DRILL_CYCLES:
@@ -230,16 +230,16 @@ def export(objectslist, filename, argstring):
 
   # Write the preamble
   if OUTPUT_COMMENTS:
-    gcode += linenumber() + "(Begin preamble)\n"
+    gcode.append( linenumber() + "(Begin preamble)\n" )
   for line in PREAMBLE.splitlines(True):
-    gcode += linenumber() + line
+    gcode.append( linenumber() + line )
   # verify if PREAMBLE have changed MOTION_MODE or UNITS
   if 'G90' in PREAMBLE:
     MOTION_MODE = 'G90'
   elif 'G91' in PREAMBLE:
     MOTION_MODE = 'G91'
   else:
-    gcode += linenumber() + MOTION_MODE + "\n"
+    gcode.append( linenumber() + MOTION_MODE + "\n" )
   if 'G21' in PREAMBLE:
     UNITS = 'G21'
     UNIT_FORMAT = 'mm'
@@ -249,7 +249,7 @@ def export(objectslist, filename, argstring):
     UNIT_FORMAT = 'in'
     UNIT_SPEED_FORMAT = 'in/min'
   else:
-    gcode += linenumber() + UNITS + "\n"
+    gcode.append( linenumber() + UNITS + "\n" )
 
   for obj in objectslist:
     # Debug...
@@ -266,13 +266,13 @@ def export(objectslist, filename, argstring):
 
     # do the pre_op
     if OUTPUT_BCNC:
-      gcode += linenumber() + "(Block-name: " + obj.Label + ")\n"
-      gcode += linenumber() + "(Block-expand: 0)\n"
-      gcode += linenumber() + "(Block-enable: 1)\n"
+      gcode.append( linenumber() + "(Block-name: " + obj.Label + ")\n" )
+      gcode.append( linenumber() + "(Block-expand: 0)\n" )
+      gcode.append( linenumber() + "(Block-enable: 1)\n" )
     if OUTPUT_COMMENTS:
-      gcode += linenumber() + "(Begin operation: " + obj.Label + ")\n"
+      gcode.append( linenumber() + "(Begin operation: " + obj.Label + ")\n" )
     for line in PRE_OPERATION.splitlines(True):
-      gcode += linenumber() + line
+      gcode.append( linenumber() + line )
       
     # get coolant mode
     coolantMode = 'None'
@@ -285,52 +285,50 @@ def export(objectslist, filename, argstring):
     # turn coolant on if required
     if OUTPUT_COMMENTS:
         if not coolantMode == 'None':
-            gcode += linenumber() + '(Coolant On:' + coolantMode + ')\n'
+            gcode.append( linenumber() + '(Coolant On:' + coolantMode + ')\n' )
     if coolantMode == 'Flood':
-        gcode  += linenumber() + 'M8' + '\n'
+        gcode.append( linenumber() + 'M8' + '\n' )
     if coolantMode == 'Mist':
-        gcode += linenumber() + 'M7' + '\n'
+        gcode.append( linenumber() + 'M7' + '\n' )
 
     # Parse the op
-    gcode += parse(obj)
+    gcode.append( parse(obj)  )
 
     # do the post_op
     if OUTPUT_COMMENTS:
-      gcode += linenumber() + "(Finish operation: " + obj.Label + ")\n"
+      gcode.append( linenumber() + "(Finish operation: " + obj.Label + ")\n" )
     for line in POST_OPERATION.splitlines(True):
-      gcode += linenumber() + line
+      gcode.append( linenumber() + line )
 
     # turn coolant off if required
     if not coolantMode == 'None':
         if OUTPUT_COMMENTS:
-            gcode += linenumber() + '(Coolant Off:' + coolantMode + ')\n'
-        gcode += linenumber() +'M9' + '\n'
+            gcode.append( linenumber() + '(Coolant Off:' + coolantMode + ')\n' )
+        gcode.append( linenumber() +'M9' + '\n' )
 
   # do the post_amble
   if OUTPUT_BCNC:
-    gcode += linenumber() + "(Block-name: post_amble)\n"
-    gcode += linenumber() + "(Block-expand: 0)\n"
-    gcode += linenumber() + "(Block-enable: 1)\n"
+    gcode.append( linenumber() + "(Block-name: post_amble)\n" )
+    gcode.append( linenumber() + "(Block-expand: 0)\n" )
+    gcode.append( linenumber() + "(Block-enable: 1)\n" )
   if OUTPUT_COMMENTS:
-    gcode += linenumber() + "(Begin postamble)\n"
+    gcode.append( linenumber() + "(Begin postamble)\n" )
   for line in POSTAMBLE.splitlines(True):
-    gcode += linenumber() + line
+    gcode.append( linenumber() + line )
 
   if RETURN_TO:
-    gcode += linenumber() + "G0 X%s Y%s" % tuple(RETURN_TO)
+    gcode.append( linenumber() + "G0 X%s Y%s" % tuple(RETURN_TO) )
 
   # show the gCode result dialog
+  sep=''
+  final = sep.join(gcode)
   if FreeCAD.GuiUp and SHOW_EDITOR:
     dia = PostUtils.GCodeEditorDialog()
-    dia.editor.setText(gcode)
-    result = dia.exec_()
-    if result:
+    dia.editor.setText(final)
+    if dia.exec_():
       final = dia.editor.toPlainText()
-    else:
-      final = gcode
-  else:
-    final = gcode
-
+    dia.editor.setText("")
+    
   print("Done postprocessing.")
 
   # write the file
@@ -348,14 +346,11 @@ def linenumber():
     return s
   return ""
 
-
-def format_outstring(strTbl):
+def format_outstring(strTable):
   global COMMAND_SPACE
-  # construct the line for the final output
-  s = ""
-  for w in strTbl:
-    s += w + COMMAND_SPACE
-  s = s.strip()
+  delim = COMMAND_SPACE
+  s = delim.join(strTable)
+  s+='\n'
   return s
 
 
@@ -371,7 +366,7 @@ def parse(pathobj):
   lastcommand = None
   precision_string = '.' + str(PRECISION) + 'f'
 
-  params = ['X', 'Y', 'Z', 'A', 'B', 'C', 'U', 'V', 'W', 'I', 'J', 'K', 'F', 'S', 'T', 'Q', 'R', 'L', 'P']
+  valid_params = ['X', 'Y', 'Z', 'A', 'B', 'C', 'U', 'V', 'W', 'I', 'J', 'K', 'F', 'S', 'T', 'Q', 'R', 'L', 'P']
 
   if hasattr(pathobj, "Group"):  # We have a compound or project.
     if OUTPUT_COMMENTS:
@@ -386,10 +381,13 @@ def parse(pathobj):
 
     if OUTPUT_COMMENTS:
       out += linenumber() + "(Path: " + pathobj.Label + ")\n"
+      
+    path_commands = pathobj.Path.Commands
 
-    for c in pathobj.Path.Commands:
+    for cmd in path_commands:
       outstring = []
-      command = c.Name
+      command = cmd.Name
+      cmd_params = cmd.Parameters
 
       outstring.append(command)
 
@@ -399,32 +397,32 @@ def parse(pathobj):
           outstring.pop(0)
 
       # Now add the remaining parameters in order
-      for param in params:
-        if param in c.Parameters:
+      for param in valid_params:
+        if param in cmd_params:
           if param == 'F':
             if command not in RAPID_MOVES:
-              speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
-              if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
-                outstring.append(param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string))
+              speed = Units.Quantity(cmd_params['F'], FreeCAD.Units.Velocity).getValueAs(UNIT_SPEED_FORMAT)
+              if speed > 0.0:
+                outstring.append(param + format(float(speed), precision_string))
           elif param in ['T', 'H', 'D', 'S', 'P', 'L']:
-            outstring.append(param + str(c.Parameters[param]))
+            outstring.append(param + str(cmd_params[param]))
           elif param in ['A', 'B', 'C']:
-            outstring.append(param + format(c.Parameters[param], precision_string))
+            outstring.append(param + format(cmd_params[param], precision_string))
           else:  # [X, Y, Z, U, V, W, I, J, K, R, Q] (Conversion eventuelle mm/inches)
-            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
-            outstring.append(param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string))
+            pos = Units.Quantity(cmd_params[param], FreeCAD.Units.Length).getValueAs(UNIT_FORMAT)
+            outstring.append(param + format(float(pos), precision_string))
 
       # store the latest command
       lastcommand = command
 
       # Memorizes the current position for calculating the related movements and the withdrawal plan
       if command in MOTION_COMMANDS:
-        if 'X' in c.Parameters:
-          CURRENT_X = Units.Quantity(c.Parameters['X'], FreeCAD.Units.Length)
-        if 'Y' in c.Parameters:
-          CURRENT_Y = Units.Quantity(c.Parameters['Y'], FreeCAD.Units.Length)
-        if 'Z' in c.Parameters:
-          CURRENT_Z = Units.Quantity(c.Parameters['Z'], FreeCAD.Units.Length)
+        if 'X' in cmd_params:
+          CURRENT_X = Units.Quantity(cmd_params['X'], FreeCAD.Units.Length)
+        if 'Y' in cmd_params:
+          CURRENT_Y = Units.Quantity(cmd_params['Y'], FreeCAD.Units.Length)
+        if 'Z' in cmd_params:
+          CURRENT_Z = Units.Quantity(cmd_params['Z'], FreeCAD.Units.Length)
 
       if command in ('G98', 'G99'):
         DRILL_RETRACT_MODE = command
@@ -434,15 +432,15 @@ def parse(pathobj):
 
       if TRANSLATE_DRILL_CYCLES:
         if command in ('G81', 'G82', 'G83'):
-          out += drill_translate(outstring, command, c.Parameters)
+          out += drill_translate(outstring, command, cmd_params)
           # Erase the line we just translated
           del(outstring[:])
           outstring = []
 
       if SPINDLE_WAIT > 0:
         if command in ('M3', 'M03', 'M4', 'M04'):
-          out += linenumber() + format_outstring(outstring) + "\n"
-          out += linenumber() + format_outstring(['G4', 'P%s' % SPINDLE_WAIT]) + "\n"
+          out += linenumber() + format_outstring(outstring)
+          out += linenumber() + format_outstring(['G4', 'P%s' % SPINDLE_WAIT]) 
           del(outstring[:])
           outstring = []
 
@@ -469,7 +467,7 @@ def parse(pathobj):
 
       # prepend a line number and append a newline
       if len(outstring) >= 1:
-          out += linenumber() + format_outstring(outstring) + "\n"
+          out += linenumber() + format_outstring(outstring)
 
   return out
 
@@ -491,7 +489,7 @@ def drill_translate(outstring, cmd, params):
   if OUTPUT_COMMENTS:  # Comment the original command
     outstring[0] = "(" + outstring[0]
     outstring[-1] = outstring[-1] + ")"
-    trBuff += linenumber() + format_outstring(outstring) + "\n"
+    trBuff += linenumber() + format_outstring(outstring)
 
   # Conversion du cycle
   # Pour l'instant, on gere uniquement les cycles dans le plan XY (G17)
