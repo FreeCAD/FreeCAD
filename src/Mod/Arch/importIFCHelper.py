@@ -451,12 +451,11 @@ def getColorFromStyledItem(styled_item):
         # ca 100x in 210_King_Merged.ifc
         # Empty styles, #4952778=IfcStyledItem(#4952779,(),$)
         # this is an error in the IFC file in my opinion
-    elif len(styled_item.Styles) > 1:
+    else:
         # never seen an ifc with more than one Styles in IfcStyledItem
         # the above seams to only apply for IFC2x3, IFC4 can have them 
         # see https://forum.freecadweb.org/viewtopic.php?f=39&t=33560&p=437056#p437056
-        _wrn("More than one 'Style' in 'IfcStyleItem', not implemented, do nothing.")
-    else:
+
         # Get the `IfcPresentationStyleAssignment`, there should only be one,
         if styled_item.Styles[0].is_a('IfcPresentationStyleAssignment'):
             assign_style = styled_item.Styles[0]
