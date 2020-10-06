@@ -103,3 +103,4 @@ if App.GuiUp:
     import FreeCADGui as Gui
     command_instance = CommandEditAttachment()
     Gui.addCommand('Part_EditAttachment', command_instance)
+
