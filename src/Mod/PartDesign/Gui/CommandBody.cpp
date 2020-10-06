@@ -27,7 +27,6 @@
 # include <QMessageBox>
 # include <QInputDialog>
 # include <Inventor/C/basic.h>
-# include <Inventor/nodes/SoCamera.h>
 # include <TopExp_Explorer.hxx>
 #endif
 
@@ -40,9 +39,7 @@
 #include <Gui/Application.h>
 #include <Gui/ActiveObjectList.h>
 #include <Gui/MainWindow.h>
-#include <Gui/ViewProviderOrigin.h>
 #include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -110,7 +107,6 @@ void CmdPartDesignBody::activated(int iMsg)
     std::vector<App::DocumentObject*> features =
         getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     App::DocumentObject* baseFeature = nullptr;
-    bool viewAll = features.empty();
     bool addtogroup = false;
 
 
@@ -296,28 +292,6 @@ void CmdPartDesignBody::activated(int iMsg)
             }
         }
     }
-
-    // The method 'SoCamera::viewBoundingBox' is still declared as protected in Coin3d versions
-    // older than 4.0.
-#if COIN_MAJOR_VERSION >= 4
-    // if no part feature was there then auto-adjust the camera
-    if (viewAll) {
-        Gui::Document* doc = Gui::Application::Instance->getDocument(getDocument());
-        Gui::View3DInventor* view = doc ? qobject_cast<Gui::View3DInventor*>(doc->getActiveView()) : nullptr;
-        if (view) {
-            SoCamera* camera = view->getViewer()->getCamera();
-            SbViewportRegion vpregion = view->getViewer()->getViewportRegion();
-            float aspectratio = vpregion.getViewportAspectRatio();
-
-            float size = Gui::ViewProviderOrigin::defaultSize();
-            SbBox3f bbox;
-            bbox.setBounds(-size,-size,-size,size,size,size);
-            camera->viewBoundingBox(bbox, aspectratio, 1.0f);
-        }
-    }
-#else
-    Q_UNUSED(viewAll)
-#endif
 
     updateActive();
 }
