@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Precision.hxx>
 # include <Standard_Failure.hxx>
 #endif
 
