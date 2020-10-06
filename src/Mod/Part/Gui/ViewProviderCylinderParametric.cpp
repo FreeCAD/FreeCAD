@@ -41,7 +41,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderCylinderParametric, PartGui::ViewProviderPa
 
 ViewProviderCylinderParametric::ViewProviderCylinderParametric()
 {
-  sPixmap = "Tree_Part_Cylinder_Parametric.svg";
+  sPixmap = "Part_Cylinder_Parametric";
 }
 
 ViewProviderCylinderParametric::~ViewProviderCylinderParametric()

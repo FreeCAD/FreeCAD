@@ -41,7 +41,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderBox, PartGui::ViewProviderPart)
 
 ViewProviderBox::ViewProviderBox()
 {
-  sPixmap = "Tree_Part_Box_Parametric.svg";
+  sPixmap = "Part_Box_Parametric";
 }
 
 ViewProviderBox::~ViewProviderBox()

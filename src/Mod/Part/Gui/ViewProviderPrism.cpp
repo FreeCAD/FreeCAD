@@ -40,7 +40,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderPrism, PartGui::ViewProviderPart)
 
 ViewProviderPrism::ViewProviderPrism()
 {
-    sPixmap = "Tree_Part_Prism.svg";
+    sPixmap = "Part_Prism_Parametric";
 }
 
 ViewProviderPrism::~ViewProviderPrism()
@@ -72,7 +72,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderWedge, PartGui::ViewProviderPart)
 
 ViewProviderWedge::ViewProviderWedge()
 {
-    sPixmap = "Tree_Part_Wedge.svg";
+    sPixmap = "Part_Wedge_Parametric";
 }
 
 ViewProviderWedge::~ViewProviderWedge()

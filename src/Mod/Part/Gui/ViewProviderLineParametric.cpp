@@ -41,7 +41,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderLineParametric, PartGui::ViewProviderPart)
 
 ViewProviderLineParametric::ViewProviderLineParametric()
 {
-  sPixmap = "Part_Line_Parametric.svg";
+  sPixmap = "Part_Line_Parametric";
 }
 
 ViewProviderLineParametric::~ViewProviderLineParametric()

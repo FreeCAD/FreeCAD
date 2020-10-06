@@ -41,7 +41,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderConeParametric, PartGui::ViewProviderPart)
        
 ViewProviderConeParametric::ViewProviderConeParametric()
 {
-  sPixmap = "Tree_Part_Cone_Parametric.svg";
+  sPixmap = "Part_Cone_Parametric";
 }
 
 ViewProviderConeParametric::~ViewProviderConeParametric()
