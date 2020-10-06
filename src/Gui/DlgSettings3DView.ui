@@ -308,8 +308,7 @@ but slower response to any scene changes.</string>
                </size>
              </property>
              <property name="toolTip">
-               <string>
-                 Area for picking elements in 3D view.
+               <string>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </string>
              </property>
