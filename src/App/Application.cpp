@@ -1885,6 +1885,7 @@ void Application::initTypes(void)
     App ::PropertyXLinkList         ::init();
     App ::PropertyXLinkContainer    ::init();
     App ::PropertyMatrix            ::init();
+    App ::PropertyMatrixList        ::init();
     App ::PropertyVector            ::init();
     App ::PropertyVectorDistance    ::init();
     App ::PropertyPosition          ::init();

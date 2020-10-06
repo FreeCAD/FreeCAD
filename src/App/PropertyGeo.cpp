@@ -540,7 +540,11 @@ PyObject *PropertyMatrix::getPyObject(void)
 
 void PropertyMatrix::setPyObject(PyObject *value)
 {
-    if (PyObject_TypeCheck(value, &(Base::MatrixPy::Type))) {
+    if (PyObject_TypeCheck(value, &(Base::PlacementPy::Type))) {
+        Base::PlacementPy  *pcObject = (Base::PlacementPy*)value;
+        setValue( pcObject->value().toMatrix() );
+    }
+    else if (PyObject_TypeCheck(value, &(Base::MatrixPy::Type))) {
         Base::MatrixPy  *pcObject = (Base::MatrixPy*)value;
         setValue( pcObject->value() );
     }
@@ -626,6 +630,130 @@ void PropertyMatrix::Paste(const Property &from)
     _cMat = dynamic_cast<const PropertyMatrix&>(from)._cMat;
     hasSetValue();
 }
+
+//**************************************************************************
+// PropertyMatrixList
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyMatrixList , App::PropertyLists)
+
+//**************************************************************************
+// Construction/Destruction
+
+PropertyMatrixList::PropertyMatrixList()
+{
+
+}
+
+PropertyMatrixList::~PropertyMatrixList()
+{
+
+}
+
+//**************************************************************************
+// Base class implementer
+
+PyObject *PropertyMatrixList::getPyObject(void)
+{
+    PyObject* list = PyList_New( getSize() );
+
+    for (int i = 0;i<getSize(); i++)
+        PyList_SetItem( list, i, new Base::MatrixPy(new Base::Matrix4D(_lValueList[i])));
+
+    return list;
+}
+
+Base::Matrix4D PropertyMatrixList::getPyValue(PyObject *item) const {
+    PropertyMatrix val;
+    val.setPyObject( item );
+    return val.getValue();
+}
+
+bool PropertyMatrixList::saveXML(Base::Writer &writer) const
+{
+    writer.Stream() << ">\n";
+    for(const auto &m : _lValueList) {
+        writer.Stream() << m[0][0] << ' ' << m[0][1] << ' ' << m[0][2] << ' ' << m[0][3] << '\n'
+                        << m[1][0] << ' ' << m[1][1] << ' ' << m[1][2] << ' ' << m[1][3] << '\n'
+                        << m[2][0] << ' ' << m[2][1] << ' ' << m[2][2] << ' ' << m[2][3] << '\n'
+                        << m[3][0] << ' ' << m[3][1] << ' ' << m[3][2] << ' ' << m[3][3] << "\n\n";
+    }
+    return false;
+}
+
+void PropertyMatrixList::restoreXML(Base::XMLReader &reader)
+{
+    unsigned count = reader.getAttributeAsUnsigned("count");
+    auto &s = reader.beginCharStream(false);
+    std::vector<Base::Matrix4D> values;
+    values.reserve(count);
+    for (unsigned i=0; i<count; ++i) {
+        double a11, a12, a13, a14,
+               a21, a22, a23, a24,
+               a31, a32, a33, a34,
+               a41, a42, a43, a44;
+        s >> a11 >> a12 >> a13 >> a14
+          >> a21 >> a22 >> a23 >> a24
+          >> a31 >> a32 >> a33 >> a34
+          >> a41 >> a42 >> a43 >> a44;
+        values.emplace_back(a11, a12, a13, a14,
+                            a21, a22, a23, a24,
+                            a31, a32, a33, a34,
+                            a41, a42, a43, a44);
+    }
+    reader.endCharStream();
+    setValues(std::move(values));
+}
+
+void PropertyMatrixList::saveStream(Base::OutputStream &str) const
+{
+    for (auto & m : _lValueList) {
+        str << m[0][0] << m[0][1] << m[0][2] << m[0][3]
+            << m[1][0] << m[1][1] << m[1][2] << m[1][3]
+            << m[2][0] << m[2][1] << m[2][2] << m[2][3]
+            << m[3][0] << m[3][1] << m[3][2] << m[3][3];
+    }
+}
+
+void PropertyMatrixList::restoreStream(Base::InputStream &str, unsigned uCt)
+{
+    std::vector<Base::Matrix4D> values;
+    values.reserve(uCt);
+    for (unsigned i=0; i<uCt; ++i) {
+        double a11, a12, a13, a14,
+               a21, a22, a23, a24,
+               a31, a32, a33, a34,
+               a41, a42, a43, a44;
+        str >> a11 >> a12 >> a13 >> a14
+            >> a21 >> a22 >> a23 >> a24
+            >> a31 >> a32 >> a33 >> a34
+            >> a41 >> a42 >> a43 >> a44;
+        values.emplace_back(a11, a12, a13, a14,
+                            a21, a22, a23, a24,
+                            a31, a32, a33, a34,
+                            a41, a42, a43, a44);
+    }
+    setValues(std::move(values));
+}
+
+Property *PropertyMatrixList::Copy(void) const
+{
+    PropertyMatrixList *p= new PropertyMatrixList();
+    p->_lValueList = _lValueList;
+    return p;
+}
+
+void PropertyMatrixList::Paste(const Property &from)
+{
+    setValues(dynamic_cast<const PropertyMatrixList&>(from)._lValueList);
+}
+
+unsigned int PropertyMatrixList::getMemSize (void) const
+{
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Matrix4D));
+}
+
+
 
 //**************************************************************************
 //**************************************************************************
@@ -1014,7 +1142,7 @@ void PropertyPlacementList::Paste(const Property &from)
 
 unsigned int PropertyPlacementList::getMemSize (void) const
 {
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3d));
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Placement));
 }
 
 

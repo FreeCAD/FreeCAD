@@ -454,6 +454,35 @@ protected:
     virtual void saveStream(Base::OutputStream &) const override;
 };
 
+class AppExport PropertyMatrixList: public PropertyListsT<Base::Matrix4D>
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    /**
+     * A property that stores a list of placements
+     */
+    PropertyMatrixList();
+
+    virtual ~PropertyMatrixList();
+
+    virtual PyObject *getPyObject(void) override;
+
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
+
+    virtual unsigned int getMemSize (void) const override;
+
+protected:
+    Base::Matrix4D getPyValue(PyObject *) const override;
+
+    virtual void restoreXML(Base::XMLReader &) override;
+    virtual bool saveXML(Base::Writer &) const override;
+    virtual bool canSaveStream(Base::Writer &) const override { return true; }
+    virtual void restoreStream(Base::InputStream &s, unsigned count) override;
+    virtual void saveStream(Base::OutputStream &) const override;
+};
+
 
 /** The base class for all basic geometry properties.
  * @author Werner Mayer

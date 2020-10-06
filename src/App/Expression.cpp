@@ -92,18 +92,17 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 #pragma warning(disable : 4065)
 #endif
 
-static inline std::ostream &operator<<(std::ostream &os, const App::Expression *expr) {
+static inline void printExpression(std::ostream &os, const App::Expression *expr) {
     if(expr) {
         os << "\nin expression: ";
         expr->toString(os);
     }
-    return os;
 }
 
 #define __EXPR_THROW(_e,_msg,_expr) do {\
     std::ostringstream ss;\
     ss << _msg;\
-    ss << (_expr);\
+    printExpression(ss, _expr);\
     throw _e(ss.str().c_str());\
 }while(0)
 
@@ -112,7 +111,7 @@ static inline std::ostream &operator<<(std::ostream &os, const App::Expression *
 #define __EXPR_SET_MSG(_e,_msg,_expr) do {\
     std::ostringstream ss;\
     ss << _msg << _e.what();\
-    ss << (_expr);\
+    printExpression(ss, _expr);\
     _e.setMessage(ss.str());\
 }while(0)
 
