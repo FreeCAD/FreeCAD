@@ -2399,23 +2399,20 @@ void ExpressionCompleter::showPopup(bool show) {
         QRect rect;
         ExpressionTextEdit *editor = qobject_cast<ExpressionTextEdit*>(widget());
         if(editor) {
-            QTextCursor cursor = editor->textCursor();
-            QSize size = editor->size();
-            QPoint cursorPos = editor->cursorRect(cursor).topLeft();
-            QPoint pos;
-            if(popup()->isHidden())
-                pos = cursorPos;
-            else {
-                pos = popup()->rect().topLeft();
-                if(abs(cursorPos.x() - pos.x()) > size.width()/2)
-                    pos = cursorPos;
+            int width = editor->width();
+            rect = editor->cursorRect();
+            rect.adjust(-2, -2, 2, 2);
+            if(popup()->isVisible()) {
+                QPoint pos = editor->viewport()->mapFromGlobal(
+                        popup()->mapToGlobal(QPoint(0,0)));
+                if(abs(rect.left() - pos.x()) < width/2)
+                    rect.setLeft(pos.x());
+                rect.setWidth(popup()->width());
             }
-            rect = QRect(editor->viewport()->mapToGlobal(pos), size);
-            int w = size.width() - rect.left();
-            if(w < 300)
-                w = 300;
-            rect.setWidth(w);
-            rect = QRect(editor->mapFromGlobal(rect.topLeft()), rect.size());
+            rect.setRight(width); 
+            if(rect.width() < 300)
+                rect.setRight(rect.left() + 300);
+            rect.moveTo(editor->viewport()->mapTo(editor, rect.topLeft()));
         }
         complete(rect);
     } else {
