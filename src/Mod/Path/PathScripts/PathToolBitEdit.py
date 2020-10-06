@@ -45,12 +45,14 @@ class ToolBitEditor(object):
     The controller embeds the UI to the parentWidget which has to have a layout attached to it.
     '''
 
-    def __init__(self, tool, parentWidget=None):
+    def __init__(self, tool, parentWidget=None, ondone=None):
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitEditor.ui")
 
         if parentWidget:
             self.form.setParent(parentWidget)
             parentWidget.layout().addWidget(self.form)
+
+        self.ondone = ondone
 
         self.tool = tool
         if not tool.BitShape:
@@ -210,6 +212,9 @@ class ToolBitEditor(object):
             self.form.shapePath.setText(foo[0])
             self.updateShape()
 
+    def ok(self):
+        self.form.close()
+
     def setupUI(self):
         PathLog.track()
         self.updateUI()
@@ -217,3 +222,8 @@ class ToolBitEditor(object):
         self.form.toolName.editingFinished.connect(self.refresh)
         self.form.shapePath.editingFinished.connect(self.updateShape)
         self.form.shapeSet.clicked.connect(self.selectShape)
+        self.form.buttonBox.accepted.connect(self.ok)
+        self.form.buttonBox.rejected.connect(self.ok)
+        if self.ondone is not None:
+            self.form.buttonBox.rejected.connect(self.ondone)
+
