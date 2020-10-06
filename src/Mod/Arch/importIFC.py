@@ -1299,8 +1299,8 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                             dig = 5
                             ma_color = sh_color = round(col[0], dig), round(col[1], dig), round(col[2], dig)
                             if "DiffuseColor" in objects[o].Material.Material:
-                                sting_col_ = objects[o].Material.Material["DiffuseColor"]
-                                col = tuple([float(f) for f in sting_col_.strip("()").split(",")])
+                                string_color = objects[o].Material.Material["DiffuseColor"]
+                                col = tuple([float(f) for f in string_color.strip("()").split(",")])
                                 ma_color = round(col[0], dig), round(col[1], dig), round(col[2], dig)
                             if ma_color != sh_color:
                                 print("\nobject color != material color for object: ", o)
