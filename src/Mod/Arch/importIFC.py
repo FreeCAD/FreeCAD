@@ -1266,7 +1266,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         # values in colors are None if something went wrong
         # thus the "DiffuseColor" will only be set if the color is not None
         mdict = {}
-        if material.id() in colorscolors and colors[material.id()] is not None:
+        if material.id() in colors and colors[material.id()] is not None:
             mdict["DiffuseColor"] = str(colors[material.id()])
         else:
             for o,m in mattable.items():
