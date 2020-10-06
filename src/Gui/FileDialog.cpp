@@ -50,7 +50,7 @@
 
 using namespace Gui;
 
-namespace Gui {
+namespace {
 bool dontUseNativeDialog()
 {
 #if defined(USE_QT_FILEDIALOG)
