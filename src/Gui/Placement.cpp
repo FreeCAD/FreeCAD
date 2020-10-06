@@ -154,7 +154,7 @@ void Placement::showDefaultButtons(bool ok)
 
 void Placement::open()
 {
-    if (propertyName != "Placement") {
+    if (!propertyName.empty() && propertyName != "Placement") {
         changeProperty = true;
         openTransaction();
     }
@@ -188,6 +188,9 @@ QWidget* Placement::getInvalidInput() const
 
 void Placement::revertTransformation()
 {
+    if (propertyName.empty())
+        return;
+
     for (std::set<std::string>::iterator it = documents.begin(); it != documents.end(); ++it) {
         Gui::Document* document = Application::Instance->getDocument(it->c_str());
         if (!document) continue;
@@ -219,6 +222,9 @@ void Placement::revertTransformation()
 
 void Placement::applyPlacement(const Base::Placement& p, bool incremental)
 {
+    if (propertyName.empty())
+        return;
+
     Gui::Document* document = Application::Instance->activeDocument();
     if (!document) return;
 
@@ -257,6 +263,9 @@ void Placement::applyPlacement(const Base::Placement& p, bool incremental)
 
 void Placement::applyPlacement(const QString& data, bool incremental)
 {
+    if (propertyName.empty())
+        return;
+
     Gui::Document* document = Application::Instance->activeDocument();
     if (!document) return;
 
@@ -381,7 +390,7 @@ void Placement::on_selectedVertex_clicked()
     //of the same object the rotation still gets applied twice
     Gui::Selection().clearSelection();
     //reselect original object that was selected when placement dlg first opened
-    for (auto it : selectionObjects)
+    for (auto & it : selectionObjects)
         Gui::Selection().addSelection(it);
 
     if (picked.size() == 1) {
@@ -639,18 +648,35 @@ void Placement::on_resetButton_clicked()
     onPlacementChanged(0);
 }
 
-void Placement::bindObject()
+void Placement::bindObject(App::PropertyPlacement * prop)
 {
-    if (!selectionObjects.empty()) {
-        App::DocumentObject* obj = selectionObjects.front().getObject();
+    App::DocumentObject * obj;
+    if (prop) {
+        obj = Base::freecad_dynamic_cast<App::DocumentObject>(prop->getContainer());
+        const char * name = prop->getName();
+        if (!obj || !name)
+            throw Base::RuntimeError("Invalid property binding for placement");
+        selectionObjects.clear();
+        propertyName = name;
+    }
+    else if (!selectionObjects.empty()) {
+        obj = selectionObjects.front().getObject();
+        if (!obj)
+            return;
+    }
 
-        ui->xPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.x")));
-        ui->yPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.y")));
-        ui->zPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.z")));
+    ui->xPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.x")));
+    ui->yPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.y")));
+    ui->zPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.z")));
 
-        ui->yawAngle  ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Yaw")));
-        ui->pitchAngle->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Pitch")));
-        ui->rollAngle ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Roll")));
+    ui->yawAngle  ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Yaw")));
+    ui->pitchAngle->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Pitch")));
+    ui->rollAngle ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Roll")));
+
+    if (prop) {
+        // Clearing the propertyName to bypass applyPlacement(), and let caller
+        // handle placement change via signal
+        propertyName.clear();
     }
 }
 
@@ -859,9 +885,9 @@ TaskPlacement::~TaskPlacement()
     // automatically deleted in the sub-class
 }
 
-void TaskPlacement::bindObject()
+void TaskPlacement::bindObject(App::PropertyPlacement * pla)
 {
-    widget->bindObject();
+    widget->bindObject(pla);
 }
 
 void TaskPlacement::open()

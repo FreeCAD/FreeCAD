@@ -28,6 +28,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Base/Placement.h>
+#include <App/PropertyGeo.h>
 
 #include <boost/signals2.hpp>
 
@@ -50,7 +51,7 @@ public:
     void accept();
     void reject();
 
-    void bindObject();
+    void bindObject(App::PropertyPlacement * pla = nullptr);
     Base::Vector3d getDirection() const;
     void setPlacement(const Base::Placement&);
     Base::Placement getPlacement() const;
@@ -134,7 +135,7 @@ public:
 public:
     void setPropertyName(const QString&);
     void setPlacement(const Base::Placement&);
-    void bindObject();
+    void bindObject(App::PropertyPlacement * pla = nullptr);
     bool accept();
     bool reject();
     void clicked(int id);
