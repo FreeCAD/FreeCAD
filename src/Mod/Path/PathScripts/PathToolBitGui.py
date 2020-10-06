@@ -280,6 +280,23 @@ def GetToolFiles(parent = None):
         return foo[0]
     return []
 
+def GetToolShapeFile(parent = None):
+    if parent is None:
+        parent = QtGui.QApplication.activeWindow()
+
+    location = PathPreferences.lastPathToolShape()
+    if os.path.isfile(location):
+        location = os.path.split(location)[0]
+    elif not os.path.isdir(location):
+        location = PathPreferences.filePath()
+
+    fname = QtGui.QFileDialog.getOpenFileName(parent, 'Select Tool Shape', location, '*.fcstd')
+    if fname and fname[0]:
+        if fname != location:
+            PathPreferences.setLastPathToolShape(location)
+        return fname[0]
+    else:
+        return None
 
 def LoadTool(parent = None):
     '''LoadTool(parent=None) ... Open a file dialog to load a tool from a file.'''
