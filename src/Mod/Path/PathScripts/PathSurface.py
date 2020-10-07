@@ -157,7 +157,7 @@ class ObjectSurface(PathOp.ObjectOp):
             ("App::PropertyDistance", "InternalFeaturesAdjustment", "Selected Geometry Settings",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Positive values push the cutter toward, or into, the feature. Negative values retract the cutter away from the feature.")),
             ("App::PropertyBool", "InternalFeaturesCut", "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Ignore internal feature areas within a larger selected face.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Cut internal feature areas within a larger selected face.")),
 
             ("App::PropertyEnumeration", "BoundBox", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Select the overall boundary for the operation.")),
@@ -249,8 +249,8 @@ class ObjectSurface(PathOp.ObjectOp):
             'AvoidLastX_Faces': 0,
             'PatternCenterCustom': FreeCAD.Vector(0.0, 0.0, 0.0),
             'GapThreshold': 0.005,
-            'AngularDeflection': 0.25, # AngularDeflection is unused
-             # Reasonable compromise between speed & precision
+            'AngularDeflection': 0.25,  # AngularDeflection is unused
+            # Reasonable compromise between speed & precision
             'LinearDeflection': 0.001,
             # For debugging
             'ShowTempObjects': False
@@ -341,7 +341,6 @@ class ObjectSurface(PathOp.ObjectOp):
                     if isinstance(val, int) or isinstance(val, float):
                         setVal = True
                 if setVal:
-                    propVal = getattr(prop, 'Value')
                     setattr(prop, 'Value', val)
                 else:
                     setattr(obj, n, val)
@@ -625,7 +624,6 @@ class ObjectSurface(PathOp.ObjectOp):
             self.commandlist.extend(CMDS)
         else:
             PathLog.error('Failed to pre-process model and/or selected face(s).')
-            
 
         # ######  CLOSING COMMANDS FOR OPERATION ######
 
@@ -973,7 +971,6 @@ class ObjectSurface(PathOp.ObjectOp):
         return SCANS
 
     def _planarDropCutScan(self, pdc, A, B):
-        #PNTS = list()
         (x1, y1) = A
         (x2, y2) = B
         path = ocl.Path()                   # create an empty path object
@@ -988,7 +985,6 @@ class ObjectSurface(PathOp.ObjectOp):
         return PNTS  # pdc.getCLPoints()
 
     def _planarCircularDropCutScan(self, pdc, Arc, cMode):
-        PNTS = list()
         path = ocl.Path()  # create an empty path object
         (sp, ep, cp) = Arc
 
@@ -1038,7 +1034,6 @@ class ObjectSurface(PathOp.ObjectOp):
             PRTS = SCANDATA[so]
             lenPRTS = len(PRTS)
             first = PRTS[0][0]  # first point of arc/line stepover group
-            start = PRTS[0][0]  # will change with each line/arc segment
             last = None
             cmds.append(Path.Command('N (Begin step {}.)'.format(so), {}))
 
@@ -1068,7 +1063,6 @@ class ObjectSurface(PathOp.ObjectOp):
                                                  tolrnc))
                 else:
                     cmds.append(Path.Command('N (part {}.)'.format(i + 1), {}))
-                    start = prt[0]
                     last = prt[lenPrt - 1]
                     if so == peIdx or peIdx == -1:
                         cmds.extend(self._planarSinglepassProcess(obj, prt))
@@ -1129,18 +1123,15 @@ class ObjectSurface(PathOp.ObjectOp):
             peIdx = lenSCANDATA - 1
 
         # Process each layer in depthparams
-        prvLyrFirst = None
-        prvLyrLast = None
         lastPrvStpLast = None
         for lyr in range(0, lenDP):
             odd = True  # ZigZag directional switch
             lyrHasCmds = False
             actvSteps = 0
             LYR = list()
-            prvStpFirst = None
-            if lyr > 0:
-                if prvStpLast is not None:
-                    lastPrvStpLast = prvStpLast
+            # if lyr > 0:
+            #     if prvStpLast is not None:
+            #         lastPrvStpLast = prvStpLast
             prvStpLast = None
             lyrDep = depthparams[lyr]
             PathLog.debug('Multi-pass lyrDep: {}'.format(round(lyrDep, 4)))
@@ -1244,7 +1235,6 @@ class ObjectSurface(PathOp.ObjectOp):
                 if prtsHasCmds is True:
                     stepHasCmds = True
                     actvSteps += 1
-                    prvStpFirst = first
                     stpOvrCmds.extend(transCmds)
                     stpOvrCmds.append(Path.Command('N (Begin step {}.)'.format(so), {}))
                     stpOvrCmds.append(Path.Command('G0', {'X': first.x, 'Y': first.y, 'F': self.horizRapid}))
@@ -1253,7 +1243,6 @@ class ObjectSurface(PathOp.ObjectOp):
 
                 # Layer transition at first active step over in current layer
                 if actvSteps == 1:
-                    prvLyrFirst = first
                     LYR.append(Path.Command('N (Layer {} begins)'.format(lyr), {}))
                     if lyr > 0:
                         LYR.append(Path.Command('N (Layer transition)', {}))
@@ -1267,7 +1256,6 @@ class ObjectSurface(PathOp.ObjectOp):
 
             # Close layer, saving commands, if any
             if lyrHasCmds is True:
-                prvLyrLast = last
                 GCODE.extend(LYR)  # save line commands
                 GCODE.append(Path.Command('N (End of layer {})'.format(lyr), {}))
 
@@ -1366,13 +1354,13 @@ class ObjectSurface(PathOp.ObjectOp):
                 prcs = False
                 if onHold is False:
                     onHold = True
-                    output.append( Path.Command('N (Start hold)', {}) )
-                    output.append( Path.Command('G0', {'Z': clrScnLn, 'F': self.vertRapid}) )
+                    output.append(Path.Command('N (Start hold)', {}))
+                    output.append(Path.Command('G0', {'Z': clrScnLn, 'F': self.vertRapid}))
             else:
                 if onHold is True:
                     onHold = False
-                    output.append( Path.Command('N (End hold)', {}) )
-                    output.append( Path.Command('G0', {'X': pnt.x, 'Y': pnt.y, 'F': self.horizRapid}) )
+                    output.append(Path.Command('N (End hold)', {}))
+                    output.append(Path.Command('G0', {'X': pnt.x, 'Y': pnt.y, 'F': self.horizRapid}))
 
             # Process point
             if prcs is True:
@@ -1540,7 +1528,6 @@ class ObjectSurface(PathOp.ObjectOp):
         pdc.setZ(finalDep)  # set minimumZ (final / target depth value)
         pdc.setSampling(SampleInterval)  # set sampling size
         return pdc
-
 
     # Main rotational scan functions
     def _processRotationalOp(self, JOB, obj, mdlIdx, compoundFaces=None):
