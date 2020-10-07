@@ -203,7 +203,7 @@ void PropertyPath::setValue(const boost::filesystem::path &Path)
 void PropertyPath::setValue(const char * Path)
 {
     aboutToSetValue();
-#if (BOOST_VERSION < 104600) || (BOOST_FILESYSTEM_VERSION == 2)
+#if (BOOST_FILESYSTEM_VERSION == 2)
     _cValue = boost::filesystem::path(Path,boost::filesystem::no_check );
     //_cValue = boost::filesystem::path(Path,boost::filesystem::native );
     //_cValue = boost::filesystem::path(Path,boost::filesystem::windows_name );
@@ -220,7 +220,7 @@ boost::filesystem::path PropertyPath::getValue(void) const
 
 PyObject *PropertyPath::getPyObject(void)
 {
-#if (BOOST_VERSION < 104600) || (BOOST_FILESYSTEM_VERSION == 2)
+#if (BOOST_FILESYSTEM_VERSION == 2)
     std::string str = _cValue.native_file_string();
 #else
     std::string str = _cValue.string();
