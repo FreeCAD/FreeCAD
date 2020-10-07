@@ -41,11 +41,13 @@ Part = LazyLoader('Part', globals(), 'Part')
 """Z Depth Correction Dressup.  This dressup takes a probe file as input and does bilinear interpolation of the Zdepths to correct for a surface which is not parallel to the milling table/bed.  The probe file should conform to the format specified by the linuxcnc G38 probe logging: 9-number coordinate consisting of XYZABCUVW http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g38
 """
 
+LOGLEVEL = False
+
 LOG_MODULE = PathLog.thisModule()
 
-if False:
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-    PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+    PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.NOTICE, LOG_MODULE)
 
@@ -67,7 +69,6 @@ class ObjectDressup:
         obj.addProperty("App::PropertyFile", "probefile", "ProbeData", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "The point file from the surface probing."))
         obj.Proxy = self
         obj.addProperty("Part::PropertyPartShape", "interpSurface", "Path")
-        #obj.setEditorMode('interpSurface', 2)  # hide
         obj.addProperty("App::PropertyDistance", "ArcInterpolate", "Interpolate", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "Deflection distance for arc interpolation"))
         obj.addProperty("App::PropertyDistance", "SegInterpolate", "Interpolate", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrectp", "break segments into smaller segments of this length."))
         obj.ArcInterpolate = 0.1
@@ -335,6 +336,7 @@ class CommandPathDressup:
         FreeCADGui.doCommand('PathScripts.PathDressupZCorrect.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
+        FreeCADGui.doCommand('obj.ViewObject.Document.setEdit(obj.ViewObject, 0)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
