@@ -613,8 +613,69 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
     }
 }
 
-int ViewProviderBody::replaceObject(App::DocumentObject *, App::DocumentObject *) {
-    return 0;
+bool ViewProviderBody::canReplaceObject(App::DocumentObject *oldObj,
+                                        App::DocumentObject *newObj)
+{
+    auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+    if (!body || !oldObj || !newObj || oldObj == newObj)
+        return false;
+
+    return body->isSibling(oldObj, newObj);
+}
+
+int ViewProviderBody::replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj)
+{
+    auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+    if (!body || !canReplaceObject(oldObj, newObj))
+        return 0;
+
+    int i, j;
+    if (!body->Group.find(oldObj->getNameInDocument(), &i)
+            || !body->Group.find(newObj->getNameInDocument(), &j))
+        return 0;
+
+    auto secondFeat = Base::freecad_dynamic_cast<PartDesign::Feature>(oldObj);
+    auto firstFeat = Base::freecad_dynamic_cast<PartDesign::Feature>(newObj);
+    if (!firstFeat || !secondFeat)
+        return 0;
+
+    // first, second refers to the order after replaceObject() operation
+    if (i > j)
+        std::swap(secondFeat, firstFeat);
+
+    App::AutoTransaction committer("Reorder body feature");
+
+    auto objs = body->Group.getValues();
+    objs.erase(objs.begin() + j);
+    objs.insert(objs.begin() + i, newObj);
+    body->Group.setValues(objs);
+
+    Base::ObjectStatusLocker<App::Property::Status,App::Property>
+        guard1(App::Property::User3, &firstFeat->BaseFeature);
+    Base::ObjectStatusLocker<App::Property::Status,App::Property>
+        guard2(App::Property::User3, &secondFeat->BaseFeature);
+
+    if (secondFeat->NewSolid.getValue()) {
+        secondFeat->NewSolid.setValue(false);
+        firstFeat->NewSolid.setValue(true);
+    }
+    firstFeat->BaseFeature.setValue(secondFeat->BaseFeature.getValue());
+    secondFeat->BaseFeature.setValue(firstFeat);
+    for (auto obj : objs) {
+        if (obj == secondFeat
+                || !PartDesign::Body::isSolidFeature(obj)
+                || !obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+            continue;
+        auto feat = static_cast<PartDesign::Feature*>(obj);
+        if (feat->BaseFeature.getValue() == firstFeat)
+            feat->BaseFeature.setValue(secondFeat);
+    }
+
+    if (body->Tip.getValue() == firstFeat)
+        body->setTip(secondFeat);
+
+    Gui::Command::updateActive();
+    return 1;
 }
 
 std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void) const {

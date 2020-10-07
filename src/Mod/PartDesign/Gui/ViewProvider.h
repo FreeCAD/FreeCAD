@@ -77,6 +77,13 @@ public:
 
     virtual void getExtraIcons(std::vector<QPixmap> &) const override;
 
+    virtual bool canDragObjects() const override {return false;}
+    virtual bool canDragObject(App::DocumentObject*) const override {return false;}
+    virtual bool canDropObjects() const override {return false;}
+    virtual bool canDropObject(App::DocumentObject*) const override {return false;}
+    virtual bool canReplaceObject(App::DocumentObject *, App::DocumentObject *) override
+        {return false;}
+
 protected:
 
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;

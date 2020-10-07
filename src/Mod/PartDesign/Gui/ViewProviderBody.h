@@ -91,6 +91,7 @@ public:
     virtual void dropObject(App::DocumentObject*) override;
 
     virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj) override;
+    virtual bool canReplaceObject(App::DocumentObject *, App::DocumentObject *) override;
 
     virtual std::vector<App::DocumentObject*> claimChildren3D(void) const override;
 
