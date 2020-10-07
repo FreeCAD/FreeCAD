@@ -92,6 +92,7 @@ public:
     App::PropertyBool Relative;
     App::PropertyBool Fuse;
     App::PropertyBool MakeFace;
+    App::PropertyEnumeration FillStyle;
     App::PropertyEnumeration BindMode;
     App::PropertyBool PartialLoad;
     App::PropertyXLink Context;
@@ -114,7 +115,10 @@ public:
     virtual App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0, 
             Base::Matrix4D *mat=0, bool transform=true, int depth=0) const override;
 
-    virtual DocumentObject *getElementOwner(const char *element) const override;
+    virtual App::DocumentObject *getElementOwner(const char *element) const override;
+
+    virtual App::DocumentObject *getLinkedObject(bool recurse=true, 
+            Base::Matrix4D *mat=0, bool transform=false, int depth=0) const override;
 
 protected:
     virtual App::DocumentObjectExecReturn* execute(void) override;

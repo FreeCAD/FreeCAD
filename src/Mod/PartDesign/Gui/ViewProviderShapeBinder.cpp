@@ -27,12 +27,15 @@
 # include <QApplication>
 # include <QMessageBox>
 # include <QMenu>
+# include <QPainter>
 # include <Inventor/nodes/SoSeparator.h>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <set>
+#include <unordered_set>
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -40,6 +43,7 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/ViewParams.h>
+#include <Gui/BitmapFactory.h>
 
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
@@ -317,6 +321,7 @@ void ViewProviderSubShapeBinder::updateData(const App::Property *prop)
                 if (iconChangeConns.size() >= 3)
                     break;
             }
+            signalChangeIcon();
         }
     }
     ViewProviderPart::updateData(prop);
@@ -349,7 +354,10 @@ std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject *obj, A
         values[owner?owner:obj] = std::move(subs);
     }
 
-    self->setLinks(std::move(values),QApplication::keyboardModifiers()==Qt::ControlModifier);
+    int dropid = Gui::TreeWidget::isDropping();
+    self->setLinks(std::move(values),
+            QApplication::keyboardModifiers()==Qt::ControlModifier && _dropID != dropid);
+    _dropID = dropid;
     if(self->Relative.getValue())
         updatePlacement(false);
     return std::string(".");
@@ -478,26 +486,92 @@ std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren(void
     return ret;
 }
 
+struct PixmapInfo {
+    QPixmap px;
+    int count = 0;
+    std::size_t index;
+
+    void multiply(std::vector<QPixmap> &icons)
+    {
+        if (this->count > 2)
+            return;
+        QPixmap pxScaled = this->px.scaled(
+                48, 48, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        this->px.fill(Qt::transparent);
+        QPainter pt;
+        pt.begin(&this->px);
+        pt.setCompositionMode(QPainter::CompositionMode_Source);
+        QPen pen(Qt::black, 2);
+        pt.setPen(pen);
+        pt.drawRect(QRect(1, 1, 54, 54));
+        pt.drawRect(QRect(10, 10, 53, 53));
+        pt.setPen(Qt::NoPen);
+        pt.drawPixmap(12, 12, pxScaled);
+        pt.end();
+        icons[this->index] = this->px;
+    }
+};
+
 void ViewProviderSubShapeBinder::getExtraIcons(std::vector<QPixmap> &icons) const
 {
     auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(getObject());
     if (!binder)
         return;
 
+    static QPixmap myPixmap;
+    if (myPixmap.isNull())
+       myPixmap = Gui::BitmapFactory().pixmap(this->sPixmap).scaled(
+               32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
     std::set<App::SubObjectT> objs;
+    std::unordered_map<qint64, PixmapInfo> cacheKeys;
+    std::size_t count = std::max(icons.size() + 3, (std::size_t)5);
     for(auto &l : binder->Support.getSubListValues()) {
         for (auto & sub : l.getSubValues()) {
-            auto res = objs.emplace(l.getValue(), sub.c_str());
-            if (!res.second)
+            App::SubObjectT sobjT(l.getValue(), sub.c_str());
+            auto sobj = sobjT.getSubObject();
+            if (!sobj)
                 continue;
-            auto vp = Gui::Application::Instance->getViewProvider(res.first->getSubObject());
+            sobjT.setSubName(sobjT.getSubNameNoElement().c_str());
+            if (!objs.insert(sobjT).second)
+                continue;
+            auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(sobj);
+            if (binder) {
+                // binder of binder, extract its first bound object's icon
+                auto boundVp = Gui::Application::Instance->getViewProvider(
+                        binder->getLinkedObject(true));
+                if (boundVp) {
+                    QPixmap px = boundVp->getIcon().pixmap(64, 64);
+                    auto & pxInfo = cacheKeys[myPixmap.cacheKey() ^ px.cacheKey()];
+                    if (++pxInfo.count > 1)
+                        pxInfo.multiply(icons);
+                    else {
+                        pxInfo.px = Gui::BitmapFactory().merge(
+                                px, myPixmap, Gui::BitmapFactoryInst::TopLeft);
+                        pxInfo.index = icons.size();
+                        icons.push_back(pxInfo.px);
+                        if (icons.size() >= count)
+                            break;
+                    }
+                    continue;
+                }
+            }
+            auto vp = Gui::Application::Instance->getViewProvider(sobj);
             if (vp) {
-                icons.push_back(vp->getIcon().pixmap(64));
-                if (icons.size() >= 3)
-                    break;
+                QPixmap px = vp->getIcon().pixmap(64);
+                auto & pxInfo = cacheKeys[px.cacheKey()];
+                if (++pxInfo.count > 1) 
+                    pxInfo.multiply(icons);
+                else {
+                    pxInfo.px = px;
+                    pxInfo.index = icons.size();
+                    icons.push_back(px);
+                    if (icons.size() >= count)
+                        break;
+                }
             }
         }
-        if (icons.size() >= 3)
+        if (icons.size() >= count)
             break;
     }
 }

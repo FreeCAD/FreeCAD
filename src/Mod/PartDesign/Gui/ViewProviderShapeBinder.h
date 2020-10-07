@@ -84,6 +84,7 @@ private:
 
 private:
     std::vector<boost::signals2::scoped_connection> iconChangeConns;
+    int _dropID = 0;
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProviderSubShapeBinder> ViewProviderSubShapeBinderPython;

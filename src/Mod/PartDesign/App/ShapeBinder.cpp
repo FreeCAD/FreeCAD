@@ -295,6 +295,14 @@ SubShapeBinder::SubShapeBinder()
     // Support.setStatus(App::Property::ReadOnly, true);
     ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fuse solids from bound shapes");
     ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face using wires from bound shapes");
+    ADD_PROPERTY_TYPE(FillStyle, (static_cast<long>(0)), "Base",App::Prop_None,
+            "Face filling type when making curved face.\n\n"
+            "Stretch: the style with the flattest patches.\n"
+            "Coons: a rounded style of patch with less depth than those of Curved.\n"
+            "Curved: the style with the most rounded patches.");
+    static const char *FillStyleEnum[] = {"Stretch", "Coons", "Curved", 0};
+    FillStyle.setEnums(FillStyleEnum);
+
     ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
     ADD_PROPERTY_TYPE(Relative, (true), "Base",App::Prop_None,"Enable relative sub-object binding");
     ADD_PROPERTY_TYPE(BindMode, ((long)0), "Base", App::Prop_None, 
@@ -337,7 +345,7 @@ SubShapeBinder::~SubShapeBinder() {
 }
 
 void SubShapeBinder::setupObject() {
-    _Version.setValue(4);
+    _Version.setValue(5);
     checkPropertyStatus();
 }
 
@@ -476,8 +484,11 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     for(auto &l : Support.getSubListValues()) {
         ++idx;
         auto obj = l.getValue();
-        if(!obj || !obj->getNameInDocument())
+        if(!obj || !obj->getNameInDocument()) {
+            if (isRecomputing())
+                FC_THROWM(Base::RuntimeError,"Missing support object");
             continue;
+        }
         auto res = mats.emplace(obj,Base::Matrix4D());
         if(parent && res.second) {
             std::string resolvedSub = parentSub;
@@ -615,7 +626,6 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     };
 
     if(!init) {
-
         if(errMsg.size()) {
             // Notify user about restore error
             // if(!(options & UpdateInit))
@@ -672,30 +682,144 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
 
         result.makECompound(shapes);
 
-        bool fused = false;
-        if(Fuse.getValue() && result.hasSubShape(TopAbs_SOLID)) {
-            // If the compound has solid, fuse them together, and ignore other type of
-            // shapes
-            auto solids = result.getSubTopoShapes(TopAbs_SOLID);
-            if(solids.size() > 1) {
-                result.makEFuse(solids);
-                result = result.makERefine();
-            } else {
-                // wrap the single solid in compound to keep its placement
-                result.makECompound({solids.front()});
-            }
-            fused = true;
-        } 
-        
-        if(!fused && MakeFace.getValue()
-                && !result.hasSubShape(TopAbs_FACE)
-                && result.hasSubShape(TopAbs_EDGE))
-        {
-            result = result.makEWires();
+        if(MakeFace.getValue() && !result.hasSubShape(TopAbs_FACE)) {
             try {
-                result = result.makEFace(0);
-            }catch(...){}
+                if (_Version.getValue()>4
+                    && !result.hasSubShape(TopAbs_EDGE)
+                    && result.countSubShapes(TopAbs_VERTEX) > 1) {
+                    std::vector<Part::TopoShape> edges;
+                    Part::TopoShape first, prev;
+                    for (auto &vertex : result.getSubTopoShapes(TopAbs_VERTEX)) {
+                        if (prev.isNull()) {
+                            first = vertex;
+                            prev = vertex;
+                            continue;
+                        }
+                        BRepBuilderAPI_MakeEdge builder(
+                                BRep_Tool::Pnt(TopoDS::Vertex(prev.getShape())),
+                                BRep_Tool::Pnt(TopoDS::Vertex(vertex.getShape())));
+                        Part::TopoShape edge(builder.Shape());
+                        edge.mapSubElement({prev, vertex});
+                        edges.push_back(edge);
+                        prev = vertex;
+                    }
+                    auto p1 = BRep_Tool::Pnt(TopoDS::Vertex(prev.getShape()));
+                    auto p2 = BRep_Tool::Pnt(TopoDS::Vertex(first.getShape()));
+                    if (result.countSubShapes(TopAbs_VERTEX) > 2
+                            && p1.SquareDistance(p2) > Precision::SquareConfusion()) {
+                        BRepBuilderAPI_MakeEdge builder(p1, p2);
+                        Part::TopoShape edge(builder.Shape());
+                        edge.mapSubElement({prev, first});
+                        edges.push_back(edge);
+                    }
+                    result.makEWires(edges);
+                }
+                else if (result.hasSubShape(TopAbs_EDGE))
+                    result = result.makEWires();
+            } catch(Base::Exception & e) {
+                FC_LOG(getFullName() << " Failed to make wire: " << e.what());
+            } catch(Standard_Failure & e) {
+                FC_LOG(getFullName() << " Failed to make wire: " << e.GetMessageString());
+            } catch(...) {
+                FC_LOG(getFullName() << " Failed to make wire");
+            }
+
+            if (result.hasSubShape(TopAbs_WIRE)) {
+                bool done = false;
+                gp_Pln pln;
+                if (_Version.getValue() > 4 && !result.findPlane(pln)) {
+                    try {
+                        Part::TopoShape filledFace(getID(), getDocument()->getStringHasher());
+                        filledFace.makEFilledFace({result}, Part::TopoShape());
+                        if (filledFace.hasSubShape(TopAbs_FACE)) {
+                            done = true;
+                            result = filledFace;
+                        }
+                    } catch(Base::Exception & e) {
+                        FC_LOG(getFullName() << " Failed to make filled face: " << e.what());
+                    } catch(Standard_Failure & e) {
+                        FC_LOG(getFullName() << " Failed to make filled face: " << e.GetMessageString());
+                    } catch(...) {
+                        FC_LOG(getFullName() << " Failed to make filled face");
+                    }
+
+                    if (!result.hasSubShape(TopAbs_FACE)) {
+                        try {
+                            result = result.makEBSplineFace(
+                                    static_cast<Part::TopoShape::FillingStyle>(FillStyle.getValue()));
+                        } catch(Base::Exception & e) {
+                            FC_LOG(getFullName() << " Failed to make bspline face: " << e.what());
+                        } catch(Standard_Failure & e) {
+                            FC_LOG(getFullName() << " Failed to make bspline face: " << e.GetMessageString());
+                        } catch(...) {
+                            FC_LOG(getFullName() << " Failed to make bspline face");
+                        }
+                    }
+                }
+                if (!done) {
+                    try {
+                        result = result.makEFace(0);
+                    } catch(Base::Exception & e) {
+                        FC_LOG(getFullName() << " Failed to make face: " << e.what());
+                    } catch(Standard_Failure & e) {
+                        FC_LOG(getFullName() << " Failed to make face: " << e.GetMessageString());
+                    } catch(...) {
+                        FC_LOG(getFullName() << " Failed to make face");
+                    }
+                }
+            }
         }
+
+        if(Fuse.getValue()) {
+            if (_Version.getValue() > 4
+                    && !result.hasSubShape(TopAbs_SOLID)
+                    && result.hasSubShape(TopAbs_FACE))
+            {
+                if (!result.hasSubShape(TopAbs_SHELL)) {
+                    try {
+                            result = result.makEShell();
+                    } catch(Base::Exception & e) {
+                        FC_LOG(getFullName() << " Failed to make shell: " << e.what());
+                    } catch(Standard_Failure & e) {
+                        FC_LOG(getFullName() << " Failed to make shell: " << e.GetMessageString());
+                    } catch(...) {
+                        FC_LOG(getFullName() << " Failed to make shell");
+                    }
+                }
+
+                if (result.hasSubShape(TopAbs_SHELL)) {
+                    try {
+                        result = result.makESolid();
+                    } catch(Base::Exception & e) {
+                        FC_LOG(getFullName() << " Failed to make solid: " << e.what());
+                    } catch(Standard_Failure & e) {
+                        FC_LOG(getFullName() << " Failed to make solid: " << e.GetMessageString());
+                    } catch(...) {
+                        FC_LOG(getFullName() << " Failed to make solid");
+                    }
+                }
+            }
+            if (result.hasSubShape(TopAbs_SOLID)) {
+                // If the compound has solid, fuse them together, and ignore other type of
+                // shapes
+                auto solids = result.getSubTopoShapes(TopAbs_SOLID);
+                if(solids.size() > 1) {
+                    try {
+                        result.makEFuse(solids);
+                        result = result.makERefine();
+                    } catch(Base::Exception & e) {
+                        FC_LOG(getFullName() << " Failed to fuse: " << e.what());
+                    } catch(Standard_Failure & e) {
+                        FC_LOG(getFullName() << " Failed to fuse: " << e.GetMessageString());
+                    } catch(...) {
+                        FC_LOG(getFullName() << " Failed to fuse");
+                    }
+                } else {
+                    // wrap the single solid in compound to keep its placement
+                    result.makECompound({solids.front()});
+                }
+            }
+        } 
 
         result.setPlacement(Placement.getValue());
         Shape.setValue(result);
@@ -837,23 +961,12 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
         }
     }else if(!isRestoring() && !getDocument()->isPerformingTransaction()) {
         if(prop == &Support) {
-            if(!Support.testStatus(App::Property::User3)) {
-                std::map<App::DocumentObject *, std::vector<std::string> > values;
-                for(auto &link : Support.getSubListValues()) 
-                    values.emplace(link.getValue(),link.getSubValues());
-
-                Base::ObjectStatusLocker<App::Property::Status, App::Property>
-                    guard(App::Property::User2, &Support);
-                setLinks(std::move(values),true);
-            }
-            if (!Support.testStatus(App::Property::User2)) {
-                clearCopiedObjects();
-                setupCopyOnChange();
-                if(Support.getSubListValues().size()) {
-                    update(); 
-                    if(BindMode.getValue() == 2)
-                        Support.setValue(0);
-                }
+            clearCopiedObjects();
+            setupCopyOnChange();
+            if(Support.getSubListValues().size()) {
+                update(); 
+                if(BindMode.getValue() == 2)
+                    Support.setValue(0);
             }
         }else if(prop == &BindCopyOnChange) {
             setupCopyOnChange();
@@ -903,7 +1016,9 @@ void SubShapeBinder::checkPropertyStatus() {
     // Shape.setStatus(App::Property::Transient, !PartialLoad.getValue() && BindMode.getValue()==0);
 }
 
-void SubShapeBinder::setLinks(std::map<App::DocumentObject *, std::vector<std::string> >&&values, bool reset)
+void SubShapeBinder::setLinks(std::map<App::DocumentObject *,
+                              std::vector<std::string> >&&values,
+                              bool reset)
 {
     Base::ObjectStatusLocker<App::Property::Status, App::Property>
         guard(App::Property::User3, &Support);
@@ -954,8 +1069,14 @@ void SubShapeBinder::setLinks(std::map<App::DocumentObject *, std::vector<std::s
 
     if(!reset) {
         for(auto &link : Support.getSubListValues()) {
+            auto linkedObj = link.getValue();
+            if (!linkedObj || !linkedObj->getNameInDocument()) {
+                FC_WARN("Discard missing support: " 
+                        << link.getObjectName() << " " << link.getDocumentPath());
+                continue;
+            }
             auto subs = link.getSubValues();
-            auto &s = values[link.getValue()];
+            auto &s = values[linkedObj];
             if(s.empty()) {
                 s = std::move(subs);
                 continue;
@@ -994,6 +1115,32 @@ void SubShapeBinder::handleChangedPropertyType(
        return;
    }
    inherited::handleChangedPropertyType(reader,TypeName,prop);
+}
+
+App::DocumentObject *SubShapeBinder::getLinkedObject(
+        bool recurse, Base::Matrix4D *mat, bool transform, int depth) const
+{
+    if (mat && transform) 
+        *mat *= Placement.getValue().toMatrix();
+
+    auto self = const_cast<SubShapeBinder*>(this);
+
+    const auto &supports = Support.getSubListValues();
+    if (supports.empty())
+        return self;
+
+    auto &link = supports.front();
+    if (!link.getValue())
+        return self;
+
+    auto sobj = link.getValue()->getSubObject(link.getSubName(), nullptr, mat, true, depth+1);
+    if (!recurse || sobj == link.getValue())
+        return sobj;
+
+    App::GetApplication().checkLinkDepth(depth);
+    // set transform to false, because the above getSubObject() already include
+    // the transform of sobj
+    return sobj->getLinkedObject(true, mat, false, depth+1);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
