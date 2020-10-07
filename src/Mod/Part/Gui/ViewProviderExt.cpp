@@ -334,7 +334,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     Lighting.touch();
     DrawStyle.touch();
 
-    sPixmap = "Tree_Part";
+    sPixmap = "Part_3D_object";
     loadParameter();
 }
 
