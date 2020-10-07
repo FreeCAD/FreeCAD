@@ -1611,8 +1611,10 @@ class NestTaskPanel:
         if hasattr(obj.ViewObject,"Proxy"):
             if hasattr(obj.ViewObject.Proxy,"getIcon"):
                 i.setIcon(QtGui.QIcon(obj.ViewObject.Proxy.getIcon()))
+        elif hasattr(obj.ViewObject, "Icon"):
+            i.setIcon(QtGui.QIcon(obj.ViewObject.Icon))
         else:
-            i.setIcon(QtGui.QIcon(":/icons/Tree_Part.svg"))
+            i.setIcon(QtGui.QIcon(":/icons/Part_3D_object.svg"))
         form.addItem(i)
 
     def removeShapes(self):
