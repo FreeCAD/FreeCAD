@@ -31,6 +31,7 @@
 
 #include <boost/signals2.hpp>
 #include "ViewProviderBoolean.h"
+#include "TaskFeatureParameters.h"
 
 class Ui_TaskBooleanParameters;
 class QListWidgetItem;
@@ -72,6 +73,7 @@ private Q_SLOTS:
     void onTypeChanged(int index);
     void preselect(QListWidgetItem*);
     void onItemSelection();
+    void onNewSolidChanged(bool);
 
 protected:
     void syncSelection();
@@ -91,7 +93,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgBooleanParameters : public Gui::TaskView::TaskDialog
+class TaskDlgBooleanParameters : public TaskDlgFeatureParameters
 {
     Q_OBJECT
 

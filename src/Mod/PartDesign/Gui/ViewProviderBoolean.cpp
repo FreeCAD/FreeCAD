@@ -75,46 +75,9 @@ void ViewProviderBoolean::setupContextMenu(QMenu* menu, QObject* receiver, const
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderBoolean::setEdit(int ModNum)
+TaskDlgFeatureParameters *ViewProviderBoolean::getEditDialog()
 {
-    if (ModNum == ViewProvider::Default ) {
-        // When double-clicking on the item for this fillet the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgBooleanParameters *booleanDlg = qobject_cast<TaskDlgBooleanParameters *>(dlg);
-        if (booleanDlg && booleanDlg->getBooleanView() != this)
-            booleanDlg = 0; // another pad left open its task panel
-        if (dlg && !booleanDlg) {
-            QMessageBox msgBox;
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().closeDialog();
-            else
-                return false;
-        }
-
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-
-        // always change to PartDesign WB, remember where we come from
-        oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-        // start the edit dialog
-        if (booleanDlg)
-            Gui::Control().showDialog(booleanDlg);
-        else
-            Gui::Control().showDialog(new TaskDlgBooleanParameters(this));
-
-        return true;
-    }
-    else {
-        return PartGui::ViewProviderPart::setEdit(ModNum);
-    }
+    return new TaskDlgBooleanParameters( this );
 }
 
 void ViewProviderBoolean::attach(App::DocumentObject* obj) {

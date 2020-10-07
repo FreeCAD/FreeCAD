@@ -73,6 +73,8 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QW
             this, SLOT(onButtonRemove()));
     connect(ui->comboType, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onTypeChanged(int)));
+    connect(ui->checkBoxNewSolid, SIGNAL(toggled(bool)),
+            this, SLOT(onNewSolidChanged(bool)));
 
     this->groupLayout()->addWidget(proxy);
     
@@ -275,9 +277,9 @@ void TaskBooleanParameters::onButtonAdd()
         std::ostringstream ss;
         for(auto i=idx;i<objs.size();++i) {
             if(objset.count(objs[i])) {
-                QMessageBox::warning(this, tr("Boolean: Input error"), 
-                        tr("Invalid selection of ") + QString::fromUtf8(objs.back()->Label.getValue()));
-                return;
+                ss.str("");
+                idx = i;
+                continue;
             }
             if(i!=idx)
                 ss << objs[i]->getNameInDocument() << '.';
@@ -396,13 +398,22 @@ void TaskBooleanParameters::changeEvent(QEvent *e)
     }
 }
 
+void TaskBooleanParameters::onNewSolidChanged(bool on)
+{
+    PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
+    setupTransaction();
+    pcBoolean->NewSolid.setValue(on);
+    pcBoolean->recomputeFeature();
+}
+
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgBooleanParameters::TaskDlgBooleanParameters(ViewProviderBoolean *BooleanView)
-    : TaskDialog(),BooleanView(BooleanView)
+    : TaskDlgFeatureParameters(BooleanView), BooleanView(BooleanView)
 {
     assert(BooleanView);
     parameter  = new TaskBooleanParameters(BooleanView);
@@ -441,7 +452,6 @@ bool TaskDlgBooleanParameters::accept()
         return false;
     }
     parameter->setupTransaction();
-    BooleanView->Visibility.setValue(true);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     Gui::Command::commitCommand();

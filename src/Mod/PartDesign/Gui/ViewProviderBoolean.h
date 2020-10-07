@@ -51,7 +51,7 @@ public:
     virtual void onChanged(const App::Property* prop) override;
 
 protected:
-    virtual bool setEdit(int ModNum) override;
+    virtual TaskDlgFeatureParameters *getEditDialog() override;
     
     static const char* DisplayEnum[];
 

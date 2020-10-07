@@ -40,6 +40,16 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkBoxNewSolid">
+     <property name="toolTip">
+      <string>Make new solid using the tool features without base feature.</string>
+     </property>
+     <property name="text">
+      <string>New solid</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QListWidget" name="listWidgetBodies"/>
    </item>
    <item>
