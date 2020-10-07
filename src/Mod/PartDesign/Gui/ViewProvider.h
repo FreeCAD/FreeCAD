@@ -96,7 +96,6 @@ protected:
     virtual TaskDlgFeatureParameters *getEditDialog();
 
     std::string oldWb;
-    App::DocumentObject* oldTip;
     bool isSetTipIcon;
     mutable QPixmap pxTipIcon;
 

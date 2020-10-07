@@ -24,6 +24,7 @@
 #ifndef PARTGUI_ViewProviderBody_H
 #define PARTGUI_ViewProviderBody_H
 
+#include <App/DocumentObserver.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Gui/ViewProviderOriginGroupExtension.h>
 #include <QCoreApplication>
@@ -33,6 +34,8 @@ class SoSeparator;
 class SbBox3f;
 class SoGetBoundingBoxAction;
 namespace PartDesignGui {
+
+class ViewProvider;
 
 /** ViewProvider of the Body feature
  *  This class manages the visual appearance of the features in the
@@ -93,6 +96,9 @@ public:
 
     unsigned long generateIconColor(App::DocumentObject * feat = nullptr) const;
 
+    void beforeEdit(PartDesignGui::ViewProvider *vp);
+    void afterEdit(PartDesignGui::ViewProvider *vp);
+
 protected:
     /// Copy over all visual properties to the child features
     void unifyVisualProperty(const App::Property* prop);
@@ -100,6 +106,8 @@ protected:
     void setVisualBodyMode(bool bodymode);
 
 private:
+    std::vector<std::pair<App::DocumentObjectT, App::DocumentObjectT> > visibleFeatures;
+
     static const char* BodyModeEnum[];
 };
 

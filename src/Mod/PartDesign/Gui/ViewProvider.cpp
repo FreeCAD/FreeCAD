@@ -61,7 +61,7 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
 ViewProvider::ViewProvider()
-:oldWb(""), oldTip(NULL), isSetTipIcon(false)
+:oldWb(""), isSetTipIcon(false)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
     ADD_PROPERTY(IconColor,((long)0));
@@ -73,21 +73,6 @@ ViewProvider::~ViewProvider()
 
 bool ViewProvider::doubleClicked(void)
 {
-#if 0
-    // TODO May be move to setEdit()? (2015-07-26, Fat-Zer)
-	if (body != NULL) {
-        // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
-        // Also, this way the user won't be tempted to use future geometry as external references for the sketch
-		oldTip = body->Tip.getValue();
-        if (oldTip != this->pcObject)
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-        else
-            oldTip = NULL;
-    } else {
-        oldTip = NULL;
-    }
-#endif
-
     try {
 	    PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
         std::string Msg("Edit ");
@@ -149,6 +134,12 @@ bool ViewProvider::setEdit(int ModNum)
 
         // always change to PartDesign WB, remember where we come from
         oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
+
+        auto bodyVp = Base::freecad_dynamic_cast<ViewProviderBody>(
+                Gui::Application::Instance->getViewProvider(
+                    PartDesign::Body::findBodyOf(getObject())));
+        if (bodyVp)
+            bodyVp->beforeEdit(this);
 
         // start the edit dialog if
         if (!featureDlg) {
@@ -215,28 +206,24 @@ TaskDlgFeatureParameters *ViewProvider::getEditDialog() {
 
 void ViewProvider::unsetEdit(int ModNum)
 {
-    // return to the WB we were in before editing the PartDesign feature
-    if (!oldWb.empty())
-        Gui::Command::assureWorkbench(oldWb.c_str());
-
     if (ModNum == ViewProvider::Default) {
-        // when pressing ESC make sure to close the dialog
-#if 0
-        PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-#endif
-        Gui::Control().closeDialog();
-#if 0
-        if ((activeBody != NULL) && (oldTip != NULL)) {
-            Gui::Selection().clearSelection();
-            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+        // return to the WB we were in before editing the PartDesign feature
+        if (!oldWb.empty()) {
+            Gui::Command::assureWorkbench(oldWb.c_str());
+            oldWb.clear();
         }
-#endif
-        oldTip = NULL;
+
+        // when pressing ESC make sure to close the dialog
+        Gui::Control().closeDialog();
+
+        auto bodyVp = Base::freecad_dynamic_cast<ViewProviderBody>(
+                Gui::Application::Instance->getViewProvider(
+                    PartDesign::Body::findBodyOf(getObject())));
+        if (bodyVp)
+            bodyVp->afterEdit(this);
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
-        oldTip = NULL;
     }
 }
 
