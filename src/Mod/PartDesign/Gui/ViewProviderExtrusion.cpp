@@ -32,6 +32,7 @@
 #include "TaskPadParameters.h"
 #include <Mod/PartDesign/App/FeatureExtrusion.h>
 #include "ViewProviderExtrusion.h"
+#include "ViewProviderDatum.h"
 
 using namespace PartDesignGui;
 
@@ -40,6 +41,24 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderExtrusion,PartDesignGui::ViewProvider
 ViewProviderExtrusion::ViewProviderExtrusion()
 {
     sPixmap = "PartDesign_Extrusion.svg";
+
+    // Default to datum color
+    //
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
+            "User parameter:BaseApp/Preferences/Mod/PartDesign");
+    unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
+    App::Color col ( (uint32_t) shcol );
+    
+    MapFaceColor.setValue(false);
+    MapLineColor.setValue(false);
+    MapPointColor.setValue(false);
+    MapTransparency.setValue(false);
+
+    ShapeColor.setValue(col);
+    LineColor.setValue(col);
+    PointColor.setValue(col);
+    Transparency.setValue(60);
+    LineWidth.setValue(1);
 }
 
 ViewProviderExtrusion::~ViewProviderExtrusion()
