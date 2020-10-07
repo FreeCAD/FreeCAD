@@ -46,6 +46,7 @@
 #include <Base/Tools.h>
 
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/AutoTransaction.h>
@@ -2471,7 +2472,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
         bool syncPlacement = TreeParams::Instance()->SyncPlacement();
 
         bool setSelection = true;
-        std::vector<std::pair<App::DocumentObject*,std::string> > droppedObjects;
+        std::vector<App::SubObjectT> droppedObjects;
 
         std::vector<ItemInfo> infos;
         // Only keep text names here, because you never know when doing drag
@@ -2548,7 +2549,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
         }
 
         // Open command
-        App::AutoTransaction committer("Drop object");
+        App::AutoTransaction committer("Drop object", true);
         try {
             auto targetObj = targetItemObj->object()->getObject();
 
@@ -2681,31 +2682,47 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 ss.str("");
                 auto lines = manager->getLines();
 
+                App::DocumentObjectT objT(obj);
+                App::DocumentObjectT dropParentT;
+
                 if(da == Qt::LinkAction) {
                     auto parentItem = targetItemObj->getParentItem();
                     if (parentItem) {
+                        App::DocumentObjectT targetObjT(targetObj);
+                        App::DocumentObjectT parentT(parentItem->object()->getObject());
+
                         ss << Command::getObjectCmd(
                                 parentItem->object()->getObject(),0,".replaceObject(",true)
                             << Command::getObjectCmd(targetObj) << ","
                             << Command::getObjectCmd(obj) << ")";
 
+                        std::ostringstream ss2;
+                        dropParent = 0;
+                        parentItem->getSubName(ss2,dropParent);
+                        if (dropParent)
+                            dropParentT = App::DocumentObjectT(dropParent);
+                        
                         int res = parentItem->object()->replaceObject(targetObj, obj);
                         if (res <= 0) {
                             FC_THROWM(Base::RuntimeError,
                                     (res<0?"Cannot":"Failed to")
-                                    << " replace object " << targetObj->getNameInDocument()
-                                    << " with " << obj->getNameInDocument());
+                                    << " replace object " << targetObjT.getObjectName()
+                                    << " with " << objT.getObjectName());
                         }
 
-                        std::ostringstream ss2;
+                        // Check cyclic dependency, may throw
+                        App::Document::getDependencyList({targetObjT.getObject(),
+                                                          objT.getObject(),
+                                                          parentT.getObject()},
+                                                          App::Document::DepNoCycle);
 
-                        dropParent = 0;
-                        parentItem->getSubName(ss2,dropParent);
                         if(dropParent) 
-                            ss2 << parentItem->object()->getObject()->getNameInDocument() << '.';
-                        else 
-                            dropParent = parentItem->object()->getObject();
-                        ss2 << obj->getNameInDocument() << '.';
+                            ss2 << parentT.getObjectName() << '.';
+                        else  {
+                            dropParentT = parentT;
+                            dropParent = parentT.getObject();
+                        }
+                        ss2 << objT.getObjectName() << '.';
                         dropName = ss2.str();
                     } else {
                         FC_WARN("ignore replace operation without parent");
@@ -2715,6 +2732,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         dropName = targetSubname.str() + dropName;
                     
                 }else{
+                    App::DocumentObjectT parentT(vp->getObject());
+
                     ss << Command::getObjectCmd(vp->getObject())
                         << ".ViewObject.dropObject(" << Command::getObjectCmd(obj);
                     if(owner) {
@@ -2732,6 +2751,10 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         else
                             dropName = targetSubname.str() + dropName;
                     }
+
+                    // Check cyclic dependency, may throw
+                    App::Document::getDependencyList({parentT.getObject(), objT.getObject()},
+                                                      App::Document::DepNoCycle);
                 }
 
                 if(manager->getLines() == lines)
@@ -2742,18 +2765,22 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 // Construct the subname pointing to the dropped object
                 if(dropName.empty()) {
                     auto pos = targetSubname.tellp();
-                    targetSubname << obj->getNameInDocument() << '.' << std::ends;
+                    targetSubname << objT.getObjectName() << '.' << std::ends;
                     dropName = targetSubname.str();
                     targetSubname.seekp(pos);
                 }
 
                 Base::Matrix4D newMat;
-                auto sobj = dropParent->getSubObject(dropName.c_str(),0,&newMat);
-                if(!sobj) {
-                    FC_LOG("failed to find dropped object " 
-                            << dropParent->getFullName() << '.' << dropName);
-                    setSelection = false;
-                    continue;
+                dropParent = dropParentT.getObject();
+                App::DocumentObject *sobj = nullptr;
+                if (dropParent) {
+                    sobj = dropParent->getSubObject(dropName.c_str(),0,&newMat);
+                    if(!sobj) {
+                        FC_LOG("failed to find dropped object " 
+                                << dropParent->getFullName() << '.' << dropName);
+                        setSelection = false;
+                        continue;
+                    }
                 }
 
                 if(da!=Qt::CopyAction && propPlacement) {
@@ -2772,15 +2799,14 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         }
                     }
                 }
-                droppedObjects.emplace_back(dropParent,dropName);
+                droppedObjects.emplace_back(dropParent,dropName.c_str());
             }
             if(setSelection && droppedObjects.size()) {
                 Selection().selStackPush();
                 Selection().clearCompleteSelection();
                 SelectionNoTopParentCheck guard;
-                for(auto &v : droppedObjects)
-                    Selection().addSelection(v.first->getDocument()->getName(),
-                        v.first->getNameInDocument(), v.second.c_str());
+                for(auto &objT : droppedObjects)
+                    Selection().addSelection(objT);
                 Selection().selStackPush();
             }
         } catch (const Base::Exception& e) {
@@ -2858,7 +2884,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
         auto manager = Application::Instance->macroManager();
         App::AutoTransaction committer(
                 da==Qt::LinkAction?"Link object":
-                    da==Qt::CopyAction?"Copy object":"Move object");
+                    da==Qt::CopyAction?"Copy object":"Move object", true);
         try {
             std::vector<App::DocumentObject*> droppedObjs;
             for (auto &info : infos) {
