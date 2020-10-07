@@ -2197,7 +2197,9 @@ CmdMeasureLinear::CmdMeasureLinear()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Measure Linear");
-    sToolTipText  = QT_TR_NOOP("Measure Linear");
+    sToolTipText  = QT_TR_NOOP("Measure the linear distance between two points;\n"
+                               "if edges or faces are picked, it will measure\n"
+                               "between two vertices of them.");
     sWhatsThis    = "Part_Measure_Linear";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Linear";
@@ -2226,7 +2228,7 @@ CmdMeasureAngular::CmdMeasureAngular()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Measure Angular");
-    sToolTipText  = QT_TR_NOOP("Measure Angular");
+    sToolTipText  = QT_TR_NOOP("Measure the angle between two edges.");
     sWhatsThis    = "Part_Measure_Angular";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Angular";
@@ -2255,7 +2257,8 @@ CmdMeasureRefresh::CmdMeasureRefresh()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Refresh");
-    sToolTipText  = QT_TR_NOOP("Refresh");
+    sToolTipText  = QT_TR_NOOP("Recalculate the dimensions\n"
+                               "if the measured points have moved.");
     sWhatsThis    = "Part_Measure_Refresh";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Refresh";
@@ -2284,7 +2287,7 @@ CmdMeasureClearAll::CmdMeasureClearAll()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Clear All");
-    sToolTipText  = QT_TR_NOOP("Clear All");
+    sToolTipText  = QT_TR_NOOP("Clear all dimensions from the screen.");
     sWhatsThis    = "Part_Measure_Clear_All";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Clear_All";
@@ -2313,7 +2316,9 @@ CmdMeasureToggleAll::CmdMeasureToggleAll()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Toggle All");
-    sToolTipText  = QT_TR_NOOP("Toggle All");
+    sToolTipText  = QT_TR_NOOP("Toggle on and off "
+                               "all currently visible dimensions,\n"
+                               "direct, orthogonal, and angular.");
     sWhatsThis    = "Part_Measure_Toggle_All";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Toggle_All";
@@ -2349,7 +2354,8 @@ CmdMeasureToggle3d::CmdMeasureToggle3d()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Toggle 3D");
     sToolTipText  = QT_TR_NOOP("Toggle on and off "
-                               "the dimensions on the 3D view");
+                               "all direct dimensions,\n"
+                               "including angular.");
     sWhatsThis    = "Part_Measure_Toggle_3D";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Toggle_3D";
@@ -2378,7 +2384,10 @@ CmdMeasureToggleDelta::CmdMeasureToggleDelta()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Toggle Delta");
-    sToolTipText  = QT_TR_NOOP("Toggle Delta");
+    sToolTipText  = QT_TR_NOOP("Toggle on and off "
+                               "all orthogonal dimensions,\n"
+                               "meaning that a direct dimension will be decomposed\n"
+                               "into its X, Y, and Z components.");
     sWhatsThis    = "Part_Measure_Toggle_Delta";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Toggle_Delta";
