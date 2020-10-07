@@ -44,6 +44,7 @@
 #include "FeatureSolid.h"
 #include "FeatureSketchBased.h"
 #include "FeatureTransformed.h"
+#include "FeatureMultiTransform.h"
 #include "DatumPoint.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
@@ -188,22 +189,14 @@ bool Body::isAfterInsertPoint(App::DocumentObject* feature) {
 
 bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
 {
-    if (f == NULL)
+    if (!f || !f->isDerivedFrom(PartDesign::Transformed::getClassTypeId()))
         return false;
 
-    // ORIGINAL COMMENT:
-    // This can be recognized because the Originals property is empty (it is contained
-    // in the MultiTransform instead)
-    // COMMENT ON THE COMMENT:
-    // This is wrong because at the creation (addObject) and before assigning the originals, that 
-    // is when this code is executed, the originals property is indeed empty.
-    //
-    // However, for the purpose of setting the base feature, the transform feature has been modified
-    // to auto set it when the originals are not null. See:
-    // App::DocumentObjectExecReturn *Transformed::execute(void)
-    //
-    return (f->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId()) &&
-            static_cast<const PartDesign::Transformed*>(f)->Originals.getValues().empty());
+    for (auto obj : f->getInList()) {
+        if (obj->isDerivedFrom(PartDesign::MultiTransform::getClassTypeId()))
+            return true;
+    }
+    return false;
 }
 
 bool Body::isSolidFeature(const App::DocumentObject* f)
