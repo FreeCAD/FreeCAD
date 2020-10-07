@@ -89,6 +89,7 @@
 # include <Geom2d_TrimmedCurve.hxx>
 # include <GeomLProp_SLProps.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <GeomFill_BSplineCurves.hxx>
 # include <GeomFill_CorrectedFrenet.hxx>
 # include <GeomFill_CurveAndTrihedron.hxx>
 # include <GeomFill_EvolvedSection.hxx>
@@ -97,6 +98,7 @@
 # include <GeomFill_Sweep.hxx>
 # include <GeomLib.hxx>
 # include <GProp_GProps.hxx>
+# include <ShapeConstruct_Curve.hxx>
 # include <Law_BSpFunc.hxx>
 # include <Law_BSpline.hxx>
 # include <Law_BSpFunc.hxx>
@@ -3657,3 +3659,112 @@ bool TopoShape::isSame(const Data::ComplexGeoData &_other) const
         && _Shape.IsEqual(other._Shape);
 }
 
+TopoShape & TopoShape::makEBSplineFace(const TopoShape & shape, FillingStyle style, const char *op)
+{
+    int edgeCount = shape.countSubShapes(TopAbs_EDGE);
+    if (edgeCount < 2 || edgeCount > 4)
+        FC_THROWM(Base::CADKernelError, "Require minimum two, maimum four edges");
+
+    std::vector<Handle(Geom_BSplineCurve)> curves;
+    curves.reserve(4);
+    Standard_Real u1, u2; // contains output
+    for (auto & e : shape.getSubTopoShapes(TopAbs_EDGE)) {
+        const TopoDS_Edge& edge = TopoDS::Edge (e.getShape());
+        TopLoc_Location heloc; // this will be output
+        Handle(Geom_Curve) c_geom = BRep_Tool::Curve(edge, heloc, u1, u2); //The geometric curve
+        Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(c_geom); //Try to get BSpline curve
+        if (!bspline.IsNull()) {
+            gp_Trsf transf = heloc.Transformation();
+            bspline->Transform(transf); // apply original transformation to control points
+            //Store Underlying Geometry
+            curves.push_back(bspline);
+        }
+        else {
+            // try to convert it into a B-spline
+            BRepBuilderAPI_NurbsConvert mkNurbs(edge);
+            TopoDS_Edge nurbs = TopoDS::Edge(mkNurbs.Shape());
+            // avoid copying
+            TopLoc_Location heloc2; // this will be output
+            Handle(Geom_Curve) c_geom2 = BRep_Tool::Curve(nurbs, heloc2, u1, u2); //The geometric curve
+            Handle(Geom_BSplineCurve) bspline2 = Handle(Geom_BSplineCurve)::DownCast(c_geom2); //Try to get BSpline curve
+
+            if (!bspline2.IsNull()) {
+                gp_Trsf transf = heloc2.Transformation();
+                bspline2->Transform(transf); // apply original transformation to control points
+                //Store Underlying Geometry
+                curves.push_back(bspline2);
+            }
+            else {
+                // BRepBuilderAPI_NurbsConvert failed, try ShapeConstruct_Curve now
+                ShapeConstruct_Curve scc;
+                Handle(Geom_BSplineCurve) spline = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
+                if (spline.IsNull())
+                    Standard_Failure::Raise("A curve was not a B-spline and could not be converted into one.");
+                gp_Trsf transf = heloc2.Transformation();
+                spline->Transform(transf); // apply original transformation to control points
+                curves.push_back(spline);
+            }
+        }
+    }
+
+    GeomFill_FillingStyle fstyle;
+    switch (style) {
+    case FillingStyle_Coons:
+        fstyle = GeomFill_CoonsStyle;
+        break;
+    case FillingStyle_Curved:
+        fstyle = GeomFill_CurvedStyle;
+        break;
+    default:
+        fstyle = GeomFill_StretchStyle;
+    }
+    GeomFill_BSplineCurves aSurfBuilder; //Create Surface Builder
+
+    if (edgeCount == 2) {
+        aSurfBuilder.Init(curves[0], curves[1], fstyle);
+    }
+    else if (edgeCount == 3) {
+        aSurfBuilder.Init(curves[0], curves[1], curves[2], fstyle);
+    }
+    else if (edgeCount == 4) {
+        aSurfBuilder.Init(curves[0], curves[1], curves[2], curves[3], fstyle);
+    }
+
+    Handle(Geom_BSplineSurface) aSurface = aSurfBuilder.Surface();
+
+    BRepBuilderAPI_MakeFace aFaceBuilder;
+    Standard_Real v1, v2;
+    // transfer surface bounds to face
+    aSurface->Bounds(u1, u2, v1, v2);
+
+    aFaceBuilder.Init(aSurface, u1, u2, v1, v2, Precision::Confusion());
+
+    TopoShape aFace(0, Hasher, aFaceBuilder.Face());
+
+    if (!aFaceBuilder.IsDone()) {
+        FC_THROWM(Base::CADKernelError, "Face unable to be constructed");
+    }
+    if (aFace.isNull()) {
+        FC_THROWM(Base::CADKernelError, "Resulting Face is null");
+    }
+
+    std::ostringstream ss;
+    for (int i=0; i<edgeCount; ++i) {
+        ss.str("");
+        ss << "Edge" << ++i;
+        std::string element = ss.str();
+        for(auto &v : getElementMappedNames(element.c_str(),true)) {
+            auto &name = v.first;
+            auto &sids = v.second;
+            ss.str("");
+            encodeElementName(element[0],name,ss,sids,op,this->Tag);
+            aFace.setElementName(element.c_str(),name.c_str(),ss.str().c_str(),&sids);
+        }
+    }
+
+    std::vector<std::string> names;
+    names.push_back(aFace.getElementName("Edge1",MapToNamed));
+    aFace.setElementComboName("Face1",names,op);
+    *this = aFace;
+    return *this;
+}

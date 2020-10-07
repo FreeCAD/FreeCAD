@@ -349,6 +349,20 @@ public:
         return TopoShape(0,Hasher).makEFace(*this,op,maker);
     }
 
+    enum FillingStyle {
+        FillingStyle_Strech,
+        FillingStyle_Coons,
+        FillingStyle_Curved,
+    };
+    TopoShape &makEBSplineFace(const TopoShape &input,
+                               FillingStyle style = FillingStyle_Strech,
+                               const char *op=0);
+    TopoShape makEBSplineFace(FillingStyle style = FillingStyle_Strech,
+                              const char *op=0)
+    {
+        return TopoShape(0,Hasher).makEBSplineFace(*this, style, op);
+    }
+    
     TopoShape &makEFilledFace(const std::vector<TopoShape> &shapes, const TopoShape &surface, const char *op=0);
 
     TopoShape &makESolid(const std::vector<TopoShape> &shapes, const char *op=0);
