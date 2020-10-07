@@ -2047,12 +2047,12 @@ class FacebinderTaskPanel:
                     for subf in f[1]:
                         item = QtGui.QTreeWidgetItem(self.tree)
                         item.setText(0,f[0].Name)
-                        item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+                        item.setIcon(0, QtGui.QIcon(":/icons/Part_3D_object.svg"))
                         item.setText(1,subf)
                 else:
                     item = QtGui.QTreeWidgetItem(self.tree)
                     item.setText(0,f[0].Name)
-                    item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+                    item.setIcon(0, QtGui.QIcon(":/icons/Part_3D_object.svg"))
                     item.setText(1,f[1])
         self.retranslateUi(self.form)
 

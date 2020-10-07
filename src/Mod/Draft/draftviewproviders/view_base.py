@@ -515,14 +515,14 @@ _ViewProviderDraftAlt = ViewProviderDraftAlt
 class ViewProviderDraftPart(ViewProviderDraftAlt):
     """A view provider that displays a Part icon instead of a Draft icon.
 
-    The `getIcon` method is overridden to provide `Tree_Part.svg`.
+    The `getIcon` method is overridden to provide `Part_3D_object.svg`.
     """
 
     def __init__(self, vobj):
         super(ViewProviderDraftPart, self).__init__(vobj)
 
     def getIcon(self):
-        return ":/icons/Tree_Part.svg"
+        return ":/icons/Part_3D_object.svg"
 
 
 # Alias for compatibility with v0.18 and earlier
