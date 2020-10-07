@@ -83,6 +83,8 @@
         <file>icons/tools/Part_Transformed_Copy.svg</file>
     </qresource>
     <qresource>
+        <file>icons/Part_2D_object.svg</file>
+        <file>icons/Part_3D_object.svg</file>
         <file>icons/Part_BoxSelection.svg</file>
         <file>icons/Part_Export.svg</file>
         <file>icons/Part_Feature.svg</file>
@@ -90,8 +92,6 @@
         <file>icons/Part_Import.svg</file>
         <file>icons/PartWorkbench.svg</file>
         <file>icons/preferences-part_design.svg</file>
-        <file>icons/Tree_Part.svg</file>
-        <file>icons/Tree_Part2D.svg</file>
     </qresource>
     <qresource>
         <file>translations/Part_af.qm</file>
