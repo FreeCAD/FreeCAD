@@ -29,6 +29,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Origin.h>
@@ -136,9 +137,7 @@ void TaskMirroredParameters::setupUI()
 
 void TaskMirroredParameters::updateUI()
 {
-    if (blockUpdate)
-        return;
-    blockUpdate = true;
+    Base::StateLocker lock(blockUpdate);
 
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
 
@@ -147,8 +146,6 @@ void TaskMirroredParameters::updateUI()
         planeLinks.addLink(pcMirrored->MirrorPlane, getRefStr(pcMirrored->MirrorPlane.getValue(),pcMirrored->MirrorPlane.getSubValues()));
         planeLinks.setCurrentLink(pcMirrored->MirrorPlane);
     }
-
-    blockUpdate = false;
 }
 
 void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg)

@@ -39,6 +39,7 @@
 #include "ViewProviderTransformed.h"
 
 class QListWidget;
+class QTimer;
 
 namespace Gui {
 namespace Dialog {
@@ -144,6 +145,7 @@ public:
     App::DocumentObject* getSketchObject() const;   
 
     void exitSelectionMode();
+    void changeVisibility();
 
     virtual void apply() = 0;
 
@@ -167,11 +169,17 @@ public:
      */
     PartDesign::Transformed *getTopTransformedObject (bool silent=true) const;
 
+public Q_SLOTS:
+    void onToggledExpansion();
+
 protected Q_SLOTS:
     /// Connect the subTask OK button to the MultiTransform task
     virtual void onSubTaskButtonOK() {}
     void onChangedSubTransform(bool);
+    void onChangedNewSolid(bool);
     void originalSelectionChanged();
+    void onChangedOffset(const QVariant &, bool, bool);
+    void onUpdateViewTimer();
 
 protected:
     /**
@@ -192,12 +200,12 @@ protected:
     void hideBase();
     void showBase();
 
+    void kickUpdateViewTimer() const;
+
     void addReferenceSelectionGate(bool edge, bool face, bool planar=true, bool whole=false);    
 
     bool isViewUpdated() const;
     int getUpdateViewTimeout() const;
-
-    void checkVisibility();
 
 protected:
     /** Notifies when the object is about to be removed. */
@@ -223,7 +231,7 @@ protected:
 
     ViewProviderTransformed *TransformedView;
 
-    enum selectionModes { none, reference };
+    enum selectionModes { none, reference, placement };
     selectionModes selectionMode;
 
     /// The MultiTransform parent task of this task
@@ -234,9 +242,12 @@ protected:
     bool blockUpdate;    
 
     QCheckBox *checkBoxSubTransform = nullptr;
+    QCheckBox *checkBoxNewSolid = nullptr;
 
     QLabel *labelMessage = nullptr;
     boost::signals2::scoped_connection connMessage;
+
+    QTimer *updateViewTimer = nullptr;
 
     int transactionID = 0;
     bool onTopEnabled = true;
@@ -261,8 +272,14 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
+
+protected Q_SLOTS:
+    void onToggledTaskParameters();
+    void onToggledTaskOffset();
+
 protected:
     TaskTransformedParameters  *parameter;
+    Gui::TaskView::TaskBox     *taskTransformOffset;
 };
 
 } //namespace PartDesignGui

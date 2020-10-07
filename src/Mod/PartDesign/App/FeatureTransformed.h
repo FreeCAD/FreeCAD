@@ -56,7 +56,7 @@ public:
 
     App::PropertyBool CopyShape;
 
-    App::PropertyPlacement Offset;
+    App::PropertyPlacement TransformOffset;
 
     /**
      * Returns the BaseFeature property's object(if any) otherwise return first original,

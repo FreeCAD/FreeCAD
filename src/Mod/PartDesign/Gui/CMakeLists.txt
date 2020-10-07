@@ -46,6 +46,7 @@ set(PartDesignGui_MOC_HDRS
     TaskTransformedParameters.h
     TaskMirroredParameters.h
     TaskLinearPatternParameters.h
+    TaskGenericPatternParameters.h
     TaskPolarPatternParameters.h
     TaskScaledParameters.h
     TaskMultiTransformParameters.h
@@ -79,6 +80,7 @@ set(PartDesignGui_UIC_SRCS
     TaskTransformedMessages.ui
     TaskMirroredParameters.ui
     TaskLinearPatternParameters.ui
+    TaskGenericPatternParameters.ui
     TaskPolarPatternParameters.ui
     TaskScaledParameters.ui
     TaskMultiTransformParameters.ui
@@ -132,6 +134,8 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderMirrored.h
     ViewProviderLinearPattern.cpp
     ViewProviderLinearPattern.h
+    ViewProviderGenericPattern.cpp
+    ViewProviderGenericPattern.h
     ViewProviderPolarPattern.cpp
     ViewProviderPolarPattern.h
     ViewProviderScaled.cpp
@@ -213,6 +217,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskLinearPatternParameters.ui
     TaskLinearPatternParameters.cpp
     TaskLinearPatternParameters.h
+    TaskGenericPatternParameters.ui
+    TaskGenericPatternParameters.cpp
+    TaskGenericPatternParameters.h
     TaskPolarPatternParameters.ui
     TaskPolarPatternParameters.cpp
     TaskPolarPatternParameters.h

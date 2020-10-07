@@ -52,6 +52,7 @@
 #include <Gui/Command.h>
 #include <Gui/ViewParams.h>
 #include <Gui/DlgPropertyLink.h>
+#include <Gui/Placement.h>
 
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -144,6 +145,19 @@ int TaskTransformedParameters::getUpdateViewTimeout() const
     return 500;
 }
 
+void TaskTransformedParameters::onUpdateViewTimer()
+{
+    if (!blockUpdate) {
+        setupTransaction();
+        recomputeFeature();
+    }
+}
+
+void TaskTransformedParameters::kickUpdateViewTimer() const
+{
+    updateViewTimer->start();
+}
+
 void TaskTransformedParameters::originalSelectionChanged()
 {
     std::vector<App::DocumentObject*> objs;
@@ -179,28 +193,15 @@ void TaskTransformedParameters::setupTransaction()
         transactionID = tid;
 }
 
-// Make sure only some feature before the given one is visible
-void TaskTransformedParameters::checkVisibility() {
-    auto feat = getObject();
-    auto body = feat->getFeatureBody();
-    if(!body) return;
-    auto inset = feat->getInListEx(true);
-    inset.emplace(feat);
-    for(auto o : body->Group.getValues()) {
-        if(!o->Visibility.getValue() 
-                || !o->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
-            continue;
-        if(inset.count(o))
-            break;
-        return;
-    }
-    FCMD_OBJ_SHOW(getBaseObject());
-}
-
 void TaskTransformedParameters::setupUI() {
     if(!TransformedView || !proxy)
         return;
 
+    updateViewTimer = new QTimer(this);
+    updateViewTimer->setSingleShot(true);
+    updateViewTimer->setInterval(getUpdateViewTimeout());
+    connect(updateViewTimer, SIGNAL(timeout()), this, SLOT(onUpdateViewTimer()));
+    
     // remembers the initial transaction ID
     App::GetApplication().getActiveTransaction(&transactionID);
 
@@ -253,8 +254,15 @@ void TaskTransformedParameters::setupUI() {
     checkBoxSubTransform->setChecked(getObject()->SubTransform.getValue());
     connect(checkBoxSubTransform, SIGNAL(toggled(bool)), this, SLOT(onChangedSubTransform(bool)));
 
+    checkBoxNewSolid = new QCheckBox(this);
+    checkBoxNewSolid->setText(tr("New solid"));
+    checkBoxNewSolid->setToolTip(tr("Make a separate solid using the resulting pattern shape"));
+    checkBoxNewSolid->setChecked(getObject()->NewSolid.getValue());
+    connect(checkBoxNewSolid, SIGNAL(toggled(bool)), this, SLOT(onChangedNewSolid(bool)));
+
     auto layout = qobject_cast<QBoxLayout*>(proxy->layout());
     assert(layout);
+    layout->insertWidget(0,checkBoxNewSolid);
     layout->insertWidget(0,checkBoxSubTransform);
 
     auto editDoc = Gui::Application::Instance->editDocument();
@@ -560,6 +568,31 @@ void TaskTransformedParameters::onChangedSubTransform(bool checked) {
     recomputeFeature();
 }
 
+void TaskTransformedParameters::onChangedNewSolid(bool checked) {
+    setupTransaction();
+    getObject()->NewSolid.setValue(checked);
+    recomputeFeature();
+}
+
+void TaskTransformedParameters::onChangedOffset(const QVariant &data, bool incr, bool)
+{
+    setupTransaction();
+    auto pla = qvariant_cast<Base::Placement>(data);
+    if (incr)
+        getObject()->TransformOffset.setValue(getObject()->TransformOffset.getValue() * pla);
+    else
+        getObject()->TransformOffset.setValue(pla);
+    kickUpdateViewTimer();
+}
+
+void TaskTransformedParameters::onToggledExpansion()
+{
+    if (this->isGroupVisible())
+        exitSelectionMode();
+    else
+        selectionMode = placement;
+}
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -570,7 +603,25 @@ TaskDlgTransformedParameters::TaskDlgTransformedParameters(
     : TaskDlgFeatureParameters(TransformedView_), parameter(parameter)
 {
     assert(vp);
+
     Content.push_back(parameter);
+
+    auto feat = Base::freecad_dynamic_cast<PartDesign::Transformed>(vp->getObject());
+    if (feat) {
+        auto widget = new Gui::Dialog::Placement();
+        widget->showDefaultButtons(false);
+        widget->bindObject(&feat->TransformOffset);
+        taskTransformOffset = new Gui::TaskView::TaskBox(QPixmap(), tr("Transform offset"), true, 0);
+        taskTransformOffset->groupLayout()->addWidget(widget);
+
+        Content.push_back(taskTransformOffset);
+        taskTransformOffset->hideGroupBox();
+
+        connect(widget, SIGNAL(placementChanged(const QVariant &, bool, bool)),
+                parameter, SLOT(onChangedOffset(const QVariant &, bool, bool)));
+        connect(taskTransformOffset, SIGNAL(toggledExpansion()), this, SLOT(onToggledTaskOffset()));
+        connect(parameter, SIGNAL(toggledExpansion()), this, SLOT(onToggledTaskParameters()));
+    }
 }
 
 //==== calls from the TaskView ===============================================================
@@ -595,6 +646,19 @@ bool TaskDlgTransformedParameters::reject()
     return TaskDlgFeatureParameters::reject ();
 }
 
+void TaskDlgTransformedParameters::onToggledTaskOffset()
+{
+    if (taskTransformOffset->foldDirection() == parameter->foldDirection()) {
+        parameter->showHide();
+        parameter->onToggledExpansion();
+    }
+}
+
+void TaskDlgTransformedParameters::onToggledTaskParameters()
+{
+    if (taskTransformOffset->foldDirection()>0 && parameter->foldDirection()>0)
+        taskTransformOffset->showHide();
+}
 
 #include "moc_TaskTransformedParameters.cpp"
 

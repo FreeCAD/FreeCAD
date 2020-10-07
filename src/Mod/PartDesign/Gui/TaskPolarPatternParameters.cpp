@@ -30,6 +30,7 @@
 #endif
 
 #include <Base/UnitsApi.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Origin.h>
@@ -105,12 +106,6 @@ void TaskPolarPatternParameters::setupUI()
 {
     TaskTransformedParameters::setupUI();
 
-    updateViewTimer = new QTimer(this);
-    updateViewTimer->setSingleShot(true);
-    updateViewTimer->setInterval(getUpdateViewTimeout());
-    connect(updateViewTimer, SIGNAL(timeout()),
-            this, SLOT(onUpdateViewTimer()));
-    
     connect(ui->comboAxis, SIGNAL(activated(int)),
             this, SLOT(onAxisChanged(int)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
@@ -161,9 +156,7 @@ void TaskPolarPatternParameters::setupUI()
 
 void TaskPolarPatternParameters::updateUI()
 {
-    if (blockUpdate)
-        return;
-    blockUpdate = true;
+    Base::StateLocker lock(blockUpdate);
 
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
@@ -182,19 +175,6 @@ void TaskPolarPatternParameters::updateUI()
     ui->checkReverse->setChecked(reverse);
     ui->polarAngle->setValue(angle);
     ui->spinOccurrences->setValue(occurrences);
-
-    blockUpdate = false;
-}
-
-void TaskPolarPatternParameters::onUpdateViewTimer()
-{
-    setupTransaction();
-    recomputeFeature();
-}
-
-void TaskPolarPatternParameters::kickUpdateViewTimer() const
-{
-    updateViewTimer->start();
 }
 
 void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)

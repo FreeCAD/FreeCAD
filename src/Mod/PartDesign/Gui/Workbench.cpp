@@ -431,11 +431,12 @@ void Workbench::activated()
         "PartDesign_Mirrored",
         "PartDesign_LinearPattern",
         "PartDesign_PolarPattern",
+        "PartDesign_GenericPattern",
 //        "PartDesign_Scaled",
         "PartDesign_MultiTransform",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
-        "SELECT PartDesign::SketchBased",
+        "SELECT PartDesign::Feature",
         Transformed,
         "Transformation tools",
         "PartDesign_MultiTransform"
@@ -518,9 +519,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // transformations
     Gui::MenuItem* transformations = new Gui::MenuItem;
     transformations->setCommand("Apply a pattern");
-    *transformations << "PartDesign_Mirrored" << "PartDesign_LinearPattern"
-        << "PartDesign_PolarPattern" << "PartDesign_MultiTransform";
+    *transformations << "PartDesign_Mirrored" 
         //<< "PartDesign_Scaled"
+                     << "PartDesign_LinearPattern"
+                     << "PartDesign_PolarPattern"
+                     << "PartDesign_GenericPattern"
+                     << "PartDesign_MultiTransform";
 
     // dressups
     Gui::MenuItem* dressups = new Gui::MenuItem;
@@ -610,6 +614,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Mirrored"
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
+          << "PartDesign_GenericPattern"
 //          << "PartDesign_Scaled"
           << "PartDesign_MultiTransform"
           << "Separator"

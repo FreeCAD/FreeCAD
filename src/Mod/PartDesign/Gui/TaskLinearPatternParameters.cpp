@@ -30,6 +30,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -107,12 +108,6 @@ void TaskLinearPatternParameters::setupUI()
 {
     TaskTransformedParameters::setupUI();
 
-    updateViewTimer = new QTimer(this);
-    updateViewTimer->setSingleShot(true);
-    updateViewTimer->setInterval(getUpdateViewTimeout());
-    connect(updateViewTimer, SIGNAL(timeout()),
-            this, SLOT(onUpdateViewTimer()));
-
     connect(ui->comboDirection, SIGNAL(activated(int)),
             this, SLOT(onDirectionChanged(int)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
@@ -164,9 +159,7 @@ void TaskLinearPatternParameters::setupUI()
 
 void TaskLinearPatternParameters::updateUI()
 {
-    if (blockUpdate)
-        return;
-    blockUpdate = true;
+    Base::StateLocker lock(blockUpdate);
 
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
 
@@ -186,19 +179,6 @@ void TaskLinearPatternParameters::updateUI()
     ui->checkReverse->setChecked(reverse);
     ui->spinLength->setValue(length);
     ui->spinOccurrences->setValue(occurrences);
-
-    blockUpdate = false;
-}
-
-void TaskLinearPatternParameters::onUpdateViewTimer()
-{
-    setupTransaction();
-    recomputeFeature();
-}
-
-void TaskLinearPatternParameters::kickUpdateViewTimer() const
-{
-    updateViewTimer->start();
 }
 
 void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -377,7 +357,7 @@ void TaskLinearPatternParameters::apply()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgLinearPatternParameters::TaskDlgLinearPatternParameters(ViewProviderLinearPattern *LinearPatternView)
-    : TaskDlgTransformedParameters(LinearPatternView, new TaskLinearPatternParameters(LinearPatternView))
+    : TaskDlgTransformedParameters(LinearPatternView, new TaskLinearPatternParameters(LinearPatternView))
 {
 }
 

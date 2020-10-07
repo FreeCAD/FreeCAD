@@ -60,7 +60,6 @@ public:
     virtual void apply();
 
 private Q_SLOTS:
-    void onUpdateViewTimer();
     void onDirectionChanged(int num);
     void onCheckReverse(const bool on);
     void onLength(const double l);
@@ -78,11 +77,9 @@ protected:
 private:
     void setupUI();
     void updateUI();
-    void kickUpdateViewTimer() const;
 
 private:
     Ui_TaskLinearPatternParameters* ui;
-    QTimer* updateViewTimer;
 
     ComboLinks dirLinks;
 };

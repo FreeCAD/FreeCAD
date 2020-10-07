@@ -75,9 +75,12 @@ Transformed::Transformed()
     ADD_PROPERTY_TYPE(Refine,(0),"Base",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
 
     ADD_PROPERTY_TYPE(SubTransform,(true),"Base",(App::PropertyType)(App::Prop_None),
-        "Transform sub feature instead of the solid if is an additive or substractive feature (e.g. Pad, Pocket)");
+        "Transform sub feature instead of the solid if it is an additive or substractive feature (e.g. Pad, Pocket)");
     ADD_PROPERTY_TYPE(CopyShape,(true),"Base",(App::PropertyType)(App::Prop_None),
         "Make a copy of each transformed shape");
+
+    ADD_PROPERTY_TYPE(TransformOffset,(Base::Placement()),"Base",(App::PropertyType)(App::Prop_None),
+        "Offset placement applied to the source shape before pattern transformation.");
 
     //init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -202,8 +205,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
 
     auto trsfInv = support.getShape().Location().Transformation().Inverted();
-    if (!Offset.getValue().isIdentity())
-        trsfInv.Multiply(TopoShape::convert(Offset.getValue().toMatrix()));
+    if (!TransformOffset.getValue().isIdentity())
+        trsfInv.Multiply(TopoShape::convert(TransformOffset.getValue().toMatrix()));
 
     // create an untransformed copy of the support shape
     support.setTransform(Base::Matrix4D());
@@ -314,7 +317,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             bool fuse = fuses[i++];
 
             std::vector<gp_Trsf>::const_iterator t = transformations.begin();
-            if (idx) {
+            if (idx != 0) {
                 // Skip first transformation in case we do not transform the
                 // first instance (i.e. original feature belongs to the same
                 // sibling group)
@@ -328,7 +331,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 if (shapeCopy.isNull())
                     return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
                 try {
-                    shapeCopy = shapeCopy.makETransform(*t,ss.str().c_str());
+                    shapeCopy = shapeCopy.makETransform(*t, ss.str().c_str(), true);
                     if(fuse)
                         fuseShapes.push_back(shapeCopy);
                     else
@@ -379,6 +382,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     int i=0;
     for (TopoShape &shape : originalShapes) {
         auto &sub = originalSubs[i];
+        int idx = startIndices[i];
         bool fuse = fuses[i++];
 
         // Transform the add/subshape and collect the resulting shapes for overlap testing
@@ -387,8 +391,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         std::vector<TopoDS_Shape> v_transformedShapes;*/
 
         std::vector<gp_Trsf>::const_iterator t = transformations.begin();
-        ++t; // Skip first transformation, which is always the identity transformation
-        for (int idx=1; t != transformations.end(); ++t,++idx) {
+        if (idx != 0)
+            ++t; // Skip first transformation, which is always the identity transformation
+        for (; t != transformations.end(); ++t,++idx) {
             // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
             // seems to be pretty broken
             ss.str("");
@@ -398,7 +403,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
 
             try {
-                shapeCopy = shapeCopy.makETransform(*t,ss.str().c_str());
+                shapeCopy = shapeCopy.makETransform(*t, ss.str().c_str(), true);
             }catch(Standard_Failure &) {
                 std::string msg("Transformation failed ");
                 msg += sub;

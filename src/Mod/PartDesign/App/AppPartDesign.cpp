@@ -45,6 +45,7 @@
 #include "FeatureTransformed.h"
 #include "FeatureMirrored.h"
 #include "FeatureLinearPattern.h"
+#include "FeatureGenericPattern.h"
 #include "FeaturePolarPattern.h"
 #include "FeatureScaled.h"
 #include "FeatureMultiTransform.h"
@@ -101,6 +102,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::LinearPattern               ::init();
     PartDesign::PolarPattern                ::init();
     PartDesign::Scaled                      ::init();
+    PartDesign::GenericPattern              ::init();
     PartDesign::MultiTransform              ::init();
     PartDesign::Hole                        ::init();
     PartDesign::Body                        ::init();

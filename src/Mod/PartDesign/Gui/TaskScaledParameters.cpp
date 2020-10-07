@@ -32,6 +32,7 @@
 #include "TaskScaledParameters.h"
 #include "TaskMultiTransformParameters.h"
 #include <Base/UnitsApi.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -112,9 +113,7 @@ void TaskScaledParameters::setupUI()
 
 void TaskScaledParameters::updateUI()
 {
-    if (blockUpdate)
-        return;
-    blockUpdate = true;
+    Base::StateLocker lock(blockUpdate);
 
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
 
@@ -123,8 +122,6 @@ void TaskScaledParameters::updateUI()
 
     ui->spinFactor->setValue(factor);
     ui->spinOccurrences->setValue(occurrences);
-
-    blockUpdate = false;
 }
 
 void TaskScaledParameters::onFactor(const double f)

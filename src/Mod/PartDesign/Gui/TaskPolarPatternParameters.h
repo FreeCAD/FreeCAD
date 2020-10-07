@@ -60,7 +60,6 @@ public:
     void apply();
 
 private Q_SLOTS:
-    void onUpdateViewTimer();
     void onAxisChanged(int num);
     void onCheckReverse(const bool on);
     void onAngle(const double a);
@@ -80,11 +79,9 @@ protected:
 private:
     void setupUI();
     void updateUI();
-    void kickUpdateViewTimer() const;
 
 private:
     Ui_TaskPolarPatternParameters* ui;
-    QTimer* updateViewTimer;
 
     ComboLinks axesLinks;
 };

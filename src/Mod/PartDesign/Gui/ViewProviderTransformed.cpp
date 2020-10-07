@@ -88,6 +88,9 @@ Gui::ViewProvider *ViewProviderTransformed::startEditing(int ModNum) {
 
 bool ViewProviderTransformed::setEdit(int ModNum)
 {
+    if (ModNum != ViewProvider::Default)
+        return ViewProvider::setEdit(ModNum);
+
     auto sep = new SoSeparator();
     sep->renderCaching = SoSeparator::OFF;
     pcRejectedRoot = sep;
@@ -134,6 +137,9 @@ void ViewProviderTransformed::unsetEdit(int ModNum)
 {
     ViewProvider::unsetEdit(ModNum);
 
+    if (ModNum != ViewProvider::Default)
+        return;
+
     while (pcRejectedRoot->getNumChildren() > 7) {
         SoSeparator* sep = static_cast<SoSeparator*>(pcRejectedRoot->getChild(7));
         SoMultipleCopy* rejectedTrfms = static_cast<SoMultipleCopy*>(sep->getChild(2));
@@ -147,6 +153,7 @@ void ViewProviderTransformed::unsetEdit(int ModNum)
     pcRoot->removeChild(pcRejectedRoot);
 
     pcRejectedRoot->unref();
+    pcRejectedRoot = nullptr;
 }
 
 bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)

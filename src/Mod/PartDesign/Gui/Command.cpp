@@ -414,7 +414,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         openCommand("Create SubShapeBinder");
         if (pcActiveBody) {
             Gui::cmdAppObject(pcActiveBody, std::ostringstream()
-                    << "newObject('PartDesign::ShapeBinder', '" << FeatName << "')");
+                    << "newObject('PartDesign::SubShapeBinder', '" << FeatName << "')");
             binder = dynamic_cast<PartDesign::SubShapeBinder*>(pcActiveBody->getObject(FeatName.c_str()));
         } else {
             doCommand(Command::Doc,
@@ -2016,8 +2016,10 @@ bool CmdPartDesignThickness::isActive(void)
 // Common functions for all Transformed features
 //===========================================================================
 
-void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const std::string& which,
-    boost::function<void(App::DocumentObject*, std::vector<App::DocumentObject*>)> func)
+template<class F>
+void prepareTransformed(PartDesign::Body *pcActiveBody,
+                        Gui::Command* cmd,
+                        const std::string& which, F func)
 {
     std::string FeatName = cmd->getUniqueObjectName(which.c_str(), pcActiveBody);
 
@@ -2105,8 +2107,8 @@ void CmdPartDesignMirrored::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [pcActiveBody, cmd](
-            App::DocumentObject *Feat, std::vector<App::DocumentObject*> features)
+    auto worker = [pcActiveBody, cmd](App::DocumentObject *Feat,
+                                      const std::vector<App::DocumentObject*> &features)
     {
         bool direction = false;
         if (features.size()
@@ -2165,8 +2167,8 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [pcActiveBody, cmd](
-            App::DocumentObject *Feat, std::vector<App::DocumentObject*> features)
+    auto worker = [pcActiveBody, cmd](App::DocumentObject *Feat,
+                                      const std::vector<App::DocumentObject*> &features)
     {
         bool direction = false;
         if (features.size()
@@ -2193,6 +2195,52 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
 }
 
 bool CmdPartDesignLinearPattern::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
+// PartDesign_GenericPattern
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignGenericPattern)
+
+CmdPartDesignGenericPattern::CmdPartDesignGenericPattern()
+  : Command("PartDesign_GenericPattern")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("GenericPattern");
+    sToolTipText  = QT_TR_NOOP("Create a generic pattern feature");
+    sWhatsThis    = "PartDesign_GenericPattern";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_GenericPattern";
+}
+
+void CmdPartDesignGenericPattern::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // No PartDesign feature without Body past FreeCAD 0.16
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
+
+    Gui::Command* cmd = this;
+    auto worker = [pcActiveBody, cmd](App::DocumentObject *Feat,
+                                      const std::vector<App::DocumentObject*> &features)
+    {
+        (void)features;
+        finishTransformed(cmd, Feat);
+    };
+
+    prepareTransformed(pcActiveBody, this, "GenericPattern", worker);
+}
+
+bool CmdPartDesignGenericPattern::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -2228,9 +2276,9 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [pcActiveBody, cmd](
-            App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
-
+    auto worker = [pcActiveBody, cmd](App::DocumentObject *Feat,
+                                      const std::vector<App::DocumentObject*> &features)
+    {
         bool direction = false;
         if (features.size()
                 && features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
@@ -2288,8 +2336,9 @@ void CmdPartDesignScaled::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
-
+    auto worker = [pcActiveBody, cmd](App::DocumentObject *Feat,
+                                      const std::vector<App::DocumentObject*> &features)
+    {
         if (!Feat || features.empty())
             return;
 
@@ -2601,6 +2650,7 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignLinearPattern());
     rcCmdMgr.addCommand(new CmdPartDesignPolarPattern());
     //rcCmdMgr.addCommand(new CmdPartDesignScaled());
+    rcCmdMgr.addCommand(new CmdPartDesignGenericPattern());
     rcCmdMgr.addCommand(new CmdPartDesignMultiTransform());
 
     rcCmdMgr.addCommand(new CmdPartDesignBoolean());
