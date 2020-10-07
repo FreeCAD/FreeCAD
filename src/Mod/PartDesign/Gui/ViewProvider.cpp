@@ -275,7 +275,10 @@ void ViewProvider::updateData(const App::Property* prop)
     } else if (prop == &feature->Suppress) {
         signalChangeIcon();
     } else if (prop == &feature->Shape) {
-        if (!IconColor.getValue().getPackedValue()) {
+        if (!getObject()->getDocument()->isPerformingTransaction()
+                && !getObject()->getDocument()->testStatus(App::Document::Restoring)
+                && !IconColor.getValue().getPackedValue())
+        {
             auto body = Base::freecad_dynamic_cast<ViewProviderBody>(
                     Gui::Application::Instance->getViewProvider(
                         PartDesign::Body::findBodyOf(getObject())));
@@ -285,16 +288,20 @@ void ViewProvider::updateData(const App::Property* prop)
                     IconColor.setValue(color);
             }
         }
-    } else if (prop == &feature->NewSolid) {
+    } else if (prop == &feature->BaseFeature && !prop->testStatus(App::Property::User3)) {
         PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
         auto bodyVp = Base::freecad_dynamic_cast<ViewProviderBody>(
                 Gui::Application::Instance->getViewProvider(body));
-        if (bodyVp && IconColor.getValue().getPackedValue()) {
+        if (!getObject()->getDocument()->isPerformingTransaction()
+                && !getObject()->getDocument()->testStatus(App::Document::Restoring)
+                && bodyVp
+                && IconColor.getValue().getPackedValue())
+        {
             unsigned long color = 0;
             if (!PartDesign::Body::isSolidFeature(getObject()))
                 this->IconColor.setValue(0);
             else {
-                if (feature->NewSolid.getValue())
+                if (!feature->BaseFeature.getValue())
                     color = bodyVp->generateIconColor();
                 for (auto obj : body->getSiblings(feature)) {
                     auto vp = Base::freecad_dynamic_cast<ViewProvider>(
