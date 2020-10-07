@@ -1837,7 +1837,7 @@ def explorer(filename,schema="IFC2X3_TC1.exp"):
             elif e.type in ["IFCROOF"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Arch_Roof_Tree.svg"))
             elif e.type in ["IFCEXTRUDEDAREASOLID","IFCCLOSEDSHELL"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Tree_Part.svg"))
+                item.setIcon(1, QtGui.QIcon(":/icons/Part_3D_object.svg"))
             elif e.type in ["IFCFACE"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Draft_SwitchMode.svg"))
             elif e.type in ["IFCARBITRARYCLOSEDPROFILEDEF","IFCPOLYLOOP"]:
