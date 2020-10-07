@@ -294,6 +294,8 @@ const int TreeWidget::ObjectType = 1001;
 static bool _DragEventFilter;
 #endif
 static bool _DraggingActive;
+static bool _Dropping;
+static int _DropID;
 static Qt::DropActions _DropActions;
 static std::vector<SelUpMenu*> _SelUpMenus;
 
@@ -1952,6 +1954,11 @@ bool TreeWidget::isDragging()
     return _DraggingActive;
 }
 
+int TreeWidget::isDropping()
+{
+    return _Dropping ? _DropID : 0;
+}
+
 void TreeWidget::keyPressEvent(QKeyEvent *event)
 {
 #if 0
@@ -2391,6 +2398,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
 {
     //FIXME: This should actually be done inside dropMimeData
 
+    Base::StateLocker guard(_Dropping);
+    if (++_DropID == 0)
+        _DropID = 1;
     bool touched = false;
 
     QTreeWidgetItem* targetItem = nullptr;
@@ -2701,7 +2711,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 auto lines = manager->getLines();
 
                 App::DocumentObjectT objT(obj);
-                App::DocumentObjectT dropParentT;
+                App::DocumentObjectT dropParentT(dropParent);
 
                 if(da == Qt::LinkAction) {
                     auto parentItem = targetItemObj->getParentItem();

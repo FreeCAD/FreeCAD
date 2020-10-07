@@ -109,6 +109,7 @@ public:
     static void expandSelectedItems(TreeItemMode mode);
     static bool setupObjectMenu(QMenu &menu, const App::SubObjectT *sobj=nullptr);
     static bool isDragging();
+    static int isDropping();
     static void restoreDocumentItem(Gui::Document *gdoc, Base::XMLReader &reader);
     static bool saveDocumentItem(const Gui::Document *gdoc, Base::Writer &writer, const char *key);
 
