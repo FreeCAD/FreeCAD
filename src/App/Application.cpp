@@ -1713,7 +1713,7 @@ void Application::init(int argc, char ** argv)
 #endif
         initTypes();
 
-#if (BOOST_VERSION < 104600) || (BOOST_FILESYSTEM_VERSION == 2)
+#if (BOOST_FILESYSTEM_VERSION == 2)
         boost::filesystem::path::default_name_check(boost::filesystem::no_check);
 #endif
 
