@@ -753,11 +753,17 @@ Body::getSiblings(App::DocumentObject *obj) const
             if (!base)
                 break;
             res.push_front(base);
+            if (res.size() >= Group.getValues().size())
+                break;
             if (!isSolidFeature(base))
                 break;
             feature = Base::freecad_dynamic_cast<PartDesign::Feature>(base);
         }
         res.push_back(obj);
+        if (res.size() >= Group.getValues().size()) {
+            // This means cyclic dependency actually
+            return res;
+        }
     }
 
     const auto & objs = Group.getValues();
@@ -768,7 +774,7 @@ Body::getSiblings(App::DocumentObject *obj) const
                 || !isSolidFeature(o))
             continue;
 
-        if (static_cast<PartDesign::Feature*>(o)->getBaseObject(true) == obj) {
+        if (static_cast<PartDesign::Feature*>(o)->BaseFeature.getValue() == obj) {
             obj = o;
             res.push_back(o);
         }
