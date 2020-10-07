@@ -757,9 +757,6 @@ struct WireJoiner {
 
     // split any edges that are intersected by other edge's end point in the middle
     void splitEdges() {
-#if (BOOST_VERSION < 105500)
-        throw Base::RuntimeError("Module must be built with boost version >= 1.55");
-#else
         for(auto it=edges.begin();it!=edges.end();) {
             const auto &info = *it;
             if(!info.hasBox) {
@@ -832,16 +829,12 @@ struct WireJoiner {
             add(it=edges.emplace(itNext,mkEdge1.Edge(),true));
             add(edges.emplace(itNext,mkEdge2.Edge(),true));
         }
-#endif
     }
 
     // This algorithm tries to find a set of closed wires that includes as many
     // edges (added by calling add() ) as possible. One edge may be included
     // in more than one closed wires if it connects to more than one edges.
     int findClosedWires(double tol = Precision::Confusion()) {
-#if (BOOST_VERSION < 105500)
-        throw Base::RuntimeError("Module must be built with boost version >= 1.55");
-#else
         // Note on tolerance: It seems OCC projector sometimes mess up the
         // tolerance of edges which are supposed to be connected. So use a
         // lesser precision below, and call makeCleanWire to fix the tolerance
@@ -1011,7 +1004,6 @@ struct WireJoiner {
         }
         FC_TIME_LOG(t,"found " << count << " closed wires, skipped " << skips << "edges. ");
         return skips;
-#endif
     }
 
     //! make a clean wire with sorted, oriented, connected, etc edges
