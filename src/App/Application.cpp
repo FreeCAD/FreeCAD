@@ -2374,22 +2374,9 @@ void Application::LoadParameters(void)
 // fix weird error while linking boost (all versions of VC)
 // VS2010: https://forum.freecadweb.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
 namespace boost { namespace program_options { std::string arg="arg"; } }
-#if (defined (BOOST_VERSION) && (BOOST_VERSION >= 104100))
 namespace boost { namespace program_options {
     const unsigned options_description::m_default_line_length = 80;
 } }
-#endif
-#endif
-
-#if 0 // it seems that SUSE has fixed the broken boost package
-// reported for SUSE in issue #0000208
-#if defined(__GNUC__)
-#if BOOST_VERSION == 104400
-namespace boost { namespace filesystem {
-    bool no_check( const std::string & ) { return true; }
-} }
-#endif
-#endif
 #endif
 
 pair<string, string> customSyntax(const string& s)
