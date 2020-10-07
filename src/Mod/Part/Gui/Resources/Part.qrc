@@ -31,6 +31,15 @@
         <file>icons/create/Part_Tube.svg</file>
     </qresource>
     <qresource>
+        <file>icons/measure/Part_Measure_Angular.svg</file>
+        <file>icons/measure/Part_Measure_Linear.svg</file>
+        <file>icons/measure/Part_Measure_Refresh.svg</file>
+        <file>icons/measure/Part_Measure_Step_Active.svg</file>
+        <file>icons/measure/Part_Measure_Step_Done.svg</file>
+        <file>icons/measure/Part_Measure_Toggle_3D.svg</file>
+        <file>icons/measure/Part_Measure_Toggle_Delta.svg</file>
+    </qresource>
+    <qresource>
         <file>icons/parametric/Part_Box_Parametric.svg</file>
         <file>icons/parametric/Part_Circle_Parametric.svg</file>
         <file>icons/parametric/Part_Cone_Parametric.svg</file>
@@ -72,13 +81,6 @@
         <file>icons/Part_Feature.svg</file>
         <file>icons/Part_FeatureImport.svg</file>
         <file>icons/Part_Import.svg</file>
-        <file>icons/Part_Measure_Angular.svg</file>
-        <file>icons/Part_Measure_Linear.svg</file>
-        <file>icons/Part_Measure_Refresh.svg</file>
-        <file>icons/Part_Measure_Step_Active.svg</file>
-        <file>icons/Part_Measure_Step_Done.svg</file>
-        <file>icons/Part_Measure_Toggle_3d.svg</file>
-        <file>icons/Part_Measure_Toggle_Delta.svg</file>
         <file>icons/Part_Points_from_Mesh.svg</file>
         <file>icons/Part_Refine_Shape.svg</file>
         <file>icons/Part_Reverse_Shape.svg</file>

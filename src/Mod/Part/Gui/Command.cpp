@@ -2337,21 +2337,22 @@ bool CmdMeasureToggleAll::isActive(void)
 }
 
 //===========================================================================
-// Part_Measure_Toggle_3d
+// Part_Measure_Toggle_3D
 //===========================================================================
 
 DEF_STD_CMD_A(CmdMeasureToggle3d)
 
 CmdMeasureToggle3d::CmdMeasureToggle3d()
-  : Command("Part_Measure_Toggle_3d")
+  : Command("Part_Measure_Toggle_3D")
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Toggle 3d");
-    sToolTipText  = QT_TR_NOOP("Toggle 3d");
-    sWhatsThis    = "Part_Measure_Toggle_3d";
+    sMenuText     = QT_TR_NOOP("Toggle 3D");
+    sToolTipText  = QT_TR_NOOP("Toggle on and off "
+                               "the dimensions on the 3D view");
+    sWhatsThis    = "Part_Measure_Toggle_3D";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Measure_Toggle_3d";
+    sPixmap       = "Part_Measure_Toggle_3D";
 }
 
 void CmdMeasureToggle3d::activated(int iMsg)

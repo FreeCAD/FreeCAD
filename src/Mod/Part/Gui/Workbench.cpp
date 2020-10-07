@@ -154,7 +154,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "Part_Measure_Refresh"
              << "Part_Measure_Clear_All"
              << "Part_Measure_Toggle_All"
-             << "Part_Measure_Toggle_3d"
+             << "Part_Measure_Toggle_3D"
              << "Part_Measure_Toggle_Delta";
 
     // leave this for 0.14 until #0000477 is fixed
@@ -223,7 +223,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
              << "Part_Measure_Refresh"
              << "Part_Measure_Clear_All"
              << "Part_Measure_Toggle_All"
-             << "Part_Measure_Toggle_3d"
+             << "Part_Measure_Toggle_3D"
              << "Part_Measure_Toggle_Delta";
 
     return root;

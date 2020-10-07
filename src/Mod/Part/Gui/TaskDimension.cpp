@@ -1457,8 +1457,8 @@ PartGui::DimensionControl::DimensionControl(QWidget* parent): QWidget(parent)
 				QObject::tr("Reset Dialog"), this);
   commandLayout->addWidget(resetButton);
 
-  QPushButton *toggle3dButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Toggle_3d"),
-						QObject::tr("Toggle 3d"), this);
+  QPushButton *toggle3dButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Toggle_3D"),
+						QObject::tr("Toggle 3D"), this);
   QObject::connect(toggle3dButton, SIGNAL(clicked(bool)), this, SLOT(toggle3dSlot(bool)));
   commandLayout->addWidget(toggle3dButton);
 

@@ -127,6 +127,7 @@ PyMOD_INIT_FUNC(PartGui)
 
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/booleans"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/create"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/measure"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/parametric"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/tools"));
 
