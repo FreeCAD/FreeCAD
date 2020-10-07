@@ -78,6 +78,7 @@
 #include <App/OriginFeature.h>
 #include <App/Document.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/Part/App/Geometry.h>
 #include "FeatureSketchBased.h"
 #include "DatumPlane.h"
 #include "DatumLine.h"
@@ -201,14 +202,27 @@ TopoShape ProfileBased::getVerifiedFace(bool silent) const {
             }
             shape = Part::Feature::getTopoShape(obj,sub.c_str(),!sub.empty());
         }
-        if(shape.isNull())
+        if(shape.isNull()) {
+            if (silent)
+                return shape;
             throw Base::CADKernelError("Linked shape object is empty");
+        }
         if(!shape.hasSubShape(TopAbs_FACE)) {
-            if(!shape.hasSubShape(TopAbs_WIRE))
-                shape = shape.makEWires();
-            if(shape.hasSubShape(TopAbs_WIRE)) {
-                shape.Hasher = getDocument()->getStringHasher();
-                return shape.makEFace(0,"Part::FaceMakerCheese");
+            try {
+                if(!shape.hasSubShape(TopAbs_WIRE))
+                    shape = shape.makEWires();
+                if(shape.hasSubShape(TopAbs_WIRE)) {
+                    shape.Hasher = getDocument()->getStringHasher();
+                    return shape.makEFace(0,"Part::FaceMakerCheese");
+                }
+            } catch (const Base::Exception &) {
+                if (silent)
+                    return TopoShape();
+                throw;
+            } catch (const Standard_Failure &) {
+                if (silent)
+                    return TopoShape();
+                throw;
             }
         }
         int count = shape.countSubShapes(TopAbs_FACE);
@@ -1160,7 +1174,7 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
     throw Base::TypeError("Rotation axis reference is invalid");
 }
 
-Base::Vector3d ProfileBased::getProfileNormal() const {
+Base::Vector3d ProfileBased::getProfileNormal(const TopoShape &profileShape) const {
 
     Base::Vector3d SketchVector(0,0,1);
     auto obj = getVerifiedObject(true);
@@ -1172,26 +1186,68 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
         Base::Placement SketchPos = obj->Placement.getValue();
         Base::Rotation SketchOrientation = SketchPos.getRotation();
         SketchOrientation.multVec(SketchVector,SketchVector);
+        return SketchVector;
     }
-    else {
-        TopoShape shape = getVerifiedFace(true);
-        if (shape.isNull())
-            return SketchVector;
 
-        if (shape.getShape().ShapeType() == TopAbs_FACE) {
-            BRepAdaptor_Surface adapt(TopoDS::Face(shape.getShape()));
-            double u = adapt.FirstUParameter() + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
-            double v = adapt.FirstVParameter() + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
-            BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
-            if(prop.IsNormalDefined()) {
-                gp_Pnt pnt; gp_Vec vec;
-                // handles the orientation state of the shape
-                BRepGProp_Face(TopoDS::Face(shape.getShape())).Normal(u,v,pnt,vec);
-                SketchVector = Base::Vector3d(vec.X(), vec.Y(), vec.Z());
-            }
+    TopoShape shape = profileShape;
+    if (shape.isNull())
+        shape = getVerifiedFace(true);
+
+    if (shape.hasSubShape(TopAbs_FACE)) {
+        BRepAdaptor_Surface adapt(TopoDS::Face(shape.getSubShape(TopAbs_FACE, 1)));
+        double u = adapt.FirstUParameter() + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
+        double v = adapt.FirstVParameter() + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
+        BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
+        if(prop.IsNormalDefined()) {
+            gp_Pnt pnt; gp_Vec vec;
+            // handles the orientation state of the shape
+            BRepGProp_Face(TopoDS::Face(shape.getShape())).Normal(u,v,pnt,vec);
+            return Base::Vector3d(vec.X(), vec.Y(), vec.Z());
         }
     }
 
+    gp_Pln pln;
+    if (shape.findPlane(pln)) {
+        gp_Dir dir = pln.Axis().Direction();
+        return Base::Vector3d(dir.X(), dir.Y(), dir.Z());
+    }
+
+    if (!shape.hasSubShape(TopAbs_EDGE))
+        return SketchVector;
+
+    // Find the first planar face that contains the edge, and return the plane normal
+    TopoShape objShape = Part::Feature::getTopoShape(obj);
+    for (int idx : objShape.findAncestors(shape.getSubShape(TopAbs_EDGE, 1), TopAbs_FACE)) {
+        if (objShape.getSubTopoShape(TopAbs_FACE, idx).findPlane(pln)) {
+            gp_Dir dir = pln.Axis().Direction();
+            return Base::Vector3d(dir.X(), dir.Y(), dir.Z());
+        }
+    }
+
+    // If the shape is a line, then return an arbitary direction that is perpendicular to the line
+    auto geom = Part::Geometry::fromShape(shape.getSubShape(TopAbs_EDGE, 1), true);
+    auto geomLine = Base::freecad_dynamic_cast<Part::GeomLine>(geom.get());
+    if (geomLine) {
+        Base::Vector3d dir = geomLine->getDir();
+        double x = std::fabs(dir.x);
+        double y = std::fabs(dir.y);
+        double z = std::fabs(dir.z);
+        if (x > y && x > z && x > 1e-7) {
+            if (y + z < 1e-7)
+                return Base::Vector3d(0, 0, 1);
+            dir.x = -(dir.z + dir.y)/dir.x;
+        } else if (y > x && y > z && y > 1e-7) {
+            if (x + z < 1e-7)
+                return Base::Vector3d(0, 0, 1);
+            dir.y = -(dir.z + dir.x)/dir.y;
+        } else if (z > 1e-7) {
+            if (x + y < 1e-7)
+                return Base::Vector3d(1, 0, 0);
+            dir.z = -(dir.x + dir.y)/dir.z;
+        } else
+            return SketchVector;
+        return dir.Normalize();
+    }
     return SketchVector;
 }
 

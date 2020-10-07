@@ -107,7 +107,7 @@ public:
     /// Returns the face of the sketch support (if any)
     TopoShape getSupportFace() const;
     
-    Base::Vector3d getProfileNormal() const;
+    Base::Vector3d getProfileNormal(const TopoShape &profileShape = TopoShape()) const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount(void) const;    

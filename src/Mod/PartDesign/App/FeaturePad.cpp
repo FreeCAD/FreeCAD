@@ -98,7 +98,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     return _execute(true, true);
 }
 
-App::DocumentObjectExecReturn *Pad::_execute(bool makesolid, bool fuse)
+App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
 {
     // Validate parameters
     double L = Length.getValue();
@@ -112,7 +112,7 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makesolid, bool fuse)
     TopoShape sketchshape;
     try {
         obj = getVerifiedObject();
-        if (makesolid) {
+        if (makeface) {
             sketchshape = getVerifiedFace();
         } else {
             std::vector<TopoShape> shapes;
@@ -148,17 +148,13 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makesolid, bool fuse)
 
     // if the Base property has a valid shape, fuse the prism into it
     TopoShape base;
-    if (!this->NewSolid.getValue()) {
-        try {
-            base = getBaseShape();
-        } catch (const Base::Exception&) {
-        }
-    }
+    if (!this->NewSolid.getValue())
+        base = getBaseShape(true);
 
     // get the Sketch plane
     Base::Placement SketchPos = obj->Placement.getValue();
     // get the normal vector of the sketch
-    Base::Vector3d SketchVector = getProfileNormal();
+    Base::Vector3d SketchVector = getProfileNormal(sketchshape);
 
     try {
         this->positionByPrevious();
@@ -217,34 +213,7 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makesolid, bool fuse)
         std::string method(Type.getValueAsString());                
 
         if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
-
-            // Special handling of extrusion of vertex 
-            if (!sketchshape.hasSubShape(TopAbs_EDGE)
-                    && sketchshape.countSubShapes(TopAbs_VERTEX)==1)
-            {
-                if (method == "UpToFace") {
-                    const auto &subs = UpToFace.getSubValues();
-                    TopoShape upto = Part::Feature::getTopoShape(
-                            UpToFace.getValue(), subs.size()?subs[0].c_str():nullptr,true);
-                    if (!upto.hasSubShape(TopAbs_EDGE) && upto.countSubShapes(TopAbs_VERTEX)==1) {
-                        TopoShape pt1 = sketchshape.getSubTopoShape(TopAbs_VERTEX, 1);
-                        TopoShape pt2 = upto.getSubTopoShape(TopAbs_VERTEX, 1);
-                        pt2.move(invObjLoc);
-                        BRepBuilderAPI_MakeEdge builder(
-                            BRep_Tool::Pnt(TopoDS::Vertex(pt1.getShape())),
-                            BRep_Tool::Pnt(TopoDS::Vertex(pt2.getShape())));
-
-                        TopoShape result(0,getDocument()->getStringHasher());
-                        result.setShape(builder.Shape(), false);
-                        result.mapSubElement({pt1, pt2});
-                        this->AddSubShape.setValue(result);
-                        this->Shape.setValue(result);
-                        return App::DocumentObject::StdReturn;
-                    }
-                }
-            }
-
-              // Note: This will return an unlimited planar face if support is a datum plane
+            // Note: This will return an unlimited planar face if support is a datum plane
             TopoShape supportface = getSupportFace();
             supportface.move(invObjLoc);
 

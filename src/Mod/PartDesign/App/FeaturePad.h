@@ -71,7 +71,7 @@ public:
     //@}
 
 protected:
-    App::DocumentObjectExecReturn * _execute(bool makesolid, bool fuse);
+    App::DocumentObjectExecReturn * _execute(bool makesface, bool fuse);
 
 protected:
     static const char* TypeEnums[];
