@@ -3372,7 +3372,7 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
     const std::vector<App::DocumentObject*>& objectArray, int options)
 {
     std::vector<App::DocumentObject*> ret;
-    if(!(options & DepSort)) {
+    if(!(options & (DepSort | DepNoCycle))) {
         _buildDependencyList(objectArray,options,&ret,0,0);
         return ret;
     }
@@ -3432,7 +3432,9 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
                 ss << '\n';
             }
             FC_ERR(ss.str());
-            FC_THROWM(Base::RuntimeError, e.what());
+            FC_THROWM(Base::RuntimeError,
+                    "Cyclice dependency detected.\n"
+                    "Please check Report View for more details.");
         }
         FC_ERR(e.what());
         ret = DocumentP::partialTopologicalSort(objectArray);
