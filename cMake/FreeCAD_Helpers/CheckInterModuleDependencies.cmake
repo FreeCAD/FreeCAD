@@ -6,11 +6,12 @@ macro(CheckInterModuleDependencies)
     # modules.  Warns if any of the prerequisite modules are disabled.
     function(REQUIRES_MODS dependent)
         if(${dependent})
-            foreach(prerequisite ${ARGN})
+            foreach(prerequisite IN LISTS ARGN)
                 if(NOT ${prerequisite})
-                    message(WARNING
-                            "${dependent} requires ${ARGN} each be ON, but "
-                            "${prerequisite} is \"${${prerequisite}}\"")
+                    message(STATUS "${dependent} requires ${prerequisite} to be ON, but it"
+                                   " is \"${${prerequisite}}\"")
+                    set(${dependent} OFF PARENT_SCOPE)
+                    break()
                 endif(NOT ${prerequisite})
             endforeach()
         endif(${dependent})
