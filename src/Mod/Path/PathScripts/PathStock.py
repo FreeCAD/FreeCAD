@@ -103,6 +103,7 @@ class StockFromBase(Stock):
         obj.addProperty("App::PropertyDistance", "ExtYpos", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in positive Y direction"))
         obj.addProperty("App::PropertyDistance", "ExtZneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative Z direction"))
         obj.addProperty("App::PropertyDistance", "ExtZpos", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in positive Z direction"))
+        obj.addProperty("App::PropertyLink","Material","Component", QtCore.QT_TRANSLATE_NOOP("App::Property","A material for this object"))
 
         obj.Base = base
         obj.ExtXneg= 1.0
