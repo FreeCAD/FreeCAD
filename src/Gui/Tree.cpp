@@ -289,7 +289,10 @@ std::set<TreeWidget *> TreeWidget::Instances;
 static TreeWidget *_LastSelectedTreeWidget;
 const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
+#define FC_CUSTOM_DRAG_AND_DROP
+#ifndef FC_CUSTOM_DRAG_AND_DROP
 static bool _DragEventFilter;
+#endif
 static bool _DraggingActive;
 static Qt::DropActions _DropActions;
 static std::vector<SelUpMenu*> _SelUpMenus;
@@ -2126,6 +2129,18 @@ void TreeWidget::startDragging() {
 
 void TreeWidget::startDrag(Qt::DropActions supportedActions)
 {
+#ifdef FC_CUSTOM_DRAG_AND_DROP
+    // We use our own drag and drop implementation in order to get customized
+    // drag cursor on the Qt::LinkAction (actually used for replace action most
+    // of the time)
+    if(selectedItems().empty())
+        return;
+
+    _DropActions = supportedActions;
+    qApp->installEventFilter(this);
+    pimpl->setOverrideCursor(Qt::DragMoveCursor);
+    _DraggingActive = true;
+#else
     QTreeWidget::startDrag(supportedActions);
     if(_DragEventFilter) {
         _DragEventFilter = false;
@@ -2144,6 +2159,7 @@ void TreeWidget::startDrag(Qt::DropActions supportedActions)
             tree->stopAutoScroll();
         }
     }
+#endif
 }
 
 QMimeData * TreeWidget::mimeData (const QList<QTreeWidgetItem *> items) const
@@ -2182,7 +2198,8 @@ void TreeWidget::dragLeaveEvent(QDragLeaveEvent * event)
 
 void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-#if QT_VERSION >= 0x050000
+#ifndef FC_CUSTOM_DRAG_AND_DROP
+#   if QT_VERSION >= 0x050000
     // Qt5 does not change drag cursor in response to modifier key press,
     // because QDrag installs a event filter that eats up key event. We install
     // a filter after Qt and generate fake mouse move event in response to key
@@ -2191,6 +2208,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
         _DragEventFilter = true;
         qApp->installEventFilter(this);
     }
+#   endif
 #endif
 
     QTreeWidget::dragMoveEvent(event);
