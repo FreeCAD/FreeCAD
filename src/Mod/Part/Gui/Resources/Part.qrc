@@ -60,33 +60,33 @@
         <file>icons/parametric/Part_Wedge_Parametric.svg</file>
     </qresource>
     <qresource>
+        <file>icons/tools/Part_Attachment.svg</file>
         <file>icons/tools/Part_Chamfer.svg</file>
+        <file>icons/tools/Part_Element_Copy.svg</file>
         <file>icons/tools/Part_Extrude.svg</file>
         <file>icons/tools/Part_Fillet.svg</file>
         <file>icons/tools/Part_Loft.svg</file>
         <file>icons/tools/Part_Mirror.svg</file>
         <file>icons/tools/Part_Offset.svg</file>
         <file>icons/tools/Part_Offset2D.svg</file>
+        <file>icons/tools/Part_Points_from_Mesh.svg</file>
         <file>icons/tools/Part_ProjectionOnSurface.svg</file>
+        <file>icons/tools/Part_Refine_Shape.svg</file>
+        <file>icons/tools/Part_Reverse_Shape.svg</file>
         <file>icons/tools/Part_Revolve.svg</file>
         <file>icons/tools/Part_RuledSurface.svg</file>
+        <file>icons/tools/Part_Shape_from_Mesh.svg</file>
+        <file>icons/tools/Part_ShapeInfo.svg</file>
         <file>icons/tools/Part_Sweep.svg</file>
         <file>icons/tools/Part_Thickness.svg</file>
+        <file>icons/tools/Part_Transformed_Copy.svg</file>
     </qresource>
     <qresource>
-        <file>icons/Part_Attachment.svg</file>
         <file>icons/Part_BoxSelection.svg</file>
-        <file>icons/Part_Element_Copy.svg</file>
         <file>icons/Part_Export.svg</file>
         <file>icons/Part_Feature.svg</file>
         <file>icons/Part_FeatureImport.svg</file>
         <file>icons/Part_Import.svg</file>
-        <file>icons/Part_Points_from_Mesh.svg</file>
-        <file>icons/Part_Refine_Shape.svg</file>
-        <file>icons/Part_Reverse_Shape.svg</file>
-        <file>icons/Part_Shape_from_Mesh.svg</file>
-        <file>icons/Part_ShapeInfo.svg</file>
-        <file>icons/Part_Transformed_Copy.svg</file>
         <file>icons/PartWorkbench.svg</file>
         <file>icons/preferences-part_design.svg</file>
         <file>icons/Tree_Part.svg</file>
