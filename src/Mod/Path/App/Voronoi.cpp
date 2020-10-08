@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Standard_math.hxx>
 # include <cinttypes>
 # include <iomanip>
 # include <boost/algorithm/string.hpp>
@@ -39,7 +40,7 @@
 using namespace Base;
 using namespace Path;
 
-TYPESYSTEM_SOURCE(Path::Voronoi , Base::BaseClass);
+TYPESYSTEM_SOURCE(Path::Voronoi , Base::BaseClass)
 
 // Helpers
 
