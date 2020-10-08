@@ -2289,6 +2289,37 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     QMdiArea* mdi = mw->findChild<QMdiArea*>();
     mdi->setProperty("showImage", tiledBackground);
 
+    // Qt's style sheet doesn't support it to define the link color of a QLabel
+    // or in the property editor when an expression is set because therefore the
+    // link color of the application's palette is used.
+    // A workaround is to set a user-defined property to e.g. a QLabel and then
+    // define it in the .qss file.
+    //
+    // Example:
+    // QLabel label;
+    // label.setProperty("haslink", QByteArray("true"));
+    // label.show();
+    // QColor link = label.palette().color(QPalette::Text);
+    //
+    // The .qss file must define it with:
+    // QLabel[haslink="true"] {
+    //     color: #rrggbb;
+    // }
+    //
+    // See https://stackoverflow.com/questions/5497799/how-do-i-customise-the-appearance-of-links-in-qlabels-using-style-sheets
+    // and https://forum.freecadweb.org/viewtopic.php?f=34&t=50744
+    static bool init = true;
+    if (init) {
+        init = false;
+        mw->setProperty("fc_originalLinkCoor", qApp->palette().color(QPalette::Link));
+    }
+    else {
+        QPalette newPal(qApp->palette());
+        newPal.setColor(QPalette::Link, mw->property("fc_originalLinkCoor").value<QColor>());
+        qApp->setPalette(newPal);
+    }
+
+
     QString current = mw->property("fc_currentStyleSheet").toString();
     mw->setProperty("fc_currentStyleSheet", qssFile);
 
@@ -2312,6 +2343,26 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 
             ActionStyleEvent e(ActionStyleEvent::Clear);
             qApp->sendEvent(mw, &e);
+
+            // This is a way to retrieve the link color of a .qss file when it's defined there.
+            // The color will then be set to the application's palette.
+            // Limitation: it doesn't work if the .qss file on purpose sets the same color as
+            // for normal text. In this case the default link color is used.
+            {
+                QLabel l1, l2;
+                l2.setProperty("haslink", QByteArray("true"));
+
+                l1.show();
+                l2.show();
+                QColor text = l1.palette().color(QPalette::Text);
+                QColor link = l2.palette().color(QPalette::Text);
+
+                if (text != link) {
+                    QPalette newPal(qApp->palette());
+                    newPal.setColor(QPalette::Link, link);
+                    qApp->setPalette(newPal);
+                }
+            }
         }
     }
 
