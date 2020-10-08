@@ -419,10 +419,13 @@ void TaskCheckGeometryResults::goCheck()
     Gui::WaitCursor wc;
     int selectedCount(0), checkedCount(0), invalidShapes(0);
     ResultEntry *theRoot = new ResultEntry();
+
+#if OCC_VERSION_HEX < 0x070500
     Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
     theProgress->NewScope("BOP check...");
 #if OCC_VERSION_HEX >= 0x060900
     theProgress->Show();
+#endif
 #endif
 
     for(const auto &sel :  Gui::Selection().getSelection()) {
@@ -473,11 +476,18 @@ void TaskCheckGeometryResults::goCheck()
             std::string label = "Checking ";
             label += sel.pObject->Label.getStrValue();
             label += "...";
+#if OCC_VERSION_HEX < 0x070500
             theProgress->NewScope(label.c_str());
             invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theProgress);
+#else
+            invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, nullptr);
+#endif
+
+#if OCC_VERSION_HEX < 0x070500
             theProgress->EndScope();
             if (theProgress->UserBreak())
               break;
+#endif
           }
         }
     }
@@ -684,7 +694,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   //this is left for another time.
   TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
   BOPAlgo_ArgumentAnalyzer BOPCheck;
-#if OCC_VERSION_HEX >= 0x060900
+#if OCC_VERSION_HEX >= 0x060900 && OCC_VERSION_HEX < 0x070500
   BOPCheck.SetProgressIndicator(theProgress);
 #else
   Q_UNUSED(theProgress);
@@ -1370,6 +1380,7 @@ TaskCheckGeometryDialog::~TaskCheckGeometryDialog()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
+#if OCC_VERSION_HEX < 0x070500
 BOPProgressIndicator::BOPProgressIndicator (const QString& title, QWidget* parent)
 {
     steps = 0;
@@ -1432,5 +1443,6 @@ Standard_Boolean BOPProgressIndicator::UserBreak()
 
     return Standard_False;
 }
+#endif
 
 #include "moc_TaskCheckGeometry.cpp"
