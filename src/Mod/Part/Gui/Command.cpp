@@ -2431,27 +2431,30 @@ bool CmdBoxSelection::isActive(void)
 DEF_STD_CMD_A(CmdPartProjectionOnSurface)
 
 CmdPartProjectionOnSurface::CmdPartProjectionOnSurface()
-  :Command("Part_ProjectionOnSurface")
+    :Command("Part_ProjectionOnSurface")
 {
-  sAppModule = "Part";
-  sGroup = QT_TR_NOOP("Part");
-  sMenuText = QT_TR_NOOP("Create projection on surface...");
-  sToolTipText = QT_TR_NOOP("Create projection on surface...");
-  sWhatsThis = "Part_ProjectionOnSurface";
-  sStatusTip = sToolTipText;
-  sPixmap = "Part_ProjectionOnSurface";
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Create projection on surface...");
+    sToolTipText = QT_TR_NOOP("Project edges, wires, or faces of one object\n"
+                              "onto a face of another object.\n"
+                              "The camera view determines the direction\n"
+                              "of projection.");
+    sWhatsThis = "Part_ProjectionOnSurface";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_ProjectionOnSurface";
 }
 
 void CmdPartProjectionOnSurface::activated(int iMsg)
 {
-  Q_UNUSED(iMsg);
-  PartGui::TaskProjectionOnSurface* dlg = new PartGui::TaskProjectionOnSurface();
-  Gui::Control().showDialog(dlg);
+    Q_UNUSED(iMsg);
+    PartGui::TaskProjectionOnSurface* dlg = new PartGui::TaskProjectionOnSurface();
+    Gui::Control().showDialog(dlg);
 }
 
 bool CmdPartProjectionOnSurface::isActive(void)
 {
-  return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
 void CreatePartCommands(void)
