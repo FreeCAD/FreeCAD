@@ -359,7 +359,7 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
       // parabolic curve, which is always formed by a point and an edge
       Voronoi::point_type   point   = e->ptr->cell()->contains_point() ? e->dia->retrievePoint(e->ptr->cell())  : e->dia->retrievePoint(e->ptr->twin()->cell());
       Voronoi::segment_type segment = e->ptr->cell()->contains_point() ? e->dia->retrieveSegment(e->ptr->twin()->cell()) : e->dia->retrieveSegment(e->ptr->cell());
-      // the location is the mid point betwenn the normal on the segment through point
+      // the location is the mid point between the normal on the segment through point
       // this is only the mid point of the segment if the parabola is symmetric
       Voronoi::point_type loc;
       {

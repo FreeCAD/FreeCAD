@@ -42,25 +42,25 @@
         </Attribute>
         <Attribute Name="Next" ReadOnly="true">
             <Documentation>
-                <UserDocu>CCW next edge whithin voronoi cell</UserDocu>
+                <UserDocu>CCW next edge within voronoi cell</UserDocu>
             </Documentation>
             <Parameter Name="Next" Type="Object"/>
         </Attribute>
         <Attribute Name="Prev" ReadOnly="true">
             <Documentation>
-                <UserDocu>CCW previous edge whithin voronoi cell</UserDocu>
+                <UserDocu>CCW previous edge within voronoi cell</UserDocu>
             </Documentation>
             <Parameter Name="Prev" Type="Object"/>
         </Attribute>
         <Attribute Name="RotNext" ReadOnly="true">
             <Documentation>
-                <UserDocu>Rotated CCW next edge whithin voronoi cell</UserDocu>
+                <UserDocu>Rotated CCW next edge within voronoi cell</UserDocu>
             </Documentation>
             <Parameter Name="RotNext" Type="Object"/>
         </Attribute>
         <Attribute Name="RotPrev" ReadOnly="true">
             <Documentation>
-                <UserDocu>Rotated CCW previous edge whithin voronoi cell</UserDocu>
+                <UserDocu>Rotated CCW previous edge within voronoi cell</UserDocu>
             </Documentation>
             <Parameter Name="RotPrev" Type="Object"/>
         </Attribute>

@@ -2789,7 +2789,7 @@
             <rdf:li>edges</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>A purple surface made with several highlighted red edges whic represent transversal sections of the surface.</dc:description>
+        <dc:description>A purple surface made with several highlighted red edges which represent transversal sections of the surface.</dc:description>
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/licenses/by-sa/4.0/">
