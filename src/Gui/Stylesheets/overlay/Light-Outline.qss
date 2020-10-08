@@ -129,6 +129,7 @@ QListView,
 QTableView {
   background: rgb(250,250,250);
   selection-background-color: rgba(94, 144, 250, 0.7);
+  border: transparent;
 }
 
 QListView::item:selected,

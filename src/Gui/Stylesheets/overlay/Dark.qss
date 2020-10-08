@@ -105,6 +105,7 @@ QListView,
 QTableView {
   background: rgb(100,100,100);
   selection-background-color: rgba(94, 144, 250, 0.7);
+  border: transparent;
 }
 
 QListView::item:selected,
@@ -116,6 +117,17 @@ Gui--PropertyEditor--PropertyEditor {
   qproperty-groupTextColor: rgb(50, 50, 50);
   qproperty-groupBackground: rgba(140, 140, 140, 0.7);
   qproperty-itemBackground: rgba(0, 0, 0, 0.01);
+}
+
+Gui--TreeWidget QScrollBar:vertical {
+  width: 0px;
+}
+
+Gui--TreeWidget QHeaderView:section {
+  height: 0px;
+  background-color: transparent;
+  padding: 0px;
+  border: transparent;
 }
 
 Gui--CallTipsList::item {
@@ -142,10 +154,10 @@ Gui--OverlaySplitterHandle {
 }
 
 QSint--ActionGroup QFrame[class="content"] {
-    background-color: #808c8c8c; /* Task Panel background color */
+  background-color: #808c8c8c; /* Task Panel background color */
 }
 
 QSint--ActionGroup QFrame[class="content"] > QWidget {
-    background-color: #808c8c8c; /* Task Panel background color */
+  background-color: #808c8c8c; /* Task Panel background color */
 }
 

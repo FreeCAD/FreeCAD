@@ -101,6 +101,7 @@ QListView,
 QTableView {
   background: rgb(250,250,250);
   selection-background-color: rgba(94, 144, 250, 0.7);
+  border: transparent;
 }
 
 QListView::item:selected,
@@ -114,6 +115,17 @@ Gui--PropertyEditor--PropertyEditor {
   qproperty-groupTextColor: rgb(100, 100, 100);
   qproperty-groupBackground: rgba(180, 180, 180, 0.7);
   qproperty-itemBackground: rgba(0, 0, 0, 0.01);
+}
+
+Gui--TreeWidget QScrollBar:vertical {
+  width: 0px;
+}
+
+Gui--TreeWidget QHeaderView:section {
+  height: 0px;
+  background-color: transparent;
+  padding: 0px;
+  border: transparent;
 }
 
 Gui--CallTipsList::item {

@@ -144,7 +144,7 @@ public:
     void setCurrent(QDockWidget *widget);
 
     void setTransparent(bool enable);
-    bool isTransparent() const {return actTransparent.isChecked();}
+    bool isTransparent() const;
 
     enum OverlayAutoMode {
         NoAutoMode,
@@ -153,6 +153,7 @@ public:
         EditHide,
     };
     void setAutoMode(OverlayAutoMode mode);
+    OverlayAutoMode getAutoMode() const { return autoMode; }
 
     void touch() {touched = true;}
     bool isTouched() const {return touched;}
@@ -160,7 +161,7 @@ public:
     void setRect(QRect rect);
 
     const QRect &getRect();
-    bool isOverlayed() const {return overlayed;}
+    bool isOverlayed(int checkTransparentState = 0) const;
     bool checkAutoHide() const;
     bool getAutoHideRect(QRect &rect) const;
     void changeSize(int changes, bool checkModifier=true);
@@ -272,6 +273,7 @@ private:
     OverlayAutoMode autoMode = NoAutoMode;
     bool repainting = false;
     bool overlayed = false;
+    bool currentTransparent = false;
     bool touched = false;
     bool busy = false;
     Qt::DockWidgetArea dockArea;

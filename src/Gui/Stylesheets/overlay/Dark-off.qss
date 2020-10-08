@@ -1,7 +1,3 @@
-* {
-  color: palette(bright-text);
-}
-
 Gui--OverlayToolButton {
   background: transparent;
   padding: 0px;

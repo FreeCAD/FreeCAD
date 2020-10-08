@@ -1098,7 +1098,7 @@ public:
         }
         if(activeStyleSheet.isEmpty()) {
             static QLatin1String _default(
-                "* {alternate-background-color: rgba(250,250,250,120); border: transparent}"
+                "* {alternate-background-color: rgba(250,250,250,120)}"
 
                 "QComboBox, QComboBox:editable, QComboBox:!editable, QLineEdit,"
                 "QTextEdit, QPlainTextEdit, QAbstractSpinBox, QDateEdit, QDateTimeEdit,"
@@ -1125,6 +1125,7 @@ public:
 
                 "QTreeView, QListView, QTableView {"
                             "background: rgb(250,250,250);"
+                            "border: transparent;"
                             "selection-background-color: rgba(94, 144, 250, 0.7);}"
                 "QListView::item:selected, QTreeView::item:selected {"
                             "background-color: rgba(94, 144, 250, 0.7);}"
@@ -1135,6 +1136,13 @@ public:
                             "qproperty-groupBackground: rgba(180, 180, 180, 0.7);}"
 
                 "QToolTip {background-color: rgba(250,250,250,180);}"
+
+                "Gui--TreeWidget QScrollBar:vertical { width: 0px; }"
+                "Gui--TreeWidget QHeaderView:section {"
+                            "height: 0px;"
+                            "background-color: transparent;"
+                            "padding: 0px;"
+                            "border: transparent;}"
 
                 "Gui--CallTipsList::item { background-color: rgba(200,200,200,200);}"
                 "Gui--CallTipsList::item::selected { background-color: palette(highlight);}"
@@ -1246,6 +1254,24 @@ void OverlayTabWidget::setTransparent(bool enable)
     OverlayManager::instance()->refresh(this);
 }
 
+bool OverlayTabWidget::isTransparent() const
+{
+    if (!actTransparent.isChecked())
+        return false;
+    auto view = getMainWindow()->activeWindow();
+    if(!view || (!view->isDerivedFrom(View3DInventor::getClassTypeId())
+                && !view->isDerivedFrom(SplitView3DInventor::getClassTypeId())))
+        return false;
+    return true;
+}
+
+bool OverlayTabWidget::isOverlayed(int checkTransparentState) const
+{
+    if (checkTransparentState && currentTransparent != isTransparent())
+        return checkTransparentState > 0;
+    return overlayed;
+}
+
 void OverlayTabWidget::setAutoMode(OverlayAutoMode mode)
 {
     if (autoMode == mode)
@@ -1314,17 +1340,21 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     QString stylesheet;
     int mode;
 
+    currentTransparent = isTransparent();
+
     if(!enable && isTransparent()) {
         stylesheet = OverlayStyleSheet::instance()->activeStyleSheet;
         mode = -1;
     } else if (enable && !isTransparent() && (autoMode == EditShow || autoMode == AutoHide)) {
-        stylesheet = OverlayStyleSheet::instance()->offStyleSheet;
+        // stylesheet = OverlayStyleSheet::instance()->offStyleSheet;
+        stylesheet = OverlayStyleSheet::instance()->activeStyleSheet;
         mode = 0;
     } else {
         if(enable)
             stylesheet = OverlayStyleSheet::instance()->onStyleSheet;
         else
-            stylesheet = OverlayStyleSheet::instance()->offStyleSheet;
+            // stylesheet = OverlayStyleSheet::instance()->offStyleSheet;
+            stylesheet = OverlayStyleSheet::instance()->activeStyleSheet;
         mode = enable?1:0;
     }
 
@@ -2741,7 +2771,7 @@ public:
         }
         updateStyle = false;
 
-        if(focus && (focus->isOverlayed() || updateFocus)) {
+        if(focus && (focus->isOverlayed(1) || updateFocus)) {
             focus->setOverlayMode(false);
             focus->raise();
             if(reveal == focus)
@@ -2749,14 +2779,14 @@ public:
         }
 
         if(active) {
-            if(active != focus && (active->isOverlayed() || updateActive)) 
+            if(active != focus && (active->isOverlayed(1) || updateActive)) 
                 active->setOverlayMode(false);
             active->raise();
             if(reveal == active)
                 reveal = nullptr;
         }
 
-        if(reveal) {
+        if(reveal && !reveal->splitter->isVisible()) {
             reveal->setOverlayMode(false);
             reveal->raise();
         }
@@ -2766,7 +2796,7 @@ public:
                     && o->tabWidget != active
                     && o->tabWidget != reveal
                     && o->tabWidget->count()
-                    && !o->tabWidget->isOverlayed())
+                    && !o->tabWidget->isOverlayed(-1))
             {
                 o->tabWidget->setOverlayMode(true);
             }
