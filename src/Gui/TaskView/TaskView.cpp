@@ -414,7 +414,7 @@ TaskView::TaskView(QWidget *parent)
 #endif
     this->scrollarea->setWidget(taskPanel);
     this->scrollarea->setWidgetResizable(true);
-    this->scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    // this->scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->scrollarea->setMinimumWidth(200);
 
     Gui::Selection().Attach(this);
