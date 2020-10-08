@@ -15,7 +15,7 @@
    id="svg5821"
    sodipodi:version="0.32"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="PartDesign_GenericTransform.svg"
+   sodipodi:docname="PartDesign_GenericPattern.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
    inkscape:export-filename="/media/data/Yorik/FreeCAD/icons/Sketcher.png"
@@ -1753,9 +1753,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="-32.590797"
-     inkscape:cy="21.351064"
+     inkscape:zoom="2.2807851"
+     inkscape:cx="86.200212"
+     inkscape:cy="17.0178"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
@@ -1783,7 +1783,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
         <dc:creator>
           <cc:Agent>
             <dc:title>[jrheinlaender]</dc:title>
@@ -1961,9 +1961,15 @@
        id="path3964-2"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
+    <circle
+       style="opacity:0.59200003;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:63;stroke-opacity:0.50196078"
+       id="path4464"
+       cx="21.879946"
+       cy="22.879946"
+       r="22.5" />
     <g
        id="g4484"
-       transform="matrix(1.2908914,0,0,1.2947555,-35.556357,-5.3919695)">
+       transform="matrix(1.2086781,0,0,1.2122961,-32.420685,0.39672279)">
       <g
          style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:6.19729567;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          transform="matrix(0.49925112,0,0,0.49925112,29.39608,5.9646447)"
