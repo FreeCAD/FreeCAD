@@ -107,15 +107,21 @@ class CHAMFERGate(PathBaseGate):
         if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
             return True
 
-        if 'Edge' == shape.ShapeType or 'Face' == shape.ShapeType:
+        if shape.ShapeType == 'Edge':
             return True
+
+        if (shape.ShapeType == 'Face'
+                and shape.normalAt(0,0) == FreeCAD.Vector(0,0,1)):
+           return True
 
         if sub:
             subShape = shape.getElement(sub)
-            if 'Edge' == subShape.ShapeType or 'Face' == subShape.ShapeType:
+            if subShape.ShapeType == 'Edge':
+                return True
+            elif (subShape.ShapeType == 'Face'
+                    and subShape.normalAt(0,0) == FreeCAD.Vector(0,0,1)):
                 return True
 
-        print(shape.ShapeType)
         return False
 
 
