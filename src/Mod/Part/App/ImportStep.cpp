@@ -67,6 +67,9 @@
 # include <StepBasic_ProductDefinitionFormation.hxx>
 #endif
 
+# include <StepElement_AnalysisItemWithinRepresentation.hxx>
+# include <StepVisual_AnnotationCurveOccurrence.hxx>
+
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
 #include <App/Application.h>
@@ -86,6 +89,11 @@ bool ReadNames (const Handle(XSControl_WorkSession) &WS);
 
 int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
 {
+    // Use this to force to link against TKSTEPBase, TKSTEPAttr and TKStep209
+    // in order to make RUNPATH working on Linux
+    StepElement_AnalysisItemWithinRepresentation stepElement;
+    StepVisual_AnnotationCurveOccurrence stepVis;
+
     STEPControl_Reader aReader;
     TopoDS_Shape aShape;
     Base::FileInfo fi(Name);
