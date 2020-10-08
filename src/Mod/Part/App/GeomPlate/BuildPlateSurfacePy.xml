@@ -95,17 +95,17 @@
     </Methode>
     <Methode Name="G0Error" Const="true">
       <Documentation>
-        <UserDocu>Returns the max distance betwen the result and the constraints</UserDocu>
+        <UserDocu>Returns the max distance between the result and the constraints</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="G1Error" Const="true">
       <Documentation>
-        <UserDocu>Returns the max angle betwen the result and the constraints</UserDocu>
+        <UserDocu>Returns the max angle between the result and the constraints</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="G2Error" Const="true">
       <Documentation>
-        <UserDocu>Returns the max difference of curvature betwen the result and the constraints</UserDocu>
+        <UserDocu>Returns the max difference of curvature between the result and the constraints</UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>
