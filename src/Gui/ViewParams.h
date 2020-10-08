@@ -257,6 +257,8 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Pie menu animation curve type"))\
     FC_VIEW_PARAM(PieMenuCenterRadius, int, Int, 10, \
         QT_TRANSLATE_NOOP("ViewParams","Pie menu center circle radius, 0 to disable"))\
+    FC_VIEW_PARAM(StickyTaskControl, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Makes the task dialog buttons stay at top or bottom of task view."))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

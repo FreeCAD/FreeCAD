@@ -45,6 +45,7 @@
 #include <Gui/Control.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/MainWindow.h>
+#include <Gui/ViewParams.h>
 
 #if defined (QSINT_ACTIONPANEL)
 #include <Gui/QSint/actionpanel/taskgroup_p.h>
@@ -388,11 +389,17 @@ QSize TaskPanel::minimumSizeHint() const
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskView::TaskView(QWidget *parent)
-    : QScrollArea(parent),ActiveDialog(0),ActiveCtrl(0)
+    : QWidget(parent),ActiveDialog(0),ActiveCtrl(0)
 {
     //addWidget(new TaskEditControl(this));
     //addWidget(new TaskAppearance(this));
     //addStretch();
+    
+    this->layout = new QVBoxLayout(this);
+    this->layout->setSpacing(0);
+    this->scrollarea = new QScrollArea(this);
+    this->layout->addWidget(scrollarea, 1);
+
 #if !defined (QSINT_ACTIONPANEL)
     taskPanel = new iisTaskPanel(this);
     taskPanel->setScheme(iisFreeCADTaskPanelScheme::defaultScheme());
@@ -405,10 +412,10 @@ TaskView::TaskView(QWidget *parent)
     taskPanel->setSizePolicy(sizePolicy);
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
 #endif
-    this->setWidget(taskPanel);
-    setWidgetResizable(true);
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    this->setMinimumWidth(200);
+    this->scrollarea->setWidget(taskPanel);
+    this->scrollarea->setWidgetResizable(true);
+    this->scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->scrollarea->setMinimumWidth(200);
 
     Gui::Selection().Attach(this);
 
@@ -479,7 +486,7 @@ bool TaskView::event(QEvent* event)
             }
         }
     }
-    return QScrollArea::event(event);
+    return QWidget::event(event);
 }
 
 void TaskView::keyPressEvent(QKeyEvent* ke)
@@ -541,7 +548,7 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
         }
     }
     else {
-        QScrollArea::keyPressEvent(ke);
+        QWidget::keyPressEvent(ke);
     }
 }
 
@@ -619,7 +626,15 @@ void TaskView::showDialog(TaskDialog *dlg)
     // give to task dialog to customize the button box
     dlg->modifyStandardButtons(ActiveCtrl->buttonBox);
 
-    if (dlg->buttonPosition() == TaskDialog::North) {
+    if (ViewParams::getStickyTaskControl() && parentWidget()) {
+        if (dlg->buttonPosition() == TaskDialog::North)
+            this->layout->insertWidget(0, ActiveCtrl);
+        else
+            this->layout->addWidget(ActiveCtrl);
+        for (auto widget : cont)
+            taskPanel->addWidget(widget);
+    }
+    else if (dlg->buttonPosition() == TaskDialog::North) {
         taskPanel->addWidget(ActiveCtrl);
         for (std::vector<QWidget*>::const_iterator it=cont.begin();it!=cont.end();++it){
             taskPanel->addWidget(*it);

@@ -40,6 +40,8 @@
 #include <Gui/Selection.h>
 #include "TaskWatcher.h"
 
+class QBoxLayout;
+
 namespace App {
 class Property;
 }
@@ -172,7 +174,7 @@ public:
   * This elements get injected mostly by the ViewProvider classes of the selected
   * DocumentObjects. 
   */
-class GuiExport TaskView : public QScrollArea, public Gui::SelectionSingleton::ObserverType
+class GuiExport TaskView : public QWidget, public Gui::SelectionSingleton::ObserverType
 {
     Q_OBJECT
 
@@ -231,6 +233,8 @@ protected:
 #endif
     TaskDialog *ActiveDialog;
     TaskEditControl *ActiveCtrl;
+    QBoxLayout *layout;
+    QScrollArea *scrollarea;
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;
