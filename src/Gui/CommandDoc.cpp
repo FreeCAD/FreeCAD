@@ -687,6 +687,7 @@ StdCmdPrint::StdCmdPrint()
     sStatusTip    = QT_TR_NOOP("Print the document");
     sPixmap       = "document-print";
     sAccel        = keySequenceToAccel(QKeySequence::Print);
+    eType         = 0;
 }
 
 void StdCmdPrint::activated(int iMsg)
@@ -717,6 +718,7 @@ StdCmdPrintPreview::StdCmdPrintPreview()
     sWhatsThis    = "Std_PrintPreview";
     sStatusTip    = QT_TR_NOOP("Print preview");
     sPixmap       = "document-print-preview";
+    eType         = 0;
 }
 
 void StdCmdPrintPreview::activated(int iMsg)
@@ -745,6 +747,7 @@ StdCmdPrintPdf::StdCmdPrintPdf()
     sToolTipText  = QT_TR_NOOP("Export the document as PDF");
     sWhatsThis    = "Std_PrintPdf";
     sStatusTip    = QT_TR_NOOP("Export the document as PDF");
+    eType         = 0;
 }
 
 void StdCmdPrintPdf::activated(int iMsg)
