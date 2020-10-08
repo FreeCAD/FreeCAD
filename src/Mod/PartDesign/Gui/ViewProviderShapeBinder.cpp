@@ -500,9 +500,9 @@ struct PixmapInfo {
         this->px.fill(Qt::transparent);
         QPainter pt;
         pt.begin(&this->px);
-        pt.setCompositionMode(QPainter::CompositionMode_Source);
         QPen pen(Qt::black, 2);
         pt.setPen(pen);
+        pt.setBrush(Qt::white);
         pt.drawRect(QRect(1, 1, 54, 54));
         pt.drawRect(QRect(10, 10, 53, 53));
         pt.setPen(Qt::NoPen);
