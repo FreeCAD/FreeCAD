@@ -239,6 +239,7 @@ void TaskTransformedParameters::setupUI() {
         }
         return false;
     });
+    linkEditor->setMinimumHeight(200);
 
     auto splitter = new QSplitter(Qt::Vertical, this);
     splitter->addWidget(labelMessage);
