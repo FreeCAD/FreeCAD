@@ -134,10 +134,10 @@ def get_dxf(obj, direction=None):
 
 
 def getDXF(obj,
-           projection=None):
+           direction=None):
     """Return DXF string of the object. DEPRECATED. Use 'get_dxf'."""
     utils.use_instead("get_dxf")
     return get_dxf(obj,
-                   projection=projection)
+                   direction=direction)
 
 ## @}
