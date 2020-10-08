@@ -100,6 +100,7 @@ protected:
 
 private Q_SLOTS:
     void onToggleDockWidget(bool checked);
+    void onDockVisibleChange(bool visible);
     void onDockWidgetTitleChange(const QString &);
     void onTaskViewUpdate();
     void onTimer();
@@ -226,6 +227,8 @@ public:
     void setState(State);
     State getState() const {return _state;}
 
+    void onSplitterResize(int index);
+
 protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
@@ -241,7 +244,6 @@ protected:
 protected Q_SLOTS:
     void onCurrentChanged(int index);
     void onTabMoved(int from, int to);
-    void onSplitterMoved();
     void onRepaint();
     void onAnimationStateChanged();
     void setupLayout();

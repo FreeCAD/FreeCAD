@@ -41,6 +41,7 @@
 #include "TaskWatcher.h"
 
 class QBoxLayout;
+class QTimer;
 
 namespace App {
 class Property;
@@ -192,7 +193,7 @@ public:
     void addTaskWatcher(const std::vector<TaskWatcher*> &Watcher);
     void clearTaskWatcher(void);
 
-    bool isEmpty() const;
+    bool isEmpty(bool includeWatcher = true) const;
 
     void clearActionStyle();
     void restoreActionStyle();
@@ -205,6 +206,7 @@ protected Q_SLOTS:
     void reject();
     void helpRequested();
     void clicked (QAbstractButton * button);
+    void onUpdateWatcher();
 
 protected:
     virtual void keyPressEvent(QKeyEvent*);
@@ -235,6 +237,7 @@ protected:
     TaskEditControl *ActiveCtrl;
     QBoxLayout *layout;
     QScrollArea *scrollarea;
+    QTimer *timer;
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;

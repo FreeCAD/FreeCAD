@@ -38,7 +38,6 @@
 # include <QBoxLayout>
 # include <QSpacerItem>
 # include <QSplitter>
-# include <QStackedWidget>
 # include <QMenu>
 #endif
 
@@ -439,7 +438,6 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     connect(tabBar(), SIGNAL(tabBarClicked(int)), this, SLOT(onCurrentChanged(int)));
     connect(tabBar(), SIGNAL(tabMoved(int,int)), this, SLOT(onTabMoved(int,int)));
     tabBar()->installEventFilter(this);
-    connect(splitter, SIGNAL(splitterMoved(int,int)), this, SLOT(onSplitterMoved()));
 
     timer.setSingleShot(true);
     connect(&timer, SIGNAL(timeout()), this, SLOT(setupLayout()));
@@ -943,7 +941,7 @@ bool OverlayTabWidget::checkAutoHide() const
 
     if(autoMode == EditShow) {
         return !Application::Instance->editDocument() 
-            && (!Control().taskPanel() || Control().taskPanel()->isEmpty());
+            && (!Control().taskPanel() || Control().taskPanel()->isEmpty(false));
     }
 
     if(autoMode == EditHide && Application::Instance->editDocument())
@@ -1680,17 +1678,33 @@ void OverlayTabWidget::setCurrent(QDockWidget *widget)
         setCurrentIndex(index);
 }
 
-void OverlayTabWidget::onSplitterMoved()
+void OverlayTabWidget::onSplitterResize(int index)
 {
-    int index = -1;
-    for(int size : splitter->sizes()) {
-        ++index;
-        if(size) {
-            if (index != currentIndex())
-                setCurrentIndex(index);
-            break;
-        }
+    const auto &sizes = splitter->sizes();
+    if (index >= 0 && index < sizes.count()) {
+        if (sizes[index] == 0) {
+            if (currentIndex() == index) {
+                bool done = false;
+                for (int i=index+1; i<sizes.count(); ++i) {
+                    if (sizes[i] > 0) {
+                        setCurrentIndex(i);
+                        done = true;
+                        break;
+                    }
+                }
+                if (!done) {
+                    for (int i=index-1; i>=0 ;--i) {
+                        if (sizes[i] > 0) {
+                            setCurrentIndex(i);
+                            break;
+                        }
+                    }
+                }
+            }
+        } else
+            setCurrentIndex(index);
     }
+
     saveTabs();
 }
 
@@ -1710,6 +1724,7 @@ void OverlayTabWidget::onCurrentChanged(int index)
             s = 0;
     }
     splitter->setSizes(sizes);
+    onSplitterResize(index);
     saveTabs();
 }
 
@@ -2185,6 +2200,11 @@ void OverlaySplitterHandle::paintEvent(QPaintEvent *e)
 
 void OverlaySplitterHandle::endDrag()
 {
+    auto tabWidget = qobject_cast<OverlayTabWidget*>(splitter()->parentWidget());
+    if (tabWidget) {
+        dockWidget();
+        tabWidget->onSplitterResize(this->idx);
+    }
     dragging = 0;
     setCursor(this->orientation() == Qt::Horizontal
             ?  Qt::SizeHorCursor : Qt::SizeVerCursor);
@@ -2250,9 +2270,10 @@ void OverlaySplitterHandle::mousePressEvent(QMouseEvent *me)
     dragging = 1;
     dragOffset = me->pos();
     auto dock = dockWidget();
-    if (dock)
+    if (dock) {
         dragSize = dock->size();
-    else
+        dock->show();
+    } else
         dragSize = QSize();
 
     QSize mwSize = getMainWindow()->size();
@@ -3023,6 +3044,8 @@ public:
                         tabWidget->setCurrent(dock);
                         tabWidget->onCurrentChanged(tabWidget->dockWidgetIndex(dock));
                     }
+                    else
+                        return;
                 } else if (checked < 0) {
                     if (sizes[index] > 0 && sizes.size() > 1) {
                         bool expand = true;
@@ -3038,6 +3061,7 @@ public:
                             tabWidget->onCurrentChanged(next);
                         }
                     }
+                    return;
                 } else if (sizes[index] == 0) {
                     tabWidget->setCurrent(dock);
                     tabWidget->onCurrentChanged(tabWidget->dockWidgetIndex(dock));
@@ -3411,6 +3435,7 @@ public:
                 auto sizes = splitter->sizes();
                 src->tabBar()->moveTab(srcIndex, dstIndex);
                 splitter->setSizes(sizes);
+                src->onSplitterResize(dstIndex);
                 src->saveTabs();
             }
             return;
@@ -3465,6 +3490,7 @@ public:
                     sizes.insert(dstIndex, size);
                     dst->setCurrentIndex(dstIndex);
                     dst->getSplitter()->setSizes(sizes);
+                    dst->onSplitterResize(dstIndex);
                     dst->saveTabs();
                 }
                 dst->setRevealTime(QTime::currentTime().addMSecs(
@@ -3545,6 +3571,7 @@ void OverlayManager::initDockWidget(QDockWidget *dw, QWidget *widget)
     (void)widget;
 #else
     connect(dw->toggleViewAction(), SIGNAL(triggered(bool)), this, SLOT(onToggleDockWidget(bool)));
+    connect(dw, SIGNAL(visibilityChanged(bool)), this, SLOT(onDockVisibleChange(bool)));
     connect(widget, SIGNAL(windowTitleChanged(QString)), this, SLOT(onDockWidgetTitleChange(QString)));
 #endif
 }
@@ -3568,6 +3595,15 @@ void OverlayManager::onToggleDockWidget(bool checked)
     d->onToggleDockWidget(qobject_cast<QDockWidget*>(action->parent()), checked?1:0);
 }
 
+void OverlayManager::onDockVisibleChange(bool visible)
+{
+    auto dock = qobject_cast<QDockWidget*>(sender());
+    if(!dock)
+        return;
+    FC_TRACE("dock " << dock->objectName().toLatin1().constData()
+            << " visible change " << visible << ", " << dock->isVisible());
+}
+
 void OverlayManager::onTaskViewUpdate()
 {
 #ifdef FC_HAS_DOCK_OVERLAY
@@ -3583,10 +3619,16 @@ void OverlayManager::onTaskViewUpdate()
             comboview = qobject_cast<DockWnd::ComboView*>(w);
     }
     if (dock) {
-        if (comboview && comboview->hasTreeView())
+        if (comboview && comboview->hasTreeView()) {
             refresh();
-        else
-            d->onToggleDockWidget(dock, taskview->isEmpty() ? -1 : 1);
+            return;
+        }
+        auto it = d->_overlayMap.find(dock);
+        if (it == d->_overlayMap.end()
+                || it->second->tabWidget->count() < 2
+                || it->second->tabWidget->getAutoMode() != OverlayTabWidget::NoAutoMode)
+            return;
+        d->onToggleDockWidget(dock, taskview->isEmpty() ? -1 : 1);
     }
 #endif
 }

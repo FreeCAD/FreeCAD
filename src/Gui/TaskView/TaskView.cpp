@@ -395,6 +395,7 @@ TaskView::TaskView(QWidget *parent)
     //addWidget(new TaskAppearance(this));
     //addStretch();
     
+    this->setAutoFillBackground(true);
     this->layout = new QVBoxLayout(this);
     this->layout->setSpacing(0);
     this->scrollarea = new QScrollArea(this);
@@ -431,6 +432,10 @@ TaskView::TaskView(QWidget *parent)
     connectApplicationRedoDocument = 
     App::GetApplication().signalRedoDocument.connect
         (boost::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, bp::_1));
+
+    this->timer = new QTimer(this);
+    this->timer->setSingleShot(true);
+    connect(this->timer, SIGNAL(timeout()), this, SLOT(onUpdateWatcher()));
 }
 
 TaskView::~TaskView()
@@ -442,16 +447,17 @@ TaskView::~TaskView()
     Gui::Selection().Detach(this);
 }
 
-bool TaskView::isEmpty() const
+bool TaskView::isEmpty(bool includeWatcher) const
 {
     if (ActiveCtrl || ActiveDialog)
         return false;
 
-    for (auto * watcher : ActiveWatcher) {
-        if (watcher->shouldShow())
-            return false;
+    if (includeWatcher) {
+        for (auto * watcher : ActiveWatcher) {
+            if (watcher->shouldShow())
+                return false;
+        }
     }
-
     return true;
 }
 
@@ -703,6 +709,14 @@ void TaskView::removeDialog(void)
 
 void TaskView::updateWatcher(void)
 {
+    this->timer->start(200);
+}
+
+void TaskView::onUpdateWatcher(void)
+{
+    if (ActiveCtrl || ActiveDialog)
+        return;
+
     // In case a child of the TaskView has the focus and get hidden we have
     // to make sure to set the focus on a widget that won't be hidden or
     // deleted because otherwise Qt may forward the focus via focusNextPrevChild()
@@ -747,7 +761,8 @@ void TaskView::addTaskWatcher(const std::vector<TaskWatcher*> &Watcher)
         delete *it;
 
     ActiveWatcher = Watcher;
-    addTaskWatcher();
+    if (!ActiveCtrl && !ActiveDialog)
+        addTaskWatcher();
 }
 
 void TaskView::clearTaskWatcher(void)
