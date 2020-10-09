@@ -487,28 +487,43 @@ std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren(void
 }
 
 struct PixmapInfo {
-    QPixmap px;
     int count = 0;
     std::size_t index;
 
-    void multiply(std::vector<QPixmap> &icons)
+    void generateIcon(QPixmap &px)
     {
-        if (this->count > 2)
+        if (++this->count > 2)
             return;
-        QPixmap pxScaled = this->px.scaled(
-                48, 48, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-        this->px.fill(Qt::transparent);
+
+        if (this->count == 1) {
+            QPixmap pxOrig = px;
+            px = QPixmap(64, 64);
+            px.fill(Qt::transparent);
+            QPainter pt;
+            pt.begin(&px);
+            pt.setRenderHints(QPainter::Antialiasing|QPainter::SmoothPixmapTransform);
+            pt.setPen(Qt::NoPen);
+            pt.setBrush(Qt::white);
+            pt.drawRect(QRect(5, 5, 52, 52));
+            pt.drawPixmap(7, 7, 48, 48, pxOrig, 0, 0, pxOrig.width(), pxOrig.height());
+            pt.setPen(QPen(Qt::black, 2));
+            pt.setBrush(QBrush());
+            pt.drawRect(QRect(5, 5, 52, 52));
+            pt.end();
+            return;
+        }
+
+        QPixmap pxCopy = px;
+        px = QPixmap(64, 64);
+        px.fill(Qt::transparent);
         QPainter pt;
-        pt.begin(&this->px);
-        QPen pen(Qt::black, 2);
-        pt.setPen(pen);
+        pt.begin(&px);
+        pt.setRenderHints(QPainter::Antialiasing|QPainter::SmoothPixmapTransform);
+        pt.setPen(QPen(Qt::black, 2));
         pt.setBrush(Qt::white);
-        pt.drawRect(QRect(1, 1, 54, 54));
-        pt.drawRect(QRect(10, 10, 53, 53));
-        pt.setPen(Qt::NoPen);
-        pt.drawPixmap(12, 12, pxScaled);
+        pt.drawRect(QRect(1, 1, 53, 53));
+        pt.drawPixmap(5, 5, pxCopy);
         pt.end();
-        icons[this->index] = this->px;
     }
 };
 
@@ -543,16 +558,14 @@ void ViewProviderSubShapeBinder::getExtraIcons(std::vector<QPixmap> &icons) cons
                 if (boundVp) {
                     QPixmap px = boundVp->getIcon().pixmap(64, 64);
                     auto & pxInfo = cacheKeys[myPixmap.cacheKey() ^ px.cacheKey()];
-                    if (++pxInfo.count > 1)
-                        pxInfo.multiply(icons);
-                    else {
-                        pxInfo.px = Gui::BitmapFactory().merge(
-                                px, myPixmap, Gui::BitmapFactoryInst::TopLeft);
-                        pxInfo.index = icons.size();
-                        icons.push_back(pxInfo.px);
+                    if (pxInfo.count == 0) {
                         if (icons.size() >= count)
                             break;
+                        px = Gui::BitmapFactory().merge(px, myPixmap, Gui::BitmapFactoryInst::TopLeft);
+                        pxInfo.index = icons.size();
+                        icons.push_back(px);
                     }
+                    pxInfo.generateIcon(icons[pxInfo.index]);
                     continue;
                 }
             }
@@ -560,15 +573,13 @@ void ViewProviderSubShapeBinder::getExtraIcons(std::vector<QPixmap> &icons) cons
             if (vp) {
                 QPixmap px = vp->getIcon().pixmap(64);
                 auto & pxInfo = cacheKeys[px.cacheKey()];
-                if (++pxInfo.count > 1) 
-                    pxInfo.multiply(icons);
-                else {
-                    pxInfo.px = px;
-                    pxInfo.index = icons.size();
-                    icons.push_back(px);
+                if (pxInfo.count == 0) {
                     if (icons.size() >= count)
                         break;
+                    pxInfo.index = icons.size();
+                    icons.push_back(px);
                 }
+                pxInfo.generateIcon(icons[pxInfo.index]);
             }
         }
         if (icons.size() >= count)
