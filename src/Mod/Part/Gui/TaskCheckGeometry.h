@@ -191,14 +191,19 @@ private:
     QPushButton *resultsBtn;
 };
 
-#if OCC_VERSION_HEX < 0x070500
 class BOPProgressIndicator : public Message_ProgressIndicator
 {
 public:
     BOPProgressIndicator (const QString &title, QWidget* parent);
     virtual ~BOPProgressIndicator ();
 
+#if OCC_VERSION_HEX < 0x070500
     virtual Standard_Boolean Show (const Standard_Boolean theForce = Standard_True);
+#else
+    virtual void Show (const Message_ProgressScope& theScope,
+                       const Standard_Boolean isForce);
+    virtual void Reset();
+#endif
     virtual Standard_Boolean UserBreak();
 
 private:
@@ -207,7 +212,6 @@ private:
     QElapsedTimer time;
     QProgressDialog* myProgress;
 };
-#endif
 }
 
 #endif // TASKCHECKGEOMETRY_H

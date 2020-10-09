@@ -417,6 +417,8 @@ void TaskCheckGeometryResults::setupInterface()
 void TaskCheckGeometryResults::goCheck()
 {
     Gui::WaitCursor wc;
+    auto selection = Gui::Selection().getSelection();
+
     int selectedCount(0), checkedCount(0), invalidShapes(0);
     ResultEntry *theRoot = new ResultEntry();
 
@@ -426,9 +428,14 @@ void TaskCheckGeometryResults::goCheck()
 #if OCC_VERSION_HEX >= 0x060900
     theProgress->Show();
 #endif
-#endif
+#else
+    Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
+    Message_ProgressRange theRange(theProgress->Start());
+    Message_ProgressScope theScope(theRange, TCollection_AsciiString("BOP check..."), selection.size());
+    theScope.Show();
+#endif // 0x070500
 
-    for(const auto &sel :  Gui::Selection().getSelection()) {
+    for(const auto &sel :  selection) {
         selectedCount++;
         TopoDS_Shape shape = Part::Feature::getShape(sel.pObject,sel.SubName,true);
         if (shape.IsNull())
@@ -479,13 +486,16 @@ void TaskCheckGeometryResults::goCheck()
 #if OCC_VERSION_HEX < 0x070500
             theProgress->NewScope(label.c_str());
             invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theProgress);
-#else
-            invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, nullptr);
-#endif
-
-#if OCC_VERSION_HEX < 0x070500
             theProgress->EndScope();
             if (theProgress->UserBreak())
+              break;
+#else
+            Message_ProgressScope theInnerScope(theScope.Next(), TCollection_AsciiString(label.c_str()), 1);
+            theInnerScope.Show();
+            //invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theInnerScope);
+            invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, nullptr);
+            theInnerScope.Close();
+            if (theScope.UserBreak())
               break;
 #endif
           }
@@ -1380,11 +1390,11 @@ TaskCheckGeometryDialog::~TaskCheckGeometryDialog()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if OCC_VERSION_HEX < 0x070500
 BOPProgressIndicator::BOPProgressIndicator (const QString& title, QWidget* parent)
 {
     steps = 0;
     canceled = false;
+
     myProgress = new QProgressDialog(parent);
     myProgress->setWindowTitle(title);
     myProgress->setAttribute(Qt::WA_DeleteOnClose);
@@ -1395,6 +1405,7 @@ BOPProgressIndicator::~BOPProgressIndicator ()
     myProgress->close();
 }
 
+#if OCC_VERSION_HEX < 0x070500
 Standard_Boolean BOPProgressIndicator::Show (const Standard_Boolean theForce)
 {
     if (theForce) {
@@ -1415,6 +1426,31 @@ Standard_Boolean BOPProgressIndicator::Show (const Standard_Boolean theForce)
 
     return Standard_True;
 }
+#else
+void BOPProgressIndicator::Show (const Message_ProgressScope& theScope,
+                                 const Standard_Boolean isForce)
+{
+    Standard_CString aName = theScope.Name(); //current step
+    myProgress->setLabelText (QString::fromLatin1(aName));
+
+    if (isForce) {
+        myProgress->show();
+    }
+
+    QCoreApplication::processEvents();
+}
+
+void BOPProgressIndicator::Reset()
+{
+    steps = 0;
+    canceled = false;
+
+    time.start();
+
+    myProgress->setRange(0, 0);
+    myProgress->setValue(0);
+}
+#endif
 
 Standard_Boolean BOPProgressIndicator::UserBreak()
 {
@@ -1443,6 +1479,5 @@ Standard_Boolean BOPProgressIndicator::UserBreak()
 
     return Standard_False;
 }
-#endif
 
 #include "moc_TaskCheckGeometry.cpp"
