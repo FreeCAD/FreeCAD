@@ -354,10 +354,10 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
 };
 
 /* ISO coarse metric enums */
-const char* Hole::HoleCutType_ISOmetric_Enums[]  = { "None", "Counterbore", "Countersink", "Cheesehead", "Countersink socket screw", "Cap screw", NULL};
+const char* Hole::HoleCutType_ISOmetric_Enums[]  = { "None", "Counterbore", "Countersink", "Cheesehead", "Countersink socket screw", "Cap screw", "ISO 4762",  "ISO 4762 + 7089",  "DIN 7984", NULL};
 const char* Hole::ThreadSize_ISOmetric_Enums[]   = { "M1.60", "M2",  "M2.50", "M3",
                                                      "M3.50", "M4",  "M5",    "M6",
-                                                     "M8", 	  "M10", "M12",   "M14",
+                                                     "M8",    "M10", "M12",   "M14",
                                                      "M16",   "M20", "M22",   "M24",
                                                      "M27",   "M30", "M36",   "M42",
                                                      "M48",   "M56", "M64",   "M68", NULL };
@@ -410,6 +410,72 @@ const char* Hole::ThreadSize_ISOmetricfine_Enums[]   = {
     "M100x2.0",    "M100x3.0",    "M100x4.0",    "M100x6.0", NULL };
 const char* Hole::ThreadClass_ISOmetricfine_Enums[]  = { "4G", "4H", "5G", "5H", "6G", "6H", "7G", "7H","8G", "8H", NULL };
 
+/* ISO 4762 Counterbore */
+const Hole::CounterDimension Hole::iso4762_data[] = {
+    { 2,   4.3,  2.1 },
+    { 2.5, 5.0,  3.0 },
+    { 3,   6.0,  3.4 },
+    { 3.5, 6.5,  3.9 },
+    { 4,   8.0,  4.4 },
+    { 5,  10.0,  5.4 },
+    { 6,  11.0,  6.4 },
+    { 8,  15.0,  8.6 },
+    { 10, 18.0, 10.6 },
+    { 12, 20.0, 12.6 },
+    { 14, 24.0, 14.6 },
+    { 16, 26.0, 16.6 },
+    { 18, 30.0, 18.6 },
+    { 20, 33.0, 20.6 },
+    { 22, 36.0, 22.8 },
+    { 24, 40.0, 24.8 },
+    { 27, 46.0, 31.0 },
+    { 30, 50.0, 34.0 },
+    { 33, 54.0, 36.0 },
+    { 36, 58.0, 37.0 },
+    {  0,  0,    0   } };
+
+const Hole::CounterDimension Hole::iso4762_7089_data[] = {
+    { 2,   6.0,  2.4 },
+    { 2.5, 7.0,  3.5 },
+    { 3,   9.0,  3.9 },
+    { 3.5, 9.0,  4.4 },
+    { 4,  10.0,  5.2 },
+    { 5,  13.0,  6.4 },
+    { 6,  15.0,  8.0 },
+    { 8,  18.0, 10.2 },
+    { 10, 24.0, 12.6 },
+    { 12, 26.0, 15.1 },
+    { 14, 30.0, 17.1 },
+    { 16, 33.0, 16.6 },
+    { 18, 36.0, 21.6 },
+    { 20, 40.0, 23.6 },
+    { 22, 43.0, 25.8 },
+    { 24, 48.0, 29.8 },
+    { 27, 54.0, 35.0 },
+    { 30, 61.0, 38.0 },
+    { 33, 63.0, 41.0 },
+    { 36, 69.0, 42.0 },
+    { 0,   0,    0   } };
+
+const Hole::CounterDimension Hole::din7984_data[] = {
+    { 2,    4.3,  1.6 },
+    { 2.5,  5.0,  2.0 },
+    { 3,    6.0,  2.4 },
+    { 3.5,  6.5,  2.9 },
+    { 4,    8.0,  3.2 },
+    { 5,   10.0,  4.0 },
+    { 6,   11.0,  4.7 },
+    { 8,   15.0,  6.0 },
+    { 10,  18.0,  7.0 },
+    { 12,  20.0,  8.0 },
+    { 14,  24.0,  9.0 },
+    { 16,  26.0, 10.5 },
+    { 18,  30.0, 11.5 },
+    { 20,  33.0, 12.5 },
+    { 22,  36.0, 13.5 },
+    { 24,  40.0, 14.5 },
+    {  0,   0,    0} };
+
 /* Details from https://en.wikipedia.org/wiki/Unified_Thread_Standard */
 
 /* UTS coarse */
@@ -438,7 +504,10 @@ const char* Hole::ThreadDirectionEnums[]  = { "Right", "Left", NULL};
 
 PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
-Hole::Hole()
+Hole::Hole() :
+    iso4762 { iso4762_data },
+    iso4762_7089 { iso4762_7089_data },
+    din7984 { din7984_data }
 {
     addSubType = FeatureAddSub::Subtractive;
 
@@ -502,31 +571,45 @@ void Hole::updateHoleCutParams()
         if (ThreadSize.getValue() < 0)
             throw Base::IndexError("Thread size out of range");
         double diameter = PartDesign::Hole::threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;
-        double f = 1.0;
-        double depth = 0;
 
-        if (holeCutType == "Counterbore") {
-            f = 2.0;
-            depth = 0.6;
+        if (holeCutType == "ISO 4762") {
+            const CounterDimension &values = iso4762.get(diameter);
+            HoleCutDiameter.setValue(values.diameter);
+            HoleCutDepth.setValue(values.depth);
+        } else if (holeCutType == "ISO 4762 + 7089") {
+            const CounterDimension &values = iso4762_7089.get(diameter);
+            HoleCutDiameter.setValue(values.diameter);
+            HoleCutDepth.setValue(values.depth);
+        } else if (holeCutType == "DIN 7984") {
+            const CounterDimension &values = din7984.get(diameter);
+            HoleCutDiameter.setValue(values.diameter);
+            HoleCutDepth.setValue(values.depth);
+        } else {
+            double f = 1.0;
+            double depth = 0;
+            if (holeCutType == "Counterbore") {
+                f = 2.0;
+                depth = 0.6;
+            }
+            else if (holeCutType == "Countersink") {
+                f = 2.0;
+                depth = 0;
+            }
+            else if (holeCutType == "Cheesehead") {
+                f = 1.6;
+                depth = 0.6;
+            }
+            else if (holeCutType == "Countersink socket screw") {
+                f = 2.0;
+                depth = 0;
+            }
+            else if (holeCutType == "Cap screw") {
+                f = 1.5;
+                depth = 1.25;
+            }
+            HoleCutDiameter.setValue(diameter * f);
+            HoleCutDepth.setValue(diameter * depth);
         }
-        else if (holeCutType == "Countersink") {
-            f = 2.0;
-            depth = 0;
-        }
-        else if (holeCutType == "Cheesehead") {
-            f = 1.6;
-            depth = 0.6;
-        }
-        else if (holeCutType == "Countersink socket screw") {
-            f = 2.0;
-            depth = 0;
-        }
-        else if (holeCutType == "Cap screw") {
-            f = 1.5;
-            depth = 1.25;
-        }
-        HoleCutDiameter.setValue(diameter * f);
-        HoleCutDepth.setValue(diameter * depth);
     }
 }
 
@@ -1045,7 +1128,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         BRepBuilderAPI_MakeWire mkWire;
         std::string holeCutType = HoleCutType.getValueAsString();
         bool isCountersink = (holeCutType == "Countersink" || holeCutType == "Countersink socket screw");
-        bool isCounterbore = (holeCutType == "Counterbore" || holeCutType == "Cheesehead" || holeCutType == "Cap screw");
+        bool isCounterbore = (holeCutType == "Counterbore" || holeCutType == "Cheesehead" || holeCutType == "Cap screw" ||  holeCutType == "ISO 4762" ||  holeCutType == "ISO 4762 + 7089" ||  holeCutType == "DIN 7984");
         double hasTaperedAngle = Tapered.getValue() ? Base::toRadians( TaperedAngle.getValue() ) : Base::toRadians(90.0);
         double radiusBottom = Diameter.getValue() / 2.0 - length * 1.0 / tan( hasTaperedAngle );
         double radius = Diameter.getValue() / 2.0;

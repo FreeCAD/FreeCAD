@@ -129,6 +129,33 @@ private:
     static const char* ThreadSize_UNEF_Enums[];
     static const char* ThreadClass_UNEF_Enums[];
 
+    /* Counter-xxx */
+    struct CounterDimension {
+        double thread;
+        double diameter;
+        double depth;
+    };
+
+    class CounterDimensionBase {
+        const CounterDimension *data;
+    public:
+        CounterDimensionBase(const CounterDimension *d) : data{ d } { }
+        const CounterDimension &get(double t) {
+            const CounterDimension *i;
+            for(i = data; i->thread; ++i) {
+                if (t == i->thread) break;
+            }
+            return *i;
+        }
+    };
+
+    static const CounterDimension iso4762_data[];
+    CounterDimensionBase iso4762;
+    static const CounterDimension iso4762_7089_data[];
+    CounterDimensionBase iso4762_7089;
+    static const CounterDimension din7984_data[];
+    CounterDimensionBase din7984;
+
     void updateHoleCutParams();
     void updateDiameterParam();
 };
