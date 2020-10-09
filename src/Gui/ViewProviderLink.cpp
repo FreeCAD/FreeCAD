@@ -729,7 +729,7 @@ public:
             link->onLinkedIconChange(me);
     }
 
-    QIcon getIcon(QPixmap px) {
+    QIcon getIcon(const QPixmap &px) {
         if(!isLinked())
             return QIcon();
 
@@ -739,10 +739,9 @@ public:
         if(iconLink.isNull()) {
             QIcon icon = pcLinked->getIcon();
             iconLink = QIcon();
-            int iconSize = TreeWidget::iconSize();
-            iconLink.addPixmap(BitmapFactory().merge(icon.pixmap(iconSize, iconSize, QIcon::Normal, QIcon::Off),
+            iconLink.addPixmap(BitmapFactory().merge(icon.pixmap(64, QIcon::Normal, QIcon::Off),
                 px,BitmapFactoryInst::BottomLeft), QIcon::Normal, QIcon::Off);
-            iconLink.addPixmap(BitmapFactory().merge(icon.pixmap(iconSize, iconSize, QIcon::Normal, QIcon::On ),
+            iconLink.addPixmap(BitmapFactory().merge(icon.pixmap(64, QIcon::Normal, QIcon::On ),
                 px,BitmapFactoryInst::BottomLeft), QIcon::Normal, QIcon::On);
         }
         return iconLink;
@@ -1941,7 +1940,7 @@ QIcon ViewProviderLink::getIcon() const {
 
 QPixmap ViewProviderLink::getOverlayPixmap() const {
     auto ext = getLinkExtension();
-    QSizeF size(8,8);
+    QSizeF size(32, 32);
     if(ext && ext->getLinkedObjectProperty() && ext->_getElementCountValue())
         return BitmapFactory().pixmapFromSvg("LinkArrayOverlay", size);
     else if(hasSubElement)
