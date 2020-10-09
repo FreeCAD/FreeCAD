@@ -3067,6 +3067,9 @@ TopoDS_Shape TopoShape::mirror(const gp_Ax2& ax2) const
 
 TopoDS_Shape TopoShape::toNurbs() const
 {
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Cannot convert null shape to NURBS");
+
     BRepBuilderAPI_NurbsConvert mkNurbs(this->_Shape);
     return mkNurbs.Shape();
 }
