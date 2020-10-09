@@ -319,29 +319,30 @@ class TreeWidget::Private
 public:
     void setOverrideCursor(Qt::CursorShape shape, bool replace=true)
     {
-#if QT_VERSION >= 0x050000
-        qreal devicePixelRatio = qApp->devicePixelRatio();
-#else
-        qreal devicePixelRatio = 1.0;
-#endif
         int cursorSize = 32;
         int iconSize = 24;
         int iconSize2 = 30;
         int hotX=0, hotY=1;
-        if (devicePixelRatio != 1.0) {
-            cursorSize *= 2;
-            iconSize *= 2;
-            iconSize2 *= 2;
-            hotX *= 2;
-            hotY *= 2;
-        }
+
+#if defined(Q_OS_WIN32)
+        cursorSize *= 0.75;
+        iconSize *= 0.75;
+        iconSize2 *= 0.75;
+#endif
+
+#if QT_VERSION >= 0x050000
+        qreal dpr = qApp->devicePixelRatio();
+#else
+        qreal dpr = 1.0;
+#endif
 #if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
 #else
-        hotX = static_cast<int>(hotX*devicePixelRatio);
-        hotY = static_cast<int>(hotY*devicePixelRatio);
+        hotX = static_cast<int>(hotX * dpr);
+        hotY = static_cast<int>(hotY * dpr);
 #endif
-        iconSize = static_cast<int>(iconSize * devicePixelRatio);
-        cursorSize = static_cast<int>(cursorSize * devicePixelRatio);
+        iconSize = static_cast<int>(iconSize * dpr);
+        iconSize2 = static_cast<int>(iconSize2 * dpr);
+        cursorSize = static_cast<int>(cursorSize * dpr);
         QSizeF size(cursorSize, cursorSize);
 
         if (!_DraggingActive) {
@@ -352,18 +353,19 @@ public:
                 if (!vp)
                     continue;
                 if (count++ == 0)
-                    pxObj = vp->getIcon().pixmap(iconSize);
+                    pxObj = vp->getIcon().pixmap(64).scaled(iconSize, iconSize,
+                                Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
                 else {
-                    pxObj2 = vp->getIcon().pixmap(iconSize);
+                    pxObj2 = vp->getIcon().pixmap(64).scaled(iconSize, iconSize,
+                                Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
                     break;
                 }
             }
 
             if (pixmapMove.isNull()) {
-                QSizeF size(32,32);
-#if defined(Q_WS_WIN)
+#if defined(Q_OS_WIN32)
                 std::map<unsigned long, unsigned long> colorMap;
-                colorMap[0] = 0xffffff;
+                colorMap[0] = 0xfEfEfE;
                 colorMap[0xffffff] = 0;
                 pixmapMove = BitmapFactory().pixmapFromSvg("TreeDragMove", size, colorMap);
                 pixmapCopy = BitmapFactory().pixmapFromSvg("TreeDragCopy", size, colorMap);
@@ -374,9 +376,8 @@ public:
                 pixmapCopy = BitmapFactory().pixmapFromSvg("TreeDragCopy", size);
                 pixmapLink = BitmapFactory().pixmapFromSvg("TreeDragLink", size);
                 pixmapReplace = BitmapFactory().pixmapFromSvg("TreeDragReplace", size);
-            }
 #endif
-
+            }
 
             pxMove = QPixmap();
             pxCopy = QPixmap();
@@ -417,10 +418,10 @@ public:
                 pxReplace = pxCursor;
 
 #if QT_VERSION >= 0x050000
-                pxMove.setDevicePixelRatio(devicePixelRatio);
-                pxCopy.setDevicePixelRatio(devicePixelRatio);
-                pxMove.setDevicePixelRatio(devicePixelRatio);
-                pxReplace.setDevicePixelRatio(devicePixelRatio);
+                pxMove.setDevicePixelRatio(dpr);
+                pxCopy.setDevicePixelRatio(dpr);
+                pxLink.setDevicePixelRatio(dpr);
+                pxReplace.setDevicePixelRatio(dpr);
 #endif
             }
         }
@@ -752,19 +753,21 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
                                              const QModelIndex &index) const
 {
     inherited::initStyleOption(option, index);
-    if (option->decorationSize.width() <= 0)
-        return;
 
     TreeWidget * tree = static_cast<TreeWidget*>(parent());
     QTreeWidgetItem * item = tree->itemFromIndex(index);
     if (!item || item->type() != TreeWidget::ObjectType)
         return;
 
+    QSize size;
 #if QT_VERSION >= 0x050000
-    option->decorationSize = option->icon.actualSize(QSize(0xffff, TreeWidget::iconSize()));
+    size = option->icon.actualSize(QSize(0xffff, 0xffff));
 #else
-    option->decorationSize = item->icon(0).actualSize(QSize(0xffff, TreeWidget::iconSize()));
+    size = item->icon(0).actualSize(QSize(0xffff, 0xffff));
 #endif
+    if (size.height())
+        option->decorationSize = QSize(size.width()*TreeWidget::iconSize()/size.height(),
+                                       TreeWidget::iconSize());
 }
 
 QWidget* TreeWidgetItemDelegate::createEditor(
@@ -976,12 +979,8 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
         QIcon icon(documentPixmap);
         documentPartialPixmap = icon.pixmap(documentPixmap.size(),QIcon::Disabled);
 
-        int w = iconSize();
-
-        QPixmap pxHidden = BitmapFactory().pixmapFromSvg("TreeHidden", QSizeF(9,9));
-        QPixmap pxScaled = documentPixmap.scaled(
-                w, w, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-        documentTempPixmap = BitmapFactory().merge(pxScaled, pxHidden, BitmapFactoryInst::TopLeft);
+        QPixmap pxHidden = BitmapFactory().pixmapFromSvg("TreeHidden", QSizeF(32,32));
+        documentTempPixmap = BitmapFactory().merge(pxHidden, pxHidden, BitmapFactoryInst::TopLeft);
     }
 
     for(auto doc : App::GetApplication().getDocuments()) {
@@ -4002,9 +4001,9 @@ enum ItemStatus {
     ItemStatusExternal = 32,
 };
 
-static QIcon getItemIcon(int currentStatus, const ViewProviderDocumentObject *vp, int size=0);
+static QIcon getItemIcon(int currentStatus, const ViewProviderDocumentObject *vp);
 
-static QIcon getItemIcon(App::Document *doc, const ViewProviderDocumentObject *vp, int size)
+static QIcon getItemIcon(App::Document *doc, const ViewProviderDocumentObject *vp)
 {
     App::DocumentObject *obj = vp->getObject();
     bool external = (doc != obj->getDocument()
@@ -4018,7 +4017,7 @@ static QIcon getItemIcon(App::Document *doc, const ViewProviderDocumentObject *v
     if (obj->isTouched() || obj->mustExecute()==1)
         currentStatus |= ItemStatusTouched;
 
-    return getItemIcon(currentStatus, vp, size);
+    return getItemIcon(currentStatus, vp);
 }
 
 static QString getItemStatus(App::DocumentObject *obj)
@@ -4204,8 +4203,6 @@ void TreeWidget::populateSelUpMenu(QMenu *menu, const App::SubObjectT *pObjT)
     if (items.empty())
         return;
 
-    int iconsize = QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
-
     App::Document *doc = docItem->document()->getDocument();
 
     App::SubObjectT objT(static_cast<DocumentObjectItem*>(items.front())->object()->getObject(), "");
@@ -4224,7 +4221,7 @@ void TreeWidget::populateSelUpMenu(QMenu *menu, const App::SubObjectT *pObjT)
             // current item.
             text = QString::fromUtf8("\xe2\x96\xB6  ") + text;
         }
-        QAction *action = menu->addAction(getItemIcon(doc, item->object(), iconsize), text);
+        QAction *action = menu->addAction(getItemIcon(doc, item->object()), text);
         action->setData(QVariant::fromValue(objT));
         action->setToolTip(getItemStatus(item->object()->getObject()));
     }
@@ -4360,7 +4357,6 @@ void TreeWidget::_setupSelUpSubMenu(QMenu *parentMenu,
             item = docItem;
         if (!item->childCount())
             return;
-        int iconsize = QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
         App::Document *doc = docItem->document()->getDocument();
         for(int i=0, c=item->childCount(); i<c; ++i) {
             QTreeWidgetItem *child = item->child(i);
@@ -4374,7 +4370,7 @@ void TreeWidget::_setupSelUpSubMenu(QMenu *parentMenu,
                         + citem->object()->getObject()->getNameInDocument() + ".");
             } else
                 sobjT = App::SubObjectT(citem->object()->getObject(), "");
-            QAction *action = menu.addAction(getItemIcon(doc, citem->object(), iconsize), citem->text(0));
+            QAction *action = menu.addAction(getItemIcon(doc, citem->object()), citem->text(0));
             action->setData(QVariant::fromValue(sobjT));
             action->setToolTip(getItemStatus(citem->object()->getObject()));
         }
@@ -5899,7 +5895,7 @@ static QPixmap mergePixmaps(const std::vector<QPixmap> &icons)
     if (icons.empty())
         return QPixmap();
 
-    int w = TreeWidget::iconSize();
+    int w = 64;
     int width = 0;
     for (auto &px : icons) {
         if(px.height() > w)
@@ -5931,45 +5927,38 @@ static QPixmap mergePixmaps(const std::vector<QPixmap> &icons)
     return px;
 }
 
-static QIcon getItemIcon(int currentStatus, const ViewProviderDocumentObject *vp, int size)
+static QIcon getItemIcon(int currentStatus, const ViewProviderDocumentObject *vp)
 {
     QIcon icon;
     QPixmap px;
     if (currentStatus & ItemStatusError) {
         static QPixmap pxError;
         if(pxError.isNull())
-            pxError = BitmapFactory().pixmapFromSvg("TreeError", QSizeF(9,9));
+            pxError = BitmapFactory().pixmapFromSvg("TreeError", QSizeF(32,32));
         px = pxError;
     }
     else if (currentStatus & ItemStatusTouched) {
         static QPixmap pxRecompute;
         if(pxRecompute.isNull()) 
-            pxRecompute = BitmapFactory().pixmapFromSvg("TreeRecompute", QSizeF(9,9));
+            pxRecompute = BitmapFactory().pixmapFromSvg("TreeRecompute", QSizeF(32,32));
         px = pxRecompute;
     }
 
-    int w = size;
-    if (!w)
-        w = TreeWidget::iconSize();
-
     QPixmap pxOn,pxOff;
     QIcon icon_orig = vp->getIcon();
+    pxOff = icon_orig.pixmap(64, QIcon::Normal, QIcon::Off);
+    pxOn = icon_orig.pixmap(64, QIcon::Normal, QIcon::On);
 
     // if needed show small pixmap inside
     if (!px.isNull()) {
-        pxOff = BitmapFactory().merge(icon_orig.pixmap(w, w, QIcon::Normal, QIcon::Off),
-            px,BitmapFactoryInst::TopRight);
-        pxOn = BitmapFactory().merge(icon_orig.pixmap(w, w, QIcon::Normal, QIcon::On ),
-            px,BitmapFactoryInst::TopRight);
-    } else {
-        pxOff = icon_orig.pixmap(w, w, QIcon::Normal, QIcon::Off);
-        pxOn = icon_orig.pixmap(w, w, QIcon::Normal, QIcon::On);
+        pxOff = BitmapFactory().merge(pxOff, px, BitmapFactoryInst::TopRight);
+        pxOn = BitmapFactory().merge(pxOn, px,BitmapFactoryInst::TopRight);
     }
 
     if(currentStatus & ItemStatusHidden)  {// hidden item
         static QPixmap pxHidden;
         if(pxHidden.isNull()) 
-            pxHidden = BitmapFactory().pixmapFromSvg("TreeHidden", QSizeF(9,9));
+            pxHidden = BitmapFactory().pixmapFromSvg("TreeHidden", QSizeF(32,32));
         pxOff = BitmapFactory().merge(pxOff, pxHidden, BitmapFactoryInst::TopLeft);
         pxOn = BitmapFactory().merge(pxOn, pxHidden, BitmapFactoryInst::TopLeft);
     }
@@ -5977,17 +5966,17 @@ static QIcon getItemIcon(int currentStatus, const ViewProviderDocumentObject *vp
     if(currentStatus & ItemStatusExternal) {// external item
         static QPixmap pxExternal;
         if(pxExternal.isNull())
-            pxExternal = BitmapFactory().pixmapFromSvg("TreeExternal", QSizeF(9,9));
+            pxExternal = BitmapFactory().pixmapFromSvg("TreeExternal", QSizeF(32,32));
         pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
         pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
     }
 
     if (currentStatus & (ItemStatusInvisible | ItemStatusVisible)) {
         static QPixmap pxInvisible, pxVisible;
-        if (pxInvisible.isNull() || pxInvisible.width() != w)
-            pxInvisible = BitmapFactory().pixmapFromSvg("TreeItemInvisible.svg", QSizeF(w,w));
-        if (pxVisible.isNull() || pxVisible.width() != w)
-            pxVisible = BitmapFactory().pixmapFromSvg("TreeItemVisible.svg", QSizeF(w,w));
+        if (pxInvisible.isNull())
+            pxInvisible = BitmapFactory().pixmap("TreeItemInvisible.svg");
+        if (pxVisible.isNull())
+            pxVisible = BitmapFactory().pixmap("TreeItemVisible.svg");
 
         std::vector<QPixmap> icons;
         icons.push_back((currentStatus & ItemStatusVisible) ? pxVisible : pxInvisible);
