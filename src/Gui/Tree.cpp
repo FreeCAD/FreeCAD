@@ -1607,18 +1607,8 @@ void TreeWidget::setIconHeight(int height)
         height = TreeParams::IconSize();
     _TreeIconSize = height;
 
-    for(auto tree : Instances) {
+    for(auto tree : Instances)
         tree->setIconSize(QSize(height, height));
-        for (App::Document *doc : App::GetApplication().getDocuments()) {
-            Gui::Document *gdoc = Application::Instance->getDocument(doc);
-            if (!gdoc) continue;
-            for (App::DocumentObject *obj : doc->getObjects()) {
-                Gui::ViewProvider *vp = gdoc->getViewProvider(obj);
-                if (vp)
-                    vp->signalChangeIcon();
-            }
-        }
-    }
 }
 
 int TreeWidget::iconSize() {
@@ -3134,10 +3124,10 @@ void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::P
                 if(data->itemHidden != itemHidden) {
                     for(auto &data : iter->second) {
                         data->itemHidden = itemHidden;
-                        if(data->docItem->showHidden()) 
-                            continue;
+                        bool docShowHidden = data->docItem->showHidden();
                         for(auto item : data->items) {
-                            item->setHidden(itemHidden);
+                            if (!docShowHidden)
+                                item->setHidden(itemHidden);
                             static_cast<DocumentObjectItem*>(item)->testStatus(false);
                         }
                     }
