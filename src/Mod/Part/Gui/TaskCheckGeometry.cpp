@@ -492,8 +492,7 @@ void TaskCheckGeometryResults::goCheck()
 #else
             Message_ProgressScope theInnerScope(theScope.Next(), TCollection_AsciiString(label.c_str()), 1);
             theInnerScope.Show();
-            //invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theInnerScope);
-            invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, nullptr);
+            invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theInnerScope);
             theInnerScope.Close();
             if (theScope.UserBreak())
               break;
@@ -673,8 +672,13 @@ QString TaskCheckGeometryResults::getShapeContentString()
   return QString::fromStdString(shapeContentString);
 }
 
+#if OCC_VERSION_HEX < 0x070500
 int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName,
                                                const Handle(Message_ProgressIndicator)& theProgress)
+#else
+int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName,
+                                               const Message_ProgressScope& theScope)
+#endif
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
@@ -704,8 +708,12 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   //this is left for another time.
   TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
   BOPAlgo_ArgumentAnalyzer BOPCheck;
-#if OCC_VERSION_HEX >= 0x060900 && OCC_VERSION_HEX < 0x070500
+#if OCC_VERSION_HEX >= 0x060900
+#if OCC_VERSION_HEX < 0x070500
   BOPCheck.SetProgressIndicator(theProgress);
+#else
+  BOPCheck.SetProgressIndicator(theScope);
+#endif // 0x070500
 #else
   Q_UNUSED(theProgress);
 #endif

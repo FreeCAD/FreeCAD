@@ -118,8 +118,13 @@ private:
     void dispatchError(ResultEntry *entry, const BRepCheck_Status &stat);
     bool split(QString &input, QString &doc, QString &object, QString &sub);
     void setupFunctionMap();
+#if OCC_VERSION_HEX < 0x070500
     int goBOPSingleCheck(const TopoDS_Shape &shapeIn, ResultEntry *theRoot, const QString &baseName,
                          const Handle(Message_ProgressIndicator)& theProgress);
+#else
+    int goBOPSingleCheck(const TopoDS_Shape &shapeIn, ResultEntry *theRoot, const QString &baseName,
+                         const Message_ProgressScope& theScope);
+#endif
     void buildShapeContent(const QString &baseName, const TopoDS_Shape &shape);
     ResultModel *model;
     QTreeView *treeView;
