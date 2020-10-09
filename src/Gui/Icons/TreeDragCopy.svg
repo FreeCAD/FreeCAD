@@ -28,8 +28,8 @@
      id="namedview4163"
      showgrid="false"
      inkscape:zoom="7.8666667"
-     inkscape:cx="28.830655"
-     inkscape:cy="20.161598"
+     inkscape:cx="9.1854908"
+     inkscape:cy="6.4719105"
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -54,7 +54,7 @@
      d="M 0.50000004,18.9649 4.1746535,15.5194 5.7314365,20.5 9.7179665,19.0133 7.4892139,14.2033 12.500062,14.7136 0.50000004,0.4998 Z"
      id="path4783" />
   <rect
-     style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:63;stroke-opacity:1"
+     style="opacity:1;fill:#fefefe;fill-opacity:1;stroke:#010101;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:63;stroke-opacity:1"
      id="rect4804"
      width="10"
      height="10"
@@ -62,12 +62,12 @@
      y="21.5" />
   <path
      inkscape:connector-curvature="0"
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     style="fill:none;fill-rule:evenodd;stroke:#010101;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      d="m 23.000001,26.500041 7,0"
      id="path4806" />
   <path
      inkscape:connector-curvature="0"
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     style="fill:none;fill-rule:evenodd;stroke:#010101;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      d="m 26.500001,23.000041 0,7"
      id="path4808" />
 </svg>

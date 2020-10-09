@@ -27,9 +27,9 @@
      inkscape:window-height="744"
      id="namedview4153"
      showgrid="false"
-     inkscape:zoom="7.8666667"
-     inkscape:cx="12"
-     inkscape:cy="9.9152542"
+     inkscape:zoom="11.125147"
+     inkscape:cx="13.187633"
+     inkscape:cy="10.181548"
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
@@ -44,12 +44,12 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <rect
-     style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:63;stroke-opacity:1"
+     style="opacity:1;fill:#fefefe;fill-opacity:1;stroke:#010101;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:63;stroke-opacity:1"
      id="rect4804"
      width="10"
      height="10"
@@ -62,7 +62,7 @@
      id="path4783" />
   <path
      inkscape:connector-curvature="0"
-     style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="opacity:1;fill:#010101;fill-opacity:1;stroke:none;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="m 23.314251,25.851041 c 0.683951,-0.6414 1.821538,-1.1434 3.412591,-1.5058 l -0.09564,-1.0373 c -0.01073,-0.1101 0.05844,-0.2023 0.205946,-0.2747 0.155234,-0.073 0.293051,-0.08 0.413214,-0.018 l 3.173037,1.4873 c 0.07634,0.041 0.120814,0.09 0.127475,0.1577 0.0064,0.069 -0.02513,0.1346 -0.09423,0.198 l -2.798873,2.5662 c -0.06554,0.064 -0.150543,0.1036 -0.255557,0.1231 -0.04694,0.01 -0.09627,0.01 -0.147646,0.01 -0.155474,-0.022 -0.239125,-0.081 -0.248821,-0.193 l -0.09171,-0.9936 c -0.622813,0.1474 -1.136284,0.3113 -1.540945,0.4896 -0.40437,0.1795 -0.722378,0.3847 -0.953943,0.617 -0.539146,0.5401 -0.676414,1.3229 -0.411792,2.3485 0.01355,0.068 -0.02641,0.12 -0.121656,0.1587 -0.01422,0.01 -0.02908,0.01 -0.0524,0.01 -0.07785,0.014 -0.134048,0 -0.169665,-0.038 l -0.131376,-0.137 c -0.0612,-0.063 -0.151074,-0.1691 -0.269254,-0.3156 -0.118408,-0.146 -0.226897,-0.2943 -0.325624,-0.4445 -0.09908,-0.1493 -0.190523,-0.3181 -0.275044,-0.5055 -0.08448,-0.1873 -0.133841,-0.3574 -0.147922,-0.5104 -0.08184,-0.8868 0.18481,-1.6178 0.799822,-2.1931 z"
      id="path4312-3" />
 </svg>
