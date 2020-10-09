@@ -1949,14 +1949,18 @@ bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
     return false;
 }
 
-bool TreeWidget::isDragging()
+namespace Gui {
+
+bool isTreeViewDragging()
 {
     return _DraggingActive;
 }
 
-int TreeWidget::isDropping()
+int isTreeViewDropping()
 {
     return _Dropping ? _DropID : 0;
+}
+
 }
 
 void TreeWidget::keyPressEvent(QKeyEvent *event)

@@ -354,7 +354,7 @@ std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject *obj, A
         values[owner?owner:obj] = std::move(subs);
     }
 
-    int dropid = Gui::TreeWidget::isDropping();
+    int dropid = Gui::isTreeViewDropping();
     self->setLinks(std::move(values),
             QApplication::keyboardModifiers()==Qt::ControlModifier && _dropID != dropid);
     _dropID = dropid;

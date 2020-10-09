@@ -3724,7 +3724,7 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
             return false;
         if (d->_trackingView >= 0) {
             View3DInventorViewer *view = nullptr;
-            if(!TreeWidget::isDragging() && d->_trackingView < d->_3dviews.size())
+            if(!isTreeViewDragging() && d->_trackingView < d->_3dviews.size())
                 view = d->_3dviews[d->_trackingView];
             if(view)
                 view->callEventFilter(ev);
@@ -3754,7 +3754,7 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
                 && QApplication::mouseButtons()!=Qt::NoButton)
             return false;
 
-        if(TreeWidget::isDragging())
+        if(isTreeViewDragging())
             return false;
 
         int hit = 0;

@@ -89,7 +89,6 @@
 # include <Geom2d_TrimmedCurve.hxx>
 # include <GeomLProp_SLProps.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <GeomFill_BSplineCurves.hxx>
 # include <GeomFill_CorrectedFrenet.hxx>
 # include <GeomFill_CurveAndTrihedron.hxx>
 # include <GeomFill_EvolvedSection.hxx>
@@ -167,6 +166,8 @@
 # include <ShapeAnalysis_FreeBounds.hxx>
 # include <BRepOffsetAPI_MakeFilling.hxx>
 # include <TopTools_DataMapIteratorOfDataMapOfShapeListOfShape.hxx>
+# include <GeomFill_FillingStyle.hxx>
+# include <GeomFill_BSplineCurves.hxx>
 
 #include <array>
 #include <deque>
