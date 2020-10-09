@@ -27,9 +27,9 @@
 # include <QMessageBox>
 # include <Precision.hxx>
 # include <QApplication>
-# include <Standard_Version.hxx>
 # include <QMessageBox>
 #endif
+# include <Standard_Version.hxx>
 
 #include <Base/Console.h>
 #include <App/Application.h>
