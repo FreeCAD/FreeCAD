@@ -1492,7 +1492,7 @@ PyObject*  TopoShapePy::scale(PyObject *args)
     double factor;
     PyObject* p=0;
     if (!PyArg_ParseTuple(args, "d|O!", &factor, &(Base::VectorPy::Type), &p))
-        return NULL;
+        return nullptr;
 
     gp_Pnt pos(0,0,0);
     if (p) {
@@ -1502,17 +1502,20 @@ PyObject*  TopoShapePy::scale(PyObject *args)
         pos.SetZ(pnt.z);
     }
     if (fabs(factor) < Precision::Confusion()) {
-        PyErr_SetString(PartExceptionOCCError, "scale factor too small");
-        return NULL;
+        PyErr_SetString(PyExc_ValueError, "scale factor too small");
+        return nullptr;
     }
 
     PY_TRY {
-        gp_Trsf scl;
-        scl.SetScale(pos, factor);
-        BRepBuilderAPI_Transform BRepScale(scl);
-        bool bCopy = true;
-        BRepScale.Perform(getTopoShapePtr()->getShape(),bCopy);
-        getTopoShapePtr()->setShape(BRepScale.Shape());
+        const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
+        if (!shape.IsNull()) {
+            gp_Trsf scl;
+            scl.SetScale(pos, factor);
+            BRepBuilderAPI_Transform BRepScale(scl);
+            bool bCopy = true;
+            BRepScale.Perform(shape, bCopy);
+            getTopoShapePtr()->setShape(BRepScale.Shape());
+        }
         return IncRef();
     } PY_CATCH_OCC
 }
