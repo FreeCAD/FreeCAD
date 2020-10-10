@@ -62,7 +62,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                 for sub in sel.SubObjects:
                     if isinstance(sub, Part.Face):
                         if sub.normalAt(0, 0) != FreeCAD.Vector(0, 0, 1):
-                            PathLog.info(translate("Path", "Ignoring non-vertical Face"))
+                            PathLog.info(translate("Path", "Ignoring non-horizontal Face"))
                             return
 
         self.super().addBaseGeometry(selection)
@@ -131,7 +131,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def taskPanelBaseGeometryPage(self, obj, features):
         '''taskPanelBaseGeometryPage(obj, features) ... return page for adding base geometries.'''
-        print(features)
         return TaskPanelBaseGeometryPage(obj, features)
 
 

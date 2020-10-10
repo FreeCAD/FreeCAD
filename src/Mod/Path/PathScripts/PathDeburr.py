@@ -30,7 +30,7 @@ import PathScripts.PathOp as PathOp
 import PathScripts.PathOpTools as PathOpTools
 import math
 
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -54,20 +54,28 @@ def toolDepthAndOffset(width, extraDepth, tool):
     '''toolDepthAndOffset(width, extraDepth, tool) ... return tuple for given\n
        parameters.'''
 
-    if not (hasattr(tool, 'CuttingEdgeAngle')
-            and hasattr(tool, 'FlatRadius')
-            and hasattr(tool, 'Diameter')):
-        raise ValueError('Deburr requires tool with flatradius, diameter, and CuttingEdgeAngle\n')
+    if not hasattr(tool, 'Diameter'):
+        raise ValueError('Deburr requires tool with diameter\n')
 
-    angle = float(tool.CuttingEdgeAngle)
-    if 0 == angle:
+    if not hasattr(tool, 'CuttingEdgeAngle'):
+        angle = 180
+        FreeCAD.Console.PrintMessage('The selected tool has No CuttingEdgeAngle property. Assuming Endmill\n')
+    else:
+        angle = float(tool.CuttingEdgeAngle)
+
+    if not hasattr(tool, 'FlatRadius'):
+        toolOffset = float(tool.Diameter / 2)
+        FreeCAD.Console.PrintMessage('The selected tool has no FlatRadius property. Using Diameter\n')
+    else:
+        toolOffset = float(tool.FlatRadius)
+
+    if angle == 0:
         angle = 180
     tan = math.tan(math.radians(angle / 2))
 
     toolDepth = 0 if 0 == tan else width / tan
     depth = toolDepth + extraDepth
-    toolOffset = float(tool.FlatRadius)
-    extraOffset = float(tool.Diameter) / 2 - width if 180 == angle else extraDepth / tan
+    extraOffset = float(tool.Diameter) / 2 - width if angle == 180 else extraDepth / tan
     offset = toolOffset + extraOffset
 
     return (depth, offset)
@@ -108,8 +116,9 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             (depth, offset) = toolDepthAndOffset(obj.Width.Value, obj.ExtraDepth.Value, self.tool)
         except ValueError as e:
             msg = "{} \n No path will be generated".format(e)
-            QtGui.QMessageBox.information(None, "Tool Error", msg)
-            return
+            raise ValueError(msg)
+            # QtGui.QMessageBox.information(None, "Tool Error", msg)
+            # return
 
         PathLog.track(obj.Label, depth, offset)
 
@@ -133,22 +142,18 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
             self.basewires.extend(basewires)
 
-            # Set default value
-            side = ["Outside"]
 
             for w in basewires:
                 self.adjusted_basewires.append(w)
-                wire = PathOpTools.offsetWire(w, base.Shape, offset, True, side)
+                wire = PathOpTools.offsetWire(w, base.Shape, offset, True) #, obj.Side)
                 if wire:
                     wires.append(wire)
 
-        # Save Outside or Inside
-        obj.Side = side[0]
+        # # Save Outside or Inside
+        # obj.Side = side[0]
 
         # Set direction of op
-        forward = True
-        if obj.Direction == 'CCW':
-            forward = False
+        forward = (obj.Direction == 'CCW')
 
         zValues = []
         z = 0
