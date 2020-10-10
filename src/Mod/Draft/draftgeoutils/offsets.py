@@ -32,7 +32,7 @@ import FreeCAD as App
 import DraftVecUtils
 
 from draftgeoutils.general import geomType, vec
-from draftgeoutils.geometry import getNormal
+from draftgeoutils.geometry import get_normal
 from draftgeoutils.wires import isReallyClosed
 from draftgeoutils.intersections import wiresIntersect, connect
 
@@ -223,7 +223,10 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     if normal:
         norm = normal
     else:
-        norm = getNormal(wire)  # norm = Vector(0, 0, 1)
+        norm = get_normal(wire)  # norm = Vector(0, 0, 1)
+        # for backward compatibility with previous getNormal implementation
+        if norm == None:
+            norm = App.Vector(0, 0, 1)
 
     closed = isReallyClosed(wire)
     nedges = []

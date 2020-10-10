@@ -196,70 +196,57 @@ def findDistance(point, edge, strict=False):
         return None
 
 
-def getSplineNormal(edge):
+def get_spline_normal(edge, tol=-1):
     """Find the normal of a BSpline edge."""
-    startPoint = edge.valueAt(edge.FirstParameter)
-    endPoint = edge.valueAt(edge.LastParameter)
-    midParameter = (edge.FirstParameter
-                    + (edge.LastParameter - edge.FirstParameter) / 2)
-    midPoint = edge.valueAt(midParameter)
-    v1 = midPoint - startPoint
-    v2 = midPoint - endPoint
-    n = v1.cross(v2)
-    n.normalize()
-    return n
 
-
-def getNormal(shape):
-    """Find the normal of a shape or list of points, if possible."""
-    if isinstance(shape, (list, tuple)):
-        if len(shape) >= 3:
-            v1 = shape[1].sub(shape[0])
-            v2 = shape[2].sub(shape[0])
-            n = v2.cross(v1)
-            if n.Length:
-                return n
+    if is_straight_line(shape, tol):
         return None
 
-    n = App.Vector(0, 0, 1)
-    if shape.isNull():
-        return n
-
-    if (shape.ShapeType == "Face") and hasattr(shape, "normalAt"):
-        n = shape.copy().normalAt(0.5, 0.5)
-    elif shape.ShapeType == "Edge":
-        if geomType(shape.Edges[0]) in ["Circle", "Ellipse"]:
-            n = shape.Edges[0].Curve.Axis
-        elif (geomType(shape.Edges[0]) == "BSplineCurve"
-              or geomType(shape.Edges[0]) == "BezierCurve"):
-            n = getSplineNormal(shape.Edges[0])
+    plane = edge.findPlane(tol)
+    if plane:
+        normal = plane.Axis
+        return normal
     else:
-        for e in shape.Edges:
-            if geomType(e) in ["Circle", "Ellipse"]:
-                n = e.Curve.Axis
-                break
-            elif (geomType(e) == "BSplineCurve"
-                  or geomType(e) == "BezierCurve"):
-                n = getSplineNormal(e)
-                break
+        return None
 
-            e1 = vec(shape.Edges[0])
-            for i in range(1, len(shape.Edges)):
-                e2 = vec(shape.Edges[i])
-                if 0.1 < abs(e1.getAngle(e2)) < 3.14:
-                    n = e1.cross(e2).normalize()
-                    break
+
+def get_normal(shape, tol=-1):
+    """Find the normal of a shape or list of points, if possible."""
+
+    # for points
+    if isinstance(shape, (list, tuple)):
+        if len(shape) <= 2:
+            return None
+        else:
+            poly = Part.makePolygon(shape)
+            if is_straight_line(poly, tol):
+                return None
+
+            plane = poly.findPlane(tol)
+            if plane:
+                normal = plane.Axis
+                return normal
+            else:
+                return None
+
+    # for shapes
+    if is_straight_line(shape, tol):
+        return None
+
+    else:
+        plane = find_plane(shape, tol)
+        if plane:
+            normal = plane.Axis
+        else:
+            return None
 
     # Check the 3D view to flip the normal if the GUI is available
     if App.GuiUp:
-        vdir = gui_utils.get_3d_view().getViewDirection()
-        if n.getAngle(vdir) < 0.78:
-            n = n.negative()
+        v_dir = gui_utils.get_3d_view().getViewDirection()
+        if normal.getAngle(v_dir) < 0.78:
+            normal = normal.negative()
 
-    if not n.Length:
-        return None
-
-    return n
+    return normal
 
 
 def getRotation(v1, v2=App.Vector(0, 0, 1)):
@@ -275,32 +262,194 @@ def getRotation(v1, v2=App.Vector(0, 0, 1)):
     return App.Rotation(axis, angle)
 
 
-def isPlanar(shape):
+def is_planar(shape, tol=-1):
     """Return True if the given shape or list of points is planar."""
-    n = getNormal(shape)
-    if not n:
-        return False
 
+    # for points
     if isinstance(shape, list):
         if len(shape) <= 3:
             return True
         else:
-            for v in shape[3:]:
-                pv = v.sub(shape[0])
-                rv = DraftVecUtils.project(pv, n)
-                if not DraftVecUtils.isNull(rv):
-                    return False
-    else:
-        if len(shape.Vertexes) <= 3:
-            return True
+            poly = Part.makePolygon(shape)
+            if is_straight_line(poly, tol):
+                return True
+            plane = poly.findPlane(tol)
+            if plane:
+                return True
+            else:
+                return False
 
-        for p in shape.Vertexes[1:]:
-            pv = p.Point.sub(shape.Vertexes[0].Point)
-            rv = DraftVecUtils.project(pv, n)
-            if not DraftVecUtils.isNull(rv):
+    # for shapes
+    # because Part.Shape.findPlane return None for Vertex and straight edges
+    if shape.ShapeType == "Vertex":
+        return True
+
+    if is_straight_line(shape, tol):
+        return True
+
+    plane = find_plane(shape, tol)
+    if plane:
+        return True
+    else:
+        return False
+
+
+def is_straight_line(shape, tol=-1):
+    """Return True if shape is a straight line.
+    function used in other methods because Part.Shape.findPlane assign a
+    plane and normal to straight wires creating priviliged directions
+    and to deal with straight wires with overlapped edges."""
+
+    if len(shape.Faces) != 0:
+        return False
+
+    if len(shape.Edges) == 0:
+        return False
+
+    if len(shape.Edges) >= 1:
+        start_edge = shape.Edges[0]
+        dir_start_edge = start_edge.tangentAt(start_edge.FirstParameter)
+        #set tolerance
+        if tol <=0:
+            err = shape.globalTolerance(tol)
+        else:
+            err = tol
+
+        for edge in shape.Edges:
+            first_point = edge.firstVertex().Point
+            last_point = edge.lastVertex().Point
+            dir_edge = edge.tangentAt(edge.FirstParameter)
+            # chek if edge is curve or no parallel to start_edge
+            # because sin(x) = x + O(x**3), for small angular deflection it's
+            # enough use the cross product of directions (or dot with a normal)
+            if (abs(edge.Length - first_point.distanceToPoint(last_point)) > err
+                or dir_start_edge.cross(dir_edge).Length > err):
                 return False
 
     return True
+
+
+def are_coplanar(shape_a, shape_b, tol=-1):
+    """Return True if exist a plane containing both shapes."""
+
+    if not is_planar(shape_a, tol) or not is_planar(shape_b, tol):
+        return False
+
+    if shape_a.isEqual(shape_b):
+        return True
+
+    plane_a = find_plane(shape_a, tol)
+    plane_b = find_plane(shape_b, tol)
+
+    #set tolerance
+    if tol <=0:
+        err = 1e-7
+    else:
+        err = tol
+
+    if plane_a and plane_b:
+        normal_a = plane_a.Axis
+        normal_b = plane_b.Axis
+        proj = plane_a.projectPoint(plane_b.Position)
+        if (normal_a.cross(normal_b).Length > err
+            or plane_b.Position.sub(proj).Length > err):
+            return False
+        else:
+            return True
+
+    elif plane_a and not plane_b:
+        normal_a = plane_a.Axis
+        for vertex in shape_b.Vertexes:
+            dir_ver_b = vertex.Point.sub(plane_a.Position).normalize()
+            if abs(normal_a.dot(dir_ver_b)) > err:
+                proj = plane_a.projectPoint(vertex.Point)
+                if vertex.Point.sub(proj).Length > err:
+                    return False
+        return True
+
+    elif plane_b and not plane_a:
+        normal_b = plane_b.Axis
+        for vertex in shape_a.Vertexes:
+            dir_ver_a = vertex.Point.sub(plane_b.Position).normalize()
+            if abs(normal_b.dot(dir_ver_a)) > err:
+                proj = plane_b.projectPoint(vertex.Point)
+                if vertex.Point.sub(proj).Length > err:
+                    return False
+        return True
+    # not normal_a and not normal_b:
+    else:
+        points_a = [vertex.Point for vertex in shape_a.Vertexes]
+        points_b = [vertex.Point for vertex in shape_b.Vertexes]
+        poly = Part.makePolygon(points_a + points_b)
+        if is_planar(poly, tol):
+            return True
+        else:
+            return False
+
+
+def get_spline_surface_normal(shape, tol=-1):
+    """Check if shape formed by BSpline surfaces is planar and get normal.
+    If shape is not planar return None."""
+
+    if len(shape.Faces) == 0:
+        return None
+
+    #set tolerance
+    if tol <=0:
+        err = shape.globalTolerance(tol)
+    else:
+        err = tol
+
+    first_surf = shape.Faces[0].Surface
+
+    if not first_surf.isPlanar(tol):
+        return None
+
+    # find bounds of first_surf
+    u0, u1, v0, v1 = first_surf.bounds()
+    u = (u0 + u1)/2
+    v = (v0 + v1)/2
+    first_normal = first_surf.normal(u, v)
+    # chek if all faces are planar and parallel
+    for face in shape.Faces:
+        surf = face.Surface
+        if not surf.isPlanar(tol):
+            return None
+        u0, u1, v0, v1 = surf.bounds()
+        u = (u0 + u1)/2
+        v = (v0 + v1)/2
+        surf_normal = surf.normal(u, v)
+        if first_normal.cross(surf_normal).Length > err:
+            return None
+
+    normal = first_normal
+
+    return normal
+
+def find_plane(shape, tol=-1):
+    """Find the plane containing the shape if possible.
+    Use this function as a workaround due Part.Shape.findPlane
+    fail to find plane on BSpline surfaces."""
+
+    if shape.ShapeType == "Vertex":
+        return None
+
+    if is_straight_line(shape, tol):
+        return None
+
+    plane = shape.findPlane(tol)
+    if plane:
+        return plane
+    elif len(shape.Faces) >= 1:
+        # in case shape have BSpline surfaces
+        normal = get_spline_surface_normal(shape, tol)
+        if normal:
+            position = shape.CenterOfMass
+            return Part.Plane(position, normal)
+        else:
+            return None
+    else:
+        return None
 
 
 def calculatePlacement(shape):
@@ -310,11 +459,14 @@ def calculatePlacement(shape):
     of gravity of the shape, and oriented towards the shape's normal.
     Otherwise, it returns a null placement.
     """
-    if not isPlanar(shape):
+    if not is_planar(shape):
         return App.Placement()
 
     pos = shape.BoundBox.Center
-    norm = getNormal(shape)
+    norm = get_normal(shape)
+    # for backward compatibility with previous getNormal implementation
+    if norm == None:
+        norm = App.Vector(0, 0, 1)
     pla = App.Placement()
     pla.Base = pos
     r = getRotation(norm)
@@ -336,5 +488,15 @@ def mirror(point, edge):
         return refl
     else:
         return None
+
+
+#compatibility layer
+
+getSplineNormal = get_spline_normal
+
+getNormal = get_normal
+
+isPlanar =  is_planar
+
 
 ## @}
