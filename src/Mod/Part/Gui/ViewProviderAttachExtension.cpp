@@ -45,7 +45,7 @@ ViewProviderAttachExtension::ViewProviderAttachExtension()
     initExtensionType(ViewProviderAttachExtension::getExtensionClassTypeId());
 }
 
-void ViewProviderAttachExtension::extensionMergeOverlayIcons(QIcon &icon) const
+void ViewProviderAttachExtension::extensionGetExtraIcons(std::vector<QPixmap> &icons) const
 {
     if (getExtendedViewProvider()->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
 
@@ -53,27 +53,8 @@ void ViewProviderAttachExtension::extensionMergeOverlayIcons(QIcon &icon) const
 
         if (attach) {
 
-            if(!attach->isAttacherActive()) {
-                QPixmap px;
-
-                static const char * const feature_detached_xpm[]={
-                    "8 8 3 1",
-                    ". c None",
-                    "# c #cc00cc",
-                    "a c #ffffff",
-                    "...##...",
-                    "..#aa#..",
-                    ".#aaaa#.",
-                    "########",
-                    "########",
-                    ".#aaaa#.",
-                    "..#aa#..",
-                    "...##..."};
-
-                    px = QPixmap(feature_detached_xpm);
-
-                    icon = Gui::BitmapFactoryInst::mergePixmap(icon, px, Gui::BitmapFactoryInst::BottomLeft);
-            }
+            if(!attach->isAttacherActive())
+                icons.push_back(Gui::BitmapFactory().pixmap("Part_Attachment_Detached.svg"));
         }
     }
 }

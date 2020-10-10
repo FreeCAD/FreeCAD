@@ -39,7 +39,7 @@ public:
     ViewProviderAttachExtension(void);
     virtual ~ViewProviderAttachExtension() = default;
 
-    virtual void extensionMergeOverlayIcons(QIcon &orig) const override;
+    virtual void extensionGetExtraIcons(std::vector<QPixmap> &) const override;
 
     virtual void extensionUpdateData(const App::Property*) override;
 

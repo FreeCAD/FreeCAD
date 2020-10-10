@@ -1,6 +1,7 @@
 <RCC>
     <qresource>
         <file>icons/Part_Attachment.svg</file>
+        <file>icons/Part_Attachment_Detached.svg</file>
         <file>icons/Part_BooleanFragments.svg</file>
         <file>icons/Part_Booleans.svg</file>
         <file>icons/Part_Box.svg</file>
