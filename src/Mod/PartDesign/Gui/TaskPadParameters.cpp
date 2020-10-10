@@ -86,34 +86,15 @@ void TaskPadParameters::setupUI(bool newObj)
 #endif
     }
 
+    this->addNewSolidCheckBox(proxy);
     this->groupLayout()->addWidget(proxy);
+
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
 
     // set the history path
     ui->lengthEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength"));
     ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength2"));
     ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadOffset"));
-
-    // Get the feature data
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
-    Base::Quantity l = pcPad->Length.getQuantityValue();
-    Base::Quantity l2 = pcPad->Length2.getQuantityValue();
-    bool useCustom = pcPad->UseCustomVector.getValue();
-    double xs = pcPad->Direction.getValue().x;
-    double ys = pcPad->Direction.getValue().y;
-    double zs = pcPad->Direction.getValue().z;
-    Base::Quantity off = pcPad->Offset.getQuantityValue();
-    bool midplane = pcPad->Midplane.getValue();
-    bool reversed = pcPad->Reversed.getValue();
-    int index = pcPad->Type.getValue(); // must extract value here, clear() kills it!
-
-    // Fill data into dialog elements
-    ui->lengthEdit->setValue(l);
-    ui->lengthEdit2->setValue(l2);
-    ui->groupBoxDirection->setChecked(useCustom);
-    ui->XDirectionEdit->setValue(xs);
-    ui->YDirectionEdit->setValue(ys);
-    ui->ZDirectionEdit->setValue(zs);
-    ui->offsetEdit->setValue(off);
 
     // Bind input fields to properties
     ui->lengthEdit->bind(pcPad->Length);
@@ -124,36 +105,12 @@ void TaskPadParameters::setupUI(bool newObj)
     ui->ZDirectionEdit->bind(App::ObjectIdentifier::parse(pcPad, std::string("Direction.z")));
 
     ui->offsetEdit->bind(pcPad->Offset);
-    ui->checkBoxMidplane->setChecked(midplane);
-    // According to bug #0000521 the reversed option
-    // shouldn't be de-activated if the pad has a support face
-    ui->checkBoxReversed->setChecked(reversed);
 
     // set decimals for the direction edits
     int UserDecimals = Base::UnitsApi::getDecimals();
     ui->XDirectionEdit->setDecimals(UserDecimals);
     ui->YDirectionEdit->setDecimals(UserDecimals);
     ui->ZDirectionEdit->setDecimals(UserDecimals);
-
-    // Set object labels
-    App::DocumentObject* obj = pcPad->UpToFace.getValue();
-    std::vector<std::string> subStrings = pcPad->UpToFace.getSubValues(false);
-    if (obj && subStrings.empty()) {
-        ui->lineFaceName->setText(QString::fromUtf8(obj->Label.getValue()));
-        ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
-    }
-    else if (obj) {
-        ui->lineFaceName->setText(QString::fromLatin1("%1:%2")
-                                  .arg(QString::fromUtf8(obj->Label.getValue()))
-                                  .arg(QString::fromLatin1(subStrings.front().c_str())));
-        ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
-        ui->lineFaceName->setProperty("FaceName", QByteArray(subStrings.front().c_str()));
-
-    }
-    else {
-        ui->lineFaceName->clear();
-        ui->lineFaceName->setProperty("FeatureName", QVariant());
-    }
 
     ui->changeMode->clear();
     ui->changeMode->insertItem(0, tr("Dimension"));
@@ -164,7 +121,6 @@ void TaskPadParameters::setupUI(bool newObj)
     else
         ui->changeMode->insertItem(3, tr("Up to face"));
     ui->changeMode->insertItem(4, tr("Two dimensions"));
-    ui->changeMode->setCurrentIndex(index);
 
     QMetaObject::connectSlotsByName(this);
 
@@ -194,11 +150,8 @@ void TaskPadParameters::setupUI(bool newObj)
             this, SLOT(onFaceName(QString)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
-    connect(ui->checkBoxNewSolid, SIGNAL(toggled(bool)),
-            this, SLOT(onNewSolidChanged(bool)));
 
-    // Due to signals attached after changes took took into effect we should update the UI now.
-    updateUI(index);
+    refresh();
 
     // if it is a newly created object use the last value of the history
     // TODO: newObj doesn't supplied normally by any caller (2015-07-24, Fat-Zer)
@@ -210,6 +163,73 @@ void TaskPadParameters::setupUI(bool newObj)
         ui->offsetEdit->setToLastUsedValue();
         ui->offsetEdit->selectNumber();
     }
+}
+
+void TaskPadParameters::refresh()
+{
+    if (!vp || !vp->getObject())
+        return;
+
+    // Get the feature data
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    Base::Quantity l = pcPad->Length.getQuantityValue();
+    Base::Quantity l2 = pcPad->Length2.getQuantityValue();
+    bool useCustom = pcPad->UseCustomVector.getValue();
+    double xs = pcPad->Direction.getValue().x;
+    double ys = pcPad->Direction.getValue().y;
+    double zs = pcPad->Direction.getValue().z;
+    Base::Quantity off = pcPad->Offset.getQuantityValue();
+    bool midplane = pcPad->Midplane.getValue();
+    bool reversed = pcPad->Reversed.getValue();
+    int index = pcPad->Type.getValue(); // must extract value here, clear() kills it!
+
+    // Temporarily prevent unnecessary feature recomputes
+    for (QWidget* child : proxy->findChildren<QWidget*>())
+        child->blockSignals(true);
+
+    // Fill data into dialog elements
+    ui->lengthEdit->setValue(l);
+    ui->lengthEdit2->setValue(l2);
+    ui->groupBoxDirection->setChecked(useCustom);
+    ui->XDirectionEdit->setValue(xs);
+    ui->YDirectionEdit->setValue(ys);
+    ui->ZDirectionEdit->setValue(zs);
+    ui->offsetEdit->setValue(off);
+
+    ui->checkBoxMidplane->setChecked(midplane);
+    // According to bug #0000521 the reversed option
+    // shouldn't be de-activated if the pad has a support face
+    ui->checkBoxReversed->setChecked(reversed);
+
+    // Set object labels
+    App::DocumentObject* obj = pcPad->UpToFace.getValue();
+    std::vector<std::string> subStrings = pcPad->UpToFace.getSubValues(false);
+    if (obj && subStrings.empty()) {
+        ui->lineFaceName->setText(QString::fromUtf8(obj->Label.getValue()));
+        ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
+    }
+    else if (obj) {
+        ui->lineFaceName->setText(QString::fromLatin1("%1:%2")
+                                  .arg(QString::fromUtf8(obj->Label.getValue()))
+                                  .arg(QString::fromLatin1(subStrings.front().c_str())));
+        ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
+        ui->lineFaceName->setProperty("FaceName", QByteArray(subStrings.front().c_str()));
+
+    }
+    else {
+        ui->lineFaceName->clear();
+        ui->lineFaceName->setProperty("FeatureName", QVariant());
+    }
+
+    ui->changeMode->setCurrentIndex(index);
+
+    // Temporarily prevent unnecessary feature recomputes
+    for (QWidget* child : proxy->findChildren<QWidget*>())
+        child->blockSignals(false);
+
+    updateUI(index);
+
+    TaskSketchBasedParameters::refresh();
 }
 
 void TaskPadParameters::updateUI(int index)
@@ -385,18 +405,6 @@ void TaskPadParameters::onReversedChanged(bool on)
     recomputeFeature();
 }
 
-void TaskPadParameters::onNewSolidChanged(bool on)
-{
-    if (vp) {
-        PartDesign::Feature* pc =
-            Base::freecad_dynamic_cast<PartDesign::Feature>(vp->getObject());
-        if (pc) {
-            pc->NewSolid.setValue(on);
-            recomputeFeature();
-        }
-    }
-}
-
 void TaskPadParameters::onModeChanged(int index)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
@@ -505,11 +513,6 @@ bool   TaskPadParameters::getReversed(void) const
     return ui->checkBoxReversed->isChecked();
 }
 
-bool   TaskPadParameters::getNewSolid(void) const
-{
-    return ui->checkBoxNewSolid->isChecked();
-}
-
 bool   TaskPadParameters::getMidplane(void) const
 {
     return ui->checkBoxMidplane->isChecked();
@@ -609,7 +612,6 @@ void TaskPadParameters::apply()
     FCMD_OBJ_CMD(obj,"Reversed = " << (getReversed()?1:0));
     FCMD_OBJ_CMD(obj,"Midplane = " << (getMidplane()?1:0));
     FCMD_OBJ_CMD(obj,"Offset = " << getOffset());
-    FCMD_OBJ_CMD(obj,"NewSolid = " << getNewSolid());
 }
 
 //**************************************************************************

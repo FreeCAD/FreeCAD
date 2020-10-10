@@ -23,12 +23,13 @@
 #ifndef TASKFEATUREPARAMETERS_H_NAHKE2YZ
 #define TASKFEATUREPARAMETERS_H_NAHKE2YZ
 
-
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/DocumentObserver.h>
 
 #include "ViewProvider.h"
+
+class QCheckBox;
 
 namespace PartDesignGui {
 
@@ -50,18 +51,29 @@ public:
 
     void recomputeFeature();
 
+    void addNewSolidCheckBox(QWidget *widget);
+
+    virtual void refresh();
+
 protected Q_SLOTS:
     // TODO Add update view to all dialogs (2015-12-05, Fat-Zer)
     void onUpdateView(bool on);
+    void onNewSolidChanged(bool);
 
 private:
     /** Notifies when the object is about to be removed. */
     virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
+    /** Notifies on undo */
+    virtual void slotUndoDocument(const Gui::Document& Doc);
+    /** Notifies on redo */
+    virtual void slotRedoDocument(const Gui::Document& Doc);
 
 protected:
     PartDesignGui::ViewProvider *vp;
     /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
     bool blockUpdate;
+
+    QCheckBox *checkBoxNewSolid = nullptr;
 };
 
 /// A common base for sketch based, dressup and other solid parameters dialogs

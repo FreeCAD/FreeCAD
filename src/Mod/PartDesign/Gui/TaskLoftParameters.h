@@ -64,6 +64,7 @@ private Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
+    void refresh();
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);

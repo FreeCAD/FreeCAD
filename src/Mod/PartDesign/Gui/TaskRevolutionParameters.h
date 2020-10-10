@@ -80,6 +80,8 @@ protected:
     bool getMidplane(void) const;
     bool getReversed(void) const;
 
+    void refresh() override;
+
     //mirrors of revolution's or groove's properties
     //should have been done by inheriting revolution and groove from common class...
     App::PropertyAngle* propAngle;

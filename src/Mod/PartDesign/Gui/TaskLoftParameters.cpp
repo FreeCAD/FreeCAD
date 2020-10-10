@@ -91,14 +91,33 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
     connect(ui->listWidgetReferences->model(),
         SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
+    this->addNewSolidCheckBox(proxy);
     this->groupLayout()->addWidget(proxy);
+
+    refresh();
+}
+
+TaskLoftParameters::~TaskLoftParameters()
+{
+    delete ui;
+}
+
+void TaskLoftParameters::updateUI(int index)
+{
+    Q_UNUSED(index);
+}
+
+void TaskLoftParameters::refresh()
+{
+    if (!vp || !vp->getObject())
+        return;
 
     // Temporarily prevent unnecessary feature recomputes
     for (QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(true);
 
     //add the profiles
-    PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(LoftView->getObject());
+    PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
     App::DocumentObject* profile = loft->Profile.getValue();
     if (profile) {
         Gui::Application::Instance->showViewProvider(profile);
@@ -122,24 +141,15 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
     ui->checkBoxClosed->setChecked(loft->Closed.getValue());
 
     if (!loft->Sections.getValues().empty()) {
-        LoftView->makeTemporaryVisible(true);
+        vp->makeTemporaryVisible(true);
     }
 
-    // activate and de-activate dialog elements as appropriate
     for (QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(false);
 
     updateUI(0);
-}
 
-TaskLoftParameters::~TaskLoftParameters()
-{
-    delete ui;
-}
-
-void TaskLoftParameters::updateUI(int index)
-{
-    Q_UNUSED(index);
+    TaskSketchBasedParameters::refresh();
 }
 
 void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)

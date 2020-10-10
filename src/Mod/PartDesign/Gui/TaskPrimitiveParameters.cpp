@@ -28,6 +28,7 @@
 # include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
+# include <QCheckBox>
 # include <sstream>
 #endif
 
@@ -60,9 +61,167 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     ui->setupUi(proxy);
 
     this->groupLayout()->addWidget(proxy);
+    this->addNewSolidCheckBox(proxy);
+
+    refresh();
+
+    Gui::Document* doc = vp->getDocument();
+    this->attachDocument(doc);
+
+    //show the parts coordinate system axis for selection
+    PartDesign::Body * body = PartDesign::Body::findBodyOf(vp->getObject());
+    if(body) {
+        try {
+            App::Origin *origin = body->getOrigin();
+            Gui::ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<Gui::ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->setTemporaryVisibility(true, true);
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what () );
+        }
+    }
+
+    // box
+    connect(ui->boxLength, SIGNAL(valueChanged(double)), this, SLOT(onBoxLengthChanged(double)));
+    connect(ui->boxWidth, SIGNAL(valueChanged(double)), this, SLOT(onBoxWidthChanged(double)));
+    connect(ui->boxHeight, SIGNAL(valueChanged(double)), this, SLOT(onBoxHeightChanged(double)));
+
+    // cylinder
+    connect(ui->cylinderRadius, SIGNAL(valueChanged(double)), this, SLOT(onCylinderRadiusChanged(double)));
+    connect(ui->cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(onCylinderHeightChanged(double)));
+    connect(ui->cylinderAngle, SIGNAL(valueChanged(double)), this, SLOT(onCylinderAngleChanged(double)));
+
+    // cone
+    connect(ui->coneRadius1, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius1Changed(double)));
+    connect(ui->coneRadius2, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius2Changed(double)));
+    connect(ui->coneAngle, SIGNAL(valueChanged(double)), this, SLOT(onConeAngleChanged(double)));
+    connect(ui->coneHeight, SIGNAL(valueChanged(double)), this, SLOT(onConeHeightChanged(double)));
+
+    // sphere
+    connect(ui->sphereRadius, SIGNAL(valueChanged(double)), this, SLOT(onSphereRadiusChanged(double)));
+    connect(ui->sphereAngle1, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle1Changed(double)));
+    connect(ui->sphereAngle2, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle2Changed(double)));
+    connect(ui->sphereAngle3, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle3Changed(double)));
+
+    // ellipsoid
+    connect(ui->ellipsoidRadius1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius1Changed(double)));
+    connect(ui->ellipsoidRadius2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius2Changed(double)));
+    connect(ui->ellipsoidRadius3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius3Changed(double)));
+    connect(ui->ellipsoidAngle1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle1Changed(double)));
+    connect(ui->ellipsoidAngle2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle2Changed(double)));
+    connect(ui->ellipsoidAngle3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle3Changed(double)));
+
+    // torus
+    connect(ui->torusRadius1, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius1Changed(double)));
+    connect(ui->torusRadius2, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius2Changed(double)));
+    connect(ui->torusAngle1, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle1Changed(double)));
+    connect(ui->torusAngle2, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle2Changed(double)));
+    connect(ui->torusAngle3, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle3Changed(double)));
+
+    //prism
+    connect(ui->prismCircumradius, SIGNAL(valueChanged(double)), this, SLOT(onPrismCircumradiusChanged(double)));
+    connect(ui->prismHeight, SIGNAL(valueChanged(double)), this, SLOT(onPrismHeightChanged(double)));
+    connect(ui->prismXSkew, SIGNAL(valueChanged(double)), this, SLOT(onPrismXSkewChanged(double)));
+    connect(ui->prismYSkew, SIGNAL(valueChanged(double)), this, SLOT(onPrismYSkewChanged(double)));
+    connect(ui->prismPolygon, SIGNAL(valueChanged(int)), this, SLOT(onPrismPolygonChanged(int)));
+
+    // wedge
+    connect(ui->wedgeXmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXmaxChanged(double)));
+    connect(ui->wedgeXmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXminChanged(double)));
+    connect(ui->wedgeYmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYmaxChanged(double)));
+    connect(ui->wedgeYmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYminChanged(double)));
+    connect(ui->wedgeZmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZmaxChanged(double)));
+    connect(ui->wedgeZmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZminChanged(double)));
+    connect(ui->wedgeX2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2maxChanged(double)));
+    connect(ui->wedgeX2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2minChanged(double)));
+    connect(ui->wedgeZ2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2maxChanged(double)));
+    connect(ui->wedgeZ2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2minChanged(double)));
+}
+
+/*
+ *  Destroys the object and frees any allocated resources
+ */
+TaskBoxPrimitives::~TaskBoxPrimitives()
+{
+    //hide the parts coordinate system axis for selection
+    try {
+        PartDesign::Body * body = vp ? PartDesign::Body::findBodyOf(vp->getObject()) : 0;
+        if (body) {
+            App::Origin *origin = body->getOrigin();
+            Gui::ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<Gui::ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->resetTemporaryVisibility();
+        }
+    } catch (const Base::Exception &ex) {
+        Base::Console().Error ("%s\n", ex.what () );
+    }
+}
+
+void TaskBoxPrimitives::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
+{
+    if (this->vp == &Obj)
+        this->vp = nullptr;
+}
+
+void TaskBoxPrimitives::slotUndoDocument(const Gui::Document &)
+{
+    refresh();
+}
+
+void TaskBoxPrimitives::slotRedoDocument(const Gui::Document &)
+{
+    refresh();
+}
+
+void TaskBoxPrimitives::onNewSolidChanged(bool on)
+{
+    if (vp) {
+        PartDesign::Feature* feat =
+            Base::freecad_dynamic_cast<PartDesign::Feature>(vp->getObject());
+        if (feat) {
+            feat->NewSolid.setValue(on);
+            feat->getDocument()->recomputeFeature ( feat );
+        }
+    }
+}
+
+void TaskBoxPrimitives::addNewSolidCheckBox(QWidget *widget)
+{
+    if (!vp || !vp->getObject())
+        return;
+
+    auto *addsub = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(vp->getObject());
+    if (addsub && addsub->getAddSubType() != PartDesign::FeatureAddSub::Additive)
+        return;
+
+    QBoxLayout * layout = qobject_cast<QBoxLayout*>(widget->layout());
+    if (layout) {
+        checkBoxNewSolid = new QCheckBox(widget);
+        checkBoxNewSolid->setText(tr("New solid"));
+        checkBoxNewSolid->setToolTip(tr("Make a new seperate solid using this feature"));
+        layout->insertWidget(0, checkBoxNewSolid);
+        connect(checkBoxNewSolid, SIGNAL(toggled(bool)), this, SLOT(onNewSolidChanged(bool)));
+    }
+}
+
+void TaskBoxPrimitives::refresh()
+{
+    if (!this->vp)
+        return;
+
+    auto feat = Base::freecad_dynamic_cast<PartDesign::FeaturePrimitive>(this->vp->getObject());
+    if (!feat)
+        return;
+
+    // activate and de-activate dialog elements as appropriate
+    for (QWidget* child : proxy->findChildren<QWidget*>())
+        child->blockSignals(true);
+
+    if (checkBoxNewSolid && feat->NewSolid.getValue() != checkBoxNewSolid->isChecked())
+        checkBoxNewSolid->setChecked(feat->NewSolid.getValue());
 
     int index = 0;
-    switch(static_cast<PartDesign::FeaturePrimitive*>(vp->getObject())->getPrimitiveType()) {
+    switch(feat->getPrimitiveType()) {
 
         case PartDesign::FeaturePrimitive::Box:
             index = 1;
@@ -247,110 +406,18 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     }
 
     ui->widgetStack->setCurrentIndex(index);
+
+    for (QWidget* child : proxy->findChildren<QWidget*>())
+        child->blockSignals(false);
+
     ui->widgetStack->setMinimumSize(ui->widgetStack->widget(index)->minimumSize());
     for(int i=0; i<ui->widgetStack->count(); ++i) {
 
         if(i != index)
             ui->widgetStack->widget(i)->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
     }
-
-    Gui::Document* doc = vp->getDocument();
-    this->attachDocument(doc);
-
-    //show the parts coordinate system axis for selection
-    PartDesign::Body * body = PartDesign::Body::findBodyOf(vp->getObject());
-    if(body) {
-        try {
-            App::Origin *origin = body->getOrigin();
-            Gui::ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<Gui::ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
-            vpOrigin->setTemporaryVisibility(true, true);
-        } catch (const Base::Exception &ex) {
-            Base::Console().Error ("%s\n", ex.what () );
-        }
-    }
-
-    // box
-    connect(ui->boxLength, SIGNAL(valueChanged(double)), this, SLOT(onBoxLengthChanged(double)));
-    connect(ui->boxWidth, SIGNAL(valueChanged(double)), this, SLOT(onBoxWidthChanged(double)));
-    connect(ui->boxHeight, SIGNAL(valueChanged(double)), this, SLOT(onBoxHeightChanged(double)));
-
-    // cylinder
-    connect(ui->cylinderRadius, SIGNAL(valueChanged(double)), this, SLOT(onCylinderRadiusChanged(double)));
-    connect(ui->cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(onCylinderHeightChanged(double)));
-    connect(ui->cylinderAngle, SIGNAL(valueChanged(double)), this, SLOT(onCylinderAngleChanged(double)));
-
-    // cone
-    connect(ui->coneRadius1, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius1Changed(double)));
-    connect(ui->coneRadius2, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius2Changed(double)));
-    connect(ui->coneAngle, SIGNAL(valueChanged(double)), this, SLOT(onConeAngleChanged(double)));
-    connect(ui->coneHeight, SIGNAL(valueChanged(double)), this, SLOT(onConeHeightChanged(double)));
-
-    // sphere
-    connect(ui->sphereRadius, SIGNAL(valueChanged(double)), this, SLOT(onSphereRadiusChanged(double)));
-    connect(ui->sphereAngle1, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle1Changed(double)));
-    connect(ui->sphereAngle2, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle2Changed(double)));
-    connect(ui->sphereAngle3, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle3Changed(double)));
-
-    // ellipsoid
-    connect(ui->ellipsoidRadius1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius1Changed(double)));
-    connect(ui->ellipsoidRadius2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius2Changed(double)));
-    connect(ui->ellipsoidRadius3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius3Changed(double)));
-    connect(ui->ellipsoidAngle1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle1Changed(double)));
-    connect(ui->ellipsoidAngle2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle2Changed(double)));
-    connect(ui->ellipsoidAngle3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle3Changed(double)));
-
-    // torus
-    connect(ui->torusRadius1, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius1Changed(double)));
-    connect(ui->torusRadius2, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius2Changed(double)));
-    connect(ui->torusAngle1, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle1Changed(double)));
-    connect(ui->torusAngle2, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle2Changed(double)));
-    connect(ui->torusAngle3, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle3Changed(double)));
-
-    //prism
-    connect(ui->prismCircumradius, SIGNAL(valueChanged(double)), this, SLOT(onPrismCircumradiusChanged(double)));
-    connect(ui->prismHeight, SIGNAL(valueChanged(double)), this, SLOT(onPrismHeightChanged(double)));
-    connect(ui->prismXSkew, SIGNAL(valueChanged(double)), this, SLOT(onPrismXSkewChanged(double)));
-    connect(ui->prismYSkew, SIGNAL(valueChanged(double)), this, SLOT(onPrismYSkewChanged(double)));
-    connect(ui->prismPolygon, SIGNAL(valueChanged(int)), this, SLOT(onPrismPolygonChanged(int)));
-
-    // wedge
-    connect(ui->wedgeXmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXmaxChanged(double)));
-    connect(ui->wedgeXmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXminChanged(double)));
-    connect(ui->wedgeYmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYmaxChanged(double)));
-    connect(ui->wedgeYmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYminChanged(double)));
-    connect(ui->wedgeZmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZmaxChanged(double)));
-    connect(ui->wedgeZmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZminChanged(double)));
-    connect(ui->wedgeX2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2maxChanged(double)));
-    connect(ui->wedgeX2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2minChanged(double)));
-    connect(ui->wedgeZ2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2maxChanged(double)));
-    connect(ui->wedgeZ2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2minChanged(double)));
 }
 
-/*
- *  Destroys the object and frees any allocated resources
- */
-TaskBoxPrimitives::~TaskBoxPrimitives()
-{
-    //hide the parts coordinate system axis for selection
-    try {
-        PartDesign::Body * body = vp ? PartDesign::Body::findBodyOf(vp->getObject()) : 0;
-        if (body) {
-            App::Origin *origin = body->getOrigin();
-            Gui::ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<Gui::ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
-            vpOrigin->resetTemporaryVisibility();
-        }
-    } catch (const Base::Exception &ex) {
-        Base::Console().Error ("%s\n", ex.what () );
-    }
-}
-
-void TaskBoxPrimitives::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
-{
-    if (this->vp == &Obj)
-        this->vp = nullptr;
-}
 
 void TaskBoxPrimitives::onBoxHeightChanged(double v) {
     PartDesign::Box* box = static_cast<PartDesign::Box*>(vp->getObject());
@@ -857,6 +924,5 @@ bool TaskPrimitiveParameters::reject()
 QDialogButtonBox::StandardButtons TaskPrimitiveParameters::getStandardButtons(void) const {
     return Gui::TaskView::TaskDialog::getStandardButtons();
 }
-
 
 #include "moc_TaskPrimitiveParameters.cpp"

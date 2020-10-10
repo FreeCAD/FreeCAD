@@ -263,8 +263,8 @@ void TaskTransformedParameters::setupUI() {
 
     auto layout = qobject_cast<QBoxLayout*>(proxy->layout());
     assert(layout);
-    layout->insertWidget(0,checkBoxNewSolid);
     layout->insertWidget(0,checkBoxSubTransform);
+    layout->insertWidget(0,checkBoxNewSolid);
 
     auto editDoc = Gui::Application::Instance->editDocument();
     if(editDoc) {

@@ -102,41 +102,10 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
 
+    this->addNewSolidCheckBox(proxy);
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
-    Gui::Document* doc = PipeView->getDocument();
-
-    //make sure the user sees all important things: the
-    //spine/auxiliary spine he already selected
-    if (pipe->Spine.getValue()) {
-        auto* svp = doc->getViewProvider(pipe->Spine.getValue());
-        spineShow = svp->isShow();
-        svp->setVisible(true);
-    }
-
-    //add initial values
-    if (pipe->Profile.getValue())
-        ui->profileBaseEdit->setText(QString::fromUtf8(pipe->Profile.getValue()->Label.getValue()));
-    if (pipe->Spine.getValue())
-        ui->spineBaseEdit->setText(QString::fromUtf8(pipe->Spine.getValue()->Label.getValue()));
-
-    std::vector<std::string> strings = pipe->Spine.getSubValues();
-    for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it) {
-        QString label = QString::fromStdString(*it);
-        QListWidgetItem* item = new QListWidgetItem();
-        item->setText(label);
-        item->setData(Qt::UserRole, QByteArray(label.toUtf8()));
-        ui->listWidgetReferences->addItem(item);
-    }
-
-    if (!strings.empty()) {
-        PipeView->makeTemporaryVisible(true);
-    }
-
-    ui->comboBoxTransition->setCurrentIndex(pipe->Transition.getValue());
-
-    updateUI();
+    refresh();
 }
 
 TaskPipeParameters::~TaskPipeParameters()
@@ -170,6 +139,55 @@ TaskPipeParameters::~TaskPipeParameters()
 void TaskPipeParameters::updateUI()
 {
 
+}
+
+void TaskPipeParameters::refresh()
+{
+    if (!vp || !vp->getObject())
+        return;
+
+    // Temporarily prevent unnecessary feature recomputes
+    for (QWidget* child : proxy->findChildren<QWidget*>())
+        child->blockSignals(true);
+
+    PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+    Gui::Document* doc = vp->getDocument();
+
+    //make sure the user sees all important things: the
+    //spine/auxiliary spine he already selected
+    if (pipe->Spine.getValue()) {
+        auto* svp = doc->getViewProvider(pipe->Spine.getValue());
+        spineShow = svp->isShow();
+        svp->setVisible(true);
+    }
+
+    //add initial values
+    if (pipe->Profile.getValue())
+        ui->profileBaseEdit->setText(QString::fromUtf8(pipe->Profile.getValue()->Label.getValue()));
+    if (pipe->Spine.getValue())
+        ui->spineBaseEdit->setText(QString::fromUtf8(pipe->Spine.getValue()->Label.getValue()));
+
+    std::vector<std::string> strings = pipe->Spine.getSubValues();
+    for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it) {
+        QString label = QString::fromStdString(*it);
+        QListWidgetItem* item = new QListWidgetItem();
+        item->setText(label);
+        item->setData(Qt::UserRole, QByteArray(label.toUtf8()));
+        ui->listWidgetReferences->addItem(item);
+    }
+
+    if (!strings.empty()) {
+        vp->makeTemporaryVisible(true);
+    }
+
+    ui->comboBoxTransition->setCurrentIndex(pipe->Transition.getValue());
+
+    for (QWidget* child : proxy->findChildren<QWidget*>())
+        child->blockSignals(false);
+
+    updateUI();
+
+    TaskSketchBasedParameters::refresh();
 }
 
 void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)

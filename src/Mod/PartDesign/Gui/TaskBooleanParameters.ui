@@ -15,6 +15,23 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QCheckBox" name="checkBoxNewSolid">
+     <property name="toolTip">
+      <string>Make new solid using the tool features without base feature.</string>
+     </property>
+     <property name="text">
+      <string>New solid</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkboxDeleteOnRemove">
+     <property name="text">
+      <string>Delete tool features on remove</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="buttonAdd">
@@ -31,23 +48,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkboxDeleteOnRemove">
-     <property name="text">
-      <string>Delete tool features on remove</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxNewSolid">
-     <property name="toolTip">
-      <string>Make new solid using the tool features without base feature.</string>
-     </property>
-     <property name="text">
-      <string>New solid</string>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="QListWidget" name="listWidgetBodies"/>

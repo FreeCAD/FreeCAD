@@ -74,6 +74,8 @@ protected:
     void removeFromListWidget(QListWidget*w, QString name);
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
+    void refresh();
+
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();

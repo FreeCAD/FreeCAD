@@ -36,6 +36,8 @@
 #include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
 
+class QCheckBox;
+
 namespace App {
 class Property;
 }
@@ -98,15 +100,25 @@ public Q_SLOTS:
     void onWedgeX2minChanged(double);
     void onWedgeZ2maxChanged(double);
     void onWedgeZ2minChanged(double);
+    void onNewSolidChanged(bool);
 
 private:
     /** Notifies when the object is about to be removed. */
     virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
+    /** Notifies on undo */
+    virtual void slotUndoDocument(const Gui::Document& Doc);
+    /** Notifies on redo */
+    virtual void slotRedoDocument(const Gui::Document& Doc);
+
+    void addNewSolidCheckBox(QWidget *widget);
+
+    void refresh();
 
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_DlgPrimitives> ui;
     ViewProviderPrimitive* vp;
+    QCheckBox* checkBoxNewSolid = nullptr;
 };
 
 class TaskPrimitiveParameters : public Gui::TaskView::TaskDialog

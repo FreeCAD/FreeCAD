@@ -119,6 +119,9 @@ void TaskBooleanParameters::onDeleteOnRemove(bool checked) {
 }
 
 void TaskBooleanParameters::populate() {
+    if (!BooleanView || !BooleanView->getObject())
+        return;
+
     ui->listWidgetBodies->clear();
     PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
     std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();

@@ -156,6 +156,12 @@ Part::Feature* Feature::getBaseObject(bool silent) const {
 TopoShape Feature::getBaseShape(bool silent) const {
     Part::TopoShape result;
 
+    if (NewSolid.getValue()) {
+        if (silent)
+            return result;
+        throw Base::ValueError("No need base shape when creating new solid");
+    }
+
     const Part::Feature* BaseObject = getBaseObject(silent);
     if (!BaseObject)
         return result;

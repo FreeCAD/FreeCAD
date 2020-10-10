@@ -71,11 +71,11 @@ private Q_SLOTS:
     void onReversedChanged(bool);
     void onButtonFace(const bool pressed = true);
     void onFaceName(const QString& text);
-    void onNewSolidChanged(bool);
     void onModeChanged(int);
 
 protected:
     void changeEvent(QEvent *e) override;
+    void refresh() override;
 
 private:
     double getLength(void) const;
@@ -87,7 +87,6 @@ private:
     double getOffset(void) const;
     bool   getReversed(void) const;
     bool   getMidplane(void) const;
-    bool   getNewSolid(void) const;
     int    getMode(void) const;
     QString getFaceName(void) const;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;

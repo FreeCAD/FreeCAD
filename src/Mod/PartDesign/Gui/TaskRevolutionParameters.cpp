@@ -77,13 +77,41 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
 
+    this->addNewSolidCheckBox(proxy);
     this->groupLayout()->addWidget(proxy);
 
+    PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    if (pcFeat->isDerivedFrom(PartDesign::Revolution::getClassTypeId())) {
+        ui->revolveAngle->bind(static_cast<PartDesign::Revolution *>(pcFeat)->Angle);
+    } else if (pcFeat->isDerivedFrom(PartDesign::Groove::getClassTypeId())) {
+        ui->revolveAngle->bind(static_cast<PartDesign::Groove *> (pcFeat)->Angle);
+    }
+
+    refresh();
+    setFocus ();
+
+    //show the parts coordinate system axis for selection
+    PartDesign::Body * body = PartDesign::Body::findBodyOf ( vp->getObject () );
+    if(body) {
+        try {
+            App::Origin *origin = body->getOrigin();
+            ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->setTemporaryVisibility(true, false);
+        } catch (const Base::Exception &ex) {
+            ex.ReportException();
+        }
+     }
+}
+
+void TaskRevolutionParameters::refresh()
+{
+    if (!vp || !vp->getObject())
+        return;
+
     // Temporarily prevent unnecessary feature recomputes
-    ui->revolveAngle->blockSignals(true);
-    ui->axis->blockSignals(true);
-    ui->checkBoxMidplane->blockSignals(true);
-    ui->checkBoxReversed->blockSignals(true);
+    for (QWidget* child : proxy->findChildren<QWidget*>())
+        child->blockSignals(true);
 
     //bind property mirrors
     PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
@@ -110,35 +138,13 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     blockUpdate = false;
     updateUI();
 
-
     ui->checkBoxMidplane->setChecked(mirrored);
     ui->checkBoxReversed->setChecked(reversed);
 
-    if (pcFeat->isDerivedFrom(PartDesign::Revolution::getClassTypeId())) {
-        ui->revolveAngle->bind(static_cast<PartDesign::Revolution *>(pcFeat)->Angle);
-    } else if (pcFeat->isDerivedFrom(PartDesign::Groove::getClassTypeId())) {
-        ui->revolveAngle->bind(static_cast<PartDesign::Groove *> (pcFeat)->Angle);
-    }
+    for (QWidget* child : proxy->findChildren<QWidget*>())
+        child->blockSignals(false);
 
-    ui->revolveAngle->blockSignals(false);
-    ui->axis->blockSignals(false);
-    ui->checkBoxMidplane->blockSignals(false);
-    ui->checkBoxReversed->blockSignals(false);
-
-    setFocus ();
-
-    //show the parts coordinate system axis for selection
-    PartDesign::Body * body = PartDesign::Body::findBodyOf ( vp->getObject () );
-    if(body) {
-        try {
-            App::Origin *origin = body->getOrigin();
-            ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
-            vpOrigin->setTemporaryVisibility(true, false);
-        } catch (const Base::Exception &ex) {
-            ex.ReportException();
-        }
-     }
+    TaskSketchBasedParameters::refresh();
 }
 
 void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)

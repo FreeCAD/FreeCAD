@@ -147,9 +147,7 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
     }
 
     // if the Base property has a valid shape, fuse the prism into it
-    TopoShape base;
-    if (!this->NewSolid.getValue())
-        base = getBaseShape(true);
+    TopoShape base = getBaseShape(true);
 
     // get the Sketch plane
     Base::Placement SketchPos = obj->Placement.getValue();
