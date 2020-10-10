@@ -750,12 +750,10 @@ QIcon BitmapFactoryInst::mergePixmap (const QIcon &base, const QPixmap &px, Gui:
 {
     QIcon overlayedIcon;
 
-    int w = TreeWidget::iconSize();
-
-    overlayedIcon.addPixmap(Gui::BitmapFactory().merge(base.pixmap(w, w, QIcon::Normal, QIcon::Off),
+    overlayedIcon.addPixmap(Gui::BitmapFactory().merge(base.pixmap(64, QIcon::Normal, QIcon::Off),
                                                        px,position), QIcon::Normal, QIcon::Off);
 
-    overlayedIcon.addPixmap(Gui::BitmapFactory().merge(base.pixmap(w, w, QIcon::Normal, QIcon::On ),
+    overlayedIcon.addPixmap(Gui::BitmapFactory().merge(base.pixmap(64, QIcon::Normal, QIcon::On ),
                                                        px,position), QIcon::Normal, QIcon::Off);
 
     return overlayedIcon;

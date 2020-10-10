@@ -5936,8 +5936,16 @@ static QIcon getItemIcon(int currentStatus, const ViewProviderDocumentObject *vp
 
     QPixmap pxOn,pxOff;
     QIcon icon_orig = vp->getIcon();
+    // We load the overlay icons as size 32x32. So to keep the correct relative
+    // size, we force the actual icon pixmap of size 64x64.
     pxOff = icon_orig.pixmap(64, QIcon::Normal, QIcon::Off);
+    if (pxOff.height() && pxOff.height() < 64)
+        pxOff = pxOff.scaled(pxOff.width()*64/pxOff.height(), 64,
+                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     pxOn = icon_orig.pixmap(64, QIcon::Normal, QIcon::On);
+    if (pxOn.height() && pxOn.height() < 64)
+        pxOn = pxOn.scaled(pxOn.width()*64/pxOn.height(), 64,
+                            Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
     // if needed show small pixmap inside
     if (!px.isNull()) {
