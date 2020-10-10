@@ -1134,6 +1134,8 @@ App::DocumentObject *SubShapeBinder::getLinkedObject(
         return self;
 
     auto sobj = link.getValue()->getSubObject(link.getSubName(), nullptr, mat, true, depth+1);
+    if (!sobj)
+        return self;
     if (!recurse || sobj == link.getValue())
         return sobj;
 
