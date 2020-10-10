@@ -111,15 +111,27 @@ def isSameLine(e1, e2):
     return False
 
 
-def isLine(bspline):
+def is_line(bspline):
     """Return True if the given BSpline curve is a straight line."""
-    step = bspline.LastParameter/10
-    b = bspline.tangent(0)
 
-    for i in range(10):
-        if bspline.tangent(i * step) != b:
-            return False
-    return True
+# previous implementation may fail for a multipole striaght spline due
+# a second order error in tolerance, wich introduce a difference of 1e-14
+# in the values of the tangents. Also, may fail on a periodic spline.
+#    step = bspline.LastParameter/10
+#    b = bspline.tangent(0)
+#
+#    for i in range(10):
+#        if bspline.tangent(i * step) != b:
+#            return False
+
+    start_point = bspline.StartPoint
+    end_point = bspline.EndPoint
+    dist_start_end = end_point.distanceToPoint(start_point)
+    if (dist_start_end == bspline.length()) < 1e-7:
+        return True
+
+    return False
+
 
 
 def invert(shape):
@@ -208,5 +220,9 @@ def getTangent(edge, from_point=None):
         return v1.cross(edge.Curve.Axis)
 
     return None
+
+# compatibility layer
+
+isLine = is_line
 
 ## @}
