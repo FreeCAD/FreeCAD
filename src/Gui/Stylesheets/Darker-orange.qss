@@ -1576,6 +1576,11 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #624b14, stop:1 #b28416);
 }
 
+QSint--ActionGroup QFrame[class="content"] QToolButton:checked {
+    background-color: #b28416;
+    border-color: #624b14;
+}
+
 
 /*==================================================================================================
 QComboBox inside Task Panel content

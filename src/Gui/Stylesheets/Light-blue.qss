@@ -1573,6 +1573,10 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #3874f2, stop:1 #5e90fa);
 }
 
+QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
+    background-color: #5e90fa;
+    border-color: #3874f2;
+}
 
 /*==================================================================================================
 Radio button
