@@ -530,8 +530,10 @@ struct PixmapInfo {
 void ViewProviderSubShapeBinder::getExtraIcons(std::vector<QPixmap> &icons) const
 {
     auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(getObject());
-    if (!binder)
+    if (!binder) {
+        inherited::getExtraIcons(icons);
         return;
+    }
 
     static QPixmap myPixmap;
     if (myPixmap.isNull())
@@ -585,6 +587,8 @@ void ViewProviderSubShapeBinder::getExtraIcons(std::vector<QPixmap> &icons) cons
         if (icons.size() >= count)
             break;
     }
+
+    inherited::getExtraIcons(icons);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////

@@ -56,6 +56,7 @@ private:
 class PartDesignGuiExport ViewProviderSubShapeBinder : public PartGui::ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderShapeBinder);
+    typedef PartGui::ViewProviderPart inherited;
 
 public:
     App::PropertyBool UseBinderStyle;

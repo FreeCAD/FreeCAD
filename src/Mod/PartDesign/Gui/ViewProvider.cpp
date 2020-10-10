@@ -361,8 +361,10 @@ void ViewProvider::setTipIcon(bool onoff)
 void ViewProvider::getExtraIcons(std::vector<QPixmap> &icons) const
 {
     auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
-    if (!feat)
+    if (!feat) {
+        inherited::getExtraIcons(icons);
         return;
+    }
 
     unsigned long color = IconColor.getValue().getPackedValue();
     if (color) {
@@ -380,6 +382,8 @@ void ViewProvider::getExtraIcons(std::vector<QPixmap> &icons) const
 
     if(feat->Suppress.getValue())
         icons.push_back(Gui::BitmapFactory().pixmap("PartDesign_Suppressed.svg"));
+
+    inherited::getExtraIcons(icons);
 }
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)
