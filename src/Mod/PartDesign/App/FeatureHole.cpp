@@ -626,150 +626,83 @@ void Hole::onChanged(const App::Property *prop)
             }
             Threaded.setValue(0);
         }
-        else if ( type == "ISOMetricProfile" ) {
-            ThreadSize.setEnums(ThreadSize_ISOmetric_Enums);
-            ThreadClass.setEnums(ThreadClass_ISOmetric_Enums);
-            HoleCutType.setEnums(HoleCutType_ISOmetric_Enums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
-            // thread class and direction are only sensible if threaded
-            // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());
-            Diameter.setReadOnly(true);
-
-            if (holeCutType == "None") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
-            else if (holeCutType == "Counterbore") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(false);
-                HoleCutCountersinkAngle.setReadOnly(true);
-
-            }
-            else if (holeCutType == "Countersink") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
-        }
-        else if ( type == "ISOMetricFineProfile" ) {
-            ThreadSize.setEnums(ThreadSize_ISOmetricfine_Enums);
-            ThreadClass.setEnums(ThreadClass_ISOmetricfine_Enums);
-            HoleCutType.setEnums(HoleCutType_ISOmetricfine_Enums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
-            // thread class and direction are only sensible if threaded
-            // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());
-            Diameter.setReadOnly(true);
-
-            if (holeCutType == "None") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
-            else if (holeCutType == "Counterbore") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(false);
-                HoleCutCountersinkAngle.setReadOnly(true);
-
-            }
-            else if (holeCutType == "Countersink") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
-        }
-        else if ( type == "UNC" ) {
-            ThreadSize.setEnums(ThreadSize_UNC_Enums);
-            ThreadClass.setEnums(ThreadClass_UNC_Enums);
-            HoleCutType.setEnums(HoleCutType_UNC_Enums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
-            // thread class and direction are only sensible if threaded
-            // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());
-            Diameter.setReadOnly(true);
-
-            if (holeCutType == "None") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
-            else if (holeCutType == "Counterbore") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(false);
-                HoleCutCountersinkAngle.setReadOnly(true);
-
-            }
-            else if (holeCutType == "Countersink") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(false);
-            }
-        }
-        else if ( type == "UNF" ) {
-            ThreadSize.setEnums(ThreadSize_UNF_Enums);
-            ThreadClass.setEnums(ThreadClass_UNF_Enums);
-            HoleCutType.setEnums(HoleCutType_UNF_Enums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
-            // thread class and direction are only sensible if threaded
-            // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());
-            Diameter.setReadOnly(true);
-
-            if (holeCutType == "None") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
-            else if (holeCutType == "Counterbore") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(false);
-                HoleCutCountersinkAngle.setReadOnly(true);
-
-            }
-            else if (holeCutType == "Countersink") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(false);
-            }
-        }
-        else if ( type == "UNEF" ) {
-            ThreadSize.setEnums(ThreadSize_UNEF_Enums);
-            ThreadClass.setEnums(ThreadClass_UNEF_Enums);
-            HoleCutType.setEnums(HoleCutType_UNEF_Enums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
-            // thread class and direction are only sensible if threaded
-            // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());;
-            Diameter.setReadOnly(true);
-
-            if (holeCutType == "None") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
-            else if (holeCutType == "Counterbore") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(false);
-                HoleCutCountersinkAngle.setReadOnly(true);
-
-            }
-            else if (holeCutType == "Countersink") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(false);
-            }
+        else {
+	        if ( type == "ISOMetricProfile" ) {
+		        ThreadSize.setEnums(ThreadSize_ISOmetric_Enums);
+		        ThreadClass.setEnums(ThreadClass_ISOmetric_Enums);
+		        HoleCutType.setEnums(HoleCutType_ISOmetric_Enums);
+		        Threaded.setReadOnly(false);
+		        ThreadSize.setReadOnly(false);
+		        // thread class and direction are only sensible if threaded
+		        // fit only sensible if not threaded
+		        ThreadFit.setReadOnly(Threaded.getValue());
+		        ThreadClass.setReadOnly(!Threaded.getValue());
+		        Diameter.setReadOnly(true);
+	        }
+	        else if ( type == "ISOMetricFineProfile" ) {
+		        ThreadSize.setEnums(ThreadSize_ISOmetricfine_Enums);
+		        ThreadClass.setEnums(ThreadClass_ISOmetricfine_Enums);
+		        HoleCutType.setEnums(HoleCutType_ISOmetricfine_Enums);
+		        Threaded.setReadOnly(false);
+		        ThreadSize.setReadOnly(false);
+		        // thread class and direction are only sensible if threaded
+		        // fit only sensible if not threaded
+		        ThreadFit.setReadOnly(Threaded.getValue());
+		        ThreadClass.setReadOnly(!Threaded.getValue());
+		        Diameter.setReadOnly(true);
+	        }
+	        else if ( type == "UNC" ) {
+		        ThreadSize.setEnums(ThreadSize_UNC_Enums);
+		        ThreadClass.setEnums(ThreadClass_UNC_Enums);
+		        HoleCutType.setEnums(HoleCutType_UNC_Enums);
+		        Threaded.setReadOnly(false);
+		        ThreadSize.setReadOnly(false);
+		        // thread class and direction are only sensible if threaded
+		        // fit only sensible if not threaded
+		        ThreadFit.setReadOnly(Threaded.getValue());
+		        ThreadClass.setReadOnly(!Threaded.getValue());
+		        Diameter.setReadOnly(true);
+	        }
+	        else if ( type == "UNF" ) {
+		        ThreadSize.setEnums(ThreadSize_UNF_Enums);
+		        ThreadClass.setEnums(ThreadClass_UNF_Enums);
+		        HoleCutType.setEnums(HoleCutType_UNF_Enums);
+		        Threaded.setReadOnly(false);
+		        ThreadSize.setReadOnly(false);
+		        // thread class and direction are only sensible if threaded
+		        // fit only sensible if not threaded
+		        ThreadFit.setReadOnly(Threaded.getValue());
+		        ThreadClass.setReadOnly(!Threaded.getValue());
+		        Diameter.setReadOnly(true);
+	        }
+	        else if ( type == "UNEF" ) {
+		        ThreadSize.setEnums(ThreadSize_UNEF_Enums);
+		        ThreadClass.setEnums(ThreadClass_UNEF_Enums);
+		        HoleCutType.setEnums(HoleCutType_UNEF_Enums);
+		        Threaded.setReadOnly(false);
+		        ThreadSize.setReadOnly(false);
+		        // thread class and direction are only sensible if threaded
+		        // fit only sensible if not threaded
+		        ThreadFit.setReadOnly(Threaded.getValue());
+		        ThreadClass.setReadOnly(!Threaded.getValue());;
+		        Diameter.setReadOnly(true);
+	        }
+	        if (holeCutType == "None") {
+		        HoleCutDiameter.setReadOnly(true);
+		        HoleCutDepth.setReadOnly(true);
+		        HoleCutCountersinkAngle.setReadOnly(true);
+	        }
+	        else if (holeCutType == "Counterbore") {
+		        HoleCutDiameter.setReadOnly(false);
+		        HoleCutDepth.setReadOnly(false);
+		        HoleCutCountersinkAngle.setReadOnly(true);
+		        
+	        }
+	        else if (holeCutType == "Countersink") {
+		        HoleCutDiameter.setReadOnly(false);
+		        HoleCutDepth.setReadOnly(true);
+		        HoleCutCountersinkAngle.setReadOnly(false);
+	        }
         }
 
         if (type == "ISOMetricProfile" || type == "ISOMetricFineProfile")
