@@ -260,6 +260,15 @@ class PROBEGate:
     def allow(self, doc, obj, sub):
         pass
 
+class TURNGate(PathBaseGate):
+    def allow(self, doc, obj, sub): # pylint: disable=unused-argument
+        PathLog.debug('obj: {} sub: {}'.format(obj, sub))
+        if hasattr(obj, "Shape") and sub:
+            shape = obj.Shape
+            subobj = shape.getElement(sub)
+            return PathUtils.isDrillable(shape, subobj, includePartials=True)
+        else:
+            return False
 
 class ALLGate(PathBaseGate):
     def allow(self, doc, obj, sub): # pylint: disable=unused-argument
@@ -340,6 +349,10 @@ def probeselect():
 def customselect():
     FreeCAD.Console.PrintWarning("Custom Select Mode\n")
 
+def turnselect():
+    FreeCADGui.Selection.addSelectionGate(TURNGate())
+    FreeCAD.Console.PrintWarning("Turning Select Mode\n")
+
 
 
 def select(op):
@@ -363,6 +376,8 @@ def select(op):
     opsel['Vcarve'] = vcarveselect
     opsel['Probe'] = probeselect
     opsel['Custom'] = customselect
+    opsel['TurnFace'] = turnselect
+    opsel['TurnProfile'] = turnselect
     return opsel[op]
 
 
