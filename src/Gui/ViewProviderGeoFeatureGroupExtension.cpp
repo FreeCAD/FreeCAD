@@ -89,7 +89,7 @@ void ViewProviderGeoFeatureGroupExtension::extensionClaimChildren(
         std::vector<App::DocumentObject *> &children) const 
 {
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-    buildExport();
+    // buildExport();
     auto objs = group->_ExportChildren.getValues();
     children.insert(children.end(), objs.begin(), objs.end());
 }
@@ -163,7 +163,9 @@ void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Proper
 {
     auto group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
     if(group) {
-        if (prop == &group->Group) {
+        if (prop == &group->_GroupTouched)
+            buildExport();
+        else if (prop == &group->Group) {
 
             buildExport();
 
@@ -210,8 +212,12 @@ static void filterLinksByScope(const App::DocumentObject *obj, std::vector<App::
 }
 
 void ViewProviderGeoFeatureGroupExtension::buildExport() const {
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+    App::DocumentObject * obj = getExtendedViewProvider()->getObject();
+    auto* group = obj->getExtensionByType<App::GeoFeatureGroupExtension>();
     if(!group)
+        return;
+
+    if(obj->getDocument()->testStatus(App::Document::Restoring) || obj->testStatus(App::PendingRecompute))
         return;
 
     auto model = group->Group.getValues ();

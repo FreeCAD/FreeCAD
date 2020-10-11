@@ -87,7 +87,7 @@ protected:
     void slotShowHidden(const App::Document&);
     void slotFinishImportObjects(const std::vector<App::DocumentObject*> &);
     void slotFinishRestoreObject(const App::DocumentObject &obj);
-    void slotRecomputed(const App::Document&);
+    void slotRecomputed(const App::Document&, const std::vector<App::DocumentObject*> &);
     void slotSkipRecompute(const App::Document &doc, const std::vector<App::DocumentObject*> &objs);
     void slotTouchedObject(const App::DocumentObject &);
     void slotChangePropertyEditor(const App::Document&, const App::Property &);

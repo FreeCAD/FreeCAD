@@ -379,9 +379,12 @@ void ViewProviderDocumentObject::update(const App::Property* prop)
             guard(App::Property::User1, &Visibility);
         ViewProvider::update(prop);
 
-        if(!getObject()->getDocument()->testStatus(App::Document::Restoring))
+        if(!getObject()->getDocument()->testStatus(App::Document::Restoring)
+                && !getObject()->testStatus(App::PendingRecompute))
+        {
             updateChildren(prop->testStatus(App::Property::Output)
                             || prop->testStatus(App::Property::PropOutput));
+        }
     }
 }
 

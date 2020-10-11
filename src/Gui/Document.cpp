@@ -229,7 +229,7 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->connectRedoDocument = pcDocument->signalRedo.connect
         (boost::bind(&Gui::Document::slotRedoDocument, this, bp::_1));
     d->connectRecomputed = pcDocument->signalRecomputed.connect
-        (boost::bind(&Gui::Document::slotRecomputed, this, bp::_1));
+        (boost::bind(&Gui::Document::slotRecomputed, this, bp::_1, bp::_2));
     d->connectSkipRecompute = pcDocument->signalSkipRecompute.connect
         (boost::bind(&Gui::Document::slotSkipRecompute, this, bp::_1, bp::_2));
     d->connectTouchedObject = pcDocument->signalTouchedObject.connect
@@ -956,10 +956,19 @@ void Document::slotRedoDocument(const App::Document& doc)
     getMainWindow()->updateActions();
 }
 
-void Document::slotRecomputed(const App::Document& doc)
+void Document::slotRecomputed(const App::Document& doc,
+        const std::vector<App::DocumentObject*> &objs)
 {
     if (d->_pcDocument != &doc)
         return;
+
+    for (auto obj : objs) {
+        auto vp  = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                Application::Instance->getViewProvider(obj));
+        if (vp)
+            vp->updateChildren(false);
+    }
+
     getMainWindow()->updateActions();
     TreeWidget::updateStatus();
 }
