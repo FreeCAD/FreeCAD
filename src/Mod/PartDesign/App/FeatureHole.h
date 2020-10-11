@@ -25,6 +25,7 @@
 #define PARTDESIGN_Hole_H
 
 #include <App/PropertyUnits.h>
+#include "json_fwd.hpp"
 #include "FeatureSketchBased.h"
 
 class Property;
@@ -105,12 +106,12 @@ private:
     static const char* ThreadClass_None_Enums[];
 
     /* ISO metric coarse profile */
-    static const char* HoleCutType_ISOmetric_Enums[];
+    static std::vector<std::string> HoleCutType_ISOmetric_Enums;
     static const char* ThreadSize_ISOmetric_Enums[];
     static const char* ThreadClass_ISOmetric_Enums[];
 
     /* ISO metric fine profile */
-    static const char* HoleCutType_ISOmetricfine_Enums[];
+    static std::vector<std::string> HoleCutType_ISOmetricfine_Enums;
     static const char* ThreadSize_ISOmetricfine_Enums[];
     static const char* ThreadClass_ISOmetricfine_Enums[];
 
@@ -129,8 +130,58 @@ private:
     static const char* ThreadSize_UNEF_Enums[];
     static const char* ThreadClass_UNEF_Enums[];
 
+    /* Counter-xxx */
+//public:
+    // Dimension for counterbore
+    struct CounterBoreDimension {
+        std::string thread;
+        double diameter;
+        double depth;
+        static const CounterBoreDimension nothing;
+    };
+    // Dimension for countersink
+    struct CounterSinkDimension {
+        std::string thread;
+        double diameter;
+        static const CounterSinkDimension nothing;
+    };
+
+    // cut dimensions for a screwtype
+    class CutDimensionSet {
+    public:
+        enum CutType { Counterbore, Countersink };
+        enum ThreadType { Metric, MetricFine };
+
+        CutDimensionSet() {}
+        CutDimensionSet(const std::string &nme,
+              std::vector<CounterBoreDimension> &&d, CutType cut, ThreadType thread);
+        CutDimensionSet(const std::string &nme,
+              std::vector<CounterSinkDimension> &&d, CutType cut, ThreadType thread);
+
+        const CounterBoreDimension &get_bore(const std::string &t) const;
+        const CounterSinkDimension &get_sink(const std::string &t) const;
+
+        std::vector<CounterBoreDimension> bore_data;
+        std::vector<CounterSinkDimension> sink_data;
+        CutType cut_type;
+        ThreadType thread_type;
+        std::string name;
+        double angle;
+    };
+
+    std::map<std::string, CutDimensionSet> HoleCutTypeMap;
+
+    void addCounterType(const CutDimensionSet dimensions);
+    bool isDynamicCounterbore(const std::string &holeCutType);
+    bool isDynamicCountersink(const std::string &holeCutType);
     void updateHoleCutParams();
     void updateDiameterParam();
+    void readCutDefinitions();
+
+    // helpers for nlohmann json
+    friend void from_json(const nlohmann::json &j, CounterBoreDimension &t);
+    friend void from_json(const nlohmann::json &j, CounterSinkDimension &t);
+    friend void from_json(const nlohmann::json &j, CutDimensionSet &t);
 };
 
 } //namespace PartDesign
