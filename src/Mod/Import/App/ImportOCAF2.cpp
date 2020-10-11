@@ -156,7 +156,7 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std
     importHidden = hGrp->GetBool("ImportHiddenObject",true);
     reduceObjects = hGrp->GetBool("ReduceObjects",true);
     showProgress = hGrp->GetBool("ShowProgress",true);
-    expandCompound = hGrp->GetBool("ExpandCompound",true);
+    expandCompound = hGrp->GetBool("ExpandCompound",false);
 
     if(d->isSaved()) {
         Base::FileInfo fi(d->FileName.getValue());
