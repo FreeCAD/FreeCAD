@@ -329,6 +329,17 @@ void PropertyEnumeration::setEnums(const char **plEnums)
     _enum._index = std::min<int>(index, max);
 }
 
+void PropertyEnumeration::setEnums(const std::vector<std::string> &Enums)
+{
+    if (_enum.isValid()) {
+        const std::string &index = getValueAsString();
+        _enum.setEnums(Enums);
+        setValue(index.c_str());
+    } else {
+        _enum.setEnums(Enums);
+    }
+}
+
 void PropertyEnumeration::setValue(const char *value)
 {
     aboutToSetValue();
