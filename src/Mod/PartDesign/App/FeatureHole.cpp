@@ -357,7 +357,7 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
 const char* Hole::HoleCutType_ISOmetric_Enums[]  = { "None", "Counterbore", "Countersink", "Cheesehead", "Countersink socket screw", "Cap screw", NULL};
 const char* Hole::ThreadSize_ISOmetric_Enums[]   = { "M1.60", "M2",  "M2.50", "M3",
                                                      "M3.50", "M4",  "M5",    "M6",
-                                                     "M8", 	  "M10", "M12",   "M14",
+                                                     "M8",    "M10", "M12",   "M14",
                                                      "M16",   "M20", "M22",   "M24",
                                                      "M27",   "M30", "M36",   "M42",
                                                      "M48",   "M56", "M64",   "M68", NULL };
@@ -505,13 +505,10 @@ void Hole::updateHoleCutParams()
         double f = 1.0;
         double depth = 0;
 
-        if (holeCutType == "Counterbore") {
-            f = 2.0;
-            depth = 0.6;
-        }
-        else if (holeCutType == "Countersink") {
-            f = 2.0;
-            depth = 0;
+        if (holeCutType == "None" ||
+              holeCutType == "Counterbore" ||
+              holeCutType == "Countersink" ) {
+	              return;
         }
         else if (holeCutType == "Cheesehead") {
             f = 1.6;
@@ -607,24 +604,6 @@ void Hole::onChanged(const App::Property *prop)
             ThreadFit.setReadOnly(true);
             ThreadClass.setReadOnly(true);
             Diameter.setReadOnly(false);
-
-            if (holeCutType == "None") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
-            else if (holeCutType == "Counterbore") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(false);
-                HoleCutCountersinkAngle.setReadOnly(true);
-
-            }
-            else if (holeCutType == "Countersink") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(false);
-            }
-            Threaded.setValue(0);
         }
         else if ( type == "ISOMetricProfile" ) {
             ThreadSize.setEnums(ThreadSize_ISOmetric_Enums);
@@ -637,23 +616,6 @@ void Hole::onChanged(const App::Property *prop)
             ThreadFit.setReadOnly(Threaded.getValue());
             ThreadClass.setReadOnly(!Threaded.getValue());
             Diameter.setReadOnly(true);
-
-            if (holeCutType == "None") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
-            else if (holeCutType == "Counterbore") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(false);
-                HoleCutCountersinkAngle.setReadOnly(true);
-
-            }
-            else if (holeCutType == "Countersink") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
         }
         else if ( type == "ISOMetricFineProfile" ) {
             ThreadSize.setEnums(ThreadSize_ISOmetricfine_Enums);
@@ -666,23 +628,6 @@ void Hole::onChanged(const App::Property *prop)
             ThreadFit.setReadOnly(Threaded.getValue());
             ThreadClass.setReadOnly(!Threaded.getValue());
             Diameter.setReadOnly(true);
-
-            if (holeCutType == "None") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
-            else if (holeCutType == "Counterbore") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(false);
-                HoleCutCountersinkAngle.setReadOnly(true);
-
-            }
-            else if (holeCutType == "Countersink") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
         }
         else if ( type == "UNC" ) {
             ThreadSize.setEnums(ThreadSize_UNC_Enums);
@@ -695,23 +640,6 @@ void Hole::onChanged(const App::Property *prop)
             ThreadFit.setReadOnly(Threaded.getValue());
             ThreadClass.setReadOnly(!Threaded.getValue());
             Diameter.setReadOnly(true);
-
-            if (holeCutType == "None") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
-            else if (holeCutType == "Counterbore") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(false);
-                HoleCutCountersinkAngle.setReadOnly(true);
-
-            }
-            else if (holeCutType == "Countersink") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(false);
-            }
         }
         else if ( type == "UNF" ) {
             ThreadSize.setEnums(ThreadSize_UNF_Enums);
@@ -724,23 +652,6 @@ void Hole::onChanged(const App::Property *prop)
             ThreadFit.setReadOnly(Threaded.getValue());
             ThreadClass.setReadOnly(!Threaded.getValue());
             Diameter.setReadOnly(true);
-
-            if (holeCutType == "None") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
-            else if (holeCutType == "Counterbore") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(false);
-                HoleCutCountersinkAngle.setReadOnly(true);
-
-            }
-            else if (holeCutType == "Countersink") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(false);
-            }
         }
         else if ( type == "UNEF" ) {
             ThreadSize.setEnums(ThreadSize_UNEF_Enums);
@@ -753,23 +664,27 @@ void Hole::onChanged(const App::Property *prop)
             ThreadFit.setReadOnly(Threaded.getValue());
             ThreadClass.setReadOnly(!Threaded.getValue());;
             Diameter.setReadOnly(true);
+        }
 
-            if (holeCutType == "None") {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
-            }
-            else if (holeCutType == "Counterbore") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(false);
-                HoleCutCountersinkAngle.setReadOnly(true);
-
-            }
-            else if (holeCutType == "Countersink") {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(false);
-            }
+        if (holeCutType == "None") {
+            HoleCutDiameter.setReadOnly(true);
+            HoleCutDepth.setReadOnly(true);
+            HoleCutCountersinkAngle.setReadOnly(true);
+        }
+        else if (holeCutType == "Counterbore") {
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
+            HoleCutCountersinkAngle.setReadOnly(true);
+        }
+        else if (holeCutType == "Countersink") {
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(true);
+            HoleCutCountersinkAngle.setReadOnly(false);
+        }
+        else {
+            HoleCutDiameter.setReadOnly(true);
+            HoleCutDepth.setReadOnly(true);
+            HoleCutCountersinkAngle.setReadOnly(true);
         }
 
         if (type == "ISOMetricProfile" || type == "ISOMetricFineProfile")
@@ -847,34 +762,30 @@ void Hole::onChanged(const App::Property *prop)
         updateDiameterParam();
     }
     else if (prop == &HoleCutType) {
-        std::string threadType,  holeCutType;
-        if (ThreadType.isValid())
-            threadType = ThreadType.getValueAsString();
+        std::string holeCutType;
         if (HoleCutType.isValid())
             holeCutType = HoleCutType.getValueAsString();
-        bool holeCutEnable = (holeCutType != "None");
-        
-        // HoleCutDiameter is only allowed for countersinks or counterbores with UTS or no profile
-        if (holeCutType == "None")
-            HoleCutDiameter.setReadOnly(true);
-        else if (threadType != "ISOMetricProfile" && threadType != "ISOMetricFineProfile")
-            HoleCutDiameter.setReadOnly(false);
-        else if (holeCutType == "Countersink" || holeCutType == "Countersink socket screw")
-            HoleCutDiameter.setReadOnly(false);
-        else
-            HoleCutDiameter.setReadOnly(true);
 
-        // HoleCutDepth can always be changed if there is a cut
-        if (holeCutType == "Countersink" || holeCutType == "Countersink socket screw")
+        if (holeCutType == "None") {
+            HoleCutDiameter.setReadOnly(true);
             HoleCutDepth.setReadOnly(true);
-        else
-            HoleCutDepth.setReadOnly(!holeCutEnable);
-        // HoleCutCountersinkAngle is only allowed for countersinks with UTS or no profile
-        HoleCutCountersinkAngle.setReadOnly(true);
-        if ((holeCutType == "Countersink" || holeCutType == "Countersink socket screw")
-            && (threadType != "ISOMetricProfile" && threadType != "ISOMetricFineProfile"))
+            HoleCutCountersinkAngle.setReadOnly(true);
+        }
+        else if (holeCutType == "Counterbore") {
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
+            HoleCutCountersinkAngle.setReadOnly(true);
+        }
+        else if (holeCutType == "Countersink") {
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(true);
             HoleCutCountersinkAngle.setReadOnly(false);
-
+        }
+        else {
+            HoleCutDiameter.setReadOnly(true);
+            HoleCutDepth.setReadOnly(true);
+            HoleCutCountersinkAngle.setReadOnly(true);
+        }
         updateHoleCutParams();
     }
     else if (prop == &DepthType) {
