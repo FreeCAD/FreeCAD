@@ -181,6 +181,10 @@ using namespace Gui;
 #define M_PI       3.14159265358979323846
 #endif
 
+// Disabled as bitmap cursor looks really bad on high DPI screen. Use Qt
+// built-in cursor for now.
+#if 0
+
 /*** zoom-style cursor ******/
 
 #define ZOOM_WIDTH 16
@@ -248,6 +252,7 @@ static unsigned char rotate_mask_bitmap[ROTATE_BYTES] = {
  0xf7,0x0f
 };
 
+#endif
 
 /*!
 As ProgressBar has no chance to control the incoming Qt events of Quarter so we need to stop
