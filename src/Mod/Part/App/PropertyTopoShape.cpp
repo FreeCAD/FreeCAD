@@ -74,6 +74,7 @@
 #include "TopoShapeShellPy.h"
 #include "TopoShapeCompSolidPy.h"
 #include "TopoShapeCompoundPy.h"
+#include "PartParams.h"
 
 FC_LOG_LEVEL_INIT("PropShape",true,true);
 
@@ -209,7 +210,12 @@ void PropertyPartShape::setPyObject(PyObject *value)
 App::Property *PropertyPartShape::Copy(void) const
 {
     PropertyPartShape *prop = new PropertyPartShape();
-    prop->_Shape = this->_Shape.makECopy();
+
+    if (PartParams::ShapePropertyCopy()) {
+        // makECopy() consume too much memory for complex geometry.
+        prop->_Shape = this->_Shape.makECopy();
+    } else
+        prop->_Shape = this->_Shape;
     prop->_Ver = this->_Ver;
     return prop;
 }

@@ -176,6 +176,8 @@ SET(Features_SRCS
     DatumFeature.h
     AttachExtension.h
     AttachExtension.cpp
+    PartParams.h
+    PartParams.cpp
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
