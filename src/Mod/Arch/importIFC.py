@@ -1248,10 +1248,13 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     # Materials
 
     if preferences['DEBUG'] and materials: print("Creating materials...",end="")
+    # print("\n")
+    # print("colors:",colors)
     # print("mattable:",mattable)
     # print("materials:",materials)
     fcmats = {}
     for material in materials:
+        # print(material.id())
         # get and set material name
         name = "Material"
         if material.Name:
@@ -1259,13 +1262,16 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             if six.PY2:
                 name = name.encode("utf8")
         # get material color
+        # the "DiffuseColor" of a material should never be 'None'
+        # values in colors are None if something went wrong
+        # thus the "DiffuseColor" will only be set if the color is not None
         mdict = {}
-        if material.id() in colors:
+        if material.id() in colors and colors[material.id()] is not None:
             mdict["DiffuseColor"] = str(colors[material.id()])
         else:
             for o,m in mattable.items():
                 if m == material.id():
-                    if o in colors:
+                    if o in colors and colors[o] is not None:
                         mdict["DiffuseColor"] = str(colors[o])
         # merge materials with same name and color if setting in prefs is True
         add_material = True
@@ -1299,8 +1305,8 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                             dig = 5
                             ma_color = sh_color = round(col[0], dig), round(col[1], dig), round(col[2], dig)
                             if "DiffuseColor" in objects[o].Material.Material:
-                                sting_col_ = objects[o].Material.Material["DiffuseColor"]
-                                col = tuple([float(f) for f in sting_col_.strip("()").split(",")])
+                                string_color = objects[o].Material.Material["DiffuseColor"]
+                                col = tuple([float(f) for f in string_color.strip("()").split(",")])
                                 ma_color = round(col[0], dig), round(col[1], dig), round(col[2], dig)
                             if ma_color != sh_color:
                                 print("\nobject color != material color for object: ", o)

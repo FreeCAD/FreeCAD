@@ -28,9 +28,11 @@ import stat
 import sys
 import tempfile
 
-from PySide import QtCore
+from PySide import QtCore, QtGui
 
 import FreeCAD
+if FreeCAD.GuiUp:
+    import FreeCADGui
 
 import addonmanager_utilities as utils
 from addonmanager_utilities import translate  # this needs to be as is for pylupdate
@@ -56,6 +58,13 @@ try:
     have_markdown = True
 except ImportError:
     pass
+
+try:
+    import StringIO as io
+    _stringio = io.StringIO
+except ImportError:  # StringIO is not available with python3
+    import io
+    _stringio = io.BytesIO
 
 #  @package AddonManager_workers
 #  \ingroup ADDONMANAGER

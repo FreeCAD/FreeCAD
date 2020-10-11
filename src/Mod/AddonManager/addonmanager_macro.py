@@ -25,10 +25,8 @@ import os
 import re
 import sys
 
-from PySide import QtCore, QtGui
 
 import FreeCAD
-import FreeCADGui
 
 from addonmanager_utilities import translate
 from addonmanager_utilities import urlopen
@@ -38,27 +36,6 @@ try:
     unescape = HTMLParser().unescape
 except ImportError:
     from html import unescape
-
-try:
-    import StringIO as io
-    _stringio = io.StringIO
-except ImportError:  # StringIO is not available with python3
-    import io
-    _stringio = io.BytesIO
-
-have_git = False
-try:
-    import git
-    have_git = True
-except ImportError:
-    pass
-
-have_zip = False
-try:
-    import zipfile
-    have_zip = True
-except ImportError:
-    pass
 
 #  @package AddonManager_macro
 #  \ingroup ADDONMANAGER

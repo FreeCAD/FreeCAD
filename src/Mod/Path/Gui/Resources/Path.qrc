@@ -99,6 +99,7 @@
         <file>panels/PageBaseHoleGeometryEdit.ui</file>
         <file>panels/PageBaseLocationEdit.ui</file>
         <file>panels/PageDepthsEdit.ui</file>
+        <file>panels/PageDiametersEdit.ui</file>
         <file>panels/PageHeightsEdit.ui</file>
         <file>panels/PageOpCustomEdit.ui</file>
         <file>panels/PageOpDeburrEdit.ui</file>

@@ -739,17 +739,21 @@ void TopoShape::importIges(const char *FileName)
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone)
             throw Base::FileException("Error in reading IGES");
 
+#if OCC_VERSION_HEX < 0x070500
         Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         pi->NewScope(100, "Reading IGES file...");
         pi->Show();
         aReader.WS()->MapReader()->SetProgress(pi);
+#endif
 
         // make brep
         aReader.ClearShapes();
         aReader.TransferRoots();
         // one shape that contains all subshapes
         this->_Shape = aReader.OneShape();
+#if OCC_VERSION_HEX < 0x070500
         pi->EndScope();
+#endif
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
@@ -763,16 +767,20 @@ void TopoShape::importStep(const char *FileName)
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone)
             throw Base::FileException("Error in reading STEP");
 
+#if OCC_VERSION_HEX < 0x070500
         Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         aReader.WS()->MapReader()->SetProgress(pi);
         pi->NewScope(100, "Reading STEP file...");
         pi->Show();
+#endif
 
         // Root transfers
         aReader.TransferRoots();
         // one shape that contains all subshapes
         this->_Shape = aReader.OneShape();
+#if OCC_VERSION_HEX < 0x070500
         pi->EndScope();
+#endif
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
@@ -785,7 +793,7 @@ void TopoShape::importBrep(const char *FileName)
         // read brep-file
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
-#if OCC_VERSION_HEX >= 0x060300
+#if OCC_VERSION_HEX >= 0x060300 && OCC_VERSION_HEX < 0x070500
         Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         pi->NewScope(100, "Reading BREP file...");
         pi->Show();
@@ -807,16 +815,19 @@ void TopoShape::importBrep(std::istream& str, int indicator)
         // read brep-file
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
-#if OCC_VERSION_HEX >= 0x060300
+#if OCC_VERSION_HEX >= 0x060300 && OCC_VERSION_HEX < 0x070500
         if (indicator) {
             Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
             pi->NewScope(100, "Reading BREP file...");
             pi->Show();
             BRepTools::Read(aShape,str,aBuilder,pi);
             pi->EndScope();
-        } else
+        }
+        else {
             BRepTools::Read(aShape,str,aBuilder);
+        }
 #else
+        (void)indicator;
         BRepTools::Read(aShape,str,aBuilder);
 #endif
         this->_Shape = aShape;
@@ -905,10 +916,13 @@ void TopoShape::exportStep(const char *filename) const
 
         const Handle(XSControl_TransferWriter)& hTransferWriter = aWriter.WS()->TransferWriter();
         Handle(Transfer_FinderProcess) hFinder = hTransferWriter->FinderProcess();
+
+#if OCC_VERSION_HEX < 0x070500
         Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         hFinder->SetProgress(pi);
         pi->NewScope(100, "Writing STEP file...");
         pi->Show();
+#endif
 
         if (aWriter.Transfer(this->_Shape, STEPControl_AsIs) != IFSelect_RetDone)
             throw Base::FileException("Error in transferring STEP");
@@ -922,7 +936,9 @@ void TopoShape::exportStep(const char *filename) const
 
         if (aWriter.Write(encodeFilename(filename).c_str()) != IFSelect_RetDone)
             throw Base::FileException("Writing of STEP failed");
+#if OCC_VERSION_HEX < 0x070500
         pi->EndScope();
+#endif
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
@@ -3051,6 +3067,9 @@ TopoDS_Shape TopoShape::mirror(const gp_Ax2& ax2) const
 
 TopoDS_Shape TopoShape::toNurbs() const
 {
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Cannot convert null shape to NURBS");
+
     BRepBuilderAPI_NurbsConvert mkNurbs(this->_Shape);
     return mkNurbs.Shape();
 }
@@ -3455,13 +3474,20 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
 
     aSewingTool.Load(aComp);
 
+#if OCC_VERSION_HEX < 0x070500
     Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
     pi->NewScope(100, "Sewing Faces...");
     pi->Show();
 
     aSewingTool.Perform(pi);
+#else
+    aSewingTool.Perform();
+#endif
+
     _Shape = aSewingTool.SewedShape();
+#if OCC_VERSION_HEX < 0x070500
     pi->EndScope();
+#endif
     if (_Shape.IsNull())
         _Shape = aComp;
 }

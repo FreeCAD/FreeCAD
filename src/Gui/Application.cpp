@@ -669,6 +669,15 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     activeDocument()->setModified(false);
             }
             else {
+                // Open transaction when importing a file
+                Gui::Document* doc = DocName ? getDocument(DocName) : activeDocument();
+                bool pendingCommand = false;
+                if (doc) {
+                    pendingCommand = doc->hasPendingCommand();
+                    if (!pendingCommand)
+                        doc->openCommand("Import");
+                }
+
                 if (DocName) {
                     Command::doCommand(Command::App, "%s.insert(u\"%s\",\"%s\")"
                                                    , Module, unicodepath.c_str(), DocName);
@@ -677,14 +686,33 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     Command::doCommand(Command::App, "%s.insert(u\"%s\")"
                                                    , Module, unicodepath.c_str());
                 }
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-                    ("User parameter:BaseApp/Preferences/View");
-                if (hGrp->GetBool("AutoFitToView", true))
-                    Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
-                Gui::Document* doc = activeDocument();
-                if (DocName) doc = getDocument(DocName);
-                if (doc)
+
+                // Commit the transaction
+                if (doc && !pendingCommand) {
+                    doc->commitCommand();
+                }
+
+                // It's possible that before importing a file the document with the
+                // given name doesn't exist or there is no active document.
+                // The import function then may create a new document.
+                if (!doc) {
+                    doc = activeDocument();
+                }
+
+                if (doc) {
                     doc->setModified(true);
+
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+                        ("User parameter:BaseApp/Preferences/View");
+                    if (hGrp->GetBool("AutoFitToView", true)) {
+                        MDIView* view = doc->getActiveView();
+                        if (view) {
+                            const char* ret = nullptr;
+                            if (view->onMsg("ViewFit", &ret))
+                                getMainWindow()->updateActions(true);
+                        }
+                    }
+                }
             }
 
             // the original file name is required
@@ -2261,6 +2289,37 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     QMdiArea* mdi = mw->findChild<QMdiArea*>();
     mdi->setProperty("showImage", tiledBackground);
 
+    // Qt's style sheet doesn't support it to define the link color of a QLabel
+    // or in the property editor when an expression is set because therefore the
+    // link color of the application's palette is used.
+    // A workaround is to set a user-defined property to e.g. a QLabel and then
+    // define it in the .qss file.
+    //
+    // Example:
+    // QLabel label;
+    // label.setProperty("haslink", QByteArray("true"));
+    // label.show();
+    // QColor link = label.palette().color(QPalette::Text);
+    //
+    // The .qss file must define it with:
+    // QLabel[haslink="true"] {
+    //     color: #rrggbb;
+    // }
+    //
+    // See https://stackoverflow.com/questions/5497799/how-do-i-customise-the-appearance-of-links-in-qlabels-using-style-sheets
+    // and https://forum.freecadweb.org/viewtopic.php?f=34&t=50744
+    static bool init = true;
+    if (init) {
+        init = false;
+        mw->setProperty("fc_originalLinkCoor", qApp->palette().color(QPalette::Link));
+    }
+    else {
+        QPalette newPal(qApp->palette());
+        newPal.setColor(QPalette::Link, mw->property("fc_originalLinkCoor").value<QColor>());
+        qApp->setPalette(newPal);
+    }
+
+
     QString current = mw->property("fc_currentStyleSheet").toString();
     mw->setProperty("fc_currentStyleSheet", qssFile);
 
@@ -2284,6 +2343,26 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 
             ActionStyleEvent e(ActionStyleEvent::Clear);
             qApp->sendEvent(mw, &e);
+
+            // This is a way to retrieve the link color of a .qss file when it's defined there.
+            // The color will then be set to the application's palette.
+            // Limitation: it doesn't work if the .qss file on purpose sets the same color as
+            // for normal text. In this case the default link color is used.
+            {
+                QLabel l1, l2;
+                l2.setProperty("haslink", QByteArray("true"));
+
+                l1.show();
+                l2.show();
+                QColor text = l1.palette().color(QPalette::Text);
+                QColor link = l2.palette().color(QPalette::Text);
+
+                if (text != link) {
+                    QPalette newPal(qApp->palette());
+                    newPal.setColor(QPalette::Link, link);
+                    qApp->setPalette(newPal);
+                }
+            }
         }
     }
 
@@ -2317,8 +2396,14 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 #endif
     }
 
-    if (mdi->style())
-        mdi->style()->unpolish(qApp);
+    // At startup time unpolish() mustn't be executed because otherwise the QSint widget
+    // appear incorrect due to an outdated cache.
+    // See https://doc.qt.io/qt-5/qstyle.html#unpolish-1
+    // See https://forum.freecadweb.org/viewtopic.php?f=17&t=50783
+    if (d->startingUp == false) {
+        if (mdi->style())
+            mdi->style()->unpolish(qApp);
+    }
 }
 
 void Application::checkForPreviousCrashes()

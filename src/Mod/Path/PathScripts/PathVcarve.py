@@ -47,16 +47,17 @@ TWIN = 2
 COLINEAR = 3
 SECONDARY = 5
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 VD = []
 
@@ -66,7 +67,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
     def opFeatures(self, obj):
         '''opFeatures(obj) ... return all standard features and edges based geomtries'''
-        return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureBaseFaces
+        return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureBaseFaces | PathOp.FeatureCoolant
 
     def setupAdditionalProperties(self, obj):
         if not hasattr(obj, 'BaseShapes'):
@@ -107,34 +108,36 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             for wire in wires:
                 PathLog.debug('discretize value: {}'.format(obj.Discretize))
                 pts = wire.discretize(QuasiDeflection=obj.Discretize)
-                ptv = [FreeCAD.Vector(p[0], p[1]) for p in pts]
+                ptv = [FreeCAD.Vector(p.x, p.y) for p in pts]
                 ptv.append(ptv[0])
 
                 for i in range(len(pts)):
                     vd.addSegment(ptv[i], ptv[i+1])
 
-        def calculate_depth(MIC):
+        def calculate_depth(MIC, baselevel=0):
             # given a maximum inscribed circle (MIC) and tool angle,
-            # return depth of cut.
+            # return depth of cut relative to baselevel.
 
             r = obj.ToolController.Tool.Diameter / 2
             toolangle = obj.ToolController.Tool.CuttingEdgeAngle
-            maxdepth = r / math.tan(math.radians(toolangle/2))
+            maxdepth = baselevel - r / math.tan(math.radians(toolangle/2))
 
-            d = round(MIC / math.tan(math.radians(toolangle / 2)), 4)
+            d = baselevel - round(MIC / math.tan(math.radians(toolangle / 2)), 4)
+            PathLog.debug('baselevel value: {} depth: {}'.format(baselevel, d))
             return d if d <= maxdepth else maxdepth
 
         def getEdges(vd, color=[PRIMARY]):
             if type(color) == int:
                 color = [color]
             geomList = []
+            bblevel = self.model[0].Shape.BoundBox.ZMin
             for e in vd.Edges:
                 if e.Color not in color:
                     continue
                 if e.toGeom() is None:
                     continue
-                p1 = e.Vertices[0].toGeom(calculate_depth(0-e.getDistances()[0]))
-                p2 = e.Vertices[-1].toGeom(calculate_depth(0-e.getDistances()[-1]))
+                p1 = e.Vertices[0].toGeom(calculate_depth(e.getDistances()[0], bblevel))
+                p2 = e.Vertices[-1].toGeom(calculate_depth(e.getDistances()[-1], bblevel))
                 newedge = Part.Edge(Part.Vertex(p1), Part.Vertex(p2))
 
                 newedge.fixTolerance(obj.Tolerance, Part.Vertex)
@@ -248,9 +251,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         PathLog.track()
 
         if not hasattr(obj.ToolController.Tool, "CuttingEdgeAngle"):
-                FreeCAD.Console.PrintError(
-                    translate("Path_Vcarve", "VCarve requires an engraving \
-                        cutter with CuttingEdgeAngle") + "\n")
+            FreeCAD.Console.PrintError(
+                translate("Path_Vcarve", "VCarve requires an engraving \
+                           cutter with CuttingEdgeAngle") + "\n")
 
         if obj.ToolController.Tool.CuttingEdgeAngle >= 180.0:
             FreeCAD.Console.PrintError(
@@ -279,9 +282,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         except Exception as e:
             PathLog.error(e)
             traceback.print_exc()
-            PathLog.error(translate('PathVcarve',
-                'The Job Base Object has no engraveable element.\
-                        Engraving operation will produce no output.'))
+            PathLog.error(translate('PathVcarve', 'The Job Base Object has \
+                                    no engraveable element. Engraving \
+                                    operation will produce no output.'))
 
     def opUpdateDepths(self, obj, ignoreErrors=False):
         '''updateDepths(obj) ... engraving is always done at \

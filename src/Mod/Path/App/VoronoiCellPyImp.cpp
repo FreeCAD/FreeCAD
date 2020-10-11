@@ -122,7 +122,8 @@ Py::Long VoronoiCellPy::getIndex(void) const {
 Py::Long VoronoiCellPy::getColor(void) const {
   VoronoiCell *c = getVoronoiCellPtr();
   if (c->isBound()) {
-    return Py::Long(c->ptr->color() & Voronoi::ColorMask);
+    Voronoi::color_type color = c->ptr->color() & Voronoi::ColorMask;
+    return Py::Long(color);
   }
   return Py::Long(0);
 }
@@ -134,7 +135,8 @@ void VoronoiCellPy::setColor(Py::Long color) {
 Py::Long VoronoiCellPy::getSourceIndex(void) const
 {
   VoronoiCell *c = getVoronoiCellFromPy(this);
-  return Py::Long(c->ptr->source_index());
+  long index = c->ptr->source_index();
+  return Py::Long(index);
 }
 
 Py::Int VoronoiCellPy::getSourceCategory(void) const

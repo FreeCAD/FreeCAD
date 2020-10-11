@@ -272,9 +272,9 @@ Py::Object ParameterGrpPy::getGroup(const Py::Tuple& args)
     // get the Handle of the wanted group
     Base::Reference<ParameterGrp> handle = _cParamGrp->GetGroup(pstr);
     if (handle.isValid()) {
-        // crate a python wrapper class
+        // create a python wrapper class
         ParameterGrpPy *pcParamGrp = new ParameterGrpPy(handle);
-        // increment the reff count
+        // increment the ref count
         return Py::asObject(pcParamGrp);
     }
     else {

@@ -271,6 +271,28 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
 }
 
 namespace Part {
+class BRepOffsetAPIModule : public Py::ExtensionModule<BRepOffsetAPIModule>
+{
+public:
+    BRepOffsetAPIModule() : Py::ExtensionModule<BRepOffsetAPIModule>("BRepOffsetAPI")
+    {
+        initialize("This is a module working with the BRepOffsetAPI package."); // register with Python
+    }
+
+    virtual ~BRepOffsetAPIModule() {}
+};
+
+class Geom2dModule : public Py::ExtensionModule<Geom2dModule>
+{
+public:
+    Geom2dModule() : Py::ExtensionModule<Geom2dModule>("Geom2d")
+    {
+        initialize("This is a module working with 2d geometries."); // register with Python
+    }
+
+    virtual ~Geom2dModule() {}
+};
+
 class GeomPlateModule : public Py::ExtensionModule<GeomPlateModule>
 {
 public:
@@ -282,9 +304,23 @@ public:
     virtual ~GeomPlateModule() {}
 };
 
+class ShapeUpgradeModule : public Py::ExtensionModule<ShapeUpgradeModule>
+{
+public:
+    ShapeUpgradeModule() : Py::ExtensionModule<ShapeUpgradeModule>("ShapeUpgrade")
+    {
+        initialize("This is a module working with the ShapeUpgrade framework."); // register with Python
+    }
+
+    virtual ~ShapeUpgradeModule() {}
+};
+
 class Module : public Py::ExtensionModule<Module>
 {
+    BRepOffsetAPIModule brepOffsetApi;
+    Geom2dModule geom2d;
     GeomPlateModule geomPlate;
+    ShapeUpgradeModule shapeUpgrade;
 public:
     Module() : Py::ExtensionModule<Module>("Part")
     {
@@ -501,7 +537,10 @@ public:
         );
         initialize("This is a module working with shapes."); // register with Python
 
+        PyModule_AddObject(m_module, "BRepOffsetAPI", brepOffsetApi.module().ptr());
+        PyModule_AddObject(m_module, "Geom2d", geom2d.module().ptr());
         PyModule_AddObject(m_module, "GeomPlate", geomPlate.module().ptr());
+        PyModule_AddObject(m_module, "ShapeUpgrade", shapeUpgrade.module().ptr());
     }
 
     virtual ~Module() {}
