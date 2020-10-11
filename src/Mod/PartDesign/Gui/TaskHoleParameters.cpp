@@ -126,30 +126,25 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->HoleCutDepth->setValue(pcHole->HoleCutDepth.getValue());
     ui->HoleCutCountersinkAngle->setValue(pcHole->HoleCutCountersinkAngle.getValue());
 
-    // only enable allowed values for hole cuts:
-    bool holeCutEnable = (pcHole->HoleCutType.getValue() != 0L);
-    QByteArray TypeClass = ui->ThreadType->itemData(pcHole->ThreadType.getValue()).toByteArray();
+    std::string holeCutType;
+    if (pcHole->HoleCutType.isValid())
+        holeCutType = pcHole->HoleCutType.getValueAsString();
 
-    // HoleCutDiameter is only allowed for countersinks or counterbores with UTS or no profile
-    if (pcHole->HoleCutType.getValue() == 0L) // no cut
-        ui->HoleCutDiameter->setEnabled(false);
-    else if (TypeClass != QByteArray("ISO"))
+    if (holeCutType == "Counterbore") {
         ui->HoleCutDiameter->setEnabled(true);
-    else if (pcHole->HoleCutType.getValue() == 2L || pcHole->HoleCutType.getValue() == 4L) {
-        ui->HoleCutDiameter->setEnabled(true);
+        ui->HoleCutDepth->setEnabled(true);
+        ui->HoleCutCountersinkAngle->setEnabled(false);
     }
-    else
-        ui->HoleCutDiameter->setEnabled(false);
-    // HoleCutDepth can always be changed if there is a cut
-    if (pcHole->HoleCutType.getValue() == 2L || pcHole->HoleCutType.getValue() == 4L)
+    else if (holeCutType == "Countersink") {
+        ui->HoleCutDiameter->setEnabled(true);
         ui->HoleCutDepth->setEnabled(false);
-    else
-        ui->HoleCutDepth->setEnabled(holeCutEnable);
-    // HoleCutCountersinkAngle is only allowed for countersinks with UTS or no profile
-    ui->HoleCutCountersinkAngle->setEnabled(false);
-    if ((pcHole->HoleCutType.getValue() == 2L || pcHole->HoleCutType.getValue() == 4L)
-        && TypeClass != QByteArray("ISO"))
         ui->HoleCutCountersinkAngle->setEnabled(true);
+    }
+    else {
+        ui->HoleCutDiameter->setEnabled(false);
+        ui->HoleCutDepth->setEnabled(false);
+        ui->HoleCutCountersinkAngle->setEnabled(false);
+    }
 
     ui->DepthType->setCurrentIndex(pcHole->DepthType.getValue());
     ui->Depth->setValue(pcHole->Depth.getValue());
