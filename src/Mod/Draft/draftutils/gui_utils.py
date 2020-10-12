@@ -351,10 +351,10 @@ def format_object(target, origin=None):
         doc = App.ActiveDocument
         if ui.isConstructionMode():
             col = fcol = ui.getDefaultColor("constr")
-            gname = utils.get_param("constructiongroupname", "Construction")
-            grp = doc.getObject(gname)
+            grp = doc.getObject("Draft_Construction")
             if not grp:
-                grp = doc.addObject("App::DocumentObjectGroup", gname)
+                grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
+                grp.Label = utils.get_param("constructiongroupname", "Construction")
             grp.addObject(target)
             if hasattr(obrep, "Transparency"):
                 obrep.Transparency = 80
