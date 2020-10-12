@@ -83,6 +83,7 @@
         <file>icons/edge-join-round-not.svg</file>
         <file>icons/edge-join-round.svg</file>
         <file>icons/preferences-path.svg</file>
+        <file>panels/AxisMapEdit.ui</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
         <file>panels/DlgJobModelSelect.ui</file>
@@ -94,6 +95,7 @@
         <file>panels/DlgToolEdit.ui</file>
         <file>panels/DogboneEdit.ui</file>
         <file>panels/DressupPathBoundary.ui</file>
+        <file>panels/DragKnifeEdit.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
         <file>panels/PageBaseGeometryEdit.ui</file>
         <file>panels/PageBaseHoleGeometryEdit.ui</file>

@@ -139,7 +139,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             ("App::PropertyDistance", "InternalFeaturesAdjustment", "Selected Geometry Settings",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Positive values push the cutter toward, or into, the feature. Negative values retract the cutter away from the feature.")),
             ("App::PropertyBool", "InternalFeaturesCut", "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Ignore internal feature areas within a larger selected face.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Cut internal feature areas within a larger selected face.")),
 
             ("App::PropertyEnumeration", "Algorithm", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).")),
@@ -341,7 +341,6 @@ class ObjectWaterline(PathOp.ObjectOp):
                     if isinstance(val, int) or isinstance(val, float):
                         setVal = True
                 if setVal:
-                    propVal = getattr(prop, 'Value')
                     setattr(prop, 'Value', val)
                 else:
                     setattr(obj, n, val)
@@ -790,8 +789,6 @@ class ObjectWaterline(PathOp.ObjectOp):
                         if scan is False:
                             erFlg = True
                         else:
-                            ##if aTyp == 'L':
-                            ##    stpOvr.append(FreeCAD.Vector(scan[0][0].x, scan[0][0].y, scan[0][0].z))
                             stpOvr.append(scan)
                 if erFlg is False:
                     SCANS.append(stpOvr)
@@ -819,7 +816,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                         horizGC = 'G1'
                         height = first.z
                 elif (minSTH + (2.0 * tolrnc)) >= max(first.z, lstPnt.z):
-                        height = False  # allow end of Zig to cut to beginning of Zag
+                    height = False  # allow end of Zig to cut to beginning of Zag
 
         # Create raise, shift, and optional lower commands
         if height is not False:
@@ -881,7 +878,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             self.layerEndPnt = FreeCAD.Vector(0.0, 0.0, 0.0)
 
         # Set extra offset to diameter of cutter to allow cutter to move around perimeter of model
-        toolDiam = self.cutter.getDiameter()
 
         if subShp is None:
             # Get correct boundbox
@@ -1012,9 +1008,9 @@ class ObjectWaterline(PathOp.ObjectOp):
         for p in range(0, pntsPerLine):
             pre.append(0)
             post.append(0)
-        for l in range(0, lenSL):
-            self.topoMap[l].insert(0, 0)
-            self.topoMap[l].append(0)
+        for i in range(0, lenSL):
+            self.topoMap[i].insert(0, 0)
+            self.topoMap[i].append(0)
         self.topoMap.insert(0, pre)
         self.topoMap.append(post)
         return True
@@ -1195,7 +1191,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         # generate the path commands
         output = []
 
-        prev = FreeCAD.Vector(2135984513.165, -58351896873.17455, 13838638431.861)
+        # prev = FreeCAD.Vector(2135984513.165, -58351896873.17455, 13838638431.861)
         nxt = FreeCAD.Vector(0.0, 0.0, 0.0)
 
         # Create first point
@@ -1218,7 +1214,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'F': self.horizFeed}))
 
             # Rotate point data
-            prev = pnt
             pnt = nxt
 
         # Save layer end point for use in transitioning to next layer
@@ -1233,7 +1228,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         PathLog.debug('_experimentalWaterlineOp()')
 
         commands = []
-        t_begin = time.time()
         base = JOB.Model.Group[mdlIdx]
         # safeSTL = self.safeSTLs[mdlIdx]
         self.endVector = None
@@ -1287,7 +1281,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             caCnt += 1
             if area.Area > 0.0:
                 cont = True
-                caWireCnt = len(area.Wires) - 1  # first wire is boundFace wire
                 self.showDebugObject(area, 'CutArea_{}'.format(caCnt))
             else:
                 data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
@@ -1297,7 +1290,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             if cont:
                 area.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - area.BoundBox.ZMin))
                 activeArea = area.cut(trimFace)
-                activeAreaWireCnt = len(activeArea.Wires)  # first wire is boundFace wire
                 self.showDebugObject(activeArea, 'ActiveArea_{}'.format(caCnt))
                 ofstArea = PathUtils.getOffsetArea(activeArea,
                                                    ofst,
@@ -1370,9 +1362,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             # Get slice at depth of shape
             csFaces = self._getModelCrossSection(shape, csHght)  # returned at Z=0.0
-            if not csFaces:
-                data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
-            else:
+            if csFaces:
                 if len(csFaces) > 0:
                     useFaces = self._getSolidAreasFromPlanarFaces(csFaces)
                 else:
@@ -1497,8 +1487,8 @@ class ObjectWaterline(PathOp.ObjectOp):
         GCODE = [Path.Command('N (Beginning of Single-pass layer.)', {})]
         tolrnc = JOB.GeometryTolerance.Value
         lenstpOVRS = len(stpOVRS)
-        lstSO = lenstpOVRS - 1
-        lstStpOvr = False
+        # lstSO = lenstpOVRS - 1
+        # lstStpOvr = False
         gDIR = ['G3', 'G2']
 
         if self.CutClimb is True:
@@ -1518,8 +1508,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             first = PRTS[0][0]  # first point of arc/line stepover group
             last = None
             cmds.append(Path.Command('N (Begin step {}.)'.format(so), {}))
-            if so == lstSO:
-                lstStpOvr = True
 
             if so > 0:
                 if cutPattern == 'CircularZigZag':
@@ -1689,7 +1677,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         PathLog.track()
 
         paths = []
-        pathParams = {} # pylint: disable=assignment-from-no-return
+        pathParams = {}  # pylint: disable=assignment-from-no-return
 
         pathParams['shapes'] = [wire]
         pathParams['feedrate'] = self.horizFeed
@@ -1705,7 +1693,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         (pp, end_vector) = Path.fromShapes(**pathParams)
         paths.extend(pp.Commands)
 
-        self.endVector = end_vector # pylint: disable=attribute-defined-outside-init
+        self.endVector = end_vector  # pylint: disable=attribute-defined-outside-init
 
         return (paths, end_vector)
 
@@ -1739,8 +1727,8 @@ class ObjectWaterline(PathOp.ObjectOp):
         xyz = endPnt
         cmds.append(Path.Command('G1', {'X': strtPnt.x, 'Y': strtPnt.y, 'Z': strtPnt.z, 'F': self.horizFeed}))
         cmds.append(Path.Command(gCmd, {'X': xyz.x, 'Y': xyz.y, 'Z': xyz.z,
-                                            'I': ijk.x, 'J': ijk.y, 'K': ijk.z,  # leave same xyz.z height
-                                            'F': self.horizFeed}))
+                                        'I': ijk.x, 'J': ijk.y, 'K': ijk.z,  # leave same xyz.z height
+                                        'F': self.horizFeed}))
         cmds.append(Path.Command('G1', {'X': endPnt.x, 'Y': endPnt.y, 'Z': endPnt.z, 'F': self.horizFeed}))
 
         return cmds
@@ -1819,7 +1807,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             do.Shape = objShape
             do.purgeTouched()
             self.tempGroup.addObject(do)
-# Eclass
+
 
 def SetupProperties():
     ''' SetupProperties() ... Return list of properties required for operation.'''
