@@ -2127,6 +2127,9 @@ void Application::initApplication(void)
     catch (const Base::Exception& e) {
         e.ReportException();
     }
+    
+    // seed randomizer
+    srand(time(0));
 }
 
 std::list<std::string> Application::getCmdLineFiles()
