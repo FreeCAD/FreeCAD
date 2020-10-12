@@ -28,7 +28,7 @@ import PathScripts.PathDeburr as PathDeburr
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
-
+import Part
 from PySide import QtCore, QtGui
 
 __title__ = "Path Deburr Operation UI"
@@ -44,8 +44,28 @@ if LOGLEVEL:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
+
+class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
+    '''Enhanced base geometry page to also allow special base objects.'''
+
+    def super(self):
+        return super(TaskPanelBaseGeometryPage, self)
+
+    def addBaseGeometry(self, selection):
+        for sel in selection:
+            if sel.HasSubObjects:
+                # selectively add some elements of the drawing to the Base
+                for sub in sel.SubObjects:
+                    if isinstance(sub, Part.Face):
+                        if sub.normalAt(0, 0) != FreeCAD.Vector(0, 0, 1):
+                            PathLog.info(translate("Path", "Ignoring non-horizontal Face"))
+                            return
+
+        self.super().addBaseGeometry(selection)
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -55,8 +75,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpDeburrEdit.ui")
 
     def initPage(self, obj):
-        self.opImagePath = "{}Mod/Path/Images/Ops/{}".format(FreeCAD.getHomePath(), 'chamfer.svg') # pylint: disable=attribute-defined-outside-init
-        self.opImage = QtGui.QPixmap(self.opImagePath) # pylint: disable=attribute-defined-outside-init
+        self.opImagePath = "{}Mod/Path/Images/Ops/{}".format(FreeCAD.getHomePath(), 'chamfer.svg')  # pylint: disable=attribute-defined-outside-init
+        self.opImage = QtGui.QPixmap(self.opImagePath)  # pylint: disable=attribute-defined-outside-init
         self.form.opImage.setPixmap(self.opImage)
         iconMiter = QtGui.QIcon(':/icons/edge-join-miter-not.svg')
         iconMiter.addFile(':/icons/edge-join-miter.svg', state=QtGui.QIcon.On)
@@ -72,7 +92,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.Join = 'Round'
         elif self.form.joinMiter.isChecked():
             obj.Join = 'Miter'
-		
+
         if obj.Direction != str(self.form.direction.currentText()):
             obj.Direction = str(self.form.direction.currentText())
 
@@ -109,6 +129,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.value_W.editingFinished.connect(self.updateWidth)
         self.form.value_h.editingFinished.connect(self.updateExtraDepth)
 
+    def taskPanelBaseGeometryPage(self, obj, features):
+        '''taskPanelBaseGeometryPage(obj, features) ... return page for adding base geometries.'''
+        return TaskPanelBaseGeometryPage(obj, features)
+
 
 Command = PathOpGui.SetupOperation('Deburr',
         PathDeburr.Create,
@@ -119,4 +143,3 @@ Command = PathOpGui.SetupOperation('Deburr',
         PathDeburr.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathDeburrGui... done\n")
-

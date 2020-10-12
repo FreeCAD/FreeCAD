@@ -136,6 +136,7 @@ def orientWire(w, forward=True):
     If forward = True (the default) the wire is oriented clockwise, looking down the negative Z axis.
     If forward = False the wire is oriented counter clockwise.
     If forward = None the orientation is determined by the order in which the edges appear in the wire.'''
+    PathLog.debug('orienting forward: {}'.format(forward))
     wire = Part.Wire(_orientEdges(w.Edges))
     if forward is not None:
         if forward != _isWireClockwise(wire):
@@ -144,7 +145,7 @@ def orientWire(w, forward=True):
         PathLog.track('orientWire - ok')
     return wire
 
-def offsetWire(wire, base, offset, forward, Side = None):
+def offsetWire(wire, base, offset, forward):#, Side = None):
     '''offsetWire(wire, base, offset, forward) ... offsets the wire away from base and orients the wire accordingly.
     The function tries to avoid most of the pitfalls of Part.makeOffset2D which is possible because all offsetting
     happens in the XY plane.
@@ -198,12 +199,12 @@ def offsetWire(wire, base, offset, forward, Side = None):
     if wire.isClosed():
         if not base.isInside(owire.Edges[0].Vertexes[0].Point, offset/2, True):
             PathLog.track('closed - outside')
-            if Side:
-                Side[0] = "Outside"
+            # if Side:
+            #     Side[0] = "Outside"
             return orientWire(owire, forward)
         PathLog.track('closed - inside')
-        if Side:
-            Side[0] = "Inside"
+        # if Side:
+        #     Side[0] = "Inside"
         try:
             owire = wire.makeOffset2D(-offset)
         except Exception: # pylint: disable=broad-except
