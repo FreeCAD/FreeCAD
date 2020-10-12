@@ -650,7 +650,7 @@ void Placement::on_resetButton_clicked()
 
 void Placement::bindObject(App::PropertyPlacement * prop)
 {
-    App::DocumentObject * obj;
+    App::DocumentObject * obj = nullptr;
     if (prop) {
         obj = Base::freecad_dynamic_cast<App::DocumentObject>(prop->getContainer());
         const char * name = prop->getName();
@@ -659,11 +659,11 @@ void Placement::bindObject(App::PropertyPlacement * prop)
         selectionObjects.clear();
         propertyName = name;
     }
-    else if (!selectionObjects.empty()) {
+    else if (!selectionObjects.empty())
         obj = selectionObjects.front().getObject();
-        if (!obj)
-            return;
-    }
+
+    if (!obj)
+        return;
 
     ui->xPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.x")));
     ui->yPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.y")));
