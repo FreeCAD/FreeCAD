@@ -28,6 +28,7 @@
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 
+#include <App/Application.h>
 #include "ComboView.h"
 #include "BitmapFactory.h"
 #include "PropertyView.h"
@@ -51,6 +52,9 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
   , modelIndex(-1)
   , taskIndex(-1)
 {
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/DockWindows/ComboView");
+
     QGridLayout* pLayout = new QGridLayout(this); 
     pLayout->setSpacing( 0 );
     pLayout->setMargin ( 0 );
@@ -109,6 +113,18 @@ void ComboView::setShowModel(bool showModel)
 
         splitter->addWidget(prop);
         prop->show();
+
+        int size1 = hGrp->GetInt("TreeViewSize", 0);
+        int size2 = hGrp->GetInt("PropertyViewSize", 0);
+        if (size1 || size2) {
+            QList<int> sizes;
+            sizes.append(size1);
+            sizes.append(size2);
+            splitter->setSizes(sizes);
+        }
+
+        connect(splitter, SIGNAL(splitterMoved(int, int)), this, SLOT(onSplitterMoved()));
+
     } else if (modelIndex >= 0) {
         tabs->removeTab(modelIndex);
         modelIndex = -1;
@@ -116,6 +132,16 @@ void ComboView::setShowModel(bool showModel)
         prop = nullptr;
         delete tree;
         tree = nullptr;
+    }
+}
+
+void ComboView::onSplitterMoved()
+{
+    auto splitter = qobject_cast<QSplitter*>(sender());
+    if (splitter) {
+        auto sizes = splitter->sizes();
+        hGrp->SetInt("TreeViewSize", sizes[0]);
+        hGrp->SetInt("PropertyViewSize", sizes[1]);
     }
 }
 

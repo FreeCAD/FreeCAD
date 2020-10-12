@@ -25,6 +25,7 @@
 #ifndef GUI_DOCKWND_COMBOVIEW_H
 #define GUI_DOCKWND_COMBOVIEW_H
 
+#include <Base/Parameter.h>
 #include "DockWindow.h"
 #include "Selection.h"
 
@@ -93,6 +94,7 @@ public:
 
 private Q_SLOTS:
     void onCurrentTabChanged(int index);
+    void onSplitterMoved();
 
 protected:
     void showDialog(Gui::TaskView::TaskDialog *dlg);
@@ -108,6 +110,9 @@ private:
     Gui::PropertyView                  * prop = nullptr;
     Gui::TreePanel                     * tree = nullptr;
     Gui::TaskView::TaskView            * taskPanel = nullptr;
+
+    ParameterGrp::handle hGrp;
+
   //Gui::ProjectWidget                 * projectView;
 };
 
