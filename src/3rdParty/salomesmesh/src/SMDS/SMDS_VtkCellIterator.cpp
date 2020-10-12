@@ -33,7 +33,8 @@ SMDS_VtkCellIterator::SMDS_VtkCellIterator(SMDS_Mesh* mesh, int vtkCellId, SMDSA
   }
   else
   {
-    vtkIdType npts, *pts;
+    vtkIdType npts;
+    vtkIdTypePtr pts;
     grid->GetCellPoints( _cellId, npts, pts );
     _vtkIdList->SetNumberOfIds( _nbNodes = npts );
     for (int i = 0; i < _nbNodes; i++)
@@ -67,7 +68,7 @@ SMDS_VtkCellIteratorToUNV::SMDS_VtkCellIteratorToUNV(SMDS_Mesh* mesh, int vtkCel
   //MESSAGE("SMDS_VtkCellInterlacedIterator (UNV)" << _type);
 
   _vtkIdList = vtkIdList::New();
-  vtkIdType* pts;
+  vtkIdTypePtr pts;
   vtkIdType npts;
   vtkUnstructuredGrid* grid = _mesh->getGrid();
   grid->GetCellPoints((vtkIdType)_cellId, npts, pts);
@@ -182,7 +183,7 @@ SMDS_VtkCellIteratorPolyH::SMDS_VtkCellIteratorPolyH(SMDS_Mesh* mesh, int vtkCel
   {
     //MESSAGE("SMDS_VtkCellIterator Polyhedra");
     vtkIdType nFaces = 0;
-    vtkIdType* ptIds = 0;
+    vtkIdTypePtr ptIds = 0;
     grid->GetFaceStream(_cellId, nFaces, ptIds);
     int id = 0;
     _nbNodesInFaces = 0;
