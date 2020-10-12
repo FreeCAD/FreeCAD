@@ -176,7 +176,7 @@ def get_param_type(param):
         return "string"
     elif param in ("textheight", "tolerance", "gridSpacing",
                    "arrowsize", "extlines", "dimspacing",
-                   "dimovershoot", "extovershoot"):
+                   "dimovershoot", "extovershoot","HatchPatternSize"):
         return "float"
     elif param in ("selectBaseObjects", "alwaysSnap", "grid",
                    "fillmode", "saveonexit", "maxSnap",

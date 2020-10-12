@@ -112,7 +112,7 @@ class ViewProviderDraft(object):
                              "PatternSize",
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property", _tip))
-            vobj.PatternSize = 1
+            vobj.PatternSize = utils.get_param("HatchPatternSize", 1)
 
     def __getstate__(self):
         """Return a tuple of all serializable objects or None.
@@ -286,8 +286,9 @@ class ViewProviderDraft(object):
                     if path and vobj.RootNode:
                         if vobj.RootNode.getChildren().getLength() > 2:
                             if vobj.RootNode.getChild(2).getChildren().getLength() > 0:
-                                if vobj.RootNode.getChild(2).getChild(0).getChildren().getLength() > 2:
-                                    r = vobj.RootNode.getChild(2).getChild(0).getChild(2)
+                                innodes = vobj.RootNode.getChild(2).getChild(0).getChildren().getLength()
+                                if  innodes > 2:
+                                    r = vobj.RootNode.getChild(2).getChild(0).getChild(innodes-1)
                                     i = QtCore.QFileInfo(path)
                                     if self.texture:
                                         r.removeChild(self.texture)
