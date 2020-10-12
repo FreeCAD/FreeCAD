@@ -123,7 +123,7 @@ Py::Long VoronoiCellPy::getColor(void) const {
   VoronoiCell *c = getVoronoiCellPtr();
   if (c->isBound()) {
     Voronoi::color_type color = c->ptr->color() & Voronoi::ColorMask;
-    return Py::Long(color);
+    return Py::Long(PyLong_FromSize_t(color));
   }
   return Py::Long(0);
 }

@@ -125,7 +125,7 @@ Py::Long VoronoiVertexPy::getColor(void) const {
   VoronoiVertex *v = getVoronoiVertexPtr();
   if (v->isBound()) {
     Voronoi::color_type color = v->ptr->color() & Voronoi::ColorMask;
-    return Py::Long(color);
+    return Py::Long(PyLong_FromSize_t(color));
   }
   return Py::Long(0);
 }

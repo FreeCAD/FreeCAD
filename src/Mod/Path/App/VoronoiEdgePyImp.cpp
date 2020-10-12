@@ -142,7 +142,7 @@ Py::Long VoronoiEdgePy::getColor(void) const {
   VoronoiEdge *e = getVoronoiEdgePtr();
   if (e->isBound()) {
     Voronoi::color_type color = e->ptr->color() & Voronoi::ColorMask;
-    return Py::Long(color);
+    return Py::Long(PyLong_FromSize_t(color));
   }
   return Py::Long(0);
 }
