@@ -2159,14 +2159,7 @@ CmdColorPerFace::CmdColorPerFace()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Color per face");
     sToolTipText  = QT_TR_NOOP("Set the color of each individual face "
-                               "of the selected object.\n"
-                               "\n"
-                               "At the moment, this command only works "
-                               "with objects which have not reimplemented\n"
-                               "their 'edit modes'; this means, it works "
-                               "with Part and PartDesign created objects,\n"
-                               "but not with most Draft or Arch objects. "
-                               "See issues #0477 and #1954 in the tracker.");
+                               "of the selected object.");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Part_ColorPerFace";
     sPixmap       = "Part_ColorFace";
@@ -2178,13 +2171,11 @@ void CmdColorPerFace::activated(int iMsg)
     if (getActiveGuiDocument()->getInEdit())
         getActiveGuiDocument()->resetEdit();
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if(sel.empty())
+    if (sel.empty())
         return;
-    Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sel.front());
-    // FIXME: Need a way to force 'Color' edit mode
-    // #0000477: Proper interface for edit modes of view provider
+    PartGui::ViewProviderPartExt* vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(sel.front()));
     if (vp)
-        getActiveGuiDocument()->setEdit(vp, Gui::ViewProvider::Color);
+        vp->changeFaceColors();
 }
 
 bool CmdColorPerFace::isActive(void)

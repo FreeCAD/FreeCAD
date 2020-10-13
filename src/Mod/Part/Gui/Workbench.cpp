@@ -157,17 +157,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "Part_Measure_Toggle_3D"
              << "Part_Measure_Toggle_Delta";
 
-    // leave this for 0.14 until #0000477 is fixed
-
-    // According to #0477 and #1954
-    // `Part_ColorPerFace` does not work with objects that reimplement
-    // their edit modes, meaning it may work with Part and PartDesign
-    // created objects but not with Draft and Arch objects.
-    // However, it does not make much sense to keep it hidden;
-    // having it available in the interface will allow more people
-    // to use it, and maybe somebody will be able to investigate
-    // and fix the issue.
-#if 1
     Gui::MenuItem* view = root->findItem("&View");
     if (view) {
         Gui::MenuItem* appr = view->findItem("Std_RandomColor");
@@ -176,7 +165,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         face->setCommand("Part_ColorPerFace");
         view->insertItem(appr, face);
     }
-#endif
 
     return root;
 }
