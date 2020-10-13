@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SurfaceGui::TaskFillingUnbound</class>
- <widget class="QWidget" name="SurfaceGui::TaskFillingUnbound">
+ <class>SurfaceGui::TaskFillingEdge</class>
+ <widget class="QWidget" name="SurfaceGui::TaskFillingEdge">
   <property name="geometry">
    <rect>
     <x>0</x>

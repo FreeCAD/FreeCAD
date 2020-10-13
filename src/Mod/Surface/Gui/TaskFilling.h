@@ -37,7 +37,7 @@ namespace SurfaceGui
 {
 
 class FillingVertexPanel;
-class FillingUnboundPanel;
+class FillingEdgePanel;
 class Ui_TaskFilling;
 
 class ViewProviderFilling : public PartGui::ViewProviderSpline
@@ -123,7 +123,7 @@ public:
 
 private:
     FillingPanel* widget1;
-    FillingUnboundPanel* widget2;
+    FillingEdgePanel* widget2;
     FillingVertexPanel* widget3;
 };
 

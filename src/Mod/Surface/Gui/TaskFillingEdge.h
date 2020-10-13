@@ -21,8 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_TASKFILLINGUNBOUND_H
-#define SURFACEGUI_TASKFILLINGUNBOUND_H
+#ifndef SURFACEGUI_TASKFILLINGEDGE_H
+#define SURFACEGUI_TASKFILLINGEDGE_H
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -38,11 +38,11 @@ namespace SurfaceGui
 {
 
 class ViewProviderFilling;
-class Ui_TaskFillingUnbound;
+class Ui_TaskFillingEdge;
 
-class FillingUnboundPanel : public QWidget,
-                     public Gui::SelectionObserver,
-                     public Gui::DocumentObserver
+class FillingEdgePanel : public QWidget,
+                         public Gui::SelectionObserver,
+                         public Gui::DocumentObserver
 {
     Q_OBJECT
 
@@ -54,12 +54,12 @@ protected:
     bool checkCommand;
 
 private:
-    Ui_TaskFillingUnbound* ui;
+    Ui_TaskFillingEdge* ui;
     ViewProviderFilling* vp;
 
 public:
-    FillingUnboundPanel(ViewProviderFilling* vp, Surface::Filling* obj);
-    ~FillingUnboundPanel();
+    FillingEdgePanel(ViewProviderFilling* vp, Surface::Filling* obj);
+    ~FillingEdgePanel();
 
     void open();
     void checkOpenCommand();
@@ -90,4 +90,4 @@ private Q_SLOTS:
 
 } //namespace SurfaceGui
 
-#endif // SURFACEGUI_TASKFILLINGUNBOUND_H
+#endif // SURFACEGUI_TASKFILLINGEDGE_H

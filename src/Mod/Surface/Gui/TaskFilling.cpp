@@ -42,7 +42,7 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskFilling.h"
-#include "TaskFillingUnbound.h"
+#include "TaskFillingEdge.h"
 #include "TaskFillingVertex.h"
 #include "ui_TaskFilling.h"
 
@@ -824,7 +824,7 @@ TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
     Content.push_back(taskbox1);
 
     // second task box
-    widget2 = new FillingUnboundPanel(vp, obj);
+    widget2 = new FillingEdgePanel(vp, obj);
     Gui::TaskView::TaskBox* taskbox2 = new Gui::TaskView::TaskBox(
         QPixmap(), widget2->windowTitle(), true, 0);
     taskbox2->groupLayout()->addWidget(widget2);
