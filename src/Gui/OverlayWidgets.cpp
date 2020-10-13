@@ -366,6 +366,9 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/editshow.svg"));
     actEditShow.setData(QString::fromLatin1("OBTN EditShow"));
 
+    actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/taskshow.svg"));
+    actTaskShow.setData(QString::fromLatin1("OBTN TaskShow"));
+
     actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/mode.svg"));
     actNoAutoMode.setData(QString::fromLatin1("OBTN NoAutoMode"));
 
@@ -377,6 +380,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     autoModeMenu.addAction(&actAutoHide);
     autoModeMenu.addAction(&actEditShow);
     autoModeMenu.addAction(&actEditHide);
+    autoModeMenu.addAction(&actTaskShow);
     syncAutoMode();
     addAction(&actAutoMode);
 
@@ -748,6 +752,8 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
         setAutoMode(EditHide);
     else if (handle->GetBool("EditShow", false))
         setAutoMode(EditShow);
+    else if (handle->GetBool("TaskShow", false))
+        setAutoMode(TaskShow);
     else
         setAutoMode(NoAutoMode);
 
@@ -811,6 +817,8 @@ void OverlayTabWidget::retranslate()
     actEditHide.setToolTip(tr("Auto hide docked widgets on editing"));
     actEditShow.setText(tr("Show on edit"));
     actEditShow.setToolTip(tr("Auto show docked widgets on editing"));
+    actTaskShow.setText(tr("Auto task"));
+    actTaskShow.setToolTip(tr("Auto show task view for any current task, and hide the view when there is no task."));
     actIncrease.setToolTip(tr("Increase window size, either width or height depending on the docking site.\n"
                               "Hold CTRL key while pressing the button to change size in the other dimension.\n"
                               "Hold SHIFT key while pressing the button to move the window.\n"
@@ -832,6 +840,9 @@ void OverlayTabWidget::syncAutoMode()
         break;
     case EditShow:
         action = &actEditShow;
+        break;
+    case TaskShow:
+        action = &actTaskShow;
         break;
     case EditHide:
         action = &actEditHide;
@@ -857,6 +868,8 @@ void OverlayTabWidget::onAction(QAction *action)
             setAutoMode(AutoHide);
         else if (action == &actEditShow)
             setAutoMode(EditShow);
+        else if (action == &actTaskShow)
+            setAutoMode(TaskShow);
         else if (action == &actEditHide)
             setAutoMode(EditHide);
         return;
@@ -3041,24 +3054,44 @@ public:
                 auto sizes = tabWidget->getSplitter()->sizes();
                 if(index >= sizes.size() || sizes[index]==0) {
                     if (checked > 0) {
-                        tabWidget->setCurrent(dock);
-                        tabWidget->onCurrentChanged(tabWidget->dockWidgetIndex(dock));
+                        int total = 0;
+                        for (int & size : sizes) {
+                            if (size) {
+                                total += size;
+                                size /= 2;
+                            }
+                        }
+                        sizes[index] = total/2;
+                        tabWidget->splitter->setSizes(sizes);
+                        tabWidget->saveTabs();
                     }
                     else
                         return;
                 } else if (checked < 0) {
                     if (sizes[index] > 0 && sizes.size() > 1) {
-                        bool expand = true;
+                        int expand = 0;
                         for (int i=0; i<sizes.size(); ++i) {
                             if (i != index && sizes[i] > 0) {
-                                expand = false;
+                                ++expand;
                                 break;
                             }
                         }
                         if (expand) {
-                            int next = index == sizes.size()-1 ? 0 : index+1;
-                            tabWidget->setCurrentIndex(next);
-                            tabWidget->onCurrentChanged(next);
+                            int expansion = sizes[index];
+                            int step = expansion / expand;
+                            for (int i=0; i<sizes.size(); ++i) {
+                                if (i == index)
+                                    sizes[i] = 0;
+                                else if (--expand) {
+                                    expansion -= step;
+                                    sizes[i] = step;
+                                } else {
+                                    sizes[i] = expansion;
+                                    break;
+                                }
+                            }
+                            tabWidget->splitter->setSizes(sizes);
+                            tabWidget->saveTabs();
                         }
                     }
                     return;
@@ -3626,7 +3659,7 @@ void OverlayManager::onTaskViewUpdate()
         auto it = d->_overlayMap.find(dock);
         if (it == d->_overlayMap.end()
                 || it->second->tabWidget->count() < 2
-                || it->second->tabWidget->getAutoMode() != OverlayTabWidget::NoAutoMode)
+                || it->second->tabWidget->getAutoMode() != OverlayTabWidget::TaskShow)
             return;
         d->onToggleDockWidget(dock, taskview->isEmpty() ? -1 : 1);
     }

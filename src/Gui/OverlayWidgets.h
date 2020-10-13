@@ -152,6 +152,7 @@ public:
         AutoHide,
         EditShow,
         EditHide,
+        TaskShow,
     };
     void setAutoMode(OverlayAutoMode mode);
     OverlayAutoMode getAutoMode() const { return autoMode; }
@@ -264,6 +265,7 @@ private:
     QAction actAutoHide;
     QAction actEditHide;
     QAction actEditShow;
+    QAction actTaskShow;
     QAction actAutoMode;
     QMenu autoModeMenu;
     QAction actTransparent;
