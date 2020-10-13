@@ -1,8 +1,11 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/actions/MeshFace.svg</file>
+        <file>icons/MeshPart_CurveOnMesh.svg</file>
         <file>icons/MeshPart_Create_Flat_Face.svg</file>
         <file>icons/MeshPart_Create_Flat_Mesh.svg</file>
+    </qresource>
+    <qresource>
         <file>translations/MeshPart_af.qm</file>
         <file>translations/MeshPart_de.qm</file>
         <file>translations/MeshPart_fi.qm</file>
@@ -41,4 +44,5 @@
         <file>translations/MeshPart_ar.qm</file>
         <file>translations/MeshPart_vi.qm</file>
     </qresource>
-</RCC> 
+</RCC>
+
