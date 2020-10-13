@@ -312,6 +312,8 @@ public:
     TopLoc_Location loc;
     TopLoc_Location locInv;
 
+    std::size_t memsize = 0;
+
     struct AncestorInfo {
         bool inited = false;
         TopTools_IndexedDataMapOfShapeListOfShape shapes;
@@ -476,6 +478,8 @@ public:
         }
         return shapes.First().Moved(parent.Location());
     }
+
+    std::size_t getMemSize();
 };
 
 void TopoShape::initCache(int reset, const char *file, int line) const{
@@ -3788,4 +3792,154 @@ TopoShape & TopoShape::makEBSplineFace(const TopoShape & shape, FillingStyle sty
     aFace.setElementComboName("Face1",names,op);
     *this = aFace;
     return *this;
+}
+
+static std::size_t 
+TopoShape_RefCountShapes(std::unordered_set<TopoDS_Shape> &shapeSet,
+                         const TopoDS_Shape& aShape)
+{
+    std::size_t size = sizeof(Base::Placement); // rough estimate of location size
+
+    // Recurse only for distinctive geometry shape. Other shapes are only
+    // referenced with a location
+    if (!shapeSet.insert(aShape.Located(TopLoc_Location())).second)
+        return size;
+
+    TopoDS_Iterator it;
+    // go through all direct children
+    for (it.Initialize(aShape, false, false);it.More(); it.Next()) {
+        size += TopoShape_RefCountShapes(shapeSet, aShape);
+    }
+
+    return size;
+}
+
+std::size_t TopoShape::Cache::getMemSize()
+{
+    if (this->memsize || this->shape.IsNull())
+        return this->memsize;
+
+    std::unordered_set<TopoDS_Shape> shapeSet;
+    this->memsize = TopoShape_RefCountShapes(shapeSet, this->shape);
+
+    for (const auto & shape : shapeSet) {
+        // Only check geometrical element for non compound shapes
+        if (TopoDS_Iterator(shape, false, false).More())
+            continue;
+
+        // add the size of the underlying geomtric data
+        Handle(TopoDS_TShape) tshape = shape.TShape();
+        this->memsize += tshape->DynamicType()->Size();
+
+        switch (shape.ShapeType())
+        {
+        case TopAbs_FACE:
+            {
+                // first, last, tolerance
+                this->memsize += 5*sizeof(Standard_Real);
+                const TopoDS_Face& face = TopoDS::Face(shape);
+                BRepAdaptor_Surface surface(face);
+                switch (surface.GetType())
+                {
+                case GeomAbs_Plane:
+                    this->memsize += sizeof(Geom_Plane);
+                    break;
+                case GeomAbs_Cylinder:
+                    this->memsize += sizeof(Geom_CylindricalSurface);
+                    break;
+                case GeomAbs_Cone:
+                    this->memsize += sizeof(Geom_ConicalSurface);
+                    break;
+                case GeomAbs_Sphere:
+                    this->memsize += sizeof(Geom_SphericalSurface);
+                    break;
+                case GeomAbs_Torus:
+                    this->memsize += sizeof(Geom_ToroidalSurface);
+                    break;
+                case GeomAbs_BezierSurface:
+                    this->memsize += sizeof(Geom_BezierSurface);
+                    this->memsize += (surface.NbUPoles()*surface.NbVPoles()) * sizeof(Standard_Real);
+                    this->memsize += (surface.NbUPoles()*surface.NbVPoles()) * sizeof(Geom_CartesianPoint);
+                    break;
+                case GeomAbs_BSplineSurface:
+                    this->memsize += sizeof(Geom_BSplineSurface);
+                    this->memsize += (surface.NbUKnots()+surface.NbVKnots()) * sizeof(Standard_Real);
+                    this->memsize += (surface.NbUPoles()*surface.NbVPoles()) * sizeof(Standard_Real);
+                    this->memsize += (surface.NbUPoles()*surface.NbVPoles()) * sizeof(Geom_CartesianPoint);
+                    break;
+                case GeomAbs_SurfaceOfRevolution:
+                    this->memsize += sizeof(Geom_SurfaceOfRevolution);
+                    break;
+                case GeomAbs_SurfaceOfExtrusion:
+                    this->memsize += sizeof(Geom_SurfaceOfLinearExtrusion);
+                    break;
+                case GeomAbs_OtherSurface:
+                    // What kind of surface should this be?
+                    this->memsize += sizeof(Geom_Surface);
+                    break;
+                default:
+                    break;
+                }
+            } break;
+        case TopAbs_EDGE:
+            {
+                // first, last, tolerance
+                this->memsize += 3*sizeof(Standard_Real);
+                const TopoDS_Edge& edge = TopoDS::Edge(shape);
+                BRepAdaptor_Curve curve(edge);
+                switch (curve.GetType())
+                {
+                case GeomAbs_Line:
+                    this->memsize += sizeof(Geom_Line);
+                    break;
+                case GeomAbs_Circle:
+                    this->memsize += sizeof(Geom_Circle);
+                    break;
+                case GeomAbs_Ellipse:
+                    this->memsize += sizeof(Geom_Ellipse);
+                    break;
+                case GeomAbs_Hyperbola:
+                    this->memsize += sizeof(Geom_Hyperbola);
+                    break;
+                case GeomAbs_Parabola:
+                    this->memsize += sizeof(Geom_Parabola);
+                    break;
+                case GeomAbs_BezierCurve:
+                    this->memsize += sizeof(Geom_BezierCurve);
+                    this->memsize += curve.NbPoles() * sizeof(Standard_Real);
+                    this->memsize += curve.NbPoles() * sizeof(Geom_CartesianPoint);
+                    break;
+                case GeomAbs_BSplineCurve:
+                    this->memsize += sizeof(Geom_BSplineCurve);
+                    this->memsize += curve.NbKnots() * sizeof(Standard_Real);
+                    this->memsize += curve.NbPoles() * sizeof(Standard_Real);
+                    this->memsize += curve.NbPoles() * sizeof(Geom_CartesianPoint);
+                    break;
+                case GeomAbs_OtherCurve:
+                    // What kind of curve should this be?
+                    this->memsize += sizeof(Geom_Curve);
+                    break;
+                default:
+                    break;
+                }
+            } break;
+        case TopAbs_VERTEX:
+            {
+                // tolerance
+                this->memsize += sizeof(Standard_Real);
+                this->memsize += sizeof(Geom_CartesianPoint);
+            } break;
+        default:
+            break;
+        }
+    }
+
+    return this->memsize;
+}
+
+
+unsigned int TopoShape::getMemSize (void) const
+{
+    INIT_SHAPE_CACHE();
+    return _Cache->getMemSize() + Data::ComplexGeoData::getMemSize();
 }
