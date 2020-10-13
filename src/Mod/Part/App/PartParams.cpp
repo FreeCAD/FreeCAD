@@ -31,14 +31,14 @@ PartParams::PartParams() {
     handle = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Part");
     handle->Attach(this);
-#undef FC_PART_PARAM
-#define FC_PART_PARAM(_name,_ctype,_type,_def) \
+#undef FC_APP_PART_PARAM
+#define FC_APP_PART_PARAM(_name,_ctype,_type,_def) \
     _##_name = handle->Get##_type(#_name,_def);\
     funcs[#_name] = &PartParams::update##_name;
 
-#undef FC_PART_PARAM2
-#define FC_PART_PARAM2 FC_PART_PARAM
-    FC_PART_PARAMS
+#undef FC_APP_PART_PARAM2
+#define FC_APP_PART_PARAM2 FC_APP_PART_PARAM
+    FC_APP_PART_PARAMS
 }
 
 PartParams::~PartParams() {

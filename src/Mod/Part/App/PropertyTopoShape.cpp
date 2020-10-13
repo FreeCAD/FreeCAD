@@ -902,6 +902,8 @@ PropertyShapeCache *PropertyShapeCache::get(const App::DocumentObject *obj, bool
 }
 
 bool PropertyShapeCache::getShape(const App::DocumentObject *obj, TopoShape &shape, const char *subname) {
+    if (PartParams::DisableShapeCache())
+        return false;
     auto prop = get(obj,false);
     if(!prop)
         return false;
@@ -917,6 +919,8 @@ bool PropertyShapeCache::getShape(const App::DocumentObject *obj, TopoShape &sha
 void PropertyShapeCache::setShape(
         const App::DocumentObject *obj, const TopoShape &shape, const char *subname) 
 {
+    if (PartParams::DisableShapeCache())
+        return;
     auto prop = get(obj,true);
     if(!prop)
         return;

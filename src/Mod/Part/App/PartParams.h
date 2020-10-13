@@ -32,13 +32,13 @@ namespace Part {
  *
  * The parameters are under group "User parameter:BaseApp/Preferences/Mod/Part"
  *
- * To add a new parameter, add a new line under FC_PART_PARAMS using macro
+ * To add a new parameter, add a new line under FC_APP_PART_PARAMS using macro
  *
  * @code
- *      FC_PART_PARAM(parameter_name, c_type, parameter_type, default_value)
+ *      FC_APP_PART_PARAM(parameter_name, c_type, parameter_type, default_value)
  * @endcode
  *
- * If there is special handling on parameter change, use FC_PART_PARAM2()
+ * If there is special handling on parameter change, use FC_APP_PART_PARAM2()
  * instead, and add a function with the following signature in PartParams.cpp,
  *
  * @code
@@ -57,17 +57,18 @@ public:
         return handle;
     }
 
-#define FC_PART_PARAMS \
-    FC_PART_PARAM(ShapePropertyCopy, bool, Bool, false) \
+#define FC_APP_PART_PARAMS \
+    FC_APP_PART_PARAM(ShapePropertyCopy, bool, Bool, false) \
+    FC_APP_PART_PARAM(DisableShapeCache, bool, Bool, false) \
 
-#undef FC_PART_PARAM
-#define FC_PART_PARAM(_name,_ctype,_type,_def) \
+#undef FC_APP_PART_PARAM
+#define FC_APP_PART_PARAM(_name,_ctype,_type,_def) \
     static const _ctype & _name() { return instance()->_##_name; }\
     static void set_##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     static void update##_name(PartParams *self) { self->_##_name = self->handle->Get##_type(#_name,_def); }\
 
-#undef FC_PART_PARAM2
-#define FC_PART_PARAM2(_name,_ctype,_type,_def) \
+#undef FC_APP_PART_PARAM2
+#define FC_APP_PART_PARAM2(_name,_ctype,_type,_def) \
     static const _ctype & _name() { return instance()->_##_name; }\
     static void set_##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     void on##_name##Changed();\
@@ -76,23 +77,23 @@ public:
         self->on##_name##Changed();\
     }\
 
-    FC_PART_PARAMS
+    FC_APP_PART_PARAMS
 
 private:
-#undef FC_PART_PARAM
-#define FC_PART_PARAM(_name,_ctype,_type,_def) \
+#undef FC_APP_PART_PARAM
+#define FC_APP_PART_PARAM(_name,_ctype,_type,_def) \
     _ctype _##_name;
 
-#undef FC_PART_PARAM2
-#define FC_PART_PARAM2 FC_PART_PARAM
+#undef FC_APP_PART_PARAM2
+#define FC_APP_PART_PARAM2 FC_APP_PART_PARAM
 
-    FC_PART_PARAMS
+    FC_APP_PART_PARAMS
     ParameterGrp::handle handle;
     std::unordered_map<const char *,void(*)(PartParams*),App::CStringHasher,App::CStringHasher> funcs;
 };
 
-#undef FC_PART_PARAM
-#undef FC_PART_PARAM2
+#undef FC_APP_PART_PARAM
+#undef FC_APP_PART_PARAM2
 
 } // namespace Part
 
