@@ -101,6 +101,7 @@ private Q_SLOTS:
     void on_buttonAccept_clicked();
     void on_buttonIgnore_clicked();
     void onDeleteEdge(void);
+    void onIndexesMoved();
     void clearSelection();
 };
 
