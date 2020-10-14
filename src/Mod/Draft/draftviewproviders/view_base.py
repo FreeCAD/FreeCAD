@@ -449,17 +449,17 @@ class ViewProviderDraft(object):
         str
             `':/icons/Draft_Draft.svg'`
         """
-        tp = self.Object.Proxy.Type
-        if tp in ('Line', 'Wire', 'Polyline'):
-            return ":/icons/Draft_N-Linear.svg"
-        elif tp in ('Rectangle', 'Polygon'):
-            return ":/icons/Draft_N-Polygon.svg"
-        elif tp in ('Circle', 'Ellipse', 'BSpline', 'BezCurve', 'Fillet'):
-            return ":/icons/Draft_N-Curve.svg"
-        elif tp in ("ShapeString"):
-            return ":/icons/Draft_ShapeString_tree.svg"
-        else:
-            return ":/icons/Draft_Draft.svg"
+        if hasattr(self.Object,"Proxy") and hasattr(self.Object.Proxy,"Type"):
+            tp = self.Object.Proxy.Type
+            if tp in ('Line', 'Wire', 'Polyline'):
+                return ":/icons/Draft_N-Linear.svg"
+            elif tp in ('Rectangle', 'Polygon'):
+                return ":/icons/Draft_N-Polygon.svg"
+            elif tp in ('Circle', 'Ellipse', 'BSpline', 'BezCurve', 'Fillet'):
+                return ":/icons/Draft_N-Curve.svg"
+            elif tp in ("ShapeString"):
+                return ":/icons/Draft_ShapeString_tree.svg"
+        return ":/icons/Draft_Draft.svg"
 
     def claimChildren(self):
         """Return objects that will be placed under it in the tree view.
