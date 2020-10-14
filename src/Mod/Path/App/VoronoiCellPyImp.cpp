@@ -75,14 +75,14 @@ int VoronoiCellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 
 PyObject* VoronoiCellPy::richCompare(PyObject *lhs, PyObject *rhs, int op) {
-  PyObject *cmp = Py_False;
+  PyObject *cmp = (op == Py_EQ) ? Py_False : Py_True;
   if (   PyObject_TypeCheck(lhs, &VoronoiCellPy::Type)
       && PyObject_TypeCheck(rhs, &VoronoiCellPy::Type)
-      && op == Py_EQ) {
+      && (op == Py_EQ || op == Py_NE)) {
     const VoronoiCell *vl = static_cast<VoronoiCellPy*>(lhs)->getVoronoiCellPtr();
     const VoronoiCell *vr = static_cast<VoronoiCellPy*>(rhs)->getVoronoiCellPtr();
     if (vl->index == vr->index && vl->dia == vr->dia) {
-      cmp = Py_True;
+      cmp = (op == Py_EQ) ? Py_True : Py_False;
     }
   }
   Py_INCREF(cmp);

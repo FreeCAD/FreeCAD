@@ -92,16 +92,14 @@ int VoronoiEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 
 PyObject* VoronoiEdgePy::richCompare(PyObject *lhs, PyObject *rhs, int op) {
-  PyObject *cmp = Py_False;
+  PyObject *cmp = (op == Py_EQ) ? Py_False : Py_True;
   if (   PyObject_TypeCheck(lhs, &VoronoiEdgePy::Type)
       && PyObject_TypeCheck(rhs, &VoronoiEdgePy::Type)
-      && op == Py_EQ) {
+      && (op == Py_EQ || op == Py_NE)) {
     const VoronoiEdge *vl = static_cast<VoronoiEdgePy*>(lhs)->getVoronoiEdgePtr();
     const VoronoiEdge *vr = static_cast<VoronoiEdgePy*>(rhs)->getVoronoiEdgePtr();
-    if (vl->index == vr->index && vl->dia == vr->dia) {
-      cmp = Py_True;
-    } else {
-      std::cerr << "VoronoiEdge==(" << vl->index << " != " << vr->index << " || " << (vl->dia == vr->dia) << ")" << std::endl;
+    if (vl->dia == vr->dia && vl->index == vr->index) {
+      cmp = (op == Py_EQ) ? Py_True : Py_False;
     }
   }
   Py_INCREF(cmp);

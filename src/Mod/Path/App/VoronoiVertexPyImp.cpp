@@ -76,14 +76,14 @@ int VoronoiVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 
 PyObject* VoronoiVertexPy::richCompare(PyObject *lhs, PyObject *rhs, int op) {
-  PyObject *cmp = Py_False;
+  PyObject *cmp = (op == Py_EQ) ? Py_False : Py_True;
   if (   PyObject_TypeCheck(lhs, &VoronoiVertexPy::Type)
       && PyObject_TypeCheck(rhs, &VoronoiVertexPy::Type)
-      && op == Py_EQ) {
+      && (op == Py_EQ || op == Py_NE)) {
     const VoronoiVertex *vl = static_cast<VoronoiVertexPy*>(lhs)->getVoronoiVertexPtr();
     const VoronoiVertex *vr = static_cast<VoronoiVertexPy*>(rhs)->getVoronoiVertexPtr();
     if (vl->index == vr->index && vl->dia == vr->dia) {
-      cmp = Py_True;
+      cmp = (op == Py_EQ) ? Py_True : Py_False;
     }
   }
   Py_INCREF(cmp);
