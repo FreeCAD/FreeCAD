@@ -171,7 +171,7 @@ def get_param_type(param):
         return "int"
     elif param in ("constructiongroupname", "textfont",
                    "patternFile", "template", "snapModes",
-                   "FontFile", "ClonePrefix",
+                   "FontFile", "ClonePrefix","overrideUnit",
                    "labeltype") or "inCommandShortcut" in param:
         return "string"
     elif param in ("textheight", "tolerance", "gridSpacing",
