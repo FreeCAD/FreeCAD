@@ -358,6 +358,24 @@ void ViewProvider::setTipIcon(bool onoff)
     }
 }
 
+QPixmap ViewProvider::getTagIcon() const
+{
+    unsigned long color = IconColor.getValue().getPackedValue();
+    if (!color)
+        return QPixmap();
+
+    if(pxTipIcon.isNull()) {
+        std::map<unsigned long, unsigned long> colormap;
+        colormap[0xffffff] = color >> 8;
+        if (isSetTipIcon)
+            colormap[0xf0f0f0] = 0x00ff00;
+        pxTipIcon = Gui::BitmapFactory().pixmapFromSvg("PartDesign_Overlay.svg",
+                                                        QSizeF(64,64),
+                                                        colormap);
+    }
+    return pxTipIcon;
+}
+
 void ViewProvider::getExtraIcons(std::vector<QPixmap> &icons) const
 {
     auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
@@ -366,19 +384,9 @@ void ViewProvider::getExtraIcons(std::vector<QPixmap> &icons) const
         return;
     }
 
-    unsigned long color = IconColor.getValue().getPackedValue();
-    if (color) {
-        if(pxTipIcon.isNull()) {
-            std::map<unsigned long, unsigned long> colormap;
-            colormap[0xffffff] = color >> 8;
-            if (isSetTipIcon)
-                colormap[0xf0f0f0] = 0x00ff00;
-            pxTipIcon = Gui::BitmapFactory().pixmapFromSvg("PartDesign_Overlay.svg",
-                                                           QSizeF(64,64),
-                                                           colormap);
-        }
-        icons.push_back(pxTipIcon);
-    }
+    QPixmap px = getTagIcon();
+    if (!px.isNull())
+        icons.push_back(px);
 
     if(feat->Suppress.getValue())
         icons.push_back(Gui::BitmapFactory().pixmap("PartDesign_Suppressed.svg"));

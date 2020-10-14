@@ -76,6 +76,7 @@ public:
     virtual PyObject* getPyObject(void) override;
 
     virtual void getExtraIcons(std::vector<QPixmap> &) const override;
+    QPixmap getTagIcon() const;
 
     virtual bool canDragObjects() const override {return false;}
     virtual bool canDragObject(App::DocumentObject*) const override {return false;}

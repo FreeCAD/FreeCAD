@@ -47,6 +47,7 @@
 
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
+#include "ViewProvider.h"
 #include "ViewProviderShapeBinder.h"
 #include "TaskShapeBinder.h"
 
@@ -552,33 +553,36 @@ void ViewProviderSubShapeBinder::getExtraIcons(std::vector<QPixmap> &icons) cons
             sobjT.setSubName(sobjT.getSubNameNoElement().c_str());
             if (!objs.insert(sobjT).second)
                 continue;
+
             auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(sobj);
+            Gui::ViewProvider *vp = nullptr;
+            QPixmap px;
             if (binder) {
                 // binder of binder, extract its first bound object's icon
-                auto boundVp = Gui::Application::Instance->getViewProvider(
+                vp = Gui::Application::Instance->getViewProvider(
                         binder->getLinkedObject(true));
-                if (boundVp) {
-                    QPixmap px = boundVp->getIcon().pixmap(64, 64);
-                    auto & pxInfo = cacheKeys[myPixmap.cacheKey() ^ px.cacheKey()];
-                    if (pxInfo.count == 0) {
-                        if (icons.size() >= count)
-                            break;
-                        px = Gui::BitmapFactory().merge(px, myPixmap, Gui::BitmapFactoryInst::TopLeft);
-                        pxInfo.index = icons.size();
-                        icons.push_back(px);
-                    }
-                    pxInfo.generateIcon(icons[pxInfo.index]);
-                    continue;
-                }
-            }
-            auto vp = Gui::Application::Instance->getViewProvider(sobj);
+            } else
+                vp = Gui::Application::Instance->getViewProvider(sobj);
+
             if (vp) {
-                QPixmap px = vp->getIcon().pixmap(64);
-                auto & pxInfo = cacheKeys[px.cacheKey()];
+                px = vp->getIcon().pixmap(64, 64);
+                unsigned long tag = 0;
+                auto featVp = Base::freecad_dynamic_cast<PartDesignGui::ViewProvider>(vp);
+                if (featVp)
+                    tag = featVp->IconColor.getValue().getPackedValue();
+
+                auto & pxInfo = cacheKeys[(binder?myPixmap.cacheKey():0) ^ px.cacheKey() ^ tag];
                 if (pxInfo.count == 0) {
                     if (icons.size() >= count)
                         break;
                     pxInfo.index = icons.size();
+                    if (binder)
+                        px = Gui::BitmapFactory().merge(px, myPixmap, Gui::BitmapFactoryInst::TopLeft);
+                    if (tag) {
+                        QPixmap tagPx = featVp->getTagIcon().scaled(40, 40,
+                            Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+                        px = Gui::BitmapFactory().merge(px, tagPx, Gui::BitmapFactoryInst::TopRight);
+                    }
                     icons.push_back(px);
                 }
                 pxInfo.generateIcon(icons[pxInfo.index]);
