@@ -475,15 +475,36 @@ bool CmdSketcherIncreaseDegree::isActive(void)
 }
 
 
-// TODO: implement this function to complement Sketcher_BSplineIncreaseDegree
-
 // Decrease degree of the spline
-// DEF_STD_CMD_A(CmdSketcherDecreaseDegree)
-// CmdSketcherDecreaseDegree::CmdSketcherDecreaseDegree()
-// : Command("Sketcher_BSplineDecreaseDegree")
-// {
-// ...
-// }
+DEF_STD_CMD_A(CmdSketcherDecreaseDegree)
+
+CmdSketcherDecreaseDegree::CmdSketcherDecreaseDegree()
+    : Command("Sketcher_BSplineDecreaseDegree")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Decrease B-spline degree");
+    sToolTipText    = QT_TR_NOOP("Decreases the degree of the B-spline.\n"
+                                 "This command is currently NOT IMPLEMENTED.");
+    sWhatsThis      = "Sketcher_BSplineDecreaseDegree";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_BSplineDecreaseDegree";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+// TODO: fully implement this function to complement Sketcher_BSplineIncreaseDegree
+void CmdSketcherDecreaseDegree::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Base::Console().Message("Decrease degree of spline. "
+                            "This command is currently NOT IMPLEMENTED.\n");
+}
+
+bool CmdSketcherDecreaseDegree::isActive(void)
+{
+    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+}
 
 
 DEF_STD_CMD_A(CmdSketcherIncreaseKnotMultiplicity)
@@ -889,8 +910,7 @@ void CreateSketcherCommandsBSpline(void)
     rcCmdMgr.addCommand(new CmdSketcherCompBSplineShowHideGeometryInformation());
     rcCmdMgr.addCommand(new CmdSketcherConvertToNURB());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseDegree());
-    // TODO: implement this function to complement CmdSketcherIncreaseDegree
-    // rcCmdMgr.addCommand(new CmdSketcherDecreaseDegree());
+    rcCmdMgr.addCommand(new CmdSketcherDecreaseDegree());  // TODO: implement this function
     rcCmdMgr.addCommand(new CmdSketcherIncreaseKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherDecreaseKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherCompModifyKnotMultiplicity());
