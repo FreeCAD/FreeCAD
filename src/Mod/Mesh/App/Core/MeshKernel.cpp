@@ -660,7 +660,7 @@ void MeshKernel::RemoveInvalids ()
 
     // delete point, number of valid points
     unsigned long ulNewPts = std::count_if(_aclPointArray.begin(), _aclPointArray.end(),
-        std::mem_fun_ref(&MeshPoint::IsValid));
+                                           [](const MeshPoint& p) { return p.IsValid(); });
     // tmp. point array
     MeshPointArray  aclTempPt(ulNewPts);
     MeshPointArray::_TIterator pPTemp = aclTempPt.begin();
@@ -705,7 +705,7 @@ void MeshKernel::RemoveInvalids ()
 
     // delete facets, number of valid facets
     unsigned long ulDelFacets = std::count_if(_aclFacetArray.begin(), _aclFacetArray.end(),
-        std::mem_fun_ref(&MeshFacet::IsValid));
+                                              [](const MeshFacet& f) { return f.IsValid(); });
     MeshFacetArray aclFArray(ulDelFacets);
     MeshFacetArray::_TIterator pFTemp = aclFArray.begin();  
     pFEnd  = _aclFacetArray.end();
