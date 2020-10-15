@@ -279,6 +279,11 @@ public:
 #include <Base/Exception.h>
 #include <CXX/Objects.hxx>
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
 using Base::streq;
 using namespace @self.export.Namespace@;
 
@@ -891,6 +896,10 @@ int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr
 {
     return static_cast<@self.export.TwinPointer@ *>(_pcTwinPointer);
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 #if 0
 /* From here on come the methods you have to implement, but NOT in this module. Implement in @self.export.Name@Imp.cpp! This prototypes 
