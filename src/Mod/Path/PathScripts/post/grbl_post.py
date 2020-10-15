@@ -340,20 +340,20 @@ def export(objectslist, filename, argstring):
 
 
 def linenumber():
+  if not OUTPUT_LINE_NUMBERS:
+    return ""
   global LINENR
   global LINEINCR
-  if OUTPUT_LINE_NUMBERS:
-    s = "N" + str(LINENR) + " "
-    LINENR += LINEINCR
-    return s
-  return ""
+  s = "N" + str(LINENR) + " "
+  LINENR += LINEINCR
+  return s
 
 
-def format_outstring(strTbl):
+def format_outstring(strTable):
   global COMMAND_SPACE
   # construct the line for the final output
   s = ""
-  for w in strTbl:
+  for w in strTable:
     s += w + COMMAND_SPACE
   s = s.strip()
   return s
@@ -431,19 +431,18 @@ def parse(pathobj):
 
       if command in ('G90', 'G91'):
         MOTION_MODE = command
+        
 
       if TRANSLATE_DRILL_CYCLES:
         if command in ('G81', 'G82', 'G83'):
           out += drill_translate(outstring, command, c.Parameters)
           # Erase the line we just translated
-          del(outstring[:])
           outstring = []
 
       if SPINDLE_WAIT > 0:
         if command in ('M3', 'M03', 'M4', 'M04'):
           out += linenumber() + format_outstring(outstring) + "\n"
           out += linenumber() + format_outstring(['G4', 'P%s' % SPINDLE_WAIT]) + "\n"
-          del(outstring[:])
           outstring = []
 
       # Check for Tool Change:
@@ -451,8 +450,8 @@ def parse(pathobj):
         if OUTPUT_COMMENTS:
           out += linenumber() + "(Begin toolchange)\n"
         if not OUTPUT_TOOL_CHANGE:
-          outstring[0] = "(" + outstring[0]
-          outstring[-1] = outstring[-1] + ")"
+          outstring.insert(0, "(" )
+          outstring.append( ")" )
         else:
           for line in TOOL_CHANGE.splitlines(True):
             out += linenumber() + line
@@ -464,8 +463,8 @@ def parse(pathobj):
           outstring.pop(0)  # remove the command
 
       if command in SUPPRESS_COMMANDS:
-        outstring[0] = "(" + outstring[0]
-        outstring[-1] = outstring[-1] + ")"
+        outstring.insert(0, "(" )
+        outstring.append( ")" )
 
       # prepend a line number and append a newline
       if len(outstring) >= 1:
@@ -493,62 +492,80 @@ def drill_translate(outstring, cmd, params):
     outstring[-1] = outstring[-1] + ")"
     trBuff += linenumber() + format_outstring(outstring) + "\n"
 
-  # Conversion du cycle
-  # Pour l'instant, on gere uniquement les cycles dans le plan XY (G17)
-  # les autres plans ZX (G18) et YZ (G19) ne sont pas traites : Calculs sur Z uniquement.
-  if MOTION_MODE == 'G90':  # Deplacements en coordonnees absolues
-    drill_X = Units.Quantity(params['X'], FreeCAD.Units.Length)
-    drill_Y = Units.Quantity(params['Y'], FreeCAD.Units.Length)
-    drill_Z = Units.Quantity(params['Z'], FreeCAD.Units.Length)
-    RETRACT_Z = Units.Quantity(params['R'], FreeCAD.Units.Length)
-  else:  # G91 Deplacements relatifs
-    drill_X = CURRENT_X + Units.Quantity(params['X'], FreeCAD.Units.Length)
-    drill_Y = CURRENT_Y + Units.Quantity(params['Y'], FreeCAD.Units.Length)
-    drill_Z = CURRENT_Z + Units.Quantity(params['Z'], FreeCAD.Units.Length)
-    RETRACT_Z = CURRENT_Z + Units.Quantity(params['R'], FreeCAD.Units.Length)
+  # cycle conversion
+  # currently only cycles in XY are provided (G17)
+  # other plains ZX (G18) and  YZ (G19) are not dealt with : Z drilling only.
+  drill_X = Units.Quantity(params['X'], FreeCAD.Units.Length)
+  drill_Y = Units.Quantity(params['Y'], FreeCAD.Units.Length)
+  drill_Z = Units.Quantity(params['Z'], FreeCAD.Units.Length)
+  RETRACT_Z = Units.Quantity(params['R'], FreeCAD.Units.Length)
+  # R less than Z is error
+  if RETRACT_Z < drill_Z :
+    trBuff += linenumber() + "(drill cycle error: R less than Z )\n"
+    return trBuff
+    
+  if MOTION_MODE == 'G91':   # G91 relative movements
+    drill_X += CURRENT_X 
+    drill_Y += CURRENT_Y 
+    drill_Z += CURRENT_Z 
+    RETRACT_Z += CURRENT_Z 
 
   if DRILL_RETRACT_MODE == 'G98' and CURRENT_Z >= RETRACT_Z:
     RETRACT_Z = CURRENT_Z
 
-  # Recupere les valeurs des autres parametres
+  # get the other parameters
   drill_Speed = Units.Quantity(params['F'], FreeCAD.Units.Velocity)
   if cmd == 'G83':
     drill_Step = Units.Quantity(params['Q'], FreeCAD.Units.Length)
+    a_bit = drill_Step  * 0.05    # NIST 3.5.16.4 G83 Cycle:  "current hole bottom, backed off a bit."
   elif cmd == 'G82':
     drill_DwellTime = params['P']
 
+  # wrap this block to ensure machine MOTION_MODE is restored in case of error
+  try:
+    if MOTION_MODE == 'G91':
+      trBuff += linenumber() + "G90\n"  # force absolute coordinates during cycles
+
+    strG0_RETRACT_Z = 'G0 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
+    strF_Drill_Speed = ' F' + format(float(drill_Speed.getValueAs(UNIT_SPEED_FORMAT)), '.2f') + "\n"
+
+    # preliminary mouvement(s) 
+    if CURRENT_Z < RETRACT_Z:
+      trBuff += linenumber() + strG0_RETRACT_Z
+    trBuff += linenumber() + 'G0 X' + format(float(drill_X.getValueAs(UNIT_FORMAT)), strFormat) + ' Y' + format(float(drill_Y.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
+    if CURRENT_Z > RETRACT_Z:
+  #    trBuff += linenumber() + 'G0 Z' + format(float(CURRENT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"  # not following NIST 3.5.16.1 Preliminary and In-Between Motion
+      trBuff += linenumber() + strG0_RETRACT_Z
+    last_Stop_Z = RETRACT_Z
+
+    # drill moves 
+    if cmd in ('G81', 'G82'):
+      trBuff += linenumber() + 'G1 Z' + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Drill_Speed
+      # pause where applicable
+      if cmd == 'G82':
+        trBuff += linenumber() + 'G4 P' + str(drill_DwellTime) + "\n"
+      trBuff += linenumber() + strG0_RETRACT_Z
+    else:  # 'G83'
+      if params['Q'] != 0 :
+        while 1:
+          if last_Stop_Z != RETRACT_Z :
+            clearance_depth = last_Stop_Z + a_bit
+            trBuff += linenumber() + 'G0 Z' + format(float(clearance_depth.getValueAs(UNIT_FORMAT)) , strFormat) + "\n" 
+          next_Stop_Z = last_Stop_Z - drill_Step
+          if next_Stop_Z > drill_Z:
+            trBuff += linenumber() + 'G1 Z' + format(float(next_Stop_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Drill_Speed
+            trBuff += linenumber() + strG0_RETRACT_Z
+            last_Stop_Z = next_Stop_Z
+          else:
+            trBuff += linenumber() + 'G1 Z' + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Drill_Speed
+            trBuff += linenumber() + strG0_RETRACT_Z
+            break
+      
+  except Exception as e:
+    pass
+     
   if MOTION_MODE == 'G91':
-    trBuff += linenumber() + "G90" + "\n"  # Force des deplacements en coordonnees absolues pendant les cycles
-
-  # Mouvement(s) preliminaire(s))
-  if CURRENT_Z < RETRACT_Z:
-    trBuff += linenumber() + 'G0 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
-  trBuff += linenumber() + 'G0 X' + format(float(drill_X.getValueAs(UNIT_FORMAT)), strFormat) + ' Y' + format(float(drill_Y.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
-  if CURRENT_Z > RETRACT_Z:
-    trBuff += linenumber() + 'G0 Z' + format(float(CURRENT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
-
-  # Mouvement de percage
-  if cmd in ('G81', 'G82'):
-    trBuff += linenumber() + 'G1 Z' + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat) + ' F' + format(float(drill_Speed.getValueAs(UNIT_SPEED_FORMAT)), '.2f') + "\n"
-    # Temporisation eventuelle
-    if cmd == 'G82':
-      trBuff += linenumber() + 'G4 P' + str(drill_DwellTime) + "\n"
-    # Sortie de percage
-    trBuff += linenumber() + 'G0 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
-  else:  # 'G83'
-    next_Stop_Z = RETRACT_Z - drill_Step
-    while 1:
-      if next_Stop_Z > drill_Z:
-        trBuff += linenumber() + 'G1 Z' + format(float(next_Stop_Z.getValueAs(UNIT_FORMAT)), strFormat) + ' F' + format(float(drill_Speed.getValueAs(UNIT_SPEED_FORMAT)), '.2f') + "\n"
-        trBuff += linenumber() + 'G0 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
-        next_Stop_Z -= drill_Step
-      else:
-        trBuff += linenumber() + 'G1 Z' + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat) + ' F' + format(float(drill_Speed.getValueAs(UNIT_SPEED_FORMAT)), '.2f') + "\n"
-        trBuff += linenumber() + 'G0 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
-        break
-
-  if MOTION_MODE == 'G91':
-    trBuff += linenumber() + 'G91'  # Restore le mode de deplacement relatif
+    trBuff += linenumber() + 'G91'  # Restore if changed
 
   return trBuff
 

@@ -398,7 +398,7 @@ Najmanjša vrednost je 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
       <source>Mesh size grading:</source>
-      <translation>Velikost elementov mreže:</translation>
+      <translation>Velikost gradnikov ploskovja:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>

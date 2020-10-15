@@ -272,19 +272,6 @@ fare clic su 'Continua' per creare comunque la funzione, o 'Annulla' per annulla
     </message>
   </context>
   <context>
-    <name>Part_MakeTube</name>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-      <source>Create tube</source>
-      <translation>Crea un tubo</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-      <source>Creates a tube</source>
-      <translation>Crea un tubo</translation>
-    </message>
-  </context>
-  <context>
     <name>Part_SplitFeatures</name>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
@@ -358,6 +345,32 @@ fare clic su 'Continua' per creare comunque la funzione, o 'Annulla' per annulla
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
       <translation>Rimuovi i frammenti intersezione</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Tube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="85"/>
+      <source>Create tube</source>
+      <translation>Crea un tubo</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="89"/>
+      <source>Creates a tube</source>
+      <translation>Crea un tubo</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
+      <source>Create tube</source>
+      <translation>Crea un tubo</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation>Crea un tubo</translation>
     </message>
   </context>
   <context>
@@ -1531,7 +1544,7 @@ fare clic su 'Continua' per creare comunque la funzione, o 'Annulla' per annulla
     <message>
       <location filename="../../Command.cpp" line="2105"/>
       <source>Check Geometry</source>
-      <translation>Controlla geometria</translation>
+      <translation>Controlla la geometria</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2106"/>
@@ -4489,7 +4502,7 @@ Selezionare prima uno o più spigoli.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="385"/>
       <source>Check Geometry</source>
-      <translation>Controlla geometria</translation>
+      <translation>Controlla la geometria</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="421"/>
@@ -4525,7 +4538,7 @@ Selezionare prima uno o più spigoli.</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="59"/>
       <source>Set to default</source>
-      <translation>Imposta al valore predefinito</translation>
+      <translation>Imposta il valore predefinito</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="66"/>

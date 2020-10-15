@@ -278,6 +278,7 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
            << "Sketcher_ConstrainEqual"
            << "Sketcher_ConstrainSymmetric"
            << "Sketcher_ConstrainLock"
+           << "Sketcher_ConstrainBlock"
            << "Sketcher_ConstrainDistanceX"
            << "Sketcher_ConstrainDistanceY"
            << "Sketcher_ConstrainDistance"
@@ -317,7 +318,7 @@ void ElementView::deleteSelectedItems()
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc) return;
 
-    doc->openTransaction("Delete");
+    doc->openTransaction("Delete element");
     std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx(doc->getName());
     for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(ft->getObject());

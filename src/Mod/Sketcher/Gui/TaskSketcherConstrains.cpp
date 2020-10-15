@@ -181,8 +181,8 @@ public:
             static QIcon vdist( Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance") );
             static QIcon horiz( Gui::BitmapFactory().iconFromTheme("Constraint_Horizontal") );
             static QIcon vert ( Gui::BitmapFactory().iconFromTheme("Constraint_Vertical") );
-          //static QIcon lock ( Gui::BitmapFactory().iconFromTheme("Sketcher_ConstrainLock") );
-            static QIcon block ( Gui::BitmapFactory().iconFromTheme("Sketcher_ConstrainBlock") );
+          //static QIcon lock ( Gui::BitmapFactory().iconFromTheme("Constraint_Lock") );
+            static QIcon block ( Gui::BitmapFactory().iconFromTheme("Constraint_Block") );
             static QIcon coinc( Gui::BitmapFactory().iconFromTheme("Constraint_PointOnPoint") );
             static QIcon para ( Gui::BitmapFactory().iconFromTheme("Constraint_Parallel") );
             static QIcon perp ( Gui::BitmapFactory().iconFromTheme("Constraint_Perpendicular") );
@@ -564,7 +564,7 @@ void ConstraintView::deleteSelectedItems()
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc) return;
 
-    doc->openTransaction("Delete");
+    doc->openTransaction("Delete constraint");
     std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx(doc->getName());
     for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(ft->getObject());

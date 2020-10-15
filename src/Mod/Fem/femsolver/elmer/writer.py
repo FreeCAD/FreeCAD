@@ -154,7 +154,10 @@ class Writer(object):
                 "N": "mol",
                 "J": "cd",
             }
-        elif self.unit_schema > Units.Scheme.SI2 and self.unit_schema != Units.Scheme.FemMilliMeterNewton:
+        elif (
+            self.unit_schema > Units.Scheme.SI2
+            and self.unit_schema != Units.Scheme.FemMilliMeterNewton
+        ):
             Console.PrintMessage(
                 "Unit schema: {} not supported by Elmer writer. "
                 "The FreeCAD standard unit schema mm/kg/s is used. "

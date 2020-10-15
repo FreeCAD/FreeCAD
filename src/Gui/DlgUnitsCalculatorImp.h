@@ -42,7 +42,7 @@ class DlgUnitsCalculator : public QDialog
     Q_OBJECT
 
 public:
-    DlgUnitsCalculator(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DlgUnitsCalculator(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgUnitsCalculator();
 
 protected:

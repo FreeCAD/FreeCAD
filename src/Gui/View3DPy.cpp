@@ -52,6 +52,7 @@
 #include "View3DViewerPy.h"
 #include "ActiveObjectList.h"
 #include "ViewParams.h"
+#include "WidgetFactory.h"
 
 
 #include <Base/Console.h>
@@ -234,6 +235,8 @@ void View3DInventorPy::init_type()
     add_varargs_method("boundViews",&View3DInventorPy::boundViews,
         "boundViews(recursive=False) -> list(view)\n\n"
         "Return all views that are bound to this view.");
+    add_varargs_method("graphicsView",&View3DInventorPy::graphicsView,
+        "graphicsView(): Access this view as QGraphicsView");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -2802,4 +2805,14 @@ Py::Object View3DInventorPy::boundViews(const Py::Tuple &args) {
     for(auto view : _view->boundViews(PyObject_IsTrue(recursive)))
         list.append(Py::asObject(view->getPyObject()));
     return list;
+}
+
+Py::Object View3DInventorPy::graphicsView(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    PythonWrapper wrap;
+    wrap.loadWidgetsModule();
+    return wrap.fromQWidget(_view->getViewer(), "QGraphicsView");
 }

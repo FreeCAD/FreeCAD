@@ -128,8 +128,8 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="727"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="741"/>
       <source>Browser</source>
       <translation>Navegador</translation>
     </message>
@@ -153,7 +153,7 @@
       <translation>Houbo erros ao cargar o ficheiro. Alúns dados poden ter sido modificados ou non recuperados de todo. Vexa a vista do informe para obter información máis específica sobre os obxectos ligados.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="698"/>
+      <location filename="../../BrowserView.cpp" line="712"/>
       <source>Loading %1...</source>
       <translation>Cargando %1...</translation>
     </message>

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Projection on surface</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

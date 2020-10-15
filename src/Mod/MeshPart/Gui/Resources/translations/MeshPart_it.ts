@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="193"/>
       <source>Create section from mesh and plane</source>
-      <translation>Crea una sezione da mesh e piano</translation>
+      <translation>Sezione da mesh e piano</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>

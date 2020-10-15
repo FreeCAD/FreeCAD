@@ -2256,7 +2256,7 @@ PyObject *Geom2dTrimmedCurve::getPyObject(void)
 // ------------------------------------------------------------------
 
 namespace Part {
-std::unique_ptr<Geom2dCurve> getCurve2dFromGeom2d(Handle(Geom2d_Curve) curve)
+std::unique_ptr<Geom2dCurve> makeFromCurve2d(Handle(Geom2d_Curve) curve)
 {
     std::unique_ptr<Geom2dCurve> geo2d;
     if (curve.IsNull())
@@ -2287,5 +2287,168 @@ std::unique_ptr<Geom2dCurve> getCurve2dFromGeom2d(Handle(Geom2d_Curve) curve)
     }
 
     return geo2d;
+}
+
+std::unique_ptr<Geom2dCurve> makeFromTrimmedCurve2d(const Handle(Geom2d_Curve)& c, double f, double l)
+{
+    if (c->IsKind(STANDARD_TYPE(Geom2d_Circle))) {
+        Handle(Geom2d_Circle) circ = Handle(Geom2d_Circle)::DownCast(c);
+        std::unique_ptr<Geom2dArcOfCircle> arc(new Geom2dArcOfCircle());
+
+        Handle(Geom2d_TrimmedCurve) this_arc = Handle(Geom2d_TrimmedCurve)::DownCast
+            (arc->handle());
+        Handle(Geom2d_Circle) this_circ = Handle(Geom2d_Circle)::DownCast
+            (this_arc->BasisCurve());
+        this_circ->SetCirc2d(circ->Circ2d());
+        this_arc->SetTrim(f, l);
+        return arc;
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_Ellipse))) {
+        Handle(Geom2d_Ellipse) ellp = Handle(Geom2d_Ellipse)::DownCast(c);
+        std::unique_ptr<Geom2dArcOfEllipse> arc(new Geom2dArcOfEllipse());
+
+        Handle(Geom2d_TrimmedCurve) this_arc = Handle(Geom2d_TrimmedCurve)::DownCast
+            (arc->handle());
+        Handle(Geom2d_Ellipse) this_ellp = Handle(Geom2d_Ellipse)::DownCast
+            (this_arc->BasisCurve());
+        this_ellp->SetElips2d(ellp->Elips2d());
+        this_arc->SetTrim(f, l);
+        return arc;
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_Hyperbola))) {
+        Handle(Geom2d_Hyperbola) hypr = Handle(Geom2d_Hyperbola)::DownCast(c);
+        std::unique_ptr<Geom2dArcOfHyperbola> arc(new Geom2dArcOfHyperbola());
+
+        Handle(Geom2d_TrimmedCurve) this_arc = Handle(Geom2d_TrimmedCurve)::DownCast
+            (arc->handle());
+        Handle(Geom2d_Hyperbola) this_hypr = Handle(Geom2d_Hyperbola)::DownCast
+            (this_arc->BasisCurve());
+        this_hypr->SetHypr2d(hypr->Hypr2d());
+        this_arc->SetTrim(f, l);
+        return arc;
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_Line))) {
+        Handle(Geom2d_Line) line = Handle(Geom2d_Line)::DownCast(c);
+        std::unique_ptr<Geom2dLineSegment> segm(new Geom2dLineSegment());
+
+        Handle(Geom2d_TrimmedCurve) this_segm = Handle(Geom2d_TrimmedCurve)::DownCast
+            (segm->handle());
+        Handle(Geom2d_Line) this_line = Handle(Geom2d_Line)::DownCast
+            (this_segm->BasisCurve());
+        this_line->SetLin2d(line->Lin2d());
+        this_segm->SetTrim(f, l);
+        return segm;
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_Parabola))) {
+        Handle(Geom2d_Parabola) para = Handle(Geom2d_Parabola)::DownCast(c);
+        std::unique_ptr<Geom2dArcOfParabola> arc(new Geom2dArcOfParabola());
+
+        Handle(Geom2d_TrimmedCurve) this_arc = Handle(Geom2d_TrimmedCurve)::DownCast
+            (arc->handle());
+        Handle(Geom2d_Parabola) this_para = Handle(Geom2d_Parabola)::DownCast
+            (this_arc->BasisCurve());
+        this_para->SetParab2d(para->Parab2d());
+        this_arc->SetTrim(f, l);
+        return arc;
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_BezierCurve))) {
+        Handle(Geom2d_BezierCurve) bezier = Handle(Geom2d_BezierCurve)::DownCast(c->Copy());
+        bezier->Segment(f, l);
+        return std::unique_ptr<Geom2dBezierCurve>(new Geom2dBezierCurve(bezier));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_BSplineCurve))) {
+        Handle(Geom2d_BSplineCurve) bspline = Handle(Geom2d_BSplineCurve)::DownCast(c->Copy());
+        bspline->Segment(f, l);
+        return std::unique_ptr<Geom2dBSplineCurve>(new Geom2dBSplineCurve(bspline));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_OffsetCurve))) {
+        Handle(Geom2d_OffsetCurve) oc = Handle(Geom2d_OffsetCurve)::DownCast(c);
+        double v = oc->Offset();
+        std::unique_ptr<Geom2dCurve> bc(makeFromTrimmedCurve2d(oc->BasisCurve(), f, l));
+        return std::unique_ptr<Geom2dOffsetCurve>(new Geom2dOffsetCurve(Handle(Geom2d_Curve)::DownCast(bc->handle()), v));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_TrimmedCurve))) {
+        Handle(Geom2d_TrimmedCurve) trc = Handle(Geom2d_TrimmedCurve)::DownCast(c);
+        return makeFromTrimmedCurve2d(trc->BasisCurve(), f, l);
+    }
+    else {
+        std::string err = "Unhandled curve type ";
+        err += c->DynamicType()->Name();
+        throw Base::TypeError(err);
+    }
+}
+std::unique_ptr<Geom2dCurve> makeFromCurveAdaptor2d(const Adaptor2d_Curve2d& adapt)
+{
+    std::unique_ptr<Geom2dCurve> geoCurve;
+    switch (adapt.GetType())
+    {
+    case GeomAbs_Line:
+        {
+            geoCurve.reset(new Geom2dLine());
+            Handle(Geom2d_Line) this_curv = Handle(Geom2d_Line)::DownCast
+                (geoCurve->handle());
+            this_curv->SetLin2d(adapt.Line());
+            break;
+        }
+    case GeomAbs_Circle:
+        {
+            geoCurve.reset(new Geom2dCircle());
+            Handle(Geom2d_Circle) this_curv = Handle(Geom2d_Circle)::DownCast
+                (geoCurve->handle());
+            this_curv->SetCirc2d(adapt.Circle());
+            break;
+        }
+    case GeomAbs_Ellipse:
+        {
+            geoCurve.reset(new Geom2dEllipse());
+            Handle(Geom2d_Ellipse) this_curv = Handle(Geom2d_Ellipse)::DownCast
+                (geoCurve->handle());
+            this_curv->SetElips2d(adapt.Ellipse());
+            break;
+        }
+    case GeomAbs_Hyperbola:
+        {
+            geoCurve.reset(new Geom2dHyperbola());
+            Handle(Geom2d_Hyperbola) this_curv = Handle(Geom2d_Hyperbola)::DownCast
+                (geoCurve->handle());
+            this_curv->SetHypr2d(adapt.Hyperbola());
+            break;
+        }
+    case GeomAbs_Parabola:
+        {
+            geoCurve.reset(new Geom2dParabola());
+            Handle(Geom2d_Parabola) this_curv = Handle(Geom2d_Parabola)::DownCast
+                (geoCurve->handle());
+            this_curv->SetParab2d(adapt.Parabola());
+            break;
+        }
+    case GeomAbs_BezierCurve:
+        {
+            geoCurve.reset(new Geom2dBezierCurve(adapt.Bezier()));
+            break;
+        }
+    case GeomAbs_BSplineCurve:
+        {
+            geoCurve.reset(new Geom2dBSplineCurve(adapt.BSpline()));
+            break;
+        }
+    case GeomAbs_OtherCurve:
+    default:
+        break;
+    }
+
+    if (!geoCurve)
+        throw Base::TypeError("Unhandled curve type");
+
+    // Check if the curve must be trimmed
+    Handle(Geom2d_Curve) curv2d = Handle(Geom2d_Curve)::DownCast
+        (geoCurve->handle());
+    double u = curv2d->FirstParameter();
+    double v = curv2d->LastParameter();
+    if (u != adapt.FirstParameter() || v != adapt.LastParameter()) {
+        geoCurve = makeFromTrimmedCurve2d(curv2d, adapt.FirstParameter(), adapt.LastParameter());
+    }
+
+    return geoCurve;
 }
 }

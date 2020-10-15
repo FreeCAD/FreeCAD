@@ -30,13 +30,9 @@
 #include <Base/Persistence.h>
 #include <Base/Stream.h>
 #if 0
-#ifndef BOOST_105400
-#include <boost/any.hpp>
+#   include <boost/any.hpp>
 #else
-#include <boost_any_1_55.hpp>
-#endif
-#else
-#include "stx/any.hpp"
+#   include "stx/any.hpp"
 #endif
 #include <string>
 #include <bitset>

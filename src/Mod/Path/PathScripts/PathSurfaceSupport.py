@@ -2528,11 +2528,11 @@ class OCL_Tool():
         # Engraver or V-bit cutter
         # OCL -> ConeCutter::ConeCutter(diameter, angle, length)
         if (self.diameter == -1.0 or
-            self.cuttingEdgeAngle == -1.0 or self.cutEdgeHeight == -1.0):
+            self.cutEdgeAngle == -1.0 or self.cutEdgeHeight == -1.0):
             return
         self.oclTool = self.ocl.ConeCutter(
                             self.diameter,
-                            self.cuttingEdgeAngle,
+                            self.cutEdgeAngle/2.,
                             self.cutEdgeHeight + self.lengthOffset
                         )
 

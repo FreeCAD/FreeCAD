@@ -62,6 +62,31 @@ if(BUILD_QT5)
   install(PROGRAMS "${Qt5Core_DIR}/../../../libexec/Assistant.app/Contents/MacOS/Assistant" DESTINATION ${CMAKE_INSTALL_PREFIX}/MacOS)
 endif(BUILD_QT5)
 
+  # add QtWebEngineProcess to bundle
+  install(PROGRAMS "${Qt5Core_DIR}/../../../lib/QtWebEngineCore.framework/Versions/5/Helpers/QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess" DESTINATION ${CMAKE_INSTALL_PREFIX}/MacOS)
+
+  # add locales to bundle
+  file(GLOB _locales_files RELATIVE "${Qt5Core_DIR}/../../../lib/QtWebEngineCore.framework/Versions/5/Resources/qtwebengine_locales" "${Qt5Core_DIR}/../../../lib/QtWebEngineCore.framework/Versions/5/Resources/qtwebengine_locales/*")
+  foreach(_locales_file ${_locales_files})
+        get_filename_component(_resolved_file "${Qt5Core_DIR}/../../../lib/QtWebEngineCore.framework/Versions/5/Resources/qtwebengine_locales/${_locales_file}" REALPATH)
+        list(APPEND _locales_resolved_files ${_resolved_file})
+  endforeach()
+  install(FILES ${_locales_resolved_files} DESTINATION "${CMAKE_INSTALL_PREFIX}/MacOS/qtwebengine_locales")
+
+  # add pak
+  file(GLOB _pak_files RELATIVE "${Qt5Core_DIR}/../../../lib/QtWebEngineCore.framework/Versions/5/Resources/" "${Qt5Core_DIR}/../../../lib/QtWebEngineCore.framework/Versions/5/Resources/*.pak")
+  foreach(_pak_file ${_pak_files})
+        get_filename_component(_pak_resolved_file "${Qt5Core_DIR}/../../../lib/QtWebEngineCore.framework/Versions/5/Resources/${_pak_file}" REALPATH)
+        list(APPEND _pak_resolved_files ${_pak_resolved_file})
+  endforeach()
+  install(FILES ${_pak_resolved_files} DESTINATION "${CMAKE_INSTALL_PREFIX}/")
+
+  # add icudtl.dat
+  install(PROGRAMS "${Qt5Core_DIR}/../../../lib/QtWebEngineCore.framework/Versions/5/Resources/icudtl.dat" DESTINATION ${CMAKE_INSTALL_PREFIX}/)
+  install(PROGRAMS "${Qt5Core_DIR}/../../../lib/QtWebEngineCore.framework/Versions/5/Resources/QtWebEngineCore.prl" DESTINATION ${CMAKE_INSTALL_PREFIX}/)
+
+
+
 # Ensure the actual plugin files are installed instead of symlinks.
 file(GLOB _subdirs RELATIVE "${QT_PLUGINS_DIR}" "${QT_PLUGINS_DIR}/*")
 
@@ -84,13 +109,25 @@ install(CODE "execute_process(COMMAND chmod -R a+w ${CMAKE_INSTALL_LIBDIR})")
 
 get_filename_component(APP_PATH ${CMAKE_INSTALL_PREFIX} PATH)
 
+execute_process(
+       COMMAND find /usr/local/Cellar/icu4c -name pkgconfig
+       RESULT_VARIABLE CMD_ERROR
+       OUTPUT_VARIABLE CONFIG_ICU)
+set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:${CONFIG_ICU}")
+find_package(PkgConfig)
+pkg_check_modules(ICU icu-uc)
+
+execute_process(
+       COMMAND find /usr/local/Cellar/nglib -name MacOS
+       OUTPUT_VARIABLE CONFIG_NGLIB)
+
 install(CODE 
     "message(STATUS \"Making bundle relocatable...\")
     # The top-level CMakeLists.txt should prevent multiple package manager
     # prefixes from being set, so the lib path will resolve correctly...
     execute_process(
-        COMMAND ${PYTHON_EXECUTABLE}
+        COMMAND python2.7
         ${CMAKE_SOURCE_DIR}/src/Tools/MakeMacBundleRelocatable.py
-        ${APP_PATH} ${HOMEBREW_PREFIX}${MACPORTS_PREFIX}/lib ${XCTEST_PATH} ${WEBKIT_FRAMEWORK_DIR}
+        ${APP_PATH} ${HOMEBREW_PREFIX}${MACPORTS_PREFIX}/lib ${ICU_PREFIX}/lib/ /usr/local/opt ${CONFIG_NGLIB} ${Qt5Core_DIR}/../../.. ${XCTEST_PATH} ${WEBKIT_FRAMEWORK_DIR}
     )"
 )

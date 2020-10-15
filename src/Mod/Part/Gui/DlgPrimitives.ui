@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>317</width>
-    <height>370</height>
+    <width>360</width>
+    <height>380</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,7 +34,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Tree_Part_Plane_Parametric.svg</normaloff>:/icons/Tree_Part_Plane_Parametric.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Plane_Parametric.svg</normaloff>:/icons/parametric/Part_Plane_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -43,7 +43,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Tree_Part_Box_Parametric.svg</normaloff>:/icons/Tree_Part_Box_Parametric.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Box_Parametric.svg</normaloff>:/icons/parametric/Part_Box_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -52,7 +52,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Tree_Part_Cylinder_Parametric.svg</normaloff>:/icons/Tree_Part_Cylinder_Parametric.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Cylinder_Parametric.svg</normaloff>:/icons/parametric/Part_Cylinder_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -61,7 +61,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Tree_Part_Cone_Parametric.svg</normaloff>:/icons/Tree_Part_Cone_Parametric.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Cone_Parametric.svg</normaloff>:/icons/parametric/Part_Cone_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -70,7 +70,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Tree_Part_Sphere_Parametric.svg</normaloff>:/icons/Tree_Part_Sphere_Parametric.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Sphere_Parametric.svg</normaloff>:/icons/parametric/Part_Sphere_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -79,7 +79,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Tree_Part_Ellipsoid_Parametric.svg</normaloff>:/icons/Tree_Part_Ellipsoid_Parametric.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Ellipsoid_Parametric.svg</normaloff>:/icons/parametric/Part_Ellipsoid_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -88,7 +88,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Tree_Part_Torus_Parametric.svg</normaloff>:/icons/Tree_Part_Torus_Parametric.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Torus_Parametric.svg</normaloff>:/icons/parametric/Part_Torus_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -97,7 +97,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Tree_Part_Prism.svg</normaloff>:/icons/Tree_Part_Prism.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Prism_Parametric.svg</normaloff>:/icons/parametric/Part_Prism_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -106,7 +106,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Tree_Part_Wedge.svg</normaloff>:/icons/Tree_Part_Wedge.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Wedge_Parametric.svg</normaloff>:/icons/parametric/Part_Wedge_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -115,7 +115,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Part_Helix_Parametric.svg</normaloff>:/icons/Part_Helix_Parametric.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Helix_Parametric.svg</normaloff>:/icons/parametric/Part_Helix_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -124,7 +124,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Part_Spiral_Parametric.svg</normaloff>:/icons/Part_Spiral_Parametric.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Spiral_Parametric.svg</normaloff>:/icons/parametric/Part_Spiral_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -133,7 +133,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Part_Circle_Parametric.svg</normaloff>:/icons/Part_Circle_Parametric.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Circle_Parametric.svg</normaloff>:/icons/parametric/Part_Circle_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -142,7 +142,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Part_Ellipse_Parametric.svg</normaloff>:/icons/Part_Ellipse_Parametric.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Ellipse_Parametric.svg</normaloff>:/icons/parametric/Part_Ellipse_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -151,7 +151,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Part_Point_Parametric.svg</normaloff>:/icons/Part_Point_Parametric.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Point_Parametric.svg</normaloff>:/icons/parametric/Part_Point_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -160,7 +160,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Part_Line_Parametric.svg</normaloff>:/icons/Part_Line_Parametric.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Line_Parametric.svg</normaloff>:/icons/parametric/Part_Line_Parametric.svg</iconset>
       </property>
      </item>
      <item>
@@ -169,7 +169,7 @@
       </property>
       <property name="icon">
        <iconset resource="Resources/Part.qrc">
-        <normaloff>:/icons/Part_Polygon_Parametric.svg</normaloff>:/icons/Part_Polygon_Parametric.svg</iconset>
+        <normaloff>:/icons/parametric/Part_Polygon_Parametric.svg</normaloff>:/icons/parametric/Part_Polygon_Parametric.svg</iconset>
       </property>
      </item>
     </widget>

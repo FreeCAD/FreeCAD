@@ -617,3 +617,4 @@ class AttachmentEditorTaskPanel(FrozenClass):
         Gui.Selection.removeObserver(self)
         if self.tv:
             self.tv.restore()
+

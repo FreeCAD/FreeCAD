@@ -4,7 +4,7 @@
   <context>
     <name>AddonInstaller</name>
     <message>
-      <location filename="../../addonmanager_workers.py" line="444"/>
+      <location filename="../../addonmanager_workers.py" line="445"/>
       <source>Installed location</source>
       <translation>安装位置</translation>
     </message>
@@ -97,7 +97,7 @@
       <translation>工作台列表已更新。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="634"/>
+      <location filename="../../addonmanager_workers.py" line="635"/>
       <source>Outdated GitPython detected, consider upgrading with pip.</source>
       <translation>检测到过时的 GitPython，建议您使用pip进行升级。</translation>
     </message>
@@ -107,82 +107,82 @@
       <translation>成功获取了宏列表。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="542"/>
+      <location filename="../../addonmanager_workers.py" line="543"/>
       <source>Retrieving description...</source>
       <translation>正在获取描述...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="355"/>
+      <location filename="../../addonmanager_workers.py" line="356"/>
       <source>Retrieving info from</source>
       <translation>获取信息</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="442"/>
+      <location filename="../../addonmanager_workers.py" line="443"/>
       <source>An update is available for this addon.</source>
       <translation>此插件可以更新。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="438"/>
+      <location filename="../../addonmanager_workers.py" line="439"/>
       <source>This addon is already installed.</source>
       <translation>此插件已经被安装。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="544"/>
+      <location filename="../../addonmanager_workers.py" line="545"/>
       <source>Retrieving info from git</source>
       <translation>从 git 获取信息</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="547"/>
+      <location filename="../../addonmanager_workers.py" line="548"/>
       <source>Retrieving info from wiki</source>
       <translation>从维基获取信息</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="596"/>
+      <location filename="../../addonmanager_workers.py" line="597"/>
       <source>GitPython not found. Using standard download instead.</source>
       <translation>找不到 GitPython。改用标准下载。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="601"/>
+      <location filename="../../addonmanager_workers.py" line="602"/>
       <source>Your version of python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
       <translation>您的 python 版本似乎不支持 ZIP 文件。无法继续。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="670"/>
+      <location filename="../../addonmanager_workers.py" line="671"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
       <translation>工作台安装成功。请重新启动 FreeCAD 以应用更改。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="720"/>
+      <location filename="../../addonmanager_workers.py" line="721"/>
       <source>Missing workbench</source>
       <translation>缺少工作台</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="729"/>
+      <location filename="../../addonmanager_workers.py" line="730"/>
       <source>Missing python module</source>
       <translation>缺少 python 模块</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="737"/>
+      <location filename="../../addonmanager_workers.py" line="738"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
       <translation>缺少可选的 python 模块 (没有阻止安装)</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="739"/>
+      <location filename="../../addonmanager_workers.py" line="740"/>
       <source>Some errors were found that prevent to install this workbench</source>
       <translation>发现一些错误，无法安装这个工作台</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="740"/>
+      <location filename="../../addonmanager_workers.py" line="741"/>
       <source>Please install the missing components first.</source>
       <translation>请先安装丢失的组件。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="764"/>
+      <location filename="../../addonmanager_workers.py" line="765"/>
       <source>Error: Unable to download</source>
       <translation>错误：无法下载</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="783"/>
+      <location filename="../../addonmanager_workers.py" line="784"/>
       <source>Successfully installed</source>
       <translation>成功安装了</translation>
     </message>
@@ -212,27 +212,27 @@
       <translation>需要重启</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="554"/>
+      <location filename="../../addonmanager_workers.py" line="555"/>
       <source>This macro is already installed.</source>
       <translation>此宏已经安装。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="681"/>
+      <location filename="../../addonmanager_workers.py" line="682"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>宏已经安装，可以在宏 -&gt; 宏菜单下使用</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="450"/>
+      <location filename="../../addonmanager_workers.py" line="451"/>
       <source>This addon is marked as obsolete</source>
       <translation>该插件被标记为已过时</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="451"/>
+      <location filename="../../addonmanager_workers.py" line="452"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
       <translation>这通常意味着不再维护它，并且此列表中的一些更高级的插件提供了相同的功能。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="757"/>
+      <location filename="../../addonmanager_workers.py" line="758"/>
       <source>Error: Unable to locate zip from</source>
       <translation>错误：无法从中找到邮政编码</translation>
     </message>
@@ -242,29 +242,34 @@
       <translation type="unfinished">Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="455"/>
+      <location filename="../../addonmanager_workers.py" line="456"/>
       <source>This addon is marked as Python 2 Only</source>
       <translation type="unfinished">This addon is marked as Python 2 Only</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="456"/>
+      <location filename="../../addonmanager_workers.py" line="457"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
       <translation type="unfinished">This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="625"/>
+      <location filename="../../addonmanager_workers.py" line="626"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
       <translation type="unfinished">User requested updating a Python 2 workbench on a system running Python 3 - </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="653"/>
+      <location filename="../../addonmanager_workers.py" line="654"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
       <translation type="unfinished">Workbench successfully updated. Please restart FreeCAD to apply the changes.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers.py" line="659"/>
+      <location filename="../../addonmanager_workers.py" line="660"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
       <translation type="unfinished">User requested installing a Python 2 workbench on a system running Python 3 - </translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_workers.py" line="308"/>
+      <source>Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</source>
+      <translation type="unfinished">Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</translation>
     </message>
   </context>
   <context>
@@ -386,19 +391,19 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.ui" line="14"/>
       <source>Addon Manager</source>
-      <translation type="unfinished">Addon Manager</translation>
+      <translation>插件管理器</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the Addon Manager</source>
-      <translation type="unfinished">Close the Addon Manager</translation>
+      <translation>关闭插件管理器</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="42"/>
       <source>You can use this window to specify additional addon repositories
 to be scanned for available addons</source>
-      <translation type="unfinished">You can use this window to specify additional addon repositories
-to be scanned for available addons</translation>
+      <translation>您可以使用此窗口指定其他插件仓库来
+扫描可用插件</translation>
     </message>
   </context>
   <context>

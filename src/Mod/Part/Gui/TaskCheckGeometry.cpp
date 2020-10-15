@@ -417,15 +417,25 @@ void TaskCheckGeometryResults::setupInterface()
 void TaskCheckGeometryResults::goCheck()
 {
     Gui::WaitCursor wc;
+    auto selection = Gui::Selection().getSelection();
+
     int selectedCount(0), checkedCount(0), invalidShapes(0);
     ResultEntry *theRoot = new ResultEntry();
+
+#if OCC_VERSION_HEX < 0x070500
     Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
     theProgress->NewScope("BOP check...");
 #if OCC_VERSION_HEX >= 0x060900
     theProgress->Show();
 #endif
+#else
+    Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
+    Message_ProgressRange theRange(theProgress->Start());
+    Message_ProgressScope theScope(theRange, TCollection_AsciiString("BOP check..."), selection.size());
+    theScope.Show();
+#endif // 0x070500
 
-    for(const auto &sel :  Gui::Selection().getSelection()) {
+    for(const auto &sel :  selection) {
         selectedCount++;
         TopoDS_Shape shape = Part::Feature::getShape(sel.pObject,sel.SubName,true);
         if (shape.IsNull())
@@ -473,11 +483,20 @@ void TaskCheckGeometryResults::goCheck()
             std::string label = "Checking ";
             label += sel.pObject->Label.getStrValue();
             label += "...";
+#if OCC_VERSION_HEX < 0x070500
             theProgress->NewScope(label.c_str());
             invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theProgress);
             theProgress->EndScope();
             if (theProgress->UserBreak())
               break;
+#else
+            Message_ProgressScope theInnerScope(theScope.Next(), TCollection_AsciiString(label.c_str()), 1);
+            theInnerScope.Show();
+            invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theInnerScope);
+            theInnerScope.Close();
+            if (theScope.UserBreak())
+              break;
+#endif
           }
         }
     }
@@ -653,8 +672,13 @@ QString TaskCheckGeometryResults::getShapeContentString()
   return QString::fromStdString(shapeContentString);
 }
 
+#if OCC_VERSION_HEX < 0x070500
 int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName,
                                                const Handle(Message_ProgressIndicator)& theProgress)
+#else
+int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName,
+                                               const Message_ProgressScope& theScope)
+#endif
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
@@ -685,7 +709,11 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
   BOPAlgo_ArgumentAnalyzer BOPCheck;
 #if OCC_VERSION_HEX >= 0x060900
+#if OCC_VERSION_HEX < 0x070500
   BOPCheck.SetProgressIndicator(theProgress);
+#else
+  BOPCheck.SetProgressIndicator(theScope);
+#endif // 0x070500
 #else
   Q_UNUSED(theProgress);
 #endif
@@ -1374,6 +1402,7 @@ BOPProgressIndicator::BOPProgressIndicator (const QString& title, QWidget* paren
 {
     steps = 0;
     canceled = false;
+
     myProgress = new QProgressDialog(parent);
     myProgress->setWindowTitle(title);
     myProgress->setAttribute(Qt::WA_DeleteOnClose);
@@ -1384,6 +1413,7 @@ BOPProgressIndicator::~BOPProgressIndicator ()
     myProgress->close();
 }
 
+#if OCC_VERSION_HEX < 0x070500
 Standard_Boolean BOPProgressIndicator::Show (const Standard_Boolean theForce)
 {
     if (theForce) {
@@ -1404,6 +1434,31 @@ Standard_Boolean BOPProgressIndicator::Show (const Standard_Boolean theForce)
 
     return Standard_True;
 }
+#else
+void BOPProgressIndicator::Show (const Message_ProgressScope& theScope,
+                                 const Standard_Boolean isForce)
+{
+    Standard_CString aName = theScope.Name(); //current step
+    myProgress->setLabelText (QString::fromLatin1(aName));
+
+    if (isForce) {
+        myProgress->show();
+    }
+
+    QCoreApplication::processEvents();
+}
+
+void BOPProgressIndicator::Reset()
+{
+    steps = 0;
+    canceled = false;
+
+    time.start();
+
+    myProgress->setRange(0, 0);
+    myProgress->setValue(0);
+}
+#endif
 
 Standard_Boolean BOPProgressIndicator::UserBreak()
 {

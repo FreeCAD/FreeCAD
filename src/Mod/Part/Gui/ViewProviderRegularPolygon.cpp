@@ -40,7 +40,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderRegularPolygon, PartGui::ViewProviderPart)
        
 ViewProviderRegularPolygon::ViewProviderRegularPolygon()
 {
-  sPixmap = "Part_Polygon_Parametric.svg";
+  sPixmap = "Part_Polygon_Parametric";
 }
 
 ViewProviderRegularPolygon::~ViewProviderRegularPolygon()

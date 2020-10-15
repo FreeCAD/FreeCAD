@@ -1757,7 +1757,7 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
 
                         SbViewVolume vol = pCam->getViewVolume();
 
-                        getCoordsOnSketchPlane(x,y,absPos+trans,vol.getProjectionDirection());
+                        getCoordsOnSketchPlane(x,y,absPos+trans*getScaleFactor(),vol.getProjectionDirection());
 
                         Gui::ViewVolumeProjection proj(viewer->getSoRenderManager()->getCamera()->getViewVolume());
 
@@ -3234,8 +3234,7 @@ void ViewProviderSketch::drawConstraintIcons()
 void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
 {
     // getScaleFactor gives us a ratio of pixels per some kind of real units
-    // (Translation: this number is somewhat made-up.)
-    float maxDistSquared = pow(0.05 * getScaleFactor(), 2);
+    float maxDistSquared = pow(getScaleFactor(), 2);
 
     // There's room for optimisation here; we could reuse the combined icons...
     edit->combinedConstrBoxes.clear();
@@ -3255,8 +3254,9 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
                 bool addedToGroup = false;
 
                 for(IconQueue::iterator j = thisGroup.begin();
-                    j != thisGroup.end(); ++j)
-                    if(i->position.equals(j->position, maxDistSquared) && (*i).type != QString::fromLatin1("small/Constraint_Symmetric_sm")) {
+                    j != thisGroup.end(); ++j) {
+                    float distSquared = pow(i->position[0]-j->position[0],2) + pow(i->position[1]-j->position[1],2);
+                    if(distSquared <= maxDistSquared && (*i).type != QString::fromLatin1("small/Constraint_Symmetric_sm")) {
                         // Found an icon in iconQueue that's close enough to
                         // a member of thisGroup, so move it into thisGroup
                         thisGroup.push_back(*i);
@@ -3264,6 +3264,7 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
                         addedToGroup = true;
                         break;
                     }
+                }
 
                 if(addedToGroup) {
                     if(i == iconQueue.end())
@@ -3289,17 +3290,13 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
 
 void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
 {
-    SbVec3f avPos(0, 0, 0);
     for(IconQueue::iterator i = iconQueue.begin(); i != iconQueue.end(); ++i) {
         clearCoinImage(i->destination);
-        avPos = avPos + i->position;
     }
-    avPos = avPos/iconQueue.size();
 
     QImage compositeIcon;
-    float closest = FLT_MAX;  // Closest distance between avPos and any icon
-    SoImage *thisDest = 0;
-    SoInfo *thisInfo = 0;
+    SoImage *thisDest = iconQueue[0].destination;
+    SoInfo *thisInfo = iconQueue[0].infoPtr;
 
     // Tracks all constraint IDs that are combined into this icon
     QString idString;
@@ -3335,23 +3332,11 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
             idString.append(QString::fromLatin1(","));
         idString.append(QString::number(i->constraintId));
 
-        if((avPos - i->position).length() < closest) {
-            thisDest = i->destination;
-            thisInfo = i->infoPtr;
-            closest = (avPos - i->position).length();
-        }
-
         i = iconQueue.erase(i);
         while(i != iconQueue.end()) {
             if(i->type != thisType) {
                 ++i;
                 continue;
-            }
-
-            if((avPos - i->position).length() < closest) {
-                thisDest = i->destination;
-                thisInfo = i->infoPtr;
-                closest = (avPos - i->position).length();
             }
 
             labels.append(i->label);
@@ -6473,7 +6458,7 @@ void ViewProviderSketch::deleteSelected()
     if(SubNames.size()>0) {
         App::Document* doc = getSketchObject()->getDocument();
 
-        doc->openTransaction("delete sketch geometry");
+        doc->openTransaction("Delete sketch geometry");
 
         onDelete(SubNames);
 

@@ -21,7 +21,7 @@
     <message>
       <location filename="../../ArchAxis.py" line="301"/>
       <source>The size of the axis bubbles</source>
-      <translation>Velikost mehurčkov osi</translation>
+      <translation>Velikost balončkov osi</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="304"/>
@@ -29,7 +29,7 @@
       <translation>Slog oštevilčevanja</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="277"/>
+      <location filename="../../ArchBuildingPart.py" line="262"/>
       <source>The type of this building</source>
       <translation>Vrsta zgradbe</translation>
     </message>
@@ -114,7 +114,7 @@
       <translation>Izračunana površina tal tega nadstropja</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="873"/>
+      <location filename="../../ArchSectionPlane.py" line="908"/>
       <source>The placement of this object</source>
       <translation>Postavitev tega predmeta</translation>
     </message>
@@ -204,12 +204,12 @@
       <translation>Normala smeri izrivanja tega predmeta (pustite (0,0,0) za samodejno smer)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1212"/>
       <source>The linked object</source>
       <translation>Povezani predmet</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1187"/>
+      <location filename="../../ArchSectionPlane.py" line="1222"/>
       <source>The line width of the rendered objects</source>
       <translation>Debelina črte izrisanih predmetov</translation>
     </message>
@@ -504,37 +504,37 @@
       <translation>Debelina roba</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="173"/>
+      <location filename="../../ArchRebar.py" line="174"/>
       <source>The diameter of the bar</source>
       <translation>Premer armaturne palice</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="175"/>
+      <location filename="../../ArchRebar.py" line="176"/>
       <source>The distance between the border of the beam and the first bar (concrete cover).</source>
       <translation>Razdalja med robom nosilca in prvo palico (zaščitna betonska plast).</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="177"/>
+      <location filename="../../ArchRebar.py" line="178"/>
       <source>The distance between the border of the beam and the last bar (concrete cover).</source>
       <translation>Razdalja med robom nosilca in zadnjo palico (zaščitna betonska plast).</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="179"/>
+      <location filename="../../ArchRebar.py" line="180"/>
       <source>The amount of bars</source>
       <translation>Število palic</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="181"/>
+      <location filename="../../ArchRebar.py" line="182"/>
       <source>The spacing between the bars</source>
       <translation>Razmik med palicami</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="186"/>
+      <location filename="../../ArchRebar.py" line="187"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
       <translation>Smer razporejanja palic. Pusti (0,0,0) za samodejno smer.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="188"/>
+      <location filename="../../ArchRebar.py" line="189"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
       <translation>Zaokorožitev roba, ki bo uporabljena na osnovnem prerezu. Vrednost je pomnožena s premerom palice.</translation>
     </message>
@@ -614,52 +614,52 @@
       <translation>Preglednica za tiskanje rezultatov</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="879"/>
+      <location filename="../../ArchSectionPlane.py" line="914"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Če je narobe, bodo prerezani tudi nepolni predmeti z možnimi napačnimi rezultati.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="949"/>
+      <location filename="../../ArchSectionPlane.py" line="984"/>
       <source>The display length of this section plane</source>
       <translation>Prikazana dolžina te presečne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="955"/>
+      <location filename="../../ArchSectionPlane.py" line="990"/>
       <source>The display height of this section plane</source>
       <translation>Prikazana višina te prečne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="961"/>
+      <location filename="../../ArchSectionPlane.py" line="996"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Velikost puščic te presečne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="975"/>
+      <location filename="../../ArchSectionPlane.py" line="1010"/>
       <source>Show the cut in the 3D view</source>
       <translation>Prikaži prerez v pogledu 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1179"/>
+      <location filename="../../ArchSectionPlane.py" line="1214"/>
       <source>The rendering mode to use</source>
       <translation>Uporabljen način prikaza</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1183"/>
+      <location filename="../../ArchSectionPlane.py" line="1218"/>
       <source>If cut geometry is shown or not</source>
       <translation>Če je rezna geometrija prikazana ali ne</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1185"/>
+      <location filename="../../ArchSectionPlane.py" line="1220"/>
       <source>If cut geometry is filled or not</source>
       <translation>Če je rezna geometrija polnjena ali ne</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1190"/>
+      <location filename="../../ArchSectionPlane.py" line="1225"/>
       <source>The size of the texts inside this object</source>
       <translation>Velikost pisave znotraj predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1193"/>
+      <location filename="../../ArchSectionPlane.py" line="1228"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Kadar obkljukano, izvori predmetov so prikazani ne glede na to ali so vidni v 3D modelu</translation>
     </message>
@@ -1084,12 +1084,12 @@
       <translation>Seznam debeline slojev</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1195"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
       <source>The line color of the projected objects</source>
       <translation>Barva črt preslikanih predmetov</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1197"/>
+      <location filename="../../ArchSectionPlane.py" line="1232"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Barva rezanih ploskev (če je vklopljeno)</translation>
     </message>
@@ -1169,27 +1169,27 @@
       <translation>Vključi/izključi prikaz lesene strukture</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="184"/>
+      <location filename="../../ArchRebar.py" line="185"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
       <translation>Celotna dolžina armaturnih palic. Pustite 0 za samodejno upoštevanje dolžine gostitelja.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="190"/>
+      <location filename="../../ArchRebar.py" line="191"/>
       <source>List of placement of all the bars</source>
       <translation>Seznam postavitev vseh palic</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="192"/>
+      <location filename="../../ArchRebar.py" line="193"/>
       <source>The structure object that hosts this rebar</source>
       <translation>Nosilni element, ki vsebuje to armaturo</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="194"/>
+      <location filename="../../ArchRebar.py" line="195"/>
       <source>The custom spacing of rebar</source>
       <translation>Ročna nastavitev razmika betonskega jekla</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="501"/>
+      <location filename="../../ArchRebar.py" line="502"/>
       <source>Shape of rebar</source>
       <translation>Oblika betonskih jekel</translation>
     </message>
@@ -1226,7 +1226,7 @@
     <message>
       <location filename="../../ArchAxis.py" line="312"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
-      <translation>Kam na os dodati krožec: na začetek, na konec, na obse strani ali nikamor</translation>
+      <translation>Kam na os dodati balončke: na začetek, na konec, na obe strani ali nikamor</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="315"/>
@@ -1264,12 +1264,12 @@
       <translation>Višina točke (0,0,0) te ravni</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="875"/>
+      <location filename="../../ArchSectionPlane.py" line="910"/>
       <source>The shape of this object</source>
       <translation>Oblika tega objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="967"/>
+      <location filename="../../ArchSectionPlane.py" line="1002"/>
       <source>The line width of this object</source>
       <translation>Debelina črt tega predmeta</translation>
     </message>
@@ -1311,7 +1311,7 @@
     <message>
       <location filename="../../ArchBuildingPart.py" line="535"/>
       <source>Camera position data associated with this object</source>
-      <translation>Podatki o mestu kamere vezani na ta predmet</translation>
+      <translation>Podatki o položaju kamere vezani na ta predmet</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="538"/>
@@ -1364,12 +1364,12 @@
       <translation>Vrednost odmika prerezne ravnine od središča</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="196"/>
+      <location filename="../../ArchRebar.py" line="197"/>
       <source>Length of a single rebar</source>
       <translation>Dolžina ene armaturne palice</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="199"/>
+      <location filename="../../ArchRebar.py" line="200"/>
       <source>Total length of all rebars</source>
       <translation>Skupna dolžina betonskih jekel</translation>
     </message>
@@ -1394,22 +1394,22 @@
       <translation>Če drži, se bodo barve povezane datoteke posodabljale</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="877"/>
+      <location filename="../../ArchSectionPlane.py" line="912"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Predmeti, ki morajo biti v prerezni ravnini zajeti. Prazno pomeni celoten dokument.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="964"/>
+      <location filename="../../ArchSectionPlane.py" line="999"/>
       <source>The transparency of this object</source>
       <translation>Prozornost tega predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="972"/>
+      <location filename="../../ArchSectionPlane.py" line="1007"/>
       <source>The color of this object</source>
       <translation>Barva tega predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="977"/>
+      <location filename="../../ArchSectionPlane.py" line="1012"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Razdalja med rezalno ravnino in ravnino vidnega polja (razdalja naj bo majhna, vendar ne nič)</translation>
     </message>
@@ -1629,12 +1629,12 @@
       <translation>Opisi IFC značilk niso še podprti</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="882"/>
+      <location filename="../../ArchSectionPlane.py" line="917"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Če drži, bodo posledično pogledi zamejeni s površino presečne ravnine.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="884"/>
+      <location filename="../../ArchSectionPlane.py" line="919"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Če drži, bo za zapolnitev odrezanih ploskev uporabljena barva predmetove snovi.</translation>
     </message>
@@ -1691,12 +1691,12 @@
     <message>
       <location filename="../../ArchBuildingPart.py" line="560"/>
       <source>The shape color of child objects</source>
-      <translation>Barva oblike podrejenga predmeta</translation>
+      <translation>Barva oblike podrejenega predmeta</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="564"/>
       <source>The transparency of child objects</source>
-      <translation>Prozornost podrejenga predmeta</translation>
+      <translation>Prozornost podrejenega predmeta</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="245"/>
@@ -1741,7 +1741,7 @@
     <message>
       <location filename="../../ArchBuildingPart.py" line="570"/>
       <source>The distance between the level plane and the cut line</source>
-      <translation type="unfinished">The distance between the level plane and the cut line</translation>
+      <translation>Razdalja med ravnino ravni in rezalni črto</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="573"/>
@@ -1756,87 +1756,87 @@
     <message>
       <location filename="../../ArchCurtainWall.py" line="181"/>
       <source>The number of vertical mullions</source>
-      <translation type="unfinished">The number of vertical mullions</translation>
+      <translation>Število navpičnic okenskega križa</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="185"/>
       <source>If the profile of the vertical mullions get aligned with the surface or not</source>
-      <translation type="unfinished">If the profile of the vertical mullions get aligned with the surface or not</translation>
+      <translation>Ali se presek navpičnic okenskega križa poravna s površino ali ne</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="188"/>
       <source>The number of vertical sections of this curtain wall</source>
-      <translation type="unfinished">The number of vertical sections of this curtain wall</translation>
+      <translation>Število navpičnih pasov te steklene fasade</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="204"/>
       <source>A profile for vertical mullions (disables vertical mullion size)</source>
-      <translation type="unfinished">A profile for vertical mullions (disables vertical mullion size)</translation>
+      <translation>Profil za navpičnice okenskega križa (onemogoči velikost navpičnic okenskega križa)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="207"/>
       <source>The number of horizontal mullions</source>
-      <translation type="unfinished">The number of horizontal mullions</translation>
+      <translation>Število vodoravnic okenskega križa</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="211"/>
       <source>If the profile of the horizontal mullions gets aligned with the surface or not</source>
-      <translation type="unfinished">If the profile of the horizontal mullions gets aligned with the surface or not</translation>
+      <translation>Ali se presek vodoravnic okenskega križa poravna s površino ali ne</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="214"/>
       <source>The number of horizontal sections of this curtain wall</source>
-      <translation type="unfinished">The number of horizontal sections of this curtain wall</translation>
+      <translation>Število vodoravnih pasov te steklene fasade</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="230"/>
       <source>A profile for horizontal mullions (disables horizontal mullion size)</source>
-      <translation type="unfinished">A profile for horizontal mullions (disables horizontal mullion size)</translation>
+      <translation>Profil za vodoravnice okenskega križa (onemogoči velikost vodoravnic okenskega križa)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="233"/>
       <source>The number of diagonal mullions</source>
-      <translation type="unfinished">The number of diagonal mullions</translation>
+      <translation>Število poševnic okenskega križa</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="237"/>
       <source>The size of the diagonal mullions, if any, if no profile is used</source>
-      <translation type="unfinished">The size of the diagonal mullions, if any, if no profile is used</translation>
+      <translation>Velikost poševnic okenskega križa, če sploh so in če ni uporabljen noben presek</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="241"/>
       <source>A profile for diagonal mullions, if any (disables horizontal mullion size)</source>
-      <translation type="unfinished">A profile for diagonal mullions, if any (disables horizontal mullion size)</translation>
+      <translation>Profil za poševnice okenskega križa (onemogoči velikost poševnice okenskega križa)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="244"/>
       <source>The number of panels</source>
-      <translation type="unfinished">The number of panels</translation>
+      <translation>Število polj</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="248"/>
       <source>The thickness of the panels</source>
-      <translation type="unfinished">The thickness of the panels</translation>
+      <translation>Debelina polj</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="252"/>
       <source>Swaps horizontal and vertical lines</source>
-      <translation type="unfinished">Swaps horizontal and vertical lines</translation>
+      <translation>Zamenja vodoravne in navpične poteze</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="255"/>
       <source>Perform subtractions between components so none overlap</source>
-      <translation type="unfinished">Perform subtractions between components so none overlap</translation>
+      <translation>Med sestavinami izvrši odvzemanje, da se nič ne prekriva</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="258"/>
       <source>Centers the profile over the edges or not</source>
-      <translation type="unfinished">Centers the profile over the edges or not</translation>
+      <translation>Usredinja profil čez robove ali ne</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="262"/>
       <source>The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</source>
-      <translation type="unfinished">The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</translation>
+      <translation>Sklicna navpična smer, ki se uporabi pri tem predmetu za določanje navpične/vodoravne smeri. Držite jo blizu dejanske navpične smeri vaše steklene stene</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="209"/>
@@ -1851,7 +1851,7 @@
     <message>
       <location filename="../../ArchSchedule.py" line="107"/>
       <source>If True, a spreadsheet containing the results is recreated when needed</source>
-      <translation type="unfinished">If True, a spreadsheet containing the results is recreated when needed</translation>
+      <translation>Če drži, potem se, ko je to potrebno, preglednica z rezulati ponovno izpiše</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="111"/>
@@ -1891,12 +1891,12 @@
     <message>
       <location filename="../../ArchTruss.py" line="173"/>
       <source>An optional start offset for the top strut</source>
-      <translation type="unfinished">An optional start offset for the top strut</translation>
+      <translation>Možnost odmika začetka pri zgornjem oporniku</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="176"/>
       <source>An optional end offset for the top strut</source>
-      <translation type="unfinished">An optional end offset for the top strut</translation>
+      <translation>Možnost odmika zaključka pri zgornjem oporniku</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="179"/>
@@ -1916,27 +1916,27 @@
     <message>
       <location filename="../../ArchTruss.py" line="191"/>
       <source>The direction of the rods</source>
-      <translation type="unfinished">The direction of the rods</translation>
+      <translation>Smer palic</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="195"/>
       <source>The diameter or side of the rods</source>
-      <translation type="unfinished">The diameter or side of the rods</translation>
+      <translation>Premer ali stran palic</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="199"/>
       <source>The number of rod sections</source>
-      <translation type="unfinished">The number of rod sections</translation>
+      <translation>Število odsekov palic</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="203"/>
       <source>If the truss has a rod at its endpoint or not</source>
-      <translation type="unfinished">If the truss has a rod at its endpoint or not</translation>
+      <translation>Ali ima paličje na koncih palico ali ne</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="206"/>
       <source>How to draw the rods</source>
-      <translation type="unfinished">How to draw the rods</translation>
+      <translation>Kako se nariše palice</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="717"/>
@@ -1961,32 +1961,32 @@
     <message>
       <location filename="../../ArchCurtainWall.py" line="175"/>
       <source>An optional host object for this curtain wall</source>
-      <translation type="unfinished">An optional host object for this curtain wall</translation>
+      <translation>Gostujoči predmet steklene fasade</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="177"/>
       <source>The height of the curtain wall, if based on an edge</source>
-      <translation type="unfinished">The height of the curtain wall, if based on an edge</translation>
+      <translation>Višina steklene fasade, če temelji na robu</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="196"/>
       <source>The height of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the vertical mullions profile, if no profile is used</translation>
+      <translation>Višina navpičnic okenskega križa, če ni uporabljen določeni presek</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="200"/>
       <source>The width of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the vertical mullions profile, if no profile is used</translation>
+      <translation>Širina navpičnic okenskega križa, če ni uporabljen določeni presek</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="222"/>
       <source>The height of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the horizontal mullions profile, if no profile is used</translation>
+      <translation>Višina vodoravnic okenskega križa, če ni uporabljen določeni presek</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="226"/>
       <source>The width of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the horizontal mullions profile, if no profile is used</translation>
+      <translation>Širina vodoravnic okenskega križa, če ni uporabljen določeni presek</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="643"/>
@@ -1996,10 +1996,10 @@
     <message>
       <location filename="../../ArchSite.py" line="837"/>
       <source>Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</source>
-      <translation type="unfinished">Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</translation>
+      <translation>Prikaži vetrovno rožo ali ne. Uporablja merilo sončnega diagrama. Potreben je modul Ladybug</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="202"/>
+      <location filename="../../ArchRebar.py" line="203"/>
       <source>The rebar mark</source>
       <translation>Oznaka armaturne palice</translation>
     </message>
@@ -2142,7 +2142,7 @@
       <translation>Pogled</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="852"/>
+      <location filename="../../ArchSectionPlane.py" line="887"/>
       <source>Create Section Plane</source>
       <translation>Ustvari presečno ravnino</translation>
     </message>
@@ -2262,7 +2262,7 @@
       <translation>Ustvari ogrodje</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="145"/>
+      <location filename="../../ArchRebar.py" line="146"/>
       <source>Create Rebar</source>
       <translation>Ustvari ojačitveni drog</translation>
     </message>
@@ -3120,7 +3120,7 @@ Site, Building, and Floor objects will be removed from the selection.
 You can change that in the preferences.</source>
       <translation>V predmet Etaža lahko vstavite vse razen Lokacije, Stavbe in Etaže.
 Etaža ne sprejema Lokacije, Stavbe in Etaže, zato bodo ti predmeti izvzeti iz izbora.
-To lahko spremenite v nastavitvah.</translation>
+To lahko spremenite v prenastavitvah.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="155"/>
@@ -3215,7 +3215,7 @@ Ustvarjanje etaže prekinjeno.</translation>
       <translation>Profil</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="152"/>
+      <location filename="../../ArchRebar.py" line="153"/>
       <source>Please select a base face on a structural object</source>
       <translation>Izberite izhodiščno ploskev na nosilnem gradniku</translation>
     </message>
@@ -3225,37 +3225,37 @@ Ustvarjanje etaže prekinjeno.</translation>
       <translation>Ustvari zunanji sklic</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1434"/>
+      <location filename="../../ArchSectionPlane.py" line="1448"/>
       <source>Section plane settings</source>
       <translation>Nastavitve prerezne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1439"/>
+      <location filename="../../ArchSectionPlane.py" line="1453"/>
       <source>Objects seen by this section plane:</source>
       <translation>Predmeti, vidni v prerezni ravnini:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1440"/>
+      <location filename="../../ArchSectionPlane.py" line="1454"/>
       <source>Section plane placement:</source>
       <translation>Umestitev prerezne ravnine:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1441"/>
+      <location filename="../../ArchSectionPlane.py" line="1455"/>
       <source>Rotate X</source>
       <translation>Zavrti X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1443"/>
+      <location filename="../../ArchSectionPlane.py" line="1457"/>
       <source>Rotate Y</source>
       <translation>Zavrti Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1445"/>
+      <location filename="../../ArchSectionPlane.py" line="1459"/>
       <source>Rotate Z</source>
       <translation>Zavrti Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1447"/>
+      <location filename="../../ArchSectionPlane.py" line="1461"/>
       <source>Resize</source>
       <translation>Spremeni velikost</translation>
     </message>
@@ -3273,7 +3273,7 @@ Note: You can change that in the preferences.</source>
       <translation>Izberite samo stavbne predmete!
 Lokacijam ni dovoljeno sprejeti drugih predmetov, raze stavbnih.
 Ostali predmeti bodo odstranjeni iz izbire.
-Opomba: To lahko spremenite v možnostih.</translation>
+Opomba: To lahko spremenite v prednastavitvah.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1141"/>
@@ -3411,42 +3411,42 @@ Stavba ne sprejema Lokacije in Stavbe, zato bodo ti predmeti izvzeti iz izbora.
 To lahko spremenite v nastavitvah.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1436"/>
+      <location filename="../../ArchSectionPlane.py" line="1450"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Odstrani označene predmete z zgornjega seznama</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1437"/>
+      <location filename="../../ArchSectionPlane.py" line="1451"/>
       <source>Add selected</source>
       <translation>Dodaj izbrane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1438"/>
+      <location filename="../../ArchSectionPlane.py" line="1452"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Dodaj izbrene predmete v območje te presečne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1442"/>
+      <location filename="../../ArchSectionPlane.py" line="1456"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Zasuka ravnino okrog osi X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1444"/>
+      <location filename="../../ArchSectionPlane.py" line="1458"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Zasuka ravnino okrog osi Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1446"/>
+      <location filename="../../ArchSectionPlane.py" line="1460"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Zasuka ravnino okrog osi Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1448"/>
+      <location filename="../../ArchSectionPlane.py" line="1462"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Prevelikosti ravnino tako, da se bo prilega predmetom z zgornjega seznama</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1450"/>
+      <location filename="../../ArchSectionPlane.py" line="1464"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Usredini ravnino na predmete z zgornjega seznama</translation>
     </message>
@@ -3568,7 +3568,7 @@ To lahko spremenite v nastavitvah.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="85"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Steklena fasada</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="98"/>
@@ -3578,7 +3578,7 @@ To lahko spremenite v nastavitvah.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="147"/>
       <source>Create Curtain Wall</source>
-      <translation type="unfinished">Create Curtain Wall</translation>
+      <translation>Ustvari stekleno fasado</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="868"/>
@@ -3683,7 +3683,7 @@ To lahko spremenite v nastavitvah.</translation>
     <message>
       <location filename="../../importSHP.py" line="138"/>
       <source>The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</source>
-      <translation type="unfinished">The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
+      <translation>Datoteke Shape pythonove knjižnice ni bilo mogoče najti v vašem okolju. Ali jo želite prenesti s &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? Dana bo v mapo vaših makrov.</translation>
     </message>
   </context>
   <context>
@@ -3942,12 +3942,12 @@ To lahko spremenite v nastavitvah.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="104"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Steklena fasada</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="106"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
-      <translation type="unfinished">Creates a curtain wall object from selected line or from scratch</translation>
+      <translation>Ustvari stekleno fasado iz izbrane črte ali od začetka</translation>
     </message>
   </context>
   <context>
@@ -3955,22 +3955,22 @@ To lahko spremenite v nastavitvah.</translation>
     <message>
       <location filename="../../ArchCutPlane.py" line="101"/>
       <source>Cut with plane</source>
-      <translation>Prereži z ravnino</translation>
+      <translation>Reži z ravnino</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="102"/>
       <source>Cut an object with a plane</source>
-      <translation>Prereži predmet z ravnino</translation>
+      <translation>Reži predmet z ravnino</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="80"/>
       <source>Cut with a line</source>
-      <translation type="unfinished">Cut with a line</translation>
+      <translation>Reži s črto</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="81"/>
       <source>Cut an object with a line with normal workplane</source>
-      <translation type="unfinished">Cut an object with a line with normal workplane</translation>
+      <translation>Reži predmet s črto z narmalno delovno ravnino</translation>
     </message>
   </context>
   <context>
@@ -4080,7 +4080,7 @@ To lahko spremenite v nastavitvah.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="1088"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
-      <translation>Ko ste v načinu "razpoločišče roba", mora ta mreža preravnati podrejene vzdolž normale roba ali ne</translation>
+      <translation>Ko ste v načinu "razpoločišče roba", mora ta mreža preusmeriti podrejenike vzdolž normale roba ali ne</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="1090"/>
@@ -4284,12 +4284,12 @@ To lahko spremenite v nastavitvah.</translation>
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="../../ArchRebar.py" line="107"/>
+      <location filename="../../ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Iz izbrane ploskve konstrukcije ustvari armaturno palico</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="105"/>
+      <location filename="../../ArchRebar.py" line="106"/>
       <source>Custom Rebar</source>
       <translation>Armatura po naročilu</translation>
     </message>
@@ -4362,12 +4362,12 @@ To lahko spremenite v nastavitvah.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="836"/>
+      <location filename="../../ArchSectionPlane.py" line="871"/>
       <source>Section Plane</source>
       <translation>Presečna ravnina</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="837"/>
+      <location filename="../../ArchSectionPlane.py" line="872"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Ustvari predmet presečne ravnine, ki vključuje izbrane predmete</translation>
     </message>
@@ -4543,7 +4543,7 @@ To lahko spremenite v nastavitvah.</translation>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="28"/>
       <source>The name of the BimServer you are currently connecting to. Change settings in Arch Preferences</source>
-      <translation>Ime BimStrežnika, s katerim se trenutno povezujete. Nastavitve spremenite v Arh Lastnostih</translation>
+      <translation>Ime BimStrežnika, s katerim se trenutno povezujete. Nastavitve spremenite v Arh Prednastavitve</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="31"/>
@@ -4761,12 +4761,12 @@ To lahko spremenite v nastavitvah.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="107"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
-      <translation type="unfinished">If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</translation>
+      <translation>Če je omogočeno, bo povezana preglednica z rezultati posodobljena skupaj s popisom</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="110"/>
       <source>Associate spreadsheet</source>
-      <translation type="unfinished">Associate spreadsheet</translation>
+      <translation>Poveži preglednico</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="117"/>
@@ -4815,10 +4815,10 @@ določene lastnosti.</translation>
 (internal names, not labels), to be considered by this operation.
 If the list contains groups, children will be added.
 Leave blank to use all objects from the document</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
-Leave blank to use all objects from the document</translation>
+      <translation>Možen je seznam imen predmetov, ločenih s podpičjem (;) 
+(nazivi, ne oznake), o čemer je vredno razmisliti pri tem opravilu.
+Če seznam vsebuje skupine, bodo dodani podrejeniki.
+Pustite prazno, če želite uporabiti vse predmete v dokumentu</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="97"/>
@@ -5024,7 +5024,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="116"/>
       <source>The number of segments to divide non-linear edges into, for calculations. If curved shapes overlap, try raising this value</source>
-      <translation>Število odsekov, na katero se za izračunavanje razdeli nepreme robove. Če se krivulje prekrivajo, poskusiti z višanjem vrednosti</translation>
+      <translation>Število odsekov, na katero se za izračunavanje razdeli nepreme robove. Če se krivulje prekrivajo, poskusite z višanjem vrednosti</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="132"/>
@@ -5582,7 +5582,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="189"/>
       <source>Use IfcOpenShell serializer if available</source>
-      <translation>Če je na voljo, uporabi nizalnik zaporedih IfcOpenShell</translation>
+      <translation>Če je na voljo, uporabi IfcOpenShell zaporejevalnik</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="205"/>
@@ -5855,10 +5855,10 @@ is exported. This leads to smaller differences between file versions.</translati
 Its serializer functionality allows to give it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
 Note: The serializer is still an experimental feature!</source>
-      <translation type="unfinished">IFCOpenShell is a library that allows to import IFC files.
-Its serializer functionality allows to give it an OCC shape and it will
-produce adequate IFC geometry: NURBS, faceted, or anything else.
-Note: The serializer is still an experimental feature!</translation>
+      <translation>IFCOpenShell je knjižnica, ki omogoča uvažanje datotek IFC.
+Njena zmožnost zaporejanja dopušča shranjevanje v obliki OCC, pri čemer
+ustvari enakovredne IFC geometrije: NURBS, ploskvične ali katere koli druge.
+Opomba: Zaporejevalnik je še vedno zmožnost v preizkušanju!</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="202"/>
@@ -5967,8 +5967,8 @@ A building storey is not mandatory but a common practice to have at least one in
       <location filename="../ui/preferences-ifc.ui" line="54"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
-      <translation type="unfinished">Shows verbose debug messages during import and export
-of IFC files in the Report view panel</translation>
+      <translation>Prikaže v plošči poročevalnega pogleda podrobni izpis sporočila
+o razhroščevanju med uvozom in izvozom datotek IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="71"/>
@@ -6001,7 +6001,7 @@ Note that this might slow things down.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="334"/>
       <source>Object names will be prefixed with the IFC ID number</source>
-      <translation type="unfinished">Object names will be prefixed with the IFC ID number</translation>
+      <translation>Imenom predmetov bodo dobila predpono s številko ID-ja IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="350"/>
@@ -6018,12 +6018,12 @@ they will be treated as one.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="367"/>
       <source>Each object will have their IFC properties stored in a spreadsheet object</source>
-      <translation type="unfinished">Each object will have their IFC properties stored in a spreadsheet object</translation>
+      <translation>IFC-lastnosti vsakega predmeta bodo shranjene v ločeni preglednici</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="370"/>
       <source>Import IFC properties in spreadsheet</source>
-      <translation type="unfinished">Import IFC properties in spreadsheet</translation>
+      <translation>Uvozi IFC-lastnosti v preglednico</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="383"/>

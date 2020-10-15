@@ -51,7 +51,7 @@
 
 using namespace Gui;
 
-namespace Gui {
+namespace {
 bool dontUseNativeDialog()
 {
 // Use Qt file dialog in order to support of save into directory without

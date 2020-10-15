@@ -2221,6 +2221,11 @@ This value is the maximum segment length. </source>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Estil d'exportació SVG desconegut, s'està canviant a Traduït</translation>
     </message>
+    <message>
+      <location filename="../../importSVG.py" line="1826"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
+    </message>
   </context>
   <context>
     <name>draft</name>

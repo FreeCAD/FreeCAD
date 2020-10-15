@@ -272,19 +272,6 @@ Klikni "Nadaljuj", če želiš vseeno ustvariti značilnost, ali "Prekini" za pr
     </message>
   </context>
   <context>
-    <name>Part_MakeTube</name>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-      <source>Create tube</source>
-      <translation>Ustvari cev</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-      <source>Creates a tube</source>
-      <translation>Ustvari cev</translation>
-    </message>
-  </context>
-  <context>
     <name>Part_SplitFeatures</name>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
@@ -358,6 +345,32 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
       <translation>Odstrani presečne drobce</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Tube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="85"/>
+      <source>Create tube</source>
+      <translation>Ustvari cev</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="89"/>
+      <source>Creates a tube</source>
+      <translation>Ustvari cev</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
+      <source>Create tube</source>
+      <translation>Ustvari cev</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation>Ustvari cev</translation>
     </message>
   </context>
   <context>
@@ -1820,7 +1833,7 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
     <message>
       <location filename="../../Command.cpp" line="1722"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation>Orodaj za odmikanje oblik (tvorjenje vzporednih oblik)</translation>
+      <translation>Orodja za odmikanje oblik (tvorjenje vzporednih oblik)</translation>
     </message>
   </context>
   <context>
@@ -2305,12 +2318,12 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
     <message>
       <location filename="../../CommandSimple.cpp" line="109"/>
       <source>Create shape from mesh...</source>
-      <translation>Ustvari obliko iz ploskovja …</translation>
+      <translation>Ustvari obliko iz mreže …</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="110"/>
       <source>Create shape from selected mesh object</source>
-      <translation>Ustvari obliko iz izbranega predmeta ploskovja</translation>
+      <translation>Ustvari obliko iz izbranega mrežnega objekta</translation>
     </message>
   </context>
   <context>
@@ -3198,7 +3211,7 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="130"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation>Izpiši krivulje v parametričnem prostoru poršja</translation>
+      <translation>Izpiši krivulje v parametričnem prostoru površine</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="153"/>
@@ -3213,7 +3226,7 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="162"/>
       <source>Enable STEP Compound merge</source>
-      <translation>Omogoči STEP združevanje v sestave</translation>
+      <translation>Omogoči STEP Spajanje sestava</translation>
     </message>
   </context>
   <context>
@@ -3479,7 +3492,7 @@ Najprej označite eno ali več robnih enot.</translation>
       <location filename="../../DlgPrimitives.ui" line="168"/>
       <location filename="../../DlgPrimitives.cpp" line="664"/>
       <source>Regular polygon</source>
-      <translation>Preprosti mnogokotnik</translation>
+      <translation>Pravilni mnogokotnik</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="180"/>
@@ -3921,7 +3934,7 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="52"/>
       <source>Automatically refine model after sketch-based operation</source>
-      <translation>Samodejno izpopolni oblikovanec po operacijah na podlagi črtov</translation>
+      <translation>Samodejno izpopolni oblikovanec po operacijah na podlagi očrtov</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="68"/>

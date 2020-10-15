@@ -256,7 +256,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="../../InitGui.py" line="107"/>
       <source>Draft utility tools</source>
-      <translation type="unfinished">Draft utility tools</translation>
+      <translation>草图工具</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="110"/>
@@ -748,7 +748,7 @@ Or choose one of the options below</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="64"/>
       <source>Align to view</source>
-      <translation type="unfinished">Align to view</translation>
+      <translation>对齐视图</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="71"/>
@@ -1918,7 +1918,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draft.ui" line="216"/>
       <source>Draft tools options</source>
-      <translation type="unfinished">Draft tools options</translation>
+      <translation>草图工具选项</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="230"/>
@@ -1968,7 +1968,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="14"/>
       <source>User interface settings</source>
-      <translation type="unfinished">User interface settings</translation>
+      <translation>用户界面</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="884"/>
@@ -1978,7 +1978,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="887"/>
       <source>Draft Statusbar</source>
-      <translation type="unfinished">Draft Statusbar</translation>
+      <translation>草图状态栏</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="907"/>
@@ -2003,7 +2003,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="532"/>
       <source>Draft Edit preferences</source>
-      <translation type="unfinished">Draft Edit preferences</translation>
+      <translation>草稿编辑选项</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="535"/>
@@ -2147,7 +2147,7 @@ instead of the size they have in the DXF document</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="408"/>
       <source>Use Layers</source>
-      <translation type="unfinished">Use Layers</translation>
+      <translation>使用图层</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="428"/>
@@ -2246,6 +2246,11 @@ This value is the maximum segment length. </source>
       <location filename="../../importSVG.py" line="1807"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation type="unfinished">Unknown SVG export style, switching to Translated</translation>
+    </message>
+    <message>
+      <location filename="../../importSVG.py" line="1826"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
     </message>
   </context>
   <context>
@@ -2840,22 +2845,22 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../DraftGui.py" line="841"/>
       <source>Center Y</source>
-      <translation type="unfinished">Center Y</translation>
+      <translation>中心 Y</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="842"/>
       <source>Center Z</source>
-      <translation type="unfinished">Center Z</translation>
+      <translation>中心 Z</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="893"/>
       <source>Offset distance</source>
-      <translation type="unfinished">Offset distance</translation>
+      <translation>偏移距离</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="949"/>
       <source>Trim distance</source>
-      <translation type="unfinished">Trim distance</translation>
+      <translation>修剪距离</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>
@@ -2878,7 +2883,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../importOCA.py" line="490"/>
       <source>successfully exported </source>
-      <translation type="unfinished">successfully exported </translation>
+      <translation>成功导出</translation>
     </message>
   </context>
 </TS>

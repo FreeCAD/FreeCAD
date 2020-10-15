@@ -112,7 +112,8 @@ from draftutils.gui_utils import (get3DView,
                                   get_selection_ex,
                                   select,
                                   loadTexture,
-                                  load_texture)
+                                  load_texture,
+                                  get_bbox)
 
 from draftutils.gui_utils import (dim_symbol,
                                   dimSymbol,

@@ -86,7 +86,7 @@ class DlgInspector : public QDialog
     Q_OBJECT
 
 public:
-    DlgInspector(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DlgInspector(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgInspector();
 
     void setDocument(Gui::Document* doc);

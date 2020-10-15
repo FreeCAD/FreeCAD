@@ -157,7 +157,7 @@
     <message>
       <location filename="../../CrossSections.cpp" line="345"/>
       <source>Failure</source>
-      <translation type="unfinished">Failure</translation>
+      <translation>Falha</translation>
     </message>
   </context>
   <context>
@@ -354,7 +354,7 @@ The smallest value is 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
-      <translation type="unfinished">Estimate</translation>
+      <translation>Estimar</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
@@ -459,7 +459,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation type="unfinished">Leave panel open</translation>
+      <translation>Deixar painel aberto</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="62"/>
@@ -516,12 +516,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Below</source>
-      <translation type="unfinished">Below</translation>
+      <translation>Abaixo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Above</source>
-      <translation type="unfinished">Above</translation>
+      <translation>Acima</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>

@@ -1,4 +1,5 @@
 ####
+#
 #  Travis-CI configuration file for FreeCAD.
 #
 #  This build configuration will build and test FreeCAD on both Linux
@@ -16,7 +17,7 @@
 #
 #  DEPLOY: Repo setting to deploy (defaults to no deploy to reduce
 #          Travis build times. Set DEPLOY=1 to enable in repo settings.
-##
+####
 env:
   global:
     - GENERATOR="Unix Makefiles"
@@ -101,6 +102,20 @@ jobs:
           - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc"
           - CACHE_NAME=JOB3
 
+      - os: osx
+        osx_image: xcode11.6
+        language: cpp
+        cache: 
+         - ccache: true
+         - directories:
+            - $HOME/.ccache
+            - $HOME/Library/Caches/Homebrew
+            - /usr/local/Homebrew
+        env:
+          - CMAKE_OPTS="-DCMAKE_CXX_COMPILER_LAUNCHER=/usr/local/bin/ccache -DBUILD_QT5=ON -DUSE_PYTHON3=1 -DCMAKE_CXX_FLAGS='-std=c++11' -DBUILD_FEM_NETGEN=1 -DBUILD_FEM=1 -DCMAKE_PREFIX_PATH='/usr/local/opt/qt/lib/cmake;/usr/local/opt/nglib/Contents/Resources' -DBUILD_FEM_NETGEN:BOOL=ON -DFREECAD_USE_EXTERNAL_KDL=ON -DCMAKE_BUILD_TYPE=Release"
+          - PATH=/usr/local/bin:$PATH
+          - CACHE_NAME=OSX1
+
       - os: windows
         language: cpp
         env:
@@ -120,7 +135,7 @@ jobs:
         cache:
           directories:
             - $HOME/clcache
-
+     
 #      - language: python
 #        python: 3.7
 #        dist: xenial  # required for Python >= 3.7 (travis-ci/travis-ci#9069)
@@ -129,6 +144,9 @@ jobs:
 #        # fail the build if there are Python syntax errors or undefined names
 #        script: flake8 . --count --select=E901,E999,F821,F822,F823 --show-source --statistics
 
+before_cache:
+  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew cleanup; fi
+  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then find /usr/local/Homebrew \! -regex ".+\.git.+" -delete; fi
 
 before_install:
 # - eval "$(curl -fsSL "https://raw.githubusercontent.com/${OSX_PORTS_CACHE}/v${FREECAD_RELEASE}/travis-helpers.sh")"
@@ -202,40 +220,46 @@ before_install:
        ;;
 
    "osx")
-       #xcodebuild -version -sdk
-       #brew --config
-       #if [ "${OSX_PORTS_CACHE}X" != "X" ]; then
-       #     brew install jq
-       #     cacheContext=$(create_helper_context repo=${OSX_PORTS_CACHE} auth_token=${GH_TOKEN} release=${FREECAD_RELEASE})
-       #     travis_wait prime_local_ports_cache $cacheContext
-       #fi
-       #brew update >/dev/null
-       #brew --config
+       xcodebuild -version -sdk
+       brew --config
+       brew install ccache
+       brew install coreutils
+       brew update >/dev/null
+       brew --config
+       brew update
+       brew upgrade
+       brew install python@3.8
+       rm /usr/local/bin/python
+       ln -s /usr/local/bin/python3 /usr/local/bin/python
+       pip3 install six
+       pip3 install pyyaml
+       pip3 install ply
+       export PATH=/usr/local/bin:$PATH
+       brew reinstall vtk@8.2
+       brew link --force vtk@8.2
+       which python
+       python --version
+       brew install boost
+       brew install boost-python3
+       brew tap FreeCAD/freecad
 
-       #brew tap FreeCAD/freecad
-
-       #brew install --verbose --only-dependencies freecad --with-packaging-utils
-       #pip install six
-       ## Qt5:  Set Qt5 build flag and CMAKE_PREFIX
-       #QT5_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qt/*/lib/cmake)
-       #QT5_WEBKIT_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qtwebkit/*/lib/cmake)
-       #CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON -DCMAKE_PREFIX_PATH=${QT5_CMAKE_PREFIX};${QT5_WEBKIT_CMAKE_PREFIX}"
+       brew install --verbose --only-dependencies freecad --with-packaging-utils
 
        ##Install the 3DConnexion frameworks
-       #if [ "${DEPLOY}" == "1" ]; then
-       #   if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
-       #      curl -o /tmp/3dFW.dmg -L 'http://www.3dconnexion.com/index.php?eID=sdl&ext=tx_iccsoftware&oid=a273bdbc-c289-e10d-816b-567043331c9e&filename=3DxWareMac_v10-4-1_r2428.dmg'
-       #      hdiutil attach -readonly /tmp/3dFW.dmg
-       #      sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
-       #      diskutil eject /Volumes/3Dconnexion\ Software
-       #   fi
-       #   export CMAKE_OPTS="${CMAKE_OPTS} -DFREECAD_CREATE_MAC_APP=ON"
-       #   export INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/MacOS/FreeCAD"
-       #else
-       #   export INSTALLED_APP_PATH="/usr/local/MacOS/FreeCAD"
-       #fi
+       if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
+        curl -o /tmp/3dFW.dmg -L 'https://download.3dconnexion.com/drivers/mac/10-6-6_360DF97D-ED08-4ccf-A55E-0BF905E58476/3DxWareMac_v10-6-6_r3234.dmg'
+        hdiutil attach -readonly /tmp/3dFW.dmg
+        sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
+        diskutil eject /Volumes/3Dconnexion\ Software
+       fi
+       export CMAKE_OPTS="${CMAKE_OPTS} -DFREECAD_CREATE_MAC_APP=OFF"
+       export INSTALLED_APP_PATH="/usr/local/MacOS/FreeCAD"
 
-       #export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON"
+       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON"
+       brew link --overwrite matplotlib
+       if [ -f "/usr/local/Cellar/opencascade/7.4.0_1/include/opencascade/Standard_Macro.hxx" ]; then
+          sed '1,$s/\[\[nodiscard\]\]//' /usr/local/Cellar/opencascade/7.4.0_1/include/opencascade/Standard_Macro.hxx > /tmp/Standard_Macro.hxx && cp /tmp/Standard_Macro.hxx /usr/local/Cellar/opencascade/7.4.0_1/include/opencascade/Standard_Macro.hxx ;
+       fi
        ;;
 
    "windows")
@@ -271,7 +295,9 @@ install:
 ####
 #  Build FreeCAD with cmake options set above for each platform
 ##
-  - mkdir build && cd build && cmake -G"${GENERATOR}" ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export PATH="/usr/local/bin:/usr/local/opt/ccache/libexec:$PATH"; fi
+  - echo ${CMAKE_ARGS}
+  - mkdir build && cd build && cmake -Wno-dev -G"${GENERATOR}" ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
 script:
 ####
@@ -300,10 +326,12 @@ script:
         # Stop compiling (GCC) after 2 hrs 50 min (3 hrs limit).
         # Preserves created ccache for the next build job.
         # if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
-        # if [ "${TRAVIS_OS_NAME}" == "osx" ]; then sudo make -j2 install; fi
+        # if [ "${TRAVIS_OS_NAME}" == "osx" ]; then sudo gtimeout -s KILL  make -j2 install; fi
         cat $HOME/.ccache/ccache.conf
         ccache -z -s
-        sudo make -j2 install
+        if [ "${TRAVIS_OS_NAME}" == "osx" ]; then export PATH="/usr/local/opt/ccacche/libexec:$PATH"; sudo gtimeout -s KILL 7200 make -j2 install; fi
+        if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
+        # sudo make -j2 install
         ccache -s
         ${INSTALLED_APP_PATH} --console --run-test 0 || travis_terminate 1
         ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &

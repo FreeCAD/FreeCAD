@@ -295,7 +295,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="297"/>
       <source>Electrostatic equation</source>
-      <translation type="unfinished">Electrostatic equation</translation>
+      <translation>Elektrostatisk ekvation</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="298"/>

@@ -27,7 +27,6 @@
 # include <QMessageBox>
 # include <QInputDialog>
 # include <Inventor/C/basic.h>
-# include <Inventor/nodes/SoCamera.h>
 # include <TopExp_Explorer.hxx>
 #endif
 
@@ -40,7 +39,6 @@
 #include <Gui/Application.h>
 #include <Gui/ActiveObjectList.h>
 #include <Gui/MainWindow.h>
-#include <Gui/ViewProviderOrigin.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 

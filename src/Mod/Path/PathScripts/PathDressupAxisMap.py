@@ -26,6 +26,7 @@ import Path
 import math
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathUtils as PathUtils
+import PathScripts.PathGui as PathGui
 
 from PySide import QtCore
 
@@ -35,21 +36,24 @@ if FreeCAD.GuiUp:
 __doc__ = """Axis remapping Dressup object and FreeCAD command.  This dressup remaps one axis of motion to another.
 For example, you can re-map the Y axis to A to control a 4th axis rotary."""
 
+
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 movecommands = ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']
 rapidcommands = ['G0', 'G00']
 arccommands = ['G2', 'G3', 'G02', 'G03']
 
+
 class ObjectDressup:
 
     def __init__(self, obj):
         maplist = ["X->A", "Y->A", "X->B", "Y->B", "X->C", "Y->C"]
-        obj.addProperty("App::PropertyLink",        "Base",     "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The base path to modify"))
-        obj.addProperty("App::PropertyEnumeration", "AxisMap",  "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The input mapping axis"))
-        obj.addProperty("App::PropertyDistance",    "Radius",   "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The radius of the wrapped axis"))
+        obj.addProperty("App::PropertyLink", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The base path to modify"))
+        obj.addProperty("App::PropertyEnumeration", "AxisMap", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The input mapping axis"))
+        obj.addProperty("App::PropertyDistance", "Radius", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The radius of the wrapped axis"))
         obj.AxisMap = maplist
         obj.AxisMap = "Y->A"
         obj.Proxy = self
@@ -68,15 +72,15 @@ class ObjectDressup:
     def _stripArcs(self, path, d):
         '''converts all G2/G3 commands into G1 commands'''
         newcommandlist = []
-        currLocation = {'X':0,'Y':0,'Z':0, 'F': 0}
+        currLocation = {'X': 0, 'Y': 0, 'Z': 0, 'F': 0}
 
         for p in path:
             if p.Name in arccommands:
                 curVec = FreeCAD.Vector(currLocation['X'], currLocation['Y'], currLocation['Z'])
                 arcwire = PathGeom.edgeForCmd(p, curVec)
-                pointlist =  arcwire.discretize(Deflection=d)
+                pointlist = arcwire.discretize(Deflection=d)
                 for point in pointlist:
-                    newcommand = Path.Command("G1", {'X':point.x, 'Y':point.y, 'Z':point.z})
+                    newcommand = Path.Command("G1", {'X': point.x, 'Y': point.y, 'Z': point.z})
                     newcommandlist.append(newcommand)
                     currLocation.update(newcommand.Parameters)
             else:
@@ -84,7 +88,6 @@ class ObjectDressup:
                 currLocation.update(p.Parameters)
 
         return newcommandlist
-
 
     def execute(self, obj):
 
@@ -103,20 +106,20 @@ class ObjectDressup:
                             pathlist = self._stripArcs(pp, d)
 
                         newcommandlist = []
-                        currLocation = {'X':0,'Y':0,'Z':0, 'F': 0}
+                        currLocation = {'X': 0, 'Y': 0, 'Z': 0, 'F': 0}
 
-                        for c in pathlist: #obj.Base.Path.Commands:
+                        for c in pathlist:
                             newparams = dict(c.Parameters)
                             remapvar = newparams.pop(inAxis, None)
                             if remapvar is not None:
                                 newparams[outAxis] = self._linear2angular(obj.Radius, remapvar)
                                 locdiff = dict(set(newparams.items()) - set(currLocation.items()))
-                                if len(locdiff) == 1 and outAxis in locdiff:  #pure rotation.  Calculate rotational feed rate
+                                if len(locdiff) == 1 and outAxis in locdiff:  # pure rotation.  Calculate rotational feed rate
                                     if 'F' in c.Parameters:
                                         feed = c.Parameters['F']
                                     else:
                                         feed = currLocation['F']
-                                    newparams.update({"F":self._linear2angular(obj.Radius, feed)})
+                                    newparams.update({"F": self._linear2angular(obj.Radius, feed)})
                                 newcommand = Path.Command(c.Name, newparams)
                                 newcommandlist.append(newcommand)
                                 currLocation.update(newparams)
@@ -129,14 +132,60 @@ class ObjectDressup:
                         obj.Path = path
 
     def onChanged(self, obj, prop):
-        if not 'Restore' in obj.State and prop == "Radius":
+        if 'Restore' not in obj.State and prop == "Radius":
             job = PathUtils.findParentJob(obj)
             if job:
                 job.Proxy.setCenterOfRotation(self.center(obj))
 
-
     def center(self, obj):
         return FreeCAD.Vector(0, 0, 0 - obj.Radius.Value)
+
+
+class TaskPanel:
+
+    def __init__(self, obj):
+        self.obj = obj
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/AxisMapEdit.ui")
+        self.radius = PathGui.QuantitySpinBox(self.form.radius, obj, 'Radius')
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupDragKnife", "Edit Dragknife Dress-up"))
+
+    def reject(self):
+        FreeCAD.ActiveDocument.abortTransaction()
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+
+    def accept(self):
+        self.getFields()
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+
+    def getFields(self):
+        self.radius.updateProperty()
+        self.obj.AxisMap = self.form.axisMapInput.currentText()
+        self.obj.Proxy.execute(self.obj)
+
+    def updateUI(self):
+        self.radius.updateSpinBox()
+        self.form.axisMapInput.setCurrentText(self.obj.AxisMap)
+        self.updateModel()
+
+    def updateModel(self):
+        self.getFields()
+        FreeCAD.ActiveDocument.recompute()
+
+    def setFields(self):
+        self.updateUI()
+
+    def open(self):
+        pass
+
+    def setupUi(self):
+        self.setFields()
+        self.form.radius.valueChanged.connect(self.updateModel)
+        self.form.axisMapInput.currentIndexChanged.connect(self.updateModel)
+
 
 class ViewProviderDressup:
 
@@ -155,6 +204,18 @@ class ViewProviderDressup:
                     i.Group = group
             # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return
+
+    def unsetEdit(self, vobj, mode=0):
+        # pylint: disable=unused-argument
+        return False
+
+    def setEdit(self, vobj, mode=0):
+        # pylint: disable=unused-argument
+        FreeCADGui.Control.closeDialog()
+        panel = TaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(panel)
+        panel.setupUi()
+        return True
 
     def claimChildren(self):
         return [self.obj.Base]
@@ -175,6 +236,7 @@ class ViewProviderDressup:
                 job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
             arg1.Object.Base = None
         return True
+
 
 class CommandPathDressup:
     # pylint: disable=no-init
@@ -219,6 +281,7 @@ class CommandPathDressup:
         FreeCADGui.doCommand('job.Proxy.addOperation(obj, base)')
         FreeCADGui.doCommand('obj.ViewObject.Proxy = PathScripts.PathDressupAxisMap.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(base.Name).Visibility = False')
+        FreeCADGui.doCommand('obj.ViewObject.Document.setEdit(obj.ViewObject, 0)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

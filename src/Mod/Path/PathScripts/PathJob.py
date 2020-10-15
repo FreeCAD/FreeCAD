@@ -32,14 +32,14 @@ import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
 import json
 import time
+from PathScripts.PathPostProcessor import PostProcessor
+from PySide import QtCore
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 ArchPanel = LazyLoader('ArchPanel', globals(), 'ArchPanel')
 Draft = LazyLoader('Draft', globals(), 'Draft')
 
-from PathScripts.PathPostProcessor import PostProcessor
-from PySide import QtCore
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
@@ -103,6 +103,10 @@ class ObjectJob:
         obj.addProperty("App::PropertyFile", "PostProcessorOutputFile", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "The NC output file for this project"))
         obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Select the Post Processor"))
         obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Arguments for the Post Processor (specific to the script)"))
+        obj.addProperty("App::PropertyString", "LastPostProcessDate", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Last Time the Job was post-processed"))
+        obj.setEditorMode('LastPostProcessDate', 2)  # Hide
+        obj.addProperty("App::PropertyString", "LastPostProcessOutput", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Last Time the Job was post-processed"))
+        obj.setEditorMode('LastPostProcessOutput', 2)  # Hide
 
         obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("PathJob", "An optional description for this job"))
         obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Job Cycle Time Estimation"))
@@ -226,7 +230,7 @@ class ObjectJob:
         # Tool controllers might refer to either legacy tool or toolbit
         PathLog.debug('taking down tool controller')
         for tc in obj.ToolController:
-            if hasattr(tc.Tool,"Proxy"):
+            if hasattr(tc.Tool, "Proxy"):
                 PathUtil.clearExpressionEngine(tc.Tool)
                 doc.removeObject(tc.Tool.Name)
             PathUtil.clearExpressionEngine(tc)
@@ -378,7 +382,7 @@ class ObjectJob:
                 try:
                     # Convert the formatted time from HH:MM:SS to just seconds
                     opCycleTime = sum(x * int(t) for x, t in zip([1, 60, 3600], reversed(formattedCycleTime.split(":"))))
-                except:
+                except Exception:
                     continue
 
                 if opCycleTime > 0:
@@ -457,7 +461,7 @@ def Instances():
 def Create(name, base, templateFile=None):
     '''Create(name, base, templateFile=None) ... creates a new job and all it's resources.
     If a template file is specified the new job is initialized with the values from the template.'''
-    if str == type(base[0]):
+    if isinstance(base[0], str):
         models = []
         for baseName in base:
             models.append(FreeCAD.ActiveDocument.getObject(baseName))

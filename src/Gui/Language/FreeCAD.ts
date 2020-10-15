@@ -431,6 +431,14 @@ while doing a left or right click and move the mouse up or down</source>
         <source>Out Of Range</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source> &quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::CameraDialog</name>
@@ -1055,15 +1063,15 @@ If this is not ticked, then the property must be uniquely named, and it is acces
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Print Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Spaceball Buttons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2080,10 +2088,6 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Sync sub-object selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2093,6 +2097,10 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2234,6 +2242,14 @@ from Python console to Report view panel</source>
     </message>
     <message>
         <source>Include a timecode for each entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normal messages will be recorded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Record normal messages</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3148,6 +3164,34 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
         <source>The directory in which the application will search for macros</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Recent macros menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size of recent macro list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>How many macros should be listed in recent macros list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shortcut count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>How many recent macros should have shortcuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keyboard Modifiers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
@@ -3224,14 +3268,6 @@ Turntable: the part will be rotated around the z-axis.</source>
     </message>
     <message>
         <source>Trackball</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New document camera orientation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Camera orientation for new documents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3338,6 +3374,14 @@ Mouse tilting is not disabled by this setting.</source>
         <source>Custom</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Default camera orientation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default camera orientation when creating a new document or selecting the home view</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
@@ -3439,6 +3483,10 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
         <source>Imperial for Civil Eng (ft, ft/sec)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FEM (mm, N, sec)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4384,18 +4432,6 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
 <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-        <source>Logging</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4425,6 +4461,30 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Plain Text Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display message types</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normal messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warnings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show report view on</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4584,6 +4644,20 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+        <source>Exact match</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+        <source>Exact match</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5205,6 +5279,21 @@ Do you want to exit without saving your data?</source>
     <name>Gui::RecentFilesAction</name>
     <message>
         <source>Open file %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The file &apos;%1&apos; cannot be opened.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+        <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6533,6 +6622,42 @@ Choose &apos;Abort&apos; to abort</source>
         <source>Override colors...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+
+Please check report view for more...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+
+Pyhsical path: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+Document: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+  Path: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Identical physical path</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SelectionFilter</name>
@@ -7740,6 +7865,21 @@ Choose &apos;Abort&apos; to abort</source>
     </message>
 </context>
 <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+        <source>Macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent macros</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent macro list</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdRedo</name>
     <message>
         <source>Edit</source>
@@ -8426,6 +8566,21 @@ Choose &apos;Abort&apos; to abort</source>
     </message>
 </context>
 <context>
+    <name>StdCmdViewHome</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set to default home view</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdViewIsometric</name>
     <message>
         <source>Standard-View</source>
@@ -9019,13 +9174,11 @@ Are you sure you want to continue?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
+        <source>Object dependencies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Object dependencies</source>
+        <source>These items are selected for deletion, but are not in the active document.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

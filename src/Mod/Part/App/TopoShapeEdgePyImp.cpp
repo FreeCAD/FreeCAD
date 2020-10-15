@@ -1065,7 +1065,7 @@ PyObject* TopoShapeEdgePy::curveOnSurface(PyObject *args)
         BRep_Tool::CurveOnSurface(edge, curve, surf, loc, first, last, idx+1);
         if (curve.IsNull())
             Py_Return;
-        std::unique_ptr<Part::Geom2dCurve> geo2d(getCurve2dFromGeom2d(curve));
+        std::unique_ptr<Part::Geom2dCurve> geo2d(makeFromCurve2d(curve));
         if (!geo2d)
             Py_Return;
         std::unique_ptr<Part::GeomSurface> geosurf(makeFromSurface(surf));

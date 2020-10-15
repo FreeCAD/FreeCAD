@@ -133,7 +133,7 @@ void CmdSketcherCloseShape::activated(int iMsg)
     int GeoIdLast=-1;
 
     // undo command open
-    openCommand("add coincident constraint");
+    openCommand("Add coincident constraint");
     // go through the selected subelements
     for (unsigned int i=0; i<(SubNames.size()-1); i++ ) {
         // only handle edges
@@ -235,7 +235,7 @@ void CmdSketcherConnect::activated(int iMsg)
     }
 
     // undo command open
-    openCommand("add coincident constraint");
+    openCommand("Add coincident constraint");
 
     // go through the selected subelements
     for (unsigned int i=0; i<(SubNames.size()-1); i++ ) {
@@ -1042,13 +1042,18 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
     if ( geoids == 0 || (geoids == 1 && LastGeoId>=0 && !lastvertexoraxis) ) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction."));
+            QObject::tr("A symmetric construction requires "
+                        "at least two geometric elements, "
+                        "the last geometric element being the reference "
+                        "for the symmetry construction."));
         return;
     }
 
     if ( lastgeotype == invalid ) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("The last element must be a point or a line serving as reference for the symmetry construction."));
+            QObject::tr("The last element must be a point "
+                        "or a line serving as reference "
+                        "for the symmetry construction."));
         return;
     }
 
@@ -1106,22 +1111,26 @@ public:
     virtual void activate() = 0;
 };
 
+// TODO: replace XPM cursor with SVG file
 static const char *cursor_createcopy[]={
     "32 32 3 1",
     "+ c white",
     "# c red",
     ". c None",
     "................................",
+    ".......+........................",
+    ".......+........................",
+    ".......+........................",
+    ".......+........................",
+    ".......+........................",
     "................................",
+    ".+++++...+++++..................",
     "................................",
-    "................................",
-    "................................",
-    "................................",
-    "................................",
-    "......................###.......",
-    "......................###.......",
-    "......................###.......",
-    "......................###.......",
+    ".......+........................",
+    ".......+..............###.......",
+    ".......+..............###.......",
+    ".......+..............###.......",
+    ".......+..............###.......",
     "......................###.......",
     ".....###..............###.......",
     ".....###..............###.......",
@@ -1136,9 +1145,6 @@ static const char *cursor_createcopy[]={
     ".....###........................",
     ".....###........................",
     ".....###........................",
-    "................................",
-    "................................",
-    "................................",
     "................................",
     "................................",
     "................................",
@@ -1350,7 +1356,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
 
     if (geoids < 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                QObject::tr("A copy requires at least one selected non-external geometric element"));
+                             QObject::tr("A copy requires at least one selected non-external geometric element"));
         return;
     }
 
@@ -1375,21 +1381,22 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     }
 
     // Ask the user if he wants to clone or to simple copy
-    /*int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Dimensional/Geometric constraints"),
-        *                                   QObject::tr("Do you want to clone the object, i.e. substitute dimensional constraints by geometric constraints?"),
-        *                                   QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
-        *   // use an equality constraint
-        *   if (ret == QMessageBox::Yes) {
-        *       clone = true;
-}
-else if (ret == QMessageBox::Cancel) {
+/*
+    int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Dimensional/Geometric constraints"),
+                                    QObject::tr("Do you want to clone the object, i.e. substitute dimensional constraints by geometric constraints?"),
+                                    QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
+    // use an equality constraint
+    if (ret == QMessageBox::Yes) {
+        clone = true;
+    }
+    else if (ret == QMessageBox::Cancel) {
     // do nothing
     return;
-}*/
+    }
+*/
 
     ActivateAcceleratorHandler(getActiveGuiDocument(),new DrawSketchHandlerCopy(geoIdList, LastGeoId, LastPointPos, geoids, op));
 }
-
 
 
 class CmdSketcherCopy : public SketcherCopy
@@ -1622,6 +1629,7 @@ bool CmdSketcherCompCopy::isActive(void)
 }
 
 
+// TODO: replace XPM cursor with SVG file
 /* XPM */
 static const char *cursor_createrectangulararray[]={
     "32 32 3 1",
@@ -1629,16 +1637,19 @@ static const char *cursor_createrectangulararray[]={
     "# c red",
     ". c None",
     "................................",
+    ".......+........................",
+    ".......+........................",
+    ".......+........................",
+    ".......+........................",
+    ".......+........................",
     "................................",
-    "................................",
-    "................................",
-    "................................",
+    ".+++++...+++++..................",
     ".......................###......",
-    ".......................###......",
-    ".......................###......",
-    ".......................###......",
-    "..............###......###......",
-    "..............###......###......",
+    ".......+...............###......",
+    ".......+...............###......",
+    ".......+...............###......",
+    ".......+......###......###......",
+    ".......+......###......###......",
     "..............###......###......",
     "..............###......###......",
     ".....###......###......###......",
@@ -1655,9 +1666,6 @@ static const char *cursor_createrectangulararray[]={
     ".....###........................",
     ".....###........................",
     ".....###........................",
-    "................................",
-    "................................",
-    "................................",
     "................................",
     "................................"};
 
@@ -1935,7 +1943,7 @@ CmdSketcherDeleteAllGeometry::CmdSketcherDeleteAllGeometry()
     sToolTipText    = QT_TR_NOOP("Deletes all the geometry and constraints but external geometry");
     sWhatsThis      = "Sketcher_DeleteAllGeometry";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Element_SelectionTypeInvalid";
+    sPixmap         = "Sketcher_DeleteGeometry";
     sAccel          = "";
     eType           = ForEdit;
 }
@@ -1998,7 +2006,7 @@ CmdSketcherDeleteAllConstraints::CmdSketcherDeleteAllConstraints()
     sToolTipText    = QT_TR_NOOP("Deletes all the constraints");
     sWhatsThis      = "Sketcher_DeleteAllConstraints";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Element_SelectionTypeInvalid";
+    sPixmap         = "Sketcher_DeleteConstraints";
     sAccel          = "";
     eType           = ForEdit;
 }

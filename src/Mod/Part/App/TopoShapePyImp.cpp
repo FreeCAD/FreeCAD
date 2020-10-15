@@ -1441,7 +1441,7 @@ PyObject*  TopoShapePy::scale(PyObject *args)
     double factor;
     PyObject* p=0;
     if (!PyArg_ParseTuple(args, "d|O!", &factor, &(Base::VectorPy::Type), &p))
-        return NULL;
+        return nullptr;
 
     gp_Pnt pos(0,0,0);
     if (p) {
@@ -1451,22 +1451,25 @@ PyObject*  TopoShapePy::scale(PyObject *args)
         pos.SetZ(pnt.z);
     }
     if (fabs(factor) < Precision::Confusion()) {
-        PyErr_SetString(PartExceptionOCCError, "scale factor too small");
-        return NULL;
+        PyErr_SetString(PyExc_ValueError, "scale factor too small");
+        return nullptr;
     }
 
     PY_TRY {
-        gp_Trsf scl;
-        scl.SetScale(pos, factor);
-        BRepBuilderAPI_Transform BRepScale(scl);
-        bool bCopy = true;
-        BRepScale.Perform(getTopoShapePtr()->getShape(),bCopy);
+        const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
+        if (!shape.IsNull()) {
+            gp_Trsf scl;
+            scl.SetScale(pos, factor);
+            BRepBuilderAPI_Transform BRepScale(scl);
+            bool bCopy = true;
+            BRepScale.Perform(shape, bCopy);
 #ifndef FC_NO_ELEMENT_MAP
-        TopoShape copy(*getTopoShapePtr());
-        getTopoShapePtr()->makEShape(BRepScale,copy);
+            TopoShape copy(*getTopoShapePtr());
+            getTopoShapePtr()->makEShape(BRepScale,copy);
 #else
-        getTopoShapePtr()->setShape(BRepScale.Shape());
+            getTopoShapePtr()->setShape(BRepScale.Shape());
 #endif
+        }
         return IncRef();
     } PY_CATCH_OCC
 }
@@ -1745,6 +1748,31 @@ PyObject*  TopoShapePy::reverse(PyObject *args)
     shape.Reverse();
     getTopoShapePtr()->setShape(shape,false);
     return IncRef();
+}
+
+PyObject*  TopoShapePy::reversed(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    TopoDS_Shape shape = getTopoShapePtr()->getShape();
+    shape = shape.Reversed();
+
+    PyTypeObject* type = this->GetType();
+    PyObject* cpy = nullptr;
+
+    // let the type object decide
+    if (type->tp_new)
+        cpy = type->tp_new(type, this, 0);
+    if (!cpy) {
+        PyErr_SetString(PyExc_TypeError, "failed to create copy of shape");
+        return nullptr;
+    }
+
+    if (!shape.IsNull()) {
+        static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->setShape(shape);
+    }
+    return cpy;
 }
 
 PyObject*  TopoShapePy::complement(PyObject *args)

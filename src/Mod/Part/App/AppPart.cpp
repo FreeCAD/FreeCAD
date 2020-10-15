@@ -105,6 +105,7 @@
 #include "Mod/Part/App/SurfaceOfRevolutionPy.h"
 #include "Mod/Part/App/ToroidPy.h"
 #include "Mod/Part/App/BRepOffsetAPI_MakePipeShellPy.h"
+#include "Mod/Part/App/BRepOffsetAPI_MakeFillingPy.h"
 #include "Mod/Part/App/PartFeaturePy.h"
 #include "Mod/Part/App/AttachEnginePy.h"
 #include <Mod/Part/App/Geom2d/ArcOfCircle2dPy.h>
@@ -124,6 +125,10 @@
 #include <Mod/Part/App/Geom2d/Line2dPy.h>
 #include <Mod/Part/App/Geom2d/OffsetCurve2dPy.h>
 #include <Mod/Part/App/Geom2d/Parabola2dPy.h>
+#include <Mod/Part/App/GeomPlate/BuildPlateSurfacePy.h>
+#include <Mod/Part/App/GeomPlate/CurveConstraintPy.h>
+#include <Mod/Part/App/GeomPlate/PointConstraintPy.h>
+#include <Mod/Part/App/ShapeUpgrade/UnifySameDomainPy.h>
 #include "PropertyGeometryList.h"
 #include "DatumFeature.h"
 #include "Attacher.h"
@@ -371,33 +376,13 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::GeometryBoolExtensionPy ::Type,partModule,"GeometryBoolExtension");
     Base::Interpreter().addType(&Part::GeometryDoubleExtensionPy ::Type,partModule,"GeometryDoubleExtension");
 
-#if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef BRepOffsetAPIDef = {
-        PyModuleDef_HEAD_INIT,
-        "BRepOffsetAPI", "BRepOffsetAPI", -1, 0,
-        NULL, NULL, NULL, NULL
-    };
-    PyObject* brepModule = PyModule_Create(&BRepOffsetAPIDef);
-#else
-    PyObject* brepModule = Py_InitModule3("BRepOffsetAPI", 0, "BrepOffsetAPI");
-#endif
-    Py_INCREF(brepModule);
-    PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
-    Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepModule,"MakePipeShell");
+    // BRepOffsetAPI package
+    PyObject* brepOffsetApiModule(module.getAttr("BRepOffsetAPI").ptr());
+    Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepOffsetApiModule,"MakePipeShell");
+    Base::Interpreter().addType(&Part::BRepOffsetAPI_MakeFillingPy::Type,brepOffsetApiModule,"MakeFilling");
 
     // Geom2d package
-#if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef geom2dDef = {
-        PyModuleDef_HEAD_INIT,
-        "Geom2dD", "Geom2d", -1, 0,
-        NULL, NULL, NULL, NULL
-    };
-    PyObject* geom2dModule = PyModule_Create(&geom2dDef);
-#else
-     PyObject* geom2dModule = Py_InitModule3("Geom2d", 0, "Geom2d");
-#endif
-    Py_INCREF(geom2dModule);
-    PyModule_AddObject(partModule, "Geom2d", geom2dModule);
+    PyObject* geom2dModule(module.getAttr("Geom2d").ptr());
     Base::Interpreter().addType(&Part::Geometry2dPy::Type,geom2dModule,"Geometry2d");
     Base::Interpreter().addType(&Part::Curve2dPy::Type,geom2dModule,"Curve2d");
     Base::Interpreter().addType(&Part::Conic2dPy::Type,geom2dModule,"Conic2d");
@@ -415,6 +400,16 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::Line2dSegmentPy::Type,geom2dModule,"Line2dSegment");
     Base::Interpreter().addType(&Part::Line2dPy::Type,geom2dModule,"Line2d");
     Base::Interpreter().addType(&Part::OffsetCurve2dPy::Type,geom2dModule,"OffsetCurve2d");
+
+    // GeomPlate sub-module
+    PyObject* geomPlate(module.getAttr("GeomPlate").ptr());
+    Base::Interpreter().addType(&Part::BuildPlateSurfacePy::Type, geomPlate, "BuildPlateSurface");
+    Base::Interpreter().addType(&Part::CurveConstraintPy::Type, geomPlate, "CurveConstraint");
+    Base::Interpreter().addType(&Part::PointConstraintPy::Type, geomPlate, "PointConstraint");
+
+    // ShapeUpgrade sub-module
+    PyObject* shapeUpgrade(module.getAttr("ShapeUpgrade").ptr());
+    Base::Interpreter().addType(&Part::UnifySameDomainPy::Type, shapeUpgrade, "UnifySameDomain");
 
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();

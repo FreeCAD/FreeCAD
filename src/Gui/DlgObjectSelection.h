@@ -33,7 +33,7 @@ class GuiExport DlgObjectSelection : public QDialog
 
 public:
     DlgObjectSelection(const std::vector<App::DocumentObject*> &objs, 
-            QWidget* parent = 0, Qt::WindowFlags fl = 0);
+            QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgObjectSelection();
 
     std::vector<App::DocumentObject*> getSelections() const;

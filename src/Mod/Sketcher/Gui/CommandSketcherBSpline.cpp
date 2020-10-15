@@ -347,7 +347,7 @@ CmdSketcherConvertToNURB::CmdSketcherConvertToNURB()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Convert Geometry to B-spline");
     sToolTipText    = QT_TR_NOOP("Converts the given Geometry to a B-spline");
-    sWhatsThis      = "Sketcher_ConvertToNURB";
+    sWhatsThis      = "Sketcher_BSplineConvertToNURB";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_BSplineApproximate";
     sAccel          = "";
@@ -410,7 +410,7 @@ bool CmdSketcherConvertToNURB::isActive(void)
     return isSketcherBSplineActive( getActiveGuiDocument(), true );
 }
 
-// Convert to NURB
+// Increase degree of the spline
 DEF_STD_CMD_A(CmdSketcherIncreaseDegree)
 
 CmdSketcherIncreaseDegree::CmdSketcherIncreaseDegree()
@@ -444,7 +444,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand("Increase degree");
+    openCommand("Increase spline degree");
 
     bool ignored=false;
 
@@ -469,8 +469,10 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     }
 
     if(ignored) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("At least one of the selected objects was not a B-Spline and was ignored."));
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Wrong selection"),
+                             QObject::tr("At least one of the selected "
+                                         "objects was not a B-Spline and was ignored."));
     }
 
     commitCommand();
@@ -484,6 +486,18 @@ bool CmdSketcherIncreaseDegree::isActive(void)
 {
     return isSketcherBSplineActive( getActiveGuiDocument(), true );
 }
+
+
+// TODO: implement this function to complement Sketcher_BSplineIncreaseDegree
+
+// Decrease degree of the spline
+// DEF_STD_CMD_A(CmdSketcherDecreaseDegree)
+// CmdSketcherDecreaseDegree::CmdSketcherDecreaseDegree()
+// :Command("Sketcher_BSplineDecreaseDegree")
+// {
+// ...
+// }
+
 
 DEF_STD_CMD_A(CmdSketcherIncreaseKnotMultiplicity)
 
@@ -505,11 +519,14 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    #if OCC_VERSION_HEX < 0x060900
-    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong OCE/OCC version"),
-                         QObject::tr("This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher"));
+#if OCC_VERSION_HEX < 0x060900
+    QMessageBox::warning(Gui::getMainWindow(),
+                         QObject::tr("Wrong OCE/OCC version"),
+                         QObject::tr("This version of OCE/OCC "
+                                     "does not support knot operation. "
+                                     "You need 6.9.0 or higher"));
     return;
-    #endif
+#endif
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;
@@ -524,7 +541,8 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
 
     if(SubNames.size()>1) {
-        // Check that only one object is selected, as we need only one object to get the new GeoId after multiplicity change
+        // Check that only one object is selected,
+        // as we need only one object to get the new GeoId after multiplicity change
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("The selection comprises more than one item. Please select just one knot."));
         return;
@@ -560,23 +578,26 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 
                     applied = true;
 
-                    // Warning: GeoId list might have changed as the consequence of deleting pole circles and
+                    // Warning: GeoId list might have changed
+                    // as the consequence of deleting pole circles and
                     // particularly B-spline GeoID might have changed.
 
                 }
                 catch (const Base::CADKernelError& e) {
                     e.ReportException();
                     if(e.getTranslatable()) {
-                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("CAD Kernel Error"),
-                                            QObject::tr(e.getMessage().c_str()));
+                        QMessageBox::warning(Gui::getMainWindow(),
+                                             QObject::tr("CAD Kernel Error"),
+                                             QObject::tr(e.getMessage().c_str()));
                     }
                     getSelection().clearSelection();
                 }
                 catch (const Base::Exception& e) {
                     e.ReportException();
                     if(e.getTranslatable()) {
-                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Input Error"),
-                                            QObject::tr(e.getMessage().c_str()));
+                        QMessageBox::warning(Gui::getMainWindow(),
+                                             QObject::tr("Input Error"),
+                                             QObject::tr(e.getMessage().c_str()));
                     }
 
                     getSelection().clearSelection();
@@ -591,7 +612,8 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     }
 
     if(notaknot){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Wrong selection"),
                              QObject::tr("None of the selected elements is a knot of a B-spline"));
     }
 
@@ -662,11 +684,14 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    #if OCC_VERSION_HEX < 0x060900
-    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong OCE/OCC version"),
-                         QObject::tr("This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher"));
+#if OCC_VERSION_HEX < 0x060900
+    QMessageBox::warning(Gui::getMainWindow(),
+                         QObject::tr("Wrong OCE/OCC version"),
+                         QObject::tr("This version of OCE/OCC "
+                                     "does not support knot operation. "
+                                     "You need 6.9.0 or higher"));
     return;
-    #endif
+#endif
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;
@@ -681,7 +706,8 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
 
     if(SubNames.size()>1) {
-        // Check that only one object is selected, as we need only one object to get the new GeoId after multiplicity change
+        // Check that only one object is selected,
+        // as we need only one object to get the new GeoId after multiplicity change
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("The selection comprises more than one item. Please select just one knot."));
         return;
@@ -886,6 +912,8 @@ void CreateSketcherCommandsBSpline(void)
     rcCmdMgr.addCommand(new CmdSketcherCompBSplineShowHideGeometryInformation());
     rcCmdMgr.addCommand(new CmdSketcherConvertToNURB());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseDegree());
+    // TODO: implement this function to complement CmdSketcherIncreaseDegree
+    // rcCmdMgr.addCommand(new CmdSketcherDecreaseDegree());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherDecreaseKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherCompModifyKnotMultiplicity());

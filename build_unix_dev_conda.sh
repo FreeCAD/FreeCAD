@@ -52,10 +52,12 @@ if [[ "${CONDA_DEFAULT_ENV}" =~ "${FCENV}" ]]; then
   echo "Already in env"
 elif [[ -z "${CONDA_DEFAULT_ENV}" ]]; then
   echo "Not in conda env... activating"
+  eval "$(conda shell.bash hook)"
   conda activate ${FCENV}
 else
   # Assume we are in some other env.
   echo "In ${CONDA_DEFAULT_ENV}, attempting switch to ${FCENV}"
+  eval "$(conda shell.bash hook)"
   conda deactivate
   conda activate ${FCENV}
 fi

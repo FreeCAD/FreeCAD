@@ -14,6 +14,11 @@
 			<Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
 			<UserDocu>TopoShapeFace is the OpenCasCade topological face wrapper</UserDocu>
 		</Documentation>
+		<Methode Name="addWire">
+			<Documentation>
+				<UserDocu>Adds a wire to the face.</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="makeOffset" Const="true">
 			<Documentation>
 				<UserDocu>Offset the face by a given amount. Returns Compound of Wires. Deprecated - use makeOffset2D instead.</UserDocu>

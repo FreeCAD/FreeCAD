@@ -136,11 +136,11 @@
     </message>
     <message>
       <source>Enable Translations</source>
-      <translation>Translationen aktivieren</translation>
+      <translation>Verschiebung aktivieren</translation>
     </message>
     <message>
       <source>Enable Rotations</source>
-      <translation>Rotationen aktivieren</translation>
+      <translation>Drehung aktivieren</translation>
     </message>
     <message>
       <source>Calibrate</source>
@@ -430,6 +430,14 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Außerhalb des Bereichs</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation type="unfinished"> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation type="unfinished">"</translation>
     </message>
   </context>
   <context>
@@ -1059,16 +1067,16 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
       <translation>Schaltflächen</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Löschen</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Referenz anzeigen</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Spaceball-Knöpfe</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Zurücksetzen</translation>
     </message>
   </context>
   <context>
@@ -2098,10 +2106,6 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
       <translation>Nach Typ filtern</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation>Wenn aktiviert wird die 3D-Ansichtsauswahl mit der vollständigen Objekthierarchie synchronisiert.</translation>
-    </message>
-    <message>
       <source>Sync sub-object selection</source>
       <translation>Synchronisieren der Unterobjekt-Auswahl</translation>
     </message>
@@ -2112,6 +2116,10 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <source>Clear</source>
       <translation>Löschen</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Wenn aktiviert wird die 3D-Ansichtsauswahl mit der vollständigen Objekthierarchie synchronisiert.</translation>
     </message>
   </context>
   <context>
@@ -2174,7 +2182,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
       <source>Log messages will be recorded</source>
-      <translation>Protokollmeldungen werden aufgezeichnet</translation>
+      <translation>Protokoll-Meldungen werden aufgezeichnet</translation>
     </message>
     <message>
       <source>Warnings will be recorded</source>
@@ -2205,28 +2213,28 @@ on-screen while displaying the warning</source>
     <message>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation>Protokoll-Nachrichten werden in einem Berichtsfenster dargestellt</translation>
+      <translation>Wenn eine normale Meldung aufgetreten ist, erscheint der Berichtsansicht-Dialog auf dem Bildschirm um die Meldung anzuzeigen</translation>
     </message>
     <message>
       <source>Show report view on normal message</source>
-      <translation>Berichtsansicht bei Protokollnachrichten anzeigen</translation>
+      <translation>Berichtsansicht für normale Meldungen anzeigen</translation>
     </message>
     <message>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation>Protokoll-Nachrichten werden in einem Berichtsfenster dargestellt</translation>
+      <translation>Wenn eine Protokoll-Meldung aufgetreten ist, erscheint der Berichtsansicht-Dialog auf dem Bildschirm um die Protokoll-Meldung anzuzeigen</translation>
     </message>
     <message>
       <source>Show report view on log message</source>
-      <translation>Berichtsansicht bei Protokollnachrichten anzeigen</translation>
+      <translation>Berichtsansicht für Protokoll-Meldungen anzeigen</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
-      <translation>Schriftfarbe für Protokoll Nachrichten in der Berichtsansicht</translation>
+      <translation>Schriftfarbe für normale Nachrichten in der Berichtsansicht</translation>
     </message>
     <message>
       <source>Font color for log messages in Report view panel</source>
-      <translation>Schriftfarbe für Protokoll Nachrichten in der Berichtsansicht</translation>
+      <translation>Schriftfarbe für Protokoll-Meldungen in der Berichtsansicht</translation>
     </message>
     <message>
       <source>Font color for warning messages in Report view panel</source>
@@ -2234,7 +2242,7 @@ on-screen while displaying the log message</source>
     </message>
     <message>
       <source>Font color for error messages in Report view panel</source>
-      <translation>Schriftfarbe für Fehler Nachrichten in der Berichtsansicht</translation>
+      <translation>Schriftfarbe für Fehlermeldungen in der Berichtsansicht</translation>
     </message>
     <message>
       <source>Internal Python output will be redirected
@@ -2258,11 +2266,11 @@ von der Python-Konsole in das Berichtsfenster umgeleitet</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation>Protokollmeldungen werden aufgezeichnet</translation>
+      <translation>Normale Meldungen werden aufgezeichnet</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>Normale Meldungen aufzeichnen</translation>
     </message>
   </context>
   <context>
@@ -3201,6 +3209,34 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
       <source>The directory in which the application will search for macros</source>
       <translation>Das Verzeichnis, in dem die Anwendung nach Makros sucht</translation>
     </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation type="unfinished">Recent macros menu</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation type="unfinished">Size of recent macro list</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation>Anzahl der Makros in der aktuellen Makroliste</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation type="unfinished">Shortcut count</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation type="unfinished">Keyboard Modifiers</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
@@ -3500,6 +3536,10 @@ Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation>Angloamerikanisch für Bauingenieurwesen (ft, ft/sec)</translation>
+    </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>FEM (mm, N, sek)</translation>
     </message>
   </context>
   <context>
@@ -4480,27 +4520,27 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Display message types</source>
-      <translation type="unfinished">Display message types</translation>
+      <translation>Arten der Bildschirm-Meldungen</translation>
     </message>
     <message>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Normale Meldungen</translation>
     </message>
     <message>
       <source>Log messages</source>
-      <translation type="unfinished">Log messages</translation>
+      <translation>Protokoll-Meldungen</translation>
     </message>
     <message>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Warnungen</translation>
     </message>
     <message>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Fehler</translation>
     </message>
     <message>
       <source>Show report view on</source>
-      <translation type="unfinished">Show report view on</translation>
+      <translation>Berichtsansicht anzeigen für</translation>
     </message>
   </context>
   <context>
@@ -4663,6 +4703,20 @@ Sollen die Änderungen gespeichert werden?</translation>
     <message>
       <source>PDF file</source>
       <translation>PDF-Datei</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Exakte Übereinstimmung</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Exakte Übereinstimmung</translation>
     </message>
   </context>
   <context>
@@ -5288,6 +5342,21 @@ Wollen Sie sie beenden, ohne Ihre Daten zu speichern?</translation>
     <message>
       <source>Open file %1</source>
       <translation>Öffne Datei %1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Datei nicht gefunden</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>Die Datei '%1' kann nicht geöffnet werden.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6629,6 +6698,50 @@ Wählen Sie 'Abbrechen' um abzubrechen</translation>
       <source>Override colors...</source>
       <translation>Farben überschreiben...</translation>
     </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation>Identischer physischer Pfad erkannt. Dies kann zu unerwünschtem Überschreiben des vorhandenen Dokuments führen!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Bist du sicher, dass du fortfahren möchtest?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation type="unfinished">
+
+Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>
+
+Pyhsical path: </source>
+      <translation>
+
+Physikalischer Pfad: </translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation>
+Dokument: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+  Pfad: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>Identischer physischer Pfad</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -7833,6 +7946,21 @@ Wählen Sie 'Abbrechen' um abzubrechen</translation>
     <message>
       <source>Recent file list</source>
       <translation>Zuletzt geöffnete Dateien</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Makro</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation>Aktuelle Makros</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation>Aktuelle Makroliste</translation>
     </message>
   </context>
   <context>

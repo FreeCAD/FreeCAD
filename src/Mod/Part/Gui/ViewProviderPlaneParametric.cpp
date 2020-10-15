@@ -41,7 +41,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderPlaneParametric, PartGui::ViewProviderPart)
 
 ViewProviderPlaneParametric::ViewProviderPlaneParametric()
 {
-    sPixmap = "Tree_Part_Plane_Parametric.svg";
+    sPixmap = "Part_Plane_Parametric";
 }
 
 ViewProviderPlaneParametric::~ViewProviderPlaneParametric()

@@ -928,6 +928,43 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.startDepthSet.setEnabled(False)
             self.form.finalDepthSet.setEnabled(False)
 
+class TaskPanelDiametersPage(TaskPanelPage):
+    '''Page controller for diameters.'''
+
+    def __init__(self, obj, features):
+        super(TaskPanelDiametersPage, self).__init__(obj, features)
+
+        # members initialized later
+        self.clearanceHeight = None
+        self.safeHeight = None
+
+    def getForm(self):
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageDiametersEdit.ui")
+
+    def initPage(self, obj):
+        self.minDiameter = PathGui.QuantitySpinBox(self.form.minDiameter, obj, 'MinDiameter')
+        self.maxDiameter = PathGui.QuantitySpinBox(self.form.maxDiameter, obj, 'MaxDiameter')
+
+    def getTitle(self, obj):
+        return translate("Path", "Diameters")
+
+    def getFields(self, obj):
+        self.minDiameter.updateProperty()
+        self.maxDiameter.updateProperty()
+
+    def setFields(self,  obj):
+        self.minDiameter.updateSpinBox()
+        self.maxDiameter.updateSpinBox()
+
+    def getSignalsForUpdate(self, obj):
+        signals = []
+        signals.append(self.form.minDiameter.editingFinished)
+        signals.append(self.form.maxDiameter.editingFinished)
+        return signals
+
+    def pageUpdateData(self, obj, prop):
+        if prop in ['MinDiameter', 'MaxDiameter']:
+            self.setFields(obj)
 
 class TaskPanel(object):
     '''
@@ -953,6 +990,8 @@ class TaskPanel(object):
         self.finalDepth = None
         self.stepDown = None
         self.buttonBox = None
+        self.minDiameter = None
+        self.maxDiameter = None
 
         features = obj.Proxy.opFeatures(obj)
         opPage.features = features
@@ -980,7 +1019,13 @@ class TaskPanel(object):
                 self.featurePages.append(opPage.taskPanelHeightsPage(obj, features))
             else:
                 self.featurePages.append(TaskPanelHeightsPage(obj, features))
-
+        
+        if PathOp.FeatureDiameters & features:
+            if hasattr(opPage, 'taskPanelDiametersPage'):
+                self.featurePages.append(opPage.taskPanelDiametersPage(obj, features))
+            else:
+                self.featurePages.append(TaskPanelDiametersPage(obj, features))
+        
         self.featurePages.append(opPage)
 
         for page in self.featurePages:

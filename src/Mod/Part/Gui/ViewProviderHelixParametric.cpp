@@ -37,7 +37,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderHelixParametric, PartGui::ViewProviderSplin
 
 ViewProviderHelixParametric::ViewProviderHelixParametric()
 {
-    sPixmap = "Part_Helix_Parametric.svg";
+    sPixmap = "Part_Helix_Parametric";
 }
 
 ViewProviderHelixParametric::~ViewProviderHelixParametric()
@@ -62,7 +62,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderSpiralParametric, PartGui::ViewProviderSpli
 
 ViewProviderSpiralParametric::ViewProviderSpiralParametric()
 {
-    sPixmap = "Part_Spiral_Parametric.svg";
+    sPixmap = "Part_Spiral_Parametric";
 }
 
 ViewProviderSpiralParametric::~ViewProviderSpiralParametric()

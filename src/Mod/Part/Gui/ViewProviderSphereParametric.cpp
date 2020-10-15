@@ -38,7 +38,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderSphereParametric, PartGui::ViewProviderPart
 
 ViewProviderSphereParametric::ViewProviderSphereParametric()
 {
-  sPixmap = "Tree_Part_Sphere_Parametric.svg";
+  sPixmap = "Part_Sphere_Parametric";
 }
 
 ViewProviderSphereParametric::~ViewProviderSphereParametric()
@@ -65,7 +65,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderEllipsoid, PartGui::ViewProviderPart)
 
 ViewProviderEllipsoid::ViewProviderEllipsoid()
 {
-    sPixmap = "Tree_Part_Ellipsoid_Parametric.svg";
+    sPixmap = "Part_Ellipsoid_Parametric";
 }
 
 ViewProviderEllipsoid::~ViewProviderEllipsoid()

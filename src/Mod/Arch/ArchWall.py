@@ -57,7 +57,7 @@ __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face=None,name="Wall"):
+def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face=None,name=None):
     """Create a wall based on a given object, and returns the generated wall.
 
     TODO: It is unclear what defines which units this function uses.
@@ -104,7 +104,10 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Wall")
-    obj.Label = translate("Arch",name)
+    if name:
+        obj.Label = name
+    else:
+        obj.Label = translate("Arch","Wall")
     _Wall(obj)
     if FreeCAD.GuiUp:
         _ViewProviderWall(obj.ViewObject)

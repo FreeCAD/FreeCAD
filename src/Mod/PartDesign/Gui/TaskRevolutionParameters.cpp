@@ -178,9 +178,7 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
         }
 
         //add part axes
-        App::DocumentObject* obj = vp->getObject();
-
-        PartDesign::Body * body = PartDesign::Body::findBodyOf ( obj );
+        PartDesign::Body * body = PartDesign::Body::findBodyOf ( pcFeat );
         if (body) {
             try {
                 App::Origin* orig = body->getOrigin();
@@ -249,13 +247,12 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
         exitSelectionMode();
         std::vector<std::string> axis;
         App::DocumentObject* selObj;
-        getReferencedSelection(vp->getObject(), msg, selObj, axis);
-        if(!selObj)
-            return;
-        propReferenceAxis->setValue(selObj, axis);
+        if (getReferencedSelection(vp->getObject(), msg, selObj, axis) && selObj) {
+            propReferenceAxis->setValue(selObj, axis);
 
-        recomputeFeature();
-        updateUI();
+            recomputeFeature();
+            updateUI();
+        }
     }
 }
 
@@ -278,6 +275,9 @@ void TaskRevolutionParameters::onAxisChanged(int num)
 
     App::DocumentObject *oldRefAxis = propReferenceAxis->getValue();
     std::vector<std::string> oldSubRefAxis = propReferenceAxis->getSubValues();
+    std::string oldRefName;
+    if (!oldSubRefAxis.empty())
+        oldRefName = oldSubRefAxis.front();
 
     App::PropertyLinkSub &lnk = *(axesInList[num]);
     if (lnk.getValue() == 0) {
@@ -295,13 +295,17 @@ void TaskRevolutionParameters::onAxisChanged(int num)
     try {
         App::DocumentObject *newRefAxis = propReferenceAxis->getValue();
         const std::vector<std::string> &newSubRefAxis = propReferenceAxis->getSubValues();
+        std::string newRefName;
+        if (!newSubRefAxis.empty())
+            newRefName = newSubRefAxis.front();
+
         if (oldRefAxis != newRefAxis ||
             oldSubRefAxis.size() != newSubRefAxis.size() ||
-            oldSubRefAxis[0] != newSubRefAxis[0]) {
+            oldRefName != newRefName) {
             bool reversed = propReversed->getValue();
-            if(pcRevolution->isDerivedFrom(PartDesign::Revolution::getClassTypeId()))
+            if (pcRevolution->isDerivedFrom(PartDesign::Revolution::getClassTypeId()))
                 reversed = static_cast<PartDesign::Revolution*>(pcRevolution)->suggestReversed();
-            if(pcRevolution->isDerivedFrom(PartDesign::Groove::getClassTypeId()))
+            if (pcRevolution->isDerivedFrom(PartDesign::Groove::getClassTypeId()))
                 reversed = static_cast<PartDesign::Groove*>(pcRevolution)->suggestReversed();
 
             if (reversed != propReversed->getValue()) {

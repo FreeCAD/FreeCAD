@@ -220,7 +220,7 @@ CmdPartPrimitives::CmdPartPrimitives()
     sToolTipText  = QT_TR_NOOP("Creation of parametrized geometric primitives");
     sWhatsThis    = "Part_Primitives";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_CreatePrimitives";
+    sPixmap       = "Part_Primitives";
 }
 
 void CmdPartPrimitives::activated(int iMsg)
@@ -2158,9 +2158,11 @@ CmdColorPerFace::CmdColorPerFace()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Color per face");
-    sToolTipText  = QT_TR_NOOP("Set color per face");
+    sToolTipText  = QT_TR_NOOP("Set the color of each individual face "
+                               "of the selected object.");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Part_ColorPerFace";
+    sPixmap       = "Part_ColorFace";
 }
 
 void CmdColorPerFace::activated(int iMsg)
@@ -2169,13 +2171,11 @@ void CmdColorPerFace::activated(int iMsg)
     if (getActiveGuiDocument()->getInEdit())
         getActiveGuiDocument()->resetEdit();
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if(sel.empty())
+    if (sel.empty())
         return;
-    Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sel.front());
-    // FIXME: Need a way to force 'Color' edit mode
-    // #0000477: Proper interface for edit modes of view provider
+    PartGui::ViewProviderPartExt* vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(sel.front()));
     if (vp)
-        getActiveGuiDocument()->setEdit(vp, Gui::ViewProvider::Color);
+        vp->changeFaceColors();
 }
 
 bool CmdColorPerFace::isActive(void)
@@ -2197,7 +2197,9 @@ CmdMeasureLinear::CmdMeasureLinear()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Measure Linear");
-    sToolTipText  = QT_TR_NOOP("Measure Linear");
+    sToolTipText  = QT_TR_NOOP("Measure the linear distance between two points;\n"
+                               "if edges or faces are picked, it will measure\n"
+                               "between two vertices of them.");
     sWhatsThis    = "Part_Measure_Linear";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Linear";
@@ -2226,7 +2228,7 @@ CmdMeasureAngular::CmdMeasureAngular()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Measure Angular");
-    sToolTipText  = QT_TR_NOOP("Measure Angular");
+    sToolTipText  = QT_TR_NOOP("Measure the angle between two edges.");
     sWhatsThis    = "Part_Measure_Angular";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Angular";
@@ -2255,7 +2257,8 @@ CmdMeasureRefresh::CmdMeasureRefresh()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Refresh");
-    sToolTipText  = QT_TR_NOOP("Refresh");
+    sToolTipText  = QT_TR_NOOP("Recalculate the dimensions\n"
+                               "if the measured points have moved.");
     sWhatsThis    = "Part_Measure_Refresh";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Refresh";
@@ -2284,7 +2287,7 @@ CmdMeasureClearAll::CmdMeasureClearAll()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Clear All");
-    sToolTipText  = QT_TR_NOOP("Clear All");
+    sToolTipText  = QT_TR_NOOP("Clear all dimensions from the screen.");
     sWhatsThis    = "Part_Measure_Clear_All";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Clear_All";
@@ -2313,7 +2316,9 @@ CmdMeasureToggleAll::CmdMeasureToggleAll()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Toggle All");
-    sToolTipText  = QT_TR_NOOP("Toggle All");
+    sToolTipText  = QT_TR_NOOP("Toggle on and off "
+                               "all currently visible dimensions,\n"
+                               "direct, orthogonal, and angular.");
     sWhatsThis    = "Part_Measure_Toggle_All";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Toggle_All";
@@ -2337,21 +2342,23 @@ bool CmdMeasureToggleAll::isActive(void)
 }
 
 //===========================================================================
-// Part_Measure_Toggle_3d
+// Part_Measure_Toggle_3D
 //===========================================================================
 
 DEF_STD_CMD_A(CmdMeasureToggle3d)
 
 CmdMeasureToggle3d::CmdMeasureToggle3d()
-  : Command("Part_Measure_Toggle_3d")
+  : Command("Part_Measure_Toggle_3D")
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Toggle 3d");
-    sToolTipText  = QT_TR_NOOP("Toggle 3d");
-    sWhatsThis    = "Part_Measure_Toggle_3d";
+    sMenuText     = QT_TR_NOOP("Toggle 3D");
+    sToolTipText  = QT_TR_NOOP("Toggle on and off "
+                               "all direct dimensions,\n"
+                               "including angular.");
+    sWhatsThis    = "Part_Measure_Toggle_3D";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Measure_Toggle_3d";
+    sPixmap       = "Part_Measure_Toggle_3D";
 }
 
 void CmdMeasureToggle3d::activated(int iMsg)
@@ -2377,7 +2384,10 @@ CmdMeasureToggleDelta::CmdMeasureToggleDelta()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Toggle Delta");
-    sToolTipText  = QT_TR_NOOP("Toggle Delta");
+    sToolTipText  = QT_TR_NOOP("Toggle on and off "
+                               "all orthogonal dimensions,\n"
+                               "meaning that a direct dimension will be decomposed\n"
+                               "into its X, Y, and Z components.");
     sWhatsThis    = "Part_Measure_Toggle_Delta";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Toggle_Delta";
@@ -2430,27 +2440,30 @@ bool CmdBoxSelection::isActive(void)
 DEF_STD_CMD_A(CmdPartProjectionOnSurface)
 
 CmdPartProjectionOnSurface::CmdPartProjectionOnSurface()
-  :Command("Part_ProjectionOnSurface")
+    :Command("Part_ProjectionOnSurface")
 {
-  sAppModule = "Part";
-  sGroup = QT_TR_NOOP("Part");
-  sMenuText = QT_TR_NOOP("Create projection on surface...");
-  sToolTipText = QT_TR_NOOP("Create projection on surface...");
-  sWhatsThis = "Part_ProjectionOnSurface";
-  sStatusTip = sToolTipText;
-  sPixmap = "Part_ProjectionOnSurface";
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Create projection on surface...");
+    sToolTipText = QT_TR_NOOP("Project edges, wires, or faces of one object\n"
+                              "onto a face of another object.\n"
+                              "The camera view determines the direction\n"
+                              "of projection.");
+    sWhatsThis = "Part_ProjectionOnSurface";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_ProjectionOnSurface";
 }
 
 void CmdPartProjectionOnSurface::activated(int iMsg)
 {
-  Q_UNUSED(iMsg);
-  PartGui::TaskProjectionOnSurface* dlg = new PartGui::TaskProjectionOnSurface();
-  Gui::Control().showDialog(dlg);
+    Q_UNUSED(iMsg);
+    PartGui::TaskProjectionOnSurface* dlg = new PartGui::TaskProjectionOnSurface();
+    Gui::Control().showDialog(dlg);
 }
 
 bool CmdPartProjectionOnSurface::isActive(void)
 {
-  return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
 void CreatePartCommands(void)

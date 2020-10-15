@@ -318,7 +318,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
       <source>Apply face colors to mesh</source>
-      <translation>Stosowanie kolorów powierzchni do siatki</translation>
+      <translation>Zastosuj kolor powierzchni do siatki</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="119"/>

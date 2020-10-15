@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Filling</string>
+   <string>Fill Surface</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
@@ -25,7 +25,7 @@
      <item>
       <widget class="QPushButton" name="buttonInitFace">
        <property name="text">
-        <string>Initial Face</string>
+        <string>Support surface</string>
        </property>
       </widget>
      </item>
@@ -40,12 +40,22 @@
    </item>
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
+     <property name="toolTip">
+      <string>Add the edges that will limit the surface.</string>
+     </property>
      <property name="title">
-      <string>Boundary</string>
+      <string>Boundary edges</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0" colspan="3">
-       <widget class="QListWidget" name="listBoundary"/>
+       <widget class="QListWidget" name="listBoundary">
+        <property name="toolTip">
+         <string>List can be reordered by dragging</string>
+        </property>
+        <property name="dragDropMode">
+         <enum>QAbstractItemView::InternalMove</enum>
+        </property>
+       </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label">

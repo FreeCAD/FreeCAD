@@ -21,16 +21,26 @@
 #*                                                                         *
 #***************************************************************************
 
-import os
-import sys
 import codecs
-import FreeCAD
-import shutil
+import os
 import re
+import shutil
+import sys
+import ctypes
 
-## @package AddonManager_utilities
-#  \ingroup ADDONMANAGER
-#  \brief Utilities to work across different platforms, providers and python versions
+if sys.version_info.major < 3:
+    import urllib2
+    from urllib2 import URLError
+    from urlparse import urlparse
+else:
+    import urllib.request as urllib2
+    from urllib.error import URLError
+    from urllib.parse import urlparse
+
+from PySide import QtGui, QtCore
+
+import FreeCAD
+import FreeCADGui
 
 # check for SSL support
 
@@ -44,14 +54,17 @@ else:
         ssl_ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
     except AttributeError:
         pass
-        
 
-        
+
+#  @package AddonManager_utilities
+#  \ingroup ADDONMANAGER
+#  \brief Utilities to work across different platforms, providers and python versions
+#  @{
+
+
 def translate(context, text, disambig=None):
-    
     "Main translation function"
-    
-    from PySide import QtGui
+
     try:
         _encoding = QtGui.QApplication.UnicodeUTF8
     except AttributeError:
@@ -61,18 +74,16 @@ def translate(context, text, disambig=None):
 
 
 def symlink(source, link_name):
-
     "creates a symlink of a file, if possible"
 
     if os.path.exists(link_name) or os.path.lexists(link_name):
-        #print("macro already exists")
+        # print("macro already exists")
         pass
     else:
         os_symlink = getattr(os, "symlink", None)
         if callable(os_symlink):
             os_symlink(source, link_name)
         else:
-            import ctypes
             csl = ctypes.windll.kernel32.CreateSymbolicLinkW
             csl.argtypes = (ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32)
             csl.restype = ctypes.c_ubyte
@@ -85,57 +96,48 @@ def symlink(source, link_name):
 
 
 def urlopen(url):
-
     """Opens an url with urllib2"""
 
     timeout = 5
 
-    if sys.version_info.major < 3:
-        import urllib2
-    else:
-        import urllib.request as urllib2
-        
     # Proxy an ssl configuration
     pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-    if pref.GetBool("NoProxyCheck",True):
-        proxies = {}  
+    if pref.GetBool("NoProxyCheck", True):
+        proxies = {}
     else:
-        if pref.GetBool("SystemProxyCheck",False):
-            proxy = urllib2.getproxies()  
-            proxies = {"http": proxy.get('http'),"https": proxy.get('http')}
-        elif pref.GetBool("UserProxyCheck",False):
-            proxy = pref.GetString("ProxyUrl","")   
-            proxies = {"http": proxy, "https": proxy}                         
+        if pref.GetBool("SystemProxyCheck", False):
+            proxy = urllib2.getproxies()
+            proxies = {"http": proxy.get('http'), "https": proxy.get('http')}
+        elif pref.GetBool("UserProxyCheck", False):
+            proxy = pref.GetString("ProxyUrl", "")
+            proxies = {"http": proxy, "https": proxy}
 
     if ssl_ctx:
         handler = urllib2.HTTPSHandler(context=ssl_ctx)
     else:
         handler = {}
-    proxy_support = urllib2.ProxyHandler(proxies)    
+    proxy_support = urllib2.ProxyHandler(proxies)
     opener = urllib2.build_opener(proxy_support, handler)
-    urllib2.install_opener(opener) 
-    
+    urllib2.install_opener(opener)
+
     # Url opening
+    req = urllib2.Request(url,
+                          headers={'User-Agent': "Magic Browser"})
     try:
-        u = urllib2.urlopen(url, timeout=timeout)
-    except:
+        u = urllib2.urlopen(req, timeout=timeout)
+    except Exception:
         return None
     else:
         return u
 
-def getserver(url):
 
+def getserver(url):
     """returns the server part of an url"""
 
-    if sys.version_info.major < 3:
-        from urlparse import urlparse
-    else:
-        from urllib.parse import urlparse
     return '{uri.scheme}://{uri.netloc}/'.format(uri=urlparse(url))
 
 
 def update_macro_details(old_macro, new_macro):
-
     """Update a macro with information from another one
 
     Update a macro with information from another one, supposedly the same but
@@ -155,7 +157,6 @@ def update_macro_details(old_macro, new_macro):
 
 
 def install_macro(macro, macro_repo_dir):
-
     """Install a macro and all its related files
 
     Returns True if the macro was installed correctly.
@@ -199,7 +200,6 @@ def install_macro(macro, macro_repo_dir):
 
 
 def remove_macro(macro):
-
     """Remove a macro and all its related files
 
     Returns True if the macro was removed correctly.
@@ -229,7 +229,6 @@ def remove_macro(macro):
 
 
 def remove_directory_if_empty(dir):
-
     """Remove the directory if it is empty
 
     Directory FreeCAD.getUserMacroDir(True) will not be removed even if empty.
@@ -241,76 +240,86 @@ def remove_directory_if_empty(dir):
         os.rmdir(dir)
 
 
-def restartFreeCAD():
-
+def restart_freecad():
     "Shuts down and restarts FreeCAD"
 
-    import FreeCADGui
-    from PySide import QtGui,QtCore
     args = QtGui.QApplication.arguments()[1:]
     if FreeCADGui.getMainWindow().close():
-        QtCore.QProcess.startDetached(QtGui.QApplication.applicationFilePath(),args)
+        QtCore.QProcess.startDetached(QtGui.QApplication.applicationFilePath(), args)
 
 
-def getZipUrl(baseurl):
-    
+def get_zip_url(baseurl):
     "Returns the location of a zip file from a repo, if available"
-    
+
     url = getserver(baseurl).strip("/")
     if url.endswith("github.com"):
         return baseurl+"/archive/master.zip"
-    elif url.endswith("framagit.org"):
+    elif url.endswith("framagit.org") or url.endswith("gitlab.com"):
         # https://framagit.org/freecad-france/mooc-workbench/-/archive/master/mooc-workbench-master.zip
         reponame = baseurl.strip("/").split("/")[-1]
         return baseurl+"/-/archive/master/"+reponame+"-master.zip"
     else:
-        print("Debug: addonmanager_utilities.getZipUrl: Unknown git host:",url)
+        print("Debug: addonmanager_utilities.get_zip_url: Unknown git host:", url)
         return None
 
 
-def getReadmeUrl(url):
-    
+def get_readme_url(url):
     "Returns the location of a readme file"
 
-    if ("github" in url) or ("framagit" in url):
-        return url+"/blob/master/README.md"
-    print("Debug: addonmanager_utilities.getReadmeUrl: Unknown git host:",url)
+    if "github" in url or "framagit" in url or "gitlab" in url:
+        return url+"/raw/master/README.md"
+    else:
+        print("Debug: addonmanager_utilities.get_readme_url: Unknown git host:", url)
     return None
 
 
-def getReadmeRegex(url):
-    
-    """Return a regex string that extracts the contents to be displayed in the description
-    panel of the Addon manager, from raw HTML data (the readme's html rendering usually)"""
-    
-    if ("github" in url):
-        return "<article.*?>(.*?)</article>"
-    elif ("framagit" in url):
-        return None # the readme content on framagit is generated by javascript so unretrievable by urlopen
-    print("Debug: addonmanager_utilities.getReadmeRegex: Unknown git host:",url)
-    return None
-
-
-def getDescRegex(url):
-    
+def get_desc_regex(url):
     """Returns a regex string that extracts a WB description to be displayed in the description
     panel of the Addon manager, if the README could not be found"""
 
-    if ("github" in url):
-        return "<meta property=\"og:description\" content=\"(.*?)\""
-    elif ("framagit" in url):
-        return "<meta.*?content=\"(.*?)\".*?og\:description.*?>"
-    print("Debug: addonmanager_utilities.getDescRegex: Unknown git host:",url)
+    if "github" in url:
+        return r'<meta property="og:description" content="(.*?)"'
+    elif "framagit" in url or "gitlab" in url:
+        return r'<meta.*?content="(.*?)".*?og:description.*?>'
+    print("Debug: addonmanager_utilities.get_desc_regex: Unknown git host:", url)
     return None
 
-def getRepoUrl(text):
-    
-    "finds an URL in a given piece of text extracted from github's HTML"
-    
-    if ("href" in text):
-        return "https://github.com/" + re.findall("href=\"\/(.*?)\/tree",text)[0]
-    elif ("MOOC" in text):
-        # Bad hack for now... We need to do better
-        return "https://framagit.org/freecad-france/mooc-workbench"
-    print("Debug: addonmanager_utilities.getRepoUrl: Unable to find repo:",text)
-    return None
+
+def get_readme_html_url(url):
+    """Returns the location of a html file containing readme"""
+
+    if "github" in url:
+        return url + "/blob/master/README.md"
+    else:
+        print("Debug: addonmanager_utilities.get_readme_html_url: Unknown git host:", url)
+        return None
+
+
+def get_readme_regex(url):
+    """Return a regex string that extracts the contents to be displayed in the description
+    panel of the Addon manager, from raw HTML data (the readme's html rendering usually)"""
+
+    if ("github" in url):
+        return "<article.*?>(.*?)</article>"
+    else:
+        print("Debug: addonmanager_utilities.get_readme_regex: Unknown git host:", url)
+        return None
+
+
+def fix_relative_links(text, base_url):
+    """Replace markdown image relative links with
+    absolute ones using the base URL"""
+
+    new_text = ""
+    for line in text.splitlines():
+        for link in (re.findall(r"!\[.*?\]\((.*?)\)", line) +
+                     re.findall(r"src\s*=\s*[\"'](.+?)[\"']", line)):
+            parts = link.split('/')
+            if len(parts) < 2 or not re.match(r"^http|^www|^.+\.|^/", parts[0]):
+                newlink = os.path.join(base_url, link.lstrip('./'))
+                line = line.replace(link, newlink)
+                print("Debug: replaced " + link + " with " + newlink)
+        new_text = new_text + '\n' + line
+    return new_text
+
+#  @}

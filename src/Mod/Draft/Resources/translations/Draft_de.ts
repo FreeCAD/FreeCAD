@@ -61,7 +61,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="156"/>
       <source>The font to use for texts and dimensions</source>
-      <translation>Die Schriftart für Texte und Abmessungen</translation>
+      <translation>Die Schriftart für Text- und Maßeinträge</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="183"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="324"/>
       <source>Dimension overshoot</source>
-      <translation>Maßlinie-Überstand</translation>
+      <translation>Maßlinienüberstand</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="334"/>
@@ -1338,7 +1338,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="455"/>
       <source>Show the unit suffix in dimensions</source>
-      <translation>Zeige das Einheiten-Suffix in den Bemaßungen</translation>
+      <translation>Zeige Maße mit Maßeinheiten an</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="93"/>
@@ -1623,7 +1623,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="273"/>
       <source>Dimension line overshoot</source>
-      <translation>Maßlinie Verlängerung</translation>
+      <translation>Maßlinienüberstand</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="280"/>
@@ -2242,6 +2242,11 @@ Dieser Wert ist die maximale Segmentlänge. </translation>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Unbekannter SVG-Export-Stil wird auf Übersetzte umgestellt</translation>
     </message>
+    <message>
+      <location filename="../../importSVG.py" line="1826"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
+    </message>
   </context>
   <context>
     <name>draft</name>
@@ -2755,7 +2760,7 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
     <message>
       <location filename="../../DraftGui.py" line="640"/>
       <source>Selects an existing edge to be measured by this dimension</source>
-      <translation>Wählt eine vorhandene Kante aus, die durch diese Bemaßung beschrieben wird</translation>
+      <translation>Zur Auswahl einer vorhandenen Kante, die bemaßt werden soll</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="645"/>

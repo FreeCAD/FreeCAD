@@ -439,25 +439,23 @@ def getColorFromStyledItem(styled_item):
 
     # In current IFC release (IFC2x3) only one presentation style
     # assignment shall be assigned.
-    # TODO: check IFC4
+    # In IFC4 `IfcPresentationStyleAssignment` is deprecated
+    # In IFC4 multiple styles are assigned to style in 'IfcStyleItem' instead
 
-    if len(styled_item.Styles) != 1:
-        # Normally, only one element in `Styles` should be available.
-        _wrn("More than one 'Style' in 'IfcStyleItem', do nothing.")
-
-        # These two cases do nothing so we just comment them out.
-        # if len(styled_item.Styles) == 0:
-        #     # ca 100x in 210_King_Merged.ifc
-        #     # Empty styles, #4952778=IfcStyledItem(#4952779,(),$)
-        #     # this is an error in the IFC file in my opinion
-        #     # print(ifcfile[p])
-        #     # print(styled_item)
-        #     # print(styled_item.Styles)
-        #     pass
-        # else:
-        #     # Never seen an IFC with more than one element in `Styles`
-        #     pass
+    # print(ifcfile[p])
+    # print(styled_item)
+    # print(styled_item.Styles)
+    if len(styled_item.Styles) == 0:
+        # IN IFC2x3, only one element in `Styles` should be available.
+        _wrn("No 'Style' in 'IfcStyleItem', do nothing.")
+        # ca 100x in 210_King_Merged.ifc
+        # Empty styles, #4952778=IfcStyledItem(#4952779,(),$)
+        # this is an error in the IFC file in my opinion
     else:
+        # never seen an ifc with more than one Styles in IfcStyledItem
+        # the above seams to only apply for IFC2x3, IFC4 can have them 
+        # see https://forum.freecadweb.org/viewtopic.php?f=39&t=33560&p=437056#p437056
+
         # Get the `IfcPresentationStyleAssignment`, there should only be one,
         if styled_item.Styles[0].is_a('IfcPresentationStyleAssignment'):
             assign_style = styled_item.Styles[0]

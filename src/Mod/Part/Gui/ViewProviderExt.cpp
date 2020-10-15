@@ -1583,6 +1583,19 @@ void ViewProviderPartExt::setEditViewer(Gui::View3DInventorViewer *viewer, int M
         Gui::ViewProviderGeometryObject::setEditViewer(viewer,ModNum);
 }
 
+bool ViewProviderPartExt::changeFaceColors()
+{
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg) {
+        Gui::Control().showDialog(dlg);
+        return false;
+    }
+
+    Gui::Selection().clearSelection();
+    Gui::Control().showDialog(new TaskFaceColors(this));
+    return true;
+}
+
 bool ViewProviderPartExt::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Color) {
