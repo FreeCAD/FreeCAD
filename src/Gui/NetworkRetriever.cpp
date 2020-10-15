@@ -374,7 +374,8 @@ void NetworkRetriever::wgetFinished(int exitCode, QProcess::ExitStatus status)
 bool NetworkRetriever::testWget()
 {
     QProcess proc;
-    proc.start(QString::fromLatin1("wget"));
+    proc.setProgram(QString::fromLatin1("wget"));
+    proc.start();
     bool ok = proc.state() == QProcess::Running;
     proc.kill();
     proc.waitForFinished();
