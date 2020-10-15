@@ -1158,7 +1158,7 @@ bool MeshEvalRangePoint::Evaluate()
     unsigned long ulCtPoints = _rclMesh.CountPoints();
 
     for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it) {
-        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, std::bind2nd(std::greater_equal<unsigned long>(), ulCtPoints)) < it->_aulPoints + 3)
+        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, [ulCtPoints](unsigned long i) { return i >= ulCtPoints; }) < it->_aulPoints + 3)
             return false;
     }
 
@@ -1173,7 +1173,7 @@ std::vector<unsigned long> MeshEvalRangePoint::GetIndices() const
 
     unsigned long ind=0;
     for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
-        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, std::bind2nd(std::greater_equal<unsigned long>(), ulCtPoints)) < it->_aulPoints + 3)
+        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, [ulCtPoints](unsigned long i) { return i >= ulCtPoints; }) < it->_aulPoints + 3)
             aInds.push_back(ind);
     }
 

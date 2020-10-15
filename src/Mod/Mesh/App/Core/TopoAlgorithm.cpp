@@ -1587,7 +1587,10 @@ void MeshComponents::SearchForComponents(TMode tMode, const std::vector<unsigned
 
   // start from the first not visited facet
   ulVisited = cAlgo.CountFacetFlag(MeshFacet::VISIT);
-  iTri = std::find_if(iTri, iEnd, std::bind2nd(MeshIsNotFlag<MeshFacet>(), MeshFacet::VISIT));
+  MeshIsNotFlag<MeshFacet> flag;
+  iTri = std::find_if(iTri, iEnd, [flag](const MeshFacet& f) {
+      return flag(f, MeshFacet::VISIT);
+  });
   ulStartFacet = iTri - iBeg;
 
   // visitor
@@ -1611,7 +1614,9 @@ void MeshComponents::SearchForComponents(TMode tMode, const std::vector<unsigned
     // if the mesh consists of several topologic independent components
     // We can search from position 'iTri' on because all elements _before_ are already visited
     // what we know from the previous iteration.
-    iTri = std::find_if(iTri, iEnd, std::bind2nd(MeshIsNotFlag<MeshFacet>(), MeshFacet::VISIT));
+    iTri = std::find_if(iTri, iEnd, [flag](const MeshFacet& f) {
+        return flag(f, MeshFacet::VISIT);
+    });
 
     if (iTri < iEnd)
       ulStartFacet = iTri - iBeg;
