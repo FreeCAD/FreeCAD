@@ -290,7 +290,6 @@ class ObjectOp(PathOp.ObjectOp):
         paths = []
         heights = [i for i in self.depthparams]
         PathLog.debug('depths: {}'.format(heights))
-        lstIdx = len(heights) - 1
         for i in range(0, len(heights)):
             for baseShape in edgeList:
                 hWire = Part.Wire(Part.__sortEdges__(baseShape.Edges))
@@ -326,7 +325,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.endVector = end_vector # pylint: disable=attribute-defined-outside-init
 
         simobj = None
-        if getsim and False:
+        if getsim:
             areaParams['ToolRadius'] = self.radius - self.radius * .005
             area.setParams(**areaParams)
             sec = area.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
@@ -356,6 +355,8 @@ class ObjectOp(PathOp.ObjectOp):
         self.useTempJobClones('Delete')  # Clear temporary group and recreate for temp job clones
         self.rotStartDepth = None  # pylint: disable=attribute-defined-outside-init
 
+        start_depth = obj.StartDepth.Value
+        final_depth = obj.FinalDepth.Value
         if obj.EnableRotation != 'Off':
             # Calculate operation heights based upon rotation radii
             opHeights = self.opDetermineRotationRadii(obj)
@@ -364,23 +365,23 @@ class ObjectOp(PathOp.ObjectOp):
 
             # Set clearance and safe heights based upon rotation radii
             if obj.EnableRotation == 'A(x)':
-                strDep = self.xRotRad
+                start_depth = self.xRotRad
             elif obj.EnableRotation == 'B(y)':
-                strDep = self.yRotRad
+                start_depth = self.yRotRad
             else:
-                strDep = max(self.xRotRad, self.yRotRad)
-            finDep = -1 * strDep
+                start_depth = max(self.xRotRad, self.yRotRad)
+            final_depth = -1 * start_depth
 
-            self.rotStartDepth = strDep
-            obj.ClearanceHeight.Value = strDep + self.clrOfset
-            obj.SafeHeight.Value = strDep + self.safOfst
+            self.rotStartDepth = start_depth
+            # The next two lines are improper code.
+            # The ClearanceHeight and SafeHeight need to be set in opSetDefaultValues() method.
+            # They should not be redefined here, so this entire `if...:` statement needs relocated.
+            obj.ClearanceHeight.Value = start_depth + self.clrOfset
+            obj.SafeHeight.Value = start_depth + self.safOfst
 
             # Create visual axes when debugging.
             if PathLog.getLevel(PathLog.thisModule()) == 4:
                 self.visualAxis()
-        else:
-            strDep = obj.StartDepth.Value
-            finDep = obj.FinalDepth.Value
 
         # Set axial feed rates based upon horizontal feed rates
         safeCircum = 2 * math.pi * obj.SafeHeight.Value
@@ -403,8 +404,8 @@ class ObjectOp(PathOp.ObjectOp):
         for shp in aOS:
             if len(shp) == 2:
                 (fc, iH) = shp
-                #     fc, iH,   sub,   angle, axis,      strtDep,             finDep
-                tup = fc, iH, 'otherOp', 0.0, 'S', obj.StartDepth.Value, obj.FinalDepth.Value
+                #     fc, iH,   sub,   angle, axis,  strtDep,     finDep
+                tup = fc, iH, 'otherOp', 0.0, 'S', start_depth, final_depth
                 shapes.append(tup)
             else:
                 shapes.append(shp)

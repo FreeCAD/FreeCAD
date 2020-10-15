@@ -350,7 +350,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 subsList = o[1]
                 angle = o[2]
                 axis = o[3]
-                stock = o[4]
+                # stock = o[4]
 
                 for sub in subsList:
                     if 'Face' in sub:
@@ -539,10 +539,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 return (False, 0, 0)
             else:
                 tmpWire = FreeCAD.ActiveDocument.addObject('Part::Feature', wireName).Shape = wr
-                tmpWire = FreeCAD.ActiveDocument.getObject(wireName)
-                tmpExt = FreeCAD.ActiveDocument.addObject('Part::Extrusion', extName)
+                tmpWireObj = FreeCAD.ActiveDocument.getObject(wireName)
+                tmpExtObj = FreeCAD.ActiveDocument.addObject('Part::Extrusion', extName)
                 tmpExt = FreeCAD.ActiveDocument.getObject(extName)
-                tmpExt.Base = tmpWire
+                tmpExt.Base = tmpWireObj
                 tmpExt.DirMode = "Normal"
                 tmpExt.DirLink = None
                 tmpExt.LengthFwd = 10.0
@@ -555,8 +555,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
                 tmpExt.recompute()
                 tmpExt.purgeTouched()
-                tmpWire.purgeTouched()
-                return (True, tmpWire, tmpExt)
+                tmpWireObj.purgeTouched()
+                return (True, tmpWireObj, tmpExt)
 
         def roundValue(precision, val):
             # Convert VALxe-15 numbers to zero
@@ -705,7 +705,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     if FreeCAD.ActiveDocument.getObject(fName):
                         FreeCAD.ActiveDocument.removeObject(fName)
 
-                    tmpFace = FreeCAD.ActiveDocument.addObject('Part::Feature', fName).Shape = mFF
+                    tmpFaceObj = FreeCAD.ActiveDocument.addObject('Part::Feature', fName).Shape = mFF
                     tmpFace = FreeCAD.ActiveDocument.getObject(fName)
                     tmpFace.purgeTouched()
 
