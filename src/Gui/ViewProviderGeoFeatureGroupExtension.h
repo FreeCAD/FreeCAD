@@ -59,6 +59,8 @@ public:
         ViewProviderExtension::extensionHide();
     }
 
+    virtual void extensionFinishRestoring() override;
+
     virtual bool extensionGetElementPicked(const SoPickedPoint *, std::string &) const override;
     virtual bool extensionGetDetailPath(const char *, SoFullPath *, SoDetail *&) const override;
     virtual bool extensionHandleChildren3D(const std::vector<App::DocumentObject*> &) override;

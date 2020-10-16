@@ -127,7 +127,6 @@ void ViewProviderDocumentObject::startRestoring()
 void ViewProviderDocumentObject::finishRestoring()
 {
     callExtension(&ViewProviderExtension::extensionFinishRestoring);
-    updateChildren(false);
 }
 
 bool ViewProviderDocumentObject::isAttachedToDocument() const

@@ -89,9 +89,16 @@ void ViewProviderGeoFeatureGroupExtension::extensionClaimChildren(
         std::vector<App::DocumentObject *> &children) const 
 {
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-    // buildExport();
     auto objs = group->_ExportChildren.getValues();
     children.insert(children.end(), objs.begin(), objs.end());
+}
+
+void ViewProviderGeoFeatureGroupExtension::extensionFinishRestoring()
+{
+    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+    if (!group->_ExportChildren.getSize())
+        buildExport();
+    ViewProviderGroupExtension::extensionFinishRestoring();
 }
 
 void ViewProviderGeoFeatureGroupExtension::extensionAttach(App::DocumentObject* pcObject)
@@ -161,13 +168,16 @@ void ViewProviderGeoFeatureGroupExtension::extensionGetDisplayModes(std::vector<
 
 void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Property* prop)
 {
-    auto group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+    auto obj = getExtendedViewProvider()->getObject();
+    auto group = obj->getExtensionByType<App::GeoFeatureGroupExtension>();
     if(group) {
-        if (prop == &group->_GroupTouched)
-            buildExport();
-        else if (prop == &group->Group) {
+        if (prop == &group->_GroupTouched) {
+            if (!obj->getDocument()->testStatus(App::Document::Restoring))
+                buildExport();
+        } else if (prop == &group->Group) {
 
-            buildExport();
+            if (!obj->getDocument()->testStatus(App::Document::Restoring))
+                buildExport();
 
             impl->conns.clear();
             if(linkView) {
@@ -217,7 +227,7 @@ void ViewProviderGeoFeatureGroupExtension::buildExport() const {
     if(!group)
         return;
 
-    if(obj->getDocument()->testStatus(App::Document::Restoring) || obj->testStatus(App::PendingRecompute))
+    if(obj->testStatus(App::PendingRecompute))
         return;
 
     auto model = group->Group.getValues ();

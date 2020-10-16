@@ -1541,8 +1541,10 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
         if(obj->getDocument() != &doc)
             continue;
         auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(getViewProvider(*rit));
-        if(vpd)
+        if(vpd) {
             vpd->isShowable(true);
+            vpd->updateChildren(false);
+        }
     }
 
     d->connectActObjectBlocker.unblock();
