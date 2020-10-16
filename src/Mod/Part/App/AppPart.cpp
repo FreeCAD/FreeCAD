@@ -108,6 +108,7 @@
 #include "Mod/Part/App/BRepOffsetAPI_MakeFillingPy.h"
 #include "Mod/Part/App/PartFeaturePy.h"
 #include "Mod/Part/App/AttachEnginePy.h"
+#include <Mod/Part/App/BRepFeat/MakePrismPy.h>
 #include <Mod/Part/App/Geom2d/ArcOfCircle2dPy.h>
 #include <Mod/Part/App/Geom2d/ArcOfConic2dPy.h>
 #include <Mod/Part/App/Geom2d/ArcOfEllipse2dPy.h>
@@ -375,6 +376,10 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::GeometryStringExtensionPy ::Type,partModule,"GeometryStringExtension");
     Base::Interpreter().addType(&Part::GeometryBoolExtensionPy ::Type,partModule,"GeometryBoolExtension");
     Base::Interpreter().addType(&Part::GeometryDoubleExtensionPy ::Type,partModule,"GeometryDoubleExtension");
+
+    // BRepFeat package
+    PyObject* brepfeatModule(module.getAttr("BRepFeat").ptr());
+    Base::Interpreter().addType(&Part::MakePrismPy::Type,brepfeatModule,"MakePrism");
 
     // BRepOffsetAPI package
     PyObject* brepOffsetApiModule(module.getAttr("BRepOffsetAPI").ptr());

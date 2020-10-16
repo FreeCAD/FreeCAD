@@ -685,8 +685,9 @@ void MeshObject::deletedFacets(const std::vector<unsigned long>& remFacets)
             // remove the invalid indices
             std::sort(segm.begin(), segm.end());
             std::vector<unsigned long>::iterator ft = std::find_if
-                (segm.begin(), segm.end(), 
-                std::bind2nd(std::equal_to<unsigned long>(), ULONG_MAX));
+                (segm.begin(), segm.end(), [](unsigned long v) {
+                    return v == ULONG_MAX;
+                });
             if (ft != segm.end())
                 segm.erase(ft, segm.end());
             it->_indices = segm;
@@ -839,8 +840,9 @@ unsigned long MeshObject::getPointDegree(const std::vector<unsigned long>& indic
         pointDeg[face._aulPoints[2]]--;
     }
 
-    unsigned long countInvalids = std::count_if(pointDeg.begin(), pointDeg.end(),
-        std::bind2nd(std::equal_to<unsigned long>(), 0));
+    unsigned long countInvalids = std::count_if(pointDeg.begin(), pointDeg.end(), [](unsigned long v) {
+        return v == 0;
+    });
 
     point_degree.swap(pointDeg);
     return countInvalids;
@@ -1386,8 +1388,8 @@ void MeshObject::removeSelfIntersections(const std::vector<unsigned long>& indic
     // make sure that the number of indices is even and are in range
     if (indices.size() % 2 != 0)
         return;
-    if (std::find_if(indices.begin(), indices.end(), 
-        std::bind2nd(std::greater_equal<unsigned long>(), _kernel.CountFacets())) < indices.end())
+    unsigned long cntfacets = _kernel.CountFacets();
+    if (std::find_if(indices.begin(), indices.end(), [cntfacets](unsigned long v) { return v >= cntfacets; }) < indices.end())
         return;
     std::vector<std::pair<unsigned long, unsigned long> > selfIntersections;
     std::vector<unsigned long>::const_iterator it;

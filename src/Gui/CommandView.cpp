@@ -337,9 +337,9 @@ void StdCmdFreezeViews::onSaveViews()
         QTextStream str(&file);
         ActionGroup* pcAction = qobject_cast<ActionGroup*>(_pcAction);
         QList<QAction*> acts = pcAction->actions();
-        str << "<?xml version='1.0' encoding='utf-8'?>" << endl
-            << "<FrozenViews SchemaVersion=\"1\">" << endl;
-        str << "  <Views Count=\"" << savedViews <<"\">" << endl;
+        str << "<?xml version='1.0' encoding='utf-8'?>\n"
+            << "<FrozenViews SchemaVersion=\"1\">\n";
+        str << "  <Views Count=\"" << savedViews <<"\">\n";
 
         for (QList<QAction*>::ConstIterator it = acts.begin()+offset; it != acts.end(); ++it) {
             if ( !(*it)->isVisible() )
@@ -356,11 +356,11 @@ void StdCmdFreezeViews::onSaveViews()
                 viewPos = lines.join(QString::fromLatin1(" "));
             }
 
-            str << "    <Camera settings=\"" << viewPos.toLatin1().constData() << "\"/>" << endl;
+            str << "    <Camera settings=\"" << viewPos.toLatin1().constData() << "\"/>\n";
         }
 
-        str << "  </Views>" << endl;
-        str << "</FrozenViews>" << endl;
+        str << "  </Views>\n";
+        str << "</FrozenViews>\n";
     }
 }
 

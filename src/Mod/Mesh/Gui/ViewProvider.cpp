@@ -2047,9 +2047,10 @@ void ViewProviderMesh::invertSelection()
 {
     const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
     const MeshCore::MeshFacetArray& faces = rMesh.getKernel().GetFacets();
-    unsigned long num_notsel = std::count_if(faces.begin(), faces.end(),
-        std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
-        MeshCore::MeshFacet::SELECTED));
+    MeshCore::MeshIsNotFlag<MeshCore::MeshFacet> flag;
+    unsigned long num_notsel = std::count_if(faces.begin(), faces.end(), [flag](const MeshCore::MeshFacet& f) {
+            return flag(f, MeshCore::MeshFacet::SELECTED);
+        });
     std::vector<unsigned long> notselect;
     notselect.reserve(num_notsel);
     MeshCore::MeshFacetArray::_TConstIterator beg = faces.begin();
