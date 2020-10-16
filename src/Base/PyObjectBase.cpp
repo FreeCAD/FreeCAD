@@ -133,8 +133,12 @@ PyTypeObject PyObjectBase::Type = {
 #if PY_MAJOR_VERSION >= 3
     ,0                                                      /*tp_finalize */
 #endif
-#if PY_VERSION_HEX >= 0x03080000
+#if PY_VERSION_HEX >= 0x03090000
     ,0                                                      /*tp_vectorcall */
+#elif PY_VERSION_HEX >= 0x03080000
+    ,0                                                      /*tp_vectorcall */
+    /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
+    ,0                                                      /*tp_print */
 #endif
 };
 

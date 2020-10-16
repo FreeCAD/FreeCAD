@@ -182,7 +182,7 @@ public:
     void setIcon(const QPixmap & icon);
     /** Returns icon of the ActionBox.
       */
-    inline const QPixmap* icon() const { return iconLabel->pixmap(); }
+    QPixmap icon() const;// { return iconLabel->pixmap(); }
 
     /** Returns header item of the ActionBox.
       */

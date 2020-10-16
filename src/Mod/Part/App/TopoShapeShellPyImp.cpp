@@ -77,6 +77,13 @@ PyObject *TopoShapeShellPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 // constructor method
 int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined Shell
+        getTopoShapePtr()->setShape(TopoDS_Shell());
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O", &obj))
         return -1;

@@ -121,6 +121,13 @@ PyObject *TopoShapeEdgePy::PyMake(struct _typeobject *, PyObject *, PyObject *) 
 // constructor method
 int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined Edge
+        getTopoShapePtr()->setShape(TopoDS_Edge());
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *pcObj, *pcObj2;
     double first=DBL_MAX, last=DBL_MAX;
     if (PyArg_ParseTuple(args, "O!|dd", &(Part::GeometryPy::Type), &pcObj, &first, &last)) {

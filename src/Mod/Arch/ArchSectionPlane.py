@@ -368,14 +368,14 @@ def getSVG(source,
     for o in objs:
         if Draft.getType(o) == "Space":
             spaces.append(o)
-        elif Draft.getType(o) in ["AngularDimension","LinearDimension","Annotation","Label","Text", "DraftText"]:
+        elif Draft.getType(o) in ["Dimension","AngularDimension","LinearDimension","Annotation","Label","Text", "DraftText"]:
             if isOriented(o,cutplane):
                 drafts.append(o)
         elif o.isDerivedFrom("Part::Part2DObject"):
             drafts.append(o)
         elif looksLikeDraft(o):
             drafts.append(o)
-        else:
+        elif not o.isDerivedFrom("App::DocumentObjectGroup"):
             nonspaces.append(o)
         if Draft.getType(o) == "Window":
             windows.append(o)

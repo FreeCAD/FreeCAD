@@ -967,17 +967,17 @@ bool MeshInput::LoadPLY (std::istream &inp)
     // check if valid 3d points
     Property property;
     std::size_t num_x = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "x"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "x"); });
     if (num_x != 1)
         return false;
 
     std::size_t num_y = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "y"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "y"); });
     if (num_y != 1)
         return false;
 
     std::size_t num_z = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "z"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "z"); });
     if (num_z != 1)
         return false;
 
@@ -993,11 +993,11 @@ bool MeshInput::LoadPLY (std::istream &inp)
 
     // check if valid colors are set
     std::size_t num_r = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "red"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "red"); });
     std::size_t num_g = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "green"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "green"); });
     std::size_t num_b = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "blue"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "blue"); });
     std::size_t rgb_colors = num_r + num_g + num_b;
     if (rgb_colors != 0 && rgb_colors != 3)
         return false;
@@ -3501,8 +3501,9 @@ void MeshCleanup::RemoveInvalids()
 
 void MeshCleanup::RemoveInvalidFacets()
 {
+    MeshIsFlag<MeshFacet> flag;
     std::size_t countInvalidFacets = std::count_if(facetArray.begin(), facetArray.end(),
-                    std::bind2nd(MeshIsFlag<MeshFacet>(), MeshFacet::INVALID));
+                    [flag](const MeshFacet& f) { return flag(f, MeshFacet::INVALID); });
     if (countInvalidFacets > 0) {
 
         // adjust the material array if needed
@@ -3522,15 +3523,16 @@ void MeshCleanup::RemoveInvalidFacets()
         MeshFacetArray copy_facets(facetArray.size() - countInvalidFacets);
         // copy all valid facets to the new array
         std::remove_copy_if(facetArray.begin(), facetArray.end(), copy_facets.begin(),
-            std::bind2nd(MeshIsFlag<MeshFacet>(), MeshFacet::INVALID));
+            [flag](const MeshFacet& f) { return flag(f, MeshFacet::INVALID); });
         facetArray.swap(copy_facets);
     }
 }
 
 void MeshCleanup::RemoveInvalidPoints()
 {
+    MeshIsFlag<MeshPoint> flag;
     std::size_t countInvalidPoints = std::count_if(pointArray.begin(), pointArray.end(),
-                    std::bind2nd(MeshIsFlag<MeshPoint>(), MeshPoint::INVALID));
+                    [flag](const MeshPoint& p) { return flag(p, MeshPoint::INVALID); });
     if (countInvalidPoints > 0) {
         // generate array of decrements
         std::vector<unsigned long> decrements;
@@ -3573,7 +3575,7 @@ void MeshCleanup::RemoveInvalidPoints()
         MeshPointArray copy_points(validPoints);
         // copy all valid facets to the new array
         std::remove_copy_if(pointArray.begin(), pointArray.end(), copy_points.begin(),
-            std::bind2nd(MeshIsFlag<MeshPoint>(), MeshPoint::INVALID));
+            [flag](const MeshPoint& p) { return flag(p, MeshPoint::INVALID); });
         pointArray.swap(copy_points);
     }
 }

@@ -102,6 +102,7 @@ class Draft_SelectPlane:
         q = FreeCAD.Units.Quantity(self.param.GetFloat("gridSpacing", 1.0), FreeCAD.Units.Length)
         self.taskd.form.fieldGridSpacing.setText(q.UserString)
         self.taskd.form.fieldGridMainLine.setValue(self.param.GetInt("gridEvery", 10))
+        self.taskd.form.fieldGridExtension.setValue(self.param.GetInt("gridSize", 100))
         self.taskd.form.fieldSnapRadius.setValue(self.param.GetInt("snapRange", 8))
 
         # Set icons
@@ -126,6 +127,7 @@ class Draft_SelectPlane:
         self.taskd.form.buttonPrevious.clicked.connect(self.onClickPrevious)
         self.taskd.form.fieldGridSpacing.textEdited.connect(self.onSetGridSize)
         self.taskd.form.fieldGridMainLine.valueChanged.connect(self.onSetMainline)
+        self.taskd.form.fieldGridExtension.valueChanged.connect(self.onSetExtension)
         self.taskd.form.fieldSnapRadius.valueChanged.connect(self.onSetSnapRadius)
 
         # Try to find a WP from the current selection
@@ -472,6 +474,13 @@ class Draft_SelectPlane:
         """Execute when setting main line grid spacing."""
         if i > 1:
             self.param.SetInt("gridEvery", i)
+            if hasattr(FreeCADGui, "Snapper"):
+                FreeCADGui.Snapper.setGrid()
+
+    def onSetExtension(self, i):
+        """Execute when setting grid extension."""
+        if i > 1:
+            self.param.SetInt("gridSize", i)
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.setGrid()
 

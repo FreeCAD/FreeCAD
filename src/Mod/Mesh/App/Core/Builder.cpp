@@ -208,7 +208,9 @@ void MeshBuilder::RemoveUnreferencedPoints()
             _meshKernel._aclPointArray[it->_aulPoints[i]].ResetInvalid();
     }
 
-    unsigned long uValidPts = std::count_if(_meshKernel._aclPointArray.begin(), _meshKernel._aclPointArray.end(), std::mem_fun_ref(&MeshPoint::IsValid));
+    unsigned long uValidPts = std::count_if(_meshKernel._aclPointArray.begin(),
+                                            _meshKernel._aclPointArray.end(),
+                                            [](const MeshPoint& p) { return p.IsValid(); });
     if ( uValidPts < _meshKernel.CountPoints() )
         _meshKernel.RemoveInvalids();
 }

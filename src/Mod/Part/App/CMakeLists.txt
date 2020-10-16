@@ -94,9 +94,12 @@ generate_from_xml(BRepOffsetAPI_MakePipeShellPy)
 generate_from_xml(BRepOffsetAPI_MakeFillingPy)
 
 # make sure to create the directory at configure time
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/BRepFeat)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Geom2d)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/GeomPlate)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ShapeUpgrade)
+
+generate_from_xml(BRepFeat/MakePrismPy)
 
 generate_from_xml(Geom2d/ArcOfCircle2dPy)
 generate_from_xml(Geom2d/ArcOfConic2dPy)
@@ -312,6 +315,14 @@ SET(Python_SRCS
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
+# BRepFeat wrappers
+SET(BRepFeatPy_SRCS
+    BRepFeat/MakePrismPy.xml
+    BRepFeat/MakePrismPyImp.cpp
+)
+
+SOURCE_GROUP("ShapeUpgrade" FILES ${ShapeUpgradePy_SRCS})
+
 # Geom2d wrappers
 SET(Geom2dPy_SRCS
     Geom2d/ArcOfCircle2dPy.xml
@@ -376,6 +387,7 @@ SET(Part_SRCS
     ${Features_SRCS}
     ${Properties_SRCS}
     ${Python_SRCS}
+    ${BRepFeatPy_SRCS}
     ${Geom2dPy_SRCS}
     ${GeomPlatePy_SRCS}
     ${ShapeUpgradePy_SRCS}

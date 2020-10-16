@@ -146,47 +146,9 @@ void PropertyPartShape::transformGeometry(const Base::Matrix4D &rclTrf)
 
 PyObject *PropertyPartShape::getPyObject(void)
 {
-    Base::PyObjectBase* prop;
-    const TopoDS_Shape& sh = _Shape.getShape();
-    if (sh.IsNull()) {
-        prop = new TopoShapePy(new TopoShape(sh));
-    }
-    else {
-        TopAbs_ShapeEnum type = sh.ShapeType();
-        switch (type)
-        {
-        case TopAbs_COMPOUND:
-            prop = new TopoShapeCompoundPy(new TopoShape(sh));
-            break;
-        case TopAbs_COMPSOLID:
-            prop = new TopoShapeCompSolidPy(new TopoShape(sh));
-            break;
-        case TopAbs_SOLID:
-            prop = new TopoShapeSolidPy(new TopoShape(sh));
-            break;
-        case TopAbs_SHELL:
-            prop = new TopoShapeShellPy(new TopoShape(sh));
-            break;
-        case TopAbs_FACE:
-            prop = new TopoShapeFacePy(new TopoShape(sh));
-            break;
-        case TopAbs_WIRE:
-            prop = new TopoShapeWirePy(new TopoShape(sh));
-            break;
-        case TopAbs_EDGE:
-            prop = new TopoShapeEdgePy(new TopoShape(sh));
-            break;
-        case TopAbs_VERTEX:
-            prop = new TopoShapeVertexPy(new TopoShape(sh));
-            break;
-        case TopAbs_SHAPE:
-        default:
-            prop = new TopoShapePy(new TopoShape(sh));
-            break;
-        }
-    }
-
-    prop->setConst();
+    Base::PyObjectBase* prop = static_cast<Base::PyObjectBase*>(_Shape.getPyObject());
+    if (prop)
+        prop->setConst();
     return prop;
 }
 
