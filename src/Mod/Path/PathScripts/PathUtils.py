@@ -983,16 +983,7 @@ def RtoIJ(startpoint, command):
     relativecenter = chord.scale(0.5, 0.5, 0.5).add(perp)
 
     # build new command
-    params = {}
-    if 'X' in command.Parameters:
-        params['X'] = command.Parameters['X']
-    if 'Y' in command.Parameters:
-        params['Y'] = command.Parameters['Y']
-    if 'Z' in command.Parameters:
-        params['Z'] = command.Parameters['Z']
-    if 'F' in command.Parameters:
-        params['F'] = command.Parameters['F']
-
+    params = { c: command.Parameters[c] for c in 'XYZF' if c in command.Parameters}
     params['I'] = relativecenter.x
     params['J'] = relativecenter.y
 
