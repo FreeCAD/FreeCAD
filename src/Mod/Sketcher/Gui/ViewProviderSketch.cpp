@@ -1727,7 +1727,15 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                             trans += static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation.getValue();
                         }
 
-                        double x,y;
+                        Base::Placement sketchPlacement = getEditingPlacement();
+                        Base::Vector3d sketchPos(sketchPlacement.getPosition());
+                        Base::Rotation sketchRot(sketchPlacement.getRotation());
+
+                        // get global coordinates from sketcher coordinates
+                        SbVec3f constrPos = absPos + trans*getScaleFactor();
+                        Base::Vector3d pos(constrPos[0],constrPos[1],0);
+                        sketchRot.multVec(pos,pos);
+                        pos = pos + sketchPos;
 
                         SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
 
@@ -1735,13 +1743,10 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                             continue;
 
                         SbViewVolume vol = pCam->getViewVolume();
-
-                        getCoordsOnSketchPlane(x,y,absPos+trans*getScaleFactor(),vol.getProjectionDirection());
-
-                        Gui::ViewVolumeProjection proj(viewer->getSoRenderManager()->getCamera()->getViewVolume());
+                        Gui::ViewVolumeProjection proj(vol);
 
                         // dimensionless [0 1] (or 1.5 see View3DInventorViewer.cpp )
-                        Base::Vector3d screencoords = proj(Base::Vector3d(x,y,0));
+                        Base::Vector3d screencoords = proj(pos);
 
                         int width = viewer->getGLWidget()->width(),
                             height = viewer->getGLWidget()->height();
