@@ -63,6 +63,13 @@ PyObject *TopoShapeVertexPy::PyMake(struct _typeobject *, PyObject *, PyObject *
 // constructor method
 int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined Vertex
+        getTopoShapePtr()->setShape(TopoDS_Vertex());
+        return 0;
+    }
+
+    PyErr_Clear();
     double x=0.0,y=0.0,z=0.0;
     PyObject *object;
     bool success = false;

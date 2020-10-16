@@ -199,6 +199,11 @@
 #include "TopoShapeFacePy.h"
 #include "TopoShapeEdgePy.h"
 #include "TopoShapeVertexPy.h"
+#include "TopoShapeWirePy.h"
+#include "TopoShapeShellPy.h"
+#include "TopoShapeSolidPy.h"
+#include "TopoShapeCompoundPy.h"
+#include "TopoShapeCompSolidPy.h"
 #include "ProgressIndicator.h"
 #include "modelRefine.h"
 #include "Tools.h"
@@ -540,6 +545,62 @@ const std::string &TopoShape::shapeName(bool silent) const {
 PyObject * TopoShape::getPySubShape(const char* Type, bool silent) const
 {
     return Py::new_reference_to(shape2pyshape(getSubShape(Type,silent)));
+}
+
+PyObject * TopoShape::getPyObject()
+{
+    Base::PyObjectBase* prop = nullptr;
+    if (_Shape.IsNull()) {
+        prop = new TopoShapePy(new TopoShape(_Shape));
+    }
+    else {
+        TopAbs_ShapeEnum type = _Shape.ShapeType();
+        switch (type)
+        {
+        case TopAbs_COMPOUND:
+            prop = new TopoShapeCompoundPy(new TopoShape(_Shape));
+            break;
+        case TopAbs_COMPSOLID:
+            prop = new TopoShapeCompSolidPy(new TopoShape(_Shape));
+            break;
+        case TopAbs_SOLID:
+            prop = new TopoShapeSolidPy(new TopoShape(_Shape));
+            break;
+        case TopAbs_SHELL:
+            prop = new TopoShapeShellPy(new TopoShape(_Shape));
+            break;
+        case TopAbs_FACE:
+            prop = new TopoShapeFacePy(new TopoShape(_Shape));
+            break;
+        case TopAbs_WIRE:
+            prop = new TopoShapeWirePy(new TopoShape(_Shape));
+            break;
+        case TopAbs_EDGE:
+            prop = new TopoShapeEdgePy(new TopoShape(_Shape));
+            break;
+        case TopAbs_VERTEX:
+            prop = new TopoShapeVertexPy(new TopoShape(_Shape));
+            break;
+        case TopAbs_SHAPE:
+        default:
+            prop = new TopoShapePy(new TopoShape(_Shape));
+            break;
+        }
+    }
+
+    return prop;
+}
+
+void TopoShape::setPyObject(PyObject* obj)
+{
+    if (PyObject_TypeCheck(obj, &TopoShapePy::Type)) {
+        this->_Shape = static_cast<TopoShapePy*>(obj)->getTopoShapePtr()->getShape();
+    }
+    else {
+        std::string error = std::string("type must be 'Shape', not ");
+        error += obj->ob_type->tp_name;
+        throw Base::TypeError(error);
+    }
 }
 
 void TopoShape::operator = (const TopoShape& sh)
