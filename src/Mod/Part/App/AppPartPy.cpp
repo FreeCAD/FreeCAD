@@ -912,17 +912,8 @@ private:
 
                 fm->Build();
 
-                if(fm->Shape().IsNull())
-                    return Py::asObject(new TopoShapePy(new TopoShape(fm->Shape())));
-
-                switch(fm->Shape().ShapeType()){
-                case TopAbs_FACE:
-                    return Py::asObject(new TopoShapeFacePy(new TopoShape(fm->Shape())));
-                case TopAbs_COMPOUND:
-                    return Py::asObject(new TopoShapeCompoundPy(new TopoShape(fm->Shape())));
-                default:
-                    return Py::asObject(new TopoShapePy(new TopoShape(fm->Shape())));
-                }
+                TopoShape topo(fm->Shape());
+                return Py::asObject(topo.getPyObject());
             }
 
             throw Py::Exception(Base::BaseExceptionFreeCADError, std::string("Argument type signature not recognized. Should be either (list, string), or (shape, string)"));
@@ -2012,36 +2003,7 @@ private:
         PyObject *object;
         if (PyArg_ParseTuple(args.ptr(),"O!",&(Part::TopoShapePy::Type), &object)) {
             TopoShape* ptr = static_cast<TopoShapePy*>(object)->getTopoShapePtr();
-            TopoDS_Shape shape = ptr->getShape();
-            if (!shape.IsNull()) {
-                TopAbs_ShapeEnum type = shape.ShapeType();
-                switch (type)
-                {
-                case TopAbs_COMPOUND:
-                    return Py::asObject(new TopoShapeCompoundPy(new TopoShape(shape)));
-                case TopAbs_COMPSOLID:
-                    return Py::asObject(new TopoShapeCompSolidPy(new TopoShape(shape)));
-                case TopAbs_SOLID:
-                    return Py::asObject(new TopoShapeSolidPy(new TopoShape(shape)));
-                case TopAbs_SHELL:
-                    return Py::asObject(new TopoShapeShellPy(new TopoShape(shape)));
-                case TopAbs_FACE:
-                    return Py::asObject(new TopoShapeFacePy(new TopoShape(shape)));
-                case TopAbs_WIRE:
-                    return Py::asObject(new TopoShapeWirePy(new TopoShape(shape)));
-                case TopAbs_EDGE:
-                    return Py::asObject(new TopoShapeEdgePy(new TopoShape(shape)));
-                case TopAbs_VERTEX:
-                    return Py::asObject(new TopoShapeVertexPy(new TopoShape(shape)));
-                case TopAbs_SHAPE:
-                    return Py::asObject(new TopoShapePy(new TopoShape(shape)));
-                default:
-                    break;
-                }
-            }
-            else {
-                throw Py::Exception(PartExceptionOCCError, "empty shape");
-            }
+            return Py::asObject(ptr->getPyObject());
         }
 
         throw Py::Exception();
