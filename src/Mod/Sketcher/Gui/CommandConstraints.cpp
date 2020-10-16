@@ -1027,7 +1027,7 @@ CmdSketcherConstrainHorizontal::CmdSketcherConstrainHorizontal()
     sAccel          = "H";
     eType           = ForEdit;
 
-    allowedSelSequences = {{SelEdge}};
+    allowedSelSequences = {{SelEdge}, {SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex}};
 }
 
 void CmdSketcherConstrainHorizontal::activated(int iMsg)
@@ -1155,12 +1155,13 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
 
 void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
 {
+    SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+    Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
+    
     switch (seqIndex) {
     case 0: // {Edge}
+    {
         // create the constraint
-        SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
-        Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
-
         const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
         int CrvId = selSeq.front().GeoId;
@@ -1205,6 +1206,35 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
 
         break;
     }
+    
+    case 1 : // {SelVertex, SelVertexOrRoot}
+    case 2 : // {SelRoot, SelVertex}
+    {
+        int GeoId1, GeoId2;
+        Sketcher::PointPos PosId1, PosId2;
+        GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(1).GeoId;
+        PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(1).PosId;
+        
+        if ( areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) ) {
+            showNoConstraintBetweenFixedGeometry();
+            return;
+        }
+
+        // undo command open
+        Gui::Command::openCommand("add horizontal alignement");
+        // issue the actual commands to create the constraint
+        Gui::cmdAppObjectArgs(sketchgui->getObject()
+                                ,"addConstraint(Sketcher.Constraint('Horizontal',%d,%d,%d,%d)) "
+                                ,GeoId1,PosId1,GeoId2,PosId2);
+        // finish the transaction and update
+        Gui::Command::commitCommand();
+
+        tryAutoRecompute(Obj);
+        
+        break;
+        
+    }
+    }
 }
 
 // ================================================================================
@@ -1235,7 +1265,7 @@ CmdSketcherConstrainVertical::CmdSketcherConstrainVertical()
     sAccel          = "V";
     eType           = ForEdit;
 
-    allowedSelSequences = {{SelEdge}};
+    allowedSelSequences = {{SelEdge}, {SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex}};
 }
 
 void CmdSketcherConstrainVertical::activated(int iMsg)
@@ -1361,12 +1391,13 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
 
 void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
 {
+    SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+    Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
+
     switch (seqIndex) {
     case 0: // {Edge}
+    {
         // create the constraint
-        SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
-        Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
-
         const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
         int CrvId = selSeq.front().GeoId;
@@ -1409,6 +1440,34 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
         }
 
         break;
+    }
+
+    case 1 : // {SelVertex, SelVertexOrRoot}
+    case 2 : // {SelRoot, SelVertex}
+    {
+        int GeoId1, GeoId2;
+        Sketcher::PointPos PosId1, PosId2;
+        GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(1).GeoId;
+        PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(1).PosId;
+        
+        if ( areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) ) {
+            showNoConstraintBetweenFixedGeometry();
+            return;
+        }
+
+        // undo command open
+        Gui::Command::openCommand("add horizontal alignement");
+        // issue the actual commands to create the constraint
+        Gui::cmdAppObjectArgs(sketchgui->getObject()
+                                ,"addConstraint(Sketcher.Constraint('Vertical',%d,%d,%d,%d)) "
+                                ,GeoId1,PosId1,GeoId2,PosId2);
+        // finish the transaction and update
+        Gui::Command::commitCommand();
+
+        tryAutoRecompute(Obj);
+        
+        break;
+    }
     }
 }
 
