@@ -89,6 +89,10 @@ int MakePrismPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
     }
+
+    PyErr_SetString(PyExc_TypeError, "supported signatures:\n"
+                    "MakePrism()\n"
+                    "MakePrism(Sbase [shape], Pbase [shape], Skface [face], Direction [Vector], Fuse [int={0, 1}], Modify [bool])\n");
     return -1;
 }
 
@@ -288,6 +292,8 @@ PyObject* MakePrismPy::curves(PyObject *args)
     Py::Tuple tuple(S.Length());
     for (int i = S.Lower(); i <= S.Upper(); ++i) {
         Handle(Geom_Curve) hC = S.Value(i);
+        if (hC.IsNull())
+            continue;
         std::unique_ptr<GeomCurve> gc(Part::makeFromCurve(hC));
         tuple.setItem(i, Py::asObject(gc->getPyObject()));
     }
@@ -301,6 +307,8 @@ PyObject* MakePrismPy::barycCurve(PyObject *args)
         return nullptr;
 
     Handle(Geom_Curve) hC = getBRepFeat_MakePrismPtr()->BarycCurve();
+    if (hC.IsNull())
+        Py_Return;
     std::unique_ptr<GeomCurve> gc(Part::makeFromCurve(hC));
     return gc->getPyObject();
 }
