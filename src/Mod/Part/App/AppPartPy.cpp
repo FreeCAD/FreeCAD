@@ -271,6 +271,17 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
 }
 
 namespace Part {
+class BRepFeatModule : public Py::ExtensionModule<BRepFeatModule>
+{
+public:
+    BRepFeatModule() : Py::ExtensionModule<BRepFeatModule>("BRepFeat")
+    {
+        initialize("This is a module working with the BRepFeat package."); // register with Python
+    }
+
+    virtual ~BRepFeatModule() {}
+};
+
 class BRepOffsetAPIModule : public Py::ExtensionModule<BRepOffsetAPIModule>
 {
 public:
@@ -317,6 +328,7 @@ public:
 
 class Module : public Py::ExtensionModule<Module>
 {
+    BRepFeatModule brepFeat;
     BRepOffsetAPIModule brepOffsetApi;
     Geom2dModule geom2d;
     GeomPlateModule geomPlate;
@@ -537,6 +549,7 @@ public:
         );
         initialize("This is a module working with shapes."); // register with Python
 
+        PyModule_AddObject(m_module, "BRepFeat", brepFeat.module().ptr());
         PyModule_AddObject(m_module, "BRepOffsetAPI", brepOffsetApi.module().ptr());
         PyModule_AddObject(m_module, "Geom2d", geom2d.module().ptr());
         PyModule_AddObject(m_module, "GeomPlate", geomPlate.module().ptr());
