@@ -46,9 +46,9 @@
             </Documentation>
             <Parameter Name="IncidentEdge" Type="Object"/>
         </Attribute>
-        <Methode Name="toGeom" Const="true">
+        <Methode Name="toPoint" Const="true">
             <Documentation>
-                <UserDocu>Returns a Vertex - or None if not possible</UserDocu>
+                <UserDocu>Returns a Vector - or None if not possible</UserDocu>
             </Documentation>
         </Methode>
     </PythonExport>
