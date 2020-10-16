@@ -79,6 +79,13 @@ PyObject *TopoShapeSolidPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 // constructor method
 int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined Solid
+        getTopoShapePtr()->setShape(TopoDS_Solid());
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &obj))
         return -1;
