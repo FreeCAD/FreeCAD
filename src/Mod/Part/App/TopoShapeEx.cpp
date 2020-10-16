@@ -3776,7 +3776,7 @@ TopoShape & TopoShape::makEBSplineFace(const TopoShape & shape, FillingStyle sty
     std::ostringstream ss;
     for (int i=0; i<edgeCount; ++i) {
         ss.str("");
-        ss << "Edge" << ++i;
+        ss << "Edge" << (i+1);
         std::string element = ss.str();
         for(auto &v : getElementMappedNames(element.c_str(),true)) {
             auto &name = v.first;
