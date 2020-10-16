@@ -153,7 +153,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         # obj.Side = side[0]
 
         # Set direction of op
-        forward = (obj.Direction == 'CCW')
+        forward = (obj.Direction == 'CW')
 
         zValues = []
         z = 0
