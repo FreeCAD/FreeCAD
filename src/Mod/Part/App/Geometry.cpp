@@ -987,7 +987,7 @@ void GeomBezierCurve::Restore(Base::XMLReader& reader)
 
 PyObject *GeomBezierCurve::getPyObject(void)
 {
-    return new BezierCurvePy((GeomBezierCurve*)this->clone());
+    return new BezierCurvePy(static_cast<GeomBezierCurve*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -1496,7 +1496,7 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
 
 PyObject *GeomBSplineCurve::getPyObject(void)
 {
-    return new BSplineCurvePy((GeomBSplineCurve*)this->clone());
+    return new BSplineCurvePy(static_cast<GeomBSplineCurve*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -1658,7 +1658,7 @@ void         GeomTrimmedCurve::Restore    (Base::XMLReader &/*reader*/)    {asse
 
 PyObject *GeomTrimmedCurve::getPyObject(void)
 {
-    return 0;
+    return new TrimmedCurvePy(static_cast<GeomTrimmedCurve*>(this->clone()));
 }
 
 bool GeomTrimmedCurve::intersectBasisCurves(  const GeomTrimmedCurve * c,
@@ -2567,7 +2567,7 @@ void GeomEllipse::Restore(Base::XMLReader& reader)
 
 PyObject *GeomEllipse::getPyObject(void)
 {
-    return new EllipsePy((GeomEllipse*)this->clone());
+    return new EllipsePy(static_cast<GeomEllipse*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -3737,7 +3737,7 @@ void GeomLine::Restore(Base::XMLReader &reader)
 
 PyObject *GeomLine::getPyObject(void)
 {
-    return 0;
+    return new LinePy(static_cast<GeomLine*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -3951,7 +3951,7 @@ void         GeomOffsetCurve::Restore    (Base::XMLReader &/*reader*/)    {asser
 
 PyObject *GeomOffsetCurve::getPyObject(void)
 {
-    return new OffsetCurvePy((GeomOffsetCurve*)this->clone());
+    return new OffsetCurvePy(static_cast<GeomOffsetCurve*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4113,7 +4113,7 @@ void         GeomBezierSurface::Restore    (Base::XMLReader &/*reader*/)    {ass
 
 PyObject *GeomBezierSurface::getPyObject(void)
 {
-    return new BezierSurfacePy((GeomBezierSurface*)this->clone());
+    return new BezierSurfacePy(static_cast<GeomBezierSurface*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4172,7 +4172,7 @@ void         GeomBSplineSurface::Restore    (Base::XMLReader &/*reader*/)    {as
 
 PyObject *GeomBSplineSurface::getPyObject(void)
 {
-    return new BSplineSurfacePy((GeomBSplineSurface*)this->clone());
+    return new BSplineSurfacePy(static_cast<GeomBSplineSurface*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4219,7 +4219,7 @@ void         GeomCylinder::Restore    (Base::XMLReader &/*reader*/)    {assert(0
 
 PyObject *GeomCylinder::getPyObject(void)
 {
-    return new CylinderPy((GeomCylinder*)this->clone());
+    return new CylinderPy(static_cast<GeomCylinder*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4266,7 +4266,7 @@ void         GeomCone::Restore    (Base::XMLReader &/*reader*/)    {assert(0);  
 
 PyObject *GeomCone::getPyObject(void)
 {
-    return new ConePy((GeomCone*)this->clone());
+    return new ConePy(static_cast<GeomCone*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4313,7 +4313,7 @@ void         GeomToroid::Restore    (Base::XMLReader &/*reader*/)    {assert(0);
 
 PyObject *GeomToroid::getPyObject(void)
 {
-    return new ToroidPy((GeomToroid*)this->clone());
+    return new ToroidPy(static_cast<GeomToroid*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4360,7 +4360,7 @@ void         GeomSphere::Restore    (Base::XMLReader &/*reader*/)    {assert(0);
 
 PyObject *GeomSphere::getPyObject(void)
 {
-    return new SpherePy((GeomSphere*)this->clone());
+    return new SpherePy(static_cast<GeomSphere*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4407,7 +4407,7 @@ void         GeomPlane::Restore    (Base::XMLReader &/*reader*/)    {assert(0); 
 
 PyObject *GeomPlane::getPyObject(void)
 {
-    return new PlanePy((GeomPlane*)this->clone());
+    return new PlanePy(static_cast<GeomPlane*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4456,7 +4456,7 @@ void         GeomOffsetSurface::Restore    (Base::XMLReader &/*reader*/)    {ass
 
 PyObject *GeomOffsetSurface::getPyObject(void)
 {
-    return new OffsetSurfacePy((GeomOffsetSurface*)this->clone());
+    return new OffsetSurfacePy(static_cast<GeomOffsetSurface*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4615,7 +4615,7 @@ void         GeomSurfaceOfRevolution::Restore    (Base::XMLReader &/*reader*/)  
 
 PyObject *GeomSurfaceOfRevolution::getPyObject(void)
 {
-    return new SurfaceOfRevolutionPy((GeomSurfaceOfRevolution*)this->clone());
+    return new SurfaceOfRevolutionPy(static_cast<GeomSurfaceOfRevolution*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4664,7 +4664,7 @@ void         GeomSurfaceOfExtrusion::Restore    (Base::XMLReader &/*reader*/)   
 
 PyObject *GeomSurfaceOfExtrusion::getPyObject(void)
 {
-    return new SurfaceOfExtrusionPy((GeomSurfaceOfExtrusion*)this->clone());
+    return new SurfaceOfExtrusionPy(static_cast<GeomSurfaceOfExtrusion*>(this->clone()));
 }
 
 
