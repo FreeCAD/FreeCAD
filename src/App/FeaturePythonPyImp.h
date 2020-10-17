@@ -27,6 +27,11 @@
 #include <Base/Interpreter.h>
 #include <App/PropertyContainerPy.h>
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 #define PYTHON_TYPE_DEF(_class_, _subclass_) \
     class _class_ : public _subclass_ \
     { \
@@ -136,5 +141,9 @@ private:
 } //namespace App
 
 #include "FeaturePythonPyImp.inl"
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 #endif // APP_FEATUREPYTHONPYIMP_H
