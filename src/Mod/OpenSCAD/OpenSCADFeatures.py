@@ -499,8 +499,8 @@ class CGALFeature:
     def execute(self,fp):
         #arguments are ignored
         maxmeshpoints = None #TBD: add as property
-        import Part, freecad.OpenSCAD.OpenSCADUtils
-        shape = freecad.OpenSCAD.OpenSCADUtils.process_ObjectsViaOpenSCADShape(fp.Document,fp.Children,\
+        import Part, OpenSCAD.OpenSCADUtils
+        shape = OpenSCAD.OpenSCADUtils.process_ObjectsViaOpenSCADShape(fp.Document,fp.Children,\
                 fp.Operation, maxmeshpoints=maxmeshpoints)
         if shape:
             fp.Shape = shape
