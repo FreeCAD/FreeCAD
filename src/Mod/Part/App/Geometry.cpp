@@ -1658,7 +1658,7 @@ void         GeomTrimmedCurve::Restore    (Base::XMLReader &/*reader*/)    {asse
 
 PyObject *GeomTrimmedCurve::getPyObject(void)
 {
-    return 0;
+    return new TrimmedCurvePy(static_cast<GeomTrimmedCurve*>(this->clone()));
 }
 
 bool GeomTrimmedCurve::intersectBasisCurves(  const GeomTrimmedCurve * c,
@@ -3737,7 +3737,7 @@ void GeomLine::Restore(Base::XMLReader &reader)
 
 PyObject *GeomLine::getPyObject(void)
 {
-    return 0;
+    return new LinePy(static_cast<GeomLine*>(this->clone()));
 }
 
 // -------------------------------------------------
