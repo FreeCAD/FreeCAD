@@ -304,9 +304,9 @@ void Body::checkChildren()
             continue;
 
         info.visibilityConn = feature->Visibility.signalChanged.connect(
-                boost::bind(&Body::checkChild, this, _1));
+                boost::bind(&Body::checkChild, this, boost::placeholders::_1));
         info.baseFeatureConn = feature->BaseFeature.signalChanged.connect(
-                boost::bind(&Body::checkChild, this, _1));
+                boost::bind(&Body::checkChild, this, boost::placeholders::_1));
 
         checkChild(feature->Visibility);
     }
@@ -687,9 +687,9 @@ void Body::onDocumentRestored()
 
         auto &info = this->childrenConns[feature];
         info.visibilityConn = feature->Visibility.signalChanged.connect(
-                boost::bind(&Body::checkChild, this, _1));
+                boost::bind(&Body::checkChild, this, boost::placeholders::_1));
         info.baseFeatureConn = feature->BaseFeature.signalChanged.connect(
-                boost::bind(&Body::checkChild, this, _1));
+                boost::bind(&Body::checkChild, this, boost::placeholders::_1));
         info.flag = childrenFlag;
     }
     _GroupTouched.setStatus(App::Property::Output,true);

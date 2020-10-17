@@ -891,7 +891,7 @@ void View3DInventorViewer::setDocument(Gui::Document* pcDocument)
         }
 
         pcDocument->getDocument()->signalChanged.connect(boost::bind(
-                    &View3DInventorViewer::slotChangeDocument, this, _1, _2));
+                    &View3DInventorViewer::slotChangeDocument, this, boost::placeholders::_1, boost::placeholders::_2));
     }
 }
 

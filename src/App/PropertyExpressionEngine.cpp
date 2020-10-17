@@ -203,10 +203,10 @@ void PropertyExpressionEngine::hasSetValue()
                         if(propDeps.empty()) {
                             if(propName.size()) 
                                 pimpl->conns.push_back(obj->signalChanged.connect(boost::bind(
-                                            &PropertyExpressionEngine::slotChangedProperty,this,_1,_2)));
+                                            &PropertyExpressionEngine::slotChangedProperty,this,boost::placeholders::_1,boost::placeholders::_2)));
                             else
                                 pimpl->conns.push_back(obj->signalChanged.connect(boost::bind(
-                                            &PropertyExpressionEngine::slotChangedObject,this,_1,_2)));
+                                            &PropertyExpressionEngine::slotChangedObject,this,boost::placeholders::_1,boost::placeholders::_2)));
                         }
                         propDeps.push_back(e.first);
                     }

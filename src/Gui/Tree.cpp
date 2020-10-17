@@ -920,7 +920,7 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
             boost::bind(&TreeWidget::slotChangedViewObject, this, bp::_1, bp::_2));
 
     connectChangedChildren = Application::Instance->signalChangedChildren.connect(
-            boost::bind(&TreeWidget::slotChangedChildren, this, _1));
+            boost::bind(&TreeWidget::slotChangedChildren, this, boost::placeholders::_1));
 
     connectFinishRestoreDocument = App::GetApplication().signalFinishRestoreDocument.connect(
         [this](const App::Document &doc) {
