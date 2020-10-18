@@ -5,7 +5,6 @@ import unittest
 
 class RegressionTests(unittest.TestCase):
 
-    @unittest.skip("issue 4456")
     def test_issue_4456(self):
         """
         0004456: Regression : Part.Plane.Intersect do not accept plane as argument
