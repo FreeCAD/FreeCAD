@@ -47,12 +47,8 @@ TWIN = 2
 COLINEAR = 3
 SECONDARY = 5
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -60,7 +56,65 @@ def translate(context, text, disambig=None):
 
 
 VD = []
+Vertex = {}
 
+def _getVoronoiWires(vd):
+    edges = [e for e in vd.Edges if e.Color == PRIMARY]
+    vertex = {}
+    for e in edges:
+        for v in e.Vertices:
+            i = v.Index
+            j = vertex.get(i, [])
+            j.append(e)
+            vertex[i] = j
+    Vertex.clear()
+    for v in vertex:
+        Vertex[v] = vertex[v]
+
+    # knots are the start and end points of a wire
+    knots = [i for i in vertex if len(vertex[i]) == 1]
+    knots.extend([i for i in vertex if len(vertex[i]) > 2])
+
+    def consume(v, edge):
+        vertex[v] = [e for e in vertex[v] if e.Index != edge.Index]
+        return len(vertex[v]) == 0
+
+    def traverse(vStart, edge, edges):
+        if vStart == edge.Vertices[0].Index:
+            vEnd = edge.Vertices[1].Index
+            edges.append(edge)
+        else:
+            vEnd = edge.Vertices[0].Index
+            edges.append(edge.Twin)
+
+        consume(vStart, edge)
+        if consume(vEnd, edge):
+            return None
+        return vEnd
+
+    wires = []
+    while knots:
+        we = []
+        vFirst = knots[0]
+        vStart = vFirst
+        vLast  = vFirst
+        if len(vertex[vStart]):
+            while not vStart is None:
+                vLast  = vStart
+                edges  = vertex[vStart]
+                if len(edges) > 0:
+                    edge   = edges[0]
+                    vStart = traverse(vStart, edge, we)
+                else:
+                    vStart = None
+            wires.append(we)
+            print("knots %s - (%s, %s)" % (knots, vFirst, vLast))
+            # The first and last edge are knots, check if they still have more edges attached
+        if len(vertex[vFirst]) == 0:
+            knots = [v for v in knots if v != vFirst]
+        if len(vertex[vLast]) == 0:
+            knots = [v for v in knots if v != vLast]
+    return wires
 
 class ObjectVcarve(PathEngraveBase.ObjectOp):
     '''Proxy class for Vcarve operation.'''
@@ -101,6 +155,29 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         # upgrade ...
         self.setupAdditionalProperties(obj)
 
+    def _calculate_depth(self, obj, MIC, baselevel=0):
+        # given a maximum inscribed circle (MIC) and tool angle,
+        # return depth of cut relative to baselevel.
+
+        r = float(obj.ToolController.Tool.Diameter) / 2
+        toolangle = obj.ToolController.Tool.CuttingEdgeAngle
+        maxdepth = baselevel - r / math.tan(math.radians(toolangle/2))
+
+        d = baselevel - round(MIC / math.tan(math.radians(toolangle / 2)), 4)
+        PathLog.debug('baselevel value: {} depth: {}'.format(baselevel, d))
+        return d if d > maxdepth else maxdepth
+
+    def _getPartEdge(self, obj, edge, bblevel):
+        dist = edge.getDistances()
+        return edge.toShape(self._calculate_depth(obj, dist[0]), self._calculate_depth(obj, dist[1]))
+
+    def _getPartEdges(self, obj, vWire):
+        bblevel = self.model[0].Shape.BoundBox.ZMin
+        edges = []
+        for e in vWire:
+            edges.append(self._getPartEdge(obj, e, bblevel))
+        return edges
+
     def buildPathMedial(self, obj, Faces):
         '''constructs a medial axis path using openvoronoi'''
 
@@ -114,107 +191,17 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 for i in range(len(pts)):
                     vd.addSegment(ptv[i], ptv[i+1])
 
-        def calculate_depth(MIC, baselevel=0):
-            # given a maximum inscribed circle (MIC) and tool angle,
-            # return depth of cut relative to baselevel.
-
-            r = obj.ToolController.Tool.Diameter / 2
-            toolangle = obj.ToolController.Tool.CuttingEdgeAngle
-            maxdepth = baselevel - r / math.tan(math.radians(toolangle/2))
-
-            d = baselevel - round(MIC / math.tan(math.radians(toolangle / 2)), 4)
-            PathLog.debug('baselevel value: {} depth: {}'.format(baselevel, d))
-            return d if d <= maxdepth else maxdepth
-
-        def getEdges(vd, color=[PRIMARY]):
-            if type(color) == int:
-                color = [color]
-            geomList = []
-            bblevel = self.model[0].Shape.BoundBox.ZMin
-            for e in vd.Edges:
-                if e.Color not in color:
-                    continue
-                if e.toGeom() is None:
-                    continue
-                p1 = e.Vertices[0].toGeom(calculate_depth(e.getDistances()[0], bblevel))
-                p2 = e.Vertices[-1].toGeom(calculate_depth(e.getDistances()[-1], bblevel))
-                newedge = Part.Edge(Part.Vertex(p1), Part.Vertex(p2))
-
-                newedge.fixTolerance(obj.Tolerance, Part.Vertex)
-                geomList.append(newedge)
-
-            return geomList
-
-        def sortEm(mywire, unmatched):
-            remaining = []
-            wireGrowing = False
-
-            # end points of existing wire
-            wireverts = [mywire.Edges[0].valueAt(mywire.Edges[0].FirstParameter),
-                mywire.Edges[-1].valueAt(mywire.Edges[-1].LastParameter)]
-
-            for i, candidate in enumerate(unmatched):
-
-                # end points of candidate edge
-                cverts = [candidate.Edges[0].valueAt(candidate.Edges[0].FirstParameter),
-                    candidate.Edges[-1].valueAt(candidate.Edges[-1].LastParameter)]
-
-                # ignore short segments below tolerance level
-                if PathGeom.pointsCoincide(cverts[0], cverts[1], obj.Tolerance):
-                    continue
-
-                # iterate the combination of endpoints. If a match is found,
-                # make an edge from the common endpoint to the other end of
-                # the candidate wire. Add the edge to the wire and return it.
-
-                # This generates a new edge rather than using the candidate to
-                # avoid vertexes with close but different vectors
-                for wvert in wireverts:
-                    for idx, cvert in enumerate(cverts):
-                        if PathGeom.pointsCoincide(wvert, cvert, obj.Tolerance):
-                            wireGrowing = True
-                            elist = mywire.Edges
-                            otherIndex = int(not(idx))
-
-                            newedge = Part.Edge(Part.Vertex(wvert),
-                                Part.Vertex(cverts[otherIndex]))
-
-                            elist.append(newedge)
-                            mywire = Part.Wire(Part.__sortEdges__(elist))
-                            remaining.extend(unmatched[i+1:])
-                            return mywire, remaining, wireGrowing
-
-                # if not matched, add to remaining list to test later
-                remaining.append(candidate)
-
-            return mywire, remaining, wireGrowing
-
-        def getWires(candidateList):
-
-            chains = []
-            while len(candidateList) > 0:
-                cur_wire = Part.Wire(candidateList.pop(0))
-
-                wireGrowing = True
-                while wireGrowing:
-                    cur_wire, candidateList, wireGrowing = sortEm(cur_wire,
-                            candidateList)
-
-                chains.append(cur_wire)
-
-            return chains
-
-        def cutWire(w):
+        def cutWire(edges):
             path = []
             path.append(Path.Command("G0 Z{}".format(obj.SafeHeight.Value)))
-            e = w.Edges[0]
+            e = edges[0]
             p = e.valueAt(e.FirstParameter)
             path.append(Path.Command("G0 X{} Y{} Z{}".format(p.x, p.y,
                 obj.SafeHeight.Value)))
             c = Path.Command("G1 X{} Y{} Z{} F{}".format(p.x, p.y, p.z,
                 obj.ToolController.HorizFeed.Value))
             path.append(c)
-            for e in w.Edges:
+            for e in edges:
                 path.extend(PathGeom.cmdsForEdge(e,
                     hSpeed=obj.ToolController.HorizFeed.Value))
 
@@ -233,16 +220,21 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 e.Color = PRIMARY if e.isPrimary() else SECONDARY
             vd.colorExterior(EXTERIOR1)
             vd.colorExterior(EXTERIOR2,
-                lambda v: not f.isInside(v.toGeom(f.BoundBox.ZMin),
+                lambda v: not f.isInside(v.toPoint(f.BoundBox.ZMin),
                 obj.Tolerance, True))
             vd.colorColinear(COLINEAR, obj.Threshold)
             vd.colorTwins(TWIN)
 
-            edgelist = getEdges(vd)
-
-            for wire in getWires(edgelist):
-                pathlist.extend(cutWire(wire))
-            VD.append((f, vd, getWires(edgelist)))
+            if True:
+                wires = []
+                for vWire in _getVoronoiWires(vd):
+                    pWire = self._getPartEdges(obj, vWire)
+                    if pWire:
+                        wires.append(pWire)
+                        pathlist.extend(cutWire(pWire))
+                VD.append((f, vd, wires))
+            else:
+                VD.append((f, vd))
 
         self.commandlist = pathlist
 
@@ -283,12 +275,12 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             PathLog.error(e)
             traceback.print_exc()
             PathLog.error(translate('PathVcarve', 'The Job Base Object has \
-                                    no engraveable element. Engraving \
-                                    operation will produce no output.'))
+no engraveable element. Engraving \
+operation will produce no output.'))
+            raise e
 
     def opUpdateDepths(self, obj, ignoreErrors=False):
-        '''updateDepths(obj) ... engraving is always done at \
-                the top most z-value'''
+        '''updateDepths(obj) ... engraving is always done at the top most z-value'''
         job = PathUtils.findParentJob(obj)
         self.opSetDefaultValues(obj, job)
 
