@@ -1035,7 +1035,7 @@ bool ToolTip::eventFilter(QObject* o, QEvent*e)
 // ----------------------------------------------------------------------
 
 StatusWidget::StatusWidget(QWidget* parent)
-  : QWidget(parent, Qt::Dialog | Qt::FramelessWindowHint)
+  : QDialog(parent, Qt::Dialog | Qt::FramelessWindowHint)
 {
     //setWindowModality(Qt::ApplicationModal);
     label = new QLabel(this);
@@ -1072,79 +1072,13 @@ QSize StatusWidget::sizeHint () const
     return QSize(250,100);
 }
 
-void StatusWidget::showEvent(QShowEvent*)
+void StatusWidget::showEvent(QShowEvent* event)
 {
-    adjustPosition(parentWidget());
+    QDialog::showEvent(event);
 }
 
 void StatusWidget::hideEvent(QHideEvent*)
 {
-}
-
-// taken from QDialog::adjustPosition(QWidget*)
-void StatusWidget::adjustPosition(QWidget* w)
-{
-    QPoint p(0, 0);
-    int extraw = 0, extrah = 0, scrn = 0;
-    if (w)
-        w = w->window();
-    QRect desk;
-    if (w) {
-        scrn = QApplication::desktop()->screenNumber(w);
-    } else if (QApplication::desktop()->isVirtualDesktop()) {
-        scrn = QApplication::desktop()->screenNumber(QCursor::pos());
-    } else {
-        scrn = QApplication::desktop()->screenNumber(this);
-    }
-    desk = QApplication::desktop()->availableGeometry(scrn);
-
-    QWidgetList list = QApplication::topLevelWidgets();
-    for (int i = 0; (extraw == 0 || extrah == 0) && i < list.size(); ++i) {
-        QWidget * current = list.at(i);
-        if (current->isVisible()) {
-            int framew = current->geometry().x() - current->x();
-            int frameh = current->geometry().y() - current->y();
-
-            extraw = qMax(extraw, framew);
-            extrah = qMax(extrah, frameh);
-        }
-    }
-
-    // sanity check for decoration frames. With embedding, we
-    // might get extraordinary values
-    if (extraw == 0 || extrah == 0 || extraw >= 10 || extrah >= 40) {
-        extrah = 40;
-        extraw = 10;
-    }
-
-
-    if (w) {
-        // Use mapToGlobal rather than geometry() in case w might
-        // be embedded in another application
-        QPoint pp = w->mapToGlobal(QPoint(0,0));
-        p = QPoint(pp.x() + w->width()/2,
-                    pp.y() + w->height()/ 2);
-    } else {
-        // p = middle of the desktop
-        p = QPoint(desk.x() + desk.width()/2, desk.y() + desk.height()/2);
-    }
-
-    // p = origin of this
-    p = QPoint(p.x()-width()/2 - extraw,
-                p.y()-height()/2 - extrah);
-
-
-    if (p.x() + extraw + width() > desk.x() + desk.width())
-        p.setX(desk.x() + desk.width() - width() - extraw);
-    if (p.x() < desk.x())
-        p.setX(desk.x());
-
-    if (p.y() + extrah + height() > desk.y() + desk.height())
-        p.setY(desk.y() + desk.height() - height() - extrah);
-    if (p.y() < desk.y())
-        p.setY(desk.y());
-
-    move(p);
 }
 
 // --------------------------------------------------------------------
