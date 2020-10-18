@@ -599,9 +599,6 @@ void Hole::onChanged(const App::Property *prop)
             ThreadSize.setEnums(ThreadSize_None_Enums);
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_None_Enums);
-            ThreadSize.setValue(0L);
-            ThreadClass.setValue(0L);
-            HoleCutType.setValue(0L);
             Threaded.setReadOnly(true);
             ThreadSize.setReadOnly(true);
             ThreadFit.setReadOnly(true);
@@ -630,9 +627,6 @@ void Hole::onChanged(const App::Property *prop)
             ThreadSize.setEnums(ThreadSize_ISOmetric_Enums);
             ThreadClass.setEnums(ThreadClass_ISOmetric_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetric_Enums);
-            ThreadSize.setValue(0L);
-            ThreadClass.setValue(0L);
-            HoleCutType.setValue(0L);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
             ThreadFit.setReadOnly(false);
@@ -646,9 +640,6 @@ void Hole::onChanged(const App::Property *prop)
             ThreadSize.setEnums(ThreadSize_ISOmetricfine_Enums);
             ThreadClass.setEnums(ThreadClass_ISOmetricfine_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetricfine_Enums);
-            ThreadSize.setValue(0L);
-            ThreadClass.setValue(0L);
-            HoleCutType.setValue(0L);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
             ThreadFit.setReadOnly(false);
@@ -662,9 +653,6 @@ void Hole::onChanged(const App::Property *prop)
             ThreadSize.setEnums(ThreadSize_UNC_Enums);
             ThreadClass.setEnums(ThreadClass_UNC_Enums);
             HoleCutType.setEnums(HoleCutType_UNC_Enums);
-            ThreadSize.setValue(0L);
-            ThreadClass.setValue(0L);
-            HoleCutType.setValue(0L);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
             ThreadFit.setReadOnly(false);
@@ -692,9 +680,6 @@ void Hole::onChanged(const App::Property *prop)
             ThreadSize.setEnums(ThreadSize_UNF_Enums);
             ThreadClass.setEnums(ThreadClass_UNF_Enums);
             HoleCutType.setEnums(HoleCutType_UNF_Enums);
-            ThreadSize.setValue(0L);
-            ThreadClass.setValue(0L);
-            HoleCutType.setValue(0L);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
             ThreadFit.setReadOnly(false);
@@ -722,9 +707,6 @@ void Hole::onChanged(const App::Property *prop)
             ThreadSize.setEnums(ThreadSize_UNEF_Enums);
             ThreadClass.setEnums(ThreadClass_UNEF_Enums);
             HoleCutType.setEnums(HoleCutType_UNEF_Enums);
-            ThreadSize.setValue(0L);
-            ThreadClass.setValue(0L);
-            HoleCutType.setValue(0L);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
             ThreadFit.setReadOnly(false);
