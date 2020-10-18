@@ -75,6 +75,11 @@ PyObjectBase::~PyObjectBase()
  * 0 and define tp_base as 0.
  */
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
 PyTypeObject PyObjectBase::Type = {
     PyVarObject_HEAD_INIT(&PyType_Type,0)
     "PyObjectBase",                                         /*tp_name*/
@@ -141,6 +146,10 @@ PyTypeObject PyObjectBase::Type = {
     ,0                                                      /*tp_print */
 #endif
 };
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 /*------------------------------
  * PyObjectBase Methods 	-- Every class, even the abstract one should have a Methods
