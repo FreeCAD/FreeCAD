@@ -692,7 +692,11 @@ void InputField::wheelEvent (QWheelEvent * event)
     }
 
     double factor = event->modifiers() & Qt::ControlModifier ? 10 : 1;
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    double step = event->angleDelta().y() > 0 ? StepSize : -StepSize;
+#else
     double step = event->delta() > 0 ? StepSize : -StepSize;
+#endif
     double val = actUnitValue + factor * step;
     if (val > Maximum)
         val = Maximum;

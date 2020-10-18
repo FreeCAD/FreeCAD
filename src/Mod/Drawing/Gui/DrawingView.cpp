@@ -197,7 +197,11 @@ void SvgView::paintEvent(QPaintEvent *event)
 
 void SvgView::wheelEvent(QWheelEvent *event)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    int delta = -event->angleDelta().y();
+#else
     int delta = -event->delta();
+#endif
     if (m_invertZoom)
         delta = -delta;
     qreal factor = std::pow(1.2, delta / 240.0);

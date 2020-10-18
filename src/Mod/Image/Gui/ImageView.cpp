@@ -476,11 +476,21 @@ void ImageView::wheelEvent(QWheelEvent * cEvent)
        // Mouse event coordinates are relative to top-left of image view (including toolbar!)
        // Get current cursor position relative to top-left of image box
        QPoint offset = _pGLImageBox->pos();
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+       QPoint pos = cEvent->position().toPoint();
+       int box_x = pos.x() - offset.x();
+       int box_y = pos.y() - offset.y();
+#else
        int box_x = cEvent->x() - offset.x();
        int box_y = cEvent->y() - offset.y();
+#endif
 
        // Zoom around centrally displayed image point
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+       int numTicks = cEvent->angleDelta().y() / 120;
+#else
        int numTicks = cEvent->delta() / 120;
+#endif
        if (_invertZoom)
            numTicks = -numTicks;
 
