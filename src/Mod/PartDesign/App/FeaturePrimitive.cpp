@@ -155,8 +155,18 @@ void FeaturePrimitive::handleChangedPropertyName(Base::XMLReader &reader, const 
     extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
 }
 
+// suppress warning about tp_print for Py3.8
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 PYTHON_TYPE_DEF(PrimitivePy, PartDesign::FeaturePy)
 PYTHON_TYPE_IMP(PrimitivePy, PartDesign::FeaturePy)
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 PyObject* FeaturePrimitive::getPyObject()
 {

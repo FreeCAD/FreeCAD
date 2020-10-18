@@ -22,8 +22,6 @@
 
 
 #include "PreCompiled.h"
-#include "PyExport.h"
-#include "Exception.h"
 #include <sstream>
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
 #if defined(__clang__)
@@ -37,6 +35,8 @@
 # pragma GCC diagnostic ignored "-Wcast-function-type"
 # endif
 #endif
+#include "PyExport.h"
+#include "Exception.h"
 namespace Swig_python {
 #define SWIG_PYTHON_NO_BUILD_NONE
 #include <swigpyrun.h>
