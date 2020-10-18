@@ -397,7 +397,8 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
 {
   double z0 = 0.0;
   double z1 = DBL_MAX;
-  if (!PyArg_ParseTuple(args, "|dd", &z0, &z1)) {
+  int dbg   = 0;
+  if (!PyArg_ParseTuple(args, "|ddp", &z0, &z1, &dbg)) {
     throw Py::RuntimeError("no, one or two arguments of type double accepted");
   }
   if (z1 == DBL_MAX) {
@@ -545,7 +546,7 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
         double flenX;
         double flenY;
         // if one of the points is the location, we have to use the other to get sensible values
-        if (fabs(dist0) > 0.001) {
+        if (fabs(dist0) > fabs(dist1)) {
           flenX = flenX0;
           flenY = distanceBetween(loc, pt0x, e->dia->getScale());
         } else {
@@ -554,6 +555,12 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
         }
         // parabola: (x - p)^2 = 4*focal*(y - q)   |  (p,q) ... location of parabola
         focal = (flenX * flenX) / (4 * fabs(flenY));
+        if (dbg) {
+          std::cerr << "segement" << segment << ", point" << point << std::endl;
+          std::cerr << "  loc" << loc << ", axis" << axis << std::endl;
+          std::cerr << "  dist0(" << dist0 << " : " << flenX0 << ", dist1(" << dist1 << " : " << flenX1 << ")" << std::endl;
+          std::cerr << "  z(" << z0 << ", " << zx << ", " << z1 << ")" << std::endl;
+        }
         // use new X values to set the parameters
         dist0 = dist0 >= 0 ? flenX0 : -flenX0;
         dist1 = dist1 >= 0 ? flenX1 : -flenX1;
