@@ -169,8 +169,8 @@ MouseP::mouseWheelEvent(QWheelEvent * event)
 {
   PUBLIC(this)->setModifiers(this->wheel, event);
 #if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
-  QPoint pos = event->position().toPoint();
-  SbVec2s pos(pos.x(), PUBLIC(this)->windowsize[1] - pos.y() - 1);
+  QPoint pnt = event->position().toPoint();
+  SbVec2s pos(pnt.x(), PUBLIC(this)->windowsize[1] - pnt.y() - 1);
 #else
   SbVec2s pos(event->pos().x(), PUBLIC(this)->windowsize[1] - event->pos().y() - 1);
 #endif
