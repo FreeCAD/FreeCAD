@@ -1562,13 +1562,21 @@ QStringList Application::workbenches(void) const
     QStringList hidden, extra;
     if (ht != config.end()) {
         QString items = QString::fromLatin1(ht->second.c_str());
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+        hidden = items.split(QLatin1Char(';'), Qt::SkipEmptyParts);
+#else
         hidden = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
+#endif
         if (hidden.isEmpty())
             hidden.push_back(QLatin1String(""));
     }
     if (et != config.end()) {
         QString items = QString::fromLatin1(et->second.c_str());
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+        extra = items.split(QLatin1Char(';'), Qt::SkipEmptyParts);
+#else
         extra = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
+#endif
         if (extra.isEmpty())
             extra.push_back(QLatin1String(""));
     }

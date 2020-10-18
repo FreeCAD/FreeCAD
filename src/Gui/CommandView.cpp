@@ -1863,8 +1863,12 @@ void StdViewScreenShot::activated(int iMsg)
                 // Replace newline escape sequence through '\\n' string to build one big string,
                 // otherwise Python would interpret it as an invalid command.
                 // Python does the decoding for us.
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+                QStringList lines = comment.split(QLatin1String("\n"), Qt::KeepEmptyParts );
+#else
                 QStringList lines = comment.split(QLatin1String("\n"), QString::KeepEmptyParts );
-                    comment = lines.join(QLatin1String("\\n"));
+#endif
+                comment = lines.join(QLatin1String("\\n"));
                 doCommand(Gui,"Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s','%s')",
                             fn.toUtf8().constData(),w,h,background,comment.toUtf8().constData());
             }
