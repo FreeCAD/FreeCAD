@@ -514,7 +514,7 @@ def drill_translate(outstring, cmd, params):
     RETRACT_Z = CURRENT_Z
 
   # get the other parameters
-  drill_Speed = Units.Quantity(params['F'], FreeCAD.Units.Velocity)
+  drill_feedrate = Units.Quantity(params['F'], FreeCAD.Units.Velocity)
   if cmd == 'G83':
     drill_Step = Units.Quantity(params['Q'], FreeCAD.Units.Length)
     a_bit = drill_Step  * 0.05    # NIST 3.5.16.4 G83 Cycle:  "current hole bottom, backed off a bit."
@@ -527,20 +527,21 @@ def drill_translate(outstring, cmd, params):
       trBuff += linenumber() + "G90\n"  # force absolute coordinates during cycles
 
     strG0_RETRACT_Z = 'G0 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
-    strF_Drill_Speed = ' F' + format(float(drill_Speed.getValueAs(UNIT_SPEED_FORMAT)), '.2f') + "\n"
+    strF_Feedrate = ' F' + format(float(drill_feedrate.getValueAs(UNIT_SPEED_FORMAT)), '.2f') + "\n"
+    print (strF_Feedrate)
 
     # preliminary mouvement(s) 
     if CURRENT_Z < RETRACT_Z:
       trBuff += linenumber() + strG0_RETRACT_Z
     trBuff += linenumber() + 'G0 X' + format(float(drill_X.getValueAs(UNIT_FORMAT)), strFormat) + ' Y' + format(float(drill_Y.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
     if CURRENT_Z > RETRACT_Z:
-  #    trBuff += linenumber() + 'G0 Z' + format(float(CURRENT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"  # not following NIST 3.5.16.1 Preliminary and In-Between Motion
-      trBuff += linenumber() + strG0_RETRACT_Z
+      # NIST GCODE 3.5.16.1 Preliminary and In-Between Motion says G0 to RETRACT_Z. Here use G1 since retract height may be below surface !
+      trBuff += linenumber() + 'G1 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Feedrate  
     last_Stop_Z = RETRACT_Z
 
     # drill moves 
     if cmd in ('G81', 'G82'):
-      trBuff += linenumber() + 'G1 Z' + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Drill_Speed
+      trBuff += linenumber() + 'G1 Z' + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Feedrate
       # pause where applicable
       if cmd == 'G82':
         trBuff += linenumber() + 'G4 P' + str(drill_DwellTime) + "\n"
@@ -549,15 +550,15 @@ def drill_translate(outstring, cmd, params):
       if params['Q'] != 0 :
         while 1:
           if last_Stop_Z != RETRACT_Z :
-            clearance_depth = last_Stop_Z + a_bit
+            clearance_depth = last_Stop_Z + a_bit  # rapid move to just short of last drilling depth
             trBuff += linenumber() + 'G0 Z' + format(float(clearance_depth.getValueAs(UNIT_FORMAT)) , strFormat) + "\n" 
           next_Stop_Z = last_Stop_Z - drill_Step
           if next_Stop_Z > drill_Z:
-            trBuff += linenumber() + 'G1 Z' + format(float(next_Stop_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Drill_Speed
+            trBuff += linenumber() + 'G1 Z' + format(float(next_Stop_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Feedrate
             trBuff += linenumber() + strG0_RETRACT_Z
             last_Stop_Z = next_Stop_Z
           else:
-            trBuff += linenumber() + 'G1 Z' + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Drill_Speed
+            trBuff += linenumber() + 'G1 Z' + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Feedrate
             trBuff += linenumber() + strG0_RETRACT_Z
             break
       
