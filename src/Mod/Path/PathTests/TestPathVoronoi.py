@@ -99,8 +99,8 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e = e0.toShape()
         self.assertTrue(type(e.Curve) == Part.LineSegment or type(e.Curve) == Part.Line)
         self.assertFalse(PathGeom.pointsCoincide(e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)))
-        self.assertEqual(e.valueAt(e.FirstParameter).z, 0)
-        self.assertEqual(e.valueAt(e.LastParameter).z,  0)
+        self.assertRoughly(e.valueAt(e.FirstParameter).z, 0)
+        self.assertRoughly(e.valueAt(e.LastParameter).z,  0)
 
     def test51(self):
         '''Check toShape for linear edges with set z'''
@@ -112,8 +112,8 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e = e0.toShape(13.7)
         self.assertTrue(type(e.Curve) == Part.LineSegment or type(e.Curve) == Part.Line)
         self.assertFalse(PathGeom.pointsCoincide(e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)))
-        self.assertEqual(e.valueAt(e.FirstParameter).z, 13.7)
-        self.assertEqual(e.valueAt(e.LastParameter).z,  13.7)
+        self.assertRoughly(e.valueAt(e.FirstParameter).z, 13.7)
+        self.assertRoughly(e.valueAt(e.LastParameter).z,  13.7)
 
     def test52(self):
         '''Check toShape for linear edges with varying z'''
@@ -125,8 +125,8 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e = e0.toShape(2.37, 5.14)
         self.assertTrue(type(e.Curve) == Part.LineSegment or type(e.Curve) == Part.Line)
         self.assertFalse(PathGeom.pointsCoincide(e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)))
-        self.assertEqual(e.valueAt(e.FirstParameter).z, 2.37)
-        self.assertEqual(e.valueAt(e.LastParameter).z,  5.14)
+        self.assertRoughly(e.valueAt(e.FirstParameter).z, 2.37)
+        self.assertRoughly(e.valueAt(e.LastParameter).z,  5.14)
 
     def test60(self):
         '''Check toShape for curved edges'''
@@ -136,11 +136,10 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e0 = edges[0]
 
         e = e0.toShape()
-        print(type(e.Curve))
         self.assertTrue(type(e.Curve) == Part.Parabola or type(e.Curve) == Part.BSplineCurve)
         self.assertFalse(PathGeom.pointsCoincide(e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)))
-        self.assertEqual(e.valueAt(e.FirstParameter).z, 0)
-        self.assertEqual(e.valueAt(e.LastParameter).z,  0)
+        self.assertRoughly(e.valueAt(e.FirstParameter).z, 0)
+        self.assertRoughly(e.valueAt(e.LastParameter).z,  0)
 
     def test61(self):
         '''Check toShape for curved edges with set z'''
@@ -150,11 +149,10 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e0 = edges[0]
 
         e = e0.toShape(13.7)
-        print(type(e.Curve))
         self.assertTrue(type(e.Curve) == Part.Parabola or type(e.Curve) == Part.BSplineCurve)
         self.assertFalse(PathGeom.pointsCoincide(e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)))
-        self.assertEqual(e.valueAt(e.FirstParameter).z, 13.7)
-        self.assertEqual(e.valueAt(e.LastParameter).z,  13.7)
+        self.assertRoughly(e.valueAt(e.FirstParameter).z, 13.7)
+        self.assertRoughly(e.valueAt(e.LastParameter).z,  13.7)
 
     def test62(self):
         '''Check toShape for curved edges with varying z'''
@@ -164,9 +162,8 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e0 = edges[0]
 
         e = e0.toShape(2.37, 5.14)
-        print(type(e.Curve))
         self.assertTrue(type(e.Curve) == Part.Parabola or type(e.Curve) == Part.BSplineCurve)
         self.assertFalse(PathGeom.pointsCoincide(e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)))
-        self.assertEqual(e.valueAt(e.FirstParameter).z, 2.37)
-        self.assertEqual(e.valueAt(e.LastParameter).z,  5.14)
+        self.assertRoughly(e.valueAt(e.FirstParameter).z, 2.37)
+        self.assertRoughly(e.valueAt(e.LastParameter).z,  5.14)
 

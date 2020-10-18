@@ -25,41 +25,36 @@
 
 #ifndef _PreComp_
 #include <boost/algorithm/string.hpp>
-#include "BRepLib.hxx"
-#include "BRepTools.hxx"
 #include "BRepBuilderAPI_MakeEdge.hxx"
-#include "BRepBuilderAPI_MakeFace.hxx"
-#include "BRepProj_Projection.hxx"
 #include "Mod/Path/App/Voronoi.h"
 #include "Mod/Path/App/Voronoi.h"
 #include "Mod/Path/App/VoronoiCell.h"
-#include "Mod/Path/App/VoronoiCellPy.h"
 #include "Mod/Path/App/VoronoiEdge.h"
-#include "Mod/Path/App/VoronoiEdgePy.h"
 #include "Mod/Path/App/VoronoiVertex.h"
-#include "Mod/Path/App/VoronoiVertexPy.h"
 #include <Base/Exception.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/PlacementPy.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/ArcOfParabolaPy.h>
 #include <Mod/Part/App/LineSegmentPy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Geom_Plane.hxx>
-#include <Precision.hxx>
-#include <TopoDS.hxx>
-#include <TopExp_Explorer.hxx>
-#include <Standard_Version.hxx>
-#include <Base/Tools.h>
+#include <Geom_Parabola.hxx>
 #endif
 
-// files generated out of VoronoiEdgePy.xml
-#include "VoronoiEdgePy.cpp"
+#include "Mod/Path/App/VoronoiCellPy.h"
+#include "Mod/Path/App/VoronoiEdgePy.h"
+#include "Mod/Path/App/VoronoiEdgePy.cpp"
+#include "Mod/Path/App/VoronoiVertexPy.h"
 
 using namespace Path;
 
 namespace {
+
+  Voronoi::point_type pointFromVertex(const Voronoi::vertex_type v) {
+    Voronoi::point_type pt;
+    pt.x(v.x());
+    pt.y(v.y());
+    return pt;
+  }
 
   Voronoi::point_type orthognalProjection(const Voronoi::point_type &point, const Voronoi::segment_type &segment) {
     // move segment so it goes through the origin (s)
@@ -91,12 +86,42 @@ namespace {
     return pt;
   }
 
-  template<typename pt_type>
-  double distanceBetween(const Voronoi::diagram_type::vertex_type &v0, const pt_type &p1, double scale) {
-    double x = v0.x() - p1.x();
-    double y = v0.y() - p1.y();
-    return sqrt(x * x + y * y) / scale;
+  double length(const Voronoi::point_type &p) {
+    return sqrt(p.x() * p.x() + p.y() * p.y());
   }
+
+  int sideOf(const Voronoi::point_type &p, const Voronoi::segment_type &s) {
+    Voronoi::coordinate_type dxp = p.x()       - low(s).x();
+    Voronoi::coordinate_type dyp = p.y()       - low(s).y();
+    Voronoi::coordinate_type dxs = high(s).x() - low(s).x();
+    Voronoi::coordinate_type dys = high(s).y() - low(s).y();
+
+    double d = -dxs * dyp + dys * dxp;
+    if (d < 0) {
+      return -1;
+    }
+    if (d > 0) {
+      return +1;
+    }
+    return 0;
+  }
+
+  template<typename pt0_type, typename pt1_type>
+  double distanceBetween(const pt0_type &p0, const pt1_type &p1, double scale) {
+    Voronoi::point_type dist;
+    dist.x(p0.x() - p1.x());
+    dist.y(p0.y() - p1.y());
+    return length(dist) / scale;
+  }
+
+  template<typename pt0_type, typename pt1_type>
+  double signedDistanceBetween(const pt0_type &p0, const pt1_type &p1, double scale) {
+    if (length(p0) > length(p1)) {
+      return -distanceBetween(p0, p1, scale);
+    }
+    return distanceBetween(p0, p1, scale);
+  }
+
 
   void addDistanceBetween(const Voronoi::diagram_type::vertex_type *v0, const Voronoi::point_type &p1, Py::List *list, double scale) {
     if (v0) {
@@ -143,6 +168,19 @@ namespace {
     addProjectedDistanceBetween(edge->ptr->vertex1(), segment, list, edge->dia->getScale());
     return false;
   }
+
+}
+
+std::ostream& operator<<(std::ostream& os, const Voronoi::vertex_type &v) {
+  return os << '(' << v.x() << ", " << v.y() << ')';
+}
+
+std::ostream& operator<<(std::ostream& os, const Voronoi::point_type &p) {
+  return os << '(' << p.x() << ", " << p.y() << ')';
+}
+
+std::ostream& operator<<(std::ostream& os, const Voronoi::segment_type &s) {
+  return os << '<' << low(s) << ", " << high(s) << '>';
 }
 
 
@@ -404,7 +442,7 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
             direction.y(dx);
           }
         }
-        double k = 10.0; // <-- need something smarter here
+        double k = 2.5; // <-- need something smarter here
         Voronoi::point_type begin;
         Voronoi::point_type end;
         if (e->ptr->vertex0()) {
@@ -445,100 +483,95 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
         axis.x(point.x() - loc.x());
         axis.y(point.y() - loc.y());
       }
-      auto p = new Part::GeomParabola;
+      Voronoi::segment_type xaxis;
       {
-        p->setCenter(e->dia->scaledVector(point, z0));
-        p->setLocation(e->dia->scaledVector(loc, z0));
-        p->setAngleXU(atan2(axis.y(), axis.x()));
-        p->setFocal(sqrt(axis.x() * axis.x() + axis.y() * axis.y()) / e->dia->getScale());
+        xaxis.low(point);
+        xaxis.high(loc);
       }
-      auto a = new Part::GeomArcOfParabola;
-      {
-        a->setHandle(Handle(Geom_Parabola)::DownCast(p->handle()));
 
-        // figure out the arc parameters
-        auto v0 = e->ptr->vertex0();
-        auto v1 = e->ptr->vertex1();
-        double param0 = 0;
-        double param1 = 0;
-        if (!p->closestParameter(e->dia->scaledVector(*v0, z0), param0)) {
-          std::cerr << "closestParameter(v0) failed" << std::endl;
-        }
-        if (!p->closestParameter(e->dia->scaledVector(*v1, z0), param1)) {
-          std::cerr << "closestParameter(v0) failed" << std::endl;
-        }
-        a->setRange(param0, param1, false);
-        std::cerr << "range(" << param0 << ", " << param1 << ")" << std::endl;
-
-        if (z0 != z1) {
-          // two points of the plane are the end points of the parabola at the correct z level
-          auto p0  = e->dia->scaledVector(*v0, z0);
-          auto p1  = e->dia->scaledVector(*v1, z1);
-          // we get a third point by moving p0 along the axis of the parabola
-          auto p0_ = e->dia->scaledVector(v0->x() + axis.x(), v0->y() + axis.y(), z0);
-          // normal of the plane defined by those 3 points
-          auto norm = ((p1 - p0).Cross(p0_ - p0)).Normalize();
-
-          if (true) {
-            double r = Distance(p0, p1) * 10;
-
-            // construct a face we can project the parabola on
-            Handle(Geom_Plane) plane = new Geom_Plane(gp_Pnt(p0.x, p0.y, p0.z), gp_Dir(norm.x, norm.y, norm.z));
-            BRepBuilderAPI_MakeFace mkFace(plane, -r, r, -r, r
-#if OCC_VERSION_HEX >= 0x060502
-                , Precision::Confusion()
-#endif
-                );
-
-            // get a shape for the parabola arc
-            Handle(Geom_Curve) arc = Handle(Geom_Curve)::DownCast(a->handle());
-            BRepBuilderAPI_MakeEdge parab(arc, arc->FirstParameter(), arc->LastParameter());
-
-            // get projection of parabola onto the plane
-            BRepProj_Projection projection(parab.Shape(), mkFace.Shape(), gp::DZ());
-            TopoDS_Shape shape = projection.Shape();
-
-            // what we get is a compound shape - but we're pretty sure there's only a single edge
-            // in there. if that's the case - return just that single edge
-            TopTools_IndexedMapOfShape map;
-            for (TopExp_Explorer it(shape, TopAbs_EDGE); it.More(); it.Next()) {
-              map.Add(it.Current());
-            }
-            if (map.Extent() == 1) {
-              // there's indeed just a single edge in the compound. Unfortunately the edge
-              // can end up being oriented the wrong way.
-              TopoDS_Shape edge = map(1);
-              edge.Orientation((edge.Orientation() == TopAbs_REVERSED) ? TopAbs_FORWARD : TopAbs_REVERSED);
-              return new Part::TopoShapeEdgePy(new Part::TopoShape(edge));
-            }
-            return new Part::TopoShapePy(new Part::TopoShape(shape));
-          } else {
-            std::cerr << "hugo" << std::endl;
-            double scale = Distance(p0, p1) / distanceBetween(*v0, *v1, e->dia->getScale());
-            double kz = param0 / fabs(param0 - param1);
-            double zc = z0 + (z0 - z1) * kz;
-
-            auto center = e->dia->scaledVector(point, zc);
-            auto location = e->dia->scaledVector(loc, zc);
-            //p->setCenter(center);
-            //p->setLocation(location);
-            p->setFocal(p->getFocal() * scale * scale);
-
-            Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(a->handle());
-            Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast(trim->BasisCurve());
-            gp_Ax1 axis;
-            axis.SetLocation(gp_Pnt(location.x, location.y, location.z));
-            axis.SetDirection(gp_Dir(norm.x, norm.y, norm.z));
-            parabola->SetAxis(axis);
-            parabola->SetFocal(p->getFocal() / scale);
-
-            a->setRange(param0 * scale, param1 * scale, false);
-          }
-        }
+      // determine distances of the end points from the x-axis, those are the parameters for
+      // the arc of the parabola in the horizontal plane
+      auto pt0 = pointFromVertex(*e->ptr->vertex0());
+      auto pt1 = pointFromVertex(*e->ptr->vertex1());
+      Voronoi::point_type pt0x = orthognalProjection(pt0, xaxis);
+      Voronoi::point_type pt1x = orthognalProjection(pt1, xaxis);
+      double dist0 = distanceBetween(pt0, pt0x, e->dia->getScale()) * sideOf(pt0, xaxis);
+      double dist1 = distanceBetween(pt1, pt1x, e->dia->getScale()) * sideOf(pt1, xaxis);
+      if (dist1 < dist0) {
+        // if the parabola is traversed in the revere direction we need to use the points
+        // on the other side of the parabola - beauty of symmetric geometries
+        dist0 = -dist0;
+        dist1 = -dist1;
       }
+
+      // at this point we have the direction of the x-axis and the two end points p0 and p1
+      // which means we know the plane of the parabola
+      auto p0 = e->dia->scaledVector(pt0, z0);
+      auto p1 = e->dia->scaledVector(pt1, z1);
+      // we get a third point by moving p0 along the axis of the parabola
+      auto p_ = p0 + e->dia->scaledVector(axis, 0);
+
+      // normal of the plane defined by those 3 points
+      auto norm = ((p_ - p0).Cross(p1 - p0)).Normalize();
+
+      // the next thing to figure out is the z level of the x-axis,
+      double zx = z0 - (dist0 / (dist0 - dist1)) * (z0 - z1);
+
+      auto locn = e->dia->scaledVector(loc, zx);
+      auto xdir = e->dia->scaledVector(axis, zx);
+
+      double focal;
+      if (z0 == z1) {
+        // focal length if parabola in the xy-plane is simply half the distance between the
+        // point and segment - aka the distance between point and location, aka the length of axis
+        focal = length(axis) / e->dia->getScale();
+      } else {
+        // if the parabola is not in the xy-plane we need to find the
+        // (x,y) coordinates of a point on the parabola in the parabola's
+        // coordinate system.
+        // see: http://amsi.org.au/ESA_Senior_Years/SeniorTopic2/2a/2a_2content_10.html
+        // note that above website uses Y as the symmetry axis of the parabola whereas
+        // OCC uses X as the symmetry axis. The math below is in the website's system.
+        // We already know 2 points on the parabola (p0 and p1), we know their X values
+        // (dist0 and dist1) if the parabola is in the xy-plane, and we know their orthogonal
+        // projection onto the parabola's symmetry axis Y (pt0x and pt1x). The resulting Y
+        // values are the distance between the parabola's location (loc) and the respective
+        // orthogonal projection. Pythagoras gives us the X values, using the X from the
+        // xy-plane and the difference in z.
+        // Note that this calculation also gives correct results if the parabola is in
+        // the xy-plane (z0 == z1), it's just that above calculation is so much simpler.
+        double flenX0 = sqrt(dist0 * dist0 + (z0 - zx) * (z0 - zx));
+        double flenX1 = sqrt(dist1 * dist1 + (zx - z1) * (zx - z1));
+        double flenX;
+        double flenY;
+        // if one of the points is the location, we have to use the other to get sensible values
+        if (fabs(dist0) > 0.001) {
+          flenX = flenX0;
+          flenY = distanceBetween(loc, pt0x, e->dia->getScale());
+        } else {
+          flenX = flenX1;
+          flenY = distanceBetween(loc, pt1x, e->dia->getScale());
+        }
+        // parabola: (x - p)^2 = 4*focal*(y - q)   |  (p,q) ... location of parabola
+        focal = (flenX * flenX) / (4 * fabs(flenY));
+        // use new X values to set the parameters
+        dist0 = dist0 >= 0 ? flenX0 : -flenX0;
+        dist1 = dist1 >= 0 ? flenX1 : -flenX1;
+      }
+
+      gp_Pnt  pbLocn(locn.x, locn.y, locn.z);
+      gp_Dir  pbNorm(norm.x, norm.y, norm.z);
+      gp_Dir  pbXdir(xdir.x, xdir.y, 0);
+
+      gp_Ax2  pb(pbLocn, pbNorm, pbXdir);
+      Handle(Geom_Parabola) parabola = new Geom_Parabola(pb, focal);
+
+      auto arc = new Part::GeomArcOfParabola;
+      arc->setHandle(parabola);
+      arc->setRange(dist0, dist1, false);
 
       // get a shape for the parabola arc
-      Handle(Geom_Curve) h = Handle(Geom_Curve)::DownCast(a->handle());
+      Handle(Geom_Curve) h = Handle(Geom_Curve)::DownCast(arc->handle());
       BRepBuilderAPI_MakeEdge mkBuilder(h, h->FirstParameter(), h->LastParameter());
       return new Part::TopoShapeEdgePy(new Part::TopoShape(mkBuilder.Shape()));
     }
@@ -554,22 +587,6 @@ PyObject* VoronoiEdgePy::getDistances(PyObject *args)
   Py::List list;
   retrieveDistances(e, &list);
   return Py::new_reference_to(list);
-}
-
-std::ostream& operator<<(std::ostream &str, const Voronoi::point_type &p) {
-  return str << "[" << int(p.x()) << ", " << int(p.y()) << "]";
-}
-
-std::ostream& operator<<(std::ostream &str, const Voronoi::segment_type &s) {
-  return str << '<' << low(s) << '-' << high(s) << '>';
-}
-
-static bool pointsMatch(const Voronoi::point_type &p0, const Voronoi::point_type &p1) {
-  return long(p0.x()) == long(p1.x()) && long(p0.y()) == long(p1.y());
-}
-
-static void printCompare(const char *label, const Voronoi::point_type &p0, const Voronoi::point_type &p1) {
-  std::cerr << "         " << label <<": " << pointsMatch(p1, p0) << pointsMatch(p0, p1) << "    " << p0 << ' ' << p1 << std::endl;
 }
 
 PyObject* VoronoiEdgePy::getSegmentAngle(PyObject *args)
@@ -589,18 +606,7 @@ PyObject* VoronoiEdgePy::getSegmentAngle(PyObject *args)
         a += M_PI;
       }
       return Py::new_reference_to(Py::Float(a));
-    } else {
-      std::cerr << "indices: " << std::endl;
-      std::cerr << "   " << e->dia->segments[i0] << std::endl;
-      std::cerr << "   " << e->dia->segments[i1] << std::endl;
-      std::cerr << "   connected: " << e->dia->segmentsAreConnected(i0, i1) << std::endl;
-      printCompare("l/l", low(e->dia->segments[i0]),  low(e->dia->segments[i1]));
-      printCompare("l/h", low(e->dia->segments[i0]),  high(e->dia->segments[i1]));
-      printCompare("h/l", high(e->dia->segments[i0]), low(e->dia->segments[i1]));
-      printCompare("h/h", high(e->dia->segments[i0]), high(e->dia->segments[i1]));
     }
-  } else {
-    std::cerr << "constains_segment(" << e->ptr->cell()->contains_segment() << ", " << e->ptr->twin()->cell()->contains_segment() << ")" << std::endl;
   }
   Py_INCREF(Py_None);
   return Py_None;
