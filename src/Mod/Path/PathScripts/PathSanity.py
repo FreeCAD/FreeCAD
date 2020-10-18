@@ -54,6 +54,13 @@ PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 class CommandPathSanity:
     baseobj = None
     outputpath = PathPreferences.defaultOutputFile()
+    if outputpath == "":
+        outputpath = PathPreferences.macroFilePath()
+    if outputpath[-1] !=  os.sep:
+        outputpath += os.sep
+    if not os.path.exists(outputpath):
+        os.makedirs(outputpath)
+
     squawkData = {"items": []}
 
     def GetResources(self):
@@ -76,7 +83,7 @@ class CommandPathSanity:
         data = self.__summarize(obj)
         html = self.__report(data)
         if html is not None:
-            print("HTML report written to {}".format(html))
+            FreeCAD.Console.PrintMessage("HTML report written to {}".format(html))
             webbrowser.open(html)
 
     def __makePicture(self, obj, imageName):
@@ -99,7 +106,7 @@ class CommandPathSanity:
         view.showNormal()
         view.resize(320, 320)
 
-        imagepath = self.outputpath + '/{}'.format(imageName)
+        imagepath = self.outputpath + '{}'.format(imageName)
 
         aview.viewIsometric()
         FreeCADGui.Selection.clearSelection()
@@ -367,16 +374,19 @@ class CommandPathSanity:
         with open(reportraw, 'w') as fd:
             fd.write(report)
             fd.close()
+            FreeCAD.Console.PrintMessage('asciidoc file written to {}\n'.format(reportraw))
 
         try:
             result = os.system('asciidoctor {} -o {}'.format(reportraw,
                 reporthtml))
             if str(result) == "32512":
-                print('asciidoctor not found')
+                msg = "asciidoctor not found. html cannot be generated."
+                QtGui.QMessageBox.information(None, "Path Sanity", msg)
+                FreeCAD.Console.PrintMessage(msg)
                 reporthtml = None
 
         except Exception as e:
-            print(e)
+            FreeCAD.Console.PrintError(e)
 
         return reporthtml
 
