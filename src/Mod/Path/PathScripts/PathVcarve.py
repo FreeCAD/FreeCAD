@@ -58,6 +58,8 @@ def translate(context, text, disambig=None):
 VD = []
 Vertex = {}
 
+_sorting = 'global'
+
 def _collectVoronoiWires(vd):
     edges = [e for e in vd.Edges if e.Color == PRIMARY]
     vertex = {}
@@ -235,8 +237,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             return path
 
         VD.clear()
-        pathlist = []
-        pathlist.append(Path.Command("(starting)"))
+        voronoiWires = []
         for f in Faces:
             vd = Path.Voronoi()
             insert_many_wires(vd, f.Wires)
@@ -252,14 +253,22 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             vd.colorColinear(COLINEAR, obj.Threshold)
             vd.colorTwins(TWIN)
 
-            wires = []
-            for vWire in _sortVoronoiWires(_collectVoronoiWires(vd)):
-                pWire = self._getPartEdges(obj, vWire)
-                if pWire:
-                    wires.append(pWire)
-                    pathlist.extend(cutWire(pWire))
+            wires = _collectVoronoiWires(vd);
+            if _sorting != 'global':
+                wires = _sortVoronoiWires(wires)
+            voronoiWires.extend(wires)
             VD.append((f, vd, wires))
 
+        if _sorting == 'global':
+            voronoiWires = _sortVoronoiWires(voronoiWires)
+
+        pathlist = []
+        pathlist.append(Path.Command("(starting)"))
+        for w in voronoiWires:
+            pWire = self._getPartEdges(obj, w)
+            if pWire:
+                wires.append(pWire)
+                pathlist.extend(cutWire(pWire))
         self.commandlist = pathlist
 
     def opExecute(self, obj):
