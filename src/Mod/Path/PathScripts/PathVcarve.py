@@ -110,8 +110,6 @@ def _collectVoronoiWires(vd):
                 else:
                     vStart = None
             wires.append(we)
-            print("knots %s - (%s, %s)" % (knots, vFirst, vLast))
-            # The first and last edge are knots, check if they still have more edges attached
         if len(vertex[vFirst]) == 0:
             knots = [v for v in knots if v != vFirst]
         if len(vertex[vLast]) == 0:
@@ -126,7 +124,7 @@ def _sortVoronoiWires(wires, start = FreeCAD.Vector(0, 0, 0)):
             if l is None or l > start.distanceToPoint(point[i]):
                 l = start.distanceToPoint(point[i])
                 p = i
-        return p
+        return (p, l)
 
 
     begin = {}
@@ -136,14 +134,22 @@ def _sortVoronoiWires(wires, start = FreeCAD.Vector(0, 0, 0)):
         begin[i] = w[ 0].Vertices[0].toPoint()
         end[i]   = w[-1].Vertices[1].toPoint()
 
-    index = []
+    result = []
     while begin:
-        idx = closestTo(start, begin)
-        index.append(idx)
-        del   begin[idx]
-        start = end[idx]
+        (bIdx, bLen) = closestTo(start, begin)
+        (eIdx, eLen) = closestTo(start, end)
+        if bLen < eLen:
+            result.append(wires[bIdx])
+            start =   end[bIdx]
+            del     begin[bIdx]
+            del       end[bIdx]
+        else:
+            result.append([e.Twin for e in reversed(wires[eIdx])])
+            start = begin[eIdx]
+            del     begin[eIdx]
+            del       end[eIdx]
 
-    return [wires[i] for i in index]
+    return result
 
 class ObjectVcarve(PathEngraveBase.ObjectOp):
     '''Proxy class for Vcarve operation.'''
