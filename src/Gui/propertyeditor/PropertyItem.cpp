@@ -342,9 +342,7 @@ QVariant PropertyItem::displayName() const
 
 QVariant PropertyItem::toolTip(const App::Property* prop) const
 {
-    QString str = QApplication::translate("App::Property",
-                                          prop->getDocumentation());
-    return QVariant(str);
+    return toString(value(prop));
 }
 
 QVariant PropertyItem::decoration(const QVariant&) const
@@ -610,9 +608,7 @@ QVariant PropertyItem::data(int column, int role) const
         else if (role == Qt::ToolTipRole) {
             QString type = QString::fromLatin1("Type: %1\nName: %2").arg(
                     QString::fromLatin1(propertyItems[0]->getTypeId().getName()), objectName());
-            QString doc = PropertyItem::toolTip(propertyItems[0]).toString();
-            if (doc.isEmpty())
-                doc = toolTip(propertyItems[0]).toString();
+            QString doc = QApplication::translate("App::Property", propertyItems[0]->getDocumentation());
             if(doc.size())
                 return type + QLatin1String("\n\n") + doc;
             return type;
@@ -3993,9 +3989,22 @@ QVariant PropertyLinkItem::data(int column, int role) const {
             else if(role == Qt::ToolTipRole) {
                 auto xlink = Base::freecad_dynamic_cast<const App::PropertyXLink>(propertyItems[0]);
                 if(xlink) {
+                    QString tooltip;
+                    tooltip = toolTip(xlink).toString();
+                    if (tooltip.isEmpty()) {
+                        const char *objname = xlink->getObjectName();
+                        if (objname && objname[0])
+                            tooltip = QString::fromLatin1("Object: %1").arg(QString::fromUtf8(objname));
+                    }
                     const char *filePath = xlink->getFilePath();
-                    if(filePath && filePath[0])
-                        return QVariant::fromValue(QString::fromUtf8(filePath));
+                    if(filePath && filePath[0]) {
+                        if (tooltip.isEmpty())
+                            tooltip = QString::fromUtf8(filePath);
+                        else
+                            tooltip = QString::fromLatin1("%1\nFile: %2").arg(tooltip, QString::fromUtf8(filePath));
+                    }
+                    if (!tooltip.isEmpty())
+                        return tooltip;
                 }
             }
         }
