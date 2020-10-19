@@ -58,7 +58,7 @@ def translate(context, text, disambig=None):
 VD = []
 Vertex = {}
 
-def _getVoronoiWires(vd):
+def _collectVoronoiWires(vd):
     edges = [e for e in vd.Edges if e.Color == PRIMARY]
     vertex = {}
     for e in edges:
@@ -115,6 +115,33 @@ def _getVoronoiWires(vd):
         if len(vertex[vLast]) == 0:
             knots = [v for v in knots if v != vLast]
     return wires
+
+def _sortVoronoiWires(wires, start = FreeCAD.Vector(0, 0, 0)):
+    def closestTo(start, point):
+        p = None
+        l = None
+        for i in point:
+            if l is None or l > start.distanceToPoint(point[i]):
+                l = start.distanceToPoint(point[i])
+                p = i
+        return p
+
+
+    begin = {}
+    end   = {}
+
+    for i, w in enumerate(wires):
+        begin[i] = w[ 0].Vertices[0].toPoint()
+        end[i]   = w[-1].Vertices[1].toPoint()
+
+    index = []
+    while begin:
+        idx = closestTo(start, begin)
+        index.append(idx)
+        del   begin[idx]
+        start = end[idx]
+
+    return [wires[i] for i in index]
 
 class ObjectVcarve(PathEngraveBase.ObjectOp):
     '''Proxy class for Vcarve operation.'''
@@ -225,16 +252,13 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             vd.colorColinear(COLINEAR, obj.Threshold)
             vd.colorTwins(TWIN)
 
-            if True:
-                wires = []
-                for vWire in _getVoronoiWires(vd):
-                    pWire = self._getPartEdges(obj, vWire)
-                    if pWire:
-                        wires.append(pWire)
-                        pathlist.extend(cutWire(pWire))
-                VD.append((f, vd, wires))
-            else:
-                VD.append((f, vd))
+            wires = []
+            for vWire in _sortVoronoiWires(_collectVoronoiWires(vd)):
+                pWire = self._getPartEdges(obj, vWire)
+                if pWire:
+                    wires.append(pWire)
+                    pathlist.extend(cutWire(pWire))
+            VD.append((f, vd, wires))
 
         self.commandlist = pathlist
 
