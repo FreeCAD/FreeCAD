@@ -1117,7 +1117,7 @@ void SubShapeBinder::handleChangedPropertyType(
    inherited::handleChangedPropertyType(reader,TypeName,prop);
 }
 
-App::DocumentObject *SubShapeBinder::getLinkedObject(
+App::DocumentObject *SubShapeBinder::_getLinkedObject(
         bool recurse, Base::Matrix4D *mat, bool transform, int depth) const
 {
     if (mat && transform) 
@@ -1140,9 +1140,16 @@ App::DocumentObject *SubShapeBinder::getLinkedObject(
         return sobj;
 
     App::GetApplication().checkLinkDepth(depth);
+
     // set transform to false, because the above getSubObject() already include
     // the transform of sobj
-    return sobj->getLinkedObject(true, mat, false, depth+1);
+    sobj = sobj->getLinkedObject(true, mat, false, depth+1);
+
+    auto binder = Base::freecad_dynamic_cast<SubShapeBinder>(sobj);
+    if (!binder)
+        return sobj;
+
+    return binder->_getLinkedObject(true, mat, false, depth+1);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////

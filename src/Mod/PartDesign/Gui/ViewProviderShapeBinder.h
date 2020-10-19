@@ -79,6 +79,8 @@ public:
     virtual void onChanged(const App::Property *prop) override;
     virtual void getExtraIcons(std::vector<QPixmap> &) const override;
     virtual void updateData(const App::Property*) override;
+    virtual Gui::ViewProviderDocumentObject *getLinkedViewProvider(
+            std::string *subname=0, bool recursive=false) const override;
 
 private:
     void updatePlacement(bool transaction);

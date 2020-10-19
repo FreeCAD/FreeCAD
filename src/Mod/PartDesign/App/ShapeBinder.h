@@ -117,8 +117,10 @@ public:
 
     virtual App::DocumentObject *getElementOwner(const char *element) const override;
 
-    virtual App::DocumentObject *getLinkedObject(bool recurse=true, 
-            Base::Matrix4D *mat=0, bool transform=false, int depth=0) const override;
+    // virtual App::DocumentObject *getLinkedObject(bool recurse=true,
+    //         Base::Matrix4D *mat=0, bool transform=false, int depth=0) const override;
+    App::DocumentObject *_getLinkedObject(bool recurse=true,
+            Base::Matrix4D *mat=0, bool transform=false, int depth=0) const;
 
 protected:
     virtual App::DocumentObjectExecReturn* execute(void) override;

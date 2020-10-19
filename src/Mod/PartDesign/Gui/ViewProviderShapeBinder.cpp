@@ -528,6 +528,25 @@ struct PixmapInfo {
     }
 };
 
+Gui::ViewProviderDocumentObject *ViewProviderSubShapeBinder::getLinkedViewProvider(
+        std::string *subname, bool recursive) const
+{
+    (void)subname;
+    auto self = const_cast<ViewProviderSubShapeBinder*>(this);
+    if(!pcObject || !pcObject->getNameInDocument())
+        return self;
+
+    auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(pcObject);
+    auto linked = binder ? binder->_getLinkedObject(recursive) : pcObject->getLinkedObject(recursive);
+    if(!linked || linked == pcObject)
+        return self;
+    auto res = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
+            Gui::Application::Instance->getViewProvider(linked));
+    if(!res)
+        res = self;
+    return res;
+}
+
 void ViewProviderSubShapeBinder::getExtraIcons(std::vector<QPixmap> &icons) const
 {
     auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(getObject());
@@ -560,7 +579,7 @@ void ViewProviderSubShapeBinder::getExtraIcons(std::vector<QPixmap> &icons) cons
             if (binder) {
                 // binder of binder, extract its first bound object's icon
                 vp = Gui::Application::Instance->getViewProvider(
-                        binder->getLinkedObject(true));
+                        binder->_getLinkedObject(true));
             } else
                 vp = Gui::Application::Instance->getViewProvider(sobj);
 
