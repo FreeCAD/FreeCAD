@@ -592,8 +592,11 @@ void Hole::updateDiameterParam()
 void Hole::onChanged(const App::Property *prop)
 {
     if (prop == &ThreadType) {
-        std::string type(ThreadType.getValueAsString());
-        std::string holeCutType(HoleCutType.getValueAsString());
+        std::string type, holeCutType;
+        if (ThreadType.isValid())
+            type = ThreadType.getValueAsString();
+        if (HoleCutType.isValid())
+            holeCutType = HoleCutType.getValueAsString();
 
         if (type == "None" ) {
             ThreadSize.setEnums(ThreadSize_None_Enums);
@@ -802,8 +805,11 @@ void Hole::onChanged(const App::Property *prop)
         updateDiameterParam();
     }
     else if (prop == &HoleCutType) {
-        std::string threadType = ThreadType.getValueAsString();
-        std::string holeCutType = HoleCutType.getValueAsString();
+        std::string threadType,  holeCutType;
+        if (ThreadType.isValid())
+            threadType = ThreadType.getValueAsString();
+        if (HoleCutType.isValid())
+            holeCutType = HoleCutType.getValueAsString();
         bool holeCutEnable = ( threadType != "ISOMetricProfile" &&
                 threadType !="ISOMetricFineProfile" &&
                 (holeCutType != "None"));
