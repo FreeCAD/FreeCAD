@@ -69,12 +69,12 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->label_CutoffOuter->setVisible(false);
     ui->label_Angle->setVisible(false);
 
-    ui->ThreadType->addItem(tr("None"));
-    ui->ThreadType->addItem(tr("ISO metric coarse profile"));
-    ui->ThreadType->addItem(tr("ISO metric fine profile"));
-    ui->ThreadType->addItem(tr("UTS coarse profile"));
-    ui->ThreadType->addItem(tr("UTS fine profile"));
-    ui->ThreadType->addItem(tr("UTS extra fine profile"));
+    ui->ThreadType->addItem(tr("None"), QByteArray("None"));
+    ui->ThreadType->addItem(tr("ISO metric coarse profile"), QByteArray("ISO"));
+    ui->ThreadType->addItem(tr("ISO metric fine profile"), QByteArray("ISO"));
+    ui->ThreadType->addItem(tr("UTS coarse profile"), QByteArray("UTS"));
+    ui->ThreadType->addItem(tr("UTS fine profile"), QByteArray("UTS"));
+    ui->ThreadType->addItem(tr("UTS extra fine profile"), QByteArray("UTS"));
 
     connect(ui->Threaded, SIGNAL(clicked(bool)), this, SLOT(threadedChanged()));
     connect(ui->ThreadType, SIGNAL(currentIndexChanged(int)), this, SLOT(threadTypeChanged(int)));
@@ -292,12 +292,7 @@ void TaskHoleParameters::threadTypeChanged(int index)
     // Besides the size also the thread class" and hole cut type are affected.
 
     // at first check what type class is used
-    QString TypeClass = ui->ThreadType->currentText();
-    // the first 3 letters are the class name
-    if (TypeClass.indexOf(QString::fromLatin1("ISO")) > -1)
-        TypeClass = QString::fromLatin1("ISO");
-    else
-        TypeClass = QString::fromLatin1("UTS");
+    QByteArray TypeClass = ui->ThreadType->itemData(index).toByteArray();
 
     // store the current size
     QString ThreadSizeString = ui->ThreadSize->currentText();
@@ -313,7 +308,7 @@ void TaskHoleParameters::threadTypeChanged(int index)
     // the size for ISO type has either foe form "M3x0.35" or just "M3"
     // so we need to check if the size contains a 'x'. If yes, check if the string
     // up to the 'x' is exists in the new list
-    if (TypeClass == QString::fromLatin1("ISO")) {
+    if (TypeClass == QByteArray("ISO")) {
         if (ThreadSizeString.indexOf(QString::fromLatin1("x")) > -1) {
             // we have an ISO fine size
             // cut of the part behind the 'x'
@@ -325,34 +320,38 @@ void TaskHoleParameters::threadTypeChanged(int index)
                 || (ThreadSizeString.indexOf(QString::fromLatin1(",")) > -1))
                 ThreadSizeString.append(QString::fromLatin1("0"));
         }
-        
         else {
             // fractions don't end with a '0' in profile ISO fine
             if ((ThreadSizeString.indexOf(QString::fromLatin1(".")) > -1)
                 || (ThreadSizeString.indexOf(QString::fromLatin1(",")) > -1))
                 ThreadSizeString.remove(ThreadSizeString.size()-1, 1);
         }
+
         // search if the string exists in the combobox
-        if (ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains) > -1) {
+        int threadSizeIndex = ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains);
+        if (threadSizeIndex > -1) {
             // we can set it
-            ui->ThreadSize->setCurrentIndex(ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains));
+            ui->ThreadSize->setCurrentIndex(threadSizeIndex);
         }
     }
+
     // for the UTS types the entries are the same
-    if (TypeClass == QString::fromLatin1("UTS")) {
-        if (ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains) > -1) {
-            ui->ThreadSize->setCurrentIndex(ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains));
+    if (TypeClass == QByteArray("UTS")) {
+        int threadSizeIndex = ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains);
+        if (threadSizeIndex > -1) {
+            ui->ThreadSize->setCurrentIndex(threadSizeIndex);
         }
     }
 
     // Class and cut type
     // the class and cut types are the same for both TypeClass so we don't need to distinguish between ISO and UTS
-    if (ui->ThreadClass->findText(ThreadClassString, Qt::MatchContains) > -1)
-        ui->ThreadClass->setCurrentIndex(ui->ThreadClass->findText(ThreadClassString, Qt::MatchContains));
-    if (ui->HoleCutType->findText(CutTypeString, Qt::MatchContains) > -1)
-        ui->HoleCutType->setCurrentIndex(ui->HoleCutType->findText(CutTypeString, Qt::MatchContains));
-               
- }
+    int threadClassIndex = ui->ThreadClass->findText(ThreadClassString, Qt::MatchContains);
+    if (threadClassIndex > -1)
+        ui->ThreadClass->setCurrentIndex(threadClassIndex);
+    int holeCutIndex = ui->HoleCutType->findText(CutTypeString, Qt::MatchContains);
+    if (holeCutIndex > -1)
+        ui->HoleCutType->setCurrentIndex(holeCutIndex);
+}
 
 void TaskHoleParameters::threadSizeChanged(int index)
 {
@@ -478,7 +477,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         ui->ThreadSize->clear();
         const char ** cursor = pcHole->ThreadSize.getEnums();
         while (*cursor) {
-            ui->ThreadSize->addItem(tr(*cursor));
+            ui->ThreadSize->addItem(QString::fromLatin1(*cursor));
             ++cursor;
         }
         ui->ThreadSize->setCurrentIndex(pcHole->ThreadSize.getValue());
@@ -489,7 +488,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         ui->HoleCutType->clear();
         cursor = pcHole->HoleCutType.getEnums();
         while (*cursor) {
-            ui->HoleCutType->addItem(tr(*cursor));
+            ui->HoleCutType->addItem(QString::fromLatin1(*cursor));
             ++cursor;
         }
         ui->HoleCutType->setCurrentIndex(pcHole->HoleCutType.getValue());
@@ -499,7 +498,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         ui->ThreadClass->clear();
         cursor = pcHole->ThreadClass.getEnums();
         while (*cursor) {
-            ui->ThreadClass->addItem(tr(*cursor));
+            ui->ThreadClass->addItem(QString::fromLatin1(*cursor));
             ++cursor;
         }
         ui->ThreadClass->setCurrentIndex(pcHole->ThreadClass.getValue());
