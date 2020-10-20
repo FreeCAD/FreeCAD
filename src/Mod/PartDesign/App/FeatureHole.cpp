@@ -632,8 +632,10 @@ void Hole::onChanged(const App::Property *prop)
             HoleCutType.setEnums(HoleCutType_ISOmetric_Enums);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
-            ThreadFit.setReadOnly(false);
-            ThreadClass.setReadOnly(false);
+            // thread class and direction are only sensible if threaded
+            // fit only sensible if not threaded
+            ThreadFit.setReadOnly(Threaded.getValue());
+            ThreadClass.setReadOnly(!Threaded.getValue());
             Diameter.setReadOnly(true);
             HoleCutDiameter.setReadOnly(true);
             HoleCutDepth.setReadOnly(true);
@@ -645,8 +647,10 @@ void Hole::onChanged(const App::Property *prop)
             HoleCutType.setEnums(HoleCutType_ISOmetricfine_Enums);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
-            ThreadFit.setReadOnly(false);
-            ThreadClass.setReadOnly(false);
+            // thread class and direction are only sensible if threaded
+            // fit only sensible if not threaded
+            ThreadFit.setReadOnly(Threaded.getValue());
+            ThreadClass.setReadOnly(!Threaded.getValue());
             Diameter.setReadOnly(true);
             HoleCutDiameter.setReadOnly(true);
             HoleCutDepth.setReadOnly(true);
@@ -658,8 +662,10 @@ void Hole::onChanged(const App::Property *prop)
             HoleCutType.setEnums(HoleCutType_UNC_Enums);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
-            ThreadFit.setReadOnly(false);
-            ThreadClass.setReadOnly(false);
+            // thread class and direction are only sensible if threaded
+            // fit only sensible if not threaded
+            ThreadFit.setReadOnly(Threaded.getValue());
+            ThreadClass.setReadOnly(!Threaded.getValue());
             Diameter.setReadOnly(true);
 
             if (holeCutType == "None") {
@@ -685,8 +691,10 @@ void Hole::onChanged(const App::Property *prop)
             HoleCutType.setEnums(HoleCutType_UNF_Enums);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
-            ThreadFit.setReadOnly(false);
-            ThreadClass.setReadOnly(false);
+            // thread class and direction are only sensible if threaded
+            // fit only sensible if not threaded
+            ThreadFit.setReadOnly(Threaded.getValue());
+            ThreadClass.setReadOnly(!Threaded.getValue());
             Diameter.setReadOnly(true);
 
             if (holeCutType == "None") {
@@ -712,8 +720,10 @@ void Hole::onChanged(const App::Property *prop)
             HoleCutType.setEnums(HoleCutType_UNEF_Enums);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
-            ThreadFit.setReadOnly(false);
-            ThreadClass.setReadOnly(false);
+            // thread class and direction are only sensible if threaded
+            // fit only sensible if not threaded
+            ThreadFit.setReadOnly(Threaded.getValue());
+            ThreadClass.setReadOnly(!Threaded.getValue());;
             Diameter.setReadOnly(true);
 
             if (holeCutType == "None") {
@@ -758,12 +768,16 @@ void Hole::onChanged(const App::Property *prop)
     else if (prop == &Threaded) {
         std::string type(ThreadType.getValueAsString());
 
+        // thread class and direction are only sensible if threaded
+        // fit only sensible if not threaded
         if (Threaded.getValue()) {
+            ThreadClass.setReadOnly(false);
             ThreadDirection.setReadOnly(false);
             ThreadFit.setReadOnly(true);
             ModelActualThread.setReadOnly(true); // For now set this one to read only
         }
         else {
+            ThreadClass.setReadOnly(true);
             ThreadDirection.setReadOnly(true);
             if (type == "None")
                 ThreadFit.setReadOnly(true);
