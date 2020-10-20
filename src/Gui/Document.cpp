@@ -1531,21 +1531,7 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
     if (d->_pcDocument != &doc)
         return;
 
-    // Refresh ViewProviderDocumentObject isShowable status. Since it is
-    // calculated based on parent status, so must call it reverse dependency
-    // order.
-    const auto &objs = doc.getObjects();
-    auto sorted = doc.getDependencyList(objs,App::Document::DepSort);
-    for (auto rit=sorted.rbegin(); rit!=sorted.rend(); ++rit) {
-        auto obj = *rit;
-        if(obj->getDocument() != &doc)
-            continue;
-        auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(getViewProvider(*rit));
-        if(vpd) {
-            vpd->isShowable(true);
-            vpd->updateChildren(false);
-        }
-    }
+    slotFinishImportObjects(doc.getObjects());
 
     d->connectActObjectBlocker.unblock();
     App::DocumentObject* act = doc.getActiveObject();
@@ -1813,16 +1799,20 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
 }
 
 void Document::slotFinishImportObjects(const std::vector<App::DocumentObject*> &objs) {
-    (void)objs;
-    // finishRestoring() is now triggered by signalFinishRestoreObject
-    //
-    // for(auto obj : objs) {
-    //     auto vp = getViewProvider(obj);
-    //     if(!vp) continue;
-    //     vp->setStatus(Gui::isRestoring,false);
-    //     auto vpd = dynamic_cast<ViewProviderDocumentObject*>(vp);
-    //     if(vpd) vpd->finishRestoring();
-    // }
+    // Refresh ViewProviderDocumentObject isShowable status. Since it is
+    // calculated based on parent status, so must call it reverse dependency
+    // order.
+    auto sorted = App::Document::getDependencyList(objs,App::Document::DepSort);
+    for (auto rit=sorted.rbegin(); rit!=sorted.rend(); ++rit) {
+        auto obj = *rit;
+        if(obj->getDocument() != d->_pcDocument)
+            continue;
+        auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(getViewProvider(*rit));
+        if(vpd) {
+            vpd->isShowable(true);
+            vpd->updateChildren(false);
+        }
+    }
 }
 
 
