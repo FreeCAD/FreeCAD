@@ -99,7 +99,11 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
         ++cursor;
     }
     ui->ThreadClass->setCurrentIndex(pcHole->ThreadClass.getValue());
+    // Class is only enabled (sensible) if threaded
+    ui->ThreadClass->setEnabled(pcHole->Threaded.getValue());
     ui->ThreadFit->setCurrentIndex(pcHole->ThreadFit.getValue());
+    // Fit is only enabled (sensible) if not threaded
+    ui->ThreadFit->setEnabled(!pcHole->Threaded.getValue());
     ui->Diameter->setValue(pcHole->Diameter.getValue());
     if (pcHole->ThreadDirection.getValue() == 0L)
         ui->directionRightHand->setChecked(true);
