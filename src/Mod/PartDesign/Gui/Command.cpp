@@ -1065,15 +1065,21 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
         //for additive and subtractive lofts allow the user to preselect the sections
         if (which.compare("AdditiveLoft") == 0 || which.compare("SubtractiveLoft") == 0) {
-            std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-            if (selection.size() > 1) { //treat additional selected objects as sections
-                for (std::vector<Gui::SelectionObject>::size_type ii = 1; ii < selection.size(); ii++) {
-                    if (selection[ii].getObject()->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-                        auto objCmdSection = Gui::Command::getObjectCmd(selection[ii].getObject());
-                        Gui::cmdAppObject(Feat, std::ostringstream() << "Sections += [" << objCmdSection << "]");
-                    }
-                }
+            std::ostringstream ss;
+            int i = -1;
+            int count = 0;
+            ss << "Sections = [";
+            for (auto & objT : Gui::Selection().getSelectionT()) {
+                auto obj = objT.getObject();
+                if (PartDesign::Body::findBodyOf(obj) != pcActiveBody)
+                    continue;
+                if (++i == 0)
+                    continue;
+                ss << obj->getFullName(true) << ", ";
+                ++count;
             }
+            if (count)
+                Gui::cmdAppObject(Feat, ss << "]");
         }
 
         // for additive and subtractive pipes allow the user to preselect the spines

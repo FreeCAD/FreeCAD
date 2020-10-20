@@ -127,12 +127,13 @@ void TaskLoftParameters::refresh()
     }
 
     for (auto obj : loft->Sections.getValues()) {
-        Gui::Application::Instance->showViewProvider(obj);
-
         QString label = QString::fromUtf8(obj->Label.getValue());
         QListWidgetItem* item = new QListWidgetItem();
         item->setText(label);
         item->setData(Qt::UserRole, QByteArray(obj->getNameInDocument()));
+        auto vp = Gui::Application::Instance->getViewProvider(obj);
+        if (vp)
+            item->setIcon(vp->getIcon());
         ui->listWidgetReferences->addItem(item);
     }
 
@@ -170,6 +171,9 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                     QListWidgetItem* item = new QListWidgetItem();
                     item->setText(label);
                     item->setData(Qt::UserRole, QByteArray(msg.pObjectName));
+                    auto vp = Gui::Application::Instance->getViewProvider(msg.Object.getSubObject());
+                    if (vp)
+                        item->setIcon(vp->getIcon());
                     ui->listWidgetReferences->addItem(item);
                 }
                 else if (selectionMode == refRemove) {

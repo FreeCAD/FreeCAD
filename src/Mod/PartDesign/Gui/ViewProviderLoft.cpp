@@ -61,12 +61,12 @@ std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren(void)const
 
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
 
-    App::DocumentObject* sketch = pcLoft->getVerifiedSketch(true);
-    if (sketch != NULL)
+    App::DocumentObject* sketch = pcLoft->Profile.getValue();
+    if (sketch != NULL && !sketch->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
         temp.push_back(sketch);
 
     for(App::DocumentObject* obj : pcLoft->Sections.getValues()) {
-        if (obj != NULL && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        if (obj != NULL && !obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
             temp.push_back(obj);
     }
 
