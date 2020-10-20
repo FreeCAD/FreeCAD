@@ -69,7 +69,8 @@ namespace Gui
         void OnRawInput(UINT nInputCode, HRAWINPUT hRawInput);
         UINT GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT cbSizeHeader);
         bool TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawInput);
-        bool ParseRawInput(UINT nInputCode, PRAWINPUT pRawInput);
+        bool TranslateSpaceMouseNew(UINT nInputCode, PRAWINPUT pRawInput, DWORD dwProductId);
+        bool TranslateSpaceMouseOld(UINT nInputCode, PRAWINPUT pRawInput, DWORD dwProductId);
         void On3dmouseInput();
 
         class TInputData
@@ -96,6 +97,7 @@ namespace Gui
         MouseParameters f3dMouseParams;     // Rotate, Pan Zoom etc.
         // use to calculate distance traveled since last event
         DWORD fLast3dmouseInputTime;
+        bool shortButtonPress = true;
         static Gui::GuiNativeEvent* gMouseInput;
 	};
 }

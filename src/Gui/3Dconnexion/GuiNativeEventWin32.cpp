@@ -80,6 +80,7 @@ typedef unsigned __int64 QWORD;
 static const int kTimeToLive = 5;
 
 enum e3dconnexion_pid {
+   eSpaceMousePlusXT = 0xc603,
    eSpacePilot = 0xc625,
    eSpaceNavigator = 0xc626,
    eSpaceExplorer = 0xc627,
@@ -87,8 +88,9 @@ enum e3dconnexion_pid {
    eSpacePilotPRO = 0xc629,
    eSpaceMouseWireless = 0xc62e,
    eSpaceMouseWirelessReceiver = 0xc62f,
-   eSpaceMousePROWireless = 0xC631,
-   eSpaceMousePROWirelessReceiver = 0xC632
+   eSpaceMousePROWireless = 0xc631,
+   eSpaceMousePROWirelessReceiver = 0xc632,
+   eSpaceMouseEnterprise = 0xc633
 };
 
 enum e3dmouse_virtual_key
@@ -671,8 +673,6 @@ void Gui::GuiNativeEvent::OnRawInput(UINT nInputCode, HRAWINPUT hRawInput)
 
 bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawInput)
 {
-	bool bIsForeground = (nInputCode == RIM_INPUT);
-
 #if _TRACE_RI_TYPE
 	qDebug("Rawinput.header.dwType=0x%x\n", pRawInput->header.dwType);
 #endif
@@ -686,7 +686,7 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
 		if (::GetRawInputDeviceInfo(pRawInput->header.hDevice, RIDI_DEVICENAME, &szDeviceName[0],	&dwSize) >0) {
 			qDebug("Device Name = %s\nDevice handle = 0x%x\n", &szDeviceName[0], pRawInput->header.hDevice);
 		}
-   }
+	}
 #endif
 
 	RID_DEVICE_INFO sRidDeviceInfo;
@@ -714,101 +714,130 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
 #endif
 
 		if (sRidDeviceInfo.hid.dwVendorId == LOGITECH_VENDOR_ID  || sRidDeviceInfo.hid.dwVendorId == CONNEXION_VENDOR_ID) {
-			if (pRawInput->data.hid.bRawData[0] == 0x01) { // Translation vector
-
-				TInputData& deviceData = fDevice2Data[pRawInput->header.hDevice];
-				deviceData.fTimeToLive = kTimeToLive;
-				if (bIsForeground) {
-					short* pnRawData = reinterpret_cast<short*>(&pRawInput->data.hid.bRawData[1]);
-					// Cache the pan zoom data
-					deviceData.fAxes[0] = static_cast<float>(pnRawData[0]);
-					deviceData.fAxes[1] = static_cast<float>(pnRawData[1]);
-					deviceData.fAxes[2] = static_cast<float>(pnRawData[2]);
-
-#if _TRACE_RI_RAWDATA
-					qDebug("Pan/Zoom RI Data =\t0x%x,\t0x%x,\t0x%x\n",
-									pnRawData[0],  pnRawData[1],  pnRawData[2]);
-#endif
-					if (pRawInput->data.hid.dwSizeHid >= 13) {// Highspeed package
-						// Cache the rotation data
-						deviceData.fAxes[3] = static_cast<float>(pnRawData[3]);
-						deviceData.fAxes[4] = static_cast<float>(pnRawData[4]);
-						deviceData.fAxes[5] = static_cast<float>(pnRawData[5]);
-						deviceData.fIsDirty = true;
-#if _TRACE_RI_RAWDATA
-						qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n",
-							 pnRawData[3], pnRawData[4], pnRawData[5]);
-#endif
-						return true;
-					}
-				} else { // Zero out the data if the app is not in foreground
-					deviceData.fAxes.assign(6, 0.f);
-				}
-			} else if (pRawInput->data.hid.bRawData[0] == 0x02) { // Rotation vector
-				// If we are not in foreground do nothing
-				// The rotation vector was zeroed out with the translation vector in the previous message
-				if (bIsForeground) {
-					TInputData& deviceData = fDevice2Data[pRawInput->header.hDevice];
-					deviceData.fTimeToLive = kTimeToLive;
-
-					short* pnRawData = reinterpret_cast<short*>(&pRawInput->data.hid.bRawData[1]);
-					// Cache the rotation data
-					deviceData.fAxes[3] = static_cast<float>(pnRawData[0]);
-					deviceData.fAxes[4] = static_cast<float>(pnRawData[1]);
-					deviceData.fAxes[5] = static_cast<float>(pnRawData[2]);
-					deviceData.fIsDirty = true;
-
-#if _TRACE_RI_RAWDATA
-					qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n",
-						pnRawData[0],  pnRawData[1], pnRawData[2]);
-#endif
-					return true;
-				}
-			} else if (pRawInput->data.hid.bRawData[0] == 0x03)  { // Keystate change
-				// this is a package that contains 3d mouse keystate information
-				// bit0=key1, bit=key2 etc.
-
-
-				unsigned long dwKeystate = *reinterpret_cast<unsigned long*>(&pRawInput->data.hid.bRawData[1]);
-#if _TRACE_RI_RAWDATA
-				qDebug("ButtonData =0x%x\n", dwKeystate);
-#endif
-				// Log the keystate changes
-				unsigned long dwOldKeystate = fDevice2Keystate[pRawInput->header.hDevice];
-				if (dwKeystate != 0) {
-					fDevice2Keystate[pRawInput->header.hDevice] = dwKeystate;
-				} else {
-					fDevice2Keystate.erase(pRawInput->header.hDevice);
-				}
-
-				//  Only call the keystate change handlers if the app is in foreground
-				if (bIsForeground) {
-					unsigned long dwChange = dwKeystate ^ dwOldKeystate;
-
-
-					for (int nKeycode=1; nKeycode<33; nKeycode++) {
-						if (dwChange & 0x01) {
-							int nVirtualKeyCode = HidToVirtualKey(sRidDeviceInfo.hid.dwProductId, nKeycode);
-							if (nVirtualKeyCode) {
-								if (dwKeystate&0x01) {
-									On3dmouseKeyDown(pRawInput->header.hDevice, nVirtualKeyCode);
-								} else {
-									On3dmouseKeyUp(pRawInput->header.hDevice, nVirtualKeyCode);
-								}
-							}
-						}
-						dwChange >>=1;
-						dwKeystate >>=1;
-					}
-				}
+			switch (sRidDeviceInfo.hid.dwProductId) {
+			case eSpaceMousePlusXT:
+				return TranslateSpaceMouseOld(nInputCode, pRawInput, sRidDeviceInfo.hid.dwProductId);
+			case eSpacePilot:
+			case eSpaceNavigator:
+			case eSpaceExplorer:
+			case eSpaceNavigatorForNotebooks:
+			case eSpacePilotPRO:
+			case eSpaceMouseWireless:
+			case eSpaceMousePROWireless:
+			case eSpaceMouseEnterprise:
+			default:
+				return TranslateSpaceMouseNew(nInputCode, pRawInput, sRidDeviceInfo.hid.dwProductId);
 			}
-            else {
-                // SpaceMouse Plus XT
-                return ParseRawInput(nInputCode, pRawInput);
-            }
 		}
-   }
-   return false;
+	}
+
+	return false;
+}
+
+bool Gui::GuiNativeEvent::TranslateSpaceMouseNew(UINT nInputCode, PRAWINPUT pRawInput, DWORD dwProductId)
+{
+	bool bIsForeground = (nInputCode == RIM_INPUT);
+
+	if (pRawInput->data.hid.bRawData[0] == 0x01) { // Translation vector
+
+		TInputData& deviceData = fDevice2Data[pRawInput->header.hDevice];
+		deviceData.fTimeToLive = kTimeToLive;
+		if (bIsForeground) {
+			short* pnRawData = reinterpret_cast<short*>(&pRawInput->data.hid.bRawData[1]);
+			// Cache the pan zoom data
+			deviceData.fAxes[0] = static_cast<float>(pnRawData[0]);
+			deviceData.fAxes[1] = static_cast<float>(pnRawData[1]);
+			deviceData.fAxes[2] = static_cast<float>(pnRawData[2]);
+
+#if _TRACE_RI_RAWDATA
+			qDebug("Pan/Zoom RI Data =\t0x%x,\t0x%x,\t0x%x\n",
+							pnRawData[0],  pnRawData[1],  pnRawData[2]);
+#endif
+			if (pRawInput->data.hid.dwSizeHid >= 13) {// Highspeed package
+				// Cache the rotation data
+				deviceData.fAxes[3] = static_cast<float>(pnRawData[3]);
+				deviceData.fAxes[4] = static_cast<float>(pnRawData[4]);
+				deviceData.fAxes[5] = static_cast<float>(pnRawData[5]);
+				deviceData.fIsDirty = true;
+#if _TRACE_RI_RAWDATA
+				qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n",
+					 pnRawData[3], pnRawData[4], pnRawData[5]);
+#endif
+				return true;
+			}
+		} else { // Zero out the data if the app is not in foreground
+			deviceData.fAxes.assign(6, 0.f);
+		}
+	} else if (pRawInput->data.hid.bRawData[0] == 0x02) { // Rotation vector
+		// If we are not in foreground do nothing
+		// The rotation vector was zeroed out with the translation vector in the previous message
+		if (bIsForeground) {
+			TInputData& deviceData = fDevice2Data[pRawInput->header.hDevice];
+			deviceData.fTimeToLive = kTimeToLive;
+
+			short* pnRawData = reinterpret_cast<short*>(&pRawInput->data.hid.bRawData[1]);
+			// Cache the rotation data
+			deviceData.fAxes[3] = static_cast<float>(pnRawData[0]);
+			deviceData.fAxes[4] = static_cast<float>(pnRawData[1]);
+			deviceData.fAxes[5] = static_cast<float>(pnRawData[2]);
+			deviceData.fIsDirty = true;
+
+#if _TRACE_RI_RAWDATA
+			qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n",
+				pnRawData[0],  pnRawData[1], pnRawData[2]);
+#endif
+			return true;
+		}
+	} else if (pRawInput->data.hid.bRawData[0] == 0x03)  { // Keystate change
+		// this is a package that contains 3d mouse keystate information
+		// bit0=key1, bit=key2 etc.
+
+
+		unsigned long dwKeystate = *reinterpret_cast<unsigned long*>(&pRawInput->data.hid.bRawData[1]);
+#if _TRACE_RI_RAWDATA
+		qDebug("ButtonData =0x%x\n", dwKeystate);
+#endif
+		// Log the keystate changes
+		unsigned long dwOldKeystate = fDevice2Keystate[pRawInput->header.hDevice];
+		if (dwKeystate != 0) {
+			fDevice2Keystate[pRawInput->header.hDevice] = dwKeystate;
+		} else {
+			fDevice2Keystate.erase(pRawInput->header.hDevice);
+		}
+
+		//  Only call the keystate change handlers if the app is in foreground
+		if (bIsForeground) {
+			unsigned long dwChange = dwKeystate ^ dwOldKeystate;
+
+			for (int nKeycode=1; nKeycode<33; nKeycode++) {
+				if (dwChange & 0x01) {
+					int nVirtualKeyCode = HidToVirtualKey(dwProductId, nKeycode);
+					if (nVirtualKeyCode) {
+						if (dwKeystate&0x01) {
+							On3dmouseKeyDown(pRawInput->header.hDevice, nVirtualKeyCode);
+						} else {
+							On3dmouseKeyUp(pRawInput->header.hDevice, nVirtualKeyCode);
+						}
+					}
+				}
+				dwChange >>=1;
+				dwKeystate >>=1;
+			}
+		}
+	}
+
+	if (dwProductId == eSpaceMouseEnterprise) {
+		if (pRawInput->data.hid.bRawData[0] == 0x1c) {
+			// TODO: short button press
+			shortButtonPress = true;
+		}
+		else if (pRawInput->data.hid.bRawData[0] == 0x1d) {
+			// TODO: long button press
+			shortButtonPress = false;
+		}
+	}
+
+	return false;
 }
 
 // ----------------------------------------------------------------------------
@@ -830,7 +859,7 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
 #define CHECK(exp)		{ if(!(exp)) goto Error; }
 #define SAFE_FREE(p)	{ if(p) { HeapFree(hHeap, 0, p); (p) = NULL; } }
 
-bool Gui::GuiNativeEvent::ParseRawInput(UINT nInputCode, PRAWINPUT pRawInput)
+bool Gui::GuiNativeEvent::TranslateSpaceMouseOld(UINT nInputCode, PRAWINPUT pRawInput, DWORD /*dwProductId*/)
 {
     bool processed = false;
     bool bIsForeground = (nInputCode == RIM_INPUT);
