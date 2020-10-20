@@ -57,7 +57,7 @@ set(PartGui_MOC_HDRS
     DlgSettingsObjectColor.h
     DlgProjectionOnSurface.h
     PropertyEnumAttacherItem.h
-    TaskFaceColors.h
+    # TaskFaceColors.h
     TaskShapeBuilder.h
     TaskLoft.h
     TaskOffset.h
@@ -96,7 +96,7 @@ set(PartGui_UIC_SRCS
     DlgSettingsGeneral.ui
     DlgSettingsObjectColor.ui
     DlgProjectionOnSurface.ui
-    TaskFaceColors.ui
+    # TaskFaceColors.ui
     TaskShapeBuilder.ui
     TaskLoft.ui
     TaskOffset.ui
@@ -238,9 +238,9 @@ SET(PartGui_SRCS
     ViewProviderRuledSurface.h
     Workbench.cpp
     Workbench.h
-    TaskFaceColors.cpp
-    TaskFaceColors.h
-    TaskFaceColors.ui
+    # TaskFaceColors.cpp
+    # TaskFaceColors.h
+    # TaskFaceColors.ui
     TaskShapeBuilder.cpp
     TaskShapeBuilder.h
     TaskShapeBuilder.ui
