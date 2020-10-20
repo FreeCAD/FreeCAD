@@ -324,7 +324,9 @@ void PropertyEnumeration::setEnums(const char **plEnums)
     // to be preserved.
     int index = _enum._index;
     _enum.setEnums(plEnums);
-    _enum._index = index;
+    // Make sure not to set an index out of range
+    int max = _enum.maxValue();
+    _enum._index = std::min<int>(index, max);
 }
 
 void PropertyEnumeration::setValue(const char *value)

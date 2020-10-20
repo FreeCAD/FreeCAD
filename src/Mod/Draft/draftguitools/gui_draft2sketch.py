@@ -36,7 +36,6 @@ into several individual Draft objects.
 ## \addtogroup draftguitools
 # @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
-
 import FreeCADGui as Gui
 import Draft_rc
 import draftguitools.gui_base_original as gui_base_original
@@ -90,7 +89,8 @@ class Draft2Sketch(gui_base_original.Modifier):
         for obj in sel:
             if obj.isDerivedFrom("Sketcher::SketchObject"):
                 allDraft = False
-            elif obj.isDerivedFrom("Part::Part2DObjectPython"):
+            elif (obj.isDerivedFrom("Part::Part2DObjectPython")
+                  or obj.isDerivedFrom("Part::Feature")):
                 allSketches = False
             else:
                 allDraft = False
@@ -141,12 +141,13 @@ class Draft2Sketch(gui_base_original.Modifier):
 
                 if obj.isDerivedFrom("Sketcher::SketchObject"):
                     _cmd_list.append("obj" + str(n) + " = " + _cmd_df)
-                elif obj.isDerivedFrom("Part::Part2DObjectPython"):
+                elif (obj.isDerivedFrom("Part::Part2DObjectPython")
+                      or obj.isDerivedFrom("Part::Feature")):
                     _cmd_list.append("obj" + str(n) + " = " + _cmd_sk)
-                elif obj.isDerivedFrom("Part::Feature"):
-                    # if (len(obj.Shape.Wires) == 1
-                    #     or len(obj.Shape.Edges) == 1):
-                    _cmd_list.append("obj" + str(n) + " = " + _cmd_sk)
+                #elif obj.isDerivedFrom("Part::Feature"):
+                #    # if (len(obj.Shape.Wires) == 1
+                #    #     or len(obj.Shape.Edges) == 1):
+                #    _cmd_list.append("obj" + str(n) + " = " + _cmd_sk)
                 n += 1
             _cmd_list.append('FreeCAD.ActiveDocument.recompute()')
             self.commit(translate("draft", "Convert Draft/Sketch"),

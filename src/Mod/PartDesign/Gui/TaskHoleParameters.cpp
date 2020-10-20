@@ -69,12 +69,62 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->label_CutoffOuter->setVisible(false);
     ui->label_Angle->setVisible(false);
 
-    ui->ThreadType->addItem(tr("None"));
-    ui->ThreadType->addItem(tr("ISO metric coarse profile"));
-    ui->ThreadType->addItem(tr("ISO metric fine profile"));
-    ui->ThreadType->addItem(tr("UTS coarse profile"));
-    ui->ThreadType->addItem(tr("UTS fine profile"));
-    ui->ThreadType->addItem(tr("UTS extra fine profile"));
+    ui->ThreadType->addItem(tr("None"), QByteArray("None"));
+    ui->ThreadType->addItem(tr("ISO metric coarse profile"), QByteArray("ISO"));
+    ui->ThreadType->addItem(tr("ISO metric fine profile"), QByteArray("ISO"));
+    ui->ThreadType->addItem(tr("UTS coarse profile"), QByteArray("UTS"));
+    ui->ThreadType->addItem(tr("UTS fine profile"), QByteArray("UTS"));
+    ui->ThreadType->addItem(tr("UTS extra fine profile"), QByteArray("UTS"));
+
+    // read values from the hole properties
+    PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
+    ui->Threaded->setChecked(pcHole->Threaded.getValue());
+    ui->ModelActualThread->setChecked(pcHole->ModelActualThread.getValue());
+    ui->ThreadPitch->setValue(pcHole->ThreadPitch.getValue());
+    ui->ThreadAngle->setValue(pcHole->ThreadAngle.getValue());
+    ui->ThreadCutOffInner->setValue(pcHole->ThreadCutOffInner.getValue());
+    ui->ThreadCutOffOuter->setValue(pcHole->ThreadCutOffOuter.getValue());
+    ui->ThreadType->setCurrentIndex(pcHole->ThreadType.getValue());
+    ui->ThreadSize->clear();
+    const char** cursor = pcHole->ThreadSize.getEnums();
+    while (*cursor) {
+        ui->ThreadSize->addItem(tr(*cursor));
+        ++cursor;
+    }
+    ui->ThreadSize->setCurrentIndex(pcHole->ThreadSize.getValue());
+    ui->ThreadClass->clear();
+    cursor = pcHole->ThreadClass.getEnums();
+    while (*cursor) {
+        ui->ThreadClass->addItem(tr(*cursor));
+        ++cursor;
+    }
+    ui->ThreadClass->setCurrentIndex(pcHole->ThreadClass.getValue());
+    ui->ThreadFit->setCurrentIndex(pcHole->ThreadFit.getValue());
+    ui->Diameter->setValue(pcHole->Diameter.getValue());
+    if (pcHole->ThreadDirection.getValue() == 0L)
+        ui->directionRightHand->setChecked(true);
+    else
+        ui->directionLeftHand->setChecked(true);
+    ui->HoleCutType->clear();
+    cursor = pcHole->HoleCutType.getEnums();
+    while (*cursor) {
+        ui->HoleCutType->addItem(QString::fromLatin1(*cursor));
+        ++cursor;
+    }
+    ui->HoleCutType->setCurrentIndex(pcHole->HoleCutType.getValue());
+    ui->HoleCutDiameter->setValue(pcHole->HoleCutDiameter.getValue());
+    ui->HoleCutDepth->setValue(pcHole->HoleCutDepth.getValue());
+    ui->HoleCutCountersinkAngle->setValue(pcHole->HoleCutCountersinkAngle.getValue());
+    ui->DepthType->setCurrentIndex(pcHole->DepthType.getValue());
+    ui->Depth->setValue(pcHole->Depth.getValue());
+    if (pcHole->DrillPoint.getValue() == 0L)
+        ui->drillPointFlat->setChecked(true);
+    else
+        ui->drillPointAngled->setChecked(true);
+    ui->DrillPointAngle->setValue(pcHole->DrillPointAngle.getValue());
+    ui->Tapered->setChecked(pcHole->ModelActualThread.getValue());
+    ui->TaperedAngle->setValue(pcHole->TaperedAngle.getValue());
+    ui->Reversed->setChecked(pcHole->Reversed.getValue());
 
     connect(ui->Threaded, SIGNAL(clicked(bool)), this, SLOT(threadedChanged()));
     connect(ui->ThreadType, SIGNAL(currentIndexChanged(int)), this, SLOT(threadTypeChanged(int)));
@@ -101,14 +151,6 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     connect(ui->Tapered, SIGNAL(clicked(bool)), this, SLOT(taperedChanged()));
     connect(ui->Reversed, SIGNAL(clicked(bool)), this, SLOT(reversedChanged()));
     connect(ui->TaperedAngle, SIGNAL(valueChanged(double)), this, SLOT(taperedAngleChanged(double)));
-
-    PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
-
-    pcHole->updateProps();
-
-    ui->Reversed->blockSignals(true);
-    ui->Reversed->setChecked(pcHole->Reversed.getValue());
-    ui->Reversed->blockSignals(false);
 
     vp->show();
 
@@ -285,7 +327,72 @@ void TaskHoleParameters::threadTypeChanged(int index)
         return;
 
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
+
+    // A typical case is that users change from an ISO profile to another one.
+    // When they had e.g. the size "M3" in one profile they expect
+    // the same size in the other profile if it exists there.
+    // Besides the size also the thread class" and hole cut type are affected.
+
+    // at first check what type class is used
+    QByteArray TypeClass = ui->ThreadType->itemData(index).toByteArray();
+
+    // store the current size
+    QString ThreadSizeString = ui->ThreadSize->currentText();
+    // store the current class
+    QString ThreadClassString = ui->ThreadClass->currentText();
+    // store the current type
+    QString CutTypeString = ui->HoleCutType->currentText();
+
+    // now set the new type, this will reset the comboboxes to item 0
     pcHole->ThreadType.setValue(index);
+
+    // Size
+    // the size for ISO type has either foe form "M3x0.35" or just "M3"
+    // so we need to check if the size contains a 'x'. If yes, check if the string
+    // up to the 'x' is exists in the new list
+    if (TypeClass == QByteArray("ISO")) {
+        if (ThreadSizeString.indexOf(QString::fromLatin1("x")) > -1) {
+            // we have an ISO fine size
+            // cut of the part behind the 'x'
+            ThreadSizeString = ThreadSizeString.left(ThreadSizeString.indexOf(QString::fromLatin1("x")));
+            
+            // fractions end with a '0' in profile ISO coarse
+            // some translations might use the comma as decimal separator
+            if ((ThreadSizeString.indexOf(QString::fromLatin1(".")) > -1)
+                || (ThreadSizeString.indexOf(QString::fromLatin1(",")) > -1))
+                ThreadSizeString.append(QString::fromLatin1("0"));
+        }
+        else {
+            // fractions don't end with a '0' in profile ISO fine
+            if ((ThreadSizeString.indexOf(QString::fromLatin1(".")) > -1)
+                || (ThreadSizeString.indexOf(QString::fromLatin1(",")) > -1))
+                ThreadSizeString.remove(ThreadSizeString.size()-1, 1);
+        }
+
+        // search if the string exists in the combobox
+        int threadSizeIndex = ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains);
+        if (threadSizeIndex > -1) {
+            // we can set it
+            ui->ThreadSize->setCurrentIndex(threadSizeIndex);
+        }
+    }
+
+    // for the UTS types the entries are the same
+    if (TypeClass == QByteArray("UTS")) {
+        int threadSizeIndex = ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains);
+        if (threadSizeIndex > -1) {
+            ui->ThreadSize->setCurrentIndex(threadSizeIndex);
+        }
+    }
+
+    // Class and cut type
+    // the class and cut types are the same for both TypeClass so we don't need to distinguish between ISO and UTS
+    int threadClassIndex = ui->ThreadClass->findText(ThreadClassString, Qt::MatchContains);
+    if (threadClassIndex > -1)
+        ui->ThreadClass->setCurrentIndex(threadClassIndex);
+    int holeCutIndex = ui->HoleCutType->findText(CutTypeString, Qt::MatchContains);
+    if (holeCutIndex > -1)
+        ui->HoleCutType->setCurrentIndex(holeCutIndex);
 }
 
 void TaskHoleParameters::threadSizeChanged(int index)
@@ -410,9 +517,9 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
 
         ui->ThreadSize->blockSignals(true);
         ui->ThreadSize->clear();
-        const char ** cursor = pcHole->ThreadSize.getEnums();
+        const char** cursor = pcHole->ThreadSize.getEnums();
         while (*cursor) {
-            ui->ThreadSize->addItem(tr(*cursor));
+            ui->ThreadSize->addItem(QString::fromLatin1(*cursor));
             ++cursor;
         }
         ui->ThreadSize->setCurrentIndex(pcHole->ThreadSize.getValue());
@@ -423,7 +530,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         ui->HoleCutType->clear();
         cursor = pcHole->HoleCutType.getEnums();
         while (*cursor) {
-            ui->HoleCutType->addItem(tr(*cursor));
+            ui->HoleCutType->addItem(QString::fromLatin1(*cursor));
             ++cursor;
         }
         ui->HoleCutType->setCurrentIndex(pcHole->HoleCutType.getValue());
@@ -433,7 +540,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         ui->ThreadClass->clear();
         cursor = pcHole->ThreadClass.getEnums();
         while (*cursor) {
-            ui->ThreadClass->addItem(tr(*cursor));
+            ui->ThreadClass->addItem(QString::fromLatin1(*cursor));
             ++cursor;
         }
         ui->ThreadClass->setCurrentIndex(pcHole->ThreadClass.getValue());

@@ -102,6 +102,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
             obj.UseStartPoint = self.form.useStartPoint.isChecked()
 
+        if obj.BoundaryEnforcement != self.form.boundaryEnforcement.isChecked():
+            obj.BoundaryEnforcement = self.form.boundaryEnforcement.isChecked()
+
         if obj.OptimizeLinearPaths != self.form.optimizeEnabled.isChecked():
             obj.OptimizeLinearPaths = self.form.optimizeEnabled.isChecked()
 
@@ -144,6 +147,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         else:
             self.form.useStartPoint.setCheckState(QtCore.Qt.Unchecked)
 
+        if obj.BoundaryEnforcement:
+            self.form.boundaryEnforcement.setCheckState(QtCore.Qt.Checked)
+        else:
+            self.form.boundaryEnforcement.setCheckState(QtCore.Qt.Unchecked)
+
         if obj.OptimizeLinearPaths:
             self.form.optimizeEnabled.setCheckState(QtCore.Qt.Checked)
         else:
@@ -174,6 +182,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.stepOver.editingFinished)
         signals.append(self.form.sampleInterval.editingFinished)
         signals.append(self.form.useStartPoint.stateChanged)
+        signals.append(self.form.boundaryEnforcement.stateChanged)
         signals.append(self.form.optimizeEnabled.stateChanged)
         signals.append(self.form.optimizeStepOverTransitions.stateChanged)
 

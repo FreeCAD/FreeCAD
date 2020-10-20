@@ -135,8 +135,8 @@ CmdSurfaceFilling::CmdSurfaceFilling()
     sGroup        = QT_TR_NOOP("Surface");
     sMenuText     = QT_TR_NOOP("Filling...");
     sToolTipText  = QT_TR_NOOP("Creates a surface from a series of picked boundary edges.\n"
-                               "Optionally, the surface may be constrained by non-boundary edges\n"
-                               "and vertices, to determine its curvature.");
+                               "Additionally, the surface may be constrained by non-boundary edges\n"
+                               "and non-boundary vertices.");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Surface_Filling";
     sPixmap       = "Surface_Filling";
@@ -198,15 +198,8 @@ CmdSurfaceCurveOnMesh::CmdSurfaceCurveOnMesh()
     sAppModule    = "MeshPart";
     sGroup        = QT_TR_NOOP("Surface");
     sMenuText     = QT_TR_NOOP("Curve on mesh...");
-    sToolTipText  = QT_TR_NOOP("Creates an approximated curve on top of the selected mesh.\n"
-                               "Press 'Start', then pick points on the mesh; "
-                               "when enough points have been set,\n"
-                               "right-click and choose 'Create'.\n"
-                               "\n"
-                               "This command only works with a 'mesh' object, "
-                               "not a regular face or surface.\n"
-                               "To convert an object to a mesh "
-                               "use the tools of the Mesh Workbench.");
+    sToolTipText  = QT_TR_NOOP("Creates an approximated curve on top of a mesh.\n"
+                               "This command only works with a 'mesh' object.");
     sWhatsThis    = "Surface_CurveOnMesh";
     sStatusTip    = sToolTipText;
     sPixmap       = "Surface_CurveOnMesh";

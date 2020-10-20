@@ -177,8 +177,10 @@ class DraftLink(DraftObject):
                 obj.Count = len(pls)
 
         if obj.Base:
-            shape = Part.getShape(obj.Base)
-            if shape.isNull():
+            shape = getattr(obj.Base, 'Shape', None)
+            if not isinstance(shape, Part.Shape):
+                obj.Shape = Part.Shape()
+            elif shape.isNull():
                 _err_msg = ("'{}' cannot build shape "
                             "from '{}'\n".format(obj.Label, obj.Base.Label))
                 raise RuntimeError(_err_msg)

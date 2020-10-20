@@ -22,6 +22,13 @@
 //  File   : StdMeshers_Cartesian_3D.cxx
 //  Module : SMESH
 //
+
+// Suppress warning due to use of #import an macOS inside Aspect_RenderingContext.hxx
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wimport-preprocessor-directive-pedantic"
+#endif
+
 #include "StdMeshers_Cartesian_3D.hxx"
 
 #include "SMDS_MeshNode.hxx"

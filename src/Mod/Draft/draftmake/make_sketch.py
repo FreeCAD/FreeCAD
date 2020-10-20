@@ -38,15 +38,16 @@ import draftutils.gui_utils as gui_utils
 from draftutils.translate import translate
 
 
-def make_sketch(objectslist, autoconstraints=False, addTo=None,
-                delete=False, name="Sketch", radiusPrecision=-1):
-    """makeSketch(objectslist,[autoconstraints],[addTo],[delete],[name],[radiusPrecision])
+def make_sketch(objects_list, autoconstraints=False, addTo=None,
+                delete=False, name="Sketch", radiusPrecision=-1, tol=1e-3):
+    """makeSketch(objects_list,[autoconstraints],[addTo],[delete],
+                  [name],[radiusPrecision],[tol])
 
-    Makes a Sketch objectslist with the given Draft objects.
+    Makes a Sketch objects_list with the given Draft objects.
 
     Parameters
     ----------
-    objectlist: can be single or list of objects of Draft type objects,
+    objects_list: can be single or list of objects of Draft type objects,
         Part::Feature, Part.Shape, or mix of them.
 
     autoconstraints(False): if True, constraints will be automatically added to
@@ -57,14 +58,17 @@ def make_sketch(objectslist, autoconstraints=False, addTo=None,
 
     delete(False): if True, the original object will be deleted.
         If set to a string 'all' the object and all its linked object will be
-        deleted
+        deleted.
 
-    name('Sketch'): the name for the new sketch object
+    name('Sketch'): the name for the new sketch object.
 
-    radiusPrecision(-1): If <0, disable radius constraint. If =0, add indiviaul
+    radiusPrecision(-1): If <0, disable radius constraint. If =0, add individual
         radius constraint. If >0, the radius will be rounded according to this
         precision, and 'Equal' constraint will be added to curve with equal
         radius within precision.
+
+    tol(1e-3): Tolerance used to check if the shapes are planar and coplanar.
+        Consider change to tol=-1 for a more accurate analisis.
     """
 
     if not App.ActiveDocument:
@@ -75,24 +79,72 @@ def make_sketch(objectslist, autoconstraints=False, addTo=None,
     from Sketcher import Constraint
     import Sketcher
 
-    StartPoint = 1
-    EndPoint = 2
-    MiddlePoint = 3
+    start_point = 1
+    end_point = 2
+    middle_point = 3
     deletable = None
 
-    if not isinstance(objectslist,(list,tuple)):
-        objectslist = [objectslist]
-    for obj in objectslist:
+    if App.GuiUp:
+        v_dir = gui_utils.get_3d_view().getViewDirection()
+    else:
+        v_dir = App.Base.Vector(0,0,-1)
+
+    # lists to accumulate shapes with defined normal and undefined normal
+    shape_norm_yes = list()
+    shape_norm_no = list()
+
+    if not isinstance(objects_list,(list,tuple)):
+        objects_list = [objects_list]
+
+    for obj in objects_list:
         if isinstance(obj,Part.Shape):
             shape = obj
         elif not hasattr(obj,'Shape'):
-            App.Console.PrintError(translate("draft","not shape found"))
+            App.Console.PrintError(translate("draft","No shape found\n"))
             return None
         else:
             shape = obj.Shape
-        if not DraftGeomUtils.isPlanar(shape):
-            App.Console.PrintError(translate("draft","All Shapes must be co-planar"))
+
+        if not DraftGeomUtils.is_planar(shape, tol):
+            App.Console.PrintError(translate("draft","All Shapes must be planar\n"))
             return None
+
+        if DraftGeomUtils.get_normal(shape, tol):
+            shape_norm_yes.append(shape)
+        else:
+            shape_norm_no.append(shape)
+
+
+    shapes_list = shape_norm_yes + shape_norm_no
+
+    # test if all shapes are coplanar
+    if len(shape_norm_yes) >= 1:
+        for shape in shapes_list[1:]:
+            if not DraftGeomUtils.are_coplanar(shapes_list[0], shape, tol):
+                App.Console.PrintError(translate("draft","All Shapes must be coplanar\n"))
+                return None
+        # define sketch normal
+        normal = DraftGeomUtils.get_normal(shapes_list[0], tol)
+
+    else:
+        # supose all geometries are straight lines or points
+        points = [vertex.Point for shape in shapes_list for vertex in shape.Vertexes]
+        if len(points) >= 2:
+            poly = Part.makePolygon(points)
+            if not DraftGeomUtils.is_planar(poly, tol):
+                App.Console.PrintError(translate("draft","All Shapes must be coplanar\n"))
+                return None
+            normal = DraftGeomUtils.get_normal(poly, tol)
+            if not normal:
+                # all points aligned
+                poly_dir = poly.Edges[0].Curve.Direction
+                normal = (v_dir - v_dir.dot(poly_dir)*poly_dir).normalize()
+                normal = normal.negative()
+        else:
+            # only one point
+            normal = v_dir.negative()
+
+
     if addTo:
         nobj = addTo
     else:
@@ -128,24 +180,23 @@ def make_sketch(objectslist, autoconstraints=False, addTo=None,
         else:
             return(edge)
 
-    rotation = None
-    for obj in objectslist:
+
+    axis = App.Vector(0,0,1).cross(normal)
+    angle = DraftVecUtils.angle(normal, App.Vector(0,0,1))*App.Units.Radian
+    rotation = App.Rotation(axis, angle)
+
+    for obj in objects_list:
         ok = False
         tp = utils.get_type(obj)
         if tp in ["Circle","Ellipse"]:
             if obj.Shape.Edges:
-                if rotation is None:
-                    rotation = obj.Placement.Rotation
                 edge = obj.Shape.Edges[0]
                 if len(edge.Vertexes) == 1:
-                    newEdge = DraftGeomUtils.orientEdge(edge)
-                    nobj.addGeometry(newEdge)
+                    newedge = DraftGeomUtils.orientEdge(edge, normal)
+                    nobj.addGeometry(newedge)
                 else:
                     # make new ArcOfCircle
-                    circle = DraftGeomUtils.orientEdge(edge)
-                    angle  = edge.Placement.Rotation.Angle
-                    axis   = edge.Placement.Rotation.Axis
-                    circle.Center = DraftVecUtils.rotate(edge.Curve.Center, -angle, axis)
+                    circle = DraftGeomUtils.orientEdge(edge, normal)
                     first  = math.radians(obj.FirstAngle)
                     last   = math.radians(obj.LastAngle)
                     arc    = Part.ArcOfCircle(circle, first, last)
@@ -153,24 +204,36 @@ def make_sketch(objectslist, autoconstraints=False, addTo=None,
                 addRadiusConstraint(edge)
                 ok = True
         elif tp == "Rectangle":
-            if rotation is None:
-                rotation = obj.Placement.Rotation
             if obj.FilletRadius.Value == 0:
                 for edge in obj.Shape.Edges:
-                    nobj.addGeometry(DraftGeomUtils.orientEdge(edge))
+                    nobj.addGeometry(DraftGeomUtils.orientEdge(edge, normal))
+                # TODO: the previous implementation for autoconstraints fails in front
+                # and side view. So the autoconstraints for wires is used. This need
+                # more checking
                 if autoconstraints:
-                    last = nobj.GeometryCount - 1
-                    segs = [last-3,last-2,last-1,last]
-                    if obj.Placement.Rotation.Q == (0,0,0,1):
-                        constraints.append(Constraint("Coincident",last-3,EndPoint,last-2,StartPoint))
-                        constraints.append(Constraint("Coincident",last-2,EndPoint,last-1,StartPoint))
-                        constraints.append(Constraint("Coincident",last-1,EndPoint,last,StartPoint))
-                        constraints.append(Constraint("Coincident",last,EndPoint,last-3,StartPoint))
-                    constraints.append(Constraint("Horizontal",last-3))
-                    constraints.append(Constraint("Vertical",last-2))
-                    constraints.append(Constraint("Horizontal",last-1))
-                    constraints.append(Constraint("Vertical",last))
+                    last = nobj.GeometryCount
+                    segs = list(range(last-len(obj.Shape.Edges),last-1))
+                    for seg in segs:
+                        constraints.append(Constraint("Coincident",seg,end_point,seg+1,start_point))
+                        if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
+                            constraints.append(Constraint("Vertical",seg))
+                        elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
+                            constraints.append(Constraint("Horizontal",seg))
+                    constraints.append(Constraint("Coincident",last-1,end_point,segs[0],start_point))
                 ok = True
+                # if autoconstraints:
+                #     last = nobj.GeometryCount - 1
+                #     segs = [last-3,last-2,last-1,last]
+                #     if obj.Placement.Rotation.Q == (0,0,0,1):
+                #         constraints.append(Constraint("Coincident",last-3,end_point,last-2,start_point))
+                #         constraints.append(Constraint("Coincident",last-2,end_point,last-1,start_point))
+                #         constraints.append(Constraint("Coincident",last-1,end_point,last,start_point))
+                #         constraints.append(Constraint("Coincident",last,end_point,last-3,start_point))
+                #     constraints.append(Constraint("Horizontal",last-3))
+                #     constraints.append(Constraint("Vertical",last-2))
+                #     constraints.append(Constraint("Horizontal",last-1))
+                #     constraints.append(Constraint("Vertical",last))
+                # ok = True
         elif tp in ["Wire","Polygon"]:
             if obj.FilletRadius.Value == 0:
                 closed = False
@@ -180,70 +243,57 @@ def make_sketch(objectslist, autoconstraints=False, addTo=None,
                     closed = obj.Closed
 
                 if obj.Shape.Edges:
-                    if (len(obj.Shape.Vertexes) < 3):
-                        e = obj.Shape.Edges[0]
-                        nobj.addGeometry(Part.LineSegment(e.Curve,e.FirstParameter,e.LastParameter))
-                    else:
-                        # Use the first three points to make a working plane. We've already
-                        # checked to make sure everything is coplanar
-                        plane = Part.Plane(*[i.Point for i in obj.Shape.Vertexes[:3]])
-                        normal = plane.Axis
-                        if rotation is None:
-                            axis = App.Vector(0,0,1).cross(normal)
-                            angle = DraftVecUtils.angle(normal, App.Vector(0,0,1)) * App.Units.Radian
-                            rotation = App.Rotation(axis, angle)
-                        for edge in obj.Shape.Edges:
-                            # edge.rotate(App.Vector(0,0,0), rotAxis, rotAngle)
-                            edge = DraftGeomUtils.orientEdge(edge, normal)
-                            nobj.addGeometry(edge)
-                        if autoconstraints:
-                            last = nobj.GeometryCount
-                            segs = list(range(last-len(obj.Shape.Edges),last-1))
-                            for seg in segs:
-                                constraints.append(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
-                                if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
-                                    constraints.append(Constraint("Vertical",seg))
-                                elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
-                                    constraints.append(Constraint("Horizontal",seg))
-                            if closed:
-                                constraints.append(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
+                    for edge in obj.Shape.Edges:
+                        edge = DraftGeomUtils.orientEdge(edge, normal)
+                        nobj.addGeometry(edge)
+                    if autoconstraints:
+                        last = nobj.GeometryCount
+                        segs = list(range(last-len(obj.Shape.Edges),last-1))
+                        for seg in segs:
+                            constraints.append(Constraint("Coincident",seg,end_point,seg+1,start_point))
+                            if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
+                                constraints.append(Constraint("Vertical",seg))
+                            elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
+                                constraints.append(Constraint("Horizontal",seg))
+                        if closed:
+                            constraints.append(Constraint("Coincident",last-1,end_point,segs[0],start_point))
                     ok = True
+
         elif tp == "BSpline":
             if obj.Shape.Edges:
-                nobj.addGeometry(obj.Shape.Edges[0].Curve)
+                edge = DraftGeomUtils.orientEdge(obj.Shape.Edges[0], normal)
+                nobj.addGeometry(edge)
                 nobj.exposeInternalGeometry(nobj.GeometryCount-1)
                 ok = True
+
         elif tp == "BezCurve":
             if obj.Shape.Edges:
-                bez = obj.Shape.Edges[0].Curve
-                bsp = bez.toBSpline(bez.FirstParameter,bez.LastParameter)
-                nobj.addGeometry(bsp)
-                nobj.exposeInternalGeometry(nobj.GeometryCount-1)
+                for piece in obj.Shape.Edges:
+                    bez = piece.Curve
+                    bsp = bez.toBSpline(bez.FirstParameter,bez.LastParameter).toShape()
+                    edge = DraftGeomUtils.orientEdge(bsp.Edges[0], normal)
+                    nobj.addGeometry(edge)
+                    nobj.exposeInternalGeometry(nobj.GeometryCount-1)
                 ok = True
+                # TODO: set coincident constraint for vertexes in multi-edge bezier curve
+
+        elif  tp == "Point":
+            shape = obj.Shape.copy()
+            if angle:
+                shape.rotate(App.Base.Vector(0,0,0), axis, -1*angle)
+            point = Part.Point(shape.Point)
+            nobj.addGeometry(point)
+            ok = True
+
         elif tp == 'Shape' or hasattr(obj,'Shape'):
             shape = obj if tp == 'Shape' else obj.Shape
-
-            if not DraftGeomUtils.isPlanar(shape):
-                App.Console.PrintError(translate("draft","The given object is not planar and cannot be converted into a sketch."))
-                return None
-            if rotation is None:
-                #rotation = obj.Placement.Rotation
-                norm = DraftGeomUtils.getNormal(shape)
-                if norm:
-                    rotation = App.Rotation(App.Vector(0,0,1),norm)
-                else:
-                    App.Console.PrintWarning(translate("draft","Unable to guess the normal direction of this object"))
-                    rotation = App.Rotation()
-                    norm = obj.Placement.Rotation.Axis
             if not shape.Wires:
                 for e in shape.Edges:
                     # unconnected edges
                     newedge = convertBezier(e)
-                    nobj.addGeometry(DraftGeomUtils.orientEdge(newedge,norm,make_arc=True))
+                    nobj.addGeometry(DraftGeomUtils.orientEdge(
+                                        newedge, normal, make_arc=True))
                     addRadiusConstraint(newedge)
-
-            # if not addTo:
-                # nobj.Placement.Rotation = DraftGeomUtils.calculatePlacement(shape).Rotation
 
             if autoconstraints:
                 for wire in shape.Wires:
@@ -252,7 +302,7 @@ def make_sketch(objectslist, autoconstraints=False, addTo=None,
                     for edge in edges:
                         newedge = convertBezier(edge)
                         nobj.addGeometry(DraftGeomUtils.orientEdge(
-                                            newedge,norm,make_arc=True))
+                                            newedge, normal, make_arc=True))
                         addRadiusConstraint(newedge)
                     for i,g in enumerate(nobj.Geometry[last_count:]):
                         if edges[i].Closed:
@@ -277,25 +327,25 @@ def make_sketch(objectslist, autoconstraints=False, addTo=None,
                         start2 = g2.value(g2.FirstParameter)
                         if DraftVecUtils.equals(end1,start2) :
                             constraints.append(Constraint(
-                                "Coincident",seg,EndPoint,seg2,StartPoint))
+                                "Coincident",seg,end_point,seg2,start_point))
                             continue
                         end2 = g2.value(g2.LastParameter)
                         start1 = g.value(g.FirstParameter)
                         if DraftVecUtils.equals(end2,start1):
                             constraints.append(Constraint(
-                                "Coincident",seg,StartPoint,seg2,EndPoint))
+                                "Coincident",seg,start_point,seg2,end_point))
                         elif DraftVecUtils.equals(start1,start2):
                             constraints.append(Constraint(
-                                "Coincident",seg,StartPoint,seg2,StartPoint))
+                                "Coincident",seg,start_point,seg2,start_point))
                         elif DraftVecUtils.equals(end1,end2):
                             constraints.append(Constraint(
-                                "Coincident",seg,EndPoint,seg2,EndPoint))
+                                "Coincident",seg,end_point,seg2,end_point))
             else:
                 for wire in shape.Wires:
                     for edge in wire.OrderedEdges:
                         newedge = convertBezier(edge)
                         nobj.addGeometry(DraftGeomUtils.orientEdge(
-                                                newedge,norm,make_arc=True))
+                                            newedge, normal, make_arc=True))
             ok = True
         gui_utils.format_object(nobj,obj)
         if ok and delete and hasattr(obj,'Shape'):
@@ -318,10 +368,9 @@ def make_sketch(objectslist, autoconstraints=False, addTo=None,
             except Exception as ex:
                 App.Console.PrintWarning(translate("draft",
                     "Failed to delete object {}: {}".format(obj.Label,ex))+"\n")
-    if rotation:
-        nobj.Placement.Rotation = rotation
-    else:
-        print("-----error!!! rotation is still None...")
+
+
+    nobj.Placement.Rotation = rotation
     nobj.addConstraint(constraints)
 
     return nobj

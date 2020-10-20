@@ -24,13 +24,13 @@
 '''PathUtils -common functions used in PathScripts for filtering, sorting, and generating gcode toolpath data '''
 import FreeCAD
 import Path
-import PathScripts
+# import PathScripts
+import PathScripts.PathJob as PathJob
 import PathScripts.PathGeom as PathGeom
 import math
 import numpy
 
 from FreeCAD import Vector
-from PathScripts import PathJob
 from PathScripts import PathLog
 from PySide import QtCore
 from PySide import QtGui
@@ -42,7 +42,7 @@ Part = LazyLoader('Part', globals(), 'Part')
 TechDraw = LazyLoader('TechDraw', globals(), 'TechDraw')
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 def translate(context, text, disambig=None):
@@ -148,7 +148,7 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
                         else:
                             drillable = True
         PathLog.debug("candidate is drillable: {}".format(drillable))
-    except Exception as ex: # pylint: disable=broad-except
+    except Exception as ex:  # pylint: disable=broad-except
         PathLog.warning(translate("PathUtils", "Issue determine drillability: {}").format(ex))
     return drillable
 
@@ -398,7 +398,7 @@ def getToolControllers(obj):
     '''returns all the tool controllers'''
     try:
         job = findParentJob(obj)
-    except Exception: # pylint: disable=broad-except
+    except Exception:  # pylint: disable=broad-except
         job = None
 
     if job:
@@ -440,7 +440,7 @@ def findParentJob(obj):
     '''retrieves a parent job object for an operation or other Path object'''
     PathLog.track()
     for i in obj.InList:
-        if hasattr(i, 'Proxy') and isinstance(i.Proxy, PathScripts.PathJob.ObjectJob):
+        if hasattr(i, 'Proxy') and isinstance(i.Proxy, PathJob.ObjectJob):
             return i
         if i.TypeId == "Path::FeaturePython" or i.TypeId == "Path::FeatureCompoundPython" or i.TypeId == "App::DocumentObjectGroup":
             grandParent = findParentJob(i)
@@ -692,7 +692,7 @@ def sort_jobs(locations, keys, attractors=None):
             # prevent dictionary comparison by inserting the index
             q.put((dist(j, location) + weight(j), i, j))
 
-        prio, i, result = q.get() # pylint: disable=unused-variable
+        prio, i, result = q.get()  # pylint: disable=unused-variable
 
         return result
 
@@ -952,3 +952,42 @@ def simplify3dLine(line, tolerance=1e-4):
     # the last point.
     results.append(line[-1])
     return results
+
+
+def RtoIJ(startpoint, command):
+    '''
+    This function takes a startpoint and an arc command in radius mode and
+    returns an arc command in IJ mode. Useful for preprocessor scripts
+    '''
+    if 'R' not in command.Parameters:
+        raise ValueError('No R parameter in command')
+    if command.Name not in ['G2', 'G02', 'G03', 'G3']:
+        raise ValueError('Not an arc command')
+
+    endpoint = command.Placement.Base
+    radius = command.Parameters['R']
+
+    # calculate the IJ
+    # we take a vector between the start and endpoints
+    chord = endpoint.sub(startpoint)
+
+    # Take its perpendicular (we assume the arc is in the XY plane)
+    perp = chord.cross(FreeCAD.Vector(0, 0, 1))
+
+    # use pythagoras to get the perp length
+    plength = math.sqrt(radius**2 - (chord.Length / 2)**2)
+    perp.normalize()
+    perp.scale(plength, plength, plength)
+
+    # Calculate the relative center
+    relativecenter = chord.scale(0.5, 0.5, 0.5).add(perp)
+
+    # build new command
+    params = { c: command.Parameters[c] for c in 'XYZF' if c in command.Parameters}
+    params['I'] = relativecenter.x
+    params['J'] = relativecenter.y
+
+    newcommand = Path.Command(command.Name)
+    newcommand.Parameters = params
+
+    return newcommand

@@ -294,7 +294,8 @@ static QString getOperatingSystem()
 {
 #if QT_VERSION >= 0x050400
     return QSysInfo::prettyProductName();
-#endif
+
+#else // < 0x050400
 
 #if defined (Q_OS_WIN32)
     switch(QSysInfo::windowsVersion())
@@ -379,6 +380,8 @@ static QString getOperatingSystem()
 #else
     return QString();
 #endif
+
+#endif // >= 0x050400
 }
 
 static int getWordSizeOfOS()

@@ -98,6 +98,8 @@ SET(Draft_functions
     draftfunctions/scale.py
     draftfunctions/split.py
     draftfunctions/svg.py
+    draftfunctions/svgshapes.py
+    draftfunctions/svgtext.py
     draftfunctions/upgrade.py
     draftfunctions/README.md
 )
