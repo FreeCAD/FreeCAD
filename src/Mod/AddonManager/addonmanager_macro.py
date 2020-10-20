@@ -143,19 +143,19 @@ class Macro(object):
         if not code:
             code = re.findall(r"<pre>(.*?)</pre>", p.replace("\n", "--endl--"))
             if code:
-                # code = code[0]
                 # take the biggest code block
                 code = sorted(code, key=len)[-1]
                 code = code.replace("--endl--", "\n")
+                # Clean HTML escape codes.
+                if sys.version_info.major < 3:
+                    code = code.decode("utf8")
+                code = unescape(code)
+                code = code.replace(b"\xc2\xa0".decode("utf-8"), " ")
+                if sys.version_info.major < 3:
+                    code = code.encode("utf8")
             else:
                 FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to fetch the code of this macro."))
-            # Clean HTML escape codes.
-            if sys.version_info.major < 3:
-                code = code.decode("utf8")
-            code = unescape(code)
-            code = code.replace(b"\xc2\xa0".decode("utf-8"), " ")
-            if sys.version_info.major < 3:
-                code = code.encode("utf8")
+
         desc = re.findall(r"<td class=\"ctEven left macro-description\">(.*?)</td>", p.replace("\n", " "))
         if desc:
             desc = desc[0]
