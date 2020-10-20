@@ -571,7 +571,7 @@ class UpdateWorker(QtCore.QThread):
             p = p.decode("utf-8")
         u.close()
         p = p.replace("\n"," ")
-        p = re.findall("octicon-file-submodule(.*?)message",p)
+        p = re.findall("octicon-file-submodule(.*?)<time-ago datetime",p)
         basedir = FreeCAD.getUserAppDataDir()
         moddir = basedir + os.sep + "Mod"
         repos = []
