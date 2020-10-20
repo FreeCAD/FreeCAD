@@ -28,6 +28,8 @@
 #include <string>
 #endif
 
+#include <boost/range.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <App/Application.h>
@@ -42,6 +44,7 @@
 
 using namespace App;
 
+typedef boost::iterator_range<const char*> CharRange;
 
 PROPERTY_SOURCE(App::Origin, App::DocumentObject)
 
@@ -199,26 +202,38 @@ void Origin::OriginExtension::initExtension(ExtensionContainer* obj) {
 }
 
 bool Origin::OriginExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
-                                                    PyObject **, Base::Matrix4D *, bool, int) const {
+                                                    PyObject **pyobj, Base::Matrix4D *mat, bool, int depth) const {
     if (!subname || subname[0] == '\0') {
         return false;
     }
 
+    const char *dot = strchr(subname, '.');
+    if (!dot)
+        return false;
+
+    CharRange name(subname, dot);
+    const char *found = nullptr;
+
     // mapping of object name to role name
-    std::string name(subname);
     for (int i=0; i<3; i++) {
-        if (name.rfind(Origin::AxisRoles[i], 0) == 0) {
-            name = Origin::AxisRoles[i];
+        if (boost::equals(name, Origin::AxisRoles[i])) {
+            found = Origin::AxisRoles[i];
             break;
         }
-        if (name.rfind(Origin::PlaneRoles[i], 0) == 0) {
-            name = Origin::PlaneRoles[i];
+        if (boost::equals(name, Origin::PlaneRoles[i])) {
+            found = Origin::PlaneRoles[i];
             break;
         }
     }
 
+    if (!found)
+        return false;
+
     try {
-        ret = obj->getOriginFeature(name.c_str());
+        ret = obj->getOriginFeature(found);
+        if (!ret)
+            return false;
+        ret = ret->getSubObject(dot+1, pyobj, mat, true, depth+1);
         return true;
     }
     catch (const Base::Exception& e) {
