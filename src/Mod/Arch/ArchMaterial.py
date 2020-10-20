@@ -274,11 +274,26 @@ class _ArchMaterial:
 
         self.Type = "Material"
         obj.Proxy = self
-        obj.addProperty("App::PropertyString","Description","Arch",QT_TRANSLATE_NOOP("App::Property","A description for this material"))
-        obj.addProperty("App::PropertyString","StandardCode","Arch",QT_TRANSLATE_NOOP("App::Property","A standard code (MasterFormat, OmniClass,...)"))
-        obj.addProperty("App::PropertyString","ProductURL","Arch",QT_TRANSLATE_NOOP("App::Property","A URL where to find information about this material"))
-        obj.addProperty("App::PropertyPercent","Transparency","Arch",QT_TRANSLATE_NOOP("App::Property","The transparency value of this material"))
-        obj.addProperty("App::PropertyColor","Color","Arch",QT_TRANSLATE_NOOP("App::Property","The color of this material"))
+        self.setProperties(obj)
+
+    def onDocumentRestored(self,obj):
+
+        self.setProperties(obj)
+
+    def setProperties(self,obj):
+
+        if not "Description" in obj.PropertiesList:
+            obj.addProperty("App::PropertyString","Description","Material",QT_TRANSLATE_NOOP("App::Property","A description for this material"))
+        if not "StandardCode" in obj.PropertiesList:
+            obj.addProperty("App::PropertyString","StandardCode","Material",QT_TRANSLATE_NOOP("App::Property","A standard code (MasterFormat, OmniClass,...)"))
+        if not "ProductURL" in obj.PropertiesList:
+            obj.addProperty("App::PropertyString","ProductURL","Material",QT_TRANSLATE_NOOP("App::Property","A URL where to find information about this material"))
+        if not "Transparency" in obj.PropertiesList:
+            obj.addProperty("App::PropertyPercent","Transparency","Material",QT_TRANSLATE_NOOP("App::Property","The transparency value of this material"))
+        if not "Color" in obj.PropertiesList:
+            obj.addProperty("App::PropertyColor","Color","Material",QT_TRANSLATE_NOOP("App::Property","The color of this material"))
+        if not "SectionColor" in obj.PropertiesList:
+            obj.addProperty("App::PropertyColor","SectionColor","Material",QT_TRANSLATE_NOOP("App::Property","The color of this material when cut"))
 
     def isSameColor(self,c1,c2):
 
@@ -293,6 +308,11 @@ class _ArchMaterial:
 
         d = obj.Material
         if prop == "Material":
+            if "SectionColor" in obj.Material:
+                c = tuple([float(f) for f in obj.Material['SectionColor'].strip("()").strip("[]").split(",")])
+                if hasattr(obj,"SectionColor"):
+                    if not self.isSameColor(obj.SectionColor,c):
+                        obj.SectionColor = c
             if "DiffuseColor" in obj.Material:
                 c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").strip("[]").split(",")])
                 if hasattr(obj,"Color"):
@@ -324,6 +344,12 @@ class _ArchMaterial:
                 if d["Name"] == obj.Label:
                     return
             d["Name"] = obj.Label
+        elif prop == "SectionColor":
+            if hasattr(obj,"SectionColor"):
+                if "SectionColor" in d:
+                    if self.isSameColor(tuple([float(f) for f in d['SectionColor'].strip("()").strip("[]").split(",")]),obj.SectionColor[:3]):
+                        return
+                d["SectionColor"] = str(obj.SectionColor[:3])
         elif prop == "Color":
             if hasattr(obj,"Color"):
                 if "DiffuseColor" in d:

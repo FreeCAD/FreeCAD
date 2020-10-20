@@ -259,7 +259,9 @@ def getFillForObject(o, defaultFill, source):
         elif isinstance(o,str):
             material = FreeCAD.ActiveDocument.getObject(o)
         if material:
-            if hasattr(material, 'Color') and material.Color:
+            if hasattr(material, 'SectionColor') and material.SectionColor:
+                return material.SectionColor
+            elif hasattr(material, 'Color') and material.Color:
                 return material.Color
     return defaultFill
 
@@ -507,7 +509,7 @@ def getSVG(source,
                                 # temporarily disabling fill patterns
                                 svgcache += Draft.get_svg(s,
                                                           linewidth=0,
-                                                          fillstyle=Draft.getrgb(objectFill),
+                                                          fillstyle=Draft.getrgb(objectFill,testbw=False),
                                                           direction=direction.negative(),
                                                           color=lineColor)
                     svgcache += "</g>\n"
