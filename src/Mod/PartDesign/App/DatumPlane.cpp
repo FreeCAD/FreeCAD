@@ -30,6 +30,7 @@
 # include <gp_Pnt.hxx>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include "DatumPlane.h"
 
 using namespace PartDesign;
@@ -92,4 +93,13 @@ void Plane::onChanged(const App::Property *prop)
     }
 
     Datum::onChanged(prop);
+}
+
+App::DocumentObject *Plane::getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
+{
+    if (subname && subname[0] && !boost::equals(subname, "Plane"))
+        return nullptr;
+
+    return Datum::getSubObject(nullptr, pyObj, pmat, transform, depth);
 }

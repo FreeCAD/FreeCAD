@@ -60,6 +60,8 @@
 #endif
 // TODO Cleanup headers (2015-09-04, Fat-Zer)
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include "DatumPoint.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
@@ -124,4 +126,13 @@ void Point::makeShape()
 Base::Vector3d Point::getPoint()
 {
     return Placement.getValue().getPosition();
+}
+
+App::DocumentObject *Point::getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
+{
+    if (subname && subname[0] && !boost::equals(subname, "Point"))
+        return nullptr;
+
+    return Datum::getSubObject(nullptr, pyObj, pmat, transform, depth);
 }

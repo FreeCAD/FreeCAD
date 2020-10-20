@@ -48,6 +48,9 @@ public:
         return "PartDesignGui::ViewProviderDatumLine";
     }
 
+    virtual App::DocumentObject *getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const;
+
     Base::Vector3d getDirection() const;
     
 private:

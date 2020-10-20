@@ -45,6 +45,9 @@ public:
         return "PartDesignGui::ViewProviderDatumPoint";
     }
 
+    virtual App::DocumentObject *getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
+
     Base::Vector3d getPoint();
 
     typedef Part::Datum Superclass;

@@ -30,6 +30,7 @@
 # include <gp_Lin.hxx>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include "DatumPlane.h"
 #include "DatumLine.h"
 
@@ -89,4 +90,13 @@ void Line::onChanged(const App::Property *prop)
         }
     }
     Datum::onChanged(prop);
+}
+
+App::DocumentObject *Line::getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
+{
+    if (subname && subname[0] && !boost::equals(subname, "Line"))
+        return nullptr;
+
+    return Datum::getSubObject(nullptr, pyObj, pmat, transform, depth);
 }
