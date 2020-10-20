@@ -1330,7 +1330,7 @@ class _Wall(ArchComponent.Component):
                             # normal of the face/sketch and the direction the
                             # wire was drawn in. IE: along the width direction
                             # of the wall.
-                            if isinstance(e.Curve,Part.Circle):
+                            if isinstance(e.Curve,(Part.Circle,Part.Ellipse)):
                                 dvec = e.Vertexes[0].Point.sub(e.Curve.Center)
                             else:
                                 dvec = DraftGeomUtils.vec(e).cross(normal)
