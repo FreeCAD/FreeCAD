@@ -3496,10 +3496,7 @@ void TreeWidget::scrollItemToTop()
     auto tree = instance();
     if (tree && tree->isConnectionAttached() && !tree->isConnectionBlocked()) {
 
-        if(tree->selectTimer->isActive())
-            tree->onSelectTimer();
-        else
-            tree->_updateStatus(false);
+        tree->_updateStatus(false);
 
         if(doc && Gui::Selection().hasSelection(doc->getDocument()->getName(),false)) {
             auto it = tree->DocumentMap.find(doc);
