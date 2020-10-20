@@ -79,6 +79,44 @@ typedef unsigned __int64 QWORD;
 
 static const int kTimeToLive = 5;
 
+/*
+    List of all devices
+    https://www.3dconnexion.com/nc/service/faq/faq/how-can-i-check-if-my-usb-3d-mouse-is-recognized-by-windows.html
+
+    Supported:
+    SpacePilot: USB\0x046d:0xc625
+    SpaceExplorer: USB\0x046d:0xc627
+    SpaceMouse Wireless (cabled): USB\0x256f:0xc62e
+    SpaceMouse Wireless Receiver: USB\0x256f:0xc62f
+    SpaceMouse Pro Wireless (cabled): USB\0x256d:0xc631
+    SpaceMouse Pro Wireless Receiver: USB\0x256f:0xc632
+
+    Supported (but works differently):
+    SpaceMouse Plus USB: USB\0x046d:0xc603
+    SpaceMouse Plus XT USB: USB\0x046d:0xc603
+
+    Unknown status:
+    SpaceNavigator: USB\0x046d:0xc626
+    SpaceNavigator for Notebooks: USB\0x046d:0xc628
+    SpacePilot Pro: USB\0x046d:0xc629
+    SpaceMouse Enterprise: USB\0x256f:0xc633
+
+    Not yet supported:
+    SpaceMouse Compact: USB\0x256f:0xc635
+
+    Not supported:
+    CadMan: USB\0x046d:0xc605
+    SpaceMouse Classic USB: USB\0x046d:0xc606
+    SpaceBall 5000 USB: USB\0x046d:0xc621
+    SpaceTraveler: USB\0x046d:0xc623
+    SpaceMouse Pro: USB\0x046d:0xc62b
+    CadMouse: USB\0x256f:0xc650
+    CadMouse Pro Wireless: USB\0x256f:0xc654
+    CadMouse Pro Wireless Left: USB\0x256f:0xc657
+    CadMouse Wireless: USB\0x256f:0xc651
+    Universal Receiver: USB\0x256f:0xc652
+*/
+
 enum e3dconnexion_pid {
    eSpaceMousePlusXT = 0xc603,
    eSpacePilot = 0xc625,
@@ -90,7 +128,8 @@ enum e3dconnexion_pid {
    eSpaceMouseWirelessReceiver = 0xc62f,
    eSpaceMousePROWireless = 0xc631,
    eSpaceMousePROWirelessReceiver = 0xc632,
-   eSpaceMouseEnterprise = 0xc633
+   eSpaceMouseEnterprise = 0xc633,
+   eSpaceMouseCompact = 0xc635
 };
 
 enum e3dmouse_virtual_key
