@@ -40,12 +40,12 @@ from PySide import QtCore
 
 __doc__ = "Class and implementation of Path Vcarve operation"
 
-PRIMARY = 0
-EXTERIOR1 = 1
-EXTERIOR2 = 4
-TWIN = 2
-COLINEAR = 3
-SECONDARY = 5
+PRIMARY   = 0
+SECONDARY = 1
+EXTERIOR1 = 2
+EXTERIOR2 = 3
+COLINEAR  = 4
+TWIN      = 5
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 #PathLog.trackModule(PathLog.thisModule())
@@ -76,6 +76,11 @@ def _collectVoronoiWires(vd):
     # knots are the start and end points of a wire
     knots = [i for i in vertex if len(vertex[i]) == 1]
     knots.extend([i for i in vertex if len(vertex[i]) > 2])
+    if len(knots) == 0:
+        for i in vertex:
+            if len(vertex[i]) > 0:
+                knots.append(i)
+                break
 
     def consume(v, edge):
         vertex[v] = [e for e in vertex[v] if e.Index != edge.Index]
@@ -190,27 +195,28 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         # upgrade ...
         self.setupAdditionalProperties(obj)
 
-    def _calculate_depth(self, obj, MIC, baselevel=0):
+    def _calculate_depth(self, MIC, zStart, zStop, zScale):
         # given a maximum inscribed circle (MIC) and tool angle,
-        # return depth of cut relative to baselevel.
+        # return depth of cut relative to zStart.
+        depth = zStart - round(MIC / zScale, 4)
+        PathLog.debug('zStart value: {} depth: {}'.format(zStart, depth))
+        return depth if depth > zStop else zStop
 
-        r = float(obj.ToolController.Tool.Diameter) / 2
-        toolangle = obj.ToolController.Tool.CuttingEdgeAngle
-        maxdepth = baselevel - r / math.tan(math.radians(toolangle/2))
-
-        d = baselevel - round(MIC / math.tan(math.radians(toolangle / 2)), 4)
-        PathLog.debug('baselevel value: {} depth: {}'.format(baselevel, d))
-        return d if d > maxdepth else maxdepth
-
-    def _getPartEdge(self, obj, edge, bblevel):
+    def _getPartEdge(self, edge, zStart, zStop, zScale):
         dist = edge.getDistances()
-        return edge.toShape(self._calculate_depth(obj, dist[0]), self._calculate_depth(obj, dist[1]))
+        return edge.toShape(self._calculate_depth(dist[0], zStart, zStop, zScale), self._calculate_depth(dist[1], zStart, zStop, zScale))
 
     def _getPartEdges(self, obj, vWire):
-        bblevel = self.model[0].Shape.BoundBox.ZMin
+        # pre-calculate the depth limits - pre-mature optimisation ;)
+        r = float(obj.ToolController.Tool.Diameter) / 2
+        toolangle = obj.ToolController.Tool.CuttingEdgeAngle
+        zStart = self.model[0].Shape.BoundBox.ZMin
+        zStop  = zStart - r / math.tan(math.radians(toolangle/2))
+        zScale = 1.0 / math.tan(math.radians(toolangle / 2))
+
         edges = []
         for e in vWire:
-            edges.append(self._getPartEdge(obj, e, bblevel))
+            edges.append(self._getPartEdge(e, zStart, zStop, zScale))
         return edges
 
     def buildPathMedial(self, obj, Faces):
