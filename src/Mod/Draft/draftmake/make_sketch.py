@@ -127,7 +127,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         normal = DraftGeomUtils.get_normal(shapes_list[0], tol)
 
     else:
-        # supose all geometries are straight lines or points
+        # suppose all geometries are straight lines or points
         points = [vertex.Point for shape in shapes_list for vertex in shape.Vertexes]
         if len(points) >= 2:
             poly = Part.makePolygon(points)
