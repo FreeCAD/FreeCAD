@@ -1,4 +1,4 @@
-####
+######
 #
 #  Travis-CI configuration file for FreeCAD.
 #
@@ -17,7 +17,7 @@
 #
 #  DEPLOY: Repo setting to deploy (defaults to no deploy to reduce
 #          Travis build times. Set DEPLOY=1 to enable in repo settings.
-####
+######
 env:
   global:
     - GENERATOR="Unix Makefiles"
@@ -112,7 +112,7 @@ jobs:
             - $HOME/Library/Caches/Homebrew
             - /usr/local/Homebrew
         env:
-          - CMAKE_OPTS="-DCMAKE_CXX_COMPILER_LAUNCHER=/usr/local/bin/ccache -DBUILD_QT5=ON -DUSE_PYTHON3=1 -DCMAKE_CXX_FLAGS='-std=c++11' -DBUILD_FEM_NETGEN=1 -DBUILD_FEM=1 -DBUILD_TECHDRAW=0 -DCMAKE_PREFIX_PATH='/usr/local/opt/qt/lib/cmake;/usr/local/opt/nglib/Contents/Resources' -DBUILD_FEM_NETGEN:BOOL=ON -DFREECAD_USE_EXTERNAL_KDL=ON -DCMAKE_BUILD_TYPE=Release"
+          - CMAKE_OPTS="-DBUILD_QT5=ON -DUSE_PYTHON3=1 -DCMAKE_CXX_FLAGS='-Wno-deprecated-declarations' -DBUILD_FEM_NETGEN=1 -DBUILD_FEM=1 -DBUILD_TECHDRAW=0 -DCMAKE_PREFIX_PATH='/usr/local/opt/qt/lib/cmake;/usr/local/opt/nglib/Contents/Resources' -DBUILD_FEM_NETGEN:BOOL=ON -DFREECAD_USE_EXTERNAL_KDL=ON -DCMAKE_BUILD_TYPE=Release"
           - PATH=/usr/local/bin:$PATH
           - CACHE_NAME=OSX1
 
@@ -228,7 +228,9 @@ before_install:
        brew --config
        brew update
        brew upgrade
-       brew install python@3.8
+       brew install python@3.9
+       brew unlink python@3.8
+       brew link --overwrite --force python@3.9
        rm /usr/local/bin/python
        ln -s /usr/local/bin/python3 /usr/local/bin/python
        pip3 install six
@@ -242,8 +244,15 @@ before_install:
        brew install boost
        brew install boost-python3
        brew tap FreeCAD/freecad
-
-       brew install --verbose --only-dependencies freecad --with-packaging-utils
+       brew install freecad/freecad/coin 
+       brew install freecad/freecad/nglib
+       brew install freecad/freecad/med-file
+       brew install freecad/freecad/opencamlib
+       brew install freecad/freecad/shiboken2
+       brew install freecad/freecad/pyside2
+       brew install freecad/freecad/pyside2-tools
+       brew install freecad/freecad/pivy
+       brew install freecad/freecad/matplotlib
 
        ##Install the 3DConnexion frameworks
        if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
@@ -329,9 +338,10 @@ script:
         # if [ "${TRAVIS_OS_NAME}" == "osx" ]; then sudo gtimeout -s KILL  make -j2 install; fi
         cat $HOME/.ccache/ccache.conf
         ccache -z -s
-        if [ "${TRAVIS_OS_NAME}" == "osx" ]; then export PATH="/usr/local/opt/ccacche/libexec:$PATH"; sudo gtimeout -s KILL 7200 make -j2 install; fi
+        df -h
+        if [ "${TRAVIS_OS_NAME}" == "osx" ]; then export PATH="/usr/local/opt/ccacche/libexec:$PATH"; sudo gtimeout -s KILL 5400 make -j2; [ $? == 0 ] && echo "No timeout" || { ccache -s; sudo make -j2 install; ccache -s; return 0; }  fi 
         if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
-        # sudo make -j2 install
+        sudo make -j2 install
         ccache -s
         ${INSTALLED_APP_PATH} --console --run-test 0 || travis_terminate 1
         ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
