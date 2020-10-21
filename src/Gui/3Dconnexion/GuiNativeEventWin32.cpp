@@ -57,6 +57,7 @@ Gui::GuiNativeEvent* Gui::GuiNativeEvent::gMouseInput = 0;
 #include <QApplication>
 #include <windows.h>
 #include <cmath>
+#include <map>
 
 #define LOGITECH_VENDOR_ID 0x46d
 #define CONNEXION_VENDOR_ID  0x256f
@@ -143,6 +144,42 @@ enum e3dmouse_virtual_key
    , V3DK_ESC, V3DK_ALT, V3DK_SHIFT, V3DK_CTRL
    , V3DK_ROTATE, V3DK_PANZOOM, V3DK_DOMINANT
    , V3DK_PLUS, V3DK_MINUS
+};
+
+// SpaceMouse Enterprise: map to virtual keycodes
+std::map<unsigned long, unsigned short> mapEnterpriseKey = {
+   {0x0002, 0x01} // V3DK_MENU
+ , {0x0004, 0x02} // V3DK_FIT
+ , {0x0006, 0x03} // V3DK_TOP
+ , {0x0007, 0x04} // V3DK_BOTTOM
+ , {0x000A, 0x05} // V3DK_RIGHT
+ , {0x000B, 0x06} // V3DK_LEFT
+ , {0x000C, 0x07} // V3DK_FRONT
+ , {0x000D, 0x08} // V3DK_BACK
+ , {0x0012, 0x09} // V3DK_CW
+ , {0x0013, 0x0a} // V3DK_CCW
+ , {0x0016, 0x0b} // V3DK_ISO1
+ , {0x0017, 0x0c} // V3DK_ISO2
+ , {0x001a, 0x0d} // V3DK_1
+ , {0x001c, 0x0e} // V3DK_2
+ , {0x001e, 0x0f} // V3DK_3
+ , {0x0020, 0x10} // V3DK_4
+ , {0x0022, 0x11} // V3DK_5
+ , {0x0024, 0x12} // V3DK_6
+ , {0x0026, 0x13} // V3DK_7
+ , {0x0028, 0x14} // V3DK_8
+ , {0x002a, 0x15} // V3DK_9
+ , {0x002c, 0x16} // V3DK_10
+ , {0x0090, 0x17} // V3DK_11
+ , {0x0092, 0x18} // V3DK_12
+ , {0x002e, 0x19} // V3DK_ESC
+ , {0x0030, 0x1a} // V3DK_ALT
+ , {0x0032, 0x1b} // V3DK_SHIFT
+ , {0x0034, 0x1c} // V3DK_CTRL
+ , {0x0048, 0x1d} // V3DK_ENTER
+ , {0x004a, 0x1e} // V3DK_DEL
+ , {0x015e, 0x1f} // V3DK_TAB
+ , {0x0160, 0x20} // V3DK_SPACE
 };
 
 struct tag_VirtualKeys
@@ -827,13 +864,14 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseNew(UINT nInputCode, PRAWINPUT pRaw
 #endif
 			return true;
 		}
-	} else if (pRawInput->data.hid.bRawData[0] == 0x03)  { // Keystate change
+	} else if ((dwProductId != eSpaceMouseEnterprise) && (pRawInput->data.hid.bRawData[0] == 0x03))  { // Keystate change
 		// this is a package that contains 3d mouse keystate information
 		// bit0=key1, bit=key2 etc.
 
 
 		unsigned long dwKeystate = *reinterpret_cast<unsigned long*>(&pRawInput->data.hid.bRawData[1]);
 #if _TRACE_RI_RAWDATA
+		qDebug("pRawInput->data.hid.bRawData[0] = 0x%x", pRawInput->data.hid.bRawData[0]);
 		qDebug("ButtonData =0x%x\n", dwKeystate);
 #endif
 		// Log the keystate changes
@@ -863,16 +901,54 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseNew(UINT nInputCode, PRAWINPUT pRaw
 				dwKeystate >>=1;
 			}
 		}
-	}
+	} else if ((dwProductId == eSpaceMouseEnterprise) && ((pRawInput->data.hid.bRawData[0] == 0x1c) || (pRawInput->data.hid.bRawData[0] == 0x1d))) {
 
-	if (dwProductId == eSpaceMouseEnterprise) {
-		if (pRawInput->data.hid.bRawData[0] == 0x1c) {
-			// TODO: short button press
-			shortButtonPress = true;
+#if _TRACE_RI_RAWDATA
+		qDebug("pRawInput->data.hid.bRawData[0] = 0x%x", pRawInput->data.hid.bRawData[0]);
+		qDebug("ButtonData = 0x%x\n", *reinterpret_cast<unsigned long*>(&pRawInput->data.hid.bRawData[1]));
+#endif
+		// calculate a KeyCode
+		unsigned long dwKeyCode = pRawInput->data.hid.bRawData[1] << 1;
+		dwKeyCode += (pRawInput->data.hid.bRawData[0] & 0x01);
+
+		// Log the last key
+		unsigned long dwOldKeyCode = fDevice2Keystate[pRawInput->header.hDevice];
+		if (dwKeyCode != 0) {
+			fDevice2Keystate[pRawInput->header.hDevice] = dwKeyCode;
 		}
-		else if (pRawInput->data.hid.bRawData[0] == 0x1d) {
-			// TODO: long button press
-			shortButtonPress = false;
+		else {
+			fDevice2Keystate.erase(pRawInput->header.hDevice);
+		}
+		//  Only call the handlers if the app is in foreground
+		if (bIsForeground) {
+			// check for changes
+			if (dwKeyCode ^ dwOldKeyCode) {
+				// special handling of additional keys
+				if (dwKeyCode == 0x0036) {
+					// toggle rotate
+					f3dMouseParams.SetRotate(!f3dMouseParams.IsRotate());
+				}
+				else if (dwKeyCode >= 0x00ce && dwKeyCode <= 0x00d2) {
+					// TODO: restore / save view
+					//	, V3DK_V1LOAD   = 0x00ce, V3DK_V1SAVE
+					//	, V3DK_V2LOAD   = 0x00d0, V3DK_V2SAVE
+					//	, V3DK_V3LOAD   = 0x00d2, V3DK_V3SAVE
+				}
+				else if (dwKeyCode != 0) {
+					// map key to virtual keycode
+					const auto iIndex(mapEnterpriseKey.find(dwKeyCode));
+					if (iIndex != mapEnterpriseKey.end()) {
+						On3dmouseKeyDown(pRawInput->header.hDevice, (*iIndex).second);
+					}
+				}
+				else if (dwOldKeyCode != 0) {
+					// map key to virtual keycode
+					const auto iIndex(mapEnterpriseKey.find(dwOldKeyCode));
+					if (iIndex != mapEnterpriseKey.end()) {
+						On3dmouseKeyUp(pRawInput->header.hDevice, (*iIndex).second);
+					}
+				}
+			}
 		}
 	}
 

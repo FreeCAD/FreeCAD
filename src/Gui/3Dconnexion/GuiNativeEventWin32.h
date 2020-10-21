@@ -97,7 +97,6 @@ namespace Gui
         MouseParameters f3dMouseParams;     // Rotate, Pan Zoom etc.
         // use to calculate distance traveled since last event
         DWORD fLast3dmouseInputTime;
-        bool shortButtonPress = true;
         static Gui::GuiNativeEvent* gMouseInput;
 	};
 }
