@@ -263,8 +263,21 @@ App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute(void) {
 
     if(getLinkedObjectProperty()) {
         DocumentObject *linked = getTrueLinkedObject(true);
-        if(!linked)
-            return new App::DocumentObjectExecReturn("Link broken");
+        if(!linked) {
+            std::ostringstream ss;
+            ss << "Link broken!";
+            auto xlink = Base::freecad_dynamic_cast<PropertyXLink>(
+                    getLinkedObjectProperty());
+            if (xlink) {
+                const char *objname = xlink->getObjectName();
+                if (objname && objname[0])
+                    ss << "\nObject: " << objname;
+                const char *filename = xlink->getFilePath();
+                if (filename && filename[0])
+                    ss << "\nFile: " << filename;
+            }
+            return new App::DocumentObjectExecReturn(ss.str().c_str());
+        }
 
         App::DocumentObject *container = getContainer();
         PropertyPythonObject *proxy = 0;
