@@ -1343,7 +1343,7 @@ std::vector<std::string> ObjectIdentifier::getStringList() const
 
 ObjectIdentifier ObjectIdentifier::relativeTo(const ObjectIdentifier &other) const
 {
-    ObjectIdentifier result(owner);
+    ObjectIdentifier result(other.getOwner());
     ResolveResults thisresult(*this);
     ResolveResults otherresult(other);
 
