@@ -4837,11 +4837,13 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
             found = true;
             if (j!=i) { // fix index if it is changed
                 childItem->setHighlight(false);
-                item->removeChild(ci);
-                item->insertChild(i,ci);
-                assert(ci->parent()==item);
+                item->removeChild(childItem);
+                childItem->selected = 0;
+                childItem->mySubs.clear();
+                item->insertChild(i,childItem);
+                assert(childItem->parent()==item);
                 if(checkHidden)
-                    updateItemsVisibility(ci,false);
+                    updateItemsVisibility(childItem,false);
             }
 
             // Check if the item just changed its policy of whether to remove
@@ -4894,6 +4896,8 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
             it->second->rootItem = 0;
             childItem->setHighlight(false);
             this->removeChild(childItem);
+            childItem->selected = 0;
+            childItem->mySubs.clear();
             item->insertChild(i,childItem);
             assert(childItem->parent()==item);
             if(checkHidden)
@@ -4908,6 +4912,8 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
             if(childItem->requiredAtRoot()) {
                 item->removeChild(childItem);
                 auto index = findRootIndex(childItem->object()->getObject());
+                childItem->selected = 0;
+                childItem->mySubs.clear();
                 if(index>=0)
                     this->insertChild(index,childItem);
                 else
