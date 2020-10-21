@@ -83,6 +83,7 @@ from draftgeoutils.edges import (findEdge,
                                  orientEdge,
                                  isSameLine,
                                  isLine,
+                                 is_line,
                                  invert,
                                  findMidpoint,
                                  getTangent)

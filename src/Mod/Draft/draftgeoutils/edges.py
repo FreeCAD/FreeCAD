@@ -127,7 +127,7 @@ def is_line(bspline):
     start_point = bspline.StartPoint
     end_point = bspline.EndPoint
     dist_start_end = end_point.distanceToPoint(start_point)
-    if (dist_start_end == bspline.length()) < 1e-7:
+    if abs(bspline.length() - dist_start_end) < 1e-7:
         return True
 
     return False
