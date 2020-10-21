@@ -2067,6 +2067,8 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
 }
 
 void TreeWidget::mousePressEvent(QMouseEvent *event) {
+    if (_DraggingActive)
+        return;
     auto item = itemAt(event->pos());
     if (item && item->type() == ObjectType) {
         QRect rect = this->visualItemRect(item);
@@ -2075,6 +2077,38 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
         auto oitem = static_cast<DocumentObjectItem*>(item);
         const char *objName = oitem->object()->getObject()->getNameInDocument();
         if (objName && rect.contains(pos)) {
+
+            auto setVisible = [oitem](App::DocumentObject *obj, const char *sobjName, bool vis) {
+                App::DocumentObject *topParent = 0;
+                std::ostringstream ss;
+                if (oitem->isSelected()) {
+                    oitem->getSubName(ss,topParent);
+                    if(!topParent)
+                        topParent = oitem->object()->getObject();
+                    else
+                        ss << oitem->object()->getObject()->getNameInDocument() << '.';
+                }
+                Selection().rmvPreselect();
+                if(topParent && !vis) {
+                    Gui::Selection().updateSelection(false,
+                                                     topParent->getDocument()->getName(),
+                                                     topParent->getNameInDocument(),
+                                                     ss.str().c_str());
+                }
+
+                if (sobjName)
+                    obj->setElementVisible(sobjName, vis);
+                else
+                    obj->Visibility.setValue(vis);
+
+                if(topParent && vis) {
+                    Gui::Selection().updateSelection(true,
+                                                        topParent->getDocument()->getName(),
+                                                        topParent->getNameInDocument(),
+                                                        ss.str().c_str());
+                }
+            };
+
             DocumentObjectItem *parentItem = oitem->getParentItem();
             if(parentItem) {
                 auto parent = parentItem->object()->getObject();
@@ -2089,22 +2123,19 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
                         if(!App::GeoFeatureGroupExtension::isNonGeoGroup(obj)) {
                             int vis = obj->isElementVisible(objName);
                             if(vis>=0) {
-                                obj->setElementVisible(objName, vis==0);
-                                Selection().rmvPreselect();
+                                setVisible(obj, objName, !vis);
                                 return;
                             }
                         }
                     }
                 }
                 if (visible >= 0) {
-                    parent->setElementVisible(objName, visible==0);
-                    Selection().rmvPreselect();
+                    setVisible(parent, objName, !visible);
                     return;
                 }
             }
-            oitem->object()->Visibility.setValue(
-                    !oitem->object()->Visibility.getValue());
-            Selection().rmvPreselect();
+            setVisible(oitem->object()->getObject(), nullptr,
+                       !oitem->object()->Visibility.getValue());
             return;
         }
     }
