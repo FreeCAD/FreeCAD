@@ -1843,6 +1843,8 @@ bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
             if (_DraggingActive) {
                 qApp->removeEventFilter(this);
                 _DraggingActive = false;
+                for (auto tree : TreeWidget::Instances)
+                    tree->setAutoScroll(false);
                 qApp->restoreOverrideCursor();
                 return true;
             }
@@ -1903,6 +1905,8 @@ bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
         if(_DraggingActive) {
             QMouseEvent *me = static_cast<QMouseEvent*>(ev);
             _DraggingActive = false;
+            for (auto tree : TreeWidget::Instances)
+                tree->setAutoScroll(false);
             qApp->removeEventFilter(this);
             qApp->restoreOverrideCursor();
 
@@ -2152,6 +2156,8 @@ void TreeWidget::startDragging() {
     qApp->installEventFilter(this);
     pimpl->setOverrideCursor(Qt::DragMoveCursor);
     _DraggingActive = true;
+    for (auto tree : TreeWidget::Instances)
+        tree->setAutoScroll(true);
 #else
     setState(DraggingState);
     startDrag(model()->supportedDragActions());
@@ -2171,6 +2177,8 @@ void TreeWidget::startDrag(Qt::DropActions supportedActions)
     qApp->installEventFilter(this);
     pimpl->setOverrideCursor(Qt::DragMoveCursor);
     _DraggingActive = true;
+    for (auto tree : TreeWidget::Instances)
+        tree->setAutoScroll(true);
 #else
     QTreeWidget::startDrag(supportedActions);
     if(_DragEventFilter) {
@@ -2267,8 +2275,11 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
             }
         }
     }
-    if (!targetItem)
+    if (!targetItem) {
         targetItem = itemAt(event->pos());
+        if (targetItem)
+            setCurrentItem(targetItem, 0, QItemSelectionModel::NoUpdate);
+    }
 
     event->setDropAction(Qt::MoveAction);
     event->accept();
