@@ -161,6 +161,8 @@ void EditDatumDialog::accepted()
 
         double newDatum = newQuant.getValue();
 
+        App::AutoTransaction transaction("Edit sketch datum");
+
         try {
 
             /*if (ui_ins_datum->cbDriving->isChecked() == Constr->isDriving) {
@@ -181,8 +183,6 @@ void EditDatumDialog::accepted()
                 Gui::cmdAppObjectArgs(sketch, "renameConstraint(%d, u'%s')",
                                       ConstrNbr, escapedstr.c_str());
             }
-
-            Gui::Command::commitCommand();
 
             if (sketch->noRecomputes && sketch->ExpressionEngine.depsAreTouched()) {
                 sketch->ExpressionEngine.execute();
