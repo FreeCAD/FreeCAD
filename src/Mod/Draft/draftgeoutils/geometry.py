@@ -297,7 +297,7 @@ def is_planar(shape, tol=-1):
 def is_straight_line(shape, tol=-1):
     """Return True if shape is a straight line.
     function used in other methods because Part.Shape.findPlane assign a
-    plane and normal to straight wires creating priviliged directions
+    plane and normal to straight wires creating privileged directions
     and to deal with straight wires with overlapped edges."""
 
     if len(shape.Faces) != 0:
@@ -319,7 +319,7 @@ def is_straight_line(shape, tol=-1):
             first_point = edge.firstVertex().Point
             last_point = edge.lastVertex().Point
             dir_edge = edge.tangentAt(edge.FirstParameter)
-            # chek if edge is curve or no parallel to start_edge
+            # check if edge is curve or no parallel to start_edge
             # because sin(x) = x + O(x**3), for small angular deflection it's
             # enough use the cross product of directions (or dot with a normal)
             if (abs(edge.Length - first_point.distanceToPoint(last_point)) > err
@@ -410,7 +410,7 @@ def get_spline_surface_normal(shape, tol=-1):
     u = (u0 + u1)/2
     v = (v0 + v1)/2
     first_normal = first_surf.normal(u, v)
-    # chek if all faces are planar and parallel
+    # check if all faces are planar and parallel
     for face in shape.Faces:
         surf = face.Surface
         if not surf.isPlanar(tol):
