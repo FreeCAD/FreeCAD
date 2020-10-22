@@ -276,7 +276,6 @@ void CmdSketcherEditSketch::activated(int iMsg)
 
     if (SketchFilter.match()) {
         Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(SketchFilter.Result[0][0].getObject());
-        openCommand("Edit sketch");
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",Sketch->getNameInDocument());
     }
 }
@@ -313,10 +312,9 @@ void CmdSketcherLeaveSketch::activated(int iMsg)
             vp->purgeHandler();
     }
 
-    openCommand("Finish editting sketch");
+    // See also TaskDlgEditSketch::reject
     doCommand(Gui,"Gui.activeDocument().resetEdit()");
     doCommand(Doc,"App.ActiveDocument.recompute()");
-    commitCommand();
 }
 
 bool CmdSketcherLeaveSketch::isActive(void)
