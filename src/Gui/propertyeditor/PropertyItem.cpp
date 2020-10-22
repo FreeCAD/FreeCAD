@@ -628,7 +628,7 @@ QVariant PropertyItem::data(int column, int role) const
                 QVariant val = parent->property(qPrintable(objectName()));
                 return decoration(val);
             }
-            else if (role == Qt::DisplayRole) {
+            else if (role == Qt::DisplayRole || role == Qt::ToolTipRole) {
                 QVariant val = parent->property(qPrintable(objectName()));
                 return toString(val);
             } 
