@@ -105,10 +105,16 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     // Fit is only enabled (sensible) if not threaded
     ui->ThreadFit->setEnabled(!pcHole->Threaded.getValue());
     ui->Diameter->setValue(pcHole->Diameter.getValue());
+    // Diameter is only enabled if ThreadType is None
+    if (pcHole->ThreadType.getValue() != 0L)
+        ui->Diameter->setEnabled(false);
     if (pcHole->ThreadDirection.getValue() == 0L)
         ui->directionRightHand->setChecked(true);
     else
         ui->directionLeftHand->setChecked(true);
+    // ThreadDirection is only sensible if there is a thread
+    ui->directionRightHand->setEnabled(pcHole->Threaded.getValue());
+    ui->directionLeftHand->setEnabled(pcHole->Threaded.getValue());
     ui->HoleCutType->clear();
     cursor = pcHole->HoleCutType.getEnums();
     while (*cursor) {
@@ -119,6 +125,32 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->HoleCutDiameter->setValue(pcHole->HoleCutDiameter.getValue());
     ui->HoleCutDepth->setValue(pcHole->HoleCutDepth.getValue());
     ui->HoleCutCountersinkAngle->setValue(pcHole->HoleCutCountersinkAngle.getValue());
+
+    // only enable allowed values for hole cuts:
+    bool holeCutEnable = (pcHole->HoleCutType.getValue() != 0L);
+    QByteArray TypeClass = ui->ThreadType->itemData(pcHole->ThreadType.getValue()).toByteArray();
+
+    // HoleCutDiameter is only allowed for countersinks or counterbores with UTS or no profile
+    if (pcHole->HoleCutType.getValue() == 0L) // no cut
+        ui->HoleCutDiameter->setEnabled(false);
+    else if (TypeClass != QByteArray("ISO"))
+        ui->HoleCutDiameter->setEnabled(true);
+    else if (pcHole->HoleCutType.getValue() == 2L || pcHole->HoleCutType.getValue() == 4L) {
+        ui->HoleCutDiameter->setEnabled(true);
+    }
+    else
+        ui->HoleCutDiameter->setEnabled(false);
+    // HoleCutDepth can always be changed if there is a cut
+    if (pcHole->HoleCutType.getValue() == 2L || pcHole->HoleCutType.getValue() == 4L)
+        ui->HoleCutDepth->setEnabled(false);
+    else
+        ui->HoleCutDepth->setEnabled(holeCutEnable);
+    // HoleCutCountersinkAngle is only allowed for countersinks with UTS or no profile
+    ui->HoleCutCountersinkAngle->setEnabled(false);
+    if ((pcHole->HoleCutType.getValue() == 2L || pcHole->HoleCutType.getValue() == 4L)
+        && TypeClass != QByteArray("ISO"))
+        ui->HoleCutCountersinkAngle->setEnabled(true);
+
     ui->DepthType->setCurrentIndex(pcHole->DepthType.getValue());
     ui->Depth->setValue(pcHole->Depth.getValue());
     if (pcHole->DrillPoint.getValue() == 0L)
