@@ -176,34 +176,38 @@ Quantity Quantity::concat(const Quantity &p) const
 
 Quantity Quantity::operator +(const Quantity &p) const
 {
-    if (this->_Unit != p._Unit)
+    if (!this->_Unit.isEmpty() && !p._Unit.isEmpty() && this->_Unit != p._Unit)
         throw Base::UnitsMismatchError("Quantity::operator +(): Unit mismatch in plus operation");
-    return Quantity(this->_Value + p._Value,this->_Unit);
+    return Quantity(this->_Value + p._Value, this->_Unit.isEmpty() ? p._Unit : this->_Unit);
 }
 
 Quantity& Quantity::operator +=(const Quantity &p)
 {
-    if (this->_Unit != p._Unit)
+    if (!this->_Unit.isEmpty() && !p._Unit.isEmpty() && this->_Unit != p._Unit)
         throw Base::UnitsMismatchError("Quantity::operator +=(): Unit mismatch in plus operation");
 
     _Value += p._Value;
+    if (this->_Unit.isEmpty())
+        _Unit = p._Unit;
 
     return *this;
 }
 
 Quantity Quantity::operator -(const Quantity &p) const
 {
-    if (this->_Unit != p._Unit)
+    if (!this->_Unit.isEmpty() && !p._Unit.isEmpty() && this->_Unit != p._Unit)
         throw Base::UnitsMismatchError("Quantity::operator -(): Unit mismatch in minus operation");
-    return Quantity(this->_Value - p._Value,this->_Unit);
+    return Quantity(this->_Value - p._Value, this->_Unit.isEmpty() ? p._Unit : this->_Unit);
 }
 
 Quantity& Quantity::operator -=(const Quantity &p)
 {
-    if (this->_Unit != p._Unit)
+    if (!this->_Unit.isEmpty() && !p._Unit.isEmpty() && this->_Unit != p._Unit)
         throw Base::UnitsMismatchError("Quantity::operator -=(): Unit mismatch in minus operation");
 
     _Value -= p._Value;
+    if (this->_Unit.isEmpty())
+        setUnit(p._Unit);
 
     return *this;
 }
