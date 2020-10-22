@@ -33,6 +33,7 @@ from PySide import QtCore
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
+import PathScripts.PathOpTools as PathOpTools
 import math
 
 # lazily loaded modules
@@ -383,15 +384,64 @@ class PathGeometryGenerator:
         wires = list()
         shape = self.shape
         offset = 0.0  # Start right at the edge of cut area
+        direction = 0
+        loop_cnt = 0
+
+        def _get_direction(w):
+            if PathOpTools._isWireClockwise(w):
+                return 1
+            return -1
+
+        def _reverse_wire(w):
+            rev_list = list()
+            for e in w.Edges:
+                rev_list.append(PathUtils.reverseEdge(e))
+            rev_list.reverse()
+            # return Part.Wire(Part.__sortEdges__(rev_list))
+            return Part.Wire(rev_list)
+
         while True:
             offsetArea = PathUtils.getOffsetArea(shape, offset, plane=self.wpc)
             if not offsetArea:
                 # Area fully consumed
                 break
+
+            # set initial cut direction
+            if direction == 0:
+                first_face_wire = offsetArea.Faces[0].Wires[0]
+                direction = _get_direction(first_face_wire)
+                if self.obj.CutMode == 'Climb':
+                    if direction == 1:
+                        direction = -1
+                else:
+                    if direction == -1:
+                        direction = 1
+
+            # Correct cut direction for `Conventional` cuts
+            if self.obj.CutMode == 'Conventional':
+                if loop_cnt == 1:
+                    direction = direction * -1
+
+            # process each wire within face
             for f in offsetArea.Faces:
+                wire_cnt = 0
                 for w in f.Wires:
-                    wires.append(w)
+                    use_direction = direction
+                    if wire_cnt > 0:
+                        # swap direction for internal features
+                        use_direction = direction * -1
+                    wire_direction = _get_direction(w)
+                    # Process wire
+                    if wire_direction == use_direction:
+                        # direction is correct
+                        wires.append(w)
+                    else:
+                        # incorrect direction, so reverse wire
+                        rw = _reverse_wire(w)
+                        wires.append(rw)
+
             offset -= self.cutOut
+            loop_cnt += 1
         return wires
 # Eclass
 
