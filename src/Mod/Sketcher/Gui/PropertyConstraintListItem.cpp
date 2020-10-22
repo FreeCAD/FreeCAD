@@ -55,10 +55,15 @@ QVariant PropertyConstraintListItem::toString(const QVariant& prop) const
     const QList<Base::Quantity>& value = prop.value< QList<Base::Quantity> >();
     QString str;
     QTextStream out(&str);
+    int count = 0;
     out << "[";
     for (QList<Base::Quantity>::const_iterator it = value.begin(); it != value.end(); ++it) {
         if (it != value.begin())
             out << ";";
+        if (++count > 3) {
+            out << "...";
+            break;
+        }
         out << it->getUserString();
     }
     out << "]";
