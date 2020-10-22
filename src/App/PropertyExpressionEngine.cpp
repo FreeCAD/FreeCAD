@@ -711,17 +711,17 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
                 *touched = prop->isTouched();
         }catch(Base::Exception &e) {
             std::ostringstream ss;
-            ss << e.what() << "\nin property binding '" << prop->getFullName() << "'";
+            ss << e.what() << "\nin binding '" << it->toString() << "'";
             e.setMessage(ss.str());
             throw;
         }catch(std::bad_cast &e) {
             std::ostringstream ss;
             ss << "Invalid type '" << value.type().name() << "'";
-            ss << "\nin property binding '" << prop->getFullName() << "'";
+            ss << "\nin binding '" << it->toString() << "'";
             throw Base::TypeError(ss.str().c_str());
         }catch(std::exception &e) {
             std::ostringstream ss;
-            ss << e.what() << "\nin property binding '" << prop->getFullName() << "'";
+            ss << e.what() << "\nin binding '" << it->toString() << "'";
             throw Base::RuntimeError(ss.str().c_str());
         }
     }
