@@ -330,7 +330,7 @@ script:
         cat $HOME/.ccache/ccache.conf
         ccache -z -s
         df -h
-        if [ "${TRAVIS_OS_NAME}" == "osx" ]; then export PATH="/usr/local/opt/ccacche/libexec:$PATH"; sudo gtimeout -s KILL 600 make -j2; [ $? == 1 ] && echo "No timeout" || echo "timeout detected"; fi
+        if [ "${TRAVIS_OS_NAME}" == "osx" ]; then export PATH="/usr/local/opt/ccacche/libexec:$PATH"; sudo gtimeout -s KILL 7200 make -j2; [ $? == 1 ] && echo "No timeout" || echo "timeout detected"; fi
         if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
         # sudo make -j2 install
         ccache -s
