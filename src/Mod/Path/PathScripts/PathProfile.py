@@ -745,17 +745,12 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     # f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                     # if planar error, Comment out previous line, uncomment the next two
                     (origWire, flatWire) = self._flattenWire(obj, wire, obj.FinalDepth.Value)
-                    f = origWire.Wires[0]
+                    f = flatWire.Wires[0]
                     if f:
-                        # shift the compound to the bottom of the base object for proper sectioning
-                        zShift = ezMin - f.BoundBox.ZMin
-                        newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), f.Placement.Rotation)
-                        f.Placement = newPlace
-
                         if self.expandProfile:
                             shapeEnv = self._getExpandedProfileEnvelope(obj, Part.Face(f), False, obj.StartDepth.Value, ezMin)
                         else:
-                            shapeEnv = PathUtils.getEnvelope(base.Shape, subshape=f, depthparams=self.depthparams)
+                            shapeEnv = PathUtils.getEnvelope(Part.Face(f), depthparams=self.depthparams)
 
                         if shapeEnv:
                             tup = shapeEnv, False, 'Profile', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
