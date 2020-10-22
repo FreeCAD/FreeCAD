@@ -6281,11 +6281,10 @@ void SketchObject::rebuildExternalGeometry(bool defining)
     assert(externalGeoRef.size() == Objects.size());
     auto keys = externalGeoRef;
 
-    auto geoms = ExternalGeo.getValues();
     // re-check for any missing geometry element. The code here has a side
     // effect that the linked external geometry will continue to work even if
     // ExternalGeometry is wiped out.
-    for(auto &geo : geoms) {
+    for(auto &geo : ExternalGeo.getValues()) {
         if(geo->Ref.size() && geo->testFlag(Part::Geometry::Missing)) {
             auto pos = geo->Ref.find('.');
             if(pos == std::string::npos)
@@ -6931,6 +6930,8 @@ void SketchObject::rebuildExternalGeometry(bool defining)
         for(auto &geo : geos)
             geo->Id = refs[i++];
     }
+
+    auto geoms = ExternalGeo.getValues();
 
     // now update the geometries
     for(auto &geos : newGeos) {
