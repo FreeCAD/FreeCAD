@@ -7988,6 +7988,28 @@ void SketchObject::onDocumentRestored()
         // delConstraintsToExternal();
         FC_WARN("Failed to restore some external geometry in " << getFullName());
     }
+
+    // Sanity check on constraints with expression. It is added because the
+    // way SketchObject syncs expression and constraints heavily relies on
+    // proper setup of undo/redo transactions. The missing transaction in
+    // EditDatumDialog may cause stray or worse wrongly bound expressions.
+    for (auto &v : ExpressionEngine.getExpressions()) {
+        if (v.first.getProperty() != &Constraints)
+            continue;
+        const Constraint * cstr = nullptr;
+        try {
+            cstr = Constraints.getConstraint(v.first);
+        } catch (Base::Exception &) {
+        }
+        if (!cstr || !cstr->isDimensional()) {
+            FC_WARN((cstr ? "Invalid" : "Orphan")
+                    << " constraint expression in "
+                    << getFullName() << "."
+                    << v.first.toString()
+                    << ": " << v.second->toString());
+            ExpressionEngine.setValue(v.first, nullptr);
+        }
+    }
 }
 
 void SketchObject::restoreFinished()
