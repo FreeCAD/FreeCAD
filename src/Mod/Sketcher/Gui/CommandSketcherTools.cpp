@@ -1887,15 +1887,14 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     }
 
     // Pop-up asking for values
-    SketchRectangularArrayDialog * slad = new SketchRectangularArrayDialog();
+    SketchRectangularArrayDialog slad;
 
-    if (slad->exec() == QDialog::Accepted) {
+    if (slad.exec() == QDialog::Accepted) {
         ActivateAcceleratorHandler(getActiveGuiDocument(),
-            new DrawSketchHandlerRectangularArray(geoIdList, LastGeoId, LastPointPos, geoids, slad->Clone,
-                                                  slad->Rows, slad->Cols, slad->ConstraintSeparation,
-                                                  slad->EqualVerticalHorizontalSpacing));
+            new DrawSketchHandlerRectangularArray(geoIdList, LastGeoId, LastPointPos, geoids, slad.Clone,
+                                                  slad.Rows, slad.Cols, slad.ConstraintSeparation,
+                                                  slad.EqualVerticalHorizontalSpacing));
     }
-    delete slad;
 }
 
 bool CmdSketcherRectangularArray::isActive(void)

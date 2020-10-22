@@ -775,21 +775,15 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
         return;
     }
 
-    // Ask the user the type of mirroring
-    SketchMirrorDialog * smd = new SketchMirrorDialog();
-
     int refgeoid = -1;
     Sketcher::PointPos refposid = Sketcher::none;
-
-    if (smd->exec() == QDialog::Accepted) {
-        refgeoid = smd->RefGeoid;
-        refposid = smd->RefPosid;
-        delete smd;
-    }
-    else {
-        delete smd;
+    // Ask the user the type of mirroring
+    SketchMirrorDialog smd;
+    if (smd.exec() != QDialog::Accepted)
         return;
-    }
+
+    refgeoid = smd.RefGeoid;
+    refposid = smd.RefPosid;
 
     App::Document* doc = App::GetApplication().getActiveDocument();
     openCommand("Create a mirrored sketch for each selected sketch");
