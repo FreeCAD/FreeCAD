@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Approx_Curve3d.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
@@ -50,6 +51,7 @@
 # include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_SurfaceOfRevolution.hxx>
 # include <Geom_SurfaceOfLinearExtrusion.hxx>
+# include <GeomAdaptor_HCurve.hxx>
 # include <GeomAPI_Interpolate.hxx>
 # include <GeomConvert.hxx>
 # include <GeomConvert_CompCurveToBSplineCurve.hxx>
@@ -1338,17 +1340,45 @@ void GeomBSplineCurve::makeC1Continuous(double tol, double ang_tol)
     GeomConvert::C0BSplineToC1BSplineCurve(this->myCurve, tol, ang_tol);
 }
 
-void GeomBSplineCurve::increaseDegree(double degree)
+void GeomBSplineCurve::increaseDegree(int degree)
 {
     try {
         Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(this->handle());
         curve->IncreaseDegree(degree);
-        return;
     }
     catch (Standard_Failure& e) {
-
         THROWM(Base::CADKernelError,e.GetMessageString())
     }
+}
+
+/*!
+ * \brief GeomBSplineCurve::approximate
+ * \param tol3d
+ * \param maxSegments
+ * \param maxDegree
+ * \param continuity
+ * \return true if the approximation succeeded, false otherwise
+ */
+bool GeomBSplineCurve::approximate(double tol3d, int maxSegments, int maxDegree, int continuity)
+{
+    try {
+        GeomAbs_Shape cont = GeomAbs_C0;
+        if (continuity >= 0 && continuity <= 6)
+            cont = static_cast<GeomAbs_Shape>(continuity);
+
+        GeomAdaptor_Curve adapt(myCurve);
+        Handle(GeomAdaptor_HCurve) hCurve = new GeomAdaptor_HCurve(adapt);
+        Approx_Curve3d approx(hCurve, tol3d, cont, maxSegments, maxDegree);
+        if (approx.IsDone() && approx.HasResult()) {
+            this->setHandle(approx.Curve());
+            return true;
+        }
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError,e.GetMessageString())
+    }
+
+    return false;
 }
 
 void GeomBSplineCurve::increaseMultiplicity(int index, int multiplicity)
@@ -1359,7 +1389,6 @@ void GeomBSplineCurve::increaseMultiplicity(int index, int multiplicity)
         return;
     }
     catch (Standard_Failure& e) {
-
         THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }

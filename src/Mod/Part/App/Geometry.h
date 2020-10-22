@@ -291,7 +291,8 @@ public:
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;
 
-    void increaseDegree(double degree);
+    void increaseDegree(int degree);
+    bool approximate(double tol3d, int maxSegments, int maxDegree, int continuity);
 
     void increaseMultiplicity(int index, int multiplicity);
     bool removeKnot(int index, int multiplicity, double tolerance = Precision::PConfusion());
