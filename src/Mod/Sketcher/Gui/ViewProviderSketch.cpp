@@ -616,7 +616,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                             const Gui::View3DInventorViewer *viewer)
 {
     assert(edit);
-    App::AutoTransaction committer;
 
     // Calculate 3d point to the mouse position
     SbLine line;
