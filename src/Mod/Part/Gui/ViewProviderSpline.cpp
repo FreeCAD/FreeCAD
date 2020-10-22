@@ -65,6 +65,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderSpline, PartGui::ViewProviderPartExt)
 ViewProviderSpline::ViewProviderSpline()
     : pcControlPoints(0)
 {
+    sPixmap = "Part_Spline_Parametric";
     ADD_PROPERTY(ControlPoints,(false));
 }
 
@@ -74,7 +75,7 @@ ViewProviderSpline::~ViewProviderSpline()
 
 QIcon ViewProviderSpline::getIcon(void) const
 {
-    return Gui::BitmapFactory().pixmap("Part_Spline_Parametric");
+    return Gui::BitmapFactory().pixmap(sPixmap);
 }
 
 void ViewProviderSpline::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
