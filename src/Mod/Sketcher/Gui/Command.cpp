@@ -742,6 +742,8 @@ void CmdSketcherValidateSketch::activated(int iMsg)
 
 bool CmdSketcherValidateSketch::isActive(void)
 {
+    if (Gui::Control().activeDialog())
+        return false;
     return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
 }
 
