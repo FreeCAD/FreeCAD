@@ -340,8 +340,13 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         switch (role) {
         case  Qt::TextColorRole: {
             Color color;
-
-            if (cell->getForeground(color))
+            const Base::Unit & computedUnit = floatProp->getUnit();
+            DisplayUnit displayUnit;
+            if (cell->getDisplayUnit(displayUnit) && 
+                    !computedUnit.isEmpty() && computedUnit != displayUnit.unit) {
+                return QVariant::fromValue(QColor(255.0, 0, 0));
+            }
+            else if (cell->getForeground(color))
                 return QVariant::fromValue(QColor(255.0 * color.r, 255.0 * color.g, 255.0 * color.b, 255.0 * color.a));
             else {
                 if (floatProp->getValue() < 0)
@@ -374,7 +379,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
                     v = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
                 }
                 else {
-                    v = QString::fromUtf8("#ERR: unit");
+                    v = QString::fromUtf8("#ERR: display unit mismatch");
                 }
             }
             else {
