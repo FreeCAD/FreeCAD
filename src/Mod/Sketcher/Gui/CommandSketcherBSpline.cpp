@@ -479,8 +479,7 @@ CmdSketcherDecreaseDegree::CmdSketcherDecreaseDegree()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Decrease B-spline degree");
-    sToolTipText    = QT_TR_NOOP("Decreases the degree of the B-spline.\n"
-                                 "This command is currently NOT IMPLEMENTED.");
+    sToolTipText    = QT_TR_NOOP("Decreases the degree of the B-spline");
     sWhatsThis      = "Sketcher_BSplineDecreaseDegree";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_BSplineDecreaseDegree";
@@ -488,12 +487,54 @@ CmdSketcherDecreaseDegree::CmdSketcherDecreaseDegree()
     eType           = ForEdit;
 }
 
-// TODO: fully implement this function to complement Sketcher_BSplineIncreaseDegree
 void CmdSketcherDecreaseDegree::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Base::Console().Message("Decrease degree of spline. "
-                            "This command is currently NOT IMPLEMENTED.\n");
+
+    // get the selection
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        return;
+    }
+
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+
+    openCommand("Decrease spline degree");
+
+    bool ignored = false;
+
+    for (size_t i=0; i < SubNames.size(); i++) {
+        // only handle edges
+        if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge") {
+            int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
+            const Part::Geometry * geo = Obj->getGeometry(GeoId);
+
+            if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "decreaseBSplineDegree(%d) ", GeoId);
+                // add new control points
+                //Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", GeoId);
+            }
+            else {
+                ignored = true;
+            }
+        }
+    }
+
+    if (ignored) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Wrong selection"),
+                             QObject::tr("At least one of the selected "
+                                         "objects was not a B-Spline and was ignored."));
+    }
+
+    commitCommand();
+    tryAutoRecomputeIfNotSolve(Obj);
+    getSelection().clearSelection();
 }
 
 bool CmdSketcherDecreaseDegree::isActive(void)
@@ -902,7 +943,7 @@ void CreateSketcherCommandsBSpline(void)
     rcCmdMgr.addCommand(new CmdSketcherCompBSplineShowHideGeometryInformation());
     rcCmdMgr.addCommand(new CmdSketcherConvertToNURB());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseDegree());
-    rcCmdMgr.addCommand(new CmdSketcherDecreaseDegree());  // TODO: implement this function
+    rcCmdMgr.addCommand(new CmdSketcherDecreaseDegree());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherDecreaseKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherCompModifyKnotMultiplicity());

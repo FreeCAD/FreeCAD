@@ -373,7 +373,7 @@ inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline)
         << "Sketcher_BSplineKnotMultiplicity"
         << "Sketcher_BSplineConvertToNURB"
         << "Sketcher_BSplineIncreaseDegree"
-        << "Sketcher_BSplineDecreaseDegree"  // TODO: implement this command
+        << "Sketcher_BSplineDecreaseDegree"
         << "Sketcher_BSplineIncreaseKnotMultiplicity"
         << "Sketcher_BSplineDecreaseKnotMultiplicity";
 }
@@ -384,7 +384,7 @@ inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bsp
     bspline << "Sketcher_CompBSplineShowHideGeometryInformation"
     << "Sketcher_BSplineConvertToNURB"
     << "Sketcher_BSplineIncreaseDegree"
-    << "Sketcher_BSplineDecreaseDegree"  // TODO: implement this command
+    << "Sketcher_BSplineDecreaseDegree"
     << "Sketcher_CompModifyKnotMultiplicity";
 }
 

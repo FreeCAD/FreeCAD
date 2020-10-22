@@ -5198,6 +5198,48 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
     return true;
 }
 
+bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
+{
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
+    if (GeoId < 0 || GeoId > getHighestCurveIndex())
+        return false;
+
+    const Part::Geometry *geo = getGeometry(GeoId);
+
+    if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+        return false;
+
+    const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
+
+    const Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(bsp->handle());
+
+    std::unique_ptr<Part::GeomBSplineCurve> bspline(new Part::GeomBSplineCurve(curve));
+
+    try {
+        int cdegree = bspline->getDegree();
+
+        bool ok = bspline->approximate(Precision::Confusion(), 20, cdegree-degreedecrement, 0);
+        if (!ok)
+            return false;
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n", e.what());
+        return false;
+    }
+
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+
+    std::vector< Part::Geometry * > newVals(vals);
+
+    newVals[GeoId] = bspline.release();
+
+    // AcceptGeometry called from onChanged
+    Geometry.setValues(newVals);
+
+    return true;
+}
+
 bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int multiplicityincr)
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.

@@ -254,6 +254,14 @@ public:
     bool increaseBSplineDegree(int GeoId, int degreeincrement = 1);
 
     /*!
+     \brief Decreases the degree of a BSpline by degreedecrement, which defaults to 1
+     \param GeoId - the geometry of type bspline to increase the degree
+     \param degreedecrement - the decrement in number of degrees to effect
+     \retval bool - returns true if the decrease in degree succeeded, or false if it did not succeed.
+     */
+    bool decreaseBSplineDegree(int GeoId, int degreedecrement = 1);
+
+    /*!
      \brief Increases or Decreases the multiplicity of a BSpline knot by the multiplicityincr param, which defaults to 1, if the result is multiplicity zero, the knot is removed
      \param GeoId - the geometry of type bspline to increase the degree
      \param knotIndex - the index of the knot to modify (note that index is OCC consistent, so 1<=knotindex<=knots)
