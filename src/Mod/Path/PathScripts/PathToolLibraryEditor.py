@@ -79,7 +79,7 @@ class EditorPanel():
         pass
 
     def getType(self, tooltype):
-        "gets a combobox index number for a given type or viceversa"
+        "gets a combobox index number for a given type or vice versa"
         toolslist = Path.Tool.getToolTypes(Path.Tool())
         if isinstance(tooltype, str):
             if tooltype in toolslist:
@@ -90,7 +90,7 @@ class EditorPanel():
             return toolslist[tooltype]
 
     def getMaterial(self, material):
-        '''gets a combobox index number for a given material or viceversa'''
+        '''gets a combobox index number for a given material or vice versa'''
         matslist = Path.Tool.getToolMaterials(Path.Tool())
         if isinstance(material, str):
             if material in matslist:

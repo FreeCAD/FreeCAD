@@ -178,7 +178,7 @@ MouseP::mouseWheelEvent(QWheelEvent * event)
 #if QT_VERSION >= 0x050000
   pos *= publ->quarter->devicePixelRatio();
 #endif
-  this->location2->setPosition(pos); //I don't know why location2 is assigned here, I assumend it important  --DeepSOIC
+  this->location2->setPosition(pos); //I don't know why location2 is assigned here, I assumed it important  --DeepSOIC
   this->wheel->setPosition(pos);
 
   // QWheelEvent::delta() returns the distance that the wheel is
