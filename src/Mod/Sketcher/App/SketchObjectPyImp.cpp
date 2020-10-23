@@ -1399,19 +1399,13 @@ PyObject* SketchObjectPy::increaseBSplineDegree(PyObject *args)
 PyObject* SketchObjectPy::decreaseBSplineDegree(PyObject *args)
 {
     int GeoId;
-    int incr = 1;
+    int decr = 1;
 
-    if (!PyArg_ParseTuple(args, "i|i", &GeoId, &incr))
-        return 0;
+    if (!PyArg_ParseTuple(args, "i|i", &GeoId, &decr))
+        return nullptr;
 
-    if (this->getSketchObjectPtr()->decreaseBSplineDegree(GeoId, incr)==false) {
-        std::stringstream str;
-        str << "Degree decrease failed for: " << GeoId;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
-        return 0;
-    }
-
-    Py_Return;
+    bool ok = this->getSketchObjectPtr()->decreaseBSplineDegree(GeoId, decr);
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
 PyObject* SketchObjectPy::modifyBSplineKnotMultiplicity(PyObject *args)

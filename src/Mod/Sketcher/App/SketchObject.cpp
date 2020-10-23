@@ -5219,7 +5219,11 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
     try {
         int cdegree = bspline->getDegree();
 
-        bool ok = bspline->approximate(Precision::Confusion(), 20, cdegree-degreedecrement, 0);
+        // degree must be >= 1
+        int maxdegree = cdegree - degreedecrement;
+        if (maxdegree == 0)
+            return false;
+        bool ok = bspline->approximate(Precision::Confusion(), 20, maxdegree, 0);
         if (!ok)
             return false;
     }
@@ -5228,6 +5232,9 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
         return false;
     }
 
+    // FIXME: Avoid to delete the whole geometry but only delete invalid constraints
+    // and unused construction geometries
+#if 0
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
     std::vector< Part::Geometry * > newVals(vals);
@@ -5236,6 +5243,11 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
 
     // AcceptGeometry called from onChanged
     Geometry.setValues(newVals);
+#else
+    delGeometry(GeoId);
+    int newId = addGeometry(bspline.release());
+    exposeInternalGeometry(newId);
+#endif
 
     return true;
 }

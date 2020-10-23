@@ -500,6 +500,8 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
         return;
     }
 
+    getSelection().clearSelection();
+
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
@@ -517,7 +519,10 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
             if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "decreaseBSplineDegree(%d) ", GeoId);
                 // add new control points
+                // Currently exposeInternalGeometry is called from within decreaseBSplineDegree because
+                // the old spline is deleted and a new one is added so that the GeoId is invalid afterwards
                 //Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", GeoId);
+                break; // cannot handle more than spline because the GeoIds will be invalidated after the first change
             }
             else {
                 ignored = true;
