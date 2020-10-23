@@ -2683,6 +2683,14 @@ void ViewProviderSketch::updateColor(void)
     float zConstrLine = (topid==2?zHighLines:midid==2?zMidLines:zLowLines);
     float zExtLine = (topid==3?zHighLines:midid==3?zMidLines:zLowLines);
 
+    // use a lambda function to only access the geometry when needed
+    // and properly handle the case where it's null
+    auto isConstructionGeom = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
+        const Part::Geometry* geom = obj->getGeometry(GeoId);
+        if (geom)
+            return geom->Construction;
+        return false;
+    };
 
 
     int j=0; // vertexindex
@@ -2724,7 +2732,7 @@ void ViewProviderSketch::updateColor(void)
                 verts[j] = SbVec3f(x,y,zExtLine);
             }
         }
-        else if (getSketchObject()->getGeometry(GeoId)->Construction) {
+        else if (isConstructionGeom(getSketchObject(), GeoId)) {
             color[i] = CurveDraftColor;
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
