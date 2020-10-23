@@ -383,10 +383,10 @@ class ObjectOp(PathOp.ObjectOp):
             if PathLog.getLevel(PathLog.thisModule()) == 4:
                 self.visualAxis()
 
-        # Set axial feed rates based upon horizontal feed rates
-        safeCircum = 2 * math.pi * obj.SafeHeight.Value
-        self.axialFeed = 360 / safeCircum * self.horizFeed # pylint: disable=attribute-defined-outside-init
-        self.axialRapid = 360 / safeCircum * self.horizRapid # pylint: disable=attribute-defined-outside-init
+            # Set axial feed rates based upon horizontal feed rates
+            safeCircum = 2 * math.pi * obj.SafeHeight.Value
+            self.axialFeed = 360 / safeCircum * self.horizFeed # pylint: disable=attribute-defined-outside-init
+            self.axialRapid = 360 / safeCircum * self.horizRapid # pylint: disable=attribute-defined-outside-init
 
         # Initiate depthparams and calculate operation heights for rotational operation
         self.depthparams = self._customDepthParams(obj, obj.StartDepth.Value, obj.FinalDepth.Value)
