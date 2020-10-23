@@ -1221,7 +1221,7 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
         }
 
         // undo command open
-        Gui::Command::openCommand("add horizontal alignement");
+        Gui::Command::openCommand("Add horizontal alignment");
         // issue the actual commands to create the constraint
         Gui::cmdAppObjectArgs(sketchgui->getObject()
                                 ,"addConstraint(Sketcher.Constraint('Horizontal',%d,%d,%d,%d)) "
@@ -1456,7 +1456,7 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
         }
 
         // undo command open
-        Gui::Command::openCommand("add horizontal alignement");
+        Gui::Command::openCommand("Add horizontal alignment");
         // issue the actual commands to create the constraint
         Gui::cmdAppObjectArgs(sketchgui->getObject()
                                 ,"addConstraint(Sketcher.Constraint('Vertical',%d,%d,%d,%d)) "
