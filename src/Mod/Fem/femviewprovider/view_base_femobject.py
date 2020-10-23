@@ -56,7 +56,7 @@ class VPBaseFemObject(object):
             return ""
         if not hasattr(self.Object.Proxy, "Type"):
             FreeCAD.Console.PrintMessage(
-                "{}: Proxy does has not have attribte Type.\n"
+                "{}: Proxy does has not have attribute Type.\n"
                 .format(self.Object.Name)
             )
             return ""

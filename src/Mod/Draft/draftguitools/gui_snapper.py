@@ -344,7 +344,7 @@ class Snapper:
 
 
     def cycleSnapObject(self):
-        """Increse the index of the snap object by one."""
+        """Increase the index of the snap object by one."""
         self.snapObjectIndex = self.snapObjectIndex + 1
 
 

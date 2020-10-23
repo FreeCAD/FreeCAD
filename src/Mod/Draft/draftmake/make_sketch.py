@@ -68,7 +68,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         radius within precision.
 
     tol(1e-3): Tolerance used to check if the shapes are planar and coplanar.
-        Consider change to tol=-1 for a more accurate analisis.
+        Consider change to tol=-1 for a more accurate analysis.
     """
 
     if not App.ActiveDocument:
