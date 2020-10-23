@@ -1218,11 +1218,16 @@ void Document::commitTransaction() {
 
 void Document::_commitTransaction(bool notify)
 {
-    if(isPerformingTransaction() || d->committing) {
+    if (isPerformingTransaction()) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
             FC_WARN("Cannot commit transaction while transacting");
         return;
     }
+    else if (d->committing) {
+        // for a recursive call return without printing a warning
+        return;
+    }
+
     if (d->activeUndoTransaction) {
         Base::FlagToggler<> flag(d->committing);
         Application::TransactionSignaller signaller(false,true);
@@ -1237,7 +1242,8 @@ void Document::_commitTransaction(bool notify)
         }
         signalCommitTransaction(*this);
 
-        if(notify)
+        // closeActiveTransaction() may call again _commitTransaction()
+        if (notify)
             GetApplication().closeActiveTransaction(false,id);
     }
 }
