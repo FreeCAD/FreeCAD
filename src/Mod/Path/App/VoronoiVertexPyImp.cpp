@@ -27,20 +27,19 @@
 # include <boost/algorithm/string.hpp>
 #endif
 
-#include "Voronoi.h"
-#include "VoronoiPy.h"
-#include "VoronoiEdge.h"
-#include "VoronoiEdgePy.h"
-#include "VoronoiVertex.h"
-#include "VoronoiVertexPy.h"
-#include <Base/Exception.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/PlacementPy.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
+#include "Base/Exception.h"
+#include "Base/GeometryPyCXX.h"
+#include "Base/PlacementPy.h"
+#include "Base/Vector3D.h"
+#include "Base/VectorPy.h"
+#include "Mod/Path/App/Voronoi.h"
+#include "Mod/Path/App/VoronoiEdge.h"
+#include "Mod/Path/App/VoronoiEdgePy.h"
+#include "Mod/Path/App/VoronoiPy.h"
+#include "Mod/Path/App/VoronoiVertex.h"
+#include "Mod/Path/App/VoronoiVertexPy.h"
 
-// files generated out of VoronoiVertexPy.xml
-#include "VoronoiVertexPy.cpp"
+#include "Mod/Path/App/VoronoiVertexPy.cpp"
 
 using namespace Path;
 
