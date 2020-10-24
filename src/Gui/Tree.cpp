@@ -3204,6 +3204,11 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     auto jt = DocumentMap.find(&Doc);
     if (jt == DocumentMap.end())
         return; // signal is emitted before the item gets created
+
+    if (QApplication::queryKeyboardModifiers()
+            & (Qt::ControlModifier | Qt::ShiftModifier))
+        return; // multi selection
+
     int displayMode = TreeParams::Instance()->DocumentMode();
     for (auto it = DocumentMap.begin();
          it != DocumentMap.end(); ++it)
