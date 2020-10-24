@@ -228,7 +228,7 @@ before_install:
        brew --config
        brew update
        brew upgrade
-       brew install python@3.8
+       brew install python3
        rm /usr/local/bin/python
        ln -s /usr/local/bin/python3 /usr/local/bin/python
        pip3 install six
