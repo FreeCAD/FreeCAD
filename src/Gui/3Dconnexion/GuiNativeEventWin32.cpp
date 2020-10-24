@@ -792,7 +792,9 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
 		if (sRidDeviceInfo.hid.dwVendorId == LOGITECH_VENDOR_ID  || sRidDeviceInfo.hid.dwVendorId == CONNEXION_VENDOR_ID) {
 			switch (sRidDeviceInfo.hid.dwProductId) {
 			case eSpaceMousePlusXT:
-				return TranslateSpaceMouseOld(nInputCode, pRawInput, sRidDeviceInfo.hid.dwProductId);
+				return TranslateSpaceMouseOldGeneric(nInputCode, pRawInput, sRidDeviceInfo.hid.dwProductId);
+			case eSpaceMouseEnterprise:
+				return TranslateSpaceMouseEnterprise(nInputCode, pRawInput, sRidDeviceInfo.hid.dwProductId);
 			case eSpacePilot:
 			case eSpaceNavigator:
 			case eSpaceExplorer:
@@ -800,9 +802,8 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
 			case eSpacePilotPRO:
 			case eSpaceMouseWireless:
 			case eSpaceMousePROWireless:
-			case eSpaceMouseEnterprise:
 			default:
-				return TranslateSpaceMouseNew(nInputCode, pRawInput, sRidDeviceInfo.hid.dwProductId);
+				return TranslateSpaceMouseNewGeneric(nInputCode, pRawInput, sRidDeviceInfo.hid.dwProductId);
 			}
 		}
 	}
@@ -810,7 +811,7 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
 	return false;
 }
 
-bool Gui::GuiNativeEvent::TranslateSpaceMouseNew(UINT nInputCode, PRAWINPUT pRawInput, DWORD dwProductId)
+bool Gui::GuiNativeEvent::TranslateSpaceMouseNewGeneric(UINT nInputCode, PRAWINPUT pRawInput, DWORD dwProductId)
 {
 	bool bIsForeground = (nInputCode == RIM_INPUT);
 
@@ -864,7 +865,7 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseNew(UINT nInputCode, PRAWINPUT pRaw
 #endif
 			return true;
 		}
-	} else if ((dwProductId != eSpaceMouseEnterprise) && (pRawInput->data.hid.bRawData[0] == 0x03))  { // Keystate change
+	} else if (pRawInput->data.hid.bRawData[0] == 0x03)  { // Keystate change
 		// this is a package that contains 3d mouse keystate information
 		// bit0=key1, bit=key2 etc.
 
@@ -901,7 +902,66 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseNew(UINT nInputCode, PRAWINPUT pRaw
 				dwKeystate >>=1;
 			}
 		}
-	} else if ((dwProductId == eSpaceMouseEnterprise) && ((pRawInput->data.hid.bRawData[0] == 0x1c) || (pRawInput->data.hid.bRawData[0] == 0x1d))) {
+	}
+
+	return false;
+}
+
+bool Gui::GuiNativeEvent::TranslateSpaceMouseEnterprise(UINT nInputCode, PRAWINPUT pRawInput, DWORD dwProductId)
+{
+	bool bIsForeground = (nInputCode == RIM_INPUT);
+
+	if (pRawInput->data.hid.bRawData[0] == 0x01) { // Translation vector
+
+		TInputData& deviceData = fDevice2Data[pRawInput->header.hDevice];
+		deviceData.fTimeToLive = kTimeToLive;
+		if (bIsForeground) {
+			short* pnRawData = reinterpret_cast<short*>(&pRawInput->data.hid.bRawData[1]);
+			// Cache the pan zoom data
+			deviceData.fAxes[0] = static_cast<float>(pnRawData[0]);
+			deviceData.fAxes[1] = static_cast<float>(pnRawData[1]);
+			deviceData.fAxes[2] = static_cast<float>(pnRawData[2]);
+
+#if _TRACE_RI_RAWDATA
+			qDebug("Pan/Zoom RI Data =\t0x%x,\t0x%x,\t0x%x\n",
+							pnRawData[0],  pnRawData[1],  pnRawData[2]);
+#endif
+			if (pRawInput->data.hid.dwSizeHid >= 13) {// Highspeed package
+				// Cache the rotation data
+				deviceData.fAxes[3] = static_cast<float>(pnRawData[3]);
+				deviceData.fAxes[4] = static_cast<float>(pnRawData[4]);
+				deviceData.fAxes[5] = static_cast<float>(pnRawData[5]);
+				deviceData.fIsDirty = true;
+#if _TRACE_RI_RAWDATA
+				qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n",
+					 pnRawData[3], pnRawData[4], pnRawData[5]);
+#endif
+				return true;
+			}
+		} else { // Zero out the data if the app is not in foreground
+			deviceData.fAxes.assign(6, 0.f);
+		}
+	} else if (pRawInput->data.hid.bRawData[0] == 0x02) { // Rotation vector
+		// If we are not in foreground do nothing
+		// The rotation vector was zeroed out with the translation vector in the previous message
+		if (bIsForeground) {
+			TInputData& deviceData = fDevice2Data[pRawInput->header.hDevice];
+			deviceData.fTimeToLive = kTimeToLive;
+
+			short* pnRawData = reinterpret_cast<short*>(&pRawInput->data.hid.bRawData[1]);
+			// Cache the rotation data
+			deviceData.fAxes[3] = static_cast<float>(pnRawData[0]);
+			deviceData.fAxes[4] = static_cast<float>(pnRawData[1]);
+			deviceData.fAxes[5] = static_cast<float>(pnRawData[2]);
+			deviceData.fIsDirty = true;
+
+#if _TRACE_RI_RAWDATA
+			qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n",
+				pnRawData[0],  pnRawData[1], pnRawData[2]);
+#endif
+			return true;
+		}
+	} else if ((pRawInput->data.hid.bRawData[0] == 0x1c) || (pRawInput->data.hid.bRawData[0] == 0x1d)) {
 
 #if _TRACE_RI_RAWDATA
 		qDebug("pRawInput->data.hid.bRawData[0] = 0x%x", pRawInput->data.hid.bRawData[0]);
@@ -974,7 +1034,7 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseNew(UINT nInputCode, PRAWINPUT pRaw
 #define CHECK(exp)		{ if(!(exp)) goto Error; }
 #define SAFE_FREE(p)	{ if(p) { HeapFree(hHeap, 0, p); (p) = NULL; } }
 
-bool Gui::GuiNativeEvent::TranslateSpaceMouseOld(UINT nInputCode, PRAWINPUT pRawInput, DWORD /*dwProductId*/)
+bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINPUT pRawInput, DWORD /*dwProductId*/)
 {
     bool processed = false;
     bool bIsForeground = (nInputCode == RIM_INPUT);
