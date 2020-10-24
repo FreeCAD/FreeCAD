@@ -160,7 +160,7 @@ bool SketcherGui::isPointOrSegmentFixed(const Sketcher::SketchObject* Obj, int G
     if (GeoId == Constraint::GeoUndef)
         return false;
     else
-        return checkConstraint(vals, Sketcher::Block, GeoId, Sketcher::none) || GeoId <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId);
+        return checkConstraint(vals, Sketcher::Block, GeoId, Sketcher::none) || GeoId <= Sketcher::GeoEnum::RtPnt || isConstructionPoint(Obj,GeoId);
 }
 
 bool SketcherGui::areBothPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1, int GeoId2)
@@ -170,8 +170,8 @@ bool SketcherGui::areBothPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj
     if (GeoId1 == Constraint::GeoUndef || GeoId2 == Constraint::GeoUndef)
         return false;
     else
-        return ((checkConstraint(vals, Sketcher::Block, GeoId1, Sketcher::none) || GeoId1 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId1)) &&
-                (checkConstraint(vals, Sketcher::Block, GeoId2, Sketcher::none) || GeoId2 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId2)));
+        return ((checkConstraint(vals, Sketcher::Block, GeoId1, Sketcher::none) || GeoId1 <= Sketcher::GeoEnum::RtPnt || isConstructionPoint(Obj,GeoId1)) &&
+                (checkConstraint(vals, Sketcher::Block, GeoId2, Sketcher::none) || GeoId2 <= Sketcher::GeoEnum::RtPnt || isConstructionPoint(Obj,GeoId2)));
 }
 
 bool SketcherGui::areAllPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1, int GeoId2, int GeoId3)
@@ -181,9 +181,9 @@ bool SketcherGui::areAllPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj,
     if (GeoId1 == Constraint::GeoUndef || GeoId2 == Constraint::GeoUndef || GeoId3 == Constraint::GeoUndef)
         return false;
     else
-        return ((checkConstraint(vals, Sketcher::Block, GeoId1, Sketcher::none) || GeoId1 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId1)) &&
-                (checkConstraint(vals, Sketcher::Block, GeoId2, Sketcher::none) || GeoId2 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId2)) &&
-                (checkConstraint(vals, Sketcher::Block, GeoId3, Sketcher::none) || GeoId3 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId3)));
+        return ((checkConstraint(vals, Sketcher::Block, GeoId1, Sketcher::none) || GeoId1 <= Sketcher::GeoEnum::RtPnt || isConstructionPoint(Obj,GeoId1)) &&
+                (checkConstraint(vals, Sketcher::Block, GeoId2, Sketcher::none) || GeoId2 <= Sketcher::GeoEnum::RtPnt || isConstructionPoint(Obj,GeoId2)) &&
+                (checkConstraint(vals, Sketcher::Block, GeoId3, Sketcher::none) || GeoId3 <= Sketcher::GeoEnum::RtPnt || isConstructionPoint(Obj,GeoId3)));
 }
 
 void SketcherGui::getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj,
