@@ -1290,7 +1290,7 @@ void OverlayTabWidget::setAutoMode(OverlayAutoMode mode)
     autoMode = mode;
 
     if (hGrp) {
-        bool autohide = false, editshow = false, edithide = false;
+        bool autohide = false, editshow = false, edithide = false, taskshow = false;
         switch (mode) {
         case AutoHide:
             autohide = true;
@@ -1301,12 +1301,16 @@ void OverlayTabWidget::setAutoMode(OverlayAutoMode mode)
         case EditHide:
             edithide = true;
             break;
+        case TaskShow:
+            taskshow = true;
+            break;
         default:
             break;
         }
         hGrp->SetBool("AutoHide", autohide);
         hGrp->SetBool("EditShow", editshow);
         hGrp->SetBool("EditHide", edithide);
+        hGrp->SetBool("TaskShow", taskshow);
     }
     syncAutoMode();
     OverlayManager::instance()->refresh(this);
