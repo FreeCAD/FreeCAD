@@ -1315,22 +1315,36 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
         }
         else if (item->type() == TreeWidget::ObjectType) {
             DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(item);
-            objitem->getOwnerDocument()->document()->setActiveView(objitem->object());
+            ViewProviderDocumentObject* vp = objitem->object();
+
+            objitem->getOwnerDocument()->document()->setActiveView(vp);
             auto manager = Application::Instance->macroManager();
             auto lines = manager->getLines();
-            auto editDoc = Application::Instance->editDocument();
-            App::AutoTransaction committer("Double click", true);
-            std::ostringstream ss;
-            ss << Command::getObjectCmd(objitem->object()->getObject())
-                << ".ViewObject.doubleClicked()";
-            if (!objitem->object()->doubleClicked())
-                QTreeWidget::mouseDoubleClickEvent(event);
-            else if(lines == manager->getLines())
-                manager->addLine(MacroManager::Gui,ss.str().c_str());
 
-            // If the double click starts an editing, let the transaction persist
-            if(!editDoc && Application::Instance->editDocument())
-                committer.setEnable(false);
+            std::ostringstream ss;
+            ss << Command::getObjectCmd(vp->getObject())
+                << ".ViewObject.doubleClicked()";
+
+            const char* commandText = vp->getTransactionText();
+            if (commandText) {
+                auto editDoc = Application::Instance->editDocument();
+                App::AutoTransaction committer(commandText, true);
+
+                if (!vp->doubleClicked())
+                    QTreeWidget::mouseDoubleClickEvent(event);
+                else if (lines == manager->getLines())
+                    manager->addLine(MacroManager::Gui, ss.str().c_str());
+
+                // If the double click starts an editing, let the transaction persist
+                if (!editDoc && Application::Instance->editDocument())
+                    committer.setEnable(false);
+            }
+            else {
+                if (!vp->doubleClicked())
+                    QTreeWidget::mouseDoubleClickEvent(event);
+                else if (lines == manager->getLines())
+                    manager->addLine(MacroManager::Gui, ss.str().c_str());
+            }
         }
     } catch (Base::Exception &e) {
         e.ReportException();
