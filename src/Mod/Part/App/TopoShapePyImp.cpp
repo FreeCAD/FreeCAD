@@ -231,6 +231,7 @@ PyObject* TopoShapePy::copy(PyObject *args)
     PyObject *pyHasher = 0;
     if (!PyArg_ParseTuple(args, "|sO!O!O!", &op,&App::StringHasherPy::Type,&pyHasher,
                 &PyBool_Type,&copyGeom,&PyBool_Type,&copyMesh)) {
+        PyErr_Clear();
         if (!PyArg_ParseTuple(args, "|O!O!", &PyBool_Type, &copyGeom, &PyBool_Type, &copyMesh))
             return 0;
     }
