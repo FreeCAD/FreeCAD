@@ -5,7 +5,7 @@
         Name="VoronoiCellPy" 
         Twin="VoronoiCell" 
         TwinPointer="VoronoiCell" 
-        Include="Mod/Path/App/Voronoi.h" 
+        Include="Mod/Path/App/VoronoiCell.h" 
         FatherInclude="Base/BaseClassPy.h" 
         Namespace="Path" 
         FatherNamespace="Base"

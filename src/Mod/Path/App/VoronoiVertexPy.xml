@@ -5,7 +5,7 @@
         Name="VoronoiVertexPy" 
         Twin="VoronoiVertex" 
         TwinPointer="VoronoiVertex" 
-        Include="Mod/Path/App/Voronoi.h" 
+        Include="Mod/Path/App/VoronoiVertex.h" 
         FatherInclude="Base/BaseClassPy.h" 
         Namespace="Path" 
         FatherNamespace="Base"

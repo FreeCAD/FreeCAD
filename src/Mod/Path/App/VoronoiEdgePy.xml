@@ -5,7 +5,7 @@
         Name="VoronoiEdgePy" 
         Twin="VoronoiEdge" 
         TwinPointer="VoronoiEdge" 
-        Include="Mod/Path/App/Voronoi.h" 
+        Include="Mod/Path/App/VoronoiEdge.h" 
         FatherInclude="Base/BaseClassPy.h" 
         Namespace="Path" 
         FatherNamespace="Base"
