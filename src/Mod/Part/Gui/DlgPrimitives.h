@@ -60,9 +60,16 @@ class DlgPrimitives : public QWidget
     Q_OBJECT
 
 public:
-    DlgPrimitives(QWidget* parent = 0);
+    enum PrimitiveType {
+        Plane, Box, Cylinder, Cone, Sphere, Ellipsoid, Torus, Prism, Wedge,
+        Helix, Spiral, Circle, Ellipse, Point, Line, RegPolygon
+    };
+
+    DlgPrimitives(QWidget* parent = 0, PrimitiveType type = PrimitiveType::Plane,
+        bool edit = false, const char* ObjectName = "");
     ~DlgPrimitives();
     void createPrimitive(const QString&);
+    void accept(const QString&);
 
 private Q_SLOTS:
     void on_buttonCircleFromThreePoints_clicked();
@@ -80,7 +87,7 @@ class Location : public QWidget
     Q_OBJECT
 
 public:
-    Location(QWidget* parent = 0);
+    Location(QWidget* parent = 0, bool edit = false, const char* ObjectName = "");
     ~Location();
     QString toPlacement() const;
 
@@ -105,13 +112,31 @@ public:
 public:
     bool accept();
     bool reject();
-
     QDialogButtonBox::StandardButtons getStandardButtons() const;
     void modifyStandardButtons(QDialogButtonBox*);
 
 private:
     DlgPrimitives* widget;
     Location* location;
+};
+
+class TaskPrimitivesEdit : public Gui::TaskView::TaskDialog
+{
+    Q_OBJECT
+
+public:
+    TaskPrimitivesEdit(DlgPrimitives::PrimitiveType type, const char* ObjectName);
+    ~TaskPrimitivesEdit();
+    
+public:
+    bool accept();
+    bool reject();
+    QDialogButtonBox::StandardButtons getStandardButtons() const;
+    void modifyStandardButtons(QDialogButtonBox*);
+
+private:
+    DlgPrimitives* widget;
+    Location* location; 
 };
 
 } // namespace PartGui

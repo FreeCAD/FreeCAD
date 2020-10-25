@@ -27,6 +27,9 @@
 # include <Python.h>
 #endif
 
+#include <Gui/Application.h>
+#include <Gui/Control.h>
+#include "DlgPrimitives.h"
 #include "ViewProviderHelixParametric.h"
 
 using namespace PartGui;
@@ -53,6 +56,46 @@ std::vector<std::string> ViewProviderHelixParametric::getDisplayModes(void) cons
     StrList.push_back("Points");
 
     return StrList;
+}
+
+void ViewProviderHelixParametric::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act;
+    act = menu->addAction(QObject::tr("Edit helix"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
+    ViewProviderSpline::setupContextMenu(menu, receiver, member);
+}
+
+void ViewProviderHelixParametric::updateData(const App::Property* prop)
+{
+    PartGui::ViewProviderSpline::updateData(prop);
+}
+
+bool ViewProviderHelixParametric::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        if (Gui::Control().activeDialog())
+            return false;
+        auto ObjectName = getObject()->getNameInDocument();
+        PartGui::TaskPrimitivesEdit* dlg
+            = new PartGui::TaskPrimitivesEdit(PartGui::DlgPrimitives::PrimitiveType::Helix, ObjectName);
+        Gui::Control().showDialog(dlg);
+        return true;
+    }
+    else {
+        ViewProviderSpline::setEdit(ModNum);
+        return true;
+    }
+}
+
+void ViewProviderHelixParametric::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        ViewProviderSpline::unsetEdit(ModNum);
+    }
 }
 
 // ------------------------------------------------------------------

@@ -39,6 +39,13 @@ public:
     /// destructor
     virtual ~ViewProviderHelixParametric();
     std::vector<std::string> getDisplayModes(void) const;
+    void setupContextMenu(QMenu*, QObject*, const char*);
+
+protected:
+    void updateData(const App::Property*);
+    bool setEdit(int ModNum);
+    void unsetEdit(int ModNum);
+
 };
 
 class PartGuiExport ViewProviderSpiralParametric : public ViewProviderSpline
