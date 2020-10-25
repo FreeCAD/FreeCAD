@@ -242,8 +242,15 @@ before_install:
        brew install boost
        brew install boost-python3
        brew tap FreeCAD/freecad
-
-       brew install --verbose --only-dependencies freecad --with-packaging-utils
+       brew install freecad/freecad/coin 
+       brew install freecad/freecad/nglib
+       brew install freecad/freecad/med-file
+       brew install freecad/freecad/opencamlib
+       brew install freecad/freecad/shiboken2
+       brew install freecad/freecad/pyside2
+       brew install freecad/freecad/pyside2-tools
+       brew install freecad/freecad/pivy
+       brew install freecad/freecad/matplotlib
 
        ##Install the 3DConnexion frameworks
        if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
