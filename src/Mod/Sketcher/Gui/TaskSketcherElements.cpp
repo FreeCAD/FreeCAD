@@ -712,7 +712,7 @@ void TaskSketcherElements::slotElementsChanged(void)
     int i=1;
     for(std::vector< Part::Geometry * >::const_iterator it= vals.begin();it!=vals.end();++it,++i){
       Base::Type type = (*it)->getTypeId();
-      bool construction = (*it)->Construction;
+      bool construction = (*it)->getConstruction();
 
       ui->listWidgetElements->addItem(new ElementItem(
         (type == Part::GeomPoint::getClassTypeId()          && element==1) ? Sketcher_Element_Point_StartingPoint.getIcon(construction, false) :
@@ -1070,12 +1070,12 @@ void TaskSketcherElements::updateIcons(int element)
     MultIcon Sketcher_Element_BSpline_EndPoint("Sketcher_Element_BSpline_EndPoint");
     MultIcon none("Sketcher_Element_SelectionTypeInvalid");
 
-    
+
     for (int i=0;i<ui->listWidgetElements->count(); i++) {
       Base::Type type = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->GeometryType;
       bool construction = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->isConstruction;
       bool external = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->isExternal;
-      
+
       ui->listWidgetElements->item(i)->setIcon(
         (type == Part::GeomPoint::getClassTypeId()          && element==1) ? Sketcher_Element_Point_StartingPoint.getIcon(construction, external) :
         (type == Part::GeomLineSegment::getClassTypeId()    && element==0) ? Sketcher_Element_Line_Edge.getIcon(construction, external) :
@@ -1122,7 +1122,7 @@ TaskSketcherElements::MultIcon::MultIcon(const char* name)
     Normal = Gui::BitmapFactory().iconFromTheme(name);
     QImage imgConstr(Normal.pixmap(Normal.availableSizes()[0]).toImage());
     QImage imgExt(imgConstr);
-    
+
     for(int ix=0 ; ix<imgConstr.width() ; ix++) {
         for(int iy=0 ; iy<imgConstr.height() ; iy++) {
             QColor clr = QColor::fromRgba(imgConstr.pixel(ix,iy));
@@ -1148,7 +1148,7 @@ TaskSketcherElements::MultIcon::MultIcon(const char* name)
     External = QIcon(QPixmap::fromImage(imgExt));
 
 }
-    
+
 QIcon TaskSketcherElements::MultIcon::getIcon(bool construction, bool external) const
 {
     if (construction && external) return QIcon();

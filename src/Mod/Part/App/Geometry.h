@@ -94,7 +94,8 @@ public:
     /// construction geometry (means no impact on a later built topo)
     /// Note: In the Sketcher and only for the specific case of a point, it has a special meaning:
     /// a construction point has fixed coordinates for the solver (it has fixed parameters)
-    bool Construction;
+    inline bool getConstruction(void) const {return Construction;};
+    inline void setConstruction(bool construction) {Construction = construction;};
     /// returns the tag of the geometry object
     boost::uuids::uuid getTag() const;
 
@@ -124,6 +125,9 @@ protected:
 private:
     Geometry(const Geometry&);
     Geometry& operator = (const Geometry&);
+
+protected:
+    bool Construction;
 };
 
 class PartExport GeomPoint : public Geometry

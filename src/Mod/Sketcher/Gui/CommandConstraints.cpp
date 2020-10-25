@@ -237,7 +237,7 @@ bool SketcherGui::isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, P
 bool SketcherGui::isConstructionPoint(const Sketcher::SketchObject* Obj, int GeoId)
 {
     const Part::Geometry * geo = Obj->getGeometry(GeoId);
-    return (geo && geo->getTypeId() == Part::GeomPoint::getClassTypeId() && geo->Construction == true);
+    return (geo && geo->getTypeId() == Part::GeomPoint::getClassTypeId() && geo->getConstruction() == true);
 }
 
 bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj)
@@ -1157,7 +1157,7 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
 {
     SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
-    
+
     switch (seqIndex) {
     case 0: // {Edge}
     {
@@ -1206,7 +1206,7 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
 
         break;
     }
-    
+
     case 1 : // {SelVertex, SelVertexOrRoot}
     case 2 : // {SelRoot, SelVertex}
     {
@@ -1214,7 +1214,7 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
         Sketcher::PointPos PosId1, PosId2;
         GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(1).GeoId;
         PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(1).PosId;
-        
+
         if ( areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) ) {
             showNoConstraintBetweenFixedGeometry();
             return;
@@ -1230,9 +1230,9 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
         Gui::Command::commitCommand();
 
         tryAutoRecompute(Obj);
-        
+
         break;
-        
+
     }
     }
 }
@@ -1449,7 +1449,7 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
         Sketcher::PointPos PosId1, PosId2;
         GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(1).GeoId;
         PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(1).PosId;
-        
+
         if ( areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) ) {
             showNoConstraintBetweenFixedGeometry();
             return;
@@ -1465,7 +1465,7 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
         Gui::Command::commitCommand();
 
         tryAutoRecompute(Obj);
-        
+
         break;
     }
     }
@@ -7003,7 +7003,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[0]));
 
-                    if(!geo->Construction)
+                    if(!geo->getConstruction())
                         Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction(%d) ",lineids[0]);
 
                 }
@@ -7014,7 +7014,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[0]));
 
-                    if(!geo->Construction)
+                    if(!geo->getConstruction())
                         Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction(%d) ",lineids[0]);
 
                     minor=true;
@@ -7031,7 +7031,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[1]));
 
-                    if(!geo->Construction)
+                    if(!geo->getConstruction())
                         Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction(%d) ",lineids[1]);
                 }
                 else
@@ -7181,7 +7181,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[0]));
 
-                    if(!geo->Construction)
+                    if(!geo->getConstruction())
                         Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction(%d) ",lineids[0]);
 
                 }
@@ -7192,7 +7192,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[0]));
 
-                    if(!geo->Construction)
+                    if(!geo->getConstruction())
                         Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction(%d) ",lineids[0]);
 
                     minor=true;
@@ -7209,7 +7209,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[1]));
 
-                    if (!geo->Construction)
+                    if (!geo->getConstruction())
                         Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction(%d) ",lineids[1]);
                 }
                 else
