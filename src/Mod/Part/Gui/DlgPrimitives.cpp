@@ -39,6 +39,7 @@
 #include <Base/Interpreter.h>
 #include <Base/Rotation.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -48,6 +49,7 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/Part/App/PartFeatures.h>
 #include <Mod/Part/App/Tools.h>
 
 #include "DlgPrimitives.h"
@@ -55,6 +57,8 @@
 using namespace PartGui;
 
 namespace PartGui {
+
+const char* ObjectNameSave;
 
 const char* gce_ErrorStatusText(gce_ErrorType et)
 {
@@ -180,12 +184,48 @@ private:
 
 /* TRANSLATOR PartGui::DlgPrimitives */
 
-DlgPrimitives::DlgPrimitives(QWidget* parent)
+DlgPrimitives::DlgPrimitives(QWidget* parent, PrimitiveType type, bool edit, const char* ObjectName)
   : QWidget(parent)
 {
     ui.setupUi(this);
     Gui::Command::doCommand(Gui::Command::Doc, "from FreeCAD import Base");
     Gui::Command::doCommand(Gui::Command::Doc, "import Part,PartGui");
+
+    ui.comboBox1->setCurrentIndex(type);
+    ui.widgetStack2->setCurrentIndex(type);
+
+    // fill the dialog with data if the primitives already exists
+    if (edit) {
+        // if existing, the primitive type can not be changed by the user
+        ui.comboBox1->setDisabled(edit);
+        // get the primitives object
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (!doc)
+            return;
+        auto docObj = doc->getDocument()->getObject(ObjectName);
+        
+        // read values from the properties
+        if (type == PrimitiveType::Helix)
+        {
+            auto Property = docObj->getPropertyByName("Pitch");
+            auto value = static_cast<const App::PropertyQuantity*>(Property);
+            ui.helixPitch->setValue(value->getQuantityValue());
+            Property = docObj->getPropertyByName("Height");
+            value = static_cast<const App::PropertyQuantity*>(Property);
+            ui.helixHeight->setValue(value->getQuantityValue());
+            Property = docObj->getPropertyByName("Radius");
+            value = static_cast<const App::PropertyQuantity*>(Property);
+            ui.helixRadius->setValue(value->getQuantityValue());
+            Property = docObj->getPropertyByName("Angle");
+            value = static_cast<const App::PropertyQuantity*>(Property);
+            ui.helixAngle->setValue(value->getQuantityValue());
+            Property = docObj->getPropertyByName("LocalCoord");
+            auto HandedIndex = static_cast<const App::PropertyEnumeration*>(Property);
+            ui.helixLocalCS->setCurrentIndex(HandedIndex->getValue());
+
+            // ToDo: connect signal if there is a preview of primitives available
+        }
+    }
 
     // set limits
     //
@@ -682,15 +722,87 @@ void DlgPrimitives::createPrimitive(const QString& placement)
     }
 }
 
+void DlgPrimitives::accept(const QString& placement)
+{
+    QString command;
+
+    // get the current object
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (!doc)
+        return;
+    auto docObj = doc->getDocument()->getObject(ObjectNameSave);
+    auto ObjectName = docObj->getNameInDocument();
+
+    // the combox with the primitive type is fixed
+    // therefore by reading its state we know what we need to change
+    if (ui.comboBox1->currentIndex() == 9) {  // helix
+
+        command = QString::fromLatin1(
+            "App.ActiveDocument.%1.Pitch=%2\n"
+            "App.ActiveDocument.%1.Height=%3\n"
+            "App.ActiveDocument.%1.Radius=%4\n"
+            "App.ActiveDocument.%1.Angle=%5\n"
+            "App.ActiveDocument.%1.LocalCoord=%6\n"
+            "App.ActiveDocument.%1.Placement=%7\n"
+            "App.ActiveDocument.recompute()\n")
+            .arg(QString::fromLatin1(ObjectName))
+            .arg(ui.helixPitch->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+            .arg(ui.helixHeight->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+            .arg(ui.helixRadius->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+            .arg(ui.helixAngle->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+            .arg(ui.helixLocalCS->currentIndex())
+            .arg(placement); 
+    }
+
+    // store command for undo
+    doc->openCommand(command.toUtf8());
+    // execute command
+    Gui::Command::runCommand(Gui::Command::App, command.toLatin1());
+    // commit undo command
+    doc->commitCommand();
+}
+
 // ----------------------------------------------
 
 /* TRANSLATOR PartGui::Location */
 
-Location::Location(QWidget* parent)
+Location::Location(QWidget* parent, bool edit, const char* ObjectName)
 {
     Q_UNUSED(parent);
     mode = 0;
     ui.setupUi(this);
+
+    ui.XPositionQSB->setUnit(Base::Unit::Length);
+    ui.YPositionQSB->setUnit(Base::Unit::Length);
+    ui.ZPositionQSB->setUnit(Base::Unit::Length);
+    ui.AngleQSB->setUnit(Base::Unit::Angle);
+
+    // fill location widget if object already exists
+    if (edit) {
+        // get the primitives object
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (!doc)
+            return;
+        auto docObj = doc->getDocument()->getObject(ObjectName);
+        // get the placement values
+        auto Property = docObj->getPropertyByName("Placement");
+        auto placement = static_cast<const App::PropertyPlacement*>(Property);
+
+        auto position = placement->getValue().getPosition();
+        ui.XPositionQSB->setValue(position.x);
+        ui.YPositionQSB->setValue(position.y);
+        ui.ZPositionQSB->setValue(position.z);
+
+        double rotationAngle;
+        Base::Vector3d rotationAxes;
+        auto rotation = placement->getValue().getRotation();
+        rotation.getRawValue(rotationAxes, rotationAngle);
+        ui.XDirectionEdit->setValue(rotationAxes.x);
+        ui.YDirectionEdit->setValue(rotationAxes.y);
+        ui.ZDirectionEdit->setValue(rotationAxes.z);
+        // the angle is in this format: 180° = PI, thus transform it to deg
+        ui.AngleQSB->setValue(rotationAngle*180/M_PI);
+    }
 }
 
 Location::~Location()
@@ -746,8 +858,12 @@ void Location::pickCallback(void * ud, SoEventCallback * n)
                 SbVec3f pnt = point->getPoint();
                 SbVec3f nor = point->getNormal();
                 Location* dlg = reinterpret_cast<Location*>(ud);
-                dlg->ui.loc->setPosition(Base::Vector3d(pnt[0],pnt[1],pnt[2]));
-                dlg->ui.loc->setDirection(Base::Vector3d(nor[0],nor[1],nor[2]));
+                dlg->ui.XPositionQSB->setValue(pnt[0]);
+                dlg->ui.YPositionQSB->setValue(pnt[1]);
+                dlg->ui.ZPositionQSB->setValue(pnt[2]);
+                dlg->ui.XDirectionEdit->setValue(nor[0]);
+                dlg->ui.YDirectionEdit->setValue(nor[1]);
+                dlg->ui.ZDirectionEdit->setValue(nor[2]);
                 n->setHandled();
             }
         }
@@ -769,59 +885,28 @@ void Location::pickCallback(void * ud, SoEventCallback * n)
 
 QString Location::toPlacement() const
 {
-    Base::Vector3d d = ui.loc->getDirection();
-    gp_Dir dir = gp_Dir(d.x,d.y,d.z);
-    gp_Pnt pnt = gp_Pnt(0.0,0.0,0.0);
-    gp_Ax3 ax3;
+    // create a command to set the position and angle of the primitive object
 
-    double cosNX = dir.Dot(gp::DX());
-    double cosNY = dir.Dot(gp::DY());
-    double cosNZ = dir.Dot(gp::DZ());
-    std::vector<double> cosXYZ;
-    cosXYZ.push_back(fabs(cosNX));
-    cosXYZ.push_back(fabs(cosNY));
-    cosXYZ.push_back(fabs(cosNZ));
+    Base::Vector3d rot;
+    rot.x = ui.XDirectionEdit->value();
+    rot.y = ui.YDirectionEdit->value();
+    rot.z = ui.ZDirectionEdit->value();
 
-    int pos = std::max_element(cosXYZ.begin(), cosXYZ.end()) - cosXYZ.begin();
+    double angle = ui.AngleQSB->rawValue();
 
-    // +X/-X
-    if (pos == 0) {
-        if (cosNX > 0)
-            ax3 = gp_Ax3(pnt, dir, gp_Dir(0,1,0));
-        else
-            ax3 = gp_Ax3(pnt, dir, gp_Dir(0,-1,0));
-    }
-    // +Y/-Y
-    else if (pos == 1) {
-        if (cosNY > 0)
-            ax3 = gp_Ax3(pnt, dir, gp_Dir(0,0,1));
-        else
-            ax3 = gp_Ax3(pnt, dir, gp_Dir(0,0,-1));
-    }
-    // +Z/-Z
-    else {
-        ax3 = gp_Ax3(pnt, dir, gp_Dir(1,0,0));
-    }
+    Base::Vector3d loc;
+    loc.x = ui.XPositionQSB->rawValue();
+    loc.y = ui.YPositionQSB->rawValue();
+    loc.z = ui.ZPositionQSB->rawValue();
 
-    gp_Trsf Trf;
-    Trf.SetTransformation(ax3);
-    Trf.Invert();
-
-    gp_XYZ theAxis(0,0,1);
-    Standard_Real theAngle = 0.0;
-    Trf.GetRotation(theAxis,theAngle);
-
-    Base::Rotation rot(Base::convertTo<Base::Vector3d>(theAxis), theAngle);
-    Base::Vector3d loc = ui.loc->getPosition();
-
-    return QString::fromLatin1("Base.Placement(Base.Vector(%1,%2,%3),Base.Rotation(%4,%5,%6,%7))")
-        .arg(loc.x,0,'f',Base::UnitsApi::getDecimals())
-        .arg(loc.y,0,'f',Base::UnitsApi::getDecimals())
-        .arg(loc.z,0,'f',Base::UnitsApi::getDecimals())
-        .arg(rot[0],0,'f',Base::UnitsApi::getDecimals())
-        .arg(rot[1],0,'f',Base::UnitsApi::getDecimals())
-        .arg(rot[2],0,'f',Base::UnitsApi::getDecimals())
-        .arg(rot[3],0,'f',Base::UnitsApi::getDecimals());
+    return QString::fromLatin1("App.Placement(App.Vector(%1,%2,%3),App.Rotation(App.Vector(%4,%5,%6),%7))")
+        .arg(loc.x, 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(loc.y, 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(loc.z, 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(rot.x, 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(rot.y, 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(rot.z, 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(angle, 0, 'f', Base::UnitsApi::getDecimals());
 }
 
 // ----------------------------------------------
@@ -832,14 +917,13 @@ TaskPrimitives::TaskPrimitives()
 {
     Gui::TaskView::TaskBox* taskbox;
     widget = new DlgPrimitives();
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(),true, 0);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
     location = new Location();
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle(),true, 0);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle() ,true, 0);
     taskbox->groupLayout()->addWidget(location);
-    taskbox->hideGroupBox();
     Content.push_back(taskbox);
 }
 
@@ -868,6 +952,59 @@ bool TaskPrimitives::accept()
 
 bool TaskPrimitives::reject()
 {
+    return true;
+}
+
+// ----------------------------------------------
+
+/* TRANSLATOR PartGui::TaskPrimitivesEdit */
+
+TaskPrimitivesEdit::TaskPrimitivesEdit(DlgPrimitives::PrimitiveType type, const char* ObjectName)
+{
+    // save object name to be able to access it in accept() since if there are e.g. 3 helices
+    // the last one would be the active object, no matter that one is editing the first one
+    ObjectNameSave = ObjectName;
+    // create and show dialog for the primitives
+    Gui::TaskView::TaskBox* taskbox;
+    widget = new DlgPrimitives(0, type, true, ObjectName);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, 0);
+    taskbox->groupLayout()->addWidget(widget);
+    Content.push_back(taskbox);
+
+    // create and show dialog for the location
+    location = new Location(0, true, ObjectName);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle(), true, 0);
+    taskbox->groupLayout()->addWidget(location);
+    Content.push_back(taskbox);
+}
+
+TaskPrimitivesEdit::~TaskPrimitivesEdit()
+{
+    // automatically deleted in the sub-class
+}
+
+QDialogButtonBox::StandardButtons TaskPrimitivesEdit::getStandardButtons() const
+{
+    return QDialogButtonBox::Close |
+        QDialogButtonBox::Ok;
+}
+
+void TaskPrimitivesEdit::modifyStandardButtons(QDialogButtonBox* box)
+{
+    QPushButton* btn = box->button(QDialogButtonBox::Ok);
+    btn->setText(QApplication::translate("PartGui::DlgPrimitives", "&OK"));
+}
+
+bool TaskPrimitivesEdit::accept()
+{
+    widget->accept(location->toPlacement());
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+    return true;
+}
+
+bool TaskPrimitivesEdit::reject()
+{
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     return true;
 }
 
