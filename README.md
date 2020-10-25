@@ -27,7 +27,7 @@ modeler made primarily to design real-life objects of any size.
 Parametric modeling allows you to easily modify your design by going back into 
 your model history to change its parameters. 
 
-* **Create 3D from 2D & back** FreeCAD lets you to sketch geometry constrained
+* **Create 3D from 2D and back** FreeCAD lets you to sketch geometry constrained
  2D shapes and use them as a base to build other objects. 
  It contains many components to adjust dimensions or extract design details from 
  3D models to create high quality production-ready drawings.
@@ -35,7 +35,7 @@ your model history to change its parameters.
 * **Designed for your needs** FreeCAD is designed to fit a wide range of uses
  including product design, mechanical engineering and architecture. 
  Whether you are a hobbyist, programmer, experienced CAD user, student or teacher,
- you will feel right at home.
+ you will hopefully feel right at home.
 
 * **Cross platform** FreeCAD runs on Windows, macOS and Linux
 
@@ -73,7 +73,7 @@ Compiling
 ---------
 
 Compiling FreeCAD requires installation of several libraries and their 
-development files such as OCCT, Coin and Qt, listed in the 
+development files such as OCCT (Open Cascade), Coin and Qt, listed in the 
 pages below. Once this is done, FreeCAD can be compiled with 
 CMake. On Windows, these libraries are bundled and offered by the 
 FreeCAD team in a convenient package. On Linux, they are usually found 
