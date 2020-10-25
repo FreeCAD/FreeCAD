@@ -82,8 +82,7 @@ PyObject* GeometryPy::mirror(PyObject *args)
     PyObject* o;
     if (PyArg_ParseTuple(args, "O!", &(Base::VectorPy::Type),&o)) {
         Base::Vector3d vec = static_cast<Base::VectorPy*>(o)->value();
-        gp_Pnt pnt(vec.x, vec.y, vec.z);
-        getGeometryPtr()->handle()->Mirror(pnt);
+        getGeometryPtr()->mirror(vec);
         Py_Return;
     }
 
@@ -93,8 +92,7 @@ PyObject* GeometryPy::mirror(PyObject *args)
                                        &(Base::VectorPy::Type),&axis)) {
         Base::Vector3d pnt = static_cast<Base::VectorPy*>(o)->value();
         Base::Vector3d dir = static_cast<Base::VectorPy*>(axis)->value();
-        gp_Ax1 ax1(gp_Pnt(pnt.x,pnt.y,pnt.z), gp_Dir(dir.x,dir.y,dir.z));
-        getGeometryPtr()->handle()->Mirror(ax1);
+        getGeometryPtr()->mirror(pnt, dir);
         Py_Return;
     }
 
@@ -109,15 +107,7 @@ PyObject* GeometryPy::rotate(PyObject *args)
         return 0;
 
     Base::Placement* plm = static_cast<Base::PlacementPy*>(o)->getPlacementPtr();
-    Base::Rotation rot(plm->getRotation());
-    Base::Vector3d pnt, dir;
-    double angle;
-
-    rot.getValue(dir, angle);
-    pnt = plm->getPosition();
-
-    gp_Ax1 ax1(gp_Pnt(pnt.x,pnt.y,pnt.z), gp_Dir(dir.x,dir.y,dir.z));
-    getGeometryPtr()->handle()->Rotate(ax1, angle);
+    getGeometryPtr()->rotate(*plm);
     Py_Return;
 }
 
@@ -128,16 +118,14 @@ PyObject* GeometryPy::scale(PyObject *args)
     Base::Vector3d vec;
     if (PyArg_ParseTuple(args, "O!d", &(Base::VectorPy::Type),&o, &scale)) {
         vec = static_cast<Base::VectorPy*>(o)->value();
-        gp_Pnt pnt(vec.x, vec.y, vec.z);
-        getGeometryPtr()->handle()->Scale(pnt, scale);
+        getGeometryPtr()->scale(vec, scale);
         Py_Return;
     }
 
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!d", &PyTuple_Type,&o, &scale)) {
         vec = Base::getVectorFromTuple<double>(o);
-        gp_Pnt pnt(vec.x, vec.y, vec.z);
-        getGeometryPtr()->handle()->Scale(pnt, scale);
+        getGeometryPtr()->scale(vec, scale);
         Py_Return;
     }
 
@@ -151,15 +139,7 @@ PyObject* GeometryPy::transform(PyObject *args)
     if (!PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type),&o))
         return 0;
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(o)->value();
-    gp_Trsf trf;
-    trf.SetValues(mat[0][0],mat[0][1],mat[0][2],mat[0][3],
-                  mat[1][0],mat[1][1],mat[1][2],mat[1][3],
-                  mat[2][0],mat[2][1],mat[2][2],mat[2][3]
-#if OCC_VERSION_HEX < 0x060800
-                  , 0.00001,0.00001
-#endif
-                ); //precision was removed in OCCT CR0025194
-    getGeometryPtr()->handle()->Transform(trf);
+    getGeometryPtr()->transform(mat);
     Py_Return;
 }
 
@@ -169,16 +149,14 @@ PyObject* GeometryPy::translate(PyObject *args)
     Base::Vector3d vec;
     if (PyArg_ParseTuple(args, "O!", &(Base::VectorPy::Type),&o)) {
         vec = static_cast<Base::VectorPy*>(o)->value();
-        gp_Vec trl(vec.x, vec.y, vec.z);
-        getGeometryPtr()->handle()->Translate(trl);
+        getGeometryPtr()->translate(vec);
         Py_Return;
     }
 
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!", &PyTuple_Type,&o)) {
         vec = Base::getVectorFromTuple<double>(o);
-        gp_Vec trl(vec.x, vec.y, vec.z);
-        getGeometryPtr()->handle()->Translate(trl);
+        getGeometryPtr()->translate(vec);
         Py_Return;
     }
 

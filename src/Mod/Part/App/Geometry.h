@@ -60,6 +60,8 @@
 #include <vector>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
+#include <Base/Matrix.h>
+#include <Base/Placement.h>
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
@@ -108,6 +110,13 @@ public:
     void setExtension(std::unique_ptr<GeometryExtension> &&geo);
     void deleteExtension(Base::Type type);
     void deleteExtension(std::string name);
+
+    void mirror(Base::Vector3d point);
+    void mirror(Base::Vector3d point, Base::Vector3d dir);
+    void rotate(Base::Placement plm);
+    void scale(Base::Vector3d vec, double scale);
+    void transform(Base::Matrix4D mat);
+    void translate(Base::Vector3d vec);
 
 protected:
     /// create a new tag for the geometry object
