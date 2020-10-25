@@ -1,4 +1,4 @@
-####
+#####
 #
 #  Travis-CI configuration file for FreeCAD.
 #
@@ -17,7 +17,7 @@
 #
 #  DEPLOY: Repo setting to deploy (defaults to no deploy to reduce
 #          Travis build times. Set DEPLOY=1 to enable in repo settings.
-####
+#####
 env:
   global:
     - GENERATOR="Unix Makefiles"
