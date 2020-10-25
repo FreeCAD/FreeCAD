@@ -383,6 +383,58 @@ Geometry *Geometry::clone(void) const
     return cpy;
 }
 
+void Geometry::mirror(Base::Vector3d point)
+{
+    gp_Pnt pnt(point.x, point.y, point.z);
+    handle()->Mirror(pnt);
+}
+
+void Geometry::mirror(Base::Vector3d point, Base::Vector3d dir)
+{
+    gp_Ax1 ax1(gp_Pnt(point.x,point.y,point.z), gp_Dir(dir.x,dir.y,dir.z));
+    handle()->Mirror(ax1);
+}
+
+void Geometry::rotate(Base::Placement plm)
+{
+    Base::Rotation rot(plm.getRotation());
+    Base::Vector3d pnt, dir;
+
+    double angle;
+
+    rot.getValue(dir, angle);
+    pnt = plm.getPosition();
+
+    gp_Ax1 ax1(gp_Pnt(pnt.x,pnt.y,pnt.z), gp_Dir(dir.x,dir.y,dir.z));
+    handle()->Rotate(ax1, angle);
+}
+
+void Geometry::scale(Base::Vector3d vec, double scale)
+{
+    gp_Pnt pnt(vec.x, vec.y, vec.z);
+    handle()->Scale(pnt, scale);
+}
+
+void Geometry::transform(Base::Matrix4D mat)
+{
+    gp_Trsf trf;
+    trf.SetValues(mat[0][0],mat[0][1],mat[0][2],mat[0][3],
+                mat[1][0],mat[1][1],mat[1][2],mat[1][3],
+                mat[2][0],mat[2][1],mat[2][2],mat[2][3]
+#if OCC_VERSION_HEX < 0x060800
+                , 0.00001,0.00001
+#endif
+                ); //precision was removed in OCCT CR0025194
+    handle()->Transform(trf);
+}
+
+void Geometry::translate(Base::Vector3d vec)
+{
+    gp_Vec trl(vec.x, vec.y, vec.z);
+    handle()->Translate(trl);
+}
+
+
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomPoint,Part::Geometry)
