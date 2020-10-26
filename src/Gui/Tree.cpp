@@ -980,7 +980,7 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
         documentPartialPixmap = icon.pixmap(documentPixmap.size(),QIcon::Disabled);
 
         QPixmap pxHidden = BitmapFactory().pixmapFromSvg("TreeHidden", QSizeF(32,32));
-        documentTempPixmap = BitmapFactory().merge(pxHidden, pxHidden, BitmapFactoryInst::TopLeft);
+        documentTempPixmap = BitmapFactory().merge(documentPixmap, pxHidden, BitmapFactoryInst::TopLeft);
     }
 
     for(auto doc : App::GetApplication().getDocuments()) {
