@@ -260,12 +260,11 @@ static void _copyShape(const char *cmdName, bool resolve,bool needElement=false,
         for(auto &v : subMap) {
             Gui::Command::doCommand(Gui::Command::Doc,
                     "__shape = Part.getShape(%s,'%s',needSubElement=%s,refine=%s)%s\n"
-                    "App.ActiveDocument.addObject('Part::Feature','%s').Shape=__shape\n"
+                    "App.ActiveDocument.addObject('Part::Feature','ShapeCopy').Shape=__shape\n"
                     "App.ActiveDocument.ActiveObject.Label=%s.Label\n",
                         parentName.c_str(), v.first.c_str(),
                         needElement?"True":"False", refine?"True":"False",
                         needElement?".copy()":"", 
-                        v.second->getNameInDocument(), 
                         Gui::Command::getObjectCmd(v.second).c_str());
             auto newObj = App::GetApplication().getActiveDocument()->getActiveObject();
             Gui::Command::copyVisual(newObj, "ShapeColor", v.second);
@@ -385,12 +384,11 @@ void CmdPartRefineShape::activated(int iMsg)
         openCommand("Refine shape");
         std::for_each(objs.begin(), objs.end(), [](App::DocumentObject* obj) {
             try {
-                doCommand(Doc,"App.ActiveDocument.addObject('Part::Refine','%s').Source="
+                doCommand(Doc,"App.ActiveDocument.addObject('Part::Refine','Refined').Source="
                               "App.ActiveDocument.%s\n"
                               "App.ActiveDocument.ActiveObject.Label="
                               "App.ActiveDocument.%s.Label\n"
                               "Gui.ActiveDocument.%s.hide()\n",
-                              obj->getNameInDocument(),
                               obj->getNameInDocument(),
                               obj->getNameInDocument(),
                               obj->getNameInDocument());
