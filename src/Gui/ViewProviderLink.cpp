@@ -3523,6 +3523,30 @@ Base::BoundBox3d ViewProviderLink::_getBoundingBox(
     return bbox;
 }
 
+void ViewProviderLink::setTransformation(const Base::Matrix4D &rcMatrix)
+{
+    inherited::setTransformation(rcMatrix);
+    auto ext = getLinkExtension();
+    if(ext) {
+        if (ext->getScaleVectorProperty())
+            updateDataPrivate(getLinkExtension(),ext->getScaleVectorProperty());
+        else
+            updateDataPrivate(getLinkExtension(),ext->getScaleProperty());
+    }
+}
+
+void ViewProviderLink::setTransformation(const SbMatrix &rcMatrix)
+{
+    inherited::setTransformation(rcMatrix);
+    auto ext = getLinkExtension();
+    if(ext) {
+        if (ext->getScaleVectorProperty())
+            updateDataPrivate(getLinkExtension(),ext->getScaleVectorProperty());
+        else
+            updateDataPrivate(getLinkExtension(),ext->getScaleProperty());
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////
 
 namespace Gui {

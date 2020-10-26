@@ -307,6 +307,9 @@ public:
         return true;
     }
 
+    virtual void setTransformation(const Base::Matrix4D &rcMatrix) override;
+    virtual void setTransformation(const SbMatrix &rcMatrix) override;
+
 protected:
     Base::BoundBox3d _getBoundingBox(const char *subname=0, 
             const Base::Matrix4D *mat=0, bool transform=true,
