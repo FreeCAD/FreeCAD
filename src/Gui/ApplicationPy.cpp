@@ -61,6 +61,7 @@
 #include "DlgPreferencesImp.h"
 #include "DocumentObserverPython.h"
 #include "Action.h"
+#include "FileDialog.h"
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
@@ -217,7 +218,7 @@ PyMethodDef Application::Methods[] = {
    "reload(name) -> doc\n\n"
    "Reload a partial opened document"},
 
-  {"loadFile",       (PyCFunction) Application::sLoadFile, METH_VARARGS,
+  {"loadFile",   reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( Application::sLoadFile )), METH_VARARGS|METH_KEYWORDS,
    "loadFile(string=filename,[string=module]) -> None\n\n"
    "Loads an arbitrary file by delegating to the given Python module:\n"
    "* If no module is given it will be determined by the file extension.\n"
@@ -1595,10 +1596,13 @@ PyObject* Application::sReload(PyObject * /*self*/, PyObject *args)
     Py_Return;
 }
 
-PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
+PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args, PyObject *kwd)
 {
     char *path, *mod="";
-    if (!PyArg_ParseTuple(args, "s|s", &path, &mod))     // convert args: Python->C
+    PyObject *interactive = Py_False;
+    static char *kwlist[] = {"path","module","interactive",0};
+    if (!PyArg_ParseTupleAndKeywords(args, kwd, 
+                "s|sO", kwlist, &path, &mod, &interactive))
         return 0;                             // NULL triggers exception
     PY_TRY {
         Base::FileInfo fi(path);
@@ -1615,6 +1619,12 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
             {
                 if(!fi.isDir()) 
                     fi.setFile(fi.dirPath());
+            } else if (PyObject_IsTrue(interactive)) {
+                QString selectedFilter;
+                SelectModule::Dict dict = SelectModule::importHandler(
+                        QString::fromUtf8(path), selectedFilter);
+                if (dict.size())
+                    module = dict.begin().value().toLatin1().constData();
             } else {
                 std::string ext = fi.extension();
                 std::vector<std::string> modules = App::GetApplication().getImportModules(ext.c_str());

@@ -23,7 +23,7 @@
 import FreeCADGui,sys
 # MRU will be given before this script is run
 rf=FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
-FreeCADGui.loadFile(rf.GetString("MRU"+str(MRU)))
+FreeCADGui.loadFile(rf.GetString("MRU"+str(MRU)), interactive=True)
 
 from StartPage import StartPage
 StartPage.postStart()
