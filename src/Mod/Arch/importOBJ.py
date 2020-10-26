@@ -20,9 +20,11 @@
 #***************************************************************************
 
 import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh, MeshPart, os, sys
+from collections import defaultdict
 # import numpy as np
 if FreeCAD.GuiUp:
     from DraftTools import translate
+    import FreeCADGui
 else:
     # \cond
     def translate(context,text):
@@ -59,95 +61,96 @@ def findVert(aVertex,aList):
                     return i
     return None
 
-def getIndices(obj,shape,offsetv,offsetvn):
+def getIndices(shape,offsetv,offsetvn,colors=None):
     "returns a list with 2 lists: vertices and face indexes, offset with the given amount"
     vlist = []
     vnlist = []
     elist = []
     flist = []
-    curves = None
+    segments = defaultdict(list)
     mesh = None
+
+    if not isinstance(colors, list):
+        colors = []
 
     if isinstance(shape,Part.Shape):
         for e in shape.Edges:
-            try:
-                if not isinstance(e.Curve,Part.LineSegment):
-                    if not curves:
-                        if obj.isDerivedFrom("App::Link"):
-                            myshape = obj.LinkedObject.Shape.copy(False)
-                            myshape.Placement=obj.LinkPlacement
-                        else:
-                            myshape = obj.Shape.copy(False)
-                            myshape.Placement = obj.getGlobalPlacement()
-                        mesh = MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
-                        FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
-                        break
-            except: # unimplemented curve type
-                if obj.isDerivedFrom("App::Link"):
-                    if obj.Shape:
-                        myshape = obj.Shape.copy(False)
-                        myshape.Placement=obj.LinkPlacement
-                    else:
-                        myshape = obj.Shape.copy(False)
-                        myshape.Placement=obj.getGlobalPlacement()
-                    mesh = MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
-                    FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
-                    break
+            if isinstance(e.Curve,Part.LineSegment):
+                continue
+            myshape = shape.copy(False)
+            mesh = MeshPart.meshFromShape(Shape=myshape,
+                                          LinearDeflection=0.1,
+                                          AngularDeflection=0.7,
+                                          Relative=True,
+                                          Segments=True if colors else False,
+                                          GroupColors=colors)
+            FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
+            break
     elif isinstance(shape,Mesh.Mesh):
         mesh = shape
-        curves = shape.Topology
+
     if mesh:
-        for v in mesh.Topology[0]:
+        topology = mesh.Topology
+        for v in topology[0]:
               vlist.append(" "+str(round(v[0],p))+" "+str(round(v[1],p))+" "+str(round(v[2],p)))
 
         for vn in mesh.Facets:
               vnlist.append(" "+str(vn.Normal[0]) + " " + str(vn.Normal[1]) + " " + str(vn.Normal[2]))
 
-        for i, vn in enumerate(mesh.Topology[1]):
-              flist.append(" "+str(vn[0]+offsetv)+"//"+str(i+offsetvn)+" "+str(vn[1]+offsetv)+"//"+str(i+offsetvn)+" "+str(vn[2]+offsetv)+"//"+str(i+offsetvn)+" ")
+        for i, vn in enumerate(topology[1]):
+            flist.append(" "+str(vn[0]+offsetv)+"//"+str(i+offsetvn)+\
+                         " "+str(vn[1]+offsetv)+"//"+str(i+offsetvn)+\
+                         " "+str(vn[2]+offsetv)+"//"+str(i+offsetvn)+" ")
+
+        if mesh.countSegments():
+            for i in range(0, mesh.countSegments()):
+                color = mesh.getSegmentColor(i)
+                segments[color] += mesh.getSegment(i)
     else:
-        if curves:
-            for v in curves[0]:
-                vlist.append(" "+str(round(v.x,p))+" "+str(round(v.y,p))+" "+str(round(v.z,p)))
-            for f in curves[1]:
-                fi = ""
-                for vi in f:
-                    fi += " " + str(vi + offsetv)
-                flist.append(fi)
-        else:
-            for v in shape.Vertexes:
-                vlist.append(" "+str(round(v.X,p))+" "+str(round(v.Y,p))+" "+str(round(v.Z,p)))
-            if not shape.Faces:
-                for e in shape.Edges:
-                   if DraftGeomUtils.geomType(e) == "Line":
-                        ei = " " + str(findVert(e.Vertexes[0],shape.Vertexes) + offsetv)
-                        ei += " " + str(findVert(e.Vertexes[-1],shape.Vertexes) + offsetv)
-                        elist.append(ei)
-            for f in shape.Faces:
-                if len(f.Wires) > 1:
-                    # if we have holes, we triangulate
-                    tris = f.tessellate(1)
-                    for fdata in tris[1]:
-                        fi = ""
-                        for vi in fdata:
-                            vdata = Part.Vertex(tris[0][vi])
-                            fi += " " + str(findVert(vdata,shape.Vertexes) + offsetv)
-                        flist.append(fi)
-                else:
+        vertexes = shape.Vertexes
+        faces = shape.Faces
+        for v in vertexes:
+            vlist.append(" "+str(round(v.X,p))+" "+str(round(v.Y,p))+" "+str(round(v.Z,p)))
+        if not faces:
+            for e in shape.Edges:
+                if DraftGeomUtils.geomType(e) == "Line":
+                    ei = " " + str(findVert(e.Vertexes[0],vertexes) + offsetv)
+                    ei += " " + str(findVert(e.Vertexes[-1],vertexes) + offsetv)
+                    elist.append(ei)
+
+        for fi,f in enumerate(faces):
+            if colors and len(colors) == len(flist):
+                segment = segments[colors[fi]]
+            else:
+                segment = None
+            if len(f.Wires) > 1:
+                # if we have holes, we triangulate
+                tris = f.tessellate(1)
+                for fdata in tris[1]:
                     fi = ""
-                    for e in f.OuterWire.OrderedEdges:
-                        #print(e.Vertexes[0].Point,e.Vertexes[1].Point)
-                        v = e.Vertexes[0]
-                        ind = findVert(v,shape.Vertexes)
-                        if ind is None:
-                            return None,None,None
-                        fi += " " + str(ind + offsetv)
+                    for vi in fdata:
+                        vdata = Part.Vertex(tris[0][vi])
+                        fi += " " + str(findVert(vdata,vertexes) + offsetv)
+                    if segment:
+                        segment.append(len(flist))
                     flist.append(fi)
-    return vlist,vnlist,elist,flist
+            else:
+                fi = ""
+                for e in f.OuterWire.OrderedEdges:
+                    #print(e.Vertexes[0].Point,e.Vertexes[1].Point)
+                    v = e.Vertexes[0]
+                    ind = findVert(v,vertexes)
+                    if ind is None:
+                        return [None]*5
+                    fi += " " + str(ind + offsetv)
+                if segment:
+                    segment.append(len(flist))
+                flist.append(fi)
+
+    return vlist,vnlist,elist,flist,segments
 
 
 def export(exportList,filename,colors=None):
-
     """export(exportList,filename,colors=None):
     Called when freecad exports a file. exportList is a list
     of objects, filename is the .obj file to export (a .mtl
@@ -155,6 +158,67 @@ def export(exportList,filename,colors=None):
     optionally colors can be a dict containing ["objectName:colorTuple"]
     pairs for use in non-GUI mode."""
 
+    colorMap = {}
+    if colors and exportList:
+        doc = exportList[0].Document
+        for name, c in colors.items():
+            try:
+                if '#' not in name:
+                    colorMap[doc.getObject(name).FullName] = c
+            except Exception:
+                pass
+
+    _export({(o,'') for o in exportList}, filename, colorMap)
+
+
+def exportSelection(filename, colors=None):
+    """exportSelection(filename,colors=None):
+
+    New style exporter function called by freecad to export current selection.
+    It is added to allow the function to extract object hierarhcy from the
+    current selection to derived to correct global placement.
+
+    filename is the .obj file to export (a .mtl file with same name will also be
+    created together), and optionally colors can be a dict containing
+    ["obj_full_name:colorTuple"] pairs for use in non-GUI mode."""
+
+    objset = set()
+    for sel in FreeCADGui.Selection.getSelectionEx('*', 0):
+        subs = sel.SubElementNames
+        if not subs:
+            objset.add((sel.Object, ''))
+            continue
+        for sub in subs:
+            objset.add((sel.Object, Part.splitSubname(sub)[0]))
+    _export(objset, filename, colors)
+
+def _findMeshes(obj, matrix, colors):
+    res = []
+    for sub in obj.getSubObjects():
+        sobj, mat = obj.getSubObject(sub,
+                                     matrix=matrix,
+                                     retType=1,
+                                     transform=False)
+        if not sobj:
+            continue
+        linked, mat = sobj.getLinkedObject(recursive=True, matrix=mat, transform=False)
+        # DO NOT use getattr(obj, 'Mesh') because incomplete support of Mesh in
+        # Link, especially link array!
+        if linked.isDerivedFrom('Mesh::Feature'):
+            mesh = linked.Mesh.copy()
+            mesh.Placement = FreeCAD.Placement(mat)
+            res.append((sobj.Label, mesh, colors.get(sobj.FullName, None)))
+            continue
+        res += _findMeshes(linked, mat, colors)
+    return res
+
+def _export(exportSet, filename, colors):
+    '''Internal function used to export a list of object to OBJ format.
+
+       exportSet : a set of (obj, subname)
+       filename : output file name
+       colors: dict(obj_full_name, color/colors)
+    '''
     import codecs
     outfile = codecs.open(filename,"wb",encoding="utf8")
     ver = FreeCAD.Version()
@@ -162,90 +226,177 @@ def export(exportList,filename,colors=None):
     outfile.write("# http://www.freecadweb.org\n")
     offsetv = 1
     offsetvn = 1
+
+    exportList = list(exportSet)
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
+
     filenamemtl = filename[:-4] + ".mtl"
     materials = []
     outfile.write("mtllib " + os.path.basename(filenamemtl) + "\n")
-    for obj in objectslist:
-        if obj.isDerivedFrom("Part::Feature") or obj.isDerivedFrom("Mesh::Feature") or obj.isDerivedFrom("App::Link"):
-            hires = None
-            if FreeCAD.GuiUp:
-                visible = obj.ViewObject.isVisible()
-                if obj.ViewObject.DisplayMode == "HiRes":
-                    # check if high-resolution object is available
-                    if hasattr(obj,"HiRes"):
-                        if obj.HiRes:
-                            if obj.HiRes.isDerivedFrom("Mesh::Feature"):
-                                m = obj.HiRes.Mesh
-                            else:
-                                m = obj.HiRes.Shape
-                            hires = m.copy()
-                            hires.Placement = obj.Placement.multiply(m.Placement)
-                    if not hires:
-                        if hasattr(obj,"CloneOf"):
-                            if obj.CloneOf:
-                                if hasattr(obj.CloneOf,"HiRes"):
-                                    if obj.CloneOf.HiRes:
-                                        if obj.CloneOf.HiRes.isDerivedFrom("Mesh::Feature"):
-                                            m = obj.CloneOf.HiRes.Mesh
-                                        else:
-                                            m = obj.CloneOf.HiRes.Shape
-                                        hires = m.copy()
-                                        hires.Placement = obj.Placement.multiply(obj.CloneOf.Placement).multiply(m.Placement)
+
+    if colors is None:
+        colors = {}
+
+    tmpobj = None
+    mat0 = FreeCAD.Matrix()
+    for parentobj, sub in objectslist:
+        sobj, mat = parentobj.getSubObject(sub, retType=1, matrix=mat0)
+
+        if not sobj:
+            FreeCAD.Console.PrintWarning(translate("Arch","Cannot find sub object %s.%s\n" \
+                        % (parentobj.FullName, sub)))
+            continue
+
+        obj, mat = sobj.getLinkedObject(recursive=True, matrix=mat, transform=False)
+
+        shapelist = []
+        hires = None
+        if FreeCAD.GuiUp:
+            if (parentobj, sub) not in exportSet:
+                vis = parentobj.isElementVisibleEx(sub)
+                if vis == 0:
+                    continue
+                if vis < 0 and not sobj.ViewObject.isVisible():
+                    continue
+
+            if obj.ViewObject.DisplayMode == "HiRes":
+                # check if high-resolution object is available
+                if hasattr(obj,"HiRes"):
+                    if obj.HiRes:
+                        if obj.HiRes.isDerivedFrom("Mesh::Feature"):
+                            m = obj.HiRes.Mesh
+                        else:
+                            m = obj.HiRes.Shape
+                        hires = m.copy()
+                        hires.Placement = FreeCAD.Placement(mat * m.Placement.toMatrix())
+                if not hires:
+                    if hasattr(obj,"CloneOf"):
+                        if obj.CloneOf:
+                            if hasattr(obj.CloneOf,"HiRes"):
+                                if obj.CloneOf.HiRes:
+                                    if obj.CloneOf.HiRes.isDerivedFrom("Mesh::Feature"):
+                                        m = obj.CloneOf.HiRes.Mesh
+                                    else:
+                                        m = obj.CloneOf.HiRes.Shape
+                                    hires = m.copy()
+                                    hires.Placement = FreeCAD.Placement(
+                                            mat * obj.CloneOf.Placement.toMatrix() \
+                                                * m.Placement.toMatrix())
+        if hires:
+            shapelist.append((sobj.Label, hires, colors.get(sobj.FullName, None)))
+
+        # DO NOT use getattr(obj, 'Mesh') because incomplete support of Mesh in
+        # Link, especially link array!
+        elif obj.isDerivedFrom('Mesh::Feature'):
+            mesh = obj.Mesh.copy()
+            mesh.Placement = FreeCAD.Placement(mat)
+            shapelist.append((sobj.Label, mesh, colors.get(sobj.FullName, None)))
+        else:
+            meshes = _findMeshes(obj, mat, colors)
+            shapelist += meshes
+
+            shape = Part.getShape(parentobj, sub)
+            if shape.isNull():
+                if not meshes:
+                    FreeCAD.Console.PrintError("Unable to export object %s (%s.%s), Skipping.\n" \
+                                                % (sobj.Label, sobj.FullName, sub))
+                    continue
             else:
-                visible = True
-            if visible:
-                if hires:
-                    vlist,vnlist,elist,flist = getIndices(obj,hires,offsetv,offsetvn)
-                else:
-                    if hasattr(obj,"Shape") and obj.Shape:
-                        vlist,vnlist,elist,flist = getIndices(obj,obj.Shape,offsetv,offsetvn)
-                    elif hasattr(obj,"Mesh") and obj.Mesh:
-                        vlist,vnlist, elist,flist = getIndices(obj,obj.Mesh,offsetv,offsetvn)
-                if vlist is None:
-                    FreeCAD.Console.PrintError("Unable to export object "+obj.Label+". Skipping.\n")
-                else:
-                    offsetv += len(vlist)
-                    offsetvn += len(vnlist)
-                    outfile.write("o " + obj.Name + "\n")
+                facecolors = None
+                try:
+                    color = colors[sobj.FullName]
+                    if isinstance(color[0], tuple):
+                        facecolors = color
+                    else:
+                        facecolors = [color]
+                except Exception:
+                    pass
 
-                    # write material
-                    m = False
-                    if hasattr(obj,"Material"):
-                        if obj.Material:
-                            if hasattr(obj.Material,"Material"):
-                                outfile.write("usemtl " + obj.Material.Name + "\n")
-                                materials.append(obj.Material)
-                                m = True
-                    if not m:
-                        if colors:
-                            if obj.Name in colors:
-                                color = colors[obj.Name]
-                                if color:
-                                    if isinstance(color[0],tuple):
-                                        # this is a diffusecolor. For now, use the first color - #TODO: Support per-face colors
-                                        color = color[0]
-                                    #print("found color for obj",obj.Name,":",color)
-                                    mn = Draft.getrgb(color,testbw=False)[1:]
-                                    outfile.write("usemtl color_" + mn + "\n")
-                                    materials.append(("color_" + mn,color,0))
-                        elif FreeCAD.GuiUp:
-                            if hasattr(obj.ViewObject,"ShapeColor") and hasattr(obj.ViewObject,"Transparency"):
-                                mn = Draft.getrgb(obj.ViewObject.ShapeColor,testbw=False)[1:]
-                                outfile.write("usemtl color_" + mn + "\n")
-                                materials.append(("color_" + mn,obj.ViewObject.ShapeColor,obj.ViewObject.Transparency))
+                if FreeCAD.GuiUp:
+                    vobj = sobj.ViewObject
+                    if not hasattr(vobj, 'DiffuseColor'):
+                        # Recursive mapping of color from group is very complex. We
+                        # simply copy the shape to a temporary Part::Feature, and
+                        # let its view provider to do the color mapping, which is
+                        # roughly equivalant of invoking Part_SimpleCopy command
+                        if not tmpobj:
+                            tmpDoc = FreeCAD.newDocument('_ArchTmp', hidden=True, temp=True)
+                            try:
+                                tmpobj = tmpDoc.removeObject('_ArchObjExport')
+                            except Exception:
+                                pass
+                            tmpobj = tmpDoc.addObject('Part::Feature', '_ArchObjExport')
+                        tmpobj.Shape = shape
+                        vobj = tmpobj.ViewObject
+                        vobj.mapShapeColors(sobj.Document)
 
-                    # write geometry
-                    for v in vlist:
-                        outfile.write("v" + v + "\n")
-                    for vn in vnlist:
-                        outfile.write("vn" + vn + "\n")
-                    for e in elist:
-                        outfile.write("l" + e + "\n")
-                    for f in flist:
-                        outfile.write("f" + f + "\n")
+                    facecolors = vobj.DiffuseColor
+
+                if len(facecolors) <= 1 or len(facecolors) != shape.countElement('Face'):
+                    shapelist.append((sobj.Label, shape, colors.get(sobj.FullName, None)))
+                else:
+                    shapelist.append((sobj.Label, shape, facecolors))
+
+        for name, shape, colorlist in shapelist:
+            m = False
+            if hasattr(obj,"Material"):
+                if obj.Material:
+                    if hasattr(obj.Material,"Material"):
+                        materials.append(obj.Material)
+                        m = True
+                        colorlist = None
+
+            vlist,vnlist,elist,flist,segments = getIndices(shape,offsetv,offsetvn,colorlist)
+            if not vlist:
+                FreeCAD.Console.PrintError("Unable to export object %s (%s), Skipping.\n" \
+                        % sobj.Label, name)
+                continue
+
+            offsetv += len(vlist)
+            offsetvn += len(vnlist)
+
+            outfile.write("o " + name + "\n")
+
+            # write geometry
+            for v in vlist:
+                outfile.write("v" + v + "\n")
+            for vn in vnlist:
+                outfile.write("vn" + vn + "\n")
+            for e in elist:
+                outfile.write("l" + e + "\n")
+
+            # write material
+            if FreeCAD.GuiUp:
+                shapecolor = getattr(sobj.ViewObject, 'ShapeColor', (0.8, 0.8, 0.8))
+                transp = getattr(sobj.ViewObject, 'Transparency', 0.0)
+            else:
+                shapecolor = (0.8, 0.8, 0.8)
+                transp = 0.0
+
+            if segments:
+                for i,(color,findices) in enumerate(segments.items()):
+                    outfile.write('g ' + 'segment' + str(i) + '\n')
+                    if not color:
+                        color = shapecolor
+                    mn = Draft.getrgb(color,testbw=False)[1:]
+                    outfile.write("usemtl color_" + mn + "\n")
+                    materials.append(("color_" + mn,color,transp))
+                    for fi in findices:
+                        outfile.write("f" + flist[fi] + "\n")
+            else:
+                if m:
+                    outfile.write("usemtl " + obj.Material.Name + "\n")
+                else:
+                    outfile.write("usemtl color_" + mn + "\n")
+                    materials.append(("color_" + mn,shapecolor,transp))
+                for f in flist:
+                    outfile.write("f" + f + "\n")
+
+    if tmpobj:
+        tmpobj.Document.removeObject(tmpobj.Name)
+
     outfile.close()
     FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + " " + decode(filename) + "\n")
     if materials: 
@@ -304,7 +455,7 @@ def insert(filename,docname):
         verts = []
         facets = []
         activeobject = None
-        material = None
+        material = []
         colortable = {}
         for line in infile:
             line = line.strip()
@@ -332,7 +483,7 @@ def insert(filename,docname):
             elif line[:2] == "o ":
                 if activeobject:
                     makeMesh(doc,activeobject,verts,facets,material,colortable)
-                material = None
+                material = []
                 facets = []
                 activeobject = line[2:]
             elif line[:2] == "v ":
@@ -344,8 +495,10 @@ def insert(filename,docname):
                         i = i.split("/")[0]
                     fa.append(int(i))
                 facets.append(fa)
+                if material:
+                    material[-1][-1] = len(facets)
             elif line[:7] == "usemtl ":
-                material = line[7:]
+                material.append([line[7:], len(facets), len(facets)])
         if activeobject:
             makeMesh(doc,activeobject,verts,facets,material,colortable)
     FreeCAD.Console.PrintMessage(translate("Arch","Successfully imported") + ' ' + decode(filename) + "\n")
@@ -370,10 +523,27 @@ def makeMesh(doc,activeobject,verts,facets,material,colortable):
             else:
                 mfacets.append([verts[i-1] for i in facet])
     if mfacets:
-        mobj = doc.addObject("Mesh::Feature",activeobject)
-        mobj.Mesh = Mesh.Mesh(mfacets)
-        if material and FreeCAD.GuiUp:
+        mobj = doc.addObject("Mesh::Feature",'Mesh')
+        mobj.Label = activeobject
+        mesh = Mesh.Mesh(mfacets)
+        if len(material) > 1:
+            err = None
+            for name, begin, end in material:
+                if begin == end:
+                    continue
+                try:
+                    mesh.addSegment(range(begin, end), colortable[name][0])
+                except Exception as e:
+                    err = str(e)
+            if err:
+                FreeCAD.Console.PrintError("Failed to set material: %s\n" % err)
+
+        elif material and FreeCAD.GuiUp:
             if material in colortable:
                 mobj.ViewObject.ShapeColor = colortable[material][0]
                 if colortable[material][1] != None:
                     mobj.ViewObject.Transparency = colortable[material][1]
+
+        mobj.Mesh = mesh
+        if FreeCAD.GuiUp:
+            mobj.ViewObject.highlightSegments()

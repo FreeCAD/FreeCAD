@@ -143,10 +143,25 @@ def get_windows(obj):
         it will return the same `obj` element.
     """
     out = []
-    if utils.get_type(obj) in ("Wall", "Structure"):
-        for o in obj.OutList:
-            out.extend(get_windows(o))
+    item = obj
 
+    if isinstance(item, tuple):
+        obj = item[0].getSubObject(item[1], retType=1)
+
+    if utils.get_type(obj) in ("Wall", "Structure"):
+        if obj is not item:
+            for o in obj.OutList:
+                for child, sub in get_windows((o, '')):
+                    out.append(item[0], item[1] + child.Name + '.' + sub)
+        else:
+            for o in obj.OutList:
+                out.extend(get_windows(o))
+
+    elif (utils.get_type(obj) in ("Window", "Rebar")
+          or utils.is_clone(obj, ["Window", "Rebar"])):
+        out.append(item)
+
+    elif obj is item:
         for i in obj.InList:
             if (utils.get_type(i) == "Window"
                     or utils.is_clone(obj, "Window")):
@@ -158,10 +173,6 @@ def get_windows(obj):
                 if hasattr(i, "Host"):
                     if obj == i.Host:
                         out.append(i)
-
-    elif (utils.get_type(obj) in ("Window", "Rebar")
-          or utils.is_clone(obj, ["Window", "Rebar"])):
-        out.append(obj)
 
     return out
 
@@ -218,6 +229,9 @@ def get_group_contents(objectslist,
         objectslist = [objectslist]
 
     for obj in objectslist:
+        item = obj
+        if isinstance(item, tuple):
+            obj = item[0].getSubObject(item[1], retType=1)
         if obj:
             if (obj.isDerivedFrom("App::DocumentObjectGroup")
                     or (utils.get_type(obj) in ("Building", "BuildingPart",
@@ -225,27 +239,31 @@ def get_group_contents(objectslist,
                         and hasattr(obj, "Group"))):
                 if utils.get_type(obj) == "Site":
                     if obj.Shape:
-                        newlist.append(obj)
+                        newlist.append(item)
                 if obj.isDerivedFrom("Drawing::FeaturePage"):
                     # Skip if the group is a Drawing page
                     # Note: the Drawing workbench is obsolete
-                    newlist.append(obj)
+                    newlist.append(item)
                 else:
                     if addgroups or (spaces
                                      and utils.get_type(obj) == "Space"):
-                        newlist.append(obj)
+                        newlist.append(item)
                     if (noarchchild
                             and utils.get_type(obj) in ("Building",
                                                         "BuildingPart")):
                         pass
+                    elif obj is not item:
+                        for o, sub in get_group_contents(
+                                [(child, '') for child in obj.Group], walls, addgroups):
+                            newlist.append((item[0], item[1] + o.Name + '.' + sub))
                     else:
                         newlist.extend(get_group_contents(obj.Group,
                                                           walls, addgroups))
             else:
                 # print("adding ", obj.Name)
-                newlist.append(obj)
+                newlist.append(item)
                 if walls:
-                    newlist.extend(get_windows(obj))
+                    newlist.extend(get_windows(item))
 
     # Clean possible duplicates
     cleanlist = []

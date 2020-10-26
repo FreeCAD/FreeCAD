@@ -741,6 +741,9 @@ def pruneIncluded(objectslist,strict=False):
     import Draft
     newlist = []
     for obj in objectslist:
+        item = obj
+        if isinstance(item, tuple):
+            obj = item[0].getSubObject(item[1], retType=1)
         toplevel = True
         if obj.isDerivedFrom("Part::Feature"):
             if not (Draft.getType(obj) in ["Window","Clone","Pipe","Rebar"]):
@@ -763,10 +766,19 @@ def pruneIncluded(objectslist,strict=False):
                             else:
                                 toplevel = False
                     if (toplevel == False) and strict:
+                        if obj is not item:
+                            objs = item[0].getObjectList(item[1])
+                            if len(objs) > 1:
+                                objs = objs[:-1]
+                                objs[-1] = parent
+                                sub = '.'.join([o.Name for o in objs])
+                                parent = (item[0], sub + '.')
+                            else:
+                                parent = (parent, '')
                         if not(parent in objectslist) and not(parent in newlist):
                             toplevel = True
         if toplevel:
-            newlist.append(obj)
+            newlist.append(item)
         else:
             FreeCAD.Console.PrintLog("pruning "+obj.Label+"\n")
     return newlist
