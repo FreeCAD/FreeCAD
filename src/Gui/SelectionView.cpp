@@ -740,7 +740,7 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
             if (modifier == Qt::ShiftModifier) {
                 TreeWidget::selectUp(sel);
             } else {
-                if (modifier == Qt::ControlModifier) {
+                if (modifier != Qt::ControlModifier) {
                     Gui::Selection().selStackPush();
                     Gui::Selection().clearSelection();
                 }
