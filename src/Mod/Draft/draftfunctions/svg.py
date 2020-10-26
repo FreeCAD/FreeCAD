@@ -789,8 +789,12 @@ def get_svg(obj,
             scale = vobj.FirstLine.Value/vobj.FontSize.Value
             f1 = fontsize * scale
 
-            _v = vobj.Proxy.coords.translation.getValue().getValue()
-            p2 = obj.Placement.multVec(App.Vector(_v))
+            if round(plane.axis.getAngle(App.Vector(0,0,1)),2) not in [0,3.14]:
+                # if not in XY view, place the label at center
+                p2 = obj.Shape.CenterOfMass
+            else:
+                _v = vobj.Proxy.coords.translation.getValue().getValue()
+                p2 = obj.Placement.multVec(App.Vector(_v))
 
             _h = vobj.Proxy.header.translation.getValue().getValue()
             lspc = App.Vector(_h)
