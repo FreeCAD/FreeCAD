@@ -589,6 +589,7 @@ enum MenuAction {
     MA_Touched,
     MA_EvalOnRestore,
     MA_CopyOnChange,
+    MA_MaterialEdit,
 };
 
 void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
@@ -692,6 +693,8 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
             _ACTION_SETUP(Touched);
             _ACTION_SETUP(EvalOnRestore);
             _ACTION_SETUP(CopyOnChange);
+            if ((*props.begin())->isDerivedFrom(App::PropertyMaterial::getClassTypeId()))
+                _ACTION_SETUP(MaterialEdit);
         }
     }
 
@@ -729,6 +732,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     ACTION_CHECK(Hidden);
     ACTION_CHECK(EvalOnRestore);
     ACTION_CHECK(CopyOnChange);
+    ACTION_CHECK(MaterialEdit);
     case MA_Touched:
         for(auto prop : props) {
             if(action->isChecked())
