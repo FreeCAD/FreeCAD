@@ -792,16 +792,18 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
 
             std::stringstream str;
             std::set<App::DocumentObject*> unique_objs;
-            str << "__objs__=[]" << std::endl;
-            for (std::vector<App::DocumentObject*>::iterator it = sel.begin(); it != sel.end(); ++it) {
-                if (unique_objs.insert(*it).second) {
-                    str << "__objs__.append(FreeCAD.getDocument(\"" << DocName << "\").getObject(\""
-                        << (*it)->getNameInDocument() << "\"))" << std::endl;
-                }
-            }
 
-            str << "import " << Module << std::endl;
-            str << Module << ".export(__objs__,u\"" << unicodepath << "\")" << std::endl;
+            str << "import " << Module << "\n"
+                << "__objs__=[]\n"
+                << "if hasattr(" << Module << ", 'exportSelection'):\n"
+                << "    __objs__=" << Module << ".exportSelection(u\"" << unicodepath << "\")\n"
+                << "else:\n";
+
+            for (std::vector<App::DocumentObject*>::iterator it = sel.begin(); it != sel.end(); ++it) {
+                if (unique_objs.insert(*it).second)
+                    str << "    __objs__.append(" << (*it)->getFullName(true) << ")\n";
+            }
+            str << "    " << Module << ".export(__objs__,u\"" << unicodepath << "\")" << std::endl;
             //str << "del __objs__" << std::endl;
 
             std::string code = str.str();
