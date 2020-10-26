@@ -126,15 +126,21 @@ PyObject* ViewProviderMeshPy::clearSelection(PyObject *args)
 
 PyObject* ViewProviderMeshPy::highlightSegments(PyObject *args)
 {
-    PyObject* list;
-    if (!PyArg_ParseTuple(args, "O", &list))
+    PyObject* list = Py_None;
+    if (!PyArg_ParseTuple(args, "|O", &list))
         return 0;
 
-    App::PropertyColorList colors;
-    colors.setPyObject(list);
-
     ViewProviderMesh* vp = getViewProviderMeshPtr();
-    vp->highlightSegments(colors.getValues());
+    if (list == Py_None)
+        vp->setHighlightedSegments(true);
+    else if (!PyObject_IsTrue(list))
+        vp->setHighlightedSegments(false);
+    else {
+        App::PropertyColorList colors;
+        colors.setPyObject(list);
+        vp->highlightSegments(colors.getValues());
+        vp->setHighlightedSegments(true);
+    }
     Py_Return;
 }
 

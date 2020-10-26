@@ -167,6 +167,7 @@ public:
     void setFacetTransparency(const std::vector<float>&);
     void resetFacetTransparency();
     void highlightSegments(const std::vector<App::Color>&);
+    void setHighlightedSegments(bool);
     //@}
 
 protected:
@@ -188,7 +189,6 @@ protected:
     void highlightComponents();
     void setHighlightedComponents(bool);
     void highlightSegments();
-    void setHighlightedSegments(bool);
     App::PropertyColorList* getColorProperty() const;
     void tryColorPerVertexOrFace(bool);
     void setColorPerVertex(const App::PropertyColorList*);

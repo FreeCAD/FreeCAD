@@ -873,6 +873,79 @@ PyObject* MeshPy::getSegment(PyObject *args)
     return Py::new_reference_to(ary);
 }
 
+PyObject *MeshPy::addSegment(PyObject *args)
+{
+    PyObject *pyIndices;
+    PyObject *pyColor = Py_None;
+    const char *name = 0;
+    if (!PyArg_ParseTuple(args, "O|Os", &pyIndices, &pyColor, &name))
+        return 0;
+
+    if (!PySequence_Check(pyIndices))  {
+        PyErr_SetString(PyExc_TypeError, "Expects the first argument to be a sequence of integer");
+        return 0;
+    }
+    Py::Sequence seq(pyIndices);
+    std::vector<unsigned long> indices;
+    indices.reserve(seq.size());
+    for (int i=0, c=seq.size(); i<c; ++i) {
+        if (!PyInt_Check(seq[i].ptr())) {
+            PyErr_SetString(PyExc_TypeError, "Expects the first argument to be a sequence of integer");
+            return 0;
+        }
+#if PY_MAJOR_VERSION < 3
+        indices.push_back(Py::Int(seq[i].ptr()));
+#else
+        indices.push_back(Py::Long(seq[i].ptr()));
+#endif
+    }
+    Segment segment(getMeshObjectPtr(), indices, false);
+
+    if (pyColor != Py_None) {
+        if (!PySequence_Check(pyColor) || PySequence_Size(pyColor)!=3)  {
+            PyErr_SetString(PyExc_TypeError, "Expects the second argument to be (float, float, float)");
+            return 0;
+        }
+        Py::Sequence seq(pyColor);
+        if (!PyFloat_Check(seq[0].ptr())
+            || !PyFloat_Check(seq[1].ptr())
+            || !PyFloat_Check(seq[2].ptr()))
+        {
+            PyErr_SetString(PyExc_TypeError, "Expects the second argument to be (float, float, float)");
+            return 0;
+        }
+        App::Color color(Py::Float(seq[0].ptr()), Py::Float(seq[1].ptr()), Py::Float(seq[2].ptr()));
+        segment.setColor(color.asHexString());
+    }
+    if (name)
+        segment.setName(name);
+    getMeshObjectPtr()->addSegment(segment);
+    Py_Return;
+}
+
+PyObject* MeshPy::getSegmentColor(PyObject *args)
+{
+    unsigned long index;
+    if (!PyArg_ParseTuple(args, "k", &index))
+        return 0;
+
+    unsigned long count = getMeshObjectPtr()->countSegments();
+    if (index >= count) {
+        PyErr_SetString(PyExc_IndexError, "index out of range");
+        return 0;
+    }
+
+    App::Color color;
+    if (!color.fromHexString(getMeshObjectPtr()->getSegment(index).getColor()))
+        Py_Return;
+    Py::Object res;
+    if (color.a != 0.0f)
+        res = Py::TupleN(Py::Float(color.r), Py::Float(color.g), Py::Float(color.b), Py::Float(color.a));
+    else
+        res = Py::TupleN(Py::Float(color.r), Py::Float(color.g), Py::Float(color.b));
+    return Py::new_reference_to(res);
+}
+
 PyObject* MeshPy::getSeparateComponents(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))

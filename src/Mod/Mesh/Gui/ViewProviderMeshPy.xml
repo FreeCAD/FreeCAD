@@ -40,7 +40,12 @@
         </Methode>
         <Methode Name="highlightSegments">
             <Documentation>
-                <UserDocu>Highlights the segments of a mesh with a given list of colors.
+                <UserDocu>
+highlightSegments(): turn on existing segment color highlight
+
+highlightSegments(False): turn off segment highlight
+
+highlightSegments([color...]): turn on new segment color highlight
 The number of elements of this list must be equal to the number of mesh segments.
                 </UserDocu>
             </Documentation>

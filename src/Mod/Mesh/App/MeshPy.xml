@@ -187,6 +187,20 @@ mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])</UserD
 				<UserDocu>Get a list of facet indices that describes a segment</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="getSegmentColor" Const="true">
+			<Documentation>
+				<UserDocu>Get the color of a segment</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="addSegment">
+			<Documentation>
+                <UserDocu>
+addSegment([facet_index], color=None, name=None)
+
+Add a segment of facets with optional color and name
+                </UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="getSeparateComponents" Const="true">
 			<Documentation>
 				<UserDocu>Returns a list containing the different
