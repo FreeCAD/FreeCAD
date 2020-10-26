@@ -889,7 +889,12 @@ PyObject *MeshPy::addSegment(PyObject *args)
     std::vector<unsigned long> indices;
     indices.reserve(seq.size());
     for (int i=0, c=seq.size(); i<c; ++i) {
-        if (!PyInt_Check(seq[i].ptr())) {
+#if PY_MAJOR_VERSION < 3
+        if (!PyInt_Check(seq[i].ptr()))
+#else
+        if (!PyLong_Check(seq[i].ptr()))
+#endif
+        {
             PyErr_SetString(PyExc_TypeError, "Expects the first argument to be a sequence of integer");
             return 0;
         }
