@@ -618,6 +618,18 @@ PyObject*  DocumentObjectPy::isElementVisible(PyObject *args)
     } PY_CATCH;
 }
 
+PyObject*  DocumentObjectPy::isElementVisibleEx(PyObject *args)
+{
+    char *subname = 0;
+    int reason = DocumentObject::GS_DEFAULT;
+    if (!PyArg_ParseTuple(args, "s|i", &subname))
+        return NULL;
+    PY_TRY {
+        return Py_BuildValue("h", getDocumentObjectPtr()->isElementVisibleEx(subname, reason));
+    } PY_CATCH;
+}
+
+
 PyObject*  DocumentObjectPy::setElementVisible(PyObject *args)
 {
     char *element = 0;

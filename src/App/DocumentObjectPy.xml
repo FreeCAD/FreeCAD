@@ -144,6 +144,22 @@ Return -1 if element visibility is not supported or element not found, 0 if invi
                 </UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="isElementVisibleEx">
+			<Documentation>
+                <UserDocu>
+isElementVisibleEx(subname, reason=0)
+Get sub-object/element visibility with a given reason
+
+subname: subname object path. Unlike isElementVisible(), this
+         function supports nested sub objects.
+reason: 0 for export purpose, 1 for selection. Different object
+        may report different element visibility depending on the reason.
+
+return -1 if sub-object/element visibility is not supported or not
+found, 0 if invisible, or else 1
+                </UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="hasChildElement">
 			<Documentation>
                 <UserDocu>Return true to indicate the object having child elements</UserDocu>
