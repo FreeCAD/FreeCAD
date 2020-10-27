@@ -516,16 +516,17 @@ class _ArchMaterialTaskPanel:
         self.existingmaterials = []
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/ArchMaterial.ui")
-        self.color = QtGui.QColor(128,128,128)
         colorPix = QtGui.QPixmap(16,16)
-        colorPix.fill(self.color)
+        colorPix.fill(QtGui.QColor(204,204,204))
         self.form.ButtonColor.setIcon(QtGui.QIcon(colorPix))
+        self.form.ButtonSectionColor.setIcon(QtGui.QIcon(colorPix))
         self.form.ButtonUrl.setIcon(QtGui.QIcon(":/icons/internet-web-browser.svg"))
         QtCore.QObject.connect(self.form.comboBox_MaterialsInDir, QtCore.SIGNAL("currentIndexChanged(QString)"), self.chooseMat)
         QtCore.QObject.connect(self.form.comboBox_FromExisting, QtCore.SIGNAL("currentIndexChanged(int)"), self.fromExisting)
         QtCore.QObject.connect(self.form.comboFather, QtCore.SIGNAL("currentIndexChanged(QString)"), self.setFather)
         QtCore.QObject.connect(self.form.comboFather, QtCore.SIGNAL("currentTextChanged(QString)"), self.setFather)
         QtCore.QObject.connect(self.form.ButtonColor,QtCore.SIGNAL("pressed()"),self.getColor)
+        QtCore.QObject.connect(self.form.ButtonSectionColor,QtCore.SIGNAL("pressed()"),self.getSectionColor)
         QtCore.QObject.connect(self.form.ButtonUrl,QtCore.SIGNAL("pressed()"),self.openUrl)
         QtCore.QObject.connect(self.form.ButtonEditor,QtCore.SIGNAL("pressed()"),self.openEditor)
         QtCore.QObject.connect(self.form.ButtonCode,QtCore.SIGNAL("pressed()"),self.getCode)
@@ -551,21 +552,14 @@ class _ArchMaterialTaskPanel:
             self.form.FieldName.setText(self.obj.Label)
         if 'Description' in self.material:
             self.form.FieldDescription.setText(self.material['Description'])
-        col = None
         if 'DiffuseColor' in self.material:
-            col = self.material["DiffuseColor"]
+            self.form.ButtonColor.setIcon(self.getColorIcon(self.material["DiffuseColor"]))
         elif 'ViewColor' in self.material:
-            col = self.material["ViewColor"]
+            self.form.ButtonColor.setIcon(self.getColorIcon(self.material["ViewColor"]))
         elif 'Color' in self.material:
-            col = self.material["Color"]
-        if col:
-            if "(" in col:
-                c = tuple([float(f) for f in col.strip("()").split(",")])
-                self.color = QtGui.QColor()
-                self.color.setRgbF(c[0],c[1],c[2])
-                colorPix = QtGui.QPixmap(16,16)
-                colorPix.fill(self.color)
-                self.form.ButtonColor.setIcon(QtGui.QIcon(colorPix))
+            self.form.ButtonColor.setIcon(self.getColorIcon(self.material["Color"]))
+        if 'SectionColor' in self.material:
+            self.form.ButtonSectionColor.setIcon(self.getColorIcon(self.material["SectionColor"]))
         if 'StandardCode' in self.material:
             self.form.FieldCode.setText(self.material['StandardCode'])
         if 'ProductURL' in self.material:
@@ -589,17 +583,34 @@ class _ArchMaterialTaskPanel:
             self.form.comboFather.addItem(father)
             self.form.comboFather.setCurrentIndex(self.form.comboFather.count()-1)
 
+    def getColorIcon(self,color):
+        if color:
+            if "(" in color:
+                c = tuple([float(f) for f in color.strip("()").split(",")])
+                qcolor = QtGui.QColor()
+                qcolor.setRgbF(c[0],c[1],c[2])
+                colorPix = QtGui.QPixmap(16,16)
+                colorPix.fill(qcolor)
+                icon = QtGui.QIcon(colorPix)
+                return icon
+        return QtGui.QIcon()
 
     def getFields(self):
         "sets self.material from the contents of the task box"
         self.material['Name'] = self.form.FieldName.text()
         self.material['Description'] = self.form.FieldDescription.text()
-        self.material['DiffuseColor'] = str(self.color.getRgbF()[:3])
+        self.material['DiffuseColor'] = self.getColorFromIcon(self.form.ButtonColor.icon())
         self.material['ViewColor'] = self.material['DiffuseColor']
         self.material['Color'] = self.material['DiffuseColor']
+        self.material['SectionColor'] = self.getColorFromIcon(self.form.ButtonSectionColor.icon())
         self.material['StandardCode'] = self.form.FieldCode.text()
         self.material['ProductURL'] = self.form.FieldUrl.text()
         self.material['Transparency'] = str(self.form.SpinBox_Transparency.value())
+
+    def getColorFromIcon(self,icon):
+        "gets pixel color from the given icon"
+        pixel = icon.pixmap(16,16).toImage().pixel(0,0)
+        return str(QtGui.QColor(pixel).getRgbF())
 
     def accept(self):
         self.getFields()
@@ -635,10 +646,17 @@ class _ArchMaterialTaskPanel:
 
     def getColor(self):
         "opens a color picker dialog"
-        self.color = QtGui.QColorDialog.getColor()
+        color = QtGui.QColorDialog.getColor()
         colorPix = QtGui.QPixmap(16,16)
-        colorPix.fill(self.color)
+        colorPix.fill(color)
         self.form.ButtonColor.setIcon(QtGui.QIcon(colorPix))
+
+    def getSectionColor(self):
+        "opens a color picker dialog"
+        color = QtGui.QColorDialog.getColor()
+        colorPix = QtGui.QPixmap(16,16)
+        colorPix.fill(color)
+        self.form.ButtonSectionColor.setIcon(QtGui.QIcon(colorPix))
 
     def fillMaterialCombo(self):
         "fills the combo with the existing FCMat cards"
