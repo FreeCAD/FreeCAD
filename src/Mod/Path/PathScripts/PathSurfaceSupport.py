@@ -226,7 +226,6 @@ class PathGeometryGenerator:
     def _Line(self):
         GeoSet = list()
         centRot = FreeCAD.Vector(0.0, 0.0, 0.0)  # Bottom left corner of face/selection/model
-        cAng = math.atan(self.deltaX / self.deltaY)  # BoundaryBox angle
 
         # Create end points for set of lines to intersect with cross-section face
         pntTuples = list()
@@ -474,7 +473,6 @@ class ProcessSelectedFaces:
 
         # Setup STL, model type, and bound box containers for each model in Job
         for m in range(0, len(JOB.Model.Group)):
-            M = JOB.Model.Group[m]
             self.modelSTLs.append(False)
             self.profileShapes.append(False)
 
@@ -797,8 +795,6 @@ class ProcessSelectedFaces:
             PathLog.debug('Processing avoid faces.')
             cont = True
             isHole = False
-            outFCS = list()
-            intFEAT = list()
 
             outFCS, intFEAT = self.findUnifiedRegions(VDS)
             if self.obj.InternalFeaturesCut:
@@ -1318,11 +1314,10 @@ def pathGeomToLinesPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gaps
 
         if chkGap is True:
             if gap < obj.GapThreshold.Value:
-                b = inLine.pop()  # pop off 'BRK' marker
+                inLine.pop()  # pop off 'BRK' marker
                 (vA, vB) = inLine.pop()  # pop off previous line segment for combining with current
                 tup = (vA, tup[1])
                 closedGap = True
-                True if closedGap else False  # used closedGap for LGTM
             else:
                 gap = round(gap, 6)
                 if gap < gaps[0]:
@@ -1417,7 +1412,7 @@ def pathGeomToZigzagPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gap
 
         if chkGap:
             if gap < obj.GapThreshold.Value:
-                b = inLine.pop()  # pop off 'BRK' marker
+                inLine.pop()  # pop off 'BRK' marker
                 (vA, vB) = inLine.pop()  # pop off previous line segment for combining with current
                 if dirFlg == 1:
                     tup = (vA, tup[1])
@@ -1887,7 +1882,6 @@ class FindUnifiedRegions:
 
     def _groupEdgesByLength(self):
         PathLog.debug('_groupEdgesByLength()')
-        cont = True
         threshold = self.geomToler
         grp = list()
         processLast = False
@@ -1909,7 +1903,6 @@ class FindUnifiedRegions:
             actvItem = DATA[actvIdx][0]  # 0 index is length
             grp.append(actvIdx)
             idxCnt -= 1
-            noMatch = True
 
             while idxCnt > 0:
                 tstIdx = indexes[0]
@@ -1922,7 +1915,6 @@ class FindUnifiedRegions:
                     indexes.pop(0)
                     idxCnt -= 1
                     grp.append(tstIdx)
-                    noMatch = False
                 else:
                     if len(grp) > 1:
                         # grp.sort()
@@ -1939,7 +1931,6 @@ class FindUnifiedRegions:
     def _identifySharedEdgesByLength(self, grp):
         PathLog.debug('_identifySharedEdgesByLength()')
         holds = list()
-        cont = True
         specialIndexes = []
         threshold = self.geomToler
 
@@ -1949,7 +1940,6 @@ class FindUnifiedRegions:
         # Sort edgeData data
         self.edgeData.sort(key=keyFirst)
         DATA = self.edgeData
-        lenDATA = len(DATA)
         lenGrp = len(grp)
 
         while lenGrp > 0:
@@ -2000,10 +1990,7 @@ class FindUnifiedRegions:
         PathLog.debug('_extractWiresFromEdges()')
         DATA = self.edgeData
         holds = list()
-        lastEdge = None
-        lastIdx = None
         firstEdge = None
-        isWire = False
         cont = True
         connectedEdges = []
         connectedIndexes = []
@@ -2086,8 +2073,6 @@ class FindUnifiedRegions:
             # Put holds indexes back in search stack
             if notConnected:
                 holds.append(actvIdx)
-                if idxCnt == 0:
-                    lastLoop = True
             holds.extend(indexes)
             indexes = holds
             idxCnt = len(indexes)
@@ -2101,7 +2086,6 @@ class FindUnifiedRegions:
         numLoops = len(LOOPS)
         PathLog.debug(' -numLoops: {}.'.format(numLoops))
         if numLoops > 0:
-            FACES = list()
             for li in range(0, numLoops):
                 Edges = LOOPS[li]
                 #for e in Edges:
@@ -2576,11 +2560,11 @@ class OCL_Tool():
         # Engraver or V-bit cutter
         # OCL -> ConeCutter::ConeCutter(diameter, angle, length)
         if (self.diameter == -1.0 or
-            self.cutEdgeAngle == -1.0 or self.cutEdgeHeight == -1.0):
+            self.cuttingEdgeAngle == -1.0 or self.cutEdgeHeight == -1.0):
             return
         self.oclTool = self.ocl.ConeCutter(
                             self.diameter,
-                            self.cutEdgeAngle/2.,
+                            self.cuttingEdgeAngle,
                             self.cutEdgeHeight + self.lengthOffset
                         )
 
