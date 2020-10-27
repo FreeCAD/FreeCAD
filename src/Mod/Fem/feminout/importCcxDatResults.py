@@ -101,7 +101,7 @@ def readResult(
                 m["frequency"] = mode_frequency
                 results.append(m)
                 mode_reading = True
-            except:
+            except Exception:
                 if mode_reading:
                     # Conversion error after mode reading started, so it's the end of section
                     eigenvalue_output_section_found = False

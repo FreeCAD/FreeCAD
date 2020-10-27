@@ -201,7 +201,7 @@ class _TaskPanel:
         error = ""
         try:
             error = gmsh_mesh.create_mesh()
-        except:
+        except Exception:
             import sys
             FreeCAD.Console.PrintMessage(
                 "Unexpected error when creating mesh: {}\n"

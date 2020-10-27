@@ -249,7 +249,7 @@ def getBoundBoxOfAllDocumentShapes(doc):
         if hasattr(o, "Shape") and hasattr(o.Shape, "BoundBox"):
             try:
                 bb = o.Shape.BoundBox
-            except:
+            except Exception:
                 bb = None
             if bb.isValid():
                 if not overalboundbox:
