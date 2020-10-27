@@ -916,18 +916,13 @@ class TaskPanel:
         self.template.updateUI()
 
     def modelSetAxis(self, axis):
-        def flipSel(sel):
-            PathLog.debug("flip")
-            p = sel.Object.Placement
-            loc = sel.Object.Placement.Base
-            rot = FreeCAD.Rotation(FreeCAD.Vector(1 - axis.x, 1 - axis.y, 1 - axis.z), 180)
-            sel.Object.Placement = FreeCAD.Placement(loc, p.Rotation.multiply(rot))
-
-        def rotateSel(sel, n):
-            # p = sel.Object.Placement
-            # loc = sel.Object.Placement.Base
+        def alignSel(sel, n, flip=False):
+            PathLog.debug("alignSel")
+            vector = axis
+            if flip:
+                vector = n.negative()
             r = axis.cross(n)  # rotation axis
-            a = DraftVecUtils.angle(n, axis, r) * 180 / math.pi
+            a = DraftVecUtils.angle(n, vector, r) * 180 / math.pi
             PathLog.debug("oh boy: (%.2f, %.2f, %.2f) -> %.2f" % (r.x, r.y, r.z, a))
             Draft.rotate(sel.Object, a, axis=r)
 
@@ -939,28 +934,26 @@ class TaskPanel:
                 selFeature = feature
                 sub = sel.Object.Shape.getElement(feature)
                 if 'Face' == sub.ShapeType:
-                    n = sub.Surface.Axis
+                    n = sub.normalAt(0,0).negative()
                     if sub.Orientation == 'Reversed':
                         n = FreeCAD.Vector() - n
                         PathLog.debug("(%.2f, %.2f, %.2f) -> reversed (%s)" % (n.x, n.y, n.z, sub.Orientation))
                     else:
                         PathLog.debug("(%.2f, %.2f, %.2f) -> forward  (%s)" % (n.x, n.y, n.z, sub.Orientation))
 
-                    if PathGeom.pointsCoincide(axis, n):
-                        PathLog.debug("face properly oriented (%.2f, %.2f, %.2f)" % (n.x, n.y, n.z))
+                    if PathGeom.pointsCoincide(axis, n) or PathGeom.pointsCoincide(axis, FreeCAD.Vector() - n):
+                        alignSel(sel, n, True)
                     else:
-                        if PathGeom.pointsCoincide(axis, FreeCAD.Vector() - n):
-                            flipSel(sel)
-                        else:
-                            rotateSel(sel, n)
+                        alignSel(sel, n)
+
                 if 'Edge' == sub.ShapeType:
                     n = (sub.Vertexes[1].Point - sub.Vertexes[0].Point).normalize()
                     if PathGeom.pointsCoincide(axis, n) or PathGeom.pointsCoincide(axis, FreeCAD.Vector() - n):
                         # Don't really know the orientation of an edge, so let's just flip the object
                         # and if the user doesn't like it they can flip again
-                        flipSel(sel)
+                        alignSel(sel, n, True)
                     else:
-                        rotateSel(sel, n)
+                        alignSel(sel, n)
         if selObject and selFeature:
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(selObject, selFeature)
@@ -1134,6 +1127,17 @@ class TaskPanel:
         # no valid selection
         return False
 
+    def isValidAxisSelection(self, sel):
+        if sel.ShapeType in ['Vertex', 'Edge', 'Face']:
+            if hasattr(sel, 'Curve') and type(sel.Curve) in [Part.Circle]:
+                 return False
+            if hasattr(sel, 'Surface') and sel.Surface.curvature(0,0,"Max") != 0:
+                return False 
+            return True
+
+        # no valid selection
+        return False
+
     def updateSelection(self):
         # Remove Job object if present in Selection: source of phantom paths
         if self.obj in FreeCADGui.Selection.getSelection():
@@ -1141,26 +1145,21 @@ class TaskPanel:
 
         sel = FreeCADGui.Selection.getSelectionEx()
 
+        self.form.setOrigin.setEnabled(False)
+        self.form.moveToOrigin.setEnabled(False)
+        self.form.modelSetXAxis.setEnabled(False)
+        self.form.modelSetYAxis.setEnabled(False)
+        self.form.modelSetZAxis.setEnabled(False)
+
         if len(sel) == 1 and len(sel[0].SubObjects) == 1:
             subObj = sel[0].SubObjects[0]
             if self.isValidDatumSelection(subObj):
-                self.form.modelSetXAxis.setEnabled(False)
-                self.form.modelSetYAxis.setEnabled(False)
-                self.form.modelSetZAxis.setEnabled(False)
                 self.form.setOrigin.setEnabled(True)
                 self.form.moveToOrigin.setEnabled(True)
-            else:
+            if self.isValidAxisSelection(subObj):
                 self.form.modelSetXAxis.setEnabled(True)
                 self.form.modelSetYAxis.setEnabled(True)
                 self.form.modelSetZAxis.setEnabled(True)
-                self.form.setOrigin.setEnabled(False)
-                self.form.moveToOrigin.setEnabled(False)
-        else:
-            self.form.modelSetXAxis.setEnabled(False)
-            self.form.modelSetYAxis.setEnabled(False)
-            self.form.modelSetZAxis.setEnabled(False)
-            self.form.setOrigin.setEnabled(False)
-            self.form.moveToOrigin.setEnabled(False)
 
         if len(sel) == 0 or self.obj.Stock in [s.Object for s in sel]:
             self.form.centerInStock.setEnabled(False)
