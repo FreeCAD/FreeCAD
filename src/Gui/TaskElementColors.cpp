@@ -197,11 +197,24 @@ public:
     }
 
     void accept() {
-        if(touched && ui->recompute->isChecked()) {
-            auto obj = vp->getObject();
-            obj->touch();
-            obj->getDocument()->recompute(obj->getInListRecursive());
+        if(touched) {
             touched = false;
+            if(ui->recompute->isChecked()) {
+                auto obj = vp->getObject();
+                auto objs = obj->getInListRecursive();
+                objs.push_back(obj);
+                for (auto o : objs)
+                    o->enforceRecompute();
+                obj->getDocument()->recompute(objs);
+            } else {
+                for (auto obj : App::Document::getDependencyList(
+                                {vp->getObject()}, App::Document::DepSort))
+                {
+                    auto vp = Application::Instance->getViewProvider(obj);
+                    if (vp)
+                        vp->updateColors();
+                }
+            }
         }
         App::GetApplication().closeActiveTransaction();
     }
