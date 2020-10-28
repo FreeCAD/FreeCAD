@@ -1488,6 +1488,16 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
         Y = (ep[1] - sp[1])**2
         return math.sqrt(X + Y)  # the 'z' value is zero in both points
 
+    def dist_to_cent(item):
+        # Sort incoming arcs by distance to center
+        # item: edge type, direction flag, parts tuple
+        # parts: start tuple, end tuple, center tuple
+        s = item[2][0][0]
+        p1 = FreeCAD.Vector(s[0], s[1], 0.0)
+        e = item[2][0][2]
+        p2 = FreeCAD.Vector(e[0], e[1], 0.0)
+        return p1.sub(p2).Length
+
     if obj.CutPatternReversed:
         if self.CutClimb:
             self.CutClimb = False
@@ -1565,6 +1575,9 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
     if not self.CutClimb:  # True yields Climb when set to Conventional
         dirFlg = -1
 
+    # Declare center point of circle pattern
+    cp = (self.tmpCOM.x, self.tmpCOM.y, 0.0)
+
     # Cycle through stepOver data
     for so in range(0, len(stpOvrEI)):
         SO = stpOvrEI[so]
@@ -1590,7 +1603,6 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
 
             sp = (v1.X, v1.Y, 0.0)
             ep = (EX, EY, 0.0)
-            cp = (self.tmpCOM.x, self.tmpCOM.y, 0.0)
             if dirFlg == 1:
                 arc = (sp, ep, cp)
             else:
@@ -1610,7 +1622,6 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
                 v2 = compGeoShp.Edges[iS].Vertexes[1]
                 sp = (v1.X, v1.Y, 0.0)
                 ep = (v2.X, v2.Y, 0.0)
-                cp = (self.tmpCOM.x, self.tmpCOM.y, 0.0)
                 if dirFlg == 1:
                     arc = (sp, ep, cp)
                     lst = ep
@@ -1629,28 +1640,27 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
                     EI.pop(iEi)
                 if len(EI) > 0:
                     PRTS.append('BRK')
-                    # chkGap = True
+                    chkGap = True
             cnt = 0
             for ei in EI:
                 if cnt > 0:
                     PRTS.append('BRK')
-                    # chkGap = True
+                    chkGap = True
                 v1 = compGeoShp.Edges[ei].Vertexes[0]
                 v2 = compGeoShp.Edges[ei].Vertexes[1]
                 sp = (v1.X, v1.Y, 0.0)
                 ep = (v2.X, v2.Y, 0.0)
-                cp = (self.tmpCOM.x, self.tmpCOM.y, 0.0)
                 if dirFlg == 1:
                     arc = (sp, ep, cp)
-                    if chkGap and False:
+                    if chkGap:
                         gap = abs(self.toolDiam - gapDist(lst, sp))  # abs(self.toolDiam - lst.sub(sp).Length)
                     lst = ep
                 else:
                     arc = (ep, sp, cp)  # OCL.Arc(firstPnt, lastPnt, centerPnt, dir=True(CCW direction))
-                    if chkGap and False:
+                    if chkGap:
                         gap = abs(self.toolDiam - gapDist(lst, ep))  # abs(self.toolDiam - lst.sub(ep).Length)
                     lst = sp
-                if chkGap and False:
+                if chkGap:
                     if gap < obj.GapThreshold.Value:
                         PRTS.pop()  # pop off 'BRK' marker
                         (vA, vB, vC) = PRTS.pop()  # pop off previous arc segment for combining with current
@@ -1672,6 +1682,8 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
         if obj.CutPattern == 'CircularZigZag':
             dirFlg = -1 * dirFlg
     # Efor
+
+    ARCS.sort(key=dist_to_cent, reverse=obj.CutPatternReversed)
 
     return ARCS
 
