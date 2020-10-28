@@ -1305,9 +1305,10 @@ App::Color ViewProviderPartExt::getElementColor(App::Color color,
     std::map<App::DocumentObject*,Part::TopoShape> &cache)
 {
     bool colorFound = false;
+    std::vector<std::string> history;
+    std::string original;
+    long tag = shape.getElementHistory(mapped.c_str(),&original,&history);
     while(1) {
-        std::string original;
-        long tag = shape.getElementHistory(mapped.c_str(),&original);
         if(!tag)
             return color;
         auto obj = doc->getObjectByID(std::abs(tag));
@@ -1328,6 +1329,7 @@ App::Color ViewProviderPartExt::getElementColor(App::Color color,
             // history until we find one.
             doc = obj->getDocument();
             mapped = original;
+            tag = shape.getElementHistory(mapped.c_str(),&original,&history);
             continue;
         }
 
@@ -1343,7 +1345,26 @@ App::Color ViewProviderPartExt::getElementColor(App::Color color,
         if(prop->getSize()==0)
             return color;
 
-        auto element = shape.getElementName(original.c_str(),Data::ComplexGeoData::MapToIndexedForced);
+        history.clear();
+        mapped = original;
+        // Normally, TopoShape::getElementHistory() returns the mapped element
+        // name of the previous step (in 'original'), and tag is the ID of the
+        // previous feature. 'mapped' is the mapped element name of the next
+        // modeling step in shape history.
+        //
+        // However, if there are intermediate modeling steps, things get a bit
+        // tricky. getElementHistory() returns intermediate element names in
+        // 'history', but the last entry of 'history' actually contains the real
+        // mapped element name of the 'current' modeling step. That's why we are
+        // calling getElementHistory() for previous modeling step now, before
+        // retriving the element for the current step using getElementName(),
+        // because we need to check intermediate history names of the previous
+        // model step. The 'original' returned by getElementHistory() here may
+        // or may not contain a valid element name for the previous step. We can
+        // only decide after another loop hits here.
+        tag = shape.getElementHistory(mapped.c_str(),&original,&history);
+        auto element = shape.getElementName(history.empty()?mapped.c_str():history.back().c_str(),
+                                            Data::ComplexGeoData::MapToIndexedForced);
         auto idx = Part::TopoShape::shapeTypeAndIndex(element);
         if(idx.second>0 && idx.second<=(int)shape.countSubShapes(idx.first)) {
             if(idx.first==type) {
