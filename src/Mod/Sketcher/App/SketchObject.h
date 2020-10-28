@@ -418,6 +418,10 @@ public:
     // Validation routines
     std::vector<Base::Vector3d> getOpenVertices(void) const;
 
+public: // geometry extension functionalities for single element sketch object user convenience
+    int setGeometryId(int GeoId, long id);
+    int getGeometryId(int GeoId, long &id) const;
+
 protected:
     /// get called by the container when a property has changed
     virtual void onChanged(const App::Property* /*prop*/) override;

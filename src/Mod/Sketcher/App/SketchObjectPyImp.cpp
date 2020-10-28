@@ -1792,6 +1792,44 @@ void SketchObjectPy::setGeometryFacadeList(Py::List value)
     getSketchObjectPtr()->Geometry.setValues(std::move(list));
 }
 
+PyObject* SketchObjectPy::getGeometryId(PyObject *args)
+{
+    int Index;
+    if (!PyArg_ParseTuple(args, "i", &Index))
+        return 0;
+
+    long Id;
+
+    if (this->getSketchObjectPtr()->getGeometryId(Index, Id)) {
+        std::stringstream str;
+        str << "Not able to set geometry Id of a geometry with the given index: " << Index;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        Py_Return;
+    }
+
+    return  Py::new_reference_to(Py::Long(Id));
+}
+
+PyObject* SketchObjectPy::setGeometryId(PyObject *args)
+{
+    int Index;
+    long Id;
+    if (!PyArg_ParseTuple(args, "il", &Index, &Id))
+        return 0;
+
+    if (this->getSketchObjectPtr()->setGeometryId(Index, Id)) {
+        std::stringstream str;
+        str << "Not able to set construction mode of a geometry with the given index: " << Index;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
+
+
+
 PyObject *SketchObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

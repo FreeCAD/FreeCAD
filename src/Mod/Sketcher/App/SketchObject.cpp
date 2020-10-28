@@ -78,6 +78,8 @@
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/BodyBase.h>
 
+#include "GeometryFacade.h"
+
 #include "SketchObject.h"
 #include "Sketch.h"
 #include <Mod/Sketcher/App/SketchObjectPy.h>
@@ -7656,6 +7658,59 @@ std::vector<Base::Vector3d> SketchObject::getOpenVertices(void) const
 
     return points;
 }
+
+// SketchGeometryExtension interface
+
+int SketchObject::setGeometryId(int GeoId, long id)
+{
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
+    if (GeoId < 0 || GeoId >= int(Geometry.getValues().size()))
+        return -1;
+
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+
+
+
+    std::vector< Part::Geometry * > newVals(vals);
+
+    // deep copy
+    for(size_t i=0; i<newVals.size(); i++) {
+        newVals[i] = newVals[i]->clone();
+
+        if((int)i == GeoId) {
+            auto gf = GeometryFacade::getFacade(newVals[i]);
+
+            gf->setId(id);
+        }
+    }
+
+    // There is not actual internal transaction going on here, however neither the geometry indices nor the vertices need to be updated
+    // so this is a convenient way of preventing it.
+    {
+        Base::StateLocker lock(internaltransaction, true);
+        this->Geometry.setValues(std::move(newVals));
+    }
+
+    return 0;
+}
+
+int SketchObject::getGeometryId(int GeoId, long &id) const
+{
+   if (GeoId < 0 || GeoId >= int(Geometry.getValues().size()))
+        return -1;
+
+   const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+
+   auto gf = GeometryFacade::getFacade(vals[GeoId]);
+
+   id = gf->getId();
+
+   return 0;
+}
+
+
+
 
 // Python Sketcher feature ---------------------------------------------------------
 
