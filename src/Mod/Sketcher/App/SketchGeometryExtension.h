@@ -29,7 +29,16 @@
 namespace Sketcher
 {
 
-class SketcherExport SketchGeometryExtension : public Part::GeometryExtension
+class ISketchGeometryExtension
+{
+
+public:
+    // Identification information
+    virtual long getId() const = 0;
+    virtual void setId(long id) = 0;
+};
+
+class SketcherExport SketchGeometryExtension : public Part::GeometryExtension, ISketchGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
@@ -46,8 +55,8 @@ public:
 
     virtual PyObject *getPyObject(void) override;
 
-    long getId() const {return Id;}
-    void setId(long id) {Id = id;}
+    virtual long getId() const override {return Id;}
+    virtual void setId(long id) override {Id = id;}
 
 private:
     SketchGeometryExtension(const SketchGeometryExtension&) = default;
