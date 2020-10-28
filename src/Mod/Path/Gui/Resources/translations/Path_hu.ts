@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="121"/>
       <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
-      <translation type="unfinished">Show the temporary path construction objects when module is in DEBUG mode.</translation>
+      <translation>Az ideiglenes építőobjektumok megjelenítésének útvonala, ha a modul DEBUG módban van.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="124"/>
@@ -132,6 +132,11 @@
       <location filename="../../../PathScripts/PathWaterline.py" line="139"/>
       <source>Positive values push the cutter toward, or into, the feature. Negative values retract the cutter away from the feature.</source>
       <translation type="unfinished">Positive values push the cutter toward, or into, the feature. Negative values retract the cutter away from the feature.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathWaterline.py" line="141"/>
+      <source>Cut internal feature areas within a larger selected face.</source>
+      <translation type="unfinished">Cut internal feature areas within a larger selected face.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="141"/>
@@ -624,6 +629,11 @@
       <translation>Mintázó mód</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathStock.py" line="106"/>
+      <source>A material for this object</source>
+      <translation>Egy anyag ehhez a tárgyhoz</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathProfile.py" line="104"/>
       <source>Extend the profile clearing beyond the Extra Offset.</source>
       <translation type="unfinished">Extend the profile clearing beyond the Extra Offset.</translation>
@@ -895,11 +905,6 @@
   <context>
     <name>Path</name>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="234"/>
-      <source>Edit</source>
-      <translation>Szerkesztés</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathEngraveGui.py" line="62"/>
       <source>%s is not a Base Model object of the job %s</source>
       <translation>%s nem egy alap modell objektuma ennek a feladatnak: %s</translation>
@@ -913,6 +918,11 @@
       <location filename="../../../PathScripts/PathEngraveGui.py" line="72"/>
       <source>Ignoring vertex</source>
       <translation>Végpont figyelmen kívül hagyása</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolController.py" line="234"/>
+      <source>Edit</source>
+      <translation>Szerkesztés</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="472"/>
@@ -1008,6 +1018,11 @@
       <location filename="PathOpGui.py" line="514"/>
       <source>Heights</source>
       <translation>Magasságok</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOpGui.py" line="949"/>
+      <source>Diameters</source>
+      <translation type="unfinished">Diameters</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="585"/>
@@ -1153,9 +1168,24 @@
       <translation type="unfinished">Always select the bottom edge of the hole when using an edge.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathDeburrGui.py" line="65"/>
+      <source>Ignoring non-horizontal Face</source>
+      <translation type="unfinished">Ignoring non-horizontal Face</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathProfileFaces.py" line="250"/>
       <source>Unable to create path for face(s).</source>
       <translation>Nem hozható létre a felület(ek) útvonala.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfile.py" line="575"/>
+      <source>Applying inverse angle automatically.</source>
+      <translation type="unfinished">Applying inverse angle automatically.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfile.py" line="579"/>
+      <source>Applying inverse angle manually.</source>
+      <translation type="unfinished">Applying inverse angle manually.</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="91"/>
@@ -1572,6 +1602,11 @@
       <translation>Érvek az utólagos végrehajtóhoz (jellemző a scripthez)</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathJob.py" line="108"/>
+      <source>Last Time the Job was post-processed</source>
+      <translation type="unfinished">Last Time the Job was post-processed</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathJob.py" line="101"/>
       <source>An optional description for this job</source>
       <translation type="unfinished">An optional description for this job</translation>
@@ -1780,6 +1815,16 @@
       <translation>Állítsa igazra, ha egy kiinduló pontot ad meg</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathOp.py" line="175"/>
+      <source>Lower limit of the turning diameter</source>
+      <translation type="unfinished">Lower limit of the turning diameter</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="176"/>
+      <source>Upper limit of the turning diameter.</source>
+      <translation type="unfinished">Upper limit of the turning diameter.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathOp.py" line="218"/>
       <source>Coolant option for this operation</source>
       <translation type="unfinished">Coolant option for this operation</translation>
@@ -1978,7 +2023,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="334"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
-      <translation type="unfinished">The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</translation>
+      <translation>A kijelölt szegély(ek) nem érhetők el. Ha többszörös, a kijelölés újrarendelése működhet.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="378"/>
@@ -2018,7 +2063,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="767"/>
       <source>Please set to an acceptable value greater than zero.</source>
-      <translation type="unfinished">Please set to an acceptable value greater than zero.</translation>
+      <translation>Állítsa nullánál nagyobb elfogadható értékre.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="860"/>
@@ -2538,7 +2583,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="839"/>
       <source>No scan data to convert to Gcode.</source>
-      <translation type="unfinished">No scan data to convert to Gcode.</translation>
+      <translation>Nincsenek beolvasott adatok, amelyet Gcode-ra konvertálhatunk.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2625"/>
@@ -2732,37 +2777,37 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="42"/>
       <source>Create Tool</source>
-      <translation type="unfinished">Create Tool</translation>
+      <translation>Eszköz létrehozása</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="43"/>
       <source>Creates a new ToolBit object</source>
-      <translation type="unfinished">Creates a new ToolBit object</translation>
+      <translation>Új ToolBit objektum létrehozása</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="62"/>
       <source>Save Tool as...</source>
-      <translation type="unfinished">Save Tool as...</translation>
+      <translation>Eszköz mentése másként...</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="64"/>
       <source>Save Tool</source>
-      <translation type="unfinished">Save Tool</translation>
+      <translation>Eszköz mentése</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="67"/>
       <source>Save an existing ToolBit object to a file</source>
-      <translation type="unfinished">Save an existing ToolBit object to a file</translation>
+      <translation>Meglévő ToolBit objektum mentése fájlba</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="115"/>
       <source>Load Tool</source>
-      <translation type="unfinished">Load Tool</translation>
+      <translation>Eszköz betöltése</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="116"/>
       <source>Load an existing ToolBit object from a file</source>
-      <translation type="unfinished">Load an existing ToolBit object from a file</translation>
+      <translation>Meglévő ToolBit objektum betöltése fájlba</translation>
     </message>
   </context>
   <context>
@@ -2770,22 +2815,22 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="40"/>
       <source>Open ToolBit Library editor</source>
-      <translation type="unfinished">Open ToolBit Library editor</translation>
+      <translation>ToolBit könyvtár szerkesztő megnyitása</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="41"/>
       <source>Open an editor to manage ToolBit libraries</source>
-      <translation type="unfinished">Open an editor to manage ToolBit libraries</translation>
+      <translation>Szerkesztő megnyitása a ToolBit-tárak kezeléséhez</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="67"/>
       <source>Load ToolBit Library</source>
-      <translation type="unfinished">Load ToolBit Library</translation>
+      <translation>ToolBit-tár betöltése</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="68"/>
       <source>Load an entire ToolBit library or part of it into a job</source>
-      <translation type="unfinished">Load an entire ToolBit library or part of it into a job</translation>
+      <translation>Teljes ToolBit-könyvtár vagy annak egy része betöltése egy feladatba</translation>
     </message>
   </context>
   <context>
@@ -2838,7 +2883,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathToolController.py" line="128"/>
       <source>PathToolController template has no version - corrupted template file?</source>
-      <translation type="unfinished">PathToolController template has no version - corrupted template file?</translation>
+      <translation>PathToolController sablonnak nincs verziója - sérült sablonfájlt?</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolController.py" line="197"/>
@@ -2851,7 +2896,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryGui.py" line="453"/>
       <source>Tooltable JSON (*.fctl)</source>
-      <translation type="unfinished">Tooltable JSON (*.fctl)</translation>
+      <translation>Eszközasztal JSON (*.json)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
@@ -2876,12 +2921,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="212"/>
       <source>Tool Table Same Name</source>
-      <translation type="unfinished">Tool Table Same Name</translation>
+      <translation>Eszközasztal azonos nevű</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="215"/>
       <source>Tool Table Name Exists</source>
-      <translation type="unfinished">Tool Table Name Exists</translation>
+      <translation>Az eszközasztal neve létezik</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="172"/>
@@ -2891,7 +2936,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="283"/>
       <source>Unsupported Path tooltable</source>
-      <translation type="unfinished">Unsupported Path tooltable</translation>
+      <translation>Nem támogatott eszközasztal útvoanl</translation>
     </message>
   </context>
   <context>
@@ -2899,7 +2944,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathToolBit.py" line="357"/>
       <source>User Defined Values</source>
-      <translation type="unfinished">User Defined Values</translation>
+      <translation>Felhasználó által definiált értékek</translation>
     </message>
   </context>
   <context>
@@ -2908,6 +2953,39 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="../../../PathScripts/PathUtils.py" line="187"/>
       <source>Issue determine drillability: {}</source>
       <translation>Probléma meghatározza a fúrhatóságot: {}</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathVcarve</name>
+    <message>
+      <location filename="../../../PathScripts/PathVcarveGui.py" line="150"/>
+      <source>Vcarve</source>
+      <translation type="unfinished">Vcarve</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarveGui.py" line="150"/>
+      <source>Creates a medial line engraving path</source>
+      <translation type="unfinished">Creates a medial line engraving path</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="173"/>
+      <source>Additional base objects to be engraved</source>
+      <translation>Kiegészítő alap tárgyakat kell bevésni</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="180"/>
+      <source>The deflection value for discretizing arcs</source>
+      <translation type="unfinished">The deflection value for discretizing arcs</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="183"/>
+      <source>cutoff for removing colinear segments (degrees).                         default=10.0.</source>
+      <translation type="unfinished">cutoff for removing colinear segments (degrees).                         default=10.0.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="322"/>
+      <source>The Job Base Object has no engraveable element. Engraving operation will produce no output.</source>
+      <translation type="unfinished">The Job Base Object has no engraveable element. Engraving operation will produce no output.</translation>
     </message>
   </context>
   <context>
@@ -2940,12 +3018,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="245"/>
       <source>Initializing LinearDeflection to 0.0001 mm.</source>
-      <translation type="unfinished">Initializing LinearDeflection to 0.0001 mm.</translation>
+      <translation>LinearDeflection inicializálása 0.0001 mm-re.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="345"/>
       <source>Sample interval limits are 0.0001 to 25.4 millimeters.</source>
-      <translation type="unfinished">Sample interval limits are 0.0001 to 25.4 millimeters.</translation>
+      <translation>A mintavételi időköz határértékek 0.0001 és 25.4 milliméter között vannak.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="350"/>
@@ -2975,7 +3053,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="471"/>
       <source>Canceling Waterline operation. Error creating OCL cutter.</source>
-      <translation type="unfinished">Canceling Waterline operation. Error creating OCL cutter.</translation>
+      <translation>A vízvonal művelet megszakítása. Hiba az OCL-vágó létrehozásakor.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="689"/>
@@ -3168,6 +3246,11 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
+      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="150"/>
+      <source>Edit Dragknife Dress-up</source>
+      <translation type="unfinished">Edit Dragknife Dress-up</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
       <source>DragKnife Dress-up</source>
       <translation>DragKnife felépítés</translation>
@@ -3231,17 +3314,17 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundaryGui.py" line="229"/>
       <source>Create a Boundary dressup</source>
-      <translation type="unfinished">Create a Boundary dressup</translation>
+      <translation>Határ felépítés létrehozása</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundaryGui.py" line="243"/>
       <source>Boundary Dress-up</source>
-      <translation type="unfinished">Boundary Dress-up</translation>
+      <translation>Határ felépítés</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundaryGui.py" line="244"/>
       <source>Creates a Path Boundary Dress-up object from a selected path</source>
-      <translation type="unfinished">Creates a Path Boundary Dress-up object from a selected path</translation>
+      <translation>Szerszámpálya határt módosító objektumot hoz létre a kiválasztott útvonalból</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundaryGui.py" line="257"/>
@@ -3251,7 +3334,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundaryGui.py" line="262"/>
       <source>Create Path Boundary Dress-up</source>
-      <translation type="unfinished">Create Path Boundary Dress-up</translation>
+      <translation>Határt módosító felépítés létrehozása</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="47"/>
@@ -3261,12 +3344,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="49"/>
       <source>Solid object to be used to limit the generated Path.</source>
-      <translation type="unfinished">Solid object to be used to limit the generated Path.</translation>
+      <translation>A létrehozott elérési út korlátozására használt szilárd test.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="51"/>
       <source>Determines if Boundary describes an inclusion or exclusion mask.</source>
-      <translation type="unfinished">Determines if Boundary describes an inclusion or exclusion mask.</translation>
+      <translation>Azt határozza meg, hogy a határoló egy belefoglalási vagy kizárási maszkot ír-e le.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="196"/>
@@ -3362,7 +3445,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathDressupTagGui.py" line="204"/>
       <source>Cannot copy tags - internal error</source>
-      <translation type="unfinished">Cannot copy tags - internal error</translation>
+      <translation>Címkék nem másolhatók - belső hiba</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupTagGui.py" line="527"/>
@@ -3415,27 +3498,27 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="67"/>
       <source>The point file from the surface probing.</source>
-      <translation type="unfinished">The point file from the surface probing.</translation>
+      <translation>A pontfájl a felület letapogatásáról.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="71"/>
       <source>Deflection distance for arc interpolation</source>
-      <translation type="unfinished">Deflection distance for arc interpolation</translation>
+      <translation>Alakváltozási távolság az ívinterpoláshoz</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="190"/>
       <source>Edit Z Correction Dress-up</source>
-      <translation type="unfinished">Edit Z Correction Dress-up</translation>
+      <translation>Szerkesztés Z korrekció felépítés</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="303"/>
       <source>Z Depth Correction Dress-up</source>
-      <translation type="unfinished">Z Depth Correction Dress-up</translation>
+      <translation>Z mélység korrekciós felépítés</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="305"/>
       <source>Use Probe Map to correct Z depth</source>
-      <translation type="unfinished">Use Probe Map to correct Z depth</translation>
+      <translation>A Z mélység korrigálása a szondatérkép segítségével</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="329"/>
@@ -3448,7 +3531,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="72"/>
       <source>break segments into smaller segments of this length.</source>
-      <translation type="unfinished">break segments into smaller segments of this length.</translation>
+      <translation>ilyen hosszú szegmensekre bontsa a szegmenseket.</translation>
     </message>
   </context>
   <context>
@@ -3577,7 +3660,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="1169"/>
       <source>Model Selection</source>
-      <translation type="unfinished">Model Selection</translation>
+      <translation>Modell kijelölés</translation>
     </message>
   </context>
   <context>
@@ -3585,7 +3668,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathCommands.py" line="137"/>
       <source>Toggle the Active State of the Operation</source>
-      <translation type="unfinished">Toggle the Active State of the Operation</translation>
+      <translation>A művelet aktív állapotának átkapcsolása</translation>
     </message>
   </context>
   <context>
@@ -3656,21 +3739,59 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
   <context>
     <name>Path_Sanity</name>
     <message>
-      <location filename="PathSanity.py" line="50"/>
-      <source>It appears the machine limits haven't been set.  Not able to check path extents.
-</source>
-      <translation>Úgy tűnik, a gép határértékei még nincsenek beállítva.  Nem képes a szerszámpálya nagyságát ellenőrizni.
-</translation>
+      <location filename="../../../PathScripts/PathSanity.py" line="71"/>
+      <source>Check the path job for common errors</source>
+      <translation type="unfinished">Check the path job for common errors</translation>
     </message>
     <message>
-      <location filename="PathSanity.py" line="79"/>
-      <source>Check the Path project for common errors</source>
-      <translation>Ellenőrizze a szerszámpálya elérési út projektet, a gyakori hibákra</translation>
+      <location filename="../../../PathScripts/PathSanity.py" line="189"/>
+      <source>Base Object(s)</source>
+      <translation type="unfinished">Base Object(s)</translation>
     </message>
     <message>
-      <location filename="PathSanity.py" line="80"/>
-      <source>Check the Path Project for common errors</source>
-      <translation>Ellenőrizze a szerszámpálya elérési út projektet, a gyakori hibákra</translation>
+      <location filename="../../../PathScripts/PathSanity.py" line="190"/>
+      <source>Job Sequence</source>
+      <translation type="unfinished">Job Sequence</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="191"/>
+      <source>Job Description</source>
+      <translation type="unfinished">Job Description</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="192"/>
+      <source>Job Type</source>
+      <translation type="unfinished">Job Type</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="193"/>
+      <source>CAD File Name</source>
+      <translation type="unfinished">CAD File Name</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="194"/>
+      <source>Last Save Date</source>
+      <translation type="unfinished">Last Save Date</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="195"/>
+      <source>Customer</source>
+      <translation type="unfinished">Customer</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="196"/>
+      <source>Designer</source>
+      <translation type="unfinished">Designer</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="255"/>
+      <source>Operation</source>
+      <translation type="unfinished">Operation</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="223"/>
+      <source>Minimum Z Height</source>
+      <translation type="unfinished">Minimum Z Height</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="64"/>
@@ -3701,6 +3822,193 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="../../../PathScripts/PathSanity.py" line="144"/>
       <source>No issues detected, {} has passed basic sanity check.</source>
       <translation type="unfinished">No issues detected, {} has passed basic sanity check.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="224"/>
+      <source>Maximum Z Height</source>
+      <translation type="unfinished">Maximum Z Height</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="225"/>
+      <source>Cycle Time</source>
+      <translation type="unfinished">Cycle Time</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="226"/>
+      <source>Coolant</source>
+      <translation type="unfinished">Coolant</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="227"/>
+      <source>TOTAL JOB</source>
+      <translation type="unfinished">TOTAL JOB</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="249"/>
+      <source>Tool Number</source>
+      <translation type="unfinished">Tool Number</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="250"/>
+      <source>Description</source>
+      <translation>Leírás</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="251"/>
+      <source>Manufacturer</source>
+      <translation type="unfinished">Manufacturer</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="252"/>
+      <source>Part Number</source>
+      <translation type="unfinished">Part Number</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="253"/>
+      <source>URL</source>
+      <translation>URL</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="254"/>
+      <source>Inspection Notes</source>
+      <translation type="unfinished">Inspection Notes</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="256"/>
+      <source>Tool Controller</source>
+      <translation type="unfinished">Tool Controller</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="257"/>
+      <source>Feed Rate</source>
+      <translation type="unfinished">Feed Rate</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="258"/>
+      <source>Spindle Speed</source>
+      <translation type="unfinished">Spindle Speed</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="259"/>
+      <source>Tool Shape</source>
+      <translation type="unfinished">Tool Shape</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="260"/>
+      <source>Tool Diameter</source>
+      <translation type="unfinished">Tool Diameter</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="288"/>
+      <source>X Size</source>
+      <translation type="unfinished">X Size</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="289"/>
+      <source>Y Size</source>
+      <translation type="unfinished">Y Size</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="290"/>
+      <source>Z Size</source>
+      <translation type="unfinished">Z Size</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="291"/>
+      <source>Material</source>
+      <translation>Anyag</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="306"/>
+      <source>Work Offsets</source>
+      <translation type="unfinished">Work Offsets</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="307"/>
+      <source>Order By</source>
+      <translation type="unfinished">Order By</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="308"/>
+      <source>Part Datum</source>
+      <translation type="unfinished">Part Datum</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="321"/>
+      <source>Gcode File</source>
+      <translation type="unfinished">Gcode File</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="322"/>
+      <source>Last Post Process Date</source>
+      <translation type="unfinished">Last Post Process Date</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="323"/>
+      <source>Stops</source>
+      <translation type="unfinished">Stops</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="324"/>
+      <source>Programmer</source>
+      <translation type="unfinished">Programmer</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="325"/>
+      <source>Machine</source>
+      <translation type="unfinished">Machine</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="326"/>
+      <source>Postprocessor</source>
+      <translation type="unfinished">Postprocessor</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="327"/>
+      <source>Post Processor Flags</source>
+      <translation type="unfinished">Post Processor Flags</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="328"/>
+      <source>File Size (kbs)</source>
+      <translation type="unfinished">File Size (kbs)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="329"/>
+      <source>Line Count</source>
+      <translation type="unfinished">Line Count</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="343"/>
+      <source>Note</source>
+      <translation type="unfinished">Note</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="344"/>
+      <source>Operator</source>
+      <translation>Irányító</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="345"/>
+      <source>Date</source>
+      <translation type="unfinished">Date</translation>
+    </message>
+    <message>
+      <location filename="PathSanity.py" line="50"/>
+      <source>It appears the machine limits haven't been set.  Not able to check path extents.
+</source>
+      <translation>Úgy tűnik, a gép határértékei még nincsenek beállítva.  Nem képes a szerszámpálya nagyságát ellenőrizni.
+</translation>
+    </message>
+    <message>
+      <location filename="PathSanity.py" line="79"/>
+      <source>Check the Path project for common errors</source>
+      <translation>Ellenőrizze a szerszámpálya elérési út projektet, a gyakori hibákra</translation>
+    </message>
+    <message>
+      <location filename="PathSanity.py" line="80"/>
+      <source>Check the Path Project for common errors</source>
+      <translation>Ellenőrizze a szerszámpálya elérési út projektet, a gyakori hibákra</translation>
     </message>
   </context>
   <context>
@@ -3814,6 +4122,19 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="PathToolLibraryManager.py" line="603"/>
       <source>Edit the Tool Library</source>
       <translation>Az eszköz könyvtár szerkesztése</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Vcarve</name>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
+      <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
+      <translation type="unfinished">VCarve requires an engraving                            cutter with CuttingEdgeAngle</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="296"/>
+      <source>Engraver Cutting Edge Angle must be &lt; 180 degrees.</source>
+      <translation type="unfinished">Engraver Cutting Edge Angle must be &lt; 180 degrees.</translation>
     </message>
   </context>
   <context>
@@ -4153,7 +4474,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathWaterlineGui.py" line="143"/>
       <source>Create a Waterline Operation from a model</source>
-      <translation type="unfinished">Create a Waterline Operation from a model</translation>
+      <translation>Vízvonal-művelet létrehozása modellből</translation>
     </message>
   </context>
   <context>
@@ -4161,7 +4482,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="839"/>
       <source>No scan data to convert to Gcode.</source>
-      <translation type="unfinished">No scan data to convert to Gcode.</translation>
+      <translation>Nincsenek beolvasott adatok, amelyet Gcode-ra konvertálhatunk.</translation>
     </message>
   </context>
   <context>
@@ -4182,12 +4503,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../PathScripts/PathProfileEdges.py" line="72"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
-      <translation type="unfinished">The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</translation>
+      <translation>A kijelölt szegély(ek) nem érhetők el. Ha többszörös, a kijelölés újrarendelése működhet.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileEdges.py" line="122"/>
       <source>Please set to an acceptable value greater than zero.</source>
-      <translation type="unfinished">Please set to an acceptable value greater than zero.</translation>
+      <translation>Állítsa nullánál nagyobb elfogadható értékre.</translation>
     </message>
   </context>
   <context>

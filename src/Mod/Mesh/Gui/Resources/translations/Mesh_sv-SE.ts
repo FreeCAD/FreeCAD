@@ -1494,7 +1494,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Parallelograms</source>
-      <translation type="unfinished">Parallelograms</translation>
+      <translation>Parallelogram</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="175"/>
@@ -1505,7 +1505,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="220"/>
       <source>Running gmsh...</source>
-      <translation type="unfinished">Running gmsh...</translation>
+      <translation>Kör gmsh...</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="242"/>

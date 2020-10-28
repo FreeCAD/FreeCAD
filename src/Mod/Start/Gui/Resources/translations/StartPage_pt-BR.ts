@@ -166,7 +166,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>build</source>
-      <translation>construir</translation>
+      <translation>build</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="75"/>

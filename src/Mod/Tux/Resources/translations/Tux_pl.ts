@@ -76,7 +76,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="295"/>
       <source>Turntable</source>
-      <translation>Obrotnica</translation>
+      <translation>Turntable</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="296"/>

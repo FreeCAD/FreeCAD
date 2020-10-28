@@ -361,12 +361,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="254"/>
       <source>Resize Mesh Feature...</source>
-      <translation type="unfinished">Resize Mesh Feature...</translation>
+      <translation>Redimensionnement du maillage...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="255"/>
       <source>Create Resize Mesh Feature</source>
-      <translation type="unfinished">Create Resize Mesh Feature</translation>
+      <translation>Créer un redimensionnement du maillage</translation>
     </message>
   </context>
   <context>
@@ -374,12 +374,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="224"/>
       <source>Scale Mesh Feature...</source>
-      <translation type="unfinished">Scale Mesh Feature...</translation>
+      <translation>Mise à l'échelle du maillage...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="225"/>
       <source>Create Scale Mesh Feature</source>
-      <translation type="unfinished">Create Scale Mesh Feature</translation>
+      <translation>Créer une mise à l'échelle du maillage</translation>
     </message>
   </context>
   <context>

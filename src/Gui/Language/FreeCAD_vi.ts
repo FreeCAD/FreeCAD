@@ -121,6 +121,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Chỉnh sửa</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -160,7 +167,7 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation type="unfinished">Global Sensitivity:</translation>
+      <translation>Global Sensitivity:</translation>
     </message>
   </context>
   <context>
@@ -179,11 +186,11 @@
     </message>
     <message>
       <source>&amp;Clear</source>
-      <translation type="unfinished">&amp;Clear</translation>
+      <translation>&amp;Clear</translation>
     </message>
     <message>
       <source>Revert to last calculated value (as constant)</source>
-      <translation type="unfinished">Revert to last calculated value (as constant)</translation>
+      <translation>Revert to last calculated value (as constant)</translation>
     </message>
   </context>
   <context>
@@ -299,13 +306,13 @@
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation type="unfinished">Press middle+left or middle+right button</translation>
+      <translation>Press middle+left or middle+right button</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
-while doing a left or right click and move the mouse up or down</translation>
+      <translation>Lăn nút chuột giữa hoặc nhấn giữ nút giữa
+đồng thời bấm chuột trái hoặc phải và di chuyển chuột lên hoặc xuống</translation>
     </message>
   </context>
   <context>
@@ -411,7 +418,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>Phần mềm này sử dụng thành phần mã nguồn mở có quyền tác giả và các quyền sở hữu thuộc về chủ sở hữu tương ứng:</translation>
     </message>
     <message>
       <source>License</source>
@@ -419,7 +426,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Collection</source>
-      <translation type="unfinished">Collection</translation>
+      <translation>Collection</translation>
     </message>
   </context>
   <context>
@@ -434,11 +441,11 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source> "</source>
-      <translation type="unfinished"> "</translation>
+      <translation> "</translation>
     </message>
     <message>
       <source>"</source>
-      <translation type="unfinished">"</translation>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -453,15 +460,15 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Q0</source>
-      <translation type="unfinished">Q0</translation>
+      <translation>Q0</translation>
     </message>
     <message>
       <source>Q1</source>
-      <translation type="unfinished">Q1</translation>
+      <translation>Q1</translation>
     </message>
     <message>
       <source>Q2</source>
-      <translation type="unfinished">Q2</translation>
+      <translation>Q2</translation>
     </message>
     <message>
       <source>Q3</source>
@@ -619,7 +626,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Verbose description of the new property.</source>
-      <translation type="unfinished">Verbose description of the new property.</translation>
+      <translation>Verbose description of the new property.</translation>
     </message>
     <message>
       <source>Documentation</source>
@@ -639,7 +646,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Prefix group name</source>
-      <translation type="unfinished">Prefix group name</translation>
+      <translation>Prefix group name</translation>
     </message>
   </context>
   <context>
@@ -1028,7 +1035,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
+      <translation>%1 module not loaded</translation>
     </message>
   </context>
   <context>
@@ -1298,11 +1305,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Tabulator raster (how many spaces)</source>
-      <translation type="unfinished">Tabulator raster (how many spaces)</translation>
+      <translation>Tabulator raster (how many spaces)</translation>
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
-      <translation type="unfinished">How many spaces will be inserted when pressing &lt;Tab&gt;</translation>
+      <translation>How many spaces will be inserted when pressing &lt;Tab&gt;</translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
@@ -2536,6 +2543,18 @@ opening or creation</translation>
       <source>Show axis cross by default</source>
       <translation type="unfinished">Show axis cross by default</translation>
     </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Chọn bán kính (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -3593,10 +3612,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation>Màu đơn giản</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Chọn bán kính (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Đối tượng đang được sửa</translation>
     </message>
@@ -3611,12 +3626,6 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation type="unfinished">Enable selection highlighting and use specified color</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>

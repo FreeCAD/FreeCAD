@@ -121,6 +121,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Redigera</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -1388,7 +1395,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
-      <translation type="unfinished">How many files should be listed in recent files list</translation>
+      <translation>Hur många filer ska visas i listan över senaste filer</translation>
     </message>
     <message>
       <source>Background of the main window will consist of tiles of a special image.
@@ -1556,7 +1563,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Toolbar</source>
-      <translation type="unfinished">Toolbar</translation>
+      <translation>Verktygsfält</translation>
     </message>
   </context>
   <context>
@@ -1643,7 +1650,7 @@ Kanske saknas fil-rättigheter?</translation>
     </message>
     <message>
       <source>Do not show again</source>
-      <translation type="unfinished">Do not show again</translation>
+      <translation>Visa inte igen</translation>
     </message>
     <message>
       <source>Guided Walkthrough</source>
@@ -1847,7 +1854,7 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>Quick search</source>
-      <translation type="unfinished">Quick search</translation>
+      <translation>Snabbsökning</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
@@ -2034,7 +2041,7 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>Programversion:</translation>
     </message>
   </context>
   <context>
@@ -2511,7 +2518,7 @@ bounding box size of the 3D object that is currently displayed. </translation>
     </message>
     <message>
       <source>Intensity</source>
-      <translation type="unfinished">Intensity</translation>
+      <translation>Intensitet</translation>
     </message>
     <message>
       <source>Intensity of the backlight</source>
@@ -2534,6 +2541,18 @@ opening or creation</translation>
     <message>
       <source>Show axis cross by default</source>
       <translation type="unfinished">Show axis cross by default</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Välj radie (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
     </message>
   </context>
   <context>
@@ -2855,7 +2874,7 @@ get date suffix according to the specified format</translation>
     </message>
     <message>
       <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
+      <translation>Datumformat</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
@@ -2938,7 +2957,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>Format</translation>
     </message>
   </context>
   <context>
@@ -3592,10 +3611,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation>Enkel färg</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Välj radie (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Objektet som blir redigerat</translation>
     </message>
@@ -3610,12 +3625,6 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation type="unfinished">Enable selection highlighting and use specified color</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -3721,7 +3730,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Decimals:</source>
-      <translation type="unfinished">Decimals:</translation>
+      <translation>Decimaler:</translation>
     </message>
     <message>
       <source>Decimals for the Quantity</source>
@@ -5335,7 +5344,7 @@ Vill du avsluta utan att spara din data?</translation>
     </message>
     <message>
       <source>Save history</source>
-      <translation type="unfinished">Save history</translation>
+      <translation>Spara historik</translation>
     </message>
     <message>
       <source>Saves Python history across %1 sessions</source>
@@ -5921,11 +5930,11 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>Close document</source>
-      <translation type="unfinished">Close document</translation>
+      <translation>Stäng dokument</translation>
     </message>
     <message>
       <source>Close the document</source>
-      <translation type="unfinished">Close the document</translation>
+      <translation>Stäng dokumentet</translation>
     </message>
     <message>
       <source>Reload document</source>
@@ -5964,7 +5973,7 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>Table</source>
-      <translation type="unfinished">Table</translation>
+      <translation>Tabell</translation>
     </message>
     <message>
       <source>...</source>

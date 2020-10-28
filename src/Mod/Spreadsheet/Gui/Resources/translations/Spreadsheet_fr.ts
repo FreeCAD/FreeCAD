@@ -457,11 +457,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>&amp;Contenu:</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>&amp;Alias:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example

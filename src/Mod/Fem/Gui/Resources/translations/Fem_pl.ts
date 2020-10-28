@@ -1564,7 +1564,7 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="454"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
       <source>Selection error</source>
-      <translation>Błąd selekcji</translation>
+      <translation>Błąd zaznaczenia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="412"/>
@@ -2051,17 +2051,17 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="30"/>
       <source>Y displacement</source>
-      <translation>Przesunięcie Y</translation>
+      <translation>Odkształcenie Y</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="37"/>
       <source>X displacement</source>
-      <translation>Przesunięcie X</translation>
+      <translation>Odkształcenie X</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="44"/>
       <source>Z displacement</source>
-      <translation>Przesunięcie Z</translation>
+      <translation>Odkształcenie Z</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="51"/>
@@ -2076,7 +2076,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="68"/>
       <source>Abs displacement</source>
-      <translation>Przemieszczenie całkowite</translation>
+      <translation>Odkształcenie całkowite</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="79"/>
@@ -2086,17 +2086,17 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="96"/>
       <source>Max:</source>
-      <translation>Maks:</translation>
+      <translation>Maksymalnie:</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="123"/>
       <source>Min:</source>
-      <translation>Min:</translation>
+      <translation>Minimalnie:</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="135"/>
       <source>Displacement</source>
-      <translation>Wyporność</translation>
+      <translation>Odkształcenie</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="143"/>
@@ -2329,7 +2329,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
       <source>Prescribed Displacement</source>
-      <translation>Przemieszczenie określone</translation>
+      <translation>Odkształcenie określone</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
@@ -2349,7 +2349,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>
       <source>Displacement x</source>
-      <translation>Przesunięcie x</translation>
+      <translation>Odkształcenie x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="104"/>
@@ -2374,12 +2374,12 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
       <source>Displacement y</source>
-      <translation>Przesunięcie y</translation>
+      <translation>Odkształcenie y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
       <source>Displacement z</source>
-      <translation>Przesunięcie z</translation>
+      <translation>Odkształcenie z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
@@ -2494,7 +2494,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="44"/>
       <source>Second order</source>
-      <translation>Drugiego rzędu</translation>
+      <translation>Elementy drugiego rzędu</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="53"/>
@@ -2549,7 +2549,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="144"/>
       <source>Optimize</source>
-      <translation>Optymalizacji</translation>
+      <translation>Optymalizacja</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="166"/>

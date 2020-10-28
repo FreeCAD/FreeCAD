@@ -309,12 +309,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="195"/>
       <source>Mirror Mesh Feature...</source>
-      <translation type="unfinished">Mirror Mesh Feature...</translation>
+      <translation>Funkcia Zrkadliť sieť prvkov...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="196"/>
       <source>Create Mirror Mesh Feature</source>
-      <translation type="unfinished">Create Mirror Mesh Feature</translation>
+      <translation>Zrkadlí sieť prvkov</translation>
     </message>
   </context>
   <context>
@@ -361,12 +361,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="254"/>
       <source>Resize Mesh Feature...</source>
-      <translation type="unfinished">Resize Mesh Feature...</translation>
+      <translation>Funkcia Zmeny veľkosti siete...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="255"/>
       <source>Create Resize Mesh Feature</source>
-      <translation type="unfinished">Create Resize Mesh Feature</translation>
+      <translation>Zmení veľkosť siete</translation>
     </message>
   </context>
   <context>
@@ -374,12 +374,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="224"/>
       <source>Scale Mesh Feature...</source>
-      <translation type="unfinished">Scale Mesh Feature...</translation>
+      <translation>Funkcia zmeny mierky siete...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="225"/>
       <source>Create Scale Mesh Feature</source>
-      <translation type="unfinished">Create Scale Mesh Feature</translation>
+      <translation>Zmení mierku siete</translation>
     </message>
   </context>
   <context>

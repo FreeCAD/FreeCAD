@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation type="unfinished">Annotation Styles Editor</translation>
+      <translation>Edytor stylów adnotacji</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="249"/>
       <source>The number of decimals to show for dimension values</source>
-      <translation type="unfinished">The number of decimals to show for dimension values</translation>
+      <translation>Liczba miejsc po przecinku dla wartości wymiarów</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="242"/>
@@ -211,7 +211,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="361"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation type="unfinished">If it is checked it will display the dimension line</translation>
+      <translation>Jeśli jest zaznaczone, wyświetli linię wymiaru</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
@@ -226,7 +226,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="404"/>
       <source>The type of arrows or markers to use at the end of dimension lines</source>
-      <translation type="unfinished">The type of arrows or markers to use at the end of dimension lines</translation>
+      <translation>Typ strzałek lub znaczników do użycia na końcu linii wymiaru</translation>
     </message>
   </context>
   <context>
@@ -413,7 +413,7 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal array</source>
-      <translation type="unfinished">Orthogonal array</translation>
+      <translation>Szyk prostokątny</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
@@ -525,8 +525,8 @@ Wartości ujemne będą skutkować kopiami wykonanymi w przeciwnym kierunku.</tr
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="366"/>
       <source>Number of elements in the array in the specified direction, including a copy of the original object.
 The number must be at least 1 in each direction.</source>
-      <translation type="unfinished">Number of elements in the array in the specified direction, including a copy of the original object.
-The number must be at least 1 in each direction.</translation>
+      <translation>Liczba elementów tablicy we wskazanym kierunku, łącznie z kopią oryginalnego obiektu.
+Liczba ta musi wynosić co najmniej 1 w każdym kierunku.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="370"/>
@@ -846,27 +846,37 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="212"/>
       <source>Snapping radius</source>
-      <translation type="unfinished">Snapping radius</translation>
+      <translation>Promień przyciągania</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="221"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="241"/>
       <source>Centers the view on the current working plane</source>
       <translation type="unfinished">Centers the view on the current working plane</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="224"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="244"/>
       <source>Center view</source>
       <translation>Widok wyśrodkowany</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="231"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="251"/>
       <source>Resets the working plane to its previous position</source>
       <translation>Resetuje płaszczyznę roboczą do poprzedniej pozycji</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="234"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="254"/>
       <source>Previous</source>
       <translation>Poprzedni</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="219"/>
+      <source>Grid extension</source>
+      <translation type="unfinished">Grid extension</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="226"/>
+      <source> lines</source>
+      <translation> linie</translation>
     </message>
   </context>
   <context>
@@ -937,7 +947,7 @@ value by using the [ and ] keys while drawing</translation>
 It can be a font name such as "Arial", a default style such as "sans", "serif"
 or "mono", or a family such as "Arial,Helvetica,sans" or a name with a style
 such as "Arial:Bold"</source>
-      <translation>To jest nazwa domyślnej czcionki dla wszystkich tekstów i wymiarów. Może to być np. nazwa czcionki "Arial", domyślny styl, tak jak "sans", "serif" lub "mono" lub rodziny, jak np. "Arial, Helvetica, sans "lub nazwę w stylu np." Arial: Bold "</translation>
+      <translation>To jest nazwa domyślnej czcionki dla wszystkich tekstów i wymiarów. Może to być np. nazwa czcionki "Arial", domyślny styl, tak jak "sans", "serif" lub "mono" lub rodziny, jak np. "Arial, Helvetica, sans" lub nazwa w stylu np. "Arial: Bold"</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="151"/>
@@ -972,7 +982,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-oca.ui" line="46"/>
       <source>Check this if you want the areas (3D faces) to be imported too.</source>
-      <translation>Zaznacz jeśli chcesz zaimportować powierzchnie (3D face).</translation>
+      <translation>Zaznacz tę opcję, jeśli chcesz, aby obszary (powierzchnie 3D) również były importowane.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="49"/>
@@ -1102,7 +1112,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="219"/>
       <source>If checked, the Snap toolbar will be shown whenever you use snapping</source>
-      <translation>Jeśli ta opcja jest zaznaczona, przyciąganie paska narzędzi pojawi się gdy używasz, opcji przyciągania</translation>
+      <translation>Jeśli to pole jest zaznaczone, pasek narzędzi Przyciąganie będzie wyświetlany przy każdym użyciu funkcji przyciągania</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="222"/>
@@ -1132,17 +1142,17 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="431"/>
       <source>Import hatch boundaries as wires</source>
-      <translation>Importowanie granic kreskowania jako przewodów</translation>
+      <translation>Importuj obwiednie kreskowania jako linie łamane</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="452"/>
       <source>Render polylines with width</source>
-      <translation>Renderowanie polilinii o szerokości</translation>
+      <translation>Renderuj polilinie o szerokości</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="141"/>
       <source>Translated (for print &amp; display)</source>
-      <translation>Przetłumaczone (dla drukowania i wyświetlania)</translation>
+      <translation>Skonwertowane (dla druku i wyświetlania)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="146"/>
@@ -1182,7 +1192,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="132"/>
       <source>Import</source>
-      <translation>Importuj</translation>
+      <translation>Import</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="142"/>
@@ -1207,7 +1217,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="597"/>
       <source>Project exported objects along current view direction</source>
-      <translation>Projekt eksportuje obiekty wzdłuż aktualnego kierunku widoku</translation>
+      <translation>Projektuj wyeksportowane obiekty wzdłuż bieżącego kierunku widoku</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="14"/>
@@ -1295,7 +1305,7 @@ such as "Arial:Bold"</source>
       <translation>Przestrzeń między linią wymiarową i tekstem wymiarowym</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="497"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="534"/>
       <source>Select a font file</source>
       <translation>Wybierz plik czcionki</translation>
     </message>
@@ -1312,7 +1322,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="217"/>
       <source>simple Part shapes</source>
-      <translation>proste kształty Części</translation>
+      <translation>Podstawowe kształty Części</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="236"/>
@@ -1332,12 +1342,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="472"/>
       <source>Treat ellipses and splines as polylines</source>
-      <translation>Traktuj elipsy i krzywe składane jako polilinie</translation>
+      <translation>Traktuj elipsy i spliny jako polilinie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="121"/>
       <source>Export style</source>
-      <translation>Styl eksportu</translation>
+      <translation>Eksportu stylu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="455"/>
@@ -1347,7 +1357,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="93"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
-      <translation>Pozwól FreeCAD na automatyczne pobieranie i aktualizację bibliotek DXF</translation>
+      <translation>Pozwól programowi FreeCAD na automatyczne pobieranie i aktualizację bibliotek DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="209"/>
@@ -1375,32 +1385,32 @@ such as "Arial:Bold"</source>
       <translation> tekst wewnątrz (3D)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="326"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="375"/>
       <source>Dashed line definition</source>
       <translation>Definicja linii przerywanej</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="349"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
       <source>0.09,0.05</source>
       <translation>0.09,0.05</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="369"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="418"/>
       <source>Dashdot line definition</source>
       <translation>Definicja linii przerywanej</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="392"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
       <source>0.09,0.05,0.02,0.05</source>
       <translation>0.09,0.05,0.02,0.05</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="412"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="461"/>
       <source>Dotted line definition</source>
       <translation>Definicja linii kropkowanej</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="435"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
       <source>0.02,0.02</source>
       <translation>0.02,0.02</translation>
     </message>
@@ -1455,17 +1465,17 @@ such as "Arial:Bold"</source>
       <translation>Odstępy w tekście</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="476"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="513"/>
       <source>ShapeString settings</source>
       <translation>Ustawienia ShapeString</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="484"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="521"/>
       <source>Default ShapeString font file</source>
       <translation>Domyślny plik czcionki ShapeString</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="318"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="367"/>
       <source>Drawing view line definitions</source>
       <translation>Rysowanie widoku definicji lini</translation>
     </message>
@@ -1482,7 +1492,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Notatka:&lt;/span&gt; Opcje DXF odnoszące się do plików DWG również.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Wskazówka:&lt;/span&gt; Opcje DXF mają zastosowanie również do plików DWG.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="14"/>
@@ -1497,7 +1507,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="46"/>
       <source>Use legacy python importer</source>
-      <translation>Użycie dziedziczonego importera Pythona</translation>
+      <translation>Użyj starszego importera Python</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="107"/>
@@ -1527,17 +1537,17 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="123"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
-      <translation>Wskazówka: Nie wszystkie opcje poniżej są używane przez nowego importera</translation>
+      <translation>Wskazówka: Nie wszystkie opcje prezentowane poniżej są używane przez nowego importera</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="29"/>
       <source>Show this dialog when importing and exporting</source>
-      <translation>Pokaz komunikat podczas importu i eksportu</translation>
+      <translation>Pokaż okno dialogowe podczas importowania i eksportowania</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="80"/>
       <source>Automatic update (legacy importer only)</source>
-      <translation>Automatyczna aktualizacja (tylko bazowy importer)</translation>
+      <translation>Automatyczna aktualizacja (tylko starszy importer)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="341"/>
@@ -1547,12 +1557,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="272"/>
       <source>Scale factor to apply to imported files</source>
-      <translation>Współczynnik skali stosowany do importowanych plików</translation>
+      <translation>Współczynnik skalowania do zastosowania przy imporcie plików</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="181"/>
       <source>Max segment length for discretized arcs</source>
-      <translation>Max segment length for discretized arcs</translation>
+      <translation>Maksymalna długość segmentu dla łuków dyskretnych</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="161"/>
@@ -1605,7 +1615,7 @@ such as "Arial:Bold"</source>
       <translation>Jeśli jest zaznaczone, podczas operacji rysowania pojawia się widżet wskazujący bieżącą orientację płaszczyzny roboczej</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="432"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="481"/>
       <source>An SVG linestyle definition</source>
       <translation>Definicja rodzaju linii SVG</translation>
     </message>
@@ -1645,34 +1655,34 @@ such as "Arial:Bold"</source>
       <translation>Odhacz-2</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="277"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="326"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
       <translation>Zaznacz to, jeśli chcesz zachować kolory ściany podczas wykonywania obniżania i podnoszenia (tylko przy dzieleniu ściany i tworzeniu powłoki)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="329"/>
       <source>Preserve colors of faces during downgrade/upgrade</source>
       <translation>Zachowaj kolory powierzchni podczas obniżania / podnoszenia</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="297"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="346"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
       <translation>Zaznacz to pole, jeśli chcesz, aby nazwy powierzchni pochodziły od nazwy obiektu źródłowego i podobnie podczas wykonywania obniżania i podnoszenia (tylko przy dzieleniu ściany i tworzeniu powłoki)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="349"/>
       <source>Preserve names of faces during downgrade/upgrade</source>
       <translation>Zachowaj kolory powierzchni podczas obniżania / podnoszenia</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
       <source>The path to your ODA (formerly Teigha) File Converter executable</source>
-      <translation>Ścieżka do pliku wykonywalnego ODA (dawniej Teigha) File Converter</translation>
+      <translation>Ścieżka do twojego pliku konwertera ODA (wcześniej Teigha)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="469"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
-      <translation>Eksport elipsy jest źle obsługiwany. Użyj tego aby eksportować je jako polilinie zamiast tego.</translation>
+      <translation>Eksport elipsy jest słabo wspierany. Użyj tej opcji, aby wyeksportować je jako polilinie.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="501"/>
@@ -1693,7 +1703,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-dxf.ui" line="67"/>
       <source>Use legacy python exporter</source>
-      <translation>Użyj starszego eksportera pytona</translation>
+      <translation>Użyj starszego eksportera Python</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="247"/>
@@ -1908,7 +1918,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draft.ui" line="194"/>
       <source>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</source>
-      <translation type="unfinished">If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</translation>
+      <translation>Jeśli ta opcja jest zaznaczona, lista rozwijana warstw wyświetli również grupy, co pozwoli ci automatycznie dodawać do nich obiekty.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="197"/>
@@ -1918,7 +1928,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draft.ui" line="216"/>
       <source>Draft tools options</source>
-      <translation type="unfinished">Draft tools options</translation>
+      <translation>Opcje narzędzi do szkicowania</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="230"/>
@@ -2033,27 +2043,27 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-dwg.ui" line="34"/>
       <source>Path to ODA file converter</source>
-      <translation type="unfinished">Path to ODA file converter</translation>
+      <translation>Ścieżka do konwertera plików ODA</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
-      <translation type="unfinished">This preferences dialog will be shown when importing/ exporting DXF files</translation>
+      <translation>Okno dialogowe będzie wyświetlane podczas importowania / eksportowania plików DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="42"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
-      <translation>Importer Pythona jest używany, w przeciwnym razie używany jest nowszy C++.
-Uwaga: C++ importer jest szybszy, ale nie jest jeszcze tak funkcjonalny</translation>
+      <translation>Jeśli opcja jest zaznaczona stosowany jest importer Python, w przeciwnym razie stosowany jest nowszy importer C++.
+Uwaga: Importer C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="62"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet
       </source>
-      <translation>Eksporter Pythona jest używany, w przeciwnym razie użyto nowszego C++.
-Uwaga: C++ importer jest szybszy, ale nie jest jeszcze tak funkcjonalny
+      <translation>Jeśli opcja jest zaznaczona stosowany jest eksporter Python, w przeciwnym razie stosowany jest nowszy eksporter C++.
+Uwaga: eksporter C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny
       </translation>
     </message>
     <message>
@@ -2061,44 +2071,44 @@ Uwaga: C++ importer jest szybszy, ale nie jest jeszcze tak funkcjonalny
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
-      <translation type="unfinished">Allow FreeCAD to download the Python converter for DXF import and export.
-You can also do this manually by installing the "dxf_library" workbench
-from the Addon Manager.</translation>
+      <translation>Zezwól programowi FreeCAD na pobranie konwertera Python do importu i eksportu plików DXF.
+Można to również zrobić ręcznie, instalując środowisko pracy „dxf_library”
+z Menedżera dodatków.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="139"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
-      <translation>Jeśli to pole wyboru nie jest zaznaczone, teksty / mteksty nie zostaną zaimportowane</translation>
+      <translation>Jeśli to pole nie jest zaznaczone, teksty / meta teksty nie zostaną zaimportowane</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="155"/>
       <source>If unchecked, points won't be imported</source>
-      <translation>Jeśli odznaczone, punkty nie zostaną zaimportowane</translation>
+      <translation>Jeśli to pole nie jest zaznaczone, punkty nie zostaną zaimportowane</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="171"/>
       <source>If checked, paper space objects will be imported too</source>
-      <translation type="unfinished">If checked, paper space objects will be imported too</translation>
+      <translation>Jeśli opcja jest zaznaczona, zaimportowane zostaną również obiekty z obszaru papieru</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation type="unfinished">If you want the non-named blocks (beginning with a *) to be imported too</translation>
+      <translation>Zaznacz ta opcje jeśli chcesz, aby zaimportować również bloki bez nazwy (zaczynające się od *)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="214"/>
       <source>Only standard Part objects will be created (fastest)</source>
-      <translation type="unfinished">Only standard Part objects will be created (fastest)</translation>
+      <translation>Zostaną utworzone tylko standardowe obiekty części (opcja najszybsza)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="233"/>
       <source>Parametric Draft objects will be created whenever possible</source>
-      <translation type="unfinished">Parametric Draft objects will be created whenever possible</translation>
+      <translation>W miarę możliwości będą tworzone parametryczne rysunki obiektów</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="249"/>
       <source>Sketches will be created whenever possible</source>
-      <translation type="unfinished">Sketches will be created whenever possible</translation>
+      <translation>W miarę możliwości zostaną utworzone szkice</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="292"/>
@@ -2106,43 +2116,43 @@ from the Addon Manager.</translation>
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
                              in meters: 1000, in inches: 25.4, in feet: 304.8</source>
-      <translation type="unfinished">Scale factor to apply to DXF files on import.
-The factor is the conversion between the unit of your DXF file and millimeters.
-Example: for files in millimeters: 1, in centimeters: 10,
-                             in meters: 1000, in inches: 25.4, in feet: 304.8</translation>
+      <translation>Współczynnik skalowania do zastosowania przy imporcie plików DXF.
+Współczynnik ten stanowi przelicznik pomiędzy jednostką z Twojego pliku DXF a milimetrami.
+Przykład: dla plików w milimetrach: 1, w centymetrach: 10,
+                             w metrach: 1000, w calach: 25,4, w stopach: 304.8</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="321"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
-      <translation>Kolory będą pobierane z obiektów DXF kiedy tylko jest to możliwe.
-W przeciwnym razie zostaną zastosowane domyślne kolory. </translation>
+      <translation>Barwy zostaną pobrane z obiektów DXF, gdy tylko będzie to możliwe.
+W przeciwnym razie zostaną zastosowane barwy domyślne. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
-      <translation type="unfinished">FreeCAD will try to join coincident objects into wires.
-Note that this can take a while!</translation>
+      <translation>FreeCAD będzie próbował łączyć przypadkowe obiekty w linie łamane.
+Zauważ, że to może być czasochłonne!</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="363"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
-      <translation type="unfinished">Objects from the same layers will be joined into Draft Blocks,
-turning the display faster, but making them less easily editable </translation>
+      <translation>Jeśli opcja jest zaznaczona, obiekty z tych samych warstw zostaną połączone w Bloki Szkiców,
+umożliwi to szybsze obracanie obrazu na wyświetlaczu, ale czyni je mniej łatwymi do edycji </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="384"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
-      <translation type="unfinished">Imported texts will get the standard Draft Text size,
-instead of the size they have in the DXF document</translation>
+      <translation>Importowane teksty uzyskają standardowy rozmiar tekstu w projekcie,
+zamiast rozmiaru, który mają w dokumencie DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="405"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation type="unfinished">If this is checked, DXF layers will be imported as Draft Layers</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, warstwy DXF zostaną zaimportowane jako warstwy robocze</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="408"/>
@@ -2152,69 +2162,69 @@ instead of the size they have in the DXF document</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="428"/>
       <source>Hatches will be converted into simple wires</source>
-      <translation type="unfinished">Hatches will be converted into simple wires</translation>
+      <translation>Kreskowanie zostanie zamienione na podstawowe linie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
-      <translation type="unfinished">If polylines have a width defined, they will be rendered
-as closed wires with correct width</translation>
+      <translation>Jeśli polilinie mają zdefiniowaną szerokość, będą renderowane
+jako zamknięte linie łamane o odpowiedniej szerokości</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="511"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
-      <translation type="unfinished">Maximum length of each of the polyline segments.
-If it is set to '0' the whole spline is treated as a straight segment.</translation>
+      <translation>Maksymalna długość każdego z segmentów polilinii.
+Jeśli jest ustawiona na "0", cały splajn jest traktowany jako odcinek prosty.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="550"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
-      <translation type="unfinished">All objects containing faces will be exported as 3D polyfaces</translation>
+      <translation>Wszystkie obiekty zawierające ściany zostaną wyeksportowane jako trójwymiarowe powierzchnie czołowe</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
       <source>Drawing Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
-      <translation type="unfinished">Drawing Views will be exported as blocks.
-This might fail for post DXF R12 templates.</translation>
+      <translation>Widoki rysunków roboczych będą eksportowane jako bloki.
+Może się to nie udać w przypadku szablonów po DXF R12.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="594"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
-      <translation type="unfinished">Exported objects will be projected to reflect the current view direction</translation>
+      <translation>Eksportowane obiekty będą rzutowane tak, aby odzwierciedlały aktualny kierunek widoku</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
       <source>Method chosen for importing SVG object color to FreeCAD</source>
-      <translation type="unfinished">Method chosen for importing SVG object color to FreeCAD</translation>
+      <translation>Metoda wybrana do importu kolorów obiektów SVG do FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="82"/>
       <source>If checked, no units conversion will occur.
 One unit in the SVG file will translate as one millimeter. </source>
-      <translation type="unfinished">If checked, no units conversion will occur.
-One unit in the SVG file will translate as one millimeter. </translation>
+      <translation>Jeśli opcja ta jest zaznaczona, nie będzie miała miejsca żadna konwersja jednostek.
+Jedna jednostka z pliku SVG zostanie przeliczona na jeden milimetr. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="128"/>
       <source>Style of SVG file to write when exporting a sketch</source>
-      <translation type="unfinished">Style of SVG file to write when exporting a sketch</translation>
+      <translation>Styl do zapisu pliku SVG podczas eksportu szkicu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="158"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
-      <translation type="unfinished">All white lines will appear in black in the SVG for better readability against white backgrounds</translation>
+      <translation>Wszystkie białe linie pojawią się w pliku SVG w kolorze czarnym, dla lepszej czytelności na białym tle</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="204"/>
       <source>Versions of Open CASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length. </source>
-      <translation type="unfinished">Versions of Open CASCADE older than version 6.8 don't support arc projection.
-In this case arcs will be discretized into small line segments.
-This value is the maximum segment length. </translation>
+      <translation>Wersje Open CASCADE starsze niż wersja 6.8 nie obsługują rzutowania łuków.
+W tym przypadku łuki zostaną rozbite na małe odcinki linii.
+Wartość ta jest maksymalną długością segmentu. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="310"/>
@@ -2225,6 +2235,31 @@ This value is the maximum segment length. </translation>
       <location filename="../ui/preferences-draftsnap.ui" line="313"/>
       <source>Show grid border</source>
       <translation>Pokaż granicę siatki</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="475"/>
+      <source>Override unit</source>
+      <translation type="unfinished">Override unit</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="495"/>
+      <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
+      <translation type="unfinished">By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="257"/>
+      <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
+      <translation type="unfinished">The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+      <source>Hatch Pattern default size</source>
+      <translation type="unfinished">Hatch Pattern default size</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+      <source>The default size of hatch patterns</source>
+      <translation type="unfinished">The default size of hatch patterns</translation>
     </message>
   </context>
   <context>
@@ -2250,7 +2285,7 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../../importSVG.py" line="1826"/>
       <source>The export list contains no object with a valid bounding box</source>
-      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
+      <translation>Lista eksportowa nie zawiera żadnego obiektu w aktualnym polu wyboru</translation>
     </message>
   </context>
   <context>
@@ -2413,7 +2448,7 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../../DraftGui.py" line="547"/>
       <source>Auto</source>
-      <translation>Automatyczny</translation>
+      <translation>Automatycznie</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="648"/>
@@ -2771,7 +2806,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../DraftGui.py" line="645"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
-      <translation type="unfinished">If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</translation>
+      <translation>Jeśli opcja jest zaznaczona, obiekty będą kopiowane, a nie przenoszone. Preferencje -&gt; Wersja robocza -&gt; Globalny tryb kopiowania, opcja umożliwia zachowanie tego trybu w następnych poleceniach</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="59"/>

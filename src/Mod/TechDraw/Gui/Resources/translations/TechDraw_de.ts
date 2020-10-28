@@ -69,7 +69,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="977"/>
       <source>Add Cosmetic Line Through 2 Points</source>
-      <translation>Kosmetische Linie durch 2 Punkte hinzufügen</translation>
+      <translation>Hilfslinie durch 2 Punkte hinzufügen</translation>
     </message>
   </context>
   <context>
@@ -1439,12 +1439,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1072"/>
       <source>Selection is not a Cosmetic Line.</source>
-      <translation type="unfinished">Selection is not a Cosmetic Line.</translation>
+      <translation>Auswahl ist keine Hilfslinie.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1109"/>
       <source>You must select 2 Vertexes.</source>
-      <translation type="unfinished">You must select 2 Vertexes.</translation>
+      <translation>Es müssen 2 Punkte ausgewählt werden.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1285"/>
@@ -1681,12 +1681,12 @@
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="151"/>
       <source>Create Cosmetic Line</source>
-      <translation type="unfinished">Create Cosmetic Line</translation>
+      <translation>Hilfslinie erstellen</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="186"/>
       <source>Edit Cosmetic Line</source>
-      <translation type="unfinished">Edit Cosmetic Line</translation>
+      <translation>Hilfslinie bearbeiten</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="125"/>
@@ -3635,7 +3635,7 @@ siehe FreeCAD Wiki &apos;2LineCenterLine&apos; für eine Beschreibung</translati
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="26"/>
       <source>Cosmetic Line</source>
-      <translation type="unfinished">Cosmetic Line</translation>
+      <translation>Hilfslinie</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="34"/>
@@ -3646,13 +3646,13 @@ siehe FreeCAD Wiki &apos;2LineCenterLine&apos; für eine Beschreibung</translati
       <location filename="../../TaskCosmeticLine.ui" line="61"/>
       <location filename="../../TaskCosmeticLine.ui" line="134"/>
       <source>2d Point</source>
-      <translation type="unfinished">2d Point</translation>
+      <translation>2D-Punkt</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="74"/>
       <location filename="../../TaskCosmeticLine.ui" line="147"/>
       <source>3d Point</source>
-      <translation type="unfinished">3d Point</translation>
+      <translation>3D-Punkt</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="88"/>

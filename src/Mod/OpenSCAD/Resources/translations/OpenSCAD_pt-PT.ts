@@ -309,12 +309,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="195"/>
       <source>Mirror Mesh Feature...</source>
-      <translation type="unfinished">Mirror Mesh Feature...</translation>
+      <translation>Espelhar recurso da malha...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="196"/>
       <source>Create Mirror Mesh Feature</source>
-      <translation type="unfinished">Create Mirror Mesh Feature</translation>
+      <translation>Criar Recurso Espelho de Malha</translation>
     </message>
   </context>
   <context>
@@ -361,12 +361,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="254"/>
       <source>Resize Mesh Feature...</source>
-      <translation type="unfinished">Resize Mesh Feature...</translation>
+      <translation>Redimensionar recurso da malha...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="255"/>
       <source>Create Resize Mesh Feature</source>
-      <translation type="unfinished">Create Resize Mesh Feature</translation>
+      <translation>Criar Recurso Redimensionar Malha</translation>
     </message>
   </context>
   <context>
@@ -374,12 +374,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="224"/>
       <source>Scale Mesh Feature...</source>
-      <translation type="unfinished">Scale Mesh Feature...</translation>
+      <translation>Escalar Recurso da Malha...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="225"/>
       <source>Create Scale Mesh Feature</source>
-      <translation type="unfinished">Create Scale Mesh Feature</translation>
+      <translation>Criar Recurso Redimensionar Malha</translation>
     </message>
   </context>
   <context>

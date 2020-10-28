@@ -16,7 +16,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Para adicionar referências: selecione-as na vista 3D e clique "Adicionar".</translation>
     </message>
   </context>
   <context>

@@ -122,6 +122,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>편집</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -2534,6 +2541,18 @@ opening or creation</translation>
       <source>Show axis cross by default</source>
       <translation type="unfinished">Show axis cross by default</translation>
     </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation type="unfinished">Pick radius (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -3591,10 +3610,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation>간단한 색상</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation type="unfinished">Pick radius (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation type="unfinished">Object being edited</translation>
     </message>
@@ -3609,12 +3624,6 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation type="unfinished">Enable selection highlighting and use specified color</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>

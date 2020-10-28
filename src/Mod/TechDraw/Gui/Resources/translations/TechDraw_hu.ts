@@ -6,7 +6,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="651"/>
       <source>Add Centerline between 2 Lines</source>
-      <translation type="unfinished">Add Centerline between 2 Lines</translation>
+      <translation>Középvonal hozzáadása 2 egyenes között</translation>
     </message>
   </context>
   <context>
@@ -14,7 +14,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="655"/>
       <source>Add Centerline between 2 Points</source>
-      <translation type="unfinished">Add Centerline between 2 Points</translation>
+      <translation>Középvonal hozzáadása 2 pont között</translation>
     </message>
   </context>
   <context>
@@ -22,7 +22,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="295"/>
       <source>Add Midpoint Vertices</source>
-      <translation type="unfinished">Add Midpoint Vertices</translation>
+      <translation>Középponti csúcspontok hozzáadása</translation>
     </message>
   </context>
   <context>
@@ -30,7 +30,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="299"/>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>Negyedelő csúcspontok hozzáadása</translation>
     </message>
   </context>
   <context>
@@ -43,7 +43,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="787"/>
       <source>Add Centerline between 2 Lines</source>
-      <translation type="unfinished">Add Centerline between 2 Lines</translation>
+      <translation>Középvonal hozzáadása 2 egyenes között</translation>
     </message>
   </context>
   <context>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="864"/>
       <source>Add Centerline between 2 Points</source>
-      <translation type="unfinished">Add Centerline between 2 Points</translation>
+      <translation>Középvonal hozzáadása 2 pont között</translation>
     </message>
   </context>
   <context>
@@ -69,7 +69,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="977"/>
       <source>Add Cosmetic Line Through 2 Points</source>
-      <translation type="unfinished">Add Cosmetic Line Through 2 Points</translation>
+      <translation>Két pont általi kozmetikai vonal beszúrása</translation>
     </message>
   </context>
   <context>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="885"/>
       <source>Insert 3-Point Angle Dimension</source>
-      <translation type="unfinished">Insert 3-Point Angle Dimension</translation>
+      <translation>3 pontos szögméretvonal beszúrása</translation>
     </message>
   </context>
   <context>
@@ -95,7 +95,7 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Insert Active View (3D View)</source>
-      <translation type="unfinished">Insert Active View (3D View)</translation>
+      <translation>Aktív nézet beszúrása (3D nézet)</translation>
     </message>
   </context>
   <context>
@@ -108,7 +108,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="797"/>
       <source>Insert Angle Dimension</source>
-      <translation type="unfinished">Insert Angle Dimension</translation>
+      <translation>Szögméretvonal beszúrása</translation>
     </message>
   </context>
   <context>
@@ -134,12 +134,12 @@
     <message>
       <location filename="../../Command.cpp" line="1126"/>
       <source>Insert Arch Workbench Object</source>
-      <translation type="unfinished">Insert Arch Workbench Object</translation>
+      <translation>Építészeti munkafelületi tárgy beszúrása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1127"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
-      <translation type="unfinished">Insert a View of a Section Plane from Arch Workbench</translation>
+      <translation>Szakaszsík nézetének beszúrása az Építészeti munkafelületből</translation>
     </message>
   </context>
   <context>
@@ -152,7 +152,7 @@
     <message>
       <location filename="../../Command.cpp" line="755"/>
       <source>Insert Balloon Annotation</source>
-      <translation type="unfinished">Insert Balloon Annotation</translation>
+      <translation>Buborékjegyzet beszúrása</translation>
     </message>
   </context>
   <context>
@@ -165,12 +165,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="574"/>
       <source>Insert Center Line</source>
-      <translation type="unfinished">Insert Center Line</translation>
+      <translation>Középvonal beszúrása</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="647"/>
       <source>Add Centerline to Faces</source>
-      <translation type="unfinished">Add Centerline to Faces</translation>
+      <translation>Középvonal hozzáadása a felületekhez</translation>
     </message>
   </context>
   <context>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../Command.cpp" line="804"/>
       <source>Insert Clip Group</source>
-      <translation type="unfinished">Insert Clip Group</translation>
+      <translation>Kivágás csoport beszúrása</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="843"/>
       <source>Add View to Clip Group</source>
-      <translation type="unfinished">Add View to Clip Group</translation>
+      <translation>Nézet hozzáadása a kivágás csoporthoz</translation>
     </message>
   </context>
   <context>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="926"/>
       <source>Remove View from Clip Group</source>
-      <translation type="unfinished">Remove View from Clip Group</translation>
+      <translation>Nézet eltávolítása kivágás csoportból</translation>
     </message>
   </context>
   <context>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1129"/>
       <source>Remove Cosmetic Object</source>
-      <translation type="unfinished">Remove Cosmetic Object</translation>
+      <translation>Kozmetikai objektum eltávolítása</translation>
     </message>
   </context>
   <context>
@@ -235,7 +235,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="395"/>
       <source>Add Cosmetic Vertex</source>
-      <translation type="unfinished">Add Cosmetic Vertex</translation>
+      <translation>Kozmetikai csúcspont hozzáadása</translation>
     </message>
   </context>
   <context>
@@ -248,12 +248,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="216"/>
       <source>Insert Cosmetic Vertex</source>
-      <translation type="unfinished">Insert Cosmetic Vertex</translation>
+      <translation>Szépítő csúcsvégpont beillesztése</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="291"/>
       <source>Add Cosmetic Vertex</source>
-      <translation type="unfinished">Add Cosmetic Vertex</translation>
+      <translation>Kozmetikai csúcspont hozzáadása</translation>
     </message>
   </context>
   <context>
@@ -266,7 +266,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1256"/>
       <source>Change Appearance of Lines</source>
-      <translation type="unfinished">Change Appearance of Lines</translation>
+      <translation>Egyenesek megjelenésének módosítása</translation>
     </message>
   </context>
   <context>
@@ -279,7 +279,7 @@
     <message>
       <location filename="../../Command.cpp" line="485"/>
       <source>Insert Detail View</source>
-      <translation type="unfinished">Insert Detail View</translation>
+      <translation>Részletnézet beszúrása</translation>
     </message>
   </context>
   <context>
@@ -292,7 +292,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="373"/>
       <source>Insert Diameter Dimension</source>
-      <translation type="unfinished">Insert Diameter Dimension</translation>
+      <translation>Átmérő méretvonalának beszúrása</translation>
     </message>
   </context>
   <context>
@@ -305,7 +305,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="124"/>
       <source>Insert Dimension</source>
-      <translation type="unfinished">Insert Dimension</translation>
+      <translation>Méretvonal beszúrása</translation>
     </message>
   </context>
   <context>
@@ -318,7 +318,7 @@
     <message>
       <location filename="../../Command.cpp" line="1060"/>
       <source>Insert Draft Workbench Object</source>
-      <translation type="unfinished">Insert Draft Workbench Object</translation>
+      <translation>Tervrajz munkafelületi tárgy beszúrása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1061"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../Command.cpp" line="1294"/>
       <source>Export Page as DXF</source>
-      <translation type="unfinished">Export Page as DXF</translation>
+      <translation>Oldal exportálása DXF-ként</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1327"/>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../Command.cpp" line="1250"/>
       <source>Export Page as SVG</source>
-      <translation type="unfinished">Export Page as SVG</translation>
+      <translation>Oldal exportálása SVG-ként</translation>
     </message>
   </context>
   <context>
@@ -372,17 +372,17 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1055"/>
       <source>Insert Extent Dimension</source>
-      <translation type="unfinished">Insert Extent Dimension</translation>
+      <translation>Határérték méreteinek beszúrása</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1121"/>
       <source>Horizontal Extent</source>
-      <translation type="unfinished">Horizontal Extent</translation>
+      <translation>Vízszintes kiterjedés</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1125"/>
       <source>Vertical Extent</source>
-      <translation type="unfinished">Vertical Extent</translation>
+      <translation>Függőleges kiterjedés</translation>
     </message>
   </context>
   <context>
@@ -395,7 +395,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="677"/>
       <source>Add Centerline to Faces</source>
-      <translation type="unfinished">Add Centerline to Faces</translation>
+      <translation>Középvonal hozzáadása a felületekhez</translation>
     </message>
   </context>
   <context>
@@ -421,7 +421,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="206"/>
       <source>Hatch a Face using Image File</source>
-      <translation type="unfinished">Hatch a Face using Image File</translation>
+      <translation>Felület sraffozása képfájllal</translation>
     </message>
   </context>
   <context>
@@ -434,7 +434,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="594"/>
       <source>Insert Horizontal Dimension</source>
-      <translation type="unfinished">Insert Horizontal Dimension</translation>
+      <translation>Vízszintes méret beszúrása</translation>
     </message>
   </context>
   <context>
@@ -447,7 +447,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1148"/>
       <source>Insert Horizontal Extent Dimension</source>
-      <translation type="unfinished">Insert Horizontal Extent Dimension</translation>
+      <translation>Vízszintes kiterjedésdimenzió beszúrása</translation>
     </message>
   </context>
   <context>
@@ -460,13 +460,13 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="396"/>
       <source>Insert Bitmap Image</source>
-      <translation type="unfinished">Insert Bitmap Image</translation>
+      <translation>Bitkép beillesztése</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="397"/>
       <location filename="../../CommandDecorate.cpp" line="399"/>
       <source>Insert Bitmap from a file into a page</source>
-      <translation type="unfinished">Insert Bitmap from a file into a page</translation>
+      <translation>Bitkép beszúrása az oldalra egy fájlból</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="414"/>
@@ -489,7 +489,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1318"/>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
-      <translation type="unfinished">Insert Landmark Dimension - EXPERIMENTAL</translation>
+      <translation>Tájékozódási pontszerű dimenzió beszúrása - KÍSÉRLETI</translation>
     </message>
   </context>
   <context>
@@ -502,7 +502,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="102"/>
       <source>Add Leaderline to View</source>
-      <translation type="unfinished">Add Leaderline to View</translation>
+      <translation>Vezérvonal hozzáadása a nézethez</translation>
     </message>
   </context>
   <context>
@@ -515,7 +515,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="494"/>
       <source>Insert Length Dimension</source>
-      <translation type="unfinished">Insert Length Dimension</translation>
+      <translation>Hosszméret beszúrása</translation>
     </message>
   </context>
   <context>
@@ -528,7 +528,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="977"/>
       <source>Link Dimension to 3D Geometry</source>
-      <translation type="unfinished">Link Dimension to 3D Geometry</translation>
+      <translation>Dimenzió csatolása 3D geometriához</translation>
     </message>
   </context>
   <context>
@@ -541,7 +541,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="456"/>
       <source>Add Midpoint Vertices</source>
-      <translation type="unfinished">Add Midpoint Vertices</translation>
+      <translation>Középponti csúcspontok hozzáadása</translation>
     </message>
   </context>
   <context>
@@ -554,7 +554,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Insert Default Page</source>
-      <translation type="unfinished">Insert Default Page</translation>
+      <translation>Alapértelmezett oldal beszúrása</translation>
     </message>
   </context>
   <context>
@@ -567,17 +567,17 @@
     <message>
       <location filename="../../Command.cpp" line="166"/>
       <source>Insert Page using Template</source>
-      <translation type="unfinished">Insert Page using Template</translation>
+      <translation>Oldal beszúrása sablonnal</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="178"/>
       <source>Select a Template File</source>
-      <translation type="unfinished">Select a Template File</translation>
+      <translation>Sablonfájl kijelölése</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="180"/>
       <source>Template (*.svg *.dxf)</source>
-      <translation type="unfinished">Template (*.svg *.dxf)</translation>
+      <translation>Sablon (*.svg *.dxf)</translation>
     </message>
   </context>
   <context>
@@ -590,12 +590,12 @@
     <message>
       <location filename="../../Command.cpp" line="534"/>
       <source>Insert Projection Group</source>
-      <translation type="unfinished">Insert Projection Group</translation>
+      <translation>Vetítés csoport beszúrása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="535"/>
       <source>Insert multiple linked views of drawable object(s)</source>
-      <translation type="unfinished">Insert multiple linked views of drawable object(s)</translation>
+      <translation>Rajzolható objektum(ok) több összekapcsolt nézetének beszúrása</translation>
     </message>
   </context>
   <context>
@@ -608,7 +608,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="495"/>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>Negyedelő csúcspontok hozzáadása</translation>
     </message>
   </context>
   <context>
@@ -621,7 +621,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="251"/>
       <source>Insert Radius Dimension</source>
-      <translation type="unfinished">Insert Radius Dimension</translation>
+      <translation>Átmérő méretének beillesztése</translation>
     </message>
   </context>
   <context>
@@ -634,7 +634,7 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Redraw Page</source>
-      <translation type="unfinished">Redraw Page</translation>
+      <translation>Oldal újrarajzolása</translation>
     </message>
   </context>
   <context>
@@ -647,7 +647,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="164"/>
       <source>Insert Rich Text Annotation</source>
-      <translation type="unfinished">Insert Rich Text Annotation</translation>
+      <translation>Szöveges jegyzet beszúrása</translation>
     </message>
   </context>
   <context>
@@ -660,7 +660,7 @@
     <message>
       <location filename="../../Command.cpp" line="435"/>
       <source>Insert Section View</source>
-      <translation type="unfinished">Insert Section View</translation>
+      <translation>Szakasznézet beszúrása</translation>
     </message>
   </context>
   <context>
@@ -673,7 +673,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1335"/>
       <source>Show/Hide Invisible Edges</source>
-      <translation type="unfinished">Show/Hide Invisible Edges</translation>
+      <translation>Láthatatlan élek megjelenítése/elrejtése</translation>
     </message>
   </context>
   <context>
@@ -686,12 +686,12 @@
     <message>
       <location filename="../../Command.cpp" line="1191"/>
       <source>Insert Spreadsheet View</source>
-      <translation type="unfinished">Insert Spreadsheet View</translation>
+      <translation>Táblázat nézet beszúrása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1192"/>
       <source>Insert View to a spreadsheet</source>
-      <translation type="unfinished">Insert View to a spreadsheet</translation>
+      <translation>Nézet beszúrása táblázatba</translation>
     </message>
   </context>
   <context>
@@ -709,7 +709,7 @@
     <message>
       <location filename="../../Command.cpp" line="1002"/>
       <source>Insert symbol from an SVG file</source>
-      <translation type="unfinished">Insert symbol from an SVG file</translation>
+      <translation>Szimbólum beszúrása SVG-fájlból</translation>
     </message>
   </context>
   <context>
@@ -736,7 +736,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="696"/>
       <source>Insert Vertical Dimension</source>
-      <translation type="unfinished">Insert Vertical Dimension</translation>
+      <translation>Függőleges méret beszúrása</translation>
     </message>
   </context>
   <context>
@@ -749,7 +749,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1235"/>
       <source>Insert Vertical Extent Dimension</source>
-      <translation type="unfinished">Insert Vertical Extent Dimension</translation>
+      <translation>Függőleges kiterjedés méret beszúrása</translation>
     </message>
   </context>
   <context>
@@ -762,12 +762,12 @@
     <message>
       <location filename="../../Command.cpp" line="280"/>
       <source>Insert View</source>
-      <translation type="unfinished">Insert View</translation>
+      <translation>Nézet beszúrása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Insert a View</source>
-      <translation type="unfinished">Insert a View</translation>
+      <translation>Egy nézet beszúrása</translation>
     </message>
   </context>
   <context>
@@ -780,7 +780,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1400"/>
       <source>Add Welding Information to Leaderline</source>
-      <translation type="unfinished">Add Welding Information to Leaderline</translation>
+      <translation>Hegesztési információk hozzáadása a Vezérvonalhoz</translation>
     </message>
   </context>
   <context>
@@ -1058,7 +1058,7 @@
       <location filename="../../Command.cpp" line="339"/>
       <location filename="../../Command.cpp" line="592"/>
       <source>No Shapes, Groups or Links in this selection</source>
-      <translation type="unfinished">No Shapes, Groups or Links in this selection</translation>
+      <translation>Nincs alakzat, csoport vagy hivatkozás ebben a kijelölésben</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="453"/>
@@ -1119,27 +1119,27 @@
     <message>
       <location filename="../../Command.cpp" line="1106"/>
       <source>There were no DraftWB objects in the selection.</source>
-      <translation type="unfinished">There were no DraftWB objects in the selection.</translation>
+      <translation>A kijelölésben nem voltak DraftWB objektumok.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1155"/>
       <source>Please select only 1 Arch Section.</source>
-      <translation type="unfinished">Please select only 1 Arch Section.</translation>
+      <translation>Ha be van jelölve, akkor a dimenzióérték mellett az egység jelenik meg.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1161"/>
       <source>No Arch Sections in selection.</source>
-      <translation type="unfinished">No Arch Sections in selection.</translation>
+      <translation>Nincsenek ívszekciók a kiválasztásban.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1313"/>
       <source>Can not export selection</source>
-      <translation type="unfinished">Can not export selection</translation>
+      <translation>A kijelölés nem exportálható</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1314"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
-      <translation type="unfinished">Page contains DrawViewArch which will not be exported. Continue?</translation>
+      <translation>Az oldal rajz nézet ívet tartalmaz, amely nem lesz exportálva. Folytatja?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1204"/>
@@ -1231,17 +1231,17 @@
       <location filename="../../CommandCreateDims.cpp" line="1194"/>
       <location filename="../../CommandCreateDims.cpp" line="1281"/>
       <source>Please select a View [and Edges].</source>
-      <translation type="unfinished">Please select a View [and Edges].</translation>
+      <translation>Jelöljön ki egy nézetet [és Éleket].</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1336"/>
       <source>Select 2 point objects and 1 View. (1)</source>
-      <translation type="unfinished">Select 2 point objects and 1 View. (1)</translation>
+      <translation>Jelöljön ki 2 pontos objektumot és 1 nézetet. (1)</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1344"/>
       <source>Select 2 point objects and 1 View. (2)</source>
-      <translation type="unfinished">Select 2 point objects and 1 View. (2)</translation>
+      <translation>Jelöljön ki 2 pontos objektumokat és 1 nézetet. (2)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="715"/>
@@ -1365,7 +1365,7 @@
       <location filename="../../CommandAnnotate.cpp" line="1500"/>
       <location filename="../../CommandAnnotate.cpp" line="1514"/>
       <source>Wrong Selection</source>
-      <translation type="unfinished">Wrong Selection</translation>
+      <translation>Hibás kijelölés</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="131"/>
@@ -1397,74 +1397,74 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="750"/>
       <source>You must select Faces or an existing CenterLine.</source>
-      <translation type="unfinished">You must select Faces or an existing CenterLine.</translation>
+      <translation>Ki kell választania a felületeket vagy egy meglévő Középvonalat.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="760"/>
       <source>No CenterLine in selection.</source>
-      <translation type="unfinished">No CenterLine in selection.</translation>
+      <translation>Középvonal nincs a kiválasztásban.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="766"/>
       <location filename="../../CommandAnnotate.cpp" line="838"/>
       <location filename="../../CommandAnnotate.cpp" line="951"/>
       <source>Selection is not a CenterLine.</source>
-      <translation type="unfinished">Selection is not a CenterLine.</translation>
+      <translation>A kijelölés nem középvonal.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="848"/>
       <source>Selection not understood.</source>
-      <translation type="unfinished">Selection not understood.</translation>
+      <translation>A kiválasztás nem érthető.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="939"/>
       <source>You must select 2 Vertexes or an existing CenterLine.</source>
-      <translation type="unfinished">You must select 2 Vertexes or an existing CenterLine.</translation>
+      <translation>Ki kell jelölnie a 2 csúcspontot vagy egy meglévő Középvonalat.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="961"/>
       <source>Need 2 Vertices or 1 CenterLine.</source>
-      <translation type="unfinished">Need 2 Vertices or 1 CenterLine.</translation>
+      <translation>Szüksége van 2 csúcsora vagy 1 Középvonalra.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1038"/>
       <source>Selection is empty.</source>
-      <translation type="unfinished">Selection is empty.</translation>
+      <translation>Nincs kiválasztva semmi.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1052"/>
       <source>Not enough points in selection.</source>
-      <translation type="unfinished">Not enough points in selection.</translation>
+      <translation>Nincs elég pont a kiválasztásban.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1072"/>
       <source>Selection is not a Cosmetic Line.</source>
-      <translation type="unfinished">Selection is not a Cosmetic Line.</translation>
+      <translation>A kiválasztás nem kozmetikázó vonal.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1109"/>
       <source>You must select 2 Vertexes.</source>
-      <translation type="unfinished">You must select 2 Vertexes.</translation>
+      <translation>Két csúcspontot kell kijelölnie.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1285"/>
       <source>No View in Selection.</source>
-      <translation type="unfinished">No View in Selection.</translation>
+      <translation>Nincs alapnézet a kijelölésben.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1290"/>
       <source>You must select a View and/or lines.</source>
-      <translation type="unfinished">You must select a View and/or lines.</translation>
+      <translation>Ki kell jelölnie egy nézetet és/vagy vonalakat.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1363"/>
       <source>No Part Views in this selection</source>
-      <translation type="unfinished">No Part Views in this selection</translation>
+      <translation>Nincs résznézet ebben a kijelölésben</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1432"/>
       <source>Select exactly one Leader line or one Weld symbol.</source>
-      <translation type="unfinished">Select exactly one Leader line or one Weld symbol.</translation>
+      <translation>Jelöljön ki pontosan egy Vezető vonalat vagy egy Hegesztés szimbólumot.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1155"/>
@@ -1485,7 +1485,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="240"/>
       <source>Replace Hatch?</source>
-      <translation type="unfinished">Replace Hatch?</translation>
+      <translation>Straffozást cserélni?</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="241"/>
@@ -4678,7 +4678,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1122"/>
       <source>Insert Horizontal Extent Dimension</source>
-      <translation type="unfinished">Insert Horizontal Extent Dimension</translation>
+      <translation>Vízszintes kiterjedésdimenzió beszúrása</translation>
     </message>
   </context>
   <context>
@@ -4702,7 +4702,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1126"/>
       <source>Insert Vertical Extent Dimension</source>
-      <translation type="unfinished">Insert Vertical Extent Dimension</translation>
+      <translation>Függőleges kiterjedés méret beszúrása</translation>
     </message>
   </context>
 </TS>

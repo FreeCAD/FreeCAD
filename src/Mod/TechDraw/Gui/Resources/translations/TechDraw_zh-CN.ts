@@ -2252,7 +2252,7 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="177"/>
       <source>Hide</source>
-      <translation type="unfinished">Hide</translation>
+      <translation>隐藏</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="182"/>

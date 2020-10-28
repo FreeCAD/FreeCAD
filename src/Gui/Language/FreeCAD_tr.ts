@@ -121,6 +121,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Düzenle</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -179,7 +186,7 @@
     </message>
     <message>
       <source>&amp;Clear</source>
-      <translation type="unfinished">&amp;Clear</translation>
+      <translation>&amp;Temizle</translation>
     </message>
     <message>
       <source>Revert to last calculated value (as constant)</source>
@@ -418,7 +425,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Collection</source>
-      <translation type="unfinished">Collection</translation>
+      <translation>Koleksiyon</translation>
     </message>
   </context>
   <context>
@@ -433,11 +440,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source> "</source>
-      <translation type="unfinished"> "</translation>
+      <translation> "</translation>
     </message>
     <message>
       <source>"</source>
-      <translation type="unfinished">"</translation>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -602,7 +609,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Özellik ekle</translation>
     </message>
     <message>
       <source>Type</source>
@@ -1408,7 +1415,7 @@ this according to your screen size or personal taste</translation>
     </message>
     <message>
       <source>Tree view mode:</source>
-      <translation type="unfinished">Tree view mode:</translation>
+      <translation>Unsur ağacı modu:</translation>
     </message>
     <message>
       <source>Customize how tree view is shown in the panel (restart required).
@@ -1479,7 +1486,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Both</source>
-      <translation type="unfinished">Both</translation>
+      <translation>İkisi</translation>
     </message>
   </context>
   <context>
@@ -1556,7 +1563,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Toolbar</source>
-      <translation type="unfinished">Toolbar</translation>
+      <translation>Araç çubuğu</translation>
     </message>
   </context>
   <context>
@@ -1643,11 +1650,11 @@ Belki bir dosya izni hatası vardır?</translation>
     </message>
     <message>
       <source>Do not show again</source>
-      <translation type="unfinished">Do not show again</translation>
+      <translation>Tekrar gösterme</translation>
     </message>
     <message>
       <source>Guided Walkthrough</source>
-      <translation type="unfinished">Guided Walkthrough</translation>
+      <translation>Kılavuzlu Çözüm Yolu</translation>
     </message>
     <message>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
@@ -1843,7 +1850,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Sorted</source>
-      <translation type="unfinished">Sorted</translation>
+      <translation>Sıralı</translation>
     </message>
     <message>
       <source>Quick search</source>
@@ -1851,11 +1858,11 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
-      <translation type="unfinished">Type in a group name to find it</translation>
+      <translation>Bulmak için bir grup adı yazın</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Arama Grubu</translation>
     </message>
   </context>
   <context>
@@ -1937,7 +1944,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Arama Grubu</translation>
     </message>
   </context>
   <context>
@@ -2034,7 +2041,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>Program sürümü:</translation>
     </message>
   </context>
   <context>
@@ -2108,7 +2115,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Filter by type</source>
-      <translation type="unfinished">Filter by type</translation>
+      <translation>Türüne göre filtre</translation>
     </message>
     <message>
       <source>Sync sub-object selection</source>
@@ -2124,7 +2131,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
+      <translation>Etkinleştirilirse, 3B görünüm seçimi tam nesne hiyerarşisi ile senkronize edilecektir.</translation>
     </message>
   </context>
   <context>
@@ -2535,6 +2542,18 @@ opening or creation</translation>
       <source>Show axis cross by default</source>
       <translation type="unfinished">Show axis cross by default</translation>
     </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Radius (px) seçin:</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -2856,7 +2875,7 @@ get date suffix according to the specified format</translation>
     </message>
     <message>
       <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
+      <translation>Tarih biçimi</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
@@ -2896,7 +2915,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Default license for new documents</source>
-      <translation type="unfinished">Default license for new documents</translation>
+      <translation>Yeni belgeler için varsayılan lisans</translation>
     </message>
     <message>
       <source>Creative Commons Attribution</source>
@@ -2939,7 +2958,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>Biçim</translation>
     </message>
   </context>
   <context>
@@ -3129,18 +3148,18 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Creation method:</source>
-      <translation type="unfinished">Creation method:</translation>
+      <translation>Oluşturma yöntemi:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsImageImp</name>
     <message>
       <source>Offscreen (New)</source>
-      <translation type="unfinished">Offscreen (New)</translation>
+      <translation>Ekran Dışı (Yeni)</translation>
     </message>
     <message>
       <source>Offscreen (Old)</source>
-      <translation type="unfinished">Offscreen (Old)</translation>
+      <translation>Ekran Dışı (Eski)</translation>
     </message>
     <message>
       <source>Framebuffer (custom)</source>
@@ -3227,31 +3246,31 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Recent macros menu</source>
-      <translation type="unfinished">Recent macros menu</translation>
+      <translation>Son makrolar menüsü</translation>
     </message>
     <message>
       <source>Size of recent macro list</source>
-      <translation type="unfinished">Size of recent macro list</translation>
+      <translation>Son makro listesinin boyutu</translation>
     </message>
     <message>
       <source>How many macros should be listed in recent macros list</source>
-      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+      <translation>Son makrolar listesinde kaç tane makro listelenmeli</translation>
     </message>
     <message>
       <source>Shortcut count</source>
-      <translation type="unfinished">Shortcut count</translation>
+      <translation>Kısayol sayısı</translation>
     </message>
     <message>
       <source>How many recent macros should have shortcuts</source>
-      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+      <translation>Son makrolardan kaç tanesi kısayol içermeli</translation>
     </message>
     <message>
       <source>Keyboard Modifiers</source>
-      <translation type="unfinished">Keyboard Modifiers</translation>
+      <translation>Klavye Değiştiricileri</translation>
     </message>
     <message>
       <source>Keyboard modifiers, default = Ctrl+Shift+</source>
-      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+      <translation>Klavye değiştiricileri, varsayılan = Ctrl+Shift+</translation>
     </message>
   </context>
   <context>
@@ -3555,7 +3574,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
-      <translation type="unfinished">FEM (mm, N, sec)</translation>
+      <translation>FEM (mm, N, sn)</translation>
     </message>
   </context>
   <context>
@@ -3593,10 +3612,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation>Basit renk</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Radius (px) seçin:</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Nesne düzenleniyor</translation>
     </message>
@@ -3611,12 +3626,6 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation type="unfinished">Enable selection highlighting and use specified color</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -4726,14 +4735,14 @@ Do you want to save your changes?</source>
     <name>Gui::ExpressionLineEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Tam eşleşme</translation>
     </message>
   </context>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Tam eşleşme</translation>
     </message>
   </context>
   <context>
@@ -5219,7 +5228,7 @@ sağ görünümde %2 nokta seçili.</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Özellik ekle</translation>
     </message>
     <message>
       <source>Remove property</source>
@@ -5374,7 +5383,7 @@ Do you want to exit without saving your data?</source>
     <name>Gui::RecentMacrosAction</name>
     <message>
       <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
+      <translation>Makroyu çalıştır %1 (Shift+düzenlemek için tıklayın) kısayol: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6653,7 +6662,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Özellik ekle</translation>
     </message>
     <message>
       <source>Failed to add property to '%1': %2</source>
@@ -6727,33 +6736,33 @@ Choose 'Abort' to abort</translation>
       <source>
 
 Please check report view for more...</source>
-      <translation type="unfinished">
+      <translation>
 
-Please check report view for more...</translation>
+Daha fazlası için lütfen rapor görünümünü kontrol edin...</translation>
     </message>
     <message>
       <source>
 
 Pyhsical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Pyhsical path: </translation>
+Fiziksel yol: </translation>
     </message>
     <message>
       <source>
 Document: </source>
-      <translation type="unfinished">
-Document: </translation>
+      <translation>
+Belge: </translation>
     </message>
     <message>
       <source>
   Path: </source>
-      <translation type="unfinished">
-  Path: </translation>
+      <translation>
+  Yol: </translation>
     </message>
     <message>
       <source>Identical physical path</source>
-      <translation type="unfinished">Identical physical path</translation>
+      <translation>Özdeş fiziksel yol</translation>
     </message>
   </context>
   <context>
@@ -7969,11 +7978,11 @@ Document: </translation>
     </message>
     <message>
       <source>Recent macros</source>
-      <translation type="unfinished">Recent macros</translation>
+      <translation>Son makrolar</translation>
     </message>
     <message>
       <source>Recent macro list</source>
-      <translation type="unfinished">Recent macro list</translation>
+      <translation>Son makro listesi</translation>
     </message>
   </context>
   <context>

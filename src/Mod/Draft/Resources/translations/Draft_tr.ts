@@ -101,7 +101,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="294"/>
       <source>Extension overshoot</source>
-      <translation type="unfinished">Extension overshoot</translation>
+      <translation>Uzatma çizgisi aşımı</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="304"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="324"/>
       <source>Dimension overshoot</source>
-      <translation type="unfinished">Dimension overshoot</translation>
+      <translation>Ölçülendirme çizgisi aşımı</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="334"/>
@@ -166,12 +166,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="26"/>
       <source>The name of your style. Existing style names can be edited.</source>
-      <translation type="unfinished">The name of your style. Existing style names can be edited.</translation>
+      <translation>Tekniğinizi isimlendirin. Haricen teknik isimler düzenlenebilir.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="163"/>
       <source>Font size in the system units</source>
-      <translation type="unfinished">Font size in the system units</translation>
+      <translation>Birim sistemlerindeki yazı tipi boyutu</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="136"/>
@@ -181,42 +181,42 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation type="unfinished">A multiplier factor that affects the size of texts and markers</translation>
+      <translation>Metinlerin ve işaretleyicilerin boyutuna izin veren bir çoklayıcı etkeni</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="249"/>
       <source>The number of decimals to show for dimension values</source>
-      <translation type="unfinished">The number of decimals to show for dimension values</translation>
+      <translation>Ölçü değerlerini hassas göstermek için ondalıkların sayısı</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="242"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation type="unfinished">Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</translation>
+      <translation>Bu birimin ölçü değerini göstermeye zorlamak için mm, m, in, ft gibi geçerli bir uzunluğu seçin</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="259"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation type="unfinished">If it is checked it will show the unit next to the dimension value</translation>
+      <translation>O seçilmişse birim değerini ölçü değerinin yanında gösterir</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
       <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
-      <translation type="unfinished">The distance that the extension lines are additionally extended beyond the dimension line</translation>
+      <translation>Mesafeyi ifade eden uzama çizgileri ölçülendirme çizgisinin ötesine eklenerek uzatılır</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
       <source>The size of the dimension arrows or markers in system units</source>
-      <translation type="unfinished">The size of the dimension arrows or markers in system units</translation>
+      <translation>Birim sistemlerindeki büyüklük oklarının veya işaretleyicilerin boyutu</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="361"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation type="unfinished">If it is checked it will display the dimension line</translation>
+      <translation>O seçildiyse ölçülendirme çizgisini gösterir</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
       <source>The distance that the dimension line is additionally extended</source>
-      <translation type="unfinished">The distance that the dimension line is additionally extended</translation>
+      <translation>Mesafeyi ifade eden ölçülendirme çizgisi ek olarak uzatılır</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
@@ -226,7 +226,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="404"/>
       <source>The type of arrows or markers to use at the end of dimension lines</source>
-      <translation type="unfinished">The type of arrows or markers to use at the end of dimension lines</translation>
+      <translation>Ölçülendirme çizgilerinin sonunda kullanmak için okların veya işaretleyicilerin tipi</translation>
     </message>
   </context>
   <context>
@@ -258,7 +258,7 @@ menüden Araçlar -&gt; Eklenti Yöneticisi</translation>
     <message>
       <location filename="../../InitGui.py" line="107"/>
       <source>Draft utility tools</source>
-      <translation type="unfinished">Draft utility tools</translation>
+      <translation>Yararlı aletler tasarlayın</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="110"/>
@@ -273,7 +273,7 @@ menüden Araçlar -&gt; Eklenti Yöneticisi</translation>
     <message>
       <location filename="../../InitGui.py" line="112"/>
       <source>&amp;Modification</source>
-      <translation type="unfinished">&amp;Modification</translation>
+      <translation>Değişiklik</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="113"/>
@@ -302,8 +302,8 @@ menüden Araçlar -&gt; Eklenti Yöneticisi</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="57"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation type="unfinished">The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</translation>
+      <translation>Dönme eksenleri olanları ifade eden noktanın koordinatları geçer.
+Özellik düzenleyicide ekselerin kendilerine ait yönleri değiştirin.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="61"/>
@@ -328,7 +328,7 @@ Change the direction of the axis itself in the property editor.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="131"/>
       <source>Reset the coordinates of the center of rotation.</source>
-      <translation type="unfinished">Reset the coordinates of the center of rotation.</translation>
+      <translation>Döndürme merkezi koordinatlarını sıfırla.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="134"/>
@@ -339,8 +339,8 @@ Change the direction of the axis itself in the property editor.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="146"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>Seçilmişse, birbirlerine değiyorlarsa dizideki sonuçlanan nesneler yapışırlar.
+Bu sadece "bağlantı" kapalıysa çalışır.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="150"/>
@@ -351,52 +351,52 @@ This only works if "Link array" is off.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="157"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>Seçilmişse sonuçlanan nesne düzenli bir dizi yerine bir bağlantı olacaktır.
+Birden fazla kopyalar oluştuğu zaman bir bağlantı daha verimlidir ama o, birbirlerini yapıştıramaz.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="161"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Bağlantı dizisi</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="186"/>
       <source>Distance from one element in one ring of the array to the next element in the same ring.
 It cannot be zero.</source>
-      <translation type="unfinished">Distance from one element in one ring of the array to the next element in the same ring.
-It cannot be zero.</translation>
+      <translation>Dizinin bir halkasındaki bir elemandan aynı halkadaki sonraki elemana mesafe.
+O sıfır değerinde olamaz.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="179"/>
       <source>Tangential distance</source>
-      <translation type="unfinished">Tangential distance</translation>
+      <translation>Eğrisel mesafe</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="210"/>
       <source>Distance from one layer of objects to the next layer of objects.</source>
-      <translation type="unfinished">Distance from one layer of objects to the next layer of objects.</translation>
+      <translation>Nesnelerin bir katmanından nesnelerin sonraki katmanına mesafe.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="203"/>
       <source>Radial distance</source>
-      <translation type="unfinished">Radial distance</translation>
+      <translation>Dairesel çap uzunluğu</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="261"/>
       <source>The number of symmetry lines in the circular array.</source>
-      <translation type="unfinished">The number of symmetry lines in the circular array.</translation>
+      <translation>Dairesel dizideki simetrik çizgilerin sayısı.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="250"/>
       <source>Number of circular layers or rings to create, including a copy of the original object.
 It must be at least 2.</source>
-      <translation type="unfinished">Number of circular layers or rings to create, including a copy of the original object.
+      <translation>Number of circular layers or rings to create, including a copy of the original object.
 It must be at least 2.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="254"/>
       <source>Number of circular layers</source>
-      <translation type="unfinished">Number of circular layers</translation>
+      <translation>Dairesel katmanların sayısı</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="264"/>
@@ -406,7 +406,7 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="273"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(Placeholder for the icon)</translation>
     </message>
   </context>
   <context>
@@ -414,21 +414,21 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal array</source>
-      <translation type="unfinished">Orthogonal array</translation>
+      <translation>Dikey dizi</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
       <source>Distance between the elements in the Z direction.
 Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation type="unfinished">Distance between the elements in the Z direction.
-Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>Z yönündeki öğelerin aralarındaki uzaklık.
+Normalde, sadece Z değeri gereklidir. Diğer iki değer kendi ilgili yönlerinde ek kaymaları sağlayabilir.
+Negatif değerler kopyaların negatif yönde üretilmesine neden olacaktır.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="49"/>
       <source>Z intervals</source>
-      <translation type="unfinished">Z intervals</translation>
+      <translation>Z Aralıkları</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="385"/>
@@ -448,19 +448,19 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="353"/>
       <source>Reset the distances.</source>
-      <translation type="unfinished">Reset the distances.</translation>
+      <translation>Mesafeleri sıfırla.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="125"/>
       <source>Reset Z</source>
-      <translation type="unfinished">Reset Z</translation>
+      <translation>Z'yi sıfırla</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="137"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>Seçilmişse, birbirlerine değiyorlarsa dizideki sonuçlanan nesneler yapışırlar.
+Bu sadece "bağlantı" kapalıysa çalışır.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="141"/>
@@ -471,68 +471,68 @@ This only works if "Link array" is off.</translation>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="148"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>Seçilmişse sonuçlanan nesne düzenli bir dizi yerine bir bağlantı olacaktır.
+Birden fazla kopyalar oluştuğu zaman bir bağlantı daha verimlidir ama o, birbirlerini yapıştıramaz.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="152"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Bağlantı dizisi</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="177"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(Placeholder for the icon)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="184"/>
       <source>Distance between the elements in the X direction.
 Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation type="unfinished">Distance between the elements in the X direction.
-Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>X yönündeki öğelerin aralarındaki uzaklık.
+Normalde, sadece X değeri gereklidir. Diğer iki değer kendi ilgili yönlerinde ek kaymaları sağlayabilir.
+Negatif değerler kopyaların negatif yönde üretilmesine neden olacaktır.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="189"/>
       <source>X intervals</source>
-      <translation type="unfinished">X intervals</translation>
+      <translation>X Aralıkları</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="265"/>
       <source>Reset X</source>
-      <translation type="unfinished">Reset X</translation>
+      <translation>Sıfırla X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="275"/>
       <source>Distance between the elements in the Y direction.
 Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation type="unfinished">Distance between the elements in the Y direction.
-Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>Y yönündeki öğelerin aralarındaki uzaklık.
+Normalde, sadece Y değeri gereklidir. Diğer iki değer kendi ilgili yönlerinde ek kaymaları sağlayabilir.
+Negatif değerler kopyaların negatif yönde üretilmesine neden olacaktır.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="280"/>
       <source>Y intervals</source>
-      <translation type="unfinished">Y intervals</translation>
+      <translation>Y Aralıkları</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="356"/>
       <source>Reset Y</source>
-      <translation type="unfinished">Reset Y</translation>
+      <translation>Sıfırla Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="366"/>
       <source>Number of elements in the array in the specified direction, including a copy of the original object.
 The number must be at least 1 in each direction.</source>
-      <translation type="unfinished">Number of elements in the array in the specified direction, including a copy of the original object.
+      <translation>Number of elements in the array in the specified direction, including a copy of the original object.
 The number must be at least 1 in each direction.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="370"/>
       <source>Number of elements</source>
-      <translation type="unfinished">Number of elements</translation>
+      <translation>Unsur sayısı</translation>
     </message>
   </context>
   <context>
@@ -540,14 +540,14 @@ The number must be at least 1 in each direction.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
       <source>Polar array</source>
-      <translation type="unfinished">Polar array</translation>
+      <translation>Dairesel çoğaltma</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="57"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation type="unfinished">The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</translation>
+      <translation>Dönme eksenleri olanları ifade eden noktanın koordinatları geçer.
+Özellik düzenleyicide ekselerin kendilerine ait yönleri değiştirin.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="61"/>
@@ -572,7 +572,7 @@ Change the direction of the axis itself in the property editor.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="131"/>
       <source>Reset the coordinates of the center of rotation.</source>
-      <translation type="unfinished">Reset the coordinates of the center of rotation.</translation>
+      <translation>Döndürme merkezi koordinatlarını sıfırla.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="134"/>
@@ -583,8 +583,8 @@ Change the direction of the axis itself in the property editor.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="146"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>Seçilmişse, birbirlerine değiyorlarsa dizideki sonuçlanan nesneler yapışırlar.
+Bu sadece "bağlantı" kapalıysa çalışır.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="150"/>
@@ -595,44 +595,44 @@ This only works if "Link array" is off.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="157"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>Seçilmişse sonuçlanan nesne düzenli bir dizi yerine bir bağlantı olacaktır.
+Birden fazla kopyalar oluştuğu zaman bir bağlantı daha verimlidir ama o, birbirlerini yapıştıramaz.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="161"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Bağlantı dizisi</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="187"/>
       <source>Sweeping angle of the polar distribution.
 A negative angle produces a polar pattern in the opposite direction.
 The maximum absolute value is 360 degrees.</source>
-      <translation type="unfinished">Sweeping angle of the polar distribution.
+      <translation>Sweeping angle of the polar distribution.
 A negative angle produces a polar pattern in the opposite direction.
 The maximum absolute value is 360 degrees.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="180"/>
       <source>Polar angle</source>
-      <translation type="unfinished">Polar angle</translation>
+      <translation>Kutupsal açı</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="219"/>
       <source>Number of elements in the array, including a copy of the original object.
 It must be at least 2.</source>
-      <translation type="unfinished">Number of elements in the array, including a copy of the original object.
+      <translation>Number of elements in the array, including a copy of the original object.
 It must be at least 2.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="212"/>
       <source>Number of elements</source>
-      <translation type="unfinished">Number of elements</translation>
+      <translation>Unsur sayısı</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="235"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(Placeholder for the icon)</translation>
     </message>
   </context>
   <context>
@@ -709,13 +709,13 @@ It must be at least 2.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
       <source>Select a face or working plane proxy or 3 vertices.
 Or choose one of the options below</source>
-      <translation type="unfinished">Select a face or working plane proxy or 3 vertices.
+      <translation>Select a face or working plane proxy or 3 vertices.
 Or choose one of the options below</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="31"/>
       <source>Sets the working plane to the XY plane (ground plane)</source>
-      <translation type="unfinished">Sets the working plane to the XY plane (ground plane)</translation>
+      <translation>Çalışma düzlemini XY düzlemine ayarla (zemin düzlemi)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="34"/>
@@ -725,7 +725,7 @@ Or choose one of the options below</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="41"/>
       <source>Sets the working plane to the XZ plane (front plane)</source>
-      <translation type="unfinished">Sets the working plane to the XZ plane (front plane)</translation>
+      <translation>Çalışma düzlemini XZ düzlemine ayarla (ön düzlem)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="44"/>
@@ -735,7 +735,7 @@ Or choose one of the options below</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="51"/>
       <source>Sets the working plane to the YZ plane (side plane)</source>
-      <translation type="unfinished">Sets the working plane to the YZ plane (side plane)</translation>
+      <translation>Çalışma düzlemini YZ düzlemine ayarla (yan düzlem)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="54"/>
@@ -745,18 +745,18 @@ Or choose one of the options below</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="61"/>
       <source>Sets the working plane facing the current view</source>
-      <translation type="unfinished">Sets the working plane facing the current view</translation>
+      <translation>Çalışma düzlemini mevcut görünüme göre ayarla</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="64"/>
       <source>Align to view</source>
-      <translation type="unfinished">Align to view</translation>
+      <translation>Görünüme Hizala</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="71"/>
       <source>The working plane will align to the current
 view each time a command is started</source>
-      <translation type="unfinished">The working plane will align to the current
+      <translation>The working plane will align to the current
 view each time a command is started</translation>
     </message>
     <message>
@@ -769,7 +769,7 @@ view each time a command is started</translation>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation type="unfinished">An optional offset to give to the working plane
+      <translation>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</translation>
     </message>
@@ -783,7 +783,7 @@ of the buttons above</translation>
       <source>If this is selected, the working plane will be
 centered on the current view when pressing one
 of the buttons above</source>
-      <translation type="unfinished">If this is selected, the working plane will be
+      <translation>If this is selected, the working plane will be
 centered on the current view when pressing one
 of the buttons above</translation>
     </message>
@@ -813,7 +813,7 @@ will be moved to the center of the view</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="152"/>
       <source>Move working plane</source>
-      <translation type="unfinished">Move working plane</translation>
+      <translation>Çalışma düzlemini taşı</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="171"/>
@@ -850,24 +850,34 @@ value by using the [ and ] keys while drawing</translation>
       <translation>Yakalama yarıçapı (etki alanı)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="221"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="241"/>
       <source>Centers the view on the current working plane</source>
       <translation type="unfinished">Centers the view on the current working plane</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="224"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="244"/>
       <source>Center view</source>
-      <translation type="unfinished">Center view</translation>
+      <translation>Merkezi görünüm</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="231"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="251"/>
       <source>Resets the working plane to its previous position</source>
       <translation type="unfinished">Resets the working plane to its previous position</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="234"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="254"/>
       <source>Previous</source>
-      <translation type="unfinished">Previous</translation>
+      <translation>Önceki</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="219"/>
+      <source>Grid extension</source>
+      <translation type="unfinished">Grid extension</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="226"/>
+      <source> lines</source>
+      <translation> çizgiler</translation>
     </message>
   </context>
   <context>
@@ -1297,7 +1307,7 @@ Bu değer, "Arial", varsayılan stiller "sans", "serif" veya "mono", veya aile a
       <translation>Ölçü metni ile ölçü çizgisi arasındaki boşluk mesafesi</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="497"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="534"/>
       <source>Select a font file</source>
       <translation>Grip Dosyasını Seçin</translation>
     </message>
@@ -1377,32 +1387,32 @@ Bu değer, "Arial", varsayılan stiller "sans", "serif" veya "mono", veya aile a
       <translation> (3D) içindeki metin</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="326"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="375"/>
       <source>Dashed line definition</source>
       <translation>Kesik çizgi tanımı</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="349"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
       <source>0.09,0.05</source>
       <translation>0.09,0.05</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="369"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="418"/>
       <source>Dashdot line definition</source>
       <translation>Kesik çizgi tanımı</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="392"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
       <source>0.09,0.05,0.02,0.05</source>
       <translation>0.09,0.05,0.02,0.05</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="412"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="461"/>
       <source>Dotted line definition</source>
       <translation>Kesik çizgi tanımı</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="435"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
       <source>0.02,0.02</source>
       <translation>0.02,0.02</translation>
     </message>
@@ -1457,17 +1467,17 @@ Bu değer, "Arial", varsayılan stiller "sans", "serif" veya "mono", veya aile a
       <translation>Birim Aralığı</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="476"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="513"/>
       <source>ShapeString settings</source>
       <translation>ShapeString ayarları</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="484"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="521"/>
       <source>Default ShapeString font file</source>
       <translation>Varsayılan ShapeString yazı tipi dosyası</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="318"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="367"/>
       <source>Drawing view line definitions</source>
       <translation>Çizim görünümü satır tanımları</translation>
     </message>
@@ -1607,7 +1617,7 @@ Bu değer, "Arial", varsayılan stiller "sans", "serif" veya "mono", veya aile a
       <translation>Bu onay kutusu seçiliyse, çizim işlemleri sırasında geçerli çalışma ortamının yönünü gösteren bir araç gözükür</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="432"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="481"/>
       <source>An SVG linestyle definition</source>
       <translation>Bir SVG linestyle tanımı</translation>
     </message>
@@ -1647,22 +1657,22 @@ Bu değer, "Arial", varsayılan stiller "sans", "serif" veya "mono", veya aile a
       <translation>Tik-2</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="277"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="326"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
       <translation>Sürüm indirme ve yükseltme yaparken yüzeylerin renklerini korumak istiyorsanız bunu işaretleyin (yalnızca splitFaces ve makeShell)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="329"/>
       <source>Preserve colors of faces during downgrade/upgrade</source>
       <translation>Sürüm indirme / yükseltme sırasında yüzlerin renklerini koru</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="297"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="346"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
       <translation>Sürüm indirme / yükseltme yaparken yüzey isimlendirmelerin kaynak nesneden esinlenilerek türetilmesini ve tersini istiyorsanız bu seçeneği işaretleyin (yalnızca splitFaces [YüzeyleriAyır] ve makeShell[KabukOluştur])</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="349"/>
       <source>Preserve names of faces during downgrade/upgrade</source>
       <translation>Sürüm indirme / yükseltme sırasında yüzeylerin isimlerini koru</translation>
     </message>
@@ -1921,7 +1931,7 @@ Bu değerin altında farklılık gösteren değerler aynı şekilde ele alınaca
     <message>
       <location filename="../ui/preferences-draft.ui" line="216"/>
       <source>Draft tools options</source>
-      <translation type="unfinished">Draft tools options</translation>
+      <translation>Taslak araçları seçenekleri</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="230"/>
@@ -1971,7 +1981,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="14"/>
       <source>User interface settings</source>
-      <translation type="unfinished">User interface settings</translation>
+      <translation>Kullanıcı arayüzü ayarları</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="884"/>
@@ -1981,7 +1991,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="887"/>
       <source>Draft Statusbar</source>
-      <translation type="unfinished">Draft Statusbar</translation>
+      <translation>Taslak durum çubuğu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="907"/>
@@ -2150,12 +2160,12 @@ instead of the size they have in the DXF document</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="408"/>
       <source>Use Layers</source>
-      <translation type="unfinished">Use Layers</translation>
+      <translation>Katmanları kullan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="428"/>
       <source>Hatches will be converted into simple wires</source>
-      <translation type="unfinished">Hatches will be converted into simple wires</translation>
+      <translation>Taramalar basit tellere dönüştürülecek</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
@@ -2227,7 +2237,32 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="313"/>
       <source>Show grid border</source>
-      <translation type="unfinished">Show grid border</translation>
+      <translation>Izgara sınırını göster</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="475"/>
+      <source>Override unit</source>
+      <translation type="unfinished">Override unit</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="495"/>
+      <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
+      <translation type="unfinished">By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="257"/>
+      <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
+      <translation type="unfinished">The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+      <source>Hatch Pattern default size</source>
+      <translation type="unfinished">Hatch Pattern default size</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+      <source>The default size of hatch patterns</source>
+      <translation type="unfinished">The default size of hatch patterns</translation>
     </message>
   </context>
   <context>
@@ -2235,12 +2270,12 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../../importDWG.py" line="275"/>
       <source>Converting: </source>
-      <translation type="unfinished">Converting: </translation>
+      <translation>Dönüştürülüyor: </translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="231"/>
       <source>Conversion successful</source>
-      <translation type="unfinished">Conversion successful</translation>
+      <translation>Dönüştürme başarılı</translation>
     </message>
   </context>
   <context>
@@ -2253,7 +2288,7 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../../importSVG.py" line="1826"/>
       <source>The export list contains no object with a valid bounding box</source>
-      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
+      <translation>Dışa aktarma listesi geçerli bir sınırlayıcı kutuya sahip hiçbir nesne içermiyor</translation>
     </message>
   </context>
   <context>
@@ -2850,22 +2885,22 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
     <message>
       <location filename="../../DraftGui.py" line="841"/>
       <source>Center Y</source>
-      <translation type="unfinished">Center Y</translation>
+      <translation>Y merkezi</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="842"/>
       <source>Center Z</source>
-      <translation type="unfinished">Center Z</translation>
+      <translation>Z merkezi</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="893"/>
       <source>Offset distance</source>
-      <translation type="unfinished">Offset distance</translation>
+      <translation>Öteleme mesafesi</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="949"/>
       <source>Trim distance</source>
-      <translation type="unfinished">Trim distance</translation>
+      <translation>Kırpma mesafesi</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>

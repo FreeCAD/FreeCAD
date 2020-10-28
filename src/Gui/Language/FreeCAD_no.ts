@@ -60,11 +60,11 @@
     <name>App::Property</name>
     <message>
       <source>The displayed size of the origin</source>
-      <translation type="unfinished">The displayed size of the origin</translation>
+      <translation>Den viste størrelse for origo</translation>
     </message>
     <message>
       <source>Visual size of the feature</source>
-      <translation type="unfinished">Visual size of the feature</translation>
+      <translation>Vist størrelse på detaljen</translation>
     </message>
     <message>
       <source>&lt;empty&gt;</source>
@@ -95,7 +95,7 @@
     </message>
     <message>
       <source>Test console output</source>
-      <translation type="unfinished">Test console output</translation>
+      <translation>Resultat fra test-terminal</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     </message>
     <message>
       <source>Clear measurement</source>
-      <translation type="unfinished">Clear measurement</translation>
+      <translation>Fjern måleverdi</translation>
     </message>
   </context>
   <context>
@@ -117,7 +117,14 @@
     </message>
     <message>
       <source>Toggle measurement</source>
-      <translation type="unfinished">Toggle measurement</translation>
+      <translation>Aktiver/deaktiver måleverdi</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Rediger</translation>
     </message>
   </context>
   <context>
@@ -160,14 +167,14 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation type="unfinished">Global Sensitivity:</translation>
+      <translation>Global følsomhet:</translation>
     </message>
   </context>
   <context>
     <name>DlgExpressionInput</name>
     <message>
       <source>Formula editor</source>
-      <translation type="unfinished">Formula editor</translation>
+      <translation>Ligningsredigerer</translation>
     </message>
     <message>
       <source>Result:</source>
@@ -179,11 +186,11 @@
     </message>
     <message>
       <source>&amp;Clear</source>
-      <translation type="unfinished">&amp;Clear</translation>
+      <translation>&amp;Nullstill</translation>
     </message>
     <message>
       <source>Revert to last calculated value (as constant)</source>
-      <translation type="unfinished">Revert to last calculated value (as constant)</translation>
+      <translation>Gå tilbake til siste beregnede verdi (som konstant)</translation>
     </message>
   </context>
   <context>
@@ -265,7 +272,7 @@
     <name>Gui::AutoSaver</name>
     <message>
       <source>Please wait until the AutoRecovery file has been saved...</source>
-      <translation type="unfinished">Please wait until the AutoRecovery file has been saved...</translation>
+      <translation>Vennligst vent mens en sikkerhetskopi lagres til fil...</translation>
     </message>
   </context>
   <context>
@@ -299,13 +306,12 @@
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation type="unfinished">Press middle+left or middle+right button</translation>
+      <translation>Trykk midt+venstre eller midt+høyre knapp</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
-while doing a left or right click and move the mouse up or down</translation>
+      <translation>Rull midterste knapp, eller hold midterste knapp inne, mens du høyre- eller venstreklikker og beveger musen opp eller ned</translation>
     </message>
   </context>
   <context>
@@ -388,7 +394,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Word size</source>
-      <translation type="unfinished">Word size</translation>
+      <translation>Ordstørrelse</translation>
     </message>
     <message>
       <source>Credits</source>
@@ -407,11 +413,11 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>Biblioteker</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>Denne programvaren bruker komponenter med åpen kildekode med opphavsrett og andre eiendomsrettigheter som tilhører de respektive eiere:</translation>
     </message>
     <message>
       <source>License</source>
@@ -445,7 +451,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
       <source>Camera settings</source>
-      <translation type="unfinished">Camera settings</translation>
+      <translation>Kamerainnstillinger</translation>
     </message>
     <message>
       <source>Orientation</source>
@@ -476,11 +482,11 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::Clipping</name>
     <message>
       <source>Clipping</source>
-      <translation type="unfinished">Clipping</translation>
+      <translation>Tverrsnitt</translation>
     </message>
     <message>
       <source>Clipping X</source>
-      <translation type="unfinished">Clipping X</translation>
+      <translation>Tverrsnitt X</translation>
     </message>
     <message>
       <source>Flip</source>
@@ -492,15 +498,15 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Clipping Y</source>
-      <translation type="unfinished">Clipping Y</translation>
+      <translation>Tverrsnitt Y</translation>
     </message>
     <message>
       <source>Clipping Z</source>
-      <translation type="unfinished">Clipping Z</translation>
+      <translation>Tverrsnitt Z</translation>
     </message>
     <message>
       <source>Clipping custom direction</source>
-      <translation type="unfinished">Clipping custom direction</translation>
+      <translation>Tverrsnitt med egendefinert retning</translation>
     </message>
     <message>
       <source>View</source>
@@ -603,7 +609,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Legg til egenskap</translation>
     </message>
     <message>
       <source>Type</source>
@@ -619,7 +625,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Verbose description of the new property.</source>
-      <translation type="unfinished">Verbose description of the new property.</translation>
+      <translation>Detaljert beskrivelse av ny egenskap.</translation>
     </message>
     <message>
       <source>Documentation</source>
@@ -1290,7 +1296,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Code lines will be numbered </source>
-      <translation type="unfinished">Code lines will be numbered </translation>
+      <translation>Kodelinjer vil bli numrerte </translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
@@ -1553,11 +1559,11 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Addons...</source>
-      <translation type="unfinished">Addons...</translation>
+      <translation>Tilleggsmoduler...</translation>
     </message>
     <message>
       <source>Toolbar</source>
-      <translation type="unfinished">Toolbar</translation>
+      <translation>Verktøylinje</translation>
     </message>
   </context>
   <context>
@@ -2533,6 +2539,18 @@ opening or creation</translation>
     <message>
       <source>Show axis cross by default</source>
       <translation type="unfinished">Show axis cross by default</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation type="unfinished">Pick radius (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
     </message>
   </context>
   <context>
@@ -3591,10 +3609,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation>Enkel farge</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation type="unfinished">Pick radius (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation type="unfinished">Object being edited</translation>
     </message>
@@ -3609,12 +3623,6 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation type="unfinished">Enable selection highlighting and use specified color</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -5216,7 +5224,7 @@ How do you want to proceed?</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Legg til egenskap</translation>
     </message>
     <message>
       <source>Remove property</source>
@@ -6652,7 +6660,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Legg til egenskap</translation>
     </message>
     <message>
       <source>Failed to add property to '%1': %2</source>
