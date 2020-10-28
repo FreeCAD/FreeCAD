@@ -1253,8 +1253,8 @@ def _makeSTL(model, obj, ocl, model_type=None):
 
 
 # Functions to convert path geometry into line/arc segments for OCL input or directly to g-code
-def pathGeomToLinesPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gaps):
-    '''pathGeomToLinesPointSet(obj, compGeoShp)...
+def pathGeomToLinesPointSet(self, obj, compGeoShp):
+    '''pathGeomToLinesPointSet(self, obj, compGeoShp)...
     Convert a compound set of sequential line segments to directionally-oriented collinear groupings.'''
     PathLog.debug('pathGeomToLinesPointSet()')
     # Extract intersection line segments for return value as list()
@@ -1268,7 +1268,7 @@ def pathGeomToLinesPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gaps
     edg0 = compGeoShp.Edges[0]
     p1 = (edg0.Vertexes[0].X, edg0.Vertexes[0].Y)
     p2 = (edg0.Vertexes[1].X, edg0.Vertexes[1].Y)
-    if cutClimb is True:
+    if self.CutClimb is True:
         tup = (p2, p1)
         lst = FreeCAD.Vector(p1[0], p1[1], 0.0)
     else:
@@ -1291,43 +1291,43 @@ def pathGeomToLinesPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gaps
             inLine.append('BRK')
             chkGap = True
         else:
-            if cutClimb is True:
+            if self.CutClimb is True:
                 inLine.reverse()
             LINES.append(inLine)  # Save inLine segments
             lnCnt += 1
             inLine = list()  # reset collinear container
-            if cutClimb is True:
+            if self.CutClimb is True:
                 sp = cp  # FreeCAD.Vector(v1[0], v1[1], 0.0)
             else:
                 sp = ep
 
-        if cutClimb is True:
+        if self.CutClimb is True:
             tup = (v2, v1)
-            if chkGap is True:
-                gap = abs(toolDiam - lst.sub(ep).Length)
+            if chkGap:
+                gap = abs(self.toolDiam - lst.sub(ep).Length)
             lst = cp
         else:
             tup = (v1, v2)
-            if chkGap is True:
-                gap = abs(toolDiam - lst.sub(cp).Length)
+            if chkGap:
+                gap = abs(self.toolDiam - lst.sub(cp).Length)
             lst = ep
 
-        if chkGap is True:
+        if chkGap:
             if gap < obj.GapThreshold.Value:
                 inLine.pop()  # pop off 'BRK' marker
                 (vA, vB) = inLine.pop()  # pop off previous line segment for combining with current
                 tup = (vA, tup[1])
-                closedGap = True
+                self.closedGap = True
             else:
                 gap = round(gap, 6)
-                if gap < gaps[0]:
-                    gaps.insert(0, gap)
-                    gaps.pop()
+                if gap < self.gaps[0]:
+                    self.gaps.insert(0, gap)
+                    self.gaps.pop()
         inLine.append(tup)
 
     # Efor
     lnCnt += 1
-    if cutClimb is True:
+    if self.CutClimb is True:
         inLine.reverse()
     LINES.append(inLine)  # Save inLine segments
 
@@ -1353,8 +1353,8 @@ def pathGeomToLinesPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gaps
 
     return LINES
 
-def pathGeomToZigzagPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gaps):
-    '''_pathGeomToZigzagPointSet(obj, compGeoShp)...
+def pathGeomToZigzagPointSet(self, obj, compGeoShp):
+    '''_pathGeomToZigzagPointSet(self, obj, compGeoShp)...
     Convert a compound set of sequential line segments to directionally-oriented collinear groupings
     with a ZigZag directional indicator included for each collinear group.'''
     PathLog.debug('_pathGeomToZigzagPointSet()')
@@ -1366,7 +1366,7 @@ def pathGeomToZigzagPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gap
     ec = len(compGeoShp.Edges)
     dirFlg = 1
 
-    if cutClimb:
+    if self.CutClimb:
         dirFlg = -1
 
     edg0 = compGeoShp.Edges[0]
@@ -1393,7 +1393,7 @@ def pathGeomToZigzagPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gap
         if iC:
             inLine.append('BRK')
             chkGap = True
-            gap = abs(toolDiam - lst.sub(cp).Length)
+            gap = abs(self.toolDiam - lst.sub(cp).Length)
         else:
             chkGap = False
             if dirFlg == -1:
@@ -1418,12 +1418,12 @@ def pathGeomToZigzagPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gap
                     tup = (vA, tup[1])
                 else:
                     tup = (tup[0], vB)
-                closedGap = True
+                self.closedGap = True
             else:
                 gap = round(gap, 6)
-                if gap < gaps[0]:
-                    gaps.insert(0, gap)
-                    gaps.pop()
+                if gap < self.gaps[0]:
+                    self.gaps.insert(0, gap)
+                    self.gaps.pop()
         inLine.append(tup)
     # Efor
     lnCnt += 1
@@ -1436,7 +1436,7 @@ def pathGeomToZigzagPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gap
         PathLog.debug('Line count is ODD: {}.'.format(lnCnt))
         dirFlg = -1 * dirFlg
         if not obj.CutPatternReversed:
-            if cutClimb:
+            if self.CutClimb:
                 dirFlg = -1 * dirFlg
 
     if obj.CutPatternReversed:
@@ -1470,8 +1470,8 @@ def pathGeomToZigzagPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gap
 
     return LINES
 
-def pathGeomToCircularPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gaps, COM):
-    '''pathGeomToCircularPointSet(obj, compGeoShp)...
+def pathGeomToCircularPointSet(self, obj, compGeoShp):
+    '''pathGeomToCircularPointSet(self, obj, compGeoShp)...
     Convert a compound set of arcs/circles to a set of directionally-oriented arc end points
     and the corresponding center point.'''
     # Extract intersection line segments for return value as list()
@@ -1498,11 +1498,11 @@ def pathGeomToCircularPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, g
                 segEI.append(ei)
                 isSame = True
                 pnt = FreeCAD.Vector(edg.Vertexes[0].X, edg.Vertexes[0].Y, 0.0)
-                sameRad = pnt.sub(COM).Length
+                sameRad = pnt.sub(self.tmpCOM).Length
             else:
                 # Check if arc is co-radial to current SEGS
                 pnt = FreeCAD.Vector(edg.Vertexes[0].X, edg.Vertexes[0].Y, 0.0)
-                if abs(sameRad - pnt.sub(COM).Length) > 0.00001:
+                if abs(sameRad - pnt.sub(self.tmpCOM).Length) > 0.00001:
                     isSame = False
 
                 if isSame is True:
@@ -1514,7 +1514,7 @@ def pathGeomToCircularPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, g
                     segEI = [ei]
                     isSame = True
                     pnt = FreeCAD.Vector(edg.Vertexes[0].X, edg.Vertexes[0].Y, 0.0)
-                    sameRad = pnt.sub(COM).Length
+                    sameRad = pnt.sub(self.tmpCOM).Length
     # Process trailing `segEI` data, if available
     if isSame is True:
         stpOvrEI.append(['A', segEI, False])
@@ -1531,9 +1531,9 @@ def pathGeomToCircularPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, g
             for i in range(0, len(EI)):
                 ei = EI[i]  # edge index
                 E = compGeoShp.Edges[ei]  # edge object
-                if abs(COM.y - E.Vertexes[0].Y) < 0.00001:
+                if abs(self.tmpCOM.y - E.Vertexes[0].Y) < 0.00001:
                     startOnAxis.append((i, ei, E.Vertexes[0]))
-                elif abs(COM.y - E.Vertexes[1].Y) < 0.00001:
+                elif abs(self.tmpCOM.y - E.Vertexes[1].Y) < 0.00001:
                     endOnAxis.append((i, ei, E.Vertexes[1]))
 
             # Look for connections between startOnAxis and endOnAxis arcs. Consolidate data when connected
@@ -1556,7 +1556,7 @@ def pathGeomToCircularPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, g
 
     # Construct arc data tuples for OCL
     dirFlg = 1
-    if not cutClimb:  # True yields Climb when set to Conventional
+    if not self.CutClimb:  # True yields Climb when set to Conventional
         dirFlg = -1
 
     # Cycle through stepOver data
@@ -1569,28 +1569,28 @@ def pathGeomToCircularPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, g
 
             # space = obj.SampleInterval.Value / 10.0
             # space = 0.000001
-            space = toolDiam * 0.005  # If too small, OCL will fail to scan the loop
+            space = self.toolDiam * 0.005  # If too small, OCL will fail to scan the loop
 
             # p1 = FreeCAD.Vector(v1.X, v1.Y, v1.Z)
             p1 = FreeCAD.Vector(v1.X, v1.Y, 0.0)  # z=0.0 for waterline; z=v1.Z for 3D Surface
-            rad = p1.sub(COM).Length
+            rad = p1.sub(self.tmpCOM).Length
             spcRadRatio = space/rad
             if spcRadRatio < 1.0:
                 tolrncAng = math.asin(spcRadRatio)
             else:
                 tolrncAng = 0.99999998 * math.pi
-            EX = COM.x + (rad * math.cos(tolrncAng))
+            EX = self.tmpCOM.x + (rad * math.cos(tolrncAng))
             EY = v1.Y - space  # rad * math.sin(tolrncAng)
 
             sp = (v1.X, v1.Y, 0.0)
             ep = (EX, EY, 0.0)
-            cp = (COM.x, COM.y, 0.0)
+            cp = (self.tmpCOM.x, self.tmpCOM.y, 0.0)
             if dirFlg == 1:
                 arc = (sp, ep, cp)
             else:
                 arc = (ep, sp, cp)  # OCL.Arc(firstPnt, lastPnt, centerPnt, dir=True(CCW direction))
             ARCS.append(('L', dirFlg, [arc]))
-        else:  # SO[0] == 'A'    A = Arc
+        elif SO[0] == 'A':  # A = Arc
             # PathLog.debug("SO[0] == 'Arc'")
             PRTS = list()
             EI = SO[1]  # list of corresponding Edges indexes
@@ -1598,13 +1598,13 @@ def pathGeomToCircularPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, g
             chkGap = False
             lst = None
 
-            if CONN:
+            if CONN:  # Connected edges(arcs)
                 (iE, iS) = CONN
                 v1 = compGeoShp.Edges[iE].Vertexes[0]
                 v2 = compGeoShp.Edges[iS].Vertexes[1]
                 sp = (v1.X, v1.Y, 0.0)
                 ep = (v2.X, v2.Y, 0.0)
-                cp = (COM.x, COM.y, 0.0)
+                cp = (self.tmpCOM.x, self.tmpCOM.y, 0.0)
                 if dirFlg == 1:
                     arc = (sp, ep, cp)
                     lst = ep
@@ -1623,38 +1623,38 @@ def pathGeomToCircularPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, g
                     EI.pop(iEi)
                 if len(EI) > 0:
                     PRTS.append('BRK')
-                    chkGap = True
+                    # chkGap = True
             cnt = 0
             for ei in EI:
                 if cnt > 0:
                     PRTS.append('BRK')
-                    chkGap = True
+                    # chkGap = True
                 v1 = compGeoShp.Edges[ei].Vertexes[0]
                 v2 = compGeoShp.Edges[ei].Vertexes[1]
                 sp = (v1.X, v1.Y, 0.0)
                 ep = (v2.X, v2.Y, 0.0)
-                cp = (COM.x, COM.y, 0.0)
+                cp = (self.tmpCOM.x, self.tmpCOM.y, 0.0)
                 if dirFlg == 1:
                     arc = (sp, ep, cp)
-                    if chkGap is True:
-                        gap = abs(toolDiam - gapDist(lst, sp))  # abs(toolDiam - lst.sub(sp).Length)
+                    if chkGap and False:
+                        gap = abs(self.toolDiam - gapDist(lst, sp))  # abs(self.toolDiam - lst.sub(sp).Length)
                     lst = ep
                 else:
                     arc = (ep, sp, cp)  # OCL.Arc(firstPnt, lastPnt, centerPnt, dir=True(CCW direction))
-                    if chkGap is True:
-                        gap = abs(toolDiam - gapDist(lst, ep))  # abs(toolDiam - lst.sub(ep).Length)
+                    if chkGap and False:
+                        gap = abs(self.toolDiam - gapDist(lst, ep))  # abs(self.toolDiam - lst.sub(ep).Length)
                     lst = sp
-                if chkGap is True:
+                if chkGap and False:
                     if gap < obj.GapThreshold.Value:
                         PRTS.pop()  # pop off 'BRK' marker
                         (vA, vB, vC) = PRTS.pop()  # pop off previous arc segment for combining with current
                         arc = (vA, arc[1], vC)
-                        closedGap = True
+                        self.closedGap = True
                     else:
                         gap = round(gap, 6)
-                        if gap < gaps[0]:
-                            gaps.insert(0, gap)
-                            gaps.pop()
+                        if gap < self.gaps[0]:
+                            self.gaps.insert(0, gap)
+                            self.gaps.pop()
                 PRTS.append(arc)
                 cnt += 1
 
