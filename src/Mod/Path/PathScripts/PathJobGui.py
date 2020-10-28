@@ -60,8 +60,8 @@ def translate(context, text, disambig=None):
 LOGLEVEL = False
 
 if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())  # lgtm [py/unreachable-statement]
+    PathLog.trackModule(PathLog.thisModule())                    # lgtm [py/unreachable-statement]
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
