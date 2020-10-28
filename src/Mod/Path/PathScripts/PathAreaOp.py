@@ -322,14 +322,8 @@ class ObjectOp(PathOp.ObjectOp):
                 paths.extend(pp.Commands)
                 PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
 
-        self.endVector = end_vector # pylint: disable=attribute-defined-outside-init
-
+        self.endVector = end_vector
         simobj = None
-        if getsim:
-            areaParams['ToolRadius'] = self.radius - self.radius * .005
-            area.setParams(**areaParams)
-            sec = area.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
-            simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
 
         return paths, simobj
 
