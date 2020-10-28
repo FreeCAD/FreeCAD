@@ -245,10 +245,10 @@ PyObject* GeometryPy::getExtensionOfType(PyObject *args)
 
         if(type != Base::Type::badType()) {
             try {
-                std::shared_ptr<GeometryExtension> ext(this->getGeometryPtr()->getExtension(type));
+                std::shared_ptr<const GeometryExtension> ext(this->getGeometryPtr()->getExtension(type));
 
                 // we create a copy and transfer this copy's memory management responsibility to Python
-                PyObject* cpy = static_cast<GeometryExtensionPy *>(ext->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
+                PyObject* cpy = static_cast<GeometryExtensionPy *>(std::const_pointer_cast<GeometryExtension>(ext)->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
 
                 return cpy;
             }
@@ -279,10 +279,10 @@ PyObject* GeometryPy::getExtensionOfName(PyObject *args)
     if (PyArg_ParseTuple(args, "s", &o)) {
 
         try {
-            std::shared_ptr<GeometryExtension> ext(this->getGeometryPtr()->getExtension(std::string(o)));
+            std::shared_ptr<const GeometryExtension> ext(this->getGeometryPtr()->getExtension(std::string(o)));
 
             // we create a copy and transfer this copy's memory management responsibility to Python
-            PyObject* cpy = static_cast<GeometryExtensionPy *>(ext->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
+            PyObject* cpy = static_cast<GeometryExtensionPy *>(std::const_pointer_cast<GeometryExtension>(ext)->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
 
             return cpy;
         }
@@ -404,7 +404,7 @@ PyObject* GeometryPy::getExtensions(PyObject *args)
     }
 
     try {
-        const std::vector<std::weak_ptr<GeometryExtension>> ext = this->getGeometryPtr()->getExtensions();
+        const std::vector<std::weak_ptr<const GeometryExtension>> ext = this->getGeometryPtr()->getExtensions();
 
         PyObject* list = PyList_New(ext.size());
 
@@ -412,7 +412,8 @@ PyObject* GeometryPy::getExtensions(PyObject *args)
 
         for (std::size_t i=0; i<ext.size(); ++i) {
 
-            std::shared_ptr<GeometryExtension> p = ext[i].lock();
+            // const casting only to get the Python object to make a copy
+            std::shared_ptr<GeometryExtension> p = std::const_pointer_cast<GeometryExtension>(ext[i].lock());
 
             if(p) {
                 // we create a python copy and add it to the list
