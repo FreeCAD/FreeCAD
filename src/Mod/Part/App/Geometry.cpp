@@ -258,9 +258,9 @@ boost::uuids::uuid Geometry::getTag() const
     return tag;
 }
 
-const std::vector<std::weak_ptr<GeometryExtension>> Geometry::getExtensions() const
+std::vector<std::weak_ptr<const GeometryExtension>> Geometry::getExtensions() const
 {
-    std::vector<std::weak_ptr<GeometryExtension>> wp;
+    std::vector<std::weak_ptr<const GeometryExtension>> wp;
 
     for(auto & ext:extensions)
         wp.push_back(ext);
@@ -288,7 +288,7 @@ bool Geometry::hasExtension(std::string name) const
     return false;
 }
 
-const std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type) const
+std::weak_ptr<const GeometryExtension> Geometry::getExtension(Base::Type type) const
 {
     for( auto ext : extensions) {
         if(ext->getTypeId() == type)
@@ -298,7 +298,7 @@ const std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type) c
     throw Base::ValueError("No geometry extension of the requested type.");
 }
 
-const std::weak_ptr<GeometryExtension> Geometry::getExtension(std::string name) const
+std::weak_ptr<const GeometryExtension> Geometry::getExtension(std::string name) const
 {
     for( auto ext : extensions) {
         if(ext->getName() == name)

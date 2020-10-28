@@ -101,12 +101,12 @@ public:
     /// returns the tag of the geometry object
     boost::uuids::uuid getTag() const;
 
-    const std::vector<std::weak_ptr<GeometryExtension>> getExtensions() const;
+    std::vector<std::weak_ptr<const GeometryExtension>> getExtensions() const;
 
     bool hasExtension(Base::Type type) const;
     bool hasExtension(std::string name) const;
-    const std::weak_ptr<GeometryExtension> getExtension(Base::Type type) const;
-    const std::weak_ptr<GeometryExtension> getExtension(std::string name) const;
+    std::weak_ptr<const GeometryExtension> getExtension(Base::Type type) const;
+    std::weak_ptr<const GeometryExtension> getExtension(std::string name) const;
     void setExtension(std::unique_ptr<GeometryExtension> &&geo);
     void deleteExtension(Base::Type type);
     void deleteExtension(std::string name);
