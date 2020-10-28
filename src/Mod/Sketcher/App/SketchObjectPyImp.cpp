@@ -27,6 +27,8 @@
 # include <boost/shared_ptr.hpp>
 #endif
 
+#include <Base/StdStlTools.h>
+
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/LinePy.h>
 #include <Mod/Part/App/Geometry.h>
@@ -45,6 +47,8 @@
 #include "SketchObjectPy.cpp"
 // other python types
 #include "ConstraintPy.h"
+#include "GeometryFacade.h"
+#include "GeometryFacadePy.h"
 
 using namespace Sketcher;
 
@@ -1748,6 +1752,44 @@ Py::Long SketchObjectPy::getGeometryCount(void) const
 Py::Long SketchObjectPy::getAxisCount(void) const
 {
     return Py::Long(this->getSketchObjectPtr()->getAxisCount());
+}
+
+
+Py::List SketchObjectPy::getGeometryFacadeList(void) const
+{
+    Py::List list;
+
+    for (int i = 0; i < getSketchObjectPtr()->Geometry.getSize(); i++) {
+
+        // we create a python copy and add it to the list
+        std::unique_ptr<GeometryFacade> geofacade = GeometryFacade::getFacade(getSketchObjectPtr()->Geometry[i]->clone());
+
+        Py::Object gfp = Py::Object(new GeometryFacadePy(geofacade.release()),true);
+
+        list.append(gfp);
+    }
+    return list;
+}
+
+void SketchObjectPy::setGeometryFacadeList(Py::List value)
+{
+    std::vector<Part::Geometry *> list;
+    list.reserve(value.size());
+
+    for (const auto & ti : value) {
+        if (PyObject_TypeCheck(ti.ptr(), &(GeometryFacadePy::Type))) {
+
+            GeometryFacadePy * gfp = static_cast<GeometryFacadePy *>(ti.ptr());
+
+            GeometryFacade * gf = gfp->getGeometryFacadePtr();
+
+            Part::Geometry * geo = gf->getGeometry()->clone();
+
+            list.push_back(geo);
+        }
+    }
+
+    getSketchObjectPtr()->Geometry.setValues(std::move(list));
 }
 
 PyObject *SketchObjectPy::getCustomAttributes(const char* /*attr*/) const
