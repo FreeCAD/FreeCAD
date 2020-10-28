@@ -458,5 +458,15 @@ If there is no such constraint an exception is raised.
       </Documentation>
       <Parameter Name="GeometryFacadeList" Type="List"/>
     </Attribute>
+    <Methode Name="setGeometryId">
+      <Documentation>
+        <UserDocu>switch a geometry to a construction line</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getGeometryId">
+      <Documentation>
+        <UserDocu>switch a geometry to a construction line</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>
