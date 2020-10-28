@@ -288,7 +288,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="478"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Izvozi objekte kot mreže in uporabi OpenSCAD za izvedbo Boolovih operacij</translation>
+      <translation>Izvozi predmete kot ploskovja in za logične operacije uporabi OpenSCAD</translation>
     </message>
   </context>
   <context>
@@ -309,12 +309,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="195"/>
       <source>Mirror Mesh Feature...</source>
-      <translation>Zrcali mrežo...</translation>
+      <translation>Zrcaljenje ploskovja...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="196"/>
       <source>Create Mirror Mesh Feature</source>
-      <translation>Ustvari značilnost zrcaljenja mreže</translation>
+      <translation>Ustvari značilnost zrcaljenja ploskovja</translation>
     </message>
   </context>
   <context>
@@ -361,12 +361,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="254"/>
       <source>Resize Mesh Feature...</source>
-      <translation type="unfinished">Resize Mesh Feature...</translation>
+      <translation>Prevelikostenje ploskovja ...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="255"/>
       <source>Create Resize Mesh Feature</source>
-      <translation type="unfinished">Create Resize Mesh Feature</translation>
+      <translation>Ustvari značilnost prevelikostenja mreže</translation>
     </message>
   </context>
   <context>
@@ -374,12 +374,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="224"/>
       <source>Scale Mesh Feature...</source>
-      <translation type="unfinished">Scale Mesh Feature...</translation>
+      <translation>Merilo ploskovja ...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="225"/>
       <source>Create Scale Mesh Feature</source>
-      <translation type="unfinished">Create Scale Mesh Feature</translation>
+      <translation>Ustvari značilnost merila ploskovja</translation>
     </message>
   </context>
   <context>

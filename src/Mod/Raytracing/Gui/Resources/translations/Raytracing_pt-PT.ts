@@ -181,8 +181,7 @@
       <location filename="../../Command.cpp" line="338"/>
       <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
-Do you want to continue?</translation>
+      <translation>A câmara do modo de exibição atual não está em perspectiva, e assim o resultado da imagem POV-Ray pode parecer diferente do que seria esperado. Quer continuar?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
@@ -215,8 +214,7 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="773"/>
       <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
-Do you want to continue?</translation>
+      <translation>A câmara do modo de exibição atual não está em perspectiva, e assim o resultado da imagem luxrender pode parecer diferente do que seria esperado. Quer continuar?</translation>
     </message>
   </context>
   <context>
@@ -472,7 +470,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="47"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>O caminho para o executável do POV-Ray, se você desejar renderizar a partir de %1</translation>
     </message>
   </context>
   <context>

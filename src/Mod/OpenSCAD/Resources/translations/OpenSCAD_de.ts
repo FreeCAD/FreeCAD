@@ -361,7 +361,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="254"/>
       <source>Resize Mesh Feature...</source>
-      <translation type="unfinished">Resize Mesh Feature...</translation>
+      <translation>Grösse des Netz-Elements anpassen...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="255"/>

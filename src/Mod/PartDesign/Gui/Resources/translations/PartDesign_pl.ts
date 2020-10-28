@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="1303"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projekt części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1304"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="1637"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Fazowanie zaznaczonych krawędzi kształtu</translation>
+      <translation>Fazuj wybrane krawędzie obiektu</translation>
     </message>
   </context>
   <context>
@@ -710,7 +710,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="49"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation>Szkicuj należącą do innej zawartości funkcję</translation>
+      <translation>Szkic należy do innej funkcji zawartości</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="50"/>
@@ -2381,7 +2381,7 @@
     <message>
       <location filename="../../ViewProviderBody.cpp" line="137"/>
       <source>Toggle active body</source>
-      <translation>Przełącz aktywną zawartość</translation>
+      <translation>Przełącz aktywność zawartości</translation>
     </message>
   </context>
   <context>
@@ -2702,7 +2702,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="135"/>
       <source>Body can't be based on another body.</source>
-      <translation>Ciało nie może opierać się na innej zawartości.</translation>
+      <translation>Podstawą zawartości nie może być inna zawartość.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="143"/>
@@ -2887,7 +2887,7 @@ Jeśli masz starszy dokument z obiektami PartDesign bez obiektu Body, użyj funk
     <message>
       <location filename="../../Utils.cpp" line="104"/>
       <source>Active Body Required</source>
-      <translation>Aktywne Body Wymagane</translation>
+      <translation>Wymagana jest aktywna zawartość</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="105"/>

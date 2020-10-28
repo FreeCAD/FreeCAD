@@ -1875,7 +1875,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="391"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Midtstill</translation>
     </message>
   </context>
   <context>

@@ -135,6 +135,11 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="141"/>
+      <source>Cut internal feature areas within a larger selected face.</source>
+      <translation type="unfinished">Cut internal feature areas within a larger selected face.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathWaterline.py" line="141"/>
       <source>Ignore internal feature areas within a larger selected face.</source>
       <translation type="unfinished">Ignore internal feature areas within a larger selected face.</translation>
     </message>
@@ -624,6 +629,11 @@
       <translation>Método de geração do padrão (trama)</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathStock.py" line="106"/>
+      <source>A material for this object</source>
+      <translation>Um material para este objeto</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathProfile.py" line="104"/>
       <source>Extend the profile clearing beyond the Extra Offset.</source>
       <translation type="unfinished">Extend the profile clearing beyond the Extra Offset.</translation>
@@ -895,11 +905,6 @@
   <context>
     <name>Path</name>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="234"/>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathEngraveGui.py" line="62"/>
       <source>%s is not a Base Model object of the job %s</source>
       <translation>%s não é um objeto modelo de base do trabalho %s</translation>
@@ -913,6 +918,11 @@
       <location filename="../../../PathScripts/PathEngraveGui.py" line="72"/>
       <source>Ignoring vertex</source>
       <translation>Ignorando o vértice</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolController.py" line="234"/>
+      <source>Edit</source>
+      <translation>Editar</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="472"/>
@@ -1008,6 +1018,11 @@
       <location filename="PathOpGui.py" line="514"/>
       <source>Heights</source>
       <translation>Alturas</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOpGui.py" line="949"/>
+      <source>Diameters</source>
+      <translation type="unfinished">Diameters</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="585"/>
@@ -1153,9 +1168,24 @@
       <translation type="unfinished">Always select the bottom edge of the hole when using an edge.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathDeburrGui.py" line="65"/>
+      <source>Ignoring non-horizontal Face</source>
+      <translation type="unfinished">Ignoring non-horizontal Face</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathProfileFaces.py" line="250"/>
       <source>Unable to create path for face(s).</source>
       <translation>Não foi possível criar o caminho para face(s).</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfile.py" line="575"/>
+      <source>Applying inverse angle automatically.</source>
+      <translation type="unfinished">Applying inverse angle automatically.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfile.py" line="579"/>
+      <source>Applying inverse angle manually.</source>
+      <translation type="unfinished">Applying inverse angle manually.</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="91"/>
@@ -1572,6 +1602,11 @@
       <translation>Argumentos para o pós-processador (específico para cada script)</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathJob.py" line="108"/>
+      <source>Last Time the Job was post-processed</source>
+      <translation type="unfinished">Last Time the Job was post-processed</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathJob.py" line="101"/>
       <source>An optional description for this job</source>
       <translation type="unfinished">An optional description for this job</translation>
@@ -1778,6 +1813,16 @@
       <location filename="../../../PathScripts/PathOp.py" line="161"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>Verdadeiro, especificando um ponto de partida</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="175"/>
+      <source>Lower limit of the turning diameter</source>
+      <translation type="unfinished">Lower limit of the turning diameter</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="176"/>
+      <source>Upper limit of the turning diameter.</source>
+      <translation type="unfinished">Upper limit of the turning diameter.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="218"/>
@@ -2911,6 +2956,39 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     </message>
   </context>
   <context>
+    <name>PathVcarve</name>
+    <message>
+      <location filename="../../../PathScripts/PathVcarveGui.py" line="150"/>
+      <source>Vcarve</source>
+      <translation type="unfinished">Vcarve</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarveGui.py" line="150"/>
+      <source>Creates a medial line engraving path</source>
+      <translation type="unfinished">Creates a medial line engraving path</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="173"/>
+      <source>Additional base objects to be engraved</source>
+      <translation>Objetos base adicionais a serem gravados</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="180"/>
+      <source>The deflection value for discretizing arcs</source>
+      <translation type="unfinished">The deflection value for discretizing arcs</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="183"/>
+      <source>cutoff for removing colinear segments (degrees).                         default=10.0.</source>
+      <translation type="unfinished">cutoff for removing colinear segments (degrees).                         default=10.0.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="322"/>
+      <source>The Job Base Object has no engraveable element. Engraving operation will produce no output.</source>
+      <translation type="unfinished">The Job Base Object has no engraveable element. Engraving operation will produce no output.</translation>
+    </message>
+  </context>
+  <context>
     <name>PathWaterline</name>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="41"/>
@@ -3167,6 +3245,11 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
   </context>
   <context>
     <name>Path_DressupDragKnife</name>
+    <message>
+      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="150"/>
+      <source>Edit Dragknife Dress-up</source>
+      <translation type="unfinished">Edit Dragknife Dress-up</translation>
+    </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
       <source>DragKnife Dress-up</source>
@@ -3656,21 +3739,59 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
   <context>
     <name>Path_Sanity</name>
     <message>
-      <location filename="PathSanity.py" line="50"/>
-      <source>It appears the machine limits haven't been set.  Not able to check path extents.
-</source>
-      <translation>Parece que os limites da máquina ainda não foram definidos.  Não é possivel verificar a extensão da trajetória.
-</translation>
+      <location filename="../../../PathScripts/PathSanity.py" line="71"/>
+      <source>Check the path job for common errors</source>
+      <translation type="unfinished">Check the path job for common errors</translation>
     </message>
     <message>
-      <location filename="PathSanity.py" line="79"/>
-      <source>Check the Path project for common errors</source>
-      <translation>Verificar o projeto para erros comuns</translation>
+      <location filename="../../../PathScripts/PathSanity.py" line="189"/>
+      <source>Base Object(s)</source>
+      <translation type="unfinished">Base Object(s)</translation>
     </message>
     <message>
-      <location filename="PathSanity.py" line="80"/>
-      <source>Check the Path Project for common errors</source>
-      <translation>Verificar o projeto para erros comuns</translation>
+      <location filename="../../../PathScripts/PathSanity.py" line="190"/>
+      <source>Job Sequence</source>
+      <translation type="unfinished">Job Sequence</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="191"/>
+      <source>Job Description</source>
+      <translation type="unfinished">Job Description</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="192"/>
+      <source>Job Type</source>
+      <translation type="unfinished">Job Type</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="193"/>
+      <source>CAD File Name</source>
+      <translation type="unfinished">CAD File Name</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="194"/>
+      <source>Last Save Date</source>
+      <translation type="unfinished">Last Save Date</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="195"/>
+      <source>Customer</source>
+      <translation type="unfinished">Customer</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="196"/>
+      <source>Designer</source>
+      <translation type="unfinished">Designer</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="255"/>
+      <source>Operation</source>
+      <translation type="unfinished">Operation</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="223"/>
+      <source>Minimum Z Height</source>
+      <translation type="unfinished">Minimum Z Height</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="64"/>
@@ -3701,6 +3822,193 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
       <location filename="../../../PathScripts/PathSanity.py" line="144"/>
       <source>No issues detected, {} has passed basic sanity check.</source>
       <translation type="unfinished">No issues detected, {} has passed basic sanity check.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="224"/>
+      <source>Maximum Z Height</source>
+      <translation type="unfinished">Maximum Z Height</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="225"/>
+      <source>Cycle Time</source>
+      <translation type="unfinished">Cycle Time</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="226"/>
+      <source>Coolant</source>
+      <translation type="unfinished">Coolant</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="227"/>
+      <source>TOTAL JOB</source>
+      <translation type="unfinished">TOTAL JOB</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="249"/>
+      <source>Tool Number</source>
+      <translation type="unfinished">Tool Number</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="250"/>
+      <source>Description</source>
+      <translation>Descrição</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="251"/>
+      <source>Manufacturer</source>
+      <translation type="unfinished">Manufacturer</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="252"/>
+      <source>Part Number</source>
+      <translation type="unfinished">Part Number</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="253"/>
+      <source>URL</source>
+      <translation>URL</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="254"/>
+      <source>Inspection Notes</source>
+      <translation type="unfinished">Inspection Notes</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="256"/>
+      <source>Tool Controller</source>
+      <translation type="unfinished">Tool Controller</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="257"/>
+      <source>Feed Rate</source>
+      <translation type="unfinished">Feed Rate</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="258"/>
+      <source>Spindle Speed</source>
+      <translation type="unfinished">Spindle Speed</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="259"/>
+      <source>Tool Shape</source>
+      <translation type="unfinished">Tool Shape</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="260"/>
+      <source>Tool Diameter</source>
+      <translation type="unfinished">Tool Diameter</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="288"/>
+      <source>X Size</source>
+      <translation type="unfinished">X Size</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="289"/>
+      <source>Y Size</source>
+      <translation type="unfinished">Y Size</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="290"/>
+      <source>Z Size</source>
+      <translation type="unfinished">Z Size</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="291"/>
+      <source>Material</source>
+      <translation>Material</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="306"/>
+      <source>Work Offsets</source>
+      <translation type="unfinished">Work Offsets</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="307"/>
+      <source>Order By</source>
+      <translation type="unfinished">Order By</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="308"/>
+      <source>Part Datum</source>
+      <translation type="unfinished">Part Datum</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="321"/>
+      <source>Gcode File</source>
+      <translation type="unfinished">Gcode File</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="322"/>
+      <source>Last Post Process Date</source>
+      <translation type="unfinished">Last Post Process Date</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="323"/>
+      <source>Stops</source>
+      <translation type="unfinished">Stops</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="324"/>
+      <source>Programmer</source>
+      <translation type="unfinished">Programmer</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="325"/>
+      <source>Machine</source>
+      <translation type="unfinished">Machine</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="326"/>
+      <source>Postprocessor</source>
+      <translation type="unfinished">Postprocessor</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="327"/>
+      <source>Post Processor Flags</source>
+      <translation type="unfinished">Post Processor Flags</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="328"/>
+      <source>File Size (kbs)</source>
+      <translation type="unfinished">File Size (kbs)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="329"/>
+      <source>Line Count</source>
+      <translation type="unfinished">Line Count</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="343"/>
+      <source>Note</source>
+      <translation type="unfinished">Note</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="344"/>
+      <source>Operator</source>
+      <translation>Operador</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="345"/>
+      <source>Date</source>
+      <translation type="unfinished">Date</translation>
+    </message>
+    <message>
+      <location filename="PathSanity.py" line="50"/>
+      <source>It appears the machine limits haven't been set.  Not able to check path extents.
+</source>
+      <translation>Parece que os limites da máquina ainda não foram definidos.  Não é possivel verificar a extensão da trajetória.
+</translation>
+    </message>
+    <message>
+      <location filename="PathSanity.py" line="79"/>
+      <source>Check the Path project for common errors</source>
+      <translation>Verificar o projeto para erros comuns</translation>
+    </message>
+    <message>
+      <location filename="PathSanity.py" line="80"/>
+      <source>Check the Path Project for common errors</source>
+      <translation>Verificar o projeto para erros comuns</translation>
     </message>
   </context>
   <context>
@@ -3814,6 +4122,19 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
       <location filename="PathToolLibraryManager.py" line="603"/>
       <source>Edit the Tool Library</source>
       <translation>Editar a biblioteca de ferramentas</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Vcarve</name>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
+      <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
+      <translation type="unfinished">VCarve requires an engraving                            cutter with CuttingEdgeAngle</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="296"/>
+      <source>Engraver Cutting Edge Angle must be &lt; 180 degrees.</source>
+      <translation type="unfinished">Engraver Cutting Edge Angle must be &lt; 180 degrees.</translation>
     </message>
   </context>
   <context>

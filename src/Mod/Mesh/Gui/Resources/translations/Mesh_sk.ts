@@ -2057,12 +2057,12 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="519"/>
       <source>Compressed X3D</source>
-      <translation type="unfinished">Compressed X3D</translation>
+      <translation>Kompresované X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="520"/>
       <source>WebGL/X3D</source>
-      <translation type="unfinished">WebGL/X3D</translation>
+      <translation>WebGL/X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="522"/>
@@ -2087,7 +2087,7 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Asymptote Format</source>
-      <translation type="unfinished">Asymptote Format</translation>
+      <translation>Formát asymptoty</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="534"/>

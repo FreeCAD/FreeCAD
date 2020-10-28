@@ -11,12 +11,12 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation>Če želite dodati sklice, jih izberite v pogledu 3D in kliknite "Dodaj".</translation>
+      <translation>Če želite dodati sklice, jih izberite v 3D pogledu in kliknite "Dodaj".</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation>Če želiš dodati sklice: izberi jih v 3D pogledu in klikni "Dodaj".</translation>
+      <translation>Če želite dodati sklice: v 3D pogledu jih izberite in kliknite "Dodaj".</translation>
     </message>
   </context>
   <context>
@@ -638,7 +638,7 @@
     <message>
       <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Ustvari MKE prostorninsko pslokovje iz telesa ali ploskovne oblike z uporabo Netgen notranjega ploskovjevalnika</translation>
+      <translation>Ustvari MKE prostorninsko ploskovje iz telesa ali ploskovne oblike z uporabo Netgen notranjega ploskovjevalnika</translation>
     </message>
   </context>
   <context>
@@ -832,7 +832,7 @@
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="42"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Ustvari MKE prostorninsko pslokovje iz telesa ali ploskovne oblike z uporabo Netgen notranjega ploskovjevalnika</translation>
+      <translation>Ustvari MKE prostorninsko ploskovje iz telesa ali ploskovne oblike z uporabo Netgen notranjega ploskovjevalnika</translation>
     </message>
   </context>
   <context>
@@ -1479,12 +1479,12 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="75"/>
       <source>Edit FEM mesh</source>
-      <translation>Uredi mrežo MKE</translation>
+      <translation>Uredi ploskovje MKE</translation>
     </message>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
       <source>Meshing failure</source>
-      <translation>Napaka pri ploskovjenje</translation>
+      <translation>Napaka pri ploskovjenju</translation>
     </message>
   </context>
   <context>
@@ -1500,7 +1500,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="67"/>
       <source>FEM constraint parameters</source>
-      <translation>Parametri omejitve MKE</translation>
+      <translation>Določilke omejila MKE</translation>
     </message>
   </context>
   <context>
@@ -1729,7 +1729,7 @@
     <message>
       <location filename="../../TaskTetParameter.cpp" line="52"/>
       <source>Tet Parameter</source>
-      <translation>Parameter tetraedra</translation>
+      <translation>Določilka tetraedra</translation>
     </message>
   </context>
   <context>
@@ -1745,7 +1745,7 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="76"/>
       <source>Meshing failure</source>
-      <translation>Napaka pri ploskovjenje</translation>
+      <translation>Napaka pri ploskovjenju</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
@@ -1872,7 +1872,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="26"/>
       <source>Material</source>
-      <translation>Material</translation>
+      <translation>Snov</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="33"/>

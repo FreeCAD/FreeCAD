@@ -121,6 +121,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>編集</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -2511,6 +2518,18 @@ opening or creation</source>
       <source>Show axis cross by default</source>
       <translation>既定で交差軸を表示</translation>
     </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>ピック半径（px）:</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -3562,10 +3581,6 @@ Mouse tilting is not disabled by this setting.</source>
       <translation>単色</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>ピック半径（px）:</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>編集中のオブジェクト</translation>
     </message>
@@ -3580,12 +3595,6 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation>選択時の強調表示を有効にし、指定色を使用</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation>3D ビューでの要素ピック範囲。
-大きな値を設定するとピックが容易になりますが、小さなフィーチャーを選択できなくなります。</translation>
     </message>
     <message>
       <source>Background color for the model view</source>

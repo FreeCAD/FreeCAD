@@ -3461,7 +3461,7 @@ Vil du fortsette?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="104"/>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Vertikal</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="120"/>
@@ -3471,7 +3471,7 @@ Vil du fortsette?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="123"/>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Horisontal</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="136"/>

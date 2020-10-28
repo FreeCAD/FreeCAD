@@ -114,7 +114,7 @@
       <translation>Το υπολογισμένο εμβαδόν αυτού του ορόφου</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="908"/>
+      <location filename="../../ArchSectionPlane.py" line="910"/>
       <source>The placement of this object</source>
       <translation>Η τοποθέτηση αυτού του αντικειμένου</translation>
     </message>
@@ -199,17 +199,17 @@
       <translation>Ο τύπος facemaker που θα χρησιμοποιηθεί για την δημιουργία του προφίλ αυτού του αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="731"/>
+      <location filename="../../ArchWall.py" line="734"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>Η κανονική διεύθυνση επέκτασης αυτού του αντικειμένου (κρατήστε το (0,0,0) για αυτόματη κανονική επιλογή)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1212"/>
+      <location filename="../../ArchSectionPlane.py" line="1242"/>
       <source>The linked object</source>
       <translation>Το συνδεδεμένο αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1222"/>
+      <location filename="../../ArchSectionPlane.py" line="1252"/>
       <source>The line width of the rendered objects</source>
       <translation>Το πλάτος γραμμής των παρεχόμενων αντικειμένων</translation>
     </message>
@@ -539,51 +539,6 @@
       <translation>Το στρογγύλεμα που θα εφαρμοστεί στη γωνία του βασικού προφίλ. Αυτή η τιμή πολλαπλασιάζεται με τη διάμετρο της ράβδου.</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="191"/>
-      <source>A list of angles for each roof pane</source>
-      <translation>Μια λίστα γωνιών για κάθε πάνελ οροφής</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="193"/>
-      <source>A list of horizontal length projections for each roof pane</source>
-      <translation>Μια λίστα προβολών οριζοντίου μήκους για κάθε πάνελ οροφής</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="195"/>
-      <source>A list of IDs of relative profiles for each roof pane</source>
-      <translation>Μια λίστα με ID σχετικών προφίλ για κάθε πάνελ οροφής</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="197"/>
-      <source>A list of thicknesses for each roof pane</source>
-      <translation>Μια λίστα με πάχη για κάθε πάνελ οροφής</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="199"/>
-      <source>A list of overhangs for each roof pane</source>
-      <translation>Μια λίστα με προεξοχές για κάθε πάνελ οροφής</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="201"/>
-      <source>A list of calculated heights for each roof pane</source>
-      <translation>Μια λίστα με υπολογισμένα ύψη για κάθε πάνελ οροφής</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="203"/>
-      <source>The face number of the base object used to build this roof</source>
-      <translation>Ο αριθμός όψης του βασικού αντικειμένου που χρησιμοποιήθηκε για την κατασκευή αυτής της οροφής</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="205"/>
-      <source>The total length of ridges and hips of this roof</source>
-      <translation>Το συνολικό μήκος των ραχών και ακμών αυτής της οροφής</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="208"/>
-      <source>The total length of borders of this roof</source>
-      <translation>Το συνολικό μήκος των ορίων αυτής της οροφής</translation>
-    </message>
-    <message>
       <location filename="../../ArchSchedule.py" line="97"/>
       <source>The description column</source>
       <translation>Η στήλη περιγραφής</translation>
@@ -614,52 +569,52 @@
       <translation>Το υπολογιστικό φύλλο στο οποίο να εκτυπωθούν τα αποτελέσματα</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="914"/>
+      <location filename="../../ArchSectionPlane.py" line="916"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Aν αυτό είναι ψευδές, θα περικοπούν και τα μη στερεά στοιχεία, με πιθανώς λανθασμένα αποτελέσματα.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="984"/>
+      <location filename="../../ArchSectionPlane.py" line="986"/>
       <source>The display length of this section plane</source>
       <translation>Το μήκος εμφάνισης αυτού του επιπέδου τομής</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="990"/>
+      <location filename="../../ArchSectionPlane.py" line="992"/>
       <source>The display height of this section plane</source>
       <translation>Το ύψος εμφάνισης αυτού του επιπέδου τομής</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="996"/>
+      <location filename="../../ArchSectionPlane.py" line="998"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Το μέγεθος των βελών αυτού του επιπέδου τομής</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1010"/>
+      <location filename="../../ArchSectionPlane.py" line="1012"/>
       <source>Show the cut in the 3D view</source>
       <translation>Εμφανίστε την περικοπή σε τρισδιάστατη προβολή</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1214"/>
+      <location filename="../../ArchSectionPlane.py" line="1244"/>
       <source>The rendering mode to use</source>
       <translation>Η λειτουργία αποτύπωσης προς χρήση</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1218"/>
+      <location filename="../../ArchSectionPlane.py" line="1248"/>
       <source>If cut geometry is shown or not</source>
       <translation>Αν η κομμένη γεωμετρική οντότητα απεικονίζεται ή όχι</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1220"/>
+      <location filename="../../ArchSectionPlane.py" line="1250"/>
       <source>If cut geometry is filled or not</source>
       <translation>Αν η κομμένη γεωμετρική οντότητα είναι γεμάτη ή όχι</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1225"/>
+      <location filename="../../ArchSectionPlane.py" line="1255"/>
       <source>The size of the texts inside this object</source>
       <translation>Το μέγεθος των κειμένων μέσα σε αυτό το αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1228"/>
+      <location filename="../../ArchSectionPlane.py" line="1258"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Εάν επιλεχθούν, τα πηγαία αντικείμενα εμφανίζονται ανεξάρτητα από το αν είναι ορατά στο τρισδιάστατο μοντέλο</translation>
     </message>
@@ -994,32 +949,32 @@
       <translation>Αν αυτό είναι αληθές, τα στοιχεία είναι ευθυγραμμισμένα με άξονες</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="711"/>
+      <location filename="../../ArchWall.py" line="714"/>
       <source>The length of this wall. Not used if this wall is based on an underlying object</source>
       <translation>Το μήκος αυτού του τοίχου. Δεν χρησιμοποιείται αν ο εν λόγω τοίχος βασίζεται σε κάποιο υποκείμενο στοιχείο</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="713"/>
+      <location filename="../../ArchWall.py" line="716"/>
       <source>The width of this wall. Not used if this wall is based on a face</source>
       <translation>Το πλάτος αυτού του τοίχου. Δεν χρησιμοποιείται αν ο εν λόγω τοίχος βασίζεται σε κάποια όψη</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="723"/>
+      <location filename="../../ArchWall.py" line="726"/>
       <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
       <translation>Το ύψος αυτού του τοίχου. Κρατήστε το 0 για αυτόματη επιλογή. Δεν χρησιμοποιείται αν ο εν λόγω τοίχος βασίζεται σε κάποιο στερεό στοιχείο</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="728"/>
+      <location filename="../../ArchWall.py" line="731"/>
       <source>The alignment of this wall on its base object, if applicable</source>
       <translation>Η ευθυγράμμιση αυτού του τοίχου πάνω στο αντικείμενο βάσης του, αν είναι εφαρμόσιμο</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="733"/>
+      <location filename="../../ArchWall.py" line="736"/>
       <source>The face number of the base object used to build this wall</source>
       <translation>Ο αριθμός όψης του αντικειμένου βάσης που χρησιμοποιήθηκε για την κατασκευή αυτού του τοίχου</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="735"/>
+      <location filename="../../ArchWall.py" line="738"/>
       <source>The offset between this wall and its baseline (only for left and right alignments)</source>
       <translation>Η απόσταση μεταξύ του εν λόγω τοίχου και της βασικής γραμμής του (μόνο για ευθυγραμμίσεις στον οριζόντιο άξονα)</translation>
     </message>
@@ -1049,47 +1004,47 @@
       <translation>Ανοίγει τα υποσυστήματα που έχουν έναν ορισμένο εύκαμπτο σύνδεσμο</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="278"/>
+      <location filename="../../ArchMaterial.py" line="288"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
       <translation>Ένας καθιερωμένος κώδικας (MasterFormat, OmniClass,...)</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="672"/>
+      <location filename="../../ArchMaterial.py" line="716"/>
       <source>A description for this material</source>
       <translation>Μια περιγραφή για αυτό το υλικό</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="280"/>
+      <location filename="../../ArchMaterial.py" line="292"/>
       <source>The transparency value of this material</source>
       <translation>Η τιμή διαφάνειας αυτού του υλικού</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="281"/>
+      <location filename="../../ArchMaterial.py" line="294"/>
       <source>The color of this material</source>
       <translation>Το χρώμα αυτού του υλικού</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="673"/>
+      <location filename="../../ArchMaterial.py" line="717"/>
       <source>The list of layer names</source>
       <translation>Η λίστα με τα ονόματα στρωμάτων</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="674"/>
+      <location filename="../../ArchMaterial.py" line="718"/>
       <source>The list of layer materials</source>
       <translation>Η λίστα με τα υλικά στρωμάτων</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="675"/>
+      <location filename="../../ArchMaterial.py" line="719"/>
       <source>The list of layer thicknesses</source>
       <translation>Η λίστα με τα πάχη στρωμάτων</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1230"/>
+      <location filename="../../ArchSectionPlane.py" line="1260"/>
       <source>The line color of the projected objects</source>
       <translation>Το χρώμα γραμμής των προβεβλημένων αντικειμένων</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1232"/>
+      <location filename="../../ArchSectionPlane.py" line="1262"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Το χρώμα των κομμένων όψεων (αν είναι ενεργοποιημένο)</translation>
     </message>
@@ -1194,11 +1149,6 @@
       <translation>Σχήμα του οπλισμού</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="211"/>
-      <source>Flip the roof direction if going the wrong way</source>
-      <translation>Αντιστρέψτε την κατεύθυνση της οροφής αν οδεύει προς τη λάθος πλευρά</translation>
-    </message>
-    <message>
       <location filename="../../ArchWindow.py" line="570"/>
       <source>Shows plan opening symbols if available</source>
       <translation>Εμφανίζει τα σύμβολα ανοίγματος σχεδίου αν διατίθενται</translation>
@@ -1264,12 +1214,12 @@
       <translation type="unfinished">The level of the (0,0,0) point of this level</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="910"/>
+      <location filename="../../ArchSectionPlane.py" line="912"/>
       <source>The shape of this object</source>
       <translation>Το σχήμα αυτού του αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1002"/>
+      <location filename="../../ArchSectionPlane.py" line="1004"/>
       <source>The line width of this object</source>
       <translation>Το πλάτος γραμμής αυτού του αντικειμένου</translation>
     </message>
@@ -1339,7 +1289,7 @@
       <translation>Η διεύθυνση URL της σελίδας προϊόντος αυτού του εξοπλισμού</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="279"/>
+      <location filename="../../ArchMaterial.py" line="290"/>
       <source>A URL where to find information about this material</source>
       <translation>Μια διεύθυνση URL όπου μπορείτε να βρείτε πληροφορίες για αυτό το υλικό</translation>
     </message>
@@ -1394,22 +1344,22 @@
       <translation type="unfinished">If true, the colors from the linked file will be kept updated</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="912"/>
+      <location filename="../../ArchSectionPlane.py" line="914"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation type="unfinished">The objects that must be considered by this section plane. Empty means the whole document.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="999"/>
+      <location filename="../../ArchSectionPlane.py" line="1001"/>
       <source>The transparency of this object</source>
       <translation>Η διαφάνεια αυτού του αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1007"/>
+      <location filename="../../ArchSectionPlane.py" line="1009"/>
       <source>The color of this object</source>
       <translation>Το χρώμα αυτού του αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1012"/>
+      <location filename="../../ArchSectionPlane.py" line="1014"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Η απόσταση μεταξύ του κομμένου επιπέδου και της πραγματικής προβολής περικοπής (κρατήστε μια πολύ μικρή τιμή αλλά όχι μηδέν)</translation>
     </message>
@@ -1484,42 +1434,42 @@
       <translation type="unfinished">The 'left outline' of all segments of stairs </translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="744"/>
+      <location filename="../../ArchWall.py" line="747"/>
       <source>Enable this to make the wall generate blocks</source>
       <translation>Ενεργοποιήστε αυτό προκειμένου να κάνετε τον τοίχο να δημιουργήσει φραγμούς</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="746"/>
+      <location filename="../../ArchWall.py" line="749"/>
       <source>The length of each block</source>
       <translation>Το μήκος κάθε φραγμού</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="748"/>
+      <location filename="../../ArchWall.py" line="751"/>
       <source>The height of each block</source>
       <translation>Το ύψος κάθε φραγμού</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="750"/>
+      <location filename="../../ArchWall.py" line="753"/>
       <source>The horizontal offset of the first line of blocks</source>
       <translation>Η οριζόντια μετατόπιση της πρώτης σειράς φραγμών</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="752"/>
+      <location filename="../../ArchWall.py" line="755"/>
       <source>The horizontal offset of the second line of blocks</source>
       <translation>Η οριζόντια μετατόπιση της δεύτερης σειράς φραγμών</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="754"/>
+      <location filename="../../ArchWall.py" line="757"/>
       <source>The size of the joints between each block</source>
       <translation>Το μέγεθος των αρθρώσεων μεταξύ των φραγμών</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="756"/>
+      <location filename="../../ArchWall.py" line="759"/>
       <source>The number of entire blocks</source>
       <translation>Ο αριθμός των πλήρων φραγμών</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="759"/>
+      <location filename="../../ArchWall.py" line="762"/>
       <source>The number of broken blocks</source>
       <translation>Ο αριθμός των σπασμένων φραγμών</translation>
     </message>
@@ -1629,12 +1579,12 @@
       <translation type="unfinished">Description of IFC attributes are not yet implemented</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="917"/>
+      <location filename="../../ArchSectionPlane.py" line="919"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation type="unfinished">If True, resulting views will be clipped to the section plane area.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="919"/>
+      <location filename="../../ArchSectionPlane.py" line="921"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation type="unfinished">If true, the color of the objects material will be used to fill cut areas.</translation>
     </message>
@@ -1939,17 +1889,17 @@
       <translation type="unfinished">How to draw the rods</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="717"/>
+      <location filename="../../ArchWall.py" line="720"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</source>
       <translation type="unfinished">This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="720"/>
+      <location filename="../../ArchWall.py" line="723"/>
       <source>This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</source>
       <translation type="unfinished">This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="725"/>
+      <location filename="../../ArchWall.py" line="728"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
       <translation type="unfinished">The area of this wall as a simple Height * Length calculation</translation>
     </message>
@@ -2003,21 +1953,81 @@
       <source>The rebar mark</source>
       <translation type="unfinished">The rebar mark</translation>
     </message>
+    <message>
+      <location filename="../../ArchMaterial.py" line="296"/>
+      <source>The color of this material when cut</source>
+      <translation type="unfinished">The color of this material when cut</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="263"/>
+      <source>The list of angles of the roof segments</source>
+      <translation type="unfinished">The list of angles of the roof segments</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="268"/>
+      <source>The list of horizontal length projections of the roof segments</source>
+      <translation type="unfinished">The list of horizontal length projections of the roof segments</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="273"/>
+      <source>The list of IDs of the relative profiles of the roof segments</source>
+      <translation type="unfinished">The list of IDs of the relative profiles of the roof segments</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="278"/>
+      <source>The list of thicknesses of the roof segments</source>
+      <translation type="unfinished">The list of thicknesses of the roof segments</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="283"/>
+      <source>The list of overhangs of the roof segments</source>
+      <translation type="unfinished">The list of overhangs of the roof segments</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="288"/>
+      <source>The list of calculated heights of the roof segments</source>
+      <translation type="unfinished">The list of calculated heights of the roof segments</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="293"/>
+      <source>The face number of the base object used to build the roof</source>
+      <translation type="unfinished">The face number of the base object used to build the roof</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="298"/>
+      <source>The total length of the ridges and hips of the roof</source>
+      <translation type="unfinished">The total length of the ridges and hips of the roof</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="304"/>
+      <source>The total length of the borders of the roof</source>
+      <translation type="unfinished">The total length of the borders of the roof</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="310"/>
+      <source>Specifies if the direction of the roof should be flipped</source>
+      <translation type="unfinished">Specifies if the direction of the roof should be flipped</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1017"/>
+      <source>Show the label in the 3D view</source>
+      <translation type="unfinished">Show the label in the 3D view</translation>
+    </message>
   </context>
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchWindow.py" line="1565"/>
+      <location filename="../../ArchWindow.py" line="1567"/>
       <source>Components</source>
       <translation>Στοιχεία</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1938"/>
+      <location filename="../../ArchComponent.py" line="1940"/>
       <source>Components of this object</source>
       <translation>Στοιχεία αυτού του αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1943"/>
+      <location filename="../../ArchComponent.py" line="1945"/>
       <source>Axes</source>
       <translation>Άξονες</translation>
     </message>
@@ -2027,12 +2037,12 @@
       <translation>Δημιουργήστε Άξονα</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1559"/>
+      <location filename="../../ArchWindow.py" line="1561"/>
       <source>Remove</source>
       <translation>Αφαίρεση</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1560"/>
+      <location filename="../../ArchWindow.py" line="1562"/>
       <source>Add</source>
       <translation>Προσθήκη</translation>
     </message>
@@ -2097,37 +2107,37 @@
       <translation>Από Πλέγμα σε Σχήμα</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1939"/>
+      <location filename="../../ArchComponent.py" line="1941"/>
       <source>Base component</source>
       <translation>Βασικό εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1940"/>
+      <location filename="../../ArchComponent.py" line="1942"/>
       <source>Additions</source>
       <translation>Προσθήκες</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1941"/>
+      <location filename="../../ArchComponent.py" line="1943"/>
       <source>Subtractions</source>
       <translation>Αφαιρέσεις</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1942"/>
+      <location filename="../../ArchComponent.py" line="1944"/>
       <source>Objects</source>
       <translation>Αντικείμενα</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="863"/>
+      <location filename="../../ArchRoof.py" line="1012"/>
       <source>Roof</source>
       <translation>Οροφή</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="159"/>
+      <location filename="../../ArchRoof.py" line="235"/>
       <source>Create Roof</source>
       <translation>Δημιουργήστε Οροφή</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="665"/>
+      <location filename="../../ArchRoof.py" line="825"/>
       <source>Unable to create a roof</source>
       <translation>Αδύνατη η δημιουργία οροφής</translation>
     </message>
@@ -2142,7 +2152,7 @@
       <translation>Προβολή</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="887"/>
+      <location filename="../../ArchSectionPlane.py" line="889"/>
       <source>Create Section Plane</source>
       <translation>Δημιουργήστε επίπεδο τομής</translation>
     </message>
@@ -2157,22 +2167,22 @@
       <translation>Δημιουργήστε Δομή</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="599"/>
+      <location filename="../../ArchWall.py" line="602"/>
       <source>Create Wall</source>
       <translation>Δημιουργήστε Τοίχο</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="491"/>
+      <location filename="../../ArchWall.py" line="494"/>
       <source>Width</source>
       <translation>Πλάτος</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="497"/>
+      <location filename="../../ArchWall.py" line="500"/>
       <source>Height</source>
       <translation>Ύψος</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="928"/>
+      <location filename="../../ArchWall.py" line="931"/>
       <source>This mesh is an invalid solid</source>
       <translation>Αυτό το πλέγμα είναι ένα μη έγκυρο στερεό στοιχείο</translation>
     </message>
@@ -2182,42 +2192,42 @@
       <translation>Δημιουργήστε Παράθυρο</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1561"/>
+      <location filename="../../ArchWindow.py" line="1563"/>
       <source>Edit</source>
       <translation>Επεξεργασία</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1562"/>
+      <location filename="../../ArchWindow.py" line="1564"/>
       <source>Create/update component</source>
       <translation>Δημιουργήστε/ενημερώστε στοιχείο</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1563"/>
+      <location filename="../../ArchWindow.py" line="1565"/>
       <source>Base 2D object</source>
       <translation>Δισδιάστατο αντικείμενο βάσης</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1569"/>
+      <location filename="../../ArchWindow.py" line="1571"/>
       <source>Wires</source>
       <translation>Σύρματα</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1566"/>
+      <location filename="../../ArchWindow.py" line="1568"/>
       <source>Create new component</source>
       <translation>Δημιουργήστε νέο εξάρτημα</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1567"/>
+      <location filename="../../ArchWindow.py" line="1569"/>
       <source>Name</source>
       <translation>Όνομα</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1568"/>
+      <location filename="../../ArchWindow.py" line="1570"/>
       <source>Type</source>
       <translation>Τύπος</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1570"/>
+      <location filename="../../ArchWindow.py" line="1572"/>
       <source>Thickness</source>
       <translation>Πάχος</translation>
     </message>
@@ -2247,7 +2257,7 @@
       <translation>Παρακαλώ επιλέξτε ένα αντικείμενο βάσης</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1945"/>
+      <location filename="../../ArchComponent.py" line="1947"/>
       <source>Fixtures</source>
       <translation>Προσαρτήσεις</translation>
     </message>
@@ -2277,7 +2287,7 @@
       <translation>Δημιουργήστε Σκάλες</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="485"/>
+      <location filename="../../ArchWall.py" line="488"/>
       <source>Length</source>
       <translation>Μήκος</translation>
     </message>
@@ -2292,17 +2302,17 @@
       <translation>Αδύνατος ο υπολογισμός σχήματος</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="656"/>
+      <location filename="../../ArchWall.py" line="659"/>
       <source>Merge Wall</source>
       <translation>Συγχωνεύστε Τοίχο</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="669"/>
+      <location filename="../../ArchWall.py" line="672"/>
       <source>Please select only wall objects</source>
       <translation>Παρακαλώ επιλέξτε μόνο στοιχεία τοιχοποιίας</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="671"/>
+      <location filename="../../ArchWall.py" line="674"/>
       <source>Merge Walls</source>
       <translation>Συγχωνεύστε Τοίχους</translation>
     </message>
@@ -2397,37 +2407,12 @@
       <translation>Δημιουργήστε Πάνελ</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="864"/>
-      <source>Parameters of the profiles of the roof:
-* Angle : slope in degrees compared to the horizontal one.
-* Run : outdistance between the wall and the ridge sheathing.
-* Thickness : thickness of the side of roof.
-* Overhang : outdistance between the sewer and the wall.
-* Height : height of the ridge sheathing (calculated automatically)
-* IdRel : Relative Id for calculations automatic.
----
-If Angle = 0 and Run = 0 then profile is identical to the relative profile.
-If Angle = 0 then angle is calculated so that the height is the same one as the relative profile.
-If Run = 0 then Run is calculated so that the height is the same one as the relative profile.</source>
-      <translation>Παράμετροι των προφίλ οροφής:
-* Γωνία : κλίση σε μοίρες σε σύγκριση με την οριζόντια διεύθυνση.
-* Διαδρομή : εξωτερική απόσταση μεταξύ του τοίχου και της επικάλυψης ράχης.
-* Πάχος : πάχος της πλευράς της οροφής.
-* Προεξοχή : εξωτερική απόσταση μεταξύ του οχετού και του τοίχου.
-* Ύψος : ύψος της επικάλυψης ράχης (υπολογίζεται αυτόματα)
-* IdRel : Ιd αναφοράς για αυτόματους υπολογισμούς.
----
-Αν Γωνία = 0 και Διαδρομή = 0 τότε το προφίλ είναι πανομοιότυπο με το προφίλ αναφοράς.
-Αν Γωνία = 0 τότε η γωνία υπολογίζεται ούτως ώστε το ύψος να είναι ίδιο με αυτό του προφίλ αναφοράς.
-Αν διαδρομή = 0 τότε η διαδρομή υπολογίζεται ούτως ώστε το ύψος να είναι ίδιο με αυτό του προφίλ αναφοράς.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Id</source>
       <translation>Id</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -2452,27 +2437,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Εμπρόσθια</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Angle (deg)</source>
       <translation>Γωνία (μοίρες)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Run (mm)</source>
       <translation>Διαδρομή (χιλιοστά)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Thickness (mm)</source>
       <translation>Πάχος (χιλιοστά)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Overhang (mm)</source>
       <translation>Προεξοχή (χιλιοστά)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Height (mm)</source>
       <translation>Ύψος (χιλιοστά)</translation>
     </message>
@@ -2487,7 +2472,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Δημιουργήστε υλικό</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="115"/>
+      <location filename="../../ArchWall.py" line="118"/>
       <source>Walls can only be based on Part or Mesh objects</source>
       <translation>Οι τοίχοι μπορούν να βασίζονται μόνο σε εξαρτήματα ή πλέγματα</translation>
     </message>
@@ -2507,12 +2492,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Κλειδί</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="599"/>
+      <location filename="../../ArchSchedule.py" line="603"/>
       <source>Value</source>
       <translation>Τιμή</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="599"/>
+      <location filename="../../ArchSchedule.py" line="603"/>
       <source>Unit</source>
       <translation>Μονάδα</translation>
     </message>
@@ -2527,7 +2512,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Δημιουργήστε Κτίριο</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1946"/>
+      <location filename="../../ArchComponent.py" line="1948"/>
       <source>Group</source>
       <translation>Ομάδα</translation>
     </message>
@@ -2702,7 +2687,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Περιστροφή</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1571"/>
+      <location filename="../../ArchWindow.py" line="1573"/>
       <source>Offset</source>
       <translation>Μετατοπίστε</translation>
     </message>
@@ -2722,7 +2707,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Εξαγάγετε Αρχείο CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="658"/>
+      <location filename="../../ArchSchedule.py" line="662"/>
       <source>Schedule</source>
       <translation>Χρονοδιάγραμμα</translation>
     </message>
@@ -2790,22 +2775,22 @@ Site creation aborted.</source>
       <translation>Πόρτα</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1572"/>
+      <location filename="../../ArchWindow.py" line="1574"/>
       <source>Hinge</source>
       <translation>Εύκαμπτος σύνδεσμος</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1573"/>
+      <location filename="../../ArchWindow.py" line="1575"/>
       <source>Opening mode</source>
       <translation>Λειτουργία ανοίγματος</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1578"/>
+      <location filename="../../ArchWindow.py" line="1580"/>
       <source>Get selected edge</source>
       <translation>Λάβετε την επιλεγμένη ακμή</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1579"/>
+      <location filename="../../ArchWindow.py" line="1581"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Πιέστε για να ανακτήσετε την επιλεγμένη ακμή</translation>
     </message>
@@ -2825,27 +2810,27 @@ Site creation aborted.</source>
       <translation>Δημιουργήστε σύνθετο υλικό</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="799"/>
+      <location filename="../../ArchMaterial.py" line="843"/>
       <source>Material</source>
       <translation>Υλικό</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="831"/>
+      <location filename="../../ArchMaterial.py" line="875"/>
       <source>New layer</source>
       <translation>Νέο στρώμα</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="470"/>
+      <location filename="../../ArchWall.py" line="473"/>
       <source>Wall Presets...</source>
       <translation>Προεπιλογές Τοίχου...</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1556"/>
+      <location filename="../../ArchWindow.py" line="1558"/>
       <source>Hole wire</source>
       <translation>Σύρμα οπής</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1558"/>
+      <location filename="../../ArchWindow.py" line="1560"/>
       <source>Pick selected</source>
       <translation>Διαλέξτε τα επιλεγμένα</translation>
     </message>
@@ -2865,62 +2850,62 @@ Site creation aborted.</source>
       <translation>Ετικέτα</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1051"/>
+      <location filename="../../ArchAxis.py" line="1052"/>
       <source>Axis system components</source>
       <translation>Στοιχεία του συστήματος αξόνων</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1377"/>
+      <location filename="../../ArchAxis.py" line="1378"/>
       <source>Grid</source>
       <translation>Κάναβος</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1378"/>
+      <location filename="../../ArchAxis.py" line="1379"/>
       <source>Total width</source>
       <translation>Συνολικό πλάτος</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1379"/>
+      <location filename="../../ArchAxis.py" line="1380"/>
       <source>Total height</source>
       <translation>Συνολικό ύψος</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1380"/>
+      <location filename="../../ArchAxis.py" line="1381"/>
       <source>Add row</source>
       <translation>Προσθέστε σειρά</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1381"/>
+      <location filename="../../ArchAxis.py" line="1382"/>
       <source>Del row</source>
       <translation>Διαγράψτε σειρά</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1382"/>
+      <location filename="../../ArchAxis.py" line="1383"/>
       <source>Add col</source>
       <translation>Προσθέστε στήλη</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1383"/>
+      <location filename="../../ArchAxis.py" line="1384"/>
       <source>Del col</source>
       <translation>Διαγράψτε στήλη</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1384"/>
+      <location filename="../../ArchAxis.py" line="1385"/>
       <source>Create span</source>
       <translation>Δημιουργήστε χώρο</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1385"/>
+      <location filename="../../ArchAxis.py" line="1386"/>
       <source>Remove span</source>
       <translation>Αφαιρέστε χώρο</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1386"/>
+      <location filename="../../ArchAxis.py" line="1387"/>
       <source>Rows</source>
       <translation>Σειρές</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1386"/>
+      <location filename="../../ArchAxis.py" line="1387"/>
       <source>Columns</source>
       <translation>Στήλες</translation>
     </message>
@@ -2935,12 +2920,12 @@ Site creation aborted.</source>
       <translation>Όρια χώρου</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1026"/>
+      <location filename="../../ArchWall.py" line="1029"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Σφάλμα: Δεν μπορείτε να τροποποιήσετε το αντικείμενο βάση αυτού του τοίχου</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1555"/>
+      <location filename="../../ArchWindow.py" line="1557"/>
       <source>Window elements</source>
       <translation>Στοιχεία παραθύρου</translation>
     </message>
@@ -2975,7 +2960,7 @@ Site creation aborted.</source>
       <translation>Εξαγάγετε CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="599"/>
+      <location filename="../../ArchSchedule.py" line="603"/>
       <source>Description</source>
       <translation>Περιγραφή</translation>
     </message>
@@ -2990,7 +2975,7 @@ Site creation aborted.</source>
       <translation>Σύνολο</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1947"/>
+      <location filename="../../ArchComponent.py" line="1949"/>
       <source>Hosts</source>
       <translation>Γονικά στοιχεία</translation>
     </message>
@@ -3005,22 +2990,22 @@ Site creation aborted.</source>
       <translation>Παρακαλώ επιλέξτε τουλάχιστον έναν άξονα</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1113"/>
+      <location filename="../../ArchAxis.py" line="1114"/>
       <source>Auto height is larger than height</source>
       <translation>Το αυτόματο ύψος είναι μεγαλύτερο από το ύψος</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1122"/>
+      <location filename="../../ArchAxis.py" line="1123"/>
       <source>Total row size is larger than height</source>
       <translation>Το συνολικό μέγεθος σειράς είναι μεγαλύτερο από το ύψος</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1144"/>
+      <location filename="../../ArchAxis.py" line="1145"/>
       <source>Auto width is larger than width</source>
       <translation>Το αυτόματο πλάτος είναι μεγαλύτερο από το πλάτος</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1153"/>
+      <location filename="../../ArchAxis.py" line="1154"/>
       <source>Total column size is larger than width</source>
       <translation>Το συνολικό μέγεθος στήλης είναι μεγαλύτερο από το πλάτος</translation>
     </message>
@@ -3067,47 +3052,47 @@ Building creation aborted.</source>
       <translation>Κλείσιμο επεξεργασίας σκαριφήματος</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1935"/>
+      <location filename="../../ArchComponent.py" line="1937"/>
       <source>Component</source>
       <translation>Στοιχείο</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1948"/>
+      <location filename="../../ArchComponent.py" line="1950"/>
       <source>Edit IFC properties</source>
       <translation type="unfinished">Edit IFC properties</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1949"/>
+      <location filename="../../ArchComponent.py" line="1951"/>
       <source>Edit standard code</source>
       <translation type="unfinished">Edit standard code</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1995"/>
+      <location filename="../../ArchComponent.py" line="1997"/>
       <source>Property</source>
       <translation>Ιδιότητα</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2000"/>
+      <location filename="../../ArchComponent.py" line="2002"/>
       <source>Add property...</source>
       <translation>Προσθήκη ιδιότητας...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2001"/>
+      <location filename="../../ArchComponent.py" line="2003"/>
       <source>Add property set...</source>
       <translation type="unfinished">Add property set...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2001"/>
+      <location filename="../../ArchComponent.py" line="2003"/>
       <source>New...</source>
       <translation>Νέο...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2143"/>
+      <location filename="../../ArchComponent.py" line="2145"/>
       <source>New property</source>
       <translation>Νέα ιδιότητα</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2179"/>
+      <location filename="../../ArchComponent.py" line="2181"/>
       <source>New property set</source>
       <translation>Νέο σύνολο ιδιοτήτων</translation>
     </message>
@@ -3225,42 +3210,42 @@ Floor creation aborted.</source>
       <translation>Δημιουργία εξωτερικής αναφοράς</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1448"/>
+      <location filename="../../ArchSectionPlane.py" line="1479"/>
       <source>Section plane settings</source>
       <translation type="unfinished">Section plane settings</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1453"/>
+      <location filename="../../ArchSectionPlane.py" line="1484"/>
       <source>Objects seen by this section plane:</source>
       <translation>Αντικείμενα που φαίνονται από αυτό το επίπεδο τομής:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1454"/>
+      <location filename="../../ArchSectionPlane.py" line="1485"/>
       <source>Section plane placement:</source>
       <translation type="unfinished">Section plane placement:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1455"/>
+      <location filename="../../ArchSectionPlane.py" line="1486"/>
       <source>Rotate X</source>
       <translation>Περιστροφή Υ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1457"/>
+      <location filename="../../ArchSectionPlane.py" line="1488"/>
       <source>Rotate Y</source>
       <translation>Περιστροφή Υ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1459"/>
+      <location filename="../../ArchSectionPlane.py" line="1490"/>
       <source>Rotate Z</source>
       <translation>Περιστροφή Ζ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1461"/>
+      <location filename="../../ArchSectionPlane.py" line="1492"/>
       <source>Resize</source>
       <translation>Αλλαγή μεγέθους</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="505"/>
+      <location filename="../../ArchWall.py" line="508"/>
       <source>Center</source>
       <translation>Κέντρο</translation>
     </message>
@@ -3306,12 +3291,12 @@ Note: You can change that in the preferences.</source>
       <translation>Σημείο τομής βρέθηκε.</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="662"/>
+      <location filename="../../ArchWall.py" line="665"/>
       <source>The selected wall contains no subwall to merge</source>
       <translation>Ο επιλεγμένος τοίχος δεν περιέχει κάποιο υπόβαθρο για να συγχωνεύσετε</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="919"/>
+      <location filename="../../ArchWall.py" line="922"/>
       <source>Cannot compute blocks for wall</source>
       <translation>Αδύνατος ο υπολογισμός των φραγμών για τον τοίχο</translation>
     </message>
@@ -3321,27 +3306,27 @@ Note: You can change that in the preferences.</source>
       <translation>Διαλέξτε μια όψη σε ένα υπάρχον αντικείμενο ή επιλέξτε μια προεπιλεγμένη</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1517"/>
+      <location filename="../../ArchWindow.py" line="1519"/>
       <source>Unable to create component</source>
       <translation>Αδύνατη η δημιουργία εξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1557"/>
+      <location filename="../../ArchWindow.py" line="1559"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Ο αριθμός του σύρματος που ορίζει μια οπή στο γονικό αντικείμενο. Η τιμή μηδέν θα συνεπάγεται την αυτόματη επιλογή του μεγαλύτερου σύρματος</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1576"/>
+      <location filename="../../ArchWindow.py" line="1578"/>
       <source>+ default</source>
       <translation>+ προεπιλογή</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1575"/>
+      <location filename="../../ArchWindow.py" line="1577"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1577"/>
+      <location filename="../../ArchWindow.py" line="1579"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
     </message>
@@ -3412,42 +3397,42 @@ You can change that in the preferences.</source>
 Αυτό μπορείτε να το αλλάξετε στις προτιμήσεις.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1450"/>
+      <location filename="../../ArchSectionPlane.py" line="1481"/>
       <source>Remove highlighted objects from the list above</source>
       <translation type="unfinished">Remove highlighted objects from the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1451"/>
+      <location filename="../../ArchSectionPlane.py" line="1482"/>
       <source>Add selected</source>
       <translation>Προσθήκη επιλεγμένων</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1452"/>
+      <location filename="../../ArchSectionPlane.py" line="1483"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1456"/>
+      <location filename="../../ArchSectionPlane.py" line="1487"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Περιστρέψτε το επίπεδο στον άξονα X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1458"/>
+      <location filename="../../ArchSectionPlane.py" line="1489"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Περιστρέψτε το επίπεδο στον άξονα Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1460"/>
+      <location filename="../../ArchSectionPlane.py" line="1491"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Περιστρέψτε το επίπεδο στον άξονα Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1462"/>
+      <location filename="../../ArchSectionPlane.py" line="1493"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1464"/>
+      <location filename="../../ArchSectionPlane.py" line="1495"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation type="unfinished">Centers the plane on the objects in the list above</translation>
     </message>
@@ -3462,7 +3447,7 @@ You can change that in the preferences.</source>
       <translation type="unfinished">Base point of column</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="364"/>
+      <location filename="../../ArchWall.py" line="367"/>
       <source>Next point</source>
       <translation>Επόμενο σημείο</translation>
     </message>
@@ -3502,42 +3487,42 @@ You can change that in the preferences.</source>
       <translation type="unfinished">Switch L/W</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="511"/>
+      <location filename="../../ArchWall.py" line="514"/>
       <source>Con&amp;tinue</source>
       <translation>Συνεχίσ&amp;τε</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="334"/>
+      <location filename="../../ArchWall.py" line="337"/>
       <source>First point of wall</source>
       <translation>Πρώτο σημείο του πίνακα</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="466"/>
+      <location filename="../../ArchWall.py" line="469"/>
       <source>Wall options</source>
       <translation>Επιλογές τοίχου</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="471"/>
+      <location filename="../../ArchWall.py" line="474"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation type="unfinished">This list shows all the MultiMaterials objects of this document. Create some to define wall types.</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="503"/>
+      <location filename="../../ArchWall.py" line="506"/>
       <source>Alignment</source>
       <translation>Ευθυγράμμιση</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="505"/>
+      <location filename="../../ArchWall.py" line="508"/>
       <source>Left</source>
       <translation>Αριστερά</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="505"/>
+      <location filename="../../ArchWall.py" line="508"/>
       <source>Right</source>
       <translation>Δεξιά</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="522"/>
+      <location filename="../../ArchWall.py" line="525"/>
       <source>Use sketches</source>
       <translation>Χρησιμοποιήστε σκαριφήματα</translation>
     </message>
@@ -3582,12 +3567,12 @@ You can change that in the preferences.</source>
       <translation type="unfinished">Create Curtain Wall</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="868"/>
+      <location filename="../../ArchMaterial.py" line="912"/>
       <source>Total thickness</source>
       <translation type="unfinished">Total thickness</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="882"/>
+      <location filename="../../ArchMaterial.py" line="926"/>
       <source>depends on the object</source>
       <translation type="unfinished">depends on the object</translation>
     </message>
@@ -3597,7 +3582,7 @@ You can change that in the preferences.</source>
       <translation>Δημιουργήστε Έργο</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="556"/>
+      <location filename="../../ArchSchedule.py" line="563"/>
       <source>Unable to recognize that file type</source>
       <translation type="unfinished">Unable to recognize that file type</translation>
     </message>
@@ -3686,6 +3671,36 @@ You can change that in the preferences.</source>
       <source>The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</source>
       <translation type="unfinished">The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
     </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="1013"/>
+      <source>Parameters of the roof profiles :
+* Angle : slope in degrees relative to the horizontal.
+* Run : horizontal distance between the wall and the ridge.
+* Thickness : thickness of the roof.
+* Overhang : horizontal distance between the eave and the wall.
+* Height : height of the ridge above the base (calculated automatically).
+* IdRel : Id of the relative profile used for automatic calculations.
+---
+If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
+If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
+If Run = 0 then the run is calculated so that the height is the same as the relative profile.</source>
+      <translation type="unfinished">Parameters of the roof profiles :
+* Angle : slope in degrees relative to the horizontal.
+* Run : horizontal distance between the wall and the ridge.
+* Thickness : thickness of the roof.
+* Overhang : horizontal distance between the eave and the wall.
+* Height : height of the ridge above the base (calculated automatically).
+* IdRel : Id of the relative profile used for automatic calculations.
+---
+If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
+If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
+If Run = 0 then the run is calculated so that the height is the same as the relative profile.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="110"/>
+      <source>Wall</source>
+      <translation>Τοίχος</translation>
+    </message>
   </context>
   <context>
     <name>ArchMaterial</name>
@@ -3715,7 +3730,7 @@ You can change that in the preferences.</source>
       <translation>Χρώμα</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="199"/>
+      <location filename="../ui/ArchMaterial.ui" line="223"/>
       <source>URL</source>
       <translation>Διεύθυνση URL</translation>
     </message>
@@ -3750,44 +3765,49 @@ You can change that in the preferences.</source>
       <translation>Το χρώμα αυτού του υλικού</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="139"/>
+      <location filename="../ui/ArchMaterial.ui" line="163"/>
       <source>Transparency</source>
       <translation>Διαφάνεια</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="146"/>
+      <location filename="../ui/ArchMaterial.ui" line="170"/>
       <source>A transparency value for this material</source>
       <translation>Μια τιμή διαφάνειας για αυτό το υλικό</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="160"/>
+      <location filename="../ui/ArchMaterial.ui" line="184"/>
       <source>Standard code</source>
       <translation>Καθιερωμένος κώδικας</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="167"/>
+      <location filename="../ui/ArchMaterial.ui" line="191"/>
       <source>A standard (MasterFormat, Omniclass...) code for this material</source>
       <translation>Ένας καθιερωμένος (MasterFormat, OmniClass...) κώδικας για αυτό το υλικό</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="225"/>
+      <location filename="../ui/ArchMaterial.ui" line="249"/>
       <source>Opens the URL in a browser</source>
       <translation>Ανοίγει την διεύθυνση URL σε έναν περιηγητή</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="212"/>
+      <location filename="../ui/ArchMaterial.ui" line="236"/>
       <source>A URL describing this material</source>
       <translation>Μια διεύθυνση URL που περιγράφει αυτό το υλικό</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="180"/>
+      <location filename="../ui/ArchMaterial.ui" line="204"/>
       <source>Opens a browser dialog to choose a class from a BIM standard</source>
       <translation type="unfinished">Opens a browser dialog to choose a class from a BIM standard</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="244"/>
+      <location filename="../ui/ArchMaterial.ui" line="268"/>
       <source>Father</source>
       <translation>Πατέρας</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchMaterial.ui" line="139"/>
+      <source>Section Color</source>
+      <translation type="unfinished">Section Color</translation>
     </message>
   </context>
   <context>
@@ -3855,7 +3875,7 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../ArchAxis.py" line="1551"/>
+      <location filename="../../ArchAxis.py" line="1552"/>
       <source>Axis tools</source>
       <translation>Εργαλεία άξονα</translation>
     </message>
@@ -4029,62 +4049,62 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="../../ArchAxis.py" line="1067"/>
+      <location filename="../../ArchAxis.py" line="1068"/>
       <source>The number of rows</source>
       <translation>Ο αριθμός σειρών</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1069"/>
+      <location filename="../../ArchAxis.py" line="1070"/>
       <source>The number of columns</source>
       <translation>Ο αριθμός των στηλών</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1071"/>
+      <location filename="../../ArchAxis.py" line="1072"/>
       <source>The sizes for rows</source>
       <translation>Τα μεγέθη για σειρές</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1073"/>
+      <location filename="../../ArchAxis.py" line="1074"/>
       <source>The sizes of columns</source>
       <translation>Τα μεγέθη των στηλών</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1075"/>
+      <location filename="../../ArchAxis.py" line="1076"/>
       <source>The span ranges of cells that are merged together</source>
       <translation>Το εύρος αποστάσεων των κελιών που έχουν συγχωνευθεί</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1077"/>
+      <location filename="../../ArchAxis.py" line="1078"/>
       <source>The type of 3D points produced by this grid object</source>
       <translation>Ο τύπος των τρισδιάστατων σημείων που παράγονται από αυτόν τον κάναβο</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1080"/>
+      <location filename="../../ArchAxis.py" line="1081"/>
       <source>The total width of this grid</source>
       <translation>Το συνολικό πλάτος αυτού του κανάβου</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1082"/>
+      <location filename="../../ArchAxis.py" line="1083"/>
       <source>The total height of this grid</source>
       <translation>Το συνολικό ύψος αυτού του κανάβου</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1084"/>
+      <location filename="../../ArchAxis.py" line="1085"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
       <translation>Δημιουργεί αυτόματες κατηγορίες στηλών (ορίστε 0 για απενεργοποίηση)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1086"/>
+      <location filename="../../ArchAxis.py" line="1087"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
       <translation>Δημιουργεί αυτόματες κατηγορίες σειρών (ορίστε 0 για απενεργοποίηση)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1088"/>
+      <location filename="../../ArchAxis.py" line="1089"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
       <translation>Όταν βρίσκεστε σε λειτουργία μέσου σημείου ακμής, εάν αυτός ο κάναβος θα πρέπει να αναπροσανατολίσει τα θυγατρικά στοιχεία του κατά μήκος των καθέτων διανυσμάτων ακμών ή όχι</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1090"/>
+      <location filename="../../ArchAxis.py" line="1091"/>
       <source>The indices of faces to hide</source>
       <translation>Οι δείκτες όψεων προς απόκρυψη</translation>
     </message>
@@ -4118,7 +4138,7 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_MaterialTools</name>
     <message>
-      <location filename="../../ArchMaterial.py" line="938"/>
+      <location filename="../../ArchMaterial.py" line="982"/>
       <source>Material tools</source>
       <translation>Εργαλεία υλικών</translation>
     </message>
@@ -4126,12 +4146,12 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_MergeWalls</name>
     <message>
-      <location filename="../../ArchWall.py" line="625"/>
+      <location filename="../../ArchWall.py" line="628"/>
       <source>Merge Walls</source>
       <translation>Συγχωνεύστε Τοίχους</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="626"/>
+      <location filename="../../ArchWall.py" line="629"/>
       <source>Merges the selected walls, if possible</source>
       <translation>Συγχωνεύει τους επιλεγμένους τοίχους, αν είναι εφικτό</translation>
     </message>
@@ -4191,7 +4211,7 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1686"/>
+      <location filename="../../ArchPanel.py" line="1688"/>
       <source>Panel tools</source>
       <translation>Εργαλεία πάνελ</translation>
     </message>
@@ -4337,12 +4357,12 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_Roof</name>
     <message>
-      <location filename="../../ArchRoof.py" line="131"/>
+      <location filename="../../ArchRoof.py" line="209"/>
       <source>Roof</source>
       <translation>Οροφή</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="133"/>
+      <location filename="../../ArchRoof.py" line="211"/>
       <source>Creates a roof object from the selected wire.</source>
       <translation>Δημιουργεί ένα στοιχείο οροφής από το επιλεγμένο σύρμα.</translation>
     </message>
@@ -4363,12 +4383,12 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="871"/>
+      <location filename="../../ArchSectionPlane.py" line="873"/>
       <source>Section Plane</source>
       <translation>Επίπεδο Τομής</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="872"/>
+      <location filename="../../ArchSectionPlane.py" line="874"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Δημιουργεί ένα στοιχείο επιπέδου τομής, συμπεριλαμβάνοντας τα επιλεγμένα στοιχεία</translation>
     </message>
@@ -4506,12 +4526,12 @@ You can change that in the preferences.</source>
   <context>
     <name>Arch_Wall</name>
     <message>
-      <location filename="../../ArchWall.py" line="268"/>
+      <location filename="../../ArchWall.py" line="271"/>
       <source>Wall</source>
       <translation>Τοίχος</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="270"/>
+      <location filename="../../ArchWall.py" line="273"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
       <translation>Δημιουργήστε ένα στοιχείο τοιχοποιίας από την αρχή ή από κάποιο επιλεγμένο στοιχείο (σύρμα, επιφάνεια ή στερεό στοιχείο)</translation>
     </message>
@@ -4615,47 +4635,47 @@ You can change that in the preferences.</source>
       <translation>Ορισμός χρονοδιαγράμματος</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="56"/>
+      <location filename="../ui/ArchSchedule.ui" line="60"/>
       <source>Description</source>
       <translation>Περιγραφή</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="59"/>
+      <location filename="../ui/ArchSchedule.ui" line="63"/>
       <source>A description for this operation</source>
       <translation>Μια περιγραφή για αυτήν την λειτουργία</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="75"/>
+      <location filename="../ui/ArchSchedule.ui" line="79"/>
       <source>Unit</source>
       <translation>Μονάδα</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="83"/>
+      <location filename="../ui/ArchSchedule.ui" line="87"/>
       <source>Objects</source>
       <translation>Αντικείμενα</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="94"/>
+      <location filename="../ui/ArchSchedule.ui" line="98"/>
       <source>Filter</source>
       <translation>Φίλτρο</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="131"/>
+      <location filename="../ui/ArchSchedule.ui" line="150"/>
       <source>Adds a line below the selected line/cell</source>
       <translation>Προσθέτει μια γραμμή κάτω από την επιλεγμένη γραμμή/κελί</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="146"/>
+      <location filename="../ui/ArchSchedule.ui" line="135"/>
       <source>Deletes the selected line</source>
       <translation>Διαγράφει την επιλεγμένη γραμμή</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="161"/>
+      <location filename="../ui/ArchSchedule.ui" line="165"/>
       <source>Clears the whole list</source>
       <translation>Απαλείφει ολόκληρη τη λίστα</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="164"/>
+      <location filename="../ui/ArchSchedule.ui" line="168"/>
       <source>Clear</source>
       <translation>Εκκαθάριση</translation>
     </message>
@@ -4750,42 +4770,42 @@ You can change that in the preferences.</source>
       <translation type="unfinished">Schedule name:</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="64"/>
+      <location filename="../ui/ArchSchedule.ui" line="68"/>
       <source>Property</source>
       <translation>Ιδιότητα</translation>
     </message>
     <message encoding="UTF-8">
-      <location filename="../ui/ArchSchedule.ui" line="78"/>
+      <location filename="../ui/ArchSchedule.ui" line="82"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
       <translation type="unfinished">An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="107"/>
+      <location filename="../ui/ArchSchedule.ui" line="111"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
       <translation type="unfinished">If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="110"/>
+      <location filename="../ui/ArchSchedule.ui" line="114"/>
       <source>Associate spreadsheet</source>
       <translation type="unfinished">Associate spreadsheet</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="117"/>
+      <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</source>
       <translation type="unfinished">If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="120"/>
+      <location filename="../ui/ArchSchedule.ui" line="124"/>
       <source>Detailed results</source>
       <translation type="unfinished">Detailed results</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="134"/>
+      <location filename="../ui/ArchSchedule.ui" line="153"/>
       <source>Add row</source>
       <translation>Προσθέστε σειρά</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="149"/>
+      <location filename="../ui/ArchSchedule.ui" line="138"/>
       <source>Del row</source>
       <translation>Διαγράψτε σειρά</translation>
     </message>
@@ -4800,7 +4820,7 @@ You can change that in the preferences.</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v5.4.5.1 the correct path now is: Sheets tab bar -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="67"/>
+      <location filename="../ui/ArchSchedule.ui" line="71"/>
       <source>The property to retrieve from each object.
 Can be "Count" to count the objects, or property names
 like "Length" or "Shape.Volume" to retrieve
@@ -4811,7 +4831,7 @@ like "Length" or "Shape.Volume" to retrieve
 a certain property.</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="86"/>
+      <location filename="../ui/ArchSchedule.ui" line="90"/>
       <source>An optional semicolon (;) separated list of object names
 (internal names, not labels), to be considered by this operation.
 If the list contains groups, children will be added.
@@ -4822,9 +4842,14 @@ If the list contains groups, children will be added.
 Leave blank to use all objects from the document</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="97"/>
+      <location filename="../ui/ArchSchedule.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="29"/>
+      <source>Unnamed schedule</source>
+      <translation type="unfinished">Unnamed schedule</translation>
     </message>
   </context>
   <context>

@@ -101,7 +101,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>Csatolás eltolása (helyi koordinátákban):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
@@ -127,6 +127,17 @@
       <translation>Egyesítés szűrője</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
+      <source>Filter out objects from a selected compound by characteristics like volume,
+area, or length, or by choosing specific items.
+If a second object is selected, it will be used as reference, for example,
+for collision or distance filtering.</source>
+      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
+area, or length, or by choosing specific items.
+If a second object is selected, it will be used as reference, for example,
+for collision or distance filtering.</translation>
+    </message>
+    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <source>Compound Filter: remove some childs from a compound</source>
       <translation>Egyesítés szűrője: néhány alosztály eltávolítása egy egyesításből</translation>
@@ -135,6 +146,11 @@
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="68"/>
       <source>Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</source>
       <translation>Először, jelöljön ki egy egyesített alakzatot! Másodiknak jelöljön ki egy elemet (nem kötelező), melyet egy rajzsablonként kezel.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="73"/>
+      <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
+      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
@@ -161,11 +177,11 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Az eredmény kiszámítása hibába ütközött:
+      <translation>Az eredmény kiszámítása hiba miatt meghiúsult: 
 
 {errstr}
 
-Kattintson a “Folytatás” gombra hogy a hiba ellenére létrehozza a funkciót, vagy a “Megszakítás” gombra hogy visszalépjen.</translation>
+Kattintson a "Folytatás" gombra a funkció létrehozásához a hiba ellenére,, vagy a "Megszakítás" gombra a megszakításhoz.</translation>
     </message>
   </context>
   <context>
@@ -176,6 +192,13 @@ Kattintson a “Folytatás” gombra hogy a hiba ellenére létrehozza a funkci�
       <translation>Összetevők szétbontása</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="58"/>
+      <source>Split up a compound of shapes into separate objects.
+It will create a 'Compound Filter' for each shape.</source>
+      <translation type="unfinished">Split up a compound of shapes into separate objects.
+It will create a 'Compound Filter' for each shape.</translation>
+    </message>
+    <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
       <source>Explode compound: split up a list of shapes into separate objects</source>
       <translation>Összetevők szétbontása: alakzat lista felosztása elkülönített tárgyakra</translation>
@@ -184,6 +207,11 @@ Kattintson a “Folytatás” gombra hogy a hiba ellenére létrehozza a funkci�
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
       <source>Select a shape that is a compound, first!</source>
       <translation>Először válasszon egy összetett alakzatot!</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
+      <source>First select a shape that is a compound.</source>
+      <translation type="unfinished">First select a shape that is a compound.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
@@ -233,6 +261,29 @@ Kattintson a “Folytatás” gombra hogy a hiba ellenére létrehozza a funkci�
   <context>
     <name>Part_JoinFeatures</name>
     <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
+      <source>Bad selection</source>
+      <translation>Rossz kiválasztás</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
+      <source>Continue</source>
+      <translation>Tovább</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
       <source>Computing the result failed with an error: 
 
@@ -246,19 +297,14 @@ Kattintson a “Folytatás” gombra hogy a hiba ellenére létrehozza a funkci�
 kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a 'Leállítás ' gombbal megszakítja.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
-      <source>Bad selection</source>
-      <translation>Rossz kiválasztás</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
-      <source>Continue</source>
-      <translation>Tovább</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
       <source>Select at least two objects, or one or more compounds, first!</source>
       <translation>Előbb jelöljön ki legalább két objektumot, vagy egy vagy több összetevőt!</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
+      <source>Select at least two objects, or one or more compounds</source>
+      <translation type="unfinished">Select at least two objects, or one or more compounds</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
@@ -266,13 +312,125 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
       <translation>Válassza ki az alap objektumot, majd a beágyazandó objektumot, és használja ezt az eszközt.</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
+      <source>Select base object, then the object to embed, and then invoke this tool.</source>
+      <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
       <translation>Kimetszésre szánt objektum kijelölése, majd a kimetszésre beilleszteni kívánt objektumot, és használja ezt az eszközt.</translation>
     </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
+    </message>
   </context>
   <context>
     <name>Part_SplitFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Rossz kiválasztás</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Tovább</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
+      <source>Boolean fragments</source>
+      <translation type="unfinished">Boolean fragments</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
+      <source>Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
+      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Szeletelje összetevőkre</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
+      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Részekre szeletel</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Logikai töredékek</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Metszőpontnál szétválasztja a tárgyakat</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
+      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
+      <translation>Felosztja a tárgyaz a másik tárgy keresztezésénél, és egyesíti a darabokat.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
+      <source>Split object by intersections with other objects.</source>
+      <translation>Objektum felosztása más objektumok kereszteződéseivel.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Először, válasszon ki legalább két objektumot! Az első a szeletelt tárgy; a többi objektum a szeletelő.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</translation>
+    </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
       <source>Computing the result failed with an error: 
@@ -287,24 +445,9 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a 'Leállítás ' gombbal megszakítja.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Rossz kiválasztás</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
-      <source>Continue</source>
-      <translation>Tovább</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Logikai töredékek</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Metszőpontnál szétválasztja a tárgyakat</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
+      <source>Remove intersection fragments</source>
+      <translation>Kereszteződési töredékek törlése</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
@@ -312,39 +455,20 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
       <translation>Előbb jelöljön ki legalább két tárgyat, vagy egy vagy több összetevőt! Ha csak egyetlen összetevő van megjelölve, az összetett alakzatok egymást keresztezni fogják (ellenkező esetben az önálló kereszteződéssel rendelkező összetett alakzatok érvénytelenek).</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-      <source>Slice to compound</source>
-      <translation>Szeletelje összetevőkre</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
-      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
-      <translation>Felosztja a tárgyaz a másik tárgy keresztezésénél, és egyesíti a darabokat.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
-      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Először, válasszon ki legalább két objektumot! Az első a szeletelt tárgy; a többi objektum a szeletelő.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-      <source>Slice apart</source>
-      <translation>Részekre szeletel</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
-      <source>Split object by intersections with other objects.</source>
-      <translation>Objektum felosztása más objektumok kereszteződéseivel.</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
       <source>Boolean XOR</source>
       <translation>Logikai XOR</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
-      <source>Remove intersection fragments</source>
-      <translation>Kereszteződési töredékek törlése</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="531"/>
+      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</source>
+      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     </message>
   </context>
   <context>

@@ -849,24 +849,34 @@ value by using the [ and ] keys while drawing</translation>
       <translation>Poloměr přichytávání</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="221"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="241"/>
       <source>Centers the view on the current working plane</source>
       <translation>Vystředí pohled na aktuální pracovní rovinu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="224"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="244"/>
       <source>Center view</source>
       <translation>Vycentrovat pohled</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="231"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="251"/>
       <source>Resets the working plane to its previous position</source>
       <translation>Resetuje pracovní rovinu na její předchozí pozici</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="234"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="254"/>
       <source>Previous</source>
       <translation>Předchozí</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="219"/>
+      <source>Grid extension</source>
+      <translation type="unfinished">Grid extension</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="226"/>
+      <source> lines</source>
+      <translation> čar</translation>
     </message>
   </context>
   <context>
@@ -1295,7 +1305,7 @@ such as "Arial:Bold"</source>
       <translation>Mezera mezi kótovací čárou a textem</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="497"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="534"/>
       <source>Select a font file</source>
       <translation>Vyberte soubor písma</translation>
     </message>
@@ -1375,32 +1385,32 @@ such as "Arial:Bold"</source>
       <translation> text uvnitř (3D)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="326"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="375"/>
       <source>Dashed line definition</source>
       <translation>Definice přerušované čáry</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="349"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
       <source>0.09,0.05</source>
       <translation>0.09,0.05</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="369"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="418"/>
       <source>Dashdot line definition</source>
       <translation>Definice čerchované čáry</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="392"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
       <source>0.09,0.05,0.02,0.05</source>
       <translation>0.09,0.05,0.02,0.05</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="412"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="461"/>
       <source>Dotted line definition</source>
       <translation>Definice tečkované čáry</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="435"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
       <source>0.02,0.02</source>
       <translation>0.02,0.02</translation>
     </message>
@@ -1455,17 +1465,17 @@ such as "Arial:Bold"</source>
       <translation>Odsazení textu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="476"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="513"/>
       <source>ShapeString settings</source>
       <translation>Nastavení Tvaru písma</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="484"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="521"/>
       <source>Default ShapeString font file</source>
       <translation>Výchozí soubor fontu pro Tvar písma</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="318"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="367"/>
       <source>Drawing view line definitions</source>
       <translation>Definice vykreslení čar</translation>
     </message>
@@ -1605,7 +1615,7 @@ such as "Arial:Bold"</source>
       <translation>Je-li zaškrtnuto, během kreslení se znázorní orientace aktuální pracovní roviny</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="432"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="481"/>
       <source>An SVG linestyle definition</source>
       <translation>Definice SVG stylu čar</translation>
     </message>
@@ -1645,22 +1655,22 @@ such as "Arial:Bold"</source>
       <translation>Fajfka-2</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="277"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="326"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
       <translation>Zaškrtněte, pokud chcete zachovat barvy ploch během ponížení a povýšení (pouze pro splitFaces a makeShell)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="329"/>
       <source>Preserve colors of faces during downgrade/upgrade</source>
       <translation>Zachovat barvy ploch během ponížení/povýšení</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="297"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="346"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
       <translation>Zaškrtněte, chcete-li názvy ploch odvodit od názvu původního objektu a obráceně, když provádíte ponížení/povýšení (pouze pro splitFaces a makeShell)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="349"/>
       <source>Preserve names of faces during downgrade/upgrade</source>
       <translation>Zachovat jména ploch během ponížení/povýšení</translation>
     </message>
@@ -2224,6 +2234,31 @@ This value is the maximum segment length. </translation>
       <location filename="../ui/preferences-draftsnap.ui" line="313"/>
       <source>Show grid border</source>
       <translation type="unfinished">Show grid border</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="475"/>
+      <source>Override unit</source>
+      <translation type="unfinished">Override unit</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="495"/>
+      <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
+      <translation type="unfinished">By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="257"/>
+      <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
+      <translation type="unfinished">The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+      <source>Hatch Pattern default size</source>
+      <translation type="unfinished">Hatch Pattern default size</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+      <source>The default size of hatch patterns</source>
+      <translation type="unfinished">The default size of hatch patterns</translation>
     </message>
   </context>
   <context>

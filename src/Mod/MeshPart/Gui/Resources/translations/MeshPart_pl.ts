@@ -33,8 +33,10 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
-      <source>Curve on mesh</source>
-      <translation>Krzywa na siatce</translation>
+      <source>Creates an approximated curve on top of a mesh.
+This command only works with a 'mesh' object.</source>
+      <translation type="unfinished">Creates an approximated curve on top of a mesh.
+This command only works with a 'mesh' object.</translation>
     </message>
   </context>
   <context>
@@ -201,47 +203,56 @@
       <translation>Krzywa na siatce</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="20"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="23"/>
+      <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+
+This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
+      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+
+This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
       <translation>Linia</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="26"/>
-      <source>Snap tolerance to vertexes</source>
-      <translation>Przyciągaj tolerancje do wierzchołków</translation>
+      <location filename="../../TaskCurveOnMesh.ui" line="44"/>
+      <source>Snap tolerance to vertices</source>
+      <translation type="unfinished">Snap tolerance to vertices</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="33"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="51"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="43"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
       <translation>Próg połączenia</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="69"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
       <translation>Przybliżenie splajnu</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="78"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
       <translation>Tolerancja do siatki</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="104"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="122"/>
       <source>Continuity</source>
       <translation>Ciągłość</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="111"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="129"/>
       <source>Maximum curve degree</source>
       <translation>Maksymalny stopień krzywej</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="135"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>
@@ -302,8 +313,8 @@
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>Maksymalne odchylenie liniowe segmentu oczek sieci będzie określone jako
+Odchylenie powierzchniowe pomnożone przez długość aktualnego segmentu oczek (krawędzi)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -325,9 +336,9 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation type="unfinished">Mesh segments will be grouped according to the color of the object faces.
-These groups will be exported for mesh output formats supporting
-this feature (e.g. the format OBJ).</translation>
+      <translation>Segmenty siatki zostaną pogrupowane zgodnie z kolorem powierzchni obiektów.
+Grupy te zostaną wyeksportowane dla wyjściowych formatów siatki obsługujących
+tą funkcję (np. format OBJ).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>

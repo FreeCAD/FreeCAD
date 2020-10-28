@@ -305,7 +305,7 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="195"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblies, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblies, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sửa hình học đầu tiên trong phép quay và dịch của nó. Lưu ý rằng sửa chữa chỉ hoạt động với hội đồng mẹ trực tiếp của nó. Nếu bạn xếp chồng các cụm, cụm mẹ sẽ không được cố định bên trong các cụm khác.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="198"/>

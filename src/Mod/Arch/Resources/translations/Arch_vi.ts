@@ -114,7 +114,7 @@
       <translation>Phần diện tích tính toán của tầng này</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="908"/>
+      <location filename="../../ArchSectionPlane.py" line="910"/>
       <source>The placement of this object</source>
       <translation>Vị trí của đối tượng này</translation>
     </message>
@@ -199,17 +199,17 @@
       <translation>Loại công cụ được sử dụng để xây dựng bề mặt của đối tượng này</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="731"/>
+      <location filename="../../ArchWall.py" line="734"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>Hướng đùn thông thường của đối tượng này (giữ mặc định ở (0,0,0))</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1212"/>
+      <location filename="../../ArchSectionPlane.py" line="1242"/>
       <source>The linked object</source>
       <translation>Đối tượng được liên kết</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1222"/>
+      <location filename="../../ArchSectionPlane.py" line="1252"/>
       <source>The line width of the rendered objects</source>
       <translation>Độ dày của các đối tượng được hiển thị</translation>
     </message>
@@ -539,51 +539,6 @@
       <translation>Độ vê tròn các góc của bề mặt đáy. Giá trị này được nhân với đường kính thanh cốt thép.</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="191"/>
-      <source>A list of angles for each roof pane</source>
-      <translation>Một danh sách các góc ở mỗi panen mái</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="193"/>
-      <source>A list of horizontal length projections for each roof pane</source>
-      <translation>Một danh sách của các hình chiếu theo phương ngang của mỗi panen mái</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="195"/>
-      <source>A list of IDs of relative profiles for each roof pane</source>
-      <translation>Danh sách ID cho các bề mặt tương đối của mỗi panen mái</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="197"/>
-      <source>A list of thicknesses for each roof pane</source>
-      <translation>Một danh sách gồm các độ dày của mỗi panen mái</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="199"/>
-      <source>A list of overhangs for each roof pane</source>
-      <translation>Một danh sách mái che cho mỗi panen mái</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="201"/>
-      <source>A list of calculated heights for each roof pane</source>
-      <translation>Một danh sách gồm độ cao tính toán cho mỗi mái panen</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="203"/>
-      <source>The face number of the base object used to build this roof</source>
-      <translation>Số lượng mái che của bộ phận cơ bản được sử dụng để xây dựng mái nhà này</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="205"/>
-      <source>The total length of ridges and hips of this roof</source>
-      <translation>Tổng chiều dài của đường chóp đỉnh và đường dốc của mái nhà này</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="208"/>
-      <source>The total length of borders of this roof</source>
-      <translation>Tổng chiều dài mép đường viền của mái nhà này</translation>
-    </message>
-    <message>
       <location filename="../../ArchSchedule.py" line="97"/>
       <source>The description column</source>
       <translation>Cột mô tả</translation>
@@ -614,52 +569,52 @@
       <translation>Bảng tính để in kết quả</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="914"/>
+      <location filename="../../ArchSectionPlane.py" line="916"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Nếu sai, những vật không phải chất rắn cũng sẽ bị cắt, với kết quả sai nhất có thể.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="984"/>
+      <location filename="../../ArchSectionPlane.py" line="986"/>
       <source>The display length of this section plane</source>
       <translation>Chiều dài hiển thị của mặt cắt này</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="990"/>
+      <location filename="../../ArchSectionPlane.py" line="992"/>
       <source>The display height of this section plane</source>
       <translation>Chiều cao hiển thị của mặt cắt này</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="996"/>
+      <location filename="../../ArchSectionPlane.py" line="998"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Kích thước mũi tên chỉ hướng của mặt cắt này</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1010"/>
+      <location filename="../../ArchSectionPlane.py" line="1012"/>
       <source>Show the cut in the 3D view</source>
       <translation>Hiển thị vết cắt ở chế độ xem 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1214"/>
+      <location filename="../../ArchSectionPlane.py" line="1244"/>
       <source>The rendering mode to use</source>
       <translation>Chế độ hình chiếu để sử dụng</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1218"/>
+      <location filename="../../ArchSectionPlane.py" line="1248"/>
       <source>If cut geometry is shown or not</source>
       <translation>Nếu hình cắt có được hiển thị hay không</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1220"/>
+      <location filename="../../ArchSectionPlane.py" line="1250"/>
       <source>If cut geometry is filled or not</source>
       <translation>Nếu hình cắt có được lấp đầy hay không</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1225"/>
+      <location filename="../../ArchSectionPlane.py" line="1255"/>
       <source>The size of the texts inside this object</source>
       <translation>Kích thước của các văn bản bên trong bộ phận này</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1228"/>
+      <location filename="../../ArchSectionPlane.py" line="1258"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Nếu được chọn, các đối tượng sẽ hiển thị bất kể chúng có hiển thị trong mô hình 3D hay không</translation>
     </message>
@@ -994,32 +949,32 @@
       <translation>Nếu đúng thì bộ phận đó được căn chỉnh với các trục</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="711"/>
+      <location filename="../../ArchWall.py" line="714"/>
       <source>The length of this wall. Not used if this wall is based on an underlying object</source>
       <translation>Chiều dài của bức tường này. Nó không được sử dụng nếu bức tường này được xây dựng đứng trên một đối tượng ở dưới</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="713"/>
+      <location filename="../../ArchWall.py" line="716"/>
       <source>The width of this wall. Not used if this wall is based on a face</source>
       <translation>Bề rộng của bức tường này. Nó không được sử dụng nếu bức tường này được dựa trên một bề mặt khác</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="723"/>
+      <location filename="../../ArchWall.py" line="726"/>
       <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
       <translation>Chiều cao của bức tường này. Đặt tự động ở mức 0. Nó không được sử dụng nếu bức tường này được dựa trên một vật thể rắn khác</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="728"/>
+      <location filename="../../ArchWall.py" line="731"/>
       <source>The alignment of this wall on its base object, if applicable</source>
       <translation>Căn chỉnh bức tường này dựa trên đối tượng cơ sở của nó, nếu áp dụng</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="733"/>
+      <location filename="../../ArchWall.py" line="736"/>
       <source>The face number of the base object used to build this wall</source>
       <translation>Số mặt của đối tượng cơ sở được sử dụng để xây dựng bức tường này</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="735"/>
+      <location filename="../../ArchWall.py" line="738"/>
       <source>The offset between this wall and its baseline (only for left and right alignments)</source>
       <translation>Khoảng cách giữa bức tường này và đường cơ sở của nó (chỉ đối với căn chỉnh trái và phải)</translation>
     </message>
@@ -1049,47 +1004,47 @@
       <translation>Mở các thành phần phụ mà có bản lề đã được xác định</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="278"/>
+      <location filename="../../ArchMaterial.py" line="288"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
       <translation>Mã tiêu chuẩn (MasterFormat, OmniClass,...)</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="672"/>
+      <location filename="../../ArchMaterial.py" line="716"/>
       <source>A description for this material</source>
       <translation>Mô tả cho loại vật liệu này</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="280"/>
+      <location filename="../../ArchMaterial.py" line="292"/>
       <source>The transparency value of this material</source>
       <translation>Tính trong suốt của loại vật liệu này</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="281"/>
+      <location filename="../../ArchMaterial.py" line="294"/>
       <source>The color of this material</source>
       <translation>Màu sắc của loại vật liệu này</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="673"/>
+      <location filename="../../ArchMaterial.py" line="717"/>
       <source>The list of layer names</source>
       <translation>Danh sách tên các lớp</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="674"/>
+      <location filename="../../ArchMaterial.py" line="718"/>
       <source>The list of layer materials</source>
       <translation>Danh sách vật liệu của từng lớp</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="675"/>
+      <location filename="../../ArchMaterial.py" line="719"/>
       <source>The list of layer thicknesses</source>
       <translation>Danh sách của chiều dày các lớp</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1230"/>
+      <location filename="../../ArchSectionPlane.py" line="1260"/>
       <source>The line color of the projected objects</source>
       <translation>Màu đường của các đối tượng được chiếu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1232"/>
+      <location filename="../../ArchSectionPlane.py" line="1262"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Màu sắc của các mặt cắt (nếu kích hoạt)</translation>
     </message>
@@ -1194,11 +1149,6 @@
       <translation>Hình dạng thanh cốt thép</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="211"/>
-      <source>Flip the roof direction if going the wrong way</source>
-      <translation>Đảo ngược chiều của mái nhà nếu nó để sai chiều</translation>
-    </message>
-    <message>
       <location filename="../../ArchWindow.py" line="570"/>
       <source>Shows plan opening symbols if available</source>
       <translation>Hiển thị biểu tượng mở bản vẽ (nếu có)</translation>
@@ -1264,12 +1214,12 @@
       <translation type="unfinished">The level of the (0,0,0) point of this level</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="910"/>
+      <location filename="../../ArchSectionPlane.py" line="912"/>
       <source>The shape of this object</source>
       <translation>Hình dạng của bộ phận này</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1002"/>
+      <location filename="../../ArchSectionPlane.py" line="1004"/>
       <source>The line width of this object</source>
       <translation>Chiều dài đường vẽ của bộ phận này</translation>
     </message>
@@ -1339,7 +1289,7 @@
       <translation>Đường dẫn URL của trang sản phẩm của thiết bị này</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="279"/>
+      <location filename="../../ArchMaterial.py" line="290"/>
       <source>A URL where to find information about this material</source>
       <translation>Đường dẫn URL để tìm thông tin về tài liệu này</translation>
     </message>
@@ -1394,22 +1344,22 @@
       <translation type="unfinished">If true, the colors from the linked file will be kept updated</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="912"/>
+      <location filename="../../ArchSectionPlane.py" line="914"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation type="unfinished">The objects that must be considered by this section plane. Empty means the whole document.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="999"/>
+      <location filename="../../ArchSectionPlane.py" line="1001"/>
       <source>The transparency of this object</source>
       <translation>Độ trong suốt của đối tượng này</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1007"/>
+      <location filename="../../ArchSectionPlane.py" line="1009"/>
       <source>The color of this object</source>
       <translation>Màu sắc của đối tượng này</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1012"/>
+      <location filename="../../ArchSectionPlane.py" line="1014"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Khoảng cách giữa mặt phẳng được cắt và chế độ xem cắt thực tế (giữ giá trị rất nhỏ nhưng không bằng 0)</translation>
     </message>
@@ -1484,42 +1434,42 @@
       <translation type="unfinished">The 'left outline' of all segments of stairs </translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="744"/>
+      <location filename="../../ArchWall.py" line="747"/>
       <source>Enable this to make the wall generate blocks</source>
       <translation>Kích hoạt tính năng này để làm cho tường tạo ra các khối</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="746"/>
+      <location filename="../../ArchWall.py" line="749"/>
       <source>The length of each block</source>
       <translation>Chiều dài của mỗi khối</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="748"/>
+      <location filename="../../ArchWall.py" line="751"/>
       <source>The height of each block</source>
       <translation>Chiều cao của mỗi khối</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="750"/>
+      <location filename="../../ArchWall.py" line="753"/>
       <source>The horizontal offset of the first line of blocks</source>
       <translation>Khoảng cách theo phương ngang của hàng khối đầu tiên</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="752"/>
+      <location filename="../../ArchWall.py" line="755"/>
       <source>The horizontal offset of the second line of blocks</source>
       <translation>Khoảng cách theo phương ngang của hàng khối thứ hai</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="754"/>
+      <location filename="../../ArchWall.py" line="757"/>
       <source>The size of the joints between each block</source>
       <translation>Kích thước của các khớp nối giữa mỗi khối</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="756"/>
+      <location filename="../../ArchWall.py" line="759"/>
       <source>The number of entire blocks</source>
       <translation>Số lượng của toàn bộ khối</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="759"/>
+      <location filename="../../ArchWall.py" line="762"/>
       <source>The number of broken blocks</source>
       <translation>Số khối bị hỏng</translation>
     </message>
@@ -1629,12 +1579,12 @@
       <translation type="unfinished">Description of IFC attributes are not yet implemented</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="917"/>
+      <location filename="../../ArchSectionPlane.py" line="919"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation type="unfinished">If True, resulting views will be clipped to the section plane area.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="919"/>
+      <location filename="../../ArchSectionPlane.py" line="921"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation type="unfinished">If true, the color of the objects material will be used to fill cut areas.</translation>
     </message>
@@ -1939,17 +1889,17 @@
       <translation type="unfinished">How to draw the rods</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="717"/>
+      <location filename="../../ArchWall.py" line="720"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</source>
       <translation type="unfinished">This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="720"/>
+      <location filename="../../ArchWall.py" line="723"/>
       <source>This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</source>
       <translation type="unfinished">This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="725"/>
+      <location filename="../../ArchWall.py" line="728"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
       <translation type="unfinished">The area of this wall as a simple Height * Length calculation</translation>
     </message>
@@ -2003,21 +1953,81 @@
       <source>The rebar mark</source>
       <translation type="unfinished">The rebar mark</translation>
     </message>
+    <message>
+      <location filename="../../ArchMaterial.py" line="296"/>
+      <source>The color of this material when cut</source>
+      <translation type="unfinished">The color of this material when cut</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="263"/>
+      <source>The list of angles of the roof segments</source>
+      <translation type="unfinished">The list of angles of the roof segments</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="268"/>
+      <source>The list of horizontal length projections of the roof segments</source>
+      <translation type="unfinished">The list of horizontal length projections of the roof segments</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="273"/>
+      <source>The list of IDs of the relative profiles of the roof segments</source>
+      <translation type="unfinished">The list of IDs of the relative profiles of the roof segments</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="278"/>
+      <source>The list of thicknesses of the roof segments</source>
+      <translation type="unfinished">The list of thicknesses of the roof segments</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="283"/>
+      <source>The list of overhangs of the roof segments</source>
+      <translation type="unfinished">The list of overhangs of the roof segments</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="288"/>
+      <source>The list of calculated heights of the roof segments</source>
+      <translation type="unfinished">The list of calculated heights of the roof segments</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="293"/>
+      <source>The face number of the base object used to build the roof</source>
+      <translation type="unfinished">The face number of the base object used to build the roof</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="298"/>
+      <source>The total length of the ridges and hips of the roof</source>
+      <translation type="unfinished">The total length of the ridges and hips of the roof</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="304"/>
+      <source>The total length of the borders of the roof</source>
+      <translation type="unfinished">The total length of the borders of the roof</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="310"/>
+      <source>Specifies if the direction of the roof should be flipped</source>
+      <translation type="unfinished">Specifies if the direction of the roof should be flipped</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1017"/>
+      <source>Show the label in the 3D view</source>
+      <translation type="unfinished">Show the label in the 3D view</translation>
+    </message>
   </context>
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchWindow.py" line="1565"/>
+      <location filename="../../ArchWindow.py" line="1567"/>
       <source>Components</source>
       <translation>Các bộ phận</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1938"/>
+      <location filename="../../ArchComponent.py" line="1940"/>
       <source>Components of this object</source>
       <translation>Các thành phần của bộ phận này</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1943"/>
+      <location filename="../../ArchComponent.py" line="1945"/>
       <source>Axes</source>
       <translation>Các trục</translation>
     </message>
@@ -2027,12 +2037,12 @@
       <translation>Tạo trục</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1559"/>
+      <location filename="../../ArchWindow.py" line="1561"/>
       <source>Remove</source>
       <translation>Xóa bỏ</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1560"/>
+      <location filename="../../ArchWindow.py" line="1562"/>
       <source>Add</source>
       <translation>Thêm mới</translation>
     </message>
@@ -2097,37 +2107,37 @@
       <translation>Chuyển đổi từ lưới sang hình dạng</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1939"/>
+      <location filename="../../ArchComponent.py" line="1941"/>
       <source>Base component</source>
       <translation>Thành phần cơ sở</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1940"/>
+      <location filename="../../ArchComponent.py" line="1942"/>
       <source>Additions</source>
       <translation>Phần bổ sung</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1941"/>
+      <location filename="../../ArchComponent.py" line="1943"/>
       <source>Subtractions</source>
       <translation>Phép trừ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1942"/>
+      <location filename="../../ArchComponent.py" line="1944"/>
       <source>Objects</source>
       <translation>Các vật thể</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="863"/>
+      <location filename="../../ArchRoof.py" line="1012"/>
       <source>Roof</source>
       <translation>Mái nhà</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="159"/>
+      <location filename="../../ArchRoof.py" line="235"/>
       <source>Create Roof</source>
       <translation>Tạo mái nhà</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="665"/>
+      <location filename="../../ArchRoof.py" line="825"/>
       <source>Unable to create a roof</source>
       <translation>Không thể tạo mái nhà</translation>
     </message>
@@ -2142,7 +2152,7 @@
       <translation>Hình, dạng của</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="887"/>
+      <location filename="../../ArchSectionPlane.py" line="889"/>
       <source>Create Section Plane</source>
       <translation>Tạo mặt cắt</translation>
     </message>
@@ -2157,22 +2167,22 @@
       <translation>Tạo kết cấu</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="599"/>
+      <location filename="../../ArchWall.py" line="602"/>
       <source>Create Wall</source>
       <translation>Tạo tường</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="491"/>
+      <location filename="../../ArchWall.py" line="494"/>
       <source>Width</source>
       <translation>Bề rộng</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="497"/>
+      <location filename="../../ArchWall.py" line="500"/>
       <source>Height</source>
       <translation>Chiều cao</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="928"/>
+      <location filename="../../ArchWall.py" line="931"/>
       <source>This mesh is an invalid solid</source>
       <translation>Lưới này là một vật thể rắn không hợp lệ</translation>
     </message>
@@ -2182,42 +2192,42 @@
       <translation>Tạo cửa sổ</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1561"/>
+      <location filename="../../ArchWindow.py" line="1563"/>
       <source>Edit</source>
       <translation>Chỉnh sửa</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1562"/>
+      <location filename="../../ArchWindow.py" line="1564"/>
       <source>Create/update component</source>
       <translation>Tạo/cập nhật thành phần</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1563"/>
+      <location filename="../../ArchWindow.py" line="1565"/>
       <source>Base 2D object</source>
       <translation>Đối tượng 2D cơ bản</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1569"/>
+      <location filename="../../ArchWindow.py" line="1571"/>
       <source>Wires</source>
       <translation>Dây dẫn</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1566"/>
+      <location filename="../../ArchWindow.py" line="1568"/>
       <source>Create new component</source>
       <translation>Tạo bộ phận mới</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1567"/>
+      <location filename="../../ArchWindow.py" line="1569"/>
       <source>Name</source>
       <translation>Tên</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1568"/>
+      <location filename="../../ArchWindow.py" line="1570"/>
       <source>Type</source>
       <translation>Kiểu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1570"/>
+      <location filename="../../ArchWindow.py" line="1572"/>
       <source>Thickness</source>
       <translation>Độ dày</translation>
     </message>
@@ -2247,7 +2257,7 @@
       <translation>Hãy chọn một đối tượng cơ bản</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1945"/>
+      <location filename="../../ArchComponent.py" line="1947"/>
       <source>Fixtures</source>
       <translation>Tệp đính kèm</translation>
     </message>
@@ -2277,7 +2287,7 @@
       <translation>Tạo cầu thang</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="485"/>
+      <location filename="../../ArchWall.py" line="488"/>
       <source>Length</source>
       <translation>Chiều dài</translation>
     </message>
@@ -2292,17 +2302,17 @@
       <translation>Không thể tính toán hình dạng</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="656"/>
+      <location filename="../../ArchWall.py" line="659"/>
       <source>Merge Wall</source>
       <translation>Kết hợp tường</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="669"/>
+      <location filename="../../ArchWall.py" line="672"/>
       <source>Please select only wall objects</source>
       <translation>Hãy chỉ chọn đối tượng tường</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="671"/>
+      <location filename="../../ArchWall.py" line="674"/>
       <source>Merge Walls</source>
       <translation>Kết hợp những bức tường</translation>
     </message>
@@ -2397,37 +2407,12 @@
       <translation>Tạo bảng</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="864"/>
-      <source>Parameters of the profiles of the roof:
-* Angle : slope in degrees compared to the horizontal one.
-* Run : outdistance between the wall and the ridge sheathing.
-* Thickness : thickness of the side of roof.
-* Overhang : outdistance between the sewer and the wall.
-* Height : height of the ridge sheathing (calculated automatically)
-* IdRel : Relative Id for calculations automatic.
----
-If Angle = 0 and Run = 0 then profile is identical to the relative profile.
-If Angle = 0 then angle is calculated so that the height is the same one as the relative profile.
-If Run = 0 then Run is calculated so that the height is the same one as the relative profile.</source>
-      <translation>Các thông số cấu hình của mái nhà:
-* Angle: Nghiêng một góc tính bằng độ so với hướng ngang.
-* Run: khoảng cách bên ngoài giữa tường và lớp phủ của sống mái nhà.
-* Thickness: độ dày của mặt mái nhà.
-* Overhang: khoảng cách bên ngoài giữa ống thoát nước và tường.
-* Height: chiều cao của lớp phủ sống mái nhà (được tính tự động)
-* IdRel: Tham chiếu để tính toán tự động.
----
-Nếu Angle = 0 và Run = 0 thì cấu hình giống hệt với cấu hình tham chiếu.
-Nếu Angle = 0 thì góc được tính toán sao cho chiều cao giống với cấu hình tham chiếu.
-Nếu Run = 0 thì Run được tính toán sao cho chiều cao giống với cấu hình tham chiếu.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Id</source>
       <translation>Id</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -2452,27 +2437,27 @@ Nếu Run = 0 thì Run được tính toán sao cho chiều cao giống với c�
       <translation>Phía trước</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Angle (deg)</source>
       <translation>Góc (độ)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Run (mm)</source>
       <translation>Đường dẫn (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Thickness (mm)</source>
       <translation>Chiều dày (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Overhang (mm)</source>
       <translation>Phần mái nhà chìa ra (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Height (mm)</source>
       <translation>Chiều cao (mm)</translation>
     </message>
@@ -2487,7 +2472,7 @@ Nếu Run = 0 thì Run được tính toán sao cho chiều cao giống với c�
       <translation>Tạo vật liệu</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="115"/>
+      <location filename="../../ArchWall.py" line="118"/>
       <source>Walls can only be based on Part or Mesh objects</source>
       <translation>Tường chỉ có thể xây dựng trên các đối tượng bộ phận hoặc lưới</translation>
     </message>
@@ -2507,12 +2492,12 @@ Nếu Run = 0 thì Run được tính toán sao cho chiều cao giống với c�
       <translation>Chìa khóa</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="599"/>
+      <location filename="../../ArchSchedule.py" line="603"/>
       <source>Value</source>
       <translation>Giá trị</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="599"/>
+      <location filename="../../ArchSchedule.py" line="603"/>
       <source>Unit</source>
       <translation>Đơn vị</translation>
     </message>
@@ -2527,7 +2512,7 @@ Nếu Run = 0 thì Run được tính toán sao cho chiều cao giống với c�
       <translation>Tạo tòa nhà</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1946"/>
+      <location filename="../../ArchComponent.py" line="1948"/>
       <source>Group</source>
       <translation>Nhóm</translation>
     </message>
@@ -2702,7 +2687,7 @@ Nếu Run = 0 thì Run được tính toán sao cho chiều cao giống với c�
       <translation>Xoay</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1571"/>
+      <location filename="../../ArchWindow.py" line="1573"/>
       <source>Offset</source>
       <translation>Offset</translation>
     </message>
@@ -2722,7 +2707,7 @@ Nếu Run = 0 thì Run được tính toán sao cho chiều cao giống với c�
       <translation>Xuất tệp CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="658"/>
+      <location filename="../../ArchSchedule.py" line="662"/>
       <source>Schedule</source>
       <translation>Thời gian biểu</translation>
     </message>
@@ -2790,22 +2775,22 @@ Site creation aborted.</source>
       <translation>Cửa</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1572"/>
+      <location filename="../../ArchWindow.py" line="1574"/>
       <source>Hinge</source>
       <translation>Bản lề</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1573"/>
+      <location filename="../../ArchWindow.py" line="1575"/>
       <source>Opening mode</source>
       <translation>Chế độ mở</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1578"/>
+      <location filename="../../ArchWindow.py" line="1580"/>
       <source>Get selected edge</source>
       <translation>Lấy một cạnh được chọn</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1579"/>
+      <location filename="../../ArchWindow.py" line="1581"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Nhấn để chọn cạnh đã chọn</translation>
     </message>
@@ -2825,27 +2810,27 @@ Site creation aborted.</source>
       <translation>Tạo chế độ đa vật liệu</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="799"/>
+      <location filename="../../ArchMaterial.py" line="843"/>
       <source>Material</source>
       <translation>Vật liệu</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="831"/>
+      <location filename="../../ArchMaterial.py" line="875"/>
       <source>New layer</source>
       <translation>Lớp mới</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="470"/>
+      <location filename="../../ArchWall.py" line="473"/>
       <source>Wall Presets...</source>
       <translation>Tùy chọn tường...</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1556"/>
+      <location filename="../../ArchWindow.py" line="1558"/>
       <source>Hole wire</source>
       <translation>Dây điện</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1558"/>
+      <location filename="../../ArchWindow.py" line="1560"/>
       <source>Pick selected</source>
       <translation>Chọn các đối tượng đã được chọn</translation>
     </message>
@@ -2865,62 +2850,62 @@ Site creation aborted.</source>
       <translation>Nhãn</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1051"/>
+      <location filename="../../ArchAxis.py" line="1052"/>
       <source>Axis system components</source>
       <translation>Các bộ phận của hệ thống trục</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1377"/>
+      <location filename="../../ArchAxis.py" line="1378"/>
       <source>Grid</source>
       <translation>Lưới</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1378"/>
+      <location filename="../../ArchAxis.py" line="1379"/>
       <source>Total width</source>
       <translation>Tổng bề rộng</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1379"/>
+      <location filename="../../ArchAxis.py" line="1380"/>
       <source>Total height</source>
       <translation>Tổng chiều cao</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1380"/>
+      <location filename="../../ArchAxis.py" line="1381"/>
       <source>Add row</source>
       <translation>Thêm hàng</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1381"/>
+      <location filename="../../ArchAxis.py" line="1382"/>
       <source>Del row</source>
       <translation>Xóa hàng</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1382"/>
+      <location filename="../../ArchAxis.py" line="1383"/>
       <source>Add col</source>
       <translation>Thêm cột</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1383"/>
+      <location filename="../../ArchAxis.py" line="1384"/>
       <source>Del col</source>
       <translation>Xóa cột</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1384"/>
+      <location filename="../../ArchAxis.py" line="1385"/>
       <source>Create span</source>
       <translation>Tạo nhịp</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1385"/>
+      <location filename="../../ArchAxis.py" line="1386"/>
       <source>Remove span</source>
       <translation>Gỡ nhịp</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1386"/>
+      <location filename="../../ArchAxis.py" line="1387"/>
       <source>Rows</source>
       <translation>Hàng</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1386"/>
+      <location filename="../../ArchAxis.py" line="1387"/>
       <source>Columns</source>
       <translation>Cột</translation>
     </message>
@@ -2935,12 +2920,12 @@ Site creation aborted.</source>
       <translation>Phần bao không gian</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1026"/>
+      <location filename="../../ArchWall.py" line="1029"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Lỗi: Bạn không thể sửa đổi đối tượng cơ bản của bức tường này</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1555"/>
+      <location filename="../../ArchWindow.py" line="1557"/>
       <source>Window elements</source>
       <translation>Các bộ phận của cửa sổ</translation>
     </message>
@@ -2975,7 +2960,7 @@ Site creation aborted.</source>
       <translation>Xuất CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="599"/>
+      <location filename="../../ArchSchedule.py" line="603"/>
       <source>Description</source>
       <translation>Mô tả</translation>
     </message>
@@ -2990,7 +2975,7 @@ Site creation aborted.</source>
       <translation>Tổng</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1947"/>
+      <location filename="../../ArchComponent.py" line="1949"/>
       <source>Hosts</source>
       <translation>Máy chủ lưu trữ</translation>
     </message>
@@ -3005,22 +2990,22 @@ Site creation aborted.</source>
       <translation>Hãy chọn ít nhất một trục</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1113"/>
+      <location filename="../../ArchAxis.py" line="1114"/>
       <source>Auto height is larger than height</source>
       <translation>Chiều cao tự động lớn hơn chiều cao</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1122"/>
+      <location filename="../../ArchAxis.py" line="1123"/>
       <source>Total row size is larger than height</source>
       <translation>Tổng kích thước các hàng lớn hơn chiều cao</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1144"/>
+      <location filename="../../ArchAxis.py" line="1145"/>
       <source>Auto width is larger than width</source>
       <translation>Chiều rộng tự động lớn hơn chiều rộng</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1153"/>
+      <location filename="../../ArchAxis.py" line="1154"/>
       <source>Total column size is larger than width</source>
       <translation>Tổng kích thước cột lớn hơn chiều rộng</translation>
     </message>
@@ -3067,47 +3052,47 @@ Việc tạo toà nhà bị gián đoạn.</translation>
       <translation>Vô hiệu hóa việc chỉnh sửa bản phác thảo</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1935"/>
+      <location filename="../../ArchComponent.py" line="1937"/>
       <source>Component</source>
       <translation>Thành phần</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1948"/>
+      <location filename="../../ArchComponent.py" line="1950"/>
       <source>Edit IFC properties</source>
       <translation type="unfinished">Edit IFC properties</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1949"/>
+      <location filename="../../ArchComponent.py" line="1951"/>
       <source>Edit standard code</source>
       <translation type="unfinished">Edit standard code</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1995"/>
+      <location filename="../../ArchComponent.py" line="1997"/>
       <source>Property</source>
       <translation>Thuộc tính</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2000"/>
+      <location filename="../../ArchComponent.py" line="2002"/>
       <source>Add property...</source>
       <translation type="unfinished">Add property...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2001"/>
+      <location filename="../../ArchComponent.py" line="2003"/>
       <source>Add property set...</source>
       <translation type="unfinished">Add property set...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2001"/>
+      <location filename="../../ArchComponent.py" line="2003"/>
       <source>New...</source>
       <translation>Mới...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2143"/>
+      <location filename="../../ArchComponent.py" line="2145"/>
       <source>New property</source>
       <translation type="unfinished">New property</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2179"/>
+      <location filename="../../ArchComponent.py" line="2181"/>
       <source>New property set</source>
       <translation type="unfinished">New property set</translation>
     </message>
@@ -3225,42 +3210,42 @@ Việc tạo tầng bị gián đoạn.</translation>
       <translation type="unfinished">Create external reference</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1448"/>
+      <location filename="../../ArchSectionPlane.py" line="1479"/>
       <source>Section plane settings</source>
       <translation type="unfinished">Section plane settings</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1453"/>
+      <location filename="../../ArchSectionPlane.py" line="1484"/>
       <source>Objects seen by this section plane:</source>
       <translation type="unfinished">Objects seen by this section plane:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1454"/>
+      <location filename="../../ArchSectionPlane.py" line="1485"/>
       <source>Section plane placement:</source>
       <translation type="unfinished">Section plane placement:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1455"/>
+      <location filename="../../ArchSectionPlane.py" line="1486"/>
       <source>Rotate X</source>
       <translation type="unfinished">Rotate X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1457"/>
+      <location filename="../../ArchSectionPlane.py" line="1488"/>
       <source>Rotate Y</source>
       <translation type="unfinished">Rotate Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1459"/>
+      <location filename="../../ArchSectionPlane.py" line="1490"/>
       <source>Rotate Z</source>
       <translation type="unfinished">Rotate Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1461"/>
+      <location filename="../../ArchSectionPlane.py" line="1492"/>
       <source>Resize</source>
       <translation type="unfinished">Resize</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="505"/>
+      <location filename="../../ArchWall.py" line="508"/>
       <source>Center</source>
       <translation>Trung tâm</translation>
     </message>
@@ -3306,12 +3291,12 @@ Lưu ý: Bạn có thể thay đổi điều đó trong mục tùy chọn.</tran
       <translation>Giao lộ đã được xác định.</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="662"/>
+      <location filename="../../ArchWall.py" line="665"/>
       <source>The selected wall contains no subwall to merge</source>
       <translation>Bức tường đã chọn không chứa tường bao để hợp nhất</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="919"/>
+      <location filename="../../ArchWall.py" line="922"/>
       <source>Cannot compute blocks for wall</source>
       <translation>Không thể tính toán các khối cho tường</translation>
     </message>
@@ -3321,27 +3306,27 @@ Lưu ý: Bạn có thể thay đổi điều đó trong mục tùy chọn.</tran
       <translation>Chọn một bề mặt trên một đối tượng hiện có hoặc chọn một giá trị đặt trước</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1517"/>
+      <location filename="../../ArchWindow.py" line="1519"/>
       <source>Unable to create component</source>
       <translation>Không thể tạo thành phần</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1557"/>
+      <location filename="../../ArchWindow.py" line="1559"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Số lượng dây xác định một lỗ trong đối tượng lưu trữ. Giá trị bằng 0 tức là chương trình sẽ tự động áp dụng dây lớn nhất</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1576"/>
+      <location filename="../../ArchWindow.py" line="1578"/>
       <source>+ default</source>
       <translation type="unfinished">+ default</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1575"/>
+      <location filename="../../ArchWindow.py" line="1577"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1577"/>
+      <location filename="../../ArchWindow.py" line="1579"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
     </message>
@@ -3412,42 +3397,42 @@ Site and Building objects will be removed from the selection.
 You can change that in the preferences.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1450"/>
+      <location filename="../../ArchSectionPlane.py" line="1481"/>
       <source>Remove highlighted objects from the list above</source>
       <translation type="unfinished">Remove highlighted objects from the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1451"/>
+      <location filename="../../ArchSectionPlane.py" line="1482"/>
       <source>Add selected</source>
       <translation>Thêm đối tượng đã chọn</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1452"/>
+      <location filename="../../ArchSectionPlane.py" line="1483"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1456"/>
+      <location filename="../../ArchSectionPlane.py" line="1487"/>
       <source>Rotates the plane along the X axis</source>
       <translation type="unfinished">Rotates the plane along the X axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1458"/>
+      <location filename="../../ArchSectionPlane.py" line="1489"/>
       <source>Rotates the plane along the Y axis</source>
       <translation type="unfinished">Rotates the plane along the Y axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1460"/>
+      <location filename="../../ArchSectionPlane.py" line="1491"/>
       <source>Rotates the plane along the Z axis</source>
       <translation type="unfinished">Rotates the plane along the Z axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1462"/>
+      <location filename="../../ArchSectionPlane.py" line="1493"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1464"/>
+      <location filename="../../ArchSectionPlane.py" line="1495"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation type="unfinished">Centers the plane on the objects in the list above</translation>
     </message>
@@ -3462,7 +3447,7 @@ You can change that in the preferences.</translation>
       <translation type="unfinished">Base point of column</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="364"/>
+      <location filename="../../ArchWall.py" line="367"/>
       <source>Next point</source>
       <translation type="unfinished">Next point</translation>
     </message>
@@ -3502,42 +3487,42 @@ You can change that in the preferences.</translation>
       <translation type="unfinished">Switch L/W</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="511"/>
+      <location filename="../../ArchWall.py" line="514"/>
       <source>Con&amp;tinue</source>
       <translation type="unfinished">Con&amp;tinue</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="334"/>
+      <location filename="../../ArchWall.py" line="337"/>
       <source>First point of wall</source>
       <translation type="unfinished">First point of wall</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="466"/>
+      <location filename="../../ArchWall.py" line="469"/>
       <source>Wall options</source>
       <translation type="unfinished">Wall options</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="471"/>
+      <location filename="../../ArchWall.py" line="474"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation type="unfinished">This list shows all the MultiMaterials objects of this document. Create some to define wall types.</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="503"/>
+      <location filename="../../ArchWall.py" line="506"/>
       <source>Alignment</source>
       <translation type="unfinished">Alignment</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="505"/>
+      <location filename="../../ArchWall.py" line="508"/>
       <source>Left</source>
       <translation>Trái</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="505"/>
+      <location filename="../../ArchWall.py" line="508"/>
       <source>Right</source>
       <translation>Phải</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="522"/>
+      <location filename="../../ArchWall.py" line="525"/>
       <source>Use sketches</source>
       <translation>Sử dụng bản phác thảo</translation>
     </message>
@@ -3582,12 +3567,12 @@ You can change that in the preferences.</translation>
       <translation type="unfinished">Create Curtain Wall</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="868"/>
+      <location filename="../../ArchMaterial.py" line="912"/>
       <source>Total thickness</source>
       <translation type="unfinished">Total thickness</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="882"/>
+      <location filename="../../ArchMaterial.py" line="926"/>
       <source>depends on the object</source>
       <translation type="unfinished">depends on the object</translation>
     </message>
@@ -3597,7 +3582,7 @@ You can change that in the preferences.</translation>
       <translation>Tạo Dự án</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="556"/>
+      <location filename="../../ArchSchedule.py" line="563"/>
       <source>Unable to recognize that file type</source>
       <translation type="unfinished">Unable to recognize that file type</translation>
     </message>
@@ -3686,6 +3671,36 @@ You can change that in the preferences.</translation>
       <source>The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</source>
       <translation type="unfinished">The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
     </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="1013"/>
+      <source>Parameters of the roof profiles :
+* Angle : slope in degrees relative to the horizontal.
+* Run : horizontal distance between the wall and the ridge.
+* Thickness : thickness of the roof.
+* Overhang : horizontal distance between the eave and the wall.
+* Height : height of the ridge above the base (calculated automatically).
+* IdRel : Id of the relative profile used for automatic calculations.
+---
+If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
+If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
+If Run = 0 then the run is calculated so that the height is the same as the relative profile.</source>
+      <translation type="unfinished">Parameters of the roof profiles :
+* Angle : slope in degrees relative to the horizontal.
+* Run : horizontal distance between the wall and the ridge.
+* Thickness : thickness of the roof.
+* Overhang : horizontal distance between the eave and the wall.
+* Height : height of the ridge above the base (calculated automatically).
+* IdRel : Id of the relative profile used for automatic calculations.
+---
+If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
+If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
+If Run = 0 then the run is calculated so that the height is the same as the relative profile.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="110"/>
+      <source>Wall</source>
+      <translation>Tường</translation>
+    </message>
   </context>
   <context>
     <name>ArchMaterial</name>
@@ -3715,7 +3730,7 @@ You can change that in the preferences.</translation>
       <translation>Màu</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="199"/>
+      <location filename="../ui/ArchMaterial.ui" line="223"/>
       <source>URL</source>
       <translation>URL</translation>
     </message>
@@ -3750,44 +3765,49 @@ You can change that in the preferences.</translation>
       <translation>Màu sắc của loại vật liệu này</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="139"/>
+      <location filename="../ui/ArchMaterial.ui" line="163"/>
       <source>Transparency</source>
       <translation>Tính trong suốt</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="146"/>
+      <location filename="../ui/ArchMaterial.ui" line="170"/>
       <source>A transparency value for this material</source>
       <translation>Mức độ trong suốt của loại vật liệu này</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="160"/>
+      <location filename="../ui/ArchMaterial.ui" line="184"/>
       <source>Standard code</source>
       <translation>Mã chuẩn</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="167"/>
+      <location filename="../ui/ArchMaterial.ui" line="191"/>
       <source>A standard (MasterFormat, Omniclass...) code for this material</source>
       <translation>Mã tiêu chuẩn (MasterFormat, Omniclass...) cho vật liệu này</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="225"/>
+      <location filename="../ui/ArchMaterial.ui" line="249"/>
       <source>Opens the URL in a browser</source>
       <translation>Mở đường dẫn URL của 1 trình duyệt</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="212"/>
+      <location filename="../ui/ArchMaterial.ui" line="236"/>
       <source>A URL describing this material</source>
       <translation>Một đường dẫn URL mô tả vật liệu này</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="180"/>
+      <location filename="../ui/ArchMaterial.ui" line="204"/>
       <source>Opens a browser dialog to choose a class from a BIM standard</source>
       <translation type="unfinished">Opens a browser dialog to choose a class from a BIM standard</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMaterial.ui" line="244"/>
+      <location filename="../ui/ArchMaterial.ui" line="268"/>
       <source>Father</source>
       <translation type="unfinished">Father</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchMaterial.ui" line="139"/>
+      <source>Section Color</source>
+      <translation type="unfinished">Section Color</translation>
     </message>
   </context>
   <context>
@@ -3855,7 +3875,7 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../ArchAxis.py" line="1551"/>
+      <location filename="../../ArchAxis.py" line="1552"/>
       <source>Axis tools</source>
       <translation>Công cụ trục</translation>
     </message>
@@ -4029,62 +4049,62 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="../../ArchAxis.py" line="1067"/>
+      <location filename="../../ArchAxis.py" line="1068"/>
       <source>The number of rows</source>
       <translation>Số hàng</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1069"/>
+      <location filename="../../ArchAxis.py" line="1070"/>
       <source>The number of columns</source>
       <translation>Số cột</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1071"/>
+      <location filename="../../ArchAxis.py" line="1072"/>
       <source>The sizes for rows</source>
       <translation>Kích thước các hàng</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1073"/>
+      <location filename="../../ArchAxis.py" line="1074"/>
       <source>The sizes of columns</source>
       <translation>Kích thước các cột</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1075"/>
+      <location filename="../../ArchAxis.py" line="1076"/>
       <source>The span ranges of cells that are merged together</source>
       <translation>Phạm vi khoảng cách của các ô đã sát nhập lại thành một</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1077"/>
+      <location filename="../../ArchAxis.py" line="1078"/>
       <source>The type of 3D points produced by this grid object</source>
       <translation>Lưới là một loại đối tượng được tạo nên bởi các chấm 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1080"/>
+      <location filename="../../ArchAxis.py" line="1081"/>
       <source>The total width of this grid</source>
       <translation>Tổng bề rộng của loại lưới này</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1082"/>
+      <location filename="../../ArchAxis.py" line="1083"/>
       <source>The total height of this grid</source>
       <translation>Tổng chiều cao của lưới này</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1084"/>
+      <location filename="../../ArchAxis.py" line="1085"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
       <translation>Tạo chế độ tự động chia tách cột (Đặt 0 để tắt chế độ này)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1086"/>
+      <location filename="../../ArchAxis.py" line="1087"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
       <translation>Tạo chế độ tự động chia tách hàng (Đặt 0 để tắt chế độ này)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1088"/>
+      <location filename="../../ArchAxis.py" line="1089"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
       <translation>Nếu ở chế độ trung điểm của cạnh, lưới gốc phải định hướng lại theo các cạnh bình thường hoặc không</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1090"/>
+      <location filename="../../ArchAxis.py" line="1091"/>
       <source>The indices of faces to hide</source>
       <translation>Ẩn các dấu trên bề mặt</translation>
     </message>
@@ -4118,7 +4138,7 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_MaterialTools</name>
     <message>
-      <location filename="../../ArchMaterial.py" line="938"/>
+      <location filename="../../ArchMaterial.py" line="982"/>
       <source>Material tools</source>
       <translation>Các công cụ vật liệu</translation>
     </message>
@@ -4126,12 +4146,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_MergeWalls</name>
     <message>
-      <location filename="../../ArchWall.py" line="625"/>
+      <location filename="../../ArchWall.py" line="628"/>
       <source>Merge Walls</source>
       <translation>Kết hợp những bức tường</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="626"/>
+      <location filename="../../ArchWall.py" line="629"/>
       <source>Merges the selected walls, if possible</source>
       <translation>Hợp nhất các bức tường được chọn (nếu có thể)</translation>
     </message>
@@ -4191,7 +4211,7 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1686"/>
+      <location filename="../../ArchPanel.py" line="1688"/>
       <source>Panel tools</source>
       <translation>Các công cụ panen</translation>
     </message>
@@ -4337,12 +4357,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Roof</name>
     <message>
-      <location filename="../../ArchRoof.py" line="131"/>
+      <location filename="../../ArchRoof.py" line="209"/>
       <source>Roof</source>
       <translation>Mái nhà</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="133"/>
+      <location filename="../../ArchRoof.py" line="211"/>
       <source>Creates a roof object from the selected wire.</source>
       <translation>Tạo đối tượng mái từ dây dẫn đã chọn.</translation>
     </message>
@@ -4363,12 +4383,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="871"/>
+      <location filename="../../ArchSectionPlane.py" line="873"/>
       <source>Section Plane</source>
       <translation>Mặt phẳng cắt</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="872"/>
+      <location filename="../../ArchSectionPlane.py" line="874"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Tạo một đối tượng mặt phẳng cắt bao gồm những đối tượng đã chọn</translation>
     </message>
@@ -4506,12 +4526,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Wall</name>
     <message>
-      <location filename="../../ArchWall.py" line="268"/>
+      <location filename="../../ArchWall.py" line="271"/>
       <source>Wall</source>
       <translation>Tường</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="270"/>
+      <location filename="../../ArchWall.py" line="273"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
       <translation>Tạo một đối tượng tường từ đầu hoặc từ một đối tượng đã chọn (dây dẫn, bề mặt hoặc vật thể rắn)</translation>
     </message>
@@ -4615,47 +4635,47 @@ You can change that in the preferences.</translation>
       <translation>Đặt thời gian biểu</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="56"/>
+      <location filename="../ui/ArchSchedule.ui" line="60"/>
       <source>Description</source>
       <translation>Mô tả</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="59"/>
+      <location filename="../ui/ArchSchedule.ui" line="63"/>
       <source>A description for this operation</source>
       <translation>Mô tả cho tính năng này</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="75"/>
+      <location filename="../ui/ArchSchedule.ui" line="79"/>
       <source>Unit</source>
       <translation>Đơn vị</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="83"/>
+      <location filename="../ui/ArchSchedule.ui" line="87"/>
       <source>Objects</source>
       <translation>Các vật thể</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="94"/>
+      <location filename="../ui/ArchSchedule.ui" line="98"/>
       <source>Filter</source>
       <translation>Bộ lọc</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="131"/>
+      <location filename="../ui/ArchSchedule.ui" line="150"/>
       <source>Adds a line below the selected line/cell</source>
       <translation>Thêm một dòng bên dưới ô / đường thẳng đã chọn</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="146"/>
+      <location filename="../ui/ArchSchedule.ui" line="135"/>
       <source>Deletes the selected line</source>
       <translation>Xóa đường đã chọn</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="161"/>
+      <location filename="../ui/ArchSchedule.ui" line="165"/>
       <source>Clears the whole list</source>
       <translation>Xóa toàn bộ danh sách</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="164"/>
+      <location filename="../ui/ArchSchedule.ui" line="168"/>
       <source>Clear</source>
       <translation>Xóa</translation>
     </message>
@@ -4750,42 +4770,42 @@ You can change that in the preferences.</translation>
       <translation type="unfinished">Schedule name:</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="64"/>
+      <location filename="../ui/ArchSchedule.ui" line="68"/>
       <source>Property</source>
       <translation>Thuộc tính</translation>
     </message>
     <message encoding="UTF-8">
-      <location filename="../ui/ArchSchedule.ui" line="78"/>
+      <location filename="../ui/ArchSchedule.ui" line="82"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
       <translation type="unfinished">An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="107"/>
+      <location filename="../ui/ArchSchedule.ui" line="111"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
       <translation type="unfinished">If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="110"/>
+      <location filename="../ui/ArchSchedule.ui" line="114"/>
       <source>Associate spreadsheet</source>
       <translation type="unfinished">Associate spreadsheet</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="117"/>
+      <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</source>
       <translation type="unfinished">If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="120"/>
+      <location filename="../ui/ArchSchedule.ui" line="124"/>
       <source>Detailed results</source>
       <translation type="unfinished">Detailed results</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="134"/>
+      <location filename="../ui/ArchSchedule.ui" line="153"/>
       <source>Add row</source>
       <translation>Thêm hàng</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="149"/>
+      <location filename="../ui/ArchSchedule.ui" line="138"/>
       <source>Del row</source>
       <translation>Xóa hàng</translation>
     </message>
@@ -4800,7 +4820,7 @@ You can change that in the preferences.</translation>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v5.4.5.1 the correct path now is: Sheets tab bar -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="67"/>
+      <location filename="../ui/ArchSchedule.ui" line="71"/>
       <source>The property to retrieve from each object.
 Can be "Count" to count the objects, or property names
 like "Length" or "Shape.Volume" to retrieve
@@ -4811,7 +4831,7 @@ like "Length" or "Shape.Volume" to retrieve
 a certain property.</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="86"/>
+      <location filename="../ui/ArchSchedule.ui" line="90"/>
       <source>An optional semicolon (;) separated list of object names
 (internal names, not labels), to be considered by this operation.
 If the list contains groups, children will be added.
@@ -4822,9 +4842,14 @@ If the list contains groups, children will be added.
 Leave blank to use all objects from the document</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="97"/>
+      <location filename="../ui/ArchSchedule.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="29"/>
+      <source>Unnamed schedule</source>
+      <translation type="unfinished">Unnamed schedule</translation>
     </message>
   </context>
   <context>

@@ -6,22 +6,22 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation type="unfinished">Annotation Styles Editor</translation>
+      <translation>Annotation Styles Editor</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
       <source>Style name</source>
-      <translation type="unfinished">Style name</translation>
+      <translation>Tên</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>Add new...</source>
-      <translation type="unfinished">Add new...</translation>
+      <translation>Add new...</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="61"/>
       <source>Renames the selected style</source>
-      <translation type="unfinished">Renames the selected style</translation>
+      <translation>Renames the selected style</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="64"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="86"/>
       <source>Deletes the selected style</source>
-      <translation type="unfinished">Deletes the selected style</translation>
+      <translation>Renames the selected style</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="89"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="139"/>
       <source>Line spacing</source>
-      <translation type="unfinished">Line spacing</translation>
+      <translation>Line spacing</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="149"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="156"/>
       <source>The font to use for texts and dimensions</source>
-      <translation type="unfinished">The font to use for texts and dimensions</translation>
+      <translation>The font to use for texts and dimensions</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="183"/>
@@ -71,27 +71,27 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
       <source>Scale multiplier</source>
-      <translation type="unfinished">Scale multiplier</translation>
+      <translation>Scale multiplier</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
       <source>Decimals</source>
-      <translation type="unfinished">Decimals</translation>
+      <translation>Decimals</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="212"/>
       <source>Unit override</source>
-      <translation type="unfinished">Unit override</translation>
+      <translation>Unit override</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
       <source>Show unit</source>
-      <translation type="unfinished">Show unit</translation>
+      <translation>Show unit</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="275"/>
       <source>Line and arrows</source>
-      <translation type="unfinished">Line and arrows</translation>
+      <translation>Line and arrows</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="284"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="294"/>
       <source>Extension overshoot</source>
-      <translation type="unfinished">Extension overshoot</translation>
+      <translation>Extension overshoot</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="304"/>
@@ -496,7 +496,7 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="189"/>
       <source>X intervals</source>
-      <translation type="unfinished">X intervals</translation>
+      <translation>Khoảng thời gian</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="265"/>
@@ -850,24 +850,34 @@ value by using the [ and ] keys while drawing</translation>
       <translation>Bán kính dính</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="221"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="241"/>
       <source>Centers the view on the current working plane</source>
       <translation type="unfinished">Centers the view on the current working plane</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="224"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="244"/>
       <source>Center view</source>
       <translation type="unfinished">Center view</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="231"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="251"/>
       <source>Resets the working plane to its previous position</source>
       <translation type="unfinished">Resets the working plane to its previous position</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="234"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="254"/>
       <source>Previous</source>
       <translation type="unfinished">Previous</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="219"/>
+      <source>Grid extension</source>
+      <translation type="unfinished">Grid extension</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="226"/>
+      <source> lines</source>
+      <translation> đường thẳng</translation>
     </message>
   </context>
   <context>
@@ -1297,7 +1307,7 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>Khoảng cách giữa đường kích thước và chữ trên đường kích thước</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="497"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="534"/>
       <source>Select a font file</source>
       <translation>Chọn một tệp phông chữ</translation>
     </message>
@@ -1377,32 +1387,32 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation> các văn bản bên trong (3D)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="326"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="375"/>
       <source>Dashed line definition</source>
       <translation>Định nghĩa đường nét đứt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="349"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
       <source>0.09,0.05</source>
       <translation>0.09,0.05</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="369"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="418"/>
       <source>Dashdot line definition</source>
       <translation>Định nghĩa đường chấm kẻ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="392"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
       <source>0.09,0.05,0.02,0.05</source>
       <translation>0.09,0.05,0.02,0.05</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="412"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="461"/>
       <source>Dotted line definition</source>
       <translation>Định nghĩa đường chấm chấm</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="435"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
       <source>0.02,0.02</source>
       <translation>0.02,0.02</translation>
     </message>
@@ -1457,17 +1467,17 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>Khoảng cách văn bản</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="476"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="513"/>
       <source>ShapeString settings</source>
       <translation>Cài đặt Chữ tạo hình</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="484"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="521"/>
       <source>Default ShapeString font file</source>
       <translation>Tệp phông chữ của chữ tạo hình mặc định</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="318"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="367"/>
       <source>Drawing view line definitions</source>
       <translation>Định nghĩa đường ngắm</translation>
     </message>
@@ -1607,7 +1617,7 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>Nếu được chọn, hiển thị tiện ích cho biết hướng của mặt phẳng công việc hiện tại trong quá trình vẽ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="432"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="481"/>
       <source>An SVG linestyle definition</source>
       <translation>Một định nghĩa kiểu đường SVG</translation>
     </message>
@@ -1647,22 +1657,22 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>Đánh dấu-2</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="277"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="326"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
       <translation type="unfinished">Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="329"/>
       <source>Preserve colors of faces during downgrade/upgrade</source>
       <translation type="unfinished">Preserve colors of faces during downgrade/upgrade</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="297"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="346"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
       <translation type="unfinished">Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="349"/>
       <source>Preserve names of faces during downgrade/upgrade</source>
       <translation type="unfinished">Preserve names of faces during downgrade/upgrade</translation>
     </message>
@@ -2228,6 +2238,31 @@ This value is the maximum segment length. </translation>
       <location filename="../ui/preferences-draftsnap.ui" line="313"/>
       <source>Show grid border</source>
       <translation type="unfinished">Show grid border</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="475"/>
+      <source>Override unit</source>
+      <translation type="unfinished">Override unit</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="495"/>
+      <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
+      <translation type="unfinished">By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="257"/>
+      <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
+      <translation type="unfinished">The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+      <source>Hatch Pattern default size</source>
+      <translation type="unfinished">Hatch Pattern default size</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+      <source>The default size of hatch patterns</source>
+      <translation type="unfinished">The default size of hatch patterns</translation>
     </message>
   </context>
   <context>

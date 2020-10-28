@@ -815,23 +815,33 @@ value by using the [ and ] keys while drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="221"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="241"/>
         <source>Centers the view on the current working plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="224"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="244"/>
         <source>Center view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="231"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="251"/>
         <source>Resets the working plane to its previous position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="234"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="254"/>
         <source>Previous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/TaskSelectPlane.ui" line="219"/>
+        <source>Grid extension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/TaskSelectPlane.ui" line="226"/>
+        <source> lines</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1261,7 +1271,7 @@ such as &quot;Arial:Bold&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-drafttexts.ui" line="497"/>
+        <location filename="../ui/preferences-drafttexts.ui" line="534"/>
         <source>Select a font file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1341,32 +1351,32 @@ such as &quot;Arial:Bold&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftvisual.ui" line="326"/>
+        <location filename="../ui/preferences-draftvisual.ui" line="375"/>
         <source>Dashed line definition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftvisual.ui" line="349"/>
+        <location filename="../ui/preferences-draftvisual.ui" line="398"/>
         <source>0.09,0.05</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftvisual.ui" line="369"/>
+        <location filename="../ui/preferences-draftvisual.ui" line="418"/>
         <source>Dashdot line definition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftvisual.ui" line="392"/>
+        <location filename="../ui/preferences-draftvisual.ui" line="441"/>
         <source>0.09,0.05,0.02,0.05</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftvisual.ui" line="412"/>
+        <location filename="../ui/preferences-draftvisual.ui" line="461"/>
         <source>Dotted line definition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftvisual.ui" line="435"/>
+        <location filename="../ui/preferences-draftvisual.ui" line="484"/>
         <source>0.02,0.02</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1421,17 +1431,17 @@ such as &quot;Arial:Bold&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-drafttexts.ui" line="476"/>
+        <location filename="../ui/preferences-drafttexts.ui" line="513"/>
         <source>ShapeString settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-drafttexts.ui" line="484"/>
+        <location filename="../ui/preferences-drafttexts.ui" line="521"/>
         <source>Default ShapeString font file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftvisual.ui" line="318"/>
+        <location filename="../ui/preferences-draftvisual.ui" line="367"/>
         <source>Drawing view line definitions</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1571,7 +1581,7 @@ such as &quot;Arial:Bold&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftvisual.ui" line="432"/>
+        <location filename="../ui/preferences-draftvisual.ui" line="481"/>
         <source>An SVG linestyle definition</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1611,22 +1621,22 @@ such as &quot;Arial:Bold&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftvisual.ui" line="277"/>
+        <location filename="../ui/preferences-draftvisual.ui" line="326"/>
         <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+        <location filename="../ui/preferences-draftvisual.ui" line="329"/>
         <source>Preserve colors of faces during downgrade/upgrade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftvisual.ui" line="297"/>
+        <location filename="../ui/preferences-draftvisual.ui" line="346"/>
         <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+        <location filename="../ui/preferences-draftvisual.ui" line="349"/>
         <source>Preserve names of faces during downgrade/upgrade</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2167,6 +2177,31 @@ This value is the maximum segment length. </source>
     <message>
         <location filename="../ui/preferences-draftsnap.ui" line="313"/>
         <source>Show grid border</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-drafttexts.ui" line="475"/>
+        <source>Override unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-drafttexts.ui" line="495"/>
+        <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-draftvisual.ui" line="257"/>
+        <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+        <source>Hatch Pattern default size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+        <source>The default size of hatch patterns</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

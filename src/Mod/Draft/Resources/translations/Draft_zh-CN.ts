@@ -271,12 +271,12 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="../../InitGui.py" line="112"/>
       <source>&amp;Modification</source>
-      <translation type="unfinished">&amp;Modification</translation>
+      <translation>修改 (&amp;M)</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="113"/>
       <source>&amp;Utilities</source>
-      <translation type="unfinished">&amp;Utilities</translation>
+      <translation>实用程序 (&amp;U)</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="122"/>
@@ -451,7 +451,7 @@ Negative values will result in copies produced in the negative direction.</sourc
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="125"/>
       <source>Reset Z</source>
-      <translation type="unfinished">Reset Z</translation>
+      <translation>重置Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="137"/>
@@ -499,7 +499,7 @@ Negative values will result in copies produced in the negative direction.</sourc
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="265"/>
       <source>Reset X</source>
-      <translation type="unfinished">Reset X</translation>
+      <translation>重置X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="275"/>
@@ -518,7 +518,7 @@ Negative values will result in copies produced in the negative direction.</sourc
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="356"/>
       <source>Reset Y</source>
-      <translation type="unfinished">Reset Y</translation>
+      <translation>重置Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="366"/>
@@ -688,12 +688,12 @@ It must be at least 2.</source>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="186"/>
       <source>Reset 3d point selection</source>
-      <translation type="unfinished">Reset 3d point selection</translation>
+      <translation>重置所选3D点</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
-      <translation type="unfinished">Reset Point</translation>
+      <translation>重置点</translation>
     </message>
   </context>
   <context>
@@ -713,7 +713,7 @@ Or choose one of the options below</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="31"/>
       <source>Sets the working plane to the XY plane (ground plane)</source>
-      <translation type="unfinished">Sets the working plane to the XY plane (ground plane)</translation>
+      <translation>将工作平面设置为 XY 平面(地面平面)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="34"/>
@@ -723,7 +723,7 @@ Or choose one of the options below</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="41"/>
       <source>Sets the working plane to the XZ plane (front plane)</source>
-      <translation type="unfinished">Sets the working plane to the XZ plane (front plane)</translation>
+      <translation>将工作平面设置为 XZ 平面(前面平面)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="44"/>
@@ -733,7 +733,7 @@ Or choose one of the options below</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="51"/>
       <source>Sets the working plane to the YZ plane (side plane)</source>
-      <translation type="unfinished">Sets the working plane to the YZ plane (side plane)</translation>
+      <translation>将工作平面设置为 YZ 平面(侧边平面)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="54"/>
@@ -848,24 +848,34 @@ value by using the [ and ] keys while drawing</translation>
       <translation>捕捉半径</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="221"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="241"/>
       <source>Centers the view on the current working plane</source>
       <translation type="unfinished">Centers the view on the current working plane</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="224"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="244"/>
       <source>Center view</source>
-      <translation type="unfinished">Center view</translation>
+      <translation>视图居中</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="231"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="251"/>
       <source>Resets the working plane to its previous position</source>
       <translation type="unfinished">Resets the working plane to its previous position</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="234"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="254"/>
       <source>Previous</source>
-      <translation type="unfinished">Previous</translation>
+      <translation>上一个</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="219"/>
+      <source>Grid extension</source>
+      <translation type="unfinished">Grid extension</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="226"/>
+      <source> lines</source>
+      <translation> 线</translation>
     </message>
   </context>
   <context>
@@ -1294,7 +1304,7 @@ such as "Arial:Bold"</source>
       <translation>尺寸线和尺寸文本之间的距离</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="497"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="534"/>
       <source>Select a font file</source>
       <translation>选择一个字体文件</translation>
     </message>
@@ -1374,32 +1384,32 @@ such as "Arial:Bold"</source>
       <translation> 文字在中(3D)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="326"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="375"/>
       <source>Dashed line definition</source>
       <translation>虚线(Dash) 设定</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="349"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
       <source>0.09,0.05</source>
       <translation>0.09,0.05</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="369"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="418"/>
       <source>Dashdot line definition</source>
       <translation>点划线(Dashdot) 设定</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="392"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
       <source>0.09,0.05,0.02,0.05</source>
       <translation>0.09,0.05,0.02,0.05</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="412"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="461"/>
       <source>Dotted line definition</source>
       <translation>点线(Dot) 设定</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="435"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
       <source>0.02,0.02</source>
       <translation>0.02,0.02</translation>
     </message>
@@ -1454,17 +1464,17 @@ such as "Arial:Bold"</source>
       <translation>文字间距</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="476"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="513"/>
       <source>ShapeString settings</source>
       <translation>字串造型产生器设置</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="484"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="521"/>
       <source>Default ShapeString font file</source>
       <translation>默认字串造型产生器字体文件</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="318"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="367"/>
       <source>Drawing view line definitions</source>
       <translation>绘图视图直线定义</translation>
     </message>
@@ -1604,7 +1614,7 @@ such as "Arial:Bold"</source>
       <translation>如果选中, 则在绘图操作期间显示一个指示当前工作平面方向的小部件</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="432"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="481"/>
       <source>An SVG linestyle definition</source>
       <translation>SVG 直线样式定义</translation>
     </message>
@@ -1644,22 +1654,22 @@ such as "Arial:Bold"</source>
       <translation>刻度-2</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="277"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="326"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
       <translation>如果要在执行降级和升级时保留面的颜色 (仅限拆分面和 壳体创建), 请选择此选项</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="329"/>
       <source>Preserve colors of faces during downgrade/upgrade</source>
       <translation>在降级/升级过程中保留面的颜色</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="297"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="346"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
       <translation>如果您希望从原始对象名称派生面名称, 并且在执行降级升级 (仅限拆分面和 壳体创建) 时从面名称派生对象名称, 请检选择改选项。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="349"/>
       <source>Preserve names of faces during downgrade/upgrade</source>
       <translation>在降级/升级过程中保留面的名称</translation>
     </message>
@@ -1693,7 +1703,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-dxf.ui" line="67"/>
       <source>Use legacy python exporter</source>
-      <translation type="unfinished">Use legacy python exporter</translation>
+      <translation>使用旧版python导出器</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="247"/>
@@ -2225,6 +2235,31 @@ This value is the maximum segment length. </source>
       <location filename="../ui/preferences-draftsnap.ui" line="313"/>
       <source>Show grid border</source>
       <translation type="unfinished">Show grid border</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="475"/>
+      <source>Override unit</source>
+      <translation type="unfinished">Override unit</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="495"/>
+      <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
+      <translation type="unfinished">By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="257"/>
+      <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
+      <translation type="unfinished">The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+      <source>Hatch Pattern default size</source>
+      <translation type="unfinished">Hatch Pattern default size</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+      <source>The default size of hatch patterns</source>
+      <translation type="unfinished">The default size of hatch patterns</translation>
     </message>
   </context>
   <context>
@@ -2805,7 +2840,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../WorkingPlane.py" line="760"/>
       <source>Side</source>
-      <translation type="unfinished">Side</translation>
+      <translation>侧面</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="679"/>
