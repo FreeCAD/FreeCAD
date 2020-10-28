@@ -187,6 +187,7 @@ def update_translation(path):
     global QMAKE, LUPDATE
     cur = os.getcwd()
     os.chdir(path)
+    existingjsons = [f for f in os.listdir(".") if f.endswith(".json")]
     filename = os.path.basename(path) + ".pro"
     os.system(QMAKE + " -project")
     #os.system(LUPDATE + " " + filename)
@@ -198,6 +199,10 @@ def update_translation(path):
         tsname = " -ts "+os.path.join("Language", "FreeCAD.ts")
     os.system(LUPDATE + " " + filename + tsname)
     os.remove(filename)
+    # lupdate creates json files since Qt5.something. Remove them here too
+    for jsonfile in [f for f in os.listdir(".") if f.endswith(".json")]:
+        if not jsonfile in existingjsons:
+            os.remove(jsonfile)
     os.chdir(cur)
 
 def update_python_translation(item):
