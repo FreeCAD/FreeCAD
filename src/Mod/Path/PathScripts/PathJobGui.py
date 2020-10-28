@@ -56,6 +56,7 @@ from pivy import coin
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+
 LOGLEVEL = False
 
 if LOGLEVEL:
@@ -303,7 +304,7 @@ class StockEdit(object):
                 widget.hide()
         if select:
             self.form.stock.setCurrentIndex(self.Index)
-        editor = self.editorFrame() # pylint: disable=assignment-from-none
+        editor = self.editorFrame()  # pylint: disable=assignment-from-none
         showHide(self.form.stockFromExisting, editor)
         showHide(self.form.stockFromBase, editor)
         showHide(self.form.stockCreateBox, editor)
@@ -365,7 +366,7 @@ class StockFromBaseBoundBoxEdit(StockEdit):
                 stock.ExtZneg = FreeCAD.Units.Quantity(self.form.stockExtZneg.text())
             if 'zpos' in fields:
                 stock.ExtZpos = FreeCAD.Units.Quantity(self.form.stockExtZpos.text())
-        except Exception: # pylint: disable=broad-except
+        except Exception:  # pylint: disable=broad-except
             pass
 
     def getFields(self, obj, fields=None):
@@ -462,7 +463,7 @@ class StockCreateBoxEdit(StockEdit):
                     obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockBoxHeight.text())
             else:
                 PathLog.error(translate('PathJob', 'Stock not a box!'))
-        except Exception: # pylint: disable=broad-except
+        except Exception:  # pylint: disable=broad-except
             pass
 
     def setFields(self, obj):
@@ -498,7 +499,7 @@ class StockCreateCylinderEdit(StockEdit):
                     obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockCylinderHeight.text())
             else:
                 PathLog.error(translate('PathJob', 'Stock not a cylinder!'))
-        except Exception: # pylint: disable=broad-except
+        except Exception:  # pylint: disable=broad-except
             pass
 
     def setFields(self, obj):
@@ -533,7 +534,7 @@ class StockFromExistingEdit(StockEdit):
 
     def candidates(self, obj):
         solids = [o for o in obj.Document.Objects if PathUtil.isSolid(o)]
-        if hasattr(obj, 'Model'): 
+        if hasattr(obj, 'Model'):
             job = obj
         else:
             job = PathUtils.findParentJob(obj)
@@ -672,7 +673,7 @@ class TaskPanel:
                     if self.form.wcslist.item(i).checkState() == QtCore.Qt.CheckState.Checked:
                         flist.append(self.form.wcslist.item(i).text())
                 self.obj.Fixtures = flist
-            except Exception: # pylint: disable=broad-except
+            except Exception:  # pylint: disable=broad-except
                 FreeCAD.Console.PrintWarning("The Job was created without fixture support.  Please delete and recreate the job\r\n")
 
             self.updateTooltips()
@@ -878,7 +879,7 @@ class TaskPanel:
         elif 'Number' == prop:
             try:
                 tc.ToolNumber = int(item.text())
-            except Exception: # pylint: disable=broad-except
+            except Exception:  # pylint: disable=broad-except
                 pass
             item.setText("%d" % tc.ToolNumber)
         elif 'Spindle' == prop:
@@ -890,7 +891,7 @@ class TaskPanel:
                     speed = -speed
                 tc.SpindleDir = rot
                 tc.SpindleSpeed = speed
-            except Exception: # pylint: disable=broad-except
+            except Exception:  # pylint: disable=broad-except
                 pass
             item.setText("%s%g" % ('+' if tc.SpindleDir == 'Forward' else '-', tc.SpindleSpeed))
         elif 'HorizFeed' == prop or 'VertFeed' == prop:
@@ -902,14 +903,14 @@ class TaskPanel:
                 elif FreeCAD.Units.Unit() == val.Unit:
                     val = FreeCAD.Units.Quantity(item.text() + vUnit)
                     setattr(tc, prop, val)
-            except Exception: # pylint: disable=broad-except
+            except Exception:  # pylint: disable=broad-except
                 pass
             item.setText("%g" % getattr(tc, prop).getValueAs(vUnit))
         else:
             try:
                 val = FreeCAD.Units.Quantity(item.text())
                 setattr(tc, prop, val)
-            except Exception: # pylint: disable=broad-except
+            except Exception:  # pylint: disable=broad-except
                 pass
             item.setText("%g" % getattr(tc, prop).Value)
 
@@ -934,7 +935,7 @@ class TaskPanel:
                 selFeature = feature
                 sub = sel.Object.Shape.getElement(feature)
                 if 'Face' == sub.ShapeType:
-                    n = sub.normalAt(0,0).negative()
+                    n = sub.normalAt(0, 0).negative()
                     if sub.Orientation == 'Reversed':
                         n = FreeCAD.Vector() - n
                         PathLog.debug("(%.2f, %.2f, %.2f) -> reversed (%s)" % (n.x, n.y, n.z, sub.Orientation))
@@ -981,9 +982,9 @@ class TaskPanel:
                         # if selection is not model, move the model too
                         # if the selection is not stock and there is a stock, move the stock too
                         for model in self.obj.Model.Group:
-                            if model != selObject: 
+                            if model != selObject:
                                 Draft.move(model, offset)
-                            if selObject != self.obj.Stock and self.obj.Stock: 
+                            if selObject != self.obj.Stock and self.obj.Stock:
                                 Draft.move(self.obj.Stock, offset)
 
     def modelMove(self, axis):
@@ -1033,10 +1034,10 @@ class TaskPanel:
                     p = FreeCAD.Vector() - sub.Curve.Location
                 if 'Face' == sub.ShapeType:
                     p = FreeCAD.Vector() - sub.BoundBox.Center
-                    
+
                 if p:
                     Draft.move(sel.Object, p)
-                
+
         if selObject and selFeature:
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(selObject, selFeature)
@@ -1130,9 +1131,9 @@ class TaskPanel:
     def isValidAxisSelection(self, sel):
         if sel.ShapeType in ['Vertex', 'Edge', 'Face']:
             if hasattr(sel, 'Curve') and type(sel.Curve) in [Part.Circle]:
-                 return False
-            if hasattr(sel, 'Surface') and sel.Surface.curvature(0,0,"Max") != 0:
-                return False 
+                return False
+            if hasattr(sel, 'Surface') and sel.Surface.curvature(0, 0, "Max") != 0:
+                return False
             return True
 
         # no valid selection
@@ -1200,7 +1201,7 @@ class TaskPanel:
 
                 # first remove all obsolete base models
                 for model, count in PathUtil.keyValueIter(obsolete):
-                    for i in range(count): # pylint: disable=unused-variable
+                    for i in range(count):  # pylint: disable=unused-variable
                         # it seems natural to remove the last of all the base objects for a given model
                         base = [b for b in obj.Model.Group if proxy.baseObject(obj, b) == model][-1]
                         self.vproxy.forgetBaseVisibility(obj, base)
@@ -1350,7 +1351,7 @@ def Create(base, template=None):
         obj.Document.recompute()
         obj.ViewObject.Proxy.editObject(obj.Stock)
         return obj
-    except Exception as exc: # pylint: disable=broad-except
+    except Exception as exc:  # pylint: disable=broad-except
         PathLog.error(exc)
         traceback.print_exc()
         FreeCAD.ActiveDocument.abortTransaction()
