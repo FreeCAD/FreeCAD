@@ -1488,6 +1488,12 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
         Y = (ep[1] - sp[1])**2
         return math.sqrt(X + Y)  # the 'z' value is zero in both points
 
+    if obj.CutPatternReversed:
+        if self.CutClimb:
+            self.CutClimb = False
+        else:
+            self.CutClimb = True
+
     # Separate arc data into Loops and Arcs
     for ei in range(0, ec):
         edg = compGeoShp.Edges[ei]
