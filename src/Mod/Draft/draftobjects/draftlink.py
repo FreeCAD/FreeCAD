@@ -138,6 +138,9 @@ class DraftLink(DraftObject):
 
         obj.configLinkProperty('LinkTransform', 'ColoredElements')
 
+        if not getattr(obj, 'Fuse', False):
+            obj.setPropertyStatus('Shape', 'Transient')
+
     def getViewProviderName(self, _obj):
         """Override the view provider name."""
         if self.use_link:
@@ -197,7 +200,8 @@ class DraftLink(DraftObject):
                             "from '{}'\n".format(obj.Label, obj.Base.Label))
                 raise RuntimeError(_err_msg)
             else:
-                shape = shape.copy()
+                #  shape = shape.copy()
+                shape = Part.Shape(shape)
                 shape.Placement = App.Placement()
                 base = []
                 for i, pla in enumerate(pls):
