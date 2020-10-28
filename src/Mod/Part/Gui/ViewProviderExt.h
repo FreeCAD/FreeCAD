@@ -157,7 +157,7 @@ public:
 
     virtual bool allowOverride(const App::DocumentObject &) const override;
 
-    void updateColors(App::Document *sourceDoc=0, bool forceColorMap=false);
+    virtual void updateColors(App::Document *sourceDoc=0, bool forceColorMap=false) override;
 
     static App::Color getElementColor(App::Color color, Part::TopoShape shape, App::Document *doc, 
             int type, std::string mapped,std::map<App::DocumentObject*,Part::TopoShape> &cache);
