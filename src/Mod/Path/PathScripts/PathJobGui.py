@@ -22,8 +22,18 @@
 # *                                                                         *
 # ***************************************************************************
 
+
+from collections import Counter
+from contextlib import contextmanager
+import math
+import traceback
+
+from pivy import coin
+from PySide import QtCore, QtGui
+
 import FreeCAD
 import FreeCADGui
+
 import PathScripts.PathJob as PathJob
 import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathJobDlg as PathJobDlg
@@ -37,19 +47,12 @@ import PathScripts.PathToolControllerGui as PathToolControllerGui
 import PathScripts.PathToolLibraryEditor as PathToolLibraryEditor
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
-import math
-import traceback
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 Draft = LazyLoader('Draft', globals(), 'Draft')
 Part = LazyLoader('Part', globals(), 'Part')
 DraftVecUtils = LazyLoader('DraftVecUtils', globals(), 'DraftVecUtils')
-
-from PySide import QtCore, QtGui
-from collections import Counter
-from contextlib import contextmanager
-from pivy import coin
 
 
 # Qt translation handling
