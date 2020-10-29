@@ -122,6 +122,12 @@ Add or remove view object from scene graph of all views depending on its canAddT
 	  </Documentation>
 	  <Parameter Name="ActiveView" Type="Object" />
 	</Attribute>
+	<Attribute Name="EditingView" ReadOnly="true">
+	  <Documentation>
+		  <UserDocu>The currently editing view of the document</UserDocu>
+	  </Documentation>
+	  <Parameter Name="EditingView" Type="Object" />
+	</Attribute>
 	<Attribute Name="EditingTransform">
 	  <Documentation>
 		  <UserDocu>The editing transformation matrix</UserDocu>

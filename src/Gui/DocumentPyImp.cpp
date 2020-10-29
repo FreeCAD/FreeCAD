@@ -383,6 +383,17 @@ void  DocumentPy::setActiveView(Py::Object /*arg*/)
     throw Py::AttributeError("'Document' object attribute 'ActiveView' is read-only");
 }
 
+Py::Object DocumentPy::getEditingView(void) const
+{
+    Gui::MDIView *view = getDocumentPtr()->getEditingView();
+    if (view) {
+        // already incremented in getPyObject().
+        return Py::Object(view->getPyObject(), true);
+    } else {
+        return Py::None();
+    }
+}
+
 Py::Object DocumentPy::getDocument(void) const
 {
     App::Document *doc = getDocumentPtr()->getDocument();

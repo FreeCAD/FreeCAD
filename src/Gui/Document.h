@@ -187,6 +187,7 @@ public:
     Gui::MDIView* getEditingViewOfViewProvider(Gui::ViewProvider*) const;
     Gui::MDIView* getViewOfViewProvider(Gui::ViewProvider*) const;
     Gui::MDIView* getViewOfNode(SoNode*) const;
+    Gui::MDIView* getEditingView(void) const;
     /// Create a new view
     MDIView *createView(const Base::Type& typeId);
     /// Create a clone of the given view

@@ -2332,6 +2332,11 @@ Gui::MDIView* Document::getViewOfViewProvider(Gui::ViewProvider* vp) const
 Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) const
 {
     (void)vp;
+    return getEditingView();
+}
+
+Gui::MDIView* Document::getEditingView() const
+{
     for (auto v : getViews()) {
         View3DInventor* view = Base::freecad_dynamic_cast<View3DInventor>(v);
         // there is only one 3d view which is in edit mode
