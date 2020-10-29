@@ -361,6 +361,8 @@ class ObjectOp(object):
         if FeatureDiameters & features:
             obj.MinDiameter = '0 mm'
             obj.MaxDiameter = '0 mm'
+            if job.Stock:
+                obj.MaxDiameter = job.Stock.Shape.BoundBox.XLength
 
         if FeatureStartPoint & features:
             obj.UseStartPoint = False
