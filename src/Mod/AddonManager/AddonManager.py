@@ -576,7 +576,7 @@ class UpdateWorker(QtCore.QThread):
         # Fix for github oct 2020 changes. This is not needed anymore in 0.19
         # as this addon manager doesn't parse the html file anymore
         # the line below retreives a list of "Owner/Repo" strings
-        p = ["/".join(e.split("/")[1:3]) for e in re.findall("href=\"(\/.*?tree.*?)\"",h) if not e.startswith("/FreeCAD/FreeCAD-addons")]
+        p = ["/".join(e.split("/")[1:3]) for e in re.findall("href=\"(\/.*?tree.*?)\"",p) if not e.startswith("/FreeCAD/FreeCAD-addons")]
         basedir = FreeCAD.getUserAppDataDir()
         moddir = basedir + os.sep + "Mod"
         repos = []
