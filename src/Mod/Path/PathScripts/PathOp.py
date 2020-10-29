@@ -22,16 +22,16 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
+import time
+
+from PySide import QtCore
+
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
-
 from PathScripts.PathUtils import waiting_effects
-from PySide import QtCore
-import time
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
