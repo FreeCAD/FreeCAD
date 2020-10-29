@@ -1015,6 +1015,12 @@ class _ViewProviderSectionPlane:
             vobj.CutMargin = 1
         if not "ShowLabel" in pl:
             vobj.addProperty("App::PropertyBool","ShowLabel","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the label in the 3D view"))
+        if not "FontName" in pl:
+            vobj.addProperty("App::PropertyFont","FontName", "SectionPlane",QT_TRANSLATE_NOOP("App::Property","The name of the font"))
+            vobj.FontName = Draft.getParam("textfont","")
+        if not "FontSize" in pl:
+            vobj.addProperty("App::PropertyLength","FontSize","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The size of the text font"))
+            vobj.FontSize = Draft.getParam("textheight",10)
 
 
     def onDocumentRestored(self,vobj):
@@ -1049,7 +1055,7 @@ class _ViewProviderSectionPlane:
         ls.coordIndex.setValues(0,57,[0,1,-1,2,3,4,5,-1,6,7,8,9,-1,10,11,-1,12,13,14,15,-1,16,17,18,19,-1,20,21,-1,22,23,24,25,-1,26,27,28,29,-1,30,31,-1,32,33,34,35,-1,36,37,38,39,-1,40,41,42,43,44])
         self.txtcoords = coin.SoTransform()
         self.txtfont = coin.SoFont()
-        self.txtfont.name = "Sans"
+        self.txtfont.name = ""
         self.txt = coin.SoAsciiText()
         self.txt.justification = coin.SoText2.LEFT
         self.txt.string.setValue(" ")
@@ -1146,7 +1152,7 @@ class _ViewProviderSectionPlane:
             self.lcoords.point.setValues(verts)
             self.fcoords.point.setValues(fverts)
             self.txtcoords.translation.setValue([p7.x,p7.y,p7.z])
-            self.txtfont.size = l1
+            #self.txtfont.size = l1
         elif prop == "LineWidth":
             self.drawstyle.lineWidth = vobj.LineWidth
         elif prop in ["CutView","CutMargin"]:
@@ -1187,6 +1193,15 @@ class _ViewProviderSectionPlane:
                 self.txt.string = vobj.Object.Label or " "
             else:
                 self.txt.string = " "
+        elif prop == "FontName":
+            if hasattr(self,"txtfont") and hasattr(vobj,"FontName"):
+                if vobj.FontName:
+                    self.txtfont.name = vobj.FontName
+                else:
+                    self.txtfont.name = ""
+        elif prop == "FontSize":
+            if hasattr(self,"txtfont") and hasattr(vobj,"FontSize"):
+                self.txtfont.size = vobj.FontSize.Value
         return
 
     def __getstate__(self):
