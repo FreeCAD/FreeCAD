@@ -1262,7 +1262,8 @@ void FemMesh::read(const char *FileName)
     }
     else if (File.hasExtension("inp") ) {
         // read Abaqus inp mesh file
-        readAbaqus(File.filePath());
+        //readAbaqus(File.filePath());
+        readNastran95(File.filePath());
     }
     else if (File.hasExtension("stl") ) {
         // read brep-file
