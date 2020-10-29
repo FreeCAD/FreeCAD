@@ -571,17 +571,24 @@ class UpdateWorker(QtCore.QThread):
             p = p.decode("utf-8")
         u.close()
         p = p.replace("\n"," ")
-        p = re.findall("octicon-file-submodule(.*?)<time-ago datetime",p)
+        #p = re.findall("octicon-file-submodule(.*?)<time-ago datetime",p)
+
+        # Fix for github oct 2020 changes. This is not needed anymore in 0.19
+        # as this addon manager doesn't parse the html file anymore
+        # the line below retreives a list of "Owner/Repo" strings
+        p = ["/".join(e.split("/")[1:3]) for e in re.findall("href=\"(\/.*?tree.*?)\"",h) if not e.startswith("/FreeCAD/FreeCAD-addons")]
         basedir = FreeCAD.getUserAppDataDir()
         moddir = basedir + os.sep + "Mod"
         repos = []
         for l in p:
             #name = re.findall("data-skip-pjax=\"true\">(.*?)<",l)[0]
-            name = re.findall("title=\"(.*?) @",l)[0]
+            #name = re.findall("title=\"(.*?) @",l)[0]
+            name = l.split("/")[1]
             self.info_label.emit(name)
             #url = re.findall("title=\"(.*?) @",l)[0]
             try:
-                url = "https://github.com/" + re.findall("href=\"\/(.*?)\/tree",l)[0]
+                #url = "https://github.com/" + re.findall("href=\"\/(.*?)\/tree",l)[0]
+                url = "https://github.com/" + l
             except:
                 pass
             else:
