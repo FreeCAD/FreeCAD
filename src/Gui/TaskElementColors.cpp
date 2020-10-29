@@ -34,6 +34,8 @@
 #include "ui_TaskElementColors.h"
 #include "TaskElementColors.h"
 #include "ViewProviderLink.h"
+#include "View3DInventor.h"
+#include "View3DInventorViewer.h"
 
 #include <Base/Console.h>
 #include <App/ComplexGeoData.h>
@@ -44,7 +46,7 @@
 #include "MainWindow.h"
 #include "Selection.h"
 #include "BitmapFactory.h"
-#include "Command.h"
+#include "CommandT.h"
 #include "ViewParams.h"
 
 #include <App/Document.h>
@@ -70,7 +72,8 @@ public:
     QPixmap px;
     bool busy;
     bool touched;
-    bool selectOnTop;
+    bool restoreOnTop;
+    bool hasEditView = false;
 
     std::string editDoc;
     std::string editObj;
@@ -90,6 +93,16 @@ public:
                 editDoc = obj->getDocument()->getName();
                 editObj = obj->getNameInDocument();
                 editSub = Data::ComplexGeoData::noElementName(editSub.c_str());
+                try {
+                    doCommandT(Command::Gui, "_taskElementColorView = "
+                                            "FreeCADGui.getDocument('%s').EditingView",
+                                            editDoc);
+                    hasEditView = true;
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                } catch (...)
+                {}
+
             }
         }
         if(editDoc.empty()) {
@@ -98,7 +111,9 @@ public:
             editObj = vp->getObject()->getNameInDocument();
             editSub.clear();
         }
-        selectOnTop = ViewParams::instance()->getShowSelectionOnTop();
+        restoreOnTop = false;
+        setOnTop();
+
         busy = false;
         touched = false;
         int w = QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon).width();
@@ -106,8 +121,37 @@ public:
     }
 
     ~Private() {
-        if(selectOnTop != ViewParams::instance()->getShowSelectionOnTop())
-            ViewParams::instance()->setShowSelectionOnTop(selectOnTop);
+        setOnTop(true, true);
+    }
+
+    void setOnTop(bool restore = false, bool del = false)
+    {
+        if (!hasEditView)
+            return;
+        bool unset = false;
+        if (restore && restoreOnTop)
+            unset = true;
+        else if (restore && !restoreOnTop)
+            return;
+        else if (!restore) {
+            if (ViewParams::getColorOnTop()) {
+                if (restoreOnTop)
+                    return;
+            } else if (!restoreOnTop)
+                return;
+            else
+                unset = true;
+        }
+        restoreOnTop = !unset;
+        try {
+            doCommandT(Command::Gui, "_taskElementColorView.%s(FreeCAD.getDocument('%s').getObject('%s'), '%s')",
+                        unset ? "removeObjectOnTop" : "addObjectOnTop", editDoc, editObj, editSub);
+            if (restore && del)
+                doCommandT(Command::Gui, "del(_taskElementColorView)");
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        } catch (...)
+        {}
     }
 
     bool allow(App::Document *doc, App::DocumentObject *obj, const char *subname) {
@@ -323,12 +367,8 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
     if(noHide)
         d->ui->hideSelection->setVisible(false);
 
-    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
-    d->ui->recompute->setChecked(hPart->GetBool("ColorRecompute",true));
-    d->ui->onTop->setChecked(hPart->GetBool("ColorOnTop",true));
-    if(d->ui->onTop->isChecked() && !ViewParams::instance()->getShowSelectionOnTop())
-        ViewParams::instance()->setShowSelectionOnTop(true);
+    d->ui->recompute->setChecked(ViewParams::getColorRecompute());
+    d->ui->onTop->setChecked(ViewParams::getColorOnTop());
 
     Selection().addSelectionGate(d,0);
 
@@ -348,16 +388,12 @@ ElementColors::~ElementColors()
 }
 
 void ElementColors::on_recompute_clicked(bool checked) {
-    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
-    hPart->SetBool("ColorRecompute",checked);
+    ViewParams::setColorRecompute(checked);
 }
 
 void ElementColors::on_onTop_clicked(bool checked) {
-    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
-    hPart->SetBool("ColorOnTop",checked);
-    ViewParams::instance()->setShowSelectionOnTop(checked);
+    ViewParams::setColorOnTop(checked);
+    d->setOnTop();
 }
 
 void ElementColors::slotDeleteDocument(const Document& Doc)

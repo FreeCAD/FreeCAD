@@ -259,6 +259,10 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Pie menu center circle radius, 0 to disable"))\
     FC_VIEW_PARAM(StickyTaskControl, bool, Bool, true, \
         QT_TRANSLATE_NOOP("ViewParams","Makes the task dialog buttons stay at top or bottom of task view."))\
+    FC_VIEW_PARAM(ColorOnTop, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Show object on top will editing its color."))\
+    FC_VIEW_PARAM(ColorRecompute, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Recompute affected object(s) after editing color."))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
