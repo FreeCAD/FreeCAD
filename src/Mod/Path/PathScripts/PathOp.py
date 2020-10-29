@@ -92,7 +92,7 @@ class ObjectOp(object):
         FeatureBasePanels    ... Base geometry support for Arch.Panels
         FeatureLocations     ... Base location support
         FeatureCoolant       ... Support for operation coolant
-        FeatureDiameters     ... Support for turning operation diameters 
+        FeatureDiameters     ... Support for turning operation diameters
 
     The base class handles all base API and forwards calls to subclasses with
     an op prefix. For instance, an op is not expected to overwrite onChanged(),
@@ -174,7 +174,7 @@ class ObjectOp(object):
         if FeatureDiameters & features:
             obj.addProperty("App::PropertyDistance", "MinDiameter", "Diameter", QtCore.QT_TRANSLATE_NOOP("PathOp", "Lower limit of the turning diameter"))
             obj.addProperty("App::PropertyDistance", "MaxDiameter", "Diameter", QtCore.QT_TRANSLATE_NOOP("PathOp", "Upper limit of the turning diameter."))
-        
+
         # members being set later
         self.commandlist = None
         self.horizFeed = None
