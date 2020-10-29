@@ -680,14 +680,11 @@ Part::TopoShape ViewProviderPartExt::getShape() const
     if (!getObject())
         return shape;
 
-    if (shapePropName.empty())
-        return Part::Feature::getTopoShape(getObject());
-
     auto prop = Base::freecad_dynamic_cast<Part::PropertyPartShape>(
-            getObject()->getPropertyByName(shapePropName.c_str()));
-    if (!prop)
-        return Part::TopoShape();
-    return prop->getShape();
+            getObject()->getPropertyByName(getShapePropertyName()));
+    if (prop)
+        return prop->getShape();
+    return Part::Feature::getTopoShape(getObject());
 }
 
 void ViewProviderPartExt::setShapePropertyName(const char *propName)
