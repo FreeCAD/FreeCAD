@@ -34,7 +34,7 @@ your model history to change its parameters.
 
 * **Designed for your needs** FreeCAD is designed to fit a wide range of uses
 including product design, mechanical engineering and architecture,
-whether you are a hobbyist, programmer, experienced CAD user, student or teacher,
+whether you are a hobbyist, programmer, experienced CAD user, student or teacher.
 
 * **Cross platform** FreeCAD runs on Windows, macOS and Linux
 
