@@ -56,6 +56,10 @@ public: // Factory methods
     static std::unique_ptr<GeometryFacade> getFacade(Part::Geometry * geometry);
     static std::unique_ptr<const GeometryFacade> getFacade(const Part::Geometry * geometry);
 
+public: // Utility methods
+    static void ensureSketchGeometryExtension(Part::Geometry * geometry);
+    static void copyId(const Part::Geometry * src, Part::Geometry * dst);
+
 public:
     void setGeometry(Part::Geometry *geometry);
 
