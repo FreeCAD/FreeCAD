@@ -1286,6 +1286,7 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
 
     menu.addSeparator();
     menu.addAction( tr("Insert file name..."), this, SLOT(onInsertFileName()));
+    menu.addAction( tr("Run a py file..."), this, SLOT(onRunApyFile()));
     menu.addSeparator();
 
     QAction* wrap = menu.addAction(tr("Word wrap"));
@@ -1348,6 +1349,20 @@ void PythonConsole::onInsertFileName()
     if ( fn.isEmpty() )
         return;
     insertPlainText(fn);
+}
+
+void PythonConsole::onRunApyFile()
+{
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), tr("Run a py file"), QString::null,
+        QString::fromLatin1("%1 (*.py)").arg(tr("py Files")));
+    if ( fn.isEmpty() )
+        return;
+    QString s1 = QString::fromLatin1("f=open(\'")+fn+QString::fromLatin1("\', \'rb\')\n");
+    QString s2 = QString::fromLatin1("exec(compile(f.read(), \'")+fn+QString::fromLatin1(("\', \'exec\'))\n"));
+    QString s3 = QString::fromLatin1("f.close()\n");
+    runSource(s1);
+    runSource(s2);
+    runSource(s3);
 }
 
 /**
