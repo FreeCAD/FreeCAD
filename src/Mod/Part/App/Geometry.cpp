@@ -1064,9 +1064,14 @@ const Handle(Geom_Geometry)& GeomBSplineCurve::handle() const
 
 Geometry *GeomBSplineCurve::copy(void) const
 {
-    GeomBSplineCurve *newCurve = new GeomBSplineCurve(myCurve);
-    newCurve->Construction = this->Construction;
-    return newCurve;
+    try {
+        GeomBSplineCurve *newCurve = new GeomBSplineCurve(myCurve);
+        newCurve->Construction = this->Construction;
+        return newCurve;
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError, e.GetMessageString())
+    }
 }
 
 int GeomBSplineCurve::countPoles() const
@@ -1089,7 +1094,6 @@ void GeomBSplineCurve::setPole(int index, const Base::Vector3d& pole, double wei
             myCurve->SetPole(index,pnt,weight);
     }
     catch (Standard_Failure& e) {
-
         THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
