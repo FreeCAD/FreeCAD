@@ -116,6 +116,7 @@ public:
 public Q_SLOTS:
     void onSaveHistoryAs();
     void onInsertFileName();
+    void onRunApyFile();    
     void onCopyHistory();
     void onCopyCommand();
     void onClearConsole();
