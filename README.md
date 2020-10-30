@@ -37,7 +37,7 @@ your model history and changing its parameters.
  Whether you are a hobbyist, a programmer, an experienced CAD user, 
  a student or a teacher, you will feel right at home with FreeCAD.
 
-* **Cross platform** FreeCAD runs on Windows, Mac and Linux
+* **Cross platform** FreeCAD runs on Windows, Mac and Linux Operating systems.
 
 * **Underlying technology**
     * **OpenCASCADE** A powerful geometry kernel, the most important component of FreeCAD
@@ -78,7 +78,7 @@ pages below. Once this is done, FreeCAD can be simply compiled with
 cMake. On Windows, these libraries are bundled and offered by the 
 FreeCAD team in a convenient package. On Linux, they are usually found 
 in your distribution's repositories, and on Mac OSX and other platforms 
-you will usually need to compile them yourself.
+you will usually need to compile them by yourself.
 
 The pages below contain up-to-date build instructions:
 
