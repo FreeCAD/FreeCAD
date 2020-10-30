@@ -178,10 +178,13 @@ TopoShape Feature::getBaseShape(bool silent) const {
 
     result = BaseObject->Shape.getShape();
 
-    if(!silent) {
-        if (result.isNull())
+    if (result.isNull()) {
+        if (!silent)
             throw Part::NullShapeException("Base feature's TopoShape is invalid");
-        if (!result.hasSubShape(TopAbs_SOLID))
+    } else if (!result.hasSubShape(TopAbs_SOLID)) {
+        if (silent)
+            result = TopoShape();
+        else
             throw Base::ValueError("Base feature's shape is not a solid");
     }
     return result;
