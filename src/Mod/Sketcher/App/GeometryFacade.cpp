@@ -99,7 +99,19 @@ void GeometryFacade::initExtension() const
     const_cast<GeometryFacade *>(this)->SketchGeoExtension = ext;
 }
 
+void GeometryFacade::ensureSketchGeometryExtension(Part::Geometry * geometry)
+{
+    if(!geometry->hasExtension(SketchGeometryExtension::getClassTypeId())) {
+        geometry->setExtension(std::make_unique<SketchGeometryExtension>()); // Create getExtension
+    }
+}
 
+void GeometryFacade::copyId(const Part::Geometry * src, Part::Geometry * dst)
+{
+    auto gfsrc = GeometryFacade::getFacade(src);
+    auto gfdst = GeometryFacade::getFacade(dst);
+    gfdst->setId(gfsrc->getId());
+}
 
 PyObject * GeometryFacade::getPyObject(void)
 {
