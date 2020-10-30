@@ -189,6 +189,7 @@ private:
     Connection connectDelObject;
     Connection connectChgObject;
     Connection connectTouchedObject;
+    Connection connectPurgeTouchedObject;
     Connection connectEdtObject;
     Connection connectResObject;
     Connection connectHltObject;
@@ -3376,6 +3377,8 @@ void TreeWidget::onUpdateStatus(void)
                     boost::bind(&TreeWidget::slotChangeObject, this, bp::_1, bp::_2));
             docItem->connectTouchedObject = doc->signalTouchedObject.connect(
                     boost::bind(&TreeWidget::slotTouchedObject, this, bp::_1));
+            docItem->connectPurgeTouchedObject = doc->signalPurgeTouchedObject.connect(
+                boost::bind(&TreeWidget::slotTouchedObject, this, bp::_1));
         }
 
         if(doc->testStatus(App::Document::PartialDoc))
@@ -4485,6 +4488,8 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
                 boost::bind(&TreeWidget::slotChangeObject, getTree(), bp::_1, bp::_2));
         connectTouchedObject = doc->getDocument()->signalTouchedObject.connect(
                 boost::bind(&TreeWidget::slotTouchedObject, getTree(), bp::_1));
+        connectPurgeTouchedObject = doc->getDocument()->signalPurgeTouchedObject.connect(
+                boost::bind(&TreeWidget::slotTouchedObject, getTree(), bp::_1));
     }
     connectEdtObject = doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, bp::_1));
     connectResObject = doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, bp::_1));
@@ -4519,6 +4524,7 @@ DocumentItem::~DocumentItem()
     connectDelObject.disconnect();
     connectChgObject.disconnect();
     connectTouchedObject.disconnect();
+    connectPurgeTouchedObject.disconnect();
     connectEdtObject.disconnect();
     connectResObject.disconnect();
     connectHltObject.disconnect();
