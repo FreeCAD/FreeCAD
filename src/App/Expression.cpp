@@ -3378,10 +3378,12 @@ const ObjectIdentifier &VariableExpression::getPath() const {
 }
 
 Py::Object VariableExpression::_getPyValue(int *) const {
-    if(_EvalStack.size() && !var.isLocalProperty() && !var.hasDocumentObjectName(true)) {
+    if(_EvalStack.size() && !var.isLocalProperty()
+                         && !var.hasDocumentObjectName(true)
+                         && var.getComponents().size())
+    {
         auto &frame = *_EvalStack.back();
         const auto &comps = var.getComponents();
-        assert(comps.size());
         auto v = frame.getVar(this,comps[0].getName(),BindQuery);
         if(v) {
             if(comps.size()==1 && components.empty())
