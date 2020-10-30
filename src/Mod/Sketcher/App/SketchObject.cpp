@@ -5278,7 +5278,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     if( knotIndex > bsp->countKnots() || knotIndex < 1 ) // knotindex in OCC 1 -> countKnots
         THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero."))
 
-    Part::GeomBSplineCurve *bspline = nullptr;
+    std::unique_ptr<Part::GeomBSplineCurve> bspline;
 
     int curmult = bsp->getMultiplicity(knotIndex);
 
@@ -5289,8 +5289,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
         THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "The multiplicity cannot be decreased beyond zero."))
 
     try {
-
-        bspline = static_cast<Part::GeomBSplineCurve *>(bsp->clone());
+        bspline.reset(static_cast<Part::GeomBSplineCurve *>(bsp->clone()));
 
         if(multiplicityincr > 0) { // increase multiplicity
             bspline->increaseMultiplicity(knotIndex, curmult + multiplicityincr);
@@ -5303,7 +5302,6 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
         }
     }
     catch (const Base::Exception& e) {
-        delete bspline;
         Base::Console().Error("%s\n", e.what());
         return false;
     }
@@ -5394,9 +5392,8 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
     // deep copy
     for(size_t i=0; i<newVals.size(); i++) {
-
-        if((int)i == GeoId) {
-            newVals[i] = bspline;
+        if ((int)i == GeoId) {
+            newVals[i] = bspline.release();
         }
         else {
             newVals[i] = newVals[i]->clone();
