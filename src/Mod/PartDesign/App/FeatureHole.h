@@ -171,7 +171,7 @@ private:
 
     std::map<std::string, CutDimensionSet> HoleCutTypeMap;
 
-    void addCounterType(const CutDimensionSet dimensions);
+    void addCounterType(const CutDimensionSet& dimensions);
     bool isDynamicCounterbore(const std::string &holeCutType);
     bool isDynamicCountersink(const std::string &holeCutType);
     void updateHoleCutParams();

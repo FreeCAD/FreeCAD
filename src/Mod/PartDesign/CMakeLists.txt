@@ -148,7 +148,7 @@ add_custom_target(PartDesignHole ALL SOURCES
 
 fc_target_copy_resource(PartDesignHole
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/share/Mod/PartDesign
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/PartDesign
     ${PartDesignHoleDefines}
 )
 
@@ -156,7 +156,7 @@ INSTALL(
     FILES
         ${PartDesignHoleDefines}
     DESTINATION
-        share/Mod/PartDesign/Resources/Hole
+        ${CMAKE_INSTALL_DATADIR}/Mod/PartDesign/Resources/Hole
 )
 
 if(BUILD_FEM)

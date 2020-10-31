@@ -7,6 +7,12 @@
 #include <string> // string
 #include <vector> // vector
 
+/*
+Licensed under the MIT License <http://opensource.org/licenses/MIT>.
+SPDX-License-Identifier: MIT
+Copyright (c) 2013-2019 Niels Lohmann <http://nlohmann.me>.
+*/
+
 /*!
 @brief namespace for Niels Lohmann
 @see https://github.com/nlohmann

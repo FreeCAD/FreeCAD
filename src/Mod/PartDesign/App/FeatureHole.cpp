@@ -1301,7 +1301,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
     }
 }
 
-void Hole::addCounterType(const CutDimensionSet dimensions)
+void Hole::addCounterType(const CutDimensionSet& dimensions)
 {
     HoleCutTypeMap.emplace(dimensions.name, dimensions);
     const std::string &name = dimensions.name;
