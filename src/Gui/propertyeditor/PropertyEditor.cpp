@@ -315,7 +315,7 @@ void PropertyEditor::closeTransaction()
                 if (!doc->isTransactionEmpty()) {
                     // Between opening and committing a transaction a recompute
                     // could already have been done
-                    if (doc->isTouched())
+                    if (doc->mustExecute())
                         doc->recompute();
                 }
             }
