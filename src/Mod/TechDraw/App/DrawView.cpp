@@ -82,8 +82,8 @@ DrawView::DrawView(void):
     ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_Output, "Rotation in degrees counterclockwise");
 
     ScaleType.setEnums(ScaleTypeEnums);
-    ADD_PROPERTY_TYPE(ScaleType, (prefScaleType()), group, App::Prop_Output, "Scale Type");
-    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_Output, "Scale factor of the view");
+    ADD_PROPERTY_TYPE(ScaleType, (prefScaleType()), group, App::Prop_None, "Scale Type");
+    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_None, "Scale factor of the view");
     Scale.setConstraints(&scaleRange);
 
     ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_Output, "Short text about the view");
@@ -113,12 +113,8 @@ void DrawView::checkScale(void)
     TechDraw::DrawPage *page = findParentPage();
     if(page &&
        keepUpdated()) {
-        if (ScaleType.isValue("Page")) {
-            if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
-                Scale.setValue(page->Scale.getValue());
-                Scale.purgeTouched();
-            }
-        }
+        if (ScaleType.isValue("Page"))
+            Scale.setValue(page->Scale.getValue());
     }
 }
 
@@ -132,12 +128,8 @@ void DrawView::onChanged(const App::Property* prop)
             auto page = findParentPage();
             if (ScaleType.isValue("Page")) {
                 Scale.setStatus(App::Property::ReadOnly,true);
-                if (page != nullptr) {
-                    if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
+                if (page != nullptr)
                        Scale.setValue(page->Scale.getValue());
-                       Scale.purgeTouched();
-                    }
-                }
             } else if ( ScaleType.isValue("Custom") ) {
                 //don't change Scale
                 Scale.setStatus(App::Property::ReadOnly,false);
