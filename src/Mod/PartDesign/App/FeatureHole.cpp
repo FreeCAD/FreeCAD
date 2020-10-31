@@ -125,7 +125,7 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
         { "M1.0x0.2", 	1.0,    0.20 },
         { "M1.1x0.2", 	1.1,    0.20 },
         { "M1.2x0.2", 	1.2,    0.20 },
-        { "M1.4z0.2", 	1.4,    0.20 },
+        { "M1.4x0.2", 	1.4,    0.20 },
         { "M1.6x0.2", 	1.6,    0.20 },
         { "M1.8x0.2", 	1.8,    0.20 },
         { "M2x0.25", 	2.0,    0.25 },
@@ -368,7 +368,7 @@ const char* Hole::ThreadClass_ISOmetric_Enums[]  = { "4G", "4H", "5G", "5H", "6G
 
 std::vector<std::string> Hole::HoleCutType_ISOmetricfine_Enums  = { "None", "Counterbore", "Countersink", "Cheesehead (deprecated)", "Countersink socket screw (deprecated)", "Cap screw (deprecated)" };
 const char* Hole::ThreadSize_ISOmetricfine_Enums[]   = {
-    "M1.0x0.2",    "M1.1x0.2",    "M1.2x0.2",    "M1.4z0.2",
+    "M1.0x0.2",    "M1.1x0.2",    "M1.2x0.2",    "M1.4x0.2",
     "M1.6x0.2",    "M1.8x0.2",    "M2x0.25",     "M2.2x0.25",
     "M2.5x0.35",   "M3x0.35",     "M3.5x0.35",
     "M4x0.5",      "M4.5x0.5",    "M5x0.5",      "M5.5x0.5",

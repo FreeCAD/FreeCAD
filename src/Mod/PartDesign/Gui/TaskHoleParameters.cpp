@@ -378,7 +378,7 @@ void TaskHoleParameters::threadTypeChanged(int index)
     pcHole->ThreadType.setValue(index);
 
     // Size
-    // the size for ISO type has either foe form "M3x0.35" or just "M3"
+    // the size for ISO type has either the form "M3x0.35" or just "M3"
     // so we need to check if the size contains a 'x'. If yes, check if the string
     // up to the 'x' is exists in the new list
     if (TypeClass == QByteArray("ISO")) {
@@ -386,18 +386,6 @@ void TaskHoleParameters::threadTypeChanged(int index)
             // we have an ISO fine size
             // cut of the part behind the 'x'
             ThreadSizeString = ThreadSizeString.left(ThreadSizeString.indexOf(QString::fromLatin1("x")));
-            
-            // fractions end with a '0' in profile ISO coarse
-            // some translations might use the comma as decimal separator
-            if ((ThreadSizeString.indexOf(QString::fromLatin1(".")) > -1)
-                || (ThreadSizeString.indexOf(QString::fromLatin1(",")) > -1))
-                ThreadSizeString.append(QString::fromLatin1("0"));
-        }
-        else {
-            // fractions don't end with a '0' in profile ISO fine
-            if ((ThreadSizeString.indexOf(QString::fromLatin1(".")) > -1)
-                || (ThreadSizeString.indexOf(QString::fromLatin1(",")) > -1))
-                ThreadSizeString.remove(ThreadSizeString.size()-1, 1);
         }
 
         // search if the string exists in the combobox
