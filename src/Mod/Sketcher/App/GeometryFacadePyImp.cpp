@@ -52,14 +52,9 @@ using namespace Sketcher;
 std::string GeometryFacadePy::representation(void) const
 {
     std::stringstream str;
-    str << "<GeometryFacade ( Extension(";
+    str << "<GeometryFacade ( Id=";
 
-    if(getGeometryFacadePtr()->getExtensionName().size()>0)
-        str << "\'" << getGeometryFacadePtr()->getExtensionName() << "\', ";
-
-    str << "Id=";
-
-    str << getGeometryFacadePtr()->getId() << ") >";
+    str << getGeometryFacadePtr()->getId() << " ) >";
     return str.str();
 }
 
