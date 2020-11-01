@@ -439,7 +439,7 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
     if(notify)
         aboutToSetValue();
     if(missing) {
-        FC_ERR(propertyName(this) 
+        FC_WARN(propertyName(this) 
                 << " missing element reference " << ret->getFullName() << " "
                 << (elementName.first.size()?elementName.first:elementName.second));
         shadow.second.swap(elementName.second);
