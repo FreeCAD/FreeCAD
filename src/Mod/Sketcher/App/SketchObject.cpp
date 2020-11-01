@@ -280,9 +280,11 @@ void SketchObject::buildShape() {
         Shape.setValue(Part::TopoShape().makEWires(shapes,TOPOP_SKETCH));
 }
 
-static bool hasSketchMarker(const char *name) {
+static const char *hasSketchMarker(const char *name) {
     static std::string marker(Part::TopoShape::elementMapPrefix()+TOPOP_SKETCH);
-    return strstr(name,marker.c_str())!=0;
+    if (!name)
+        return nullptr;
+    return strstr(name,marker.c_str());
 }
 
 int SketchObject::hasConflicts(void) const
@@ -8262,10 +8264,10 @@ App::DocumentObject *SketchObject::getSubObject(
         const char *subname, PyObject **pyObj, 
         Base::Matrix4D *pmat, bool transform, int depth) const
 {
+    std::string sub;
     const char *mapped = Data::ComplexGeoData::isMappedElement(subname);
-    if(!subname || !subname[0] || (mapped && hasSketchMarker(mapped))) {
+    if(!subname || !subname[0] || !pyObj)
         return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
-    }
     if(!mapped) {
         const char *dot = strchr(subname,'.');
         if(dot) {
@@ -8277,8 +8279,20 @@ App::DocumentObject *SketchObject::getSubObject(
         }else if(boost::starts_with(subname,"Vertex") || boost::starts_with(subname,"Edge"))
             return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
     }
+    else {
+        auto subshape = Shape.getShape().getSubTopoShape(mapped, true);
+        if (!subshape.isNull())
+            return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
 
-    std::string sub = checkSubName(subname);
+        const char * pos = mapped;
+        for (; *pos; ++pos) {
+            if (!std::isalnum((int)*pos))
+                break;
+        }
+        std::string sub = std::string(subname, pos-subname);
+        subname = sub.c_str();
+    }
+    sub = checkSubName(subname);
     const char *shapetype = sub.c_str();
     const Part::Geometry *geo = 0;
     Base::Vector3d point;
