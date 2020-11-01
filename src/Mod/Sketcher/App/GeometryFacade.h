@@ -35,6 +35,7 @@
 namespace Sketcher
 {
 
+class GeometryFacadePy;
 // This class is a Facade to handle geometry and sketcher geometry extensions with a single sketcher specific interface
 //
 //
@@ -48,9 +49,9 @@ TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 private:
     GeometryFacade(const Part::Geometry * geometry);
+    GeometryFacade(); // As TYPESYSTEM requirement
 
-public:
-    GeometryFacade(); // As TYPESYSTEM requirement for Python object construction
+    friend class GeometryFacadePy;
 
 public: // Factory methods
     static std::unique_ptr<GeometryFacade> getFacade(Part::Geometry * geometry);
