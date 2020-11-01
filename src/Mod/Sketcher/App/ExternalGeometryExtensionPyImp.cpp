@@ -55,7 +55,7 @@ std::string ExternalGeometryExtensionPy::representation(void) const
 
         bool first=true;
 
-        for(size_t i=0;i<ExternalGeometryExtension::NumFlags;i++) {
+        for(size_t i=0;i<ISketchExternalGeometryExtension::NumFlags;i++) {
             if(getExternalGeometryExtensionPtr()->testFlag(i)) {
                 if(first) {
                     first=false;
