@@ -819,7 +819,11 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
             }
             if (sub[i].length()>0){
                 try{
-                    storage.push_back(shape.getSubShape(sub[i].c_str()));
+                    shape = Part::Feature::getTopoShape(geof, sub[i].c_str(), true);
+                    if (shape.isNull())
+                        FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
+                                << objs[i]->getNameInDocument() << '.' << sub[i]);
+                    storage.push_back(shape.getShape());
                 } catch (Standard_Failure &e){
                     FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
                             << objs[i]->getNameInDocument() << '.' << sub[i] 
@@ -924,7 +928,8 @@ Base::Placement AttachEngine::calculateAttachedPlacement(
             auto &res = subChanges[i];
             res.first = Data::ComplexGeoData::elementMapPrefix() + related.front().first;
             res.second = std::move(related.front().second);
-        }
+        } else
+            subnames[i] = shadow;
     }
     if(subChanges.size()) {
         // In case there is topological name changes, we only auto change the
