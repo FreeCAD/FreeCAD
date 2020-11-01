@@ -2029,7 +2029,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody,
 {
     std::string FeatName = cmd->getUniqueObjectName(which.c_str(), pcActiveBody);
 
-    auto worker = [=](std::vector<App::DocumentObject*> features) {
+    auto worker = [=](const std::vector<App::DocumentObject*> & features) {
         std::stringstream str;
         str << cmd->getObjectCmd(FeatName.c_str(), pcActiveBody->getDocument()) << ".Originals = [";
         for (auto obj : features) {
@@ -2043,9 +2043,11 @@ void prepareTransformed(PartDesign::Body *pcActiveBody,
         Gui::cmdAppObject(pcActiveBody, std::ostringstream()
                 << "newObjectAt('PartDesign::" << which << "','" << FeatName << "', "
                             <<  "FreeCADGui.Selection.getSelection())");
+#if 0
         // FIXME: There seems to be kind of a race condition here, leading to sporadic errors like
         // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
         Gui::Command::updateActive(); // Helps to ensure that the object already exists when the next command comes up
+#endif
         Gui::Command::doCommand(Gui::Command::Doc, str.str().c_str());
 
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
@@ -2413,18 +2415,20 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
                 QObject::tr("Please select one and only one pattern feature."));
         }
         trFeat = static_cast<PartDesign::Transformed*>(obj);
+        break;
     }
 
-    // Create a MultiTransform feature and move the Transformed feature inside it
-    std::string FeatName = getUniqueObjectName("MultiTransform",pcActiveBody);
-    std::string baseFeature = getObjectCmd(trFeat->BaseFeature.getValue()); 
-    Gui::cmdAppObject(pcActiveBody, std::ostringstream()
-            << "newObjectAt('PartDesign::MultiTransform','"
-            << FeatName << "', " << baseFeature  << ")");
-
-    auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-
     if (trFeat) {
+
+        // Create a MultiTransform feature and move the Transformed feature inside it
+        std::string FeatName = getUniqueObjectName("MultiTransform",pcActiveBody);
+        std::string baseFeature = getObjectCmd(trFeat->BaseFeature.getValue()); 
+        Gui::cmdAppObject(pcActiveBody, std::ostringstream()
+                << "newObjectAt('PartDesign::MultiTransform','"
+                << FeatName << "', " << baseFeature  << ")");
+
+        auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+
         if (pcActiveBody->Tip.getValue() == trFeat)
             pcActiveBody->setTip(Feat);
 
@@ -2434,9 +2438,29 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         Gui::cmdAppObject(trFeat, std::ostringstream() <<"BaseFeature = None");
         Gui::cmdAppObject(trFeat, std::ostringstream() <<"OriginalSubs = []");
         Gui::cmdAppObject(Feat, std::ostringstream() <<"Transformations = ["<<objCmd<<"]");
-    }
 
-    finishFeature(this, Feat);
+        finishFeature(this, Feat);
+
+    } else {
+        Gui::Command* cmd = this;
+        auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat,
+                                          const std::vector<App::DocumentObject*> & features)
+        {
+            (void)features;
+            if (!Feat)
+                return;
+
+            // Make sure the user isn't presented with an empty screen because no transformations are defined yet...
+            App::DocumentObject* prevSolid = pcActiveBody->Tip.getValue();
+            if (prevSolid != NULL) {
+                Part::Feature* feat = static_cast<Part::Feature*>(prevSolid);
+                FCMD_OBJ_CMD(Feat,"Shape = "<<getObjectCmd(feat)<<".Shape");
+            }
+            finishFeature(cmd, Feat);
+        };
+
+        prepareTransformed(pcActiveBody, this, "MultiTransform", worker);
+    }
 }
 
 bool CmdPartDesignMultiTransform::isActive(void)

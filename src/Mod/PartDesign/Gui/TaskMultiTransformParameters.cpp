@@ -332,7 +332,15 @@ void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
 
     // Insert new transformation after the selected row
     // This means that in order to insert at the beginning, the user has to use "Move Up" in the menu
-    App::DocumentObject* newFeature = pcMultiTransform->getDocument()->getObject(newFeatName.c_str());
+
+    auto newFeature = static_cast<PartDesign::Transformed*>(
+            pcMultiTransform->getDocument()->getObject(newFeatName.c_str()));
+    newFeature->BaseFeature.setValue(nullptr);
+
+    auto body = PartDesign::Body::findBodyOf(newFeature);
+    if (body && body->Tip.getValue() == newFeature)
+        body->setTip(pcMultiTransform);
+
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
     if (row == ui->listTransformFeatures->model()->rowCount() - 1) {
         // Note: Inserts always happen before the specified iterator so in order to append at the

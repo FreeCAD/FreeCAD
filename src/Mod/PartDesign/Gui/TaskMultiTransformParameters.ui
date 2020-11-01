@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>256</width>
-    <height>147</height>
+    <height>179</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,10 +23,16 @@
    </item>
    <item>
     <widget class="QListWidget" name="listTransformFeatures">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>110</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>80</height>
+       <height>16777215</height>
       </size>
      </property>
     </widget>

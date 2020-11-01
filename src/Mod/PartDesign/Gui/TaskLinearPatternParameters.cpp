@@ -89,7 +89,7 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParam
     proxy = new QWidget(parentTask);
     ui = new Ui_TaskLinearPatternParameters();
     ui->setupUi(proxy);
-    connect(ui->buttonOK, SIGNAL(pressed()),
+    connect(ui->buttonOK, SIGNAL(clicked(bool)),
             parentTask, SLOT(onSubTaskButtonOK()));
     QMetaObject::connectSlotsByName(this);
 

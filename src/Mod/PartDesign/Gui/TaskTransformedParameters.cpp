@@ -155,7 +155,10 @@ void TaskTransformedParameters::onUpdateViewTimer()
 
 void TaskTransformedParameters::kickUpdateViewTimer() const
 {
-    updateViewTimer->start();
+    if (updateViewTimer)
+        updateViewTimer->start();
+    else if (parentTask)
+        parentTask->kickUpdateViewTimer();
 }
 
 void TaskTransformedParameters::originalSelectionChanged()
