@@ -39,6 +39,7 @@ generate_from_xml(SketchObjectPy)
 generate_from_xml(SketchGeometryExtensionPy)
 generate_from_xml(ExternalGeometryExtensionPy)
 generate_from_xml(GeometryFacadePy)
+generate_from_xml(ExternalGeometryFacadePy)
 generate_from_xml(ConstraintPy)
 generate_from_xml(SketchPy)
 
@@ -72,6 +73,8 @@ SET(Datatypes_SRCS
     Sketch.h
     GeometryFacade.cpp
     GeometryFacade.h
+    ExternalGeometryFacade.cpp
+    ExternalGeometryFacade.h
 )
 SOURCE_GROUP("Datatypes" FILES ${Datatypes_SRCS})
 
@@ -86,6 +89,8 @@ SET(Python_SRCS
     ExternalGeometryExtensionPyImp.cpp
     GeometryFacadePy.xml
     GeometryFacadePyImp.cpp
+    ExternalGeometryFacadePy.xml
+    ExternalGeometryFacadePyImp.cpp
     ConstraintPyImp.cpp
     ConstraintPy.xml
     SketchPy.xml
