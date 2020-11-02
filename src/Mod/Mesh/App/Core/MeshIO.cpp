@@ -619,8 +619,14 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                        "\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s*$");
-    boost::regex rx_f3("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
-    boost::regex rx_f4("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
+    boost::regex rx_d("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                       "\\s+([0-1]?)\\.?([0-9]+)\\s+([0-1]?)\\.?([0-9]+)\\s+([0-1]?)\\.?([0-9]+)\\s+([0-1]?)\\.?([0-9]+)\\s*$");
+    boost::regex rx_rgb("^\\s*(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s*$");
+    boost::regex rx_rgba("^\\s*(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s*$");
+    boost::regex rx_rgbf("^\\s*([0-1]?)\\.?([0-9]+)\\s+([0-1]?)\\.?([0-9]+)\\s+([0-1]?)\\.?([0-9]+)\\s*$");
+    boost::regex rx_rgbaf("^\\s*([0-1]?)\\.?([0-9]+)\\s+([0-1]?)\\.?([0-9]+)\\s+([0-1]?)\\.?([0-9]+)\\s+([0-1]?)\\.?([0-9]+)\\s*$");
 
     boost::cmatch what;
 
@@ -631,8 +637,6 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
     std::string line;
     float fX, fY, fZ;
     int r, g, b, a;
-    unsigned int  i1=1,i2=1,i3=1,i4=1;
-    MeshGeomFacet clFacet;
     MeshFacet item;
 
     if (!rstrIn || rstrIn.bad() == true)
@@ -654,19 +658,24 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
 
     // get number of vertices and faces
     int numPoints=0, numFaces=0;
-    std::getline(rstrIn, line);
-    boost::algorithm::to_lower(line);
-    if (boost::regex_match(line.c_str(), what, rx_n)) {
-        numPoints = std::atoi(what[1].first);
-        numFaces = std::atoi(what[2].first);
+
+    while (true) {
+        std::getline(rstrIn, line);
+        boost::algorithm::to_lower(line);
+        if (boost::regex_match(line.c_str(), what, rx_n)) {
+            numPoints = std::atoi(what[1].first);
+            numFaces = std::atoi(what[2].first);
+            break;
+        }
     }
-    else {
-        // Cannot read number of elements
+
+    if (numPoints == 0 || numFaces == 0)
         return false;
-    }
 
     meshPoints.reserve(numPoints);
     meshFacets.reserve(numFaces);
+    std::vector<App::Color> diffuseColor;
+    diffuseColor.reserve(numFaces);
     if (_material && colorPerVertex) {
         _material->binding = MeshIO::PER_VERTEX;
         _material->diffuseColor.reserve(numPoints);
@@ -696,6 +705,21 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
                 meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
                 cntPoints++;
             }
+            else if (boost::regex_match(line.c_str(), what, rx_d)) {
+                fX = static_cast<float>(std::atof(what[1].first));
+                fY = static_cast<float>(std::atof(what[4].first));
+                fZ = static_cast<float>(std::atof(what[7].first));
+                // add to the material
+                if (_material) {
+                    float fr = std::atof(what[10].first);
+                    float fg = std::atof(what[12].first);
+                    float fb = std::atof(what[14].first);
+                    float fa = std::atof(what[16].first);
+                    _material->diffuseColor.emplace_back(fr, fg, fb, fa);
+                }
+                meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
+                cntPoints++;
+            }
         }
         else {
             if (boost::regex_match(line.c_str(), what, rx_p)) {
@@ -712,35 +736,87 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
     while (cntFaces < numFaces) {
         if (!std::getline(rstrIn, line))
             break;
-        if (boost::regex_match(line.c_str(), what, rx_f3)) {
-            // 3-vertex face
-            if (std::atoi(what[1].first) == 3) {
-                i1 = std::atoi(what[2].first);
-                i2 = std::atoi(what[3].first);
-                i3 = std::atoi(what[4].first);
-                item.SetVertices(i1,i2,i3);
-                meshFacets.push_back(item);
-                cntFaces++;
+        std::istringstream str(line);
+        str.unsetf(std::ios_base::skipws);
+        str >> std::ws;
+        if (str.eof())
+            continue; // empty line
+        int count, index;
+        str >> count;
+        if (count >= 3) {
+            std::vector<int> faces;
+            faces.reserve(count);
+
+            for (int i = 0; i < count; i++) {
+                str >> std::ws;
+                str >> index;
+                faces.push_back(index);
             }
-        }
-        else if (boost::regex_match(line.c_str(), what, rx_f4)) {
-            // 4-vertex face
-            if (std::atoi(what[1].first) == 4) {
-                i1 = std::atoi(what[2].first);
-                i2 = std::atoi(what[3].first);
-                i3 = std::atoi(what[4].first);
-                i4 = std::atoi(what[5].first);
 
-                item.SetVertices(i1,i2,i3);
+            for (int i = 0; i < count-2; i++) {
+                item.SetVertices(faces[0],faces[i+1],faces[i+2]);
                 meshFacets.push_back(item);
+            }
+            cntFaces++;
 
-                item.SetVertices(i3,i4,i1);
-                meshFacets.push_back(item);
-                cntFaces++;
+            std::size_t pos = std::size_t(str.tellg());
+            if (line.size() > pos) {
+                std::string color = line.substr(pos);
+                if (boost::regex_match(color.c_str(), what, rx_rgb)) {
+                    r = std::min<int>(std::atof(what[1].first),255);
+                    g = std::min<int>(std::atof(what[2].first),255);
+                    b = std::min<int>(std::atof(what[3].first),255);
+                    // add to the material
+                    float fr = static_cast<float>(r)/255.0f;
+                    float fg = static_cast<float>(g)/255.0f;
+                    float fb = static_cast<float>(b)/255.0f;
+                    for (int i = 0; i < count-2; i++) {
+                        diffuseColor.emplace_back(fr, fg, fb);
+                    }
+                }
+                else if (boost::regex_match(color.c_str(), what, rx_rgba)) {
+                    r = std::min<int>(std::atof(what[1].first),255);
+                    g = std::min<int>(std::atof(what[2].first),255);
+                    b = std::min<int>(std::atof(what[3].first),255);
+                    a = std::min<int>(std::atof(what[4].first),255);
+                    // add to the material
+                    float fr = static_cast<float>(r)/255.0f;
+                    float fg = static_cast<float>(g)/255.0f;
+                    float fb = static_cast<float>(b)/255.0f;
+                    float fa = static_cast<float>(a)/255.0f;
+                    for (int i = 0; i < count-2; i++) {
+                        diffuseColor.emplace_back(fr, fg, fb, fa);
+                    }
+                }
+                else if (boost::regex_match(color.c_str(), what, rx_rgbf)) {
+                    // add to the material
+                    float fr = std::atof(what[1].first);
+                    float fg = std::atof(what[3].first);
+                    float fb = std::atof(what[5].first);
+                    for (int i = 0; i < count-2; i++) {
+                        diffuseColor.emplace_back(fr, fg, fb);
+                    }
+                }
+                else if (boost::regex_match(color.c_str(), what, rx_rgbaf)) {
+                    // add to the material
+                    float fr = std::atof(what[1].first);
+                    float fg = std::atof(what[3].first);
+                    float fb = std::atof(what[5].first);
+                    float fa = std::atof(what[7].first);
+                    for (int i = 0; i < count-2; i++) {
+                        diffuseColor.emplace_back(fr, fg, fb, fa);
+                    }
+                }
             }
         }
     }
 
+    if (_material) {
+        if (meshFacets.size() == diffuseColor.size()) {
+            _material->binding = MeshIO::PER_FACE;
+            _material->diffuseColor.swap(diffuseColor);
+        }
+    }
     this->_rclMesh.Clear(); // remove all data before
 
     MeshCleanup meshCleanup(meshPoints,meshFacets);
