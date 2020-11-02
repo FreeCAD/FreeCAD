@@ -40,8 +40,8 @@ import traceback
 import uuid as UUID
 from functools import partial
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+# PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 _UuidRole = PySide.QtCore.Qt.UserRole + 1
 _PathRole = PySide.QtCore.Qt.UserRole + 2
@@ -355,6 +355,7 @@ class ToolBitLibrary(object):
     def __init__(self):
         PathLog.track()
         self.factory = ModelFactory()
+        self.temptool = None
         self.toolModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
         self.listModel = PySide.QtGui.QStandardItemModel()
         self.form = FreeCADGui.PySideUic.loadUi(':/panels/ToolBitLibraryEdit.ui')
@@ -415,7 +416,6 @@ class ToolBitLibrary(object):
             self.toolModel.removeRows(row, 1)
 
     def toolSelect(self, selected, deselected):
-        # pylint: disable=unused-argument
         sel = len(self.toolTableView.selectedIndexes()) > 0
         self.form.toolDelete.setEnabled(sel)
 
@@ -440,26 +440,70 @@ class ToolBitLibrary(object):
         PathPreferences.setLastPathToolLibrary(path)
         self.loadData()
 
+    def cleanupDocument(self):
+        # This feels like a hack.  Remove the toolbit object
+        # remove the editor from the dialog
+        # re-enable all the controls
+        self.temptool.Document.removeObject(self.temptool.Name)
+        self.temptool = None
+        widget = self.form.toolTableGroup.children()[-1]
+        widget.setParent(None)
+        self.editor = None
+        self.lockoff()
+
+    def accept(self):
+        self.temptool.Proxy.saveToFile(self.temptool, self.temptool.File)
+        self.loadData()
+        self.cleanupDocument()
+
+    def reject(self):
+        self.cleanupDocument()
+
+    def lockon(self):
+        self.toolTableView.setEnabled(False)
+        self.form.toolCreate.setEnabled(False)
+        self.form.toolDelete.setEnabled(False)
+        self.form.toolAdd.setEnabled(False)
+        self.form.TableList.setEnabled(False)
+        self.form.libraryOpen.setEnabled(False)
+        self.form.libraryExport.setEnabled(False)
+        self.form.addToolTable.setEnabled(False)
+        self.form.librarySave.setEnabled(False)
+
+    def lockoff(self):
+        self.toolTableView.setEnabled(True)
+        self.form.toolCreate.setEnabled(True)
+        self.form.toolDelete.setEnabled(True)
+        self.form.toolAdd.setEnabled(True)
+        self.form.toolTable.setEnabled(True)
+        self.form.TableList.setEnabled(True)
+        self.form.libraryOpen.setEnabled(True)
+        self.form.libraryExport.setEnabled(True)
+        self.form.addToolTable.setEnabled(True)
+        self.form.librarySave.setEnabled(True)
+
     def toolEdit(self, selected):
         item = self.toolModel.item(selected.row(), 0)
+
+        if self.temptool is not None:
+            self.temptool.Document.removeObject(self.temptool.Name)
+
         if selected.column() == 0:  # editing Nr
             pass
         else:
             tbpath = item.data(_PathRole)
-
-            temptool = PathToolBit.ToolBitFactory().CreateFrom(tbpath, 'temptool')
-            self.editor = PathToolBitEdit.ToolBitEditor(temptool,
-                    self.form.toolTableGroup, ondone=self.toolEditDone)
+            self.temptool = PathToolBit.ToolBitFactory().CreateFrom(tbpath, 'temptool')
+            self.editor = PathToolBitEdit.ToolBitEditor(self.temptool, self.form.toolTableGroup, loadBitBody=False)
 
             QBtn = QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
-
             buttonBox = QtGui.QDialogButtonBox(QBtn)
-            # self.buttonBox.accepted.connect(self.accept)
-            # self.buttonBox.rejected.connect(self.reject)
+            buttonBox.accepted.connect(self.accept)
+            buttonBox.rejected.connect(self.reject)
 
-            layout = self.editor.form.layout() #QVBoxLayout()
+            layout = self.editor.form.layout()
             layout.addWidget(buttonBox)
-            #self.setLayout(self.layout)
+            self.lockon()
+            self.editor.setupUI()
 
     def toolEditDone(self, success=True):
         FreeCAD.ActiveDocument.removeObject("temptool")
