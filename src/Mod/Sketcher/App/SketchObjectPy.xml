@@ -460,12 +460,12 @@ If there is no such constraint an exception is raised.
     </Attribute>
     <Methode Name="setGeometryId">
       <Documentation>
-        <UserDocu>switch a geometry to a construction line</UserDocu>
+        <UserDocu>sets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getGeometryId">
       <Documentation>
-        <UserDocu>switch a geometry to a construction line</UserDocu>
+        <UserDocu>gets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId</UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>

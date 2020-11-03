@@ -1802,7 +1802,7 @@ PyObject* SketchObjectPy::getGeometryId(PyObject *args)
 
     if (this->getSketchObjectPtr()->getGeometryId(Index, Id)) {
         std::stringstream str;
-        str << "Not able to set geometry Id of a geometry with the given index: " << Index;
+        str << "Not able to get geometry Id of a geometry with the given index: " << Index;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         Py_Return;
     }
@@ -1819,7 +1819,7 @@ PyObject* SketchObjectPy::setGeometryId(PyObject *args)
 
     if (this->getSketchObjectPtr()->setGeometryId(Index, Id)) {
         std::stringstream str;
-        str << "Not able to set construction mode of a geometry with the given index: " << Index;
+        str << "Not able to set geometry Id of a geometry with the given index: " << Index;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }
