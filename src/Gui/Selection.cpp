@@ -1067,10 +1067,15 @@ void SelectionSingleton::_SelObj::log(bool remove, bool clearPreselect) {
     ss << "Gui.Selection." << (remove?"removeSelection":"addSelection")
         << "('" << DocName  << "','" << FeatName << "'";
     if(SubName.size()) {
+        // Use old style indexed based selection may have ambiguity, e.g in
+        // sketch, where the editing geometry and shape geometry may have the
+        // same sub element name but refers to different geometry element.
+#if 0
         if(elementName.second.size() && elementName.first.size())
             ss << ",'" << SubName.substr(0,SubName.size()-elementName.first.size()) 
                 << elementName.second << "'";
         else
+#endif
             ss << ",'" << SubName << "'";
     }
     if(!remove && (x || y || z || !clearPreselect)) {
