@@ -2799,7 +2799,8 @@ void ViewProviderSketch::updateColor(void)
         count = 0;
 
     // colors of the constraints
-    for (int i=0; i < count; i++) {
+
+    auto setConstraintColors = [&](int i, const SbColor *highlightColor) {
         SoSeparator *s = static_cast<SoSeparator *>(edit->constrGroup->getChild(i));
 
         // Check Constraint Type
@@ -2822,23 +2823,22 @@ void ViewProviderSketch::updateColor(void)
             m = static_cast<SoMaterial *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
         }
 
-        if (edit->SelConstraintSet.find(i) != edit->SelConstraintSet.end()) {
+        if (highlightColor) {
             if (hasDatumLabel) {
                 SoDatumLabel *l = static_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                l->textColor = SelectColor;
+                l->textColor = *highlightColor;
             } else if (hasMaterial) {
-                m->diffuseColor = SelectColor;
+                m->diffuseColor = *highlightColor;
             } else if (type == Sketcher::Coincident) {
-                auto selectpoint = [this, pcolor, PtNum](int geoid, Sketcher::PointPos pos){
+                for (int i=0; i<2; ++i) {
+                    int geoid = i ? constraint->Second : constraint->First;
+                    const Sketcher::PointPos &pos = i ? constraint->SecondPos : constraint->FirstPos;
                     if(geoid >= 0) {
                         int index = getSketchObject()->getSolvedSketch().getPointId(geoid, pos) + 1;
                         if (index >= 0 && index < PtNum)
-                            pcolor[index] = SelectColor;
+                            pcolor[index] = *highlightColor;
                     }
                 };
-
-                selectpoint(constraint->First, constraint->FirstPos);
-                selectpoint(constraint->Second, constraint->SecondPos);
             } else if (type == Sketcher::InternalAlignment) {
                 switch(constraint->AlignmentType) {
                     case EllipseMajorDiameter:
@@ -2850,7 +2850,7 @@ void ViewProviderSketch::updateColor(void)
                             int cGeoId = edit->CurvIdToGeoId[i];
 
                             if(cGeoId == constraint->First) {
-                                color[i] = SelectColor;
+                                color[i] = *highlightColor;
                                 break;
                             }
                         }
@@ -2860,22 +2860,14 @@ void ViewProviderSketch::updateColor(void)
                     case EllipseFocus2:
                     {
                         int index = getSketchObject()->getSolvedSketch().getPointId(constraint->First, constraint->FirstPos) + 1;
-                        if (index >= 0 && index < PtNum) pcolor[index] = SelectColor;
+                        if (index >= 0 && index < PtNum) pcolor[index] = *highlightColor;
                     }
                     break;
                     default:
                     break;
                 }
             }
-        } else if (edit->PreselectConstraintSet.count(i)) {
-            if (hasDatumLabel) {
-                SoDatumLabel *l = static_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                l->textColor = PreselectColor;
-            } else if (hasMaterial) {
-                m->diffuseColor = PreselectColor;
-            }
-        }
-        else {
+        } else {
             if (hasDatumLabel) {
                 SoDatumLabel *l = static_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
 
@@ -2895,7 +2887,16 @@ void ViewProviderSketch::updateColor(void)
                                     :DeactivatedConstrDimColor;
             }
         }
-    }
+    };
+
+    for (int i=0; i < count; i++)
+        setConstraintColors(i, nullptr);
+
+    for (int i : edit->SelConstraintSet)
+        setConstraintColors(i, &SelectColor);
+
+    for (int i : edit->PreselectConstraintSet)
+        setConstraintColors(i, &PreselectColor);
 
     // end editing
     edit->CurvesMaterials->diffuseColor.finishEditing();
