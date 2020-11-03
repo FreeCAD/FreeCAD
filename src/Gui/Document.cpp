@@ -103,6 +103,7 @@ struct DocumentP
     bool       _hasExpansion;
     bool       _changeViewTouchDocument;
     int                         _editMode;
+    CoinPtr<SoNode>              _editRootNode;
     ViewProvider*               _editViewProvider;
     App::DocumentObject*        _editingObject;
     ViewProviderDocumentObject* _editViewProviderParent;
@@ -184,6 +185,7 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
     d->_editViewProvider = 0;
+    d->_editRootNode = 0;
     d->_editingObject = 0;
     d->_editViewProviderParent = 0;
     d->_editingViewer = 0;
@@ -484,6 +486,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     if(view3d) {
         view3d->getViewer()->setEditingViewProvider(d->_editViewProvider,ModNum);
         d->_editingViewer = view3d->getViewer();
+        d->_editRootNode = view3d->getViewer()->getEditRootNode();
     }
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg)
@@ -556,6 +559,7 @@ void Document::_resetEdit(void)
     d->_editingViewer = 0;
     d->_editObjs.clear();
     d->_editingObject = 0;
+    d->_editRootNode.reset();
     if(Application::Instance->editDocument() == this)
         Application::Instance->setEditDocument(0);
 }
@@ -1071,6 +1075,8 @@ ViewProviderDocumentObject* Document::getViewProviderByPathFromHead(SoPath * pat
     for (int i = 0; i < path->getLength(); i++) {
         SoNode *node = path->getNode(i);
         if (node->isOfType(SoSeparator::getClassTypeId())) {
+            if (node == d->_editRootNode && d->_editViewProvider)
+                return Base::freecad_dynamic_cast<ViewProviderDocumentObject>(d->_editViewProvider);
             auto it = d->_CoinMap.find(static_cast<SoSeparator*>(node));
             if(it!=d->_CoinMap.end())
                 return it->second;
