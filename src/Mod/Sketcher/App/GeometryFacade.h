@@ -38,10 +38,40 @@ namespace Sketcher
 class GeometryFacadePy;
 // This class is a Facade to handle geometry and sketcher geometry extensions with a single sketcher specific interface
 //
+// The inherits and thus provides the same interface as the extension. It does not inherit from Part::Geometry and thus
+// is intended to provide, in part a convenience subset of the interface of Part::Geometry, in part a different interface.
 //
+// GeometryFacade has private constructors and objects may only be created using the getFacade factory methods.
 //
+// There is a version of getFacade taking a const Part::Geometry and producing a const GeometryFacade, and a non-const
+// version producing a non-const GeometryFacade. So constness of the Part::Geometry object is preserved by the GeometryFacade
+// container.
+//
+// The const factory method will throw if the geometry does not have a SketchGeometryExtension (being const, it commits not to
+// create one and modify the const Part::Geometry object). The non-const factory method will create the extension if not existing.
+//
+// There are some static convenience utility functions to simplify common operations such as ID copy or to ensure that a geometry
+// object has the extension (creating the extension if not existing).
+//
+// A simple usage example:
+//
+// const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+// auto gf = GeometryFacade::getFacade(vals[GeoId]);
+// id = gf->getId();
+//
+// An example of static Id utility function
+//
+// const Part::Geometry *geo = getGeometry(GeoId);
+// ...
+// std::unique_ptr<Part::GeomBSplineCurve> bspline(new Part::GeomBSplineCurve(curve));
+// ...
+//
+// Part::GeomBSplineCurve * gbsc = bspline.release();
+// GeometryFacade::copyId(geo, gbsc);
+//
+// Summary Remarks:
 // It is intended to have a separate type (not being a Geometry type).
-// it is intended to have the relevant interface for the sketcher only
+// it is intended to have the relevant interface in full for the sketcher extension only
 // It is intended to work on borrowed memory allocation.
 class SketcherExport GeometryFacade : public Base::BaseClass, ISketchGeometryExtension
 {

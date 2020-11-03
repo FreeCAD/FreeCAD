@@ -37,10 +37,13 @@ namespace Sketcher
 {
 
 class ExternalGeometryFacadePy;
-// This class is a Facade to handle external geometry geometry and sketcher geometry extensions with a single sketcher specific interface
+// This class is a Facade to handle EXTERNAL sketcher geometry and sketcher geometry extensions with a single sketcher specific interface.
 //
+// Exactly the same considerations as for GeometryFacade apply (see documentation of GeometryFacade).
+//
+// Summary Remarks:
 // It is intended to have a separate type (not being a Geometry type).
-// it is intended to have the relevant interface for the sketcher only
+// it is intended to have the relevant interface in full for the sketcher extension only
 // It is intended to work on borrowed memory allocation.
 class SketcherExport ExternalGeometryFacade : public Base::BaseClass, public ISketchGeometryExtension, public ISketchExternalGeometryExtension
 {
