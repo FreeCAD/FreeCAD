@@ -434,6 +434,8 @@ protected:
 
 public:
     virtual ViewProvider *startEditing(int ModNum=0);
+    /// Allow disable multi geometry pick on other object when editing
+    virtual bool isEditingPickExclusive() const { return false; }
     bool isEditing() const;
     void finishEditing();
     /// adjust viewer settings when editing a view provider

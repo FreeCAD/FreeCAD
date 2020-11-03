@@ -267,6 +267,12 @@ void SoFCUnifiedSelection::getPickedInfo(std::vector<PickedInfo> &ret,
         const SoPickedPointList &points, bool singlePick, bool copy,
         std::set<std::pair<ViewProvider*,std::string> > &filter) const
 {
+    ViewProvider *edit_vp = 0;
+    if (this->pcDocument) {
+       edit_vp = this->pcDocument->getInEdit();
+       if (!edit_vp || !edit_vp->isEditingPickExclusive())
+           edit_vp = 0;
+    }
     ViewProvider *last_vp = 0;
     for(int i=0,count=points.getLength();i<count;++i) {
         PickedInfo info;
@@ -279,7 +285,9 @@ void SoFCUnifiedSelection::getPickedInfo(std::vector<PickedInfo> &ret,
             if(singlePick && last_vp && last_vp!=vp)
                 return;
         }
-        if(!vp || !vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+        if(!vp || !vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())
+               || (edit_vp && vp != edit_vp))
+        {
             if(!singlePick) continue;
             if(ret.empty()) {
                 if(copy) info.copy();
@@ -298,7 +306,7 @@ void SoFCUnifiedSelection::getPickedInfo(std::vector<PickedInfo> &ret,
             break;
         }
 
-        if(!info.vpd->getElementPicked(info.pp,info.subname))
+        if(!info.vpd->getElementPicked(info.pp,info.subname) || info.subname.empty())
             continue;
 
         if(singlePick) 
