@@ -641,7 +641,7 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
         int index = -1;
         std::string element = sel.getOldElementName(&index);
         if(index < 0)
-            continue;
+            element = "Other";
         ss << sel.getObjectName() << '.' << sel.getSubNameNoElement();
         std::string key = ss.str();
 
@@ -728,7 +728,7 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
 
     Gui::Selection().rmvPreselect();
 
-    QAction* picked = PieMenu::exec(this, QCursor::pos(), "Std_PickGeometry");
+    QAction* picked = PieMenu::exec(this, QCursor::pos(), "Std_PickGeometry", false, true);
 
     ToolTip::hideText();
 
@@ -815,14 +815,20 @@ void SelectionMenu::showToolTip() {
 
 void SelectionMenu::onSubMenu() {
     auto submenu = qobject_cast<QMenu*>(sender());
-    if(!submenu)
+    if(!submenu) {
+        Gui::Selection().rmvPreselect();
         return;
+    }
     auto actions = submenu->actions();
-    if(!actions.size())
+    if(!actions.size()) {
+        Gui::Selection().rmvPreselect();
         return;
+    }
     int idx = actions.front()->data().toInt();
-    if(idx<=0 || idx>(int)pSelList->size())
+    if(idx<=0 || idx>(int)pSelList->size()) {
+        Gui::Selection().rmvPreselect();
         return;
+    }
 
     ToolTip::hideText();
 
@@ -844,6 +850,10 @@ bool SelectionMenu::eventFilter(QObject *o, QEvent *ev)
         return QMenu::eventFilter(o, ev);
 
     switch(ev->type()) {
+    case QEvent::Show: {
+        Gui::Selection().rmvPreselect();
+        break;
+    }
     case QEvent::MouseButtonRelease: {
         auto me = static_cast<QMouseEvent*>(ev);
         if (me->button() == Qt::RightButton) {
