@@ -177,7 +177,8 @@ public:
     /// helper to detect preselection
     bool detectPreselection(const SoPickedPoint *Point,
                             const Gui::View3DInventorViewer *viewer,
-                            const SbVec2s &cursorPos);
+                            const SbVec2s &cursorPos,
+                            bool preselect=true);
 
     /// Helper for detectPreselection(), for constraints only.
     std::set<int> detectPreselectionConstr(const SoPickedPoint *Point,
@@ -251,7 +252,10 @@ public:
     boost::signals2::signal<void ()> signalElementsChanged;
         
     virtual std::vector<App::DocumentObject*> claimChildren(void) const;
-    void selectElement(const char *element) const;
+    void selectElement(const char *element, bool preselect=false) const;
+
+    virtual bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const;
+    virtual bool isEditingPickExclusive() const;
 
 protected:
     Base::Placement getEditingPlacement() const;

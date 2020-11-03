@@ -630,7 +630,7 @@ void TaskSketcherElements::on_elementsWidget_itemSelectionChanged(void)
                 ss << "Edge" << ite->ElementNbr + 1;
             else
                 ss << "ExternalEdge" << -ite->ElementNbr - 2;
-            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+            sketchView->selectElement(ss.str().c_str());
         }
 
         if (ite->isStartingPointSelected) {
@@ -638,7 +638,7 @@ void TaskSketcherElements::on_elementsWidget_itemSelectionChanged(void)
             vertex= ite->StartingVertex;
             if (vertex!=-1) {
                 ss << "Vertex" << vertex + 1;
-                Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+                sketchView->selectElement(ss.str().c_str());
             }
         }
 
@@ -647,7 +647,7 @@ void TaskSketcherElements::on_elementsWidget_itemSelectionChanged(void)
             vertex= ite->EndVertex;
             if (vertex!=-1) {
                 ss << "Vertex" << vertex + 1;
-                Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+                sketchView->selectElement(ss.str().c_str());
             }
         }
 
@@ -656,7 +656,7 @@ void TaskSketcherElements::on_elementsWidget_itemSelectionChanged(void)
             vertex= ite->MidVertex;
             if (vertex!=-1) {
                 ss << "Vertex" << vertex + 1;
-                Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+                sketchView->selectElement(ss.str().c_str());
             }
         }
     }

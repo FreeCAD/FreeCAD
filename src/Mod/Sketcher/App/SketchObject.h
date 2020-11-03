@@ -356,6 +356,7 @@ public:
     inline const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
     /// gets the solved sketch as a reference
     inline Sketch &getSolvedSketch(void) {return solvedSketch;}
+    inline const Sketch &getSolvedSketch(void) const {return solvedSketch;}
 
     /// returns the geometric elements/vertex which the solver detects as having dependent parameters.
     /// these parameters relate to not fully constraint edges/vertices.
@@ -397,6 +398,11 @@ public:
 
     virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0, 
             Base::Matrix4D *mat=0, bool transform=true, int depth=0) const override;
+
+    virtual const std::vector<const char *>& getElementTypes(bool all=true) const override;
+
+    virtual std::vector<std::string> getHigherElements(
+            const char *element, bool silent=false) const override;
 
     std::vector<std::string> checkSubNames(const std::vector<std::string> &) const;
     std::string checkSubName(const char *) const;

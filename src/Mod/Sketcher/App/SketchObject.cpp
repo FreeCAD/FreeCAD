@@ -8354,6 +8354,50 @@ App::DocumentObject *SketchObject::getSubObject(
     return const_cast<SketchObject*>(this);
 }
 
+std::vector<std::string>
+SketchObject::getHigherElements(const char *element, bool silent) const
+{
+    if (testStatus(App::ObjEditing)) {
+        std::vector<std::string> res;
+        std::ostringstream ss;
+        if (boost::starts_with(element, "Vertex")) {
+            int n = 0;
+            int index = atoi(element+6);
+            for (auto cstr : Constraints.getValues()) {
+                ++n;
+                if (cstr->Type != Sketcher::Coincident)
+                    continue;
+                for (int i=0; i<2; ++i) {
+                    int geoid = i ? cstr->Second : cstr->First;
+                    const Sketcher::PointPos &pos = i ? cstr->SecondPos : cstr->FirstPos;
+                    if(geoid >= 0 && index == getSolvedSketch().getPointId(geoid, pos) + 1) {
+                        ss.str("");
+                        ss << "Constraint" << n;
+                        res.push_back(ss.str());
+                    }
+                };
+            }
+        }
+        return res;
+    }
+    return Part::Part2DObject::getHigherElements(element, silent);
+}
+
+const std::vector<const char *>& SketchObject::getElementTypes(bool all) const
+{
+    if (!all)
+        return Part::Part2DObject::getElementTypes();
+    static std::vector<const char *> res;
+    if (res.empty()) {
+        res = { Part::TopoShape::shapeName(TopAbs_VERTEX).c_str(),
+                Part::TopoShape::shapeName(TopAbs_EDGE).c_str(),
+                "ExternalEdge",
+                "Constraint"
+              };
+    }
+    return res;
+}
+
 std::pair<std::string,std::string> SketchObject::getElementName(
         const char *name, ElementNameType type) const
 {
