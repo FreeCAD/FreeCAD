@@ -6177,7 +6177,7 @@ void SketchObject::rebuildExternalGeometry(void)
                                         P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
                                         // P1 = P1, already defined
                                     } else {
-                                        // P1 = P1, alreday defined
+                                        // P1 = P1, already defined
                                         // P2 = P2, already defined
                                     }
                                 } else {
