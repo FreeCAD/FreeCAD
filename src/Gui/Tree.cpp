@@ -2209,13 +2209,16 @@ void TreeWidget::onReloadDoc() {
     }
 }
 
-void TreeWidget::onCloseDoc() {
+void TreeWidget::onCloseDoc()
+{
     if (!this->contextItem || this->contextItem->type() != DocumentType)
         return;
-    DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
-    App::Document* doc = docitem->document()->getDocument();
     try {
-        Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", doc->getName());
+        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        Gui::Document* gui = docitem->document();
+        App::Document* doc = gui->getDocument();
+        if (gui->canClose(true, true))
+            Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", doc->getName());
     } catch (const Base::Exception& e) {
         e.ReportException();
     } catch (std::exception &e) {
