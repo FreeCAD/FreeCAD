@@ -312,11 +312,8 @@ void SoFCUnifiedSelection::getPickedInfo(std::vector<PickedInfo> &ret,
             App::GeoFeature::resolveElement(info.vpd->getObject(),
                     info.subname.c_str(), elementName, false,
                     App::GeoFeature::Normal, nullptr, nullptr, &geo);
-            if(geo && geo->getPropertyOfGeometry()) {
-                auto data = geo->getPropertyOfGeometry()->getComplexData();
-                if(data)
-                    info.elements = data->getHigherElements(elementName.second.c_str());
-            }
+            if(geo && !elementName.second.empty())
+                info.elements = geo->getHigherElements(elementName.second.c_str(), true);
         }
         
         if(copy) info.copy();

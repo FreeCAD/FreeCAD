@@ -256,3 +256,12 @@ GeoFeature::getElementTypes(bool /*all*/) const
         return nil;
     return prop->getComplexData()->getElementTypes();
 }
+
+std::vector<std::string>
+GeoFeature::getHigherElements(const char *element, bool silent) const
+{
+    auto prop = getPropertyOfGeometry();
+    if (!prop)
+        return {};
+    return prop->getComplexData()->getHigherElements(element, silent);
+}
