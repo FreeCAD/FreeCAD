@@ -111,12 +111,12 @@ public:
     void deleteExtension(Base::Type type);
     void deleteExtension(std::string name);
 
-    void mirror(Base::Vector3d point);
-    void mirror(Base::Vector3d point, Base::Vector3d dir);
-    void rotate(Base::Placement plm);
-    void scale(Base::Vector3d vec, double scale);
-    void transform(Base::Matrix4D mat);
-    void translate(Base::Vector3d vec);
+    void mirror(const Base::Vector3d& point);
+    void mirror(const Base::Vector3d& point, const Base::Vector3d& dir);
+    void rotate(const Base::Placement& plm);
+    void scale(const Base::Vector3d& vec, double scale);
+    void transform(const Base::Matrix4D& mat);
+    void translate(const Base::Vector3d& vec);
 
 protected:
     /// create a new tag for the geometry object
