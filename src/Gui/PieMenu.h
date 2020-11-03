@@ -63,7 +63,7 @@ public:
     ~PieMenu();
 
     static QAction *exec(QMenu *menu, const QPoint &pt,
-            const char *param=0, bool forwardKeyPress=false);
+            const char *param=0, bool forwardKeyPress=false, bool resetOffset=false);
 
     static bool isEnabled(const char *name);
     static void setEnabled(const char *name, bool enabled=true);

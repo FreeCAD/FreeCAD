@@ -752,12 +752,19 @@ void PieMenu::setEnabled(const char *name, bool enabled)
         Private::getParameterGroup()->SetInt(name, -1);
 }
 
-QAction *PieMenu::exec(QMenu *menu, const QPoint &pt, const char *name, bool forwardKeyPress)
+QAction *PieMenu::exec(QMenu *menu,
+                       const QPoint &pt,
+                       const char *name,
+                       bool forwardKeyPress,
+                       bool resetOffset)
 {
     PieMenu pmenu(menu, name, getMainWindow());
     pmenu.pimpl->forwardKeyPress = forwardKeyPress;
     if (pmenu.pimpl->buttons.empty())
         return nullptr;
+
+    if (resetOffset)
+        pmenu.pimpl->offset = 0.;
 
     if (!isEnabled(pmenu.pimpl->param.c_str())) {
         QAction *actionPie = new QAction(tr("Show pie menu"), menu);
