@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,7 +31,7 @@ namespace PathGui {
 class Ui_DlgSettingsPathColor;
 
 class DlgSettingsPathColor : public Gui::Dialog::PreferencePage
-{ 
+{
   Q_OBJECT
 
 public:
