@@ -557,7 +557,7 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
         // parabola: (x - p)^2 = 4*focal*(y - q)   |  (p,q) ... location of parabola
         focal = (flenX * flenX) / (4 * fabs(flenY));
         if (dbg) {
-          std::cerr << "segement" << segment << ", point" << point << std::endl;
+          std::cerr << "segment" << segment << ", point" << point << std::endl;
           std::cerr << "  loc" << loc << ", axis" << axis << std::endl;
           std::cerr << "  dist0(" << dist0 << " : " << flenX0 << ", dist1(" << dist1 << " : " << flenX1 << ")" << std::endl;
           std::cerr << "  z(" << z0 << ", " << zx << ", " << z1 << ")" << std::endl;

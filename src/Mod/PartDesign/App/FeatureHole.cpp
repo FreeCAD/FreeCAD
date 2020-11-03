@@ -1421,7 +1421,7 @@ void Hole::readCutDefinitions()
         ::App::Application::getUserAppDataDir() + subpath,
     };
 
-    std::cerr << "Looking for thread definitons in: ";
+    std::cerr << "Looking for thread definitions in: ";
     for (auto &i : dirs)
         std::cerr << i << " ";
     std::cerr << "\n";
