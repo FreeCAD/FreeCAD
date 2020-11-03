@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                        *
+# *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -19,7 +20,8 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
+
 from __future__ import print_function
 import FreeCAD
 from FreeCAD import Units

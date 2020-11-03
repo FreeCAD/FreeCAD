@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -35,7 +33,7 @@ Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "PathOpTools - Tools for Path operations."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Collection of functions used by various Path operations. The functions are specific to Path and the algorithms employed by Path's operations."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
@@ -157,7 +155,7 @@ def offsetWire(wire, base, offset, forward):#, Side = None):
         curve = edge.Curve
         if Part.Circle == type(curve) and wire.isClosed():
             # it's a full circle and there are some problems with that, see
-            # http://www.freecadweb.org/wiki/Part%20Offset2D
+            # https://www.freecadweb.org/wiki/Part%20Offset2D
             # it's easy to construct them manually though
             z = -1 if forward else 1
             edge = Part.makeCircle(curve.Radius + offset, curve.Center, FreeCAD.Vector(0, 0, z))

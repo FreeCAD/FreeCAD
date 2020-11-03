@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -42,7 +41,7 @@ else:
 
 __title__ = "FreeCAD Path Commands"
 __author__ = "sliptonic"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 
 class _CommandSelectLoop:
@@ -110,7 +109,7 @@ class _CommandSelectLoop:
                     QtCore.QT_TRANSLATE_NOOP('Path_SelectLoop', 'Closed loop detection failed.'))
 
     def formsPartOfALoop(self, obj, sub, names):
-        try: 
+        try:
             if names[0][0:4] != 'Edge':
                 if names[0][0:4] == 'Face' and horizontalFaceLoop(obj, sub, names):
                     return True

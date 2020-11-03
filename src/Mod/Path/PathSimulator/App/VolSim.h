@@ -1,5 +1,5 @@
-/***************************************************************************
-*   Copyright (c) Shsi Seger (shaise at gmail) 2017                       *
+/**************************************************************************
+*   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -38,7 +38,7 @@
 struct toolShapePoint {
   float radiusPos;
   float heightPos;
-  
+
   struct less_than{
   	bool operator()(const toolShapePoint &a, const toolShapePoint &b){
     	return a.radiusPos < b.radiusPos;
@@ -75,7 +75,7 @@ inline static Point3D unit(const Point3D & a) { return a / length(a); }
 struct Triangle3D
 {
 	Triangle3D() {}
-	Triangle3D(Point3D & p1, Point3D & p2, Point3D & p3) 
+	Triangle3D(Point3D & p1, Point3D & p2, Point3D & p3)
 	{
 		points[0] = p1;
 		points[1] = p2;
@@ -89,7 +89,7 @@ struct cLineSegment
 	cLineSegment() : len(0), lenXY(0) {}
 	cLineSegment(Point3D & p1, Point3D & p2) { SetPoints(p1, p2); }
 	void SetPoints(Point3D & p1, Point3D & p2);
-	void PointAt(float dist, Point3D & retp); 
+	void PointAt(float dist, Point3D & retp);
 	Point3D pStart;
 	Point3D pDir;
 	Point3D pDirXY;

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
@@ -41,7 +39,7 @@ from PySide import QtCore
 
 __title__ = "Path Pocket Shape Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
@@ -674,7 +672,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     else:
                         face.translate(FreeCAD.Vector(0.0, 0.0, -1 * clrnc))
                     PathLog.debug('self.horizontal post-shpZMin: {}'.format(shpZMin))
-                    
+
                     if obj.LimitDepthToFace is True and obj.EnableRotation != 'Off':
                         if shpZMinVal > obj.FinalDepth.Value:
                             PathLog.debug('shpZMin > obj.FinalDepth.Value')
@@ -693,7 +691,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                 round(start_dep - zDestination, 6)):
                                 shpZMin = -1 * shpZMin
                         face.translate(FreeCAD.Vector(0, 0, translation))
-                    
+
                     extent = FreeCAD.Vector(0, 0, abs(start_dep - shpZMin) + clrnc)  # adj_final_dep + clrnc)
                     extShp = face.removeSplitter().extrude(extent)
                     self.removalshapes.append((extShp, False, 'pathPocketShape', useAngle, axis, start_dep, adj_final_dep))

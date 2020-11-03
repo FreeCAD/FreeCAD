@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -35,7 +33,7 @@ def refstring(string):
     if sys.version_info.major < 3:
         return string
     return string.replace(" u'", " '")
-    
+
 
 class TestPathSetupSheet(PathTestBase):
 

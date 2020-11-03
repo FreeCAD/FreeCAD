@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2016 Christoph Blaue <blaue@fh-westkueste.de>           *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -191,7 +189,7 @@ SPINDLE_DECIMALS = 0
 SUPPRESS_ZERO_FEED = True
 # possible values: True    if feed is zero the F command is suppressed
 #                  False   F commands are written even if they are zero
-# This is useful for machines without special speeds for the G0 command. They could be 
+# This is useful for machines without special speeds for the G0 command. They could be
 # left zero and are suppressed in the output
 
 # The header is divided into two parts, one is dynamic, the other is a static GCode header.

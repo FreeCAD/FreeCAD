@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -210,7 +208,7 @@ def defaultOutputPolicy():
 
 def defaultStockTemplate():
     return preferences().GetString(DefaultStockTemplate, "")
-    
+
 def setDefaultStockTemplate(template):
     preferences().SetString(DefaultStockTemplate, template)
 
@@ -225,24 +223,24 @@ def experimentalFeaturesEnabled():
 
 def lastPathToolBit():
     return preferences().GetString(LastPathToolBit, pathDefaultToolsPath('Bit'))
-    
+
 def setLastPathToolBit(path):
     return preferences().SetString(LastPathToolBit, path)
 
 def lastPathToolLibrary():
     return preferences().GetString(LastPathToolLibrary, pathDefaultToolsPath('Library'))
-    
+
 def setLastPathToolLibrary(path):
     return preferences().SetString(LastPathToolLibrary, path)
 
 def lastPathToolShape():
     return preferences().GetString(LastPathToolShape, pathDefaultToolsPath('Shape'))
-    
+
 def setLastPathToolShape(path):
     return preferences().SetString(LastPathToolShape, path)
 
 def lastPathToolTable():
     return preferences().GetString(LastPathToolTable, "")
-    
+
 def setLastPathToolTable(table):
     return preferences().SetString(LastPathToolTable, table)

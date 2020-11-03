@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
@@ -30,7 +28,7 @@ import PathScripts.PathProfile as PathProfile
 
 __title__ = "Path Profile Faces Operation (depreciated)"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Path Profile operation based on faces (depreciated)."
 __contributors__ = "Schildkroet"
 

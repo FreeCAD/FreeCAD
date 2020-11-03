@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) sliptonic (shopinthewoods@gmail.com) 2020               *
+ *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -264,7 +264,7 @@ bool Voronoi::diagram_type::segmentsAreConnected(int i, int j) const {
 }
 
 void Voronoi::colorColinear(Voronoi::color_type color, double degree) {
-  double rad = degree * M_PI / 180; 
+  double rad = degree * M_PI / 180;
 
   Voronoi::diagram_type::angle_map_t angle;
   int psize = vd->points.size();

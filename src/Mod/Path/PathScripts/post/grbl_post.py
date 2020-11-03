@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *                                                                         *
-# *   (c) sliptonic (shopinthewoods@gmail.com) 2014                         *
-# *   (c) Gauthier Briere - 2018, 2019                                      *
-# *   (c) Schildkroet - 2019-2020                                           *
+# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2018, 2019 Gauthier Briere                              *
+# *   Copyright (c) 2019, 2020 Schildkroet                                  *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,7 +22,7 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
 
 import FreeCAD
 from FreeCAD import Units
@@ -220,7 +219,7 @@ def export(objectslist, filename, argstring):
     gcode += linenumber() + "(Exported by FreeCAD)\n"
     gcode += linenumber() + "(Post Processor: " + __name__ + ")\n"
     gcode += linenumber() + "(Output Time:" + str(datetime.datetime.now()) + ")\n"
-  
+
   # Check canned cycles for drilling
   if TRANSLATE_DRILL_CYCLES:
     if len(SUPPRESS_COMMANDS) == 0:
@@ -259,7 +258,7 @@ def export(objectslist, filename, argstring):
     if not hasattr(obj, "Path"):
       print("The object " + obj.Name + " is not a path. Please select only path and Compounds.")
       return
-    
+
     # Skip inactive operations
     if PathUtil.opProperty(obj, 'Active') is False:
         continue
@@ -273,7 +272,7 @@ def export(objectslist, filename, argstring):
       gcode += linenumber() + "(Begin operation: " + obj.Label + ")\n"
     for line in PRE_OPERATION.splitlines(True):
       gcode += linenumber() + line
-      
+
     # get coolant mode
     coolantMode = 'None'
     if hasattr(obj, "CoolantMode") or hasattr(obj, 'Base') and  hasattr(obj.Base, "CoolantMode"):
@@ -431,7 +430,7 @@ def parse(pathobj):
 
       if command in ('G90', 'G91'):
         MOTION_MODE = command
-        
+
 
       if TRANSLATE_DRILL_CYCLES:
         if command in ('G81', 'G82', 'G83'):
@@ -503,12 +502,12 @@ def drill_translate(outstring, cmd, params):
   if RETRACT_Z < drill_Z :
     trBuff += linenumber() + "(drill cycle error: R less than Z )\n"
     return trBuff
-    
+
   if MOTION_MODE == 'G91':   # G91 relative movements
-    drill_X += CURRENT_X 
-    drill_Y += CURRENT_Y 
-    drill_Z += CURRENT_Z 
-    RETRACT_Z += CURRENT_Z 
+    drill_X += CURRENT_X
+    drill_Y += CURRENT_Y
+    drill_Z += CURRENT_Z
+    RETRACT_Z += CURRENT_Z
 
   if DRILL_RETRACT_MODE == 'G98' and CURRENT_Z >= RETRACT_Z:
     RETRACT_Z = CURRENT_Z
@@ -530,16 +529,16 @@ def drill_translate(outstring, cmd, params):
     strF_Feedrate = ' F' + format(float(drill_feedrate.getValueAs(UNIT_SPEED_FORMAT)), '.2f') + "\n"
     print (strF_Feedrate)
 
-    # preliminary mouvement(s) 
+    # preliminary mouvement(s)
     if CURRENT_Z < RETRACT_Z:
       trBuff += linenumber() + strG0_RETRACT_Z
     trBuff += linenumber() + 'G0 X' + format(float(drill_X.getValueAs(UNIT_FORMAT)), strFormat) + ' Y' + format(float(drill_Y.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
     if CURRENT_Z > RETRACT_Z:
       # NIST GCODE 3.5.16.1 Preliminary and In-Between Motion says G0 to RETRACT_Z. Here use G1 since retract height may be below surface !
-      trBuff += linenumber() + 'G1 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Feedrate  
+      trBuff += linenumber() + 'G1 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Feedrate
     last_Stop_Z = RETRACT_Z
 
-    # drill moves 
+    # drill moves
     if cmd in ('G81', 'G82'):
       trBuff += linenumber() + 'G1 Z' + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Feedrate
       # pause where applicable
@@ -551,7 +550,7 @@ def drill_translate(outstring, cmd, params):
         while 1:
           if last_Stop_Z != RETRACT_Z :
             clearance_depth = last_Stop_Z + a_bit  # rapid move to just short of last drilling depth
-            trBuff += linenumber() + 'G0 Z' + format(float(clearance_depth.getValueAs(UNIT_FORMAT)) , strFormat) + "\n" 
+            trBuff += linenumber() + 'G0 Z' + format(float(clearance_depth.getValueAs(UNIT_FORMAT)) , strFormat) + "\n"
           next_Stop_Z = last_Stop_Z - drill_Step
           if next_Stop_Z > drill_Z:
             trBuff += linenumber() + 'G1 Z' + format(float(next_Stop_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Feedrate
@@ -561,10 +560,10 @@ def drill_translate(outstring, cmd, params):
             trBuff += linenumber() + 'G1 Z' + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Feedrate
             trBuff += linenumber() + strG0_RETRACT_Z
             break
-      
+
   except Exception as e:
     pass
-     
+
   if MOTION_MODE == 'G91':
     trBuff += linenumber() + 'G91'  # Restore if changed
 

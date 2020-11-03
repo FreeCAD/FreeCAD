@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -40,7 +38,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Path Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Base classes and framework for Path operation's UI"
 
 LOGLEVEL = False
@@ -1019,13 +1017,13 @@ class TaskPanel(object):
                 self.featurePages.append(opPage.taskPanelHeightsPage(obj, features))
             else:
                 self.featurePages.append(TaskPanelHeightsPage(obj, features))
-        
+
         if PathOp.FeatureDiameters & features:
             if hasattr(opPage, 'taskPanelDiametersPage'):
                 self.featurePages.append(opPage.taskPanelDiametersPage(obj, features))
             else:
                 self.featurePages.append(TaskPanelDiametersPage(obj, features))
-        
+
         self.featurePages.append(opPage)
 
         for page in self.featurePages:
