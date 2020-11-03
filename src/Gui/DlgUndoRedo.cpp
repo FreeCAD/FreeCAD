@@ -22,6 +22,9 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QCoreApplication>
+#endif
 
 #include "DlgUndoRedo.h"
 #include "Application.h"
@@ -77,8 +80,10 @@ void UndoDialog::onFetchInfo()
         Gui::Document* pcDoc = mdi->getGuiDocument();
         if (pcDoc) {
             std::vector<std::string> vecUndos = pcDoc->getUndoVector();
-            for (std::vector<std::string>::iterator i = vecUndos.begin(); i != vecUndos.end(); ++i)
-                addAction(QString::fromUtf8((*i).c_str()), this, SLOT(onSelected()));
+            for (std::vector<std::string>::iterator i = vecUndos.begin(); i != vecUndos.end(); ++i) {
+                QString text = QCoreApplication::translate("Command", i->c_str());
+                addAction(text, this, SLOT(onSelected()));
+            }
         }
     }
 }
@@ -140,8 +145,10 @@ void RedoDialog::onFetchInfo()
         Gui::Document* pcDoc = mdi->getGuiDocument();
         if (pcDoc) {
             std::vector<std::string> vecRedos = pcDoc->getRedoVector();
-            for (std::vector<std::string>::iterator i = vecRedos.begin(); i != vecRedos.end(); ++i)
-                addAction(QString::fromUtf8((*i).c_str()), this, SLOT(onSelected()));
+            for (std::vector<std::string>::iterator i = vecRedos.begin(); i != vecRedos.end(); ++i) {
+                QString text = QCoreApplication::translate("Command", i->c_str());
+                addAction(text, this, SLOT(onSelected()));
+            }
         }
     }
 }
