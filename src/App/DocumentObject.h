@@ -64,6 +64,7 @@ enum ObjectStatus {
     NoAutoExpand = 17, // disable tree item auto expand on selection for this object
     PendingTransactionUpdate = 18, // mark that the object expects a call to onUndoRedoFinished() after transaction is finished.
     ViewProviderAttached = 19, // indicate if a view provider is attached to this object
+    ObjEditing = 20, // indicate the object is current being edited
 };
 
 /** Return object for feature execution

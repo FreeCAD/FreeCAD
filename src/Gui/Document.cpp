@@ -479,6 +479,8 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         return false;
     }
 
+    d->_editingObject->setStatus(App::ObjEditing, true);
+
     if(view3d) {
         view3d->getViewer()->setEditingViewProvider(d->_editViewProvider,ModNum);
         d->_editingViewer = view3d->getViewer();
@@ -521,6 +523,8 @@ void Document::_resetEdit(void)
                 activeView->getViewer()->resetEditingViewProvider();
         }
 
+        if (d->_editingObject)
+            d->_editingObject->setStatus(App::ObjEditing, false);
         d->_editViewProvider->finishEditing();
 
         // Have to check d->_editViewProvider below, because there is a chance
