@@ -367,13 +367,11 @@ class ToolBitLibrary(object):
 
     def toolBitNew(self):
         PathLog.track()
-        # pylint: disable=broad-except
 
         # select the shape file
         shapefile = PathToolBitGui.GetToolShapeFile()
         if shapefile is None:  # user canceled
             return
-
 
         filename = PathToolBitGui.GetNewToolFile()
         if filename == None:
@@ -385,11 +383,13 @@ class ToolBitLibrary(object):
         fullpath = "{}/{}.fctb".format(loc, fname)
         PathLog.debug(fullpath)
 
-        f = PathToolBit.ToolBitFactory()
-        newtool = f.Create(name=fname)
-        newtool.BitShape = shapefile
-        newtool.Label = fname
-        newtool.Proxy.saveToFile(newtool, fullpath)
+        self.temptool = PathToolBit.ToolBitFactory().Create(name=fname)
+        self.temptool.BitShape = shapefile
+        self.temptool.Proxy.unloadBitBody(self.temptool)
+        self.temptool.Label = fname
+        self.temptool.Proxy.saveToFile(self.temptool, fullpath)
+        self.temptool.Document.removeObject(self.temptool.Name)
+        self.temptool = None
 
         # add it to the model
         self.factory.newTool(self.toolModel, fullpath)
@@ -444,6 +444,7 @@ class ToolBitLibrary(object):
         # This feels like a hack.  Remove the toolbit object
         # remove the editor from the dialog
         # re-enable all the controls
+        self.temptool.Proxy.unloadBitBody(self.temptool)
         self.temptool.Document.removeObject(self.temptool.Name)
         self.temptool = None
         widget = self.form.toolTableGroup.children()[-1]
