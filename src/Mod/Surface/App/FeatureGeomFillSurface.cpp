@@ -37,6 +37,8 @@
 #include <Geom_BezierSurface.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BSplineSurface.hxx>
+#include <Geom_TrimmedCurve.hxx>
+#include <GeomConvert.hxx>
 #include <GeomFill.hxx>
 #include <GeomFill_BezierCurves.hxx>
 #include <GeomFill_BSplineCurves.hxx>
@@ -327,26 +329,20 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
         TopLoc_Location heloc; // this will be output
         Handle(Geom_Curve) c_geom = BRep_Tool::Curve(edge, heloc, u1, u2); //The geometric curve
         Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(c_geom); //Try to get BSpline curve
-
+        gp_Trsf transf = heloc.Transformation();
         if (!bspline.IsNull()) {
-            gp_Trsf transf = heloc.Transformation();
             bspline->Transform(transf); // apply original transformation to control points
             //Store Underlying Geometry
             curves.push_back(bspline);
         }
         else {
             // try to convert it into a B-spline
-            BRepBuilderAPI_NurbsConvert mkNurbs(edge);
-            TopoDS_Edge nurbs = TopoDS::Edge(mkNurbs.Shape());
-            // avoid copying
-            TopLoc_Location heloc2; // this will be output
-            Handle(Geom_Curve) c_geom2 = BRep_Tool::Curve(nurbs, heloc2, u1, u2); //The geometric curve
-            Handle(Geom_BSplineCurve) bspline2 = Handle(Geom_BSplineCurve)::DownCast(c_geom2); //Try to get BSpline curve
-
+            Handle(Geom_TrimmedCurve) trim = new Geom_TrimmedCurve(c_geom, u1, u2);
+            GeomConvert conv;
+            Convert_ParameterisationType paratype = Convert_Polynomial;
+            Handle(Geom_BSplineCurve) bspline2 = conv.CurveToBSplineCurve(trim, paratype);
             if (!bspline2.IsNull()) {
-                gp_Trsf transf = heloc2.Transformation();
                 bspline2->Transform(transf); // apply original transformation to control points
-                //Store Underlying Geometry
                 curves.push_back(bspline2);
             }
             else {
@@ -355,7 +351,6 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
                 Handle(Geom_BSplineCurve) spline = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
                 if (spline.IsNull())
                     Standard_Failure::Raise("A curve was not a B-spline and could not be converted into one.");
-                gp_Trsf transf = heloc2.Transformation();
                 spline->Transform(transf); // apply original transformation to control points
                 curves.push_back(spline);
             }
@@ -373,6 +368,13 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
                 curves[i]->Reverse();
         }
     }
+//     for (std::size_t i=0; i<edgeCount; i++) {
+//         if (curves[i]->Continuity() == GeomAbs_Shape::GeomAbs_C0) {
+//             Handle(Geom_BSplineCurve) c1_curve = GeomConvert::CurveToBSplineCurve(curves[i], Convert_ParameterisationType::Convert_Polynomial);
+//             curves[i] = c1_curve;
+//         }
+//     }
+    
     if (edgeCount == 2) {
         aSurfBuilder.Init(curves[0], curves[1], fstyle);
     }
