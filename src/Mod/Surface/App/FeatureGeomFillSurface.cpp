@@ -338,6 +338,8 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
         else {
             // try to convert it into a B-spline
             Handle(Geom_TrimmedCurve) trim = new Geom_TrimmedCurve(c_geom, u1, u2);
+            // Approximate the curve to non-rational polynomial BSpline
+            // to avoid C0 continuity in output surface
             GeomConvert conv;
             Convert_ParameterisationType paratype = Convert_Polynomial;
             Handle(Geom_BSplineCurve) bspline2 = conv.CurveToBSplineCurve(trim, paratype);
@@ -346,7 +348,7 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
                 curves.push_back(bspline2);
             }
             else {
-                // BRepBuilderAPI_NurbsConvert failed, try ShapeConstruct_Curve now
+                // GeomConvert failed, try ShapeConstruct_Curve now
                 ShapeConstruct_Curve scc;
                 Handle(Geom_BSplineCurve) spline = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
                 if (spline.IsNull())
@@ -368,13 +370,6 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
                 curves[i]->Reverse();
         }
     }
-//     for (std::size_t i=0; i<edgeCount; i++) {
-//         if (curves[i]->Continuity() == GeomAbs_Shape::GeomAbs_C0) {
-//             Handle(Geom_BSplineCurve) c1_curve = GeomConvert::CurveToBSplineCurve(curves[i], Convert_ParameterisationType::Convert_Polynomial);
-//             curves[i] = c1_curve;
-//         }
-//     }
-    
     if (edgeCount == 2) {
         aSurfBuilder.Init(curves[0], curves[1], fstyle);
     }
