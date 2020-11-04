@@ -176,6 +176,18 @@ class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
         return tool
 
 
+def GetNewToolFile(parent=None):
+    if parent is None:
+        parent = QtGui.QApplication.activeWindow()
+    foo = QtGui.QFileDialog.getSaveFileName(parent, 'Tool',
+                                            PathPreferences.lastPathToolBit(),
+                                            '*.fctb')
+    if foo and foo[0]:
+        PathPreferences.setLastPathToolBit(os.path.dirname(foo[0]))
+        return foo[0]
+    return None
+
+
 def GetToolFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
