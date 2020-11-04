@@ -811,6 +811,9 @@ void Hole::onChanged(const App::Property *prop)
             HoleCutDepth.setReadOnly(true);
             HoleCutCountersinkAngle.setReadOnly(true);
         }
+        ProfileBased::onChanged(&HoleCutDiameter);
+        ProfileBased::onChanged(&HoleCutDepth);
+        ProfileBased::onChanged(&HoleCutCountersinkAngle);
         updateHoleCutParams();
     }
     else if (prop == &DepthType) {
