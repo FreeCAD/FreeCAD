@@ -70,7 +70,7 @@ namespace Base
      * data. White space (space, tab, vtab, CR and LF) charachters are mapped
      * to -2. Other invalid characters are mapped to -1.
      */
-    BaseExport const char *base64_decode_table();
+    BaseExport const signed char *base64_decode_table();
 
     /** Decode the input base64 string into binary data
      * @param out: output buffer with minimum size of base64_encode(len)
@@ -261,7 +261,7 @@ namespace Base
 
         template<typename Device>
         std::streamsize read(Device& dev, char_type* s, std::streamsize n) {
-            static const char *table = base64_decode_table();
+            static const signed char *table = base64_decode_table();
 
             if(!n)
                 return 0;
@@ -291,13 +291,13 @@ namespace Base
                         out_count = pending_in-1;
                         pending_in = 4;
                     } else {
-                        char c = table[d];
+                        signed char c = table[d];
                         if(c < 0) {
                             if(c==-2 || silent)
                                 continue;
                             throw BOOST_IOSTREAMS_FAILURE("Invalid character in base64 string");
                         }
-                        char_array_4[pending_in++] = c;
+                        char_array_4[pending_in++] = (char)c;
                     }
                     if(pending_in == 4) {
                         pending_out = pending_in = 0;

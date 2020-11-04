@@ -44,8 +44,8 @@ static const std::string base64_chars =
              "0123456789+/";
 
 
-const char *Base::base64_decode_table() {
-    static const char _table[] = {
+const signed char *Base::base64_decode_table() {
+    static const signed char _table[] = {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -2, -2, -2, -1, -2, -1, -1, //   0-15
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, //  16-31
         -2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63, //  32-47
@@ -119,14 +119,14 @@ std::pair<std::size_t, std::size_t> Base::base64_decode(
   int j = 0;
   unsigned char char_array_4[4], char_array_3[3];
 
-  static const char *table = base64_decode_table();
+  static const signed char *table = base64_decode_table();
 
   while (in_len-- && *in != '=') {
-    const char v = table[(int)(*in++)];
+    const signed char v = table[(int)(*in++)];
     if(v < 0)
         break;
 
-    char_array_4[i++] = v;
+    char_array_4[i++] = (unsigned char)v;
     if (i ==4) {
       char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
       char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
