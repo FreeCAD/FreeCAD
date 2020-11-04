@@ -42,8 +42,8 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Class to deal with and represent a tool bit."
 
-# PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-# PathLog.trackModule()
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.trackModule()
 
 
 def translate(context, text, disambig=None):
@@ -363,6 +363,7 @@ class ToolBit(object):
 
 
 def Declaration(path):
+    print(path)
     with open(path, 'r') as fp:
         return json.load(fp)
 
@@ -388,12 +389,13 @@ class AttributePrototype(PathSetupSheetOpPrototype.OpPrototype):
         self.addProperty('App::PropertyMap', 'UserAttributes',
                 PropertyGroupAttribute, translate('PathToolBit',
                 'User Defined Values'))
-
+        self.addProperty('App::PropertyBool', 'SpindlePower',
+                PropertyGroupAttribute, translate('PathToolBit',
+                'Whether Spindle Power should be allowed'))
 
 class ToolBitFactory(object):
 
     def CreateFromAttrs(self, attrs, name='ToolBit'):
-        # pylint: disable=protected-access
         obj = Factory.Create(name, attrs['shape'])
         obj.Label = attrs['name']
         params = attrs['parameter']

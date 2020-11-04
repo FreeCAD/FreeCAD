@@ -169,14 +169,16 @@ class ToolBitEditor(object):
 
         # get the attributes
         for i, name in enumerate(self.props):
+            print('in accept: {}'.format(name))
             prop = self.proto.getProperty(name)
-            enabled = self.model.item(i, 0).checkState() == QtCore.Qt.Checked
-            if enabled and not prop.getValue() is None:
-                prop.setupProperty(self.tool, name,
-                                   PathToolBit.PropertyGroupAttribute,
-                                   prop.getValue())
-            elif hasattr(self.tool, name):
-                self.tool.removeProperty(name)
+            if self.model.item(i, 0) is not None:
+                enabled = self.model.item(i, 0).checkState() == QtCore.Qt.Checked
+                if enabled and not prop.getValue() is None:
+                    prop.setupProperty(self.tool, name,
+                                    PathToolBit.PropertyGroupAttribute,
+                                    prop.getValue())
+                elif hasattr(self.tool, name):
+                    self.tool.removeProperty(name)
 
     def reject(self):
         PathLog.track()
