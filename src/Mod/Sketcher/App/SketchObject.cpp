@@ -940,15 +940,15 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
 
-    const Part::Geometry *geo = getGeometry(GeoId);
-    // Only for supported types
-    if ((geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
-        geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
-        geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
-        geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
-        geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())) {
+    if (deleteinternalgeo) {
+        const Part::Geometry *geo = getGeometry(GeoId);
+        // Only for supported types
+        if ((geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+             geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+             geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+             geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
+             geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())) {
 
-        if(deleteinternalgeo) {
             this->deleteUnusedInternalGeometry(GeoId, true);
             return 0;
         }
