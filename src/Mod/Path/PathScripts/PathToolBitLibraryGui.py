@@ -152,8 +152,8 @@ class ModelFactory(object):
     def _toolAdd(self, nr, tool, path):
 
         strShape = os.path.splitext(os.path.basename(tool['shape']))[0]
-        strDiam = tool['parameter']['Diameter']
-        tooltip = "{}: {}".format(strShape, strDiam)
+        # strDiam = tool['parameter']['Diameter']
+        tooltip = "{}".format(strShape)
 
         toolNr = PySide.QtGui.QStandardItem()
         toolNr.setData(nr, PySide.QtCore.Qt.EditRole)
@@ -171,11 +171,12 @@ class ModelFactory(object):
         toolShape.setData(strShape, PySide.QtCore.Qt.EditRole)
         toolShape.setEditable(False)
 
-        toolDiameter = PySide.QtGui.QStandardItem()
-        toolDiameter.setData(strDiam, PySide.QtCore.Qt.EditRole)
-        toolDiameter.setEditable(False)
+        # toolDiameter = PySide.QtGui.QStandardItem()
+        # toolDiameter.setData(strDiam, PySide.QtCore.Qt.EditRole)
+        # toolDiameter.setEditable(False)
 
-        return [toolNr, toolName, toolShape, toolDiameter]
+        #return [toolNr, toolName, toolShape, toolDiameter]
+        return [toolNr, toolName, toolShape]
 
     def newTool(self, datamodel, path):
         '''
@@ -559,7 +560,7 @@ class ToolBitLibrary(object):
         return lib, loc
 
     def columnNames(self):
-        return ['Nr', 'Tool', 'Shape', 'Diameter']
+        return ['Nr', 'Tool', 'Shape']
 
     def loadData(self, path=None):
         PathLog.track(path)
