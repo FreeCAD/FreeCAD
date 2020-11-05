@@ -43,9 +43,9 @@ else:
 #  Rebars (or Reinforcing Bars) are metallic bars placed
 #  inside concrete structures to reinforce them.
 
-__title__="FreeCAD Rebar"
+__title__  = "FreeCAD Rebar"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="Rebar"):

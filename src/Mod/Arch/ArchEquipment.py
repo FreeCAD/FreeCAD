@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -21,9 +20,9 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Equipment"
+__title__  = "FreeCAD Equipment"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Units

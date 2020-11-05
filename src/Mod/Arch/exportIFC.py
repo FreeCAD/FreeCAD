@@ -53,9 +53,9 @@ from draftutils.messages import _msg, _err
 if FreeCAD.GuiUp:
     import FreeCADGui
 
-__title__ = "FreeCAD IFC export"
+__title__  = "FreeCAD IFC export"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
-__url__ = "https://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 # Save the Python open function because it will be redefined
 if open.__module__ in ['__builtin__', 'io']:
@@ -479,7 +479,7 @@ def export(exportList, filename, colors=None, preferences=None):
             ifctype = "IfcBuildingElementProxy"
 
         # getting the representation
- 
+
         # ignore the own shape for assembly objects
         skipshape = False
         if assemblyElements:
@@ -1642,7 +1642,7 @@ def getIfcTypeFromObj(obj):
     else:
         # it makes no sense to return IfcPart::Cylinder for a Part::Cylinder
         # this is not a ifctype at all
-        ifctype = None  
+        ifctype = None
 
     # print("Return value of getIfcTypeFromObj: {}".format(ifctype))
     return ifctype

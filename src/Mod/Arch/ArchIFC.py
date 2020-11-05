@@ -174,7 +174,7 @@ class IfcRoot:
 
     def getIfcAttributeSchema(self, ifcTypeSchema, name):
         """Get the schema of an IFC attribute with the given name.
-        
+
         Convert the IFC attribute's name from the human readable version Arch
         uses, and convert it to the less readable name it has in the IFC
         schema.
@@ -260,17 +260,17 @@ class IfcRoot:
 
         obj.IfcData = IfcData
         if attribute["is_enum"]:
-            obj.addProperty("App::PropertyEnumeration", 
-                            attribute["name"], 
-                            "IFC Attributes", 
+            obj.addProperty("App::PropertyEnumeration",
+                            attribute["name"],
+                            "IFC Attributes",
                             QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
             setattr(obj, attribute["name"], attribute["enum_values"])
         else:
             import ArchIFCSchema
             propertyType = "App::" + ArchIFCSchema.IfcTypes[attribute["type"]]["property"]
-            obj.addProperty(propertyType, 
-                            attribute["name"], 
-                            "IFC Attributes", 
+            obj.addProperty(propertyType,
+                            attribute["name"],
+                            "IFC Attributes",
                             QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
 
     def addIfcAttributeValueExpressions(self, obj, attribute):
@@ -420,7 +420,7 @@ class IfcRoot:
             if r in IfcTypes:
                 obj.IfcType = r
                 FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" IfcRole property to IfcType\n")
-        
+
         if "IfcAttributes"in obj.PropertiesList:
             obj.IfcData = obj.IfcAttributes
             obj.removeProperty("IfcAttributes")

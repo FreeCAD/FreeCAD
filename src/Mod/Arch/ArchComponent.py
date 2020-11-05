@@ -27,9 +27,9 @@ Examples
 TODO put examples here.
 """
 
-__title__="FreeCAD Arch Component"
+__title__  = "FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 import FreeCAD,Draft,ArchCommands,math,sys,json,os,ArchIFC,ArchIFCSchema
 from FreeCAD import Vector
@@ -779,7 +779,7 @@ class Component(ArchIFC.IfcProduct):
                     subvolume = o.Subvolume.Shape.copy()
                     if hasattr(o,"Placement"):
                         subvolume.Placement = subvolume.Placement.multiply(o.Placement)
-                    
+
                 if subvolume:
                     if base.Solids and subvolume.Solids:
                         if placement:

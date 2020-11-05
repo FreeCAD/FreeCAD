@@ -5,11 +5,11 @@ Provides the data as IfcContexts, IfcProducts and IfcTypes.
 
 import FreeCAD, os, json
 
-ifcVersions = ["IFC4", "IFC2X3"] 
+ifcVersions = ["IFC4", "IFC2X3"]
 IfcVersion = ifcVersions[FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("IfcVersion",0)]
 
 with open(os.path.join(FreeCAD.getResourceDir(), "Mod", "Arch", "Presets",
-"ifc_contexts_" + IfcVersion + ".json")) as f: 
+"ifc_contexts_" + IfcVersion + ".json")) as f:
     IfcContexts = json.load(f)
 
 with open(os.path.join(FreeCAD.getResourceDir(), "Mod", "Arch", "Presets",

@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -47,7 +46,7 @@ else:
 
 __title__ = "Arch Schedule"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 
 verbose = True # change this for silent recomputes
