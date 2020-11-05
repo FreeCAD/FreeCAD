@@ -5488,14 +5488,11 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
     // Trigger update now
     // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
-    Geometry.touch();
-
-    std::sort (delGeoId.begin(), delGeoId.end());
-
-    if (delGeoId.size()>0) {
-        for (std::vector<int>::reverse_iterator it=delGeoId.rbegin(); it!=delGeoId.rend(); ++it) {
-            delGeometry(*it,false);
-        }
+    if (!delGeoId.empty()) {
+        delGeometries(delGeoId);
+    }
+    else {
+        Geometry.touch();
     }
 
     // * DOCUMENTING OCC ISSUE OCC < 6.9.0
