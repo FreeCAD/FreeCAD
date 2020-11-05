@@ -36,7 +36,7 @@ your model history to change its parameters.
 including product design, mechanical engineering and architecture,
 whether you are a hobbyist, programmer, experienced CAD user, student or teacher.
 
-* **Cross platform** FreeCAD runs on Windows, macOS and Linux
+* **Cross platform** FreeCAD runs on Windows, macOS and Linux operating systems.
 
 * **Underlying technology**
     * **OpenCASCADE** A powerful geometry kernel, the most important component of FreeCAD
