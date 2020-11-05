@@ -1424,10 +1424,10 @@ void Hole::readCutDefinitions()
         ::App::Application::getUserAppDataDir() + subpath,
     };
 
-    std::cerr << "Looking for thread definitions in: ";
+    std::clog << "Looking for thread definitions in: ";
     for (auto &i : dirs)
-        std::cerr << i << " ";
-    std::cerr << "\n";
+        std::clog << i << " ";
+    std::clog << "\n";
     for (auto &dir : dirs) {
         std::vector<::Base::FileInfo> files { ::Base::FileInfo(dir).getDirectoryContent() };
         for (const auto &f : files) {
