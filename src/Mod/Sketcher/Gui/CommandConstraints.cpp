@@ -255,6 +255,22 @@ bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher
     return Obj->isPointOnCurve(GeoIdCurve, p.x, p.y);
 }
 
+bool SketcherGui::ReleaseHandler(Gui::Document* doc) {
+    if (doc) {
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
+
+            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
+                ->getSketchMode() == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
+
+                vp->purgeHandler();
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 /// Makes a simple tangency constraint using extra point + tangent via point
 /// ellipse => an ellipse
 /// geom2 => any of an ellipse, an arc of ellipse, a circle, or an arc (of circle)
