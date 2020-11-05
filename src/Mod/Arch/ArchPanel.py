@@ -43,10 +43,9 @@ else:
 #  Panels consist of a closed shape that gets extruded to
 #  produce a flat object.
 
-
-__title__="FreeCAD Panel"
+__title__  = "FreeCAD Panel"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 #           Description                 l    w    t
 
