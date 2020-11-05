@@ -42,6 +42,7 @@
 #include "ViewProviderSketch.h"
 
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Sketcher/Gui/CommandConstraints.h>
 
 #include <Base/Tools.h>
 #include <App/Application.h>
@@ -442,6 +443,22 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     QMenu menu;
     QListWidgetItem* item = currentItem();
     QList<QListWidgetItem *> items = selectedItems();
+
+    // Cancel any in-progress operation
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    bool didRelease = SketcherGui::ReleaseHandler(doc);
+
+    // Sync the FreeCAD selection with the selection in the ConstraintView widget
+    if (didRelease) {
+        Gui::Selection().clearSelection();
+        for (auto&& it : items) {
+            auto ci = static_cast<ConstraintItem*>(it);
+            std::string constraint_name = Sketcher::PropertyConstraintList::getConstraintName(ci->ConstraintNbr);
+            std::string doc_name = ci->sketchView->getSketchObject()->getDocument()->getName();
+            std::string obj_name = ci->sketchView->getSketchObject()->getNameInDocument();
+            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), constraint_name.c_str());
+        }
+    }
 
     bool isQuantity = false;
     bool isToggleDriving = false;
