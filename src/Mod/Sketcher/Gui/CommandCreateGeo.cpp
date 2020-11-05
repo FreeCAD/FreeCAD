@@ -5867,6 +5867,11 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
+    virtual bool allowExternalPick() const
+    {
+        return true;
+    }
+
     virtual void activated(ViewProviderSketch *sketchgui)
     {
         if(attaching.size())

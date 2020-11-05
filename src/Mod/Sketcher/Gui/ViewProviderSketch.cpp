@@ -273,6 +273,8 @@ struct EditData {
     SbVec2s       curCursorPos;
     std::string   lastPreselection;
     Gui::View3DInventorViewer * viewer = nullptr;
+
+    bool enableExternalPick = false;
 };
 
 
@@ -1510,7 +1512,7 @@ Base::Vector3d ViewProviderSketch::seekConstraintPosition(const Base::Vector3d &
 
 bool ViewProviderSketch::isEditingPickExclusive() const
 {
-    return true;
+    return edit && (!edit->sketchHandler || !edit->sketchHandler->allowExternalPick()) ;
 }
 
 bool ViewProviderSketch::isSelectable(void) const

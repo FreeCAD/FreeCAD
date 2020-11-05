@@ -70,6 +70,8 @@ public:
     virtual bool onSelectionChanged(const Gui::SelectionChanges&) { return false; }
     virtual void registerPressedKey(bool /*pressed*/, int /*key*/){}
 
+    virtual bool allowExternalPick() const {return false;}
+
     virtual void quit(void);
 
     friend class ViewProviderSketch;
