@@ -1000,6 +1000,82 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     return 0;
 }
 
+int SketchObject::delGeometries(const std::vector<int>& GeoIds)
+{
+    std::vector<int> sGeoIds(GeoIds);
+    std::sort(sGeoIds.begin(), sGeoIds.end());
+    if (sGeoIds.empty())
+        return 0;
+
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+    if (sGeoIds.front() < 0 || sGeoIds.back() >= int(vals.size()))
+        return -1;
+
+
+    std::vector< Part::Geometry * > newVals(vals);
+    for (auto it = sGeoIds.rbegin(); it != sGeoIds.rend(); ++it) {
+        int GeoId = *it;
+        newVals.erase(newVals.begin() + GeoId);
+
+        // Find coincident points to replace the points of the deleted geometry
+        std::vector<int> GeoIdList;
+        std::vector<PointPos> PosIdList;
+        for (PointPos PosId = start; PosId != mid; ) {
+            getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
+            if (GeoIdList.size() > 1) {
+                delConstraintOnPoint(GeoId, PosId, true /* only coincidence */);
+                transferConstraints(GeoIdList[0], PosIdList[0], GeoIdList[1], PosIdList[1]);
+            }
+            PosId = (PosId == start) ? end : mid; // loop through [start, end, mid]
+        }
+    }
+
+    // Copy the original constraints
+    std::vector< Constraint* > constraints;
+    for (const auto ptr : this->Constraints.getValues())
+        constraints.push_back(ptr->clone());
+    std::vector< Constraint* > filteredConstraints(0);
+    for (auto it = sGeoIds.rbegin(); it != sGeoIds.rend(); ++it) {
+        int GeoId = *it;
+        for (std::vector<Constraint*>::const_iterator it = constraints.begin();
+             it != constraints.end(); ++it) {
+
+            Constraint* copiedConstr(*it);
+            if ((*it)->First != GeoId && (*it)->Second != GeoId && (*it)->Third != GeoId) {
+                if (copiedConstr->First > GeoId)
+                    copiedConstr->First -= 1;
+                if (copiedConstr->Second > GeoId)
+                    copiedConstr->Second -= 1;
+                if (copiedConstr->Third > GeoId)
+                    copiedConstr->Third -= 1;
+                filteredConstraints.push_back(copiedConstr);
+            }
+            else {
+                delete copiedConstr;
+            }
+        }
+
+        constraints = filteredConstraints;
+        filteredConstraints.clear();
+    }
+
+    // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
+    {
+        Base::StateLocker lock(internaltransaction, true);
+        this->Geometry.setValues(newVals);
+        this->Constraints.setValues(std::move(constraints));
+    }
+    // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
+    Geometry.touch();
+
+    if (noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+
+    return 0;
+}
+
 int SketchObject::deleteAllGeometry()
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
@@ -5409,6 +5485,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
         this->Constraints.setValues(std::move(newcVals));
     }
+
     // Trigger update now
     // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
     Geometry.touch();
