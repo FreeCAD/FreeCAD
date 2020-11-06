@@ -305,35 +305,46 @@ std::string InterpreterSingleton::runString(const char *sCmd)
 
 std::string InterpreterSingleton::runStringWithKey(const char *psCmd, const char *key, const char *key_initial_value)
 {
+    std::string result;
     PyGILStateLocker locker;
-    Py::Module module("__main__");
-    Py::Dict globalDictionary = module.getDict();
-    Py::Dict localDictionary;
-    Py::String initial_value(key_initial_value);
-    localDictionary.setItem(key, initial_value);
 
-    PyObject* presult = PyRun_String(psCmd, Py_file_input, globalDictionary.ptr(), localDictionary.ptr());
-    if (!presult) {
-        if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
-            throw SystemExitException();
-        }
-        else {
-            PyException::ThrowException();
-            return std::string(); // just to quieten code analyzers
-        }
-    }
-    Py_DECREF(presult);
+    try {
+        Py::Module module("__main__");
+        Py::Dict globalDictionary = module.getDict();
+        Py::Dict localDictionary;
+        Py::String initial_value(key_initial_value);
+        localDictionary.setItem(key, initial_value);
 
-    Py::Object key_return_value = localDictionary.getItem(key);
-    if (!key_return_value.isString())
-        key_return_value = key_return_value.str();
+        PyObject* presult = PyRun_String(psCmd, Py_file_input, globalDictionary.ptr(), localDictionary.ptr());
+        if (!presult) {
+            if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
+                throw SystemExitException();
+            }
+            else {
+                PyException::ThrowException();
+                return std::string(); // just to quieten code analyzers
+            }
+        }
+        Py_DECREF(presult);
+
+        Py::Object key_return_value = localDictionary.getItem(key);
+        if (!key_return_value.isString())
+            key_return_value = key_return_value.str();
 
 #if PY_MAJOR_VERSION >= 3
-    Py::Bytes str = Py::String(key_return_value).encode("utf-8", "~E~");
-    std::string result = static_cast<std::string>(str);
+        result = PyUnicode_AsUTF8(key_return_value.ptr());
 #else
-    std::string result = static_cast<std::string>(Py::String(key_return_value));
+        if (PyUnicode_Check(key_return_value.ptr())) {
+            PyObject* unicode = PyUnicode_AsUTF8String(key_return_value.ptr());
+            result = PyString_AsString(unicode);
+            Py_DECREF(unicode);
+        }
+        else
+            result = PyString_AsString(key_return_value.ptr());
 #endif
+    } catch (Py::Exception &) {
+        PyException::ThrowException();
+    }
     return result;
 }
 
