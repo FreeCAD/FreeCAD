@@ -142,17 +142,17 @@ _Re_Comment = re.compile(_Re_Pattern.format("Comment"))
 _Re_CreationDate = re.compile(_Re_Pattern.format("CreationDate"))
 _Re_LastModifiedDate = re.compile(_Re_Pattern.format("LastModifiedDate"))
 
+def getLocalTime(timestamp):
+    tformat = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("TimeFormat","%m/%d/%Y %H:%M:%S")
+
+    "returns a local time from a timestamp"
+    return time.strftime(tformat,time.localtime(timestamp))
+
 def getInfo(filename):
 
     "returns available file information"
 
     global iconbank,tempfolder
-
-    tformat = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("TimeFormat","%m/%d/%Y %H:%M:%S")
-
-    def getLocalTime(timestamp):
-        "returns a local time from a timestamp"
-        return time.strftime(tformat,time.localtime(timestamp))
 
     def getSize(size):
         "returns a human-readable size"
@@ -309,11 +309,31 @@ def buildCard(filename,method,arg=None):
 
     "builds a html <li> element representing a file. method is a script + a keyword, for ex. url.py?key="
 
+    global tempfolder
+
     result = encode("")
     if os.path.exists(filename) and isOpenableByFreeCAD(filename):
         basename = os.path.basename(filename)
         if not arg:
             arg = basename
+
+        cachename = None
+        if filename.lower().endswith(".fcstd"):
+            sha = hashlib.sha1()
+            sha.update(filename + '_card')
+            sha = sha.hexdigest()
+
+            s = os.stat(filename)
+            cacheheader = '<!--%s-->' % getLocalTime(s.st_mtime)
+            cachename = '{}/{}.html'.format(tempfolder,sha)
+            if os.path.exists(cachename):
+                with open(cachename, 'r') as f:
+                    result = f.read()
+                    if isinstance(result, bytes):
+                        result = result.decode("utf8")
+                    if result.startswith(cacheheader):
+                        return result.replace('$METHOD$', method).replace('$ARG$', arg)
+
         finfo = getInfo(filename)
         if finfo:
             image = finfo[0]
@@ -325,7 +345,7 @@ def buildCard(filename,method,arg=None):
             if finfo[5]:
                 infostring += "\n\n" + encode(finfo[5])
             if size:
-                result += '<a href="'+method+arg+'" title="'+infostring+'">'
+                result += '<a href="$METHOD$$ARG$'+'" title="'+infostring+'">'
                 result += '<li class="icon">'
                 result += '<img src="file:///'+image+'">'
                 result += '<div class="caption">'
@@ -335,6 +355,14 @@ def buildCard(filename,method,arg=None):
                 result += '</div>'
                 result += '</li>'
                 result += '</a>'
+
+                if cachename:
+                    with open(cachename, 'w') as f:
+                        f.write(cacheheader.encode('utf8'))
+                        f.write(result.encode('utf8'))
+
+                return result.replace('$METHOD$', method).replace('$ARG$', arg)
+
     return result
 
 
