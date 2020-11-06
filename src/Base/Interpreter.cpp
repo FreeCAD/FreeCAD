@@ -979,7 +979,7 @@ bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char*
     (void)TypeName;
     (void)obj;
     (void)ptr;
-    (flags)flags;
+    (void)flags;
     result = -1; // indicates error
 #endif
 #if PY_MAJOR_VERSION < 3
