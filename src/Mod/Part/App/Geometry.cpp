@@ -1770,9 +1770,17 @@ Geometry *GeomTrimmedCurve::copy(void) const
 }
 
 // Persistence implementer
-unsigned int GeomTrimmedCurve::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
-void         GeomTrimmedCurve::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
-void         GeomTrimmedCurve::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
+unsigned int GeomTrimmedCurve::getMemSize (void) const {
+    throw Base::NotImplementedError();
+}
+
+void GeomTrimmedCurve::Save (Base::Writer &/*writer*/) const {
+    throw Base::NotImplementedError();
+}
+
+void GeomTrimmedCurve::Restore (Base::XMLReader &/*reader*/) {
+    throw Base::NotImplementedError();
+}
 
 PyObject *GeomTrimmedCurve::getPyObject(void)
 {
@@ -4150,9 +4158,17 @@ const Handle(Geom_Geometry)& GeomOffsetCurve::handle() const
 }
 
 // Persistence implementer
-unsigned int GeomOffsetCurve::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
-void         GeomOffsetCurve::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
-void         GeomOffsetCurve::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
+unsigned int GeomOffsetCurve::getMemSize (void) const {
+    throw Base::NotImplementedError();
+}
+
+void GeomOffsetCurve::Save (Base::Writer &/*writer*/) const {
+    throw Base::NotImplementedError();
+}
+
+void GeomOffsetCurve::Restore (Base::XMLReader &/*reader*/) {
+    throw Base::NotImplementedError();
+}
 
 PyObject *GeomOffsetCurve::getPyObject(void)
 {
@@ -4331,9 +4347,17 @@ Geometry *GeomBezierSurface::copy(void) const
 }
 
 // Persistence implementer
-unsigned int GeomBezierSurface::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
-void         GeomBezierSurface::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
-void         GeomBezierSurface::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
+unsigned int GeomBezierSurface::getMemSize (void) const {
+    throw Base::NotImplementedError();
+}
+
+void GeomBezierSurface::Save (Base::Writer &/*writer*/) const {
+    throw Base::NotImplementedError();
+}
+
+void GeomBezierSurface::Restore (Base::XMLReader &/*reader*/) {
+    throw Base::NotImplementedError();
+}
 
 PyObject *GeomBezierSurface::getPyObject(void)
 {
@@ -4416,9 +4440,17 @@ Geometry *GeomBSplineSurface::copy(void) const
 }
 
 // Persistence implementer
-unsigned int GeomBSplineSurface::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
-void         GeomBSplineSurface::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
-void         GeomBSplineSurface::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
+unsigned int GeomBSplineSurface::getMemSize (void) const {
+    throw Base::NotImplementedError();
+}
+
+void GeomBSplineSurface::Save (Base::Writer &/*writer*/) const {
+    throw Base::NotImplementedError();
+}
+
+void GeomBSplineSurface::Restore (Base::XMLReader &/*reader*/) {
+    throw Base::NotImplementedError();
+}
 
 PyObject *GeomBSplineSurface::getPyObject(void)
 {
@@ -4563,9 +4595,17 @@ Geometry *GeomCylinder::copy(void) const
 }
 
 // Persistence implementer
-unsigned int GeomCylinder::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
-void         GeomCylinder::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
-void         GeomCylinder::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
+unsigned int GeomCylinder::getMemSize (void) const {
+    throw Base::NotImplementedError();
+}
+
+void GeomCylinder::Save (Base::Writer &/*writer*/) const {
+    throw Base::NotImplementedError();
+}
+
+void GeomCylinder::Restore (Base::XMLReader &/*reader*/) {
+    throw Base::NotImplementedError();
+}
 
 PyObject *GeomCylinder::getPyObject(void)
 {
