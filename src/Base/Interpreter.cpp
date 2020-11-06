@@ -919,6 +919,9 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const c
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     result = Swig_python::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
 #else
+    (void)TypeName;
+    (void)Pointer;
+    (void)own;
     result = -1; // indicates error
 #endif
 #if PY_MAJOR_VERSION < 3
@@ -971,9 +974,13 @@ bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char*
     (void)Module;
 #endif
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
-        result = Swig_python::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
+    result = Swig_python::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
 #else
-        result = -1; // indicates error
+    (void)TypeName;
+    (void)obj;
+    (void)ptr;
+    (flags)flags;
+    result = -1; // indicates error
 #endif
 #if PY_MAJOR_VERSION < 3
     }
@@ -1002,6 +1009,8 @@ void InterpreterSingleton::cleanupSWIG(const char* TypeName)
     PyGILStateLocker locker;
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     Swig_python::cleanupSWIG_T(TypeName);
+#else
+    (void)TypeName;
 #endif
 #if PY_MAJOR_VERSION < 3
     Swig_1_3_25::cleanupSWIG_T(TypeName);
