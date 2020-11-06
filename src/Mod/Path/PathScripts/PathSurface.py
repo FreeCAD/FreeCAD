@@ -1806,6 +1806,9 @@ class ObjectSurface(PathOp.ObjectOp):
                         lo = ocl.Line(p2, p1)
                     else:
                         lo = ocl.Line(p1, p2)
+                else:
+                    # default to line-object
+                    lo = ocl.Line(p1, p2)
             else:
                 lo = ocl.Line(p1, p2)   # line-object
 
