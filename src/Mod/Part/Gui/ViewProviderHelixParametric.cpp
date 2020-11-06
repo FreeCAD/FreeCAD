@@ -118,3 +118,37 @@ std::vector<std::string> ViewProviderSpiralParametric::getDisplayModes(void) con
 
     return StrList;
 }
+
+void ViewProviderSpiralParametric::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act;
+    act = menu->addAction(QObject::tr("Edit spiral"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
+    ViewProviderSpline::setupContextMenu(menu, receiver, member);
+}
+
+bool ViewProviderSpiralParametric::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        if (Gui::Control().activeDialog())
+            return false;
+        PartGui::TaskPrimitivesEdit* dlg
+            = new PartGui::TaskPrimitivesEdit(dynamic_cast<Part::Primitive*>(getObject()));
+        Gui::Control().showDialog(dlg);
+        return true;
+    }
+    else {
+        ViewProviderSpline::setEdit(ModNum);
+        return true;
+    }
+}
+
+void ViewProviderSpiralParametric::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        ViewProviderSpline::unsetEdit(ModNum);
+    }
+}

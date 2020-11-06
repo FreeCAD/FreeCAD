@@ -44,7 +44,6 @@ public:
 protected:
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);
-
 };
 
 class PartGuiExport ViewProviderSpiralParametric : public ViewProviderSpline
@@ -57,6 +56,11 @@ public:
     /// destructor
     virtual ~ViewProviderSpiralParametric();
     std::vector<std::string> getDisplayModes(void) const;
+    void setupContextMenu(QMenu*, QObject*, const char*);
+
+protected:
+    bool setEdit(int ModNum);
+    void unsetEdit(int ModNum);
 };
 
 } // namespace PartGui
