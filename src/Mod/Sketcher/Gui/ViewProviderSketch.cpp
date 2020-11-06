@@ -3244,6 +3244,8 @@ void ViewProviderSketch::drawConstraintIcons()
             SbVec3f pos1(endpoint.x,endpoint.y,endpoint.z);
 
             Gui::View3DInventorViewer *viewer = edit->viewer;
+            if (!viewer)
+                return;
             SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
             if (!pCam)
                 return;
@@ -3597,8 +3599,7 @@ void ViewProviderSketch::drawTypicalConstraintIcon(const constrIconQueueItem &i)
 
 float ViewProviderSketch::getScaleFactor()
 {
-    assert(edit);
-    if (edit->viewer) {
+    if (edit && edit->viewer) {
         Gui::View3DInventorViewer *viewer = edit->viewer;
         SoCamera* camera = viewer->getSoRenderManager()->getCamera();
         float scale = camera->getViewVolume(camera->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 3;
