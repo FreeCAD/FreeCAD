@@ -1264,10 +1264,9 @@ class radiusTracker(Tracker):
 class archDimTracker(Tracker):
     """A wrapper around a Sketcher dim."""
 
-    def __init__(self,
-                 p1=FreeCAD.Vector(0, 0, 0),
-                 p2=FreeCAD.Vector(1, 0, 0), mode=1):
+    def __init__(self, p1=FreeCAD.Vector(0, 0, 0), p2=FreeCAD.Vector(1, 0, 0), mode=1):
         import SketcherGui
+        self.transform = coin.SoMatrixTransform()
         self.dimnode = coin.SoType.fromName("SoDatumLabel").createInstance()
         p1node = coin.SbVec3f([p1.x, p1.y, p1.z])
         p2node = coin.SbVec3f([p2.x, p2.y, p2.z])
@@ -1275,23 +1274,34 @@ class archDimTracker(Tracker):
         self.dimnode.lineWidth = 1
         color = FreeCADGui.draftToolBar.getDefaultColor("snap")
         self.dimnode.textColor.setValue(coin.SbVec3f(color))
+        self.dimnode.size = 11
+        self.offset = 0.5
         self.setString()
         self.setMode(mode)
-        Tracker.__init__(self, children=[self.dimnode], name="archDimTracker")
+        Tracker.__init__(self, children=[self.transform, self.dimnode], name="archDimTracker")
 
     def setString(self, text=None):
         """Set the dim string to the given value or auto value."""
-        self.dimnode.param1.setValue(.5)
         p1 = Vector(self.dimnode.pnts.getValues()[0].getValue())
         p2 = Vector(self.dimnode.pnts.getValues()[-1].getValue())
         m = self.dimnode.datumtype.getValue()
+        plane = FreeCAD.DraftWorkingPlane
+        self.dimnode.norm.setValue(plane.getNormal())
+        # set the offset sign to prevent the dim line from intersecting the curve near the cursor
+        sign_dx = math.copysign(1, (p2.sub(p1)).x)
+        sign_dy = math.copysign(1, (p2.sub(p1)).y)
+        sign = sign_dx*sign_dy
         if m == 2:
-            self.Distance = (DraftVecUtils.project(p2.sub(p1), Vector(1, 0, 0))).Length
+            self.Distance = abs((p2.sub(p1)).x)
+            self.dimnode.param1.setValue(sign*self.offset)
         elif m == 3:
-            self.Distance = (DraftVecUtils.project(p2.sub(p1), Vector(0, 1, 0))).Length
+            self.Distance = abs((p2.sub(p1)).y)
+            self.dimnode.param1.setValue(-1*sign*self.offset)
         else:
             self.Distance = (p2.sub(p1)).Length
+
         text = FreeCAD.Units.Quantity(self.Distance, FreeCAD.Units.Length).UserString
+        self.transform.matrix.setValue(*plane.getPlacement().Matrix.transposed().A)
         self.dimnode.string.setValue(text.encode('utf8'))
 
     def setMode(self, mode=1):
@@ -1306,16 +1316,24 @@ class archDimTracker(Tracker):
 
     def p1(self, point=None):
         """Set or get the first point of the dim."""
+        plane = FreeCAD.DraftWorkingPlane
         if point:
-            self.dimnode.pnts.set1Value(0, point.x, point.y, point.z)
+            p1_proj = plane.projectPoint(point)
+            p1_proj_u = (p1_proj - plane.position).dot(plane.u.normalize())
+            p1_proj_v = (p1_proj - plane.position).dot(plane.v.normalize())
+            self.dimnode.pnts.set1Value(0, p1_proj_u, p1_proj_v, 0)
             self.setString()
         else:
             return Vector(self.dimnode.pnts.getValues()[0].getValue())
 
     def p2(self, point=None):
         """Set or get the second point of the dim."""
+        plane = FreeCAD.DraftWorkingPlane
         if point:
-            self.dimnode.pnts.set1Value(1, point.x, point.y, point.z)
+            p2_proj = plane.projectPoint(point)
+            p2_proj_u = (p2_proj - plane.position).dot(plane.u.normalize())
+            p2_proj_v = (p2_proj - plane.position).dot(plane.v.normalize())
+            self.dimnode.pnts.set1Value(1, p2_proj_u, p2_proj_v, 0)
             self.setString()
         else:
             return Vector(self.dimnode.pnts.getValues()[-1].getValue())
