@@ -25,6 +25,7 @@
 
 #include <QEventLoop>
 #include <QPointer>
+#include <App/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Part/Gui/ui_DlgPrimitives.h>
 #include <Mod/Part/Gui/ui_Location.h>
@@ -35,6 +36,10 @@ class SoEventCallback;
 
 namespace App { class Document; }
 namespace Gui { class Document; }
+namespace Part {
+class Feature;
+class Primitive;
+}
 namespace PartGui {
 
 class Picker
@@ -61,13 +66,7 @@ class DlgPrimitives : public QWidget
     Q_OBJECT
 
 public:
-    enum PrimitiveType {
-        Plane, Box, Cylinder, Cone, Sphere, Ellipsoid, Torus, Prism, Wedge,
-        Helix, Spiral, Circle, Ellipse, Point, Line, RegPolygon
-    };
-
-    DlgPrimitives(QWidget* parent = 0, PrimitiveType type = PrimitiveType::Plane,
-        bool edit = false, const char* ObjectName = "");
+    DlgPrimitives(QWidget* parent = nullptr, Part::Primitive* feature = nullptr);
     ~DlgPrimitives();
     void createPrimitive(const QString&);
     void accept(const QString&);
@@ -81,6 +80,7 @@ private:
 
 private:
     Ui_DlgPrimitives ui;
+    App::DocumentObjectWeakPtrT featurePtr;
 };
 
 class Location : public QWidget
@@ -88,7 +88,7 @@ class Location : public QWidget
     Q_OBJECT
 
 public:
-    Location(QWidget* parent = 0, bool edit = false, const char* ObjectName = "");
+    Location(QWidget* parent = nullptr, Part::Feature* feature = nullptr);
     ~Location();
     QString toPlacement() const;
 
@@ -126,7 +126,7 @@ class TaskPrimitivesEdit : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskPrimitivesEdit(DlgPrimitives::PrimitiveType type, const char* ObjectName);
+    TaskPrimitivesEdit(Part::Primitive* feature);
     ~TaskPrimitivesEdit();
     
 public:

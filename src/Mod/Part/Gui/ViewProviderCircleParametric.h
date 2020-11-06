@@ -36,7 +36,7 @@ class SoTransform;
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderCircleParametric:public ViewProviderPart
+class PartGuiExport ViewProviderCircleParametric : public ViewProviderPrimitive
 {
     PROPERTY_HEADER(PartGui::ViewProviderCircleParametric);
 

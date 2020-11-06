@@ -36,7 +36,7 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderCylinderParametric, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderCylinderParametric, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderCylinderParametric::ViewProviderCylinderParametric()

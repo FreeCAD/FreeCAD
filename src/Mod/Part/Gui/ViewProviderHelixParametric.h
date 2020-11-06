@@ -42,7 +42,6 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*);
 
 protected:
-    void updateData(const App::Property*);
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);
 

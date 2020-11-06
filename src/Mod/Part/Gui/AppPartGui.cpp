@@ -157,6 +157,7 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::ViewProviderAttachExtensionPython      ::init();
     PartGui::ViewProviderPartExt                    ::init();
     PartGui::ViewProviderPart                       ::init();
+    PartGui::ViewProviderPrimitive                  ::init();
     PartGui::ViewProviderEllipsoid                  ::init();
     PartGui::ViewProviderPython                     ::init();
     PartGui::ViewProviderBox                        ::init();

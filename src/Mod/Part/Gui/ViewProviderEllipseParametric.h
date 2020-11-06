@@ -36,7 +36,7 @@ class SoTransform;
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderEllipseParametric:public ViewProviderPart
+class PartGuiExport ViewProviderEllipseParametric : public ViewProviderPrimitive
 {
     PROPERTY_HEADER(PartGui::ViewProviderEllipseParametric);
 

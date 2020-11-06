@@ -30,6 +30,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/Control.h>
+#include <Mod/Part/App/PrimitiveFeature.h>
 #include "DlgPrimitives.h"
 #include "ViewProviderHelixParametric.h"
 
@@ -67,19 +68,13 @@ void ViewProviderHelixParametric::setupContextMenu(QMenu* menu, QObject* receive
     ViewProviderSpline::setupContextMenu(menu, receiver, member);
 }
 
-void ViewProviderHelixParametric::updateData(const App::Property* prop)
-{
-    PartGui::ViewProviderSpline::updateData(prop);
-}
-
 bool ViewProviderHelixParametric::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         if (Gui::Control().activeDialog())
             return false;
-        auto ObjectName = getObject()->getNameInDocument();
         PartGui::TaskPrimitivesEdit* dlg
-            = new PartGui::TaskPrimitivesEdit(PartGui::DlgPrimitives::PrimitiveType::Helix, ObjectName);
+            = new PartGui::TaskPrimitivesEdit(dynamic_cast<Part::Primitive*>(getObject()));
         Gui::Control().showDialog(dlg);
         return true;
     }

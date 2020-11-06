@@ -61,6 +61,23 @@ protected:
                     std::vector<App::Color>& colors);
 };
 
+class PartGuiExport ViewProviderPrimitive : public ViewProviderPart
+{
+    PROPERTY_HEADER(PartGui::ViewProviderPrimitive);
+
+public:
+    /// constructor
+    ViewProviderPrimitive();
+    /// destructor
+    virtual ~ViewProviderPrimitive();
+
+    void setupContextMenu(QMenu*, QObject*, const char*);
+
+protected:
+    bool setEdit(int ModNum);
+    void unsetEdit(int ModNum);
+};
+
 } // namespace PartGui
 
 

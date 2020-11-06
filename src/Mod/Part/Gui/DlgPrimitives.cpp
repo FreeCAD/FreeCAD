@@ -50,7 +50,9 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/Part/App/PartFeatures.h>
+#include <Mod/Part/App/PrimitiveFeature.h>
+#include <Mod/Part/App/FeaturePartBox.h>
+#include <Mod/Part/App/FeaturePartCircle.h>
 #include <Mod/Part/App/Tools.h>
 
 #include "DlgPrimitives.h"
@@ -58,8 +60,6 @@
 using namespace PartGui;
 
 namespace PartGui {
-
-const char* ObjectNameSave;
 
 const char* gce_ErrorStatusText(gce_ErrorType et)
 {
@@ -185,48 +185,13 @@ private:
 
 /* TRANSLATOR PartGui::DlgPrimitives */
 
-DlgPrimitives::DlgPrimitives(QWidget* parent, PrimitiveType type, bool edit, const char* ObjectName)
+DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
   : QWidget(parent)
+  , featurePtr(feature)
 {
     ui.setupUi(this);
     Gui::Command::doCommand(Gui::Command::Doc, "from FreeCAD import Base");
     Gui::Command::doCommand(Gui::Command::Doc, "import Part,PartGui");
-
-    ui.comboBox1->setCurrentIndex(type);
-    ui.widgetStack2->setCurrentIndex(type);
-
-    // fill the dialog with data if the primitives already exists
-    if (edit) {
-        // if existing, the primitive type can not be changed by the user
-        ui.comboBox1->setDisabled(edit);
-        // get the primitives object
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if (!doc)
-            return;
-        auto docObj = doc->getDocument()->getObject(ObjectName);
-        
-        // read values from the properties
-        if (type == PrimitiveType::Helix)
-        {
-            auto Property = docObj->getPropertyByName("Pitch");
-            auto value = static_cast<const App::PropertyQuantity*>(Property);
-            ui.helixPitch->setValue(value->getQuantityValue());
-            Property = docObj->getPropertyByName("Height");
-            value = static_cast<const App::PropertyQuantity*>(Property);
-            ui.helixHeight->setValue(value->getQuantityValue());
-            Property = docObj->getPropertyByName("Radius");
-            value = static_cast<const App::PropertyQuantity*>(Property);
-            ui.helixRadius->setValue(value->getQuantityValue());
-            Property = docObj->getPropertyByName("Angle");
-            value = static_cast<const App::PropertyQuantity*>(Property);
-            ui.helixAngle->setValue(value->getQuantityValue());
-            Property = docObj->getPropertyByName("LocalCoord");
-            auto HandedIndex = static_cast<const App::PropertyEnumeration*>(Property);
-            ui.helixLocalCS->setCurrentIndex(HandedIndex->getValue());
-
-            // ToDo: connect signal if there is a preview of primitives available
-        }
-    }
 
     // set limits
     //
@@ -324,6 +289,95 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, PrimitiveType type, bool edit, con
     ui.edgeZ2->setMinimum(INT_MIN);
     // RegularPolygon
     ui.regularPolygonCircumradius->setRange(0, INT_MAX);
+
+    // fill the dialog with data if the primitives already exists
+    if (feature) {
+        // must be the same order as of the stacked widget
+        std::vector<Base::Type> types;
+        types.emplace_back(Part::Plane::getClassTypeId());
+        types.emplace_back(Part::Box::getClassTypeId());
+        types.emplace_back(Part::Cylinder::getClassTypeId());
+        types.emplace_back(Part::Cone::getClassTypeId());
+        types.emplace_back(Part::Sphere::getClassTypeId());
+        types.emplace_back(Part::Ellipsoid::getClassTypeId());
+        types.emplace_back(Part::Torus::getClassTypeId());
+        types.emplace_back(Part::Prism::getClassTypeId());
+        types.emplace_back(Part::Wedge::getClassTypeId());
+        types.emplace_back(Part::Helix::getClassTypeId());
+        types.emplace_back(Part::Spiral::getClassTypeId());
+        types.emplace_back(Part::Circle::getClassTypeId());
+        types.emplace_back(Part::Ellipse::getClassTypeId());
+        types.emplace_back(Part::Vertex::getClassTypeId());
+        types.emplace_back(Part::Line::getClassTypeId());
+        types.emplace_back(Part::RegularPolygon::getClassTypeId());
+
+        Base::Type type = feature->getTypeId();
+        int index = std::distance(types.begin(), std::find(types.begin(), types.end(), type));
+        ui.comboBox1->setCurrentIndex(index);
+        ui.widgetStack2->setCurrentIndex(index);
+
+        // if existing, the primitive type can not be changed by the user
+        ui.comboBox1->setDisabled(feature != nullptr);
+
+        // read values from the properties
+        if (type == Part::Plane::getClassTypeId()) {
+            Part::Plane* plane = static_cast<Part::Plane*>(feature);
+            ui.planeLength->setValue(plane->Length.getQuantityValue());
+            ui.planeWidth->setValue(plane->Width.getQuantityValue());
+        }
+        else if (type == Part::Box::getClassTypeId()) {
+
+        }
+        else if (type == Part::Cylinder::getClassTypeId()) {
+
+        }
+        else if (type == Part::Cone::getClassTypeId()) {
+
+        }
+        else if (type == Part::Sphere::getClassTypeId()) {
+
+        }
+        else if (type == Part::Ellipsoid::getClassTypeId()) {
+
+        }
+        else if (type == Part::Torus::getClassTypeId()) {
+
+        }
+        else if (type == Part::Prism::getClassTypeId()) {
+
+        }
+        else if (type == Part::Wedge::getClassTypeId()) {
+
+        }
+        else if (type == Part::Helix::getClassTypeId()) {
+            Part::Helix* helix = static_cast<Part::Helix*>(feature);
+            ui.helixPitch->setValue(helix->Pitch.getQuantityValue());
+            ui.helixHeight->setValue(helix->Height.getQuantityValue());
+            ui.helixRadius->setValue(helix->Radius.getQuantityValue());
+            ui.helixAngle->setValue(helix->Angle.getQuantityValue());
+            ui.helixLocalCS->setCurrentIndex(helix->LocalCoord.getValue());
+
+            // ToDo: connect signal if there is a preview of primitives available
+        }
+        else if (type == Part::Spiral::getClassTypeId()) {
+
+        }
+        else if (type == Part::Circle::getClassTypeId()) {
+
+        }
+        else if (type == Part::Ellipse::getClassTypeId()) {
+
+        }
+        else if (type == Part::Vertex::getClassTypeId()) {
+
+        }
+        else if (type == Part::Line::getClassTypeId()) {
+
+        }
+        else if (type == Part::RegularPolygon::getClassTypeId()) {
+
+        }
+    }
 }
 
 /*  
@@ -725,49 +779,103 @@ void DlgPrimitives::createPrimitive(const QString& placement)
 
 void DlgPrimitives::accept(const QString& placement)
 {
-    QString command;
-
-    // get the current object
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (!doc)
+    if (featurePtr.expired())
         return;
-    auto docObj = doc->getDocument()->getObject(ObjectNameSave);
-    auto ObjectName = docObj->getNameInDocument();
+    QString command;
+    App::Document* doc = featurePtr->getDocument();
+    Base::Type type = featurePtr->getTypeId();
+    QString objectName = QString::fromLatin1("App.getDocument(\"%1\").%2")
+                         .arg(QString::fromLatin1(doc->getName()))
+                         .arg(QString::fromLatin1(featurePtr->getNameInDocument()));
 
     // the combox with the primitive type is fixed
     // therefore by reading its state we know what we need to change
-    if (ui.comboBox1->currentIndex() == 9) {  // helix
 
+    // read values from the properties
+    if (type == Part::Plane::getClassTypeId()) {
         command = QString::fromLatin1(
-            "App.ActiveDocument.%1.Pitch=%2\n"
-            "App.ActiveDocument.%1.Height=%3\n"
-            "App.ActiveDocument.%1.Radius=%4\n"
-            "App.ActiveDocument.%1.Angle=%5\n"
-            "App.ActiveDocument.%1.LocalCoord=%6\n"
-            "App.ActiveDocument.%1.Placement=%7\n"
-            "App.ActiveDocument.recompute()\n")
-            .arg(QString::fromLatin1(ObjectName))
+            "%1.Length=%2\n"
+            "%1.Width=%3\n"
+            "%1.Placement=%4\n")
+            .arg(objectName)
+            .arg(ui.planeLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.planeWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::Box::getClassTypeId()) {
+
+    }
+    else if (type == Part::Cylinder::getClassTypeId()) {
+
+    }
+    else if (type == Part::Cone::getClassTypeId()) {
+
+    }
+    else if (type == Part::Sphere::getClassTypeId()) {
+
+    }
+    else if (type == Part::Ellipsoid::getClassTypeId()) {
+
+    }
+    else if (type == Part::Torus::getClassTypeId()) {
+
+    }
+    else if (type == Part::Prism::getClassTypeId()) {
+
+    }
+    else if (type == Part::Wedge::getClassTypeId()) {
+
+    }
+    else if (type == Part::Helix::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.Pitch=%2\n"
+            "%1.Height=%3\n"
+            "%1.Radius=%4\n"
+            "%1.Angle=%5\n"
+            "%1.LocalCoord=%6\n"
+            "%1.Placement=%7\n"
+            "%1.recompute()\n")
+            .arg(objectName)
             .arg(ui.helixPitch->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
             .arg(ui.helixHeight->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
             .arg(ui.helixRadius->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
             .arg(ui.helixAngle->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
             .arg(ui.helixLocalCS->currentIndex())
-            .arg(placement); 
+            .arg(placement);
+    }
+    else if (type == Part::Spiral::getClassTypeId()) {
+
+    }
+    else if (type == Part::Circle::getClassTypeId()) {
+
+    }
+    else if (type == Part::Ellipse::getClassTypeId()) {
+
+    }
+    else if (type == Part::Vertex::getClassTypeId()) {
+
+    }
+    else if (type == Part::Line::getClassTypeId()) {
+
+    }
+    else if (type == Part::RegularPolygon::getClassTypeId()) {
+
     }
 
     // store command for undo
-    doc->openCommand(command.toUtf8());
+    QString cmd = tr("Edit %1").arg(QString::fromUtf8(featurePtr->Label.getValue()));
+    doc->openTransaction(cmd.toLatin1());
     // execute command
     Gui::Command::runCommand(Gui::Command::App, command.toLatin1());
     // commit undo command
-    doc->commitCommand();
+    doc->commitTransaction();
 }
 
 // ----------------------------------------------
 
 /* TRANSLATOR PartGui::Location */
 
-Location::Location(QWidget* parent, bool edit, const char* ObjectName)
+Location::Location(QWidget* parent, Part::Feature* feature)
 {
     Q_UNUSED(parent);
     mode = 0;
@@ -779,30 +887,24 @@ Location::Location(QWidget* parent, bool edit, const char* ObjectName)
     ui.AngleQSB->setUnit(Base::Unit::Angle);
 
     // fill location widget if object already exists
-    if (edit) {
-        // get the primitives object
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if (!doc)
-            return;
-        auto docObj = doc->getDocument()->getObject(ObjectName);
+    if (feature) {
         // get the placement values
-        auto Property = docObj->getPropertyByName("Placement");
-        auto placement = static_cast<const App::PropertyPlacement*>(Property);
+        auto placement = feature->Placement.getValue();
 
-        auto position = placement->getValue().getPosition();
+        auto position = placement.getPosition();
         ui.XPositionQSB->setValue(position.x);
         ui.YPositionQSB->setValue(position.y);
         ui.ZPositionQSB->setValue(position.z);
 
         double rotationAngle;
         Base::Vector3d rotationAxes;
-        auto rotation = placement->getValue().getRotation();
+        auto rotation = placement.getRotation();
         rotation.getRawValue(rotationAxes, rotationAngle);
         ui.XDirectionEdit->setValue(rotationAxes.x);
         ui.YDirectionEdit->setValue(rotationAxes.y);
         ui.ZDirectionEdit->setValue(rotationAxes.z);
         // the angle is in this format: 180° = PI, thus transform it to deg
-        ui.AngleQSB->setValue(rotationAngle*180/M_PI);
+        ui.AngleQSB->setValue(Base::toDegrees<double>(rotationAngle));
     }
 }
 
@@ -925,6 +1027,7 @@ TaskPrimitives::TaskPrimitives()
     location = new Location();
     taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle() ,true, 0);
     taskbox->groupLayout()->addWidget(location);
+    taskbox->hideGroupBox();
     Content.push_back(taskbox);
 }
 
@@ -960,20 +1063,17 @@ bool TaskPrimitives::reject()
 
 /* TRANSLATOR PartGui::TaskPrimitivesEdit */
 
-TaskPrimitivesEdit::TaskPrimitivesEdit(DlgPrimitives::PrimitiveType type, const char* ObjectName)
+TaskPrimitivesEdit::TaskPrimitivesEdit(Part::Primitive* feature)
 {
-    // save object name to be able to access it in accept() since if there are e.g. 3 helices
-    // the last one would be the active object, no matter that one is editing the first one
-    ObjectNameSave = ObjectName;
     // create and show dialog for the primitives
     Gui::TaskView::TaskBox* taskbox;
-    widget = new DlgPrimitives(0, type, true, ObjectName);
+    widget = new DlgPrimitives(nullptr, feature);
     taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
     // create and show dialog for the location
-    location = new Location(0, true, ObjectName);
+    location = new Location(nullptr, feature);
     taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(location);
     Content.push_back(taskbox);
@@ -999,13 +1099,15 @@ void TaskPrimitivesEdit::modifyStandardButtons(QDialogButtonBox* box)
 bool TaskPrimitivesEdit::accept()
 {
     widget->accept(location->toPlacement());
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+    std::string document = getDocumentName(); // needed because resetEdit() deletes this instance
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
     return true;
 }
 
 bool TaskPrimitivesEdit::reject()
 {
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+    std::string document = getDocumentName(); // needed because resetEdit() deletes this instance
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
     return true;
 }
 
