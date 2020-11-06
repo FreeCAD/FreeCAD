@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <Python.h>
+# include <QMenu>
 #endif
 
 #include <Gui/Application.h>

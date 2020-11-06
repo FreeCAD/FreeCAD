@@ -30,6 +30,7 @@
 #include <Mod/Part/Gui/ui_Location.h>
 
 class gp_Ax2;
+class SoPickedPoint;
 class SoEventCallback;
 
 namespace App { class Document; }
