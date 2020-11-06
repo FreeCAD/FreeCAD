@@ -862,9 +862,20 @@ or None if no history.
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="findSubShape" Const="true">
+      <Documentation>
+          <UserDocu>
+findSubShape(shape) -> (type_name, index)
+
+Find sub shape and return the shape type name and index. If not found,
+then return (None, 0)
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="searchSubShape" Const="true" Keyword="true">
       <Documentation>
-        <UserDocu>searchSubShape(shape, needName=False, checkGeometry=True, tol=1e-7, atol=1e-12)
+          <UserDocu>
+searchSubShape(shape, needName=False, checkGeometry=True, tol=1e-7, atol=1e-12) -> Shape
 
 shape: input elementary shape, currently only support Face, Edge, or Vertex
 

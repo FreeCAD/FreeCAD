@@ -2706,6 +2706,27 @@ PyObject* TopoShapePy::defeaturing(PyObject *args)
     } PY_CATCH_OCC
 }
 
+PyObject* TopoShapePy::findSubShape(PyObject *args)
+{
+    PyObject *pyobj;
+    if (!PyArg_ParseTuple(args, "O", &pyobj))
+        return NULL;
+
+    PY_TRY {
+        Py::List res;
+        for (auto & s : getPyShapes(pyobj)) {
+            int index = getTopoShapePtr()->findShape(s.getShape());
+            if (index > 0)
+                res.append(Py::TupleN(Py::String(s.shapeName()), Py::Int(index)));
+            else
+                res.append(Py::TupleN(Py::Object(), Py::Int(0)));
+        }
+        if (PySequence_Check(pyobj))
+            return Py::new_reference_to(res);
+        return Py::new_reference_to(Py::Object(res[0].ptr()));
+    } PY_CATCH_OCC
+}
+
 PyObject *TopoShapePy::searchSubShape(PyObject *args, PyObject *keywds)
 {
     static char *kwlist[] = {"shape", "needName", "checkGeometry", "tol", "atol", NULL};
