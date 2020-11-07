@@ -190,9 +190,6 @@
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Don't retract after every hole&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <property name="locale">
-         <locale language="English" country="UnitedStates"/>
-        </property>
         <property name="text">
          <string>Keep Tool Down</string>
         </property>
