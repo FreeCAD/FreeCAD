@@ -3915,13 +3915,18 @@ TopoShape Sketch::toShape(void) const
     return result;
 #else
     std::list<TopoDS_Edge> edge_list;
+    std::list<TopoDS_Vertex> vertex_list;
     std::list<TopoDS_Wire> wires;
 
     // collecting all (non constructive and non external) edges out of the sketch
     for (;it!=Geoms.end();++it) {
         auto gf = GeometryFacade::getFacade(it->geo);
-        if (!it->external && !gf->getConstruction() && (it->type != Point)) {
-            edge_list.push_back(TopoDS::Edge(it->geo->toShape()));
+        if (!it->external && !gf->getConstruction()) {
+
+            if (it->type != Point)
+                edge_list.push_back(TopoDS::Edge(it->geo->toShape()));
+            else
+                vertex_list.push_back(TopoDS::Vertex(it->geo->toShape()));
         }
     }
 
@@ -3963,9 +3968,10 @@ TopoShape Sketch::toShape(void) const
         wires.push_back(aFix.Wire());
     }
 
-    if (wires.size() == 1)
+    if (wires.size() == 1 && vertex_list.empty()) {
         result = *wires.begin();
-    else if (wires.size() > 1) {
+    }
+    else if (wires.size() > 1 || !vertex_list.empty()) {
         // FIXME: The right way here would be to determine the outer and inner wires and
         // generate a face with holes (inner wires have to be tagged REVERSE or INNER).
         // that's the only way to transport a somewhat more complex sketch...
@@ -3979,6 +3985,8 @@ TopoShape Sketch::toShape(void) const
         TopoDS_Compound comp;
         builder.MakeCompound(comp);
         for (std::list<TopoDS_Wire>::iterator wt = wires.begin(); wt != wires.end(); ++wt)
+            builder.Add(comp, *wt);
+        for (std::list<TopoDS_Vertex>::iterator wt = vertex_list.begin(); wt != vertex_list.end(); ++wt)
             builder.Add(comp, *wt);
         result.setShape(comp);
     }
