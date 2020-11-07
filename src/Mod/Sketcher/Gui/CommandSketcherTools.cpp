@@ -306,13 +306,13 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    // Cancel any in-progress operation
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    SketcherGui::ReleaseHandler(doc);
-
     // get the selection
     std::vector<Gui::SelectionObject> selection;
     selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // Cancel any in-progress operation
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    SketcherGui::ReleaseHandler(doc);
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
