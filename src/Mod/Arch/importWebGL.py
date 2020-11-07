@@ -1,4 +1,5 @@
 #***************************************************************************
+#*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 #*   Copyright (c) 2020 Travis Apple <travisapple@gmail.com>               *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
