@@ -263,7 +263,7 @@ public:
                    boost::starts_with(msg.pSubName,editSub))
                 {
                     for(auto item : ui->elementList->findItems(
-                                QString::fromLatin1(msg.pSubName-editSub.size()),0))
+                                QString::fromLatin1(msg.pSubName-editSub.size()), Qt::MatchExactly))
                         item->setSelected(msg.Type==SelectionChanges::AddSelection);
                 }
             }

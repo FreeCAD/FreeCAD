@@ -417,7 +417,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="41"/>
       <source>Components</source>
-      <translation>Komponente</translation>
+      <translation>Sestavine</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="48"/>
@@ -459,7 +459,7 @@
       <location filename="../../SegmentationManual.ui" line="181"/>
       <location filename="../../SegmentationManual.ui" line="234"/>
       <source>Tolerance</source>
-      <translation>Toleranca</translation>
+      <translation>Dopustno odstopanje</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="148"/>

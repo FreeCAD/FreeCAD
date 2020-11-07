@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -34,7 +32,6 @@ else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 Processed = False
-
 
 def Startup():
     global Processed # pylint: disable=global-statement
@@ -82,6 +79,7 @@ def Startup():
         from PathScripts import PathToolLibraryEditor
         from PathScripts import PathUtilsGui
         # from PathScripts import PathWaterlineGui  # Added in initGui.py due to OCL dependency
+        from PathScripts import PathVcarveGui
         Processed = True
     else:
         PathLog.debug('Skipping PathGui initialisation')

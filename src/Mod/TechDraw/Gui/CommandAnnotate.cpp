@@ -1085,9 +1085,11 @@ void execLine2Points(Gui::Command* cmd)
         for (auto& v2d: vertexNames) {
             int idx = DrawUtil::getIndexFromName(v2d);
             TechDraw::Vertex* v = baseFeat->getProjVertexByIndex(idx);
-            Base::Vector3d p = DrawUtil::invertY(v->pnt);
-            points.push_back(p / scale);
-            is3d.push_back(false);
+            if (v) {
+                Base::Vector3d p = DrawUtil::invertY(v->pnt);
+                points.push_back(p / scale);
+                is3d.push_back(false);
+            }
         }
     }
     //get the 3D points

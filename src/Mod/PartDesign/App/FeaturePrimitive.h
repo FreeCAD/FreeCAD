@@ -318,6 +318,8 @@ public:
     App::PropertyIntegerConstraint Polygon;
     App::PropertyLength Circumradius;
     App::PropertyLength Height;
+    App::PropertyAngle FirstAngle;
+    App::PropertyAngle SecondAngle;
     
     /** @name methods override feature */
     //@{

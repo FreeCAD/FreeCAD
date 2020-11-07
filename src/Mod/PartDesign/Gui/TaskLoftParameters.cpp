@@ -77,11 +77,19 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
 
+    // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    remove->setShortcut(QString::fromLatin1("Del"));
+    remove->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    remove->setShortcutVisibleInContextMenu(true);
+#endif
     ui->listWidgetReferences->addAction(remove);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteSection()));
+
+    connect(ui->listWidgetReferences->model(),
+        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
     this->groupLayout()->addWidget(proxy);
 
@@ -107,6 +115,14 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
         item->setText(label);
         item->setData(Qt::UserRole, QByteArray(obj->getNameInDocument()));
         ui->listWidgetReferences->addItem(item);
+    }
+
+    // get options
+    ui->checkBoxRuled->setChecked(loft->Ruled.getValue());
+    ui->checkBoxClosed->setChecked(loft->Closed.getValue());
+
+    if (!loft->Sections.getValues().empty()) {
+        LoftView->makeTemporaryVisible(true);
     }
 
     // activate and de-activate dialog elements as appropriate
@@ -225,10 +241,9 @@ void TaskLoftParameters::onDeleteSection()
 {
     // Delete the selected profile
     int row = ui->listWidgetReferences->currentRow();
-    QListWidgetItem* item = ui->listWidgetReferences->item(row);
+    QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
     if (item) {
         QByteArray data = item->data(Qt::UserRole).toByteArray();
-        ui->listWidgetReferences->takeItem(row);
         delete item;
 
         // search inside the list of sections
@@ -244,6 +259,27 @@ void TaskLoftParameters::onDeleteSection()
             recomputeFeature();
         }
     }
+}
+
+void TaskLoftParameters::indexesMoved()
+{
+    QAbstractItemModel* model = qobject_cast<QAbstractItemModel*>(sender());
+    if (!model)
+        return;
+
+    PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
+    std::vector<App::DocumentObject*> originals = loft->Sections.getValues();
+
+    QByteArray name;
+    int rows = model->rowCount();
+    for (int i = 0; i < rows; i++) {
+        QModelIndex index = model->index(i, 0);
+        name = index.data(Qt::UserRole).toByteArray().constData();
+        originals[i] = loft->getDocument()->getObject(name.constData());
+    }
+
+    loft->Sections.setValues(originals);
+    recomputeFeature();
 }
 
 void TaskLoftParameters::clearButtons() {

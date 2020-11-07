@@ -114,6 +114,12 @@
 #include <Base/GeometryPyCXX.h>
 #include "Link.h"
 
+#include "DocumentPy.h"
+#include "DocumentObjectGroupPy.h"
+#include "LinkBaseExtensionPy.h"
+#include "OriginGroupExtensionPy.h"
+#include "PartPy.h"
+
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
 // src/Build/Version.h. Or create your own from src/Build/Version.h.in!
@@ -308,6 +314,23 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Base::Interpreter().addType(&Base::TypePy            ::Type,pBaseModule,"TypeId");
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
+
+    // Add document types
+    Base::Interpreter().addType(&App::PropertyContainerPy::Type, pAppModule, "PropertyContainer");
+    Base::Interpreter().addType(&App::ExtensionContainerPy::Type, pAppModule, "ExtensionContainer");
+    Base::Interpreter().addType(&App::DocumentPy::Type, pAppModule, "Document");
+    Base::Interpreter().addType(&App::DocumentObjectPy::Type, pAppModule, "DocumentObject");
+    Base::Interpreter().addType(&App::DocumentObjectGroupPy::Type, pAppModule, "DocumentObjectGroup");
+    Base::Interpreter().addType(&App::GeoFeaturePy::Type, pAppModule, "GeoFeature");
+    Base::Interpreter().addType(&App::PartPy::Type, pAppModule, "Part");
+
+    // Add extension types
+    Base::Interpreter().addType(&App::ExtensionPy::Type, pAppModule, "Extension");
+    Base::Interpreter().addType(&App::DocumentObjectExtensionPy::Type, pAppModule, "DocumentObjectExtension");
+    Base::Interpreter().addType(&App::GroupExtensionPy::Type, pAppModule, "GroupExtension");
+    Base::Interpreter().addType(&App::GeoFeatureGroupExtensionPy::Type, pAppModule, "GeoFeatureGroupExtension");
+    Base::Interpreter().addType(&App::OriginGroupExtensionPy::Type, pAppModule, "OriginGroupExtension");
+    Base::Interpreter().addType(&App::LinkBaseExtensionPy::Type, pAppModule, "LinkBaseExtension");
 
     //insert Base and Console
     Py_INCREF(pBaseModule);
@@ -1690,7 +1713,7 @@ void Application::init(int argc, char ** argv)
 #endif
         initTypes();
 
-#if (BOOST_VERSION < 104600) || (BOOST_FILESYSTEM_VERSION == 2)
+#if (BOOST_FILESYSTEM_VERSION == 2)
         boost::filesystem::path::default_name_check(boost::filesystem::no_check);
 #endif
 
@@ -2104,6 +2127,9 @@ void Application::initApplication(void)
     catch (const Base::Exception& e) {
         e.ReportException();
     }
+    
+    // seed randomizer
+    srand(time(0));
 }
 
 std::list<std::string> Application::getCmdLineFiles()
@@ -2348,22 +2374,9 @@ void Application::LoadParameters(void)
 // fix weird error while linking boost (all versions of VC)
 // VS2010: https://forum.freecadweb.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
 namespace boost { namespace program_options { std::string arg="arg"; } }
-#if (defined (BOOST_VERSION) && (BOOST_VERSION >= 104100))
 namespace boost { namespace program_options {
     const unsigned options_description::m_default_line_length = 80;
 } }
-#endif
-#endif
-
-#if 0 // it seems that SUSE has fixed the broken boost package
-// reported for SUSE in issue #0000208
-#if defined(__GNUC__)
-#if BOOST_VERSION == 104400
-namespace boost { namespace filesystem {
-    bool no_check( const std::string & ) { return true; }
-} }
-#endif
-#endif
 #endif
 
 pair<string, string> customSyntax(const string& s)

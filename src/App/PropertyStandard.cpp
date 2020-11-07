@@ -203,7 +203,7 @@ void PropertyPath::setValue(const boost::filesystem::path &Path)
 void PropertyPath::setValue(const char * Path)
 {
     aboutToSetValue();
-#if (BOOST_VERSION < 104600) || (BOOST_FILESYSTEM_VERSION == 2)
+#if (BOOST_FILESYSTEM_VERSION == 2)
     _cValue = boost::filesystem::path(Path,boost::filesystem::no_check );
     //_cValue = boost::filesystem::path(Path,boost::filesystem::native );
     //_cValue = boost::filesystem::path(Path,boost::filesystem::windows_name );
@@ -220,7 +220,7 @@ boost::filesystem::path PropertyPath::getValue(void) const
 
 PyObject *PropertyPath::getPyObject(void)
 {
-#if (BOOST_VERSION < 104600) || (BOOST_FILESYSTEM_VERSION == 2)
+#if (BOOST_FILESYSTEM_VERSION == 2)
     std::string str = _cValue.native_file_string();
 #else
     std::string str = _cValue.string();
@@ -324,7 +324,20 @@ void PropertyEnumeration::setEnums(const char **plEnums)
     // to be preserved.
     int index = _enum._index;
     _enum.setEnums(plEnums);
-    _enum._index = index;
+    // Make sure not to set an index out of range
+    int max = _enum.maxValue();
+    _enum._index = std::min<int>(index, max);
+}
+
+void PropertyEnumeration::setEnums(const std::vector<std::string> &Enums)
+{
+    if (_enum.isValid()) {
+        const std::string &index = getValueAsString();
+        _enum.setEnums(Enums);
+        setValue(index.c_str());
+    } else {
+        _enum.setEnums(Enums);
+    }
 }
 
 void PropertyEnumeration::setValue(const char *value)

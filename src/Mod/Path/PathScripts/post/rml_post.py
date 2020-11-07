@@ -1,5 +1,5 @@
 #***************************************************************************
-#*   (c) Jon Nordby (jononor@gmail.com) 2015                               *
+#*   Copyright (c) 2015 Jon Nordby <jononor@gmail.com>                     *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -19,7 +19,7 @@
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
-#***************************************************************************/
+#***************************************************************************
 
 
 TOOLTIP='''

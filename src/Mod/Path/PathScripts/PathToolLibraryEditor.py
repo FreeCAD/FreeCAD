@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -49,7 +47,7 @@ class EditorPanel():
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolLibraryEditor.ui")
         self.TLM = ToolLibraryManager.ToolLibraryManager()
         listname = self.TLM.getCurrentTableName()
-        
+
         if listname:
             self.loadToolTables()
 
@@ -79,7 +77,7 @@ class EditorPanel():
         pass
 
     def getType(self, tooltype):
-        "gets a combobox index number for a given type or viceversa"
+        "gets a combobox index number for a given type or vice versa"
         toolslist = Path.Tool.getToolTypes(Path.Tool())
         if isinstance(tooltype, str):
             if tooltype in toolslist:
@@ -90,7 +88,7 @@ class EditorPanel():
             return toolslist[tooltype]
 
     def getMaterial(self, material):
-        '''gets a combobox index number for a given material or viceversa'''
+        '''gets a combobox index number for a given material or vice versa'''
         matslist = Path.Tool.getToolMaterials(Path.Tool())
         if isinstance(material, str):
             if material in matslist:
@@ -159,7 +157,7 @@ class EditorPanel():
         if item:
             number = int(item)
             listname = self.TLM.getCurrentTableName()
-            success, newNum = self.TLM.movedown(number, listname) 
+            success, newNum = self.TLM.movedown(number, listname)
             if success:
                 self.loadTable(listname)
                 self.updateSelection(newNum)
@@ -204,7 +202,7 @@ class EditorPanel():
         ''' updates the ui when tools are selected'''
         if index:
             self.form.ToolsList.selectRow(index.row())
-        
+
         self.form.btnCopyTools.setEnabled(False)
         self.form.ButtonDelete.setEnabled(False)
         self.form.ButtonUp.setEnabled(False)
@@ -224,8 +222,8 @@ class EditorPanel():
 
         # only allow moving or deleting a single tool at a time.
         if checkCount == 1:
-            #make sure the row is highlighted when the check box gets ticked   
-            self.form.ToolsList.selectRow(checkList[0])       
+            #make sure the row is highlighted when the check box gets ticked
+            self.form.ToolsList.selectRow(checkList[0])
             self.form.ButtonDelete.setEnabled(True)
             self.form.ButtonUp.setEnabled(True)
             self.form.ButtonDown.setEnabled(True)
@@ -296,7 +294,7 @@ class EditorPanel():
         if tooldata:
             self.form.ToolsList.setModel(tooldata)
             self.form.ToolsList.resizeColumnsToContents()
-            self.form.ToolsList.horizontalHeader().setResizeMode(self.form.ToolsList.model().columnCount() - 1, QtGui.QHeaderView.Stretch)       
+            self.form.ToolsList.horizontalHeader().setResizeMode(self.form.ToolsList.model().columnCount() - 1, QtGui.QHeaderView.Stretch)
             self.setCurrentToolTableByName(name)
 
     def addNewToolTable(self):
@@ -304,7 +302,7 @@ class EditorPanel():
         name = self.TLM.addNewToolTable()
         self.loadToolTables()
         self.loadTable(name)
-         
+
     def loadToolTables(self):
         ''' Load list of available tool tables '''
         self.form.TableList.clear()
@@ -328,7 +326,7 @@ class EditorPanel():
         ''' reloads the current tooltable'''
         name = self.TLM.getCurrentTableName()
         self.loadTable(name)
-        
+
     def setCurrentToolTableByName(self, name):
         ''' get the current tool table '''
         item = self.getToolTableByName(name)
@@ -347,7 +345,7 @@ class EditorPanel():
         ''' delete the selected tool table '''
         self.TLM.deleteToolTable()
         self.loadToolTables()
-    
+
     def renameTable(self):
         ''' provides dialog for new tablename and renames the selected tool table'''
         name = self.TLM.getCurrentTableName()
@@ -373,10 +371,10 @@ class EditorPanel():
         self.form.ButtonEdit.clicked.connect(self.editTool)
         self.form.ButtonDuplicate.clicked.connect(self.duplicate)
         self.form.btnCopyTools.clicked.connect(self.copyTools)
- 
+
         self.form.ToolsList.doubleClicked.connect(self.editTool)
         self.form.ToolsList.clicked.connect(self.toolSelectionChanged)
- 
+
         self.form.TableList.clicked.connect(self.tableSelected)
         self.form.TableList.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.TableList.itemChanged.connect(self.renameTable)
@@ -391,13 +389,13 @@ class EditorPanel():
         self.setFields()
 
 class ToolTableListWidgetItem(QtGui.QWidget):
-    
+
     toolMoved = QtCore.Signal()
-  
+
     def __init__(self, TLM):
         super(ToolTableListWidgetItem, self).__init__()
-        
-        self.tlm = TLM   
+
+        self.tlm = TLM
         self.setAcceptDrops(True)
 
         self.mainLayout = QtGui.QHBoxLayout()
@@ -420,17 +418,17 @@ class ToolTableListWidgetItem(QtGui.QWidget):
     def dragEnterEvent(self, e):
         currentToolTable = self.tlm.getCurrentTableName()
         thisToolTable = self.getTableName()
-      
+
         if not currentToolTable == thisToolTable:
             e.accept()
         else:
-            e.ignore() 
+            e.ignore()
 
     def dropEvent(self, e):
         selectedTools = e.source().selectedIndexes()
         if selectedTools:
             toolData = selectedTools[1].data()
-        
+
             if toolData:
                 self.tlm.moveToTable(int(toolData), self.getTableName())
                 self.toolMoved.emit()

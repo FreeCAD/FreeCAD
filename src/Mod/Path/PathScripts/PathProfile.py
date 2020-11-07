@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2020 Schildkroet                                        *
@@ -482,12 +480,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         for shape in faces:
                             finalDep = obj.FinalDepth.Value
                             custDepthparams = self.depthparams
-
-                            if obj.Side == 'Inside':
-                                if finalDep < shape.BoundBox.ZMin:
-                                    # Recalculate depthparams
-                                    finalDep = shape.BoundBox.ZMin
-                                    custDepthparams = self._customDepthParams(obj, strDep + 0.5, finalDep)
+                            self._addDebugObject('Rotation_Indiv_Shp', shape)
 
                             if self.expandProfile:
                                 shapeEnv = self._getExpandedProfileEnvelope(obj, shape, False, obj.StartDepth.Value, finalDep)
@@ -557,13 +550,16 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         (norm, surf) = self.getFaceNormAndSurf(shape)
         (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
         PathLog.debug("initial faceRotationAnalysis: {}".format(praInfo))
+
         if rtn is True:
+            # Rotational alignment is suggested from analysis
             (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, subCount)
             # Verify faces are correctly oriented - InverseAngle might be necessary
             faceIA = getattr(clnBase.Shape, sub)
             (norm, surf) = self.getFaceNormAndSurf(faceIA)
             (rtn, praAngle, praAxis, praInfo2) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
             PathLog.debug("follow-up faceRotationAnalysis: {}".format(praInfo2))
+            PathLog.debug("praAngle: {}".format(praAngle))
 
             if abs(praAngle) == 180.0:
                 rtn = False
@@ -573,8 +569,12 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
             if rtn is True:
                 PathLog.debug(translate("Path", "Face appears misaligned after initial rotation."))
-                if obj.InverseAngle is False:
-                    if obj.AttemptInverseAngle is True:
+                if obj.AttemptInverseAngle is True:
+                    PathLog.debug(translate("Path", "Applying inverse angle automatically."))
+                    (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
+                else:
+                    if obj.InverseAngle:
+                        PathLog.debug(translate("Path", "Applying inverse angle manually."))
                         (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
                     else:
                         msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
@@ -743,17 +743,12 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     # f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                     # if planar error, Comment out previous line, uncomment the next two
                     (origWire, flatWire) = self._flattenWire(obj, wire, obj.FinalDepth.Value)
-                    f = origWire.Wires[0]
+                    f = flatWire.Wires[0]
                     if f:
-                        # shift the compound to the bottom of the base object for proper sectioning
-                        zShift = ezMin - f.BoundBox.ZMin
-                        newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), f.Placement.Rotation)
-                        f.Placement = newPlace
-
                         if self.expandProfile:
                             shapeEnv = self._getExpandedProfileEnvelope(obj, Part.Face(f), False, obj.StartDepth.Value, ezMin)
                         else:
-                            shapeEnv = PathUtils.getEnvelope(base.Shape, subshape=f, depthparams=self.depthparams)
+                            shapeEnv = PathUtils.getEnvelope(Part.Face(f), depthparams=self.depthparams)
 
                         if shapeEnv:
                             tup = shapeEnv, False, 'Profile', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value

@@ -25,15 +25,21 @@
 
 #include <QEventLoop>
 #include <QPointer>
+#include <App/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Part/Gui/ui_DlgPrimitives.h>
 #include <Mod/Part/Gui/ui_Location.h>
 
 class gp_Ax2;
+class SoPickedPoint;
 class SoEventCallback;
 
 namespace App { class Document; }
 namespace Gui { class Document; }
+namespace Part {
+class Feature;
+class Primitive;
+}
 namespace PartGui {
 
 class Picker
@@ -60,9 +66,10 @@ class DlgPrimitives : public QWidget
     Q_OBJECT
 
 public:
-    DlgPrimitives(QWidget* parent = 0);
+    DlgPrimitives(QWidget* parent = nullptr, Part::Primitive* feature = nullptr);
     ~DlgPrimitives();
     void createPrimitive(const QString&);
+    void accept(const QString&);
 
 private Q_SLOTS:
     void on_buttonCircleFromThreePoints_clicked();
@@ -73,6 +80,7 @@ private:
 
 private:
     Ui_DlgPrimitives ui;
+    App::DocumentObjectWeakPtrT featurePtr;
 };
 
 class Location : public QWidget
@@ -80,7 +88,7 @@ class Location : public QWidget
     Q_OBJECT
 
 public:
-    Location(QWidget* parent = 0);
+    Location(QWidget* parent = nullptr, Part::Feature* feature = nullptr);
     ~Location();
     QString toPlacement() const;
 
@@ -105,13 +113,31 @@ public:
 public:
     bool accept();
     bool reject();
-
     QDialogButtonBox::StandardButtons getStandardButtons() const;
     void modifyStandardButtons(QDialogButtonBox*);
 
 private:
     DlgPrimitives* widget;
     Location* location;
+};
+
+class TaskPrimitivesEdit : public Gui::TaskView::TaskDialog
+{
+    Q_OBJECT
+
+public:
+    TaskPrimitivesEdit(Part::Primitive* feature);
+    ~TaskPrimitivesEdit();
+    
+public:
+    bool accept();
+    bool reject();
+    QDialogButtonBox::StandardButtons getStandardButtons() const;
+    void modifyStandardButtons(QDialogButtonBox*);
+
+private:
+    DlgPrimitives* widget;
+    Location* location; 
 };
 
 } // namespace PartGui

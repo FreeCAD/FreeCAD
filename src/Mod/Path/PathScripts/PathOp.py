@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -22,16 +20,16 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
+import time
+
+from PySide import QtCore
+
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
-
 from PathScripts.PathUtils import waiting_effects
-from PySide import QtCore
-import time
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -39,7 +37,7 @@ Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "Base class for all operations."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Base class and properties implementation for all Path operations."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
@@ -64,6 +62,7 @@ FeatureBaseFaces    = 0x0400     # Base
 FeatureBasePanels   = 0x0800     # Base
 FeatureLocations    = 0x1000     # Locations
 FeatureCoolant      = 0x2000     # Coolant
+FeatureDiameters    = 0x4000     # Turning Diameters
 
 FeatureBaseGeometry = FeatureBaseVertexes | FeatureBaseFaces | FeatureBaseEdges | FeatureBasePanels
 
@@ -91,6 +90,7 @@ class ObjectOp(object):
         FeatureBasePanels    ... Base geometry support for Arch.Panels
         FeatureLocations     ... Base location support
         FeatureCoolant       ... Support for operation coolant
+        FeatureDiameters     ... Support for turning operation diameters
 
     The base class handles all base API and forwards calls to subclasses with
     an op prefix. For instance, an op is not expected to overwrite onChanged(),
@@ -168,6 +168,10 @@ class ObjectOp(object):
         if FeatureStartPoint & features:
             obj.addProperty("App::PropertyVectorDistance", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("PathOp", "The start point of this path"))
             obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("PathOp", "Make True, if specifying a Start Point"))
+
+        if FeatureDiameters & features:
+            obj.addProperty("App::PropertyDistance", "MinDiameter", "Diameter", QtCore.QT_TRANSLATE_NOOP("PathOp", "Lower limit of the turning diameter"))
+            obj.addProperty("App::PropertyDistance", "MaxDiameter", "Diameter", QtCore.QT_TRANSLATE_NOOP("PathOp", "Upper limit of the turning diameter."))
 
         # members being set later
         self.commandlist = None
@@ -351,6 +355,12 @@ class ObjectOp(object):
             if job.SetupSheet.ClearanceHeightExpression:
                 if not self.applyExpression(obj, 'ClearanceHeight', job.SetupSheet.ClearanceHeightExpression):
                     obj.ClearanceHeight = '5 mm'
+
+        if FeatureDiameters & features:
+            obj.MinDiameter = '0 mm'
+            obj.MaxDiameter = '0 mm'
+            if job.Stock:
+                obj.MaxDiameter = job.Stock.Shape.BoundBox.XLength
 
         if FeatureStartPoint & features:
             obj.UseStartPoint = False

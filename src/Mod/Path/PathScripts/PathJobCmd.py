@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -129,7 +126,7 @@ class CommandJobTemplateExport:
                 "Path - Job Template",
                 PathPreferences.filePath(),
                 "job_*.json")[0]
-        if foo: 
+        if foo:
             if not os.path.basename(foo).startswith('job_'):
                 foo = os.path.join(os.path.dirname(foo), 'job_' + os.path.basename(foo))
             if not foo.endswith('.json'):

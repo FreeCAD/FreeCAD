@@ -651,8 +651,14 @@ QVariant PrintModel::headerData(int section, Qt::Orientation orientation, int ro
 ///////////////////////////////////////////////////////////////////////////////////////
 
 DlgCustomizeSpaceball::DlgCustomizeSpaceball(QWidget *parent)
-  : CustomizeActionPage(parent), buttonView(0), buttonModel(0),
-    commandView(0), commandModel(0), clearButton(0), printReference(0)
+  : CustomizeActionPage(parent)
+  , buttonView(nullptr)
+  , buttonModel(nullptr)
+  , commandView(nullptr)
+  , commandModel(nullptr)
+  , clearButton(nullptr)
+  , printReference(nullptr)
+  , devModel(nullptr)
 {
     this->setWindowTitle(tr("Spaceball Buttons"));
     GUIApplicationNativeEventAware *app = qobject_cast<GUIApplicationNativeEventAware *>(QApplication::instance());

@@ -2387,24 +2387,44 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
     } 
 }
 
-void Document::toggleInSceneGraph(ViewProvider *vp) {
+void Document::toggleInSceneGraph(ViewProvider *vp)
+{
+    // FIXME: What's the point of having this function?
+    //
     for (auto view : d->baseViews) {
         View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
         if (!activeView)
             continue;
+
         auto root = vp->getRoot();
-        if(!root)
+        if (!root)
             continue;
+
         auto scenegraph = dynamic_cast<SoGroup*>(
                 activeView->getViewer()->getSceneGraph());
-        if(!scenegraph)
+        if (!scenegraph)
             continue;
-        int idx = scenegraph->findChild(root);
-        if(idx<0) {
-            if(vp->canAddToSceneGraph())
+
+        // If it cannot be added then only check the top-level nodes
+        if (!vp->canAddToSceneGraph()) {
+            int idx = scenegraph->findChild(root);
+            if (idx >= 0) scenegraph->removeChild(idx);
+        }
+        else {
+            // Do a deep search of the scene because the root node
+            // isn't necessarily a top-level node when claimed by
+            // another view provider.
+            // This is to avoid to add a node twice to the scene.
+            SoSearchAction sa;
+            sa.setNode(root);
+            sa.setSearchingAll(false);
+            sa.apply(scenegraph);
+
+            SoPath* path = sa.getPath();
+            if (!path) {
                 scenegraph->addChild(root);
-        }else if(!vp->canAddToSceneGraph())
-            scenegraph->removeChild(idx);
+            }
+        }
     }
 }
 

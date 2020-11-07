@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -33,7 +31,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Path Engrave Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Engrave operation page controller and command implementation."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())

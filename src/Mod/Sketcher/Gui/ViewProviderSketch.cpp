@@ -616,7 +616,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                             const Gui::View3DInventorViewer *viewer)
 {
     assert(edit);
-    App::AutoTransaction committer;
 
     // Calculate 3d point to the mouse position
     SbLine line;
@@ -1727,7 +1726,15 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                             trans += static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation.getValue();
                         }
 
-                        double x,y;
+                        Base::Placement sketchPlacement = getEditingPlacement();
+                        Base::Vector3d sketchPos(sketchPlacement.getPosition());
+                        Base::Rotation sketchRot(sketchPlacement.getRotation());
+
+                        // get global coordinates from sketcher coordinates
+                        SbVec3f constrPos = absPos + trans*getScaleFactor();
+                        Base::Vector3d pos(constrPos[0],constrPos[1],0);
+                        sketchRot.multVec(pos,pos);
+                        pos = pos + sketchPos;
 
                         SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
 
@@ -1735,13 +1742,10 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                             continue;
 
                         SbViewVolume vol = pCam->getViewVolume();
-
-                        getCoordsOnSketchPlane(x,y,absPos+trans,vol.getProjectionDirection());
-
-                        Gui::ViewVolumeProjection proj(viewer->getSoRenderManager()->getCamera()->getViewVolume());
+                        Gui::ViewVolumeProjection proj(vol);
 
                         // dimensionless [0 1] (or 1.5 see View3DInventorViewer.cpp )
-                        Base::Vector3d screencoords = proj(Base::Vector3d(x,y,0));
+                        Base::Vector3d screencoords = proj(pos);
 
                         int width = viewer->getGLWidget()->width(),
                             height = viewer->getGLWidget()->height();
@@ -2646,7 +2650,7 @@ void ViewProviderSketch::updateColor(void)
         pverts[i].getValue(x,y,z);
         const Part::Geometry * tmp = getSketchObject()->getGeometry(edit->PointIdToGeoId[i]);
         if(tmp && z < zHighlight) {
-            if(tmp->Construction)
+            if(tmp->getConstruction())
                 pverts[i].setValue(x,y,zConstrPoint);
             else
                 pverts[i].setValue(x,y,zNormPoint);
@@ -2679,6 +2683,14 @@ void ViewProviderSketch::updateColor(void)
     float zConstrLine = (topid==2?zHighLines:midid==2?zMidLines:zLowLines);
     float zExtLine = (topid==3?zHighLines:midid==3?zMidLines:zLowLines);
 
+    // use a lambda function to only access the geometry when needed
+    // and properly handle the case where it's null
+    auto isConstructionGeom = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
+        const Part::Geometry* geom = obj->getGeometry(GeoId);
+        if (geom)
+            return geom->getConstruction();
+        return false;
+    };
 
 
     int j=0; // vertexindex
@@ -2720,7 +2732,7 @@ void ViewProviderSketch::updateColor(void)
                 verts[j] = SbVec3f(x,y,zExtLine);
             }
         }
-        else if (getSketchObject()->getGeometry(GeoId)->Construction) {
+        else if (isConstructionGeom(getSketchObject(), GeoId)) {
             color[i] = CurveDraftColor;
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
@@ -3198,8 +3210,7 @@ void ViewProviderSketch::drawConstraintIcons()
 void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
 {
     // getScaleFactor gives us a ratio of pixels per some kind of real units
-    // (Translation: this number is somewhat made-up.)
-    float maxDistSquared = pow(0.05 * getScaleFactor(), 2);
+    float maxDistSquared = pow(getScaleFactor(), 2);
 
     // There's room for optimisation here; we could reuse the combined icons...
     edit->combinedConstrBoxes.clear();
@@ -3219,8 +3230,9 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
                 bool addedToGroup = false;
 
                 for(IconQueue::iterator j = thisGroup.begin();
-                    j != thisGroup.end(); ++j)
-                    if(i->position.equals(j->position, maxDistSquared) && (*i).type != QString::fromLatin1("small/Constraint_Symmetric_sm")) {
+                    j != thisGroup.end(); ++j) {
+                    float distSquared = pow(i->position[0]-j->position[0],2) + pow(i->position[1]-j->position[1],2);
+                    if(distSquared <= maxDistSquared && (*i).type != QString::fromLatin1("small/Constraint_Symmetric_sm")) {
                         // Found an icon in iconQueue that's close enough to
                         // a member of thisGroup, so move it into thisGroup
                         thisGroup.push_back(*i);
@@ -3228,6 +3240,7 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
                         addedToGroup = true;
                         break;
                     }
+                }
 
                 if(addedToGroup) {
                     if(i == iconQueue.end())
@@ -3253,17 +3266,13 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
 
 void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
 {
-    SbVec3f avPos(0, 0, 0);
     for(IconQueue::iterator i = iconQueue.begin(); i != iconQueue.end(); ++i) {
         clearCoinImage(i->destination);
-        avPos = avPos + i->position;
     }
-    avPos = avPos/iconQueue.size();
 
     QImage compositeIcon;
-    float closest = FLT_MAX;  // Closest distance between avPos and any icon
-    SoImage *thisDest = 0;
-    SoInfo *thisInfo = 0;
+    SoImage *thisDest = iconQueue[0].destination;
+    SoInfo *thisInfo = iconQueue[0].infoPtr;
 
     // Tracks all constraint IDs that are combined into this icon
     QString idString;
@@ -3299,23 +3308,11 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
             idString.append(QString::fromLatin1(","));
         idString.append(QString::number(i->constraintId));
 
-        if((avPos - i->position).length() < closest) {
-            thisDest = i->destination;
-            thisInfo = i->infoPtr;
-            closest = (avPos - i->position).length();
-        }
-
         i = iconQueue.erase(i);
         while(i != iconQueue.end()) {
             if(i->type != thisType) {
                 ++i;
                 continue;
-            }
-
-            if((avPos - i->position).length() < closest) {
-                thisDest = i->destination;
-                thisInfo = i->infoPtr;
-                closest = (avPos - i->position).length();
             }
 
             labels.append(i->label);
@@ -5898,7 +5895,7 @@ void ViewProviderSketch::UpdateSolverInformation()
                     edit->FullyConstrained = true;
 
                 if (!hasRedundancies) {
-                    signalSetUp(QString::fromLatin1("<font color='green'>%1</font>").arg(tr("Fully constrained sketch")));
+                    signalSetUp(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span>").arg(tr("Fully constrained sketch")));
                 }
             }
             else if (!hasRedundancies) {
@@ -5908,7 +5905,7 @@ void ViewProviderSketch::UpdateSolverInformation()
                     signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%1 degrees</span></a> of freedom").arg(dofs));
             }
 
-            signalSolved(QString::fromLatin1("<font color='green'>%1</font>").arg(tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime())));
+            signalSolved(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span>").arg(tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime())));
         }
         else {
             signalSolved(QString::fromLatin1("<font color='red'>%1</font>").arg(tr("Unsolved (%1 sec)").arg(getSketchObject()->getLastSolveTime())));
@@ -6397,7 +6394,7 @@ void ViewProviderSketch::deleteSelected()
     if(SubNames.size()>0) {
         App::Document* doc = getSketchObject()->getDocument();
 
-        doc->openTransaction("delete sketch geometry");
+        doc->openTransaction("Delete sketch geometry");
 
         onDelete(SubNames);
 

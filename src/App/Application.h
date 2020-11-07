@@ -398,7 +398,7 @@ public:
     /** Return the links to a given object
      *
      * @param obj: the linked object. If NULL, then all links are returned.
-     * @param option: @sa App::GetLinkOptions
+     * @param option: @sa App::GetLinkOption
      * @param maxCount: limit the number of links returned, 0 means no limit
      */
     std::set<DocumentObject*> getLinksTo(

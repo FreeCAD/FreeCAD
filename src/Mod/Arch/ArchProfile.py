@@ -60,12 +60,12 @@ profilefiles = [os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","pr
 def readPresets():
 
     Presets=[]
+    bid = 1 #Unique index
     for profilefile in profilefiles:
         if os.path.exists(profilefile):
             try:
                 with open(profilefile, "r") as csvfile:
                     beamreader = csv.reader(csvfile)
-                    bid=1 #Unique index
                     for row in beamreader:
                         if (not row) or row[0].startswith("#"):
                             continue

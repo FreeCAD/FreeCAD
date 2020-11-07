@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -237,7 +237,7 @@ int TooltablePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0;
 }
 
-Py::Int TooltablePy::getVersion(void) const 
+Py::Int TooltablePy::getVersion(void) const
 {
     return Py::Int(getTooltablePtr()->Version);
 }

@@ -73,7 +73,7 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
     newwire = None
     delete = None
 
-    if utils.get_type(obj) in ["Sketch","Part"]:
+    if utils.get_type(obj).startswith("Part::") or utils.get_type(obj).startswith("Sketcher::"):
         copy = True
         print("the offset tool is currently unable to offset a non-Draft object directly - Creating a copy")
 

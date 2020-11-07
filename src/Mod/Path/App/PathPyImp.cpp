@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -50,7 +50,7 @@ std::string PathPy::representation(void) const
 
 PyObject *PathPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of PathPy and the Twin object 
+    // create a new instance of PathPy and the Twin object
     return new PathPy(new Toolpath);
 }
 
@@ -68,7 +68,7 @@ int PathPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     getToolpathPtr()->addCommand(cmd);
                 } else {
                     PyErr_SetString(PyExc_TypeError, "The list must contain only Path Commands");
-                    return -1; 
+                    return -1;
                 }
             }
         }
@@ -80,7 +80,7 @@ int PathPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
     PyErr_SetString(PyExc_TypeError, "Argument must be a list of commands or a gcode string");
-    return -1; 
+    return -1;
 }
 
 
@@ -234,7 +234,7 @@ PyObject *PathPy::getCustomAttributes(const char* /*attr*/) const
 
 int PathPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

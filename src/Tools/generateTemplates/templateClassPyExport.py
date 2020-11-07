@@ -279,6 +279,11 @@ public:
 #include <Base/Exception.h>
 #include <CXX/Objects.hxx>
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
 using Base::streq;
 using namespace @self.export.Namespace@;
 
@@ -366,8 +371,12 @@ PyTypeObject @self.export.Name@::Type = {
 #if PY_MAJOR_VERSION >= 3
     ,0                                                /*tp_finalize */
 #endif
-#if PY_VERSION_HEX >= 0x03080000
+#if PY_VERSION_HEX >= 0x03090000
     ,0                                                /*tp_vectorcall */
+#elif PY_VERSION_HEX >= 0x03080000
+    ,0                                                /*tp_vectorcall */
+    /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
+    ,0                                                /*tp_print */
 #endif
 };
 
@@ -887,6 +896,10 @@ int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr
 {
     return static_cast<@self.export.TwinPointer@ *>(_pcTwinPointer);
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 #if 0
 /* From here on come the methods you have to implement, but NOT in this module. Implement in @self.export.Name@Imp.cpp! This prototypes 

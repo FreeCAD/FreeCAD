@@ -33,47 +33,53 @@ __url__ = "https://www.freecadweb.org"
 ## \addtogroup draftguitools
 # @{
 import FreeCAD as App
-
 from draftutils.translate import translate
 
-
-def get_supported_sketcher_objects():
-    return ["Sketch", "Sketcher::SketchObject", 
-            ]
-
-# SKETCH: just if it's composed by a single segment-----------------------
-
-def getSketchPts(obj):
-    """Return the list of edipoints for the given single line sketch.
-
-    (WallTrace)
-    0 : startpoint
-    1 : endpoint
-    """
-    editpoints = []
-    if obj.GeometryCount == 1:
-        editpoints.append(obj.getPoint(0,1))
-        editpoints.append(obj.getPoint(0,2))
-        return editpoints
-    else:
-        _wrn = translate("draft", "Sketch is too complex to edit: "
-                                  "it is suggested to use sketcher default editor")
-        App.Console.PrintWarning(_wrn + "\n")
-        return None
+from draftguitools.gui_edit_base_object import GuiTools
 
 
-def updateSketch(obj, nodeIndex, v):
-    """Move a single line sketch vertex a certain displacement.
+class SketcherSketchObjectGuiTools(GuiTools):
 
-    (single segment sketch object, node index as Int, App.Vector)
-    move a single line sketch (WallTrace) vertex according to a given App.Vector
-    0 : startpoint
-    1 : endpoint
-    """
-    if nodeIndex == 0:
-        obj.movePoint(0, 1, v)
-    elif nodeIndex == 1:
-        obj.movePoint(0, 2, v)
-    obj.recompute()
+    def __init__(self):
+        pass
+
+    def get_edit_points(self, obj):
+        """Return the list of edipoints for the given single line sketch.
+        (WallTrace)
+        0 : startpoint
+        1 : endpoint
+        """
+        editpoints = []
+        if obj.GeometryCount == 1:
+            editpoints.append(obj.getPoint(0,1))
+            editpoints.append(obj.getPoint(0,2))
+            return editpoints
+        else:
+            _wrn = translate("draft", "Sketch is too complex to edit: "
+                                    "it is suggested to use sketcher default editor")
+            App.Console.PrintWarning(_wrn + "\n")
+            return None
+
+
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        """Move a single line sketch vertex a certain displacement.
+
+        (single segment sketch object, node index as Int, App.Vector)
+        move a single line sketch (WallTrace) vertex according to a given App.Vector
+        0 : startpoint
+        1 : endpoint
+        """
+        if node_idx == 0:
+            obj.movePoint(0, 1, v)
+        elif node_idx == 1:
+            obj.movePoint(0, 2, v)
+        obj.recompute()
+
+    def get_edit_point_context_menu(self, obj, node_idx):
+        pass
+    
+    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
+        pass
+
 
 ## @}

@@ -211,7 +211,11 @@ QStringList DlgWorkbenchesImp::load_enabled_workbenches()
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
     enabled_wbs = QString::fromStdString(hGrp->GetASCII("Enabled", all_workbenches.toStdString().c_str()).c_str());
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    enabled_wbs_list = enabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
+#else
     enabled_wbs_list = enabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
+#endif
 
     if (enabled_wbs_list.at(0) == all_workbenches) {
         enabled_wbs_list.removeFirst();
@@ -232,7 +236,11 @@ QStringList DlgWorkbenchesImp::load_disabled_workbenches()
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
     disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", ""));
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    disabled_wbs_list = disabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
+#else
     disabled_wbs_list = disabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
+#endif
 
     return disabled_wbs_list;
 }

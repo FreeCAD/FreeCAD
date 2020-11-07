@@ -36,6 +36,12 @@ With special thanks to marcxs for making the first steps
 #include "GuiApplicationNativeEventAware.h"
 #include <Base/Console.h>
 
+// Suppress warnings to kConnexionMsgDeviceState and tdxAppID
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wfour-char-constants"
+#endif
+
 UInt16 Gui::GuiNativeEvent::tdxClientID = 0;
 uint32_t Gui::GuiNativeEvent::lastButtons = 0;
 

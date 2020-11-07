@@ -146,7 +146,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
     for (std::size_t i=0; i<geom.size(); i++) {
         Part::Geometry* g = geom[i];
 
-        if(g->Construction && !includeconstruction)
+        if(g->getConstruction() && !includeconstruction)
             continue;
 
         if (g->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
@@ -830,7 +830,7 @@ int SketchAnalysis::detectDegeneratedGeometries(double tolerance)
     for (std::size_t i=0; i<geom.size(); i++) {
         Part::Geometry* g = geom[i];
 
-        if (g->Construction)
+        if (g->getConstruction())
             continue;
 
         if (g->getTypeId().isDerivedFrom(Part::GeomCurve::getClassTypeId())) {
@@ -851,7 +851,7 @@ int SketchAnalysis::removeDegeneratedGeometries(double tolerance)
     for (std::size_t i=0; i<geom.size(); i++) {
         Part::Geometry* g = geom[i];
 
-        if (g->Construction)
+        if (g->getConstruction())
             continue;
 
         if (g->getTypeId().isDerivedFrom(Part::GeomCurve::getClassTypeId())) {

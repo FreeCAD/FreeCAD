@@ -97,7 +97,10 @@ void DrawSketchHandler::setCrosshairCursor(const char* svgName) {
     unsigned long color = getCrosshairColor();
     auto colorMapping = std::map<unsigned long, unsigned long>();
     colorMapping[defaultCrosshairColor] = color;
-    setSvgCursor(cursorName, 7, 7, colorMapping);
+    // hot spot of all SVG icons should be 8,8 for 32x32 size (16x16 for 64x64)
+    int hotX = 8;
+    int hotY = 8;
+    setSvgCursor(cursorName, hotX, hotY, colorMapping);
 }
 
 void DrawSketchHandler::setSvgCursor(const QString & cursorName, int x, int y, const std::map<unsigned long, unsigned long>& colorMapping)
@@ -110,8 +113,13 @@ void DrawSketchHandler::setSvgCursor(const QString & cursorName, int x, int y, c
     qreal pRatio = devicePixelRatio();
     bool isRatioOne = (pRatio == 1.0);
     qreal defaultCursorSize = isRatioOne ? 64 : 32;
+#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
+    qreal hotX = x;
+    qreal hotY = y;
+#else
     qreal hotX = x * pRatio;
     qreal hotY = y * pRatio;
+#endif
     qreal cursorSize = defaultCursorSize * pRatio;
 
     QPixmap pointer = Gui::BitmapFactory().pixmapFromSvg(cursorName.toStdString().c_str(), QSizeF(cursorSize, cursorSize), colorMapping);
@@ -147,7 +155,14 @@ void DrawSketchHandler::setCursor(const QPixmap &p,int x,int y, bool autoScale)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
             p1.setDevicePixelRatio(pRatio);
 #endif
-            cursor = QCursor(p1, x * pRatio, y * pRatio);
+#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
+            qreal hotX = x;
+            qreal hotY = y;
+#else
+            qreal hotX = x * pRatio;
+            qreal hotY = y * pRatio;
+#endif
+            cursor = QCursor(p1, hotX, hotY);
         } else {
             // already scaled
             cursor = QCursor(p1, x, y);

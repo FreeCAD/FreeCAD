@@ -311,9 +311,11 @@ CmdMeshPartCurveOnMesh::CmdMeshPartCurveOnMesh()
     sAppModule    = "MeshPart";
     sGroup        = QT_TR_NOOP("Mesh");
     sMenuText     = QT_TR_NOOP("Curve on mesh...");
-    sToolTipText  = QT_TR_NOOP("Curve on mesh");
+    sToolTipText  = QT_TR_NOOP("Creates an approximated curve on top of a mesh.\n"
+                               "This command only works with a 'mesh' object.");
     sWhatsThis    = "MeshPart_CurveOnMesh";
     sStatusTip    = sToolTipText;
+    sPixmap       = "MeshPart_CurveOnMesh";
 }
 
 void CmdMeshPartCurveOnMesh::activated(int)

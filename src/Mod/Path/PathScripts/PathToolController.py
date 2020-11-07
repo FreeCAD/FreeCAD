@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +19,8 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-''' Tool Controller defines tool, spindle speed and feed rates for Path Operations '''
+
+'''Tool Controller defines tool, spindle speed and feed rates for Path Operations'''
 
 import FreeCAD
 import Path

@@ -396,7 +396,11 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
     ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences");
     hGrp = hGrp->GetGroup("ParameterEditor");
     QString path = QString::fromUtf8(hGrp->GetASCII("LastParameterGroup").c_str());
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    QStringList paths = path.split(QLatin1String("."), Qt::SkipEmptyParts);
+#else
     QStringList paths = path.split(QLatin1String("."), QString::SkipEmptyParts);
+#endif
 
     QTreeWidgetItem* parent = 0;
     for (int index=0; index < paramGroup->topLevelItemCount() && !paths.empty(); index++) {
@@ -701,10 +705,17 @@ bool ParameterValue::edit ( const QModelIndex & index, EditTrigger trigger, QEve
 void ParameterValue::contextMenuEvent ( QContextMenuEvent* event )
 {
     QTreeWidgetItem* item = currentItem();
-    if (item && item->isSelected())
+    if (item && item->isSelected()) {
         menuEdit->popup(event->globalPos());
-    else
-        menuNew->popup(event->globalPos());
+    }
+    else {
+        // There is a regression in Qt 5.12.9 where it isn't checked that a sub-menu (here menuNew)
+        // can be popped up without its parent menu (menuEdit) and thus causes a crash.
+        // A workaround is to simply call exec() instead.
+        //
+        //menuNew->popup(event->globalPos());
+        menuNew->exec(event->globalPos());
+    }
 }
 
 void ParameterValue::keyPressEvent (QKeyEvent* event)

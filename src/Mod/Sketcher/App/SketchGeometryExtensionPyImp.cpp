@@ -89,8 +89,6 @@ void SketchGeometryExtensionPy::setId(Py::Long Id)
     this->getSketchGeometryExtensionPtr()->setId(long(Id));
 }
 
-
-
 PyObject *SketchGeometryExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

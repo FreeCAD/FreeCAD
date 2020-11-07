@@ -30,7 +30,7 @@
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderRegularPolygon : public ViewProviderPart
+class PartGuiExport ViewProviderRegularPolygon : public ViewProviderPrimitive
 {
     PROPERTY_HEADER(PartGui::ViewProviderRegularPolygon);
 

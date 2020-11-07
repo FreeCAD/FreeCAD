@@ -579,7 +579,7 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
 
         // Its better not to use BRepFeat_MakePrism here even if we have a support because the
         // resulting shape creates problems with Pocket
-        BRepPrimAPI_MakePrism PrismMaker(from, Ltotal*gp_Vec(dir), 0,1); // finite prism
+        BRepPrimAPI_MakePrism PrismMaker(from, Ltotal*gp_Vec(dir), 0, 1); // finite prism
         if (!PrismMaker.IsDone())
             throw Base::RuntimeError("ProfileBased: Length: Could not extrude the sketch!");
         prism = PrismMaker.Shape();
@@ -1092,7 +1092,14 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
             throw Base::ValueError("No rotation axis reference specified");
         const Part::Feature* refFeature = static_cast<const Part::Feature*>(pcReferenceAxis);
         Part::TopoShape refShape = refFeature->Shape.getShape();
-        TopoDS_Shape ref = refShape.getSubShape(subReferenceAxis[0].c_str());
+        TopoDS_Shape ref;
+        try {
+            // if an exception is raised then convert it into a FreeCAD-specific exception
+            ref = refShape.getSubShape(subReferenceAxis[0].c_str());
+        }
+        catch (const Standard_Failure& e) {
+            throw Base::RuntimeError(e.GetMessageString());
+        }
 
         if (ref.ShapeType() == TopAbs_EDGE) {
             TopoDS_Edge refEdge = TopoDS::Edge(ref);

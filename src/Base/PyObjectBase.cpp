@@ -75,6 +75,11 @@ PyObjectBase::~PyObjectBase()
  * 0 and define tp_base as 0.
  */
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
 PyTypeObject PyObjectBase::Type = {
     PyVarObject_HEAD_INIT(&PyType_Type,0)
     "PyObjectBase",                                         /*tp_name*/
@@ -133,10 +138,18 @@ PyTypeObject PyObjectBase::Type = {
 #if PY_MAJOR_VERSION >= 3
     ,0                                                      /*tp_finalize */
 #endif
-#if PY_VERSION_HEX >= 0x03080000
+#if PY_VERSION_HEX >= 0x03090000
     ,0                                                      /*tp_vectorcall */
+#elif PY_VERSION_HEX >= 0x03080000
+    ,0                                                      /*tp_vectorcall */
+    /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
+    ,0                                                      /*tp_print */
 #endif
 };
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 /*------------------------------
  * PyObjectBase Methods 	-- Every class, even the abstract one should have a Methods

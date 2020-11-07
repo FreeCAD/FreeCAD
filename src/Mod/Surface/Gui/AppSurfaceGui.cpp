@@ -36,6 +36,8 @@
 #include "Workbench.h"
 #include "TaskGeomFillSurface.h"
 #include "TaskFilling.h"
+#include "TaskSections.h"
+#include "ViewProviderExtend.h"
 
 // use a different name to CreateCommand()
 void CreateSurfaceCommands(void);
@@ -79,8 +81,9 @@ PyMOD_INIT_FUNC(SurfaceGui)
     SurfaceGui::Workbench::init();
     SurfaceGui::ViewProviderGeomFillSurface ::init();
     SurfaceGui::ViewProviderFilling         ::init();
-    
-//    SurfaceGui::ViewProviderCut::init();
+    SurfaceGui::ViewProviderSections        ::init();
+    SurfaceGui::ViewProviderExtend::init();
+    // SurfaceGui::ViewProviderCut::init();
 
     PyObject* mod = SurfaceGui::initModule();
     Base::Console().Log("Loading GUI of Surface module... done\n");

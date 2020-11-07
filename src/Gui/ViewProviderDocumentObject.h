@@ -73,6 +73,10 @@ public:
     virtual void hide(void) override;
     /// Show the object in the view
     virtual void show(void) override;
+    /// Is called by the tree if the user double clicks on the object. It returns the string
+    /// for the transaction that will be shown in the undo/redo dialog.
+    /// If null is returned then no transaction will be opened.
+    virtual const char* getTransactionText() const override;
 
     virtual bool canDropObjectEx(App::DocumentObject *, App::DocumentObject *, 
             const char *, const std::vector<std::string> &) const override;
@@ -148,6 +152,9 @@ public:
         return false;
     }
 
+    void setShowable(bool enable);
+    bool isShowable() const;
+
 protected:
     /*! Get the active mdi view of the document this view provider is part of.
       @note The returned mdi view doesn't need to be a 3d view but can be e.g.
@@ -194,14 +201,17 @@ protected:
 
     //@}
 
+    virtual void setModeSwitch() override;
+
 protected:
     App::DocumentObject *pcObject;
     Gui::Document* pcDocument;
 
 private:
+    bool _Showable = true;
+
     std::vector<const char*> aDisplayEnumsArray;
     std::vector<std::string> aDisplayModesArray;
-    bool _UpdatingView;
 
     friend class Document;
 };

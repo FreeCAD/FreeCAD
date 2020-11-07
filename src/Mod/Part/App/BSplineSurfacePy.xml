@@ -668,16 +668,6 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="uIso" Const="true">
-			<Documentation>
-				<UserDocu>Builds the U isoparametric B-Spline curve of this B-Spline surface</UserDocu>
-			</Documentation>
-		</Methode>
-        <Methode Name="vIso" Const="true">
-			<Documentation>
-				<UserDocu>Builds the V isoparametric B-Spline curve of this B-Spline surface</UserDocu>
-			</Documentation>
-		</Methode>
 		<Methode Name="reparametrize" Const="true">
 			<Documentation>
 				<UserDocu>Returns a reparametrized copy of this surface</UserDocu>
@@ -731,6 +721,13 @@
 					arguments: poles (sequence of sequence of Base.Vector), umults, vmults, [uknots, vknots, uperiodic, vperiodic, udegree, vdegree, weights (sequence of sequence of float)]
 				</UserDocu>
 			</Documentation>
-	</Methode>
+		</Methode>
+		<Methode Name="buildFromNSections">
+			<Documentation>
+				<UserDocu>
+					Builds a B-Spline from a list of control curves
+				</UserDocu>
+			</Documentation>
+		</Methode>
 	</PythonExport>
 </GenerateModel>

@@ -64,6 +64,7 @@
         <file>icons/Draft_PlaneProxy.svg</file>
         <file>icons/Draft_Point.svg</file>
         <file>icons/Draft_PointArray.svg</file>
+        <file>icons/Draft_PointLinkArray.svg</file>
         <file>icons/Draft_PolarArray.svg</file>
         <file>icons/Draft_PolarLinkArray.svg</file>
         <file>icons/Draft_Polygon.svg</file>

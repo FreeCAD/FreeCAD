@@ -96,7 +96,7 @@ private:
     TechDraw::DrawViewPart* m_partFeat;
 
     std::string m_edgeName;
-    int m_edgeIndex;
+    //int m_edgeIndex;
     TechDraw::CosmeticEdge* m_ce;
     TechDraw::CosmeticEdge* m_saveCE;
     std::vector<Base::Vector3d> m_points;

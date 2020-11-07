@@ -214,7 +214,7 @@ def read_inp(file_name):
                 try:
                     enode = int(line_list[en])
                     elm_category[number].append(enode)
-                except:
+                except Exception:
                     elm_2nd_line = True
                     break
 

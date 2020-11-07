@@ -25,7 +25,6 @@
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <QEventLoop>
 # include <QMessageBox>
 # include <QTextStream>
 # include <QTimer>
@@ -64,7 +63,6 @@ class SweepWidget::Private
 {
 public:
     Ui_TaskSweep ui;
-    QEventLoop loop;
     QString buttonText;
     std::string document;
     Private()
@@ -148,6 +146,7 @@ SweepWidget::SweepWidget(QWidget* parent)
 SweepWidget::~SweepWidget()
 {
     delete d;
+    Gui::Selection().rmvSelectionGate();
 }
 
 void SweepWidget::findShapes()
@@ -272,7 +271,7 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
 
 bool SweepWidget::accept()
 {
-    if (d->loop.isRunning())
+    if (d->ui.buttonPath->isChecked())
         return false;
     Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
     Gui::SelectionFilter partFilter  ("SELECT Part::Feature COUNT 1");
@@ -361,7 +360,7 @@ bool SweepWidget::accept()
 
 bool SweepWidget::reject()
 {
-    if (d->loop.isRunning())
+    if (d->ui.buttonPath->isChecked())
         return false;
     return true;
 }
@@ -378,9 +377,9 @@ void SweepWidget::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem
     }
 }
 
-void SweepWidget::on_buttonPath_clicked()
+void SweepWidget::on_buttonPath_toggled(bool on)
 {
-    if (!d->loop.isRunning()) {
+    if (on) {
         QList<QWidget*> c = this->findChildren<QWidget*>();
         for (QList<QWidget*>::iterator it = c.begin(); it != c.end(); ++it)
             (*it)->setEnabled(false);
@@ -392,7 +391,6 @@ void SweepWidget::on_buttonPath_clicked()
 
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new Private::EdgeSelection());
-        d->loop.exec();
     }
     else {
         QList<QWidget*> c = this->findChildren<QWidget*>();
@@ -401,7 +399,6 @@ void SweepWidget::on_buttonPath_clicked()
         d->ui.buttonPath->setText(d->buttonText);
         d->ui.labelPath->clear();
         Gui::Selection().rmvSelectionGate();
-        d->loop.quit();
 
         Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
         Gui::SelectionFilter partFilter  ("SELECT Part::Feature COUNT 1");

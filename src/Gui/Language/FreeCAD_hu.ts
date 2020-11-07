@@ -121,6 +121,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Szerkesztés</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -183,7 +190,7 @@
     </message>
     <message>
       <source>Revert to last calculated value (as constant)</source>
-      <translation>Visszatérés a legutóbb számolt értékhez (konstansként)</translation>
+      <translation>Visszatérés az utolsó számított értékre (állandóként)</translation>
     </message>
   </context>
   <context>
@@ -418,7 +425,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Collection</source>
-      <translation type="unfinished">Collection</translation>
+      <translation>Gyűjtemény</translation>
     </message>
   </context>
   <context>
@@ -430,6 +437,14 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Tartományon kívüli</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -610,7 +625,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Verbose description of the new property.</source>
-      <translation type="unfinished">Verbose description of the new property.</translation>
+      <translation>Az új tulajdonság részletes leírása.</translation>
     </message>
     <message>
       <source>Documentation</source>
@@ -622,15 +637,15 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+      <translation>A tulajdonság nevét előválassza a csoport nevével az 'Group_Name' űrlapon, hogy elkerülje a meglévő tulajdonságokkal való ütközéseket.
+Ebben az esetben az előtag automatikusan levágásra kerül, amikor megjelenik a tulajdonságszerkesztőben.
+Azonban a tulajdonságot továbbra is használják a script-ben a teljes névvel, mint a 'obj. Group_Name'.
 
-If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+Ha ez nincs bejelölve, akkor a tulajdonságot egyedileg kell elnevezni, és úgy kell elérni, mint az 'obj. a neve".</translation>
     </message>
     <message>
       <source>Prefix group name</source>
-      <translation type="unfinished">Prefix group name</translation>
+      <translation>Előtagcsoport neve</translation>
     </message>
   </context>
   <context>
@@ -1019,7 +1034,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
+      <translation>%1 modul nincs betöltve</translation>
     </message>
   </context>
   <context>
@@ -1059,16 +1074,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Gombok</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Törlés</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Nyomtatási hivatkozás</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Térbeli mozgatás gombjai</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Alaphelyzetbe állítása</translation>
     </message>
   </context>
   <context>
@@ -1281,23 +1296,23 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Code lines will be numbered </source>
-      <translation>A kód-sorok sorszámozva lesznek </translation>
+      <translation>A kód sorok sorszámozva lesznek </translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation>A &lt;Tab&gt;-ot megnyomva beszúr a bekezdés-betolásnak megfelelő számút</translation>
+      <translation>A &lt;Tab&gt; beszúrja a megadott behúzási méretet</translation>
     </message>
     <message>
       <source>Tabulator raster (how many spaces)</source>
-      <translation>Tabulátor raszter (szóközökben megadva)</translation>
+      <translation>Tabulátor raszter (hány szóköz)</translation>
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
-      <translation>Ennyi szóköz lesz beszúrva a &lt;Tab&gt; megnyomására</translation>
+      <translation>Ennyi szóköz kerül beszúrva a &lt;Tab&gt; megnyomására</translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
-      <translation>A &lt;Tab&gt;-ot megnyomva tabulátor-betolásnak megfelelő méretű tabulátort szúr be</translation>
+      <translation>A &lt;Tab&gt; billentyű megnyomására meghatározott méretű tabulátort szúr be</translation>
     </message>
     <message>
       <source>Display items</source>
@@ -1305,15 +1320,15 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Font size to be used for selected code type</source>
-      <translation>A kiválasztott kód-típushoz használandó fontméret</translation>
+      <translation>A kijelölt kódtípushoz használandó betűméret</translation>
     </message>
     <message>
       <source>Color and font settings will be applied to selected type</source>
-      <translation>A kiválasztott típushoz alkalmazandó szín- és fontbeállítások</translation>
+      <translation>A kiválasztott típushoz alkalmazandó szín- és betű beállítások</translation>
     </message>
     <message>
       <source>Font family to be used for selected code type</source>
-      <translation>A kiválasztott kód-típushoz használandó font család</translation>
+      <translation>A kiválasztott kód típushoz használandó betű család</translation>
     </message>
     <message>
       <source>Color:</source>
@@ -1376,7 +1391,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Language of the application's user interface</source>
-      <translation>Az alkalmazás felhasználói interfészének nyelve</translation>
+      <translation>Az alkalmazás felhasználói felületének nyelve</translation>
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
@@ -1385,20 +1400,20 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Background of the main window will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation>A fő ablak háttere egy képből lesz csempézve. A részleteket lásd a FreeCAD Wiki-ben.</translation>
+      <translation>A fő ablak háttere egy speciális képből kerül csempézésre. A kép részleteihez lásd a FreeCAD Wiki-ben.</translation>
     </message>
     <message>
       <source>Style sheet how user interface will look like</source>
-      <translation>A felhasználói interfész kinézetét megadó stíluslap</translation>
+      <translation>Stíluslap, hogyan fog kinézni a felhasználói felület</translation>
     </message>
     <message>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation>Az eszközsáv ikon mérete. Ízlés szerint, vagy a képernyőméretnek megfelelően állítható be</translation>
+      <translation>Válassza ki az eszköztárikon méretét. Beállíthatja, a képernyő méretének vagy a személyes ízlésnek megfelelően</translation>
     </message>
     <message>
       <source>Tree view mode:</source>
-      <translation>Fa-szerű megjelenítési mód:</translation>
+      <translation>Fa nézet mód:</translation>
     </message>
     <message>
       <source>Customize how tree view is shown in the panel (restart required).
@@ -1406,20 +1421,25 @@ this according to your screen size or personal taste</source>
 'ComboView': combine tree view and property view into one panel.
 'TreeView and PropertyView': split tree view and property view into separate panel.
 'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation>A panelen történő fa megjelenítési mód testre szabása (újraindítás után).
+      <translation>A fanézet panelen való megjelenítésének testreszabása (újraindítás szükséges).
 
-'ComboView': fa és tulajdonságok megjelenítése egyetlen panelen. 'TreeView and PropertyView': fa megjelenítés és tulajdonság megjelenítés elkülönítése két panelre. 'Both': mindhárom panel megtartása, és két-két fa és tulajdonság panel jeleníthető meg.</translation>
+"KombináltNézet": a fanézet és a tulajdonságnézet kombinálása egyetlen panelen.
+'FaNézet és TulajdonságNézet': a fa nézet és a tulajdonság nézet felosztása külön panelre.
+"Mindkettő": tartsa meg mindhárom panelt, és két fanézet- és tulajdonságnézetet használhat.</translation>
     </message>
     <message>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
-      <translation>Az Indítási kép a FreeCAD elindításakor megjelenő kis betöltő ablak. Ha az opció be van jelölve, a FreeCAD megjeleníti az indítóablakot</translation>
+      <translation>A kezdőkép egy kis betöltőablak, amely
+a FreeCAD indulásakor látható. Ha ez az opció be van jelölve, a FreeCAD
+megjeleníti a kezdő képet</translation>
     </message>
     <message>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation>A FreeCAD elindulását követően aktiválódó és megjelenő munkaasztal választható ki</translation>
+      <translation>Válassza ki, hogy melyik munkaterület lesz aktiválva és jelenik meg
+a FreeCAD elindítása után</translation>
     </message>
     <message>
       <source>Words will be wrapped when they exceed available
@@ -1459,11 +1479,11 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
-      <translation>TreeView (fa megjelenítés) és PropertyView (tulajdonság megjelenítés)</translation>
+      <translation>FaNézet és TulajdonságNézet</translation>
     </message>
     <message>
       <source>Both</source>
-      <translation>Both (Mindkettő)</translation>
+      <translation>Mindkettő</translation>
     </message>
   </context>
   <context>
@@ -1629,41 +1649,41 @@ Esetleg fájl jogosultsági hiba?</translation>
     </message>
     <message>
       <source>Guided Walkthrough</source>
-      <translation>Végigvezetés</translation>
+      <translation>Interaktív útmutató</translation>
     </message>
     <message>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
 
 Note: your changes will be applied when you next switch workbenches
 </source>
-      <translation>Végigvezeti egy testreszabott globális eszköztárban ezen makró beállításain. A dialógusokban az útmutató szöveg pirossal jelenik meg.
+      <translation>Ez végigvezeti önt a makró egyéni globális eszköztár beállításán.  Az utasítások piros szöveggel jelennek meg a párbeszédablakon belül.
 
-Megjegyzés: a változtatások csak a következő munkaasztal-váltáskor lépnek életbe
+Megjegyzés: a módosítások csak a következő munkaasztal váltásakor érvényesülnek
 </translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 2</source>
-      <translation>Végigvezetés, 1. dialógus a 2-ből</translation>
+      <translation>Útmutató, 1. dialógus a 2-ből</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
-      <translation>Végigvezetés útmutató: töltse ki az üres mezőket (opcionális) majd kattintson a 'Hozzáad'-ra, végül pedig a 'Bezár'-ra</translation>
+      <translation>Útmutató utasítások: Töltse ki a hiányzó mezőket (nem kötelező), majd kattintson a Hozzáadás, majd a Bezárás gombra</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 1</source>
-      <translation>Végigvezetés, 1. dialógus az 1-ből</translation>
+      <translation>Útmutató, 1. dialógus az 1-ből</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 2 of 2</source>
-      <translation>Végigvezetés, 2. dialógus a 2-ből</translation>
+      <translation>Útmutató, 2. dialógus a 2-ből</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
-      <translation>Végigvezetés útmutató: Kattintson a jobbra nyílra (-&gt;), majd a 'Bezár'-ra.</translation>
+      <translation>Útmutató utasítások: Kattintson a jobbra nyílra (-&gt;), majd a majd a Bezárás gombra.</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
-      <translation>Végigvezetés útmutató: Kattintson az 'Új'-ra, majd a jobbra nyíl (-&gt;) gombra, végül a 'Bezár'-ra.</translation>
+      <translation>Útmutató utasítások: Kattintson az Új, majd a jobbra nyíl (-&gt;) gombra, majd a Bezárás gombra.</translation>
     </message>
   </context>
   <context>
@@ -1833,11 +1853,11 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
-      <translation type="unfinished">Type in a group name to find it</translation>
+      <translation>Írja be a csoport nevét a kereséshez</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Csoport keresés</translation>
     </message>
   </context>
   <context>
@@ -1919,7 +1939,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Csoport keresés</translation>
     </message>
   </context>
   <context>
@@ -2016,7 +2036,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>Program verziója:</translation>
     </message>
   </context>
   <context>
@@ -2093,12 +2113,8 @@ Kérem válasszon másik könyvtárat.</translation>
       <translation>Szűrés típus szerint</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be sychronize with full object hierarchy.</translation>
-    </message>
-    <message>
       <source>Sync sub-object selection</source>
-      <translation>Az al-objektum kiválasztás szinkronizálása</translation>
+      <translation>Alobjektum kijelölése szinkronizálása</translation>
     </message>
     <message>
       <source>Reset</source>
@@ -2107,6 +2123,10 @@ Kérem válasszon másik könyvtárat.</translation>
     <message>
       <source>Clear</source>
       <translation>Törlés</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Ha engedélyezve van, akkor a 3D nézet kiválasztása a teljes objektumhierarchiával szinkronizálásra kerül.</translation>
     </message>
   </context>
   <context>
@@ -2169,97 +2189,99 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Log messages will be recorded</source>
-      <translation>Naplóbejegyzések mentése</translation>
+      <translation>Naplóüzenetek rögzítésre kerülnek</translation>
     </message>
     <message>
       <source>Warnings will be recorded</source>
-      <translation>Figyelmeztetések mentése</translation>
+      <translation>Figyelmeztetések rögzítésre kerülnek</translation>
     </message>
     <message>
       <source>Error messages will be recorded</source>
-      <translation>Hibaüzenetek mentése</translation>
+      <translation>Hibaüzenetek rögzítésre kerülnek</translation>
     </message>
     <message>
       <source>When an error has occurred, the Report View dialog becomes visible
 on-screen while displaying the error</source>
-      <translation>Hiba esetén a képernyőn felugrik a Jelentés (Report View) dialógus, amely kiírja a hibát</translation>
+      <translation>Hiba esetén a Jelentésnézet párbeszédpanel láthatóvá válik
+a képernyőn a hiba megjelenítése közben</translation>
     </message>
     <message>
       <source>Show report view on error</source>
-      <translation type="unfinished">Show report view on error</translation>
+      <translation>Jelentésnézet megjelenítése hiba esetén</translation>
     </message>
     <message>
       <source>When a warning has occurred, the Report View dialog becomes visible
 on-screen while displaying the warning</source>
-      <translation type="unfinished">When a warning has occurred, the Report View dialog becomes visible
-on-screen while displaying the warning</translation>
+      <translation>Figyelmeztetés esetén a Jelentésnézet párbeszédpanel láthatóvá válik
+a képernyőn, miközben megjeleníti a figyelmeztető</translation>
     </message>
     <message>
       <source>Show report view on warning</source>
-      <translation type="unfinished">Show report view on warning</translation>
+      <translation>Jelentésnézet megjelenítése figyelmeztetésre</translation>
     </message>
     <message>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation type="unfinished">When a normal message has occurred, the Report View dialog becomes visible
-on-screen while displaying the message</translation>
+      <translation>Normál üzenet bekövetkezése esetén a Jelentésnézet párbeszédpanel láthatóvá válik
+a képernyőn az üzenet megjelenítése közben</translation>
     </message>
     <message>
       <source>Show report view on normal message</source>
-      <translation type="unfinished">Show report view on normal message</translation>
+      <translation>Jelentésnézet megjelenítése normál üzenetben</translation>
     </message>
     <message>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation type="unfinished">When a log message has occurred, the Report View dialog becomes visible
-on-screen while displaying the log message</translation>
+      <translation>Naplóüzenet bekövetkezése esetén, a Jelentésnézet párbeszédpanel láthatóvá válik
+a képernyőn a naplóüzenet megjelenítése közben</translation>
     </message>
     <message>
       <source>Show report view on log message</source>
-      <translation type="unfinished">Show report view on log message</translation>
+      <translation>Jelentésnézet megjelenítése naplóüzenetben</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
-      <translation>A Jelentés panel normál üzeneteinek font színe</translation>
+      <translation>A normál üzenetek betűszíne a Jelentés nézet panelen</translation>
     </message>
     <message>
       <source>Font color for log messages in Report view panel</source>
-      <translation>Naplóbejegyzés üzenetek font színe a Jelentés panelen</translation>
+      <translation>Naplóüzenetek betűszíne a Jelentés nézet panelen</translation>
     </message>
     <message>
       <source>Font color for warning messages in Report view panel</source>
-      <translation>Figyelmeztető üzenetek font színe a jelentés panelen</translation>
+      <translation>Figyelmeztető üzenetek betűszíne a Jelentés nézet panelen</translation>
     </message>
     <message>
       <source>Font color for error messages in Report view panel</source>
-      <translation>Hibaüzenetek font színe a Jelentés panelen</translation>
+      <translation>Hibaüzenetek betűszíne a Jelentés nézet panelen</translation>
     </message>
     <message>
       <source>Internal Python output will be redirected
 from Python console to Report view panel</source>
-      <translation>A belső Python kimenet átirányítása a Python konzolról a Jelentés panelre</translation>
+      <translation>A belső Python kimenet átirányításra kerül
+a Python konzolról a Jelentés nézet panelre</translation>
     </message>
     <message>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
-      <translation type="unfinished">Internal Python error messages will be redirected
-from Python console to Report view panel</translation>
+      <translation>A belső Python-hibaüzenetek át lesznek irányítva
+a Python konzolról a Jelentés nézet panelre</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>
-      <translation type="unfinished">Include a timecode for each report</translation>
+      <translation>Minden jelentéshez időkód szerepeltetése</translation>
     </message>
     <message>
       <source>Include a timecode for each entry</source>
-      <translation type="unfinished">Include a timecode for each entry</translation>
+      <translation>Minden bejegyzéshez adjon meg egy időkódot</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>Normál üzenetek rögzítésre kerülnek</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>Normál üzenetek rögzítése</translation>
     </message>
   </context>
   <context>
@@ -2366,26 +2388,26 @@ from Python console to Report view panel</translation>
     <message>
       <source>Main coordinate system will always be shown in
 lower right corner within opened files</source>
-      <translation type="unfinished">Main coordinate system will always be shown in
-lower right corner within opened files</translation>
+      <translation>A fő koordináta rendszer mindig a
+jobb alsó sarok a megnyitott fájlokban</translation>
     </message>
     <message>
       <source>Time needed for last operation and resulting frame rate
 will be shown at the lower left corner in opened files</source>
-      <translation type="unfinished">Time needed for last operation and resulting frame rate
-will be shown at the lower left corner in opened files</translation>
+      <translation>Az utolsó művelethez és az eredményül kapott képkockasebességhez szükséges idő
+a bal alsó sarokban jelenik meg a megnyitott fájlokban</translation>
     </message>
     <message>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
-      <translation type="unfinished">If checked, application will remember which workbench is active for each tab of the viewport</translation>
+      <translation>Ha be van jelölve, az alkalmazás megjegyzi, hogy melyik munkaterület aktív a nézetablak minden lapján</translation>
     </message>
     <message>
       <source>Remember active workbench by tab</source>
-      <translation type="unfinished">Remember active workbench by tab</translation>
+      <translation>Aktív munkaterület lap szerinti megjegyzése</translation>
     </message>
     <message>
       <source>Rendering</source>
-      <translation type="unfinished">Rendering</translation>
+      <translation>Igazít</translation>
     </message>
     <message>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
@@ -2398,24 +2420,24 @@ can be rendered directly by GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
-      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU. 
+      <translation>Ha bejelölt, akkor a csúcspontpuffer objektumok (VBO) lesznek használva.
+A VBO egy OpenGL funkció, amely módszereket biztosítják a
+csúcspont adatok (pozíció, normál vektor, szín stb.) a grafikus kártyára töltését.
+A VBOs jelentős teljesítménynövekedést kínál, mivel az adatok
+a grafikus memóriában, nem pedig a rendszermemóriában, és így
+közvetlenül a GPU-val renderelhetők. 
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support on the FreeCAD forums</translation>
+Megjegyzés: Előfordulhat, hogy ez a funkció számos különböző hibát,
+grafikus anomáliáktól a GPU összeomlási hibákig, generál. Ne feledje, hogy
+jelentse ezt a beállítást engedélyezve, amikor támogatást kér a FreeCAD fórumokon</translation>
     </message>
     <message>
       <source>Use OpenGL VBO (Vertex Buffer Object)</source>
-      <translation type="unfinished">Use OpenGL VBO (Vertex Buffer Object)</translation>
+      <translation>OpenGL VBO (Csúcspont pufferobjektum) használata</translation>
     </message>
     <message>
       <source>Render cache</source>
-      <translation type="unfinished">Render cache</translation>
+      <translation>Gyorsítótár leképzése</translation>
     </message>
     <message>
       <source>'Render Caching' is another way to say 'Rendering Acceleration'.
@@ -2425,13 +2447,11 @@ There are 3 options available to achieve this:
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
-      <translation type="unfinished">'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this: 
-1) 'Auto' (default), let Coin3D decide where to cache.
-2) 'Distributed', manually turn on cache for all view provider root node.
-3) 'Centralized', manually turn off cache in all nodes of all view provider, and
-only cache at the scene graph root node. This offers the fastest rendering speed
-but slower response to any scene changes.</translation>
+      <translation>A 'Leképző gyorsítótár' egy másik módja annak, ahogy kimondják a "Leképzési gyorsítótárazás".
+Ennek elérésére 3 lehetőség áll rendelkezésre: 
+1) 'Autó' (alapértelmezett), hagyja Coin3D eldönteni, hogy hova gyorsítótáraz.
+2) 'Elosztott', manuálisan kapcsolja be a gyorsítótárat az összes nézetszolgáltató gyökércsomópontjához.
+3) 'Központosított', manuálisan kapcsolja ki a gyorsítótárat az összes nézetszolgáltató összes csomópontjában, és csak a helyszínen rajzolt grafikus gyökér csomópontot gyorsítja. Ez a leggyorsabb gyorsító sebesség, de lassabban válaszol minden jelenet változásokra.</translation>
     </message>
     <message>
       <source>Auto</source>
@@ -2455,7 +2475,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Render types of transparent objects</source>
-      <translation type="unfinished">Render types of transparent objects</translation>
+      <translation>Áttetsző objektumok gyorsítótárazása</translation>
     </message>
     <message>
       <source>One pass</source>
@@ -2514,6 +2534,18 @@ opening or creation</translation>
     <message>
       <source>Show axis cross by default</source>
       <translation type="unfinished">Show axis cross by default</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Kiválasztott rádiusz (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
     </message>
   </context>
   <context>
@@ -2855,22 +2887,23 @@ icon in the tree view to fully reload it.</translation>
     </message>
     <message>
       <source>Disable partial loading of external linked objects</source>
-      <translation>Tiltja külső csatolt objektumok részleges betöltését</translation>
+      <translation>Külső csatolt objektumok részleges betöltésének letiltása</translation>
     </message>
     <message>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
-      <translation>A létrehozandó dokumentumok az itt megadott szerző névvel jönnek létre. Névtelen dokumentumokhoz hagyjuk üresen.
-A következő forma is használható: Gipsz Jakab &lt;gipjak@pelda.hu&gt;</translation>
+      <translation>Minden létrehozandó dokumentum megkapja a megadott szerző nevét.
+Maradjon üresen, ha névtelen.
+Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     </message>
     <message>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
-      <translation>Az 'Last modified by' (Utoljára módosította) mező a file mentésekor a megadott szerzőt fogja tartalmazni</translation>
+      <translation>A 'Utoljára módosította' mező a fájl mentésekor megadott szerzőre lesz állítva</translation>
     </message>
     <message>
       <source>Default company name to use for new files</source>
-      <translation>Új file-okhoz használandó alapértelmezett cégnév</translation>
+      <translation>Az új fájlokhoz használandó alapértelmezett vállalatnév</translation>
     </message>
     <message>
       <source>Default license for new documents</source>
@@ -2878,27 +2911,27 @@ A következő forma is használható: Gipsz Jakab &lt;gipjak@pelda.hu&gt;</trans
     </message>
     <message>
       <source>Creative Commons Attribution</source>
-      <translation>CreativeCommons Attribution</translation>
+      <translation>Creative Commons hozzárendelés</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-ShareAlike</source>
-      <translation>CreativeCommons Attribution-ShareAlike</translation>
+      <translation>Creative Commons hozzárendelés megosztás egyenlő feltételek mellett</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NoDerivatives</source>
-      <translation>CreativeCommons Attribution-NoDerivatives</translation>
+      <translation>Creative Commons hozzárendelés-nincs szerkesztés</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial</source>
-      <translation>CreativeCommons Attribution-NonCommercial</translation>
+      <translation>CreativeCommons hozzárendelés-nem kereskedelmi</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
-      <translation>CreativeCommons Attribution-NonCommercial-ShareAlike</translation>
+      <translation>Creative Commons Hozzárendelés - Nem kereskedelmi - Megosztás egyenlő feltételek mellett</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
-      <translation>CreativeCommons Attribution-NonCommercial-NoDerivatives</translation>
+      <translation>Creative Commons hozzárendelés-nem kereskedelmi-Származtatások nélkül</translation>
     </message>
     <message>
       <source>URL describing more about the license</source>
@@ -3185,23 +3218,51 @@ A következő forma is használható: Gipsz Jakab &lt;gipjak@pelda.hu&gt;</trans
     </message>
     <message>
       <source>Variables defined by macros are created as local variables</source>
-      <translation>A makrókban definiált változók lokális változókként jönnek létre</translation>
+      <translation>A makrók által definiált változók helyi változóként jönnek létre</translation>
     </message>
     <message>
       <source>Commands executed by macro scripts are shown in Python console</source>
-      <translation>A makró szkriptekben végrehajtott parancsok megjelennek a Python konzolban</translation>
+      <translation>A makróparancsfájlok által végrehajtott parancsok a Python konzolon jelennek meg</translation>
     </message>
     <message>
       <source>Recorded macros will also contain user interface commands</source>
-      <translation>A rögzített makrók felhasználói interfész parancsokat is tartalmaznak</translation>
+      <translation>A rögzített makrók a felhasználói felület parancsait is tartalmazzák</translation>
     </message>
     <message>
       <source>Recorded macros will also contain user interface commands as comments</source>
-      <translation>A rögzített makrók megjegyzésként felhasználói interfész parancsokat is tartalmaznak</translation>
+      <translation>A rögzített makrók a felhasználói felület parancsait is megjegyzésként tartalmazzák</translation>
     </message>
     <message>
       <source>The directory in which the application will search for macros</source>
-      <translation>Az a mappa, ahol az alkalmazás a makrókat keresni fogja</translation>
+      <translation>Az a könyvtár, amelyben az alkalmazás makrókat keres</translation>
+    </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation type="unfinished">Recent macros menu</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation type="unfinished">Size of recent macro list</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation type="unfinished">Shortcut count</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation type="unfinished">Keyboard Modifiers</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
     </message>
   </context>
   <context>
@@ -3485,11 +3546,11 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Number of decimals that should be shown for numbers and dimensions</source>
-      <translation>A számok és méretek megjelenítésekor használt decimális jegyek száma</translation>
+      <translation>A számokhoz és dimenziókhoz feltüntetendő tizedesjegyek száma</translation>
     </message>
     <message>
       <source>Unit system that should be used for all parts the application</source>
-      <translation>Az alkalmazás valamennyi összetevőjében használandó mértékegység-rendszer</translation>
+      <translation>Egységrendszer, amelyet az alkalmazás minden részéhez használni kell</translation>
     </message>
     <message>
       <source>Minimum fractional inch to be displayed</source>
@@ -3497,11 +3558,15 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cft)</source>
-      <translation>Építészet US (ft-in/sqft/cft) (láb-hüvelyk/négyzetláb/köbláb)</translation>
+      <translation>Építészet US (láb-hüvelyk/négyzetláb/köbláb)</translation>
     </message>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation>Imperial építőipari (ft, ft/sec) (láb, láb/sec)</translation>
+      <translation>Imperial polgári mérnöki (láb, láb/sec)</translation>
+    </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation type="unfinished">FEM (mm, N, sec)</translation>
     </message>
   </context>
   <context>
@@ -3539,10 +3604,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation>Egyszínű</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Kiválasztott rádiusz (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Tárgy szerkesztésre kerül</translation>
     </message>
@@ -3552,16 +3613,11 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Enable preselection and highlight by specified color</source>
-      <translation>Engedélyezi a megadott színt az előzetes kiválasztásra és kijelölésre</translation>
+      <translation>Előválasztás és kiemelés engedélyezése megadott színnel</translation>
     </message>
     <message>
       <source>Enable selection highlighting and use specified color</source>
-      <translation>A kijelölés engedélyezése és színének megadása</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation>Elemek kiválasztásának területe 3D nézetben. Nagyobb érték megkönnyíti a kiválasztást, de kisebb dolgok kiválasztását lehetetlenné teheti.</translation>
+      <translation>Kijelölés kiemelésének engedélyezése és megadott szín használata</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -3573,7 +3629,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Color gradient will get selected color as middle color</source>
-      <translation>A kiválasztott szín a színgradiens középső színe lesz</translation>
+      <translation>A színátmenet középső színként lesz kijelölve</translation>
     </message>
     <message>
       <source>Bottom color</source>
@@ -3593,11 +3649,11 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Background color for objects in tree view that are currently edited</source>
-      <translation>Fa nézetben éppen szerkesztett objektumok háttérszíne</translation>
+      <translation>Az aktuálisan szerkesztett fanézetben lévő objektumok háttérszíne</translation>
     </message>
     <message>
       <source>Background color for active containers in tree view</source>
-      <translation>A fa nézetben aktív konténerek háttérszíne</translation>
+      <translation>Az aktív tárolók háttérszíne fanézetben</translation>
     </message>
   </context>
   <context>
@@ -3635,11 +3691,11 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Input the source value and unit</source>
-      <translation>A forrás értékének és mértékegységének bevitele</translation>
+      <translation>Adja meg a forrásértéket és a mértékegységet</translation>
     </message>
     <message>
       <source>Input here the unit for the result</source>
-      <translation>Az eredmény mértékegysége ide kerül</translation>
+      <translation>Adja meg itt a mértékegységet az eredményhez</translation>
     </message>
     <message>
       <source>Result</source>
@@ -3648,7 +3704,8 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <source>List of last used calculations 
 To add a calculation press Return in the value input field</source>
-      <translation>Legutóbbi számolások eredményeinek listája. Újabb számolás hozzáadásához a beviteli mezőben nyomjuk meg az Enter-t</translation>
+      <translation>Az utoljára használt számítások listája 
+Számítás hozzáadásához nyomja meg a Return billentyűt az értékbeviteli mezőben</translation>
     </message>
     <message>
       <source>Quantity</source>
@@ -3661,8 +3718,8 @@ To add a calculation press Return in the value input field</source>
     <message>
       <source>Unit system to be used for the Quantity
 The preference system is the one set in the general preferences.</source>
-      <translation>A Mennyiség-hez használandó mértékegység-rendszer
-Az preferált rendszer az, ami az általános beállításokban be van állítva.</translation>
+      <translation>A mennyiséghez használandó mértékegységrendszer
+Az előnyben részesített rendszer az általános beállításokban beállított érték.</translation>
     </message>
     <message>
       <source>Decimals:</source>
@@ -3670,19 +3727,19 @@ Az preferált rendszer az, ami az általános beállításokban be van állítva
     </message>
     <message>
       <source>Decimals for the Quantity</source>
-      <translation>A Mennyiség Tizedesjegyei</translation>
+      <translation>Tizedesjegyek a mennyiséghez</translation>
     </message>
     <message>
       <source>Unit category:</source>
-      <translation>Mértékegység kategóriája:</translation>
+      <translation>Mértékegység kategória:</translation>
     </message>
     <message>
       <source>Unit category for the Quantity</source>
-      <translation>A Mennyiség mértékegység-kategóriája</translation>
+      <translation>A mennyiségi egység kategóriája</translation>
     </message>
     <message>
       <source>Copy the result into the clipboard</source>
-      <translation>Az eredményt a vágólapra másolja</translation>
+      <translation>Eredmény másolása a vágólapra</translation>
     </message>
   </context>
   <context>
@@ -4263,7 +4320,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <name>Gui::Dialog::RemoteDebugger</name>
     <message>
       <source>Attach to remote debugger</source>
-      <translation>Csatlakozás távoli debuggerhez</translation>
+      <translation>Csatolás távoli hibakeresőhöz</translation>
     </message>
     <message>
       <source>winpdb</source>
@@ -4665,6 +4722,20 @@ El akarja menteni a változásokat?</translation>
     <message>
       <source>PDF file</source>
       <translation>PDF-fájl</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
     </message>
   </context>
   <context>
@@ -5304,6 +5375,21 @@ Ki szeretne lépni az adatok mentése nélkül?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>A fájl nem található</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>A '%1' fájl nem nyitható meg.</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::RevitNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
@@ -5726,7 +5812,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <source>Vietnamese</source>
-      <translation>Vietnámi</translation>
+      <translation>Vietnami</translation>
     </message>
   </context>
   <context>
@@ -5827,7 +5913,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <source>Show hidden tree view items</source>
-      <translation>Fanézetben elrejtett elemek megjelenítése</translation>
+      <translation>Rejtett fanézet elemek megjelenítése</translation>
     </message>
     <message>
       <source>Hide item</source>
@@ -6630,6 +6716,50 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Override colors...</source>
       <translation type="unfinished">Override colors...</translation>
+    </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation type="unfinished">
+
+Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>
+
+Pyhsical path: </source>
+      <translation type="unfinished">
+
+Pyhsical path: </translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation type="unfinished">
+Document: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation type="unfinished">
+  Path: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation type="unfinished">Identical physical path</translation>
     </message>
   </context>
   <context>
@@ -7838,6 +7968,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Makró</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation type="unfinished">Recent macros</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation type="unfinished">Recent macro list</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -8336,11 +8481,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>TreeView actions</source>
-      <translation type="unfinished">TreeView actions</translation>
+      <translation>FaNézet műveletei</translation>
     </message>
     <message>
       <source>TreeView behavior options and actions</source>
-      <translation type="unfinished">TreeView behavior options and actions</translation>
+      <translation>A FaNézet viselkedés beállításai és műveletei</translation>
     </message>
   </context>
   <context>
@@ -8876,14 +9021,14 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>FaNézet</translation>
     </message>
   </context>
   <context>
     <name>StdTreeDrag</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>FaNézet</translation>
     </message>
     <message>
       <source>Initiate dragging</source>
@@ -8902,7 +9047,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>FaNézet</translation>
     </message>
     <message>
       <source>Multi document</source>
@@ -8913,7 +9058,7 @@ Choose 'Abort' to abort</translation>
     <name>StdTreePreSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>FaNézet</translation>
     </message>
     <message>
       <source>Pre-selection</source>
@@ -8928,7 +9073,7 @@ Choose 'Abort' to abort</translation>
     <name>StdTreeRecordSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>FaNézet</translation>
     </message>
     <message>
       <source>Record selection</source>
@@ -8943,7 +9088,7 @@ Choose 'Abort' to abort</translation>
     <name>StdTreeSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>FaNézet</translation>
     </message>
     <message>
       <source>Go to selection</source>
@@ -8962,7 +9107,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>FaNézet</translation>
     </message>
     <message>
       <source>Single document</source>
@@ -8973,7 +9118,7 @@ Choose 'Abort' to abort</translation>
     <name>StdTreeSyncPlacement</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>FaNézet</translation>
     </message>
     <message>
       <source>Sync placement</source>
@@ -8988,7 +9133,7 @@ Choose 'Abort' to abort</translation>
     <name>StdTreeSyncSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>FaNézet</translation>
     </message>
     <message>
       <source>Sync selection</source>
@@ -9003,7 +9148,7 @@ Choose 'Abort' to abort</translation>
     <name>StdTreeSyncView</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>FaNézet</translation>
     </message>
     <message>
       <source>Sync view</source>

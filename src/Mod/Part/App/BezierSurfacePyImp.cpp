@@ -672,41 +672,6 @@ PyObject* BezierSurfacePy::exchangeUV(PyObject *args)
     }
 }
 
-PyObject* BezierSurfacePy::uIso(PyObject * args)
-{
-    double u;
-    if (!PyArg_ParseTuple(args, "d", &u))
-        return 0;
-
-    try {
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast
-            (getGeometryPtr()->handle());
-        Handle(Geom_Curve) c = surf->UIso(u);
-        return new BezierCurvePy(new GeomBezierCurve(Handle(Geom_BezierCurve)::DownCast(c)));
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
-}
-
-PyObject* BezierSurfacePy::vIso(PyObject * args)
-{
-    double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
-        return 0;
-
-    try {
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast
-            (getGeometryPtr()->handle());
-        Handle(Geom_Curve) c = surf->VIso(v);
-        return new BezierCurvePy(new GeomBezierCurve(Handle(Geom_BezierCurve)::DownCast(c)));
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
-}
 Py::Long BezierSurfacePy::getUDegree(void) const
 {
     Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast

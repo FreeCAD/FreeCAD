@@ -61,7 +61,7 @@ void Assistant::showDocumentation(const QString &page)
     if (!page.isEmpty()) {
         QTextStream str(proc);
         str << QLatin1String("setSource qthelp://org.freecad.usermanual/doc/")
-            << page << QLatin1Char('\n') << endl;
+            << page << QLatin1String("\n\n");
     }
 }
 

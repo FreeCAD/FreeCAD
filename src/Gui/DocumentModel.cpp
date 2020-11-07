@@ -628,7 +628,7 @@ Qt::ItemFlags DocumentModel::flags(const QModelIndex &index) const
     //    return Qt::ItemIsEnabled;
     //return QAbstractItemModel::flags(index);
     if (!index.isValid())
-        return 0;
+        return Qt::ItemFlags();
     return static_cast<DocumentModelIndex*>(index.internalPointer())->flags();
 }
 

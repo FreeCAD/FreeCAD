@@ -24,16 +24,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
+# include <QMenu>
 #endif
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <App/Document.h>
+#include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/Control.h>
 
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/PrimitiveFeature.h>
 
 #include "ViewProvider.h"
+#include "DlgPrimitives.h"
 
 
 using namespace PartGui;
@@ -89,6 +95,53 @@ void ViewProviderPart::applyTransparency(const float& transparency,
             if (j->a == 0.0)
                 j->a = transparency/100.0; // transparency comes in percent
         }
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(PartGui::ViewProviderPrimitive, PartGui::ViewProviderPart)
+
+ViewProviderPrimitive::ViewProviderPrimitive()
+{
+}
+
+ViewProviderPrimitive::~ViewProviderPrimitive()
+{
+
+}
+
+void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act;
+    act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
+    ViewProviderPart::setupContextMenu(menu, receiver, member);
+}
+
+bool ViewProviderPrimitive::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        if (Gui::Control().activeDialog())
+            return false;
+        PartGui::TaskPrimitivesEdit* dlg
+            = new PartGui::TaskPrimitivesEdit(dynamic_cast<Part::Primitive*>(getObject()));
+        Gui::Control().showDialog(dlg);
+        return true;
+    }
+    else {
+        ViewProviderPart::setEdit(ModNum);
+        return true;
+    }
+}
+
+void ViewProviderPrimitive::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        ViewProviderPart::unsetEdit(ModNum);
     }
 }
 

@@ -42,6 +42,7 @@
 #include "ViewProviderSketch.h"
 
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Sketcher/Gui/CommandConstraints.h>
 
 #include <Base/Tools.h>
 #include <App/Application.h>
@@ -181,8 +182,8 @@ public:
             static QIcon vdist( Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance") );
             static QIcon horiz( Gui::BitmapFactory().iconFromTheme("Constraint_Horizontal") );
             static QIcon vert ( Gui::BitmapFactory().iconFromTheme("Constraint_Vertical") );
-          //static QIcon lock ( Gui::BitmapFactory().iconFromTheme("Sketcher_ConstrainLock") );
-            static QIcon block ( Gui::BitmapFactory().iconFromTheme("Sketcher_ConstrainBlock") );
+          //static QIcon lock ( Gui::BitmapFactory().iconFromTheme("Constraint_Lock") );
+            static QIcon block ( Gui::BitmapFactory().iconFromTheme("Constraint_Block") );
             static QIcon coinc( Gui::BitmapFactory().iconFromTheme("Constraint_PointOnPoint") );
             static QIcon para ( Gui::BitmapFactory().iconFromTheme("Constraint_Parallel") );
             static QIcon perp ( Gui::BitmapFactory().iconFromTheme("Constraint_Perpendicular") );
@@ -443,6 +444,22 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     QListWidgetItem* item = currentItem();
     QList<QListWidgetItem *> items = selectedItems();
 
+    // Cancel any in-progress operation
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    bool didRelease = SketcherGui::ReleaseHandler(doc);
+
+    // Sync the FreeCAD selection with the selection in the ConstraintView widget
+    if (didRelease) {
+        Gui::Selection().clearSelection();
+        for (auto&& it : items) {
+            auto ci = static_cast<ConstraintItem*>(it);
+            std::string constraint_name = Sketcher::PropertyConstraintList::getConstraintName(ci->ConstraintNbr);
+            std::string doc_name = ci->sketchView->getSketchObject()->getDocument()->getName();
+            std::string obj_name = ci->sketchView->getSketchObject()->getNameInDocument();
+            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), constraint_name.c_str());
+        }
+    }
+
     bool isQuantity = false;
     bool isToggleDriving = false;
     bool isActive = true;
@@ -564,7 +581,7 @@ void ConstraintView::deleteSelectedItems()
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc) return;
 
-    doc->openTransaction("Delete");
+    doc->openTransaction("Delete constraint");
     std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx(doc->getName());
     for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(ft->getObject());

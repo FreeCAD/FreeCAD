@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2020 russ4262 <russ4262@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -2528,11 +2526,11 @@ class OCL_Tool():
         # Engraver or V-bit cutter
         # OCL -> ConeCutter::ConeCutter(diameter, angle, length)
         if (self.diameter == -1.0 or
-            self.cuttingEdgeAngle == -1.0 or self.cutEdgeHeight == -1.0):
+            self.cutEdgeAngle == -1.0 or self.cutEdgeHeight == -1.0):
             return
         self.oclTool = self.ocl.ConeCutter(
                             self.diameter,
-                            self.cuttingEdgeAngle,
+                            self.cutEdgeAngle/2.,
                             self.cutEdgeHeight + self.lengthOffset
                         )
 

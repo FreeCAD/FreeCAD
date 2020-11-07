@@ -371,7 +371,7 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create sketch</source>
-      <translation>Ustvari skico</translation>
+      <translation>Ustvari očrt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
@@ -715,7 +715,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="50"/>
       <source>Base plane</source>
-      <translation>Osnovna ravniva</translation>
+      <translation>Osnovna ravnina</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="51"/>
@@ -746,7 +746,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="14"/>
       <source>Involute parameter</source>
-      <translation>Parameter evolvente</translation>
+      <translation>Določilka evolvente</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="20"/>
@@ -864,7 +864,7 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="305"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1159"/>
       <source>Angle:</source>
-      <translation>Kot:</translation>
+      <translation>Kót:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="251"/>
@@ -893,7 +893,7 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="455"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="646"/>
       <source>U parameter:</source>
-      <translation>Spremenljivka U:</translation>
+      <translation>Določilka U:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="462"/>
@@ -909,12 +909,12 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="669"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="759"/>
       <source>V parameter:</source>
-      <translation>Spremenljivka V:</translation>
+      <translation>Določilka V:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="736"/>
       <source>U Parameter:</source>
-      <translation>Spremenljivka U:</translation>
+      <translation>Določilka U:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="886"/>
@@ -1348,7 +1348,7 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="72"/>
       <source>Base plane</source>
-      <translation>Osnovna ravniva</translation>
+      <translation>Osnovna ravnina</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="73"/>
@@ -1766,12 +1766,12 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
       <source>Standard</source>
-      <translation>Standard</translation>
+      <translation>Običajno</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation>Pritrjen</translation>
+      <translation>Nepremičen</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
@@ -2135,7 +2135,7 @@
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="67"/>
       <source>Angle:</source>
-      <translation>Kot:</translation>
+      <translation>Kót:</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="98"/>
@@ -3135,7 +3135,7 @@ Neglede na to je selitev v bodoče z "Oblikovanje delov -&gt; Preseli" mogoča k
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>
       <source>Tolerance</source>
-      <translation>Toleranca</translation>
+      <translation>Dopustno odstopanje</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="249"/>

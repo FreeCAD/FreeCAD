@@ -35,7 +35,7 @@ macro(PrintFinalReport)
 
     message(STATUS "PyCXX:               [${PYCXX_INCLUDE_DIR}]")
 
-    message(STATUS "OCC:                 ${OCC_VERSION_STRING} [${OCC_LIBRARIES}]")
+    message(STATUS "OCC:                 ${OCC_VERSION_STRING} [${OCC_LIBRARIES}] [${OCC_LIBRARY_DIR}] [${OCC_INCLUDE_DIR}]")
 
     if(BUILD_SMESH)
         if(FREECAD_USE_EXTERNAL_SMESH)

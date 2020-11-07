@@ -1327,9 +1327,11 @@ class _ArchWindowTaskPanel:
         if hasattr(obj.ViewObject,"Proxy"):
             if hasattr(obj.ViewObject.Proxy,"getIcon"):
                 return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
-        if obj.isDerivedFrom("Sketcher::SketchObject"):
+        elif obj.isDerivedFrom("Sketcher::SketchObject"):
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
-        return QtGui.QIcon(":/icons/Tree_Part.svg")
+        elif hasattr(obj.ViewObject, "Icon"):
+            return QtGui.QIcon(obj.ViewObject.Icon)
+        return QtGui.QIcon(":/icons/Part_3D_object.svg")
 
     def update(self):
 
@@ -1355,7 +1357,7 @@ class _ArchWindowTaskPanel:
                     for p in range(0,len(self.obj.WindowParts),5):
                         item = QtGui.QTreeWidgetItem(self.comptree)
                         item.setText(0,self.obj.WindowParts[p])
-                        item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+                        item.setIcon(0, QtGui.QIcon(":/icons/Part_3D_object.svg"))
                 if hasattr(self.obj,"HoleWire"):
                     self.holeNumber.setText(str(self.obj.HoleWire))
                 else:

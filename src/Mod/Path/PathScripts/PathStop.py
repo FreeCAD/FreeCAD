@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +19,8 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-''' Used for CNC machine Stops for Path module. Create an Optional or Mandatory Stop.'''
+
+'''Used for CNC machine Stops for Path module. Create an Optional or Mandatory Stop.'''
 
 import FreeCAD
 import FreeCADGui

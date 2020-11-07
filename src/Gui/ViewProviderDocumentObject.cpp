@@ -71,7 +71,6 @@ PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 ViewProviderDocumentObject::ViewProviderDocumentObject()
   : pcObject(nullptr)
   , pcDocument(nullptr)
-  , _UpdatingView(false)
 {
     static const char *dogroup = "Display Options";
     static const char *sgroup = "Selection";
@@ -236,6 +235,32 @@ void ViewProviderDocumentObject::hide(void)
     }
 }
 
+bool ViewProviderDocumentObject::isShowable() const
+{
+    return _Showable;
+}
+
+void ViewProviderDocumentObject::setShowable(bool enable)
+{
+    if (_Showable == enable)
+        return;
+
+    _Showable = enable;
+    int which = getModeSwitch()->whichChild.getValue();
+    if (_Showable && which == -1 && Visibility.getValue()) {
+        setModeSwitch();
+    }
+    else if (!_Showable) {
+        if (which >= 0)
+            ViewProvider::hide();
+    }
+}
+
+void ViewProviderDocumentObject::setModeSwitch() {
+    if(isShowable())
+        ViewProvider::setModeSwitch();
+}
+
 void ViewProviderDocumentObject::show(void)
 {
     if(TreeWidget::isObjectShowable(getObject()))
@@ -253,6 +278,11 @@ void ViewProviderDocumentObject::show(void)
         Visibility.setValue(true);
         Visibility.setStatus(App::Property::User2, false);
     }
+}
+
+const char* ViewProviderDocumentObject::getTransactionText() const
+{
+    return QT_TRANSLATE_NOOP("Command", "Edit");
 }
 
 void ViewProviderDocumentObject::updateView()

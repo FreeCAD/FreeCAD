@@ -31,7 +31,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Navigation style</source>
-      <translation>Stil navigacije</translation>
+      <translation>Slog krmarjenja</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="68"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
-      <translation>Srednji miškin gumb.</translation>
+      <translation>Srednja miškina tipka.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="74"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or H key.</source>
-      <translation>Srednji gumb miške ali tipka H.</translation>
+      <translation>Srednja miškina tipka ali tipka H.</translation>
     </message>
   </context>
 </TS>

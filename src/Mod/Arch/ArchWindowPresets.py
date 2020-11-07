@@ -170,7 +170,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             fw = str(w2)
             if w2 == w1:
                 fw = "0.00+V"
-            wp.extend(["InnerFrame","Frame","Wire2,Wire3",fw,str(o2)+"+V"])
+            wp.extend(["InnerFrame","Frame","Wire2,Wire3,Edge8,Mode1",fw,str(o2)+"+V"])
             wp.extend(["InnerGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
 
         elif windowtype == "Open 2-pane":
@@ -220,9 +220,9 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             fw = str(w2)
             if w2 == w1:
                 fw = "0.00+V"
-            wp.extend(["LeftFrame","Frame","Wire2,Wire3",fw,str(o2)+"+V"])
+            wp.extend(["LeftFrame","Frame","Wire2,Wire3,Edge8,Mode1",fw,str(o2)+"+V"])
             wp.extend(["LeftGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
-            wp.extend(["RightFrame","Frame","Wire4,Wire5",fw,str(o2)+"+V"])
+            wp.extend(["RightFrame","Frame","Wire4,Wire5,Edge6,Mode2",fw,str(o2)+"+V"])
             wp.extend(["RightGlass","Glass panel","Wire5",str(w2/gla),str(o2+w2/2)+"+V"])
 
         elif windowtype == "Sash 2-pane":
@@ -433,7 +433,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
         elif windowtype == "Simple door":
 
             wp = doorFrame(s,width,height,h1,w1,o1)
-            wp.extend(["Door","Solid panel","Wire1",str(w2),str(o2)+"+V"])
+            wp.extend(["Door","Solid panel","Wire1,Edge8,Mode2",str(w2),str(o2)+"+V"])
 
         elif windowtype == "Glass door":
 
@@ -463,7 +463,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             fw = str(w2)
             if w2 == w1:
                 fw = "0.00+V"
-            wp.extend(["InnerFrame","Frame","Wire2,Wire3",fw,str(o2)+"+V"])
+            wp.extend(["InnerFrame","Frame","Wire2,Wire3,Edge8,Mode1",fw,str(o2)+"+V"])
             wp.extend(["InnerGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
 
         return (s,wp)

@@ -23,7 +23,7 @@
    <item row="0" column="0">
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="Geometry">
       <property name="enabled">
@@ -33,8 +33,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>345</width>
-        <height>373</height>
+        <width>347</width>
+        <height>391</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -111,8 +111,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>345</width>
-        <height>373</height>
+        <width>347</width>
+        <height>391</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -152,20 +152,13 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="Gui::InputField" name="finishDepth">
+        <widget class="Gui::InputField" name="stepDown">
          <property name="unit" stdset="0">
           <string notr="true">mm</string>
          </property>
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QLabel" name="label_13">
-         <property name="text">
-          <string>Finish Depth</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>Step Down</string>
@@ -173,9 +166,16 @@
         </widget>
        </item>
        <item row="3" column="0">
-        <widget class="Gui::InputField" name="stepDown">
+        <widget class="Gui::InputField" name="finishDepth">
          <property name="unit" stdset="0">
           <string notr="true">mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Finish Step Down</string>
          </property>
         </widget>
        </item>
@@ -186,8 +186,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>345</width>
-        <height>373</height>
+        <width>347</width>
+        <height>391</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -236,8 +236,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>345</width>
-        <height>373</height>
+        <width>347</width>
+        <height>391</height>
        </rect>
       </property>
       <attribute name="icon">

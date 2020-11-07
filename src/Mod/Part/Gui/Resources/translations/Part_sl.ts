@@ -127,6 +127,17 @@
       <translation>Sito sestavov</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
+      <source>Filter out objects from a selected compound by characteristics like volume,
+area, or length, or by choosing specific items.
+If a second object is selected, it will be used as reference, for example,
+for collision or distance filtering.</source>
+      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
+area, or length, or by choosing specific items.
+If a second object is selected, it will be used as reference, for example,
+for collision or distance filtering.</translation>
+    </message>
+    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <source>Compound Filter: remove some childs from a compound</source>
       <translation>Sito sestavov: odstrani nekatere podrejenike iz sestava</translation>
@@ -135,6 +146,11 @@
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="68"/>
       <source>Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</source>
       <translation>Najprej izberite obliko, ki je sestav! Drugi izbrani kos bo (neobvezno) obravnavan kot vzorec.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="73"/>
+      <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
+      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
@@ -176,6 +192,13 @@ Klikni "Nadaljuj", če želiš vseeno ustvariti značilnost, ali "Prekini" za pr
       <translation>Razbij sestav</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="58"/>
+      <source>Split up a compound of shapes into separate objects.
+It will create a 'Compound Filter' for each shape.</source>
+      <translation type="unfinished">Split up a compound of shapes into separate objects.
+It will create a 'Compound Filter' for each shape.</translation>
+    </message>
+    <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
       <source>Explode compound: split up a list of shapes into separate objects</source>
       <translation>Razbij sestav: razcepi seznam oblik v ločene predmete</translation>
@@ -184,6 +207,11 @@ Klikni "Nadaljuj", če želiš vseeno ustvariti značilnost, ali "Prekini" za pr
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
       <source>Select a shape that is a compound, first!</source>
       <translation>Najprej izberite obliko, ki je sestav!</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
+      <source>First select a shape that is a compound.</source>
+      <translation type="unfinished">First select a shape that is a compound.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
@@ -233,6 +261,29 @@ Klikni "Nadaljuj", če želiš vseeno ustvariti značilnost, ali "Prekini" za pr
   <context>
     <name>Part_JoinFeatures</name>
     <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
+      <source>Bad selection</source>
+      <translation>Neveljaven izbor</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
+      <source>Continue</source>
+      <translation>Nadaljuj</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
       <source>Computing the result failed with an error: 
 
@@ -246,19 +297,14 @@ Klikni "Nadaljuj", če želiš vseeno ustvariti značilnost, ali "Prekini" za pr
  Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
-      <source>Bad selection</source>
-      <translation>Neveljaven izbor</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
-      <source>Continue</source>
-      <translation>Nadaljuj</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
       <source>Select at least two objects, or one or more compounds, first!</source>
       <translation>Najprej izberite vsaj dva predmeta ali enega oz. več sestavov!</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
+      <source>Select at least two objects, or one or more compounds</source>
+      <translation type="unfinished">Select at least two objects, or one or more compounds</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
@@ -266,26 +312,125 @@ Klikni "Nadaljuj", če želiš vseeno ustvariti značilnost, ali "Prekini" za pr
       <translation>Izberite osnovni predmet, nato predmet za vgradnjo in prikličite to orodje.</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
+      <source>Select base object, then the object to embed, and then invoke this tool.</source>
+      <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
       <translation>Izberite predmet, v katerem želite narediti izrez, nato izberite predmet, kateremu se naj izrez prilega, in prikličite to orodje.</translation>
     </message>
-  </context>
-  <context>
-    <name>Part_MakeTube</name>
     <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-      <source>Create tube</source>
-      <translation>Ustvari cev</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-      <source>Creates a tube</source>
-      <translation>Ustvari cev</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
     </message>
   </context>
   <context>
     <name>Part_SplitFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Neveljaven izbor</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Nadaljuj</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
+      <source>Boolean fragments</source>
+      <translation type="unfinished">Boolean fragments</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
+      <source>Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
+      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Razcepki v sestav</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
+      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Razcepi</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Drobci logične operacije</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Razcepi predmete, kjer se sekajo</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
+      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
+      <translation>Razcepi predmet na presečišču z drugimi predmeti in združi koščke v sestav.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
+      <source>Split object by intersections with other objects.</source>
+      <translation>Razcepi predmet pri presečiščih z drugimi predmeti.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Najprej izberite vsaj dva predmeta! Prvi predmet bo razrezan z ostalimi predmeti.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</translation>
+    </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
       <source>Computing the result failed with an error: 
@@ -300,24 +445,9 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Neveljaven izbor</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
-      <source>Continue</source>
-      <translation>Nadaljuj</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Drobci logične operacije</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Razcepi predmete, kjer se sekajo</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
+      <source>Remove intersection fragments</source>
+      <translation>Odstrani presečne drobce</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
@@ -325,39 +455,46 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
       <translation>Najprej izberitev vsaj dva predmeta ali enega oz. več sestavov! Če je izbran le en sestav, bo med sestavljenimi oblikami izveden presek (sicer so sestavi, ki sekajo sami sebe, neveljavni).</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-      <source>Slice to compound</source>
-      <translation>Razcepki v sestav</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
-      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
-      <translation>Razcepi predmet na presečišču z drugimi predmeti in združi koščke v sestav.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
-      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Najprej izberite vsaj dva predmeta! Prvi predmet bo razrezan z ostalimi predmeti.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-      <source>Slice apart</source>
-      <translation>Razcepi</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
-      <source>Split object by intersections with other objects.</source>
-      <translation>Razcepi predmet pri presečiščih z drugimi predmeti.</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
       <source>Boolean XOR</source>
       <translation>Logična vrednost XOR</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
-      <source>Remove intersection fragments</source>
-      <translation>Odstrani presečne drobce</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="531"/>
+      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</source>
+      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Tube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="85"/>
+      <source>Create tube</source>
+      <translation>Ustvari cev</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="89"/>
+      <source>Creates a tube</source>
+      <translation>Ustvari cev</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
+      <source>Create tube</source>
+      <translation>Ustvari cev</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation>Ustvari cev</translation>
     </message>
   </context>
   <context>
@@ -770,7 +907,7 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
       <location filename="../../AttacherTexts.cpp" line="240"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Dotikalno na površje, vzdolž parametra U. Oglišče povezave določa mesto.</translation>
+      <translation>Dotikalno na površje, vzdolž določilke U. Povezava oglišča določa mesto.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="239"/>
@@ -1518,7 +1655,7 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
       <location filename="../../Command.cpp" line="2357"/>
       <location filename="../../Command.cpp" line="2359"/>
       <source>Box selection</source>
-      <translation>Izbirno polje</translation>
+      <translation>Izbirni kvader</translation>
     </message>
   </context>
   <context>
@@ -1820,7 +1957,7 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
     <message>
       <location filename="../../Command.cpp" line="1722"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation>Orodaj za odmikanje oblik (tvorjenje vzporednih oblik)</translation>
+      <translation>Orodja za odmikanje oblik (tvorjenje vzporednih oblik)</translation>
     </message>
   </context>
   <context>
@@ -2305,12 +2442,12 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
     <message>
       <location filename="../../CommandSimple.cpp" line="109"/>
       <source>Create shape from mesh...</source>
-      <translation>Ustvari obliko iz ploskovja …</translation>
+      <translation>Ustvari obliko iz mreže …</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="110"/>
       <source>Create shape from selected mesh object</source>
-      <translation>Ustvari obliko iz izbranega predmeta ploskovja</translation>
+      <translation>Ustvari obliko iz izbranega mrežnega objekta</translation>
     </message>
   </context>
   <context>
@@ -2925,7 +3062,7 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
       <source>Fillet Parameter</source>
-      <translation>Parameter zaokrožitve</translation>
+      <translation>Določilka zaokrožitve</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="57"/>
@@ -3198,7 +3335,7 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="130"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation>Izpiši krivulje v parametričnem prostoru poršja</translation>
+      <translation>Izpiši krivulje v parametričnem prostoru površine</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="153"/>
@@ -3213,7 +3350,7 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="162"/>
       <source>Enable STEP Compound merge</source>
-      <translation>Omogoči STEP združevanje v sestave</translation>
+      <translation>Omogoči STEP Spajanje sestava</translation>
     </message>
   </context>
   <context>
@@ -3304,7 +3441,7 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="109"/>
       <source>Parameter</source>
-      <translation>Parameter</translation>
+      <translation>Določilka</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="121"/>
@@ -3479,12 +3616,12 @@ Najprej označite eno ali več robnih enot.</translation>
       <location filename="../../DlgPrimitives.ui" line="168"/>
       <location filename="../../DlgPrimitives.cpp" line="664"/>
       <source>Regular polygon</source>
-      <translation>Preprosti mnogokotnik</translation>
+      <translation>Pravilni mnogokotnik</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="180"/>
       <source>Parameter</source>
-      <translation>Parameter</translation>
+      <translation>Določilka</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="223"/>
@@ -3512,7 +3649,7 @@ Najprej označite eno ali več robnih enot.</translation>
       <location filename="../../DlgPrimitives.ui" line="474"/>
       <location filename="../../DlgPrimitives.ui" line="1328"/>
       <source>Angle:</source>
-      <translation>Kot:</translation>
+      <translation>Kót:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="420"/>
@@ -3541,7 +3678,7 @@ Najprej označite eno ali več robnih enot.</translation>
       <location filename="../../DlgPrimitives.ui" line="624"/>
       <location filename="../../DlgPrimitives.ui" line="815"/>
       <source>U parameter:</source>
-      <translation>Spremenljivka U:</translation>
+      <translation>Določilka U:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="631"/>
@@ -3557,12 +3694,12 @@ Najprej označite eno ali več robnih enot.</translation>
       <location filename="../../DlgPrimitives.ui" line="838"/>
       <location filename="../../DlgPrimitives.ui" line="928"/>
       <source>V parameter:</source>
-      <translation>Spremenljivka V:</translation>
+      <translation>Določilka V:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="905"/>
       <source>U Parameter:</source>
-      <translation>Spremenljivka U:</translation>
+      <translation>Določilka U:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1055"/>
@@ -3737,7 +3874,7 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="71"/>
       <source>Angle:</source>
-      <translation>Kot:</translation>
+      <translation>Kót:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="111"/>
@@ -3921,7 +4058,7 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="52"/>
       <source>Automatically refine model after sketch-based operation</source>
-      <translation>Samodejno izpopolni oblikovanec po operacijah na podlagi črtov</translation>
+      <translation>Samodejno izpopolni oblikovanec po operacijah na podlagi očrtov</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="68"/>
@@ -4538,7 +4675,7 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="66"/>
       <source>Box selection</source>
-      <translation>Izbirno polje</translation>
+      <translation>Izbirni kvader</translation>
     </message>
   </context>
   <context>
@@ -4994,12 +5131,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="112"/>
       <source>Invalid Same Parameter Flag</source>
-      <translation>Neveljavna zastavica enakega parametra</translation>
+      <translation>Neveljavna zastavica enake določilke</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="113"/>
       <source>Invalid Degenerated Flag</source>
-      <translation>Neveljavna zastavica popačenosti</translation>
+      <translation>Neveljavna zastavica izrojenosti</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="114"/>
@@ -5285,7 +5422,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Primitives</source>
-      <translation>Osnovne oblike</translation>
+      <translation>Osnovniki</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>

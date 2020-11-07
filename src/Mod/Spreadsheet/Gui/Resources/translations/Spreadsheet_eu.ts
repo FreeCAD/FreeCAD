@@ -366,13 +366,13 @@ Aukeratu gelaxka bakar bat.</translation>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>Aliasak karaktere baliogabeak ditu!</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Egin erreferentzia gelaxkei aliasa erabilita, adibidez
+'KalkuluOrria.nire_aliasa' erabili 'KalkuluOrria.B1' erabili ordez</translation>
     </message>
   </context>
   <context>
@@ -467,8 +467,8 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Egin erreferentzia gelaxkei aliasa erabilita, adibidez
+'KalkuluOrria.nire_aliasa' erabili 'KalkuluOrria.B1' erabili ordez</translation>
     </message>
   </context>
   <context>

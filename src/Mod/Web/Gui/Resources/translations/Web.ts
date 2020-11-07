@@ -128,13 +128,13 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../AppWebGui.cpp" line="80"/>
-        <location filename="../../BrowserView.cpp" line="726"/>
+        <location filename="../../AppWebGui.cpp" line="88"/>
+        <location filename="../../BrowserView.cpp" line="745"/>
         <source>Browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="555"/>
+        <location filename="../../BrowserView.cpp" line="560"/>
         <source>File does not exist!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -142,18 +142,18 @@
 <context>
     <name>WebGui::BrowserView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="546"/>
         <location filename="../../BrowserView.cpp" line="551"/>
+        <location filename="../../BrowserView.cpp" line="556"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="551"/>
+        <location filename="../../BrowserView.cpp" line="556"/>
         <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="697"/>
+        <location filename="../../BrowserView.cpp" line="716"/>
         <source>Loading %1...</source>
         <translation type="unfinished"></translation>
     </message>

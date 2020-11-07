@@ -322,7 +322,7 @@ void ShapeBuilderWidget::createFaceFromVertex()
     }
     else {
         cmd = QString::fromLatin1(
-            "_=Part.makeFilledFace([Part.makePolygon(%1, True)])\n"
+            "_=Part.makeFilledFace(Part.makePolygon(%1, True).Edges)\n"
             "if _.isNull(): raise RuntimeError('Failed to create face')\n"
             "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
             "del _\n"

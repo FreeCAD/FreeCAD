@@ -62,7 +62,7 @@ public:
      * the view will attach to the active document. Be aware, there isn't
      * always an active document.
      */
-    MDIView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=0);
+    MDIView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags());
     /** View destructor
      * Detach the view from the document, if attached.
      */

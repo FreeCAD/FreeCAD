@@ -172,7 +172,7 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
     std::string rowPart;
     boost::regex re{"([A-Z]*)([0-9]*)"};
     boost::smatch what;
-    int iRowStart, iRowEnd;
+    int iRowStart = 0, iRowEnd = 0;
     std::string sColStart, sColEnd;
     if (boost::regex_search(scellstart, what, re)) {
         if (what.size() < 3) {

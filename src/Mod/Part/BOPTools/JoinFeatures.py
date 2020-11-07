@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************/
 
-__title__="BOPTools.JoinFeatures module"
+__title__ = "BOPTools.JoinFeatures module"
 __author__ = "DeepSOIC"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Implementation of document objects (features) for connect, ebmed and cutout operations."
@@ -32,11 +32,11 @@ import Part
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    # -------------------------- common stuff --------------------------------------------------
-    
-    #-------------------------- translation-related code ----------------------------------------
-    #Thanks, yorik! (see forum thread "A new Part tool is being born... JoinFeatures!"
-    #http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239 )
+# -------------------------- common stuff -------------------------------------
+
+# -------------------------- translation-related code -------------------------
+# Thanks, yorik! (see forum thread "A new Part tool is being born... JoinFeatures!"
+# http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239 )
     
     try:
         _fromUtf8 = QtCore.QString.fromUtf8
@@ -53,18 +53,20 @@ if FreeCAD.GuiUp:
 else:
     def _translate(context, text, disambig):
         return text
-    #--------------------------/translation-related code ----------------------------------------
+# --------------------------/translation-related code -------------------------
 
 
 def getParamRefine():
     return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Part/Boolean").GetBool("RefineModel")
 
+
 def cmdCreateJoinFeature(name, mode):
-    "cmdCreateJoinFeature(name, mode): generalized implementation of GUI commands."
+    """cmdCreateJoinFeature(name, mode): generalized implementation of GUI commands."""
     sel = FreeCADGui.Selection.getSelectionEx()
+
     FreeCAD.ActiveDocument.openTransaction("Create "+mode)
     FreeCADGui.addModule("BOPTools.JoinFeatures")
-    FreeCADGui.doCommand("j = BOPTools.JoinFeatures.make{mode}(name = '{name}')".format(mode= mode, name= name))
+    FreeCADGui.doCommand("j = BOPTools.JoinFeatures.make{mode}(name='{name}')".format(mode=mode, name=name))
     if mode == "Embed" or mode == "Cutout":
         FreeCADGui.doCommand("j.Base = App.ActiveDocument."+sel[0].Object.Name)
         FreeCADGui.doCommand("j.Tool = App.ActiveDocument."+sel[1].Object.Name)
@@ -73,7 +75,7 @@ def cmdCreateJoinFeature(name, mode):
            sel= "["  +  ", ".join(["App.ActiveDocument."+so.Object.Name for so in sel])  +  "]"
            ))
     else:
-        raise ValueError("cmdCreateJoinFeature: Unexpected mode {mode}".format(mode= repr(mode)))
+        raise ValueError("cmdCreateJoinFeature: Unexpected mode {mode}".format(mode=repr(mode)))
 
     try:
         FreeCADGui.doCommand("j.Proxy.execute(j)")
@@ -81,13 +83,16 @@ def cmdCreateJoinFeature(name, mode):
     except Exception as err:
         mb = QtGui.QMessageBox()
         mb.setIcon(mb.Icon.Warning)
-        mb.setText(_translate("Part_JoinFeatures","Computing the result failed with an error: \n\n{err}\n\n Click 'Continue' to create the feature anyway, or 'Abort' to cancel.", None)
-                   .format(err= str(err)))
+        mb.setText(_translate("Part_JoinFeatures",
+                              "Computing the result failed with an error:\n\n"
+                              "{err}\n\n"
+                              "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.", None)
+                   .format(err=str(err)))
         mb.setWindowTitle(_translate("Part_JoinFeatures","Bad selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
-        btnOK = mb.addButton(_translate("Part_JoinFeatures","Continue",None), QtGui.QMessageBox.ButtonRole.ActionRole)
+        btnOK = mb.addButton(_translate("Part_JoinFeatures","Continue",None),
+                             QtGui.QMessageBox.ButtonRole.ActionRole)
         mb.setDefaultButton(btnOK)
-
         mb.exec_()
 
         if mb.clickedButton() is btnAbort:
@@ -99,12 +104,13 @@ def cmdCreateJoinFeature(name, mode):
 
     FreeCAD.ActiveDocument.commitTransaction()
 
+
 def getIconPath(icon_dot_svg):
-    return ":/icons/" + icon_dot_svg
+    return icon_dot_svg
 
-# -------------------------- /common stuff --------------------------------------------------
+# -------------------------- /common stuff ------------------------------------
 
-# -------------------------- Connect --------------------------------------------------
+# -------------------------- Connect ------------------------------------------
 
 def makeConnect(name):
     '''makeConnect(name): makes an Connect object.'''
@@ -114,13 +120,18 @@ def makeConnect(name):
         ViewProviderConnect(obj.ViewObject)
     return obj
 
+
 class FeatureConnect:
-    "The PartJoinFeature object"
+    """The PartJoinFeature object."""
+
     def __init__(self,obj):
         obj.addProperty("App::PropertyLinkList","Objects","Connect","Object to be connectded.")
-        obj.addProperty("App::PropertyBool","Refine","Connect","True = refine resulting shape. False = output as is.")
+        obj.addProperty("App::PropertyBool","Refine","Connect",
+                        "True = refine resulting shape. False = output as is.")
         obj.Refine = getParamRefine()
-        obj.addProperty("App::PropertyLength","Tolerance","Connect","Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
+        obj.addProperty("App::PropertyLength","Tolerance","Connect",
+                        "Tolerance when intersecting (fuzzy value). "
+                        "In addition to tolerances of the shapes.")
 
         obj.Proxy = self
         self.Type = "FeatureConnect"
@@ -133,7 +144,7 @@ class FeatureConnect:
 
 
 class ViewProviderConnect:
-    "A View Provider for the Part Connect feature"
+    """A View Provider for the Part Connect feature."""
 
     def __init__(self,vobj):
         vobj.Proxy = self
@@ -179,20 +190,23 @@ class ViewProviderConnect:
 
 
 class CommandConnect:
-    "Command to create Connect feature"
+    """Command to create Connect feature."""
+
     def GetResources(self):
-        return {'Pixmap'  : getIconPath("Part_JoinConnect.svg"),
+        return {'Pixmap': getIconPath("Part_JoinConnect.svg"),
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinConnect","Connect objects"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinConnect","Fuses objects, taking care to preserve voids.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinConnect",
+                                                    "Fuses objects, taking care to preserve voids.")}
 
     def Activated(self):
-        if len(FreeCADGui.Selection.getSelectionEx()) >= 1 :
-            cmdCreateJoinFeature(name = "Connect", mode = "Connect")
+        if len(FreeCADGui.Selection.getSelectionEx()) >= 1:
+            cmdCreateJoinFeature(name="Connect", mode="Connect")
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(_translate("Part_JoinFeatures", "Select at least two objects, or one or more compounds, first!", None))
+            mb.setText(_translate("Part_JoinFeatures",
+                                  "Select at least two objects, or one or more compounds", None))
             mb.setWindowTitle(_translate("Part_JoinFeatures","Bad selection", None))
             mb.exec_()
 
@@ -202,10 +216,10 @@ class CommandConnect:
         else:
             return False
 
-# -------------------------- /Connect --------------------------------------------------
+# -------------------------- /Connect -----------------------------------------
 
 
-# -------------------------- Embed --------------------------------------------------
+# -------------------------- Embed --------------------------------------------
 
 
 def makeEmbed(name):
@@ -216,14 +230,19 @@ def makeEmbed(name):
         ViewProviderEmbed(obj.ViewObject)
     return obj
 
+
 class FeatureEmbed:
-    "The Part Embed object"
+    """The Part Embed object."""
+
     def __init__(self,obj):
         obj.addProperty("App::PropertyLink","Base","Embed","Object to embed into.")
         obj.addProperty("App::PropertyLink","Tool","Embed","Object to be embedded.")
-        obj.addProperty("App::PropertyBool","Refine","Embed","True = refine resulting shape. False = output as is.")
+        obj.addProperty("App::PropertyBool","Refine","Embed",
+                        "True = refine resulting shape. False = output as is.")
         obj.Refine = getParamRefine()
-        obj.addProperty("App::PropertyLength","Tolerance","Embed","Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
+        obj.addProperty("App::PropertyLength","Tolerance","Embed",
+                        "Tolerance when intersecting (fuzzy value). "
+                        "In addition to tolerances of the shapes.")
 
         obj.Proxy = self
         self.Type = "FeatureEmbed"
@@ -236,7 +255,7 @@ class FeatureEmbed:
 
 
 class ViewProviderEmbed:
-    "A View Provider for the Part Embed feature"
+    """A View Provider for the Part Embed feature."""
 
     def __init__(self,vobj):
         vobj.Proxy = self
@@ -265,24 +284,28 @@ class ViewProviderEmbed:
             FreeCAD.Console.PrintError("Error in onDelete: " + str(err))
         return True
 
+
 class CommandEmbed:
-    "Command to create Part Embed feature"
+    """Command to create Part Embed feature."""
+
     def GetResources(self):
-        return {'Pixmap'  : getIconPath("Part_JoinEmbed.svg"),
+        return {'Pixmap': getIconPath("Part_JoinEmbed.svg"),
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinEmbed","Embed object"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinEmbed","Fuses one object into another, taking care to preserve voids.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinEmbed",
+                                                    "Fuses one object into another, taking care to preserve voids.")}
 
     def Activated(self):
-        if len(FreeCADGui.Selection.getSelectionEx()) == 2 :
+        if len(FreeCADGui.Selection.getSelectionEx()) == 2:
             cmdCreateJoinFeature(name = "Embed", mode = "Embed")
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(_translate("Part_JoinFeatures","Select base object, then the object to embed, and invoke this tool.", None))
+            mb.setText(_translate("Part_JoinFeatures",
+                                  "Select base object, then the object to embed, "
+                                  "and then invoke this tool.", None))
             mb.setWindowTitle(_translate("Part_JoinFeatures","Bad selection", None))
             mb.exec_()
-
 
     def IsActive(self):
         if FreeCAD.ActiveDocument:
@@ -290,11 +313,10 @@ class CommandEmbed:
         else:
             return False
 
-# -------------------------- /Embed --------------------------------------------------
+# -------------------------- /Embed -------------------------------------------
 
 
-
-# -------------------------- Cutout --------------------------------------------------
+# -------------------------- Cutout -------------------------------------------
 
 def makeCutout(name):
     '''makeCutout(name): makes an Cutout object.'''
@@ -304,14 +326,18 @@ def makeCutout(name):
         ViewProviderCutout(obj.ViewObject)
     return obj
 
+
 class FeatureCutout:
-    "The Part Cutout object"
+    """The Part Cutout object."""
+
     def __init__(self,obj):
         obj.addProperty("App::PropertyLink","Base","Cutout","Object to be cut.")
         obj.addProperty("App::PropertyLink","Tool","Cutout","Object to make cutout for.")
-        obj.addProperty("App::PropertyBool","Refine","Cutout","True = refine resulting shape. False = output as is.")
+        obj.addProperty("App::PropertyBool","Refine","Cutout",
+                        "True = refine resulting shape. False = output as is.")
         obj.Refine = getParamRefine()
-        obj.addProperty("App::PropertyLength","Tolerance","Cutout","Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
+        obj.addProperty("App::PropertyLength","Tolerance","Cutout",
+                        "Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
 
         obj.Proxy = self
         self.Type = "FeatureCutout"
@@ -324,7 +350,7 @@ class FeatureCutout:
 
 
 class ViewProviderCutout:
-    "A View Provider for the Part Cutout feature"
+    """A View Provider for the Part Cutout feature."""
 
     def __init__(self,vobj):
         vobj.Proxy = self
@@ -355,20 +381,25 @@ class ViewProviderCutout:
 
 
 class CommandCutout:
-    "Command to create PartJoinFeature in Cutout mode"
+    """Command to create PartJoinFeature in Cutout mode."""
+
     def GetResources(self):
-        return {'Pixmap'  : getIconPath("Part_JoinCutout.svg"),
+        return {'Pixmap': getIconPath("Part_JoinCutout.svg"),
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinCutout","Cutout for object"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinCutout","Makes a cutout in one object to fit another object.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinCutout",
+                                                    "Makes a cutout in one object to fit another object.")}
 
     def Activated(self):
-        if len(FreeCADGui.Selection.getSelectionEx()) == 2 :
-            cmdCreateJoinFeature(name = "Cutout", mode = "Cutout")
+        if len(FreeCADGui.Selection.getSelectionEx()) == 2:
+            cmdCreateJoinFeature(name="Cutout", mode="Cutout")
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(_translate("Part_JoinFeatures","Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.", None))
+            mb.setText(_translate("Part_JoinFeatures",
+                                  "Select the object to make a cutout in, "
+                                  "then the object that should fit into the cutout, "
+                                  "and then invoke this tool.", None))
             mb.setWindowTitle(_translate("Part_JoinFeatures","Bad selection", None))
             mb.exec_()
 
@@ -378,9 +409,9 @@ class CommandCutout:
         else:
             return False
 
-# -------------------------- /Cutout --------------------------------------------------
+# -------------------------- /Cutout ------------------------------------------
 
 def addCommands():
-    FreeCADGui.addCommand('Part_JoinCutout',CommandCutout())
-    FreeCADGui.addCommand('Part_JoinEmbed',CommandEmbed())
-    FreeCADGui.addCommand('Part_JoinConnect',CommandConnect())
+    FreeCADGui.addCommand('Part_JoinCutout', CommandCutout())
+    FreeCADGui.addCommand('Part_JoinEmbed', CommandEmbed())
+    FreeCADGui.addCommand('Part_JoinConnect', CommandConnect())

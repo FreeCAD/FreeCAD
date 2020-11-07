@@ -36,7 +36,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Prilagodi število tukaj prikazanih nedavnih datotek v meniju Uredi -&gt; Možnosti -&gt; Splošne nastavitve -&gt; Velikost seznama nedavnih datotek</translation>
+      <translation>Prilagodi število tukaj prikazanih nedavnih datotek v meniju Uredi -&gt; Prednastavitve -&gt; Splošne nastavitve -&gt; Velikost seznama nedavnih datotek</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
@@ -126,7 +126,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Spodaj je seznam razpoložljivih dodatnih delovnih okolij, ki so lahko dodane FreeCAD namestitvi. Poiščite in namestite z menija Orodja -&gt; Dodatki. Več lahko izveste o katerem koli s klikom na spodnje povezave.</translation>
+      <translation>Spodaj je seznam razpoložljivih delovnih okolij, ki so lahko dodane FreeCAD namestitvi. Poiščite in namestite jih z menija Orodja -&gt; Upravljalnik dodatkov. Več lahko izveste o katerem koli s klikom na spodnje povezave.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation>Mapo po meri, ki bo prikazana tukaj, lahko nastavite v meniju Uredi -&gt; Možnosti -&gt; Začetek -&gt; Prikaži dodatno mapo</translation>
+      <translation>Mapo po meri, ki bo prikazana tukaj, lahko nastavite v meniju Uredi -&gt; Prednastavitve -&gt; Začetek -&gt; Prikaži dodatno mapo</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="289"/>
       <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>Če je to označeno in je seznam slogov določen v Splošnih nastavitvah, bo uporabljen in bo preglasil barve spodaj</translation>
+      <translation>Če je to označeno in je seznam slogov določen v Splošnih prednastavitvah, bo uporabljen in bo povozil barve spodaj</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="308"/>

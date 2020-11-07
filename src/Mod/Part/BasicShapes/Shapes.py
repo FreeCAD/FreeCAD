@@ -70,7 +70,7 @@ if FreeCAD.GuiUp:
             return
 
         def getIcon(self):
-            return ":/icons/Tree_Part_Tube_Parametric.svg"
+            return ":/icons/parametric/Part_Tube_Parametric.svg"
 
         def __getstate__(self):
             return None
@@ -79,14 +79,14 @@ if FreeCAD.GuiUp:
             return None
 
 
-    class _CommandMakeTube:
-        "Make tube command"
+    class CommandTube:
+        """Command for creating Tube."""
         def GetResources(self):
-            return {'MenuText': Qt.QT_TRANSLATE_NOOP("Part_MakeTube","Create tube"),
+            return {'MenuText': Qt.QT_TRANSLATE_NOOP("Part_Tube","Create tube"),
                     'Accel': "",
                     'CmdType': "AlterDoc:Alter3DView:AlterSelection",
-                    'Pixmap'  : ":/icons/Part_Tube.svg",
-                    'ToolTip': Qt.QT_TRANSLATE_NOOP("Part_MakeTube","Creates a tube")}
+                    'Pixmap': "Part_Tube",
+                    'ToolTip': Qt.QT_TRANSLATE_NOOP("Part_Tube","Creates a tube")}
         
         def Activated(self):
             FreeCAD.ActiveDocument.openTransaction("Create tube")
@@ -100,4 +100,5 @@ if FreeCAD.GuiUp:
             return not FreeCAD.ActiveDocument is None
 
 
-    FreeCADGui.addCommand('Part_MakeTube',_CommandMakeTube())
+    FreeCADGui.addCommand('Part_Tube', CommandTube())
+

@@ -687,6 +687,7 @@ StdCmdPrint::StdCmdPrint()
     sStatusTip    = QT_TR_NOOP("Print the document");
     sPixmap       = "document-print";
     sAccel        = keySequenceToAccel(QKeySequence::Print);
+    eType         = 0;
 }
 
 void StdCmdPrint::activated(int iMsg)
@@ -717,6 +718,7 @@ StdCmdPrintPreview::StdCmdPrintPreview()
     sWhatsThis    = "Std_PrintPreview";
     sStatusTip    = QT_TR_NOOP("Print preview");
     sPixmap       = "document-print-preview";
+    eType         = 0;
 }
 
 void StdCmdPrintPreview::activated(int iMsg)
@@ -745,6 +747,7 @@ StdCmdPrintPdf::StdCmdPrintPdf()
     sToolTipText  = QT_TR_NOOP("Export the document as PDF");
     sWhatsThis    = "Std_PrintPdf";
     sStatusTip    = QT_TR_NOOP("Export the document as PDF");
+    eType         = 0;
 }
 
 void StdCmdPrintPdf::activated(int iMsg)
@@ -992,6 +995,7 @@ StdCmdDuplicateSelection::StdCmdDuplicateSelection()
     sToolTipText  = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
     sWhatsThis    = "Std_DuplicateSelection";
     sStatusTip    = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
+    sPixmap       = "Std_DuplicateSelection";
 }
 
 void StdCmdDuplicateSelection::activated(int iMsg)
@@ -1434,6 +1438,7 @@ StdCmdAlignment::StdCmdAlignment()
     sToolTipText  = QT_TR_NOOP("Align the selected objects");
     sStatusTip    = QT_TR_NOOP("Align the selected objects");
     sWhatsThis    = "Std_Alignment";
+    sPixmap       = "Std_Alignment";
 }
 
 void StdCmdAlignment::activated(int iMsg)

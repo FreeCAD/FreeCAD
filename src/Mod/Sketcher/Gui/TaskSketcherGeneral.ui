@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>275</width>
-    <height>234</height>
+    <width>312</width>
+    <height>254</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -142,7 +142,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Rendering order (global) :</string>
+      <string>Rendering order (global):</string>
      </property>
     </widget>
    </item>
@@ -181,13 +181,13 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefQuantitySpinBox</class>
-   <extends>QWidget</extends>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>QWidget</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

@@ -30,7 +30,7 @@
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderPrism : public ViewProviderPart
+class PartGuiExport ViewProviderPrism : public ViewProviderPrimitive
 {
     PROPERTY_HEADER(PartGui::ViewProviderPrism);
 
@@ -46,7 +46,7 @@ protected:
 
 };
 
-class PartGuiExport ViewProviderWedge : public ViewProviderPart
+class PartGuiExport ViewProviderWedge : public ViewProviderPrimitive
 {
     PROPERTY_HEADER(PartGui::ViewProviderWedge);
 

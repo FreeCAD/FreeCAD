@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -153,21 +151,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.processCircles.hide()
             self.form.processHoles.hide()
             self.form.processPerimeter.hide()
-
-        side = False
-        if self.form.useCompensation.isChecked() is True:
-            if not fullModel:
-                side = True
-
-        if side:
-            self.form.cutSide.show()
-            self.form.cutSideLabel.show()
-        else:
-            # Reset cutSide to 'Outside' for full model before hiding cutSide input
-            if self.form.cutSide.currentText() == 'Inside':
-                self.selectInComboBox('Outside', self.form.cutSide)
-            self.form.cutSide.hide()
-            self.form.cutSideLabel.hide()
 
     def registerSignalHandlers(self, obj):
         self.form.useCompensation.stateChanged.connect(self.updateVisibility)

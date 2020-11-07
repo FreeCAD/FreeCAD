@@ -1,5 +1,7 @@
-# /**************************************************************************
-# *   Copyright (c) Kresimir Tusek         (kresimir.tusek@gmail.com) 2018  *
+# -*- coding: utf-8 -*-
+# ***************************************************************************
+# *   Copyright (c) 2018 Kresimir Tusek <kresimir.tusek@gmail.com>          *
+# *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This library is free software; you can redistribute it and/or         *
@@ -17,7 +19,7 @@
 # *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
 # *   Suite 330, Boston, MA  02111-1307, USA                                *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
 
 import PathScripts.PathOpGui as PathOpGui
 from PySide import QtCore, QtGui

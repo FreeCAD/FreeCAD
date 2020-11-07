@@ -1,5 +1,5 @@
-/***************************************************************************
-*   Copyright (c) Shsi Seger (shaise at gmail) 2017                       *
+/**************************************************************************
+*   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -717,7 +717,7 @@ void Point3D::UpdateCmd(Path::Command & cmd)
 //************************************************************************************************************
 // Simulation tool
 //************************************************************************************************************
-cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){ 
+cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){
 
 	BRepCheck_Analyzer aChecker(toolShape);
     bool shapeIsValid = aChecker.IsValid() ? true : false;
@@ -735,19 +735,19 @@ cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){
 	radius = (xMax - xMin) / 2;
 	length = zMax - zMin;
 
-	Base::Vector3d pnt; 
-	pnt.x = 0; 
+	Base::Vector3d pnt;
+	pnt.x = 0;
 	pnt.y = 0;
 	pnt.z = 0;
- 	
+
 	int radValue = (int)(radius / res) + 1;
 
 	// Measure the performance of the profile extraction
-	//auto start = std::chrono::high_resolution_clock::now(); 
+	//auto start = std::chrono::high_resolution_clock::now();
 
 	for (int x = 0; x < radValue; x++)
 	{
-		// find the face of the tool by checking z points across the 
+		// find the face of the tool by checking z points across the
 		// radius to see if the point is inside the shape
 		pnt.x =  x * res;
 		bool inside = isInside(toolShape, pnt, res);
@@ -757,7 +757,7 @@ cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){
 			pnt.z -= res;
 			inside = isInside(toolShape, pnt, res);
 		}
-		
+
 		// move up until the point is first inside the shape and record the position
 		while (!inside && pnt.z < length)
 		{
@@ -775,7 +775,7 @@ cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){
 	}
 
 	// Report the performance of the profile extraction
-	//auto stop = std::chrono::high_resolution_clock::now(); 
+	//auto stop = std::chrono::high_resolution_clock::now();
 	//auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 	//Base::Console().Log("cSimTool::cSimTool - Tool Profile Extraction Took: %i ms\n", duration.count() / 1000);
 

@@ -216,7 +216,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "UnitOverride",
                              "Units",
                              _tip)
-            vobj.UnitOverride = ''
+            vobj.UnitOverride = utils.get_param("overrideUnit", '')
 
     def set_graphics_properties(self, vobj, properties):
         """Set graphics properties only if they don't already exist."""

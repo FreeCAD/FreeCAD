@@ -270,8 +270,13 @@ public:
         // Thus, we filter out horizontal scrolling.
         if (event->type() == QEvent::Wheel) {
             QWheelEvent* we = static_cast<QWheelEvent*>(event);
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+            if (qAbs(we->angleDelta().x()) > qAbs(we->angleDelta().y()))
+                return true;
+#else
             if (we->orientation() == Qt::Horizontal)
                 return true;
+#endif
         }
         else if (event->type() == QEvent::KeyPress) {
             QKeyEvent* ke = static_cast<QKeyEvent*>(event);
@@ -1085,17 +1090,30 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks)
             ViewProviderLink::updateLinks(editViewProvider);
     }
     catch (const Py::Exception& e) {
-        Py::Object o = Py::type(e);
-        if (o.isString()) {
-            Py::String s(o);
-            Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
+        /* coverity[UNCAUGHT_EXCEPT] Uncaught exception */
+        // Coverity created several reports when removeViewProvider()
+        // is used somewhere in a destructor which indirectly invokes
+        // resetEditingRoot().
+        // Now theoretically Py::type can throw an exception which nowhere
+        // will be handled and thus terminates the application. So, add an
+        // extra try/catch block here.
+        try {
+            Py::Object o = Py::type(e);
+            if (o.isString()) {
+                Py::String s(o);
+                Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
+            }
+            else {
+                Py::String s(o.repr());
+                Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
+            }
+            // Prints message to console window if we are in interactive mode
+            PyErr_Print();
         }
-        else {
-            Py::String s(o.repr());
-            Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
+        catch (Py::Exception& e) {
+            e.clear();
+            Base::Console().Error("Unexpected exception raised in View3DInventorViewer::resetEditingRoot\n");
         }
-        // Prints message to console window if we are in interactive mode
-        PyErr_Print();
     }
 }
 

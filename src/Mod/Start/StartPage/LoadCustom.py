@@ -26,8 +26,11 @@ if sys.version_info.major < 3:
 else:
     from urllib.parse import unquote
 # filename will be given before this script is run
-cfolder = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("ShowCustomFolder","")
-if cfolder:
+cfolders = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("ShowCustomFolder","")
+if cfolders:
+    dirnumber = int(filename[0])
+    filename = filename[2:]
+    cfolder = cfolders.split(";;")[dirnumber]
     if not os.path.isdir(cfolder):
         cfolder = os.path.dirname(cfolder)
     f = unquote(filename).replace("+"," ")

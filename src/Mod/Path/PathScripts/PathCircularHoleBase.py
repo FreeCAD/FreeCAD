@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -346,7 +344,7 @@ class ObjectOp(PathOp.ObjectOp):
                 # holes.append({'x': location.x, 'y': location.y, 'r': 0, 'angle': 0.0, 'axis': 'X', 'holeBtm': obj.FinalDepth.Value})
                 holes.append({'x': location.x, 'y': location.y, 'r': 0,
                              'angle': 0.0, 'axis': 'X', 'trgtDep': finDep,
-                              'stkTop': PathUtils.findParentJob(obj).stock.Shape.BoundBox.ZMax})
+                              'stkTop': PathUtils.findParentJob(obj).Stock.Shape.BoundBox.ZMax})
 
         if len(holes) > 0:
             self.circularHoleExecute(obj, holes)  # circularHoleExecute() located in PathDrilling.py

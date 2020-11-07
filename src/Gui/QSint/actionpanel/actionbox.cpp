@@ -116,6 +116,19 @@ void ActionBox::setIcon(const QPixmap & icon)
     iconLabel->setFixedSize(icon.size());
 }
 
+QPixmap ActionBox::icon() const
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    return iconLabel->pixmap(Qt::ReturnByValue);
+#else
+    QPixmap p;
+    const QPixmap* ptr = iconLabel->pixmap();
+    if (ptr)
+        p = *ptr;
+    return p;
+#endif
+}
+
 ActionLabel* ActionBox::createItem(QAction * action, QLayout * l)
 {
     if (!action)

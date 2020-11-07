@@ -52,12 +52,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* surface = new Gui::MenuItem;
     root->insertItem( item, surface );
     surface->setCommand("Surface");
-    *surface << "Surface_CurveOnMesh"
+    *surface << "Surface_Filling"
+             << "Surface_GeomFillSurface"
+             << "Surface_Sections"
              << "Surface_ExtendFace"
-             << "Surface_Filling"
-             << "Surface_GeomFillSurface";
-/*    *surface << "Surface_Filling";
-    *surface << "Surface_Cut";*/
+             << "Surface_CurveOnMesh";
+/*
+    *surface << "Surface_Cut";
+*/
 
     return root;
 }
@@ -67,10 +69,15 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
 
     Gui::ToolBarItem* surface = new Gui::ToolBarItem(root);
-    surface->setCommand( "Surface" );
+    surface->setCommand("Surface");
     *surface << "Surface_Filling"
-             << "Surface_GeomFillSurface";
-/*  *surface << "Surface_Cut"; */
+             << "Surface_GeomFillSurface"
+             << "Surface_Sections"
+             << "Surface_ExtendFace"
+             << "Surface_CurveOnMesh";
+/*
+    *surface << "Surface_Cut";
+*/
 
     return root;
 }

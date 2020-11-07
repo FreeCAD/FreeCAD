@@ -36,7 +36,7 @@ class SoTransform;
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderBox:public ViewProviderPart
+class PartGuiExport ViewProviderBox : public ViewProviderPrimitive
 {
     PROPERTY_HEADER(PartGui::ViewProviderBox);
 

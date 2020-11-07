@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <cstdlib>
 # include <memory>
+# include <Python.h>
 # include <Bnd_Box.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>

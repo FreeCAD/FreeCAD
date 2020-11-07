@@ -57,17 +57,18 @@ printverbose = True
 import tokrules
 from tokrules import tokens
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def translate(context, text):
-        "convenience function for Qt translator"
-        from PySide import QtGui
-        return QtGui.QApplication.translate(context, text, None, _encoding)
-except AttributeError:
-    def translate(context, text):
-        "convenience function for Qt translator"
-        from PySide import QtGui
-        return QtGui.QApplication.translate(context, text, None)
+if gui:
+    try:
+        _encoding = QtGui.QApplication.UnicodeUTF8
+        def translate(context, text):
+            "convenience function for Qt translator"
+            from PySide import QtGui
+            return QtGui.QApplication.translate(context, text, None, _encoding)
+    except AttributeError:
+        def translate(context, text):
+            "convenience function for Qt translator"
+            from PySide import QtGui
+            return QtGui.QApplication.translate(context, text, None)
 
 def open(filename):
     "called when freecad opens a file."
@@ -380,6 +381,7 @@ def CGALFeatureObj(name,children,arguments=[]):
 
 def p_offset_action(p):
     'offset_action : offset LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
+    subobj=None
     if len(p[6]) == 0:
         newobj = placeholder('group',[],'{}')
     elif (len(p[6]) == 1 ): #single object

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -214,7 +212,7 @@ class ToolEditor:
         self.tool = self.Tool
 
     def getType(self, tooltype):
-        "gets a combobox index number for a given type or viceversa"
+        "gets a combobox index number for a given type or vice versa"
         toolslist = Path.Tool.getToolTypes(Path.Tool())
         if isinstance(tooltype, str):
             if tooltype in toolslist:
@@ -224,7 +222,7 @@ class ToolEditor:
         return toolslist[tooltype]
 
     def getMaterial(self, material):
-        "gets a combobox index number for a given material or viceversa"
+        "gets a combobox index number for a given material or vice versa"
         matslist = Path.Tool.getToolMaterials(Path.Tool())
         if isinstance(material, str):
             if material in matslist:

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -35,7 +35,7 @@ class PathGuiExport ViewProviderPathShape: public ViewProviderPath
 
 public:
 
-    /// grouping handling 
+    /// grouping handling
     virtual std::vector<App::DocumentObject*> claimChildren(void) const;
     virtual void updateData(const App::Property*);
     virtual bool onDelete(const std::vector<std::string> &);
@@ -47,7 +47,7 @@ public:
     virtual bool canDropObjects() const;
     virtual bool canDropObject(App::DocumentObject*) const;
     virtual void dropObject(App::DocumentObject*);
-        
+
     QIcon getIcon(void) const;
 };
 

@@ -98,7 +98,7 @@ void ViewProviderGeomFillSurface::unsetEdit(int ModNum)
 
 QIcon ViewProviderGeomFillSurface::getIcon(void) const
 {
-    return Gui::BitmapFactory().pixmap("BSplineSurf");
+    return Gui::BitmapFactory().pixmap("Surface_BSplineSurface");
 }
 
 void ViewProviderGeomFillSurface::highlightReferences(bool on)
@@ -585,7 +585,7 @@ TaskGeomFillSurface::TaskGeomFillSurface(ViewProviderGeomFillSurface* vp, Surfac
     widget = new GeomFillSurface(vp, obj);
     widget->setWindowTitle(QObject::tr("Surface"));
     taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("BezSurf"),
+        Gui::BitmapFactory().pixmap("Surface_BSplineSurface"),
         widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

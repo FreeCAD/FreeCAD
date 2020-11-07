@@ -758,7 +758,7 @@ class Component(ArchIFC.IfcProduct):
                 for host in link.Hosts:
                     if host == obj:
                         subs.append(link)
-            elif hasattr(link,"Host"):
+            elif hasattr(link,"Host") and Draft.getType(link) != "Rebar":
                 if link.Host == obj:
                     subs.append(link)
         for o in subs:
@@ -1805,11 +1805,13 @@ class ComponentTaskPanel:
         if hasattr(obj.ViewObject,"Proxy"):
             if hasattr(obj.ViewObject.Proxy,"getIcon"):
                 return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
-        if obj.isDerivedFrom("Sketcher::SketchObject"):
+        elif obj.isDerivedFrom("Sketcher::SketchObject"):
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
-        if obj.isDerivedFrom("App::DocumentObjectGroup"):
+        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
             return QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
-        return QtGui.QIcon(":/icons/Tree_Part.svg")
+        elif hasattr(obj.ViewObject, "Icon"):
+            return QtGui.QIcon(obj.ViewObject.Icon)
+        return QtGui.QIcon(":/icons/Part_3D_object.svg")
 
     def update(self):
         """Populate the treewidget with its various items.

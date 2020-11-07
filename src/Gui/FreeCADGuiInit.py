@@ -34,8 +34,10 @@ import FreeCAD, FreeCADGui
 
 # shortcuts
 Gui = FreeCADGui
+
 # this is to keep old code working
 Gui.listCommands = Gui.Command.listAll
+Gui.isCommandActive = lambda cmd: Gui.Command.get(cmd).isActive()
 
 # Important definitions
 class Workbench:

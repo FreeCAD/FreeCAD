@@ -46,7 +46,7 @@ class GuiExport DlgParameterImp : public QDialog
     Q_OBJECT
 
 public:
-    DlgParameterImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
+    DlgParameterImp( QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
     ~DlgParameterImp();
 
     void accept();

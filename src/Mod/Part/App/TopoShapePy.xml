@@ -489,6 +489,11 @@ op: an optional string to be appended when auto generates element mapping.
         <UserDocu>Reverses the orientation of this shape.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="reversed">
+      <Documentation>
+        <UserDocu>Reverses the orientation of a copy of this shape.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="complement">
       <Documentation>
         <UserDocu>Computes the complement of the orientation of this shape,

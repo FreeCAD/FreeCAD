@@ -53,6 +53,7 @@ set(CompoundTools_Scripts
 set(Part_tests
     parttests/__init__.py
     parttests/part_test_objects.py
+    parttests/regression_tests.py
 )
 
 add_custom_target(PartScripts ALL SOURCES

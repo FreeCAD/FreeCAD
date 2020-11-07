@@ -178,6 +178,7 @@ struct DocumentP
     bool rollback;
     bool undoing; ///< document in the middle of undo or redo
     bool committing;
+    bool opentransaction;
     std::bitset<32> StatusBits;
     int iUndoMode;
     unsigned int UndoMemSize;
@@ -205,6 +206,7 @@ struct DocumentP
         rollback = false;
         undoing = false;
         committing = false;
+        opentransaction = false;
         StatusBits.set((size_t)Document::Closable, true);
         StatusBits.set((size_t)Document::KeepTrailingDigits, true);
         StatusBits.set((size_t)Document::Restoring, false);
@@ -1101,6 +1103,14 @@ int Document::_openTransaction(const char* name, int id)
     }
 
     if (d->iUndoMode) {
+        // Avoid recursive calls that is possible while
+        // clearing the redo transactions and will cause
+        // a double deletion of some transaction and thus
+        // a segmentation fault
+        if (d->opentransaction)
+            return 0;
+        Base::FlagToggler<> flag(d->opentransaction);
+
         if(id && mUndoMap.find(id)!=mUndoMap.end())
             throw Base::RuntimeError("invalid transaction id");
         if (d->activeUndoTransaction)
@@ -1208,11 +1218,16 @@ void Document::commitTransaction() {
 
 void Document::_commitTransaction(bool notify)
 {
-    if(isPerformingTransaction() || d->committing) {
+    if (isPerformingTransaction()) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
             FC_WARN("Cannot commit transaction while transacting");
         return;
     }
+    else if (d->committing) {
+        // for a recursive call return without printing a warning
+        return;
+    }
+
     if (d->activeUndoTransaction) {
         Base::FlagToggler<> flag(d->committing);
         Application::TransactionSignaller signaller(false,true);
@@ -1227,7 +1242,8 @@ void Document::_commitTransaction(bool notify)
         }
         signalCommitTransaction(*this);
 
-        if(notify)
+        // closeActiveTransaction() may call again _commitTransaction()
+        if (notify)
             GetApplication().closeActiveTransaction(false,id);
     }
 }
@@ -2943,7 +2959,7 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
         const DocumentObject *obj, int options, int maxCount,
         const std::vector<DocumentObject*> &objs) const 
 {
-    std::map<const App::DocumentObject*,App::DocumentObject*> linkMap;
+    std::map<const App::DocumentObject*, std::vector<App::DocumentObject*> > linkMap;
 
     for(auto o : objs.size()?objs:d->objectArray) {
         if(o == obj) continue;
@@ -2960,7 +2976,7 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
 
         if(linked && linked!=o) {
             if(options & GetLinkRecursive)
-                linkMap[linked] = o;
+                linkMap[linked].push_back(o);
             else if(linked == obj || !obj) {
                 if((options & GetLinkExternal)
                         && linked->getDocument()==o->getDocument())
@@ -2983,15 +2999,19 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
         if(!GetApplication().checkLinkDepth(depth,true))
             break;
         std::vector<const DocumentObject*> next;
-        for(auto o : current) {
+        for(const App::DocumentObject *o : current) {
             auto iter = linkMap.find(o);
-            if(iter!=linkMap.end() && links.insert(iter->second).second) {
-                if(maxCount && maxCount<=(int)links.size())
-                    return;
-                next.push_back(iter->second);
+            if(iter==linkMap.end())
+                continue;
+            for (App::DocumentObject *link : iter->second) {
+                if (links.insert(link).second) {
+                    if(maxCount && maxCount<=(int)links.size())
+                        return;
+                    next.push_back(link);
+                }
             }
         }
-        current.swap(next);
+        current = std::move(next);
     }
     return;
 }

@@ -28,24 +28,14 @@
 
 ## \addtogroup draftviewproviders
 # @{
+from draftviewproviders.view_base import ViewProviderDraft
 
-
-class ViewProviderDraftLink:
+class ViewProviderDraftLink(ViewProviderDraft):
     """ A view provider for link type object.
     """
 
     def __init__(self,vobj):
-        self.Object = vobj.Object
-        vobj.Proxy = self
-
-    def attach(self,vobj):
-        self.Object = vobj.Object
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+        super(ViewProviderDraftLink, self).__init__(vobj)
 
     def getIcon(self):
         tp = self.Object.Proxy.Type
@@ -60,6 +50,8 @@ class ViewProviderDraftLink:
             return ":/icons/Draft_PathLinkArray.svg"
         elif tp == 'PathTwistedArray':
             return ":/icons/Draft_PathTwistedLinkArray.svg"
+        elif tp == 'PointArray':
+            return ":/icons/Draft_PointLinkArray.svg"
 
     def claimChildren(self):
         obj = self.Object
@@ -68,7 +60,7 @@ class ViewProviderDraftLink:
         else:
             expand = obj.ShowElement
         if not expand:
-            return [obj.Base]
+            return super(ViewProviderDraftLink, self).claimChildren()
         else:
             return obj.ElementList
 

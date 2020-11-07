@@ -183,7 +183,8 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
                     const std::map<int, Sketcher::PointPos> coincidents = psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
 
                     if(!coincidents.empty()) {
-                        ext = coincidents.begin()->first < 0; // the keys are ordered, so if the first is negative, it is coincident with external
+                        // the keys are ordered, so if the first is negative, it is coincident with external
+                        ext = coincidents.begin()->first < 0;
 
                         std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
 
@@ -3196,7 +3197,7 @@ CmdSketcherCreateArcOfEllipse::CmdSketcherCreateArcOfEllipse()
     sToolTipText    = QT_TR_NOOP("Create an arc of ellipse in the sketch");
     sWhatsThis      = "Sketcher_CreateArcOfEllipse";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Elliptical_Arc";
+    sPixmap         = "Sketcher_CreateElliptical_Arc";
     eType           = ForEdit;
 }
 
@@ -3539,7 +3540,7 @@ CmdSketcherCreateArcOfHyperbola::CmdSketcherCreateArcOfHyperbola()
     sToolTipText    = QT_TR_NOOP("Create an arc of hyperbola in the sketch");
     sWhatsThis      = "Sketcher_CreateArcOfHyperbola";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Hyperbolic_Arc";
+    sPixmap         = "Sketcher_CreateHyperbolic_Arc";
     eType           = ForEdit;
 }
 
@@ -3837,7 +3838,7 @@ CmdSketcherCreateArcOfParabola::CmdSketcherCreateArcOfParabola()
     sToolTipText    = QT_TR_NOOP("Create an arc of parabola in the sketch");
     sWhatsThis      = "Sketcher_CreateArcOfParabola";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Parabolic_Arc";
+    sPixmap         = "Sketcher_CreateParabolic_Arc";
     eType           = ForEdit;
 }
 
@@ -3914,13 +3915,13 @@ Gui::Action * CmdSketcherCompCreateConic::createAction(void)
     ellipseBy3Points->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
 
     QAction* arcofellipse = pcAction->addAction(QString());
-    arcofellipse->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Elliptical_Arc"));
+    arcofellipse->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc"));
 
     QAction* arcofhyperbola = pcAction->addAction(QString());
-    arcofhyperbola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Hyperbolic_Arc"));
+    arcofhyperbola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc"));
 
     QAction* arcofparabola = pcAction->addAction(QString());
-    arcofparabola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Parabolic_Arc"));
+    arcofparabola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc"));
 
     _pcAction = pcAction;
     languageChange();
@@ -3945,17 +3946,17 @@ void CmdSketcherCompCreateConic::updateAction(int mode)
     case Normal:
         a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse"));
         a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
-        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Elliptical_Arc"));
-        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Hyperbolic_Arc"));
-        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Parabolic_Arc"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc"));
+        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc"));
+        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc"));
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
         a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_Constr"));
         a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points_Constr"));
-        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Elliptical_Arc_Constr"));
-        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Hyperbolic_Arc_Constr"));
-        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Parabolic_Arc_Constr"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc_Constr"));
+        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc_Constr"));
+        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc_Constr"));
         getAction()->setIcon(a[index]->icon());
         break;
     }
@@ -3975,21 +3976,21 @@ void CmdSketcherCompCreateConic::languageChange()
     ellipseByCenter->setToolTip(QApplication::translate("Sketcher_CreateEllipseByCenter","Create an ellipse by center, major radius and point"));
     ellipseByCenter->setStatusTip(QApplication::translate("Sketcher_CreateEllipseByCenter","Create an ellipse by center, major radius and point"));
     QAction* ellipseBy3Points = a[1];
-    ellipseBy3Points->setText(QApplication::translate("CmdSketcherCompCreateConic","Ellipse by Periapsis, apoapsis, minor radius"));
+    ellipseBy3Points->setText(QApplication::translate("CmdSketcherCompCreateConic","Ellipse by periapsis, apoapsis, minor radius"));
     ellipseBy3Points->setToolTip(QApplication::translate("Sketcher_CreateEllipseBy3Points","Create a ellipse by periapsis, apoapsis, and minor radius"));
     ellipseBy3Points->setStatusTip(QApplication::translate("Sketcher_CreateEllipseBy3Points","Create a ellipse by periapsis, apoapsis, and minor radius"));
     QAction* arcofellipse = a[2];
     arcofellipse->setText(QApplication::translate("CmdSketcherCompCreateConic","Arc of ellipse by center, major radius, endpoints"));
-    arcofellipse->setToolTip(QApplication::translate("Sketcher_CreateArcOfEllipse","Create an arc of ellipse by its center, major radius, endpoints"));
-    arcofellipse->setStatusTip(QApplication::translate("Sketcher_CreateArcOfEllipse","Create an arc of ellipse by its center, major radius, endpoints"));
+    arcofellipse->setToolTip(QApplication::translate("Sketcher_CreateArcOfEllipse","Create an arc of ellipse by its center, major radius, and endpoints"));
+    arcofellipse->setStatusTip(QApplication::translate("Sketcher_CreateArcOfEllipse","Create an arc of ellipse by its center, major radius, and endpoints"));
     QAction* arcofhyperbola = a[3];
     arcofhyperbola->setText(QApplication::translate("CmdSketcherCompCreateConic","Arc of hyperbola by center, major radius, endpoints"));
-    arcofhyperbola->setToolTip(QApplication::translate("Sketcher_CreateArcOfHyperbola","Create an arc of hyperbola by its center, major radius, endpoints"));
-    arcofhyperbola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfHyperbola","Create an arc of hyperbola by its center, major radius, endpoints"));
+    arcofhyperbola->setToolTip(QApplication::translate("Sketcher_CreateArcOfHyperbola","Create an arc of hyperbola by its center, major radius, and endpoints"));
+    arcofhyperbola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfHyperbola","Create an arc of hyperbola by its center, major radius, and endpoints"));
     QAction* arcofparabola = a[4];
     arcofparabola->setText(QApplication::translate("CmdSketcherCompCreateConic","Arc of parabola by focus, vertex, endpoints"));
-    arcofparabola->setToolTip(QApplication::translate("Sketcher_CreateArcOfParabola","Create an arc of parabola by its focus, vertex, endpoints"));
-    arcofparabola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfParabola","Create an arc of parabola by its focus, vertex, endpoints"));
+    arcofparabola->setToolTip(QApplication::translate("Sketcher_CreateArcOfParabola","Create an arc of parabola by its focus, vertex, and endpoints"));
+    arcofparabola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfParabola","Create an arc of parabola by its focus, vertex, and endpoints"));
 }
 
 bool CmdSketcherCompCreateConic::isActive(void)
@@ -5132,7 +5133,7 @@ public:
                 if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
                     const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(GeoIdList[0]);
                     const Part::Geometry *geom2 = sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);
-                    construction=geom1->Construction && geom2->Construction;
+                    construction=geom1->getConstruction() && geom2->getConstruction();
                     if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                         geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                         const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geom1);
@@ -5215,7 +5216,7 @@ public:
                         if (radius < 0)
                             return false;
 
-                        construction=lineSeg1->Construction && lineSeg2->Construction;
+                        construction=lineSeg1->getConstruction() && lineSeg2->getConstruction();
                     }
                     else { // other supported curves
                         const Part::Geometry *geo1 = static_cast<const Part::Geometry *>
@@ -5223,7 +5224,7 @@ public:
                         const Part::Geometry *geo2 = static_cast<const Part::Geometry *>
                                                                 (sketchgui->getSketchObject()->getGeometry(secondCurve));
 
-                        construction=geo1->Construction && geo2->Construction;
+                        construction=geo1->getConstruction() && geo2->getConstruction();
                     }
 
 
@@ -6083,7 +6084,7 @@ namespace SketcherGui {
     {
         sAppModule      = "Sketcher";
         sGroup          = QT_TR_NOOP("Sketcher");
-        sMenuText       = QT_TR_NOOP("CarbonCopy");
+        sMenuText       = QT_TR_NOOP("Carbon copy");
         sToolTipText    = QT_TR_NOOP("Copies the geometry of another sketch");
         sWhatsThis      = "Sketcher_CarbonCopy";
         sStatusTip      = sToolTipText;

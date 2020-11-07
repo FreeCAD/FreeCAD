@@ -31,6 +31,7 @@
 #include <Geom_Circle.hxx>
 #include <Geom_TrimmedCurve.hxx>
 #include <Python.h>
+#include <QMessageBox>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #endif
@@ -39,6 +40,7 @@
 #include <Base/Interpreter.h>
 #include <Base/Rotation.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -48,6 +50,9 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/Part/App/PrimitiveFeature.h>
+#include <Mod/Part/App/FeaturePartBox.h>
+#include <Mod/Part/App/FeaturePartCircle.h>
 #include <Mod/Part/App/Tools.h>
 
 #include "DlgPrimitives.h"
@@ -180,8 +185,9 @@ private:
 
 /* TRANSLATOR PartGui::DlgPrimitives */
 
-DlgPrimitives::DlgPrimitives(QWidget* parent)
+DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
   : QWidget(parent)
+  , featurePtr(feature)
 {
     ui.setupUi(this);
     Gui::Command::doCommand(Gui::Command::Doc, "from FreeCAD import Base");
@@ -283,6 +289,155 @@ DlgPrimitives::DlgPrimitives(QWidget* parent)
     ui.edgeZ2->setMinimum(INT_MIN);
     // RegularPolygon
     ui.regularPolygonCircumradius->setRange(0, INT_MAX);
+
+    // fill the dialog with data if the primitives already exists
+    if (feature) {
+        // must be the same order as of the stacked widget
+        std::vector<Base::Type> types;
+        types.emplace_back(Part::Plane::getClassTypeId());
+        types.emplace_back(Part::Box::getClassTypeId());
+        types.emplace_back(Part::Cylinder::getClassTypeId());
+        types.emplace_back(Part::Cone::getClassTypeId());
+        types.emplace_back(Part::Sphere::getClassTypeId());
+        types.emplace_back(Part::Ellipsoid::getClassTypeId());
+        types.emplace_back(Part::Torus::getClassTypeId());
+        types.emplace_back(Part::Prism::getClassTypeId());
+        types.emplace_back(Part::Wedge::getClassTypeId());
+        types.emplace_back(Part::Helix::getClassTypeId());
+        types.emplace_back(Part::Spiral::getClassTypeId());
+        types.emplace_back(Part::Circle::getClassTypeId());
+        types.emplace_back(Part::Ellipse::getClassTypeId());
+        types.emplace_back(Part::Vertex::getClassTypeId());
+        types.emplace_back(Part::Line::getClassTypeId());
+        types.emplace_back(Part::RegularPolygon::getClassTypeId());
+
+        Base::Type type = feature->getTypeId();
+        int index = std::distance(types.begin(), std::find(types.begin(), types.end(), type));
+        ui.comboBox1->setCurrentIndex(index);
+        ui.widgetStack2->setCurrentIndex(index);
+
+        // if existing, the primitive type can not be changed by the user
+        ui.comboBox1->setDisabled(feature != nullptr);
+
+        // ToDo: connect signal if there is a preview of primitives available
+        // read values from the properties
+        if (type == Part::Plane::getClassTypeId()) {
+            Part::Plane* plane = static_cast<Part::Plane*>(feature);
+            ui.planeLength->setValue(plane->Length.getQuantityValue());
+            ui.planeWidth->setValue(plane->Width.getQuantityValue());
+        }
+        else if (type == Part::Box::getClassTypeId()) {
+            Part::Box* box = static_cast<Part::Box*>(feature);
+            ui.boxLength->setValue(box->Length.getQuantityValue());
+            ui.boxWidth->setValue(box->Width.getQuantityValue());
+            ui.boxHeight->setValue(box->Height.getQuantityValue());
+        }
+        else if (type == Part::Cylinder::getClassTypeId()) {
+            Part::Cylinder* cyl = static_cast<Part::Cylinder*>(feature);
+            ui.cylinderRadius->setValue(cyl->Radius.getQuantityValue());
+            ui.cylinderHeight->setValue(cyl->Height.getQuantityValue());
+            ui.cylinderAngle->setValue(cyl->Angle.getQuantityValue());
+        }
+        else if (type == Part::Cone::getClassTypeId()) {
+            Part::Cone* cone = static_cast<Part::Cone*>(feature);
+            ui.coneRadius1->setValue(cone->Radius1.getQuantityValue());
+            ui.coneRadius2->setValue(cone->Radius2.getQuantityValue());
+            ui.coneHeight->setValue(cone->Height.getQuantityValue());
+            ui.coneAngle->setValue(cone->Angle.getQuantityValue());
+        }
+        else if (type == Part::Sphere::getClassTypeId()) {
+            Part::Sphere* sphere = static_cast<Part::Sphere*>(feature);
+            ui.sphereRadius->setValue(sphere->Radius.getQuantityValue());
+            ui.sphereAngle1->setValue(sphere->Angle1.getQuantityValue());
+            ui.sphereAngle2->setValue(sphere->Angle2.getQuantityValue());
+            ui.sphereAngle3->setValue(sphere->Angle3.getQuantityValue());
+        }
+        else if (type == Part::Ellipsoid::getClassTypeId()) {
+            Part::Ellipsoid* ell = static_cast<Part::Ellipsoid*>(feature);
+            ui.ellipsoidRadius1->setValue(ell->Radius1.getQuantityValue());
+            ui.ellipsoidRadius2->setValue(ell->Radius2.getQuantityValue());
+            ui.ellipsoidRadius3->setValue(ell->Radius3.getQuantityValue());
+            ui.ellipsoidAngle1->setValue(ell->Angle1.getQuantityValue());
+            ui.ellipsoidAngle2->setValue(ell->Angle2.getQuantityValue());
+            ui.ellipsoidAngle3->setValue(ell->Angle3.getQuantityValue());
+        }
+        else if (type == Part::Torus::getClassTypeId()) {
+            Part::Torus* torus = static_cast<Part::Torus*>(feature);
+            ui.torusRadius1->setValue(torus->Radius1.getQuantityValue());
+            ui.torusRadius2->setValue(torus->Radius2.getQuantityValue());
+            ui.torusAngle1->setValue(torus->Angle1.getQuantityValue());
+            ui.torusAngle2->setValue(torus->Angle2.getQuantityValue());
+            ui.torusAngle3->setValue(torus->Angle3.getQuantityValue());
+        }
+        else if (type == Part::Prism::getClassTypeId()) {
+            Part::Prism* prism = static_cast<Part::Prism*>(feature);
+            ui.prismPolygon->setValue(prism->Polygon.getValue());
+            ui.prismCircumradius->setValue(prism->Circumradius.getQuantityValue());
+            ui.prismHeight->setValue(prism->Height.getQuantityValue());
+            ui.prismXSkew->setValue(prism->FirstAngle.getQuantityValue());
+            ui.prismYSkew->setValue(prism->SecondAngle.getQuantityValue());
+        }
+        else if (type == Part::Wedge::getClassTypeId()) {
+            Part::Wedge* wedge = static_cast<Part::Wedge*>(feature);
+            ui.wedgeXmin->setValue(wedge->Xmin.getQuantityValue());
+            ui.wedgeYmin->setValue(wedge->Ymin.getQuantityValue());
+            ui.wedgeZmin->setValue(wedge->Zmin.getQuantityValue());
+            ui.wedgeX2min->setValue(wedge->X2min.getQuantityValue());
+            ui.wedgeZ2min->setValue(wedge->Z2min.getQuantityValue());
+            ui.wedgeXmax->setValue(wedge->Xmax.getQuantityValue());
+            ui.wedgeYmax->setValue(wedge->Ymax.getQuantityValue());
+            ui.wedgeZmax->setValue(wedge->Zmax.getQuantityValue());
+            ui.wedgeX2max->setValue(wedge->X2max.getQuantityValue());
+            ui.wedgeZ2max->setValue(wedge->Z2max.getQuantityValue());
+        }
+        else if (type == Part::Helix::getClassTypeId()) {
+            Part::Helix* helix = static_cast<Part::Helix*>(feature);
+            ui.helixPitch->setValue(helix->Pitch.getQuantityValue());
+            ui.helixHeight->setValue(helix->Height.getQuantityValue());
+            ui.helixRadius->setValue(helix->Radius.getQuantityValue());
+            ui.helixAngle->setValue(helix->Angle.getQuantityValue());
+            ui.helixLocalCS->setCurrentIndex(helix->LocalCoord.getValue());
+        }
+        else if (type == Part::Spiral::getClassTypeId()) {
+            Part::Spiral* spiral = static_cast<Part::Spiral*>(feature);
+            ui.spiralGrowth->setValue(spiral->Growth.getQuantityValue());
+            ui.spiralRotation->setValue(spiral->Rotations.getQuantityValue().getValue());
+            ui.spiralRadius->setValue(spiral->Radius.getQuantityValue());
+        }
+        else if (type == Part::Circle::getClassTypeId()) {
+            Part::Circle* circle = static_cast<Part::Circle*>(feature);
+            ui.circleRadius->setValue(circle->Radius.getQuantityValue());
+            ui.circleAngle0->setValue(circle->Angle0.getQuantityValue());
+            ui.circleAngle1->setValue(circle->Angle1.getQuantityValue());
+        }
+        else if (type == Part::Ellipse::getClassTypeId()) {
+            Part::Ellipse* ell = static_cast<Part::Ellipse*>(feature);
+            ui.ellipseMajorRadius->setValue(ell->MajorRadius.getQuantityValue());
+            ui.ellipseMinorRadius->setValue(ell->MinorRadius.getQuantityValue());
+            ui.ellipseAngle0->setValue(ell->Angle0.getQuantityValue());
+            ui.ellipseAngle1->setValue(ell->Angle1.getQuantityValue());
+        }
+        else if (type == Part::Vertex::getClassTypeId()) {
+            Part::Vertex* v = static_cast<Part::Vertex*>(feature);
+            ui.vertexX->setValue(v->X.getQuantityValue());
+            ui.vertexY->setValue(v->Y.getQuantityValue());
+            ui.vertexZ->setValue(v->Z.getQuantityValue());
+        }
+        else if (type == Part::Line::getClassTypeId()) {
+            Part::Line* line = static_cast<Part::Line*>(feature);
+            ui.edgeX1->setValue(line->X1.getQuantityValue());
+            ui.edgeY1->setValue(line->Y1.getQuantityValue());
+            ui.edgeZ1->setValue(line->Z1.getQuantityValue());
+            ui.edgeX2->setValue(line->X2.getQuantityValue());
+            ui.edgeY2->setValue(line->Y2.getQuantityValue());
+            ui.edgeZ2->setValue(line->Z2.getQuantityValue());
+        }
+        else if (type == Part::RegularPolygon::getClassTypeId()) {
+            Part::RegularPolygon* poly = static_cast<Part::RegularPolygon*>(feature);
+            ui.regularPolygonPolygon->setValue(poly->Polygon.getValue());
+            ui.regularPolygonCircumradius->setValue(poly->Circumradius.getQuantityValue());
+        }
+    }
 }
 
 /*  
@@ -501,12 +656,16 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Polygon=%2\n"
                 "App.ActiveDocument.%1.Circumradius=%3\n"
                 "App.ActiveDocument.%1.Height=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n"
-                "App.ActiveDocument.%1.Label='%6'\n")
+                "App.ActiveDocument.%1.FirstAngle=%5\n"
+                "App.ActiveDocument.%1.SecondAngle=%6\n"
+                "App.ActiveDocument.%1.Placement=%7\n"
+                "App.ActiveDocument.%1.Label='%8'\n")
                 .arg(name)
                 .arg(ui.prismPolygon->value())
                 .arg(ui.prismCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                 .arg(ui.prismHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ui.prismXSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+                .arg(ui.prismYSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
                 .arg(placement)
                 .arg(tr("Prism"));
         }
@@ -678,15 +837,299 @@ void DlgPrimitives::createPrimitive(const QString& placement)
     }
 }
 
+void DlgPrimitives::accept(const QString& placement)
+{
+    if (featurePtr.expired())
+        return;
+    QString command;
+    App::Document* doc = featurePtr->getDocument();
+    Base::Type type = featurePtr->getTypeId();
+    QString objectName = QString::fromLatin1("App.getDocument(\"%1\").%2")
+                         .arg(QString::fromLatin1(doc->getName()))
+                         .arg(QString::fromLatin1(featurePtr->getNameInDocument()));
+
+    // the combox with the primitive type is fixed
+    // therefore by reading its state we know what we need to change
+
+    // read values from the properties
+    if (type == Part::Plane::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.Length=%2\n"
+            "%1.Width=%3\n"
+            "%1.Placement=%4\n")
+            .arg(objectName)
+            .arg(ui.planeLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.planeWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::Box::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.Length=%2\n"
+            "%1.Width=%3\n"
+            "%1.Height=%4\n"
+            "%1.Placement=%5\n")
+            .arg(objectName)
+            .arg(ui.boxLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.boxWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.boxHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::Cylinder::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.Radius=%2\n"
+            "%1.Height=%3\n"
+            "%1.Angle=%4\n"
+            "%1.Placement=%5\n")
+            .arg(objectName)
+            .arg(ui.cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.cylinderHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.cylinderAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::Cone::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.Radius1=%2\n"
+            "%1.Radius2=%3\n"
+            "%1.Height=%4\n"
+            "%1.Angle=%5\n"
+            "%1.Placement=%6\n")
+            .arg(objectName)
+            .arg(ui.coneRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.coneRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.coneHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.coneAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::Sphere::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.Radius=%2\n"
+            "%1.Angle1=%3\n"
+            "%1.Angle2=%4\n"
+            "%1.Angle3=%5\n"
+            "%1.Placement=%6\n")
+            .arg(objectName)
+            .arg(ui.sphereRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.sphereAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.sphereAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.sphereAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::Ellipsoid::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.Radius1=%2\n"
+            "%1.Radius2=%3\n"
+            "%1.Radius3=%4\n"
+            "%1.Angle1=%5\n"
+            "%1.Angle2=%6\n"
+            "%1.Angle3=%7\n"
+            "%1.Placement=%8\n")
+            .arg(objectName)
+            .arg(ui.ellipsoidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.ellipsoidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.ellipsoidRadius3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.ellipsoidAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.ellipsoidAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.ellipsoidAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::Torus::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.Radius1=%2\n"
+            "%1.Radius2=%3\n"
+            "%1.Angle1=%4\n"
+            "%1.Angle2=%5\n"
+            "%1.Angle3=%6\n"
+            "%1.Placement=%7\n")
+            .arg(objectName)
+            .arg(ui.torusRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.torusRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.torusAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.torusAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.torusAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::Prism::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.Polygon=%2\n"
+            "%1.Circumradius=%3\n"
+            "%1.Height=%4\n"
+            "%1.FirstAngle=%5\n"
+            "%1.SecondAngle=%6\n"
+            "%1.Placement=%7\n")
+            .arg(objectName)
+            .arg(ui.prismPolygon->value())
+            .arg(ui.prismCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.prismHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.prismXSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+            .arg(ui.prismYSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::Wedge::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.Xmin=%2\n"
+            "%1.Ymin=%3\n"
+            "%1.Zmin=%4\n"
+            "%1.X2min=%5\n"
+            "%1.Z2min=%6\n"
+            "%1.Xmax=%7\n"
+            "%1.Ymax=%8\n"
+            "%1.Zmax=%9\n"
+            "%1.X2max=%10\n"
+            "%1.Z2max=%11\n"
+            "%1.Placement=%12\n")
+            .arg(objectName)
+            .arg(ui.wedgeXmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.wedgeYmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.wedgeZmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.wedgeX2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.wedgeZ2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.wedgeXmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.wedgeYmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.wedgeZmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.wedgeX2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.wedgeZ2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::Helix::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.Pitch=%2\n"
+            "%1.Height=%3\n"
+            "%1.Radius=%4\n"
+            "%1.Angle=%5\n"
+            "%1.LocalCoord=%6\n"
+            "%1.Placement=%7\n")
+            .arg(objectName)
+            .arg(ui.helixPitch->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+            .arg(ui.helixHeight->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+            .arg(ui.helixRadius->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+            .arg(ui.helixAngle->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+            .arg(ui.helixLocalCS->currentIndex())
+            .arg(placement);
+    }
+    else if (type == Part::Spiral::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.Growth=%2\n"
+            "%1.Rotations=%3\n"
+            "%1.Radius=%4\n"
+            "%1.Placement=%5\n")
+            .arg(objectName)
+            .arg(ui.spiralGrowth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.spiralRotation->value(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.spiralRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::Circle::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.Radius=%2\n"
+            "%1.Angle0=%3\n"
+            "%1.Angle1=%4\n"
+            "%1.Placement=%5\n")
+            .arg(objectName)
+            .arg(ui.circleRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.circleAngle0->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.circleAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::Ellipse::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.MajorRadius=%2\n"
+            "%1.MinorRadius=%3\n"
+            "%1.Angle0=%4\n"
+            "%1.Angle1=%5\n"
+            "%1.Placement=%6\n")
+            .arg(objectName)
+            .arg(ui.ellipseMajorRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.ellipseMinorRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.ellipseAngle0->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.ellipseAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::Vertex::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.X=%2\n"
+            "%1.Y=%3\n"
+            "%1.Z=%4\n"
+            "%1.Placement=%5\n")
+            .arg(objectName)
+            .arg(ui.vertexX->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.vertexY->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.vertexZ->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::Line::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.X1=%2\n"
+            "%1.Y1=%3\n"
+            "%1.Z1=%4\n"
+            "%1.X2=%5\n"
+            "%1.Y2=%6\n"
+            "%1.Z2=%7\n"
+            "%1.Placement=%8\n")
+            .arg(objectName)
+            .arg(ui.edgeX1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.edgeY1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.edgeZ1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.edgeX2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.edgeY2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(ui.edgeZ2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+    else if (type == Part::RegularPolygon::getClassTypeId()) {
+        command = QString::fromLatin1(
+            "%1.Polygon=%2\n"
+            "%1.Circumradius=%3\n"
+            "%1.Placement=%4\n")
+            .arg(objectName)
+            .arg(ui.regularPolygonPolygon->value())
+            .arg(ui.regularPolygonCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+            .arg(placement);
+    }
+
+    // store command for undo
+    QString cmd = tr("Edit %1").arg(QString::fromUtf8(featurePtr->Label.getValue()));
+    doc->openTransaction(cmd.toLatin1());
+    // execute command
+    Gui::Command::runCommand(Gui::Command::App, command.toLatin1());
+    doc->recompute();
+    // commit undo command
+    doc->commitTransaction();
+}
+
 // ----------------------------------------------
 
 /* TRANSLATOR PartGui::Location */
 
-Location::Location(QWidget* parent)
+Location::Location(QWidget* parent, Part::Feature* feature)
 {
     Q_UNUSED(parent);
     mode = 0;
     ui.setupUi(this);
+
+    ui.XPositionQSB->setUnit(Base::Unit::Length);
+    ui.YPositionQSB->setUnit(Base::Unit::Length);
+    ui.ZPositionQSB->setUnit(Base::Unit::Length);
+    ui.AngleQSB->setUnit(Base::Unit::Angle);
+
+    // fill location widget if object already exists
+    if (feature) {
+        // get the placement values
+        auto placement = feature->Placement.getValue();
+
+        auto position = placement.getPosition();
+        ui.XPositionQSB->setValue(position.x);
+        ui.YPositionQSB->setValue(position.y);
+        ui.ZPositionQSB->setValue(position.z);
+
+        double rotationAngle;
+        Base::Vector3d rotationAxes;
+        auto rotation = placement.getRotation();
+        rotation.getRawValue(rotationAxes, rotationAngle);
+        ui.XDirectionEdit->setValue(rotationAxes.x);
+        ui.YDirectionEdit->setValue(rotationAxes.y);
+        ui.ZDirectionEdit->setValue(rotationAxes.z);
+        // the angle is in this format: 180° = PI, thus transform it to deg
+        ui.AngleQSB->setValue(Base::toDegrees<double>(rotationAngle));
+    }
 }
 
 Location::~Location()
@@ -742,8 +1185,12 @@ void Location::pickCallback(void * ud, SoEventCallback * n)
                 SbVec3f pnt = point->getPoint();
                 SbVec3f nor = point->getNormal();
                 Location* dlg = reinterpret_cast<Location*>(ud);
-                dlg->ui.loc->setPosition(Base::Vector3d(pnt[0],pnt[1],pnt[2]));
-                dlg->ui.loc->setDirection(Base::Vector3d(nor[0],nor[1],nor[2]));
+                dlg->ui.XPositionQSB->setValue(pnt[0]);
+                dlg->ui.YPositionQSB->setValue(pnt[1]);
+                dlg->ui.ZPositionQSB->setValue(pnt[2]);
+                dlg->ui.XDirectionEdit->setValue(nor[0]);
+                dlg->ui.YDirectionEdit->setValue(nor[1]);
+                dlg->ui.ZDirectionEdit->setValue(nor[2]);
                 n->setHandled();
             }
         }
@@ -765,59 +1212,28 @@ void Location::pickCallback(void * ud, SoEventCallback * n)
 
 QString Location::toPlacement() const
 {
-    Base::Vector3d d = ui.loc->getDirection();
-    gp_Dir dir = gp_Dir(d.x,d.y,d.z);
-    gp_Pnt pnt = gp_Pnt(0.0,0.0,0.0);
-    gp_Ax3 ax3;
+    // create a command to set the position and angle of the primitive object
 
-    double cosNX = dir.Dot(gp::DX());
-    double cosNY = dir.Dot(gp::DY());
-    double cosNZ = dir.Dot(gp::DZ());
-    std::vector<double> cosXYZ;
-    cosXYZ.push_back(fabs(cosNX));
-    cosXYZ.push_back(fabs(cosNY));
-    cosXYZ.push_back(fabs(cosNZ));
+    Base::Vector3d rot;
+    rot.x = ui.XDirectionEdit->value();
+    rot.y = ui.YDirectionEdit->value();
+    rot.z = ui.ZDirectionEdit->value();
 
-    int pos = std::max_element(cosXYZ.begin(), cosXYZ.end()) - cosXYZ.begin();
+    double angle = ui.AngleQSB->rawValue();
 
-    // +X/-X
-    if (pos == 0) {
-        if (cosNX > 0)
-            ax3 = gp_Ax3(pnt, dir, gp_Dir(0,1,0));
-        else
-            ax3 = gp_Ax3(pnt, dir, gp_Dir(0,-1,0));
-    }
-    // +Y/-Y
-    else if (pos == 1) {
-        if (cosNY > 0)
-            ax3 = gp_Ax3(pnt, dir, gp_Dir(0,0,1));
-        else
-            ax3 = gp_Ax3(pnt, dir, gp_Dir(0,0,-1));
-    }
-    // +Z/-Z
-    else {
-        ax3 = gp_Ax3(pnt, dir, gp_Dir(1,0,0));
-    }
+    Base::Vector3d loc;
+    loc.x = ui.XPositionQSB->rawValue();
+    loc.y = ui.YPositionQSB->rawValue();
+    loc.z = ui.ZPositionQSB->rawValue();
 
-    gp_Trsf Trf;
-    Trf.SetTransformation(ax3);
-    Trf.Invert();
-
-    gp_XYZ theAxis(0,0,1);
-    Standard_Real theAngle = 0.0;
-    Trf.GetRotation(theAxis,theAngle);
-
-    Base::Rotation rot(Base::convertTo<Base::Vector3d>(theAxis), theAngle);
-    Base::Vector3d loc = ui.loc->getPosition();
-
-    return QString::fromLatin1("Base.Placement(Base.Vector(%1,%2,%3),Base.Rotation(%4,%5,%6,%7))")
-        .arg(loc.x,0,'f',Base::UnitsApi::getDecimals())
-        .arg(loc.y,0,'f',Base::UnitsApi::getDecimals())
-        .arg(loc.z,0,'f',Base::UnitsApi::getDecimals())
-        .arg(rot[0],0,'f',Base::UnitsApi::getDecimals())
-        .arg(rot[1],0,'f',Base::UnitsApi::getDecimals())
-        .arg(rot[2],0,'f',Base::UnitsApi::getDecimals())
-        .arg(rot[3],0,'f',Base::UnitsApi::getDecimals());
+    return QString::fromLatin1("App.Placement(App.Vector(%1,%2,%3),App.Rotation(App.Vector(%4,%5,%6),%7))")
+        .arg(loc.x, 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(loc.y, 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(loc.z, 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(rot.x, 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(rot.y, 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(rot.z, 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(angle, 0, 'f', Base::UnitsApi::getDecimals());
 }
 
 // ----------------------------------------------
@@ -828,12 +1244,12 @@ TaskPrimitives::TaskPrimitives()
 {
     Gui::TaskView::TaskBox* taskbox;
     widget = new DlgPrimitives();
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(),true, 0);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
     location = new Location();
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle(),true, 0);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle() ,true, 0);
     taskbox->groupLayout()->addWidget(location);
     taskbox->hideGroupBox();
     Content.push_back(taskbox);
@@ -864,6 +1280,58 @@ bool TaskPrimitives::accept()
 
 bool TaskPrimitives::reject()
 {
+    return true;
+}
+
+// ----------------------------------------------
+
+/* TRANSLATOR PartGui::TaskPrimitivesEdit */
+
+TaskPrimitivesEdit::TaskPrimitivesEdit(Part::Primitive* feature)
+{
+    // create and show dialog for the primitives
+    Gui::TaskView::TaskBox* taskbox;
+    widget = new DlgPrimitives(nullptr, feature);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, 0);
+    taskbox->groupLayout()->addWidget(widget);
+    Content.push_back(taskbox);
+
+    // create and show dialog for the location
+    location = new Location(nullptr, feature);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle(), true, 0);
+    taskbox->groupLayout()->addWidget(location);
+    Content.push_back(taskbox);
+}
+
+TaskPrimitivesEdit::~TaskPrimitivesEdit()
+{
+    // automatically deleted in the sub-class
+}
+
+QDialogButtonBox::StandardButtons TaskPrimitivesEdit::getStandardButtons() const
+{
+    return QDialogButtonBox::Close |
+        QDialogButtonBox::Ok;
+}
+
+void TaskPrimitivesEdit::modifyStandardButtons(QDialogButtonBox* box)
+{
+    QPushButton* btn = box->button(QDialogButtonBox::Ok);
+    btn->setText(QApplication::translate("PartGui::DlgPrimitives", "&OK"));
+}
+
+bool TaskPrimitivesEdit::accept()
+{
+    widget->accept(location->toPlacement());
+    std::string document = getDocumentName(); // needed because resetEdit() deletes this instance
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
+    return true;
+}
+
+bool TaskPrimitivesEdit::reject()
+{
+    std::string document = getDocumentName(); // needed because resetEdit() deletes this instance
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
     return true;
 }
 

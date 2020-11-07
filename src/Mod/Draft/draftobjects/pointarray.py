@@ -45,7 +45,7 @@ import draftutils.utils as utils
 
 from draftutils.messages import _wrn, _err
 from draftutils.translate import translate, _tr
-from draftobjects.base import DraftObject
+from draftobjects.draftlink import DraftLink
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
@@ -54,12 +54,21 @@ Part = lz.LazyLoader("Part", globals(), "Part")
 # @{
 
 
-class PointArray(DraftObject):
+class PointArray(DraftLink):
     """The Draft Point Array object."""
 
     def __init__(self, obj):
         super(PointArray, self).__init__(obj, "PointArray")
+
+    def attach(self, obj):
+        """Set up the properties when the object is attached."""
         self.set_properties(obj)
+        super(PointArray, self).attach(obj)
+
+    def linkSetup(self, obj):
+        """Set up the object as a link object."""
+        super(PointArray, self).linkSetup(obj)
+        obj.configLinkProperty(ElementCount='Count')
 
     def set_properties(self, obj):
         """Set properties only if they don't exist."""
@@ -109,19 +118,22 @@ class PointArray(DraftObject):
                             _tip)
             obj.ExtraPlacement = App.Placement()
 
+        if self.use_link and "ExpandArray" not in properties:
+            _tip = _tr("Show the individual array elements "
+                       "(only for Link arrays)")
+            obj.addProperty("App::PropertyBool",
+                            "ExpandArray",
+                            "Objects",
+                            _tip)
+            obj.setPropertyStatus('Shape', 'Transient')
+
     def execute(self, obj):
         """Run when the object is created or recomputed."""
-        if not hasattr(obj.Base, 'Shape'):
-            _err(_tr("Base object doesn't have a 'Shape', "
-                     "it cannot be used for an array."))
-            obj.Count = 0
-            return
 
         pt_list, count = get_point_list(obj.PointObject)
-        shape = build_copies(obj.Base, pt_list, obj.ExtraPlacement)
+        pls = build_placements(obj.Base, pt_list, obj.ExtraPlacement)
 
-        obj.Shape = shape
-        obj.Count = count
+        return super(PointArray, self).buildShape(obj, obj.Placement, pls)
 
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored.
@@ -147,6 +159,7 @@ class PointArray(DraftObject):
 
         self.set_properties(obj)
         self.migrate_properties_0v19(obj)
+        return super(PointArray, self).onDocumentRestored(obj)
 
     def migrate_properties_0v19(self, obj):
         """Migrate properties."""
@@ -231,33 +244,30 @@ def get_point_list(point_object):
     count = len(pt_list)
     return pt_list, count
 
-
-def build_copies(base_object, pt_list=None, placement=App.Placement()):
-    """Build a compound of copies from the base object and list of points.
+def build_placements(base_object, pt_list=None, placement=App.Placement()):
+    """Build a placements from the base object and list of points.
 
     Returns
     -------
-    Part::TopoShape
-        The compound shape created by `Part.makeCompound`.
+    list(App.Placement)
     """
     if not pt_list:
         _err(translate("Draft",
                        "Point object doesn't have a discrete point, "
                        "it cannot be used for an array."))
-        shape = base_object.Shape.copy()
-        return shape
+        return []
 
-    copies = list()
+    pls = list()
 
     for point in pt_list:
-        new_shape = base_object.Shape.copy()
-        original_rotation = new_shape.Placement.Rotation
+        new_pla = base_object.Placement.copy()
+        original_rotation = new_pla.Rotation
 
         # Reset the position of the copy, and combine the original rotation
         # with the provided rotation. Two rotations (quaternions)
         # are combined by multiplying them.
-        new_shape.Placement.Base = placement.Base
-        new_shape.Placement.Rotation = original_rotation * placement.Rotation
+        new_pla.Base = placement.Base
+        new_pla.Rotation = original_rotation * placement.Rotation
 
         if point.TypeId == "Part::Vertex":
             # For this object the final position is the value of the Placement
@@ -288,7 +298,33 @@ def build_copies(base_object, pt_list=None, placement=App.Placement()):
             # translate by the X, Y, Z coordinates
             place = App.Vector(point.X, point.Y, point.Z)
 
-        new_shape.translate(place)
+        new_pla.translate(place)
+
+        pls.append(new_pla)
+
+    return pls
+
+def build_copies(base_object, pt_list=None, placement=App.Placement()):
+    """Build a compound of copies from the base object and list of points.
+
+    Returns
+    -------
+    Part::TopoShape
+        The compound shape created by `Part.makeCompound`.
+    """
+
+    if not pt_list:
+        _err(translate("Draft",
+                       "Point object doesn't have a discrete point, "
+                       "it cannot be used for an array."))
+        shape = base_object.Shape.copy()
+        return shape
+
+    copies = list()
+
+    for pla in build_copies(base_object, pt_list, placement):
+        new_shape = base_object.Shape.copy()
+        new_shape.Placement = pla
 
         copies.append(new_shape)
 

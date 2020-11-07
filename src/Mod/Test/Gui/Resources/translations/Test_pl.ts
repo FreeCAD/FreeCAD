@@ -6,7 +6,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="16"/>
       <source>FreeCAD UnitTest</source>
-      <translation>FreeCAD UnitTest</translation>
+      <translation>Środowisko pracy FreeCAD UnitTest</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="31"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="248"/>
       <source>Run:</source>
-      <translation>Uruchom:</translation>
+      <translation>Wykonaj:</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="258"/>
@@ -112,12 +112,15 @@
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation>Wprowadź nazwę wywoływanego obiektu, jeżeli zostanie wywołany, zwróci TestCase. Wybierz 'start', a utworzony test zostanie uruchomiony.</translation>
+      <translation>Wprowadź nazwę obiektu typu callable, który po wywołaniu zwróci TestCase.
+Kliknij 'start', a utworzony w ten sposób test zostanie uruchomiony.
+
+Kliknij dwukrotnie na pozycję z błędem w widoku drzewa, aby zobaczyć więcej informacji na jego temat, w tym śledzenie stosu.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="176"/>
       <source>About FreeCAD UnitTest</source>
-      <translation>O FreeCAD UnitTest</translation>
+      <translation>O środowisku pracy FreeCAD UnitTest</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="176"/>
@@ -126,7 +129,7 @@ Double click on an error in the tree view to see more information about it, incl
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
       <translation>Copyright (c) Werner Mayer
 
-FreeCAD UnitTest jest częścią FreeCAD i wspiera pisanie Jednostek Testowych dla własnych modułów.</translation>
+Środowisko pracy FreeCAD UnitTest jest częścią FreeCAD i wspiera pisanie własnych testów dla własnych modułów.</translation>
     </message>
   </context>
 </TS>

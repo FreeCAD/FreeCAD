@@ -332,6 +332,7 @@ def export(exportList, filename, colors=None, preferences=None):
         description = getText("Description",obj)
         uid = getUID(obj,preferences)
         ifctype = getIfcTypeFromObj(obj)
+        # print(ifctype)
 
         if ifctype == "IfcGroup":
             groups[obj.Name] = [o.Name for o in obj.Group]
@@ -341,9 +342,13 @@ def export(exportList, filename, colors=None, preferences=None):
 
         assemblyElements = []
 
-        if ifctype == "IfcArray":
+        # if ifctype == "IfcArray":
+        # FIXME: the first array element is not placed correct if the array is not on coordinate origin
+        # https://forum.freecadweb.org/viewtopic.php?f=39&t=50085&p=431476#p431476
+        # workaround: do not use the assembly in ifc but a normal compound instead
+        if False:
+            clonedeltas = []
             if obj.ArrayType == "ortho":
-                clonedeltas = []
                 for i in range(obj.NumberX):
                     clonedeltas.append(obj.Placement.Base+(i*obj.IntervalX))
                     for j in range(obj.NumberY):
@@ -352,31 +357,39 @@ def export(exportList, filename, colors=None, preferences=None):
                         for k in range(obj.NumberZ):
                             if k > 0:
                                 clonedeltas.append(obj.Placement.Base+(i*obj.IntervalX)+(j*obj.IntervalY)+(k*obj.IntervalZ))
-            #print("clonedeltas:",clonedeltas)
-            for delta in clonedeltas:
-                representation,placement,shapetype = getRepresentation(
-                    ifcfile,
-                    context,
-                    obj.Base,
-                    forcebrep=(getBrepFlag(obj.Base,preferences)),
-                    colors=colors,
-                    preferences=preferences,
-                    forceclone=delta
-                )
-                subproduct = createProduct(
-                    ifcfile,
-                    obj.Base,
-                    getIfcTypeFromObj(obj.Base),
-                    getUID(obj.Base,preferences),
-                    history,
-                    getText("Name",obj.Base),
-                    getText("Description",obj.Base),
-                    placement,
-                    representation,
-                    preferences)
 
-                assemblyElements.append(subproduct)
+            #print("clonedeltas:",clonedeltas)
+            if clonedeltas:
                 ifctype = "IfcElementAssembly"
+                for delta in clonedeltas:
+                    # print("delta: {}".format(delta))
+                    representation,placement,shapetype = getRepresentation(
+                        ifcfile,
+                        context,
+                        obj.Base,
+                        forcebrep=(getBrepFlag(obj.Base,preferences)),
+                        colors=colors,
+                        preferences=preferences,
+                        forceclone=delta
+                    )
+                    subproduct = createProduct(
+                        ifcfile,
+                        obj.Base,
+                        getIfcTypeFromObj(obj.Base),
+                        getUID(obj.Base,preferences),
+                        history,
+                        getText("Name",obj.Base),
+                        getText("Description",obj.Base),
+                        placement,
+                        representation,
+                        preferences
+                    )
+                    assemblyElements.append(subproduct)
+            # if an array was handled assemblyElements is not empty
+            # if assemblyElements is not empty later on
+            # the own Shape is ignored if representation is retrieved
+            # this because we will build an assembly for the assemblyElements
+            # from here and the assembly itself should not have a representation
 
         elif ifctype == "IfcApp::Part":
             for subobj in [FreeCAD.ActiveDocument.getObject(n[:-1]) for n in obj.getSubObjects()]:
@@ -466,6 +479,12 @@ def export(exportList, filename, colors=None, preferences=None):
             ifctype = "IfcBuildingElementProxy"
 
         # getting the representation
+ 
+        # ignore the own shape for assembly objects
+        skipshape = False
+        if assemblyElements:
+            # print("Assembly object: {}, thus own Shape will have no representation.".format(obj.Name))
+            skipshape = True
 
         representation,placement,shapetype = getRepresentation(
             ifcfile,
@@ -473,7 +492,8 @@ def export(exportList, filename, colors=None, preferences=None):
             obj,
             forcebrep=(getBrepFlag(obj,preferences)),
             colors=colors,
-            preferences=preferences
+            preferences=preferences,
+            skipshape=skipshape
         )
         if preferences['GET_STANDARD']:
             if isStandardCase(obj,ifctype):
@@ -1615,7 +1635,17 @@ def getIfcTypeFromObj(obj):
     if ifctype in translationtable.keys():
         ifctype = translationtable[ifctype]
 
-    return "Ifc" + ifctype
+    if not "::" in ifctype:
+        ifctype = "Ifc" + ifctype
+    elif ifctype == "App::DocumentObjctGroup":
+        ifctype = "IfcGroup"
+    else:
+        # it makes no sense to return IfcPart::Cylinder for a Part::Cylinder
+        # this is not a ifctype at all
+        ifctype = None  
+
+    # print("Return value of getIfcTypeFromObj: {}".format(ifctype))
+    return ifctype
 
 
 def exportIFC2X3Attributes(obj, kwargs, scale=0.001):
@@ -1862,7 +1892,7 @@ def getProfile(ifcfile,p):
     return profile
 
 
-def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1,colors=None,preferences=None,forceclone=False):
+def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1,colors=None,preferences=None,forceclone=False,skipshape=False):
 
     """returns an IfcShapeRepresentation object or None. forceclone can be False (does nothing),
     "store" or True (stores the object as clone base) or a Vector (creates a clone)"""
@@ -1876,7 +1906,6 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
     shapetype = "no shape"
     tostore = False
     subplacement = None
-    skipshape = False
 
     # check for clones
 
@@ -1909,10 +1938,6 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
     # unhandled case: object is duplicated because of Axis
     if obj.isDerivedFrom("Part::Feature") and (len(obj.Shape.Solids) > 1) and hasattr(obj,"Axis") and obj.Axis:
         forcebrep = True
-
-    # specific cases that must ignore their own shape
-    if Draft.getType(obj) in ["Array"]:
-        skipshape = True
 
     if (not shapes) and (not forcebrep) and (not skipshape):
         profile = None
@@ -2093,10 +2118,12 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
                         if fcshape.Solids:
                             dataset = fcshape.Solids
-                        else:
+                        elif fcshape.Shells:
                             dataset = fcshape.Shells
                             #if preferences['DEBUG']: print("Warning! object contains no solids")
-
+                        else:
+                            if preferences['DEBUG']: print("Warning! object "+obj.Label+" contains no solids or shells")
+                            dataset = [fcshape]
                         for fcsolid in dataset:
                             fcsolid.scale(preferences['SCALE_FACTOR']) # to meters
                             faces = []
@@ -2298,6 +2325,12 @@ def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,rep
         kwargs = exportIFC2X3Attributes(obj, kwargs, preferences['SCALE_FACTOR'])
     else:
         kwargs = exportIfcAttributes(obj, kwargs, preferences['SCALE_FACTOR'])
+    # in some cases object have wrong ifctypes, thus set it
+    # https://forum.freecadweb.org/viewtopic.php?f=39&t=50085
+    if ifctype not in ArchIFCSchema.IfcProducts.keys():
+        # print("Wrong IfcType: IfcBuildingElementProxy is used. {}".format(ifctype))
+        ifctype = "IfcBuildingElementProxy"
+    # print("createProduct: {}".format(ifctype))
     product = getattr(ifcfile,"create"+ifctype)(**kwargs)
     return product
 

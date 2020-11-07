@@ -300,7 +300,7 @@ class Scale(gui_base_original.Modifier):
         and `BSpline`.
         """
         t = utils.getType(obj)
-        if t in ["Rectangle", "Wire", "Annotation", "BSpline"]:
+        if t in ["Rectangle", "Wire", "Annotation", "BSpline","Image::ImagePlane"]:
             # TODO: support more types in Draft.scale
             return True
         else:
