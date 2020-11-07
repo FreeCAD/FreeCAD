@@ -343,6 +343,7 @@ class ToolBitSelector(object):
                     return
                 else:
                     doc.setVisible(True)
+                    return
 
         mw = FreeCADGui.getMainWindow()
         mw.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.form,
@@ -454,7 +455,9 @@ class ToolBitLibrary(object):
         self.lockoff()
 
     def accept(self):
+        self.editor.accept()
         self.temptool.Proxy.saveToFile(self.temptool, self.temptool.File)
+        self.librarySave()
         self.loadData()
         self.cleanupDocument()
 

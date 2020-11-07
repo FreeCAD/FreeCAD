@@ -95,7 +95,7 @@ class ToolBitEditor(object):
         self.model.setHorizontalHeaderLabels(['Set', 'Property', 'Value'])
 
         for i, name in enumerate(self.props):
-            print("propname: %s " % name)
+            PathLog.debug("propname: %s " % name)
 
             prop = self.proto.getProperty(name)
             isset = hasattr(tool, name)
@@ -133,7 +133,7 @@ class ToolBitEditor(object):
 
         if hasattr(tool, "UserAttributes"):
             for key, value in tool.UserAttributes.items():
-                print(key, value)
+                PathLog.debug(key, value)
                 c1 = QtGui.QStandardItem()
                 c1.setCheckable(False)
                 c1.setEditable(False)
@@ -169,7 +169,7 @@ class ToolBitEditor(object):
 
         # get the attributes
         for i, name in enumerate(self.props):
-            print('in accept: {}'.format(name))
+            PathLog.debug('in accept: {}'.format(name))
             prop = self.proto.getProperty(name)
             if self.model.item(i, 0) is not None:
                 enabled = self.model.item(i, 0).checkState() == QtCore.Qt.Checked
