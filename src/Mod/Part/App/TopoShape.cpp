@@ -4132,7 +4132,7 @@ TopoShape &TopoShape::makEFace(const std::vector<TopoShape> &shapes, const char 
     for(auto &s : shapes) {
         if (s.getShape().ShapeType() == TopAbs_COMPOUND)
             mkFace->useCompound(TopoDS::Compound(s.getShape()));
-        else
+        else if (s.getShape().ShapeType() != TopAbs_VERTEX)
             mkFace->addShape(s.getShape());
     }
     mkFace->Build();
