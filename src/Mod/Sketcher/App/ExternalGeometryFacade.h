@@ -45,7 +45,7 @@ class ExternalGeometryFacadePy;
 // It is intended to have a separate type (not being a Geometry type).
 // it is intended to have the relevant interface in full for the sketcher extension only
 // It is intended to work on borrowed memory allocation.
-class SketcherExport ExternalGeometryFacade : public Base::BaseClass, public ISketchGeometryExtension, public ISketchExternalGeometryExtension
+class SketcherExport ExternalGeometryFacade : public Base::BaseClass, private ISketchGeometryExtension, private ISketchExternalGeometryExtension
 {
 TYPESYSTEM_HEADER_WITH_OVERRIDE();
 

@@ -33,20 +33,6 @@ namespace Sketcher
 class ISketchExternalGeometryExtension
 {
 public:
-    // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
-    enum Flag {
-        Defining = 0,   // allow an external geometry to build shape
-        Frozen = 1,     // freeze an external geometry
-        Detached = 2,   // signal the intentions of detaching the geometry from external reference
-        Missing = 3,    // geometry with missing external reference
-        Sync = 4,       // signal the intention to synchronize a frozen geometry
-        NumFlags        // Must be the last type
-    };
-    // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
-
-    constexpr static std::array<const char *,NumFlags> flag2str {{ "Defining", "Frozen", "Detached","Missing", "Sync" }};
-
-public:
     // Identification information
     // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
     virtual bool testFlag(int flag) const = 0;
@@ -60,9 +46,22 @@ public:
     virtual void setRef(const std::string & ref) = 0;
 };
 
-class SketcherExport ExternalGeometryExtension : public Part::GeometryExtension, public ISketchExternalGeometryExtension
+class SketcherExport ExternalGeometryExtension : public Part::GeometryExtension, private ISketchExternalGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+public:
+    // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
+    enum Flag {
+        Defining = 0,   // allow an external geometry to build shape
+        Frozen = 1,     // freeze an external geometry
+        Detached = 2,   // signal the intentions of detaching the geometry from external reference
+        Missing = 3,    // geometry with missing external reference
+        Sync = 4,       // signal the intention to synchronize a frozen geometry
+        NumFlags        // Must be the last type
+    };
+    // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
+
+    constexpr static std::array<const char *,NumFlags> flag2str {{ "Defining", "Frozen", "Detached","Missing", "Sync" }};
 public:
 
     ExternalGeometryExtension() = default;
