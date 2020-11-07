@@ -59,16 +59,19 @@ ParameterTypeConstraint = {
 
 
 def _findTool(path, typ, dbg=False):
-    if os.path.exists(path):
+    # PathLog.track("Path: {} typ: {}".format(path, typ))
+    if os.path.exists(path): # absolute reference
         if dbg:
             PathLog.debug("Found {} at {}".format(typ, path))
         return path
 
     def searchFor(pname, fname):
+        # PathLog.debug("pname: {} fname: {}".format(pname, fname))
         if dbg:
             PathLog.debug("Looking for {}".format(pname))
         if fname:
             for p in PathPreferences.searchPathsTool(typ):
+                PathLog.track(p)
                 f = os.path.join(p, fname)
                 if dbg:
                     PathLog.debug("  Checking {}".format(f))
@@ -77,6 +80,7 @@ def _findTool(path, typ, dbg=False):
                         PathLog.debug("  Found {} at {}".format(typ, f))
                     return f
         if pname and os.path.sep != pname:
+            PathLog.track(pname)
             ppname, pfname = os.path.split(pname)
             ffname = os.path.join(pfname, fname) if fname else pfname
             return searchFor(ppname, ffname)
@@ -94,6 +98,7 @@ def findShape(path):
 
 
 def findBit(path):
+    PathLog.track(path)
     if path.endswith('.fctb'):
         return _findTool(path, 'Bit')
     return _findTool("{}.fctb".format(path), 'Bit')

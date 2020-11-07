@@ -27,8 +27,8 @@ import glob
 import os
 import PathScripts.PathLog as PathLog
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule()
+# PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule()
 
 DefaultFilePath           = "DefaultFilePath"
 DefaultJobTemplate        = "DefaultJobTemplate"
@@ -152,7 +152,9 @@ def searchPathsTool(sub='Bit'):
     paths = []
 
     if 'Bit' == sub:
+        paths.append("{}/Bit".format(os.path.dirname(lastPathToolLibrary())))
         paths.append(lastPathToolBit())
+
     if 'Library' == sub:
         paths.append(lastPathToolLibrary())
     if 'Shape' == sub:

@@ -229,6 +229,9 @@ class ModelFactory(object):
         if lib == "":
             lib = PathPreferences.lastFileToolLibrary()
 
+        if lib == "" or lib is None:
+            return model
+
         if os.path.isfile(lib):  # An individual library is wanted
             self.__libraryLoad(lib, model)
 
@@ -250,9 +253,13 @@ class ToolBitSelector(object):
         return ['#', 'Tool']
 
     def curLib(self):
-        libfile = os.path.split(PathPreferences.lastFileToolLibrary())[1]
-        libName = os.path.splitext(libfile)[0]
-        return libName
+        libfile = PathPreferences.lastFileToolLibrary()
+        if libfile is None or libfile == "":
+            return ""
+        else:
+            libfile = os.path.split(PathPreferences.lastFileToolLibrary())[1]
+            libfile = os.path.splitext(libfile)[0]
+        return libfile
 
     def loadData(self):
         PathLog.track()
