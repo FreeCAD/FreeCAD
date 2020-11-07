@@ -391,7 +391,7 @@ protected:
     void onChanged(const App::Property* prop);
 };
 
-class Ellipse : public Part::Primitive
+class PartExport Ellipse : public Part::Primitive
 {
     PROPERTY_HEADER(Part::Ellipse);
 
