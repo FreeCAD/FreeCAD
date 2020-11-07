@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -95,6 +96,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.DwellEnabled = self.form.dwellEnabled.isChecked()
         if obj.PeckEnabled != self.form.peckEnabled.isChecked():
             obj.PeckEnabled = self.form.peckEnabled.isChecked()
+        if obj.KeepToolDown != self.form.KeepToolDownEnabled.isChecked():
+            obj.KeepToolDown = self.form.KeepToolDownEnabled.isChecked()
         if obj.ExtraOffset != str(self.form.ExtraOffset.currentText()):
             obj.ExtraOffset = str(self.form.ExtraOffset.currentText())
         if obj.EnableRotation != str(self.form.enableRotation.currentText()):
@@ -117,6 +120,11 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.peckEnabled.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.peckEnabled.setCheckState(QtCore.Qt.Unchecked)
+        
+        if obj.KeepToolDown:
+            self.form.KeepToolDownEnabled.setCheckState(QtCore.Qt.Checked)
+        else:
+            self.form.KeepToolDownEnabled.setCheckState(QtCore.Qt.Unchecked)
 
         self.selectInComboBox(obj.ExtraOffset, self.form.ExtraOffset)
 
@@ -134,6 +142,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.dwellTime.editingFinished)
         signals.append(self.form.dwellEnabled.stateChanged)
         signals.append(self.form.peckEnabled.stateChanged)
+        signals.append(self.form.KeepToolDownEnabled.stateChanged)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.ExtraOffset.currentIndexChanged)
