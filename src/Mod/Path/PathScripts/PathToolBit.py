@@ -42,8 +42,8 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Class to deal with and represent a tool bit."
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule()
+# PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+# PathLog.trackModule()
 
 
 def translate(context, text, disambig=None):
@@ -254,7 +254,6 @@ class ToolBit(object):
         return (doc, docOpened)
 
     def _removeBitBody(self, obj):
-        print('in _removebitbody')
         if obj.BitBody:
             obj.BitBody.removeObjectsFromDocument()
             obj.Document.removeObject(obj.BitBody.Name)
@@ -327,7 +326,7 @@ class ToolBit(object):
         return None
 
     def saveToFile(self, obj, path, setFile=True):
-        print('were saving now')
+        PathLog.track(path)
         try:
             with open(path, 'w') as fp:
                 json.dump(self.templateAttrs(obj), fp, indent='  ')
@@ -363,7 +362,6 @@ class ToolBit(object):
 
 
 def Declaration(path):
-    print(path)
     with open(path, 'r') as fp:
         return json.load(fp)
 
@@ -396,6 +394,7 @@ class AttributePrototype(PathSetupSheetOpPrototype.OpPrototype):
 class ToolBitFactory(object):
 
     def CreateFromAttrs(self, attrs, name='ToolBit'):
+        PathLog.debug(attrs)
         obj = Factory.Create(name, attrs['shape'])
         obj.Label = attrs['name']
         params = attrs['parameter']
@@ -407,7 +406,6 @@ class ToolBitFactory(object):
         proto = AttributePrototype()
         uservals = {}
         for pname in params:
-            # print(f"pname: {pname}")
             try:
                 prop = proto.getProperty(pname)
                 # val =  prop.valueFromString(params[pname])

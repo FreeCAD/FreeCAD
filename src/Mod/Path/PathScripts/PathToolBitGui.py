@@ -150,6 +150,7 @@ class TaskPanel:
         FreeCAD.ActiveDocument.recompute()
 
     def updateUI(self):
+        PathLog.track()
         self.editor.updateUI()
 
     def updateModel(self):
