@@ -87,12 +87,12 @@ PyObject* ExternalGeometryFacadePy::testFlag(PyObject *args)
     char* flag;
     if (PyArg_ParseTuple(args, "s",&flag)) {
 
-        auto pos = std::find_if(getExternalGeometryFacadePtr()->flag2str.begin(),
-                    getExternalGeometryFacadePtr()->flag2str.end(),
+        auto pos = std::find_if(ExternalGeometryExtension::flag2str.begin(),
+                    ExternalGeometryExtension::flag2str.end(),
                     [flag](const char * val) { return strcmp(val,flag) == 0;});
 
-        if( pos != getExternalGeometryFacadePtr()->flag2str.end()) {
-            int index = std::distance( getExternalGeometryFacadePtr()->flag2str.begin(), pos );
+        if( pos != ExternalGeometryExtension::flag2str.end()) {
+            int index = std::distance( ExternalGeometryExtension::flag2str.begin(), pos );
 
             return new_reference_to(Py::Boolean(this->getExternalGeometryFacadePtr()->testFlag(index)));
         }
@@ -112,14 +112,14 @@ PyObject* ExternalGeometryFacadePy::setFlag(PyObject *args)
     PyObject * bflag = Py_True;
     if (PyArg_ParseTuple(args, "s|O!", &flag, &PyBool_Type, &bflag)) {
 
-        auto pos = std::find_if(getExternalGeometryFacadePtr()->flag2str.begin(),
-                                getExternalGeometryFacadePtr()->flag2str.end(),
+        auto pos = std::find_if(ExternalGeometryExtension::flag2str.begin(),
+                                ExternalGeometryExtension::flag2str.end(),
                                 [flag](const char * val) {
                                     return strcmp(val,flag)==0;}
                                 );
 
-        if( pos != getExternalGeometryFacadePtr()->flag2str.end()) {
-            int index = std::distance( getExternalGeometryFacadePtr()->flag2str.begin(), pos );
+        if( pos != ExternalGeometryExtension::flag2str.end()) {
+            int index = std::distance( ExternalGeometryExtension::flag2str.begin(), pos );
 
             this->getExternalGeometryFacadePtr()->setFlag(index,PyObject_IsTrue(bflag) ? true : false);
             Py_Return;

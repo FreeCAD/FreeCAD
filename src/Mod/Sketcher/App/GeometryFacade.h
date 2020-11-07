@@ -38,8 +38,9 @@ namespace Sketcher
 class GeometryFacadePy;
 // This class is a Facade to handle geometry and sketcher geometry extensions with a single sketcher specific interface
 //
-// The inherits and thus provides the same interface as the extension. It does not inherit from Part::Geometry and thus
-// is intended to provide, in part a convenience subset of the interface of Part::Geometry, in part a different interface.
+// The facade privately inherits from a common interface it shares with the extension thereby implementing a compiler enforced
+// same interface as the extension. It does not inherit from Part::Geometry and thus is intended to provide, in part a convenience
+// subset of the interface of Part::Geometry, in part a different interface.
 //
 // GeometryFacade has private constructors and objects may only be created using the getFacade factory methods.
 //
@@ -73,7 +74,7 @@ class GeometryFacadePy;
 // It is intended to have a separate type (not being a Geometry type).
 // it is intended to have the relevant interface in full for the sketcher extension only
 // It is intended to work on borrowed memory allocation.
-class SketcherExport GeometryFacade : public Base::BaseClass, ISketchGeometryExtension
+class SketcherExport GeometryFacade : public Base::BaseClass, private ISketchGeometryExtension
 {
 TYPESYSTEM_HEADER_WITH_OVERRIDE();
 

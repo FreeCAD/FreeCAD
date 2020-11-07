@@ -38,7 +38,7 @@ public:
     virtual void setId(long id) = 0;
 };
 
-class SketcherExport SketchGeometryExtension : public Part::GeometryExtension, ISketchGeometryExtension
+class SketcherExport SketchGeometryExtension : public Part::GeometryExtension, private ISketchGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
