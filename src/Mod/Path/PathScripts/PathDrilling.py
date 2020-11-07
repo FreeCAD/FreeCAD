@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *   Copyright (c) 2020 Schildkroet                                        *
@@ -73,6 +75,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         obj.addProperty("App::PropertyDistance", "RetractHeight", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height where feed starts and height during retract tool when path is finished while in a peck operation"))
         obj.addProperty("App::PropertyEnumeration", "ExtraOffset", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "How far the drill depth is extended"))
         obj.ExtraOffset = ['None', 'Drill Tip', '2x Drill Tip']  # Canned Cycle Return Level
+        obj.addProperty("App::PropertyBool", "KeepToolDown", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Don't retract with every hole"))
 
         # Rotation related properties
         if not hasattr(obj, 'EnableRotation'):
@@ -107,15 +110,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         holes = PathUtils.sort_jobs(holes, ['x', 'y'])
         self.commandlist.append(Path.Command('G90'))
         self.commandlist.append(Path.Command(obj.ReturnLevel))
-
-        # Set correct start depth
-        if obj.OpStartDepth.Value != obj.StartDepth.Value:
-            obj.RetractHeight.Value = obj.StartDepth.Value + 1
-
-            # Adjust retract input box
-            s = str(obj.RetractHeight.Value) + 'mm'
-            self.applyExpression(obj, 'RetractHeight', s)
-
+        
         for p in holes:
             cmd = "G81"
             cmdParams = {}
@@ -166,11 +161,12 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             # Perform canned drilling cycle
             self.commandlist.append(Path.Command(cmd, params))
 
-            # Cancel canned drilling cycle
-            self.commandlist.append(Path.Command('G80'))
-            self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value}))
+            if obj.KeepToolDown == False:
+                # Cancel canned drilling cycle
+                self.commandlist.append(Path.Command('G80'))
+                self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value}))
 
-            # shift axis and angle values
+            # Shift axis and angle values
             if obj.EnableRotation != 'Off':
                 lastAxis = axisOfRot
                 lastAngle = angle
@@ -178,6 +174,12 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         if obj.EnableRotation != 'Off':
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
             self.commandlist.append(Path.Command('G0', {lastAxis: 0.0, 'F': self.axialRapid}))
+        
+        if obj.KeepToolDown == True:
+            # Cancel canned drilling cycle
+            self.commandlist.append(Path.Command('G80'))
+            self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value}))
+
 
     def opSetDefaultValues(self, obj, job):
         '''opSetDefaultValues(obj, job) ... set default value for RetractHeight'''
@@ -203,6 +205,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         obj.InverseAngle = False
         obj.AttemptInverseAngle = False
         obj.ExtraOffset = "None"
+        obj.KeepToolDown = True
 
         # Initial setting for EnableRotation is taken from Job SetupSheet
         # User may override on per-operation basis as needed.
@@ -226,6 +229,8 @@ def SetupProperties():
     setup.append("ReverseDirection")
     setup.append("InverseAngle")
     setup.append("AttemptInverseAngle")
+    setup.append("KeepToolDown")
+    
     return setup
 
 
@@ -233,9 +238,9 @@ def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Drilling operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-
+    
     obj.Proxy = ObjectDrilling(obj, name)
     if obj.Proxy:
         obj.Proxy.findAllHoles(obj)
-
+    
     return obj
