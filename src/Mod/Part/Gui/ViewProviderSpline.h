@@ -24,6 +24,7 @@
 #define PARTGUI_VIEWPROVIDERPARTSPLINE_H
 
 #include "ViewProviderExt.h"
+#include <Gui/ViewProviderExtension.h>
 
 namespace PartGui
 {
@@ -47,6 +48,30 @@ public:
 
 protected:
     void onChanged(const App::Property* prop);
+    void toggleControlPoints(bool);
+    void showControlPoints(bool, const App::Property* prop);
+    void showControlPointsOfEdge(const TopoDS_Edge&);
+    void showControlPointsOfFace(const TopoDS_Face&);
+
+    SoSwitch     *pcControlPoints;
+};
+
+class PartGuiExport ViewProviderSplineExtension : public Gui::ViewProviderExtension
+{
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderSplineExtension);
+
+public:
+    /// Constructor
+    ViewProviderSplineExtension(void);
+    virtual ~ViewProviderSplineExtension() = default;
+
+    App::PropertyBool ControlPoints;
+
+    virtual void extensionUpdateData(const App::Property*) override;
+    void setupContextMenu(QMenu* menu);
+
+protected:
+    virtual void extensionOnChanged(const App::Property* p) override;
     void toggleControlPoints(bool);
     void showControlPoints(bool, const App::Property* prop);
     void showControlPointsOfEdge(const TopoDS_Edge&);
