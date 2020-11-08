@@ -70,6 +70,7 @@ public:
     ~DlgPrimitives();
     void createPrimitive(const QString&);
     void accept(const QString&);
+    void reject();
 
 private Q_SLOTS:
     void on_buttonCircleFromThreePoints_clicked();
@@ -149,7 +150,6 @@ public:
     bool accept();
     bool reject();
     QDialogButtonBox::StandardButtons getStandardButtons() const;
-    void modifyStandardButtons(QDialogButtonBox*);
 
 private:
     DlgPrimitives* widget;

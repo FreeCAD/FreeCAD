@@ -1107,14 +1107,19 @@ void DlgPrimitives::accept(const QString& placement)
             .arg(placement);
     }
 
-    // store command for undo
-    QString cmd = tr("Edit %1").arg(QString::fromUtf8(featurePtr->Label.getValue()));
-    doc->openTransaction(cmd.toLatin1());
-    // execute command
+    // execute command, a transaction is already opened
     Gui::Command::runCommand(Gui::Command::App, command.toLatin1());
     doc->recompute();
     // commit undo command
     doc->commitTransaction();
+}
+
+void DlgPrimitives::reject()
+{
+    if (featurePtr.expired())
+        return;
+    App::Document* doc = featurePtr->getDocument();
+    doc->abortTransaction();
 }
 
 void DlgPrimitives::onChangePlane(QWidget*)
@@ -1438,14 +1443,8 @@ TaskPrimitivesEdit::~TaskPrimitivesEdit()
 
 QDialogButtonBox::StandardButtons TaskPrimitivesEdit::getStandardButtons() const
 {
-    return QDialogButtonBox::Close |
+    return QDialogButtonBox::Cancel |
         QDialogButtonBox::Ok;
-}
-
-void TaskPrimitivesEdit::modifyStandardButtons(QDialogButtonBox* box)
-{
-    QPushButton* btn = box->button(QDialogButtonBox::Ok);
-    btn->setText(QApplication::translate("PartGui::DlgPrimitives", "&OK"));
 }
 
 bool TaskPrimitivesEdit::accept()
@@ -1458,6 +1457,7 @@ bool TaskPrimitivesEdit::accept()
 
 bool TaskPrimitivesEdit::reject()
 {
+    widget->reject();
     std::string document = getDocumentName(); // needed because resetEdit() deletes this instance
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
     return true;
