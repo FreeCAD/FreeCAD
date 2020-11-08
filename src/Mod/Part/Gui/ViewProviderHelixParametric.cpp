@@ -28,21 +28,18 @@
 # include <QMenu>
 #endif
 
-#include <Gui/Application.h>
-#include <Gui/Control.h>
-#include <Mod/Part/App/PrimitiveFeature.h>
-#include "DlgPrimitives.h"
 #include "ViewProviderHelixParametric.h"
 
 using namespace PartGui;
 
 
-PROPERTY_SOURCE(PartGui::ViewProviderHelixParametric, PartGui::ViewProviderSpline)
+PROPERTY_SOURCE(PartGui::ViewProviderHelixParametric, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderHelixParametric::ViewProviderHelixParametric()
 {
     sPixmap = "Part_Helix_Parametric";
+    extension.initExtension(this);
 }
 
 ViewProviderHelixParametric::~ViewProviderHelixParametric()
@@ -62,46 +59,19 @@ std::vector<std::string> ViewProviderHelixParametric::getDisplayModes(void) cons
 
 void ViewProviderHelixParametric::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit helix"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
-    ViewProviderSpline::setupContextMenu(menu, receiver, member);
-}
-
-bool ViewProviderHelixParametric::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        if (Gui::Control().activeDialog())
-            return false;
-        PartGui::TaskPrimitivesEdit* dlg
-            = new PartGui::TaskPrimitivesEdit(dynamic_cast<Part::Primitive*>(getObject()));
-        Gui::Control().showDialog(dlg);
-        return true;
-    }
-    else {
-        ViewProviderSpline::setEdit(ModNum);
-        return true;
-    }
-}
-
-void ViewProviderHelixParametric::unsetEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderSpline::unsetEdit(ModNum);
-    }
+    ViewProviderPrimitive::setupContextMenu(menu, receiver, member);
+    extension.setupContextMenu(menu);
 }
 
 // ------------------------------------------------------------------
 
-PROPERTY_SOURCE(PartGui::ViewProviderSpiralParametric, PartGui::ViewProviderSpline)
+PROPERTY_SOURCE(PartGui::ViewProviderSpiralParametric, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderSpiralParametric::ViewProviderSpiralParametric()
 {
     sPixmap = "Part_Spiral_Parametric";
+    extension.initExtension(this);
 }
 
 ViewProviderSpiralParametric::~ViewProviderSpiralParametric()
@@ -121,34 +91,6 @@ std::vector<std::string> ViewProviderSpiralParametric::getDisplayModes(void) con
 
 void ViewProviderSpiralParametric::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit spiral"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
-    ViewProviderSpline::setupContextMenu(menu, receiver, member);
-}
-
-bool ViewProviderSpiralParametric::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        if (Gui::Control().activeDialog())
-            return false;
-        PartGui::TaskPrimitivesEdit* dlg
-            = new PartGui::TaskPrimitivesEdit(dynamic_cast<Part::Primitive*>(getObject()));
-        Gui::Control().showDialog(dlg);
-        return true;
-    }
-    else {
-        ViewProviderSpline::setEdit(ModNum);
-        return true;
-    }
-}
-
-void ViewProviderSpiralParametric::unsetEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderSpline::unsetEdit(ModNum);
-    }
+    ViewProviderPrimitive::setupContextMenu(menu, receiver, member);
+    extension.setupContextMenu(menu);
 }
