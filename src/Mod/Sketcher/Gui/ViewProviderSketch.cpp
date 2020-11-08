@@ -4245,16 +4245,10 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
         // pole weights --------------------------------------------------------
         std::vector<double> weights = spline->getWeights();
-        QString WeightString;
-        int itw;
-        // since the first and last control point of a spline is also treated as knot and thus
-        // can also have a displayed multiplicity, we must assure the multiplicity is not visibly overwritten
-        // we add spaces to show the weight behind the multiplicity
         auto TextBegin = hGrpsk->GetBool("BSplineKnotMultiplicityVisible", true) ? "   [" : "[";
-
         if (rebuildinformationlayer) {
 
-            for (itw = 0; itw != weights.size(); ++itw) {
+            for (size_t index = 0; index < weights.size(); ++index) {
 
                 SoSwitch* sw = new SoSwitch();
 
@@ -4272,7 +4266,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 SoTranslation* translate = new SoTranslation;
 
-                Base::Vector3d poleposition = poles[itw];
+                Base::Vector3d poleposition = poles[index];
 
                 SoFont* font = new SoFont;
                 font->name.setValue("Helvetica");
@@ -4281,10 +4275,13 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 translate->translation.setValue(poleposition.x, poleposition.y, zInfo);
 
                 // set up string with weight value and the user-defined number of decimals
-                WeightString  = QString::fromLatin1("%1").arg(weights[itw], 0, 'f', Base::UnitsApi::getDecimals());
+                QString WeightString  = QString::fromLatin1("%1").arg(weights[index], 0, 'f', Base::UnitsApi::getDecimals());
 
                 SoText2* WeightText = new SoText2;
-                WeightText->string = SbString(TextBegin) + SbString(WeightString.toStdString().c_str()) + SbString("]");
+                SoMFString label;
+                label.set1Value(0, SbString(""));
+                label.set1Value(1, SbString("[") + SbString(WeightString.toStdString().c_str()) + SbString("]"));
+                WeightText->string = label;
 
                 sep->addChild(translate);
                 sep->addChild(mat);
@@ -4301,7 +4298,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             }
         }
         else {
-            for (itw = 0; itw != weights.size(); ++itw) {
+            for (size_t index = 0; index < weights.size(); ++index) {
                 SoSwitch* sw = static_cast<SoSwitch*>(edit->infoGroup->getChild(currentInfoNode));
 
                 if (visibleInformationChanged)
@@ -4309,15 +4306,19 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 SoSeparator* sep = static_cast<SoSeparator*>(sw->getChild(0));
 
-                Base::Vector3d poleposition = poles[itw];
+                Base::Vector3d poleposition = poles[index];
 
                 static_cast<SoTranslation*>(sep->getChild(GEOINFO_BSPLINE_DEGREE_POS))
                     ->translation.setValue(poleposition.x, poleposition.y, zInfo);
 
-                WeightString = QString::fromLatin1("%1").arg(weights[itw], 0, 'f', Base::UnitsApi::getDecimals());
+                QString WeightString = QString::fromLatin1("%1").arg(weights[index], 0, 'f', Base::UnitsApi::getDecimals());
+
+                SoMFString label;
+                label.set1Value(0, SbString(""));
+                label.set1Value(1, SbString("[") + SbString(WeightString.toStdString().c_str()) + SbString("]"));
 
                 static_cast<SoText2*>(sep->getChild(GEOINFO_BSPLINE_DEGREE_TEXT))
-                                        ->string = SbString(TextBegin) + SbString(WeightString.toStdString().c_str()) + SbString("]");
+                                        ->string = label;
 
                 currentInfoNode++; // switch to next node
             }
