@@ -254,12 +254,47 @@ void PropertyContainer::handleChangedPropertyType(XMLReader &reader, const char 
 
 PropertyData PropertyContainer::propertyData;
 
-void PropertyContainer::Save (Base::Writer &writer) const 
+namespace App {
+class PropertyContainerP
 {
-    std::map<std::string,Property*> Map;
+public:
+    std::map<std::string, Property*> propertyMap;
+    std::vector<Property*> transients;
+
+    void clear()
+    {
+        propertyMap.clear();
+        transients.clear();
+    }
+};
+
+struct PropertyContainerPGuard
+{
+    PropertyContainerPGuard(PropertyContainerP & priv)
+        :priv(priv)
+    {}
+
+    ~PropertyContainerPGuard()
+    {
+        priv.clear();
+    }
+
+    PropertyContainerP & priv;
+};
+}
+
+void PropertyContainer::beforeSave() const
+{
+    if (!_pimpl)
+        _pimpl.reset(new PropertyContainerP);
+    else
+        _pimpl->clear();
+
+    auto & Map = _pimpl->propertyMap;
+    auto & transients = _pimpl->transients;
+
     getPropertyMap(Map);
 
-    std::vector<Property*> transients;
     for(auto it=Map.begin();it!=Map.end();) {
         auto prop = it->second;
         if (prop->getContainer() != this
@@ -274,9 +309,22 @@ void PropertyContainer::Save (Base::Writer &writer) const
         {
             transients.push_back(prop);
             it = Map.erase(it);
-        }else
+        } else {
+            prop->beforeSave();
             ++it;
+        }
     }
+}
+
+void PropertyContainer::Save (Base::Writer &writer) const 
+{
+    if (!_pimpl || _pimpl->propertyMap.empty())
+        beforeSave();
+
+    PropertyContainerPGuard guard(*_pimpl);
+
+    auto & Map = _pimpl->propertyMap;
+    auto & transients = _pimpl->transients;
 
     writer.incInd(); // indentation for 'Properties Count'
     writer.Stream() << writer.ind() << "<Properties Count=\"" << Map.size()

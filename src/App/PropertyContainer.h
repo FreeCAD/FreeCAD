@@ -138,6 +138,7 @@ struct AppExport PropertyData
   void split(PropertyData *other);
 };
 
+class PropertyContainerP;
 
 /** Base class of all classes with properties
  */
@@ -240,6 +241,7 @@ public:
 
   virtual void Save (Base::Writer &writer) const;
   virtual void Restore(Base::XMLReader &reader);
+  virtual void beforeSave() const;
 
   const char *getPropertyPrefix() const {
       return _propertyPrefix.c_str();
@@ -284,9 +286,12 @@ private:
 protected:
   DynamicProperty dynamicProps;
 
-private:
+
+private: 
   std::string _propertyPrefix;
-  static PropertyData propertyData;
+  static PropertyData propertyData; 
+
+  mutable std::unique_ptr<PropertyContainerP> _pimpl;
 };
 
 /// Property define
