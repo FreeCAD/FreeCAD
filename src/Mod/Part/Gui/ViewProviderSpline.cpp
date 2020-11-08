@@ -324,7 +324,7 @@ void ViewProviderSplineExtension::toggleControlPoints(bool on)
     ControlPoints.setValue(on);
 }
 
-void ViewProviderSplineExtension::setupContextMenu(QMenu* menu)
+void ViewProviderSplineExtension::extensionSetupContextMenu(QMenu* menu, QObject*, const char*)
 {
     // toggle command to display components
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
@@ -545,4 +545,11 @@ void ViewProviderSplineExtension::showControlPointsOfFace(const TopoDS_Face& fac
     nodes->addChild(control);
 
     pcControlPoints->addChild(nodes);
+}
+
+namespace Gui {
+    EXTENSION_PROPERTY_SOURCE_TEMPLATE(PartGui::ViewProviderSplineExtensionPython, PartGui::ViewProviderSplineExtension)
+
+// explicit template instantiation
+    template class PartGuiExport ViewProviderExtensionPythonT<PartGui::ViewProviderSplineExtension>;
 }

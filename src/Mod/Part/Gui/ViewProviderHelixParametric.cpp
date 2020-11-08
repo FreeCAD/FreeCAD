@@ -60,7 +60,6 @@ std::vector<std::string> ViewProviderHelixParametric::getDisplayModes(void) cons
 void ViewProviderHelixParametric::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     ViewProviderPrimitive::setupContextMenu(menu, receiver, member);
-    extension.setupContextMenu(menu);
 }
 
 // ------------------------------------------------------------------
@@ -92,5 +91,4 @@ std::vector<std::string> ViewProviderSpiralParametric::getDisplayModes(void) con
 void ViewProviderSpiralParametric::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     ViewProviderPrimitive::setupContextMenu(menu, receiver, member);
-    extension.setupContextMenu(menu);
 }

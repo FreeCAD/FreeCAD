@@ -68,7 +68,7 @@ public:
     App::PropertyBool ControlPoints;
 
     virtual void extensionUpdateData(const App::Property*) override;
-    void setupContextMenu(QMenu* menu);
+    virtual void extensionSetupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
     virtual void extensionOnChanged(const App::Property* p) override;
@@ -79,6 +79,8 @@ protected:
 
     SoSwitch     *pcControlPoints;
 };
+
+typedef Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderSplineExtension> ViewProviderSplineExtensionPython;
 
 } //namespace PartGui
 
