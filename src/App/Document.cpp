@@ -100,6 +100,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include "DocumentObject.h"
 #include "MergeDocuments.h"
 #include "ExpressionParser.h"
+#include "StringHasher.h"
 #include <App/DocumentPy.h>
 
 #include <Base/Console.h>
@@ -203,10 +204,13 @@ struct DocumentP
     std::multimap<const App::DocumentObject*,
         std::unique_ptr<App::DocumentObjectExecReturn> > _RecomputeLog;
 
+    StringHasherRef Hasher;
+
     // restored files
     std::set<std::string> files;
 
     DocumentP() {
+#ifndef FC_DEBUG
         static std::random_device _RD;
         static std::mt19937 _RGEN(_RD());
         static std::uniform_int_distribution<> _RDIST(0,5000);
@@ -214,6 +218,10 @@ struct DocumentP
         // copying shape from other document. It is probably better to randomize
         // on each object ID.
         lastObjectId = _RDIST(_RGEN);
+#else
+        lastObjectId = 10; 
+#endif
+        Hasher.reset(new StringHasher);
         activeObject = 0;
         activeUndoTransaction = 0;
         iTransactionMode = 0;
@@ -1568,7 +1576,7 @@ void Document::setTransactionMode(int iMode)
 // constructor
 //--------------------------------------------------------------------------
 Document::Document(const char *name)
-    :Hasher(new StringHasher), myName(name)
+    : myName(name)
 {
     // Remark: In a constructor we should never increment a Python object as we cannot be sure
     // if the Python interpreter gets a reference of it. E.g. if we increment but Python don't
@@ -1658,7 +1666,7 @@ Document::Document(const char *name)
     ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
     ADD_PROPERTY_TYPE(ShowHidden,(false), 0,PropertyType(Prop_None),
                         "Whether to show hidden object items in the tree view");
-    ADD_PROPERTY_TYPE(UseHasher,(true), 0,PropertyType(Prop_None), 
+    ADD_PROPERTY_TYPE(UseHasher,(true), 0,PropertyType(Prop_Hidden), 
                         "Whether to use hasher on topological naming");
     if(!DocumentParams::UseHasher())
         UseHasher.setValue(false);
@@ -1752,7 +1760,7 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
 void Document::Save (Base::Writer &writer) const
 {
     d->hashers.clear();
-    addStringHasher(Hasher);
+    addStringHasher(d->Hasher);
 
     writer.Stream() << "<Document SchemaVersion=\"" << FC_DOC_SCHEMA_VER 
                     << "\" ProgramVersion=\""
@@ -1768,8 +1776,12 @@ void Document::Save (Base::Writer &writer) const
     // NOTE: DO NOT save the main string hasher as separate file, because it is
     // required by many objects, which assume the string hasher is fully
     // restored.
-    Hasher->setPersistenceFileName(0);
-    Hasher->Save(writer);
+    d->Hasher->setPersistenceFileName(0);
+
+    for (auto o : d->objectArray)
+        o->beforeSave();
+
+    d->Hasher->Save(writer);
 
     writer.decInd();
 
@@ -1784,7 +1796,7 @@ void Document::Restore(Base::XMLReader &reader)
     int i,Cnt;
     d->hashers.clear();
     d->touchedObjs.clear();
-    addStringHasher(Hasher);
+    addStringHasher(d->Hasher);
 
     Base::ReaderContext rctx(getName());
 
@@ -1809,9 +1821,9 @@ void Document::Restore(Base::XMLReader &reader)
 
     if (reader.hasAttribute("StringHasher")) {
         Base::ReaderContext rctx("StringHasher");
-        Hasher->Restore(reader);
+        d->Hasher->Restore(reader);
     } else
-        Hasher->clear();
+        d->Hasher->clear();
 
     // When this document was created the FileName and Label properties
     // were set to the absolute path or file name, respectively. To save
@@ -1878,16 +1890,24 @@ void Document::Restore(Base::XMLReader &reader)
     reader.readEndElement("Document");
 }
 
-std::pair<bool,int> Document::addStringHasher(StringHasherRef hasher) const {
+std::pair<bool,int> Document::addStringHasher(const StringHasherRef & hasher) const {
+    if (!hasher)
+        return std::make_pair(false, 0);
     auto ret = d->hashers.left.insert(HasherMap::left_map::value_type(hasher,(int)d->hashers.size()));
+    if (ret.second)
+        hasher->clearMarks();
     return std::make_pair(ret.second,ret.first->second);
+}
+
+StringHasherRef Document::getHasher() const {
+    return d->Hasher;
 }
 
 StringHasherRef Document::getStringHasher(int idx) const {
     StringHasherRef hasher;
     if(idx<0) {
         if(UseHasher.getValue())
-            return Hasher;
+            return d->Hasher;
         return hasher;
     }
 
@@ -2403,7 +2423,7 @@ unsigned int Document::getMemSize (void) const
     for (it = d->objectArray.begin(); it != d->objectArray.end(); ++it)
         size += (*it)->getMemSize();
 
-    size += Hasher->getMemSize();
+    size += d->Hasher->getMemSize();
 
     // size of the document properties...
     size += PropertyContainer::getMemSize();

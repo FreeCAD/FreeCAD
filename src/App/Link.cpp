@@ -1007,7 +1007,7 @@ void LinkBaseExtension::checkGeoElementMap(const App::DocumentObject *obj,
         return;
        
     auto geoData = static_cast<Data::ComplexGeoDataPy*>(*pyObj)->getComplexGeoDataPtr();
-    geoData->reTagElementMap(obj->getID(),obj->getDocument()->Hasher,postfix);
+    geoData->reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher(),postfix);
 }
 
 void LinkBaseExtension::onExtendedSetupObject() {

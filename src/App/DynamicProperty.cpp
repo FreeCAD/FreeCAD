@@ -203,7 +203,7 @@ Property* DynamicProperty::_addDynamicProperty(PropertyContainer &pc, const char
     if(!docID && doc && doc[0]) {
         auto document = pc.getOwnerDocument();
         if(document)
-            docID = document->Hasher->getID(doc);
+            docID = document->getHasher()->getID(doc);
     }
     auto res = props.get<0>().emplace(pcProperty,
             getUniquePropertyName(pc,name), nullptr, group, doc, docID, attr, ro, hidden);
@@ -323,7 +323,7 @@ Property *DynamicProperty::restore(PropertyContainer &pc,
     else if(reader.hasAttribute("docID")) {
         auto document = pc.getOwnerDocument();
         if(document)
-            docID = document->Hasher->getID(reader.getAttributeAsInteger("docID"));
+            docID = document->getHasher()->getID(reader.getAttributeAsInteger("docID"));
     }
     if (reader.hasAttribute("attr")) {
         attr = reader.getAttribute("attr");
@@ -359,7 +359,7 @@ bool DynamicProperty::changeDynamicProperty(const Property *prop, const char *gr
     if(doc) {
         auto container = prop->getContainer();
         if(container && container->getOwnerDocument()) {
-            it->docID = container->getOwnerDocument()->Hasher->getID(doc);
+            it->docID = container->getOwnerDocument()->getHasher()->getID(doc);
             it->doc.clear();
         } else {
             it->docID = StringIDRef();

@@ -878,7 +878,7 @@ Py::Boolean DocumentPy::getRecomputing(void) const
 
 Py::Object DocumentPy::getHasher() const
 {
-    return Py::Object(getDocumentPtr()->Hasher->getPyObject(),true);
+    return Py::Object(getDocumentPtr()->getHasher()->getPyObject(),true);
 }
 
 Py::Boolean DocumentPy::getTransacting() const

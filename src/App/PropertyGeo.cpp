@@ -1228,9 +1228,10 @@ std::string PropertyComplexGeoData::getElementMapVersion(bool) const {
     auto data = getComplexData();
     if(!data)
         return std::string();
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
     std::ostringstream ss;
-    if(owner && owner->getDocument() && owner->getDocument()->Hasher==data->Hasher)
+    if(owner && owner->getDocument()
+             && owner->getDocument()->getStringHasher()==data->Hasher)
         ss << "1.";
     else
         ss << "0.";

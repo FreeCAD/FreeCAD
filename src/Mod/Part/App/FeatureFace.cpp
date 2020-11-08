@@ -83,7 +83,7 @@ App::DocumentObjectExecReturn *Face::execute(void)
         return new App::DocumentObjectExecReturn("No shapes linked");
 
     std::unique_ptr<FaceMaker> facemaker = FaceMaker::ConstructFromType(this->FaceMakerClass.getValue());
-    facemaker->MyHasher = getDocument()->Hasher;
+    facemaker->MyHasher = getDocument()->getStringHasher();
 
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
         auto shape = Feature::getTopoShape(*it);
