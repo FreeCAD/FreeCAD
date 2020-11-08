@@ -4245,7 +4245,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
         // pole weights --------------------------------------------------------
         std::vector<double> weights = spline->getWeights();
-        auto TextBegin = hGrpsk->GetBool("BSplineKnotMultiplicityVisible", true) ? "   [" : "[";
+
         if (rebuildinformationlayer) {
 
             for (size_t index = 0; index < weights.size(); ++index) {
@@ -4278,6 +4278,9 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 QString WeightString  = QString::fromLatin1("%1").arg(weights[index], 0, 'f', Base::UnitsApi::getDecimals());
 
                 SoText2* WeightText = new SoText2;
+                // since the first and last control point of a spline is also treated as knot and thus
+                // can also have a displayed multiplicity, we must assure the multiplicity is not visibly overwritten
+                // therefore be output the weight in a second line
                 SoMFString label;
                 label.set1Value(0, SbString(""));
                 label.set1Value(1, SbString("[") + SbString(WeightString.toStdString().c_str()) + SbString("]"));
@@ -4311,8 +4314,12 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 static_cast<SoTranslation*>(sep->getChild(GEOINFO_BSPLINE_DEGREE_POS))
                     ->translation.setValue(poleposition.x, poleposition.y, zInfo);
 
+                // set up string with weight value and the user-defined number of decimals
                 QString WeightString = QString::fromLatin1("%1").arg(weights[index], 0, 'f', Base::UnitsApi::getDecimals());
 
+                // since the first and last control point of a spline is also treated as knot and thus
+                // can also have a displayed multiplicity, we must assure the multiplicity is not visibly overwritten
+                // therefore be output the weight in a second line
                 SoMFString label;
                 label.set1Value(0, SbString(""));
                 label.set1Value(1, SbString("[") + SbString(WeightString.toStdString().c_str()) + SbString("]"));
