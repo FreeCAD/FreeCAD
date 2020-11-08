@@ -458,7 +458,7 @@ public:
     virtual bool mouseButtonPressed(int button, bool pressed, const SbVec2s &cursorPos,
                                     const View3DInventorViewer* viewer);
     /// set up the context-menu with the supported edit modes
-    virtual void setupContextMenu(QMenu*, QObject*, const char*) {}
+    virtual void setupContextMenu(QMenu*, QObject*, const char*);
 
     /** @name direct handling methods
      *  This group of methods is to direct influence the

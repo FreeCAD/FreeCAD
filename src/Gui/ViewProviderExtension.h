@@ -89,6 +89,7 @@ public:
     virtual void extensionReattach(App::DocumentObject* ) { }
     virtual void extensionSetDisplayMode(const char* ) { }
     virtual std::vector<std::string> extensionGetDisplayModes(void) const {return std::vector<std::string>();}
+    virtual void extensionSetupContextMenu(QMenu*, QObject*, const char*) {}
 
     //update data of extended opject
     virtual void extensionUpdateData(const App::Property*);

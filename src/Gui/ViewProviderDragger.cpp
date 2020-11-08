@@ -107,6 +107,7 @@ void ViewProviderDragger::setupContextMenu(QMenu* menu, QObject* receiver, const
 {
     QAction* act = menu->addAction(QObject::tr("Transform"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Transform));
+    ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
 }
 
 ViewProvider *ViewProviderDragger::startEditing(int mode) {

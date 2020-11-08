@@ -649,6 +649,13 @@ bool ViewProvider::mouseButtonPressed(int button, bool pressed,
     return false;
 }
 
+void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* method)
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for (Gui::ViewProviderExtension* ext : vector)
+        ext->extensionSetupContextMenu(menu, receiver, method);
+}
+
 bool ViewProvider::onDelete(const vector< string >& subNames)
 {
     bool del = true;
