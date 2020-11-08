@@ -1573,8 +1573,9 @@ void DlgPrimitives::onChangeRegularPolygon(QWidget* widget)
 /* TRANSLATOR PartGui::Location */
 
 Location::Location(QWidget* parent, Part::Feature* feature)
+    : QWidget(parent)
+    , featurePtr(feature)
 {
-    Q_UNUSED(parent);
     mode = 0;
     ui.setupUi(this);
 
@@ -1600,8 +1601,19 @@ Location::Location(QWidget* parent, Part::Feature* feature)
         ui.XDirectionEdit->setValue(rotationAxes.x);
         ui.YDirectionEdit->setValue(rotationAxes.y);
         ui.ZDirectionEdit->setValue(rotationAxes.z);
-        // the angle is in this format: 180° = PI, thus transform it to deg
+        // the angle is rad, transform it for display to degrees
         ui.AngleQSB->setValue(Base::toDegrees<double>(rotationAngle));
+
+        //connect signals
+        QSignalMapper* mapper = new QSignalMapper(this);
+        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangePosRot(QWidget*)));
+        connectSignalMapper(ui.XPositionQSB, SIGNAL(valueChanged(double)), mapper);
+        connectSignalMapper(ui.YPositionQSB, SIGNAL(valueChanged(double)), mapper);
+        connectSignalMapper(ui.ZPositionQSB, SIGNAL(valueChanged(double)), mapper);
+        connectSignalMapper(ui.AngleQSB, SIGNAL(valueChanged(double)), mapper);
+        connectSignalMapper(ui.XDirectionEdit, SIGNAL(valueChanged(double)), mapper);
+        connectSignalMapper(ui.YDirectionEdit, SIGNAL(valueChanged(double)), mapper);
+        connectSignalMapper(ui.ZDirectionEdit, SIGNAL(valueChanged(double)), mapper);
     }
 }
 
@@ -1617,6 +1629,120 @@ Location::~Location()
         SoNode* root = viewer->getSceneGraph();
         if (root && root->getTypeId().isDerivedFrom(Gui::SoFCUnifiedSelection::getClassTypeId()))
             static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionMode.setValue(this->mode);
+    }
+}
+
+void Location::connectSignalMapper(QWidget* sender, const char* signal, QSignalMapper* mapper)
+{
+    connect(sender, signal, mapper, SLOT(map()));
+    mapper->setMapping(sender, sender);
+}
+
+void Location::onChangePosRot(QWidget* widget)
+{
+    App::Document* doc = featurePtr->getDocument();
+    Base::Type type = featurePtr->getTypeId();
+
+    // read dialog values
+    Base::Vector3d loc;
+    loc.x = ui.XPositionQSB->rawValue();
+    loc.y = ui.YPositionQSB->rawValue();
+    loc.z = ui.ZPositionQSB->rawValue();
+    double angle = ui.AngleQSB->rawValue();
+    // the angle is displayed in degrees, transform it to rad
+    angle = Base::toRadians<double>(angle);
+    Base::Vector3d rot;
+    rot.x = ui.XDirectionEdit->value();
+    rot.y = ui.YDirectionEdit->value();
+    rot.z = ui.ZDirectionEdit->value();
+
+    // set placement and rotation
+    Base::Placement placement;
+    Base::Rotation rotation(rot, angle);
+    placement.setPosition(loc);
+    placement.setRotation(rotation);
+
+    // apply new placement to the feature
+
+    if (type == Part::Plane::getClassTypeId()) {
+        Part::Plane* plane = featurePtr.get<Part::Plane>();
+        plane->Placement.setValue(placement);
+        plane->recomputeFeature();
+    }
+    else if (type == Part::Box::getClassTypeId()) {
+        Part::Box* box = featurePtr.get<Part::Box>();
+        box->Placement.setValue(placement);
+        box->recomputeFeature();
+    }
+    else if (type == Part::Cylinder::getClassTypeId()) {
+        Part::Cylinder* cylinder = featurePtr.get<Part::Cylinder>();
+        cylinder->Placement.setValue(placement);
+        cylinder->recomputeFeature();
+    }
+    else if (type == Part::Cone::getClassTypeId()) {
+        Part::Cone* cone = featurePtr.get<Part::Cone>();
+        cone->Placement.setValue(placement);
+        cone->recomputeFeature();
+    }
+    else if (type == Part::Sphere::getClassTypeId()) {
+        Part::Sphere* sphere = featurePtr.get<Part::Sphere>();
+        sphere->Placement.setValue(placement);
+        sphere->recomputeFeature();
+    }
+    else if (type == Part::Ellipsoid::getClassTypeId()) {
+        Part::Ellipsoid* ellipsoid = featurePtr.get<Part::Ellipsoid>();
+        ellipsoid->Placement.setValue(placement);
+        ellipsoid->recomputeFeature();
+    }
+    else if (type == Part::Torus::getClassTypeId()) {
+        Part::Torus* torus = featurePtr.get<Part::Torus>();
+        torus->Placement.setValue(placement);
+        torus->recomputeFeature();
+    }
+    else if (type == Part::Prism::getClassTypeId()) {
+        Part::Prism* prism = featurePtr.get<Part::Prism>();
+        prism->Placement.setValue(placement);
+        prism->recomputeFeature();
+    }
+    else if (type == Part::Wedge::getClassTypeId()) {
+        Part::Wedge* wedge = featurePtr.get<Part::Wedge>();
+        wedge->Placement.setValue(placement);
+        wedge->recomputeFeature();
+    }
+    else if (type == Part::Helix::getClassTypeId()) {
+        Part::Helix* helix = featurePtr.get<Part::Helix>();
+        helix->Placement.setValue(placement);
+        helix->recomputeFeature();
+    }
+    else if (type == Part::Spiral::getClassTypeId()) {
+        Part::Spiral* spiral = featurePtr.get<Part::Spiral>();
+        spiral->Placement.setValue(placement);
+        spiral->recomputeFeature();
+    }
+    else if (type == Part::Circle::getClassTypeId()) {
+        Part::Circle* circle = featurePtr.get<Part::Circle>();
+        circle->Placement.setValue(placement);
+        circle->recomputeFeature();
+    }
+    else if (type == Part::Ellipse::getClassTypeId()) {
+        Part::Ellipse* ellipse = featurePtr.get<Part::Ellipse>();
+        ellipse->Placement.setValue(placement);
+        ellipse->recomputeFeature();
+    }
+    else if (type == Part::Vertex::getClassTypeId()) {
+        Part::Vertex* vertex = featurePtr.get<Part::Vertex>();
+        vertex->Placement.setValue(placement);
+        vertex->recomputeFeature();
+    }
+    else if (type == Part::Line::getClassTypeId()) {
+        Part::Line* line = featurePtr.get<Part::Line>();
+        line->Placement.setValue(placement);
+        line->recomputeFeature();
+    }
+    else if (type == Part::RegularPolygon::getClassTypeId()) {
+        Part::RegularPolygon* polygon = featurePtr.get<Part::RegularPolygon>();
+        polygon->Placement.setValue(placement);
+        polygon->recomputeFeature();
     }
 }
 
@@ -1724,7 +1850,6 @@ TaskPrimitives::TaskPrimitives()
     location = new Location();
     taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle() ,true, 0);
     taskbox->groupLayout()->addWidget(location);
-    taskbox->hideGroupBox();
     Content.push_back(taskbox);
 }
 

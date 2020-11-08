@@ -112,13 +112,18 @@ public:
     QString toPlacement() const;
 
 private Q_SLOTS:
+    void onChangePosRot(QWidget*);
     void on_viewPositionButton_clicked();
+
+private:
+    void connectSignalMapper(QWidget* sender, const char* signal, QSignalMapper* mapper);
 
 private:
     static void pickCallback(void * ud, SoEventCallback * n);
     int mode;
     QPointer<QWidget> activeView;
     Ui_Location ui;
+    App::DocumentObjectWeakPtrT featurePtr;
 };
 
 class TaskPrimitives : public Gui::TaskView::TaskDialog
