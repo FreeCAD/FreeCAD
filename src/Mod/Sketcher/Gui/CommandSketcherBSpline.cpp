@@ -214,6 +214,37 @@ bool CmdSketcherBSplineKnotMultiplicity::isActive(void)
     return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
 
+//
+DEF_STD_CMD_A(CmdSketcherBSplinePoleWeight)
+
+CmdSketcherBSplinePoleWeight::CmdSketcherBSplinePoleWeight()
+    : Command("Sketcher_BSplinePoleWeight")
+{
+    sAppModule = "Sketcher";
+    sGroup = QT_TR_NOOP("Sketcher");
+    sMenuText = QT_TR_NOOP("Show/hide B-spline control point weight");
+    sToolTipText = QT_TR_NOOP("Switches between showing and hiding the control point weight for all B-splines");
+    sWhatsThis = "Sketcher_BSplinePoleWeight";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_BSplinePoleWeight";
+    sAccel = "";
+    eType = ForEdit;
+}
+
+void CmdSketcherBSplinePoleWeight::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::Document* doc = getActiveGuiDocument();
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    ShowRestoreInformationLayer(vp, "BSplinePoleWeightVisible");
+}
+
+bool CmdSketcherBSplinePoleWeight::isActive(void)
+{
+    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+}
+
 // Composite drop down menu for show/hide geometry information layer
 DEF_STD_CMD_ACLU(CmdSketcherCompBSplineShowHideGeometryInformation)
 
@@ -223,7 +254,7 @@ CmdSketcherCompBSplineShowHideGeometryInformation::CmdSketcherCompBSplineShowHid
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Show/hide B-spline information layer");
-    sToolTipText    = QT_TR_NOOP("Show/hide B-spline information layer");
+    sToolTipText    = sMenuText;
     sWhatsThis      = "Sketcher_CompBSplineShowHideGeometryInformation";
     sStatusTip      = sToolTipText;
     eType           = ForEdit;
@@ -242,6 +273,8 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::activated(int iMsg)
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineComb");
     else if (iMsg == 3)
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineKnotMultiplicity");
+    else if (iMsg == 4)
+        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplinePoleWeight");
     else
         return;
 
@@ -254,6 +287,8 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::activated(int iMsg)
 
     assert(iMsg < a.size());
     pcAction->setIcon(a[iMsg]->icon());
+    // we must also set the tooltip of the used command
+    pcAction->setToolTip(a[iMsg]->toolTip());
 }
 
 Gui::Action * CmdSketcherCompBSplineShowHideGeometryInformation::createAction(void)
@@ -270,6 +305,8 @@ Gui::Action * CmdSketcherCompBSplineShowHideGeometryInformation::createAction(vo
     c3->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplineComb"));
     QAction* c4 = pcAction->addAction(QString());
     c4->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplineKnotMultiplicity"));
+    QAction* c5 = pcAction->addAction(QString());
+    c5->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplinePoleWeight"));
 
     _pcAction = pcAction;
     languageChange();
@@ -318,6 +355,14 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::languageChange()
                                            "Switches between showing and hiding the knot multiplicity for all B-splines"));
     c4->setStatusTip(QApplication::translate("Sketcher_BSplineKnotMultiplicity",
                                              "Switches between showing and hiding the knot multiplicity for all B-splines"));
+
+    QAction* c5 = a[4];
+    c5->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
+        "Show/hide B-spline control point weight"));
+    c5->setToolTip(QApplication::translate("Sketcher_BSplinePoleWeight",
+        "Switches between showing and hiding the control point weight for all B-splines"));
+    c5->setStatusTip(QApplication::translate("Sketcher_BSplinePoleWeight",
+        "Switches between showing and hiding the control point weight for all B-splines"));
 }
 
 void CmdSketcherCompBSplineShowHideGeometryInformation::updateAction(int /*mode*/)
@@ -945,6 +990,7 @@ void CreateSketcherCommandsBSpline(void)
     rcCmdMgr.addCommand(new CmdSketcherBSplinePolygon());
     rcCmdMgr.addCommand(new CmdSketcherBSplineComb());
     rcCmdMgr.addCommand(new CmdSketcherBSplineKnotMultiplicity());
+    rcCmdMgr.addCommand(new CmdSketcherBSplinePoleWeight());
     rcCmdMgr.addCommand(new CmdSketcherCompBSplineShowHideGeometryInformation());
     rcCmdMgr.addCommand(new CmdSketcherConvertToNURB());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseDegree());
