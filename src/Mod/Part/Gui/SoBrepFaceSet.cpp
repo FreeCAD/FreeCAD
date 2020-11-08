@@ -2476,7 +2476,7 @@ void SoBrepFaceSet::renderFaces(const SoCoordinateElement *coords,
             if (mode == GL_POLYGON) {
                 doVertex(v5);
                 v1 = viptr < viendptr ? *viptr++ : -1;
-                while (v1 >= 0) {
+                while (v1 >= 0 && v1 < numverts) {
                     doVertex(v1);
                     v1 = viptr < viendptr ? *viptr++ : -1;
                 }
