@@ -37,6 +37,8 @@
 #include <App/ComplexGeoData.h>
 #include <Base/Exception.h>
 
+#include <QVector>
+
 class BRepBuilderAPI_MakeShape;
 class BRepBuilderAPI_Sewing;
 class BRepOffsetAPI_ThruSections;
@@ -100,11 +102,7 @@ public:
     ~TopoShape();
 
     inline void setShape(const TopoDS_Shape& shape, bool resetElementMap=true) {
-        _Shape = shape;
-        if(resetElementMap) {
-            Hasher = App::StringHasherRef();
-            this->resetElementMap();
-        }
+        _Shape.setShape(shape, resetElementMap);
     }
 
     inline void setShape(const TopoShape& shape) {
@@ -118,7 +116,7 @@ public:
     void operator = (const TopoShape&);
 
     bool operator == (const TopoShape &other) const {
-        return _Shape.IsEqual(other._Shape);
+        return _Shape.getShape().IsEqual(other._Shape);
     }
 
     virtual bool isSame (const Data::ComplexGeoData &other) const;
@@ -680,36 +678,43 @@ public:
      */
     //@{
     void mapSubElement(const TopoShape &other,const char *op=0, bool forceHasher=false);
-    void mapSubElement(const std::vector<TopoShape> &shapes, const char *op=0) {
-        for(auto &shape : shapes)
-            mapSubElement(shape,op);
-    }
-    void mapSubElementsTo(std::vector<TopoShape> &shapes, const char *op=0) const {
-        for(auto &shape : shapes)
-            shape.mapSubElement(*this,op);
-    }
+    void mapSubElement(const std::vector<TopoShape> &shapes, const char *op=0);
+    void mapSubElementsTo(std::vector<TopoShape> &shapes, const char *op=0) const;
+    void copyElementMap(const TopoShape &other, const char *op=0);
 
     bool canMapElement(const TopoShape &other) const;
 
-    std::vector<std::pair<std::string,std::string> > getRelatedElements(
-            const char *name, bool sameType=true) const;
+    void cacheRelatedElements(const Data::MappedName & name,
+                              bool sameType,
+                              const QVector<Data::MappedElement> & names) const;
 
-    void cacheRelatedElements(const char *name, bool sameType,
-            const std::vector<std::pair<std::string,std::string> > &names) const;
-
-    bool getRelatedElementsCached(const char *name, bool sameType,
-            std::vector<std::pair<std::string,std::string> > &names) const;
+    bool getRelatedElementsCached(const Data::MappedName & name,
+                                  bool sameType,
+                                  QVector<Data::MappedElement> &names) const;
 
     virtual std::string getElementMapVersion() const;
+    virtual bool checkElementMapVersion(const char * ver) const;
 
-    virtual std::vector<std::string> getHigherElements(const char *element, bool silent=false) const;
+    virtual void flushElementMap() const;
 
-    const char *setElementComboName(const char *element, 
-            const std::vector<std::string> &names, const char *marker=0, const char *op=0);
+    virtual Data::ElementMapPtr resetElementMap(
+            Data::ElementMapPtr elementMap=Data::ElementMapPtr());
+
+    virtual unsigned long getElementMapReserve() const;
+    bool hasPendingElementMap() const;
+
+    virtual std::vector<Data::IndexedName> getHigherElements(const char *element,
+                                                             bool silent=false) const;
+
+    Data::MappedName setElementComboName(const Data::IndexedName & element, 
+                                         const std::vector<Data::MappedName> &names,
+                                         const char *marker=0,
+                                         const char *op=0,
+                                         const Data::ElementIDRefs *sids=nullptr);
 
     virtual void reTagElementMap(long tag, App::StringHasherRef hasher, const char *postfix=0);
 
-    long isElementGenerated(const char *name, int depth=1) const;
+    long isElementGenerated(const Data::MappedName &name, int depth=1) const;
     //@}
 
 
@@ -743,14 +748,139 @@ public:
     static const std::string &shapeName(TopAbs_ShapeEnum type,bool silent=false);
     const std::string &shapeName(bool silent=false) const;
     static std::pair<TopAbs_ShapeEnum,int> shapeTypeAndIndex(const char *name);
+    static std::pair<TopAbs_ShapeEnum,int> shapeTypeAndIndex(const Data::IndexedName &name);
 
     class Cache;
     friend class Cache;
 
 private:
-    TopoDS_Shape _Shape;
 
+    // helper class to ensure synchronization of element map and cache
+    class ShapeProtector
+    {
+    public:
+        ShapeProtector(TopoShape & master)
+            : master(master)
+        {}
+
+        ShapeProtector(TopoShape & master, const TopoDS_Shape & shape)
+            : master(master), _Shape(shape)
+        {}
+
+        void setShape(const TopoDS_Shape & shape, bool resetElementMap);
+
+        const TopoDS_Shape & getShape() const {
+            return _Shape;
+        }
+        operator const TopoDS_Shape & () const {
+            return _Shape;
+        }
+
+        // Pass through all const interface of TopoDS_Shape
+
+        Standard_Boolean IsNull() const { return _Shape.IsNull(); }
+        const TopLoc_Location& Location() const { return _Shape.Location(); }
+        TopoDS_Shape Located (const TopLoc_Location& Loc) const { return _Shape.Located(Loc); }
+        TopAbs_Orientation Orientation() const { return _Shape.Orientation(); }
+        TopoDS_Shape Oriented (const TopAbs_Orientation Or) const { return _Shape.Oriented(Or); }
+        const Handle(TopoDS_TShape)& TShape() const { return _Shape.TShape(); }
+        TopAbs_ShapeEnum ShapeType() const { return _Shape.ShapeType(); }
+        Standard_Boolean Free() const { return _Shape.Free(); }
+        Standard_Boolean Locked() const { return _Shape.Locked(); }
+        Standard_Boolean Modified() const { return _Shape.Modified(); }
+        Standard_Boolean Checked() const { return _Shape.Checked(); }
+        Standard_Boolean Orientable() const { return _Shape.Orientable(); }
+        Standard_Boolean Closed() const { return _Shape.Closed(); }
+        Standard_Boolean Infinite() const { return _Shape.Infinite(); }
+        Standard_Boolean Convex() const { return _Shape.Convex(); }
+        TopoDS_Shape Moved (const TopLoc_Location& position) const { return _Shape.Moved(position); }
+        TopoDS_Shape Reversed() const { return _Shape.Reversed(); }
+        TopoDS_Shape Complemented() const { return _Shape.Complemented(); }
+        TopoDS_Shape Composed (const TopAbs_Orientation Orient) const { return _Shape.Composed(Orient); }
+        Standard_Boolean IsPartner (const TopoDS_Shape& other) const { return _Shape.IsPartner(other); }
+        Standard_Boolean IsSame (const TopoDS_Shape& other) const { return _Shape.IsSame(other); }
+        Standard_Boolean IsEqual (const TopoDS_Shape& other) const { return _Shape.IsEqual(other); }
+        Standard_Boolean operator == (const TopoDS_Shape& other) const { return _Shape == other; }
+        Standard_Boolean IsNotEqual (const TopoDS_Shape& other) const { return _Shape.IsNotEqual(other); }
+        Standard_Boolean operator != (const TopoDS_Shape& other) const { return _Shape != other; }
+        Standard_Integer HashCode (const Standard_Integer Upper) const { return _Shape.HashCode(Upper); }
+        TopoDS_Shape EmptyCopied() const { return _Shape.EmptyCopied(); }
+
+        // Flag setters, probably not going to affect element map or cache. Pass
+        // through for now.
+
+        void Free (const Standard_Boolean F) { _Shape.Free(F); }
+        void Locked (const Standard_Boolean F) { _Shape.Locked(F); }
+        void Modified (const Standard_Boolean M) { _Shape.Modified(M); }
+        void Checked (const Standard_Boolean C) { _Shape.Checked(C); }
+        void Orientable (const Standard_Boolean C) { _Shape.Orientable(C); }
+        void Closed (const Standard_Boolean C) { _Shape.Closed(C); }
+        void Infinite (const Standard_Boolean C) { _Shape.Infinite(C); }
+        void Convex (const Standard_Boolean C) { _Shape.Convex(C); }
+    
+        // Sync master TopoShape element map and cache on all non-const interface
+
+        void Nullify() {
+            master.resetElementMap();
+            master._Cache.reset();
+            master._ParentCache.reset();
+        }
+    
+        void Location (const TopLoc_Location& Loc) {
+            master.flushElementMap();
+            _Shape.Location(Loc);
+            if (master._Cache) master.initCache();
+        }
+    
+        void Orientation (const TopAbs_Orientation Orient) {
+            master.flushElementMap();
+            _Shape.Orientation(Orient);
+            if (master._Cache) master.initCache();
+        }
+    
+        void Move (const TopLoc_Location& position) {
+            // Move does not affect element map or cache
+            _Shape.Move(position);
+        }
+    
+        void Reverse() {
+            master.flushElementMap();
+            _Shape.Reverse();
+            if (master._Cache) master.initCache();
+        }
+    
+        void Complement() {
+            master.flushElementMap();
+            _Shape.Complement();
+            if (master._Cache) master.initCache();
+        }
+    
+        void Compose (const TopAbs_Orientation Orient) {
+            master.flushElementMap();
+            _Shape.Compose(Orient);
+            if (master._Cache) master.initCache();
+        }
+    
+        void EmptyCopy() {
+            master.flushElementMap();
+            _Shape.EmptyCopy();
+            if (master._Cache) master.initCache();
+        }
+    
+        void TShape (const Handle(TopoDS_TShape)& T) {
+            master.flushElementMap();
+            _Shape.TShape(T);
+            if (master._Cache) master.initCache();
+        }
+    private:
+        TopoShape & master;
+        TopoDS_Shape _Shape;
+    };
+    friend class ShapeProtector;
+
+    ShapeProtector _Shape;
     mutable std::shared_ptr<Cache> _Cache;
+    mutable std::shared_ptr<Cache> _ParentCache;
 };
 
 } //namespace Part

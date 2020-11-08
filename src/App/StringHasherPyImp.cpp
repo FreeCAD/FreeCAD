@@ -60,17 +60,19 @@ PyObject* StringHasherPy::isSame(PyObject *args)
 PyObject* StringHasherPy::getID(PyObject *args)
 {
     long id = -1;
+    int index = 0;
     PyObject *value = 0;
     PyObject *base64 = Py_False;
-    if (!PyArg_ParseTuple(args, "l|O",&id,&base64)) {
+    if (!PyArg_ParseTuple(args, "l|i",&id,&index)) {
+        PyErr_Clear();
         if (!PyArg_ParseTuple(args, "O|O",&value,&base64))
             return NULL;    // NULL triggers exception
     }
     if(id>0) {
         PY_TRY {
-            auto sid = getStringHasherPtr()->getID(id);
+            auto sid = getStringHasherPtr()->getID(id, index);
             if(!sid) Py_Return;
-            return sid->getPyObject();
+            return sid.getPyObject();
         }PY_CATCH;
     }
     std::string txt;
@@ -98,7 +100,7 @@ PyObject* StringHasherPy::getID(PyObject *args)
             sid = getStringHasherPtr()->getID(data,true);
         }else
             sid = getStringHasherPtr()->getID(txt.c_str(),txt.size());
-        return sid->getPyObject();
+        return sid.getPyObject();
     }PY_CATCH;
 }
 
@@ -128,14 +130,8 @@ void StringHasherPy::setThreshold(Py::Int value) {
 
 Py::Dict StringHasherPy::getTable() const {
     Py::Dict dict;
-    for(auto &v : getStringHasherPtr()->getIDMap()) {
-        if(v.second->isHashed())
-            dict.setItem(Py::Int(v.first),Py::String(v.second->data().toHex().constData()));
-        else if(v.second->isBinary())
-            dict.setItem(Py::Int(v.first),Py::String(v.second->data().toBase64().constData()));
-        else
-            dict.setItem(Py::Int(v.first),Py::String(v.second->data().constData()));
-    }
+    for(auto &v : getStringHasherPtr()->getIDMap())
+        dict.setItem(Py::Int(v.first),Py::String(v.second.dataToText()));
     return dict;
 }
 

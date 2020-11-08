@@ -172,7 +172,7 @@ public:
         }
 
         const char *getDoc() const {
-            return docID?docID->data().constData():doc.c_str();
+            return docID?docID.constData():doc.c_str();
         }
 
         friend class DynamicProperty;

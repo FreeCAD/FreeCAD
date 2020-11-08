@@ -91,6 +91,7 @@
 #include <App/DocumentObserver.h>
 #include <App/GeoFeature.h>
 #include <App/ComplexGeoData.h>
+#include <App/MappedElement.h>
 
 #include "SoFCUnifiedSelection.h"
 #include "Application.h"
@@ -234,7 +235,7 @@ struct SoFCUnifiedSelection::PickedInfo {
     // Subname path including the directly picked geometry elements (Vertex, Edge, Face)
     std::string subname;
     // Higher level geometry elements, like Wire, Solid
-    std::vector<std::string> elements;
+    std::vector<Data::IndexedName> elements;
 
     PickedInfo()
         :pp(0),vpd(0)
@@ -488,7 +489,7 @@ SoFCUnifiedSelection::getPickedSelections(const SbVec2s &pos,
         prefix.assign(info.subname.c_str(), element);
         for(const auto &element : info.elements) {
             subname = prefix;
-            subname += element;
+            element.toString(subname);
             if(objSet.insert(std::make_pair(info.vpd,subname)).second)
                 sels.emplace_back(info.vpd->getObject(), subname.c_str());
         }
@@ -770,7 +771,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
             prefix.assign(info.subname.c_str(), element);
             for(const auto &element : info.elements) {
                 subname = prefix;
-                subname += element;
+                element.toString(subname);
                 auto res = objSet.insert(std::make_pair(info.vpd, subname));
                 if(res.second) {
                     sel.SubName = res.first->second.c_str();

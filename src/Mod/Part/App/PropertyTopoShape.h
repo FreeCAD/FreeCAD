@@ -84,6 +84,8 @@ public:
     virtual void Save (Base::Writer &writer) const override;
     virtual void Restore(Base::XMLReader &reader) override;
 
+    virtual void beforeSave() const override;
+
     virtual void SaveDocFile (Base::Writer &writer) const override;
     virtual void RestoreDocFile(Base::Reader &reader) override;
 
@@ -103,6 +105,8 @@ public:
 private:
     TopoShape _Shape;
     std::string _Ver;
+    mutable int _HasherIndex = 0;
+    mutable bool _SaveHasher = false;
 };
 
 struct PartExport ShapeHistory {

@@ -46,7 +46,7 @@ public:
     virtual void onChanged(const App::Property* prop) override;
     virtual App::DocumentObjectExecReturn *execute(void) override;
     virtual void onDocumentRestored() override;
-    virtual bool isElementGenerated(const TopoShape &shape, const char *name) const override;
+    virtual bool isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const override;
 
     bool isSolidFeature() const;
     void setWrappedLinkScope();

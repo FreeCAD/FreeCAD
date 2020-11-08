@@ -52,6 +52,7 @@
 #include <Base/Reader.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/MappedElement.h>
 #include <Mod/Part/App/modelRefine.h>
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
@@ -623,13 +624,13 @@ void Transformed::setupObject () {
     CopyShape.setValue(false);
 }
 
-bool Transformed::isElementGenerated(const TopoShape &shape, const char *name) const
+bool Transformed::isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const
 {
     bool res = false;
     long tag = 0;
     int depth = 2;
     shape.traceElement(name,
-        [&] (const std::string &, size_t, long tag2, long) {
+        [&] (const Data::MappedName &, int, long tag2, long) {
             if(tag && std::abs(tag2)!=tag) {
                 if(--depth == 0)
                     return true;

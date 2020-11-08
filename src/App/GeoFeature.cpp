@@ -30,6 +30,7 @@
 #include "Document.h"
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
+#include "MappedElement.h"
 #include <App/GeoFeaturePy.h>
 #include <App/Link.h>
 
@@ -102,37 +103,28 @@ std::pair<std::string,std::string> GeoFeature::getElementName(
     auto geo = prop->getComplexData();
     if(!geo) return ret;
 
-    if(Data::ComplexGeoData::isMappedElement(name)) {
-        const char *oldName = geo->getElementName(name);
-        const char *dot = strrchr(name,'.');
-        if(oldName != name) {
-            if(!dot) {
-                ret.first = name;
-                ret.first += '.';
-            }else
-                ret.first.assign(name,dot-name+1);
-            ret.first += oldName;
-            ret.second = oldName;
-        }else{
-            FC_TRACE("element mapped name not found " << name << " in " << getFullName());
-            ret.first = name;
-            if(dot) {
-                // deliberately mangle the old style element name to signal a
-                // missing reference
-                ret.second = Data::ComplexGeoData::missingPrefix();
-                ret.second += dot+1;
-            }
-        }
-        return ret;
-    }
-    const char *newName = geo->getElementName(name,Data::ComplexGeoData::MapToNamed);
-    if(newName != name) {
+    Data::MappedElement mapped = geo->getElementName(name);
+
+    if (mapped.index && mapped.name) {
         std::ostringstream ss;
-        ss << Data::ComplexGeoData::elementMapPrefix() << newName << '.' << name;
+        ss << Data::ComplexGeoData::elementMapPrefix()
+           << mapped.name << '.' << mapped.index;
         ret.first = ss.str();
-        ret.second = name;
-    }else
-        ret.second = name;
+        mapped.index.toString(ret.second);
+    } else if (mapped.name) {
+        FC_TRACE("element mapped name not found " << name << " in " << getFullName());
+        ret.first = name;
+        const char *dot = strrchr(name,'.');
+        if(dot) {
+            // deliberately mangle the old style element name to signal a
+            // missing reference
+            ret.second = Data::ComplexGeoData::missingPrefix();
+            ret.second += dot+1;
+        }
+    } else {
+        mapped.index.toString(ret.second);
+    }
+
     return ret;
 }
 
@@ -200,8 +192,7 @@ void GeoFeature::updateElementReference() {
     auto prop = getPropertyOfGeometry();
     if(!prop) return;
     auto geo = prop->getComplexData();
-    if(!geo || !geo->getElementMapSize()) return;
-    auto elementMap = geo->getElementMap();
+    if(!geo) return;
     bool reset = false;
     auto version = getElementMapVersion(prop);
     if(_ElementMapVersion.getStrValue().empty()) 
@@ -210,10 +201,7 @@ void GeoFeature::updateElementReference() {
         reset = true;
         _ElementMapVersion.setValue(version);
     }
-    if(reset || _elementMapCache!=elementMap) {
-        _elementMapCache.swap(elementMap);
-        PropertyLinkBase::updateElementReferences(this,reset);
-    }
+    PropertyLinkBase::updateElementReferences(this,reset);
 }
 
 void GeoFeature::onChanged(const Property *prop) {
@@ -257,7 +245,7 @@ GeoFeature::getElementTypes(bool /*all*/) const
     return prop->getComplexData()->getElementTypes();
 }
 
-std::vector<std::string>
+std::vector<Data::IndexedName>
 GeoFeature::getHigherElements(const char *element, bool silent) const
 {
     auto prop = getPropertyOfGeometry();

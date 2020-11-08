@@ -42,6 +42,8 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/find.hpp>
 #include <boost/range.hpp>
+#include <boost/iostreams/device/array.hpp>
+#include <boost/iostreams/stream.hpp>
 
 typedef boost::iterator_range<const char*> CharRange;
 
@@ -53,6 +55,7 @@ typedef boost::iterator_range<const char*> CharRange;
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/OriginFeature.h>
 #include <App/Link.h>
+#include <App/MappedElement.h>
 #include <App/Part.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
@@ -68,6 +71,7 @@ FC_LOG_LEVEL_INIT("Part",true,true)
 
 using namespace Part;
 namespace bp = boost::placeholders;
+namespace bio = boost::iostreams;
 
 // ============================================================================
 
@@ -643,20 +647,22 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     }
 }
 
-App::DocumentObject *SubShapeBinder::getElementOwner(const char *element) const
+App::DocumentObject *SubShapeBinder::getElementOwner(const Data::MappedName & name) const
 {
-    if(!element)
+    if(!name)
         return nullptr;
 
-    CharRange range(element, element+strlen(element)+1);
-    static const char _op[] = TOPOP_SHAPEBINDER ":";
-    CharRange op(_op, _op+sizeof(_op)-1);
-    auto res = boost::find_last(range, op);
-    if(boost::begin(res) == boost::end(res))
+    static std::string op(TOPOP_SHAPEBINDER ":");
+    int offset = name.rfind(op);
+    if (offset < 0)
         return nullptr;
     
     int idx, subidx;
-    if(sscanf(boost::end(res), "%d:%d", &idx, &subidx) != 2 || subidx<0)
+    char sep;
+    int size;
+    const char * s = name.toConstString(offset+op.size(), size);
+    bio::stream<bio::array_source> iss(s, size);
+    if (!(iss >> idx >> sep >> subidx) || sep!=':' || subidx<0)
         return nullptr;
 
     const App::PropertyXLink *link = nullptr;
@@ -1208,8 +1214,10 @@ SubShapeBinder::import(const App::SubObjectT &feature,
             continue;
         if (element.size()) {
             auto res = Part::Feature::getElementFromSource(binder, "", sobj, element.c_str(), true);
-            if (res.size())
-                return App::SubObjectT(binder, res.front().second.c_str());
+            if (res.size()) {
+                std::string tmp;
+                return App::SubObjectT(binder, res.front().index.toString(tmp));
+            }
             FC_WARN("Failed to deduce bound geometry from existing import: " << binder->getFullName());
         } else
             return binder;
@@ -1229,8 +1237,10 @@ SubShapeBinder::import(const App::SubObjectT &feature,
     if (element.size()) {
         doc->recomputeFeature(binder);
         auto res = Part::Feature::getElementFromSource(binder, "", sobj, element.c_str(), true);
-        if (res.size())
-            return App::SubObjectT(binder, res.front().second.c_str());
+        if (res.size()) {
+            std::string tmp;
+            return App::SubObjectT(binder, res.front().index.toString(tmp));
+        }
         FC_THROWM(Base::RuntimeError, "Failed to deduce bound geometry");
     }
     return binder;

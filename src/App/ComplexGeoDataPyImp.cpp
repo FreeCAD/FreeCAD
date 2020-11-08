@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include "ComplexGeoData.h"
+#include "MappedElement.h"
 
 // inclusion of the generated files (generated out of ComplexGeoDataPy.xml)
 #include <App/ComplexGeoDataPy.h>
@@ -90,22 +91,28 @@ PyObject* ComplexGeoDataPy::getElementName(PyObject *args)
     int direction = 0;
     if (!PyArg_ParseTuple(args, "s|i", &input,&direction))
         return NULL;
-    const char *ret = getComplexGeoDataPtr()->getElementName(input,direction);
-    return Py::new_reference_to(Py::String(ret));
+
+    Data::MappedElement res = getComplexGeoDataPtr()->getElementName(input);
+    std::string s;
+    if (direction == 1)
+        return Py::new_reference_to(Py::String(res.name.toString(s)));
+    else
+        return Py::new_reference_to(Py::String(res.index.toString(s)));
 }
 
 PyObject *ComplexGeoDataPy::setElementName(PyObject *args, PyObject *kwds) {
     const char *element;
     const char *name = 0;
     const char *postfix = 0;
+    int tag = 0;
     PyObject *pySid = Py_None;
     PyObject *overwrite = Py_False;
 
-    static char *kwlist[] = {"element", "name", "postfix", "overwrite", "sid", NULL};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|sssOO", kwlist, 
-                &element,&name,&postfix,&overwrite,&pySid))
+    static char *kwlist[] = {"element", "name", "postfix", "overwrite", "sid", "tag", NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|sssOOi", kwlist, 
+                &element,&name,&postfix,&overwrite,&pySid,&tag))
         return NULL;
-    std::vector<App::StringIDRef> sids;
+    ElementIDRefs sids;
     if(pySid != Py_None) {
         if(PyObject_TypeCheck(pySid,&App::StringIDPy::Type))
             sids.push_back(static_cast<App::StringIDPy*>(pySid)->getStringIDPtr());
@@ -122,9 +129,14 @@ PyObject *ComplexGeoDataPy::setElementName(PyObject *args, PyObject *kwds) {
             throw Py::TypeError("expect sid to contain either StringID or sequence of StringID");
     }
     PY_TRY {
-        const char *ret = getComplexGeoDataPtr()->setElementName(element,name, 
-                postfix,&sids,PyObject_IsTrue(overwrite));
-        return Py::new_reference_to(Py::String(ret));
+        Data::IndexedName index(element, getComplexGeoDataPtr()->getElementTypes());
+        Data::MappedName mapped = Data::MappedName::fromRawData(name);
+        std::ostringstream ss;
+        getComplexGeoDataPtr()->encodeElementName(getComplexGeoDataPtr()->elementType(index),
+                                                  mapped, ss, &sids, postfix, tag);
+        Data::MappedName res = getComplexGeoDataPtr()->setElementName(
+                index, mapped, &sids, PyObject_IsTrue(overwrite));
+        return Py::new_reference_to(Py::String(res.toString(0)));
     }PY_CATCH
 }
 
@@ -137,36 +149,46 @@ Py::Object ComplexGeoDataPy::getHasher() const {
 
 Py::Dict ComplexGeoDataPy::getElementMap() const {
     Py::Dict ret;
-    for(auto &v : getComplexGeoDataPtr()->getElementMap())
-        ret.setItem(v.first,Py::String(v.second));
+    std::string s;
+    for(auto &v : getComplexGeoDataPtr()->getElementMap()) {
+        s.clear();
+        ret.setItem(v.name.toString(0), Py::String(v.index.toString(s)));
+    }
     return ret;
 }
 
 void ComplexGeoDataPy::setElementMap(Py::Dict dict) {
-    std::map<std::string, std::string> map;
+    std::vector<Data::MappedElement> map;
+    const auto & types = getComplexGeoDataPtr()->getElementTypes();
     for(auto it=dict.begin();it!=dict.end();++it) {
         const auto &value = *it;
         if(!value.first.isString() || !value.second.isString())
             throw Py::TypeError("expect only strings in the dict");
-        map.emplace_hint(map.cend(),value.first.as_string(),Py::Object(value.second).as_string());
+        map.emplace_back(Data::MappedName(value.first.as_string().c_str()),
+                         Data::IndexedName(Py::Object(value.second).as_string().c_str(), types));
     }
     getComplexGeoDataPtr()->setElementMap(map);
 }
 
 Py::Dict ComplexGeoDataPy::getElementReverseMap() const {
     Py::Dict ret;
+    std::string s;
     for(auto &v : getComplexGeoDataPtr()->getElementMap()) {
-        auto value = ret[Py::String(v.second)];
+        s.clear();
+        auto value = ret[Py::String(v.index.toString(s))];
         Py::Object item(value);
-        if(item.isNone())
-            value = Py::String(v.first);
-        else if(item.isList()) {
+        if(item.isNone()) {
+            s.clear();
+            value = Py::String(v.name.toString(s));
+        } else if(item.isList()) {
             Py::List list(item);
-            list.append(Py::String(v.first));
+            s.clear();
+            list.append(Py::String(v.name.toString(s)));
         } else {
             Py::List list;
             list.append(item);
-            list.append(Py::String(v.first));
+            s.clear();
+            list.append(Py::String(v.name.toString(s)));
             value = list;
         }
     }

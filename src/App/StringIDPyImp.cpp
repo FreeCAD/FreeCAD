@@ -32,7 +32,7 @@ using namespace App;
 // returns a string which represent the object e.g. when printed in python
 std::string StringIDPy::representation(void) const
 {
-    return getStringIDPtr()->toString();
+    return getStringIDPtr()->toString(_index);
 }
 
 PyObject* StringIDPy::isSame(PyObject *args)
@@ -41,8 +41,10 @@ PyObject* StringIDPy::isSame(PyObject *args)
     if (!PyArg_ParseTuple(args, "O!", &StringIDPy::Type, &other)) {     // convert args: Python->C 
         return Py::new_reference_to(Py::False());
     }
-    auto otherID = static_cast<StringIDPy*>(other)->getStringIDPtr();
-    return Py::new_reference_to(Py::Boolean(getStringIDPtr() == otherID));
+    auto otherPy = static_cast<StringIDPy*>(other);
+    return Py::new_reference_to(Py::Boolean(
+        otherPy->getStringIDPtr() == this->getStringIDPtr()
+        && otherPy->_index == this->_index));
 }
 
 Py::Int StringIDPy::getValue(void) const {
@@ -50,7 +52,7 @@ Py::Int StringIDPy::getValue(void) const {
 }
 
 Py::String StringIDPy::getData(void) const {
-    return Py::String(getStringIDPtr()->dataToText());
+    return Py::String(getStringIDPtr()->dataToText(this->_index));
 }
 
 Py::Boolean StringIDPy::getIsBinary(void) const {
@@ -59,6 +61,14 @@ Py::Boolean StringIDPy::getIsBinary(void) const {
 
 Py::Boolean StringIDPy::getIsHashed(void) const {
     return Py::Boolean(getStringIDPtr()->isHashed());
+}
+
+Py::Int StringIDPy::getIndex(void) const {
+    return Py::Int(this->_index);
+}
+
+void StringIDPy::setIndex(Py::Int index) {
+    this->_index = index;
 }
 
 PyObject *StringIDPy::getCustomAttributes(const char* /*attr*/) const

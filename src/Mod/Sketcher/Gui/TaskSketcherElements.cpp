@@ -47,6 +47,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/MappedElement.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
@@ -241,8 +242,9 @@ public:
         }
         setIcon(0,icon);
 
-        std::string name = sketch->shapeTypeFromGeoId(ElementNbr, (Sketcher::PointPos)(element));
-        setText(ColName, QString::fromLatin1(name.c_str()));
+        Data::IndexedName name = sketch->shapeTypeFromGeoId(ElementNbr, (Sketcher::PointPos)(element));
+        std::string tmp;
+        setText(ColName, QString::fromLatin1(name.toString(tmp)));
         std::string mapped = sketch->convertSubName(name,false);
         setText(ColMapped, QString::fromLatin1(Data::ComplexGeoData::isMappedElement(mapped.c_str())));
     }

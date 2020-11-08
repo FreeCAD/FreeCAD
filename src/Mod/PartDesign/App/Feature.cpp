@@ -37,6 +37,7 @@
 #include <Base/Exception.h>
 #include "App/Document.h"
 #include <App/FeaturePythonPyImp.h>
+#include <App/MappedElement.h>
 #include "App/OriginFeature.h"
 #include "Body.h"
 #include "ShapeBinder.h"
@@ -318,15 +319,13 @@ void Feature::getGeneratedIndices(std::vector<int> &faces,
                                   std::vector<int> &vertices) const
 {
     Part::TopoShape shape = Shape.getShape();
-    std::string element("Face");
     std::set<int> edgeSet;
     std::set<int> vertexSet;
     unsigned count = shape.countSubShapes(TopAbs_FACE);
     for(unsigned i=1; i<=count; ++i) {
-        element.resize(4);
-        element += std::to_string(i);
-        auto mapped = shape.getElementName(element.c_str(),Data::ComplexGeoData::MapToNamed);
-        if(mapped != element.c_str() && isElementGenerated(shape, mapped)) {
+        Data::MappedName mapped = shape.getMappedName(
+                Data::IndexedName::fromConst("Face", i));
+        if(mapped && isElementGenerated(shape, mapped)) {
             faces.push_back(i-1);
             Part::TopoShape face = shape.getSubTopoShape(TopAbs_FACE, i);
             for(auto &s : face.getSubShapes(TopAbs_EDGE)) {
@@ -343,7 +342,7 @@ void Feature::getGeneratedIndices(std::vector<int> &faces,
     }
 }
 
-bool Feature::isElementGenerated(const TopoShape &shape, const char *name) const
+bool Feature::isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const
 {
     return shape.isElementGenerated(name);
 }
@@ -384,12 +383,10 @@ void Feature::updateSuppressedShape()
     std::vector<TopoShape> generated;
     if(!shape.isNull()) {
         unsigned count = shape.countSubShapes(TopAbs_FACE);
-        std::string element("Face");
         for(unsigned i=1; i<=count; ++i) {
-            element.resize(4);
-            element += std::to_string(i);
-            auto mapped = shape.getElementName(element.c_str(),Data::ComplexGeoData::MapToNamed);
-            if(mapped != element.c_str() && isElementGenerated(shape,mapped))
+            Data::MappedName mapped = shape.getMappedName(
+                    Data::IndexedName::fromConst("Face", i));
+            if(mapped && isElementGenerated(shape, mapped))
                 generated.push_back(shape.getSubTopoShape(TopAbs_FACE, i));
         }
     }

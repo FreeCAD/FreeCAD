@@ -323,7 +323,6 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
 #ifndef FC_NO_ELEMENT_MAP
         TopoShape res;
         res.setShape(offsetshape);
-        res.copyElementMap(*getTopoShapePtr());
         return Py::new_reference_to(shape2pyshape(res));
 #else
         return new TopoShapeSolidPy(new TopoShape(offsetshape));

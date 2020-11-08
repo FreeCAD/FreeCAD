@@ -39,6 +39,7 @@
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/MappedElement.h>
 #include <App/Link.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
@@ -1371,6 +1372,8 @@ bool populateGeometryReferences(QListWidget *listWidget, App::PropertyLinkSub &p
         subSet.insert(sub.first.empty()?sub.second:sub.first);
     bool touched = false;
     std::vector<std::string> refs;
+    std::string tmp;
+    std::string indexedName;
     for(auto &sub : subs) {
         refs.push_back(sub.second);
         if(refresh || sub.first.empty() || baseShape.isNull()) {
@@ -1388,17 +1391,23 @@ bool populateGeometryReferences(QListWidget *listWidget, App::PropertyLinkSub &p
         }
         FC_WARN("missing element reference in " << prop.getFullName() << ": " << ref);
         bool popped = false;
-        for(auto &name : Part::Feature::getRelatedElements(base,ref.c_str())) {
-            if(!subSet.insert(name.second).second || !subSet.insert(name.first).second)
+        for(auto &element : Part::Feature::getRelatedElements(base,ref.c_str())) {
+            tmp.clear();
+            element.name.toString(tmp);
+            if (!subSet.insert(tmp).second)
                 continue;
-            FC_WARN("guess element reference in " << prop.getFullName() << ": " << ref << " -> " << name.first);
-            listWidget->addItem(QString::fromStdString(name.second));
+            indexedName.clear();
+            element.index.toString(indexedName);
+            if (!subSet.insert(indexedName).second)
+                continue;
+            FC_WARN("guess element reference in " << prop.getFullName() << ": " << ref << " -> " << element.name);
+            listWidget->addItem(QString::fromStdString(indexedName));
             if(!popped) {
                 refs.pop_back();
                 touched = true;
                 popped = true;
             }
-            refs.push_back(name.second);
+            refs.push_back(indexedName);
         }
         if(!popped) {
             std::string missingSub = refs.back();

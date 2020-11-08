@@ -237,7 +237,7 @@ void FeatureWrap::onDocumentRestored()
     FeatureAddSub::onDocumentRestored();
 }
 
-bool FeatureWrap::isElementGenerated(const TopoShape &shape, const char *name) const
+bool FeatureWrap::isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const
 {
     auto feat = WrapFeature.getValue();
     if (!feat)
@@ -245,7 +245,7 @@ bool FeatureWrap::isElementGenerated(const TopoShape &shape, const char *name) c
     long wrapTag = feat->getID();
     bool res = false;
     shape.traceElement(name,
-        [&] (const std::string &, size_t, long tag2, long) {
+        [&] (const Data::MappedName &, int, long tag2, long) {
             if (tag2 == wrapTag) {
                 res = true;
                 return true;

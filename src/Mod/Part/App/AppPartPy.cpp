@@ -107,6 +107,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/ExpressionParser.h>
+#include <App/MappedElement.h>
 
 #include "OCCError.h"
 #include "TopoShape.h"
@@ -2347,8 +2348,14 @@ private:
         auto ret = Part::Feature::getRelatedElements(obj,name,
                 PyObject_IsTrue(sameType), PyObject_IsTrue(withCache));
         Py::List list;
-        for(auto &v : ret)
-            list.append(Py::TupleN(Py::String(v.first),Py::String(v.second)));
+        std::string tmp,tmp2;
+        for(auto &v : ret) {
+            tmp.clear();
+            v.index.toString(tmp);
+            tmp2.clear();
+            v.name.toString(tmp2);
+            list.append(Py::TupleN(Py::String(tmp2),Py::String(tmp)));
+        }
         return list;
     }
 
@@ -2363,6 +2370,7 @@ private:
 
         auto feature = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
         Py::List list;
+        std::string tmp;
         for(auto &history : Part::Feature::getElementHistory(feature,name,
                     PyObject_IsTrue(recursive),PyObject_IsTrue(sameType))) 
         {
@@ -2371,10 +2379,13 @@ private:
                 ret.setItem(0,Py::Object(history.obj->getPyObject(),true));
             else
                 ret.setItem(0,Py::Int(history.tag));
-            ret.setItem(1,Py::String(history.element));
+            tmp.clear();
+            ret.setItem(1,Py::String(history.element.toString(tmp)));
             Py::List intermedates;
-            for(auto &h : history.intermediates)
-                intermedates.append(Py::String(h));
+            for(auto &h : history.intermediates) {
+                tmp.clear();
+                intermedates.append(Py::String(h.toString(tmp)));
+            }
             ret.setItem(2,intermedates);
             list.append(ret);
         }

@@ -31,6 +31,7 @@
 # include <ShapeAnalysis.hxx>
 #endif
 
+#include <App/MappedElement.h>
 #include "TopoShapeOpCode.h"
 #include "FaceMaker.h"
 
@@ -158,10 +159,11 @@ void Part::FaceMaker::Build()
 
 struct ElementName {
     long tag;
-    std::string name;
+    Data::MappedName name;
+    Data::ElementIDRefs sids;
 
-    ElementName(long t, const char *n)
-        :tag(t),name(n)
+    ElementName(long t, const Data::MappedName &n, const Data::ElementIDRefs &sids)
+        :tag(t),name(n), sids(sids)
     {}
 
     inline bool operator<(const ElementName &other) const {
@@ -178,7 +180,6 @@ void Part::FaceMaker::postBuild() {
     this->myTopoShape.Hasher = this->MyHasher;
     this->myTopoShape.mapSubElement(this->mySourceShapes);
     int i = 0;
-    std::ostringstream ss;
     const char *op = this->MyOp;
     if(!op) op = TOPOP_FACE;
     const auto &faces = this->myTopoShape.getSubTopoShapes(TopAbs_FACE);
@@ -190,26 +191,31 @@ void Part::FaceMaker::postBuild() {
         std::set<ElementName> edgeNames;
         int count = wire.countSubShapes(TopAbs_EDGE);
         for(int i=1;i<=count;++i) {
-            std::string element("Edge");
-            element += std::to_string(i);
-            const char *name = face.getElementName(element.c_str(),Data::ComplexGeoData::MapToNamed);
-            if(name == element)
+            Data::ElementIDRefs sids;
+            Data::MappedName name = face.getMappedName(
+                    Data::IndexedName::fromConst("Edge",i), false, &sids);
+            if(!name)
                 continue;
-            edgeNames.emplace(wire.getElementHistory(name),name);
+            edgeNames.emplace(wire.getElementHistory(name),name,sids);
         }
         if(edgeNames.empty())
             continue;
-        ss.str("");
-        ss << "Face" << i;
-        std::vector<std::string> names;
+
+        std::vector<Data::MappedName> names;
+        Data::ElementIDRefs sids;
 #if 0
-        names.insert(names.end(),edgeNames.begin(),edgeNames.end());
+        for (auto &e : edgeNames) {
+            names.insert(e.name);
+            sids += e.sids;
+        }
 #else
         // We just use the first source element name to make the face name more
         // stable
         names.push_back(edgeNames.begin()->name);
+        sids = edgeNames.begin()->sids;
 #endif
-        this->myTopoShape.setElementComboName(ss.str().c_str(),names,op);
+        this->myTopoShape.setElementComboName(
+                Data::IndexedName::fromConst("Face",i),names,op,nullptr,&sids);
     }
     this->myTopoShape.initCache(true);
     this->Done();

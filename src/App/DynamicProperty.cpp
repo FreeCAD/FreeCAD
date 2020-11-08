@@ -301,7 +301,7 @@ void DynamicProperty::save(const Property *prop, Base::Writer &writer) const
                         << "\" ro=\"" << data.readonly
                         << "\" hide=\"" << data.hidden;
         if(writer.getFileVersion()>1 && data.docID)
-            writer.Stream() << "\" docID=\"" << data.docID->value();
+            writer.Stream() << "\" docID=\"" << data.docID.value();
         else
             writer.Stream() << "\" doc=\"" << Base::Persistence::encodeAttribute(data.getDoc());
     }

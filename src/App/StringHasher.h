@@ -25,16 +25,24 @@
 
 #include <memory>
 #include <bitset>
+
 #include <QByteArray>
+#include <QVector>
+
 #include <CXX/Objects.hxx>
 #include <Base/Handle.h>
 #include <Base/Persistence.h>
+
+namespace Data{
+class MappedName;
+}
 
 namespace App {
 
 class StringHasher;
 class StringID;
-typedef Base::Reference<StringID> StringIDRef;
+class StringIDRef;
+typedef Base::Reference<StringHasher> StringHasherRef;
 
 class AppExport StringID: public Base::BaseClass, public Base::Handled {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -42,6 +50,13 @@ public:
     enum Flag {
         Binary,
         Hashed,
+        PostfixEncoded,
+        Postfixed,
+        Indexed,
+        PrefixID,
+        PrefixIDIndex,
+        Persistent,
+        Marked,
     };
     StringID(long id, const QByteArray &data, bool binary, bool hashed)
         :_id(id),_data(data)
@@ -54,29 +69,287 @@ public:
         :_id(id),_data(data),_flags(flags)
     {}
 
-    virtual ~StringID(){}
+    StringID()
+        :_id(0),_flags(0)
+    {}
+
+    virtual ~StringID();
 
     long value() const {return _id;}
-    const QByteArray &data() const {return _data;}
 
     bool isBinary() const {return _flags.test(Binary);}
     bool isHashed() const {return _flags.test(Hashed);}
+    bool isPostfixed() const {return _flags.test(Postfixed);}
+    bool isPostfixEncoded() const {return _flags.test(PostfixEncoded);}
+    bool isIndexed() const {return _flags.test(Indexed);}
+    bool isPrefixID() const {return _flags.test(PrefixID);}
+    bool isPrefixIDIndex() const {return _flags.test(PrefixIDIndex);}
+    bool isMarked() const {return _flags.test(Marked);}
+    bool isPersistent() const {return _flags.test(Persistent);}
+
+    bool isSameHasher(const StringHasherRef & hasher) const
+    {
+        return this->_hasher == hasher;
+    }
+
+    const QByteArray data() const {return _data;}
+    const QByteArray postfix() const {return _postfix;}
 
     virtual PyObject *getPyObject() override;
-    std::string toString() const;
-    static long fromString(const char *name, bool eof=true);
-    static StringIDRef getNullID();
-    bool isNull() const;
+    PyObject *getPyObjectWithIndex(int index);
 
-    std::string dataToText() const;
+    std::string toString(int index) const;
+
+    struct IndexID {
+        long id;
+        int index;
+
+        explicit operator bool() const {
+            return id > 0;
+        }
+
+        friend std::ostream & operator << (std::ostream &s, const IndexID & id) {
+            s << id.id;
+            if (id.index)
+                s << ':' << id.index;
+            return s;
+        }
+    };
+    static IndexID fromString(const char *name, bool eof=true, int size = -1);
+
+    static IndexID fromString(const QByteArray &bytes, bool eof=true) {
+        return fromString(bytes.constData(), eof, bytes.size());
+    }
+
+    std::string dataToText(int index) const;
+
+    void toBytes(QByteArray &bytes) const {
+        if (_postfix.size())
+            bytes = _data + _postfix;
+        else
+            bytes = _data;
+    }
+
+    void mark() const;
+
+    void setPersistent(bool enable)
+    {
+        _flags.set(Persistent, enable);
+    }
 
     friend class StringHasher;
 
 private:
     long _id;
     QByteArray _data;
-    std::string _cache;
-    std::bitset<8> _flags;
+    QByteArray _postfix;
+    StringHasher *_hasher = nullptr;
+    mutable std::bitset<32> _flags;
+    mutable QVector<StringIDRef> _sids;
+};
+
+//////////////////////////////////////////////////////////////////////////
+
+class StringIDRef
+{
+public:
+    StringIDRef()
+        :_sid(0), _index(0)
+    {}
+
+    StringIDRef(StringID* p, int index=0)
+        : _sid(p), _index(index)
+    {
+        if (_sid)
+            _sid->ref();
+    }
+
+    StringIDRef(const StringIDRef & other)
+        : _sid(other._sid)
+        , _index(other._index)
+    {
+        if (_sid)
+            _sid->ref();
+    }
+
+    StringIDRef(StringIDRef && other)
+        : _sid(other._sid)
+        , _index(other._index)
+    {
+        other._sid = nullptr;
+    }
+
+    StringIDRef(const StringIDRef & other, int index)
+        : _sid(other._sid)
+        , _index(index)
+    {
+        if (_sid)
+            _sid->ref();
+    }
+
+    ~StringIDRef()
+    {
+        if (_sid)
+            _sid->unref();
+    }
+
+    void reset(const StringIDRef & p = StringIDRef()) {
+        *this = p;
+    }
+
+    void reset(const StringIDRef &p, int index) {
+        *this = p;
+        this->_index = index;
+    }
+
+    void swap(StringIDRef &p) {
+        if(*this != p) {
+            auto tmp = p;
+            p = *this;
+            *this = tmp;
+        }
+    }
+
+    StringIDRef & operator=(StringID* p) {
+        if (_sid == p)
+            return *this;
+        if (_sid)
+            _sid->unref();
+        _sid = p;
+        if (_sid)
+            _sid->ref();
+        this->_index = 0;
+        return *this;
+    }
+
+    StringIDRef & operator=(const StringIDRef & p) {
+        if (_sid != p._sid) {
+            if (_sid)
+                _sid->unref();
+            _sid = p._sid;
+            if (_sid)
+                _sid->ref();
+        }
+        this->_index = p._index;
+        return *this;
+    }
+
+    StringIDRef & operator=(StringIDRef && p) {
+        if (_sid != p._sid) {
+            if (_sid)
+                _sid->unref();
+            _sid = p._sid;
+            p._sid = nullptr;
+        }
+        this->_index = p._index;
+        return *this;
+    }
+
+    bool operator<(const StringIDRef & p) const {
+        if (_sid < p._sid)
+            return true;
+        if (_sid > p._sid)
+            return false;
+        return _index < p._index;
+    }
+
+    bool operator==(const StringIDRef & p) const {
+        return _sid == p._sid && _index == p._index;
+    }
+
+    bool operator!=(const StringIDRef & p) const {
+        return _sid != p._sid || _index != p._index;
+    }
+
+    explicit operator bool() const {
+        return _sid != nullptr;
+    }
+
+    int getRefCount(void) const {
+        if (_sid)
+            return _sid->getRefCount();
+        return 0;
+    }
+
+    std::string toString() const {
+        if (_sid)
+            return _sid->toString(_index);
+        return std::string();
+    }
+
+    std::string dataToText() const {
+        if (_sid)
+            return _sid->dataToText(_index);
+        return std::string();
+    }
+
+    const char * constData() const {
+        if (_sid) {
+            assert(_sid->postfix().isEmpty());
+            return _sid->data().constData();
+        }
+        return "";
+    }
+
+    const StringID & deref() const {
+        return *_sid;
+    }
+
+    long value() const {
+        if (_sid)
+            return _sid->value();
+        return 0;
+    }
+
+    bool isBinary() const {
+        if (_sid)
+            return _sid->isBinary();
+        return false;
+    }
+
+    bool isHashed() const {
+        if (_sid)
+            return _sid->isHashed();
+        return false;
+    }
+
+    void toBytes(QByteArray &bytes) const {
+        if (_sid)
+            _sid->toBytes(bytes);
+    }
+
+    PyObject *getPyObject(void) {
+        if (_sid)
+            return _sid->getPyObjectWithIndex(_index);
+        Py_INCREF(Py_None);
+        return Py_None;
+    }
+
+    void mark() const {
+        if (_sid)
+            _sid->mark();
+    }
+
+    bool isMarked() const {
+        return _sid && _sid->isMarked();
+    }
+
+    bool isSameHasher(const StringHasherRef & hasher) const
+    {
+        return _sid && _sid->isSameHasher(hasher);
+    }
+
+    void setPersistent(bool enable)
+    {
+        if (_sid)
+            _sid->setPersistent(enable);
+    }
+
+    friend class StringHasher;
+
+private:
+    StringID *_sid;
+    int _index;
 };
 
 /// A String table to map string from/to a unique integer
@@ -112,7 +385,11 @@ public:
     StringIDRef getID(const char *text, int len=-1, bool hashable=false);
 
     /** Map text or binary data to an integer */
-    StringIDRef getID(QByteArray data, bool binary, bool hashable=true);
+    StringIDRef getID(const QByteArray & data, bool binary, bool hashable=true, bool nocopy=false);
+
+    /** Map geometry element name to an integer */
+    StringIDRef getID(const Data::MappedName & name,
+                      const QVector<StringIDRef> & sids);
 
     /** Obtain the reference counted StringID object from numerical id
      *
@@ -120,7 +397,11 @@ public:
      * and the original text is not persistent. The caller use this function to
      * retrieve the reference count ID object after restore
      */
-    StringIDRef getID(long id) const;
+    StringIDRef getID(long id, int index = 0) const;
+
+    StringIDRef getID(const StringID::IndexID &id) const {
+        return getID(id.id, id.index);
+    }
 
     std::map<long,StringIDRef> getIDMap() const;
 
@@ -141,19 +422,24 @@ public:
     void setThreshold(int threshold);
     int getThreshold() const;
 
-    class HashMap;
+    void clearMarks() const;
 
-private:
+    void compact();
+
+    class HashMap;
+    friend class StringID;
+
+protected:
+    StringID * insert(const StringIDRef & sid);
     long lastID() const;
     void saveStream(std::ostream &s) const;
     void restoreStream(std::istream &s, std::size_t count);
+    void restoreStreamNew(std::istream &s, std::size_t count);
 
 private:
     std::unique_ptr<HashMap> _hashes;
     mutable std::string _filename;
 };
-
-typedef Base::Reference<StringHasher> StringHasherRef;
 
 }
 

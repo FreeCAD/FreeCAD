@@ -65,6 +65,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/MappedElement.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -582,6 +583,7 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
     for(auto &sub : subs) 
         subSet.insert(sub.first.empty()?sub.second:sub.first);
 
+    std::string tmp;
     std::vector<App::DocumentObject*>::const_iterator it = std::find(objs.begin(), objs.end(), base);
     if (it != objs.end()) {
         // toggle visibility
@@ -627,15 +629,13 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
             }
             FC_WARN("missing element reference: " << base->getFullName() << "." << ref);
             
-            for(auto &name : Part::Feature::getRelatedElements(base,ref.c_str())) {
-                if(!subSet.insert(name.second).second || !subSet.insert(name.first).second)
+            for(auto &mapped : Part::Feature::getRelatedElements(base,ref.c_str())) {
+                tmp.clear();
+                if(!subSet.insert(mapped.index.toString(tmp)).second
+                        || !subSet.insert(mapped.name.toString(0)).second)
                     continue;
-                int idx=0;
-                sscanf(name.second.c_str(),"Edge%d",&idx);
-                if(idx>0) {
-                    FC_WARN("guess element reference: " << ref << " -> " << name.first);
-                    elements.emplace(idx,e[i].radius1,e[i].radius2);
-                }
+                FC_WARN("guess element reference: " << ref << " -> " << mapped.index);
+                elements.emplace(mapped.index.getIndex(),e[i].radius1,e[i].radius2);
             }
         }
 

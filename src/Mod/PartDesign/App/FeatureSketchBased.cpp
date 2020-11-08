@@ -78,6 +78,7 @@
 #include <App/Application.h>
 #include <App/OriginFeature.h>
 #include <App/Document.h>
+#include <App/MappedElement.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/FeatureOffset.h>
@@ -1342,7 +1343,7 @@ void ProfileBased::handleChangedPropertyName(
     }
 }
 
-bool ProfileBased::isElementGenerated(const TopoShape &shape, const char *name) const
+bool ProfileBased::isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const
 {
     // auto profile = Profile.getValue();
     // if (!profile)
@@ -1350,7 +1351,7 @@ bool ProfileBased::isElementGenerated(const TopoShape &shape, const char *name) 
     // long profileTag = profile->getID();
     bool res = false;
     shape.traceElement(name,
-        [&] (const std::string &, size_t, long tag2, long) {
+        [&] (const Data::MappedName &, size_t, long tag2, long) {
             if (std::abs(tag2) == this->getID()) {
                 res = true;
                 return true;

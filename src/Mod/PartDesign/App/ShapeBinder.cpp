@@ -51,6 +51,7 @@ FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 using namespace PartDesign;
 namespace bp = boost::placeholders;
+namespace bio = boost::iostreams;
 
 // ============================================================================
 

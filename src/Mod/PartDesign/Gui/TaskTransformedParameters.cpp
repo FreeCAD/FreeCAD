@@ -44,6 +44,7 @@
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
+#include <App/MappedElement.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -325,9 +326,10 @@ void TaskTransformedParameters::setupUI() {
             }catch(...) {
                 auto names = Part::Feature::getRelatedElements(obj,shadow.first.c_str());
                 if(names.size()) {
-                    auto &name = names.front();
-                    FC_WARN("guess element reference: " << shadow.first << " -> " << name.first);
-                    sub = name.second;
+                    auto &mapped = names.front();
+                    FC_WARN("guess element reference: " << shadow.first << " -> " << mapped.name);
+                    sub.clear();
+                    mapped.index.toString(sub);
                     touched = true;
                 } else {
                     sub = shadow.first; // use new style name for future guessing

@@ -84,7 +84,7 @@ public:
         return "PartDesignGui::ViewProvider";
     }
 
-    virtual bool isElementGenerated(const TopoShape &shape, const char *name) const;
+    virtual bool isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const;
 
     virtual void getGeneratedIndices(std::vector<int> &faces,
                                      std::vector<int> &edges,

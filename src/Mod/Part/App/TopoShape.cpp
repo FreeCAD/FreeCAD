@@ -309,7 +309,7 @@ std::string ShapeSegment::getName() const
 TYPESYSTEM_SOURCE(Part::TopoShape , Data::ComplexGeoData)
 
 TopoShape::TopoShape(long tag,App::StringHasherRef hasher, const TopoDS_Shape &shape)
-    :_Shape(shape)
+    :_Shape(*this, shape)
 {
     Tag = tag;
     Hasher = hasher;
@@ -320,17 +320,8 @@ TopoShape::~TopoShape()
 }
 
 TopoShape::TopoShape(const TopoDS_Shape& shape)
-  : _Shape(shape)
+  : _Shape(*this, shape)
 {
-}
-
-TopoShape::TopoShape(const TopoShape& shape)
-  : _Shape(shape._Shape)
-{
-    Tag = shape.Tag;
-    Hasher = shape.Hasher;
-    _ElementMap = shape._ElementMap;
-    _Cache = shape._Cache;
 }
 
 const std::vector<const char*>& TopoShape::getElementTypes(void) const
@@ -507,17 +498,6 @@ void TopoShape::setPyObject(PyObject* obj)
         std::string error = std::string("type must be 'Shape', not ");
         error += obj->ob_type->tp_name;
         throw Base::TypeError(error);
-    }
-}
-
-void TopoShape::operator = (const TopoShape& sh)
-{
-    if (this != &sh) {
-        this->Tag = sh.Tag;
-        this->_Shape = sh._Shape;
-        this->_ElementMap = sh._ElementMap;
-        this->_Cache = sh._Cache;
-        this->Hasher = sh.Hasher;
     }
 }
 
@@ -727,8 +707,7 @@ void TopoShape::importIges(const char *FileName)
         aReader.ClearShapes();
         aReader.TransferRoots();
         // one shape that contains all subshapes
-        this->_Shape = aReader.OneShape();
-        _ElementMap.reset();
+        setShape(aReader.OneShape());
 
 #if OCC_VERSION_HEX < 0x070500
         pi->EndScope();
@@ -756,8 +735,7 @@ void TopoShape::importStep(const char *FileName)
         // Root transfers
         aReader.TransferRoots();
         // one shape that contains all subshapes
-        this->_Shape = aReader.OneShape();
-        _ElementMap.reset();
+        setShape(aReader.OneShape());
 
 #if OCC_VERSION_HEX < 0x070500
         pi->EndScope();
@@ -783,8 +761,7 @@ void TopoShape::importBrep(const char *FileName)
 #else
         BRepTools::Read(aShape,(Standard_CString)FileName,aBuilder);
 #endif
-        this->_Shape = aShape;
-        _ElementMap.reset();
+        setShape(this->_Shape);
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
@@ -812,8 +789,7 @@ void TopoShape::importBrep(std::istream& str, int indicator)
         (void)indicator;
         BRepTools::Read(aShape,str,aBuilder);
 #endif
-        this->_Shape = aShape;
-        _ElementMap.reset();
+        setShape(aShape);
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
@@ -837,8 +813,7 @@ void TopoShape::importBinary(std::istream& str)
     TopAbs_Orientation anOrient = static_cast<TopAbs_Orientation>(orient);
 
     try {
-        this->_Shape = theShapeSet.Shape(shapeId);
-        _ElementMap.reset();
+        setShape(theShapeSet.Shape(shapeId));
         this->_Shape.Location(theShapeSet.Locations().Location (locId));
         this->_Shape.Orientation (anOrient);
     }
@@ -3013,25 +2988,25 @@ bool TopoShape::fix(double precision, double mintol, double maxtol)
         fix.FixFaceTool()->Perform();
         fix.FixShellTool()->Perform();
         fix.FixSolidTool()->Perform();
-        this->_Shape = fix.FixSolidTool()->Shape();
+        setShape(fix.FixSolidTool()->Shape(), false);
     }
     else if (type == TopAbs_SHELL) {
         fix.FixWireTool()->Perform();
         fix.FixFaceTool()->Perform();
         fix.FixShellTool()->Perform();
-        this->_Shape = fix.FixShellTool()->Shape();
+        setShape(fix.FixShellTool()->Shape(), false);
     }
     else if (type == TopAbs_FACE) {
         fix.FixWireTool()->Perform();
         fix.FixFaceTool()->Perform();
-        this->_Shape = fix.Shape();
+        setShape(fix.Shape(), false);
     }
     else if (type == TopAbs_WIRE) {
         fix.FixWireTool()->Perform();
-        this->_Shape = fix.Shape();
+        setShape(fix.Shape(), false);
     }
     else {
-        this->_Shape = fix.Shape();
+        setShape(fix.Shape(), false);
         return isValid();
     }
     return isValid();
@@ -3043,7 +3018,7 @@ bool TopoShape::removeInternalWires(double minArea)
     ShapeUpgrade_RemoveInternalWires fix(this->_Shape);
     fix.MinArea() = minArea;
     bool ok = fix.Perform() ? true : false;
-    this->_Shape = fix.GetResult();
+    setShape(fix.GetResult(), false);
     resetElementMap();
     mapSubElement(copy);
     return ok;
@@ -3401,13 +3376,14 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
     aSewingTool.Perform();
 #endif
 
-    _Shape = aSewingTool.SewedShape();
+    resetElementMap();
+
+    setShape(aSewingTool.SewedShape());
 #if OCC_VERSION_HEX < 0x070500
     pi->EndScope();
 #endif
     if (_Shape.IsNull())
-        _Shape = aComp;
-    _ElementMap.reset();
+        setShape(aComp);
 }
 
 void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,

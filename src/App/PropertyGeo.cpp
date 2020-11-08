@@ -1239,6 +1239,24 @@ std::string PropertyComplexGeoData::getElementMapVersion(bool) const {
     return ss.str();
 }
 
+bool PropertyComplexGeoData::checkElementMapVersion(const char * ver) const
+{
+    auto data = getComplexData();
+    if(!data)
+        return false;
+    auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
+    std::ostringstream ss;
+    const char *prefix;
+    if(owner && owner->getDocument()
+             && owner->getDocument()->getStringHasher() == data->Hasher)
+        prefix = "1.";
+    else
+        prefix = "0.";
+    if (!boost::starts_with(ver, prefix))
+        return true;
+    return data->checkElementMapVersion(ver+2);
+}
+
 bool PropertyComplexGeoData::isSame(const Property &_other) const
 {
     if(!_other.isDerivedFrom(PropertyComplexGeoData::getClassTypeId()))

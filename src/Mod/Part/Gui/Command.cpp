@@ -45,6 +45,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObserver.h>
 #include <App/AutoTransaction.h>
+#include <App/MappedElement.h>
 #include <App/Part.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
@@ -2644,8 +2645,11 @@ void CmdPartGeometryHistory::activated(int iMsg)
     }
 
     std::vector<App::SubObjectT> sels;
-    for (auto &hist : Part::Feature::getElementHistory(sobj, element.c_str()))
-        sels.emplace_back(hist.obj, hist.element.c_str());
+    std::string tmp;
+    for (auto &hist : Part::Feature::getElementHistory(sobj, element.c_str())) {
+        tmp.clear();
+        sels.emplace_back(hist.obj, hist.element.toString(tmp));
+    }
 
     Gui::SelectionMenu menu;
     menu.doPick(sels, sel);
@@ -2703,11 +2707,14 @@ void CmdPartGeometryDerived::activated(int iMsg)
     std::vector<App::SubObjectT> sels;
     auto inlist = sobj->getInListEx(true);
     std::vector<App::DocumentObject*> objs(inlist.begin(), inlist.end());
+    std::string tmp;
     for (auto obj : App::Document::getDependencyList(objs, App::Document::DepSort)) {
         if (!obj->isDerivedFrom(Part::Feature::getClassTypeId()) || !inlist.count(obj))
             continue;
-        for (auto &elementName : Part::Feature::getElementFromSource(obj, "", sobj, element.c_str()))
-            sels.emplace_back(obj, elementName.second.c_str());
+        for (auto &elementName : Part::Feature::getElementFromSource(obj, "", sobj, element.c_str())) {
+            tmp.clear();
+            sels.emplace_back(obj, elementName.index.toString(tmp));
+        }
     }
 
     Gui::SelectionMenu menu;

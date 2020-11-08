@@ -39,6 +39,7 @@
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/MappedElement.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -283,20 +284,19 @@ void TaskDressUpParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         // back to its base
         auto history = pcDressUp->getElementHistory(pcDressUp,msg.pSubName);
         const char *element = 0;
+        std::string tmp;
         for(auto &hist : history) {
             if(hist.obj != base)
                 continue;
-            auto name = pcDressUp->getElementName(hist.element.c_str());
-            if ((!allowFaces && boost::starts_with(name.second.c_str(),"Face"))
-                || (!allowEdges && boost::starts_with(name.second.c_str(),"Edge")))
-            {
+
+            char type = pcDressUp->Shape.getShape().elementType(hist.element);
+            if ((!allowFaces && type == 'F') || (!allowEdges && type == 'E'))
                 continue;
-            }
             if(element) {
                 showMessage("Ambiguous selection");
                 return;
             }
-            element = hist.element.c_str();
+            element = hist.element.toString(tmp);
         }
         if(element) {
             std::vector<App::SubObjectT> sels;
@@ -603,20 +603,22 @@ bool TaskDressUpParameters::getItemElement(QListWidgetItem *item, std::string &s
     }
     PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
     auto shape = pcDressUp->DressUpShape.getShape();
-    std::string element("Face");
+    Data::IndexedName indexed;
+    std::string tmp;
     bool found = false;
     for (int i=1, c=shape.countSubShapes(TopAbs_FACE); i<=c; ++i) {
-        element.resize(4);
-        element += std::to_string(i);
-        auto name = shape.getElementName(element.c_str(), Data::ComplexGeoData::MapToNamed);
+        indexed = Data::IndexedName::fromConst("Face", i);
+        auto name = shape.getMappedName(indexed);
         shape.traceElement(name,
-            [&] (const std::string &n, size_t, long, long) {
-            if (n == ref) {
-                found = true;
-                return true;
-            }
-            return false;
-        });
+            [&] (const Data::MappedName &n, int, long, long) {
+                tmp.clear();
+                n.toString(tmp);
+                if (tmp == ref) {
+                    found = true;
+                    return true;
+                }
+                return false;
+            });
         if (found)
             break;
     }
@@ -629,7 +631,8 @@ bool TaskDressUpParameters::getItemElement(QListWidgetItem *item, std::string &s
     if (!editDoc)
         return false;
     editDoc->getInEdit(&editVp,&subname);
-    subname += PartDesign::FeatureAddSub::addsubElementPrefix() + element;
+    subname += PartDesign::FeatureAddSub::addsubElementPrefix();
+    indexed.toString(subname);
     return true;
 }
 

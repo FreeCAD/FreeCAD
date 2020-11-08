@@ -478,14 +478,19 @@ public:
 
     virtual const std::vector<const char *>& getElementTypes(bool all=true) const override;
 
-    virtual std::vector<std::string> getHigherElements(
+    virtual std::vector<Data::IndexedName> getHigherElements(
             const char *element, bool silent=false) const override;
 
     std::vector<std::string> checkSubNames(const std::vector<std::string> &) const;
-    std::string checkSubName(const char *) const;
+
+    Data::IndexedName checkSubName(const char *) const;
+
+    bool geoIdFromShapeType(const Data::IndexedName &, int &geoId, PointPos &posId) const;
 
     bool geoIdFromShapeType(const char *shapetype, int &geoId, PointPos &posId) const;
-    bool geoIdFromShapeType(const char *shapetype, int &geoId) const {
+
+    bool geoIdFromShapeType(const char *shapetype, int &geoId) const
+    {
         PointPos posId;
         return geoIdFromShapeType(shapetype,geoId,posId);
     }
@@ -493,11 +498,16 @@ public:
     /// Return a human friendly element reference of an external geometry
     std::string getGeometryReference(int GeoId) const;
 
-    std::string convertSubName(const char *, bool postfix=true) const;
-    std::string convertSubName(const std::string &subname, bool postfix=true) const
-        { return convertSubName(subname.c_str(),postfix); }
+    std::string convertSubName(const char *subname, bool postfix=true) const;
 
-    std::string shapeTypeFromGeoId(int GeoId, PointPos pos=Sketcher::none ) const;
+    std::string convertSubName(const std::string & subname, bool postfix=true) const
+    {
+        return convertSubName(subname.c_str(), postfix);
+    }
+
+    std::string convertSubName(const Data::IndexedName &, bool postfix=true) const;
+
+    Data::IndexedName shapeTypeFromGeoId(int GeoId, PointPos pos=Sketcher::none ) const;
 
     Part::TopoShape getEdge(const Part::Geometry *geo, const char *name) const;
 

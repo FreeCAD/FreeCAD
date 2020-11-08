@@ -44,5 +44,15 @@
             </Documentation>
             <Parameter Name="IsHashed" Type="Boolean"/>
         </Attribute>
+        <Attribute Name="Index" ReadOnly="false">
+            <Documentation>
+                <UserDocu>Geometry index. Only meaningful for geometry element name</UserDocu>
+            </Documentation>
+            <Parameter Name="Index" Type="Int"/>
+        </Attribute>
+		<ClassDeclarations>private:
+    friend class StringID;
+    int _index = 0;
+		</ClassDeclarations>
     </PythonExport>
 </GenerateModel>

@@ -83,15 +83,12 @@ public:
      * @param name: input name
      * @param type: desired element name type to return
      *
-     * @return a pair(newName,oldName). New element name may be empty.
-     *
-     * NOTE: Unlike ComplexGeoData::getElementName(), this function
-     * relies on ComplexGeoData::elementMapPrefix() to decide whether
-     * it is a forward query, i.e. mapped -> original, or reverse query.
-     * The reason being that, unlike ComplexGeoData who deals with the
+     * This function relies on ComplexGeoData::elementMapPrefix() to decide
+     * whether it is a forward query, i.e. mapped -> original, or reverse
+     * query.  The reason being that, unlike ComplexGeoData who deals with the
      * actual element map data, GeoFeature here sits at a higher level.
-     * GeoFeature should be dealing with whatever various PropertyLinkSub(s)
-     * is assigned.
+     * GeoFeature should be dealing with whatever various PropertyLinkSub(s) is
+     * assigned.
      *
      * This function is made virtual, so that inherited class can do something
      * unusual, such as Sketcher::SketcherObject, which uses this to expose its
@@ -158,13 +155,13 @@ public:
 
 
     /// Return the object that owns the shape that contains the give element name
-    virtual DocumentObject *getElementOwner(const char * /*element*/) const
+    virtual DocumentObject *getElementOwner(const Data::MappedName & /*name*/) const
     {return nullptr;}
 
     virtual const std::vector<const char *>& getElementTypes(bool all=true) const;
 
     /// Return the higher level element names of the given element
-    virtual std::vector<std::string> getHigherElements(const char *element, bool silent=false) const;
+    virtual std::vector<Data::IndexedName> getHigherElements(const char *name, bool silent=false) const;
 
 protected:
     virtual void onChanged(const Property* prop);
@@ -172,7 +169,7 @@ protected:
     void updateElementReference();
 
 private:
-    std::map<std::string,std::string> _elementMapCache;
+    std::vector<Data::MappedElement> _elementMapCache;
     std::string _elementMapVersion;
 };
 

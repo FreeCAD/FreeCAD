@@ -259,19 +259,28 @@ void PropertyPartShape::getPaths(std::vector<App::ObjectIdentifier> &paths) cons
 
 static void BRepTools_Write(const TopoDS_Shape& Sh, Standard_OStream& S);
 
+void PropertyPartShape::beforeSave() const
+{
+    _HasherIndex = 0;
+    _SaveHasher = false;
+    auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    if(owner && !_Shape.isNull()) {
+        auto ret = owner->getDocument()->addStringHasher(_Shape.Hasher);
+        _HasherIndex = ret.second;
+        _SaveHasher = ret.first;
+        _Shape.beforeSave();
+    }
+}
+
 void PropertyPartShape::Save (Base::Writer &writer) const
 {
     //See SaveDocFile(), RestoreDocFile()
     writer.Stream() << writer.ind() << "<Part";
-    bool saveHasher=false;
     auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
-    if(owner && !_Shape.Hasher.isNull()) {
-        auto ret = owner->getDocument()->addStringHasher(_Shape.Hasher);
-        writer.Stream() << " HasherIndex=\"" << ret.second << '"';
-        if(ret.first) {
-            saveHasher = true;
+    if(owner && !_Shape.isNull() && !_Shape.Hasher.isNull()) {
+        writer.Stream() << " HasherIndex=\"" << _HasherIndex << '"';
+        if(_SaveHasher)
             writer.Stream() << " SaveHasher=\"1\"";
-        }
     }
     std::string version;
     // If exporting, do not export mapped element name, but still make a mark
@@ -300,7 +309,7 @@ void PropertyPartShape::Save (Base::Writer &writer) const
         writer.endCharStream() << '\n' << writer.ind() << "</Part>\n";
     }
 
-    if(saveHasher) {
+    if(_SaveHasher) {
         if(!toXML && writer.getFileVersion()>1)
             _Shape.Hasher->setPersistenceFileName(getFileName(".Table").c_str());
         else
@@ -368,11 +377,12 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             if(owner) owner->getDocument()->addRecomputeObject(owner);
         }else{
             _Shape.Restore(reader);
-            auto ver = owner?owner->getElementMapVersion(this):_Shape.getElementMapVersion();
-            if(ver!=_Ver) {
-                if(!owner || !owner->getNameInDocument() || !_Shape.getElementMapSize())
+            if (owner ? owner->checkElementMapVersion(this, _Ver.c_str())
+                      : _Shape.checkElementMapVersion(_Ver.c_str())) {
+                auto ver = owner?owner->getElementMapVersion(this):_Shape.getElementMapVersion();
+                if(!owner || !owner->getNameInDocument() || !_Shape.getElementMapSize()) {
                     _Ver = ver;
-                else {
+                } else {
                     // version mismatch, signal for regenerating.
                     static const char *warnedDoc=0;
                     if(warnedDoc != owner->getDocument()->getName()) {

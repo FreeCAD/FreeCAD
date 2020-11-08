@@ -534,6 +534,9 @@ public:
      */
     virtual std::string getElementMapVersion(bool restored=false) const;
 
+    /// Return true to signal element map version change
+    virtual bool checkElementMapVersion(const char * ver) const;
+
     virtual bool isSame(const Property &other) const;
     virtual Property *copyBeforeChange() const {return Copy();}
 };

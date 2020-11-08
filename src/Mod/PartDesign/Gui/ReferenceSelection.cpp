@@ -36,6 +36,7 @@
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
 #include <App/Part.h>
+#include <App/MappedElement.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
@@ -302,10 +303,11 @@ bool populateRefElement(App::PropertyLinkSub *prop, QLabel *label, bool canTouch
     bool touched = false;
     if(Data::ComplexGeoData::hasMissingElement(sub.second.c_str())) {
         if(canTouch) {
-            for(auto &name : Part::Feature::getRelatedElements(obj,sub.first.c_str())) {
-                FC_WARN("guess element reference: " << sub.first << " -> " << name.first);
+            for(auto &mapped : Part::Feature::getRelatedElements(obj,sub.first.c_str())) {
+                FC_WARN("guess element reference: " << sub.first << " -> " << mapped.name);
                 touched = true;
-                sub = std::move(name);
+                sub.second.clear();
+                mapped.index.toString(sub.second);
                 prop->setValue(obj, {sub.second});
                 break;
             }

@@ -98,7 +98,7 @@ public:
     typedef std::vector<std::pair<Part::TopoShape,std::vector<gp_Trsf> > > rejectedMap;
     const rejectedMap getRejectedTransformations(void) { return rejected; }
 
-    virtual bool isElementGenerated(const TopoShape &shape, const char *name) const;
+    virtual bool isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const;
 
 protected:
     virtual void handleChangedPropertyType(

@@ -125,7 +125,7 @@ public:
     virtual void handleChangedPropertyName(
         Base::XMLReader &reader, const char * TypeName, const char *PropName);
     
-    virtual bool isElementGenerated(const TopoShape &shape, const char *name) const;
+    virtual bool isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const;
 
     // calculate the through all length
     double getThroughAllLength() const;

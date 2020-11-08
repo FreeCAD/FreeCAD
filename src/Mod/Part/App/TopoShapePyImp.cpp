@@ -79,6 +79,7 @@
 #include <Base/MatrixPy.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
+#include <App/MappedElement.h>
 #include <App/PropertyStandard.h>
 #include <CXX/Extensions.hxx>
 #include <App/StringHasherPy.h>
@@ -3034,33 +3035,22 @@ PyObject *TopoShapePy::getElementHistory(PyObject *args) {
         return 0;
 
     PY_TRY {
-        std::string original;
-        std::vector<std::string> history;
-        name = getTopoShapePtr()->getElementName(name,Data::ComplexGeoData::MapToNamed);
+        Data::MappedName original;
+        std::vector<Data::MappedName> history;
         long tag = getTopoShapePtr()->getElementHistory(name,&original,&history);
         if(!tag)
             Py_Return;
         Py::Tuple ret(3);
         ret.setItem(0,Py::Int(tag));
-        ret.setItem(1,Py::String(original));
+        std::string tmp;
+        ret.setItem(1,Py::String(original.toString(tmp)));
         Py::List pyHistory;
-        for(auto &h : history)
-            pyHistory.append(Py::String(h));
+        for(auto &h : history) {
+            tmp.clear();
+            pyHistory.append(Py::String(h.toString(tmp)));
+        }
         ret.setItem(2,pyHistory);
         return Py::new_reference_to(ret);
-    }PY_CATCH_OCC
-}
-
-PyObject *TopoShapePy::getRelatedElements(PyObject *args) {
-    const char *name;
-    if (!PyArg_ParseTuple(args, "s", &name))
-        return 0;
-
-    PY_TRY {
-        Py::Dict dict;
-        for(auto &v : getTopoShapePtr()->getRelatedElements(name))
-            dict.setItem(Py::String(v.first),Py::String(v.second));
-        return Py::new_reference_to(dict);
     }PY_CATCH_OCC
 }
 

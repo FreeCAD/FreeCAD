@@ -34,6 +34,8 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost_bind_bind.hpp>
+#include <boost/iostreams/device/array.hpp>
+#include <boost/iostreams/stream.hpp>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <CXX/Objects.hxx>
@@ -59,6 +61,7 @@ using namespace App;
 using namespace Base;
 using namespace std;
 namespace bp = boost::placeholders;
+namespace bio = boost::iostreams;
 
 //**************************************************************************
 //**************************************************************************
@@ -5071,7 +5074,8 @@ void PropertyXLinkContainer::Restore(Base::XMLReader &reader) {
     _XLinkRestores.reset(new std::vector<RestoreInfo>(count));
 
     if(reader.hasAttribute("hidden")) {
-        std::istringstream iss(reader.getAttribute("hidden"));
+        const char *attr = reader.getAttribute("hidden");
+        bio::stream<bio::array_source> iss(attr, std::strlen(attr));
         int index;
         while(iss >> index) {
             if(index>=0 && index<static_cast<int>(count))

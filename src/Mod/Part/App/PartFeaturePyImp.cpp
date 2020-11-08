@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include <App/Document.h>
+#include <App/MappedElement.h>
 #include "OCCError.h"
 #include "PartFeature.h"
 
@@ -52,6 +53,7 @@ PyObject *PartFeaturePy::getElementHistory(PyObject *args, PyObject *kwds) {
     Py::List list;
     bool showObjName = PyObject_IsTrue(showName);
     PY_TRY {
+        std::string tmp;
         for(auto &history : Feature::getElementHistory(feature,name,
                     PyObject_IsTrue(recursive),PyObject_IsTrue(sameType))) {
             Py::Tuple ret(3);
@@ -63,10 +65,13 @@ PyObject *PartFeaturePy::getElementHistory(PyObject *args, PyObject *kwds) {
                     ret.setItem(0,Py::Object(history.obj->getPyObject(),true));
             } else
                 ret.setItem(0,Py::Int(history.tag));
-            ret.setItem(1,Py::String(history.element));
+            tmp.clear();
+            ret.setItem(1,Py::String(history.element.toString(tmp)));
             Py::List intermedates;
-            for(auto &h : history.intermediates)
-                intermedates.append(Py::String(h));
+            for(auto &h : history.intermediates) {
+                tmp.clear();
+                intermedates.append(Py::String(h.toString(tmp)));
+            }
             ret.setItem(2,intermedates);
             list.append(ret);
         }

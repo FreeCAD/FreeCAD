@@ -744,17 +744,6 @@ op: optional string prefix to append before the mapped sub element names
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getRelatedElements" Const="true">
-      <Documentation>
-        <UserDocu>
-getRelatedElements(name) 
-            
-Returns dict(name:indexed_name) of elements  that are related to the given name.
-
-name: input name, this can be an element reference that no long exists
-        </UserDocu>
-      </Documentation>
-    </Methode>
     <Methode Name="getElementHistory" Const="true">
       <Documentation>
         <UserDocu>

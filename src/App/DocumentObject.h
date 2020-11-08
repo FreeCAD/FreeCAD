@@ -314,6 +314,9 @@ public:
      * @return Return the element map version string.
      */
     virtual std::string getElementMapVersion(const App::Property *prop, bool restored=false) const;
+
+    /// Return true to signal re-generation of geometry element names
+    virtual bool checkElementMapVersion(const App::Property *prop, const char *ver) const;
        
 public:
     /** mustExecute

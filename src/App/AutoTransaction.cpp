@@ -56,7 +56,7 @@ AutoTransaction::AutoTransaction(const char *name, bool tmpName) {
     else if(tid || app._activeTransactionGuard>0)
         ++app._activeTransactionGuard;
     else if(app.getActiveTransaction()) {
-        FC_LOG("auto transaction disabled because of '" << app._activeTransactionName << "'");
+        FC_TRACE("auto transaction disabled because of '" << app._activeTransactionName << "'");
         --app._activeTransactionGuard;
     } else
         ++app._activeTransactionGuard;

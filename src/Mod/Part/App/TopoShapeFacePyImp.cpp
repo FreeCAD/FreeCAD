@@ -148,7 +148,6 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
             else if (sh.ShapeType() == TopAbs_FACE) {
                 getTopoShapePtr()->setShape(sh);
-                getTopoShapePtr()->copyElementMap(shape);
                 return 0;
             }
         } _PY_CATCH_OCC(return(-1))
