@@ -358,12 +358,11 @@ class Draft_SelectPlane:
 
     def onClickTop(self):
         """Execute when pressing the top button."""
-        offset = str(self.getOffset())
         _cmd = self.ac
         _cmd += "("
         _cmd += self.tostr(self.getCenterPoint(0, 0, 1)) + ", "
         _cmd += self.tostr((0, 0, 1)) + ", "
-        _cmd += offset
+        _cmd += str(self.getOffset())
         _cmd += ")"
         FreeCADGui.doCommandGui(_cmd)
         self.display('Top')
@@ -371,12 +370,11 @@ class Draft_SelectPlane:
 
     def onClickFront(self):
         """Execute when pressing the front button."""
-        offset = str(self.getOffset())
         _cmd = self.ac
         _cmd += "("
         _cmd += self.tostr(self.getCenterPoint(0, -1, 0)) + ", "
         _cmd += self.tostr((0, -1, 0)) + ", "
-        _cmd += offset
+        _cmd += str(self.getOffset())
         _cmd += ")"
         FreeCADGui.doCommandGui(_cmd)
         self.display('Front')
@@ -384,12 +382,11 @@ class Draft_SelectPlane:
 
     def onClickSide(self):
         """Execute when pressing the side button."""
-        offset = str(self.getOffset())
         _cmd = self.ac
         _cmd += "("
         _cmd += self.tostr(self.getCenterPoint(1, 0, 0)) + ", "
         _cmd += self.tostr((1, 0, 0)) + ", "
-        _cmd += offset
+        _cmd += str(self.getOffset())
         _cmd += ")"
         FreeCADGui.doCommandGui(_cmd)
         self.display('Side')
@@ -397,9 +394,20 @@ class Draft_SelectPlane:
 
     def onClickAlign(self):
         """Execute when pressing the align."""
-        FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.setup(force=True)")
-        d = self.view.getViewDirection().negative()
-        self.display(d)
+        dir = self.view.getViewDirection().negative()
+        camera = self.view.getCameraNode()
+        rot = camera.getField("orientation").getValue()
+        coin_up = coin.SbVec3f(0, 1, 0)
+        upvec = FreeCAD.Vector(rot.multVec(coin_up).getValue())
+        _cmd = self.ac
+        _cmd += "("
+        _cmd += self.tostr(self.getCenterPoint(dir.x, dir.y, dir.z)) + ", "
+        _cmd += self.tostr((dir.x, dir.y, dir.z)) + ", "
+        _cmd += str(self.getOffset()) + ", "
+        _cmd += self.tostr(upvec)
+        _cmd += ")"
+        FreeCADGui.doCommandGui(_cmd)
+        self.display(dir)
         self.finish()
 
     def onClickAuto(self):
