@@ -33,7 +33,7 @@
 #    The 'camera' string for the active document may be generated from: import OfflineRenderingUtils; OfflineRenderingUtils.getCamera(FreeCAD.ActiveDocument.FileName);
 #
 # Development reload oneliner:
-# def re(): from importlib import reload;import importWebGL;reload(importWebGL);o=FreeCAD.getDocument("curve");importWebGL.export([o.getObject("Body")],u"C:/Users/Travis/Desktop/test.htm");
+# def re(): from importlib import reload;import importWebGL;reload(importWebGL);o=FreeCAD.getDocument("YourDocName");importWebGL.export([o.getObject("YourBodyName")],u"C:/path/to/your/file.htm");
 
 """FreeCAD WebGL Exporter"""
 
