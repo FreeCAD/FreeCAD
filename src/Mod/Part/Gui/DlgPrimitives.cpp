@@ -32,6 +32,7 @@
 #include <Geom_TrimmedCurve.hxx>
 #include <Python.h>
 #include <QMessageBox>
+#include <QSignalMapper>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #endif
@@ -331,12 +332,36 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             ui.boxLength->setValue(box->Length.getQuantityValue());
             ui.boxWidth->setValue(box->Width.getQuantityValue());
             ui.boxHeight->setValue(box->Height.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeBox(QWidget*)));
+
+            connect(ui.boxLength, SIGNAL(valueChanged(double)), mapper, SLOT(map()));
+            mapper->setMapping(ui.boxLength, ui.boxLength);
+
+            connect(ui.boxWidth, SIGNAL(valueChanged(double)), mapper, SLOT(map()));
+            mapper->setMapping(ui.boxWidth, ui.boxWidth);
+
+            connect(ui.boxHeight, SIGNAL(valueChanged(double)), mapper, SLOT(map()));
+            mapper->setMapping(ui.boxHeight, ui.boxHeight);
         }
         else if (type == Part::Cylinder::getClassTypeId()) {
             Part::Cylinder* cyl = static_cast<Part::Cylinder*>(feature);
             ui.cylinderRadius->setValue(cyl->Radius.getQuantityValue());
             ui.cylinderHeight->setValue(cyl->Height.getQuantityValue());
             ui.cylinderAngle->setValue(cyl->Angle.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeCylinder(QWidget*)));
+
+            connect(ui.cylinderRadius, SIGNAL(valueChanged(double)), mapper, SLOT(map()));
+            mapper->setMapping(ui.cylinderRadius, ui.cylinderRadius);
+
+            connect(ui.cylinderHeight, SIGNAL(valueChanged(double)), mapper, SLOT(map()));
+            mapper->setMapping(ui.cylinderHeight, ui.cylinderHeight);
+
+            connect(ui.cylinderAngle, SIGNAL(valueChanged(double)), mapper, SLOT(map()));
+            mapper->setMapping(ui.cylinderAngle, ui.cylinderAngle);
         }
         else if (type == Part::Cone::getClassTypeId()) {
             Part::Cone* cone = static_cast<Part::Cone*>(feature);
@@ -1090,6 +1115,112 @@ void DlgPrimitives::accept(const QString& placement)
     doc->recompute();
     // commit undo command
     doc->commitTransaction();
+}
+
+void DlgPrimitives::onChangePlane(QWidget*)
+{
+
+}
+
+void DlgPrimitives::onChangeBox(QWidget* widget)
+{
+    if (featurePtr.expired())
+        return;
+    Part::Box* box = featurePtr.get<Part::Box>();
+    if (widget == ui.boxLength) {
+        box->Length.setValue(ui.boxLength->value().getValue());
+    }
+    else if (widget == ui.boxWidth) {
+        box->Width.setValue(ui.boxWidth->value().getValue());
+    }
+    else if (widget == ui.boxHeight) {
+        box->Height.setValue(ui.boxHeight->value().getValue());
+    }
+
+    box->recomputeFeature();
+}
+
+void DlgPrimitives::onChangeCylinder(QWidget* widget)
+{
+    if (featurePtr.expired())
+        return;
+    Part::Cylinder* cyl = featurePtr.get<Part::Cylinder>();
+    if (widget == ui.cylinderRadius) {
+        cyl->Radius.setValue(ui.cylinderRadius->value().getValue());
+    }
+    else if (widget == ui.cylinderHeight) {
+        cyl->Height.setValue(ui.cylinderHeight->value().getValue());
+    }
+    else if (widget == ui.cylinderAngle) {
+        cyl->Angle.setValue(ui.cylinderAngle->value().getValue());
+    }
+
+    cyl->recomputeFeature();
+}
+
+void DlgPrimitives::onChangeCone(QWidget*)
+{
+
+}
+
+void DlgPrimitives::onChangeSphere(QWidget*)
+{
+
+}
+
+void DlgPrimitives::onChangeEllipsoid(QWidget*)
+{
+
+}
+
+void DlgPrimitives::onChangeTorus(QWidget*)
+{
+
+}
+
+void DlgPrimitives::onChangePrism(QWidget*)
+{
+
+}
+
+void DlgPrimitives::onChangeWedge(QWidget*)
+{
+
+}
+
+void DlgPrimitives::onChangeHelix(QWidget*)
+{
+
+}
+
+void DlgPrimitives::onChangeSpiral(QWidget*)
+{
+
+}
+
+void DlgPrimitives::onChangeCircle(QWidget*)
+{
+
+}
+
+void DlgPrimitives::onChangeEllipse(QWidget*)
+{
+
+}
+
+void DlgPrimitives::onChangeVertex(QWidget*)
+{
+
+}
+
+void DlgPrimitives::onChangeLine(QWidget*)
+{
+
+}
+
+void DlgPrimitives::onChangeRegularPolygon(QWidget*)
+{
+
 }
 
 // ----------------------------------------------

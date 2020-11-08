@@ -73,6 +73,22 @@ public:
 
 private Q_SLOTS:
     void on_buttonCircleFromThreePoints_clicked();
+    void onChangePlane(QWidget*);
+    void onChangeBox(QWidget*);
+    void onChangeCylinder(QWidget*);
+    void onChangeCone(QWidget*);
+    void onChangeSphere(QWidget*);
+    void onChangeEllipsoid(QWidget*);
+    void onChangeTorus(QWidget*);
+    void onChangePrism(QWidget*);
+    void onChangeWedge(QWidget*);
+    void onChangeHelix(QWidget*);
+    void onChangeSpiral(QWidget*);
+    void onChangeCircle(QWidget*);
+    void onChangeEllipse(QWidget*);
+    void onChangeVertex(QWidget*);
+    void onChangeLine(QWidget*);
+    void onChangeRegularPolygon(QWidget*);
 
 private:
     static void pickCallback(void * ud, SoEventCallback * n);
