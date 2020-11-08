@@ -320,7 +320,10 @@ def buildCard(filename,method,arg=None):
         cachename = None
         if filename.lower().endswith(".fcstd"):
             sha = hashlib.sha1()
-            sha.update(filename + '_card')
+            try:
+                sha.update(filename + '_card')
+            except Exception:
+                sha.update((filename + '_card').encode('utf-8'))
             sha = sha.hexdigest()
 
             s = os.stat(filename)
@@ -358,8 +361,12 @@ def buildCard(filename,method,arg=None):
 
                 if cachename:
                     with open(cachename, 'w') as f:
-                        f.write(cacheheader.encode('utf8'))
-                        f.write(result.encode('utf8'))
+                        try:
+                            f.write(cacheheader.encode('utf8'))
+                            f.write(result.encode('utf8'))
+                        except Exception:
+                            f.write(cacheheader)
+                            f.write(result)
 
                 return result.replace('$METHOD$', method).replace('$ARG$', arg)
 
