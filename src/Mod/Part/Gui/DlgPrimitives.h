@@ -33,6 +33,7 @@
 class gp_Ax2;
 class SoPickedPoint;
 class SoEventCallback;
+class QSignalMapper;
 
 namespace App { class Document; }
 namespace Gui { class Document; }
@@ -94,6 +95,7 @@ private Q_SLOTS:
 private:
     static void pickCallback(void * ud, SoEventCallback * n);
     void executeCallback(Picker*);
+    void connectSignalMapper(QWidget *sender, const char *signal, QSignalMapper* mapper);
 
 private:
     Ui_DlgPrimitives ui;

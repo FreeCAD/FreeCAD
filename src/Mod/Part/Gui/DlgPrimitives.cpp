@@ -326,6 +326,11 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             Part::Plane* plane = static_cast<Part::Plane*>(feature);
             ui.planeLength->setValue(plane->Length.getQuantityValue());
             ui.planeWidth->setValue(plane->Width.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangePlane(QWidget*)));
+            connectSignalMapper(ui.planeLength, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.planeWidth, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Box::getClassTypeId()) {
             Part::Box* box = static_cast<Part::Box*>(feature);
@@ -335,15 +340,9 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeBox(QWidget*)));
-
-            connect(ui.boxLength, SIGNAL(valueChanged(double)), mapper, SLOT(map()));
-            mapper->setMapping(ui.boxLength, ui.boxLength);
-
-            connect(ui.boxWidth, SIGNAL(valueChanged(double)), mapper, SLOT(map()));
-            mapper->setMapping(ui.boxWidth, ui.boxWidth);
-
-            connect(ui.boxHeight, SIGNAL(valueChanged(double)), mapper, SLOT(map()));
-            mapper->setMapping(ui.boxHeight, ui.boxHeight);
+            connectSignalMapper(ui.boxLength, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.boxWidth, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.boxHeight, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Cylinder::getClassTypeId()) {
             Part::Cylinder* cyl = static_cast<Part::Cylinder*>(feature);
@@ -353,15 +352,9 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeCylinder(QWidget*)));
-
-            connect(ui.cylinderRadius, SIGNAL(valueChanged(double)), mapper, SLOT(map()));
-            mapper->setMapping(ui.cylinderRadius, ui.cylinderRadius);
-
-            connect(ui.cylinderHeight, SIGNAL(valueChanged(double)), mapper, SLOT(map()));
-            mapper->setMapping(ui.cylinderHeight, ui.cylinderHeight);
-
-            connect(ui.cylinderAngle, SIGNAL(valueChanged(double)), mapper, SLOT(map()));
-            mapper->setMapping(ui.cylinderAngle, ui.cylinderAngle);
+            connectSignalMapper(ui.cylinderRadius, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.cylinderHeight, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.cylinderAngle, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Cone::getClassTypeId()) {
             Part::Cone* cone = static_cast<Part::Cone*>(feature);
@@ -369,6 +362,13 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             ui.coneRadius2->setValue(cone->Radius2.getQuantityValue());
             ui.coneHeight->setValue(cone->Height.getQuantityValue());
             ui.coneAngle->setValue(cone->Angle.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeCone(QWidget*)));
+            connectSignalMapper(ui.coneRadius1, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.coneRadius2, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.coneHeight, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.coneAngle, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Sphere::getClassTypeId()) {
             Part::Sphere* sphere = static_cast<Part::Sphere*>(feature);
@@ -376,6 +376,13 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             ui.sphereAngle1->setValue(sphere->Angle1.getQuantityValue());
             ui.sphereAngle2->setValue(sphere->Angle2.getQuantityValue());
             ui.sphereAngle3->setValue(sphere->Angle3.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeSphere(QWidget*)));
+            connectSignalMapper(ui.sphereRadius, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.sphereAngle1, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.sphereAngle2, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.sphereAngle3, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Ellipsoid::getClassTypeId()) {
             Part::Ellipsoid* ell = static_cast<Part::Ellipsoid*>(feature);
@@ -385,6 +392,15 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             ui.ellipsoidAngle1->setValue(ell->Angle1.getQuantityValue());
             ui.ellipsoidAngle2->setValue(ell->Angle2.getQuantityValue());
             ui.ellipsoidAngle3->setValue(ell->Angle3.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeEllipsoid(QWidget*)));
+            connectSignalMapper(ui.ellipsoidRadius1, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.ellipsoidRadius2, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.ellipsoidRadius3, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.ellipsoidAngle1, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.ellipsoidAngle2, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.ellipsoidAngle3, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Torus::getClassTypeId()) {
             Part::Torus* torus = static_cast<Part::Torus*>(feature);
@@ -393,6 +409,14 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             ui.torusAngle1->setValue(torus->Angle1.getQuantityValue());
             ui.torusAngle2->setValue(torus->Angle2.getQuantityValue());
             ui.torusAngle3->setValue(torus->Angle3.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeTorus(QWidget*)));
+            connectSignalMapper(ui.torusRadius1, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.torusRadius2, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.torusAngle1, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.torusAngle2, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.torusAngle3, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Prism::getClassTypeId()) {
             Part::Prism* prism = static_cast<Part::Prism*>(feature);
@@ -401,6 +425,14 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             ui.prismHeight->setValue(prism->Height.getQuantityValue());
             ui.prismXSkew->setValue(prism->FirstAngle.getQuantityValue());
             ui.prismYSkew->setValue(prism->SecondAngle.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangePrism(QWidget*)));
+            connectSignalMapper(ui.prismPolygon, SIGNAL(valueChanged(int)), mapper);
+            connectSignalMapper(ui.prismCircumradius, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.prismHeight, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.prismXSkew, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.prismYSkew, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Wedge::getClassTypeId()) {
             Part::Wedge* wedge = static_cast<Part::Wedge*>(feature);
@@ -414,6 +446,19 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             ui.wedgeZmax->setValue(wedge->Zmax.getQuantityValue());
             ui.wedgeX2max->setValue(wedge->X2max.getQuantityValue());
             ui.wedgeZ2max->setValue(wedge->Z2max.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeWedge(QWidget*)));
+            connectSignalMapper(ui.wedgeXmin, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.wedgeYmin, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.wedgeZmin, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.wedgeX2min, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.wedgeZ2min, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.wedgeXmax, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.wedgeYmax, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.wedgeZmax, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.wedgeX2max, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.wedgeZ2max, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Helix::getClassTypeId()) {
             Part::Helix* helix = static_cast<Part::Helix*>(feature);
@@ -422,18 +467,38 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             ui.helixRadius->setValue(helix->Radius.getQuantityValue());
             ui.helixAngle->setValue(helix->Angle.getQuantityValue());
             ui.helixLocalCS->setCurrentIndex(helix->LocalCoord.getValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeHelix(QWidget*)));
+            connectSignalMapper(ui.helixPitch, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.helixHeight, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.helixRadius, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.helixAngle, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.helixLocalCS, SIGNAL(currentIndexChanged(int)), mapper);
         }
         else if (type == Part::Spiral::getClassTypeId()) {
             Part::Spiral* spiral = static_cast<Part::Spiral*>(feature);
             ui.spiralGrowth->setValue(spiral->Growth.getQuantityValue());
             ui.spiralRotation->setValue(spiral->Rotations.getQuantityValue().getValue());
             ui.spiralRadius->setValue(spiral->Radius.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeSpiral(QWidget*)));
+            connectSignalMapper(ui.spiralGrowth, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.spiralRotation, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.spiralRadius, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Circle::getClassTypeId()) {
             Part::Circle* circle = static_cast<Part::Circle*>(feature);
             ui.circleRadius->setValue(circle->Radius.getQuantityValue());
             ui.circleAngle0->setValue(circle->Angle0.getQuantityValue());
             ui.circleAngle1->setValue(circle->Angle1.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeCircle(QWidget*)));
+            connectSignalMapper(ui.circleRadius, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.circleAngle0, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.circleAngle1, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Ellipse::getClassTypeId()) {
             Part::Ellipse* ell = static_cast<Part::Ellipse*>(feature);
@@ -441,12 +506,25 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             ui.ellipseMinorRadius->setValue(ell->MinorRadius.getQuantityValue());
             ui.ellipseAngle0->setValue(ell->Angle0.getQuantityValue());
             ui.ellipseAngle1->setValue(ell->Angle1.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeEllipse(QWidget*)));
+            connectSignalMapper(ui.ellipseMajorRadius, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.ellipseMinorRadius, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.ellipseAngle0, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.ellipseAngle1, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Vertex::getClassTypeId()) {
             Part::Vertex* v = static_cast<Part::Vertex*>(feature);
             ui.vertexX->setValue(v->X.getQuantityValue());
             ui.vertexY->setValue(v->Y.getQuantityValue());
             ui.vertexZ->setValue(v->Z.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeVertex(QWidget*)));
+            connectSignalMapper(ui.vertexX, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.vertexY, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.vertexZ, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Line::getClassTypeId()) {
             Part::Line* line = static_cast<Part::Line*>(feature);
@@ -456,11 +534,25 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             ui.edgeX2->setValue(line->X2.getQuantityValue());
             ui.edgeY2->setValue(line->Y2.getQuantityValue());
             ui.edgeZ2->setValue(line->Z2.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeLine(QWidget*)));
+            connectSignalMapper(ui.edgeX1, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.edgeY1, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.edgeZ1, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.edgeX2, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.edgeY2, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui.edgeZ2, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::RegularPolygon::getClassTypeId()) {
             Part::RegularPolygon* poly = static_cast<Part::RegularPolygon*>(feature);
             ui.regularPolygonPolygon->setValue(poly->Polygon.getValue());
             ui.regularPolygonCircumradius->setValue(poly->Circumradius.getQuantityValue());
+
+            QSignalMapper* mapper = new QSignalMapper(this);
+            connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeRegularPolygon(QWidget*)));
+            connectSignalMapper(ui.regularPolygonPolygon, SIGNAL(valueChanged(int)), mapper);
+            connectSignalMapper(ui.regularPolygonCircumradius, SIGNAL(valueChanged(double)), mapper);
         }
     }
 }
@@ -470,6 +562,12 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
  */
 DlgPrimitives::~DlgPrimitives()
 {
+}
+
+void DlgPrimitives::connectSignalMapper(QWidget *sender, const char *signal, QSignalMapper* mapper)
+{
+    connect(sender, signal, mapper, SLOT(map()));
+    mapper->setMapping(sender, sender);
 }
 
 void DlgPrimitives::pickCallback(void * ud, SoEventCallback * n)
@@ -1122,9 +1220,19 @@ void DlgPrimitives::reject()
     doc->abortTransaction();
 }
 
-void DlgPrimitives::onChangePlane(QWidget*)
+void DlgPrimitives::onChangePlane(QWidget* widget)
 {
+    if (featurePtr.expired())
+        return;
+    Part::Plane* plane = featurePtr.get<Part::Plane>();
+    if (widget == ui.planeLength) {
+        plane->Length.setValue(ui.planeLength->value().getValue());
+    }
+    else if (widget == ui.planeWidth) {
+        plane->Width.setValue(ui.planeWidth->value().getValue());
+    }
 
+    plane->recomputeFeature();
 }
 
 void DlgPrimitives::onChangeBox(QWidget* widget)
@@ -1163,69 +1271,301 @@ void DlgPrimitives::onChangeCylinder(QWidget* widget)
     cyl->recomputeFeature();
 }
 
-void DlgPrimitives::onChangeCone(QWidget*)
+void DlgPrimitives::onChangeCone(QWidget* widget)
 {
+    if (featurePtr.expired())
+        return;
+    Part::Cone* cone = featurePtr.get<Part::Cone>();
+    if (widget == ui.coneRadius1) {
+        cone->Radius1.setValue(ui.coneRadius1->value().getValue());
+    }
+    else if (widget == ui.coneRadius2) {
+        cone->Radius2.setValue(ui.coneRadius2->value().getValue());
+    }
+    else if (widget == ui.coneHeight) {
+        cone->Height.setValue(ui.coneHeight->value().getValue());
+    }
+    else if (widget == ui.coneAngle) {
+        cone->Angle.setValue(ui.coneAngle->value().getValue());
+    }
 
+    cone->recomputeFeature();
 }
 
-void DlgPrimitives::onChangeSphere(QWidget*)
+void DlgPrimitives::onChangeSphere(QWidget* widget)
 {
+    if (featurePtr.expired())
+        return;
+    Part::Sphere* sphere = featurePtr.get<Part::Sphere>();
+    if (widget == ui.sphereRadius) {
+        sphere->Radius.setValue(ui.sphereRadius->value().getValue());
+    }
+    else if (widget == ui.sphereAngle1) {
+        sphere->Angle1.setValue(ui.sphereAngle1->value().getValue());
+    }
+    else if (widget == ui.sphereAngle2) {
+        sphere->Angle2.setValue(ui.sphereAngle2->value().getValue());
+    }
+    else if (widget == ui.sphereAngle3) {
+        sphere->Angle3.setValue(ui.sphereAngle3->value().getValue());
+    }
 
+    sphere->recomputeFeature();
 }
 
-void DlgPrimitives::onChangeEllipsoid(QWidget*)
+void DlgPrimitives::onChangeEllipsoid(QWidget* widget)
 {
+    if (featurePtr.expired())
+        return;
+    Part::Ellipsoid* ell = featurePtr.get<Part::Ellipsoid>();
+    if (widget == ui.ellipsoidRadius1) {
+        ell->Radius1.setValue(ui.ellipsoidRadius1->value().getValue());
+    }
+    else if (widget == ui.ellipsoidRadius2) {
+        ell->Radius2.setValue(ui.ellipsoidRadius2->value().getValue());
+    }
+    else if (widget == ui.ellipsoidRadius3) {
+        ell->Radius3.setValue(ui.ellipsoidRadius3->value().getValue());
+    }
+    else if (widget == ui.ellipsoidAngle1) {
+        ell->Angle1.setValue(ui.ellipsoidAngle1->value().getValue());
+    }
+    else if (widget == ui.ellipsoidAngle2) {
+        ell->Angle2.setValue(ui.ellipsoidAngle2->value().getValue());
+    }
+    else if (widget == ui.ellipsoidAngle3) {
+        ell->Angle3.setValue(ui.ellipsoidAngle3->value().getValue());
+    }
 
+    ell->recomputeFeature();
 }
 
-void DlgPrimitives::onChangeTorus(QWidget*)
+void DlgPrimitives::onChangeTorus(QWidget* widget)
 {
+    if (featurePtr.expired())
+        return;
+    Part::Torus* torus = featurePtr.get<Part::Torus>();
+    if (widget == ui.torusRadius1) {
+        torus->Radius1.setValue(ui.torusRadius1->value().getValue());
+    }
+    else if (widget == ui.torusRadius2) {
+        torus->Radius2.setValue(ui.torusRadius2->value().getValue());
+    }
+    else if (widget == ui.torusAngle1) {
+        torus->Angle1.setValue(ui.torusAngle1->value().getValue());
+    }
+    else if (widget == ui.torusAngle2) {
+        torus->Angle2.setValue(ui.torusAngle2->value().getValue());
+    }
+    else if (widget == ui.torusAngle3) {
+        torus->Angle3.setValue(ui.torusAngle3->value().getValue());
+    }
 
+    torus->recomputeFeature();
 }
 
-void DlgPrimitives::onChangePrism(QWidget*)
+void DlgPrimitives::onChangePrism(QWidget* widget)
 {
+    if (featurePtr.expired())
+        return;
+    Part::Prism* prism = featurePtr.get<Part::Prism>();
+    if (widget == ui.prismPolygon) {
+        prism->Polygon.setValue(ui.prismPolygon->value());
+    }
+    else if (widget == ui.prismCircumradius) {
+        prism->Circumradius.setValue(ui.prismCircumradius->value().getValue());
+    }
+    else if (widget == ui.prismHeight) {
+        prism->Height.setValue(ui.prismHeight->value().getValue());
+    }
+    else if (widget == ui.prismXSkew) {
+        prism->FirstAngle.setValue(ui.prismXSkew->value().getValue());
+    }
+    else if (widget == ui.prismYSkew) {
+        prism->SecondAngle.setValue(ui.prismYSkew->value().getValue());
+    }
 
+    prism->recomputeFeature();
 }
 
-void DlgPrimitives::onChangeWedge(QWidget*)
+void DlgPrimitives::onChangeWedge(QWidget* widget)
 {
+    if (featurePtr.expired())
+        return;
+    Part::Wedge* wedge = featurePtr.get<Part::Wedge>();
+    if (widget == ui.wedgeXmin) {
+        wedge->Xmin.setValue(ui.wedgeXmin->value().getValue());
+    }
+    else if (widget == ui.wedgeYmin) {
+        wedge->Ymin.setValue(ui.wedgeYmin->value().getValue());
+    }
+    else if (widget == ui.wedgeZmin) {
+        wedge->Zmin.setValue(ui.wedgeZmin->value().getValue());
+    }
+    else if (widget == ui.wedgeX2min) {
+        wedge->X2min.setValue(ui.wedgeX2min->value().getValue());
+    }
+    else if (widget == ui.wedgeZ2min) {
+        wedge->Z2min.setValue(ui.wedgeZ2min->value().getValue());
+    }
+    else if (widget == ui.wedgeXmax) {
+        wedge->Xmax.setValue(ui.wedgeXmax->value().getValue());
+    }
+    else if (widget == ui.wedgeYmax) {
+        wedge->Ymax.setValue(ui.wedgeYmax->value().getValue());
+    }
+    else if (widget == ui.wedgeZmax) {
+        wedge->Zmax.setValue(ui.wedgeZmax->value().getValue());
+    }
+    else if (widget == ui.wedgeX2max) {
+        wedge->X2max.setValue(ui.wedgeX2max->value().getValue());
+    }
+    else if (widget == ui.wedgeZ2max) {
+        wedge->Z2max.setValue(ui.wedgeZ2max->value().getValue());
+    }
 
+    wedge->recomputeFeature();
 }
 
-void DlgPrimitives::onChangeHelix(QWidget*)
+void DlgPrimitives::onChangeHelix(QWidget* widget)
 {
+    if (featurePtr.expired())
+        return;
+    Part::Helix* helix = featurePtr.get<Part::Helix>();
+    if (widget == ui.helixPitch) {
+        helix->Pitch.setValue(ui.helixPitch->value().getValue());
+    }
+    else if (widget == ui.helixHeight) {
+        helix->Height.setValue(ui.helixHeight->value().getValue());
+    }
+    else if (widget == ui.helixRadius) {
+        helix->Radius.setValue(ui.helixRadius->value().getValue());
+    }
+    else if (widget == ui.helixAngle) {
+        helix->Angle.setValue(ui.helixAngle->value().getValue());
+    }
+    else if (widget == ui.helixLocalCS) {
+        helix->LocalCoord.setValue(ui.helixLocalCS->currentIndex());
+    }
 
+    helix->recomputeFeature();
 }
 
-void DlgPrimitives::onChangeSpiral(QWidget*)
+void DlgPrimitives::onChangeSpiral(QWidget* widget)
 {
+    if (featurePtr.expired())
+        return;
+    Part::Spiral* spiral = featurePtr.get<Part::Spiral>();
+    if (widget == ui.spiralGrowth) {
+        spiral->Growth.setValue(ui.spiralGrowth->value().getValue());
+    }
+    else if (widget == ui.spiralRotation) {
+        spiral->Rotations.setValue(ui.spiralRotation->value());
+    }
+    else if (widget == ui.spiralRadius) {
+        spiral->Radius.setValue(ui.spiralRadius->value().getValue());
+    }
 
+    spiral->recomputeFeature();
 }
 
-void DlgPrimitives::onChangeCircle(QWidget*)
+void DlgPrimitives::onChangeCircle(QWidget* widget)
 {
+    if (featurePtr.expired())
+        return;
+    Part::Circle* circle = featurePtr.get<Part::Circle>();
+    if (widget == ui.circleRadius) {
+        circle->Radius.setValue(ui.circleRadius->value().getValue());
+    }
+    else if (widget == ui.circleAngle0) {
+        circle->Angle0.setValue(ui.circleAngle0->value().getValue());
+    }
+    else if (widget == ui.circleAngle1) {
+        circle->Angle1.setValue(ui.circleAngle1->value().getValue());
+    }
 
+    circle->recomputeFeature();
 }
 
-void DlgPrimitives::onChangeEllipse(QWidget*)
+void DlgPrimitives::onChangeEllipse(QWidget* widget)
 {
+    if (featurePtr.expired())
+        return;
+    Part::Ellipse* ell = featurePtr.get<Part::Ellipse>();
+    if (widget == ui.ellipseMajorRadius) {
+        ell->MajorRadius.setValue(ui.ellipseMajorRadius->value().getValue());
+    }
+    else if (widget == ui.ellipseMinorRadius) {
+        ell->MinorRadius.setValue(ui.ellipseMinorRadius->value().getValue());
+    }
+    else if (widget == ui.ellipseAngle0) {
+        ell->Angle0.setValue(ui.ellipseAngle0->value().getValue());
+    }
+    else if (widget == ui.ellipseAngle1) {
+        ell->Angle1.setValue(ui.ellipseAngle1->value().getValue());
+    }
 
+    ell->recomputeFeature();
 }
 
-void DlgPrimitives::onChangeVertex(QWidget*)
+void DlgPrimitives::onChangeVertex(QWidget* widget)
 {
+    if (featurePtr.expired())
+        return;
+    Part::Vertex* v = featurePtr.get<Part::Vertex>();
+    if (widget == ui.vertexX) {
+        v->X.setValue(ui.vertexX->value().getValue());
+    }
+    else if (widget == ui.vertexY) {
+        v->Y.setValue(ui.vertexY->value().getValue());
+    }
+    else if (widget == ui.vertexZ) {
+        v->Z.setValue(ui.vertexZ->value().getValue());
+    }
 
+    v->recomputeFeature();
 }
 
-void DlgPrimitives::onChangeLine(QWidget*)
+void DlgPrimitives::onChangeLine(QWidget* widget)
 {
+    if (featurePtr.expired())
+        return;
+    Part::Line* line = featurePtr.get<Part::Line>();
+    if (widget == ui.edgeX1) {
+        line->X1.setValue(ui.edgeX1->value().getValue());
+    }
+    else if (widget == ui.edgeY1) {
+        line->Y1.setValue(ui.edgeY1->value().getValue());
+    }
+    else if (widget == ui.edgeZ1) {
+        line->Z1.setValue(ui.edgeZ1->value().getValue());
+    }
+    else if (widget == ui.edgeX2) {
+        line->X2.setValue(ui.edgeX2->value().getValue());
+    }
+    else if (widget == ui.edgeY2) {
+        line->Y2.setValue(ui.edgeY2->value().getValue());
+    }
+    else if (widget == ui.edgeZ2) {
+        line->Z2.setValue(ui.edgeZ2->value().getValue());
+    }
 
+    line->recomputeFeature();
 }
 
-void DlgPrimitives::onChangeRegularPolygon(QWidget*)
+void DlgPrimitives::onChangeRegularPolygon(QWidget* widget)
 {
+    if (featurePtr.expired())
+        return;
+    Part::RegularPolygon* poly = featurePtr.get<Part::RegularPolygon>();
+    if (widget == ui.regularPolygonPolygon) {
+        poly->Polygon.setValue(ui.regularPolygonPolygon->value());
+    }
+    else if (widget == ui.regularPolygonCircumradius) {
+        poly->Circumradius.setValue(ui.regularPolygonCircumradius->value().getValue());
+    }
 
+    poly->recomputeFeature();
 }
 
 // ----------------------------------------------
