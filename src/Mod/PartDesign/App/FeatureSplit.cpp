@@ -338,7 +338,9 @@ App::DocumentObject *Split::getSubObject(const char *subname,
     return ret;
 }
 
-int Split::isElementVisible(const char *) const
+int Split::isElementVisible(const char * element) const
 {
-    return 1;
+    if (Solids.find(element))
+        return 1;
+    return -1;
 }
