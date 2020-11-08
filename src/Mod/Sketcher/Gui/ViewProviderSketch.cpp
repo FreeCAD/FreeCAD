@@ -3843,7 +3843,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             double maxcurv = 0;
             double maxdisttocenterofmass = 0;
 
-            for(int i = 0; i < ndiv; i++) {
+            for (int i = 0; i < ndiv; i++) {
                 paramlist[i] = firstparam + i * step;
                 pointatcurvelist[i] = spline->pointAtParameter(paramlist[i]);
 
@@ -3859,12 +3859,12 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                     curvaturelist[i] = 0;
                 }
 
-                if(curvaturelist[i] > maxcurv)
+                if (curvaturelist[i] > maxcurv)
                     maxcurv = curvaturelist[i];
 
                 double tempf = ( pointatcurvelist[i] - midp ).Length();
 
-                if( tempf > maxdisttocenterofmass )
+                if (tempf > maxdisttocenterofmass)
                     maxdisttocenterofmass = tempf;
 
             }
@@ -3903,7 +3903,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
         midp /= poles.size();
 
-        if(rebuildinformationlayer) {
+        if (rebuildinformationlayer) {
             SoSwitch *sw = new SoSwitch();
 
             sw->whichChild = hGrpsk->GetBool("BSplineDegreeVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
@@ -3943,7 +3943,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         else {
             SoSwitch *sw = static_cast<SoSwitch *>(edit->infoGroup->getChild(currentInfoNode));
 
-            if(visibleInformationChanged)
+            if (visibleInformationChanged)
                 sw->whichChild = hGrpsk->GetBool("BSplineDegreeVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
 
             SoSeparator *sep = static_cast<SoSeparator *>(sw->getChild(0));
@@ -3956,7 +3956,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         currentInfoNode++; // switch to next node
 
         // control polygon --------------------------------------------------------
-        if(rebuildinformationlayer) {
+        if (rebuildinformationlayer) {
             SoSwitch *sw = new SoSwitch();
 
             sw->whichChild = hGrpsk->GetBool("BSplineControlPolygonVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
@@ -3975,7 +3975,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoCoordinate3 *polygoncoords = new SoCoordinate3;
 
-            if(spline->isPeriodic()) {
+            if (spline->isPeriodic()) {
                 polygoncoords->point.setNum(poles.size()+1);
             }
             else {
@@ -3989,7 +3989,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 vts[i].setValue((*it).x,(*it).y,zInfo);
             }
 
-            if(spline->isPeriodic()) {
+            if (spline->isPeriodic()) {
                 vts[poles.size()].setValue(poles[0].x,poles[0].y,zInfo);
             }
 
@@ -4086,7 +4086,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             pointatcomblist[i] = pointatcurvelist[i] - combrepscalehyst * curvaturelist[i] * normallist[i];
         }
 
-        if(rebuildinformationlayer) {
+        if (rebuildinformationlayer) {
             SoSwitch *sw = new SoSwitch();
 
             sw->whichChild = hGrpsk->GetBool("BSplineCombVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
@@ -4177,7 +4177,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         std::vector<int>::const_iterator itm;
 
 
-        if(rebuildinformationlayer) {
+        if (rebuildinformationlayer) {
 
             for( itk = knots.begin(), itm = mult.begin(); itk != knots.end() && itm != mult.end(); ++itk, ++itm) {
 
@@ -4199,14 +4199,14 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 Base::Vector3d knotposition = spline->pointAtParameter(*itk);
 
-                translate->translation.setValue(knotposition.x,knotposition.y,zInfo);
+                translate->translation.setValue(knotposition.x, knotposition.y, zInfo);
 
                 SoFont *font = new SoFont;
                 font->name.setValue("Helvetica");
                 font->size.setValue(fontSize);
 
                 SoText2 *degreetext = new SoText2;
-                degreetext->string = SbString("(")+SbString(*itm)+SbString(")");
+                degreetext->string = SbString("(") + SbString(*itm) + SbString(")");
 
                 sep->addChild(translate);
                 sep->addChild(mat);
@@ -4235,13 +4235,95 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 static_cast<SoTranslation *>(sep->getChild(GEOINFO_BSPLINE_DEGREE_POS))->translation.setValue(knotposition.x,knotposition.y,zInfo);
 
-                static_cast<SoText2 *>(sep->getChild(GEOINFO_BSPLINE_DEGREE_TEXT))->string = SbString("(")+SbString(*itm)+SbString(")");
+                static_cast<SoText2 *>(sep->getChild(GEOINFO_BSPLINE_DEGREE_TEXT))->string = SbString("(") + SbString(*itm) + SbString(")");
 
                 currentInfoNode++; // switch to next node
             }
         }
 
         // End of knot multiplicity
+
+        // pole weights --------------------------------------------------------
+        std::vector<double> weights = spline->getWeights();
+        QString WeightString;
+        int itw;
+        // since the first and last control point of a spline is also treated as knot and thus
+        // can also have a displayed multiplicity, we must assure the multiplicity is not visibly overwritten
+        // we add spaces to show the weight behind the multiplicity
+        auto TextBegin = hGrpsk->GetBool("BSplineKnotMultiplicityVisible", true) ? "   [" : "[";
+
+        if (rebuildinformationlayer) {
+
+            for (itw = 0; itw != weights.size(); ++itw) {
+
+                SoSwitch* sw = new SoSwitch();
+
+                sw->whichChild = hGrpsk->GetBool("BSplinePoleWeightVisible", true) ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+
+                SoSeparator* sep = new SoSeparator();
+                sep->ref();
+                // no caching for fluctuand data structures
+                sep->renderCaching = SoSeparator::OFF;
+
+                // every information visual node gets its own material for to-be-implemented preselection and selection
+                SoMaterial* mat = new SoMaterial;
+                mat->ref();
+                mat->diffuseColor = InformationColor;
+
+                SoTranslation* translate = new SoTranslation;
+
+                Base::Vector3d poleposition = poles[itw];
+
+                SoFont* font = new SoFont;
+                font->name.setValue("Helvetica");
+                font->size.setValue(fontSize);
+
+                translate->translation.setValue(poleposition.x, poleposition.y, zInfo);
+
+                // set up string with weight value and the user-defined number of decimals
+                WeightString  = QString::fromLatin1("%1").arg(weights[itw], 0, 'f', Base::UnitsApi::getDecimals());
+
+                SoText2* WeightText = new SoText2;
+                WeightText->string = SbString(TextBegin) + SbString(WeightString.toStdString().c_str()) + SbString("]");
+
+                sep->addChild(translate);
+                sep->addChild(mat);
+                sep->addChild(font);
+                sep->addChild(WeightText);
+
+                sw->addChild(sep);
+
+                edit->infoGroup->addChild(sw);
+                sep->unref();
+                mat->unref();
+
+                currentInfoNode++; // switch to next node
+            }
+        }
+        else {
+            for (itw = 0; itw != weights.size(); ++itw) {
+                SoSwitch* sw = static_cast<SoSwitch*>(edit->infoGroup->getChild(currentInfoNode));
+
+                if (visibleInformationChanged)
+                    sw->whichChild = hGrpsk->GetBool("BSplinePoleWeightVisible", true) ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+
+                SoSeparator* sep = static_cast<SoSeparator*>(sw->getChild(0));
+
+                Base::Vector3d poleposition = poles[itw];
+
+                static_cast<SoTranslation*>(sep->getChild(GEOINFO_BSPLINE_DEGREE_POS))
+                    ->translation.setValue(poleposition.x, poleposition.y, zInfo);
+
+                WeightString = QString::fromLatin1("%1").arg(weights[itw], 0, 'f', Base::UnitsApi::getDecimals());
+
+                static_cast<SoText2*>(sep->getChild(GEOINFO_BSPLINE_DEGREE_TEXT))
+                                        ->string = SbString(TextBegin) + SbString(WeightString.toStdString().c_str()) + SbString("]");
+
+                currentInfoNode++; // switch to next node
+            }
+        }
+
+        // End of pole weights
     }
 
 
