@@ -848,9 +848,6 @@ void DlgPrimitives::accept(const QString& placement)
                          .arg(QString::fromLatin1(doc->getName()))
                          .arg(QString::fromLatin1(featurePtr->getNameInDocument()));
 
-    // the combox with the primitive type is fixed
-    // therefore by reading its state we know what we need to change
-
     // read values from the properties
     if (type == Part::Plane::getClassTypeId()) {
         command = QString::fromLatin1(
