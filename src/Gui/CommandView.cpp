@@ -3553,7 +3553,7 @@ public:
         addCommand(new StdTreeSyncView());
         addCommand(new StdTreeSyncSelection());
         addCommand(new StdTreeSyncPlacement());
-        addCommand(new StdTreePreSelection());
+        addCommand(Application::Instance->commandManager().getCommandByName("Std_TreePreSelection"));
         addCommand(new StdTreeRecordSelection());
 
         addCommand();
@@ -3752,7 +3752,7 @@ public:
         addCommand(new StdCmdEditingAutoTransparent());
         addCommand(new StdCmdSelectionFaceWire());
         addCommand(new StdCmdPreselEdgeOnly());
-        addCommand(new StdTreePreSelection());
+        addCommand(Application::Instance->commandManager().getCommandByName("Std_TreePreSelection"));
         addCommand(new StdCmdSelHierarchyAscend());
         addCommand();
         addCommand(new StdCmdMapChildrenPlacement());
@@ -4203,6 +4203,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdBoxSelection());
     rcCmdMgr.addCommand(new StdBoxElementSelection());
     rcCmdMgr.addCommand(new StdLassoElementSelection());
+    rcCmdMgr.addCommand(new StdTreePreSelection());
     rcCmdMgr.addCommand(new StdCmdTreeExpand());
     rcCmdMgr.addCommand(new StdCmdTreeCollapse());
     rcCmdMgr.addCommand(new StdCmdTreeSelectAllInstances());

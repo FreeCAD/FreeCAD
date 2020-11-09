@@ -855,7 +855,7 @@ public:
         addCommand(new StdCmdLinkSelectLinked());
         addCommand(new StdCmdLinkSelectLinkedFinal());
         addCommand(new StdCmdLinkSelectAllLinks());
-        addCommand(Application::Instance->commandManager().getCommandByName("Std_TreeSelectAllInstances"));
+        addCommand(Application::Instance->commandManager().getCommandByName("Std_TreeSelectAllInstances"), false);
     }
 
     virtual const char* className() const {return "StdCmdLinkSelectActions";}
