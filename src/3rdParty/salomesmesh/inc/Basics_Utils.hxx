@@ -32,6 +32,9 @@
 #ifndef WIN32
 #include <sys/time.h>
 #else
+// avoid name collision with std::byte in C++17
+#define NOCRYPT
+#define NOGDI
 #include <winsock2.h>
 #include <windows.h>
 #pragma comment(lib,"winmm.lib")

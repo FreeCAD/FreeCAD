@@ -1704,7 +1704,7 @@ void Application::init(int argc, char ** argv)
         std::signal(SIGSEGV,segmentation_fault_handler);
         std::signal(SIGABRT,segmentation_fault_handler);
         std::set_terminate(unhandled_exception_handler);
-        std::set_unexpected(unexpection_error_handler);
+           ::set_unexpected(unexpection_error_handler);
 #elif defined(FC_OS_LINUX)
         std::signal(SIGSEGV,segmentation_fault_handler);
 #endif
