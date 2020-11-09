@@ -168,7 +168,12 @@ void ViewProviderSpline::showControlPointsOfEdge(const TopoDS_Edge& edge)
 {
     std::list<gp_Pnt> poles, knots;
     Standard_Integer nCt=0;
-    BRepAdaptor_Curve curve(edge);
+
+    TopoDS_Edge edge_loc(edge);
+    TopLoc_Location aLoc;
+    edge_loc.Location(aLoc);
+
+    BRepAdaptor_Curve curve(edge_loc);
     switch (curve.GetType())
     {
     case GeomAbs_BezierCurve:
@@ -232,10 +237,13 @@ void ViewProviderSpline::showControlPointsOfFace(const TopoDS_Face& face)
     std::list<gp_Pnt> knots;
     std::vector<std::vector<gp_Pnt> > poles;
     Standard_Integer nCtU=0, nCtV=0;
-    BRepAdaptor_Surface surface(face);
 
-    BRepAdaptor_Surface clSurface(face);
-    switch (clSurface.GetType())
+    TopoDS_Face face_loc(face);
+    TopLoc_Location aLoc;
+    face_loc.Location(aLoc);
+
+    BRepAdaptor_Surface surface(face_loc);
+    switch (surface.GetType())
     {
     case GeomAbs_BezierSurface:
         {
@@ -408,7 +416,12 @@ void ViewProviderSplineExtension::showControlPointsOfEdge(const TopoDS_Edge& edg
 {
     std::list<gp_Pnt> poles, knots;
     Standard_Integer nCt=0;
-    BRepAdaptor_Curve curve(edge);
+
+    TopoDS_Edge edge_loc(edge);
+    TopLoc_Location aLoc;
+    edge_loc.Location(aLoc);
+
+    BRepAdaptor_Curve curve(edge_loc);
     switch (curve.GetType())
     {
     case GeomAbs_BezierCurve:
@@ -472,10 +485,13 @@ void ViewProviderSplineExtension::showControlPointsOfFace(const TopoDS_Face& fac
     std::list<gp_Pnt> knots;
     std::vector<std::vector<gp_Pnt> > poles;
     Standard_Integer nCtU=0, nCtV=0;
-    BRepAdaptor_Surface surface(face);
 
-    BRepAdaptor_Surface clSurface(face);
-    switch (clSurface.GetType())
+    TopoDS_Face face_loc(face);
+    TopLoc_Location aLoc;
+    face_loc.Location(aLoc);
+
+    BRepAdaptor_Surface surface(face_loc);
+    switch (surface.GetType())
     {
     case GeomAbs_BezierSurface:
         {
