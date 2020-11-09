@@ -293,6 +293,8 @@ void PropertyContainer::beforeSave() const
     auto & Map = _pimpl->propertyMap;
     auto & transients = _pimpl->transients;
 
+    dynamicProps.beforeSave();
+
     getPropertyMap(Map);
 
     for(auto it=Map.begin();it!=Map.end();) {

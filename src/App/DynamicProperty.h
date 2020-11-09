@@ -186,6 +186,8 @@ public:
 
     bool changeDynamicProperty(const Property *prop, const char *group, const char *doc);
 
+    void beforeSave() const;
+
 private:
     std::string getUniquePropertyName(PropertyContainer &pc, const char *Name) const;
     Property* _addDynamicProperty(PropertyContainer &pc, const char* type, const char* name, const char* group,

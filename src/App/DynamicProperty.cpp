@@ -377,3 +377,10 @@ const char *DynamicProperty::getPropertyName(const Property *prop) const
         return it->getName();
     return 0;
 }
+
+void DynamicProperty::beforeSave() const
+{
+    auto &index = props.get<0>();
+    for(auto &v : index) 
+        v.docID.mark();
+}

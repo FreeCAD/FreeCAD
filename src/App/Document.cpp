@@ -1780,6 +1780,7 @@ void Document::Save (Base::Writer &writer) const
 
     for (auto o : d->objectArray)
         o->beforeSave();
+    beforeSave();
 
     d->Hasher->Save(writer);
 
