@@ -414,6 +414,8 @@ class MaterialEditor:
         "returns a dictionary from the contents of the editor."
 
         model = self.widget.treeView.model()
+        if model is None:
+            return {}
         root = model.invisibleRootItem()
 
         d = {}
