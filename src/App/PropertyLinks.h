@@ -26,6 +26,7 @@
 
 // Std. configurations
 #include <boost_signals2.hpp>
+#include <boost/ptr_container/ptr_vector.hpp>
 
 #include <vector>
 #include <map>
@@ -1289,7 +1290,7 @@ public:
 
     void setSubListValues(const std::vector<PropertyLinkSubList::SubSet>&);
 
-    const std::list<PropertyXLinkSub> &getSubListValues() const {
+    const boost::ptr_vector<PropertyXLinkSub> &getSubListValues() const {
         return _Links;
     }
 
@@ -1342,7 +1343,7 @@ public:
     void setSyncSubObject(bool enable);
 
 protected:
-    std::list<PropertyXLinkSub> _Links;
+    boost::ptr_vector<PropertyXLinkSub> _Links;
 };
 
 
