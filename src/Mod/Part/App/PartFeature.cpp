@@ -226,7 +226,13 @@ getElementSource(App::DocumentObject *owner,
             break;
         auto obj = owner;
         if(owner) {
-            obj = owner->getDocument()->getObjectByID(tag);
+            App::Document *doc = owner->getDocument();
+            if (owner->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+                auto o = static_cast<App::GeoFeature*>(owner)->getElementOwner(ret.back().second);
+                if (o)
+                    doc = o->getDocument();
+            }
+            obj = doc->getObjectByID(tag);
             if(type) {
                 for(auto &hist : history) {
                     if(shape.elementType(hist)!=type)
@@ -271,8 +277,15 @@ Feature::getElementHistory(App::DocumentObject *feature,
                 if (linked == feature)
                     break;
                 feature = linked;
-                if (feature->getDocument() != doc)
+                if (feature->getDocument() != doc) {
+                    doc = feature->getDocument();
                     break;
+                }
+            }
+            if(feature->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+                auto owner = static_cast<App::GeoFeature*>(feature)->getElementOwner(element);
+                if(owner)
+                    doc = owner->getDocument();
             }
             obj = doc->getObjectByID(std::abs(tag));
         }
