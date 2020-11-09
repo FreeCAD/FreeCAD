@@ -922,7 +922,6 @@ void TopoShape::mapSubElementsTo(std::vector<TopoShape> &shapes, const char *op)
 
 void TopoShape::copyElementMap(const TopoShape &s, const char *op)
 {
-    resetElementMap();
     if (s.isNull() || isNull())
         return;
     std::vector<Data::MappedChildElements> children;
@@ -950,6 +949,9 @@ void TopoShape::copyElementMap(const TopoShape &s, const char *op)
         if (op)
             child.postfix = op;
     }
+    resetElementMap();
+    if (!Hasher)
+        Hasher = s.Hasher;
     setMappedChildElements(children);
 }
 
@@ -3981,13 +3983,7 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
     Hasher = hasher;
     Tag = tag;
     resetElementMap();
-
-    TopLoc_Location loc(tmp._Shape.Location());
-    // Temporary reset shape location to make name mapping faster
-    tmp._Shape.Location(TopLoc_Location());
-    _Shape.Location(TopLoc_Location());
-    mapSubElement(tmp,postfix,!hasher.isNull());
-    _Shape.Location(loc);
+    copyElementMap(tmp, postfix);
 }
 
 void TopoShape::cacheRelatedElements(const Data::MappedName &name,
