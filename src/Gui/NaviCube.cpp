@@ -92,6 +92,7 @@
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <App/Document.h>
 
 #include "View3DInventorViewer.h"
 #include "View3DInventor.h"
@@ -99,6 +100,7 @@
 #include "MainWindow.h"
 #include "MDIView.h"
 #include "Command.h"
+#include "Document.h"
 #include "ViewParams.h"
 
 #include "NaviCube.h"
@@ -244,6 +246,8 @@ public:
 	int m_CubeWidgetSize = 0;
 	int m_CubeWidgetPosX = 0;
 	int m_CubeWidgetPosY = 0;
+	int m_CubeWidgetOffsetX = 0;
+	int m_CubeWidgetOffsetY = 0;
 	int m_PrevWidth = 0;
 	int m_PrevHeight = 0;
 	QColor m_TextColor;
@@ -829,38 +833,42 @@ void NaviCubeImplementation::createContextMenu(const std::vector<std::string>& c
 void NaviCubeImplementation::handleResize() {
 	SbVec2s view = m_View3DInventorViewer->getSoRenderManager()->getSize();
 	if ((m_PrevWidth != view[0]) || (m_PrevHeight != view[1])) {
-		if ((m_PrevWidth > 0) && (m_PrevHeight > 0)) {
-			// maintain position relative to closest edge
-			if (m_CubeWidgetPosX > m_PrevWidth / 2)
-				m_CubeWidgetPosX = view[0] - (m_PrevWidth - m_CubeWidgetPosX);
-			if (m_CubeWidgetPosY > m_PrevHeight / 2)
-				m_CubeWidgetPosY = view[1] - (m_PrevHeight - m_CubeWidgetPosY);
-		}
-		else { // initial position
+		if ((m_PrevWidth <= 0) || (m_PrevHeight <= 0)) {
+		    // initial position
 			ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
-			int m_CubeWidgetOffsetX = hGrp->GetInt("OffsetX", 0);
-			int m_CubeWidgetOffsetY = hGrp->GetInt("OffsetY", 0);
-			switch (m_Corner) {
-			case NaviCube::TopLeftCorner:
-				m_CubeWidgetPosX = m_CubeWidgetSize*1.1 / 2 + m_CubeWidgetOffsetX;
-				m_CubeWidgetPosY = view[1] - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetOffsetY;
-				break;
-			case NaviCube::TopRightCorner:
-				m_CubeWidgetPosX = view[0] - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetOffsetX;
-				m_CubeWidgetPosY = view[1] - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetOffsetY;
-				break;
-			case NaviCube::BottomLeftCorner:
-				m_CubeWidgetPosX = m_CubeWidgetSize*1.1 / 2 + m_CubeWidgetOffsetX;
-				m_CubeWidgetPosY = m_CubeWidgetSize*1.1 / 2 + m_CubeWidgetOffsetY;
-				break;
-			case NaviCube::BottomRightCorner:
-				m_CubeWidgetPosX = view[0] - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetOffsetX;
-				m_CubeWidgetPosY = m_CubeWidgetSize*1.1 / 2 + m_CubeWidgetOffsetY;
-				break;
-			}
-		}
+			m_CubeWidgetOffsetX = hGrp->GetInt("OffsetX", 0);
+			m_CubeWidgetOffsetY = hGrp->GetInt("OffsetY", 0);
+        }
+        switch (m_Corner) {
+        case NaviCube::TopLeftCorner:
+            m_CubeWidgetPosX = m_CubeWidgetSize*1.1 / 2 + m_CubeWidgetOffsetX;
+            m_CubeWidgetPosY = view[1] - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetOffsetY;
+            break;
+        case NaviCube::TopRightCorner:
+            m_CubeWidgetPosX = view[0] - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetOffsetX;
+            m_CubeWidgetPosY = view[1] - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetOffsetY;
+            break;
+        case NaviCube::BottomLeftCorner:
+            m_CubeWidgetPosX = m_CubeWidgetSize*1.1 / 2 + m_CubeWidgetOffsetX;
+            m_CubeWidgetPosY = m_CubeWidgetSize*1.1 / 2 + m_CubeWidgetOffsetY;
+            break;
+        case NaviCube::BottomRightCorner:
+            m_CubeWidgetPosX = view[0] - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetOffsetX;
+            m_CubeWidgetPosY = m_CubeWidgetSize*1.1 / 2 + m_CubeWidgetOffsetY;
+            break;
+        }
 		m_PrevWidth = view[0];
 		m_PrevHeight = view[1];
+
+        if (m_CubeWidgetPosX < 0)
+            m_CubeWidgetPosX = 0;
+        else if (m_CubeWidgetPosX > m_PrevWidth)
+            m_CubeWidgetPosX = m_PrevWidth;
+        if (m_CubeWidgetPosY < 0)
+            m_CubeWidgetPosY = 0;
+        else if (m_CubeWidgetPosY > m_PrevHeight)
+            m_CubeWidgetPosY = m_PrevHeight;
+
 		m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
 
 	}
@@ -1198,7 +1206,34 @@ void NaviCubeImplementation::handleMenu() {
 bool NaviCubeImplementation::mouseReleased(short x, short y) {
 	setHilite(0);
 	m_MouseDown = false;
-	if (!m_Dragging) {
+	if (m_Dragging) {
+        switch (m_Corner) {
+        case NaviCube::TopLeftCorner:
+            m_CubeWidgetOffsetX = m_CubeWidgetPosX - m_CubeWidgetSize*1.1 / 2;
+            m_CubeWidgetOffsetY = m_PrevWidth - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetPosY;
+            break;
+        case NaviCube::TopRightCorner:
+            m_CubeWidgetOffsetX = m_PrevWidth - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetPosX;
+            m_CubeWidgetOffsetY = m_PrevHeight - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetPosY;
+            break;
+        case NaviCube::BottomLeftCorner:
+            m_CubeWidgetOffsetX = m_CubeWidgetPosX - m_CubeWidgetSize*1.1 / 2;
+            m_CubeWidgetOffsetY = m_CubeWidgetPosY - m_CubeWidgetSize*1.1 / 2;
+            break;
+        case NaviCube::BottomRightCorner:
+            m_CubeWidgetOffsetX = m_PrevWidth - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetPosX;
+            m_CubeWidgetOffsetY = m_CubeWidgetPosY - m_CubeWidgetSize*1.1 / 2;
+            break;
+        }
+        // Save the offset only if the user adjust the navicube with an empty document
+		if (m_View3DInventorViewer->getDocument() 
+            && m_View3DInventorViewer->getDocument()->getDocument()->getObjects().empty())
+        {
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+            hGrp->SetInt("OffsetX", m_CubeWidgetOffsetX);
+            hGrp->SetInt("OffsetY", m_CubeWidgetOffsetY);
+        }
+    } else {
 		float rot = 45 ; //30;
 		float tilt = 90-54.7356f ; //30; // 90 + deg(asin(-sqrt(1.0/3.0)))
 		int pick = pickFace(x, y);
