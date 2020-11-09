@@ -337,6 +337,7 @@ def buildCard(filename,method,arg=None):
                     if result.startswith(cacheheader):
                         return result.replace('$METHOD$', method).replace('$ARG$', arg)
 
+        result = encode("")
         finfo = getInfo(filename)
         if finfo:
             image = finfo[0]
