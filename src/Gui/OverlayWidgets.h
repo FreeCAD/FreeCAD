@@ -323,7 +323,6 @@ protected:
     void keyPressEvent(QKeyEvent *ke);
 
 private:
-    bool dragging = false;
     QPoint dragOffset;
     QSize dragSize;
     QLayoutItem *titleItem = nullptr;

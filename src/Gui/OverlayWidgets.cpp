@@ -81,6 +81,7 @@ static OverlayTabWidget *_BottomOverlay;
 static std::array<OverlayTabWidget*, 4> _Overlays;
 
 static OverlayDragFrame *_DragFrame;
+static QWidget *_Dragging;
 
 static const int _TitleButtonSize = 12;
 static const int _MinimumOverlaySize = 30;
@@ -1878,14 +1879,14 @@ void OverlayTitleBar::paintEvent(QPaintEvent *)
 
 void OverlayTitleBar::mouseMoveEvent(QMouseEvent *me)
 {
-    if (!dragging) {
+    if (_Dragging != this) {
         if (qobject_cast<QDockWidget*>(parentWidget()))
             me->ignore();
         return;
     }
 
     if (!(me->buttons() & Qt::LeftButton)) {
-        dragging = false;
+        _Dragging = nullptr;
         setCursor(Qt::OpenHandCursor);
         if (_DragFrame)
             _DragFrame->hide();
@@ -1900,7 +1901,7 @@ void OverlayTitleBar::mouseMoveEvent(QMouseEvent *me)
 void OverlayTitleBar::mousePressEvent(QMouseEvent *me)
 {
     QWidget *parent = parentWidget();
-    if (!parent || !getMainWindow() || me->button() != Qt::LeftButton)
+    if (_Dragging || !parent || !getMainWindow() || me->button() != Qt::LeftButton)
         return;
 
     dragSize = parent->size();
@@ -1933,7 +1934,7 @@ void OverlayTitleBar::mousePressEvent(QMouseEvent *me)
                                 std::min(mwSize.height()/2, dragSize.height())));
 
     dragOffset = me->pos();
-    dragging = true;
+    _Dragging = this;
     setCursor(Qt::ClosedHandCursor);
     OverlayManager::instance()->dragDockWidget(me->globalPos(),
                                                parentWidget(),
@@ -1943,7 +1944,7 @@ void OverlayTitleBar::mousePressEvent(QMouseEvent *me)
 
 void OverlayTitleBar::mouseReleaseEvent(QMouseEvent *me)
 {
-    if (!dragging) {
+    if (_Dragging != this) {
         if (qobject_cast<QDockWidget*>(parentWidget()))
             me->ignore();
         return;
@@ -1953,7 +1954,7 @@ void OverlayTitleBar::mouseReleaseEvent(QMouseEvent *me)
         return;
 
     setCursor(Qt::OpenHandCursor);
-    dragging = false;
+    _Dragging = nullptr;
     OverlayManager::instance()->dragDockWidget(me->globalPos(), 
                                                parentWidget(),
                                                dragOffset,
@@ -1965,9 +1966,9 @@ void OverlayTitleBar::mouseReleaseEvent(QMouseEvent *me)
 
 void OverlayTitleBar::keyPressEvent(QKeyEvent *ke)
 {
-    if (dragging && ke->key() == Qt::Key_Escape) {
+    if (_Dragging == this && ke->key() == Qt::Key_Escape) {
         setCursor(Qt::OpenHandCursor);
-        dragging = false;
+        _Dragging = nullptr;
         if (_DragFrame)
             _DragFrame->hide();
     }
@@ -2222,7 +2223,7 @@ void OverlaySplitterHandle::endDrag()
         dockWidget();
         tabWidget->onSplitterResize(this->idx);
     }
-    dragging = 0;
+    _Dragging = nullptr;
     setCursor(this->orientation() == Qt::Horizontal
             ?  Qt::SizeHorCursor : Qt::SizeVerCursor);
     if (_DragFrame)
@@ -2231,13 +2232,13 @@ void OverlaySplitterHandle::endDrag()
 
 void OverlaySplitterHandle::keyPressEvent(QKeyEvent *ke)
 {
-    if (dragging && ke->key() == Qt::Key_Escape)
+    if (_Dragging == this && ke->key() == Qt::Key_Escape)
         endDrag();
 }
 
 void OverlaySplitterHandle::mouseMoveEvent(QMouseEvent *me)
 {
-    if (!dragging)
+    if (_Dragging != this)
         return;
 
     if (!(me->buttons() & Qt::LeftButton)) {
@@ -2281,9 +2282,10 @@ void OverlaySplitterHandle::mouseMoveEvent(QMouseEvent *me)
 
 void OverlaySplitterHandle::mousePressEvent(QMouseEvent *me)
 {
-    if (!getMainWindow() || me->button() != Qt::LeftButton)
+    if (_Dragging || !getMainWindow() || me->button() != Qt::LeftButton)
         return;
 
+    _Dragging = this;
     dragging = 1;
     dragOffset = me->pos();
     auto dock = dockWidget();
@@ -2303,7 +2305,7 @@ void OverlaySplitterHandle::mousePressEvent(QMouseEvent *me)
 
 void OverlaySplitterHandle::mouseReleaseEvent(QMouseEvent *me)
 {
-    if (!dragging || me->button() != Qt::LeftButton) 
+    if (_Dragging != this || me->button() != Qt::LeftButton) 
         return;
 
     if (dragging == 1) {
