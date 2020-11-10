@@ -60,8 +60,8 @@ class Tracker:
         global Part, DraftGeomUtils
         import Part, DraftGeomUtils
         self.ontop = ontop
-        color = coin.SoBaseColor()
-        color.rgb = scolor or FreeCADGui.draftToolBar.getDefaultColor("ui")
+        self.color = coin.SoBaseColor()
+        self.color.rgb = scolor or FreeCADGui.draftToolBar.getDefaultColor("line")
         drawstyle = coin.SoDrawStyle()
         if swidth:
             drawstyle.lineWidth = swidth
@@ -70,7 +70,7 @@ class Tracker:
             drawstyle.lineWeight = 3
             drawstyle.linePattern = 0x0f0f  # 0xaa
         node = coin.SoSeparator()
-        for c in [drawstyle, color] + children:
+        for c in [drawstyle, self.color] + children:
             node.addChild(c)
         self.switch = coin.SoSwitch()  # this is the on/off switch
         if name:

@@ -75,7 +75,7 @@ class Snapper:
     meant to be used directly, they are all called when necessary by
     the general snap() function.
 
-    The Snapper lives inside FreeCADGui once the Draft module has been
+    The Snapper lives inside Gui once the Draft module has been
     loaded.
 
     """
@@ -333,6 +333,7 @@ class Snapper:
         fp = self.cstr(lastpoint, constrain, point)
         if self.trackLine and lastpoint and (not noTracker):
             self.trackLine.p2(fp)
+            self.trackLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
             self.trackLine.on()
         # Set the arch point tracking
         if lastpoint:
@@ -475,6 +476,7 @@ class Snapper:
             self.running = False
             if self.trackLine and lastpoint:
                 self.trackLine.p2(self.spoint)
+                self.trackLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
                 self.trackLine.on()
             return self.spoint
 
@@ -512,6 +514,7 @@ class Snapper:
             fp = self.cstr(lastpoint, constrain, winner[2])
             if self.trackLine and lastpoint:
                 self.trackLine.p2(fp)
+                self.trackLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
                 self.trackLine.on()
             # set the cursor
             self.setCursor(winner[1])
@@ -573,6 +576,7 @@ class Snapper:
             if self.extLine:
                 self.extLine.p1(tsnap[0])
                 self.extLine.p2(tsnap[2])
+                self.extLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
                 self.extLine.on()
             self.setCursor(tsnap[1])
             return tsnap[2], eline
@@ -586,6 +590,7 @@ class Snapper:
                         self.tracker.on()
                     if self.extLine:
                         self.extLine.p2(tsnap[2])
+                        self.extLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
                         self.extLine.on()
                     self.setCursor(tsnap[1])
                     return tsnap[2], eline
@@ -599,6 +604,7 @@ class Snapper:
                             self.tracker.on()
                         if self.extLine:
                             self.extLine.p2(tsnap[2])
+                            self.extLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
                             self.extLine.on()
                         self.setCursor(tsnap[1])
                         return tsnap[2], eline
@@ -640,6 +646,7 @@ class Snapper:
                                         else:
                                             self.extLine.p1(p0)
                                         self.extLine.p2(np)
+                                        self.extLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
                                         self.extLine.on()
                                     self.setCursor('extension')
                                     ne = Part.LineSegment(p0,np).toShape()
@@ -699,6 +706,7 @@ class Snapper:
                                     self.extLine2.p1(p0)
                                 self.extLine2.p2(p)
                                 self.extLine.p2(p)
+                                self.extLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
                                 self.extLine2.on()
                             return p
         return None
@@ -1705,6 +1713,7 @@ class Snapper:
         if self.spoint and self.spoint not in self.holdPoints:
             if self.holdTracker:
                 self.holdTracker.addCoords(self.spoint)
+                self.holdTracker.color.rgb = Gui.draftToolBar.getDefaultColor("line")
                 self.holdTracker.on()
             self.holdPoints.append(self.spoint)
 
