@@ -200,6 +200,13 @@ struct IndexedElements
     std::map<int, MappedChildElements> children;
 };
 
+struct ChildMapInfo
+{
+    int index = 0;
+    MappedChildElements * childMap = nullptr;
+    std::map<ElementMap *, int> mapIndices;
+};
+
 struct CStringComp
 {
     bool operator()(const char *a, const char *b) const
@@ -220,17 +227,23 @@ public:
     {
     }
 
-    void mark() const {
+    void mark(const App::StringHasherRef & hasher) const {
         for (auto & v : this->indexedNames) {
             for (const MappedNameRef & ref : v.second.names) {
                 for (const MappedNameRef *r=&ref; r; r=r->next.get()) {
-                    for (const App::StringIDRef & s : r->sids)
-                        s.mark();
+                    for (const App::StringIDRef & sid : r->sids) {
+                        if (sid.isSameHasher(hasher))
+                            sid.mark();
+                    }
                 }
             }
             for (auto & vv : v.second.children) {
                 if (vv.second.elementMap)
-                    vv.second.elementMap->mark();
+                    vv.second.elementMap->mark(hasher);
+                for (auto & sid : vv.second.sids) {
+                    if (sid.isSameHasher(hasher))
+                        sid.mark();
+                }
             }
         }
     }
@@ -308,83 +321,91 @@ public:
               const std::map<const ElementMap*,int> &childMapSet,
               const std::map<QByteArray, int> &postfixMap) const
     {
-        s << "ElementMap " << index << ' ' << this->indexedNames.size() << '\n';
+        s << "\nElementMap " << index << ' ' << this->indexedNames.size() << '\n';
 
         for (auto & v : this->indexedNames) {
-            s << v.first;
-            if (v.second.children.size()) {
-                s << " ChildCount " << v.second.children.size() << '\n';
-                for (auto & vv : v.second.children) {
-                    auto & child = vv.second;
-                    int mapIndex = 0;
-                    if (child.elementMap) {
-                        auto it = childMapSet.find(child.elementMap.get());
-                        if (it == childMapSet.end() || it->second == 0)
-                            FC_ERR("Invalid child element map");
-                        else
-                            mapIndex = it->second;
-                    }
-                    s << child.indexedName.getIndex() << ' '
-                      << child.offset << ' '
-                      << child.count << ' '
-                      << child.tag << ' '
-                      << child.postfix << ' '
-                      << mapIndex << '\n';
-                }
-            } else {
-                s << " NameCount " << v.second.names.size() << '\n';
-                boost::io::ios_flags_saver ifs(s);
-                s << std::hex;
-                for (auto & ref : v.second.names) {
-                    for (auto r = &ref; r; r=r->next.get()) {
-                        if (!r->name)
-                            break;
+            s << '\n' << v.first << '\n';
 
-                        App::StringID::IndexID prefixid;
-                        prefixid.id = 0;
-                        IndexedName idx(r->name.dataBytes());
-                        bool printName = true;
-                        if (idx) {
-                            auto key = QByteArray::fromRawData(idx.getType(), qstrlen(idx.getType()));
-                            auto it = postfixMap.find(key);
-                            if (it != postfixMap.end()) {
-                                s << ':' << it->second << '.' << idx.getIndex();
-                                printName = false;
-                            }
-                        } else  {
-                            prefixid = App::StringID::fromString(r->name.dataBytes());
-                            if (prefixid.id) {
-                                for (auto & sid : r->sids) {
-                                    if (sid.value() == prefixid.id) {
-                                        s << '$' << r->name.dataBytes();
-                                        printName = false;
-                                        break;
-                                    }
+            s << "\nChildCount " << v.second.children.size() << '\n';
+            boost::io::ios_flags_saver ifs(s);
+            s << std::hex;
+            for (auto & vv : v.second.children) {
+                auto & child = vv.second;
+                int mapIndex = 0;
+                if (child.elementMap) {
+                    auto it = childMapSet.find(child.elementMap.get());
+                    if (it == childMapSet.end() || it->second == 0)
+                        FC_ERR("Invalid child element map");
+                    else
+                        mapIndex = it->second;
+                }
+                s << child.indexedName.getIndex() << ' '
+                    << child.offset << ' '
+                    << child.count << ' '
+                    << child.tag << ' '
+                    << mapIndex << ' '
+                    << child.postfix << ' '
+                    << '0';
+                for (auto & sid : child.sids) {
+                    if (sid.isMarked())
+                        s << '.' << sid.value();
+                }
+                s << '\n';
+            }
+
+            s << "\nNameCount " << std::dec << v.second.names.size() << std::hex << '\n';
+            if (v.second.names.empty())
+                continue;
+
+            for (auto & ref : v.second.names) {
+                for (auto r = &ref; r; r=r->next.get()) {
+                    if (!r->name)
+                        break;
+
+                    App::StringID::IndexID prefixid;
+                    prefixid.id = 0;
+                    IndexedName idx(r->name.dataBytes());
+                    bool printName = true;
+                    if (idx) {
+                        auto key = QByteArray::fromRawData(idx.getType(), qstrlen(idx.getType()));
+                        auto it = postfixMap.find(key);
+                        if (it != postfixMap.end()) {
+                            s << ':' << it->second << '.' << idx.getIndex();
+                            printName = false;
+                        }
+                    } else  {
+                        prefixid = App::StringID::fromString(r->name.dataBytes());
+                        if (prefixid.id) {
+                            for (auto & sid : r->sids) {
+                                if (sid.isMarked() && sid.value() == prefixid.id) {
+                                    s << '$' << r->name.dataBytes();
+                                    printName = false;
+                                    break;
                                 }
-                                if (printName)
-                                    prefixid.id = 0;
                             }
+                            if (printName)
+                                prefixid.id = 0;
                         }
-                        if (printName)
-                            s << ';' << r->name.dataBytes();
-
-                        const QByteArray & postfix = r->name.postfixBytes();
-                        if (postfix.isEmpty())
-                            s << ".0";
-                        else {
-                            auto it = postfixMap.find(postfix);
-                            assert(it != postfixMap.end());
-                            s << '.' << it->second;
-                        }
-                        for (auto & sid : r->sids) {
-                            if (sid.value() != prefixid.id)
-                                s << '.' << sid.value();
-                        }
-
-                        s << ' ';
                     }
-                    s << "0\n";
+                    if (printName)
+                        s << ';' << r->name.dataBytes();
+
+                    const QByteArray & postfix = r->name.postfixBytes();
+                    if (postfix.isEmpty())
+                        s << ".0";
+                    else {
+                        auto it = postfixMap.find(postfix);
+                        assert(it != postfixMap.end());
+                        s << '.' << it->second;
+                    }
+                    for (auto & sid : r->sids) {
+                        if (sid.isMarked() && sid.value() != prefixid.id)
+                            s << '.' << sid.value();
+                    }
+
+                    s << ' ';
                 }
+                s << "0\n";
             }
         }
     }
@@ -401,7 +422,7 @@ public:
         for (auto & p : postfixes)
             s << p << '\n';
         int index = 0;
-        s << "MapCount " << childMaps.size() << '\n';
+        s << "\nMapCount " << childMaps.size() << '\n';
         for (auto & elementMap : childMaps)
             elementMap->save(s, ++index, childMapSet, postfixMap);
     }
@@ -442,7 +463,6 @@ public:
     {
         const char * msg = "Invalid element map";
         std::string tmp;
-        std::string tmp2;
         int index;
         int typeCount = 0;
         if (! (s >> tmp >> index >> typeCount) || tmp != "ElementMap")
@@ -451,126 +471,150 @@ public:
         const char *hasherWarn = nullptr;
         const char *hasherIDWarn = nullptr;
         const char *postfixWarn = nullptr;
+        const char *childSIDWarn = nullptr;
         std::vector<std::string> tokens;
 
         for (int i=0; i<typeCount; ++i) {
             int count;
-            if (! (s >> tmp >> tmp2 >> count))
-                FC_THROWM(Base::RuntimeError, msg);
+            if (! (s >> tmp))
+                FC_THROWM(Base::RuntimeError, "missing element type");
             IndexedName idx(tmp.c_str(), 1);
+                
+            if (! (s >> tmp >> count) || tmp != "ChildCount")
+                FC_THROWM(Base::RuntimeError, "missing element child count");
+
+            boost::io::ios_flags_saver ifs(s);
+            s >> std::hex;
+
             auto & indices = this->indexedNames[idx.getType()];
-            if (tmp2 == "ChildCount") {
-                for (int j=0; j<count; ++j) {
-                    int cindex;
-                    int offset;
-                    int count;
-                    long tag;
-                    int mapIndex;
-                    if (! (s >> cindex >> offset >> count >> tag >> tmp >> mapIndex))
-                        FC_THROWM(Base::RuntimeError, "Invalid element child");
-                    if (cindex < 0)
-                        FC_THROWM(Base::RuntimeError, "Invalid element child index");
-                    if (offset < 0)
-                        FC_THROWM(Base::RuntimeError, "Invalid element child offset");
-                    if (mapIndex >= index || mapIndex < 0 || mapIndex > (int)childMaps.size())
-                        FC_THROWM(Base::RuntimeError, "Invalid element child map index");
-                    auto & child = indices.children[cindex+offset+count];
-                    child.indexedName = IndexedName::fromConst(idx.getType(), cindex);
-                    child.offset = offset;
-                    child.count = count;
-                    child.tag = tag;
-                    if (mapIndex > 0)
-                        child.elementMap = childMaps[mapIndex-1];
-                    else
-                        child.elementMap = nullptr;
-                    child.postfix = tmp.c_str();
-                    this->childElements.insert(child.postfix, &child);
-                    this->childElementSize += child.count;
-                }
-            } else if (tmp2 == "NameCount") {
-                indices.names.resize(count);
-                for (int j=0; j<count; ++j) {
-                    idx.setIndex(j);
-                    auto * ref = & indices.names[j];
-                    int k = 0;
-                    while (1) {
-                        if (! (s >> tmp))
-                            FC_THROWM(Base::RuntimeError, "Failed to read element name");
-                        if (tmp == "0")
-                            break;
-                        if (k++ != 0) {
-                            ref->next.reset(new MappedNameRef);
-                            ref = ref->next.get();
-                        }
-                        tokens.clear();
-                        boost::split(tokens, tmp, boost::is_any_of("."));
-                        if (tokens.size() < 2)
-                            FC_THROWM(Base::RuntimeError, "Invalid element entry");
+            for (int j=0; j<count; ++j) {
+                int cindex;
+                int offset;
+                int count;
+                long tag;
+                int mapIndex;
+                if (! (s >> cindex >> offset >> count >> tag >> mapIndex >> tmp))
+                    FC_THROWM(Base::RuntimeError, "Invalid element child");
+                if (cindex < 0)
+                    FC_THROWM(Base::RuntimeError, "Invalid element child index");
+                if (offset < 0)
+                    FC_THROWM(Base::RuntimeError, "Invalid element child offset");
+                if (mapIndex >= index || mapIndex < 0 || mapIndex > (int)childMaps.size())
+                    FC_THROWM(Base::RuntimeError, "Invalid element child map index");
+                auto & child = indices.children[cindex+offset+count];
+                child.indexedName = IndexedName::fromConst(idx.getType(), cindex);
+                child.offset = offset;
+                child.count = count;
+                child.tag = tag;
+                if (mapIndex > 0)
+                    child.elementMap = childMaps[mapIndex-1];
+                else
+                    child.elementMap = nullptr;
+                child.postfix = tmp.c_str();
+                this->childElements[child.postfix].childMap = &child;
+                this->childElementSize += child.count;
 
-                        int offset = 1;
-                        App::StringID::IndexID prefixid;
-                        prefixid.id = 0;
+                if (! (s >> tmp))
+                    FC_THROWM(Base::RuntimeError, "Invalid element child string id");
 
-                        switch(tokens[0][0]) {
-                        case ':': {
-                            if (tokens.size() < 3)
-                                FC_THROWM(Base::RuntimeError, "Invalid element entry");
-                            ++offset;
-                            long n = strtol(tokens[0].c_str()+1, nullptr, 16);
-                            if (n <= 0 || n > (int)postfixes.size())
-                                FC_THROWM(Base::RuntimeError, "Invalid element name index");
-                            long m = strtol(tokens[1].c_str(), nullptr, 16);
-                            ref->name = MappedName(IndexedName::fromConst(postfixes[n-1].c_str(), m));
-                            break;
-                        }
-                        case '$':
-                            ref->name = MappedName(tokens[0].c_str()+1);
-                            prefixid = App::StringID::fromString(ref->name.dataBytes());
-                            break;
-                        case ';':
-                            ref->name = MappedName(tokens[0].c_str()+1);
-                            break;
-                        default:
-                            FC_THROWM(Base::RuntimeError, "Invalid element name marker");
-                        }
-
-                        if (tokens[offset] != "0") {
-                            long n = strtol(tokens[offset].c_str(), nullptr, 16);
-                            if (n <= 0 || n > (int)postfixes.size())
-                                postfixWarn = "Invalid element postfix index";
-                            else
-                                ref->name += postfixes[n-1];
-                        }
-
-                        this->mappedNames.emplace(ref->name, idx);
-
-                        if (!hasher) {
-                            if (offset + 1 < (int)tokens.size())
-                                hasherWarn = "No hasher";
-                            continue;
-                        }
-
-                        ref->sids.reserve(tokens.size()-offset-1 + prefixid.id?1:0);
-                        if (prefixid.id) {
-                            auto sid = hasher->getID(prefixid.id);
-                            if (!sid)
-                                hasherIDWarn = "Missing element name prefix id";
-                            else
-                                ref->sids.push_back(sid);
-                        }
-                        for (int l=offset+1; l<(int)tokens.size(); ++l) {
-                            long id = strtol(tokens[l].c_str(), nullptr, 16);
-                            auto sid = hasher->getID(id);
-                            if (!sid)
-                                hasherIDWarn = "Invalid element name string id";
-                            else
-                                ref->sids.push_back(sid);
-                        }
+                tokens.clear();
+                boost::split(tokens, tmp, boost::is_any_of("."));
+                if (tokens.size() > 1) {
+                    child.sids.reserve(tokens.size()-1);
+                    for (unsigned k=1; k<tokens.size(); ++k) {
+                        long n = strtol(tokens[k].c_str(), nullptr, 16);
+                        auto sid = hasher->getID(n);
+                        if (!sid)
+                            childSIDWarn = "Missing element child string id";
+                        else
+                            child.sids.push_back(sid);
                     }
                 }
             }
-            else 
-                FC_THROWM(Base::RuntimeError, msg);
+
+            if (! (s >> tmp >> std::dec >> count >> std::hex) || tmp != "NameCount")
+                FC_THROWM(Base::RuntimeError, "missing element name count");
+
+            indices.names.resize(count);
+            for (int j=0; j<count; ++j) {
+                idx.setIndex(j);
+                auto * ref = & indices.names[j];
+                int k = 0;
+                while (1) {
+                    if (! (s >> tmp))
+                        FC_THROWM(Base::RuntimeError, "Failed to read element name");
+                    if (tmp == "0")
+                        break;
+                    if (k++ != 0) {
+                        ref->next.reset(new MappedNameRef);
+                        ref = ref->next.get();
+                    }
+                    tokens.clear();
+                    boost::split(tokens, tmp, boost::is_any_of("."));
+                    if (tokens.size() < 2)
+                        FC_THROWM(Base::RuntimeError, "Invalid element entry");
+
+                    int offset = 1;
+                    App::StringID::IndexID prefixid;
+                    prefixid.id = 0;
+
+                    switch(tokens[0][0]) {
+                    case ':': {
+                        if (tokens.size() < 3)
+                            FC_THROWM(Base::RuntimeError, "Invalid element entry");
+                        ++offset;
+                        long n = strtol(tokens[0].c_str()+1, nullptr, 16);
+                        if (n <= 0 || n > (int)postfixes.size())
+                            FC_THROWM(Base::RuntimeError, "Invalid element name index");
+                        long m = strtol(tokens[1].c_str(), nullptr, 16);
+                        ref->name = MappedName(IndexedName::fromConst(postfixes[n-1].c_str(), m));
+                        break;
+                    }
+                    case '$':
+                        ref->name = MappedName(tokens[0].c_str()+1);
+                        prefixid = App::StringID::fromString(ref->name.dataBytes());
+                        break;
+                    case ';':
+                        ref->name = MappedName(tokens[0].c_str()+1);
+                        break;
+                    default:
+                        FC_THROWM(Base::RuntimeError, "Invalid element name marker");
+                    }
+
+                    if (tokens[offset] != "0") {
+                        long n = strtol(tokens[offset].c_str(), nullptr, 16);
+                        if (n <= 0 || n > (int)postfixes.size())
+                            postfixWarn = "Invalid element postfix index";
+                        else
+                            ref->name += postfixes[n-1];
+                    }
+
+                    this->mappedNames.emplace(ref->name, idx);
+
+                    if (!hasher) {
+                        if (offset + 1 < (int)tokens.size())
+                            hasherWarn = "No hasher";
+                        continue;
+                    }
+
+                    ref->sids.reserve(tokens.size()-offset-1 + prefixid.id?1:0);
+                    if (prefixid.id) {
+                        auto sid = hasher->getID(prefixid.id);
+                        if (!sid)
+                            hasherIDWarn = "Missing element name prefix id";
+                        else
+                            ref->sids.push_back(sid);
+                    }
+                    for (int l=offset+1; l<(int)tokens.size(); ++l) {
+                        long id = strtol(tokens[l].c_str(), nullptr, 16);
+                        auto sid = hasher->getID(id);
+                        if (!sid)
+                            hasherIDWarn = "Invalid element name string id";
+                        else
+                            ref->sids.push_back(sid);
+                    }
+                }
+            }
         }
         if (hasherWarn)
             FC_WARN(hasherWarn);
@@ -578,6 +622,8 @@ public:
             FC_WARN(hasherIDWarn);
         if (postfixWarn)
             FC_WARN(postfixWarn);
+        if (childSIDWarn)
+            FC_WARN(childSIDWarn);
     }
 
     MappedName addName(MappedName & name,
@@ -651,14 +697,15 @@ public:
                 return IndexedName();
 
             int len = 0;
-            if (ComplexGeoData::findTagInElementName(name,nullptr,&len) < 0)
+            if (ComplexGeoData::findTagInElementName(
+                        name,nullptr,&len,nullptr,nullptr,false,false) < 0)
                 return IndexedName();
             QByteArray key = name.toRawBytes(len);
             auto it = this->childElements.find(key);
             if (it == this->childElements.end())
                 return IndexedName();
 
-            const auto & child = *it.value();
+            const auto & child = *it.value().childMap;
             IndexedName res;
 
             MappedName childName = MappedName::fromRawData(name, 0, len);
@@ -671,7 +718,7 @@ public:
                     && child.indexedName.getIndex() <= res.getIndex()
                     && child.indexedName.getIndex() + child.count > res.getIndex())
             {
-                res.setIndex(res.getIndex() + it.value()->offset);
+                res.setIndex(res.getIndex() + it.value().childMap->offset);
                 return res;
             }
 
@@ -807,40 +854,114 @@ public:
         return mappedNames.empty() && childElementSize == 0;
     }
 
-    struct ChildKey {
-        const MappedChildElements & item;
-        ChildKey(const MappedChildElements & item)
-            : item(item)
-        {}
-
-        bool operator < (const ChildKey &other) const
-        {
-            if (item.indexedName[0] < other.item.indexedName[0])
-                return true;
-            if (item.indexedName[0] > other.item.indexedName[0])
-                return false;
-            if (item.tag < other.item.tag)
-                return true;
-            if (item.tag > other.item.tag)
-                return false;
-            return item.postfix < other.item.postfix;
-        }
-    };
-
-    struct ChildValue {
-        int index = 0;
-        std::map<ElementMap*, int> mapIndices;
-    };
-
-    void setChildElements(ComplexGeoData & master, const std::vector<MappedChildElements> &children)
+    void hashChildMaps(ComplexGeoData & master)
     {
-        assert(empty());
+        if (childElements.empty() || !master.Hasher)
+            return;
+        std::ostringstream ss;
+        for (auto & v : this->indexedNames) {
+            for (auto & vv : v.second.children) {
+                auto & child = vv.second;
+                int len = 0;
+                long tag;
+                int pos = ComplexGeoData::findTagInElementName(
+                        MappedName::fromRawData(child.postfix),
+                        &tag, &len, nullptr, nullptr, false, false);
+                if (pos > 10) {
+                    MappedName postfix = master.hashElementName(
+                            MappedName::fromRawData(child.postfix.constData(), pos), child.sids);
+                    ss.str("");
+                    ss << MappedChildElements::prefix() << postfix;
+                    MappedName tmp;
+                    master.encodeElementName(child.indexedName[0],
+                            tmp, ss, nullptr, nullptr, child.tag, true);
+                    this->childElements.remove(child.postfix);
+                    child.postfix = tmp.toBytes();
+                    this->childElements[child.postfix].childMap = & child;
+                }
+            }
+        }
+    }
 
-        std::map<ChildKey, ChildValue> indexMap;
-
+    void addChildElements(ComplexGeoData & master,
+                          const std::vector<MappedChildElements> &children)
+    {
         std::ostringstream ss;
         ss << std::hex;
-        for (auto & child : children) {
+
+        // To avoid possibly very long recusive child map lookup, resulting very
+        // long mapped names, we try to resolve the grand child map now.
+        std::vector<MappedChildElements> expansion;
+        for (auto it=children.begin(); it!=children.end(); ++it) {
+            auto & child = *it;
+            if (!child.elementMap || child.elementMap->childElements.empty()) {
+                if (expansion.size())
+                    expansion.push_back(child);
+                continue;
+            }
+            auto & indices = child.elementMap->indexedNames[child.indexedName.getType()];
+            if (indices.children.empty()) {
+                if (expansion.size())
+                    expansion.push_back(child);
+                continue;
+            }
+
+            // Note that it is allow to have both mapped names and child map. We
+            // may have to split the current child mapping into pieces.
+
+            int start = child.indexedName.getIndex();
+            int end = start + child.count;
+            for (auto iter=indices.children.upper_bound(start); iter!=indices.children.end(); ++iter) {
+                auto & grandchild = iter->second;
+                int istart = grandchild.indexedName.getIndex() + grandchild.offset;
+                int iend = istart + grandchild.count;
+                if (end <= istart)
+                    break;
+                if (istart >= end) {
+                    if (expansion.size()) {
+                        expansion.push_back(child);
+                        expansion.back().indexedName.setIndex(start);
+                        expansion.back().count = end - start;
+                    }
+                    break;
+                }
+                if (expansion.empty()) {
+                    expansion.reserve(children.size() + 10);
+                    expansion.insert(expansion.end(), children.begin(), it);
+                }
+                expansion.push_back(child);
+                auto * entry = & expansion.back();
+                if (istart > start) {
+                    entry->indexedName.setIndex(start);
+                    entry->count = istart - start;
+
+                    expansion.push_back(child);
+                    entry = & expansion.back();
+                } else
+                    istart = start;
+
+                if (iend > end)
+                    iend = end;
+
+                entry->indexedName.setIndex(istart - grandchild.offset);
+                entry->count = iend - istart;
+                entry->offset += grandchild.offset;
+                entry->elementMap = grandchild.elementMap;
+                entry->sids += grandchild.sids;
+                entry->postfix = grandchild.postfix + entry->postfix;
+
+                start = iend;
+                if (start >= end)
+                    break;
+            }
+            if (expansion.size() && start > end) {
+                expansion.push_back(child);
+                expansion.back().indexedName.setIndex(start);
+                expansion.back().count = end - start;
+            }
+        }
+
+        for (auto & child : expansion.size()?expansion:children) {
             if (!child.indexedName || !child.count) {
                 if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
                     FC_ERR("invalid mapped child element");
@@ -848,13 +969,16 @@ public:
             }
 
             ss.str("");
+            MappedName tmp;
+            master.encodeElementName(child.indexedName[0],
+                    tmp, ss, nullptr, child.postfix.constData(), child.tag, true);
 
             // Perform some disambiguation in case the same shape is mapped
             // multiple times, e.g. draft array.
-            auto & entry = indexMap[child];
-            int mapIndex = entry.mapIndices[child.elementMap.get()]++;
-            ++entry.index;
-            if (entry.index != 1) {
+            auto * entry = & childElements[tmp.toBytes()];
+            int mapIndex = entry->mapIndices[child.elementMap.get()]++;
+            ++entry->index;
+            if (entry->index != 1) {
                 if (child.elementMap && mapIndex == 0) {
                     // This child has duplicated 'tag' and 'postfix', but it
                     // has its own element map. We'll expand this map now.
@@ -885,30 +1009,32 @@ public:
                 // purposes. Here, we just need some postfix for disambiguation. We
                 // don't need to extract the index.
                 ss.str("");
-                ss << ComplexGeoData::elementMapPrefix() << ":C" << entry.index-1;
+                ss << ComplexGeoData::elementMapPrefix() << ":C" << entry->index-1;
+
+                tmp.clear();
+                master.encodeElementName(child.indexedName[0],
+                        tmp, ss, nullptr, child.postfix.constData(), child.tag, true);
+
+                entry = & childElements[tmp.toBytes()];
+                if (entry->childMap) {
+                    FC_ERR("duplicate mapped child element");
+                    continue;
+                }
             }
 
             auto & indices = this->indexedNames[child.indexedName.getType()];
             auto res = indices.children.emplace(
                     child.indexedName.getIndex() + child.offset + child.count, child);
             if (!res.second) {
+                if (!entry->childMap)
+                    this->childElements.remove(tmp.toBytes());
                 FC_ERR("duplicate mapped child element");
                 continue;
             }
 
-            MappedName tmp;
-            master.encodeElementName(child.indexedName[0],
-                    tmp, ss, nullptr, child.postfix.constData(), child.tag, true);
-
             auto & insertedChild = res.first->second;
             insertedChild.postfix = tmp.toBytes();
-
-            if (this->childElements.contains(insertedChild.postfix))
-                FC_ERR("duplicate mapped child element postfix: "
-                        << insertedChild.postfix);
-            else
-                this->childElements.insert(insertedChild.postfix, &insertedChild);
-
+            entry->childMap = & insertedChild;
             childElementSize += insertedChild.count;
         }
     }
@@ -918,7 +1044,7 @@ public:
         std::vector<MappedChildElements> res;
         res.reserve(this->childElements.size());
         for (auto & v : this->childElements)
-            res.push_back(*v);
+            res.push_back(*v.childMap);
         return res;
     }
 
@@ -928,7 +1054,7 @@ public:
         for (auto &v : this->mappedNames)
             ret.emplace_back(v.first, v.second);
         for (auto &v : this->childElements) {
-            auto & child = *v;
+            auto & child = *v.childMap;
             IndexedName idx(child.indexedName);
             idx.setIndex(idx.getIndex() + child.offset);
             IndexedName childIdx(child.indexedName);
@@ -958,7 +1084,7 @@ private:
 #endif
             > mappedNames;
 
-    QHash<QByteArray, MappedChildElements *> childElements;
+    QHash<QByteArray, ChildMapInfo> childElements;
 
     std::size_t childElementSize = 0;
 };
@@ -1491,7 +1617,8 @@ int ComplexGeoData::findTagInElementName(const MappedName & name,
                                          int *len,
                                          std::string *postfix,
                                          char *type,
-                                         bool negative) 
+                                         bool negative,
+                                         bool recursive) 
 {
     bool hex = true;
     int pos = name.rfind(tagPostfix());
@@ -1565,14 +1692,19 @@ int ComplexGeoData::findTagInElementName(const MappedName & name,
         return -1;
 
     if (hex) {
-        if (pos-_len <= 0)
+        if (pos-_len < 0)
            return -1; 
+        if (_len && recursive && (tag || len)) {
+            // in case of recursive tag postfix (used by hierarhcy element map)
+            if (MappedName::fromRawData(name, pos-_len, _len).rfind(tagPostfix()) >= 0)
+                _len = 0;
+        }
         _len = pos - _len;
     }
     if(type)
         *type = tp;
     if(tag) {
-        if (_tag == 0)
+        if (_tag == 0 && recursive)
             return findTagInElementName(
                         MappedName(name, 0, _len), tag, len, postfix, type, negative);
         if(_tag>0 || negative)
@@ -1609,7 +1741,7 @@ void ComplexGeoData::encodeElementName(char element_type,
         if(inputTag == tag)
             return;
     }
-    else if (forceTag || !tag || tag==Tag) {
+    else if (!tag || (!forceTag && tag==Tag)) {
         int pos = findTagInElementName(name,&inputTag,nullptr,nullptr,nullptr,true);
         if(inputTag) {
             tag = inputTag;
@@ -1678,21 +1810,30 @@ long ComplexGeoData::getElementHistory(const MappedName & name,
 
     MappedName tmp;
     MappedName &ret = original?*original:tmp;
-    bool first = true;
+    if(name.startsWith(elementMapPrefix())) {
+        unsigned offset = elementMapPrefix().size();
+        ret = MappedName::fromRawData(name, offset);
+    } else
+        ret = name;
+
     while(1) {
         if(!len || len>pos) {
             FC_WARN("invalid name length " << name);
             return 0;
         }
-        if(first) {
-            first = false;
-            size_t offset = 0;
-            if(name.startsWith(elementMapPrefix()))
-                offset = elementMapPrefix().size();
-            ret = MappedName(name, offset, len);
-        }else
-            ret = MappedName(ret, 0, len);
-        ret = dehashElementName(ret);
+        bool dehashed = false;
+        if (ret.startsWith(MappedChildElements::prefix(), len)) {
+            int offset = (int)MappedChildElements::prefix().size();
+            MappedName tmp = MappedName::fromRawData(ret, len+offset, pos-len-offset);
+            MappedName postfix = dehashElementName(tmp);
+            if (postfix != tmp) {
+                dehashed = true;
+                ret = MappedName::fromRawData(ret, 0, len) + postfix;
+            }
+        }
+        if (!dehashed)
+            ret = dehashElementName(MappedName::fromRawData(ret, 0, len));
+
         long tag2 = 0;
         pos = findTagInElementName(ret,&tag2,&len,nullptr,nullptr,true);
         if(pos < 0 || (tag2!=tag && tag!=Tag && -tag!=Tag))
@@ -1710,14 +1851,21 @@ void ComplexGeoData::setPersistenceFileName(const char *filename) const {
 }
 
 void ComplexGeoData::Save(Base::Writer &writer) const {
-    writer.Stream() << writer.ind() << "<ElementMap new=\"1\"/>\n";
-    // New layout of element map, so we use new xml tag, ElementMap2
-    writer.Stream() << writer.ind() << "<ElementMap2";
-    flushElementMap();
-    if(!_ElementMap || _ElementMap->empty()) {
-        writer.Stream() << "/>\n";
+
+    if(!getElementMapSize()) {
+        writer.Stream() << writer.ind() << "<ElementMap/>\n";
         return;
     }
+
+    // Store some dummy map entry to trigger recompute in older version.
+    writer.Stream() << writer.ind()
+                    << "<ElementMap new=\"1\" count=\"1\">"
+                        << "<Element key=\"Dummy\" value=\"Dummy\"/>"
+                    << "</ElementMap>\n";
+
+    // New layout of element map, so we use new xml tag, ElementMap2
+    writer.Stream() << writer.ind() << "<ElementMap2";
+
     if(_PersistenceName.size()) {
         writer.Stream() << " file=\"" 
             << writer.addFile(_PersistenceName+".txt",this) 
@@ -1736,6 +1884,7 @@ void ComplexGeoData::Restore(Base::XMLReader &reader) {
     reader.readElement("ElementMap");
     bool newtag = false;
     if (reader.getAttributeAsInteger("new","0") > 0) {
+        reader.readEndElement("ElementMap");
         reader.readElement("ElementMap2");
         newtag = true;
     }
@@ -1916,7 +2065,7 @@ void ComplexGeoData::traceElement(const MappedName &name, TraceCallback cb) cons
 void ComplexGeoData::setMappedChildElements(const std::vector<MappedChildElements> & children)
 {
     resetElementMap(std::make_shared<ElementMap>());
-    _ElementMap->setChildElements(*this, children);
+    _ElementMap->addChildElements(*this, children);
 }
 
 std::vector<MappedChildElements> ComplexGeoData::getMappedChildElements() const
@@ -1930,5 +2079,12 @@ void ComplexGeoData::beforeSave() const
 {
     flushElementMap();
     if (this->_ElementMap)
-        this->_ElementMap->mark();
+        this->_ElementMap->mark(Hasher);
+}
+
+void ComplexGeoData::hashChildMaps()
+{
+    flushElementMap();
+    if (_ElementMap)
+        _ElementMap->hashChildMaps(*this);
 }

@@ -307,6 +307,8 @@ public:
      */
     MappedName hashElementName(const MappedName & name, ElementIDRefs &sid) const;
 
+    void hashChildMaps();
+
     /// Reverse hashElementName()
     MappedName dehashElementName(const MappedName & name) const;
      
@@ -375,11 +377,17 @@ public:
      * @param type: optional pointer to receive the element type character
      * @param negative: return negative tag as it is. If disabled, then always return positive tag.
      *                  Negative tag is sometimes used for element disambiguation.
+     * @param recursive: recursivly find the last non-zero tag
      *
      * @return Return the end poisition of the tag field, or return -1 if not found.
      */
-    static int findTagInElementName(const MappedName & name, long *tag=0,
-            int *len=0, std::string *postfix=0, char *type=0, bool negative=false);
+    static int findTagInElementName(const MappedName & name,
+                                    long *tag=0,
+                                    int *len=0,
+                                    std::string *postfix=0,
+                                    char *type=0,
+                                    bool negative=false,
+                                    bool recursive=true);
 
     /** Element trace callback
      *

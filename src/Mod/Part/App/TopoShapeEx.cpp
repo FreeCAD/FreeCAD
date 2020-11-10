@@ -885,6 +885,7 @@ void TopoShape::mapSubElement(const std::vector<TopoShape> &shapes, const char *
         }
         if (count) {
             std::vector<Data::MappedChildElements> children;
+            children.reserve(count*3);
             TopAbs_ShapeEnum types[] = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
             for (unsigned i=0; i<sizeof(types)/sizeof(types[0]); ++i) {
                 int offset = 0;
@@ -967,26 +968,62 @@ void TopoShape::mapSubElement(const TopoShape &other, const char *op, bool force
     }
 
     bool warned = false;
-    static const std::array<TopAbs_ShapeEnum,3> types = {TopAbs_VERTEX,TopAbs_EDGE,TopAbs_FACE};
+    static const std::array<TopAbs_ShapeEnum,3> types = 
+        {TopAbs_VERTEX,TopAbs_EDGE,TopAbs_FACE};
+
+    auto checkHasher = [this](const TopoShape &other) {
+        if(Hasher) {
+            if(other.Hasher!=Hasher) {
+                if(!getElementMapSize(false)) {
+                    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                        FC_WARN("hasher mismatch");
+                }else {
+                    // FC_THROWM(Base::RuntimeError, "hasher mismatch");
+                    FC_ERR("hasher mismatch");
+                }
+                Hasher = other.Hasher;
+            }
+        }else
+            Hasher = other.Hasher;
+    };
+
+    if (this->shapeType(true) == TopAbs_COMPOUND) {
+        auto & info = _Cache->getInfo(TopAbs_SHAPE);
+        if (info.find(_Shape, other.getShape()) > 0) {
+            std::vector<Data::MappedChildElements> children;
+            children.reserve(3);
+            for (auto type : types) {
+                int count = other.countSubShapes(type);
+                if (!count)
+                    continue;
+                if(!forceHasher && other.Hasher) {
+                    forceHasher = true;
+                    checkHasher(other);
+                }
+                children.emplace_back();
+                auto & child = children.back();
+                child.indexedName = Data::IndexedName::fromConst(shapeName(type).c_str(), 1);
+                child.offset = _Cache->getInfo(type).find(_Shape, other.getSubShape(type, 1)) - 1;
+                assert(child.offset >= 0);
+                child.count = count;
+                child.elementMap = other.elementMap();
+                child.tag = other.Tag;
+                if (op)
+                    child.postfix = op;
+            }
+            setMappedChildElements(children);
+            return;
+        }
+    }
+
     for(auto type : types) {
         auto &shapeMap = _Cache->getInfo(type);
         auto &otherMap = other._Cache->getInfo(type);
         if(!shapeMap.count() || !otherMap.count())
             continue;
         if(!forceHasher && other.Hasher) {
-            if(Hasher) {
-                if(other.Hasher!=Hasher) {
-                    if(!getElementMapSize(false)) {
-                        if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-                            FC_WARN("hasher mismatch");
-                    }else {
-                        // FC_THROWM(Base::RuntimeError, "hasher mismatch");
-                        FC_ERR("hasher mismatch");
-                    }
-                    Hasher = other.Hasher;
-                }
-            }else
-                Hasher = other.Hasher;
+            forceHasher = true;
+            checkHasher(other);
         }
         const char *shapetype = shapeName(type).c_str();
         std::ostringstream ss;

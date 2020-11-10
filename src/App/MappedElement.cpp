@@ -248,3 +248,9 @@ HistoryItem::HistoryItem(App::DocumentObject *obj, const Data::MappedName &name)
     if(obj)
         tag = obj->getID();
 }
+
+const std::string & MappedChildElements::prefix()
+{
+    static std::string _prefix(ComplexGeoData::elementMapPrefix() + ":R");
+    return _prefix;
+}

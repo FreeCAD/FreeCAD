@@ -355,6 +355,13 @@ public:
         return res;
 	}
 
+	MappedName operator+(const QByteArray & other) const
+	{
+        MappedName res(*this);
+        res += other;
+        return res;
+	}
+
 	MappedName & operator+=(const char * other)
 	{
         if (other && other[0])
@@ -368,6 +375,12 @@ public:
             this->postfix.reserve(this->postfix.size() + other.size());
             this->postfix.append(other.c_str(), other.size());
         }
+		return *this;
+	}
+
+	MappedName & operator+=(const QByteArray & other)
+	{
+        this->postfix += other;
 		return *this;
 	}
 
@@ -399,17 +412,29 @@ public:
             size = other.size() - from;
 
         int count = size;
-        if (count > other.data.size())
-            count = other.data.size();
-
-        if (from == 0 && count == other.data.size() && this->empty()) {
-            this->data = other.data;
-            this->raw = other.raw;
+        if (from < other.data.size()) {
+            if (count > other.data.size() - from)
+                count = other.data.size() - from;
+            if (from == 0 && count == other.data.size() && this->empty()) {
+                this->data = other.data;
+                this->raw = other.raw;
+            } else
+                append(other.data.constData() + from, count);
+            from = 0;
+            size -= count;
         } else
-            append(other.data.constData() + from, count);
-        size -= count;
-        if (size)
-            append(other.postfix.constData(), size);
+            from -= other.data.size();
+        if (size) {
+            if (from == 0 && size == other.postfix.size()) {
+                if (this->empty())
+                    this->data = other.postfix;
+                else if (this->postfix.isEmpty())
+                    this->postfix = other.postfix;
+                else
+                    this->postfix += other.postfix;
+            } else
+                append(other.postfix.constData() + from, size);
+        }
     }
 
     std::string toString(int from, int len=-1) const
@@ -768,14 +793,19 @@ struct AppExport ElementNameComp {
     bool operator()(const MappedName &a, const MappedName &b) const;
 };
 
+typedef QVector<App::StringIDRef> ElementIDRefs;
+
 struct MappedChildElements
 {
     IndexedName indexedName;
     int count;
     int offset;
-    ElementMapPtr elementMap;
     long tag;
+    ElementMapPtr elementMap;
     QByteArray postfix;
+    ElementIDRefs sids;
+
+    static const std::string & prefix();
 };
 
 } //namespace Data
