@@ -745,7 +745,7 @@ QList<App::SubObjectT> DlgPropertyLink::originalLinks() const
 
 QString DlgPropertyLink::linksToPython(QList<App::SubObjectT> links) {
     if(links.isEmpty())
-        return QLatin1String("None");
+        return QLatin1String("[]");
 
     if(links.size() == 1)
         return QString::fromLatin1(links.front().getSubObjectPython(false).c_str());
