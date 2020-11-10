@@ -522,19 +522,19 @@ void Hole::updateHoleCutParams()
             const CutDimensionSet& counter = HoleCutTypeMap.find("ISO 4762")->second;
             const CounterBoreDimension& dimen = counter.get_bore(threadSize);
             if (HoleCutDiameter.getValue() == 0.0) {
-                    HoleCutDiameter.setValue(dimen.diameter);
-                    HoleCutDepth.setValue(dimen.depth);
+                HoleCutDiameter.setValue(dimen.diameter);
+                HoleCutDepth.setValue(dimen.depth);
             }
             if (HoleCutDepth.getValue() == 0.0)
                 HoleCutDepth.setValue(dimen.depth);
         }
-        if (holeCutType == "Countersink") {
+        else if (holeCutType == "Countersink") {
             if (HoleCutDiameter.getValue() == 0.0) {
                 //read ISO 10642 values
                 const CutDimensionSet& counter = HoleCutTypeMap.find("ISO 10642")->second;
                 const CounterSinkDimension& dimen = counter.get_sink(threadSize);
-                    HoleCutDiameter.setValue(dimen.diameter);
-                    HoleCutCountersinkAngle.setValue(counter.angle);
+                HoleCutDiameter.setValue(dimen.diameter);
+                HoleCutCountersinkAngle.setValue(counter.angle);
             }
         }
 
@@ -567,16 +567,16 @@ void Hole::updateHoleCutParams()
         // handle legacy types but don’t change user settings for
         // user defined None, Counterbore and Countersink
         else if (holeCutType == "Cheesehead (deprecated)") {
-	        HoleCutDiameter.setValue(diameter * 1.6);
-	        HoleCutDepth.setValue(diameter * 0.6);
+            HoleCutDiameter.setValue(diameter * 1.6);
+            HoleCutDepth.setValue(diameter * 0.6);
         }
         else if (holeCutType == "Countersink socket screw (deprecated)") {
-	        HoleCutDiameter.setValue(diameter * 2.0);
-	        HoleCutDepth.setValue(diameter * 0.0);
+            HoleCutDiameter.setValue(diameter * 2.0);
+            HoleCutDepth.setValue(diameter * 0.0);
         }
         else if (holeCutType == "Cap screw (deprecated)") {
-	        HoleCutDiameter.setValue(diameter * 1.5);
-	        HoleCutDepth.setValue(diameter * 1.25);
+            HoleCutDiameter.setValue(diameter * 1.5);
+            HoleCutDepth.setValue(diameter * 1.25);
         }
     }
 }
