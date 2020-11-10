@@ -507,9 +507,39 @@ void Hole::updateHoleCutParams()
         if (ThreadSize.getValue() < 0)
             throw Base::IndexError("Thread size out of range");
 
+        if (holeCutType == "None")
+            return;
+
+        // get diameter and size
+        double diameter = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;
+        std::string threadSize{ ThreadSize.getValueAsString() };
+
+        // we don't update for these settings but we need to set a value for new holes
+        // if we have a cut but the values are zero, we assume it is a new hole
+        // we take in this case the values from the norm ISO 4762 or ISO 10642
+        if (holeCutType == "Counterbore") {
+            //read ISO 4762 values
+            const CutDimensionSet& counter = HoleCutTypeMap.find("ISO 4762")->second;
+            const CounterBoreDimension& dimen = counter.get_bore(threadSize);
+            if (HoleCutDiameter.getValue() == 0.0) {
+                    HoleCutDiameter.setValue(dimen.diameter);
+                    HoleCutDepth.setValue(dimen.depth);
+            }
+            if (HoleCutDepth.getValue() == 0.0)
+                HoleCutDepth.setValue(dimen.depth);
+        }
+        if (holeCutType == "Countersink") {
+            if (HoleCutDiameter.getValue() == 0.0) {
+                //read ISO 10642 values
+                const CutDimensionSet& counter = HoleCutTypeMap.find("ISO 10642")->second;
+                const CounterSinkDimension& dimen = counter.get_sink(threadSize);
+                    HoleCutDiameter.setValue(dimen.diameter);
+                    HoleCutCountersinkAngle.setValue(counter.angle);
+            }
+        }
+
         // cut definition
         if (HoleCutTypeMap.count(holeCutType) ) {
-            std::string threadSize { ThreadSize.getValueAsString() };
             const CutDimensionSet &counter = HoleCutTypeMap.find(holeCutType)->second;
             if (counter.cut_type == CutDimensionSet::Counterbore) {
                 const CounterBoreDimension &dimen = counter.get_bore(threadSize);
@@ -534,18 +564,17 @@ void Hole::updateHoleCutParams()
         }
         // handle legacy types but don’t change user settings for
         // user defined None, Counterbore and Countersink
+        // handle legacy types but don’t change user settings for
+        // user defined None, Counterbore and Countersink
         else if (holeCutType == "Cheesehead (deprecated)") {
-	        double diameter = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;
 	        HoleCutDiameter.setValue(diameter * 1.6);
 	        HoleCutDepth.setValue(diameter * 0.6);
         }
         else if (holeCutType == "Countersink socket screw (deprecated)") {
-	        double diameter = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;
 	        HoleCutDiameter.setValue(diameter * 2.0);
 	        HoleCutDepth.setValue(diameter * 0.0);
         }
         else if (holeCutType == "Cap screw (deprecated)") {
-	        double diameter = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;
 	        HoleCutDiameter.setValue(diameter * 1.5);
 	        HoleCutDepth.setValue(diameter * 1.25);
         }
@@ -708,8 +737,8 @@ void Hole::onChanged(const App::Property *prop)
             HoleCutCountersinkAngle.setReadOnly(false);
         }
         else {
-            HoleCutDiameter.setReadOnly(true);
-            HoleCutDepth.setReadOnly(true);
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(true);
         }
 
@@ -807,8 +836,8 @@ void Hole::onChanged(const App::Property *prop)
             HoleCutCountersinkAngle.setReadOnly(false);
         }
         else { // screw definition
-            HoleCutDiameter.setReadOnly(true);
-            HoleCutDepth.setReadOnly(true);
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(true);
         }
         ProfileBased::onChanged(&HoleCutDiameter);
@@ -1319,6 +1348,8 @@ void Hole::addCounterType(const CutDimensionSet& dimensions)
     default:
         return;
     }
+    // add the collected lists of JSON definitions to the lists
+    // if a name doesn't already exist in the list
     if (std::all_of(list->begin(), list->end(),
                 [name](const std::string &x){ return x != name; }))
         list->push_back(dimensions.name);
