@@ -68,13 +68,13 @@
     <message>
       <location filename="../../Command.cpp" line="320"/>
       <source>Merge point clouds</source>
-      <translation type="unfinished">Merge point clouds</translation>
+      <translation>Споји облак тачака</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="321"/>
       <location filename="../../Command.cpp" line="323"/>
       <source>Merge several point clouds into one</source>
-      <translation type="unfinished">Merge several point clouds into one</translation>
+      <translation>Споји више облака тачака у један</translation>
     </message>
   </context>
   <context>
@@ -106,13 +106,13 @@
     <message>
       <location filename="../../Command.cpp" line="362"/>
       <source>Structured point cloud</source>
-      <translation type="unfinished">Structured point cloud</translation>
+      <translation>Структурни облак тачака</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>
       <location filename="../../Command.cpp" line="365"/>
       <source>Convert points to structured point cloud</source>
-      <translation type="unfinished">Convert points to structured point cloud</translation>
+      <translation>Претвори тачке у структурни облак тачака</translation>
     </message>
   </context>
   <context>
@@ -285,7 +285,7 @@
       <location filename="../../Command.cpp" line="81"/>
       <location filename="../../Command.cpp" line="129"/>
       <source>Point formats</source>
-      <translation type="unfinished">Point formats</translation>
+      <translation>Формати тачке</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="81"/>

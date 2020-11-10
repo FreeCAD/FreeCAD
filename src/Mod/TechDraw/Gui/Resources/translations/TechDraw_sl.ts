@@ -4554,7 +4554,7 @@ s pomočjo podanih X/Y odmikov</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="283"/>
       <source>Position from the 3D origin of the object in the view</source>
-      <translation type="unfinished">Position from the 3D origin of the object in the view</translation>
+      <translation>Položaj od 3D izhodišča predmeta v pogledu</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="286"/>

@@ -211,7 +211,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
       <source>First select a shape that is a compound.</source>
-      <translation type="unfinished">First select a shape that is a compound.</translation>
+      <translation>Önce bileşik olan bir şekil seçin.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
@@ -593,7 +593,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="329"/>
       <source>Torus</source>
       <comment>Attacher reference type</comment>
-      <translation>Simit</translation>
+      <translation>Halka</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="330"/>
@@ -2118,12 +2118,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1306"/>
       <source>Extrude...</source>
-      <translation>Patlat...</translation>
+      <translation>Uzat...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1307"/>
       <source>Extrude a selected sketch</source>
-      <translation>Seçili bir eskiza kalınlık ver</translation>
+      <translation>Seçili bir eskize kalınlık ver</translation>
     </message>
   </context>
   <context>
@@ -2262,7 +2262,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1468"/>
       <source>Mirroring...</source>
-      <translation>Aynalanıyor...</translation>
+      <translation>Aynala...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1469"/>
@@ -2570,7 +2570,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../CommandParametric.cpp" line="222"/>
       <location filename="../../CommandParametric.cpp" line="227"/>
       <source>Torus</source>
-      <translation>Simit</translation>
+      <translation>Halka</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="212"/>
@@ -2989,7 +2989,9 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <source>Creating Extrusion failed.
 
 %1</source>
-      <translation>Ekstrüzyon oluşturulurken hata oluştu</translation>
+      <translation>Ekstrüzyon oluşturma işlemi başarısız oldu.
+
+%1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="542"/>
@@ -3553,13 +3555,13 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
       <location filename="../../DlgPrimitives.ui" line="78"/>
       <location filename="../../DlgPrimitives.cpp" line="475"/>
       <source>Ellipsoid</source>
-      <translation>Elipsoid</translation>
+      <translation>Elipsoit</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="87"/>
       <location filename="../../DlgPrimitives.cpp" line="495"/>
       <source>Torus</source>
-      <translation>Simit</translation>
+      <translation>Halka</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
@@ -3946,7 +3948,9 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>Devir ekseni bağlantısı geçersiz</translation>
+      <translation>Devir ekseni bağlantısı geçersiz.
+
+%1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="289"/>
@@ -3964,7 +3968,9 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation>Dönme başarısız oldu</translation>
+      <translation>Döndürerek katılama başarısız oldu.
+
+%1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="444"/>
@@ -4605,7 +4611,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     <message>
       <location filename="../../TaskAttacher.cpp" line="821"/>
       <source>%1 (add %2)</source>
-      <translation>% 1 (% 2 ekle)</translation>
+      <translation>%1 (%2 ekle)</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="826"/>

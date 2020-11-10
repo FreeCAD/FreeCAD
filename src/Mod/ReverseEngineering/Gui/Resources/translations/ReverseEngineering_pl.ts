@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="380"/>
       <source>Mesh segmentation...</source>
-      <translation type="unfinished">Mesh segmentation...</translation>
+      <translation>Segmentacja siatki...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="381"/>
@@ -389,7 +389,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="70"/>
       <source>Distance to plane</source>
-      <translation type="unfinished">Distance to plane</translation>
+      <translation>Odległość do płaszczyzny</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="87"/>
