@@ -1964,7 +1964,10 @@ void ViewProviderLink::onChanged(const App::Property* prop) {
                 childVp->setPropertyPrefix("ChildViewProvider.");
                 childVp->Visibility.setValue(getObject()->Visibility.getValue());
                 childVp->attach(getObject());
-                childVp->updateView();
+                if (!isRestoring())
+                    childVp->updateView();
+                else
+                    childVp->setStatus(ViewStatus::isRestoring, true);
                 childVp->setActiveMode();
                 if(pcModeSwitch->getNumChildren()>1){
                     childVpLink = LinkInfo::get(childVp,0);
@@ -2310,8 +2313,10 @@ void ViewProviderLink::finishRestoring() {
     applyMaterial();
     applyColors();
 
-    if(childVp)
+    if(childVp) {
+        childVp->setStatus(ViewStatus::isRestoring, false);
         childVp->finishRestoring();
+    }
 
     inherited::finishRestoring();
 }
