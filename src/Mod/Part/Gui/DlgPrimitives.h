@@ -112,11 +112,8 @@ public:
     QString toPlacement() const;
 
 private Q_SLOTS:
-    void onChangePosRot(QWidget*);
+    void onChangePosRot();
     void on_viewPositionButton_clicked();
-
-private:
-    void connectSignalMapper(QWidget* sender, const char* signal, QSignalMapper* mapper);
 
 private:
     static void pickCallback(void * ud, SoEventCallback * n);
