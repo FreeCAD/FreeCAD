@@ -141,8 +141,8 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
         ui->HoleCutCountersinkAngle->setEnabled(true);
     }
     else {
-        ui->HoleCutDiameter->setEnabled(false);
-        ui->HoleCutDepth->setEnabled(false);
+        ui->HoleCutDiameter->setEnabled(true);
+        ui->HoleCutDepth->setEnabled(true);
         ui->HoleCutCountersinkAngle->setEnabled(false);
     }
 
