@@ -207,9 +207,9 @@ void Geometry::Save(Base::Writer &writer) const
 {
     if( extensions.size()>0 ) {
 
-        writer.incInd();
-
         writer.Stream() << writer.ind() << "<GeoExtensions count=\"" << extensions.size() << "\">" << std::endl;
+
+        writer.incInd();
 
         for(auto att:extensions) {
             att->Save(writer);
