@@ -387,7 +387,7 @@ def select(op):
     opsel['Custom'] = customselect
     opsel['TurnFace'] = turnselect
     opsel['TurnProfile'] = turnselect
-    opsel['TurnPart'] = turnselect
+    opsel['TurnPartoff'] = turnselect
     opsel['TurnRough'] = turnselect
     return opsel[op]
 
