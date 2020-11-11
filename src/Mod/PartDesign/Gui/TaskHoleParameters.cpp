@@ -70,9 +70,9 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->label_Angle->setVisible(false);
 
     ui->ThreadType->addItem(tr("None"), QByteArray("None"));
-    ui->ThreadType->addItem(tr("ISO metric coarse profile"), QByteArray("ISO"));
+    ui->ThreadType->addItem(tr("ISO metric regular profile"), QByteArray("ISO"));
     ui->ThreadType->addItem(tr("ISO metric fine profile"), QByteArray("ISO"));
-    ui->ThreadType->addItem(tr("UTS coarse profile"), QByteArray("UTS"));
+    ui->ThreadType->addItem(tr("UTS regular profile"), QByteArray("UTS"));
     ui->ThreadType->addItem(tr("UTS fine profile"), QByteArray("UTS"));
     ui->ThreadType->addItem(tr("UTS extra fine profile"), QByteArray("UTS"));
 
