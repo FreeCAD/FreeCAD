@@ -519,7 +519,7 @@ void Hole::updateHoleCutParams()
         // we take in this case the values from the norm ISO 4762 or ISO 10642
         if (holeCutType == "Counterbore") {
             //read ISO 4762 values
-            const CutDimensionSet& counter = HoleCutTypeMap.find("ISO 4762")->second;
+            const CutDimensionSet& counter = find_cutDimensionSet(threadType, "ISO 4762");
             const CounterBoreDimension& dimen = counter.get_bore(threadSize);
             if (HoleCutDiameter.getValue() == 0.0) {
                 HoleCutDiameter.setValue(dimen.diameter);
@@ -531,7 +531,7 @@ void Hole::updateHoleCutParams()
         else if (holeCutType == "Countersink") {
             if (HoleCutDiameter.getValue() == 0.0) {
                 //read ISO 10642 values
-                const CutDimensionSet& counter = HoleCutTypeMap.find("ISO 10642")->second;
+                const CutDimensionSet& counter = find_cutDimensionSet(threadType, "ISO 10642");
                 const CounterSinkDimension& dimen = counter.get_sink(threadSize);
                 HoleCutDiameter.setValue(dimen.diameter);
                 HoleCutCountersinkAngle.setValue(counter.angle);
@@ -539,8 +539,9 @@ void Hole::updateHoleCutParams()
         }
 
         // cut definition
-        if (HoleCutTypeMap.count(holeCutType) ) {
-            const CutDimensionSet &counter = HoleCutTypeMap.find(holeCutType)->second;
+        CutDimensionKey key { threadType, holeCutType };
+        if (HoleCutTypeMap.count(key)) {
+            const CutDimensionSet &counter = find_cutDimensionSet(key);
             if (counter.cut_type == CutDimensionSet::Counterbore) {
                 const CounterBoreDimension &dimen = counter.get_bore(threadSize);
                 if (dimen.thread == "None") {
@@ -1048,14 +1049,15 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             return new App::DocumentObjectExecReturn("Hole: Invalid hole depth");
 
         BRepBuilderAPI_MakeWire mkWire;
-        std::string holeCutType = HoleCutType.getValueAsString();
+        const std::string holeCutType = HoleCutType.getValueAsString();
+        const std::string threadType = ThreadType.getValueAsString();
         bool isCountersink = (holeCutType == "Countersink" ||
               holeCutType == "Countersink socket screw (deprecated)" ||
-              isDynamicCountersink(holeCutType));
+              isDynamicCountersink(threadType, holeCutType));
         bool isCounterbore = (holeCutType == "Counterbore" ||
               holeCutType == "Cheesehead (deprecated)" ||
               holeCutType == "Cap screw (deprecated)" ||
-              isDynamicCounterbore(holeCutType));
+              isDynamicCounterbore(threadType, holeCutType));
         double hasTaperedAngle = Tapered.getValue() ? Base::toRadians( TaperedAngle.getValue() ) : Base::toRadians(90.0);
         double radiusBottom = Diameter.getValue() / 2.0 - length * 1.0 / tan( hasTaperedAngle );
         double radius = Diameter.getValue() / 2.0;
@@ -1333,16 +1335,19 @@ App::DocumentObjectExecReturn *Hole::execute(void)
     }
 }
 
-void Hole::addCounterType(const CutDimensionSet& dimensions)
+void Hole::addCutType(const CutDimensionSet& dimensions)
 {
-    HoleCutTypeMap.emplace(dimensions.name, dimensions);
+    const CutDimensionSet::ThreadType thread = dimensions.thread_type;
     const std::string &name = dimensions.name;
+
     std::vector<std::string> *list;
-    switch(dimensions.thread_type) {
+    switch(thread) {
     case CutDimensionSet::Metric:
+        HoleCutTypeMap.emplace(CutDimensionKey("ISOMetricProfile", name), dimensions);
         list = &HoleCutType_ISOmetric_Enums;
         break;
     case CutDimensionSet::MetricFine:
+        HoleCutTypeMap.emplace(CutDimensionKey("ISOMetricFineProfile", name), dimensions);
         list = &HoleCutType_ISOmetricfine_Enums;
         break;
     default:
@@ -1352,19 +1357,23 @@ void Hole::addCounterType(const CutDimensionSet& dimensions)
     // if a name doesn't already exist in the list
     if (std::all_of(list->begin(), list->end(),
                 [name](const std::string &x){ return x != name; }))
-        list->push_back(dimensions.name);
+        list->push_back(name);
 }
 
-bool Hole::isDynamicCounterbore(const std::string &holeCutType)
+bool Hole::isDynamicCounterbore(const std::string &thread,
+      const std::string &holeCutType)
 {
-    return HoleCutTypeMap.count(holeCutType) &&
-        HoleCutTypeMap.find(holeCutType)->second.cut_type == CutDimensionSet::Counterbore;
+    CutDimensionKey key { thread, holeCutType };
+    return HoleCutTypeMap.count(key) &&
+        HoleCutTypeMap.find(key)->second.cut_type == CutDimensionSet::Counterbore;
 }
 
-bool Hole::isDynamicCountersink(const std::string &holeCutType)
+bool Hole::isDynamicCountersink(const std::string &thread,
+      const std::string &holeCutType)
 {
-    return HoleCutTypeMap.count(holeCutType) &&
-        HoleCutTypeMap.find(holeCutType)->second.cut_type == CutDimensionSet::Countersink;
+    CutDimensionKey key { thread, holeCutType };
+    return HoleCutTypeMap.count(key) &&
+        HoleCutTypeMap.find(key)->second.cut_type == CutDimensionSet::Countersink;
 }
 
 /*
@@ -1373,6 +1382,27 @@ bool Hole::isDynamicCountersink(const std::string &holeCutType)
 
 const Hole::CounterBoreDimension Hole::CounterBoreDimension::nothing { "None", 0.0, 0.0 };
 const Hole::CounterSinkDimension Hole::CounterSinkDimension::nothing { "None", 0.0 };
+
+Hole::CutDimensionKey::CutDimensionKey(const std::string &t, const std::string &c) :
+    thread_type { t }, cut_name { c }
+{
+}
+
+bool Hole::CutDimensionKey::operator<(const CutDimensionKey &b) const
+{
+    return thread_type < b.thread_type ||
+                         (thread_type == b.thread_type && cut_name < b.cut_name);
+}
+
+const Hole::CutDimensionSet& Hole::find_cutDimensionSet(const std::string &t,
+      const std::string &c) {
+    return HoleCutTypeMap.find(CutDimensionKey(t, c))->second;
+}
+
+const Hole::CutDimensionSet& Hole::find_cutDimensionSet(const CutDimensionKey &k)
+{
+    return HoleCutTypeMap.find(k)->second;
+}
 
 Hole::CutDimensionSet::CutDimensionSet(const std::string &nme,
       std::vector<CounterBoreDimension> &&d, CutType cut, ThreadType thread) :
@@ -1463,13 +1493,12 @@ void Hole::readCutDefinitions()
         std::vector<::Base::FileInfo> files { ::Base::FileInfo(dir).getDirectoryContent() };
         for (const auto &f : files) {
             if (f.extension() == "json") {
-                //std::cerr << "reading: " << f.filePath() << "\n";
                 try {
                     std::ifstream input(f.filePath());
                     nlohmann::json j;
                     input >> j;
                     CutDimensionSet screwtype = j.get<CutDimensionSet>();
-                    addCounterType(screwtype);
+                    addCutType(screwtype);
                 }
                 catch(std::exception &e) {
                     std::cerr << "Failed reading ‘" << f.filePath() << "’ with: "<< e.what() << "\n";
