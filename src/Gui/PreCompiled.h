@@ -28,7 +28,9 @@
 
 #ifdef FC_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #endif
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
