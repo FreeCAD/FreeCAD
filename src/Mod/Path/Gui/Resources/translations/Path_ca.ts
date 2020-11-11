@@ -89,6 +89,11 @@
       <translation>Ignora les àrees que passen per davall d'una profunditat especificada.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="128"/>
+      <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
+      <translation>Planar: pla, escaneig de la superfície 3D. Rotacional: escaneig rotacional del 4t eix.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="142"/>
       <source>Depth used to identify waste areas to ignore.</source>
       <translation>Profunditat utilitzada per a identificar àmplies àrees a ignorar.</translation>
@@ -97,11 +102,6 @@
       <location filename="../../../PathScripts/PathSurface.py" line="143"/>
       <source>Cut through waste to depth at model edge, releasing the model.</source>
       <translation>Retalla els residus fins al fons en la vora del model, alliberant-lo.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="128"/>
-      <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
-      <translation>Planar: pla, escaneig de la superfície 3D. Rotacional: escaneig rotacional del 4t eix.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="129"/>
@@ -242,11 +242,6 @@
       <location filename="PathCopy.py" line="45"/>
       <source>The path to be copied</source>
       <translation>El camí que es copia</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="56"/>
-      <source>The base geometry of this toolpath</source>
-      <translation>La geometria base d'aquesta trajectòria</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="70"/>
@@ -424,14 +419,14 @@
       <translation>Controla la manera en què l'eina es retrau. Per defecte=G98</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDrilling.py" line="72"/>
-      <source>The height where feed starts and height during retract tool when path is finished</source>
-      <translation>L'alçària a què s'inicia l'avanç i l'alçària durant la retirada de l'eina quan el camí està finalitzat</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="73"/>
       <source>Controls how tool retracts Default=G99</source>
       <translation>Controla la manera en què l'eina es retrau. Per defecte=G99</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDrilling.py" line="72"/>
+      <source>The height where feed starts and height during retract tool when path is finished</source>
+      <translation>L'alçària a què s'inicia l'avanç i l'alçària durant la retirada de l'eina quan el camí està finalitzat</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="75"/>
@@ -589,6 +584,11 @@
       <translation>Desplaçament addicional que s'aplica a l'operació. La direcció és dependent de l'operació.</translation>
     </message>
     <message>
+      <location filename="PathPocket.py" line="55"/>
+      <source>The library to use to generate the path</source>
+      <translation>La biblioteca que s'utilitza per a generar el camí</translation>
+    </message>
+    <message>
       <location filename="PathPocket.py" line="78"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Comença a foradar al centre o al límit</translation>
@@ -679,9 +679,9 @@
       <translation>Marqueu «cert», si s'utilitza compensació de radi de l'eina de tall</translation>
     </message>
     <message>
-      <location filename="PathPocket.py" line="55"/>
-      <source>The library to use to generate the path</source>
-      <translation>La biblioteca que s'utilitza per a generar el camí</translation>
+      <location filename="PathProfileEdges.py" line="56"/>
+      <source>The base geometry of this toolpath</source>
+      <translation>La geometria base d'aquesta trajectòria</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="47"/>
@@ -940,14 +940,14 @@
       <translation>L'angle de tall %.2f no és vàlid, ha de ser &gt;0° i &lt;=180°</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="808"/>
-      <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
-      <translation>L'angle de tall %.2f no és vàlid, ha de ser &gt;0Â° i &lt;=180Â°</translation>
-    </message>
-    <message>
       <location filename="PathUtils.py" line="767"/>
       <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
       <translation>L'angle de tall (%.2f) dóna com a resultat una longitud negativa de la punta de l'eina</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathUtils.py" line="808"/>
+      <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
+      <translation>L'angle de tall %.2f no és vàlid, ha de ser &gt;0Â° i &lt;=180Â°</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="232"/>
@@ -1441,6 +1441,16 @@
   <context>
     <name>PathFace</name>
     <message>
+      <location filename="PathMillFace.py" line="350"/>
+      <source>Face</source>
+      <translation>Cara</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathMillFaceGui.py" line="44"/>
+      <source>Create a Facing Operation from a model or face</source>
+      <translation>Crea una operació de generació de cares a partir d'un model o una cara</translation>
+    </message>
+    <message>
       <location filename="PathMillFace.py" line="171"/>
       <source>Generating toolpath with libarea offsets.
 </source>
@@ -1450,16 +1460,6 @@
       <location filename="PathMillFace.py" line="305"/>
       <source>Pick Start Point</source>
       <translation>Trieu el punt d'inici</translation>
-    </message>
-    <message>
-      <location filename="PathMillFace.py" line="350"/>
-      <source>Face</source>
-      <translation>Cara</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathMillFaceGui.py" line="44"/>
-      <source>Create a Facing Operation from a model or face</source>
-      <translation>Crea una operació de generació de cares a partir d'un model o una cara</translation>
     </message>
   </context>
   <context>
@@ -1536,6 +1536,11 @@
       <translation>La direcció dels talls circulars, en sentit horari (CW) o antihorari (CCW)</translation>
     </message>
     <message>
+      <location filename="PathHelix.py" line="52"/>
+      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
+      <translation>La direcció dels talls circulars, en sentit horari o antihorari</translation>
+    </message>
+    <message>
       <location filename="PathHelix.py" line="55"/>
       <source>Start cutting from the inside or outside</source>
       <translation>Inicia el tall des de l'interior o l'exterior</translation>
@@ -1549,11 +1554,6 @@
       <location filename="../../../PathScripts/PathHelix.py" line="76"/>
       <source>Starting Radius</source>
       <translation>Radi inicial</translation>
-    </message>
-    <message>
-      <location filename="PathHelix.py" line="52"/>
-      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
-      <translation>La direcció dels talls circulars, en sentit horari o antihorari</translation>
     </message>
   </context>
   <context>
@@ -1992,11 +1992,6 @@ Si és necessari establir la profunditat final de forma manual, seleccioneu una 
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
-      <source>Profile based on face or faces</source>
-      <translation>Perfil basat en una o més cares</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
       <source>Profile</source>
       <translation>Perfil</translation>
@@ -2005,6 +2000,11 @@ Si és necessari establir la profunditat final de forma manual, seleccioneu una 
       <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
       <translation type="unfinished">Profile entire model, selected face(s) or selected edge(s)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
+      <source>Profile based on face or faces</source>
+      <translation>Perfil basat en una o més cares</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="90"/>
@@ -3105,16 +3105,6 @@ Si és necessari establir la profunditat final de forma manual, seleccioneu una 
   <context>
     <name>Path_Dressup</name>
     <message>
-      <location filename="PathDressup.py" line="98"/>
-      <source>Dress-up</source>
-      <translation>Aspecte</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="100"/>
-      <source>Creates a Path Dess-up object from a selected path</source>
-      <translation>Crea un objecte aspecte del camí a partir d'un camí seleccionat</translation>
-    </message>
-    <message>
       <location filename="PathDressup.py" line="110"/>
       <source>Please select one path object
 </source>
@@ -3130,6 +3120,16 @@ Si és necessari establir la profunditat final de forma manual, seleccioneu una 
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="325"/>
       <source>Please select a Path object</source>
       <translation>Seleccioneu un objecte camí</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="98"/>
+      <source>Dress-up</source>
+      <translation>Aspecte</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="100"/>
+      <source>Creates a Path Dess-up object from a selected path</source>
+      <translation>Crea un objecte aspecte del camí a partir d'un camí seleccionat</translation>
     </message>
   </context>
   <context>
@@ -4028,6 +4028,12 @@ Si és necessari establir la profunditat final de forma manual, seleccioneu una 
   <context>
     <name>Path_SimpleCopy</name>
     <message>
+      <location filename="PathSimpleCopy.py" line="59"/>
+      <source>Please select exactly one path object
+</source>
+      <translation>Seleccioneu exactament un objecte de tipus camí</translation>
+    </message>
+    <message>
       <location filename="PathSimpleCopy.py" line="62"/>
       <source>Simple Copy</source>
       <translation>Còpia simple</translation>
@@ -4041,12 +4047,6 @@ Si és necessari establir la profunditat final de forma manual, seleccioneu una 
       <location filename="../../../PathScripts/PathSimpleCopy.py" line="61"/>
       <source>Please select exactly one path object</source>
       <translation>Si us plau, seleccioneu exactament un objecte de camí</translation>
-    </message>
-    <message>
-      <location filename="PathSimpleCopy.py" line="59"/>
-      <source>Please select exactly one path object
-</source>
-      <translation>Seleccioneu exactament un objecte de tipus camí</translation>
     </message>
   </context>
   <context>
@@ -4078,6 +4078,11 @@ Si és necessari establir la profunditat final de forma manual, seleccioneu una 
   <context>
     <name>Path_ToolController</name>
     <message>
+      <location filename="PathToolController.py" line="132"/>
+      <source>Tool Number to Load</source>
+      <translation>Número d'eina per carregar</translation>
+    </message>
+    <message>
       <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
       <translation>Afig un controlador d'eina a la tasca</translation>
@@ -4086,11 +4091,6 @@ Si és necessari establir la profunditat final de forma manual, seleccioneu una 
       <location filename="../../../PathScripts/PathToolControllerGui.py" line="123"/>
       <source>Add Tool Controller</source>
       <translation>Afig un controlador d'eina</translation>
-    </message>
-    <message>
-      <location filename="PathToolController.py" line="132"/>
-      <source>Tool Number to Load</source>
-      <translation>Número d'eina per carregar</translation>
     </message>
   </context>
   <context>
@@ -4176,9 +4176,44 @@ Si és necessari establir la profunditat final de forma manual, seleccioneu una 
       <translation>Desa la llibreria d'eines de bits</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
+      <source>Tooltable JSON (*.json)</source>
+      <translation>Taula d'eines JSON (*.json)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
+      <source>HeeksCAD tooltable (*.tooltable)</source>
+      <translation>Taula d'eines HeeksCAD (*.tooltable)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
+      <source>LinuxCNC tooltable (*.tbl)</source>
+      <translation>Taula d'eines LinuxCNC (*.tbl)</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
       <source>Open tooltable</source>
       <translation>Obri la taula d'eines</translation>
+    </message>
+    <message>
+      <location filename="TooltableEditor.py" line="610"/>
+      <source>Save tooltable</source>
+      <translation>Guarda la taula d'eines</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
+      <source>Add New Tool Table</source>
+      <translation>Afegeix una taula d'eines nova</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
+      <source>Delete Selected Tool Table</source>
+      <translation>Esborra la taula d'eines seleccionada</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
+      <source>Rename Selected Tool Table</source>
+      <translation>Canvia el nom de la taula d'eines seleccionada</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="388"/>
@@ -4392,11 +4427,6 @@ Si és necessari establir la profunditat final de forma manual, seleccioneu una 
     </message>
     <message>
       <location filename="TooltableEditor.py" line="610"/>
-      <source>Save tooltable</source>
-      <translation>Guarda la taula d'eines</translation>
-    </message>
-    <message>
-      <location filename="TooltableEditor.py" line="610"/>
       <source>Tooltable XML (*.xml)</source>
       <translation>Taula d'eines XML (*.xml)</translation>
     </message>
@@ -4409,36 +4439,6 @@ Si és necessari establir la profunditat final de forma manual, seleccioneu una 
       <location filename="TooltableEditor.py" line="653"/>
       <source>Object doesn't have a tooltable property</source>
       <translation>L'objecte no té la propietat de taula d'eines</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
-      <source>Add New Tool Table</source>
-      <translation>Afegeix una taula d'eines nova</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
-      <source>Delete Selected Tool Table</source>
-      <translation>Esborra la taula d'eines seleccionada</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
-      <source>Rename Selected Tool Table</source>
-      <translation>Canvia el nom de la taula d'eines seleccionada</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
-      <source>Tooltable JSON (*.json)</source>
-      <translation>Taula d'eines JSON (*.json)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
-      <source>HeeksCAD tooltable (*.tooltable)</source>
-      <translation>Taula d'eines HeeksCAD (*.tooltable)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
-      <source>LinuxCNC tooltable (*.tbl)</source>
-      <translation>Taula d'eines LinuxCNC (*.tbl)</translation>
     </message>
     <message>
       <location filename="PathToolLibraryManager.py" line="514"/>

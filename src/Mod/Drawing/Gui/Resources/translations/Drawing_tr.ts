@@ -430,7 +430,7 @@ Devam etmek istiyor musun?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="568"/>
       <source>Show smooth lines</source>
-      <translation>Düzgünleştirilmiş çizgileri göster</translation>
+      <translation>Düzgün çizgileri göster</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="579"/>
@@ -652,7 +652,7 @@ Devam etmek istiyor musun?</translation>
     <message>
       <location filename="../../Command.cpp" line="234"/>
       <source>Insert new %1%2 %3 drawing</source>
-      <translation>Yeni% 1% 2% 3 çizim ekle</translation>
+      <translation>Yeni %1%2 %3 çizim ekle</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="241"/>
@@ -662,7 +662,7 @@ Devam etmek istiyor musun?</translation>
     <message>
       <location filename="../../Command.cpp" line="247"/>
       <source>Insert new %1%2 %3 (%4) drawing</source>
-      <translation>Yeni %1%2 %3 çizimi Ekle</translation>
+      <translation>Yeni %1%2 %3 (%4) çizim ekle</translation>
     </message>
   </context>
   <context>

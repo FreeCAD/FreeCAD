@@ -204,12 +204,12 @@
       <translation>A direção normal de extrusão deste objeto (mantenha (0,0,0) para normal automática)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1242"/>
+      <location filename="../../ArchSectionPlane.py" line="1257"/>
       <source>The linked object</source>
       <translation>O objeto ligado</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1252"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <source>The line width of the rendered objects</source>
       <translation>A espessura da linha dos objetos renderizados</translation>
     </message>
@@ -594,27 +594,27 @@
       <translation>Mostrar o corte na vista 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1244"/>
+      <location filename="../../ArchSectionPlane.py" line="1259"/>
       <source>The rendering mode to use</source>
       <translation>O modo de renderização a ser usado</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1248"/>
+      <location filename="../../ArchSectionPlane.py" line="1263"/>
       <source>If cut geometry is shown or not</source>
       <translation>Se a geometria cortada é mostrada ou não</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1250"/>
+      <location filename="../../ArchSectionPlane.py" line="1265"/>
       <source>If cut geometry is filled or not</source>
       <translation>Se a geometria cortada é preenchida ou não</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1255"/>
+      <location filename="../../ArchSectionPlane.py" line="1270"/>
       <source>The size of the texts inside this object</source>
       <translation>O tamanho dos textos dentro deste objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1258"/>
+      <location filename="../../ArchSectionPlane.py" line="1273"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Se marcado, objetos são mostrados independente de estarem visível no modelo 3D</translation>
     </message>
@@ -1039,12 +1039,12 @@
       <translation>A lista de espessuras das camadas</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1260"/>
+      <location filename="../../ArchSectionPlane.py" line="1275"/>
       <source>The line color of the projected objects</source>
       <translation>A cor da linha dos objetos projetados</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1262"/>
+      <location filename="../../ArchSectionPlane.py" line="1277"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>A cor das faces cortadas (se ativado)</translation>
     </message>
@@ -1746,32 +1746,32 @@
     <message>
       <location filename="../../ArchCurtainWall.py" line="233"/>
       <source>The number of diagonal mullions</source>
-      <translation type="unfinished">The number of diagonal mullions</translation>
+      <translation>O número de mainéis diagonais</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="237"/>
       <source>The size of the diagonal mullions, if any, if no profile is used</source>
-      <translation type="unfinished">The size of the diagonal mullions, if any, if no profile is used</translation>
+      <translation>O tamanho dos mainéis diagonais, se existirem e se nenhum perfil for usado</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="241"/>
       <source>A profile for diagonal mullions, if any (disables horizontal mullion size)</source>
-      <translation type="unfinished">A profile for diagonal mullions, if any (disables horizontal mullion size)</translation>
+      <translation>Um perfil para mainéis diagonais, se existirem (desativa o tamanho de mainel horizontal)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="244"/>
       <source>The number of panels</source>
-      <translation type="unfinished">The number of panels</translation>
+      <translation>Número de painéis</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="248"/>
       <source>The thickness of the panels</source>
-      <translation type="unfinished">The thickness of the panels</translation>
+      <translation>Espessura dos painéis</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="252"/>
       <source>Swaps horizontal and vertical lines</source>
-      <translation type="unfinished">Swaps horizontal and vertical lines</translation>
+      <translation>Troca as linhas horizontais e verticais</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="255"/>
@@ -3209,37 +3209,37 @@ Floor creation aborted.</source>
       <translation>Criar referência externa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1479"/>
+      <location filename="../../ArchSectionPlane.py" line="1494"/>
       <source>Section plane settings</source>
       <translation>Configurações do plano de corte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1484"/>
+      <location filename="../../ArchSectionPlane.py" line="1499"/>
       <source>Objects seen by this section plane:</source>
       <translation>Objetos vistos por este plano de corte:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1485"/>
+      <location filename="../../ArchSectionPlane.py" line="1500"/>
       <source>Section plane placement:</source>
       <translation>Posição do plano de corte:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1486"/>
+      <location filename="../../ArchSectionPlane.py" line="1501"/>
       <source>Rotate X</source>
       <translation>Rodar X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1488"/>
+      <location filename="../../ArchSectionPlane.py" line="1503"/>
       <source>Rotate Y</source>
       <translation>Rodar Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1490"/>
+      <location filename="../../ArchSectionPlane.py" line="1505"/>
       <source>Rotate Z</source>
       <translation>Rodar Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1492"/>
+      <location filename="../../ArchSectionPlane.py" line="1507"/>
       <source>Resize</source>
       <translation>Redimensionar</translation>
     </message>
@@ -3393,42 +3393,42 @@ Site and Building objects will be removed from the selection.
 You can change that in the preferences.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1481"/>
+      <location filename="../../ArchSectionPlane.py" line="1496"/>
       <source>Remove highlighted objects from the list above</source>
       <translation type="unfinished">Remove highlighted objects from the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1482"/>
+      <location filename="../../ArchSectionPlane.py" line="1497"/>
       <source>Add selected</source>
       <translation>Adicionar selecionados</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1483"/>
+      <location filename="../../ArchSectionPlane.py" line="1498"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1487"/>
+      <location filename="../../ArchSectionPlane.py" line="1502"/>
       <source>Rotates the plane along the X axis</source>
       <translation type="unfinished">Rotates the plane along the X axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1489"/>
+      <location filename="../../ArchSectionPlane.py" line="1504"/>
       <source>Rotates the plane along the Y axis</source>
       <translation type="unfinished">Rotates the plane along the Y axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1491"/>
+      <location filename="../../ArchSectionPlane.py" line="1506"/>
       <source>Rotates the plane along the Z axis</source>
       <translation type="unfinished">Rotates the plane along the Z axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1493"/>
+      <location filename="../../ArchSectionPlane.py" line="1508"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1495"/>
+      <location filename="../../ArchSectionPlane.py" line="1510"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation type="unfinished">Centers the plane on the objects in the list above</translation>
     </message>

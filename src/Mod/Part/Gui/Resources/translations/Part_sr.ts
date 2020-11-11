@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
       <source>No object named {name}</source>
-      <translation type="unfinished">No object named {name}</translation>
+      <translation>Непостојећи објекат именован {име}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="98"/>
@@ -168,7 +168,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Лош одабир</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
@@ -216,7 +216,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Лош одабир</translation>
     </message>
   </context>
   <context>
@@ -224,7 +224,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect objects</source>
-      <translation type="unfinished">Connect objects</translation>
+      <translation>Повежи објекте</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
@@ -276,7 +276,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Лош одабир</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
@@ -345,7 +345,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Лош одабир</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -876,7 +876,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to edge</translation>
+      <translation>Нормално на ивицу</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="231"/>
@@ -888,7 +888,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="233"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Binormal</translation>
+      <translation>Бинормала</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="234"/>
@@ -1090,7 +1090,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="146"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Normal to edge</translation>
+      <translation>Нормално на ивицу</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="147"/>
@@ -1128,7 +1128,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="158"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Concentric</translation>
+      <translation>Концентрично</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="159"/>
@@ -1152,7 +1152,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="164"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Plane by 3 points</translation>
+      <translation>Раван са 3 тачке</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="165"/>
@@ -1176,7 +1176,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Folding</translation>
+      <translation>Савијање</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="171"/>
@@ -1325,7 +1325,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Concentric</translation>
+      <translation>Концентрично</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="84"/>
@@ -1373,7 +1373,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="95"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Folding</translation>
+      <translation>Савијање</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="96"/>
@@ -2280,7 +2280,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1623"/>
       <source>3D Offset...</source>
-      <translation type="unfinished">3D Offset...</translation>
+      <translation>3Д одступање...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1624"/>
@@ -2298,7 +2298,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1673"/>
       <source>2D Offset...</source>
-      <translation type="unfinished">2D Offset...</translation>
+      <translation>2Д одступање...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1674"/>
@@ -2945,7 +2945,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="264"/>
       <source>Symmetric</source>
-      <translation type="unfinished">Symmetric</translation>
+      <translation>Симетрично</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="276"/>
@@ -3127,7 +3127,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Edges to chamfer</source>
-      <translation type="unfinished">Edges to chamfer</translation>
+      <translation>Ивице за обарање</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
@@ -3877,7 +3877,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="111"/>
       <source>Revolution axis</source>
-      <translation type="unfinished">Revolution axis</translation>
+      <translation>Оса обртања</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="119"/>
@@ -3929,7 +3929,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="328"/>
       <source>Symmetric angle</source>
-      <translation type="unfinished">Symmetric angle</translation>
+      <translation>Симетрични угао</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="173"/>
@@ -4003,7 +4003,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="90"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Постављање геометријских облика у равни&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Дефинише максимално одступање постављених геометријских облика на површину. Што је вредност мања, то је брзина рендеровања мања што доводи до повећаних детаља/резолуције.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="93"/>
@@ -4142,7 +4142,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
       <source>Random shape color</source>
-      <translation type="unfinished">Random shape color</translation>
+      <translation>Насумична боја облика</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
@@ -4191,12 +4191,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="80"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Доступни профили</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="81"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Изабрани профили</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
@@ -4259,7 +4259,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../Mirroring.ui" line="67"/>
       <source>Base point</source>
-      <translation type="unfinished">Base point</translation>
+      <translation>Базна тачка</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="73"/>
@@ -4389,12 +4389,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="136"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Доступни профили</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Изабрани профили</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
@@ -4805,7 +4805,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="68"/>
       <source>Planar</source>
-      <translation type="unfinished">Planar</translation>
+      <translation>Раванско</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="75"/>
@@ -4887,7 +4887,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="172"/>
       <source>Simple</source>
-      <translation type="unfinished">Simple</translation>
+      <translation>Једноставно</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="177"/>
@@ -5381,7 +5381,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../ViewProviderSpline.cpp" line="81"/>
       <source>Show control points</source>
-      <translation type="unfinished">Show control points</translation>
+      <translation>Прикажи контролне тачке</translation>
     </message>
   </context>
   <context>
@@ -5424,7 +5424,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Join</source>
-      <translation type="unfinished">Join</translation>
+      <translation>Придружи</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>

@@ -1285,7 +1285,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="37"/>
       <source>CalculiX</source>
-      <translation type="unfinished">CalculiX</translation>
+      <translation>CalculiX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="51"/>
@@ -1325,7 +1325,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="223"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Statisk</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="232"/>
@@ -1837,7 +1837,7 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="67"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Statisk</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="77"/>
@@ -2051,17 +2051,17 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="30"/>
       <source>Y displacement</source>
-      <translation type="unfinished">Y displacement</translation>
+      <translation>Y förskjutning</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="37"/>
       <source>X displacement</source>
-      <translation type="unfinished">X displacement</translation>
+      <translation>X förskjutning</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="44"/>
       <source>Z displacement</source>
-      <translation type="unfinished">Z displacement</translation>
+      <translation>Z förskjutning</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="51"/>
@@ -2071,7 +2071,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="61"/>
       <source>Von Mises stress</source>
-      <translation type="unfinished">Von Mises stress</translation>
+      <translation>Von Mises effektivspänning</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="68"/>
@@ -2359,7 +2359,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="288"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="330"/>
       <source>Free</source>
-      <translation type="unfinished">Free</translation>
+      <translation>Fri</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="111"/>
@@ -2369,17 +2369,17 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="295"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="340"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Fixerad</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
       <source>Displacement y</source>
-      <translation type="unfinished">Displacement y</translation>
+      <translation>Förflyttning y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
       <source>Displacement z</source>
-      <translation type="unfinished">Displacement z</translation>
+      <translation>Förflyttning z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
@@ -2389,17 +2389,17 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>
       <source>Rotation x</source>
-      <translation type="unfinished">Rotation x</translation>
+      <translation>Rotation x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="279"/>
       <source>Rotation y</source>
-      <translation type="unfinished">Rotation y</translation>
+      <translation>Rotation y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="318"/>
       <source>Rotation z</source>
-      <translation type="unfinished">Rotation z</translation>
+      <translation>Rotation z</translation>
     </message>
   </context>
   <context>
@@ -2458,7 +2458,7 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="32"/>
       <source>Pressure</source>
-      <translation type="unfinished">Pressure</translation>
+      <translation>Tryck</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="39"/>

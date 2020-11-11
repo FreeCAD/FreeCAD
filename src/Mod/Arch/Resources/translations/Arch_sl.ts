@@ -204,12 +204,12 @@
       <translation>Normala smeri izrivanja tega predmeta (pustite (0,0,0) za samodejno smer)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1242"/>
+      <location filename="../../ArchSectionPlane.py" line="1257"/>
       <source>The linked object</source>
       <translation>Povezani predmet</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1252"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <source>The line width of the rendered objects</source>
       <translation>Debelina črte izrisanih predmetov</translation>
     </message>
@@ -594,27 +594,27 @@
       <translation>Prikaži prerez v pogledu 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1244"/>
+      <location filename="../../ArchSectionPlane.py" line="1259"/>
       <source>The rendering mode to use</source>
       <translation>Uporabljen način prikaza</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1248"/>
+      <location filename="../../ArchSectionPlane.py" line="1263"/>
       <source>If cut geometry is shown or not</source>
       <translation>Če je rezna geometrija prikazana ali ne</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1250"/>
+      <location filename="../../ArchSectionPlane.py" line="1265"/>
       <source>If cut geometry is filled or not</source>
       <translation>Če je rezna geometrija polnjena ali ne</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1255"/>
+      <location filename="../../ArchSectionPlane.py" line="1270"/>
       <source>The size of the texts inside this object</source>
       <translation>Velikost pisave znotraj predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1258"/>
+      <location filename="../../ArchSectionPlane.py" line="1273"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Kadar obkljukano, izvori predmetov so prikazani ne glede na to ali so vidni v 3D modelu</translation>
     </message>
@@ -1039,12 +1039,12 @@
       <translation>Seznam debeline slojev</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1260"/>
+      <location filename="../../ArchSectionPlane.py" line="1275"/>
       <source>The line color of the projected objects</source>
       <translation>Barva črt preslikanih predmetov</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1262"/>
+      <location filename="../../ArchSectionPlane.py" line="1277"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Barva rezanih ploskev (če je vklopljeno)</translation>
     </message>
@@ -1681,7 +1681,7 @@
     <message>
       <location filename="../../ArchBuildingPart.py" line="546"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
-      <translation type="unfinished">A slot to save the inventor representation of this object, if enabled</translation>
+      <translation>Mesto za shranjevanje predstavitve Inventor tega predmeta, če je mogoče</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="568"/>
@@ -1956,62 +1956,62 @@
     <message>
       <location filename="../../ArchMaterial.py" line="296"/>
       <source>The color of this material when cut</source>
-      <translation type="unfinished">The color of this material when cut</translation>
+      <translation>Barva tega meriala v prerezu</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="263"/>
       <source>The list of angles of the roof segments</source>
-      <translation type="unfinished">The list of angles of the roof segments</translation>
+      <translation>Seznam kotov strešnih odsekov</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="268"/>
       <source>The list of horizontal length projections of the roof segments</source>
-      <translation type="unfinished">The list of horizontal length projections of the roof segments</translation>
+      <translation>Seznam vodoravnih preslikav dolžin strešnih odsekov</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="273"/>
       <source>The list of IDs of the relative profiles of the roof segments</source>
-      <translation type="unfinished">The list of IDs of the relative profiles of the roof segments</translation>
+      <translation>Seznam določilnikov odnosnih presekov strešnih odsekov</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="278"/>
       <source>The list of thicknesses of the roof segments</source>
-      <translation type="unfinished">The list of thicknesses of the roof segments</translation>
+      <translation>Seznam debelin strešnih odsekov</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="283"/>
       <source>The list of overhangs of the roof segments</source>
-      <translation type="unfinished">The list of overhangs of the roof segments</translation>
+      <translation>Seznam napuščev strešnih odsekov</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="288"/>
       <source>The list of calculated heights of the roof segments</source>
-      <translation type="unfinished">The list of calculated heights of the roof segments</translation>
+      <translation>Seznam izračunanih višin strešnih odsekov</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="293"/>
       <source>The face number of the base object used to build the roof</source>
-      <translation type="unfinished">The face number of the base object used to build the roof</translation>
+      <translation>Število ploskev osnovnega predmeta, uporabljenega za izdelavo strehe</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="298"/>
       <source>The total length of the ridges and hips of the roof</source>
-      <translation type="unfinished">The total length of the ridges and hips of the roof</translation>
+      <translation>Skupna dolžina slemen in grebenov strehe</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="304"/>
       <source>The total length of the borders of the roof</source>
-      <translation type="unfinished">The total length of the borders of the roof</translation>
+      <translation>Skupna dolžina robov strehe</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="310"/>
       <source>Specifies if the direction of the roof should be flipped</source>
-      <translation type="unfinished">Specifies if the direction of the roof should be flipped</translation>
+      <translation>Določa ali naj se smer strehe obrne</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1017"/>
       <source>Show the label in the 3D view</source>
-      <translation type="unfinished">Show the label in the 3D view</translation>
+      <translation>Prikaži oznako v 3D pogledu</translation>
     </message>
   </context>
   <context>
@@ -2304,7 +2304,7 @@
     <message>
       <location filename="../../ArchWall.py" line="659"/>
       <source>Merge Wall</source>
-      <translation>Združi zid</translation>
+      <translation>Združi steno</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="672"/>
@@ -2314,7 +2314,7 @@
     <message>
       <location filename="../../ArchWall.py" line="674"/>
       <source>Merge Walls</source>
-      <translation>Združi zidove</translation>
+      <translation>Združi stene</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="784"/>
@@ -3210,37 +3210,37 @@ Ustvarjanje etaže prekinjeno.</translation>
       <translation>Ustvari zunanji sklic</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1479"/>
+      <location filename="../../ArchSectionPlane.py" line="1494"/>
       <source>Section plane settings</source>
       <translation>Nastavitve prerezne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1484"/>
+      <location filename="../../ArchSectionPlane.py" line="1499"/>
       <source>Objects seen by this section plane:</source>
       <translation>Predmeti, vidni v prerezni ravnini:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1485"/>
+      <location filename="../../ArchSectionPlane.py" line="1500"/>
       <source>Section plane placement:</source>
       <translation>Umestitev prerezne ravnine:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1486"/>
+      <location filename="../../ArchSectionPlane.py" line="1501"/>
       <source>Rotate X</source>
       <translation>Zavrti X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1488"/>
+      <location filename="../../ArchSectionPlane.py" line="1503"/>
       <source>Rotate Y</source>
       <translation>Zavrti Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1490"/>
+      <location filename="../../ArchSectionPlane.py" line="1505"/>
       <source>Rotate Z</source>
       <translation>Zavrti Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1492"/>
+      <location filename="../../ArchSectionPlane.py" line="1507"/>
       <source>Resize</source>
       <translation>Spremeni velikost</translation>
     </message>
@@ -3396,42 +3396,42 @@ Stavba ne sprejema Lokacije in Stavbe, zato bodo ti predmeti izvzeti iz izbora.
 To lahko spremenite v nastavitvah.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1481"/>
+      <location filename="../../ArchSectionPlane.py" line="1496"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Odstrani označene predmete z zgornjega seznama</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1482"/>
+      <location filename="../../ArchSectionPlane.py" line="1497"/>
       <source>Add selected</source>
       <translation>Dodaj izbrane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1483"/>
+      <location filename="../../ArchSectionPlane.py" line="1498"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Dodaj izbrene predmete v območje te presečne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1487"/>
+      <location filename="../../ArchSectionPlane.py" line="1502"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Zasuka ravnino okrog osi X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1489"/>
+      <location filename="../../ArchSectionPlane.py" line="1504"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Zasuka ravnino okrog osi Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1491"/>
+      <location filename="../../ArchSectionPlane.py" line="1506"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Zasuka ravnino okrog osi Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1493"/>
+      <location filename="../../ArchSectionPlane.py" line="1508"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Prevelikosti ravnino tako, da se bo prilega predmetom z zgornjega seznama</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1495"/>
+      <location filename="../../ArchSectionPlane.py" line="1510"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Usredini ravnino na predmete z zgornjega seznama</translation>
     </message>
@@ -3628,7 +3628,7 @@ To lahko spremenite v nastavitvah.</translation>
     <message>
       <location filename="../../importSHP.py" line="71"/>
       <source>Choose which field provides shapes elevations:</source>
-      <translation type="unfinished">Choose which field provides shapes elevations:</translation>
+      <translation>Označite polje za nárise oblik:</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="114"/>
@@ -3683,17 +3683,17 @@ To lahko spremenite v nastavitvah.</translation>
 If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
 If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
 If Run = 0 then the run is calculated so that the height is the same as the relative profile.</source>
-      <translation type="unfinished">Parameters of the roof profiles :
-* Angle : slope in degrees relative to the horizontal.
-* Run : horizontal distance between the wall and the ridge.
-* Thickness : thickness of the roof.
-* Overhang : horizontal distance between the eave and the wall.
-* Height : height of the ridge above the base (calculated automatically).
-* IdRel : Id of the relative profile used for automatic calculations.
+      <translation>Določilke strešnih presekov:
+* Naklon: nagib v stopinjah glede na vodoravnico.
+* Vodoravni korak: vodoravna razdalja med steno in slemenom.
+* Debelina: debelina strehe.
+* Napušč: razdalja med kapom in steno.
+* Višina: višina slemena nad izhodiščem (samodejno izračunano).
+* IdRel: Določilnik odnosnega preseka za samodejne izračune.
 ---
-If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
-If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
-If Run = 0 then the run is calculated so that the height is the same as the relative profile.</translation>
+Če je Naklon = 0 in Dolžina = 0, potem je presek enak odnosnemu preseku.
+Če je Naklon = 0, potem je naklon izračunan tako, da je višina enaka višini odnosnega preseka.
+Če je Vodoravni korak = 0, potem je vodoravni korak izračunan tako, da je višina enaka višini odnosnega preseka.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="110"/>
@@ -3806,7 +3806,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../ui/ArchMaterial.ui" line="139"/>
       <source>Section Color</source>
-      <translation type="unfinished">Section Color</translation>
+      <translation>Barva prereza</translation>
     </message>
   </context>
   <context>
@@ -4147,7 +4147,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWall.py" line="628"/>
       <source>Merge Walls</source>
-      <translation>Združi zidove</translation>
+      <translation>Združi stene</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="629"/>
@@ -4848,7 +4848,7 @@ Pustite prazno, če želite uporabiti vse predmete v dokumentu</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="29"/>
       <source>Unnamed schedule</source>
-      <translation type="unfinished">Unnamed schedule</translation>
+      <translation>Brezimen popis</translation>
     </message>
   </context>
   <context>

@@ -24,7 +24,7 @@
     <message>
       <location filename="../../AddonManager.py" line="80"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>Yüklenebilecek eklentiler FreeCAD&apos;in resmi olarak bir parçası değildir ve FreeCAD takımı tarafından incelenmemektedir. Ne yüklediğinizi bildiğinizden emin olun!</translation>
+      <translation>Yüklenebilecek eklentiler FreeCAD'in resmi bir parçası değildir ve FreeCAD takımı tarafından incelenmemektedir. Ne yüklediğinizi bildiğinizden emin olun!</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="200"/>

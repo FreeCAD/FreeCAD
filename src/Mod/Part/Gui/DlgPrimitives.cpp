@@ -1573,8 +1573,9 @@ void DlgPrimitives::onChangeRegularPolygon(QWidget* widget)
 /* TRANSLATOR PartGui::Location */
 
 Location::Location(QWidget* parent, Part::Feature* feature)
+    : QWidget(parent)
+    , featurePtr(feature)
 {
-    Q_UNUSED(parent);
     mode = 0;
     ui.setupUi(this);
 
@@ -1600,8 +1601,17 @@ Location::Location(QWidget* parent, Part::Feature* feature)
         ui.XDirectionEdit->setValue(rotationAxes.x);
         ui.YDirectionEdit->setValue(rotationAxes.y);
         ui.ZDirectionEdit->setValue(rotationAxes.z);
-        // the angle is in this format: 180° = PI, thus transform it to deg
+        // the angle is rad, transform it for display to degrees
         ui.AngleQSB->setValue(Base::toDegrees<double>(rotationAngle));
+
+        //connect signals
+        connect(ui.XPositionQSB, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
+        connect(ui.YPositionQSB, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
+        connect(ui.ZPositionQSB, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
+        connect(ui.AngleQSB, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
+        connect(ui.XDirectionEdit, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
+        connect(ui.YDirectionEdit, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
+        connect(ui.ZDirectionEdit, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
     }
 }
 
@@ -1618,6 +1628,36 @@ Location::~Location()
         if (root && root->getTypeId().isDerivedFrom(Gui::SoFCUnifiedSelection::getClassTypeId()))
             static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionMode.setValue(this->mode);
     }
+}
+
+void Location::onChangePosRot()
+{
+    App::GeoFeature* geom = featurePtr.get<App::GeoFeature>();
+    if (!geom)
+        return;
+
+    // read dialog values
+    Base::Vector3d loc;
+    loc.x = ui.XPositionQSB->rawValue();
+    loc.y = ui.YPositionQSB->rawValue();
+    loc.z = ui.ZPositionQSB->rawValue();
+    double angle = ui.AngleQSB->rawValue();
+    // the angle is displayed in degrees, transform it to rad
+    angle = Base::toRadians<double>(angle);
+    Base::Vector3d rot;
+    rot.x = ui.XDirectionEdit->value();
+    rot.y = ui.YDirectionEdit->value();
+    rot.z = ui.ZDirectionEdit->value();
+
+    // set placement and rotation
+    Base::Placement placement;
+    Base::Rotation rotation(rot, angle);
+    placement.setPosition(loc);
+    placement.setRotation(rotation);
+
+    // apply new placement to the feature
+    geom->Placement.setValue(placement);
+    geom->recomputeFeature();
 }
 
 void Location::on_viewPositionButton_clicked()

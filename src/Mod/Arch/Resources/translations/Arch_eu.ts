@@ -204,12 +204,12 @@
       <translation>Objektu honen estrusio-norabide normala (mantendu (0,0,0) normal automatikorako)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1242"/>
+      <location filename="../../ArchSectionPlane.py" line="1257"/>
       <source>The linked object</source>
       <translation>Estekatutako objektua</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1252"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <source>The line width of the rendered objects</source>
       <translation>Errendatutako objektuen lerro-luzera</translation>
     </message>
@@ -594,27 +594,27 @@
       <translation>Erakutsi moztea 3D bistan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1244"/>
+      <location filename="../../ArchSectionPlane.py" line="1259"/>
       <source>The rendering mode to use</source>
       <translation>Erabiliko den errendatze-modua</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1248"/>
+      <location filename="../../ArchSectionPlane.py" line="1263"/>
       <source>If cut geometry is shown or not</source>
       <translation>Mozte-geometria erakutsiko den ala ez</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1250"/>
+      <location filename="../../ArchSectionPlane.py" line="1265"/>
       <source>If cut geometry is filled or not</source>
       <translation>Mozte-geometria beteta dagoen ala ez</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1255"/>
+      <location filename="../../ArchSectionPlane.py" line="1270"/>
       <source>The size of the texts inside this object</source>
       <translation>Objektu honen barruko testuen tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1258"/>
+      <location filename="../../ArchSectionPlane.py" line="1273"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Markatuta badago, iturburu-objektuak erakutsi egingo dira, 3D ereduan ikusgarriak izan zein ez</translation>
     </message>
@@ -1039,12 +1039,12 @@
       <translation>Geruza-lodieren zerrenda</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1260"/>
+      <location filename="../../ArchSectionPlane.py" line="1275"/>
       <source>The line color of the projected objects</source>
       <translation>Proiektatutako objektuen lerro-kolorea</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1262"/>
+      <location filename="../../ArchSectionPlane.py" line="1277"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Mozte-aurpegien kolorea (aktibatuta badago)</translation>
     </message>
@@ -1956,62 +1956,62 @@
     <message>
       <location filename="../../ArchMaterial.py" line="296"/>
       <source>The color of this material when cut</source>
-      <translation type="unfinished">The color of this material when cut</translation>
+      <translation>Material honen kolorea mozten denean</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="263"/>
       <source>The list of angles of the roof segments</source>
-      <translation type="unfinished">The list of angles of the roof segments</translation>
+      <translation>Teilatu-segmentuen angeluen zerrenda</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="268"/>
       <source>The list of horizontal length projections of the roof segments</source>
-      <translation type="unfinished">The list of horizontal length projections of the roof segments</translation>
+      <translation>Teilatu-segmentuen luzera-proiekzio horizontalen zerrenda</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="273"/>
       <source>The list of IDs of the relative profiles of the roof segments</source>
-      <translation type="unfinished">The list of IDs of the relative profiles of the roof segments</translation>
+      <translation>Teilatu-segmentuen profil erlatiboen IDen zerrenda</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="278"/>
       <source>The list of thicknesses of the roof segments</source>
-      <translation type="unfinished">The list of thicknesses of the roof segments</translation>
+      <translation>Teilatu-segmentuen lodieren zerrenda</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="283"/>
       <source>The list of overhangs of the roof segments</source>
-      <translation type="unfinished">The list of overhangs of the roof segments</translation>
+      <translation>Teilatu-segmentuen hegalen zerrenda</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="288"/>
       <source>The list of calculated heights of the roof segments</source>
-      <translation type="unfinished">The list of calculated heights of the roof segments</translation>
+      <translation>Teilatu-segmentuen altuera kalkulatuen zerrenda</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="293"/>
       <source>The face number of the base object used to build the roof</source>
-      <translation type="unfinished">The face number of the base object used to build the roof</translation>
+      <translation>Teilatua eraikitzeko erabili den oinarri-objektuaren aurpegi kopurua</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="298"/>
       <source>The total length of the ridges and hips of the roof</source>
-      <translation type="unfinished">The total length of the ridges and hips of the roof</translation>
+      <translation>Teilatuaren gailurren eta isurkien luzera totala</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="304"/>
       <source>The total length of the borders of the roof</source>
-      <translation type="unfinished">The total length of the borders of the roof</translation>
+      <translation>Teilatuaren ertzen luzera totala</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="310"/>
       <source>Specifies if the direction of the roof should be flipped</source>
-      <translation type="unfinished">Specifies if the direction of the roof should be flipped</translation>
+      <translation>Teilatuaren norabidea irauli behar den ala ez zehazten du</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1017"/>
       <source>Show the label in the 3D view</source>
-      <translation type="unfinished">Show the label in the 3D view</translation>
+      <translation>Erakutsi etiketa 3D bistan</translation>
     </message>
   </context>
   <context>
@@ -3211,37 +3211,37 @@ Solairuaren sorrera utzi egin da.</translation>
       <translation>Sortu kanpoko erreferentzia</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1479"/>
+      <location filename="../../ArchSectionPlane.py" line="1494"/>
       <source>Section plane settings</source>
       <translation>Sekzio-planoaren ezarpenak</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1484"/>
+      <location filename="../../ArchSectionPlane.py" line="1499"/>
       <source>Objects seen by this section plane:</source>
       <translation>Sekzio-plano honek ikusten dituen objektuak:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1485"/>
+      <location filename="../../ArchSectionPlane.py" line="1500"/>
       <source>Section plane placement:</source>
       <translation>Sekzio-planoaren kokapena:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1486"/>
+      <location filename="../../ArchSectionPlane.py" line="1501"/>
       <source>Rotate X</source>
       <translation>Biratu X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1488"/>
+      <location filename="../../ArchSectionPlane.py" line="1503"/>
       <source>Rotate Y</source>
       <translation>Biratu Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1490"/>
+      <location filename="../../ArchSectionPlane.py" line="1505"/>
       <source>Rotate Z</source>
       <translation>Biratu Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1492"/>
+      <location filename="../../ArchSectionPlane.py" line="1507"/>
       <source>Resize</source>
       <translation>Aldatu tamaina</translation>
     </message>
@@ -3398,42 +3398,42 @@ Guneak eta eraikinak hautapenetik kendu egingo dira.
 Portaera hori aldatu egin daiteke hobespenetan.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1481"/>
+      <location filename="../../ArchSectionPlane.py" line="1496"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Kendu nabarmendutako objektuak goiko zerrendatik</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1482"/>
+      <location filename="../../ArchSectionPlane.py" line="1497"/>
       <source>Add selected</source>
       <translation>Gehitu hautatuak</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1483"/>
+      <location filename="../../ArchSectionPlane.py" line="1498"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Gehitu hautatutako objektua(k) sekzio-plano honen esparrura</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1487"/>
+      <location filename="../../ArchSectionPlane.py" line="1502"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Planoa X ardatzean biratzen du</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1489"/>
+      <location filename="../../ArchSectionPlane.py" line="1504"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Planoa Y ardatzean biratzen du</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1491"/>
+      <location filename="../../ArchSectionPlane.py" line="1506"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Planoa Z ardatzean biratzen du</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1493"/>
+      <location filename="../../ArchSectionPlane.py" line="1508"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Planoa goiko zerrendako objektuekin doitzeko biratzen du</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1495"/>
+      <location filename="../../ArchSectionPlane.py" line="1510"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Planoa goiko zerrendako objektuetan zentratzen du</translation>
     </message>
@@ -3685,17 +3685,17 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
 If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
 If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
 If Run = 0 then the run is calculated so that the height is the same as the relative profile.</source>
-      <translation type="unfinished">Parameters of the roof profiles :
-* Angle : slope in degrees relative to the horizontal.
-* Run : horizontal distance between the wall and the ridge.
-* Thickness : thickness of the roof.
-* Overhang : horizontal distance between the eave and the wall.
-* Height : height of the ridge above the base (calculated automatically).
-* IdRel : Id of the relative profile used for automatic calculations.
+      <translation>Teilatu-profilen parametroak :
+* Angelua : maila, graduetan horizontalarekiko.
+* Distantzia : distantzia horizontala paretaren eta gailurraren artean.
+* Lodiera : teilatuaren lodiera.
+* Hegala : distantzia horizontala hegalaren eta paretaren artean.
+* Altuera : gailurraren altuera oinarriaren gainetik (automatikoki kalkulatua).
+* IdRel : Kalkulu automatikoetarako erabilitako profil erlatiboaren Ida.
 ---
-If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
-If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
-If Run = 0 then the run is calculated so that the height is the same as the relative profile.</translation>
+Angelua = 0 eta Distantzia = 0 badira, orduan profila eta profil erlatiboa berdinak dira.
+Angelua = 0 bada, orduan angelua kalkulatzen da altuera profil erlatiboaren berdina izan dadin.
+Distantzia = 0 bada, orduan distantzia kalkulatzen da altuera profil erlatiboaren berdina izan dadin.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="110"/>
@@ -3808,7 +3808,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../ui/ArchMaterial.ui" line="139"/>
       <source>Section Color</source>
-      <translation type="unfinished">Section Color</translation>
+      <translation>Sekzioaren kolorea</translation>
     </message>
   </context>
   <context>
@@ -4850,7 +4850,7 @@ Utzi hutsik dokumentuko objektu guztiak erabili daitezen.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="29"/>
       <source>Unnamed schedule</source>
-      <translation type="unfinished">Unnamed schedule</translation>
+      <translation>Izenik gabeko programazioa</translation>
     </message>
   </context>
   <context>

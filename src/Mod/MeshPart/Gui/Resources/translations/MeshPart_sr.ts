@@ -67,7 +67,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../Command.cpp" line="193"/>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Направи пресек од модела и равни</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>

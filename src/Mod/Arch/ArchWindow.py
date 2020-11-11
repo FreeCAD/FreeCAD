@@ -475,7 +475,7 @@ class _CommandWindow:
             self.im.show()
             if i == 0:
                 self.im.load(":/ui/ParametersWindowFixed.svg")
-            elif i == 1:
+            elif i in [1,8]:
                 self.im.load(":/ui/ParametersWindowSimple.svg")
             elif i == 6:
                 self.im.load(":/ui/ParametersDoorGlass.svg")

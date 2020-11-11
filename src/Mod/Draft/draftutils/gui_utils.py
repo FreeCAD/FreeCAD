@@ -350,7 +350,9 @@ def format_object(target, origin=None):
     if ui:
         doc = App.ActiveDocument
         if ui.isConstructionMode():
-            col = fcol = ui.getDefaultColor("constr")
+            lcol = fcol = ui.getDefaultColor("constr")
+            tcol = lcol
+            fcol = lcol
             grp = doc.getObject("Draft_Construction")
             if not grp:
                 grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
@@ -359,25 +361,27 @@ def format_object(target, origin=None):
             if hasattr(obrep, "Transparency"):
                 obrep.Transparency = 80
         else:
-            col = ui.getDefaultColor("ui")
+            lcol = ui.getDefaultColor("line")
+            tcol = ui.getDefaultColor("text")
             fcol = ui.getDefaultColor("face")
-        col = (float(col[0]), float(col[1]), float(col[2]), 0.0)
+        lcol = (float(lcol[0]), float(lcol[1]), float(lcol[2]), 0.0)
+        tcol = (float(tcol[0]), float(tcol[1]), float(tcol[2]), 0.0)
         fcol = (float(fcol[0]), float(fcol[1]), float(fcol[2]), 0.0)
-        lw = ui.linewidth
-        fs = ui.fontsize
+        lw = utils.getParam("linewidth",2)
+        fs = utils.getParam("textheight",0.20)
         if not origin or not hasattr(origin, 'ViewObject'):
             if "FontSize" in obrep.PropertiesList:
                 obrep.FontSize = fs
             if "TextSize" in obrep.PropertiesList:
                 obrep.TextSize = fs
             if "TextColor" in obrep.PropertiesList:
-                obrep.TextColor = col
+                obrep.TextColor = tcol
             if "LineWidth" in obrep.PropertiesList:
                 obrep.LineWidth = lw
             if "PointColor" in obrep.PropertiesList:
-                obrep.PointColor = col
+                obrep.PointColor = lcol
             if "LineColor" in obrep.PropertiesList:
-                obrep.LineColor = col
+                obrep.LineColor = lcol
             if "ShapeColor" in obrep.PropertiesList:
                 obrep.ShapeColor = fcol
         else:

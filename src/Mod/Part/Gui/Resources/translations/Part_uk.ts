@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="575"/>
       <source>Failed to resolve links. {err}</source>
-      <translation type="unfinished">Failed to resolve links. {err}</translation>
+      <translation>Неможливе посилання. {err}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="583"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="585"/>
       <source>Attached with mode {mode}</source>
-      <translation type="unfinished">Attached with mode {mode}</translation>
+      <translation>Приєднано з режимом {mode}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
@@ -96,17 +96,17 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
-      <translation type="unfinished">Attachment Offset:</translation>
+      <translation>Зміщення прикріплення:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>Зміщення прикріплення (в локальних координатах):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
+      <translation>Зміщення прикріплення (неактивний - не приєднано):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
       <source>Edit attachment of selected object.</source>
-      <translation type="unfinished">Edit attachment of selected object.</translation>
+      <translation>Редагувати приєднання вибраного об'єкта.</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="58"/>
       <source>Compound Filter</source>
-      <translation type="unfinished">Compound Filter</translation>
+      <translation>Фільтр з'єднань</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
@@ -132,20 +132,20 @@
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation>Відфільтруйте об'єкти з вибраного з'єднання за такими характеристиками, як об'єм,
+площа, довжина, або шляхом вибору конкретних елементів.
+Якщо вибрано другий об'єкт, він буде використаний як зразок, наприклад,
+для фільтрування перетину або відстані.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <source>Compound Filter: remove some childs from a compound</source>
-      <translation type="unfinished">Compound Filter: remove some childs from a compound</translation>
+      <translation>Фільтр з'єднань: видалення деяких частин із з'єднання</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="68"/>
       <source>Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</source>
-      <translation type="unfinished">Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</translation>
+      <translation>Спершу виберіть фігуру, яка є складовою! Другий вибраний елемент (за бажанням) буде розглядатися як трафарет.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="73"/>
@@ -2623,7 +2623,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset:</source>
-      <translation type="unfinished">Attachment Offset:</translation>
+      <translation>Зміщення прикріплення:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
@@ -4508,7 +4508,7 @@ Please check one or more edge entities first.</source>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="319"/>
       <source>Attachment Offset:</source>
-      <translation type="unfinished">Attachment Offset:</translation>
+      <translation>Зміщення прикріплення:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -4573,7 +4573,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="319"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
+      <translation>Зміщення прикріплення (неактивний - не приєднано):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="618"/>

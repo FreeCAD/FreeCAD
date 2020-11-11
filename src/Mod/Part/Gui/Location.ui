@@ -40,6 +40,9 @@
         </item>
         <item>
          <widget class="Gui::QuantitySpinBox" name="XPositionQSB">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>
@@ -58,6 +61,9 @@
         </item>
         <item>
          <widget class="Gui::QuantitySpinBox" name="YPositionQSB">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>
@@ -76,6 +82,9 @@
         </item>
         <item>
          <widget class="Gui::QuantitySpinBox" name="ZPositionQSB">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>

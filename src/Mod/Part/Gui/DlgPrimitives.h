@@ -112,6 +112,7 @@ public:
     QString toPlacement() const;
 
 private Q_SLOTS:
+    void onChangePosRot();
     void on_viewPositionButton_clicked();
 
 private:
@@ -119,6 +120,7 @@ private:
     int mode;
     QPointer<QWidget> activeView;
     Ui_Location ui;
+    App::DocumentObjectWeakPtrT featurePtr;
 };
 
 class TaskPrimitives : public Gui::TaskView::TaskDialog
