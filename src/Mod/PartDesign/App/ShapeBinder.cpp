@@ -594,7 +594,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             try {
                 auto shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
                 if(shape.isNull())
-                    throw Part::NullShapeException();
+                    throw Part::NullShapeException("Null shape");
                 shapes.push_back(shape);
                 shapeOwners.emplace_back(sidx, subidx);
                 shapeMats.push_back(&res.first->second);

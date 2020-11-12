@@ -8280,7 +8280,7 @@ App::DocumentObject *SketchObject::getSubObject(
             return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
     }
     else {
-        auto subshape = Shape.getShape().getSubTopoShape(mapped, true);
+        auto subshape = Shape.getShape().getSubTopoShape(subname, true);
         if (!subshape.isNull())
             return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
 
@@ -8289,7 +8289,7 @@ App::DocumentObject *SketchObject::getSubObject(
             if (!std::isalnum((int)*pos))
                 break;
         }
-        std::string sub = std::string(subname, pos-subname);
+        sub = std::string(subname, pos-subname);
         subname = sub.c_str();
     }
     sub = checkSubName(subname);
