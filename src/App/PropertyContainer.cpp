@@ -480,23 +480,30 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
             e.setReported(true);
             throw; // re-throw
         }
-        catch (const Base::RestoreError &) {
+        catch (const Base::RestoreError &e) {
+            e.ReportException();
             reader.setPartialRestore(true);
             reader.clearPartialRestoreProperty();
-            Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
+            FC_ERR(getFullName() << '.' << PropName << " (" << TypeName
+                    << "): was subject to a partial restore.");
         }
         catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
+            e.ReportException();
+            FC_ERR(getFullName() << '.' << PropName << " (" << TypeName
+                    << ") restore error.");
         }
         catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
+            FC_ERR(getFullName() << '.' << PropName << " (" << TypeName
+                    << ") restore error: " << e.what());
         }
         catch (const char* e) {
-            Base::Console().Error("%s\n", e);
+            FC_ERR(getFullName() << '.' << PropName << " (" << TypeName
+                    << ") restore error: " << e);
         }
 #ifndef FC_DEBUG
         catch (...) {
-            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
+            FC_ERR(getFullName() << '.' << PropName << " (" << TypeName
+                    << ") restore error: Unknown C++ exception thrown\n");
         }
 #endif
         reader.readEndElement("Property",&guard);
