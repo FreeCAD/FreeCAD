@@ -883,7 +883,6 @@ pointPair DrawViewDimension::getPointsTwoVerts()
 
 pointPair DrawViewDimension::getPointsEdgeVert()
 {
-//    Base::Console().Message("DVD::getPointsEdgeVert() - %s\n",getNameInDocument());
     pointPair result;
     const std::vector<std::string> &subElements      = References2D.getSubValues();
     int idx0 = DrawUtil::getIndexFromName(subElements[0]);
@@ -897,34 +896,13 @@ pointPair DrawViewDimension::getPointsEdgeVert()
         e = getViewPart()->getGeomByIndex(idx1);
         v = getViewPart()->getProjVertexByIndex(idx0);
     }
-    if ((v == nullptr) ||
-        (e == nullptr) ) {
-        Base::Console().Error("Error: DVD - %s - 2D references are corrupt (4)\n",getNameInDocument());
+    if ((v == nullptr) || (e == nullptr) ) {
+        Base::Console().Error("Error: DVD - %s - 2D references are corrupt (4)\n", getNameInDocument());
         return result;
     }
 
-    // if DistanceX or DistanceY, needs to be closest horizontal or vertical extent of edge
-    // for Distance the perpendicular distance if fine. 
-    Bnd_Box edgeBox;
-    BRepBndLib::Add(e->occEdge, edgeBox);
-    edgeBox.SetGap(0.0);
-    double minX, minY, minZ, maxX, maxY, maxZ;
-    edgeBox.Get(minX, minY, minZ, maxX, maxY, maxZ);
-    gp_Pnt pnt = BRep_Tool::Pnt(v->occVertex);
+    result = closestPoints(e->occEdge,v->occVertex);
 
-    if (Type.isValue("DistanceX") ) {
-        gp_Pnt p0(pnt.X(), minY, 0.0);
-        gp_Pnt p1(pnt.X(), maxY, 0.0);
-        TopoDS_Edge boundary = BRepBuilderAPI_MakeEdge(p0, p1);
-        result = closestPoints(e->occEdge, boundary);
-    } else if (Type.isValue("DistanceY") ) {
-        gp_Pnt p0(minX, pnt.Y(), 0.0);
-        gp_Pnt p1(maxX, pnt.Y(), 0.0);
-        TopoDS_Edge boundary = BRepBuilderAPI_MakeEdge(p0, p1);
-        result = closestPoints(e->occEdge, boundary);
-    } else {
-        result = closestPoints(e->occEdge,v->occVertex);
-    }
     return result;
 }
 
