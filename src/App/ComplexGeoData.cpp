@@ -42,6 +42,8 @@
 #include <Base/Exception.h>
 #include <Base/Console.h>
 #include <App/DynamicProperty.h>
+#include "Application.h"
+#include "Document.h"
 #include "ComplexGeoData.h"
 #include "MappedElement.h"
 
@@ -221,13 +223,59 @@ inline std::ostream & operator << (std::ostream &s, const QByteArray &bytes)
     return s;
 }
 
-class ElementMap {
+// Because the existence of hierarchical element maps, for the same document
+// we may store an element map more than once in multiple objects. And because
+// we may want to support partial loading, we choose to tolerate such redundancy
+// for now.
+//
+// In order to not waste memory space when the file is loaded, we use the
+// following two maps to assign a one-time id for each unique element map.  The
+// id will be saved together with the element map. 
+//
+// When restoring, we'll read back the id and lookup for an existing element map
+// with the same id, and skip loading the current map if one is found.
+//
+// TODO: Note that the same redundancy can be found when saving OCC shapes,
+// because we currently save shapes for each object separately. After restoring,
+// any shape sharing is lost. But again, we do want to keep separate shape files
+// because of partial loading. The same technique used here can be applied to
+// restore shape sharing.
+static std::unordered_map<const ElementMap*, unsigned> _ElementMapToId;
+static std::unordered_map<unsigned, ElementMapPtr> _IdToElementMap;
+
+class ElementMap : public std::enable_shared_from_this<ElementMap> {
 public:
+
     ElementMap()
     {
+        static bool inited;
+        if (!inited) {
+            inited = true;
+            App::GetApplication().signalStartSaveDocument.connect(
+                [](const App::Document &, const std::string &) {
+                    _ElementMapToId.clear();
+                });
+            App::GetApplication().signalFinishSaveDocument.connect(
+                [](const App::Document &, const std::string &) {
+                    _ElementMapToId.clear();
+                });
+            App::GetApplication().signalStartRestoreDocument.connect(
+                [](const App::Document &) {
+                    _IdToElementMap.clear();
+                });
+            App::GetApplication().signalFinishRestoreDocument.connect(
+                [](const App::Document &) {
+                    _IdToElementMap.clear();
+                });
+        }
     }
 
-    void mark(const App::StringHasherRef & hasher) const {
+    void beforeSave(const App::StringHasherRef & hasher) const {
+        unsigned & id = _ElementMapToId[this];
+        if (!id)
+            id = _ElementMapToId.size();
+        this->_id = id;
+        
         for (auto & v : this->indexedNames) {
             for (const MappedNameRef & ref : v.second.names) {
                 for (const MappedNameRef *r=&ref; r; r=r->next.get()) {
@@ -239,7 +287,7 @@ public:
             }
             for (auto & vv : v.second.children) {
                 if (vv.second.elementMap)
-                    vv.second.elementMap->mark(hasher);
+                    vv.second.elementMap->beforeSave(hasher);
                 for (auto & sid : vv.second.sids) {
                     if (sid.isSameHasher(hasher))
                         sid.mark();
@@ -321,7 +369,8 @@ public:
               const std::map<const ElementMap*,int> &childMapSet,
               const std::map<QByteArray, int> &postfixMap) const
     {
-        s << "\nElementMap " << index << ' ' << this->indexedNames.size() << '\n';
+        s << "\nElementMap " << index << ' ' << this->_id << ' ' 
+            << this->indexedNames.size() << '\n';
 
         for (auto & v : this->indexedNames) {
             s << '\n' << v.first << '\n';
@@ -408,6 +457,7 @@ public:
                 s << "0\n";
             }
         }
+        s << "\nEndMap\n";
     }
 
     void save(std::ostream &s) const {
@@ -418,7 +468,7 @@ public:
 
         collectChildMaps(childMapSet, childMaps, postfixMap, postfixes);
 
-        s << "PostfixCount " << postfixes.size() << '\n';
+        s << this->_id << " PostfixCount " << postfixes.size() << '\n';
         for (auto & p : postfixes)
             s << p << '\n';
         int index = 0;
@@ -427,13 +477,19 @@ public:
             elementMap->save(s, ++index, childMapSet, postfixMap);
     }
 
-    void restore(App::StringHasherRef hasher, std::istream &s)
+    ElementMapPtr restore(App::StringHasherRef hasher, std::istream &s)
     {
         const char * msg = "Invalid element map";
+
+        unsigned id;
         int count = 0;
         std::string tmp;
-        if (! (s >> tmp >> count) || tmp != "PostfixCount")
+        if (! (s >> id >> tmp >> count) || tmp != "PostfixCount")
             FC_THROWM(Base::RuntimeError, msg);
+
+        auto & map = _IdToElementMap[id];
+        if (map)
+            return map;
 
         std::vector<std::string> postfixes;
         postfixes.reserve(count);
@@ -446,27 +502,37 @@ public:
         count = 0;
         if (! (s >> tmp >> count) || tmp != "MapCount" || count==0)
             FC_THROWM(Base::RuntimeError, msg);
-        if (count > 1)
-            count = count;
-        childMaps.reserve(count);
+        childMaps.reserve(count-1);
         for (int i=0; i<count-1; ++i) {
-            childMaps.push_back(std::make_shared<ElementMap>());
-            childMaps.back()->restore(hasher, s, childMaps, postfixes);
+            childMaps.push_back(std::make_shared<ElementMap>()->restore(
+                        hasher, s, childMaps, postfixes));
         }
-        restore(hasher, s, childMaps, postfixes);
+
+        return restore(hasher, s, childMaps, postfixes);
     }
 
-    void restore(App::StringHasherRef hasher,
-                 std::istream &s,
-                 std::vector<ElementMapPtr> &childMaps,
-                 const std::vector<std::string> &postfixes)
+    ElementMapPtr restore(App::StringHasherRef hasher,
+                          std::istream &s,
+                          std::vector<ElementMapPtr> &childMaps,
+                          const std::vector<std::string> &postfixes)
     {
         const char * msg = "Invalid element map";
         std::string tmp;
-        int index;
+        int index = 0;
         int typeCount = 0;
-        if (! (s >> tmp >> index >> typeCount) || tmp != "ElementMap")
+        unsigned id = 0;
+        if (! (s >> tmp >> index >> id >> typeCount) || tmp != "ElementMap")
             FC_THROWM(Base::RuntimeError, msg);
+
+        auto & map = _IdToElementMap[id];
+        if (map) {
+            do {
+                if (! std::getline(s, tmp))
+                    FC_THROWM(Base::RuntimeError, "unexpected end of child element map");
+            } while(tmp != "EndMap");
+            return map;
+        }
+        map = shared_from_this();
 
         const char *hasherWarn = nullptr;
         const char *hasherIDWarn = nullptr;
@@ -624,6 +690,11 @@ public:
             FC_WARN(postfixWarn);
         if (childSIDWarn)
             FC_WARN(childSIDWarn);
+
+        if (! (s >> tmp) || tmp != "EndMap")
+            FC_THROWM(Base::RuntimeError, "unexpected end of child element map");
+
+        return shared_from_this();
     }
 
     MappedName addName(MappedName & name,
@@ -1087,6 +1158,8 @@ private:
     QHash<QByteArray, ChildMapInfo> childElements;
 
     std::size_t childElementSize = 0;
+
+    mutable unsigned _id = 0;
 };
 
 }
@@ -1901,7 +1974,7 @@ void ComplexGeoData::Restore(Base::XMLReader &reader) {
 
     if (newtag) {
         resetElementMap(std::make_shared<ElementMap>());
-        _ElementMap->restore(Hasher, reader.beginCharStream(false));
+        _ElementMap = _ElementMap->restore(Hasher, reader.beginCharStream(false));
         reader.endCharStream();
         reader.readEndElement("ElementMap2");
         return;
@@ -1995,23 +2068,22 @@ void ComplexGeoData::restoreStream(std::istream &s, std::size_t count) {
 void ComplexGeoData::SaveDocFile(Base::Writer &writer) const {
     flushElementMap();
     if (_ElementMap) {
-        writer.Stream() << "ElementMapStart v1\n";
+        writer.Stream() << "BeginElementMap v1\n";
         _ElementMap->save(writer.Stream());
-        writer.Stream() << "ElementMapEnd\n";
     }
 }
 
 void ComplexGeoData::RestoreDocFile(Base::Reader &reader) {
     std::string marker, ver;
     reader >> marker;
-    if (boost::equals(marker, "ElementMapStart")) {
+    if (boost::equals(marker, "BeginElementMap")) {
         resetElementMap();
         reader >> ver;
         if (ver != "v1")
             FC_WARN("Unknown element map format");
         else {
             resetElementMap(std::make_shared<ElementMap>());
-            _ElementMap->restore(Hasher, reader);
+            _ElementMap = _ElementMap->restore(Hasher, reader);
             return;
         }
     }
@@ -2079,7 +2151,7 @@ void ComplexGeoData::beforeSave() const
 {
     flushElementMap();
     if (this->_ElementMap)
-        this->_ElementMap->mark(Hasher);
+        this->_ElementMap->beforeSave(Hasher);
 }
 
 void ComplexGeoData::hashChildMaps()
