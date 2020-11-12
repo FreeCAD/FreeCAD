@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+# *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,32 +20,43 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "BasicShapes.Shapes"
+__title__ = "BasicShapes.CommandShapes"
 __author__ = "Werner Mayer"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Basic shapes"
 
 
+import FreeCAD
+from FreeCAD import Qt
+import FreeCADGui
+
 import Part
-
-def makeTube(outerRadius, innerRadius, height):
-    outer_cylinder = Part.makeCylinder(outerRadius, height)
-    shape = outer_cylinder
-    if innerRadius > 0 and innerRadius < outerRadius:
-        inner_cylinder = Part.makeCylinder(innerRadius, height)
-        shape = outer_cylinder.cut(inner_cylinder)
-    return shape
+from . import Shapes
+from . import ViewProviderShapes
+import math
+import sys
 
 
-class TubeFeature:
-    def __init__(self, obj):
-        obj.Proxy = self
-        obj.addProperty("App::PropertyLength","OuterRadius","Tube","Outer radius").OuterRadius = 5.0
-        obj.addProperty("App::PropertyLength","InnerRadius","Tube","Inner radius").InnerRadius = 2.0
-        obj.addProperty("App::PropertyLength","Height","Tube", "Height of the tube").Height = 10.0
-        obj.addExtension("Part::AttachExtensionPython", self)
 
-    def execute(self, fp):
-        if fp.InnerRadius >= fp.OuterRadius:
-            raise ValueError("Inner radius must be smaller than outer radius")
-        fp.Shape = makeTube(fp.OuterRadius, fp.InnerRadius, fp.Height)
+class CommandTube:
+    """Command for creating Tube."""
+    def GetResources(self):
+        return {'MenuText': Qt.QT_TRANSLATE_NOOP("Part_Tube","Create tube"),
+                'Accel': "",
+                'CmdType': "AlterDoc:Alter3DView:AlterSelection",
+                'Pixmap': "Part_Tube",
+                'ToolTip': Qt.QT_TRANSLATE_NOOP("Part_Tube","Creates a tube")}
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create tube")
+        tube = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Tube")
+        Shapes.TubeFeature(tube)
+        ViewProviderShapes.ViewProviderTube(tube.ViewObject)
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
+
+FreeCADGui.addCommand('Part_Tube', CommandTube())
