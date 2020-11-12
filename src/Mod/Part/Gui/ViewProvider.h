@@ -76,6 +76,9 @@ public:
 protected:
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);
+
+private:
+    void startDefaultEditMode();
 };
 
 } // namespace PartGui
