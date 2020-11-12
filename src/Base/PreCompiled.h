@@ -46,7 +46,9 @@
 #ifdef FC_OS_WIN32
 #include <direct.h>
 #define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #include <windows.h>
 #include <crtdbg.h>
 #include <shellapi.h>
