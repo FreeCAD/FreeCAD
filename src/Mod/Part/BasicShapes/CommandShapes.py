@@ -48,7 +48,8 @@ class CommandTube:
                 'ToolTip': Qt.QT_TRANSLATE_NOOP("Part_Tube","Creates a tube")}
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create tube")
+        text = FreeCAD.Qt.translate("QObject", "Create tube")
+        FreeCAD.ActiveDocument.openTransaction(text)
         tube = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Tube")
         Shapes.TubeFeature(tube)
         ViewProviderShapes.ViewProviderTube(tube.ViewObject)

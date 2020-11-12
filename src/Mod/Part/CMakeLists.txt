@@ -35,6 +35,7 @@ if(BUILD_GUI)
     list (APPEND BasicShapes_Scripts
           BasicShapes/CommandShapes.py
           BasicShapes/ViewProviderShapes.py
+          BasicShapes/TaskTube.ui
     )
 endif(BUILD_GUI)
 
