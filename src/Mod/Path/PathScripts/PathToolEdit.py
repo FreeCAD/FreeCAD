@@ -149,6 +149,11 @@ class ToolEditorEndmill(ToolEditorImage):
     def __init__(self, editor):
         super(ToolEditorEndmill, self).__init__(editor, 'endmill.svg', 'da', 'S')
 
+class ToolEditorReamer(ToolEditorImage):
+    '''Tool parameter editor for reamers.'''
+    def __init__(self, editor):
+        super(ToolEditorReamer, self).__init__(editor, 'reamer.svg', 'da', 'S')
+
 class ToolEditorDrill(ToolEditorImage):
     '''Tool parameter editor for drills.'''
     def __init__(self, editor):
@@ -186,7 +191,8 @@ class ToolEditor:
     ToolTypeImage = {
             'EndMill':  ToolEditorEndmill,
             'Drill':    ToolEditorDrill,
-            'Engraver': ToolEditorEngrave }
+            'Engraver': ToolEditorEngrave,
+            'Reamer':   ToolEditorReamer, }
 
     def __init__(self, tool, parentWidget, parent=None):
         self.Parent = parent
@@ -250,6 +256,7 @@ class ToolEditor:
 
     def setupToolType(self, tt):
         PathLog.track()
+        print("Tool type: %s" % (tt))
         if 'Undefined' == tt:
             tt = Path.Tool.getToolTypes(Path.Tool())[0]
         if tt in self.ToolTypeImage:
