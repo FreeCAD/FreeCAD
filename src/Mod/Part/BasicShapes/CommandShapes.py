@@ -52,9 +52,9 @@ class CommandTube:
         FreeCAD.ActiveDocument.openTransaction(text)
         tube = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Tube")
         Shapes.TubeFeature(tube)
-        ViewProviderShapes.ViewProviderTube(tube.ViewObject)
-        FreeCAD.ActiveDocument.commitTransaction()
+        vp = ViewProviderShapes.ViewProviderTube(tube.ViewObject)
         FreeCAD.ActiveDocument.recompute()
+        vp.startDefaultEditMode(tube.ViewObject)
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None

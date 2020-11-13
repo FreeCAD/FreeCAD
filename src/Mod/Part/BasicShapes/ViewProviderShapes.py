@@ -47,9 +47,10 @@ class ViewProviderTube:
         return False
 
     def startDefaultEditMode(self, viewObject):
-        text = FreeCAD.Qt.translate("QObject", "Edit %1").replace("%1", viewObject.Object.Label)
         document = viewObject.Document.Document
-        document.openTransaction(text)
+        if not document.HasPendingTransaction:
+            text = FreeCAD.Qt.translate("QObject", "Edit %1").replace("%1", viewObject.Object.Label)
+            document.openTransaction(text)
         viewObject.Document.setEdit(viewObject.Object, 0)
 
     def setEdit(self, viewObject, mode):
@@ -117,8 +118,9 @@ class TaskTubeUI:
         return True
 
     def reject(self):
-        document = self.viewObject.Document.Document
+        guidocument = self.viewObject.Document
+        document = guidocument.Document
         document.abortTransaction()
         document.recompute()
-        self.viewObject.Document.resetEdit()
+        guidocument.resetEdit()
         return True
