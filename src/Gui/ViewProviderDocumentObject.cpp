@@ -852,7 +852,6 @@ void ViewProviderDocumentObject::updateChildren(bool propagate) {
         return;
 
     std::set<App::DocumentObject *> newSet;
-    bool updated = false;
     for (auto child : newChildren) {
         auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
                 Application::Instance->getViewProvider(child));
@@ -860,7 +859,6 @@ void ViewProviderDocumentObject::updateChildren(bool propagate) {
             continue;
         if(!childSet.erase(child)) {
             // this means new child detected
-            updated = true;
             if(vpd->parentSet.insert(obj).second 
                     && child->getDocument() == obj->getDocument())
             {
@@ -873,7 +871,6 @@ void ViewProviderDocumentObject::updateChildren(bool propagate) {
     for (auto child : childSet) {
         if(newSet.find(child) == newSet.end()) {
             // this means old child removed
-            updated = true;
             auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
                     Application::Instance->getViewProvider(child));
             if(!vpd)
@@ -885,9 +882,6 @@ void ViewProviderDocumentObject::updateChildren(bool propagate) {
             }
         }
     }
-
-    if(!updated)
-        return;
 
     childSet = std::move(newSet);
     claimedChildren = std::move(newChildren);
