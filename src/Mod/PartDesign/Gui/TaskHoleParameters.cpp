@@ -47,6 +47,16 @@ namespace bp = boost::placeholders;
 
 /* TRANSLATOR PartDesignGui::TaskHoleParameters */
 
+// See Hole::HoleCutType_ISOmetric_Enums
+// and Hole::HoleCutType_ISOmetricfine_Enums
+#if 0 // needed for Qt's lupdate utility
+    qApp->translate("PartDesignGui::TaskHoleParameters", "Counterbore");
+    qApp->translate("PartDesignGui::TaskHoleParameters", "Countersink");
+    qApp->translate("PartDesignGui::TaskHoleParameters", "Cheesehead (deprecated)");
+    qApp->translate("PartDesignGui::TaskHoleParameters", "Countersink socket screw (deprecated)");
+    qApp->translate("PartDesignGui::TaskHoleParameters", "Cap screw (deprecated)");
+#endif
+
 TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *parent)
     : TaskSketchBasedParameters(HoleView, parent, "PartDesign_Hole",tr("Hole parameters"))
     , observer(new Observer(this, static_cast<PartDesign::Hole*>(vp->getObject())))
@@ -118,7 +128,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->HoleCutType->clear();
     cursor = pcHole->HoleCutType.getEnums();
     while (*cursor) {
-        ui->HoleCutType->addItem(QString::fromLatin1(*cursor));
+        ui->HoleCutType->addItem(tr(*cursor));
         ++cursor;
     }
     ui->HoleCutType->setCurrentIndex(pcHole->HoleCutType.getValue());
