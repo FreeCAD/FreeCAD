@@ -29,6 +29,9 @@
      <property name="unit" stdset="0">
       <string notr="true">deg</string>
      </property>
+     <property name="minimum">
+      <double>0.000000000000000</double>
+     </property>
     </widget>
    </item>
    <item row="14" column="0">
@@ -78,6 +81,9 @@
      <property name="unit" stdset="0">
       <string notr="true">mm</string>
      </property>
+     <property name="minimum">
+      <double>0.000000000000000</double>
+     </property>
     </widget>
    </item>
    <item row="7" column="2">
@@ -98,6 +104,9 @@
      <property name="unit" stdset="0">
       <string notr="true">mm</string>
      </property>
+     <property name="minimum">
+      <double>0.000000000000000</double>
+     </property>
     </widget>
    </item>
    <item row="6" column="2">
@@ -115,12 +124,18 @@
      <property name="unit" stdset="0">
       <string notr="true">mm</string>
      </property>
+     <property name="minimum">
+      <double>0.000000000000000</double>
+     </property>
     </widget>
    </item>
    <item row="11" column="6" colspan="2">
     <widget class="Gui::PrefQuantitySpinBox" name="Diameter">
      <property name="unit" stdset="0">
       <string notr="true">mm</string>
+     </property>
+     <property name="minimum">
+      <double>0.000000000000000</double>
      </property>
     </widget>
    </item>
@@ -131,6 +146,9 @@
      </property>
      <property name="unit" stdset="0">
       <string notr="true">mm</string>
+     </property>
+     <property name="minimum">
+      <double>0.000000000000000</double>
      </property>
     </widget>
    </item>
@@ -185,6 +203,9 @@
           <property name="unit" stdset="0">
            <string notr="true">deg</string>
           </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
          </widget>
         </item>
        </layout>
@@ -199,6 +220,9 @@
      </property>
      <property name="unit" stdset="0">
       <string notr="true">mm</string>
+     </property>
+     <property name="minimum">
+      <double>0.000000000000000</double>
      </property>
     </widget>
    </item>
@@ -274,6 +298,9 @@
      <property name="unit" stdset="0">
       <string notr="true">deg</string>
      </property>
+     <property name="minimum">
+      <double>0.000000000000000</double>
+     </property>
     </widget>
    </item>
    <item row="11" column="2">
@@ -287,6 +314,9 @@
     <widget class="Gui::PrefQuantitySpinBox" name="TaperedAngle">
      <property name="unit" stdset="0">
       <string notr="true">deg</string>
+     </property>
+     <property name="minimum">
+      <double>0.000000000000000</double>
      </property>
     </widget>
    </item>
