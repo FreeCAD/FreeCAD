@@ -498,17 +498,23 @@ Hole::Hole()
 
 void Hole::updateHoleCutParams()
 {
+    std::string holeCutType = HoleCutType.getValueAsString();
+
+    // there is no cut, thus return
+    if (holeCutType == "None")
+        return;
+
+    if (ThreadType.getValue() < 0) {
+        throw Base::IndexError("Thread type out of range");
+        return;
+    }
+
     std::string threadType = ThreadType.getValueAsString();
-
     if (threadType == "ISOMetricProfile" || threadType == "ISOMetricFineProfile") {
-        std::string holeCutType = HoleCutType.getValueAsString();
-        if (ThreadType.getValue() < 0)
-            throw Base::IndexError("Thread type out of range");
-        if (ThreadSize.getValue() < 0)
+        if (ThreadSize.getValue() < 0) {
             throw Base::IndexError("Thread size out of range");
-
-        if (holeCutType == "None")
             return;
+        }
 
         // get diameter and size
         double diameter = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;
@@ -578,6 +584,28 @@ void Hole::updateHoleCutParams()
         else if (holeCutType == "Cap screw (deprecated)") {
             HoleCutDiameter.setValue(diameter * 1.5);
             HoleCutDepth.setValue(diameter * 1.25);
+        }
+    }
+    else { // we have an UTS profile
+        // get diameter
+        double diameter = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;
+
+        // we don't update for these settings but we need to set a value for new holes
+        // if we have a cut but the values are zero, we assume it is a new hole
+        // we use rules of thumbs as proposal
+        if (holeCutType == "Counterbore") {
+            if (HoleCutDiameter.getValue() == 0.0) {
+                HoleCutDiameter.setValue(diameter * 1.6);
+                HoleCutDepth.setValue(diameter * 0.9);
+            }
+            if (HoleCutDepth.getValue() == 0.0)
+                HoleCutDepth.setValue(diameter * 0.9);
+        }
+        else if (holeCutType == "Countersink") {
+            if (HoleCutDiameter.getValue() == 0.0) {
+                HoleCutDiameter.setValue(diameter * 1.7);
+                HoleCutCountersinkAngle.setValue(82.0);
+            }
         }
     }
 }
