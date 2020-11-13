@@ -99,6 +99,7 @@ class PathWorkbench (Workbench):
         extracmdlist = []
         # modcmdmore = ["Path_Hop",]
         # remotecmdlist = ["Path_Remote"]
+        specialcmdlist = []
 
 
         if PathPreferences.toolsReallyUseLegacyTools():
