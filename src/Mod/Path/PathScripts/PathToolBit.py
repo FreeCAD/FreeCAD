@@ -367,6 +367,7 @@ class ToolBit(object):
 
 
 def Declaration(path):
+    PathLog.track(path)
     with open(path, 'r') as fp:
         return json.load(fp)
 
