@@ -6,16 +6,73 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>304</width>
-    <height>430</height>
+    <width>233</width>
+    <height>513</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>450</width>
+    <height>16777215</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Clipping</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_5">
-   <item row="0" column="0">
+  <layout class="QGridLayout" name="gridLayout_6">
+   <item row="0" column="0" colspan="3">
+    <widget class="QGroupBox" name="ModeGB">
+     <property name="maximumSize">
+      <size>
+       <width>215</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Cliping: hollow cut planes, result not persistent, all visible objects can be clipped
+Cutting: solid cut planes, persistent result, only objects with a solid shape can be cut</string>
+     </property>
+     <property name="title">
+      <string>Mode</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="CuttingRB">
+        <property name="text">
+         <string>Cutting</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="ClippingRB">
+        <property name="text">
+         <string>Clipping</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="3">
     <widget class="QGroupBox" name="groupBoxX">
+     <property name="maximumSize">
+      <size>
+       <width>215</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="title">
       <string>Clipping X</string>
      </property>
@@ -26,13 +83,17 @@
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="clipX"/>
-      </item>
-      <item row="0" column="3">
-       <widget class="QPushButton" name="flipClipX">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>Flip</string>
+         <string>Offset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="clipX">
+        <property name="keyboardTracking">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -43,24 +104,49 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
+          <width>20</width>
           <height>20</height>
          </size>
         </property>
        </spacer>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
+      <item row="0" column="3">
+       <widget class="QPushButton" name="flipX">
         <property name="text">
-         <string>Offset</string>
+         <string>Flip</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="4">
+       <widget class="QSlider" name="clipXHS">
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="sliderPosition">
+         <number>50</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0" colspan="3">
     <widget class="QGroupBox" name="groupBoxY">
+     <property name="maximumSize">
+      <size>
+       <width>215</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="title">
       <string>Clipping Y</string>
      </property>
@@ -71,13 +157,17 @@
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="clipY"/>
-      </item>
-      <item row="0" column="3">
-       <widget class="QPushButton" name="flipClipY">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Flip</string>
+         <string>Offset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="clipY">
+        <property name="keyboardTracking">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -88,24 +178,43 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
+          <width>20</width>
           <height>20</height>
          </size>
         </property>
        </spacer>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_2">
+      <item row="0" column="3">
+       <widget class="QPushButton" name="flipY">
         <property name="text">
-         <string>Offset</string>
+         <string>Flip</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="4">
+       <widget class="QSlider" name="clipYHS">
+        <property name="value">
+         <number>50</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0" colspan="3">
     <widget class="QGroupBox" name="groupBoxZ">
+     <property name="maximumSize">
+      <size>
+       <width>215</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="title">
       <string>Clipping Z</string>
      </property>
@@ -116,13 +225,17 @@
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="clipZ"/>
-      </item>
-      <item row="0" column="3">
-       <widget class="QPushButton" name="flipClipZ">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Flip</string>
+         <string>Offset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="clipZ">
+        <property name="keyboardTracking">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -133,24 +246,61 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
+          <width>20</width>
           <height>20</height>
          </size>
         </property>
        </spacer>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_3">
+      <item row="0" column="3">
+       <widget class="QPushButton" name="flipZ">
         <property name="text">
-         <string>Offset</string>
+         <string>Flip</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="4">
+       <widget class="QSlider" name="clipZHS">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>50</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="0" colspan="3">
     <widget class="QGroupBox" name="groupBoxView">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>140</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>215</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="title">
       <string>Clipping custom direction</string>
      </property>
@@ -160,66 +310,125 @@
      <property name="checked">
       <bool>false</bool>
      </property>
-     <layout class="QGridLayout" name="gridLayout_6">
-      <item row="0" column="3">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>84</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="4">
-       <widget class="QPushButton" name="fromView">
-        <property name="text">
-         <string>View</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="5">
-       <widget class="QCheckBox" name="adjustViewdirection">
-        <property name="text">
-         <string>Adjust to view direction</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0" colspan="5">
-       <widget class="QGroupBox" name="groupBox">
-        <property name="title">
-         <string>Direction</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_4">
-         <item row="0" column="0">
-          <widget class="QDoubleSpinBox" name="dirX"/>
-         </item>
-         <item row="0" column="1">
-          <widget class="QDoubleSpinBox" name="dirY"/>
-         </item>
-         <item row="0" column="2">
-          <widget class="QDoubleSpinBox" name="dirZ"/>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="0" column="1">
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Offset</string>
         </property>
        </widget>
       </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="clipView">
+        <property name="keyboardTracking">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="2">
-       <widget class="QDoubleSpinBox" name="clipView"/>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="3">
+       <widget class="QPushButton" name="fromView">
+        <property name="text">
+         <string>View</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="4">
+       <widget class="QCheckBox" name="adjustViewdirection">
+        <property name="text">
+         <string>Adjust to view direction</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="4">
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Direction</string>
+        </property>
+        <widget class="QDoubleSpinBox" name="dirX">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>23</y>
+           <width>53</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="dirY">
+         <property name="geometry">
+          <rect>
+           <x>69</x>
+           <y>23</y>
+           <width>53</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="dirZ">
+         <property name="geometry">
+          <rect>
+           <x>128</x>
+           <y>23</y>
+           <width>53</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="keyboardTracking">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0">
+    <widget class="QPushButton" name="RefreshCutPB">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>Refreshes the list of visible documents objects
+Use this before you invoke the cutting</string>
+     </property>
+     <property name="text">
+      <string>Refresh for Cutting</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <spacer name="horizontalSpacer_6">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="5" column="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -234,13 +443,13 @@
  <tabstops>
   <tabstop>groupBoxX</tabstop>
   <tabstop>clipX</tabstop>
-  <tabstop>flipClipX</tabstop>
+  <tabstop>flipX</tabstop>
   <tabstop>groupBoxY</tabstop>
   <tabstop>clipY</tabstop>
-  <tabstop>flipClipY</tabstop>
+  <tabstop>flipY</tabstop>
   <tabstop>groupBoxZ</tabstop>
   <tabstop>clipZ</tabstop>
-  <tabstop>flipClipZ</tabstop>
+  <tabstop>flipZ</tabstop>
   <tabstop>groupBoxView</tabstop>
   <tabstop>clipView</tabstop>
   <tabstop>fromView</tabstop>

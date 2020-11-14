@@ -41,6 +41,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
     ${COIN3D_INCLUDE_DIRS}
+    ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
@@ -55,6 +56,8 @@ endif(MSVC)
 
 if(MSVC)
     set(FreeCADGui_LIBS
+         ${OCC_LIBRARIES}
+         ${OCC_DEBUG_LIBRARIES}
          FreeCADApp
          ${COIN3D_LIBRARIES}
          ${OPENGL_gl_LIBRARY}
@@ -68,6 +71,8 @@ if(MSVC)
 
 else(MSVC)
     set(FreeCADGui_LIBS
+        ${OCC_LIBRARIES}
+        ${OCC_DEBUG_LIBRARIES}
         FreeCADApp
         ${COIN3D_LIBRARIES}
         ${Boost_LIBRARIES}

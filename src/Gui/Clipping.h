@@ -25,6 +25,7 @@
 #define GUI_DIALOG_CLIPPING_H
 
 #include <QDialog>
+#include <App/DocumentObject.h>
 
 namespace Gui {
 class View3DInventor;
@@ -43,15 +44,20 @@ public:
     ~Clipping();
 
 protected Q_SLOTS:
+    void onModeGBclicked();
     void on_groupBoxX_toggled(bool);
     void on_groupBoxY_toggled(bool);
     void on_groupBoxZ_toggled(bool);
     void on_clipX_valueChanged(double);
     void on_clipY_valueChanged(double);
     void on_clipZ_valueChanged(double);
+    void on_clipXHS_sliderMoved(int);
+    void on_clipYHS_sliderMoved(int);
+    void on_clipZHS_sliderMoved(int);
     void on_flipClipX_clicked();
     void on_flipClipY_clicked();
     void on_flipClipZ_clicked();
+    void on_RefreshCutPB_clicked();
     void on_groupBoxView_toggled(bool);
     void on_clipView_valueChanged(double);
     void on_fromView_clicked();
@@ -66,6 +72,15 @@ public:
 private:
     class Private;
     Private* d;
+    std::vector<App::DocumentObject*> ObjectsList;
+    std::vector<App::DocumentObject*> ObjectsListVisible;
+    bool hasBoxX;
+    bool hasBoxY;
+    bool hasBoxZ;
+    bool hasBoxCustom;
+    SbBox3f getViewBoundingBox();
+    void refreshCutRanges(SbBox3f, bool forXValue = true, bool forYValue = true, bool forZValue = true,
+        bool forXRange = true, bool forYRange = true, bool forZRange = true, bool forCustom = true);
 };
 
 } // namespace Dialog
