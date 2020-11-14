@@ -124,6 +124,8 @@ protected:
     /// copies the tag from the geometry passed as a parameter to this object
     void assignTag(const Part::Geometry *);
 
+    void copyNonTag(const Part::Geometry *);
+
 protected:
     Geometry();
 
