@@ -313,7 +313,7 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     lineEdit()->setTextMargins(0, 2, 0, 2);
 #else
     // https://forum.freecadweb.org/viewtopic.php?f=8&t=50615
-    lineEdit()->setTextMargins(0, 2, 0, 4);
+    lineEdit()->setTextMargins(0, 2, 0, 0);
 #endif
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
