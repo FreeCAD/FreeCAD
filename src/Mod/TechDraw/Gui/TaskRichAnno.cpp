@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -108,7 +108,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
         return;
     }
 
-    //m_baseFeat can be null 
+    //m_baseFeat can be null
     App::DocumentObject* obj = m_annoFeat->AnnoParent.getValue();
     if (obj != nullptr) {
         if ( obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) )  {
@@ -123,7 +123,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     m_mdi = dvp->getMDIViewPage();
     m_qgParent = nullptr;
     m_haveMdi = true;
-    if (m_mdi != nullptr) {    
+    if (m_mdi != nullptr) {
         m_view = m_mdi->getQGVPage();
         if (m_baseFeat != nullptr) {
             m_qgParent = m_view->findQViewForDocObj(m_baseFeat);
@@ -183,7 +183,7 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     m_qgParent = nullptr;
     m_haveMdi = true;
     m_mdi = dvp->getMDIViewPage();
-    if (m_mdi != nullptr) {    
+    if (m_mdi != nullptr) {
         m_view = m_mdi->getQGVPage();
         if (baseFeat != nullptr) {
             m_qgParent = m_view->findQViewForDocObj(baseFeat);
@@ -244,7 +244,7 @@ void TaskRichAnno::setUiPrimary()
 #endif
 }
 
-void TaskRichAnno::enableTextUi(bool b) 
+void TaskRichAnno::enableTextUi(bool b)
 {
     ui->pbEditor->setEnabled(b);
     ui->teAnnoText->setEnabled(b);
@@ -266,7 +266,7 @@ void TaskRichAnno::setUiEdit()
     enableVPUi(true);
     setWindowTitle(m_title);
     enableTextUi(true);
-    
+
     if (m_annoFeat != nullptr) {
         std::string baseName("None");
         App::DocumentObject* docObj = m_annoFeat->AnnoParent.getValue();
@@ -430,7 +430,7 @@ void TaskRichAnno::commonFeatureUpdate(void)
 {
 //    Base::Console().Message("TRA::commonFeatureUpdate()\n");
     m_annoFeat->setPosition(Rez::appX(m_attachPoint.x),Rez::appX(- m_attachPoint.y), true);
-    m_annoFeat->AnnoText.setValue(ui->teAnnoText->toHtml().toUtf8()); 
+    m_annoFeat->AnnoText.setValue(ui->teAnnoText->toHtml().toUtf8());
     m_annoFeat->MaxWidth.setValue(ui->dsbMaxWidth->value().getValue());
     m_annoFeat->ShowFrame.setValue(ui->cbShowFrame->isChecked());
 }
@@ -565,7 +565,7 @@ bool TaskRichAnno::reject()
 //        Base::Console().Message("TRA::reject - edit in progress!!\n");
         return false;
     }
-    
+
     if (m_basePage != nullptr) {
         Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
         if (!doc) {
@@ -577,7 +577,7 @@ bool TaskRichAnno::reject()
         }
     }
 
-    //make sure any dangling objects are cleaned up 
+    //make sure any dangling objects are cleaned up
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 

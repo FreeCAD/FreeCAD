@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2017 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

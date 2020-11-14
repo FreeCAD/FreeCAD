@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com>                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -88,7 +88,7 @@ public:
     virtual QRectF boundingRect() const override;
     virtual QPainterPath shape() const override;
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
-    
+
     void inEdit(bool b) { m_inEdit = b; }
     bool inEdit(void)   { return m_inEdit; }
     void startPathEdit(std::vector<QPointF> pathPoints);
@@ -99,7 +99,7 @@ public:
     std::vector<QPointF> getDeltasFromLeader(void);
 
     void setScale(double s) { m_scale = s; }
-    double getScale(void)   { return m_scale; }    
+    double getScale(void)   { return m_scale; }
 
     void setPoints(std::vector<QPointF> pts) { m_ghostPoints = pts; }
 
@@ -137,7 +137,7 @@ protected:
 
     QGILeaderLine* m_parentLeader;
     QGIPrimPath* m_ghost;
-    
+
     double m_startAdj;
     double m_endAdj;
 };
