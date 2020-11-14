@@ -25,6 +25,7 @@ import FreeCADGui
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathGui as PathGui
+import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPreferences as PathPreferences
@@ -211,6 +212,9 @@ class TaskPanelPage(object):
         self.parent = None
         self.panelTitle = 'Operation'
 
+        if hasattr(self.form, 'toolController'):
+            PathJob.Notification.updateTC.connect(self.resetToolController)
+
     def setParent(self, parent):
         '''setParent() ... used to transfer parent object link to child class.
         Do not overwrite.'''
@@ -360,6 +364,11 @@ class TaskPanelPage(object):
             combo.blockSignals(True)
             combo.setCurrentIndex(index)
             combo.blockSignals(False)
+
+    def resetToolController(self, job, tc):
+        self.obj.ToolController = tc
+        combo = self.form.toolController
+        self.setupToolController(self.obj, combo)
 
     def setupToolController(self, obj, combo):
         '''setupToolController(obj, combo) ...
