@@ -176,6 +176,7 @@ SET(Tools_Shape_SRCS
     Tools/Shape/endmill.fcstd
     Tools/Shape/probe.fcstd
     Tools/Shape/slittingsaw.fcstd
+    Tools/Shape/thread-mill.fcstd
     Tools/Shape/v-bit.fcstd
 )
 

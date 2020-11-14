@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>482</width>
+    <width>318</width>
     <height>756</height>
    </rect>
   </property>
@@ -157,36 +157,9 @@
      <property name="title">
       <string>Tool Controller</string>
      </property>
-     <layout class="QFormLayout" name="formLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Tool</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
        <widget class="QComboBox" name="toolController"/>
-      </item>
-      <item row="1" column="1">
-       <widget class="Gui::QuantitySpinBox" name="toolFlat">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Crest</string>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>
