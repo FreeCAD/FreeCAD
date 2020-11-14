@@ -524,7 +524,7 @@ void Hole::updateHoleCutParams()
         // if we have a cut but the values are zero, we assume it is a new hole
         // we take in this case the values from the norm ISO 4762 or ISO 10642
         if (holeCutType == "Counterbore") {
-            //read ISO 4762 values
+            // read ISO 4762 values
             const CutDimensionSet& counter = find_cutDimensionSet(threadType, "ISO 4762");
             const CounterBoreDimension& dimen = counter.get_bore(threadSize);
             if (HoleCutDiameter.getValue() == 0.0) {
@@ -535,11 +535,14 @@ void Hole::updateHoleCutParams()
                 HoleCutDepth.setValue(dimen.depth);
         }
         else if (holeCutType == "Countersink") {
+            // read ISO 10642 values
+            const CutDimensionSet& counter = find_cutDimensionSet(threadType, "ISO 10642");
             if (HoleCutDiameter.getValue() == 0.0) {
-                //read ISO 10642 values
-                const CutDimensionSet& counter = find_cutDimensionSet(threadType, "ISO 10642");
                 const CounterSinkDimension& dimen = counter.get_sink(threadSize);
                 HoleCutDiameter.setValue(dimen.diameter);
+                HoleCutCountersinkAngle.setValue(counter.angle);
+            }
+            if (HoleCutCountersinkAngle.getValue() == 0.0) {
                 HoleCutCountersinkAngle.setValue(counter.angle);
             }
         }
@@ -549,6 +552,9 @@ void Hole::updateHoleCutParams()
         if (HoleCutTypeMap.count(key)) {
             const CutDimensionSet &counter = find_cutDimensionSet(key);
             if (counter.cut_type == CutDimensionSet::Counterbore) {
+                // disable HoleCutCountersinkAngle and reset it to ISO's default
+                HoleCutCountersinkAngle.setValue(90.0);
+                HoleCutCountersinkAngle.setReadOnly(true);
                 const CounterBoreDimension &dimen = counter.get_bore(threadSize);
                 if (dimen.thread == "None") {
                     // valid values for visual feedback
@@ -563,12 +569,17 @@ void Hole::updateHoleCutParams()
                 if (dimen.thread == "None") {
                     // valid values for visual feedback
                     HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
+                    // there might be an angle of zero (if no norm exists for the size)
+                     if (HoleCutCountersinkAngle.getValue() == 0.0) {
+                        HoleCutCountersinkAngle.setValue(counter.angle);
+                    }
                 } else {
                     HoleCutDiameter.setValue(dimen.diameter);
                     HoleCutCountersinkAngle.setValue(counter.angle);
                 }
             }
         }
+
         // handle legacy types but don’t change user settings for
         // user defined None, Counterbore and Countersink
         // handle legacy types but don’t change user settings for
@@ -580,13 +591,16 @@ void Hole::updateHoleCutParams()
         else if (holeCutType == "Countersink socket screw (deprecated)") {
             HoleCutDiameter.setValue(diameter * 2.0);
             HoleCutDepth.setValue(diameter * 0.0);
+            if (HoleCutCountersinkAngle.getValue() == 0.0) {
+                HoleCutCountersinkAngle.setValue(90.0);
+            }
         }
         else if (holeCutType == "Cap screw (deprecated)") {
             HoleCutDiameter.setValue(diameter * 1.5);
             HoleCutDepth.setValue(diameter * 1.25);
         }
     }
-    else { // we have an UTS profile
+    else { // we have an UTS profile or none
         // get diameter
         double diameter = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;
 
@@ -604,7 +618,17 @@ void Hole::updateHoleCutParams()
         else if (holeCutType == "Countersink") {
             if (HoleCutDiameter.getValue() == 0.0) {
                 HoleCutDiameter.setValue(diameter * 1.7);
-                HoleCutCountersinkAngle.setValue(82.0);
+                // 82 degrees for UTS, 90 otherwise
+                if (threadType != "None")       
+                    HoleCutCountersinkAngle.setValue(82.0);
+                else
+                    HoleCutCountersinkAngle.setValue(90.0);
+            }
+            if (HoleCutCountersinkAngle.getValue() == 0.0) {
+                if (threadType != "None")
+                    HoleCutCountersinkAngle.setValue(82.0);
+                else
+                    HoleCutCountersinkAngle.setValue(90.0);
             }
         }
     }
@@ -762,19 +786,14 @@ void Hole::onChanged(const App::Property *prop)
         }
         else if (holeCutType == "Countersink") {
             HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(true);
+            HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(false);
         }
-        else {
+        else { // screw definition
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(true);
+            HoleCutCountersinkAngle.setReadOnly(false);
         }
-
-        if (type == "ISOMetricProfile" || type == "ISOMetricFineProfile")
-            HoleCutCountersinkAngle.setValue(90.0);
-        else if (type == "UNC" || type == "UNF" || type == "UNEF")
-            HoleCutCountersinkAngle.setValue(82.0);
 
         // Signal changes to these
         ProfileBased::onChanged(&ThreadSize);
@@ -861,13 +880,13 @@ void Hole::onChanged(const App::Property *prop)
         }
         else if (holeCutType == "Countersink") {
             HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(true);
+            HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(false);
         }
         else { // screw definition
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(true);
+            HoleCutCountersinkAngle.setReadOnly(false);
         }
         ProfileBased::onChanged(&HoleCutDiameter);
         ProfileBased::onChanged(&HoleCutDepth);

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -30,16 +29,16 @@
 
 #include "ui_TaskHoleParameters.h"
 #include "TaskHoleParameters.h"
+#include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeatureHole.h>
-
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -140,20 +139,25 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     if (pcHole->HoleCutType.isValid())
         holeCutType = pcHole->HoleCutType.getValueAsString();
 
-    if (holeCutType == "Counterbore") {
+    if (holeCutType == "None") {
+        ui->HoleCutDiameter->setEnabled(false);
+        ui->HoleCutDepth->setEnabled(false);
+        ui->HoleCutCountersinkAngle->setEnabled(false);
+    }
+    else if (holeCutType == "Counterbore") {
         ui->HoleCutDiameter->setEnabled(true);
         ui->HoleCutDepth->setEnabled(true);
         ui->HoleCutCountersinkAngle->setEnabled(false);
     }
     else if (holeCutType == "Countersink") {
         ui->HoleCutDiameter->setEnabled(true);
-        ui->HoleCutDepth->setEnabled(false);
+        ui->HoleCutDepth->setEnabled(true);
         ui->HoleCutCountersinkAngle->setEnabled(true);
     }
-    else {
+    else { // screw definition
         ui->HoleCutDiameter->setEnabled(true);
         ui->HoleCutDepth->setEnabled(true);
-        ui->HoleCutCountersinkAngle->setEnabled(false);
+        ui->HoleCutCountersinkAngle->setEnabled(true);
     }
 
     ui->DepthType->setCurrentIndex(pcHole->DepthType.getValue());
@@ -273,6 +277,10 @@ void TaskHoleParameters::holeCutChanged(int index)
 
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
+    // the HoleCutDepth is something different for countersinks and counterbores
+    // therefore reset it, it will be reset to sensible values by setting the new HoleCutType 
+    pcHole->HoleCutDepth.setValue(0.0);
+
     pcHole->HoleCutType.setValue(index);
     recomputeFeature();
 }
@@ -289,7 +297,24 @@ void TaskHoleParameters::holeCutDepthChanged(double value)
 {
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
-    pcHole->HoleCutDepth.setValue(value);
+    if (ui->HoleCutCountersinkAngle->isEnabled()){
+        // we have a countersink and recalculate the HoleCutDiameter
+
+        // store current depth
+        double DepthDifference = value - pcHole->HoleCutDepth.getValue();
+        // new diameter is the old one + 2*tan(angle/2)*DepthDifference
+        double newDiameter = pcHole->HoleCutDiameter.getValue()
+            + 2 * tan(Base::toRadians(pcHole->HoleCutCountersinkAngle.getValue() / 2)) * DepthDifference;
+        // only apply if the result is not smaller than the hole diameter
+        if (newDiameter > pcHole->Diameter.getValue()) {
+            pcHole->HoleCutDiameter.setValue(newDiameter);
+            pcHole->HoleCutDepth.setValue(value);
+        }
+    }
+    else {
+        pcHole->HoleCutDepth.setValue(value);
+    }
+
     recomputeFeature();
 }
 
