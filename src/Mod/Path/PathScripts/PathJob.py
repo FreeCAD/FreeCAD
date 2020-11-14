@@ -94,7 +94,15 @@ def createModelResourceClone(obj, orig):
     return createResourceClone(obj, orig, 'Model', 'BaseGeometry')
 
 
+class NotificationClass(QtCore.QObject):
+    updateTC = QtCore.Signal(object, object)
+
+
+Notification = NotificationClass()
+
+
 class ObjectJob:
+
 
     def __init__(self, obj, models, templateFile=None):
         self.obj = obj
@@ -146,6 +154,7 @@ class ObjectJob:
 
         self.tooltip = None
         self.tooltipArgs = None
+
 
         obj.Proxy = self
 
@@ -261,6 +270,7 @@ class ObjectJob:
         self.setupBaseModel(obj)
         self.fixupOperations(obj)
         self.setupSetupSheet(obj)
+
         obj.setEditorMode('Operations', 2)  # hide
         obj.setEditorMode('Placement', 2)
 
@@ -413,6 +423,7 @@ class ObjectJob:
             tc.setExpression('HorizRapid', "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Template.HorizRapid))
             group.append(tc)
             self.obj.ToolController = group
+            Notification.updateTC.emit(self.obj, tc)
 
     def allOperations(self):
         ops = []
