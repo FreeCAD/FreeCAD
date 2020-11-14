@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Luke Parry    <l.parry@warwick.ac.uk>              *
+ *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

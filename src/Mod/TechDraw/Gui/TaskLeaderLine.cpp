@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -204,7 +204,7 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
     m_qgParent = nullptr;
     m_haveMdi = true;
     m_mdi = vpp->getMDIViewPage();
-    if (m_mdi != nullptr) {    
+    if (m_mdi != nullptr) {
         m_scene = m_mdi->m_scene;
         m_view = m_mdi->getQGVPage();
         if (baseFeat != nullptr) {
@@ -217,7 +217,7 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
     ui->setupUi(this);
 
     setUiPrimary();
-    
+
     connect(ui->pbTracker, SIGNAL(clicked(bool)),
             this, SLOT(onTrackerClicked(bool)));
     connect(ui->pbCancelEdit, SIGNAL(clicked(bool)),
@@ -515,7 +515,7 @@ void TaskLeaderLine::onTrackerClicked(bool b)
         Base::Console().Message("TLL::onTrackerClicked - no Mdi, no Tracker!\n");
         return;
     }
-    
+
     if ( (m_pbTrackerState == TRACKERSAVE) &&
          (getCreateMode())  ){
         if (m_tracker != nullptr) {
@@ -568,7 +568,7 @@ void TaskLeaderLine::onTrackerClicked(bool b)
             QGVPage* qgvp = m_mdi->getQGVPage();
             QGIView* qgiv = qgvp->findQViewForDocObj(m_lineFeat);
             QGILeaderLine* qgLead = dynamic_cast<QGILeaderLine*>(qgiv);
-            
+
             if (qgLead == nullptr) {
                 //tarfu
                 Base::Console().Error("TaskLeaderLine - can't find leader graphic\n");
@@ -635,7 +635,7 @@ void TaskLeaderLine::startTracker(void)
 
 void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent)
 {
-    //in this case, we already know who the parent is.  We don't need QGTracker to tell us. 
+    //in this case, we already know who the parent is.  We don't need QGTracker to tell us.
     (void) qgParent;
 //    Base::Console().Message("TTL::onTrackerFinished() - parent: %X\n",qgParent);
     if (pts.empty()) {
@@ -742,7 +742,7 @@ void TaskLeaderLine::onPointEditComplete(void)
 {
 //    Base::Console().Message("TTL::onPointEditComplete()\n");
     m_inProgressLock = false;
-    
+
     m_pbTrackerState = TRACKEREDIT;
     ui->pbTracker->setText(QString::fromUtf8("Edit points"));
     ui->pbTracker->setEnabled(true);
@@ -843,7 +843,7 @@ bool TaskLeaderLine::reject()
         removeTracker();
         return false;
     }
-    
+
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     if (!doc) return false;
 
@@ -860,7 +860,7 @@ bool TaskLeaderLine::reject()
     m_trackerMode = QGTracker::TrackerMode::None;
     removeTracker();
 
-    //make sure any dangling objects are cleaned up 
+    //make sure any dangling objects are cleaned up
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 

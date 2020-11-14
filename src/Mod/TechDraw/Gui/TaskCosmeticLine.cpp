@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2020 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -213,14 +213,14 @@ void TaskCosmeticLine::createCosmeticLine(void)
     y = ui->qsby2->value().getValue();
     z = ui->qsbz2->value().getValue();
     Base::Vector3d p1(x, y, z);
-    
+
     Base::Vector3d centroid = m_partFeat->getOriginalCentroid();
 
     if (ui->rb3d1->isChecked()) {
         p0 = p0 - centroid;
         p0 = DrawUtil::invertY(m_partFeat->projectPoint(p0));
-    } 
-    
+    }
+
     if (ui->rb3d2->isChecked()) {
         p1 = p1 - centroid;
         p1 = DrawUtil::invertY(m_partFeat->projectPoint(p1));
@@ -284,7 +284,7 @@ bool TaskCosmeticLine::accept()
 
 bool TaskCosmeticLine::reject()
 {
-    //there's nothing to do. 
+    //there's nothing to do.
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     return false;
 }
