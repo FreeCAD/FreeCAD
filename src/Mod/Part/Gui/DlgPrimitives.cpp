@@ -314,11 +314,11 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
 
         Base::Type type = feature->getTypeId();
         int index = std::distance(types.begin(), std::find(types.begin(), types.end(), type));
-        ui.comboBox1->setCurrentIndex(index);
+        ui.PrimitiveTypeCB->setCurrentIndex(index);
         ui.widgetStack2->setCurrentIndex(index);
 
         // if existing, the primitive type can not be changed by the user
-        ui.comboBox1->setDisabled(feature != nullptr);
+        ui.PrimitiveTypeCB->setDisabled(feature != nullptr);
 
         // ToDo: connect signal if there is a preview of primitives available
         // read values from the properties
@@ -626,7 +626,7 @@ void DlgPrimitives::executeCallback(Picker* p)
             viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), pickCallback, p);
 
             if (ret == 0) {
-                p->createPrimitive(this, ui.comboBox1->currentText(), doc);
+                p->createPrimitive(this, ui.PrimitiveTypeCB->currentText(), doc);
             }
         }
     }
@@ -645,10 +645,10 @@ void DlgPrimitives::createPrimitive(const QString& placement)
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (!doc) {
             QMessageBox::warning(this, tr("Create %1")
-                .arg(ui.comboBox1->currentText()), tr("No active document"));
+                .arg(ui.PrimitiveTypeCB->currentText()), tr("No active document"));
             return;
         }
-        if (ui.comboBox1->currentIndex() == 0) {         // plane
+        if (ui.PrimitiveTypeCB->currentIndex() == 0) {         // plane
             name = QString::fromLatin1(doc->getUniqueObjectName("Plane").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Plane\",\"%1\")\n"
@@ -662,7 +662,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Plane"));
         }
-        else if (ui.comboBox1->currentIndex() == 1) {         // box
+        else if (ui.PrimitiveTypeCB->currentIndex() == 1) {         // box
             name = QString::fromLatin1(doc->getUniqueObjectName("Box").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Box\",\"%1\")\n"
@@ -678,7 +678,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Box"));
         }
-        else if (ui.comboBox1->currentIndex() == 2) {  // cylinder
+        else if (ui.PrimitiveTypeCB->currentIndex() == 2) {  // cylinder
             name = QString::fromLatin1(doc->getUniqueObjectName("Cylinder").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Cylinder\",\"%1\")\n"
@@ -694,7 +694,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Cylinder"));
         }
-        else if (ui.comboBox1->currentIndex() == 3) {  // cone
+        else if (ui.PrimitiveTypeCB->currentIndex() == 3) {  // cone
             name = QString::fromLatin1(doc->getUniqueObjectName("Cone").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Cone\",\"%1\")\n"
@@ -712,7 +712,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Cone"));
         }
-        else if (ui.comboBox1->currentIndex() == 4) {  // sphere
+        else if (ui.PrimitiveTypeCB->currentIndex() == 4) {  // sphere
             name = QString::fromLatin1(doc->getUniqueObjectName("Sphere").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Sphere\",\"%1\")\n"
@@ -730,7 +730,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Sphere"));
         }
-        else if (ui.comboBox1->currentIndex() == 5) {  // ellipsoid
+        else if (ui.PrimitiveTypeCB->currentIndex() == 5) {  // ellipsoid
             name = QString::fromLatin1(doc->getUniqueObjectName("Ellipsoid").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Ellipsoid\",\"%1\")\n"
@@ -752,7 +752,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Ellipsoid"));
         }
-        else if (ui.comboBox1->currentIndex() == 6) {  // torus
+        else if (ui.PrimitiveTypeCB->currentIndex() == 6) {  // torus
             name = QString::fromLatin1(doc->getUniqueObjectName("Torus").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Torus\",\"%1\")\n"
@@ -772,7 +772,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Torus"));
         }
-        else if (ui.comboBox1->currentIndex() == 7) {  // prism
+        else if (ui.PrimitiveTypeCB->currentIndex() == 7) {  // prism
             name = QString::fromLatin1(doc->getUniqueObjectName("Prism").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Prism\",\"%1\")\n"
@@ -792,7 +792,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Prism"));
         }
-        else if (ui.comboBox1->currentIndex() == 8) {  // wedge
+        else if (ui.PrimitiveTypeCB->currentIndex() == 8) {  // wedge
             name = QString::fromLatin1(doc->getUniqueObjectName("Wedge").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Wedge\",\"%1\")\n"
@@ -822,7 +822,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Wedge"));
         }
-        else if (ui.comboBox1->currentIndex() == 9) {  // helix
+        else if (ui.PrimitiveTypeCB->currentIndex() == 9) {  // helix
             name = QString::fromLatin1(doc->getUniqueObjectName("Helix").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Helix\",\"%1\")\n"
@@ -843,7 +843,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Helix"));
         }
-        else if (ui.comboBox1->currentIndex() == 10) {  // spiral
+        else if (ui.PrimitiveTypeCB->currentIndex() == 10) {  // spiral
             name = QString::fromLatin1(doc->getUniqueObjectName("Spiral").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Spiral\",\"%1\")\n"
@@ -859,7 +859,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Spiral"));
         }
-        else if (ui.comboBox1->currentIndex() == 11) {  // circle
+        else if (ui.PrimitiveTypeCB->currentIndex() == 11) {  // circle
             name = QString::fromLatin1(doc->getUniqueObjectName("Circle").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
@@ -875,7 +875,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Circle"));
         }
-        else if (ui.comboBox1->currentIndex() == 12) {  // ellipse
+        else if (ui.PrimitiveTypeCB->currentIndex() == 12) {  // ellipse
             name = QString::fromLatin1(doc->getUniqueObjectName("Ellipse").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Ellipse\",\"%1\")\n"
@@ -893,7 +893,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Ellipse"));
         }
-        else if (ui.comboBox1->currentIndex() == 13) {  // vertex
+        else if (ui.PrimitiveTypeCB->currentIndex() == 13) {  // vertex
             name = QString::fromLatin1(doc->getUniqueObjectName("Vertex").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Vertex\",\"%1\")\n"
@@ -909,7 +909,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Vertex"));
         }
-        else if (ui.comboBox1->currentIndex() == 14) {  // line
+        else if (ui.PrimitiveTypeCB->currentIndex() == 14) {  // line
             name = QString::fromLatin1(doc->getUniqueObjectName("Line").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::Line\",\"%1\")\n"
@@ -931,7 +931,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 .arg(placement)
                 .arg(tr("Line"));
         }
-        else if (ui.comboBox1->currentIndex() == 15) {  // RegularPolygon
+        else if (ui.PrimitiveTypeCB->currentIndex() == 15) {  // RegularPolygon
             name = QString::fromLatin1(doc->getUniqueObjectName("RegularPolygon").c_str());
             cmd = QString::fromLatin1(
                 "App.ActiveDocument.addObject(\"Part::RegularPolygon\",\"%1\")\n"
@@ -947,7 +947,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
         }
 
         // Execute the Python block
-        QString prim = tr("Create %1").arg(ui.comboBox1->currentText());
+        QString prim = tr("Create %1").arg(ui.PrimitiveTypeCB->currentText());
         Gui::Application::Instance->activeDocument()->openCommand(prim.toUtf8());
         Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
         Gui::Application::Instance->activeDocument()->commitCommand();
@@ -956,7 +956,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
     }
     catch (const Base::PyException& e) {
         QMessageBox::warning(this, tr("Create %1")
-            .arg(ui.comboBox1->currentText()), QString::fromLatin1(e.what()));
+            .arg(ui.PrimitiveTypeCB->currentText()), QString::fromLatin1(e.what()));
     }
 }
 
@@ -1764,7 +1764,6 @@ TaskPrimitives::TaskPrimitives()
     location = new Location();
     taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle() ,true, 0);
     taskbox->groupLayout()->addWidget(location);
-    taskbox->hideGroupBox();
     Content.push_back(taskbox);
 }
 
