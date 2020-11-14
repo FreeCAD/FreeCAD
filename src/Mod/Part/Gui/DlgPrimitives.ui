@@ -18,7 +18,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QComboBox" name="comboBox1">
+    <widget class="QComboBox" name="PrimitiveTypeCB">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -2436,7 +2436,7 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>comboBox1</tabstop>
+  <tabstop>PrimitiveTypeCB</tabstop>
   <tabstop>planeLength</tabstop>
   <tabstop>planeWidth</tabstop>
   <tabstop>boxLength</tabstop>
@@ -2510,7 +2510,7 @@
  </resources>
  <connections>
   <connection>
-   <sender>comboBox1</sender>
+   <sender>PrimitiveTypeCB</sender>
    <signal>activated(int)</signal>
    <receiver>widgetStack2</receiver>
    <slot>setCurrentIndex(int)</slot>
