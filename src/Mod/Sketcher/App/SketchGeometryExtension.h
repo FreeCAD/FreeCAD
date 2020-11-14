@@ -86,6 +86,8 @@ public:
 
     constexpr static std::array<const char *,InternalType::NumInternalGeometryType> internaltype2str {{ "None", "EllipseMajorDiameter", "EllipseMinorDiameter","EllipseFocus1", "EllipseFocus2", "HyperbolaMajor", "HyperbolaMinor", "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint" }};
 
+    static bool getInternalTypeFromName(std::string str, InternalType::InternalType &type);
+
 private:
     SketchGeometryExtension(const SketchGeometryExtension&) = default;
 

@@ -104,18 +104,11 @@ Py::String SketchGeometryExtensionPy::getInternalType(void) const
 void SketchGeometryExtensionPy::setInternalType(Py::String arg)
 {
     std::string argstr = arg;
+    InternalType::InternalType type;
 
-    auto pos = std::find_if(this->getSketchGeometryExtensionPtr()->internaltype2str.begin(),
-                                getSketchGeometryExtensionPtr()->internaltype2str.end(),
-                                [argstr](const char * val) {
-                                    return strcmp(val,argstr.c_str())==0;}
-                                );
-
-    if( pos != getSketchGeometryExtensionPtr()->internaltype2str.end()) {
-            int index = std::distance( getSketchGeometryExtensionPtr()->internaltype2str.begin(), pos );
-
-            this->getSketchGeometryExtensionPtr()->setInternalType((InternalType::InternalType)index);
-            return;
+    if(SketchGeometryExtension::getInternalTypeFromName(argstr, type)) {
+        this->getSketchGeometryExtensionPtr()->setInternalType(type);
+        return;
     }
 
     throw Py::ValueError("Argument is not a valid internal geometry type.");
