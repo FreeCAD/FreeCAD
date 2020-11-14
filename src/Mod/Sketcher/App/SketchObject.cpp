@@ -147,6 +147,7 @@ SketchObject::SketchObject()
 
     internaltransaction=false;
     managedoperation=false;
+    afterRestoreMigration=false;
 }
 
 SketchObject::~SketchObject()
@@ -7339,6 +7340,9 @@ void SketchObject::onUndoRedoFinished()
 void SketchObject::onDocumentRestored()
 {
     try {
+        if(afterRestoreMigration)
+            migrateSketch();
+
         validateExternalLinks();
         rebuildExternalGeometry();
         Constraints.acceptGeometry(getCompleteGeometry());
@@ -7358,6 +7362,9 @@ void SketchObject::onDocumentRestored()
 void SketchObject::restoreFinished()
 {
     try {
+        if(afterRestoreMigration)
+            migrateSketch();
+
         validateExternalLinks();
         rebuildExternalGeometry();
         Constraints.acceptGeometry(getCompleteGeometry());
@@ -7369,6 +7376,90 @@ void SketchObject::restoreFinished()
         }
     }
     catch (...) {
+    }
+}
+
+void SketchObject::migrateSketch(void)
+{
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+
+    for( auto c : Constraints.getValues()) {
+
+        // Assign correct Internal Geometry Type
+        switch(c->AlignmentType){
+            case Undef:
+            {
+                auto gf = GeometryFacade::getFacade(vals[c->First]);
+                gf->setInternalType(InternalType::None);
+                break;
+            }
+            case EllipseMajorDiameter:
+            {
+                auto gf = GeometryFacade::getFacade(vals[c->First]);
+                gf->setInternalType(InternalType::EllipseMajorDiameter);
+                break;
+            }
+            case EllipseMinorDiameter:
+            {
+                auto gf = GeometryFacade::getFacade(vals[c->First]);
+                gf->setInternalType(InternalType::EllipseMinorDiameter);
+                break;
+            }
+            case EllipseFocus1:
+            {
+                auto gf = GeometryFacade::getFacade(vals[c->First]);
+                gf->setInternalType(InternalType::EllipseFocus1);
+                break;
+            }
+            case EllipseFocus2:
+            {
+                auto gf = GeometryFacade::getFacade(vals[c->First]);
+                gf->setInternalType(InternalType::EllipseFocus2);
+                break;
+            }
+            case HyperbolaMajor:
+            {
+                auto gf = GeometryFacade::getFacade(vals[c->First]);
+                gf->setInternalType(InternalType::HyperbolaMajor);
+                break;
+            }
+            case HyperbolaMinor:
+            {
+                auto gf = GeometryFacade::getFacade(vals[c->First]);
+                gf->setInternalType(InternalType::HyperbolaMinor);
+                break;
+            }
+            case HyperbolaFocus:
+            {
+                auto gf = GeometryFacade::getFacade(vals[c->First]);
+                gf->setInternalType(InternalType::HyperbolaFocus);
+                break;
+            }
+            case ParabolaFocus:
+            {
+                auto gf = GeometryFacade::getFacade(vals[c->First]);
+                gf->setInternalType(InternalType::ParabolaFocus);
+                break;
+            }
+            case BSplineControlPoint:
+            {
+                auto gf = GeometryFacade::getFacade(vals[c->First]);
+                gf->setInternalType(InternalType::BSplineControlPoint);
+                break;
+            }
+            case BSplineKnotPoint:
+            {
+                auto gf = GeometryFacade::getFacade(vals[c->First]);
+                gf->setInternalType(InternalType::BSplineKnotPoint);
+                break;
+            }
+        }
+
+        // Assign Blocked geometry mode
+        if(c->Type == Block){
+            auto gf = GeometryFacade::getFacade(vals[c->First]);
+            gf->setBlocked();
+        }
     }
 }
 

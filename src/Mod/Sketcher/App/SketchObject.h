@@ -450,6 +450,9 @@ protected:
 
     virtual void onUndoRedoFinished() override;
 
+    // migration functions
+    void migrateSketch(void);
+
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool allowOtherBody;
@@ -488,6 +491,8 @@ private:
     bool internaltransaction;
 
     bool managedoperation; // indicates whether changes to properties are the deed of SketchObject or not (for input validation)
+
+    bool afterRestoreMigration;
 };
 
 typedef App::FeaturePythonT<SketchObject> SketchObjectPython;
