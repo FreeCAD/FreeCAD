@@ -140,14 +140,19 @@ class ModelFactory(object):
             library = json.load(fp)
 
         for toolBit in library['tools']:
-            nr = toolBit['nr']
-            bit = PathToolBit.findBit(toolBit['path'])
-            if bit:
-                PathLog.track(bit)
-                tool = PathToolBit.Declaration(bit)
-                datamodel.appendRow(self._toolAdd(nr, tool, bit))
-            else:
-                PathLog.error("Could not find tool #{}: {}".format(nr, toolBit['path']))
+            try:
+                nr = toolBit['nr']
+                bit = PathToolBit.findBit(toolBit['path'])
+                if bit:
+                    PathLog.track(bit)
+                    tool = PathToolBit.Declaration(bit)
+                    datamodel.appendRow(self._toolAdd(nr, tool, bit))
+                else:
+                    PathLog.error("Could not find tool #{}: {}".format(nr, toolBit['path']))
+            except Exception as e:
+                msg = "Error loading tool: {} : {}".format(toolBit['path'], e)
+                FreeCAD.Console.PrintError(msg)
+
 
     def _toolAdd(self, nr, tool, path):
 
