@@ -36,7 +36,6 @@ if FreeCAD.GuiUp:
     import pivy.coin as pvy
 
     import FreeCADGui
-    import draftguitools.gui_trackers as trackers
 
 # Translation-related code
 # See forum thread "A new Part tool is being born... JoinFeatures!"
@@ -65,6 +64,7 @@ class _CommandImageScaling:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Scales an image plane by defining a distance between two points")}
 
     def Activated(self):
+        import draftguitools.gui_trackers as trackers
         cmdCreateImageScaling(name="ImageScaling")
         
     def IsActive(self):
