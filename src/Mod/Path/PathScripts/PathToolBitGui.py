@@ -113,7 +113,14 @@ class ViewProvider(object):
         return []
 
     def doubleClicked(self, vobj):
-        self.setEdit(vobj)
+        if os.path.exists(vobj.Object.BitShape):
+            self.setEdit(vobj)
+        else:
+            msg = translate('PathToolBit',
+                    'Toolbit cannot be edited: Shapefile not found')
+            diag = QtGui.QMessageBox(QtGui.QMessageBox.Warning, 'Error', msg)
+            diag.setWindowModality(QtCore.Qt.ApplicationModal)
+            diag.exec_()
 
 
 class TaskPanel:
