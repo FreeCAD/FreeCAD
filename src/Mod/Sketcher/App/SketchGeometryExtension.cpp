@@ -98,3 +98,21 @@ PyObject * SketchGeometryExtension::getPyObject(void)
     return new SketchGeometryExtensionPy(new SketchGeometryExtension(*this));
 }
 
+bool SketchGeometryExtension::getInternalTypeFromName(std::string str, InternalType::InternalType &type)
+{
+    auto pos = std::find_if(    SketchGeometryExtension::internaltype2str.begin(),
+                                SketchGeometryExtension::internaltype2str.end(),
+                                [str](const char * val) {
+                                    return strcmp(val,str.c_str())==0;}
+                                );
+
+    if( pos != SketchGeometryExtension::internaltype2str.end()) {
+            int index = std::distance( SketchGeometryExtension::internaltype2str.begin(), pos );
+
+            type = static_cast<InternalType::InternalType>(index);
+            return true;
+    }
+
+    return false;
+}
+

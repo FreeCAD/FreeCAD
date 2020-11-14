@@ -107,18 +107,11 @@ Py::String GeometryFacadePy::getInternalType(void) const
 void GeometryFacadePy::setInternalType(Py::String arg)
 {
     std::string argstr = arg;
+    InternalType::InternalType type;
 
-    auto pos = std::find_if(    SketchGeometryExtension::internaltype2str.begin(),
-                                SketchGeometryExtension::internaltype2str.end(),
-                                [argstr](const char * val) {
-                                    return strcmp(val,argstr.c_str())==0;}
-                                );
-
-    if( pos != SketchGeometryExtension::internaltype2str.end()) {
-            int index = std::distance( SketchGeometryExtension::internaltype2str.begin(), pos );
-
-            this->getGeometryFacadePtr()->setInternalType((InternalType::InternalType)index);
-            return;
+    if(SketchGeometryExtension::getInternalTypeFromName(argstr, type)) {
+        this->getGeometryFacadePtr()->setInternalType(type);
+        return;
     }
 
     throw Py::ValueError("Argument is not a valid internal geometry type.");
