@@ -40,8 +40,8 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Path thread milling operation."
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -196,6 +196,12 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         obj.addProperty("App::PropertyLink", "ClearanceOp", "Operation", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Operation to clear the inside of the thread"))
         obj.Direction = self.Directions
 
+        # Rotation related properties
+        if not hasattr(obj, 'EnableRotation'):
+            obj.addProperty("App::PropertyEnumeration", "EnableRotation", "Rotation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable rotation to gain access to pockets/areas not normal to Z axis."))
+            obj.EnableRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
+
+
     def threadStartDepth(self, obj):
         if obj.ThreadOrientation == self.RightHand:
             if obj.Direction == self.DirectionClimb:
@@ -264,7 +270,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
 
         self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
-        for radius in threadPasses(obj.Passes, radiiInternal, obj.MajorDiameter.Value, obj.MinorDiameter.Value, self.tool.Diameter, 0):
+        for radius in threadPasses(obj.Passes, radiiInternal, obj.MajorDiameter.Value, obj.MinorDiameter.Value, float(self.tool.Diameter), float(self.tool.Crest)):
             commands = internalThreadCommands(loc, gcode, zStart, zFinal, pitch, radius, obj.LeadInOut)
             for cmd in commands:
                 p = cmd.Parameters
@@ -279,20 +285,22 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
 
     def circularHoleExecute(self, obj, holes):
         PathLog.track()
+        if self.isToolSupported(obj, self.tool):
+            self.commandlist.append(Path.Command("(Begin Thread Milling)"))
 
-        self.commandlist.append(Path.Command("(Begin Thread Milling)"))
+            (cmd, zStart, zFinal) = self.threadSetup(obj)
+            pitch = obj.Pitch.Value
+            if obj.TPI > 0:
+                pitch = 25.4 / obj.TPI
+            if pitch <= 0:
+                PathLog.error("Cannot create thread with pitch {}".format(pitch))
+                return
 
-        (cmd, zStart, zFinal) = self.threadSetup(obj)
-        pitch = obj.Pitch.Value
-        if obj.TPI > 0:
-            pitch = 25.4 / obj.TPI
-        if pitch <= 0:
-            PathLog.error("Cannot create thread with pitch {}".format(pitch))
-            return
-
-        # rapid to clearance height
-        for loc in holes:
-            self.executeThreadMill(obj, FreeCAD.Vector(loc['x'], loc['y'], 0), cmd, zStart, zFinal, pitch)
+            # rapid to clearance height
+            for loc in holes:
+                self.executeThreadMill(obj, FreeCAD.Vector(loc['x'], loc['y'], 0), cmd, zStart, zFinal, pitch)
+        else:
+            PathLog.error("No suitable Tool found for thread milling operation")
 
 
     def opSetDefaultValues(self, obj, job):
@@ -304,6 +312,10 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         obj.Passes = 1
         obj.Direction = self.DirectionClimb
         obj.LeadInOut = True
+
+    def isToolSupported(self, obj, tool):
+        '''Thread milling only supports thread milling cutters.'''
+        return hasattr(tool, 'Diameter') and hasattr(tool, 'Crest')
 
 
 def SetupProperties():
