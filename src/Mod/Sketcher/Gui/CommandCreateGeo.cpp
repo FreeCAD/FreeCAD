@@ -6429,6 +6429,11 @@ namespace SketcherGui {
             setCrosshairCursor("Sketcher_Pointer_CarbonCopy");
         }
 
+        virtual bool allowExternalPick() const
+        {
+            return true;
+        }
+
         virtual void deactivated(ViewProviderSketch *sketchgui)
         {
             sketchgui->setAxisPickStyle(true);
