@@ -36,6 +36,7 @@ class ViewProviderTube:
     def __init__(self, obj):
         ''' Set this object to the proxy object of the actual view provider '''
         obj.Proxy = self
+        obj.addExtension("PartGui::ViewProviderAttachExtensionPython", self)
 
     def attach(self, obj):
         ''' Setup the scene sub-graph of the view provider, this method is mandatory '''

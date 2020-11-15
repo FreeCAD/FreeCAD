@@ -25,6 +25,7 @@
 #define PARTGUI_VIEWPROVIDERPRIMITIVE_H
 
 #include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 
 
 namespace PartGui {
@@ -47,6 +48,9 @@ protected:
 
 private:
     void startDefaultEditMode();
+
+private:
+    ViewProviderAttachExtension extension;
 };
 
 } // namespace PartGui
