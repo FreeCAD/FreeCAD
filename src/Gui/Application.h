@@ -45,6 +45,7 @@ class MainWindow;
 class MenuItem;
 class ViewProvider;
 class ViewProviderDocumentObject;
+enum  class HighlightMode;
 
 /** The Application main class
  * This is the central class of the GUI
@@ -135,6 +136,12 @@ public:
     boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
     /// signal on changed claimed children
     boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalChangedChildren;
+    /// signal on changed Object, the 2nd argument is the highlight mode to use
+    boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&, 
+                                  const Gui::HighlightMode&, 
+                                  bool,
+                                  App::DocumentObject *parent, 
+                                  const char *subname)> signalHighlightObject; 
     //@}
 
     /** @name methods for Document handling */

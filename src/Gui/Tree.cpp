@@ -4493,7 +4493,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     }
     connectEdtObject = doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, bp::_1));
     connectResObject = doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, bp::_1));
-    connectHltObject = doc->signalHighlightObject.connect(
+    connectHltObject = Application::Instance->signalHighlightObject.connect(
             boost::bind(&DocumentItem::slotHighlightObject, this, bp::_1, bp::_2, bp::_3, bp::_4, bp::_5));
     connectExpObject = doc->signalExpandObject.connect(
             boost::bind(&DocumentItem::slotExpandObject, this, bp::_1, bp::_2, bp::_3, bp::_4));
@@ -5073,13 +5073,12 @@ void TreeWidget::slotChangedChildren(const ViewProviderDocumentObject &view) {
 void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj, 
     const Gui::HighlightMode& high, bool set, const App::DocumentObject *parent, const char *subname)
 {
-    getTree()->_updateStatus(false);
-    if(parent && parent->getDocument()!=document()->getDocument()) {
-        auto it = getTree()->DocumentMap.find(Application::Instance->getDocument(parent->getDocument()));
-        if(it!=getTree()->DocumentMap.end())
-            it->second->slotHighlightObject(obj,high,set,parent,subname);
+    (void)subname;
+    if((parent && parent->getDocument()!=document()->getDocument())
+        || (!parent && obj.getDocument() != document()))
         return;
-    }
+
+    getTree()->_updateStatus(false);
     FOREACH_ITEM(item,obj)
         if(parent) {
             App::DocumentObject *topParent = 0;

@@ -33,8 +33,6 @@
 #include <Base/Persistence.h>
 #include <App/Document.h>
 
-#include "Tree.h"
-
 class SoNode;
 class SoPath;
 
@@ -114,13 +112,7 @@ public:
     mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode
     mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
-    /// signal on changed Object, the 2nd argument is the highlite mode to use
-    mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&, 
-                                          const Gui::HighlightMode&, 
-                                          bool,
-                                          App::DocumentObject *parent, 
-                                          const char *subname)> signalHighlightObject; 
-    /// signal on changed Object, the 2nd argument is the highlite mode to use
+    /// signal on changed Object, the 2nd argument is the highlight mode to use
     mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&,
                                           const Gui::TreeItemMode&,
                                           App::DocumentObject *parent, 

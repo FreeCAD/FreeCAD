@@ -76,8 +76,8 @@ bool ActiveAnalysisObserver::hasActiveObject() const
 
 void ActiveAnalysisObserver::highlightActiveObject(const Gui::HighlightMode& mode, bool on)
 {
-    if (activeDocument && activeView)
-        activeDocument->signalHighlightObject(*activeView, mode, on, 0, 0);
+    if (activeView)
+        Gui::Application::Instance->signalHighlightObject(*activeView, mode, on, 0, 0);
 }
 
 void ActiveAnalysisObserver::slotDeletedDocument(const App::Document& Doc)

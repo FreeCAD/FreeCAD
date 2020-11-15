@@ -69,7 +69,7 @@ void ActiveObjectList::setHighlight(const ObjectInfo &info, HighlightMode mode, 
                                               info.obj, info.subname.c_str());
     }
 
-    vp->getDocument()->signalHighlightObject(*vp, mode,enable,info.obj,info.subname.c_str());
+    Gui::Application::Instance->signalHighlightObject(*vp, mode,enable,info.obj,info.subname.c_str());
 }
 
 Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::DocumentObject *obj, const char *subname) const
