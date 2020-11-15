@@ -25,7 +25,7 @@
 #define PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H
 
 #include "ViewProviderSpline.h"
-#include "ViewProvider.h"
+#include "ViewProviderPrimitive.h"
 
 namespace PartGui {
 

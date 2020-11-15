@@ -24,7 +24,7 @@
 #ifndef PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
 
-#include "ViewProvider.h"
+#include "ViewProviderPrimitive.h"
 
 
 class TopoDS_Shape;

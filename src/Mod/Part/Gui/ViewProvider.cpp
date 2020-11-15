@@ -31,17 +31,11 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <App/Document.h>
-#include <Gui/ActionFunction.h>
-#include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
 
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/PrimitiveFeature.h>
 
 #include "ViewProvider.h"
-#include "DlgPrimitives.h"
 
 
 using namespace PartGui;
@@ -96,66 +90,6 @@ void ViewProviderPart::applyTransparency(const float& transparency,
             if (j->a == 0.0)
                 j->a = transparency/100.0; // transparency comes in percent
         }
-    }
-}
-
-// ----------------------------------------------------------------------------
-
-PROPERTY_SOURCE(PartGui::ViewProviderPrimitive, PartGui::ViewProviderPart)
-
-ViewProviderPrimitive::ViewProviderPrimitive()
-{
-}
-
-ViewProviderPrimitive::~ViewProviderPrimitive()
-{
-
-}
-
-void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
-{
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
-    act->setData(QVariant((int)ViewProvider::Default));
-    func->trigger(act, boost::bind(&ViewProviderPrimitive::startDefaultEditMode, this));
-
-    ViewProviderPart::setupContextMenu(menu, receiver, member);
-}
-
-void ViewProviderPrimitive::startDefaultEditMode()
-{
-    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-    Gui::Command::openCommand(text.toUtf8());
-
-    Gui::Document* document = this->getDocument();
-    if (document) {
-        document->setEdit(this, ViewProvider::Default);
-    }
-}
-
-bool ViewProviderPrimitive::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        if (Gui::Control().activeDialog())
-            return false;
-        PartGui::TaskPrimitivesEdit* dlg
-            = new PartGui::TaskPrimitivesEdit(dynamic_cast<Part::Primitive*>(getObject()));
-        Gui::Control().showDialog(dlg);
-        return true;
-    }
-    else {
-        ViewProviderPart::setEdit(ModNum);
-        return true;
-    }
-}
-
-void ViewProviderPrimitive::unsetEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderPart::unsetEdit(ModNum);
     }
 }
 

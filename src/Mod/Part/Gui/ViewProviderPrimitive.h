@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,56 +21,36 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
-#define PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
+#ifndef PARTGUI_VIEWPROVIDERPRIMITIVE_H
+#define PARTGUI_VIEWPROVIDERPRIMITIVE_H
 
-#include "ViewProviderPrimitive.h"
+#include <Mod/Part/Gui/ViewProvider.h>
 
-
-class TopoDS_Shape;
-class TopoDS_Face;
-class SoSeparator;
-class SbVec3f;
-class SoTransform;
 
 namespace PartGui {
 
-
-class PartGuiExport ViewProviderPlaneParametric : public ViewProviderPrimitive
+class PartGuiExport ViewProviderPrimitive : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPlaneParametric);
+    PROPERTY_HEADER(PartGui::ViewProviderPrimitive);
 
 public:
     /// constructor
-    ViewProviderPlaneParametric();
+    ViewProviderPrimitive();
     /// destructor
-    virtual ~ViewProviderPlaneParametric();
+    virtual ~ViewProviderPrimitive();
 
-    std::vector<std::string> getDisplayModes(void) const;
+    void setupContextMenu(QMenu*, QObject*, const char*);
 
 protected:
+    bool setEdit(int ModNum);
+    void unsetEdit(int ModNum);
 
-};
-
-class PartGuiExport ViewProviderFace : public ViewProviderPlaneParametric
-{
-    PROPERTY_HEADER(PartGui::ViewProviderFace);
-
-public:
-    ViewProviderFace();
-    virtual ~ViewProviderFace();
-
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
-    virtual bool canDragObjects() const;
-    virtual bool canDragObject(App::DocumentObject*) const;
-    virtual void dragObject(App::DocumentObject*);
-    virtual bool canDropObjects() const;
-    virtual bool canDropObject(App::DocumentObject*) const;
-    virtual void dropObject(App::DocumentObject*);
+private:
+    void startDefaultEditMode();
 };
 
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
+#endif // PARTGUI_VIEWPROVIDERPRIMITIVE_H
 
