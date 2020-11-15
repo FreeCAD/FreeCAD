@@ -3657,6 +3657,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                 return -1;
             }
             signalRecomputedObject(*Cur);
+            GetApplication().signalRecomputedObject(*this, *Feat);
             ++objectCount;
         }
     }
@@ -3779,6 +3780,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                 }
                 if(obj->isTouched() || doRecompute) {
                     signalRecomputedObject(*obj);
+                    GetApplication().signalRecomputedObject(*this, *obj);
                     obj->purgeTouched();
                     // Mark all dependent object with ObjectStatus::Enforce.
                     // Note that We don't call enforceRecompute() here in order
@@ -4117,6 +4119,7 @@ bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
         } else {
             _recomputeFeature(Feat);
             signalRecomputedObject(*Feat);
+            GetApplication().signalRecomputedObject(*this, *Feat);
             return Feat->isValid();
         }
     }else

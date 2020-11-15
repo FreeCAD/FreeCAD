@@ -264,6 +264,13 @@ public:
     boost::signals2::signal<void (const App::Document&)> signalRecomputed;
     /// signal on recomputed document object
     boost::signals2::signal<void (const App::DocumentObject&)> signalObjectRecomputed;
+    /** signal on recomputed document object
+     *
+     * Same as signalObjectRecomputed, but with extra argument signaling the source
+     * of recomputation. Note that a document may trigger recomputation of external
+     * object, so the document may not always be the owner of the recomputing document.
+     */
+    boost::signals2::signal<void (const App::Document&, const App::DocumentObject&)> signalRecomputedObject;
     /// signal of skipped objects when recomputing document
     boost::signals2::signal<void (const App::Document&, const std::vector<App::DocumentObject*> &)> signalSkipRecompute;
     // signal on opened transaction
