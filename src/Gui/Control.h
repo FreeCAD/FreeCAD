@@ -30,6 +30,8 @@
 #include <bitset>
 #include <stack>
 
+#include <boost/signals2.hpp>
+
 #include <Gui/TaskView/TaskDialog.h>
 
 class QTabWidget;
@@ -94,6 +96,9 @@ public:
       the selection while it is open. If no task dialog is open true is returned.
      */
     bool isAllowedAlterSelection(void) const;
+
+    boost::signals2::signal<void (QWidget *, std::vector<QWidget*> &)> signalShowDialog;
+    boost::signals2::signal<void (QWidget *, std::vector<QWidget*> &)> signalRemoveDialog;
 
 public Q_SLOTS:
     void accept();

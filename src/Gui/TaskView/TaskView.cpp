@@ -627,7 +627,8 @@ void TaskView::showDialog(TaskDialog *dlg)
     connect(ActiveCtrl->buttonBox,SIGNAL(clicked(QAbstractButton *)),
             this,SLOT(clicked(QAbstractButton *)));
 
-    const std::vector<QWidget*>& cont = dlg->getDialogContent();
+    this->contents = dlg->getDialogContent();
+    Control().signalShowDialog(this, this->contents);
 
     // give to task dialog to customize the button box
     dlg->modifyStandardButtons(ActiveCtrl->buttonBox);
@@ -637,19 +638,17 @@ void TaskView::showDialog(TaskDialog *dlg)
             this->layout->insertWidget(0, ActiveCtrl);
         else
             this->layout->addWidget(ActiveCtrl);
-        for (auto widget : cont)
+        for (auto widget : this->contents)
             taskPanel->addWidget(widget);
     }
     else if (dlg->buttonPosition() == TaskDialog::North) {
         taskPanel->addWidget(ActiveCtrl);
-        for (std::vector<QWidget*>::const_iterator it=cont.begin();it!=cont.end();++it){
-            taskPanel->addWidget(*it);
-        }
+        for (auto widget : this->contents)
+            taskPanel->addWidget(widget);
     }
     else {
-        for (std::vector<QWidget*>::const_iterator it=cont.begin();it!=cont.end();++it){
-            taskPanel->addWidget(*it);
-        }
+        for (auto widget : this->contents)
+            taskPanel->addWidget(widget);
         taskPanel->addWidget(ActiveCtrl);
     }
 
@@ -684,10 +683,10 @@ void TaskView::removeDialog(void)
     if (ActiveDialog) {
         // See 'accept' and 'reject'
         if (ActiveDialog->property("taskview_accept_or_reject").isNull()) {
-            const std::vector<QWidget*> &cont = ActiveDialog->getDialogContent();
-            for(std::vector<QWidget*>::const_iterator it=cont.begin();it!=cont.end();++it){
-                taskPanel->removeWidget(*it);
-            }
+            Control().signalRemoveDialog(this, this->contents);
+            for (auto widget : contents) 
+                taskPanel->removeWidget(widget);
+            contents.clear();
             remove = ActiveDialog;
             ActiveDialog = 0;
         }

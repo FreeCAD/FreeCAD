@@ -238,6 +238,8 @@ protected:
     QBoxLayout *layout;
     QScrollArea *scrollarea;
     QTimer *timer;
+    
+    std::vector<QWidget*> contents;
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;
