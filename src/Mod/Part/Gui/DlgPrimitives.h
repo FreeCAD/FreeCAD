@@ -23,12 +23,11 @@
 #ifndef PARTGUI_DLGPRIMITIVES_H
 #define PARTGUI_DLGPRIMITIVES_H
 
+#include <memory>
 #include <QEventLoop>
 #include <QPointer>
 #include <App/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Part/Gui/ui_DlgPrimitives.h>
-#include <Mod/Part/Gui/ui_Location.h>
 
 class gp_Ax2;
 class SoPickedPoint;
@@ -62,6 +61,7 @@ public:
     QEventLoop loop;
 };
 
+class Ui_DlgPrimitives;
 class DlgPrimitives : public QWidget
 {
     Q_OBJECT
@@ -98,10 +98,11 @@ private:
     void connectSignalMapper(QWidget *sender, const char *signal, QSignalMapper* mapper);
 
 private:
-    Ui_DlgPrimitives ui;
+    std::unique_ptr<Ui_DlgPrimitives> ui;
     App::DocumentObjectWeakPtrT featurePtr;
 };
 
+class Ui_Location;
 class Location : public QWidget
 {
     Q_OBJECT
@@ -119,7 +120,7 @@ private:
     static void pickCallback(void * ud, SoEventCallback * n);
     int mode;
     QPointer<QWidget> activeView;
-    Ui_Location ui;
+    std::unique_ptr<Ui_Location> ui;
     App::DocumentObjectWeakPtrT featurePtr;
 };
 
