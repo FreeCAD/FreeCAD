@@ -418,9 +418,7 @@ PyObject* BezierCurvePy::interpolate(PyObject * args)
         int num_poles = 0;
         for (Py::Sequence::iterator it1 = constraints.begin(); it1 != constraints.end(); ++it1) {
             Py::Sequence row(*it1);
-            for (Py::Sequence::iterator it2 = row.begin(); it2 != row.end(); ++it2) {
-                num_poles++;
-            }
+            num_poles += (int)row.size();
         }
         if (num_poles > curve->MaxDegree())
             Standard_Failure::Raise("number of constraints exceeds bezier curve capacity");
@@ -440,7 +438,7 @@ PyObject* BezierCurvePy::interpolate(PyObject * args)
             Py::Sequence row(*it1);
             math_Matrix bezier_eval(1, row.size(), 1, num_poles, 0.0);
             Standard_Integer first_non_zero;
-            Standard_Integer error_code = BSplCLib::EvalBsplineBasis(row.size()-1, num_poles, knots, params(cons_idx), first_non_zero, bezier_eval, Standard_False);
+            BSplCLib::EvalBsplineBasis(row.size()-1, num_poles, knots, params(cons_idx), first_non_zero, bezier_eval, Standard_False);
             int idx2 = 1;
             for (Py::Sequence::iterator it2 = row.begin(); it2 != row.end(); ++it2) {
                 OCCmatrix.SetRow(row_idx, bezier_eval.Row(idx2));
