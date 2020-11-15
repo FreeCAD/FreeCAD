@@ -491,7 +491,7 @@ struct PixmapInfo {
     int count = 0;
     std::size_t index;
 
-    void generateIcon(QPixmap &px)
+    void generateIcon(QPixmap &px, const QPixmap &pxTag)
     {
         if (++this->count > 2)
             return;
@@ -507,6 +507,8 @@ struct PixmapInfo {
             pt.setBrush(Qt::white);
             pt.drawRect(QRect(5, 5, 52, 52));
             pt.drawPixmap(7, 7, 48, 48, pxOrig, 0, 0, pxOrig.width(), pxOrig.height());
+            if (!pxTag.isNull())
+                pt.drawPixmap(64-pxTag.width(), 0, pxTag);
             pt.setPen(QPen(Qt::black, 2));
             pt.setBrush(QBrush());
             pt.drawRect(QRect(5, 5, 52, 52));
@@ -524,6 +526,8 @@ struct PixmapInfo {
         pt.setBrush(Qt::white);
         pt.drawRect(QRect(1, 1, 53, 53));
         pt.drawPixmap(5, 5, pxCopy);
+        if (!pxTag.isNull())
+            pt.drawPixmap(62-pxTag.width(), 0, pxTag);
         pt.end();
     }
 };
@@ -591,20 +595,19 @@ void ViewProviderSubShapeBinder::getExtraIcons(std::vector<QPixmap> &icons) cons
                     tag = featVp->IconColor.getValue().getPackedValue();
 
                 auto & pxInfo = cacheKeys[(binder?myPixmap.cacheKey():0) ^ px.cacheKey() ^ tag];
+                QPixmap pxTag;
                 if (pxInfo.count == 0) {
                     if (icons.size() >= count)
                         break;
                     pxInfo.index = icons.size();
                     if (binder)
                         px = Gui::BitmapFactory().merge(px, myPixmap, Gui::BitmapFactoryInst::TopLeft);
-                    if (tag) {
-                        QPixmap tagPx = featVp->getTagIcon().scaled(40, 40,
+                    if (tag)
+                        pxTag = featVp->getTagIcon().scaled(40, 40,
                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-                        px = Gui::BitmapFactory().merge(px, tagPx, Gui::BitmapFactoryInst::TopRight);
-                    }
                     icons.push_back(px);
                 }
-                pxInfo.generateIcon(icons[pxInfo.index]);
+                pxInfo.generateIcon(icons[pxInfo.index], pxTag);
             }
         }
         if (icons.size() >= count)
