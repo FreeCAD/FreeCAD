@@ -4588,9 +4588,11 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
             getTree()->editingItem = findItemByObject(true,parentVp->getObject(),subname.c_str());
     }
 
-    if(getTree()->editingItem)
+    if(getTree()->editingItem) {
         getTree()->editingItem->setBackground(0,color);
-    else{
+        showItem(getTree()->editingItem, false, true);
+        getTree()->scrollToItem(getTree()->editingItem);
+    } else{
         FOREACH_ITEM(item,v)
             item->setBackground(0,color);
         END_FOREACH_ITEM
@@ -5091,8 +5093,11 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
                 continue;
         }
         item->setHighlight(set,high);
-        if(parent)
+        if(parent) {
+            showItem(item,false,true);
+            getTree()->scrollToItem(item);
             return;
+        }
     END_FOREACH_ITEM
 }
 
