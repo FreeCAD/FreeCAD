@@ -399,6 +399,9 @@ void Command::invoke(int i, TriggerSource trigger)
 
     onInvoke(i);
 
+    if (!Application::Instance->commandManager().onInvokeCommand(getName(), i))
+        return;
+
     if(displayText.empty()) {
         displayText = getMenuText();
         boost::replace_all(displayText,"&","");
@@ -1828,6 +1831,65 @@ CommandManager::CommandManager()
 CommandManager::~CommandManager()
 {
     clearCommands();
+}
+
+int CommandManager::registerCallback(const CallbackFunction & func, const char *cmd)
+{
+    if (!cmd)
+        cmd = "";
+    
+    _Callbacks[++_CallbackId] = _CallbackMap.emplace(cmd, func);
+    return _CallbackId;
+}
+
+bool CommandManager::unregisterCallback(int id)
+{
+    auto it = _Callbacks.find(id);
+    if (it == _Callbacks.end())
+        return false;
+    _CallbackMap.erase(it->second);
+    _Callbacks.erase(it);
+    return true;
+}
+
+static int CommandInvokeCount;
+struct CommandInvokeCounter
+{
+    CommandInvokeCounter()
+    {
+        ++CommandInvokeCount;
+    }
+    ~CommandInvokeCounter()
+    {
+        --CommandInvokeCount;
+    }
+};
+
+bool CommandManager::onInvokeCommand(const char *cmd, int i) const
+{
+    CommandInvokeCounter counter;
+    if (CommandInvokeCount > 10)
+        return true;
+
+    auto it = _CallbackMap.find(cmd);
+    if (it == _CallbackMap.end())
+        return true;
+    if (cmd[0]) {
+        for (; it != _CallbackMap.end(); ++it) {
+            if (it->first != cmd)
+                break;
+            if (!it->second(cmd, i))
+                return false;
+        }
+    }
+    it = _CallbackMap.find("");
+    for (; it != _CallbackMap.end(); ++it) {
+        if (!it->first.empty())
+            break;
+        if (!it->second(cmd, i))
+            return false;
+    }
+    return true;
 }
 
 void CommandManager::addCommand(Command* pCom)

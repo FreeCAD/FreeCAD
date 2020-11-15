@@ -28,6 +28,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include <functional>
 #include <vector>
 
 #include <Base/Type.h>
@@ -880,11 +881,37 @@ public:
     /// Return a revision number to check for any changes in commands
     int getRevision() { return _revision; }
 
+    typedef std::function<bool (const char *, int)> CallbackFunction;
+
+    /** Register a callback which will be called before invoking a command
+     *  
+     *  @param cb: callback function with signature bool cb(const char*),
+     *             which accepts an argument of the current running command,
+     *             and another integer argument passed to Command::invoke()
+     *             If the callback returns false, then the command invoke is aborted.
+     *
+     *  @param cmd: optional command to specify which command to invoke the given callback.
+     *              If null, then trigger the callback on all command.
+     *
+     *  @return Return an integer id to be used for unregisterCallback()
+     */    
+    int registerCallback(const CallbackFunction &cb, const char *cmd=nullptr);
+    /// Unregister command callback
+    bool unregisterCallback(int);
+
+    bool onInvokeCommand(const char *cmd, int) const;
+
 private:
     /// Destroys all commands in the manager and empties the list.
     void clearCommands();
     std::map<std::string, Command*> _sCommands;
     std::map<std::string, std::list<std::string> > _sCommandModes;
+
+    typedef std::multimap<std::string, CallbackFunction> CallbackMap;
+    CallbackMap _CallbackMap;
+    std::map<int, CallbackMap::iterator> _Callbacks;
+    int _CallbackId = 0;
+
     mutable std::set<std::string> _sPendingWorkbench;
     int _revision = 0;
 };
