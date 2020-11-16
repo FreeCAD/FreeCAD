@@ -30,6 +30,8 @@
 # include <TopExp_Explorer.hxx>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Console.h>
 #include <App/Origin.h>
 #include <App/Part.h>
@@ -322,6 +324,8 @@ void CmdPartDesignBody::activated(int iMsg)
         if(baseFeature) {
             FCMD_OBJ_CMD(body,"addObject(" << getObjectCmd(baseFeature) << ")");
             FCMD_OBJ_CMD(body,"BaseFeature = " << getObjectCmd(baseFeature));
+            if (!boost::starts_with(baseFeature->Label.getValue(), "BaseFeature"))
+                FCMD_OBJ_CMD(baseFeature,"Label = " << getObjectCmd(baseFeature) << ".Label");
             FCMD_OBJ_CMD(baseFeature,"Fuse = True");
             FCMD_OBJ_CMD(baseFeature,"Support = " << support);
         }
