@@ -2,27 +2,27 @@
   "tools": [
     {
       "nr": 1,
-      "path": "5mm Endmill.fctb"
+      "path": "5mm_Endmill.fctb"
     },
     {
       "nr": 2,
-      "path": "5mm Drill.fctb"
+      "path": "5mm_Drill.fctb"
     },
     {
       "nr": 3,
-      "path": "6mm Ball End.fctb"
+      "path": "6mm_Ball_End.fctb"
     },
     {
       "nr": 4,
-      "path": "6 mm Bullnose.fctb"
+      "path": "6mm_Bullnose.fctb"
     },
     {
       "nr": 5,
-      "path": "60 degree Vbit.fctb"
+      "path": "60degree_Vbit.fctb"
     },
     {
       "nr": 6,
-      "path": "45 degree chamfer.fctb"
+      "path": "45degree_chamfer.fctb"
     },
     {
       "nr": 7,
