@@ -25,7 +25,8 @@ import FreeCAD, FreeCADGui
 import Part,  PartDesignGui
 from PyQt4 import QtCore, QtGui
 import Standards
-import os
+import os, sys
+_string_type = str if sys.version_info[0] >= 3 else basestring
 
 class TaskHole:
     "Hole hole feature"
@@ -190,7 +191,7 @@ class TaskHole:
         
     def getRefText(self,  ref):
         (obj,  element) = ref
-        if isinstance(element,  basestring):
+        if isinstance(element,  _string_type):
             return obj.Name + ":" + element
         elif isinstance(element,  list):
             return obj.Name + ":" + element[0]

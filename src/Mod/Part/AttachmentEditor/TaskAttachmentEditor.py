@@ -22,6 +22,9 @@
 
 from __future__ import absolute_import
 
+import sys
+_string_type = str if sys.version_info[0] >= 3 else basestring
+
 import FreeCAD as App
 import Part
 mm = App.Units.MilliMetre
@@ -72,7 +75,7 @@ def linkSubList_convertToOldStyle(references):
                 result.append((tup[0], subname))
             if len(tup[1]) == 0:
                 result.append((tup[0], ''))
-        elif isinstance(tup[1],basestring):
+        elif isinstance(tup[1],_string_type):
             # old style references, no conversion required
             result.append(tup)
     return result
@@ -230,7 +233,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
 
         import os
         self.form=uic.loadUi(os.path.dirname(__file__) + os.path.sep + 'TaskAttachmentEditor.ui')
-        self.form.setWindowIcon(QtGui.QIcon(':/icons/Part_Attachment.svg'))
+        self.form.setWindowIcon(QtGui.QIcon(':/icons/tools/Part_Attachment.svg'))
         self.form.setWindowTitle(_translate('AttachmentEditor',"Attachment",None))
 
         self.form.attachmentOffsetX.setProperty("unit", "mm")
