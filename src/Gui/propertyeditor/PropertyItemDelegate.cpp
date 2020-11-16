@@ -37,6 +37,8 @@
 #include "PropertyItemDelegate.h"
 #include "PropertyItem.h"
 #include "PropertyEditor.h"
+#include "View3DInventorViewer.h"
+#include "Tree.h"
 
 FC_LOG_LEVEL_INIT("PropertyView",true,true)
 
@@ -159,6 +161,14 @@ bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
             QWidget *w = QApplication::focusWidget();
             while (w) { // don't worry about focus changes internally in the editor
                 if (w == widget || w == parentEditor->activeEditor)
+                    return false;
+
+                // ignore focus change to 3D view or tree view, because, for
+                // example DlgPropertyLink is implemented as modal-less dialog
+                // to allow selection in 3D and tree view.
+                if (qobject_cast<View3DInventorViewer*>(w))
+                    return false;
+                if (qobject_cast<TreeWidget*>(w))
                     return false;
                 w = w->parentWidget();
             }
