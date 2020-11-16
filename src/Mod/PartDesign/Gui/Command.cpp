@@ -1108,8 +1108,17 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
     //if a profile is selected we can make our life easy and fast
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (!selection.empty()) {
-        base_worker(selection.front().getObject(), selection.front().getSubNames());
-        return;
+        bool validSelection = true;
+        for (auto & sel : cmd->getSelection().getSelectionEx()) {
+            if (PartDesign::Body::findBodyOf(sel.getObject()) != pcActiveBody) {
+                validSelection = false;
+                break;
+            }
+        }
+        if (validSelection) {
+            base_worker(selection.front().getObject(), selection.front().getSubNames());
+            return;
+        }
     }
 
     //no face profile was selected, do the extended sketch logic
