@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2014 Nathan Miller         <Nathan.A.Mill[at]gmail.com> *
- *                      Balázs Bámer                                       *
+ *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
+ *   Copyright (c) 2014 Balázs Bámer                                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

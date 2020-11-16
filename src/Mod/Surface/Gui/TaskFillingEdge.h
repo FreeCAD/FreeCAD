@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2017 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                      Christophe Grellier <cg[at]grellier.fr>            *
+ *   Copyright (c) 2017 Christophe Grellier <cg[at]grellier.fr>            *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
