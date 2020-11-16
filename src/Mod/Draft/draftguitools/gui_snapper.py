@@ -1659,7 +1659,7 @@ class Snapper:
     def setTrackers(self):
         """Set the trackers."""
         v = Draft.get3DView()
-        if v != self.activeview:
+        if v and (v != self.activeview):
             if v in self.trackers[0]:
                 i = self.trackers[0].index(v)
                 self.grid = self.trackers[1][i]

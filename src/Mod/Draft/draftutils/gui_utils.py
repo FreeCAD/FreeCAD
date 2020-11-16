@@ -65,14 +65,15 @@ def get_3d_view():
         Return `None` if the graphical interface is not available.
     """
     if App.GuiUp:
-        v = Gui.ActiveDocument.ActiveView
-        if "View3DInventor" in str(type(v)):
-            return v
+        if Gui.ActiveDocument:
+            v = Gui.ActiveDocument.ActiveView
+            if "View3DInventor" in str(type(v)):
+                return v
 
-        # print("Debug: Draft: Warning, not working in active view")
-        v = Gui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
-        if v:
-            return v[0]
+            # print("Debug: Draft: Warning, not working in active view")
+            v = Gui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
+            if v:
+                return v[0]
 
     _wrn(_tr("No graphical interface"))
     return None
@@ -100,17 +101,17 @@ def autogroup(obj):
     obj: App::DocumentObject
         Any type of object that will be stored in the group.
     """
-    
+
     # check for required conditions for autogroup to work
     if not App.GuiUp:
         return
     if not hasattr(Gui,"draftToolBar"):
         return
     if not hasattr(Gui.draftToolBar,"autogroup"):
-        return        
+        return
     if Gui.draftToolBar.isConstructionMode():
         return
-    
+
     # autogroup code
     if Gui.draftToolBar.autogroup is not None:
         active_group = App.ActiveDocument.getObject(Gui.draftToolBar.autogroup)
@@ -123,13 +124,13 @@ def autogroup(obj):
                 gr = active_group.Group
                 gr.append(obj)
                 active_group.Group = gr
-                
+
     else:
 
         if Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
             # add object to active Arch Container
             Gui.ActiveDocument.ActiveView.getActiveObject("Arch").addObject(obj)
-            
+
         elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
             # add object to active part and change it's placement accordingly
             # so object does not jump to different position, works with App::Link
