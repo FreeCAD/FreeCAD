@@ -78,6 +78,14 @@ FC_LOG_LEVEL_INIT("PartDesign",true,true)
 using namespace std;
 using namespace Attacher;
 
+static bool commandOverride(Gui::Command *cmd, int idx, const char *, int)
+{
+    if (PartDesignGui::queryCommandOverride()) {
+        cmd->invoke(idx);
+        return false;
+    }
+    return true;
+}
 
 //===========================================================================
 // PartDesign_Datum
@@ -365,6 +373,9 @@ CmdPartDesignSubShapeBinder::CmdPartDesignSubShapeBinder()
     sWhatsThis      = "PartDesign_SubShapeBinder";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_SubShapeBinder";
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, _1, _2), "Part_MakeFace");
 }
 
 void CmdPartDesignSubShapeBinder::activated(int iMsg)
@@ -1315,6 +1326,9 @@ CmdPartDesignExtrusion::CmdPartDesignExtrusion()
     sWhatsThis    = "PartDesign_Extrusion";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Extrusion";
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Extrude");
 }
 
 void CmdPartDesignExtrusion::activated(int iMsg)
@@ -1458,6 +1472,9 @@ CmdPartDesignRevolution::CmdPartDesignRevolution()
     sWhatsThis    = "PartDesign_Revolution";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Revolution";
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, _1, _2), "Part_MakeRevolve");
 }
 
 void CmdPartDesignRevolution::activated(int iMsg)
@@ -1582,6 +1599,9 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
     sWhatsThis    = "PartDesign_AdditivePipe";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Additive_Pipe";
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Sweep");
 }
 
 void CmdPartDesignAdditivePipe::activated(int iMsg)
@@ -1682,6 +1702,9 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
     sWhatsThis    = "PartDesign_AdditiveLoft";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Additive_Loft";
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Loft");
 }
 
 void CmdPartDesignAdditiveLoft::activated(int iMsg)
@@ -1880,6 +1903,9 @@ CmdPartDesignFillet::CmdPartDesignFillet()
     sWhatsThis    = "PartDesign_Fillet";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Fillet";
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Fillet");
 }
 
 void CmdPartDesignFillet::activated(int iMsg)
@@ -1908,6 +1934,9 @@ CmdPartDesignChamfer::CmdPartDesignChamfer()
     sWhatsThis    = "PartDesign_Chamfer";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Chamfer";
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Chamfer");
 }
 
 void CmdPartDesignChamfer::activated(int iMsg)
@@ -1994,6 +2023,9 @@ CmdPartDesignThickness::CmdPartDesignThickness()
     sWhatsThis    = "PartDesign_Thickness";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Thickness";
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Thickness");
 }
 
 void CmdPartDesignThickness::activated(int iMsg)
@@ -2108,6 +2140,9 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
     sWhatsThis    = "PartDesign_Mirrored";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Mirrored";
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Mirror");
 }
 
 void CmdPartDesignMirrored::activated(int iMsg)
@@ -2497,13 +2532,20 @@ CmdPartDesignBoolean::CmdPartDesignBoolean()
     sWhatsThis      = "PartDesign_Boolean";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Boolean";
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Boolean");
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 1, _1, _2), "Part_Cut");
+                    
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 2, _1, _2), "Part_Common");
 }
 
 
 void CmdPartDesignBoolean::activated(int iMsg)
 {
-    Q_UNUSED(iMsg);
-
     std::string bodySub;
     App::DocumentObject *bodyParent = nullptr;
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true,true,true,&bodyParent,&bodySub);
@@ -2569,6 +2611,15 @@ void CmdPartDesignBoolean::activated(int iMsg)
                         <<  "FreeCADGui.Selection.getSelection())");
     auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
 
+    switch(iMsg) {
+    case 1:
+        Gui::cmdAppObject(Feat, "Type = 'Cut'");
+        break;
+    case 2:
+        Gui::cmdAppObject(Feat, "Type = 'Common'");
+        break;
+    }
+
     for(auto &v : binderLinks) {
         std::string FeatName = getUniqueObjectName("Reference",pcActiveBody);
         Gui::cmdAppObject(pcActiveBody, std::ostringstream()
@@ -2625,11 +2676,22 @@ CmdPartDesignSplit::CmdPartDesignSplit()
     sWhatsThis      = "PartDesign_Split";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Split";
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 1, _1, _2), "Part_BooleanFragments");
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Slice");
+                    
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, _1, _2), "Part_SliceApart");
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, _1, _2), "Part_ExplodeCompound");
 }
 
 void CmdPartDesignSplit::activated(int iMsg)
 {
-    Q_UNUSED(iMsg);
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if (!pcActiveBody) return;
 
@@ -2639,6 +2701,13 @@ void CmdPartDesignSplit::activated(int iMsg)
             << "newObjectAt('PartDesign::Split','" << FeatName << "', "
                         <<  "FreeCADGui.Selection.getSelection())");
     auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+
+    switch(iMsg) {
+    case 1:
+        Gui::cmdAppObject(Feat, "Fregment = True");
+        break;
+    }
+
     Gui::cmdAppObject(Feat, std::ostringstream() <<"Tools = FreeCADGui.Selection.getSelection()");
     for(auto tool : static_cast<PartDesign::Split*>(Feat)->Tools.getValues())
         Gui::cmdAppObject(tool, std::ostringstream() <<"Visibility = False");

@@ -23,7 +23,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <QPointer>
 #include <QMessageBox>
+#include <QCheckBox>
 # include <Precision.hxx>
 # include <gp_Pln.hxx>
 #endif
@@ -557,6 +559,53 @@ void relinkToOrigin(App::DocumentObject* feat, PartDesign::Body* targetbody)
             }
         }
     }
+}
+
+PartDesign::Body *queryCommandOverride()
+{
+    if (Part::PartParams::CommandOverride() == 0)
+        return nullptr;
+
+    PartDesign::Body * body = nullptr;
+    auto sels = Gui::Selection().getSelection();
+    if (sels.empty())
+        body = PartDesignGui::getBody(false, false);
+    else {
+        for (auto & sel : sels) {
+            body = PartDesign::Body::findBodyOf(sel.pObject);
+            if (body)
+                break;
+        }
+    }
+    if (!body || Part::PartParams::CommandOverride() == 1)
+        return body;
+
+    QMessageBox box(Gui::getMainWindow());
+    box.setIcon(QMessageBox::Question);
+    box.setWindowTitle(QObject::tr("PartDesign Command override"));
+    if (sels.empty())
+        box.setText(QObject::tr("You are invoking a non-PartDesign command while referecing a "
+                                "PartDesign feature.\n\nDo you want to override this command with "
+                                "an equivalant PartDesign command?"));
+    else
+        box.setText(QObject::tr("You are invoking a non-PartDesign command while having an active"
+                                "PartDesign body.\n\nDo you want to override this command with an "
+                                "equivalant PartDesign command?"));
+    box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    box.setDefaultButton(QMessageBox::Yes);
+    box.setEscapeButton(QMessageBox::No);
+
+    QCheckBox checkBox(QObject::tr("Remember the choice"));
+    checkBox.blockSignals(true);
+    box.addButton(&checkBox, QMessageBox::ResetRole); 
+    int res = box.exec();
+    if (checkBox.isChecked()) {
+        QMessageBox::information(Gui::getMainWindow(),
+                QObject::tr("PartDesign Command override"),
+                QObject::tr("You can change your choice in 'Part design' preference page."));
+        Part::PartParams::set_CommandOverride(res == QMessageBox::Yes ? 1 : 0);
+    }
+    return res == QMessageBox::Yes ? body : nullptr;
 }
 
 } /* PartDesignGui */

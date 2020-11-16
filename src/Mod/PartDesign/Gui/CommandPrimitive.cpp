@@ -61,6 +61,18 @@ static const char * primitiveIntToName(int id)
     };
 }
 
+static bool commandOverride(Gui::Command *cmd, int idx, bool shift, const char *, int)
+{
+    bool shiftPressed = (QApplication::queryKeyboardModifiers() == Qt::ShiftModifier);
+    if (shift != shiftPressed)
+        return true;
+    if (PartDesignGui::queryCommandOverride()) {
+        cmd->invoke(idx);
+        return false;
+    }
+    return true;
+}
+
 CmdPrimtiveCompAdditive::CmdPrimtiveCompAdditive()
   : Command("PartDesign_CompPrimitiveAdditive")
 {
@@ -71,6 +83,17 @@ CmdPrimtiveCompAdditive::CmdPrimtiveCompAdditive()
     sWhatsThis      = "PartDesign_CompPrimitiveAdditive";
     sStatusTip      = sToolTipText;
     eType           = ForEdit;
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, false, _1, _2), "Part_Box");
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 1, false, _1, _2), "Part_Cylinder");
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 2, false, _1, _2), "Part_Sphere");
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 3, false, _1, _2), "Part_Cone");
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 5, false, _1, _2), "Part_Torus");
 }
 
 void CmdPrimtiveCompAdditive::activated(int iMsg)
@@ -242,6 +265,17 @@ CmdPrimtiveCompSubtractive::CmdPrimtiveCompSubtractive()
     sWhatsThis      = "PartDesign_CompPrimitiveSubtractive";
     sStatusTip      = sToolTipText;
     eType           = ForEdit;
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, true, _1, _2), "Part_Box");
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 1, true, _1, _2), "Part_Cylinder");
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 2, true, _1, _2), "Part_Sphere");
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 3, true, _1, _2), "Part_Cone");
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 5, true, _1, _2), "Part_Torus");
 }
 
 void CmdPrimtiveCompSubtractive::activated(int iMsg)

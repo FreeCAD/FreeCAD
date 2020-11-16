@@ -88,6 +88,8 @@ std::vector<App::DocumentObject*> collectMovableDependencies(std::vector<App::Do
 /// Relink sketches and datums to target body's origin
 void relinkToOrigin(App::DocumentObject* feature, PartDesign::Body* body);
 
+PartDesign::Body *queryCommandOverride();
+
 } /* PartDesignGui */
 
 #endif /* end of include guard: UTILS_H_CS5LK2ZQ */
