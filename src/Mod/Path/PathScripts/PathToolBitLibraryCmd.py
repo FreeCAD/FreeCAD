@@ -38,7 +38,8 @@ class CommandToolBitSelectorOpen:
         return {'Pixmap': 'Path-ToolTable',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "ToolBit Dock"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "Toggle the Toolbit Dock"),
-                'Accel': "P, T"}
+                'Accel': "P, T",
+                'CmdType': "ForEdit"}
 
     def IsActive(self):
         return FreeCAD.ActiveDocument is not None
@@ -66,7 +67,8 @@ class CommandToolBitLibraryOpen:
     def GetResources(self):
         return {'Pixmap': 'Path-ToolTable',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "ToolBit Library editor"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "Open an editor to manage ToolBit libraries")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "Open an editor to manage ToolBit libraries"),
+                'CmdType': "ForEdit"}
 
     def IsActive(self):
         return FreeCAD.ActiveDocument is not None
