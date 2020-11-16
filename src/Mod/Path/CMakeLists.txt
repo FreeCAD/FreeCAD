@@ -154,26 +154,28 @@ SET(PathScripts_post_SRCS
 )
 
 SET(Tools_Bit_SRCS
-    Tools/Bit/t1.fctb
-    Tools/Bit/t2.fctb
-    Tools/Bit/t3.fctb
-    Tools/Bit/t4.fctb
-    Tools/Bit/t5.fctb
-    Tools/Bit/t6.fctb
-    Tools/Bit/t7.fctb
-    Tools/Bit/t8.fctb
-    Tools/Bit/t9.fctb
+    Tools/Bit/45degree_chamfer.fctb
+    Tools/Bit/5mm_Drill.fctb
+    Tools/Bit/5mm_Endmill.fctb
+    Tools/Bit/60degree_Vbit.fctb
+    Tools/Bit/6mm_Ball_End.fctb
+    Tools/Bit/6mm_Bullnose.fctb
+    Tools/Bit/slittingsaw.fctb
+    Tools/Bit/probe.fctb
 )
 
 SET(Tools_Library_SRCS
-    Tools/Library/endmills.fctl
+    Tools/Library/Default.fctl
 )
 
 SET(Tools_Shape_SRCS
     Tools/Shape/ballend.fcstd
     Tools/Shape/bullnose.fcstd
     Tools/Shape/drill.fcstd
+    Tools/Shape/chamfer.fcstd
     Tools/Shape/endmill.fcstd
+    Tools/Shape/probe.fcstd
+    Tools/Shape/slittingsaw.fcstd
     Tools/Shape/v-bit.fcstd
 )
 

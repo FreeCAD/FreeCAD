@@ -1,7 +1,7 @@
 {
   "version": 2,
   "name": "Slitting Saw",
-  "shape": "SlittingSaw.fcstd",
+  "shape": "slittingsaw.fcstd",
   "parameter": {
     "BladeThickness": "3.0000 mm",
     "BoltHeight": "3.0000 mm",
