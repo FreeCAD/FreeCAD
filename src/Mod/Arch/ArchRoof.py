@@ -806,7 +806,7 @@ class _Roof(ArchComponent.Component):
                 base = self.shps.pop()
                 for s in self.shps:
                     base = base.fuse(s)
-                base = self.processSubShapes(obj, base)
+                base = self.processSubShapes(obj, base, pl)
                 self.applyShape(obj, base, pl, allownosolid = True)
 
                 ## subVolume
@@ -819,7 +819,7 @@ class _Roof(ArchComponent.Component):
                         self.sub.Placement = pl
 
         elif base:
-            base = self.processSubShapes(obj, base)
+            base = self.processSubShapes(obj, base, pl)
             self.applyShape(obj, base, pl, allownosolid = True)
         else:
             FreeCAD.Console.PrintMessage(translate("Arch", "Unable to create a roof"))
