@@ -48,9 +48,9 @@ else:
 #  of wires, and that can be inserted into other Arch objects,
 #  by defining a volume that gets subtracted from them.
 
-__title__="FreeCAD Window"
+__title__  = "FreeCAD Window"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 # presets
 WindowPartTypes = ["Frame","Solid panel","Glass panel","Louvre"]

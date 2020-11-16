@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -47,9 +46,9 @@ else:
 #  Sites are containers for Arch objects, and also define a
 #  terrain surface
 
-__title__="FreeCAD Site"
+__title__= "FreeCAD Site"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 
 def makeSite(objectslist=None,baseobj=None,name="Site"):

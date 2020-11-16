@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -51,9 +50,9 @@ if sys.version_info.major >= 3:
 #  This module provides tools to build BuildingPart objects.
 #  BuildingParts are used to group different Arch objects
 
-__title__="FreeCAD Arch BuildingPart"
+__title__  = "FreeCAD Arch BuildingPart"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 BuildingTypes = ['Undefined',

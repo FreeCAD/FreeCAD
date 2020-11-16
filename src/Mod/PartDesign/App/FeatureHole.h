@@ -169,11 +169,25 @@ private:
         double angle;
     };
 
-    std::map<std::string, CutDimensionSet> HoleCutTypeMap;
+    class CutDimensionKey {
+        std::string thread_type;
+        std::string cut_name;
+    public:
+        CutDimensionKey() {}
+        CutDimensionKey(const std::string &t, const std::string &c);
+        bool operator<(const CutDimensionKey &b) const;
+    };
 
-    void addCounterType(const CutDimensionSet& dimensions);
-    bool isDynamicCounterbore(const std::string &holeCutType);
-    bool isDynamicCountersink(const std::string &holeCutType);
+    std::map<CutDimensionKey, CutDimensionSet> HoleCutTypeMap;
+
+    const CutDimensionSet& find_cutDimensionSet(const std::string &t,
+          const std::string &c);
+
+    const CutDimensionSet& find_cutDimensionSet(const CutDimensionKey &k);
+
+    void addCutType(const CutDimensionSet& dimensions);
+    bool isDynamicCounterbore(const std::string &thread, const std::string &holeCutType);
+    bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
     void updateHoleCutParams();
     void updateDiameterParam();
     void readCutDefinitions();

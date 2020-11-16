@@ -31,7 +31,7 @@ import FreeCAD
 if FreeCAD.GuiUp:
     import FreeCADGui
     import Draft_rc
-def QT_TRANSLATE_NOOP(ctx,txt): 
+def QT_TRANSLATE_NOOP(ctx,txt):
     return txt
 
 __title__ = "FreeCAD Draft Workbench GUI Tools - Styling tools"
@@ -79,6 +79,7 @@ class Draft_SetStyle_TaskPanel:
         self.form.ArrowSize.setText(FreeCAD.Units.Quantity(FreeCAD.ParamGet(self.p+"/Mod/Draft").GetFloat("arrowsize",5),FreeCAD.Units.Length).UserString)
         self.form.ShowUnit.setChecked(FreeCAD.ParamGet(self.p+"Mod/Draft").GetBool("showUnit",True))
         self.form.UnitOverride.setText(FreeCAD.ParamGet(self.p+"Mod/Draft").GetString("overrideUnit",""))
+        self.form.applyButton.clicked.connect(self.onApplyStyle)
 
     def getPrefColor(self,group,prop,default):
 
@@ -111,6 +112,42 @@ class Draft_SetStyle_TaskPanel:
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.setStyleButton()
         self.reject()
+
+    def onApplyStyle(self):
+
+        for obj in FreeCADGui.Selection.getSelection():
+            vobj = obj.ViewObject
+            if vobj:
+                if "LineColor" in vobj.PropertiesList:
+                    vobj.LineColor = self.form.LineColor.property("color").rgb()<<8
+                if "LineWidth" in vobj.PropertiesList:
+                    vobj.LineWidth = self.form.LineWidth.value()
+                if "DrawStyle" in vobj.PropertiesList:
+                    vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"][self.form.DrawStyle.currentIndex()]
+                if "DisplayMode" in vobj.PropertiesList:
+                    try:
+                        vobj.DisplayMode = ["Flat Lines","Wireframe","Shaded","points"][self.form.DisplayMode.currentIndex()]
+                    except:
+                        pass
+                if "ShapeColor" in vobj.PropertiesList:
+                    vobj.ShapeColor = self.form.ShapeColor.property("color").rgb()<<8
+                if "Transparency" in vobj.PropertiesList:
+                    vobj.Transparency = self.form.Transparency.value()
+                if "FontName" in vobj.PropertiesList:
+                    vobj.TextFont = self.form.TextFont.currentFont().family()
+                if "TextSize" in vobj.PropertiesList:
+                    vobj.TextSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
+                if "TextColor" in vobj.PropertiesList:
+                    vobj.TextColor = self.form.TextColor.property("color").rgb()<<8
+                if "ArrowType" in vobj.PropertiesList:
+                    vobj.ArrowType = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"][self.form.ArrowStyle.currentIndex()]
+                if "ArrowSize" in vobj.PropertiesList:
+                    vobj.ArrowSize = FreeCAD.Units.Quantity(self.form.ArrowSize.text()).Value
+                if "ShowUnit" in vobj.PropertiesList:
+                    vobj.ShowUnit = self.form.ShowUnit.isChecked()
+                if "UnitOverride" in vobj.PropertiesList:
+                    vobj.UnitOverride = self.form.UnitOverride.text()
+
 
 FreeCADGui.addCommand('Draft_SetStyle', Draft_SetStyle())
 

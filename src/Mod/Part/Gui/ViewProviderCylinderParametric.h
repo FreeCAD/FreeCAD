@@ -24,7 +24,7 @@
 #ifndef PARTGUI_VIEWPROVIDERCYLINDERPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERCYLINDERPARAMETRIC_H
 
-#include "ViewProvider.h"
+#include "ViewProviderPrimitive.h"
 
 
 class TopoDS_Shape;

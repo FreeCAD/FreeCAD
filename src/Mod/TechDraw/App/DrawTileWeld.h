@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wanderer Fan <wandererfan@gmail.com>               *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -51,7 +51,7 @@ public:
 
     virtual short mustExecute() const;
     virtual App::DocumentObjectExecReturn *execute(void);
-    virtual void onDocumentRestored(); 
+    virtual void onDocumentRestored();
     virtual void setupObject();
 
     virtual const char* getViewProviderName(void) const {

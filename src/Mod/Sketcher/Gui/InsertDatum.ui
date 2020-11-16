@@ -40,12 +40,6 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
-       </property>
       </widget>
      </item>
      <item row="1" column="0">
@@ -62,12 +56,6 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
        </property>
        <property name="toolTip">
         <string>Constraint name (available for expressions)</string>

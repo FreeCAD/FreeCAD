@@ -37,9 +37,9 @@ else:
         return txt
     # \endcond
 
-__title__="FreeCAD Axis System"
+__title__  = "FreeCAD Axis System"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package ArchAxis
 #  \ingroup ARCH

@@ -543,6 +543,18 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Sprocket"
           << "PartDesign_InvoluteGear";
 
+    // use Part's measure features also for PartDesign
+    Gui::MenuItem* measure = new Gui::MenuItem;
+    root->insertItem(item, measure);
+    measure->setCommand("Measure");
+    *measure << "Part_Measure_Linear"
+        << "Part_Measure_Angular"
+        << "Separator"
+        << "Part_Measure_Refresh"
+        << "Part_Measure_Clear_All"
+        << "Part_Measure_Toggle_All"
+        << "Part_Measure_Toggle_3D"
+        << "Part_Measure_Toggle_Delta";
 
     // For 0.13 a couple of python packages like numpy, matplotlib and others
     // are not deployed with the installer on Windows. Thus, the WizardShaft is
@@ -607,6 +619,18 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Thickness"
           << "Separator"
           << "PartDesign_Boolean";
+
+    // use Part's measure features also for PartDesign
+    Gui::ToolBarItem* measure = new Gui::ToolBarItem(root);
+    measure->setCommand("Measure");
+    *measure << "Part_Measure_Linear"
+        << "Part_Measure_Angular"
+        << "Separator"
+        << "Part_Measure_Refresh"
+        << "Part_Measure_Clear_All"
+        << "Part_Measure_Toggle_All"
+        << "Part_Measure_Toggle_3D"
+        << "Part_Measure_Toggle_Delta";
 
     return root;
 }

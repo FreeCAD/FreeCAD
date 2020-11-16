@@ -38,6 +38,7 @@
 #include "ViewProvider.h"
 #include "ViewProviderExt.h"
 #include "ViewProviderPython.h"
+#include "ViewProviderPrimitive.h"
 #include "ViewProviderBox.h"
 #include "ViewProviderCurveNet.h"
 #include "ViewProviderImport.h"

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan    <wandererfan@gmail.com>             *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -145,7 +145,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
         TopoDS_Shape shape = BuilderCopy.Shape();
         builder.Add(comp, shape);
     }
-    //it appears that an empty compound is !IsNull(), so we need to check a different way 
+    //it appears that an empty compound is !IsNull(), so we need to check a different way
     //if we added anything to the compound.
     if (!found) {
         Base::Console().Error("SE::getSourceShapes - source shape is empty!\n");
@@ -181,7 +181,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
                 if (cLinkElem->hasPlacement()) {
                     childPlm = cLinkElem->getLinkPlacementProperty()->getValue();
                 }
-            }            
+            }
             auto shape = Part::Feature::getShape(l);
             if(!shape.IsNull()) {
                 Base::Placement netPlm = linkPlm;
@@ -234,7 +234,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
 {
 //    Base::Console().Message("SE::getShapesFromObject(%s)\n", docObj->getNameInDocument());
     std::vector<TopoDS_Shape> result;
-    
+
     const App::GroupExtension* gex = dynamic_cast<const App::GroupExtension*>(docObj);
     App::Property* gProp = docObj->getPropertyByName("Group");
     App::Property* sProp = docObj->getPropertyByName("Shape");
@@ -335,8 +335,8 @@ std::vector<TopoDS_Shape> ShapeExtractor::extractDrawableShapes(const TopoDS_Sha
                 extShapes.push_back(s);
             }
         }
-        //vs using 2d geom as construction geom? 
-        //get edges not part of a solid 
+        //vs using 2d geom as construction geom?
+        //get edges not part of a solid
         //???? should this look for Faces(Wires?) before Edges?
         TopExp_Explorer expEdge(shapeIn, TopAbs_EDGE, TopAbs_SOLID);
         for (int i = 1; expEdge.More(); expEdge.Next(), i++) {
@@ -349,7 +349,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::extractDrawableShapes(const TopoDS_Sha
         //not a Compound or a CompSolid just push_back shape_In)
         extShapes.push_back(shapeIn);
     }
-    
+
     result = extShapes;
     if (!extEdges.empty()) {
         result.insert(std::end(result), std::begin(extEdges), std::end(extEdges));
@@ -375,11 +375,11 @@ bool ShapeExtractor::isEdgeType(App::DocumentObject* obj)
 //    if (t.isDerivedFrom(Part::Line::getClassTypeId()) ) {
 //        result = true;
 //    } else if (t.isDerivedFrom(Part::Circle::getClassTypeId())) {
-//        result = true; 
+//        result = true;
 //    } else if (t.isDerivedFrom(Part::Ellipse::getClassTypeId())) {
-//        result = true; 
+//        result = true;
 //    } else if (t.isDerivedFrom(Part::RegularPolygon::getClassTypeId())) {
-//        result = true; 
+//        result = true;
 //    }
     return result;
 }
@@ -389,7 +389,7 @@ bool ShapeExtractor::isPointType(App::DocumentObject* obj)
     bool result = false;
     Base::Type t = obj->getTypeId();
     if (t.isDerivedFrom(Part::Vertex::getClassTypeId())) {
-        result = true; 
+        result = true;
     } else if (isDraftPoint(obj)) {
         result = true;
     }
@@ -443,7 +443,7 @@ bool ShapeExtractor::prefAdd2d(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    bool result = hGrp->GetBool("ShowLoose2d", false); 
+    bool result = hGrp->GetBool("ShowLoose2d", false);
     return result;
 }
-    
+
