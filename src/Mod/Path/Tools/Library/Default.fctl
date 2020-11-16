@@ -1,0 +1,37 @@
+{
+  "tools": [
+    {
+      "nr": 1,
+      "path": "5mm Endmill.fctb"
+    },
+    {
+      "nr": 2,
+      "path": "5mm Drill.fctb"
+    },
+    {
+      "nr": 3,
+      "path": "6mm Ball End.fctb"
+    },
+    {
+      "nr": 4,
+      "path": "6 mm Bullnose.fctb"
+    },
+    {
+      "nr": 5,
+      "path": "60 degree Vbit.fctb"
+    },
+    {
+      "nr": 6,
+      "path": "45 degree chamfer.fctb"
+    },
+    {
+      "nr": 7,
+      "path": "slittingsaw.fctb"
+    },
+    {
+      "nr": 8,
+      "path": "probe.fctb"
+    }
+  ],
+  "version": 1
+}
