@@ -90,6 +90,8 @@ void relinkToOrigin(App::DocumentObject* feature, PartDesign::Body* body);
 
 PartDesign::Body *queryCommandOverride();
 
+void initMonitor();
+
 } /* PartDesignGui */
 
 #endif /* end of include guard: UTILS_H_CS5LK2ZQ */

@@ -61,6 +61,7 @@ public:
     FC_APP_PART_PARAM(ShapePropertyCopy, bool, Bool, false) \
     FC_APP_PART_PARAM(DisableShapeCache, bool, Bool, false) \
     FC_APP_PART_PARAM(CommandOverride, int, Int, 2) \
+    FC_APP_PART_PARAM(EnableWrapFeature, int, Int, 2) \
     FC_APP_PART_PARAM(CopySubShape, bool, Bool, false) \
 
 #undef FC_APP_PART_PARAM

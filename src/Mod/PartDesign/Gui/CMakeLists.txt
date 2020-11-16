@@ -56,6 +56,7 @@ set(PartDesignGui_MOC_HDRS
     TaskPrimitiveParameters.h
     TaskPipeParameters.h
     TaskLoftParameters.h
+    TaskWrapParameters.h
 )
 fc_wrap_cpp(PartDesignGui_MOC_SRCS ${PartDesignGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartDesignGui_MOC_SRCS})
@@ -90,6 +91,7 @@ set(PartDesignGui_UIC_SRCS
     TaskPipeOrientation.ui
     TaskPipeScaling.ui
     TaskLoftParameters.ui
+    TaskWrapParameters.ui
     DlgReference.ui
 )
 
@@ -170,6 +172,8 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderLoft.cpp
     ViewProviderBase.h 
     ViewProviderBase.cpp
+    ViewProviderWrap.cpp
+    ViewProviderWrap.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${PartDesignGuiViewProvider_SRCS})
 
@@ -250,6 +254,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskLoftParameters.ui
     TaskLoftParameters.h
     TaskLoftParameters.cpp
+    TaskWrapParameters.h
+    TaskWrapParameters.cpp
+    TaskWrapParameters.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${PartDesignGuiTaskDlgs_SRCS})
 

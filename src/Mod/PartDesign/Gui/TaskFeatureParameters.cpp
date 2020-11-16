@@ -54,6 +54,15 @@ TaskFeatureParameters::TaskFeatureParameters(PartDesignGui::ViewProvider *vp, QW
     this->attachDocument(doc);
 }
 
+TaskFeatureParameters::TaskFeatureParameters(PartDesignGui::ViewProvider *vp, QWidget *parent,
+                                             const QString& parname)
+    : TaskBox(vp->getIcon().pixmap(64), parname,true, parent),
+      vp(vp), blockUpdate(false)
+{
+    Gui::Document* doc = vp->getDocument();
+    this->attachDocument(doc);
+}
+
 void TaskFeatureParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
 {
     if (this->vp == &Obj)

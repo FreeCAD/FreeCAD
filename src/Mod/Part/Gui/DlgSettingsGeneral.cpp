@@ -31,6 +31,7 @@
 
 #include <Base/Parameter.h>
 #include <App/Application.h>
+#include <Mod/Part/App/PartParams.h>
 
 #include "DlgSettingsGeneral.h"
 #include "ui_DlgSettingsGeneral.h"
@@ -62,6 +63,8 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkSketchBaseRefine->onSave();
     ui->checkSingleSolid->onSave();
     ui->checkObjectNaming->onSave();
+    Part::PartParams::set_CommandOverride(ui->comboBoxCommandOverride->currentIndex());
+    Part::PartParams::set_EnableWrapFeature(ui->comboBoxWrapFeature->currentIndex());
 }
 
 void DlgSettingsGeneral::loadSettings()
@@ -71,6 +74,8 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkSketchBaseRefine->onRestore();
     ui->checkSingleSolid->onRestore();
     ui->checkObjectNaming->onRestore();
+    ui->comboBoxCommandOverride->setCurrentIndex(Part::PartParams::CommandOverride());
+    ui->comboBoxWrapFeature->setCurrentIndex(Part::PartParams::EnableWrapFeature());
 }
 
 /**

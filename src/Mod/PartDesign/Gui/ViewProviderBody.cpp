@@ -36,6 +36,8 @@
 #include <Base/Tools.h>
 #include <App/Part.h>
 #include <App/Origin.h>
+#include <App/Link.h>
+#include <App/DocumentObserver.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -55,6 +57,8 @@
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
+#include <Mod/PartDesign/App/FeatureWrap.h>
+#include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "ViewProviderDatum.h"
 #include "Utils.h"
@@ -73,6 +77,8 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderBody,PartGui::ViewPro
 
 ViewProviderBody::ViewProviderBody()
 {
+    PartDesignGui::initMonitor();
+
     ADD_PROPERTY(DisplayModeBody,((long)0));
     DisplayModeBody.setEnums(BodyModeEnum);
 

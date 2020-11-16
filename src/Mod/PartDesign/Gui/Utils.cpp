@@ -35,24 +35,33 @@
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/Link.h>
 #include <Gui/Application.h>
+#include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
 #include <Gui/ViewProviderPart.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
+#include <Mod/Part/App/PartParams.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
 #include <Mod/PartDesign/App/DatumCS.h>
+#include <Mod/PartDesign/App/FeatureWrap.h>
+#include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "ReferenceSelection.h"
 #include "Utils.h"
 #include "WorkflowManager.h"
+#include "ViewProviderBody.h"
+#include "TaskWrapParameters.h"
 
 FC_LOG_LEVEL_INIT("PartDesignGui",true,true)
 
@@ -606,6 +615,245 @@ PartDesign::Body *queryCommandOverride()
         Part::PartParams::set_CommandOverride(res == QMessageBox::Yes ? 1 : 0);
     }
     return res == QMessageBox::Yes ? body : nullptr;
+}
+
+class Monitor
+{
+public:
+    Monitor()
+    {
+        Gui::Application::Instance->signalHighlightObject.connect(
+            [this](const Gui::ViewProviderDocumentObject &vp,
+                   const Gui::HighlightMode &, 
+                   bool set,
+                   App::DocumentObject * parent,
+                   const char *subname)
+            {
+                if (!set) {
+                    if (activeBody == vp.getObject()) {
+                        activeBody = nullptr;
+                        connChangedObject.disconnect();
+                        connDeletedObject.disconnect();
+                        connDeleteDocument.disconnect();
+                    }
+                }
+                else if (vp.isDerivedFrom(ViewProviderBody::getClassTypeId())) {
+                    activeBody = Base::freecad_dynamic_cast<PartDesign::Body>(vp.getObject());
+                    if (activeBody) {
+                        connChangedObject = activeBody->getDocument()->signalChangedObject.connect(
+                                boost::bind(&Monitor::slotChangedObject, this, _1, _2));
+                        connDeletedObject = activeBody->getDocument()->signalDeletedObject.connect(
+                                boost::bind(&Monitor::slotDeletedObject, this, _1));
+                        connDeleteDocument = App::GetApplication().signalDeleteDocument.connect(
+                                boost::bind(&Monitor::slotDeleteDocument, this, _1));
+                        if (parent)
+                            activeBodyT = App::SubObjectT(parent, subname);
+                        else
+                            activeBodyT = App::SubObjectT(activeBody, "");
+                    }
+                }
+            });
+
+        Gui::Application::Instance->signalInEdit.connect(
+            [this](const Gui::ViewProviderDocumentObject & vp) {
+                resetEdit();
+                auto doc = Gui::Application::Instance->editDocument();
+                if (!doc)
+                    return;
+                auto view = Base::freecad_dynamic_cast<Gui::View3DInventor>(doc->getEditingView());
+                if (!view)
+                    return;
+
+                for(auto obj : vp.getObject()->getInList()) {
+                    if (obj->isDerivedFrom(PartDesign::FeatureWrap::getClassTypeId())) {
+                        auto wrap = static_cast<PartDesign::FeatureWrap*>(obj);
+                        Gui::ViewProviderDocumentObject *parentVp = nullptr;
+                        std::string subname;
+                        doc->getInEdit(&parentVp, &subname);
+                        App::DocumentObject *parent = nullptr;
+                        if (parentVp)
+                            parent = parentVp->getObject();
+                        else if (activeBody && activeBody == PartDesign::Body::findBodyOf(wrap)) {
+                            parent = activeBodyT.getObject();
+                            subname = activeBodyT.getSubName() + wrap->getNameInDocument() + ".";
+                        } else
+                            return;
+                        editObj = App::SubObjectT(parent, subname.c_str());
+                        if (editObj.getSubObject() == wrap) {
+                            editObj.setSubName(editObj.getSubName()
+                                    + vp.getObject()->getNameInDocument() + ".");
+                        }
+                        editView = view;
+                        view->getViewer()->checkGroupOnTop(
+                                Gui::SelectionChanges(
+                                    Gui::SelectionChanges::AddSelection,
+                                    editObj.getDocumentName().c_str(),
+                                    editObj.getObjectName().c_str(),
+                                    editObj.getSubName().c_str()), true);
+                        break;
+                    }
+                }
+            });
+
+        Gui::Application::Instance->signalResetEdit.connect(
+            [this](const Gui::ViewProviderDocumentObject &) {
+                resetEdit();
+            });
+
+        Gui::Control().signalShowDialog.connect(
+            [this](QWidget *parent, std::vector<QWidget*> &contents) {
+                auto doc = Gui::Application::Instance->editDocument();
+                if (!doc)
+                    return;
+                Gui::ViewProviderDocumentObject *parentVp = nullptr;
+                std::string subname;
+                doc->getInEdit(&parentVp, &subname);
+                if (!parentVp)
+                    return;
+                App::SubObjectT sobjT(parentVp->getObject(), subname.c_str());
+                auto wrap = Base::freecad_dynamic_cast<PartDesign::FeatureWrap>(sobjT.getSubObject());
+                if (!wrap)
+                    wrap = Base::freecad_dynamic_cast<PartDesign::FeatureWrap>(
+                            sobjT.getParent().getSubObject());
+                auto wrapVp = Base::freecad_dynamic_cast<ViewProviderWrap>(
+                        Gui::Application::Instance->getViewProvider(wrap));
+                if (wrapVp) {
+                    taskWidget = new TaskWrapParameters(wrapVp, parent);
+                    contents.insert(contents.begin(), taskWidget);
+                }
+            });
+
+        Gui::Control().signalRemoveDialog.connect(
+            [this](QWidget *, std::vector<QWidget*> &contents) {
+                if (!taskWidget)
+                    return;
+                for (auto it=contents.begin(); it!=contents.end(); ) {
+                    if (*it == taskWidget) {
+                        it = contents.erase(it);
+                        taskWidget->deleteLater();
+                    } else
+                        ++it;
+                }
+            });
+
+    }
+
+    void resetEdit()
+    {
+        if (!editView)
+            return;
+        auto doc = Gui::Application::Instance->getDocument(editObj.getDocument());
+        if (doc) {
+            doc->foreachView<Gui::View3DInventor>(
+                [this](Gui::View3DInventor *view) {
+                    if (view == editView)
+                        view->getViewer()->checkGroupOnTop(
+                                Gui::SelectionChanges(
+                                    Gui::SelectionChanges::RmvSelection,
+                                    editObj.getDocumentName().c_str(),
+                                    editObj.getObjectName().c_str(),
+                                    editObj.getSubName().c_str()), true);
+                });
+        }
+
+        editView = nullptr;
+    }
+
+    void slotChangedObject(const App::DocumentObject &object, const App::Property &prop)
+    {
+        if (Part::PartParams::EnableWrapFeature() == 0)
+            return;
+        if (!activeBody || !prop.isDerivedFrom(App::PropertyLinkBase::getClassTypeId()))
+            return;
+        if (!object.isDerivedFrom(Part::Feature::getClassTypeId())
+                || object.isDerivedFrom(PartDesign::Feature::getClassTypeId())
+                || object.isDerivedFrom(PartDesign::Body::getClassTypeId())
+                || object.isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
+                || object.isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())
+                || object.hasExtension(App::LinkBaseExtension::getExtensionClassTypeId()))
+            return;
+        auto link = static_cast<const App::PropertyLinkBase*>(&prop);
+        if (App::GeoFeatureGroupExtension::getGroupOfObject(&object))
+            return;
+
+        std::vector<App::DocumentObject*> links;
+        for (auto obj : link->linkedObjects()) {
+            if (PartDesign::Body::findBodyOf(obj) == activeBody)
+                links.push_back(obj);
+        }
+        if (links.empty())
+            return;
+
+        if (Part::PartParams::EnableWrapFeature() > 1) {
+            QMessageBox box(Gui::getMainWindow());
+            box.setIcon(QMessageBox::Question);
+            box.setWindowTitle(QObject::tr("PartDesign feature wrap"));
+            box.setText(QObject::tr("You are referencing a PartDesign feature in a non-PartDesign "
+                                    "object.\n\nDo you want to incoporate this object into PartDesign "
+                                    "body using a wrap feature?"));
+            box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+            box.setDefaultButton(QMessageBox::Yes);
+            box.setEscapeButton(QMessageBox::No);
+
+            QCheckBox checkBox(QObject::tr("Remember the choice"));
+            checkBox.blockSignals(true);
+            box.addButton(&checkBox, QMessageBox::ResetRole); 
+            int res = box.exec();
+            if (checkBox.isChecked()) {
+                QMessageBox::information(Gui::getMainWindow(),
+                        QObject::tr("PartDesign feature wrap"),
+                        QObject::tr("You can change your choice in 'Part design' preference page."));
+                Part::PartParams::set_EnableWrapFeature(res == QMessageBox::Yes ? 1 : 0);
+            }
+            if (res != QMessageBox::Yes)
+                return;
+        }
+        try {
+            auto wrap = static_cast<PartDesign::FeatureWrap*>(
+                    activeBody->newObjectAt("PartDesign::FeatureWrap", "Wrap", links));
+            wrap->Label.setValue(object.Label.getValue());
+            wrap->WrapFeature.setValue(const_cast<App::DocumentObject*>(&object));
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
+    }
+
+    void slotDeletedObject(const App::DocumentObject &obj)
+    {
+        if (activeBody == &obj)
+            disconnect();
+    }
+
+    void slotDeleteDocument(const App::Document &doc)
+    {
+        if (activeBody && activeBody->getDocument() == &doc)
+            disconnect();
+    }
+
+    void disconnect()
+    {
+        activeBody = nullptr;
+        connChangedObject.disconnect();
+        connDeletedObject.disconnect();
+        connDeleteDocument.disconnect();
+    }
+
+public:
+    boost::signals2::scoped_connection connChangedObject;
+    boost::signals2::scoped_connection connDeletedObject;
+    boost::signals2::scoped_connection connDeleteDocument;
+    PartDesign::Body *activeBody = nullptr;
+    App::SubObjectT activeBodyT;
+    App::SubObjectT editObj;
+    Gui::View3DInventor *editView = nullptr;
+    QPointer<QWidget> taskWidget;
+};
+
+static Monitor *_MonitorInstance;
+void initMonitor()
+{
+    if (!_MonitorInstance)
+        _MonitorInstance = new Monitor;
 }
 
 } /* PartDesignGui */
