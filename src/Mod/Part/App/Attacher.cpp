@@ -928,8 +928,15 @@ Base::Placement AttachEngine::calculateAttachedPlacement(
             auto &res = subChanges[i];
             res.first = Data::ComplexGeoData::elementMapPrefix() + related.front().first;
             res.second = std::move(related.front().second);
-        } else
-            subnames[i] = shadow;
+        } else {
+            std::string name = Data::ComplexGeoData::oldElementName(shadow.c_str());
+            if (name.size()) {
+                auto &res = subChanges[i];
+                res.first.clear();
+                res.second = name;
+            }else
+                subnames[i] = shadow;
+        }
     }
     if(subChanges.size()) {
         // In case there is topological name changes, we only auto change the
@@ -940,7 +947,10 @@ Base::Placement AttachEngine::calculateAttachedPlacement(
         for(auto &v : subChanges)
             subs[v.first] = v.second.second;
         auto pla = _calculateAttachedPlacement(objs,subs,origPlacement);
-        if(pla == origPlacement) {
+        // check equal placement with some tolerance
+        if(pla.getPosition().IsEqual(origPlacement.getPosition(),1e-7)
+            && pla.getRotation().isSame(origPlacement.getRotation(),1e-12))
+        {
             if(subChanged) *subChanged = true;
             subnames = std::move(subs);
             for(auto &v : subChanges)
