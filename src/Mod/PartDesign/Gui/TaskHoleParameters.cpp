@@ -167,7 +167,9 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     else
         ui->drillPointAngled->setChecked(true);
     ui->DrillPointAngle->setValue(pcHole->DrillPointAngle.getValue());
-    ui->Tapered->setChecked(pcHole->ModelActualThread.getValue());
+    ui->Tapered->setChecked(pcHole->Tapered.getValue());
+    // Angle is only enabled (sensible) if tapered
+    ui->TaperedAngle->setEnabled(pcHole->Tapered.getValue());
     ui->TaperedAngle->setValue(pcHole->TaperedAngle.getValue());
     ui->Reversed->setChecked(pcHole->Reversed.getValue());
 
@@ -793,7 +795,7 @@ long TaskHoleParameters::getThreadClass() const
 
 long TaskHoleParameters::getThreadFit() const
 {
-    // the fit is independent if the hole is threaded or not
+    // the fit (clearance) is independent if the hole is threaded or not
     // since an unthreaded hole for a screw can also have a close fit
     return ui->ThreadFit->currentIndex();
 }
