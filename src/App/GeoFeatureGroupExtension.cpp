@@ -139,42 +139,45 @@ Base::Placement GeoFeatureGroupExtension::recursiveGroupPlacement(GeoFeatureGrou
     return group->placement().getValue();
 }
 
-std::vector<DocumentObject*> GeoFeatureGroupExtension::addObjects(std::vector<App::DocumentObject*> objects)  {
-    
-    std::vector<DocumentObject*> grp = Group.getValues();
+std::vector<DocumentObject*>
+GeoFeatureGroupExtension::addObjects(std::vector<App::DocumentObject*> objects)
+{
+    const auto & grp = Group.getValues();
     std::vector<DocumentObject*> ret;
+    ret.reserve(objects.size()*2);
 
     auto owner = getExtendedObject();
 
-    auto inSet = owner->getInListEx(true);
-    inSet.insert(owner);
-    
-    for(auto object : objects) {
-        
-        if(inSet.count(object) || !allowObject(object))
+    auto objSet = owner->getInListEx(true);
+    objSet.insert(owner);
+    objSet.insert(grp.begin(), grp.end());
+
+    for (unsigned i=0; i<objects.size(); ++i) {
+        auto object = objects[i];
+        if (!objSet.insert(object).second || !allowObject(object))
             continue;
         
-        //cross CoordinateSystem links are not allowed, so we need to move the whole link group 
-        std::vector<App::DocumentObject*> links = getCSRelevantLinks(object);
-        links.push_back(object);
-        
-        for( auto obj : links) {
-            //only one geofeaturegroup per object. 
-            auto *group = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
-            if(group && group != owner)
-                group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
-            
-            if (!hasObject(obj)) {
-                grp.push_back(obj);
-                ret.push_back(obj);
-            }
+        //only one geofeaturegroup per object. 
+        auto *group = App::GeoFeatureGroupExtension::getGroupOfObject(object);
+        if(group) {
+            if (group == owner)
+                continue;
+            group->getExtensionByType<App::GroupExtension>()->removeObject(object);
         }
+        ret.push_back(object);
+
+        //cross CoordinateSystem links are not allowed, so we need to move the whole link group 
+        recursiveCSRelevantLinks(object, objects);
     }
     
-    if(Group.getSize() != (int)grp.size()) {
+    if(!ret.empty()) {
         Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, &Group);
-        buildExport(grp);
-        Group.setValues(grp);
+        std::vector<App::DocumentObject *> objs;
+        objs.reserve(grp.size() + ret.size());
+        objs.insert(objs.end(), grp.begin(), grp.end());
+        objs.insert(objs.end(), ret.begin(), ret.end());
+        buildExport(objs);
+        Group.setValues(objs);
     }
     return ret;
 }
