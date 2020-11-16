@@ -332,10 +332,11 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
-    }
-    catch (...) {
+    } catch (const Base::Exception & e) {
+        e.ReportException();
+        return new App::DocumentObjectExecReturn(e.what());
+    } catch (...) {
         return new App::DocumentObjectExecReturn("A fatal error occurred when making the pipe");
     }
 }
