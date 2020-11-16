@@ -2411,6 +2411,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         if (PartDesign::Body::findBodyOf(obj) != pcActiveBody) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
                 QObject::tr("Please select only one feature in the active body."));
+            return;
         }
 
         if (obj->isDerivedFrom(PartDesign::MultiTransform::getClassTypeId())) {
@@ -2419,12 +2420,14 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
             return;
         }
 
-        if (trFeat || !obj->isDerivedFrom(PartDesign::Transformed::getClassTypeId())) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Invalid MultiTransform selection"),
-                QObject::tr("Please select one and only one pattern feature."));
+        if (obj->isDerivedFrom(PartDesign::Transformed::getClassTypeId())) {
+            if (trFeat) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Invalid MultiTransform selection"),
+                    QObject::tr("Please select one and only one pattern feature."));
+                return;
+            }
+            trFeat = static_cast<PartDesign::Transformed*>(obj);
         }
-        trFeat = static_cast<PartDesign::Transformed*>(obj);
-        break;
     }
 
     if (trFeat) {
