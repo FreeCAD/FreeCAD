@@ -98,7 +98,7 @@ class ToolController:
             if hasattr(obj.Tool, 'InList') and len(obj.Tool.InList) == 1:
                 if hasattr(obj.Tool.Proxy, 'onDelete'):
                     obj.Tool.Proxy.onDelete(obj.Tool)
-                obj.Document.removeObject(obj.Tool.Name)
+                #obj.Document.removeObject(obj.Name)
 
     def setFromTemplate(self, obj, template):
         '''
