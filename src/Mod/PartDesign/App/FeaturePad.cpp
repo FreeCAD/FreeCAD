@@ -74,6 +74,10 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
     Offset.setConstraints(&signedLengthConstraint);
+
+    // Remove the constraints and keep the type to allow to accept negative values
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
+    Length2.setConstraints(nullptr);
 }
 
 short Pad::mustExecute() const
