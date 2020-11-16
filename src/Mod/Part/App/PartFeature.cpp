@@ -76,6 +76,7 @@ typedef boost::iterator_range<const char*> CharRange;
 #include "PartFeature.h"
 #include "PartFeaturePy.h"
 #include "TopoShapePy.h"
+#include "PartParams.h"
 
 using namespace Part;
 namespace bp = boost::placeholders;
@@ -161,13 +162,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         if(subname && *subname && !ts.isNull())
             ts = ts.getSubTopoShape(subname,true);
         if(doTransform && !ts.isNull()) {
-            static int sCopy = -1; 
-            if(sCopy<0) {
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                        "User parameter:BaseApp/Preferences/Mod/Part/General");
-                sCopy = hGrp->GetBool("CopySubShape",false)?1:0;
-            }
-            bool copy = sCopy?true:false;
+            bool copy = PartParams::CopySubShape();
             if(!copy) {
                 // Work around OCC bug on transforming circular edge with an
                 // offset surface. The bug probably affect other shape type,

@@ -28,6 +28,7 @@
 # include <Bnd_Box.hxx>
 # include <Poly_Polygon3D.hxx>
 # include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
@@ -1658,7 +1659,8 @@ void ViewProviderPartExt::updateVisual()
     haction.apply(this->lineset);
     haction.apply(this->nodeset);
 
-    TopoDS_Shape cShape = getShape().getShape();
+    const Part::TopoShape & toposhape = getShape();
+    TopoDS_Shape cShape = toposhape.getShape();
     cachedShape = cShape;
     if (cShape.IsNull()) {
         coords  ->point      .setNum(0);
@@ -1671,6 +1673,14 @@ void ViewProviderPartExt::updateVisual()
         VisualTouched = false;
         return;
     }
+
+    // copy edge sub shape to work around OCC trangulation bug (in
+    // case the edge is part of a face of some other shape in a
+    // different location). Seems OCC 7.4 has fixed problem.
+#if OCC_VERSION_HEX < 0x070400
+    if (!toposhape.hasSubShape(TopAbs_FACE) && toposhape.hasSubShape(TopAbs_EDGE))
+        cShape = BRepBuilderAPI_Copy(cShape).Shape();
+#endif
 
     // time measurement and book keeping
     Base::TimeInfo start_time;

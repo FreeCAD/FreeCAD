@@ -60,6 +60,7 @@ public:
 #define FC_APP_PART_PARAMS \
     FC_APP_PART_PARAM(ShapePropertyCopy, bool, Bool, false) \
     FC_APP_PART_PARAM(DisableShapeCache, bool, Bool, false) \
+    FC_APP_PART_PARAM(CopySubShape, bool, Bool, false) \
 
 #undef FC_APP_PART_PARAM
 #define FC_APP_PART_PARAM(_name,_ctype,_type,_def) \
