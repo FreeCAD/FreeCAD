@@ -692,7 +692,7 @@ void ViewProvider::dragObject(App::DocumentObject* obj)
         return false;
     });
     if(!res)
-        throw Base::RuntimeError("ViewProvider::dragObject: no extension for dragging given object available.");
+        throw Base::RuntimeError("Cannot drag object.");
 }
 
 bool ViewProvider::canDropObject(App::DocumentObject* obj) const
@@ -720,7 +720,7 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
     });
 
     if(!res)
-        throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
+        throw Base::RuntimeError("Cannot drop object.");
 }
 
 bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
