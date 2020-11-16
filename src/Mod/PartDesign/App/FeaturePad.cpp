@@ -273,7 +273,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                     return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
                 prism = PrismMaker.Shape();
 #else
-                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, 2, 1);
+                Standard_Integer fuse = fabs(Offset.getValue()) > Precision::Confusion() ? 1 : 2;
+                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, fuse, Standard_True);
 #endif
                 base.Nullify();
             } else {
@@ -298,7 +299,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                     return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
                 prism = PrismMaker.Shape();
 #else
-                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, 2, 1);
+                Standard_Integer fuse = fabs(Offset.getValue()) > Precision::Confusion() ? 1 : 2;
+                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, fuse, Standard_True);
 #endif
             }
         } else {

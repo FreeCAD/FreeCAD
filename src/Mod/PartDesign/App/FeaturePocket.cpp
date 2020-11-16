@@ -188,7 +188,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopoDS_Shape prism = PrismMaker.Shape();
 #else
             TopoDS_Shape prism;
-            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, 0, 1);
+            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, 0, Standard_True);
 #endif
 
             // And the really expensive way to get the SubShape...
