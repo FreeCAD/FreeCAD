@@ -366,9 +366,10 @@ class TaskPanelPage(object):
             combo.blockSignals(False)
 
     def resetToolController(self, job, tc):
-        self.obj.ToolController = tc
-        combo = self.form.toolController
-        self.setupToolController(self.obj, combo)
+        if self.obj is not None:
+            self.obj.ToolController = tc
+            combo = self.form.toolController
+            self.setupToolController(self.obj, combo)
 
     def setupToolController(self, obj, combo):
         '''setupToolController(obj, combo) ...
