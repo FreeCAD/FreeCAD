@@ -100,11 +100,11 @@ def get_material_resources(category='Solid'):
         if os.path.exists(custom_mat_dir):
             resources[custom_mat_dir] = ":/icons/user.svg"
         # fail silently
-        #else:
-        #    FreeCAD.Console.PrintError(
-        #        'Custom material directory set by user: {} does not exist.\n'
-        #        .format(custom_mat_dir)
-        #    )
+        # else:
+        #     FreeCAD.Console.PrintError(
+        #         'Custom material directory set by user: {} does not exist.\n'
+        #         .format(custom_mat_dir)
+        #     )
 
     return resources
 
@@ -149,7 +149,7 @@ def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon, template=False)
     for a_path in dir_path_list:
         try:
             mat_dict = read(a_path)
-        except:
+        except Exception:
             FreeCAD.Console.PrintError(
                 'Error on reading card data. The card data will be empty for card:\n{}\n'
                 .format(a_path)
@@ -483,7 +483,7 @@ def check_value_unit(param, value):
                     '{} Unit {} is known by FreeCAD, but wrong for parameter {}.\n'
                     .format(some_text, unitproblem, param)
                 )
-            except:
+            except Exception:
                 FreeCAD.Console.PrintError(
                     '{} Not known problem.\n'
                     .format(some_text)
@@ -494,7 +494,7 @@ def check_value_unit(param, value):
                 '{} Unit {} is not known by FreeCAD.\n'
                 .format(some_text, unitproblem)
             )
-        except:
+        except Exception:
             FreeCAD.Console.PrintError(
                 '{} Not known problem.\n'
                 .format(some_text)
@@ -584,7 +584,7 @@ def output_value_unit_info(param, value):
                     '{} Unit {} is known by FreeCAD, but wrong for parameter {}.\n'
                     .format(some_text, unitproblem, param)
                 )
-            except:
+            except Exception:
                 FreeCAD.Console.PrintError(
                     '{} Not known problem.\n'
                     .format(some_text)
@@ -597,7 +597,7 @@ def output_value_unit_info(param, value):
                 .format(some_text, unitproblem)
             )
 
-        except:
+        except Exception:
             FreeCAD.Console.PrintError(
                 '{} Not known problem.\n'
                 .format(some_text)
