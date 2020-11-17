@@ -142,7 +142,7 @@ def get_pref_working_dir(solver_obj):
 
 
 # these are a duplicate of the methods in src/Mod/Fem/femsolver/run.py
-# see commit xxx (will be added when in master) for more information
+# see commit a9c19ca6d42c for more information
 # the FEM preferences will be used by both
 def get_temp_dir(obj=None):
     from tempfile import mkdtemp
@@ -153,7 +153,7 @@ def get_beside_dir(obj):
     base = get_beside_base(obj)
     specific_path = os.path.join(base, obj.Label)
     if not os.path.isdir(specific_path):
-        os.makedirs(specific_path)
+        make_dir(specific_path)
     return specific_path
 
 
@@ -162,28 +162,31 @@ def get_custom_dir(obj):
     specific_path = os.path.join(
         base, obj.Document.Name, obj.Label)
     if not os.path.isdir(specific_path):
-        os.makedirs(specific_path)
+        make_dir(specific_path)
     return specific_path
 
 
 def get_beside_base(obj):
     fcstdPath = obj.Document.FileName
     if fcstdPath == "":
+        new_path = get_temp_dir()
         error_message = (
             "Please save the file before executing a solver or creating a mesh. "
             "This must be done because the location of the working directory "
-            "is set to \"Beside *.FCStd File\". For the moment a tmp dir is used."
+            "is set to \"Beside *.FCStd File\". For the moment the tmp dir {} is used."
+            .format(new_path)
         )
-        FreeCAD.Console.PrintError(error_message + "\n")
+        FreeCAD.Console.PrintError("{}\n".format(error_message))
         if FreeCAD.GuiUp:
             QtGui.QMessageBox.critical(
                 FreeCADGui.getMainWindow(),
                 "Can't start Solver or Mesh creation besides FC file.",
                 error_message
             )
+        
         # from .errors import MustSaveError
         # raise MustSaveError()
-        return get_temp_dir()
+        return new_path
     else:
         return os.path.splitext(fcstdPath)[0]
 
@@ -192,8 +195,13 @@ def get_custom_base(solver):
     from femsolver.settings import get_custom_dir
     path = get_custom_dir()
     if not os.path.isdir(path):
-        error_message = "Selected working directory doesn't exist."
-        FreeCAD.Console.PrintError(error_message + "\n")
+        new_path = get_temp_dir()
+        error_message = (
+            "Selected working directory {} doesn't exist. "
+            " For the moment the tmp dir {} is used."
+            .format(path, new_path)
+        )
+        FreeCAD.Console.PrintError("{}\n".format(error_message))
         if FreeCAD.GuiUp:
             QtGui.QMessageBox.critical(
                 FreeCADGui.getMainWindow(),
@@ -202,7 +210,7 @@ def get_custom_base(solver):
             )
         # from .errors import DirectoryDoesNotExistError
         # raise DirectoryDoesNotExistError("Invalid path")
-        return get_temp_dir()
+        return new_path
     return path
 
 
@@ -214,6 +222,23 @@ def check_working_dir(wdir):
         return True
     else:
         return False
+
+
+def make_dir(specific_path):
+    try:
+        os.makedirs(specific_path)
+    except OSError:
+        new_path = get_temp_dir()
+        # it could fail for various reasons, full disk, etc
+        # beside dir fails on installed FC examples from start wb
+        error_message = (
+            "Failed to create the directory {}. "
+            " For the moment the tmp dir {} is used."
+            .format(specific_path, new_path)
+        )
+        FreeCAD.Console.PrintError("{}\n".format(error_message))
+        return new_path
+    return specific_path
 
 
 # ************************************************************************************************
