@@ -591,7 +591,7 @@ def export( exportList, filename, colors = None, camera = None ):
     
     # Take the objects out of groups
     objectslist = Draft.get_group_contents(exportList, walls=True, addgroups=False)
-    objectslist = Arch.pruneIncluded(objectslist)
+    # objectslist = Arch.pruneIncluded(objectslist)
     
     for obj in objectslist:
         
