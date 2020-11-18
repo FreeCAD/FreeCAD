@@ -729,10 +729,6 @@ public:
 
     virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-    virtual void paint(QPainter * painter,
-                       const QStyleOptionViewItem & option,
-                       const QModelIndex & index ) const;
-
     virtual void initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const;
 };
 
@@ -741,13 +737,6 @@ public:
 TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
-}
-
-void TreeWidgetItemDelegate ::paint(QPainter * painter,
-                                    const QStyleOptionViewItem & option,
-                                    const QModelIndex & index ) const
-{
-    inherited::paint(painter, option, index);
 }
 
 void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
@@ -5970,7 +5959,7 @@ static QPixmap mergePixmaps(const std::vector<QPixmap> &icons)
         }
         else {
             pt.drawPixmap(x, (w-p.height())/2, p);
-            x += w;
+            x += p.width();
         }
     }
     pt.end();
