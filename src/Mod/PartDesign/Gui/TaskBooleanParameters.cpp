@@ -32,6 +32,7 @@
 #include "ui_TaskBooleanParameters.h"
 #include "TaskBooleanParameters.h"
 #include "Utils.h"
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/DocumentObserver.h>
 #include <App/Document.h>
@@ -81,6 +82,9 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QW
 #if QT_VERSION >= 0x040200
     ui->listWidgetBodies->setMouseTracking(true); // needed for itemEntered() to work
 #endif
+    ui->listWidgetBodies->setDragDropMode(QListWidget::InternalMove);
+    connect(ui->listWidgetBodies->model(), SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
+            this, SLOT(onItemMoved()));
     connect(ui->listWidgetBodies, SIGNAL(itemEntered(QListWidgetItem*)), 
             this, SLOT(preselect(QListWidgetItem*)));
     ui->listWidgetBodies->installEventFilter(this); // for leaveEvent
@@ -156,6 +160,30 @@ App::DocumentObject *TaskBooleanParameters::getInEdit(std::string &subname) {
     return parent->getObject();
 }
 
+void TaskBooleanParameters::onItemMoved()
+{
+    if (!BooleanView || !BooleanView->getObject())
+        return;
+
+    PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
+    std::vector<App::DocumentObject*> group;
+    for(int i=0,count=ui->listWidgetBodies->count();i<count;++i) {
+        auto item = ui->listWidgetBodies->item(i);
+        auto obj = pcBoolean->getDocument()->getObject(
+                item->data(Qt::UserRole).toString().toLatin1().constData());
+        if (obj)
+            group.push_back(obj);
+    }
+    if (group == pcBoolean->Group.getValues())
+        return;
+
+    setupTransaction();
+    Gui::Selection().clearSelection();
+    pcBoolean->Group.setValues(group);
+    pcBoolean->recomputeFeature(true);
+    populate();
+}
+
 void TaskBooleanParameters::preselect(QListWidgetItem *item) {
     std::string subname;
     auto parent = getInEdit(subname);
@@ -174,6 +202,8 @@ void TaskBooleanParameters::onItemSelection() {
     auto parent = getInEdit(subname);
     if(!parent)
         return;
+
+    Base::StateLocker guard(this->selecting);
 
     Gui::Selection().clearCompleteSelection();
     std::vector<std::string> subs;
@@ -207,6 +237,8 @@ void TaskBooleanParameters::syncSelection() {
 
 void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    if (this->selecting)
+        return;
     switch(msg.Type) {
     case Gui::SelectionChanges::ClrSelection: {
         bool blocked = ui->listWidgetBodies->blockSignals(true);

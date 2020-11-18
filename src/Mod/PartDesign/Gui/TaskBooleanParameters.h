@@ -74,6 +74,7 @@ private Q_SLOTS:
     void preselect(QListWidgetItem*);
     void onItemSelection();
     void onNewSolidChanged(bool);
+    void onItemMoved();
 
 protected:
     void syncSelection();
@@ -88,7 +89,7 @@ private:
     ViewProviderBoolean *BooleanView;
     boost::signals2::scoped_connection undoConn;
     boost::signals2::scoped_connection redoConn;
-
+    bool selecting = false;
     int transactionID = 0;
 };
 
