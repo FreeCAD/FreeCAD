@@ -715,13 +715,18 @@ PyObject *PropertyLinkList::getPyObject(void)
     return Py::new_reference_to(sequence);
 }
 
-DocumentObject *PropertyLinkList::getPyValue(PyObject *item) const {
-    if (!PyObject_TypeCheck(item, &(DocumentObjectPy::Type))) {
-        std::string error = std::string("type must be 'DocumentObject' or list of 'DocumentObject', not ");
-        error += item->ob_type->tp_name;
-        throw Base::TypeError(error);
+DocumentObject *PropertyLinkList::getPyValue(PyObject *item) const
+{
+    if (item == Py_None) {
+        return nullptr;
     }
-    return static_cast<DocumentObjectPy*>(item)->getDocumentObjectPtr();
+    else if (PyObject_TypeCheck(item, &(DocumentObjectPy::Type))) {
+        return static_cast<DocumentObjectPy*>(item)->getDocumentObjectPtr();
+    }
+
+    std::string error = std::string("type must be 'DocumentObject', list of 'DocumentObject', or NoneType, not ");
+    error += item->ob_type->tp_name;
+    throw Base::TypeError(error);
 }
 
 void PropertyLinkList::Save(Base::Writer &writer) const

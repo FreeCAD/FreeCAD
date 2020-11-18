@@ -30,7 +30,7 @@ from PySide import QtCore, QtGui, QtSvg
 
 import FreeCAD
 import FreeCADGui
-import Material_rc
+# import Material_rc
 
 # is this still needed after the move to card utils???
 if sys.version_info.major >= 3:
@@ -65,9 +65,9 @@ class MaterialEditor:
 
         # restore size and position
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material")
-        w = p.GetInt("MaterialEditorWidth",441)
-        h = p.GetInt("MaterialEditorHeight",626)
-        self.widget.resize(w,h)
+        w = p.GetInt("MaterialEditorWidth", 441)
+        h = p.GetInt("MaterialEditorHeight", 626)
+        self.widget.resize(w, h)
 
         # additional UI fixes and tweaks
         widget = self.widget
@@ -79,7 +79,6 @@ class MaterialEditor:
         buttonSave = widget.ButtonSave
         comboMaterial = widget.ComboMaterial
         treeView = widget.treeView
-
 
         # create preview svg slots
         self.widget.PreviewRender = QtSvg.QSvgWidget(":/icons/preview-rendered.svg")
@@ -174,10 +173,10 @@ class MaterialEditor:
                 itType = QtGui.QStandardItem(tt)
 
                 top.appendRow([item, it, itType])
-                treeView.setExpanded(top.index(),p.GetBool("TreeExpand"+gg,True))
-            #top.sortChildren(0)
+                treeView.setExpanded(top.index(), p.GetBool("TreeExpand"+gg, True))
+            # top.sortChildren(0)
 
-        #treeView.expandAll()
+        # treeView.expandAll()
 
     def updateMatParamsInTree(self, data):
 
@@ -294,12 +293,12 @@ class MaterialEditor:
         "stores the widget size"
         # store widths
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material")
-        p.SetInt("MaterialEditorWidth",self.widget.width())
-        p.SetInt("MaterialEditorHeight",self.widget.height())
+        p.SetInt("MaterialEditorWidth", self.widget.width())
+        p.SetInt("MaterialEditorHeight", self.widget.height())
         root = self.widget.treeView.model().invisibleRootItem()
         for gg in range(root.rowCount()):
             group = root.child(gg)
-            p.SetBool("TreeExpand"+group.text(),self.widget.treeView.isExpanded(group.index()))
+            p.SetBool("TreeExpand"+group.text(), self.widget.treeView.isExpanded(group.index()))
 
     def expandKey(self, key):
         "adds spaces before caps in a KeyName"
@@ -456,7 +455,7 @@ class MaterialEditor:
                     self.widget.PreviewVector.show()
     '''
 
-    def updatePreviews(self,mat=None):
+    def updatePreviews(self, mat=None):
         "updates the preview images from the content of the editor"
         if not mat:
             mat = self.getDict()
@@ -479,27 +478,27 @@ class MaterialEditor:
                 svg = QtCore.QTextStream(fd).readAll()
                 fd.close()
                 if diffcol:
-                    svg = svg.replace("#d3d7cf",self.getColorHash(diffcol,val=255))
-                    svg = svg.replace("#555753",self.getColorHash(diffcol,val=125))
+                    svg = svg.replace("#d3d7cf", self.getColorHash(diffcol, val=255))
+                    svg = svg.replace("#555753", self.getColorHash(diffcol, val=125))
                 if highlightcol:
-                    svg = svg.replace("#fffffe",self.getColorHash(highlightcol,val=255))
-                self.widget.PreviewRender.load(QtCore.QByteArray(bytes(svg,encoding="utf8")))
+                    svg = svg.replace("#fffffe", self.getColorHash(highlightcol, val=255))
+                self.widget.PreviewRender.load(QtCore.QByteArray(bytes(svg, encoding="utf8")))
         if diffcol or sectioncol:
             fd = QtCore.QFile(":/icons/preview-vector.svg")
             if fd.open(QtCore.QIODevice.ReadOnly | QtCore.QIODevice.Text):
                 svg = QtCore.QTextStream(fd).readAll()
                 fd.close()
                 if diffcol:
-                    svg = svg.replace("#d3d7cf",self.getColorHash(diffcol,val=255))
-                    svg = svg.replace("#555753",self.getColorHash(diffcol,val=125))
+                    svg = svg.replace("#d3d7cf", self.getColorHash(diffcol, val=255))
+                    svg = svg.replace("#555753", self.getColorHash(diffcol, val=125))
                 if sectioncol:
-                    svg = svg.replace("#ffffff",self.getColorHash(sectioncol,val=255))
-                self.widget.PreviewVector.load(QtCore.QByteArray(bytes(svg,encoding="utf8")))
+                    svg = svg.replace("#ffffff", self.getColorHash(sectioncol, val=255))
+                self.widget.PreviewVector.load(QtCore.QByteArray(bytes(svg, encoding="utf8")))
 
-    def getColorHash(self,col,val=255):
+    def getColorHash(self, col, val=255):
         "returns a '#000000' string from a '(0.1,0.2,0.3)' string"
         col = [float(x.strip()) for x in col.strip("()").split(",")]
-        color = QtGui.QColor(int(col[0]*val),int(col[1]*val),int(col[2]*val))
+        color = QtGui.QColor(int(col[0]*val), int(col[1]*val), int(col[2]*val))
         return color.name()
 
     def openfile(self):

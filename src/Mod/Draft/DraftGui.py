@@ -168,12 +168,12 @@ class DraftToolBar:
         # taskmode = 0 was used by draft toolbar that is now obsolete.
         # print("taskmode: ",str(self.taskmode))
         
-        # OBSOLETE - TO BE REMOVED
-        #self.paramcolor = Draft.getParam("color",255)>>8
-        #self.color = QtGui.QColor(self.paramcolor)
-        #self.facecolor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)>>8
-        #self.linewidth = Draft.getParam("linewidth",2)
-        #self.fontsize = Draft.getParam("textheight",0.20)
+        # OBSOLETE BUT STILL USED BY SOME ADDONS AND MACROS
+        self.paramcolor = Draft.getParam("color",255)>>8
+        self.color = QtGui.QColor(self.paramcolor)
+        self.facecolor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)>>8
+        self.linewidth = Draft.getParam("linewidth",2)
+        self.fontsize = Draft.getParam("textheight",0.20)
         
         self.paramconstr = Draft.getParam("constructioncolor",746455039)>>8
         self.constrMode = False
@@ -1789,6 +1789,12 @@ class DraftToolBar:
         txt = str(linewidth)+"px | "+FreeCAD.Units.Quantity(fontsize,FreeCAD.Units.Length).UserString
         self.styleButton.setIcon(icon)
         self.styleButton.setText(txt)
+
+        # FOR BACKWARDS COMPATIBILITY
+        self.color = linecolor
+        self.facecolor = facecolor
+        self.linewidth = linewidth
+        self.fontsize = fontsize
 
     def popupMenu(self,llist,ilist=None,pos=None):
         """pops up a menu filled with the given list"""

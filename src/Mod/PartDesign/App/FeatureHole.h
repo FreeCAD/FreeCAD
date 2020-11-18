@@ -84,8 +84,9 @@ public:
         double diameter;
         double pitch;
     } ThreadDescription;
-
     static const ThreadDescription threadDescription[][171];
+
+    static const double metricHoleDiameters[35][4];
 
     virtual void Restore(Base::XMLReader & reader);
 
