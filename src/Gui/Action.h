@@ -478,6 +478,30 @@ protected:
     std::unique_ptr<Private> _pimpl;
 };
 
+/**
+ * Special action for Std_Expression command.
+ */
+class GuiExport ExpressionAction : public Action
+{
+    Q_OBJECT
+
+public:
+    ExpressionAction (Command* pcCmd, QObject * parent = 0);
+    virtual ~ExpressionAction();
+    void addTo (QWidget * w);
+    void popup(const QPoint &pt);
+
+protected Q_SLOTS:
+    void onShowMenu();
+    void onAction(QAction *action);
+
+protected:
+    QMenu* _menu;
+    class Private;
+    friend class Private;
+    std::unique_ptr<Private> _pimpl;
+};
+
 GuiExport void setupMenuStyle(QWidget *);
 
 } // namespace Gui

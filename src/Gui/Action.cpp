@@ -36,6 +36,7 @@
 # include <QToolBar>
 # include <QToolButton>
 # include <QElapsedTimer>
+# include <QClipboard>
 #endif
 
 #include <QWidgetAction>
@@ -45,10 +46,15 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <cctype>
+#include <boost/regex.hpp>
+#include <boost/algorithm/string/replace.hpp>
+
 
 #include <Base/Tools.h>
 #include <Base/Parameter.h>
 #include <App/DocumentObserver.h>
+#include <App/AutoTransaction.h>
 #include "Action.h"
 #include "Application.h"
 #include "BitmapFactory.h"
@@ -74,6 +80,8 @@
 
 #include <Base/Exception.h>
 #include <App/Application.h>
+
+FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -1987,5 +1995,252 @@ void ToolbarMenuAction::popup(const QPoint &pt)
     PieMenu::exec(_menu, pt, _pcCmd->getName());
     _menu->setActiveAction(0);
 }
+
+////////////////////////////////////////////////////////////////////
+
+class ExpressionAction::Private {
+public:
+    void init(QMenu *menu)
+    {
+        pcActionCopySel = menu->addAction(QObject::tr("Copy selected"));
+        pcActionCopyActive = menu->addAction(QObject::tr("Copy active document"));
+        pcActionCopyAll = menu->addAction(QObject::tr("Copy all documents"));
+        pcActionPaste = menu->addAction(QObject::tr("Paste"));
+    }
+
+    void onAction(QAction *action) {
+        if (action == pcActionPaste) {
+            pasteExpressions();
+            return;
+        }
+
+        std::map<App::Document*, std::set<App::DocumentObject*> > objs;
+        if (action == pcActionCopySel) {
+            for(auto &sel : Selection().getCompleteSelection())
+                objs[sel.pObject->getDocument()].insert(sel.pObject);
+        }
+        else if (action == pcActionCopyActive) {
+            if(App::GetApplication().getActiveDocument()) {
+                auto doc = App::GetApplication().getActiveDocument();
+                auto array = doc->getObjects();
+                auto &set = objs[doc];
+                set.insert(array.begin(),array.end());
+            }
+        }
+        else if (action == pcActionCopyAll) {
+            for(auto doc : App::GetApplication().getDocuments()) {
+                auto &set = objs[doc];
+                auto array = doc->getObjects();
+                set.insert(array.begin(),array.end());
+            }
+        }
+        copyExpressions(objs);
+    }
+
+    void copyExpressions(const std::map<App::Document*, std::set<App::DocumentObject*> > &objs)
+    {
+        std::ostringstream ss;
+        std::vector<App::Property*> props;
+        for(auto &v : objs) {
+            for(auto obj : v.second) {
+                props.clear();
+                obj->getPropertyList(props);
+                for(auto prop : props) {
+                    auto p = dynamic_cast<App::PropertyExpressionContainer*>(prop);
+                    if(!p) continue;
+                    for(auto &v : p->getExpressions()) {
+                        ss << "##@@ " << v.first.toString() << ' '
+                            << obj->getFullName() << '.' << p->getName()
+                            << " (" << obj->Label.getValue() << ')' << std::endl;
+                        ss << "##@@";
+                        if(v.second->comment.size()) {
+                            if(v.second->comment[0] == '&' 
+                                    || v.second->comment.find('\n') != std::string::npos
+                                    || v.second->comment.find('\r') != std::string::npos)
+                            {
+                                std::string comment = v.second->comment;
+                                boost::replace_all(comment,"&","&amp;");
+                                boost::replace_all(comment,"\n","&#10;");
+                                boost::replace_all(comment,"\r","&#13;");
+                                ss << '&' << comment;
+                            }else
+                                ss << v.second->comment;
+                        }
+                        ss << std::endl << v.second->toStr(true,true) << std::endl << std::endl;
+                    }
+                }
+            }
+        }
+        QApplication::clipboard()->setText(QString::fromUtf8(ss.str().c_str()));
+    }
+
+    void pasteExpressions() {
+        std::map<App::Document*, std::map<App::PropertyExpressionContainer*, 
+            std::map<App::ObjectIdentifier, App::ExpressionPtr> > > exprs;
+
+        bool failed = false;
+        std::string txt = QApplication::clipboard()->text().toUtf8().constData();
+        const char *tstart = txt.c_str();
+        const char *tend = tstart + txt.size();
+
+        static boost::regex rule("^##@@ ([^ ]+) (\\w+)#(\\w+)\\.(\\w+) [^\n]+\n##@@([^\n]*)\n");
+        boost::cmatch m;
+        if(!boost::regex_search(tstart,m,rule)) {
+            FC_WARN("No expression header found");
+            return;
+        }
+        boost::cmatch m2;
+        bool found = true;
+        for(;found;m=m2) {
+            found = boost::regex_search(m[0].second,tend,m2,rule);
+
+            auto pathName = m.str(1);
+            auto docName = m.str(2);
+            auto objName = m.str(3);
+            auto propName = m.str(4);
+            auto comment = m.str(5);
+
+            App::Document *doc = App::GetApplication().getDocument(docName.c_str());
+            if(!doc) {
+                FC_WARN("Cannot find document '" << docName << "'");
+                continue;
+            }
+
+            auto obj = doc->getObject(objName.c_str());
+            if(!obj) {
+                FC_WARN("Cannot find object '" << docName << '#' << objName << "'");
+                continue;
+            }
+
+            auto prop = dynamic_cast<App::PropertyExpressionContainer*>(
+                    obj->getPropertyByName(propName.c_str()));
+            if(!prop) {
+                FC_WARN("Invalid property '" << docName << '#' << objName << '.' << propName << "'");
+                continue;
+            }
+
+            size_t len = (found?m2[0].first:tend) - m[0].second;
+            try {
+                // Check if the expression body contains a single
+                // non-whitespace character '#'.  This is used to signal the
+                // user's intention of unbinding the property.
+                bool empty = false;
+                const char *t = m[0].second;
+                for(;*t && std::isspace((int)*t);++t);
+                if(*t == '#') {
+                    for(++t;*t && std::isspace((int)*t);++t);
+                    empty = !*t;
+                }
+                App::ExpressionPtr expr;
+                if(!empty)
+                    expr = App::Expression::parse(obj,std::string(m[0].second,len));
+                if(expr && comment.size()) {
+                    if(comment[0] == '&') {
+                        expr->comment = comment.c_str()+1;
+                        boost::replace_all(expr->comment,"&amp;","&");
+                        boost::replace_all(expr->comment,"&#10;","\n");
+                        boost::replace_all(expr->comment,"&#13;","\r");
+                    } else
+                        expr->comment = comment;
+                }
+                exprs[doc][prop][App::ObjectIdentifier::parse(obj,pathName)] = std::move(expr);
+            } catch(Base::Exception &e) {
+                FC_ERR(e.what() << std::endl << m[0].str());
+                failed = true;
+            }
+        }
+        if(failed) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Expression error"),
+                QObject::tr("Failed to parse some of the expressions.\n"
+                            "Please check the Report View for more details."));
+            return;
+        }
+
+        App::AutoTransaction guard("Paste expressions");
+        try {
+            for(auto &v : exprs) {
+                for(auto &v2 : v.second) {
+                    auto &expressions = v2.second;
+                    auto old = v2.first->getExpressions();
+                    for(auto it=expressions.begin(),itNext=it;it!=expressions.end();it=itNext) {
+                        ++itNext;
+                        if(!it->second)
+                            continue;
+                        auto iter = old.find(it->first);
+                        if(iter != old.end() && it->second->isSame(*iter->second))
+                            expressions.erase(it);
+                    }
+                    if(expressions.size())
+                        v2.first->setExpressions(std::move(expressions));
+                }
+            }
+        } catch (const Base::Exception& e) {
+            e.ReportException();
+            App::GetApplication().closeActiveTransaction(true);
+            QMessageBox::critical(getMainWindow(), QObject::tr("Failed to paste expressions"),
+                QString::fromLatin1(e.what()));
+        }
+    }
+
+    void update() {
+        if(!App::GetApplication().getActiveDocument()) {
+            pcActionCopyAll->setEnabled(false);
+            pcActionCopySel->setEnabled(false);
+            pcActionCopyActive->setEnabled(false);
+            pcActionPaste->setEnabled(false);
+            return;
+        }
+        pcActionCopyActive->setEnabled(true);
+        pcActionCopyAll->setEnabled(true);
+        pcActionCopySel->setEnabled(Selection().hasSelection());
+
+        QString txt = QApplication::clipboard()->text();
+        pcActionPaste->setEnabled(txt.startsWith(QLatin1String("##@@ ")));
+    }
+
+    QAction *pcActionCopyAll;
+    QAction *pcActionCopySel;
+    QAction *pcActionCopyActive;
+    QAction *pcActionPaste;
+};
+
+ExpressionAction::ExpressionAction (Command* pcCmd, QObject * parent)
+    : Action(pcCmd, parent), _menu(nullptr), _pimpl(new Private)
+{
+}
+
+ExpressionAction::~ExpressionAction ()
+{
+}
+
+void ExpressionAction::addTo ( QWidget * w )
+{
+    if (!_menu) {
+        _menu = new QMenu();
+        _action->setMenu(_menu);
+        connect(_menu, SIGNAL(aboutToShow()), this, SLOT(onShowMenu()));
+        connect(_menu, SIGNAL(triggered(QAction*)), this, SLOT(onAction(QAction*)));
+
+        _pimpl->init(_menu);
+    }
+
+    w->addAction(_action);
+}
+
+void ExpressionAction::onAction(QAction *action) {
+    _pimpl->onAction(action);
+}
+
+void ExpressionAction::onShowMenu()
+{
+    _pimpl->update();
+}
+
+void ExpressionAction::popup(const QPoint &pt)
+{
+    if (_menu)
+        _menu->exec(pt);
+}
+
 
 #include "moc_Action.cpp"
