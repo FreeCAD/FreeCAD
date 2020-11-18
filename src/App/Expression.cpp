@@ -2412,6 +2412,20 @@ const std::vector<FunctionExpression::FunctionInfo> &FunctionExpression::getFunc
         {CATH, "cath", "cath(x, y, [z]) = sqrt(x^2 - y^2 - z^2), where z is optional"},
         {LIST, "list", "list(arg...), create a Python list"},
         {TUPLE, "tuple", "tuple(arg...), create a Python tuple"},
+        {EVAL, "eval", "eval(arg...), evaluate the first argument (string or sequence of string)\n"
+                       "as expression(s). Additional unamed argument are interpreted as local\n"
+                       "variables with name _1_, _2_, and so on. Named argument are interpreted\n"
+                       "as variable with the same name."},
+        {FUNC, "func", "func(arg...), make a callable object using the first argument (string or\n"
+                       "sequence of string) as expressions. Additional arguments are interpreted as\n"
+                       "default arguments of the callable. The arguments are evaluated before storing\n"
+                       "inside the callable object."},
+        {FUNC_D, "func_d", "func_d(arg...), make a callable object using the first argument (string or\n"
+                           "sequence of string) as expressions. Additional arguments are interpreted as\n"
+                           "default arguments of the callable. The evaluation of the arguments are\n"
+                           "delayed until the callable is invoked.\n"},
+        {IMPORT_PY, "import_py", "import_py(string), import the given python module"},
+        {PRAGMA, "pragma", "pragma(arg...), expression interpreter behavior control"},
         {MSCALE, "mscale", "mscale(matrix, vector)\n"
                            "mscale(matrix, scalex, scaley, scalez)\n\n"
                            "Scaling of a matrix"},
