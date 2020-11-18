@@ -496,9 +496,11 @@ struct PixmapInfo {
         if (++this->count > 2)
             return;
 
+        int tagWidth = pxTag.isNull() ? 0 : pxTag.width()/2;
+
         if (this->count == 1) {
             QPixmap pxOrig = px;
-            px = QPixmap(64, 64);
+            px = QPixmap(64 + tagWidth, 64);
             px.fill(Qt::transparent);
             QPainter pt;
             pt.begin(&px);
@@ -507,17 +509,17 @@ struct PixmapInfo {
             pt.setBrush(Qt::white);
             pt.drawRect(QRect(5, 5, 52, 52));
             pt.drawPixmap(7, 7, 48, 48, pxOrig, 0, 0, pxOrig.width(), pxOrig.height());
-            if (!pxTag.isNull())
-                pt.drawPixmap(64-pxTag.width(), 0, pxTag);
             pt.setPen(QPen(Qt::black, 2));
             pt.setBrush(QBrush());
             pt.drawRect(QRect(5, 5, 52, 52));
+            if (!pxTag.isNull())
+                pt.drawPixmap(64-tagWidth, 0, pxTag);
             pt.end();
             return;
         }
 
         QPixmap pxCopy = px;
-        px = QPixmap(64, 64);
+        px = QPixmap(pxCopy.size());
         px.fill(Qt::transparent);
         QPainter pt;
         pt.begin(&px);
@@ -526,8 +528,6 @@ struct PixmapInfo {
         pt.setBrush(Qt::white);
         pt.drawRect(QRect(1, 1, 53, 53));
         pt.drawPixmap(5, 5, pxCopy);
-        if (!pxTag.isNull())
-            pt.drawPixmap(62-pxTag.width(), 0, pxTag);
         pt.end();
     }
 };
