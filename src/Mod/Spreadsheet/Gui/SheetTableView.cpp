@@ -566,7 +566,7 @@ void SheetTableView::setSheet(Sheet * _sheet)
     for (std::vector<std::string>::const_iterator i = usedCells.begin(); i != usedCells.end(); ++i) {
         CellAddress address(*i);
         auto cell = sheet->getCell(address);
-        if(cell && cell->isPersistentEditMode())
+        if(cell && !cell->hasException() && cell->isPersistentEditMode())
             openPersistentEditor(model()->index(address.row(),address.col()));
 
         if (sheet->isMergedCell(address))
@@ -987,7 +987,7 @@ void SheetTableView::dataChanged(const QModelIndex &topLeft, const QModelIndex &
         auto address = *range;
         auto cell = sheet->getCell(address);
         closePersistentEditor(model()->index(address.row(),address.col()));
-        if(cell && cell->isPersistentEditMode())
+        if(cell && !cell->hasException() && cell->isPersistentEditMode())
             openPersistentEditor(model()->index(address.row(),address.col()));
     }while(range.next());
 
