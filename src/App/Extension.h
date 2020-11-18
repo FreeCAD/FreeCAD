@@ -31,7 +31,7 @@
 #include <CXX/Objects.hxx>
 
 namespace App {
-    
+
 class ExtensionContainer;
 
 /// define Extension types
@@ -53,7 +53,7 @@ public: \
   static void *create(void);\
 private: \
   static Base::Type classTypeId
-    
+
 /// define to implement a subclass of Base::BaseClass
 #define EXTENSION_TYPESYSTEM_SOURCE_P(_class_) \
 Base::Type _class_::getExtensionClassTypeId(void) { return _class_::classTypeId; } \
@@ -122,105 +122,105 @@ template<> void _class_::init(void){\
   initExtensionSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
   _class_::propertyData.parentPropertyData = _parentclass_::extensionGetPropertyDataPtr();\
 }
-  
+
 /**
  * @brief Base class for all extension that can be added to a DocumentObject
- * 
- * For general documentation on why extension system exists and how to use it see the ExtensionContainer 
- * documentation. Following is a description howto create custom extensions. 
- * 
- * Extensions are like every other FreeCAD object and based on properties. All information storage 
- * and persistence should be achieved by use of those. Additional any number of methods can be 
+ *
+ * For general documentation on why extension system exists and how to use it see the ExtensionContainer
+ * documentation. Following is a description howto create custom extensions.
+ *
+ * Extensions are like every other FreeCAD object and based on properties. All information storage
+ * and persistence should be achieved by use of those. Additional any number of methods can be
  * added to provide functionality around the properties. There are 3 small difference to normal objects:
  * 1. They must be derived from Extension class
  * 2. Properties must be handled with special extension macros
  * 3. Extensions must be initialised
- * This works as simple as 
+ * This works as simple as
  * @code
  * class MyExtension : public Extension {
  *   EXTENSION_PROPERTY_HEADER(MyExtension);
  *   PropertyInt MyProp;
  *   virtual bool overridableMethod(DocumentObject* obj) {};
  * };
- * 
+ *
  * EXTENSION_PROPERTY_SOURCE(App::MyExtension, App::Extension)
  * MyExtension::MyExtension() {
- * 
- *     EXTENSION_ADD_PROPERTY(MyProp, (0)) * 
+ *
+ *     EXTENSION_ADD_PROPERTY(MyProp, (0)) *
  *     initExtension(MyExtension::getExtensionClassTypeId());
  * }
  * typedef ExtensionPythonT<MyExtension> MyExtensionPython;
- * @endcode 
- *  
- * The special python extension type created above is important, as only those python extensions 
- * can be added to an object from python. It does not work to add the c++ version directly there. 
- * 
- * Note that every method of the extension becomes part of the extended object when added from c++. 
+ * @endcode
+ *
+ * The special python extension type created above is important, as only those python extensions
+ * can be added to an object from python. It does not work to add the c++ version directly there.
+ *
+ * Note that every method of the extension becomes part of the extended object when added from c++.
  * This means one should carefully design the API and make only necessary methods public or protected.
  * Every internal method should be private.
- * 
- * The automatic availability of methods in the class does not hold for the python interface, only 
- * for c++ classes. This is like every where else in FreeCAD, there is no automatic creation of python 
- * API from c++ classes. Hence the extension creator must also create a custom python object of its 
- * extension, which works exactly like the normal FreeCAD python object workflow. There is nothing 
- * special at all for extension python objects, the normal xml + imp.cpp approach is used. It must 
- * only be taken care that the objects father is the correct extension base class. Of course also 
+ *
+ * The automatic availability of methods in the class does not hold for the python interface, only
+ * for c++ classes. This is like every where else in FreeCAD, there is no automatic creation of python
+ * API from c++ classes. Hence the extension creator must also create a custom python object of its
+ * extension, which works exactly like the normal FreeCAD python object workflow. There is nothing
+ * special at all for extension python objects, the normal xml + imp.cpp approach is used. It must
+ * only be taken care that the objects father is the correct extension base class. Of course also
  * make sure your extension returns the correct python object in its "getPyObject" call.
- * Every method you create in the extensions python will be later added to an extended object. This 
- * happens automatically for both, c++ and python extension, if "getPyObject" returns the correct 
+ * Every method you create in the extensions python will be later added to an extended object. This
+ * happens automatically for both, c++ and python extension, if "getPyObject" returns the correct
  * python object. No extra work needs to be done.
- * 
- * A special case that needs to be handled for extensions is the possibility of overridden methods. 
- * Often it is desired to customise extension behaviour by allowing the user to override methods 
- * provided by the extension. On c++ side this is trivial, such methods are simply marked as "virtual" 
+ *
+ * A special case that needs to be handled for extensions is the possibility of overridden methods.
+ * Often it is desired to customise extension behaviour by allowing the user to override methods
+ * provided by the extension. On c++ side this is trivial, such methods are simply marked as "virtual"
  * and can than be overridden in any derived class. This is more involved for the python interface and
- * here special care needs to be taken. 
- * 
- * As already seen above one needs to create a special ExtensionPythonT<> object for extension from 
- * python. This is done exactly for the purpose of allowing to have overridable methods. The 
- * ExtensionPythonT wrapper adds a proxy property which holds a PyObject which itself will contain 
- * the implementations for the overridden methods. This design is equal to the ObjectPythonT<> design 
- * of normal document objects. 
- * As this wrapper inherits the c++ extension class it can also override the virtual functions the 
- * user designed to be overridden. What it should do at a call of the virtual method is to check if 
- * this method is implemented in the proxy object and if so call it, and if not call the normal 
+ * here special care needs to be taken.
+ *
+ * As already seen above one needs to create a special ExtensionPythonT<> object for extension from
+ * python. This is done exactly for the purpose of allowing to have overridable methods. The
+ * ExtensionPythonT wrapper adds a proxy property which holds a PyObject which itself will contain
+ * the implementations for the overridden methods. This design is equal to the ObjectPythonT<> design
+ * of normal document objects.
+ * As this wrapper inherits the c++ extension class it can also override the virtual functions the
+ * user designed to be overridden. What it should do at a call of the virtual method is to check if
+ * this method is implemented in the proxy object and if so call it, and if not call the normal
  * c++ version. It is the extensions creators responsibility to implement this check and call behaviour
  * for every overridable method.
- * This is done by creating a custom wrapper just like ExtensionPythonT<> and overriding all virtual 
+ * This is done by creating a custom wrapper just like ExtensionPythonT<> and overriding all virtual
  * methods.
  * @code
  * template<typename ExtensionT> class MyExtensionPythonT : public ExtensionT {
  * public:
- *   
+ *
  *   MyExtensionPythonT() {}
  *   virtual ~MyExtensionPythonT() {}
  *
  *   virtual bool overridableMethod(DocumentObject* obj)  override {
  *       Py::Object pyobj = Py::asObject(obj->getPyObject());
  *       EXTENSION_PROXY_ONEARG(allowObject, pyobj);
- *               
+ *
  *       if(result.isNone())
  *           ExtensionT::allowObject(obj);
- *       
+ *
  *       if(result.isBoolean())
  *           return result.isTrue();
- *       
+ *
  *       return false;
  *   };
  * };
  * @endcode
- * @Note As seen in the code there are multiple helper macros to ease the repetitive work of querying 
+ * @Note As seen in the code there are multiple helper macros to ease the repetitive work of querying
  * and calling methods of the proxy object. See the macro documentation for how to use them.
- * 
- * To ensure that your wrapper is used when a extension is created from python the extension type must 
+ *
+ * To ensure that your wrapper is used when a extension is created from python the extension type must
  * be exposed as follows:
  * @code
  * typedef ExtensionPythonT<MyExtensionPythonT<MyExtension>> MyExtensionPython;
  * @endcode
- * 
- * This boilerplate is absolutely necessary to allow overridable methods in python and it is the 
+ *
+ * This boilerplate is absolutely necessary to allow overridable methods in python and it is the
  * extension creator's responsibility to ensure full implementation.
- * 
+ *
  */
 class AppExport Extension
 {
@@ -235,18 +235,18 @@ public:
     virtual ~Extension();
 
     virtual void initExtension(App::ExtensionContainer* obj);
-    
+
     App::ExtensionContainer*       getExtendedContainer() {return m_base;}
     const App::ExtensionContainer* getExtendedContainer() const {return m_base;}
- 
+
     //get extension name without namespace
     std::string name() const;
- 
+
     bool isPythonExtension() {return m_isPythonExtension;}
-  
+
     virtual PyObject* getExtensionPyObject(void);
-  
-  
+
+
     /** @name Access properties */
     //@{
     /// find a property by its name
@@ -271,36 +271,36 @@ public:
     /// get the Group of a named Property
     virtual const char* extensionGetPropertyDocumentation(const char *name) const;
     //@}
-    
+
     /** @name Persistence */
     //@{
     virtual void extensionSave(Base::Writer&) const {}
     virtual void extensionRestore(Base::XMLReader&) {}
     //@}
-    
+
     /** @name TypeHandling */
     //@{
     bool extensionIsDerivedFrom(const Base::Type type) const {return getExtensionTypeId().isDerivedFrom(type);}
 protected:
-    static void initExtensionSubclass(Base::Type &toInit,const char* ClassName, const char *ParentName, 
+    static void initExtensionSubclass(Base::Type &toInit,const char* ClassName, const char *ParentName,
                                       Base::Type::instantiationMethod method=0);
     //@}
 
     virtual void extensionOnChanged(const Property* p) {(void)(p);}
-    
+
     friend class App::ExtensionContainer;
 
-protected:     
+protected:
     void initExtensionType(Base::Type type);
     bool m_isPythonExtension = false;
     Py::Object ExtensionPythonObject;
-  
+
 private:
     Base::Type                    m_extensionType;
     App::ExtensionContainer*      m_base = nullptr;
 };
 
-// Property define 
+// Property define
 #define _EXTENSION_ADD_PROPERTY(_name, _prop_, _defaultval_) \
   do { \
     this->_prop_.setValue _defaultval_;\
@@ -319,7 +319,7 @@ private:
 
 #define EXTENSION_ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \
     _EXTENSION_ADD_PROPERTY_TYPE(#_prop_, _prop_, _defaultval_, _group_,_type_,_Docu_)
-  
+
 
 /**
  * Generic Python extension class which allows every extension derived
@@ -332,11 +332,11 @@ class ExtensionPythonT : public ExtensionT
 
 public:
     typedef ExtensionT Inherited;
-    
+
     ExtensionPythonT() {
         ExtensionT::m_isPythonExtension = true;
         ExtensionT::initExtensionType(ExtensionPythonT::getExtensionClassTypeId());
-        
+
         EXTENSION_ADD_PROPERTY(ExtensionProxy,(Py::Object()));
     }
     virtual ~ExtensionPythonT() {
@@ -358,16 +358,16 @@ typedef ExtensionPythonT<App::Extension> ExtensionPython;
             if (feature.hasAttr(std::string("function"))) {\
                 if (feature.hasAttr("__object__")) {\
                     Py::Callable method(feature.getAttr(std::string("function")));
-                    
-                    
-                    
+
+
+
 
 #define EXTENSION_PROXY_SECOND(function)\
                     result = method.apply(args);\
                 }\
                 else {\
                     Py::Callable method(feature.getAttr(std::string("function")));
-                    
+
 #define EXTENSION_PROXY_THIRD()\
                     result = method.apply(args);\
                 }\
@@ -378,7 +378,7 @@ typedef ExtensionPythonT<App::Extension> ExtensionPython;
         Base::PyException e;\
         e.ReportException();\
     }
-    
+
 #define EXTENSION_PROXY_NOARG(function)\
     EXTENSION_PROXY_FIRST(function) \
     Py::Tuple args;\
@@ -401,13 +401,13 @@ typedef ExtensionPythonT<App::Extension> ExtensionPython;
     virtual void function() override {\
         EXTENSION_PROXY_NOARGS(function)\
     };
-    
+
 #define EXTENSION_PYTHON_OVERRIDE_OBJECT_NOARGS(function)\
     virtual PyObject* function() override {\
         EXTENSION_PROXY_NOARGS(function)\
         return res.ptr();\
     };
-    
+
 } //App
 
 #endif // APP_EXTENSION_H

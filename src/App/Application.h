@@ -72,7 +72,7 @@ class AppExport Application
 public:
 
     //---------------------------------------------------------------------
-    // exported functions goes here +++++++++++++++++++++++++++++++++++++++
+    // exported functions go here +++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
 
     /** @name methods for document handling */
@@ -111,7 +111,7 @@ public:
      *
      * This function will also open any external referenced files.
      */
-    std::vector<Document*> openDocuments(const std::vector<std::string> &filenames, 
+    std::vector<Document*> openDocuments(const std::vector<std::string> &filenames,
             const std::vector<std::string> *paths=0,
             const std::vector<std::string> *labels=0,
             std::vector<std::string> *errs=0,
@@ -136,7 +136,7 @@ public:
     /// Indicate the application is closing all document
     bool isClosingAll() const;
     //@}
-    
+
     /** @name Application-wide trandaction setting */
     //@{
     /** Setup a pending application-wide active transaction
@@ -263,9 +263,9 @@ public:
     /// signal on about changing the editor mode of a property
     boost::signals2::signal<void (const App::Document&, const App::Property&)> signalChangePropertyEditor;
     //@}
-    
+
     /** @name Signals of extension changes
-     * These signals are emitted on dynamic extension addition. Dynamic extensions are the ones added by python (c++ ones are part 
+     * These signals are emitted on dynamic extension addition. Dynamic extensions are the ones added by python (c++ ones are part
      * of the class definition, hence not dynamic)
      * The extension in question is provided as parameter.
      */
@@ -382,7 +382,7 @@ public:
 
     /** @name Link handling */
     //@{
-    
+
     /** Check for link recursion depth
      *
      * @param depth: current depth
@@ -513,7 +513,7 @@ private:
     static PyObject *sGetActiveTransaction  (PyObject *self,PyObject *args);
     static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
     static PyObject *sCheckAbort(PyObject *self,PyObject *args);
-    static PyMethodDef    Methods[]; 
+    static PyMethodDef    Methods[];
 
     friend class ApplicationObserver;
 
@@ -526,7 +526,7 @@ private:
     static Application *_pcSingleton;
     /// argument helper function
     static void ParseOptions(int argc, char ** argv);
-    /// checks if the environment is allreight
+    /// checks if the environment is alright
     //static void CheckEnv(void);
     /// Search for the FreeCAD home path based on argv[0]
     /*!

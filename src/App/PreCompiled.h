@@ -63,7 +63,7 @@
 #include <iostream>
 #include <sstream>
 
-// STL 
+// STL
 #include <string>
 #include <list>
 #include <map>

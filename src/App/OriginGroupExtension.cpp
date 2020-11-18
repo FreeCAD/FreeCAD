@@ -67,12 +67,12 @@ App::Origin *OriginGroupExtension::getOrigin () const {
 }
 
 bool OriginGroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
-        PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const 
+        PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const
 {
     App::DocumentObject *originObj = Origin.getValue ();
     const char *dot;
-    if(originObj && originObj->getNameInDocument() && 
-       subname && (dot=strchr(subname,'.'))) 
+    if(originObj && originObj->getNameInDocument() &&
+       subname && (dot=strchr(subname,'.')))
     {
         bool found;
         if(subname[0] == '$')
@@ -80,7 +80,7 @@ bool OriginGroupExtension::extensionGetSubObject(DocumentObject *&ret, const cha
         else
             found = std::string(subname,dot)==originObj->getNameInDocument();
         if(found) {
-            if(mat && transform) 
+            if(mat && transform)
                 *mat *= const_cast<OriginGroupExtension*>(this)->placement().getValue().toMatrix();
             ret = originObj->getSubObject(dot+1,pyObj,mat,true,depth+1);
             return true;
@@ -93,9 +93,9 @@ App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObjec
 
     if(!obj)
         return nullptr;
-    
+
     bool isOriginFeature = obj->isDerivedFrom(App::OriginFeature::getClassTypeId());
-    
+
     auto list = obj->getInList();
     for (auto o : list) {
         if(o->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId()))
@@ -178,13 +178,13 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
     obj->getPropertyList(list);
     for(App::Property* prop : list) {
         if(prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
-            
+
             auto p = static_cast<App::PropertyLink*>(prop);
             if(!p->getValue() || !p->getValue()->isDerivedFrom(App::OriginFeature::getClassTypeId()))
                 continue;
-        
+
             p->setValue(getOrigin()->getOriginFeature(static_cast<OriginFeature*>(p->getValue())->Role.getValue()));
-        }            
+        }
         else if(prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
             auto p = static_cast<App::PropertyLinkList*>(prop);
             auto vec = p->getValues();
@@ -205,7 +205,7 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
             auto p = static_cast<App::PropertyLinkSub*>(prop);
             if(!p->getValue() || !p->getValue()->isDerivedFrom(App::OriginFeature::getClassTypeId()))
                 continue;
-        
+
             std::vector<std::string> subValues = p->getSubValues();
             p->setValue(getOrigin()->getOriginFeature(static_cast<OriginFeature*>(p->getValue())->Role.getValue()), subValues);
         }

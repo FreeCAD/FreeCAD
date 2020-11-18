@@ -1,8 +1,28 @@
 %{
-/* Lexer for the FreeCAD Expression language   */
-/* (c) 2010 Jürgen Riegel LGPL                 */
-/* (c) 2015 Eivind Kvedalen LGPL               */
+/***************************************************************************
+ *   Copyright (c) 2010 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
 
+/* Lexer for the FreeCAD Expression language   */
 
 /* This disables inclusion of unistd.h, which is not available under Visual C++
  * on Win32. The C++ scanner uses STL streams instead. */
@@ -28,7 +48,7 @@ extern int column;
 /* the manual says "somewhat more optimized" */
 %option batch
 
-%option never-interactive 
+%option never-interactive
 
 /* no support for include files is planned */
 %option noyywrap nounput
@@ -211,7 +231,7 @@ EXPO     [eE][-+]?[0-9]+
 "yd"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Yard;                yylval.quantity.unitStr = yytext; return UNIT; // yard
 "mi"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Mile;                yylval.quantity.unitStr = yytext; return UNIT; // mile
 
-"mph"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::MilePerHour;         yylval.quantity.unitStr = yytext; return UNIT; // mile per hour 
+"mph"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::MilePerHour;         yylval.quantity.unitStr = yytext; return UNIT; // mile per hour
 "sqft"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::SquareFoot;          yylval.quantity.unitStr = yytext; return UNIT; // square foot
 "cft"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::CubicFoot;           yylval.quantity.unitStr = yytext; return UNIT; // cubic foot
 
@@ -343,7 +363,7 @@ $[A-Za-z]{1,2}{DIGIT}+       COUNTCHARS; yylval.string = yytext; return CELLADDR
                             std::map<std::string, FunctionExpression::Function>::const_iterator j = registered_functions.find(s);
                             if (j != registered_functions.end())
                               yylval.func.first = j->second;
-                            else 
+                            else
                             { yylval.func.first = FunctionExpression::NONE; yylval.func.second = std::move(s); }
                             return FUNC;
                         }

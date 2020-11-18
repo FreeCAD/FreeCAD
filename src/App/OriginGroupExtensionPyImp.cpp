@@ -50,7 +50,7 @@ PyObject *OriginGroupExtensionPy::getCustomAttributes(const char* /*attr*/) cons
 
 int OriginGroupExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 
