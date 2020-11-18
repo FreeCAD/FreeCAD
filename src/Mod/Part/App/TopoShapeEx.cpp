@@ -2262,6 +2262,11 @@ TopoShape &TopoShape::makEShell(bool silent, const char *op) {
 TopoShape &TopoShape::makEShape(const char *maker, 
         const std::vector<TopoShape> &shapes, const char *op, double tol)
 {
+#if OCC_VERSION_HEX <= 0x060800
+    if (tol > 0.0)
+        Standard_Failure::Raise("Fuzzy Booleans are not supported in this version of OCCT");
+#endif
+
     if(!maker)
         FC_THROWM(Base::CADKernelError,"no maker");
 
@@ -2340,6 +2345,23 @@ TopoShape &TopoShape::makEShape(const char *maker,
                 _shapes.push_back(s);
         }
     }
+    else if (strcmp(maker, TOPOP_CUT)==0) {
+        for(unsigned i=1; i<shapes.size(); ++i) {
+            auto &s = shapes[i];
+            if(s.isNull())
+                HANDLE_NULL_INPUT;
+            if(s.shapeType() == TopAbs_COMPOUND) {
+                if(_shapes.empty()) 
+                    _shapes.insert(_shapes.end(),shapes.begin(),shapes.begin()+i);
+                expandCompound(s,_shapes);
+            }else if(_shapes.size())
+                _shapes.push_back(s);
+        }
+    }
+
+    if (tol > 0.0 &&  _shapes.empty())
+        _shapes = shapes;
+
     const auto &inputs = _shapes.size()?_shapes:shapes;
     if(inputs.empty())
         HANDLE_NULL_INPUT;
@@ -2350,9 +2372,6 @@ TopoShape &TopoShape::makEShape(const char *maker,
     }
 
 #if OCC_VERSION_HEX <= 0x060800
-    if (tol > 0.0)
-        Standard_Failure::Raise("Fuzzy Booleans are not supported in this version of OCCT");
-
     TopoShape resShape = inputs[0];
     if (resShape.isNull())
         FC_THROWM(Base::ValueError,"Object shape is null");
@@ -2433,17 +2452,23 @@ TopoShape &TopoShape::makEShape(const char *maker,
         if(++i == 0)
             shapeArguments.Append(shape.getShape());
         else if (tol > 0.0) {
+            auto & s = _shapes[i];
             // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
-            shapeTools.Append(TopoShape(shape.getShape()).makECopy().getShape());
-        }else
+            s.setShape(BRepBuilderAPI_Copy(s.getShape()).Shape(), false);
+            shapeTools.Append(s.getShape());
+        } else
             shapeTools.Append(shape.getShape());
     }
     mk->SetArguments(shapeArguments);
     mk->SetTools(shapeTools);
-    if (tol > 0.0)
+    if (tol > 0.0) {
         mk->SetFuzzyValue(tol);
-    mk->Build();
-    makEShape(*mk,shapes,op);
+        mk->Build();
+        makEShape(*mk,_shapes,op);
+    } else {
+        mk->Build();
+        makEShape(*mk,shapes,op);
+    }
 
     if(buildShell)
         makEShell();
