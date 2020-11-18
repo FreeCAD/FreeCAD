@@ -33,21 +33,21 @@
 
 namespace App
 {
-    
+
 class AppExport DocumentObjectGroup : public DocumentObject, public GroupExtension {
-    
+
     PROPERTY_HEADER_WITH_EXTENSIONS(App::DocumentObjectGroup);
-    
+
 public:
     /// Constructor
     DocumentObjectGroup(void);
     virtual ~DocumentObjectGroup();
-    
+
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const override{
         return "Gui::ViewProviderDocumentObjectGroup";
     }
-    
+
     virtual PyObject *getPyObject(void) override;
 };
 

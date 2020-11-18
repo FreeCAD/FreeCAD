@@ -82,11 +82,11 @@ public:
 
         // Constructor
         String(const std::string & s = "", bool _isRealString = false, bool _forceIdentifier = false)
-            : str(s), isString(_isRealString), forceIdentifier(_forceIdentifier) 
+            : str(s), isString(_isRealString), forceIdentifier(_forceIdentifier)
         { }
 
         String(std::string &&s, bool _isRealString = false, bool _forceIdentifier = false)
-            : str(std::move(s)), isString(_isRealString), forceIdentifier(_forceIdentifier) 
+            : str(std::move(s)), isString(_isRealString), forceIdentifier(_forceIdentifier)
         { }
 
         FC_DEFAULT_CTORS(String) {
@@ -125,7 +125,7 @@ public:
 
         bool operator>(const String & other) const { return str > other.str; }
 
-        void checkImport(const App::DocumentObject *owner, 
+        void checkImport(const App::DocumentObject *owner,
                 const App::DocumentObject *obj=0, String *objName=0);
     private:
 
@@ -164,9 +164,9 @@ public:
             return *this;
         }
 
-        Component(const String &_name = String(), typeEnum _type=SIMPLE, 
+        Component(const String &_name = String(), typeEnum _type=SIMPLE,
                 int begin=INT_MAX, int end=INT_MAX, int step=1);
-        Component(String &&_name, typeEnum _type=SIMPLE, 
+        Component(String &&_name, typeEnum _type=SIMPLE,
                 int begin=INT_MAX, int end=INT_MAX, int step=1);
 
         static Component SimpleComponent(const char * _component);
@@ -224,16 +224,16 @@ public:
 
     };
 
-    static Component SimpleComponent(const char * _component) 
+    static Component SimpleComponent(const char * _component)
         {return Component::SimpleComponent(_component);}
 
-    static Component SimpleComponent(const String & _component) 
+    static Component SimpleComponent(const String & _component)
         {return Component::SimpleComponent(_component);}
 
-    static Component SimpleComponent(String &&_component) 
+    static Component SimpleComponent(String &&_component)
         {return Component::SimpleComponent(std::move(_component));}
 
-    static Component ArrayComponent(int _index) 
+    static Component ArrayComponent(int _index)
         {return Component::ArrayComponent(_index); }
 
     static Component RangeComponent(int _begin, int _end = INT_MAX, int _step=1)
@@ -245,7 +245,7 @@ public:
     static Component MapComponent(String &&_key)
         {return Component::MapComponent(_key);}
 
-    ObjectIdentifier(const App::PropertyContainer * _owner = 0, 
+    ObjectIdentifier(const App::PropertyContainer * _owner = 0,
             const std::string & property = std::string(), int index=INT_MAX);
 
     ObjectIdentifier(const App::PropertyContainer * _owner, bool localProperty);
@@ -272,13 +272,13 @@ public:
     App::DocumentObject *getOwner() const { return owner; }
 
     // Components
-    void addComponent(const Component &c) { 
+    void addComponent(const Component &c) {
         components.push_back(c);
         _cache.clear();
     }
 
     // Components
-    void addComponent(Component &&c) { 
+    void addComponent(Component &&c) {
         components.push_back(std::move(c));
         _cache.clear();
     }
@@ -320,10 +320,10 @@ public:
 
     String getDocumentName() const;
 
-    void setDocumentObjectName(String &&name, bool force = false, 
+    void setDocumentObjectName(String &&name, bool force = false,
             String &&subname = String(), bool checkImport=false);
 
-    void setDocumentObjectName(const App::DocumentObject *obj, bool force = false, 
+    void setDocumentObjectName(const App::DocumentObject *obj, bool force = false,
             String &&subname = String(), bool checkImport=false);
 
     bool hasDocumentObjectName(bool forced=false) const;
@@ -347,7 +347,7 @@ public:
     App::Document *getDocument(String name = String(), bool *ambiguous=0) const;
 
     App::DocumentObject *getDocumentObject() const;
-    
+
     std::vector<std::string> getStringList() const;
 
     App::ObjectIdentifier relativeTo(const App::ObjectIdentifier & other) const;
@@ -417,7 +417,7 @@ protected:
 
     friend struct ResolveResults;
 
-    App::Property *resolveProperty(const App::DocumentObject *obj, 
+    App::Property *resolveProperty(const App::DocumentObject *obj,
         const char *propertyName, App::DocumentObject *&sobj,int &ptype) const;
 
     void getSubPathStr(std::ostream &ss, const ResolveResults &result, bool toPython=false) const;
@@ -462,7 +462,7 @@ Py::Object AppExport pyObjectFromAny(const App::any &value);
 
 namespace std {
 
-template<> 
+template<>
 struct hash<App::ObjectIdentifier> {
     typedef App::ObjectIdentifier argument_type;
     typedef std::size_t result_type;

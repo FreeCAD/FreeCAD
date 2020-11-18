@@ -111,7 +111,7 @@ private:
     void slotBeforeAddingDynamicExtension(const App::ExtensionContainer&, std::string extension);
     /** Called when an object gets a dynamic extension added*/
     void slotAddedDynamicExtension(const App::ExtensionContainer&, std::string extension);
-  
+
 
 private:
     Py::Object inst;

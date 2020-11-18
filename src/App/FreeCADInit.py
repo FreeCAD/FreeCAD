@@ -1,12 +1,5 @@
-# FreeCAD init module
-# (c) 2001 Jürgen Riegel
-#
-# Gathering all the information to start FreeCAD
-# This is the second one of three init scripts, the third one
-# runs when the gui is up
-
 #***************************************************************************
-#*   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+#*   Copyright (c) 2001,2002 Jürgen Riegel <juergen.riegel@web.de>         *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -28,6 +21,11 @@
 #*                                                                         *
 #***************************************************************************/
 
+# FreeCAD init module
+#
+# Gathering all the information to start FreeCAD.
+# This is the second of of three init scripts.
+# The third one runs when the gui is up,
 
 # imports the one and only
 import FreeCAD
@@ -160,8 +158,8 @@ def InitApplications():
 	# from FreeCAD.Module import package
 	FreeCAD.__path__ = [ModDir] + libpaths + [HomeMod]
 
-	# also add these directories to the sys.path to 
-	# not change the old behaviour. once we have moved to 
+	# also add these directories to the sys.path to
+	# not change the old behaviour. once we have moved to
 	# proper python modules this can eventuelly be removed.
 	sys.path = [ModDir] + libpaths + [ExtDir] + sys.path
 
@@ -265,7 +263,7 @@ if sys.version_info.major < 3:
 
 class FCADLogger(object):
     '''Convenient class for tagged logging.
-    
+
        Example usage:
            >>> logger = FreeCAD.Logger('MyModule')
            >>> logger.info('log test {}',1)
@@ -784,7 +782,7 @@ App.Units.AngularSecond = App.Units.Quantity().AngularSecond
 App.Units.Length        = App.Units.Unit(1)
 App.Units.Area          = App.Units.Unit(2)
 App.Units.Volume        = App.Units.Unit(3)
-App.Units.Mass          = App.Units.Unit(0,1) 
+App.Units.Mass          = App.Units.Unit(0,1)
 # (length, weight, time, current, temperature, amount of substance, luminous intensity, angle)
 
 # Angle
@@ -793,13 +791,13 @@ App.Units.AngleOfFriction  = App.Units.Unit(0,0,0,0,0,0,0,1)
 
 App.Units.Density       = App.Units.Unit(-3,1)
 
-App.Units.TimeSpan      = App.Units.Unit(0,0,1) 
+App.Units.TimeSpan      = App.Units.Unit(0,0,1)
 App.Units.Frequency     = App.Units.Unit(0,0,-1)
-App.Units.Velocity      = App.Units.Unit(1,0,-1) 
-App.Units.Acceleration  = App.Units.Unit(1,0,-2) 
-App.Units.Temperature   = App.Units.Unit(0,0,0,0,1) 
+App.Units.Velocity      = App.Units.Unit(1,0,-1)
+App.Units.Acceleration  = App.Units.Unit(1,0,-2)
+App.Units.Temperature   = App.Units.Unit(0,0,0,0,1)
 
-App.Units.ElectricCurrent       = App.Units.Unit(0,0,0,1) 
+App.Units.ElectricCurrent       = App.Units.Unit(0,0,0,1)
 App.Units.ElectricPotential     = App.Units.Unit(2,1,-3,-1)
 App.Units.ElectricCharge        = App.Units.Unit(0,0,1,1)
 App.Units.MagneticFluxDensity   = App.Units.Unit(0,1,-2,-1)
@@ -819,9 +817,9 @@ App.Units.UltimateTensileStrength = App.Units.Unit(-1,1,-2)
 App.Units.YieldStrength           = App.Units.Unit(-1,1,-2)
 App.Units.YoungsModulus           = App.Units.Unit(-1,1,-2)
 
-App.Units.Force         = App.Units.Unit(1,1,-2) 
-App.Units.Work          = App.Units.Unit(2,1,-2) 
-App.Units.Power         = App.Units.Unit(2,1,-3) 
+App.Units.Force         = App.Units.Unit(1,1,-2)
+App.Units.Work          = App.Units.Unit(2,1,-2)
+App.Units.Power         = App.Units.Unit(2,1,-3)
 
 App.Units.SpecificEnergy               = App.Units.Unit(2,0,-2)
 App.Units.ThermalConductivity          = App.Units.Unit(1,1,-3,0,-1)
