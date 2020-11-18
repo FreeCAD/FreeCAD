@@ -96,6 +96,7 @@ protected Q_SLOTS:
     void cellAlias();
     void editMode(QAction *);
     void onRecompute();
+    void onRecomputeNoTouch();
     void onBind();
     void onConfSetup();
     void onEditPersistent(bool);

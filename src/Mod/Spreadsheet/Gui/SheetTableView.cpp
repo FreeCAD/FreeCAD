@@ -163,9 +163,19 @@ SheetTableView::SheetTableView(QWidget *parent)
     subMenu->addAction(actionEditPersistent);
 
     contextMenu->addSeparator();
-    QAction *recompute = new QAction(tr("Recompute"),this);
+    QAction *recompute = new QAction(tr("Recompute cells"),this);
     connect(recompute, SIGNAL(triggered()), this, SLOT(onRecompute()));
     contextMenu->addAction(recompute);
+    recompute->setToolTip(tr("Mark selected cells as touched, and recompute the entire spreadsheet"));
+
+    QAction *recomputeOnly = new QAction(tr("Recompute cells only"),this);
+    connect(recomputeOnly, SIGNAL(triggered()), this, SLOT(onRecomputeOnTouch()));
+    contextMenu->addAction(recomputeOnly);
+    recomputeOnly->setToolTip(tr("Recompute only the selected cells without touching other depending cells\n"
+                                 "It can be used as a way out of tricky cyclic dependency problem, but may\n"
+                                 "may affect cells depedency coherence. Use with care!"));
+
+    contextMenu->addSeparator();
 
     actionBind = new QAction(tr("Bind..."),this);
     connect(actionBind, SIGNAL(triggered()), this, SLOT(onBind()));
@@ -278,6 +288,16 @@ void SheetTableView::onEditPersistent(bool checked) {
 
 void SheetTableView::onRecompute() {
     Gui::Command::openCommand("Recompute cells");
+    for(auto &range : selectedRanges()) {
+        Gui::cmdAppObjectArgs(sheet, "touchCells('%s', '%s')",
+                range.fromCellString(), range.toCellString());
+    }
+    Gui::cmdAppObjectArgs(sheet, "recompute(True)");
+    Gui::Command::commitCommand();
+}
+
+void SheetTableView::onRecomputeNoTouch() {
+    Gui::Command::openCommand("Recompute cells only");
     for(auto &range : selectedRanges()) {
         Gui::cmdAppObjectArgs(sheet, "recomputeCells('%s', '%s')",
                 range.fromCellString(), range.toCellString());

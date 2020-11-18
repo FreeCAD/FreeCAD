@@ -1163,7 +1163,7 @@ PyObject *SheetPy::recomputeCells(PyObject *args) {
     const char *address;
     const char *address2=0;
 
-    if (!PyArg_ParseTuple(args, "s|s:touchCells", &address, &address2))
+    if (!PyArg_ParseTuple(args, "s|s", &address, &address2))
         return 0;
 
     PY_TRY {
