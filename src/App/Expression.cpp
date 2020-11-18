@@ -3412,7 +3412,7 @@ Py::Object VariableExpression::_getPyValue(int *) const {
         bool isPseudoProperty = false;
         auto res = var.getPyValue(true, &isPseudoProperty);
 
-        if(!var.isLocalProperty() || !isPseudoProperty)
+        if(!res.isCallable() && (!var.isLocalProperty() || !isPseudoProperty))
             EvalFrame::warn(this,1);
         return res;
     } catch (Base::Exception &) {
@@ -6046,10 +6046,10 @@ bool LambdaExpression::isTouched() const
 }
 
 void LambdaExpression::_visit(ExpressionVisitor &v) {
-    FunctionDepth depth;
     for(auto &arg : args) {
         if(arg) arg->visit(v);
     }
+    FunctionDepth depth;
     body->visit(v);
 }
 
