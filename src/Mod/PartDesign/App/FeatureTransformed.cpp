@@ -200,9 +200,12 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     this->positionBySupport();
 
     // Get the support
-    auto support = getBaseShape();
-    if (support.isNull())
-        return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
+    TopoShape support;
+    if (!NewSolid.getValue()) {
+        support = getBaseShape();
+        if (support.isNull())
+            return new App::DocumentObjectExecReturn("Cannot transform invalid support shape");
+    }
 
     auto trsfInv = support.getShape().Location().Transformation().Inverted();
     if (!TransformOffset.getValue().isIdentity())
@@ -306,7 +309,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     if (allowMultiSolid()) {
         std::vector<TopoShape> fuseShapes;
-        fuseShapes.push_back(support);
+        if (!support.isNull())
+            fuseShapes.push_back(support);
         std::vector<TopoShape> cutShapes;
         cutShapes.push_back(TopoShape());
 
@@ -347,11 +351,24 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
         try {
             try {
-                if(fuseShapes.size() > 1) 
-                    support.makEFuse(fuseShapes);
+                if(fuseShapes.size() > 1) {
+                    if (cutShapes.size() <= 1 && NewSolid.getValue())
+                        support.makECompound(fuseShapes);
+                    else
+                        support.makEFuse(fuseShapes);
+                }
                 if(cutShapes.size() > 1) {
-                    cutShapes[0] = support;
-                    result.makECut(cutShapes);
+                    if (support.isNull()) { // means new solid without fuseShapes
+                        if (cutShapes.size() == 2)
+                            result = cutShapes[1];
+                        else {
+                            cutShapes.erase(cutShapes.begin());
+                            result.makECompound(cutShapes);
+                        }
+                    } else {
+                        cutShapes[0] = support;
+                        result.makECut(cutShapes);
+                    }
                 }else
                     result = support;
             } catch (Standard_Failure& e) {
@@ -361,13 +378,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 throw Base::CADKernelError(msg.c_str());
             }
         } catch (Base::Exception &) {
-            if(cutShapes.size()) {
-                for(auto &s : cutShapes)
-                    rejected.emplace_back(s,std::vector<gp_Trsf>());
-            } else {
-                for(auto &s : fuseShapes)
-                    rejected.emplace_back(s,std::vector<gp_Trsf>());
-            }
+            for(auto &s : cutShapes)
+                rejected.emplace_back(s,std::vector<gp_Trsf>());
+            for(auto &s : fuseShapes)
+                rejected.emplace_back(s,std::vector<gp_Trsf>());
             throw;
         }
         originalShapes.clear();
