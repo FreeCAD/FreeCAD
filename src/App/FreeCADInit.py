@@ -485,8 +485,11 @@ class FCADLogger(object):
                 prefix += '{}({}): '.format(os.path.basename(
                     frame.f_code.co_filename),frame.f_lineno)
             except Exception:
-                frame = inspect.stack()[frame+1]
-                prefix += '{}({}): '.format(os.path.basename(frame[1]),frame[2])
+                try:
+                    frame = inspect.stack()[frame+1]
+                    prefix += '{}({}): '.format(os.path.basename(frame[1]),frame[2])
+                except Exception:
+                    pass
 
         self.__class__._printer[level]('{}{}\n'.format(prefix,msg))
 
