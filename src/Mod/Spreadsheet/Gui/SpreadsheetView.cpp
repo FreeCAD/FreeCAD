@@ -37,6 +37,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
+#include <App/AutoTransaction.h>
 #include <App/Range.h>
 #include <Base/Tools.h>
 #include <boost_bind_bind.hpp>
@@ -339,7 +340,11 @@ void SheetView::editingFinished()
 
     QModelIndex i = ui->cells->currentIndex();
 
-    if (i.isValid()) {
+    if (!i.isValid())
+        return;
+
+    App::AutoTransaction guard("Edit cell");
+    try {
         QString str = ui->cellAlias->text();
         bool aliasOkay = true;
 
@@ -348,9 +353,10 @@ void SheetView::editingFinished()
         }
 
         ui->cellAlias->setDocumentObject(sheet);
-        ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
+        CellAddress addr(i.row(), i.column());
+        sheet->setCell(addr, ui->cellContent->text().toUtf8().constData());
 
-        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
+        Cell * cell = sheet->getCell(addr);
         if (cell){
             if (!aliasOkay){
                 //do not show error message if failure to set new alias is because it is already the same string
@@ -368,6 +374,11 @@ void SheetView::editingFinished()
         }
         ui->cells->setCurrentIndex(ui->cellContent->next());
         ui->cells->setFocus();
+    } catch (Base::Exception & e) {
+        e.ReportException();
+        App::GetApplication().closeActiveTransaction(true);
+        QMessageBox::critical(getMainWindow(), tr("Edit cell"),
+                tr("Failed to edit cell: %1").arg(QString::fromUtf8(e.what())));
     }
 }
 
