@@ -67,6 +67,8 @@
 
 #include "GeometryExtension.h"
 
+class BRepAdaptor_Surface;
+
 namespace Part {
 
 class PartExport Geometry: public Base::Persistence
@@ -1193,6 +1195,9 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
                                       const Base::Vector3d &center, double radius);
 PartExport
 std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface)&, bool silent=false);
+
+PartExport
+std::unique_ptr<GeomSurface> makeFromSurfaceAdaptor(const BRepAdaptor_Surface&, bool silent=false);
 
 PartExport
 std::unique_ptr<GeomCurve> makeFromCurve(const Handle(Geom_Curve)&, bool silent=false);

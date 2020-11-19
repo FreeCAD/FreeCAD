@@ -229,13 +229,13 @@ std::unique_ptr<Geometry> Geometry::fromShape(const TopoDS_Shape &s, bool silent
     case TopAbs_EDGE: {
         const TopoDS_Edge& e = TopoDS::Edge(s);
         BRepAdaptor_Curve adapt(e);
-        geom = makeFromCurve(adapt.Curve().Curve());
+        geom = makeFromCurveAdaptor(adapt, silent);
         break;
     }
     case TopAbs_FACE: {
         const TopoDS_Face& f = TopoDS::Face(s);
         BRepAdaptor_Surface adapt(f);
-        geom = makeFromSurface(adapt.Surface().Surface());
+        geom = makeFromSurfaceAdaptor(adapt, silent);
         break;
     }
     default:
@@ -5477,6 +5477,116 @@ std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface)& s, bool
 
     return geoSurf;
 }
+
+std::unique_ptr<GeomSurface> makeFromSurfaceAdaptor(const BRepAdaptor_Surface& adapt, bool silent)
+{
+    std::unique_ptr<GeomSurface> geoSurf;
+
+    switch(adapt.GetType())
+    {
+    case GeomAbs_Plane:
+        {
+            geoSurf.reset(new GeomPlane());
+            Handle(Geom_Plane) this_surf = Handle(Geom_Plane)::DownCast
+                (geoSurf->handle());
+            this_surf->SetPln(adapt.Plane());
+            break;
+        }
+    case GeomAbs_Cylinder:
+        {
+            geoSurf.reset(new GeomCylinder());
+            Handle(Geom_CylindricalSurface) this_surf = Handle(Geom_CylindricalSurface)::DownCast
+                (geoSurf->handle());
+            this_surf->SetCylinder(adapt.Cylinder());
+            break;
+        }
+    case GeomAbs_Cone:
+        {
+            geoSurf.reset(new GeomCone());
+            Handle(Geom_ConicalSurface) this_surf = Handle(Geom_ConicalSurface)::DownCast
+                (geoSurf->handle());
+            this_surf->SetCone(adapt.Cone());
+            break;
+        }
+    case GeomAbs_Sphere:
+        {
+            geoSurf.reset(new GeomSphere());
+            Handle(Geom_SphericalSurface) this_surf = Handle(Geom_SphericalSurface)::DownCast
+                (geoSurf->handle());
+            this_surf->SetSphere(adapt.Sphere());
+            break;
+        }
+    case GeomAbs_Torus:
+        {
+            geoSurf.reset(new GeomToroid());
+            Handle(Geom_ToroidalSurface) this_surf = Handle(Geom_ToroidalSurface)::DownCast
+                (geoSurf->handle());
+            this_surf->SetTorus(adapt.Torus());
+            break;
+        }
+    case GeomAbs_BezierSurface:
+        {
+            geoSurf.reset(new GeomBezierSurface(adapt.Bezier()));
+            break;
+        }
+    case GeomAbs_BSplineSurface:
+        {
+            geoSurf.reset(new GeomBSplineSurface(adapt.BSpline()));
+            break;
+        }
+    case GeomAbs_SurfaceOfRevolution:
+        {
+            Handle(Geom_Surface) s = BRep_Tool::Surface(adapt.Face());
+            Handle(Geom_SurfaceOfRevolution) rev = Handle(Geom_SurfaceOfRevolution)::DownCast(s);
+            if (rev.IsNull()) {
+                Handle(Geom_RectangularTrimmedSurface) rect = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
+                rev = Handle(Geom_SurfaceOfRevolution)::DownCast(rect->BasisSurface());
+            }
+            if (!rev.IsNull())
+                geoSurf.reset(new GeomSurfaceOfRevolution(rev));
+            break;
+        }
+    case GeomAbs_SurfaceOfExtrusion:
+        {
+            Handle(Geom_Surface) s = BRep_Tool::Surface(adapt.Face());
+            Handle(Geom_SurfaceOfLinearExtrusion) ext = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(s);
+            if (ext.IsNull()) {
+                Handle(Geom_RectangularTrimmedSurface) rect = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
+                ext = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(rect->BasisSurface());
+            }
+            if (!ext.IsNull())
+                geoSurf.reset(new GeomSurfaceOfExtrusion(ext));
+            break;
+        }
+    case GeomAbs_OffsetSurface:
+        {
+            Handle(Geom_Surface) s = BRep_Tool::Surface(adapt.Face());
+            Handle(Geom_OffsetSurface) off = Handle(Geom_OffsetSurface)::DownCast(s);
+            if (off.IsNull()) {
+                Handle(Geom_RectangularTrimmedSurface) rect = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
+                off = Handle(Geom_OffsetSurface)::DownCast(rect->BasisSurface());
+            }
+            if (!off.IsNull())
+                geoSurf.reset(new GeomOffsetSurface(off));
+            break;
+        }
+    default:
+        break;
+    }
+
+    if (!geoSurf && !silent) {
+        std::string err = "Cannot convert surface type ";
+        Handle(Geom_Surface) s = BRep_Tool::Surface(adapt.Face());
+        if (s)
+            err += s->DynamicType()->Name();
+        else
+            err += " unknown";
+        throw Base::TypeError(err);
+    }
+
+    return geoSurf;
+}
+
 
 std::unique_ptr<GeomCurve> makeFromCurve(const Handle(Geom_Curve)& c, bool silent)
 {
