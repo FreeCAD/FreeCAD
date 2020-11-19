@@ -169,7 +169,7 @@ SheetTableView::SheetTableView(QWidget *parent)
     recompute->setToolTip(tr("Mark selected cells as touched, and recompute the entire spreadsheet"));
 
     QAction *recomputeOnly = new QAction(tr("Recompute cells only"),this);
-    connect(recomputeOnly, SIGNAL(triggered()), this, SLOT(onRecomputeOnTouch()));
+    connect(recomputeOnly, SIGNAL(triggered()), this, SLOT(onRecomputeNoTouch()));
     contextMenu->addAction(recomputeOnly);
     recomputeOnly->setToolTip(tr("Recompute only the selected cells without touching other depending cells\n"
                                  "It can be used as a way out of tricky cyclic dependency problem, but may\n"
