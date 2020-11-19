@@ -103,7 +103,6 @@ Notification = NotificationClass()
 
 class ObjectJob:
 
-
     def __init__(self, obj, models, templateFile=None):
         self.obj = obj
         obj.addProperty("App::PropertyFile", "PostProcessorOutputFile", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "The NC output file for this project"))
@@ -154,7 +153,6 @@ class ObjectJob:
 
         self.tooltip = None
         self.tooltipArgs = None
-
 
         obj.Proxy = self
 

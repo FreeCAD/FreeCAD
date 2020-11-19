@@ -41,8 +41,9 @@ __doc__ = "Task panel editor for a ToolBit"
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-# PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.trackModule(PathLog.thisModule())
 
 
 class ViewProvider(object):
@@ -141,8 +142,7 @@ class TaskPanel:
         self.editor.reject()
         FreeCADGui.Control.closeDialog()
         if self.deleteOnReject:
-            FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit',
-                                                             'Uncreate ToolBit'))
+            FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit', 'Uncreate ToolBit'))
             self.editor.reject()
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()

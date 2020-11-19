@@ -36,7 +36,6 @@ import PySide
 import json
 import os
 import glob
-import traceback
 import uuid as UUID
 from functools import partial
 
@@ -130,7 +129,6 @@ class ModelFactory(object):
         self.path = ""
         # self.currentLib = ""
 
-
     def __libraryLoad(self, path, datamodel):
         PathLog.track(path)
         PathPreferences.setLastFileToolLibrary(path)
@@ -152,7 +150,6 @@ class ModelFactory(object):
             except Exception as e:
                 msg = "Error loading tool: {} : {}".format(toolBit['path'], e)
                 FreeCAD.Console.PrintError(msg)
-
 
     def _toolAdd(self, nr, tool, path):
 
@@ -176,11 +173,6 @@ class ModelFactory(object):
         toolShape.setData(strShape, PySide.QtCore.Qt.EditRole)
         toolShape.setEditable(False)
 
-        # toolDiameter = PySide.QtGui.QStandardItem()
-        # toolDiameter.setData(strDiam, PySide.QtCore.Qt.EditRole)
-        # toolDiameter.setEditable(False)
-
-        #return [toolNr, toolName, toolShape, toolDiameter]
         return [toolNr, toolName, toolShape]
 
     def newTool(self, datamodel, path):
@@ -196,8 +188,8 @@ class ModelFactory(object):
                 nr = max(nr, itemNr)
             nr += 1
             tool = PathToolBit.Declaration(path)
-        except Exception:
-            PathLog.error(traceback.print_exc())
+        except Exception as e:
+            PathLog.error(e)
 
         datamodel.appendRow(self._toolAdd(nr, tool, path))
 
@@ -388,7 +380,7 @@ class ToolBitLibrary(object):
             return
 
         filename = PathToolBitGui.GetNewToolFile()
-        if filename == None:
+        if filename is None:
             return
 
         # Parse out the name of the file and write the structure
@@ -569,7 +561,6 @@ class ToolBitLibrary(object):
     def libPaths(self):
         lib = PathPreferences.lastFileToolLibrary()
         loc = PathPreferences.lastPathToolLibrary()
-        #loc = os.path.split(lib)[0]
 
         PathLog.track("lib: {} loc: {}".format(lib, loc))
         return lib, loc
@@ -581,7 +572,6 @@ class ToolBitLibrary(object):
         PathLog.track(path)
         self.toolTableView.setUpdatesEnabled(False)
         self.form.TableList.setUpdatesEnabled(False)
-
 
         if path is None:
             path, loc = self.libPaths()
@@ -599,7 +589,6 @@ class ToolBitLibrary(object):
         self.form.setWindowTitle("{}".format(PathPreferences.lastPathToolLibrary()))
         self.toolModel.setHorizontalHeaderLabels(self.columnNames())
         self.listModel.setHorizontalHeaderLabels(['Library'])
-
 
         # Select the current library in the list of tables
         curIndex = None

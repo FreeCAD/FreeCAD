@@ -35,9 +35,11 @@ from PySide import QtCore, QtGui
 from lazy_loader.lazy_loader import LazyLoader
 Part = LazyLoader('Part', globals(), 'Part')
 
+
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 class ViewProvider:
 
@@ -122,7 +124,8 @@ class ViewProvider:
             return [obj.Tool]
         return []
 
-def Create(name = 'Default Tool', tool=None, toolNumber=1):
+
+def Create(name='Default Tool', tool=None, toolNumber=1):
     PathLog.track(tool, toolNumber)
 
     obj = PathScripts.PathToolController.Create(name, tool, toolNumber)
@@ -172,6 +175,7 @@ class CommandPathToolController(object):
                 job.Proxy.addToolController(tc)
                 FreeCAD.ActiveDocument.recompute()
 
+
 class ToolControllerEditor(object):
 
     def __init__(self, obj, asDialog):
@@ -180,13 +184,18 @@ class ToolControllerEditor(object):
             self.form.buttonBox.hide()
         self.obj = obj
 
-        self.vertFeed = PathGui.QuantitySpinBox(self.form.vertFeed, obj, 'VertFeed')
-        self.horizFeed = PathGui.QuantitySpinBox(self.form.horizFeed, obj, 'HorizFeed')
-        self.vertRapid = PathGui.QuantitySpinBox(self.form.vertRapid, obj, 'VertRapid')
-        self.horizRapid = PathGui.QuantitySpinBox(self.form.horizRapid, obj, 'HorizRapid')
+        self.vertFeed = PathGui.QuantitySpinBox(self.form.vertFeed, obj,
+                                                'VertFeed')
+        self.horizFeed = PathGui.QuantitySpinBox(self.form.horizFeed, obj,
+                                                 'HorizFeed')
+        self.vertRapid = PathGui.QuantitySpinBox(self.form.vertRapid, obj,
+                                                 'VertRapid')
+        self.horizRapid = PathGui.QuantitySpinBox(self.form.horizRapid, obj,
+                                                  'HorizRapid')
 
         if obj.Proxy.usesLegacyTool(obj):
-            self.editor = PathToolEdit.ToolEditor(obj.Tool, self.form.toolEditor)
+            self.editor = PathToolEdit.ToolEditor(obj.Tool,
+                                                  self.form.toolEditor)
         else:
             self.editor = None
             self.form.toolBox.widget(1).hide()
@@ -201,7 +210,8 @@ class ToolControllerEditor(object):
         self.vertFeed.updateSpinBox()
         self.vertRapid.updateSpinBox()
         self.form.spindleSpeed.setValue(tc.SpindleSpeed)
-        index = self.form.spindleDirection.findText(tc.SpindleDir, QtCore.Qt.MatchFixedString)
+        index = self.form.spindleDirection.findText(tc.SpindleDir,
+                                                    QtCore.Qt.MatchFixedString)
         if index >= 0:
             self.form.spindleDirection.setCurrentIndex(index)
 
@@ -224,9 +234,9 @@ class ToolControllerEditor(object):
                 self.editor.updateTool()
                 tc.Tool = self.editor.tool
 
-        except Exception as e: # pylint: disable=broad-except
-            PathLog.error(translate("PathToolController", "Error updating TC: %s") % e)
-
+        except Exception as e:
+            PathLog.error(translate("PathToolController",
+                                    "Error updating TC: %s") % e)
 
     def refresh(self):
         self.form.blockSignals(True)
@@ -296,7 +306,8 @@ class TaskPanel:
     def setupUi(self):
         if self.editor.editor:
             t = Part.makeCylinder(1, 1)
-            self.toolrep = FreeCAD.ActiveDocument.addObject("Part::Feature", "tool")
+            self.toolrep = FreeCAD.ActiveDocument.addObject("Part::Feature",
+                                                            "tool")
             self.toolrep.Shape = t
 
         self.setFields()
@@ -311,7 +322,7 @@ class DlgToolControllerEdit:
         self.obj = obj
 
     def exec_(self):
-        restoreTC   = self.obj.Proxy.templateAttrs(self.obj)
+        restoreTC = self.obj.Proxy.templateAttrs(self.obj)
 
         rc = False
         if not self.editor.form.exec_():
@@ -319,6 +330,7 @@ class DlgToolControllerEdit:
             self.obj.Proxy.setFromTemplate(self.obj, restoreTC)
             rc = True
         return rc
+
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command

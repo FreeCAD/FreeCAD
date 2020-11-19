@@ -59,8 +59,7 @@ ParameterTypeConstraint = {
 
 
 def _findTool(path, typ, dbg=False):
-    # PathLog.track("Path: {} typ: {}".format(path, typ))
-    if os.path.exists(path): # absolute reference
+    if os.path.exists(path):  # absolute reference
         if dbg:
             PathLog.debug("Found {} at {}".format(typ, path))
         return path
@@ -397,6 +396,7 @@ class AttributePrototype(PathSetupSheetOpPrototype.OpPrototype):
                 PropertyGroupAttribute, translate('PathToolBit',
                 'Whether Spindle Power should be allowed'))
 
+
 class ToolBitFactory(object):
 
     def CreateFromAttrs(self, attrs, name='ToolBit'):
@@ -414,21 +414,15 @@ class ToolBitFactory(object):
         for pname in params:
             try:
                 prop = proto.getProperty(pname)
-                # val =  prop.valueFromString(params[pname])
                 prop.setupProperty(obj, pname, PropertyGroupAttribute, prop.valueFromString(params[pname]))
             except Exception:
-                # prop = obj.addProperty('App::PropertyString', pname, "Attribute", translate('PathTooolBit', 'User Defined Value'))
-                # setattr(obj, pname, params[pname])
                 prop = proto.getProperty("UserAttributes")
                 uservals.update({pname: params[pname]})
-                # prop.setupProperty(obj, pname, "UserAttributes", prop.valueFromString(params[pname]))
 
         if len(uservals.items()) > 0:
             prop.setupProperty(obj, "UserAttributes",
                                PropertyGroupAttribute, uservals)
 
-            # print("prop[%s] = %s (%s)" % (pname, params[pname], type(val)))
-            # prop.setupProperty(obj, pname, PropertyGroupAttribute, prop.valueFromString(params[pname]))
         return obj
 
     def CreateFrom(self, path, name='ToolBit'):
