@@ -1575,6 +1575,10 @@ Py::Object Expression::getPyValue(int options, int *jumpCode) const {
             options &= ~OptionPythonMode;
             frame.setPythonMode();
         }
+        // fake function name to push last call frame. The fact that
+        // frame.funcOwner is still null means we won't get warning about object
+        // reference in function.
+        frame.funcName = "<CallFrame>";
         frame.push();
         return getPyValue(options,jumpCode);
     }
