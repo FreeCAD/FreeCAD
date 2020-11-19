@@ -220,6 +220,8 @@ def _svg_shape(svg, obj, plane,
         fill = fillstyle
     elif fillstyle == "shape color":
         fill = "#888888"
+    elif fillstyle in ("none",None):
+        fill = "none"
     else:
         fill = 'url(#' + fillstyle + ')'
 
@@ -841,6 +843,8 @@ def get_svg(obj,
                         fill = utils.get_rgb(vobj.ShapeColor,
                                              testbw=False)
                         fill_opacity = 1 - vobj.Transparency / 100.0
+                    elif fillstyle in ("none",None):
+                        fill = "none"
                     else:
                         fill = 'url(#'+fillstyle+')'
                         svg += get_pattern(fillstyle)
