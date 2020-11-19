@@ -116,7 +116,10 @@ class Facebinder(DraftObject):
             return
         obj.Shape = sh
         obj.Placement = pl
-        obj.Area = area
+        try:
+            obj.Area = area
+        except Exception:
+            pass
 
     def addSubobjects(self,obj,facelinks):
         """adds facelinks to this facebinder"""
