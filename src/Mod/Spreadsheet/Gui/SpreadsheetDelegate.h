@@ -56,6 +56,7 @@ private:
     Spreadsheet::Sheet * sheet;
     bool commiting = false;
     mutable bool updating = false;
+    mutable bool syncCombo = false;
 
     friend class SheetTableView;
 };

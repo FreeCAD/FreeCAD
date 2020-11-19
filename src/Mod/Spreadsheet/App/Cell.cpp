@@ -1157,19 +1157,16 @@ bool Cell::setEditData(const QVariant &d) {
                         App::NumberExpression::create(parent, index));
                 setExpression(std::move(e));
             }
-            if(expr->getSize()>=3) {
+            expr = SimpleStatement::cast<ListExpression>(expression.get());
+            if(expr && expr->getSize()>=3) {
                 Base::PyGILStateLocker lock;
                 try {
                     Py::Object item(expr->getItems()[2]->getPyValue());
                     if(item.isCallable()) {
-                        Py::Tuple args(4);
+                        Py::Tuple args(3);
                         args.setItem(0,Py::asObject(parent->getPyObject()));
                         args.setItem(1,Py::String(address.toString()));
-                        if(isString)
-                            args.setItem(2,Py::String(data));
-                        else
-                            args.setItem(2,Py::Int(index));
-                        args.setItem(3,expr->getItems()[1]->getPyValue());
+                        args.setItem(2,expr->getPyValue());
                         Py::Callable(item).apply(args);
                     }
                 }catch(Py::Exception &) {

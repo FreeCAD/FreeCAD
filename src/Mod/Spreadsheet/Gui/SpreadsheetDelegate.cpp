@@ -186,17 +186,28 @@ void SpreadsheetDelegate::setEditorData(QWidget *editor,
         QList<QVariant> list = data.toList();
         if(list.size()>1) {
             QString txt = list.front().toString();
-            int index = list.front().toInt();
+            int idx = list.front().toInt();
             QStringList items;
             for(int i=1; i<list.size(); ++i)
                 items.append(list[i].toString());
             combo->addItems(items);
-            if(index <= 0)
-                index = combo->findText(txt);
+            if(idx <= 0)
+                idx = combo->findText(txt);
             else
-                --index;
-            if(index>=0)
-                combo->setCurrentIndex(index);
+                --idx;
+            if(idx>=0)
+                combo->setCurrentIndex(idx);
+            else if (!syncCombo) {
+                Base::StateLocker guard(syncCombo);
+                // Cannot find a matching current index for the combo. So we
+                // update the the data to sync with the current index
+                QList<QVariant> data;
+                data.append(combo->currentText());
+                data.append(combo->currentIndex()+1);
+                App::CellAddress address(index.row(), index.column());
+                sheet->editCell(address, data);
+                sheet->recomputeFeature();
+            }
         }
         return;
     }
