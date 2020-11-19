@@ -719,13 +719,15 @@ Py::Object ObjectIdentifier::Component::get(const Py::Object &pyobj) const {
         FC_THROWM(Base::RuntimeError, "Invalid component: " << getName());
     if(!res.ptr())
         Base::PyException::ThrowException();
-    if(PyModule_Check(res.ptr()) && !ExpressionParser::isModuleImported(res.ptr()))
-        FC_THROWM(Base::RuntimeError, "Module '" << getName() << "' access denied.");
+    // if(PyModule_Check(res.ptr()) && !ExpressionParser::isModuleImported(res.ptr()))
+    //     FC_THROWM(Base::RuntimeError, "Module '" << getName() << "' access denied.");
     return res;
 }
 
 void ObjectIdentifier::Component::set(Py::Object &pyobj, const Py::Object &value) const {
     if(isSimple()) {
+        if (getName() == "__module__" || getName() == "__self__")
+            FC_THROWM(Base::RuntimeError, "Cannot modify attribute " << getName());
         if(PyObject_SetAttrString(*pyobj, getName().c_str(), *value ) == -1)
             Base::PyException::ThrowException();
     } else if(isArray()) {

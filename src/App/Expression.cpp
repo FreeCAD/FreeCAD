@@ -32,6 +32,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/io/ios_state.hpp>
+#include <boost/intrusive/list.hpp>
 
 #include <Base/Console.h>
 #include "Base/Exception.h"
@@ -70,6 +71,7 @@
 
 using namespace Base;
 using namespace App;
+namespace bi = boost::intrusive;
 
 FC_LOG_LEVEL_INIT("Expression",true,true)
 
@@ -2288,37 +2290,181 @@ bool OperatorExpression::isRightAssociative() const
     }
 }
 
+class PyObjectNode: public bi::list_base_hook<>
+{
+public:
+    // The Key is used for keying an MRU cache (_Cache) below to accelerate
+    // callable security checking. We are not ref counting the cached object. To
+    // reduce the chance of memory address reuse of allocation, include the type
+    // object as the hash key
+    typedef std::pair<PyObject*, PyTypeObject*> Key;
+
+    static Key key(PyObject *pyobj)
+    {
+        return std::make_pair(pyobj, pyobj->ob_type);
+    }
+
+    Key key() const {
+        return std::make_pair(this->pyobj, this->pytype);
+    }
+
+    static void initAdd(PyObject *_pyobj, const char *_msg, const char *_info="");
+    static void initDone();
+    static void clearCache();
+    void init(PyObject *_pyobj, const char *_msg, const char *_info="");
+    bool isCached();
+
+public:
+
+    PyObject *pyobj = nullptr;
+    PyTypeObject *pytype = nullptr;
+    const char * msg = nullptr;
+    std::string info;
+};
+
+static std::unordered_map<PyObjectNode::Key,
+                          PyObjectNode,
+                          boost::hash<PyObjectNode::Key> > _Cache;
+
+static bi::list<PyObjectNode> _CacheList;
+static auto _CacheListBegin = _CacheList.end();
+
+void PyObjectNode::initAdd(PyObject *_pyobj, const char *_msg, const char *_info)
+{
+    if (!_pyobj)
+        return;
+    _Cache[key(_pyobj)].init(_pyobj, _msg, _info);
+}
+
+void PyObjectNode::initDone()
+{
+    _CacheListBegin = _CacheList.end();
+    --_CacheListBegin;
+}
+
+void PyObjectNode::clearCache()
+{
+    auto it = _CacheListBegin;
+    ++it;
+    while (it != _CacheList.end()) {
+        auto & node = *it;
+        it = _CacheList.erase(it);
+        _Cache.erase(node.key());
+    }
+}
+
+void PyObjectNode::init(PyObject *_pyobj, const char *_msg, const char *_info)
+{
+    this->pyobj = _pyobj;
+    this->pytype = _pyobj->ob_type;
+    this->msg = _msg;
+    this->info = _info;
+    if (is_linked())
+        _CacheList.erase(_CacheList.iterator_to(*this));
+    _CacheList.push_back(*this);
+    if (_Cache.size() > 256) {
+        auto it = _CacheListBegin;
+        ++it;
+        auto & tmp = *it;
+        _CacheList.erase(it);
+        _Cache.erase(tmp.key());
+    }
+}
+
+bool PyObjectNode::isCached()
+{
+    if (!this->pyobj)
+        return false;
+    if (this != &_CacheList.back()) {
+        _CacheList.erase(_CacheList.iterator_to(*this));
+        _CacheList.push_back(*this);
+    }
+    return true;
+}
+
 //
 // Internal class to manager user defined import modules
 //
 class ImportModules: public ParameterGrp::ObserverType {
 public:
     ImportModules() {
+        defModules = {
+#if PY_MAJOR_VERSION < 3
+            "__builtin__",
+#else
+            "builtins",
+#endif
+            "FreeCAD",
+            "FreeCADGui",
+            "Base",
+            "__FreeCADConsole__",
+            "Units",
+            "Selection",
+            "Part",
+            "PartDesign",
+            "Sketcher",
+            "Spreadsheet",
+            "collections",
+            "math",
+            "re",
+            "_sre", // re built-in C extension
+            "freecad.fc_cadquery",
+        };
+        for (auto mod : defModules)
+            modules[mod] = nullptr;
+
         handle = GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/Expression/PyModules");
         handle->Attach(this);
-        for(auto &m : handle->GetBoolMap()) {
-            if(m.second)
-                modules.emplace(m.first,nullptr);
-        }
+        for (auto &m : handle->GetBoolMap())
+            modules[m.first] = m.second ? nullptr : Py_None;
     }
 
     void OnChange(Base::Subject<const char*> &, const char* sReason) {
         if(!sReason)
             return;
         if(!handle->GetBool(sReason,false)) {
-            auto it = modules.find(sReason);
-            if(it!=modules.end()) {
-                imports.erase(it->second);
-                modules.erase(it);
+            // Check if there is really an entry with value false. That would
+            // indicate an intention to forbid that module and all its sub
+            // modules. And we mark it by setting the value to None.
+            //
+            // Note that a non-None entry (including null entry) indicates that
+            // the module and all its submodule (not explicitly forbidden) are
+            // allowed. A null entry just means the module hasn't been
+            // explicitly imported by expression statement 'import_py' yet. 
+            if (!handle->GetBool(sReason, true)) {
+                auto & pyobj = modules[sReason];
+                if (pyobj && pyobj != Py_None) {
+                    Py_DECREF(pyobj);
+                    imports.erase(pyobj);
+                }
+                pyobj = Py_None;
+            } else {
+                auto it = modules.find(sReason);
+                if (it != modules.end()) {
+                    if (defModules.count(sReason)) {
+                        if (it->second == Py_None)
+                            it->second = nullptr;
+                    } else {
+                        if (it->second && it->second != Py_None) {
+                            imports.erase(it->second);
+                            Py_DECREF(it->second);
+                        }
+                        modules.erase(it);
+                    }
+                }
             }
-        }else
-            modules.emplace(sReason,nullptr);
+        } else {
+            auto & pyobj = modules[sReason];
+            if (pyobj == Py_None)
+                pyobj = nullptr;
+        }
+        PyObjectNode::clearCache();
     }
 
     Py::Object getModule(const std::string &name, const Expression *e) {
         auto it = modules.find(name);
-        if(it == modules.end())
+        if(it == modules.end() || it->second == Py_None)
             __EXPR_THROW(ImportError, "Python module '" << name << "' access denied.", e);
         if(it->second)
             return Py::Object(it->second);
@@ -2326,12 +2472,11 @@ public:
         if(!it->second) 
             EXPR_PY_THROW(e);
         imports.insert(it->second);
-        // Not ref counted inside modules or ipmorts
-        return Py::asObject(it->second);
+        return Py::Object(it->second);
     }
 
     bool isImported(PyObject *module) const {
-        return imports.count(module);
+        return imports.count(module) > 0;
     }
 
     static ImportModules *instance() {
@@ -2345,10 +2490,70 @@ public:
         return handle;
     }
 
+    bool checkCallable(PyObjectNode & node, PyObject *pyobj)
+    {
+        if (inspect.isNone()) {
+            Py::Object module;
+            PyObject *pymod = PyImport_ImportModule("inspect");
+            PyObject *pyfunc = nullptr;
+            if (pymod) {
+                module = Py::asObject(pymod);
+                pyfunc = PyObject_GetAttrString(pymod, "getmodule");
+            }
+            if (!pyfunc) {
+                PyErr_Clear();
+                node.init(pyobj, "Failed to inspect module of callable");
+                return false;
+            }
+            this->inspect = Py::asObject(pyfunc);
+        }
+
+        const char *name = nullptr;
+        Py::Object pymod;
+        PyObject * module = PyObject_CallFunction(this->inspect.ptr(), "O", pyobj);
+        if (module) {
+            pymod = Py::asObject(module);
+            name = PyModule_GetName(module);
+        }
+        if (!name || !name[0]) {
+            name = nullptr;
+            module = nullptr;
+            PyErr_Clear();
+            PyObject * self = PyObject_GetAttrString(pyobj, "__self__");
+            if (self) {
+                module = PyObject_CallFunction(this->inspect.ptr(), "O", self->ob_type);
+                if (module) {
+                    pymod = Py::asObject(module);
+                    name = PyModule_GetName(module);
+                }
+                Py_DECREF(self);
+            }
+        }
+        if (!name || !name[0]) {
+            PyErr_Clear();
+            node.init(pyobj, "Unknown module of callable");
+        } else {
+            auto it = modules.lower_bound(name);
+            if (it != modules.end()
+                    && it->second != Py_None
+                    && boost::starts_with(name, it->first)
+                    && (name[it->first.size()] == 0
+                        || name[it->first.size()] == '.'))
+            {
+                node.init(pyobj, nullptr);
+            } else {
+                node.init(pyobj, "Access denied of callable in module ", name);
+            }
+        }
+        return node.msg == nullptr;
+    }
+
 private:
-    std::unordered_map<std::string,PyObject*> modules;
+    std::map<std::string, PyObject*, std::greater<std::string> > modules;
+    std::unordered_set<const char *, App::CStringHasher, App::CStringHasher> defModules;
     std::set<PyObject*> imports;
     ParameterGrp::handle handle;
+    Py::Object inspect;
 };
 
 class ImportParamLock: public ParameterLock {
@@ -4028,6 +4233,56 @@ Py::Object CallableExpression::evaluate(PyObject *pyargs, PyObject *pykwds) {
     return res;
 }
 
+void CallableExpression::securityCheck(PyObject *pyobj) const
+{
+    if(_Cache.empty()) {
+        std::ostringstream ss;
+        const char *tmpvar = "__blockobj";
+        const char *cmds[] = {
+            "Gui.doCommand",
+            "Gui.doCommandGui",
+        };
+        const char * msg = "Callable blocked: ";
+        for(auto cmd : cmds) {
+            try {
+                ss.str("");
+                ss << tmpvar << " = " << cmd;
+                PyObject * pyvalue = Base::Interpreter().getValue(ss.str().c_str(), tmpvar);
+                PyObjectNode::initAdd(pyvalue, msg, cmd);
+                Py::_XDECREF(pyvalue);
+            } catch(Base::Exception &e) {
+                FC_LOG("Exception on blocking " << cmd << ": " << e.what());
+            }
+        }
+        Base::Interpreter().removeVariable(tmpvar);
+
+        msg = "Python built-in blocked";
+        PyObjectNode::initAdd(EvalFrame::getBuiltin("eval"), msg);
+        PyObjectNode::initAdd(EvalFrame::getBuiltin("execfile"), msg);
+        PyObjectNode::initAdd(EvalFrame::getBuiltin("exec"), msg);
+        PyObjectNode::initAdd(EvalFrame::getBuiltin("__import__"), msg);
+        PyObjectNode::initAdd(EvalFrame::getBuiltin("file"), msg);
+        PyObjectNode::initAdd(EvalFrame::getBuiltin("open"), msg);
+        PyObjectNode::initAdd(EvalFrame::getBuiltin("input"), msg);
+        // setattr() is blocked to avoid changing special attribute like
+        // '__module__' or '__self__'. Normal assignment operation is handled by
+        // ObjectIdentifier::set() which checks for those attributes.
+        PyObjectNode::initAdd(EvalFrame::getBuiltin("setattr"), msg);
+
+        PyObjectNode::initDone();
+    }
+
+    PyObjectNode & node = _Cache[std::make_pair(pyobj, pyobj->ob_type)];
+    if (!node.isCached()) {
+        if (PyObject_TypeCheck(pyobj, &ExpressionPy::Type))
+            node.init(pyobj, nullptr);
+        else
+            ImportModules::instance()->checkCallable(node, pyobj);
+    }
+    if (node.msg)
+        EXPR_THROW(node.msg << node.info);
+}
+
 Py::Object CallableExpression::_getPyValue(int *) const {
     if(!expr && ftype == EVAL) {
         if(args.size()<1)
@@ -4154,33 +4409,7 @@ Py::Object CallableExpression::_getPyValue(int *) const {
            EXPR_THROW("Expects Python callable.");
     }
 
-    static std::set<PyObject*> blockedObjs;
-    if(blockedObjs.empty()) {
-#define BLOCK_VAR "__blockobj"
-#define BLOCK_CMD(_name) BLOCK_VAR "=" _name
-        const char *cmds[] = {
-            BLOCK_CMD("Gui.doCommand"),
-        };
-        for(auto cmd : cmds) {
-            try {
-                PyObject * pyvalue = Base::Interpreter().getValue(cmd, BLOCK_VAR);
-                blockedObjs.insert(pyvalue);
-                Py::_XDECREF(pyvalue);
-            }catch(Base::Exception &e) {
-                FC_LOG("Exception on blocking " << cmd << ": " << e.what());
-            }
-        }
-        Base::Interpreter().removeVariable(BLOCK_VAR);
-        blockedObjs.insert(EvalFrame::getBuiltin("eval"));
-        blockedObjs.insert(EvalFrame::getBuiltin("execfile"));
-        blockedObjs.insert(EvalFrame::getBuiltin("exec"));
-        blockedObjs.insert(EvalFrame::getBuiltin("__import__"));
-        blockedObjs.insert(EvalFrame::getBuiltin("file"));
-        blockedObjs.insert(EvalFrame::getBuiltin("open"));
-        blockedObjs.insert(EvalFrame::getBuiltin("input"));
-    }
-    if(blockedObjs.find(pyobj.ptr()) != blockedObjs.end())
-        EXPR_THROW("Python built-in blocked");
+    securityCheck(pyobj.ptr());
 
     int count=0;
     std::vector<Py::Sequence,ExpressionAllocator(Py::Sequence) > seqs;
