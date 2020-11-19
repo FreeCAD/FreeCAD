@@ -98,7 +98,6 @@ class ToolController:
             if hasattr(obj.Tool, 'InList') and len(obj.Tool.InList) == 1:
                 if hasattr(obj.Tool.Proxy, 'onDelete'):
                     obj.Tool.Proxy.onDelete(obj.Tool)
-                #obj.Document.removeObject(obj.Name)
 
     def setFromTemplate(self, obj, template):
         '''
@@ -176,7 +175,6 @@ class ToolController:
         commands = ""
         commands += "(" + obj.Label + ")"+'\n'
         commands += 'M6 T'+str(obj.ToolNumber)+'\n'
-
 
         # If a toolbit is used, check to see if spindlepower is allowed.
         # This is to prevent accidentally spinning the spindle with an

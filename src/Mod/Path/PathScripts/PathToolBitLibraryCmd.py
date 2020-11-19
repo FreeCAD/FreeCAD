@@ -129,6 +129,7 @@ class CommandToolBitLibraryOpen:
 #             return True
 #         return False
 
+
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_ToolBitLibraryOpen', CommandToolBitLibraryOpen())
     FreeCADGui.addCommand('Path_ToolBitDock', CommandToolBitSelectorOpen())

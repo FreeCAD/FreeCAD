@@ -545,7 +545,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                     PathLog.error(translate("PathProject", "Faces are not supported"))
                 return False
         else:
-            if not self.supportsPanels() or not 'Panel' in sel.Object.Name:
+            if not self.supportsPanels() or 'Panel' not in sel.Object.Name:
                 if not ignoreErrors:
                     PathLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
                 return False
@@ -635,6 +635,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         col = qList.width()  # 300
         row = (qList.count() + qList.frameWidth()) * 15
         qList.setFixedSize(col, row)
+
 
 class TaskPanelBaseLocationPage(TaskPanelPage):
     '''Page controller for base locations. Uses PathGetPoint.'''
@@ -936,6 +937,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.startDepthSet.setEnabled(False)
             self.form.finalDepthSet.setEnabled(False)
 
+
 class TaskPanelDiametersPage(TaskPanelPage):
     '''Page controller for diameters.'''
 
@@ -960,7 +962,7 @@ class TaskPanelDiametersPage(TaskPanelPage):
         self.minDiameter.updateProperty()
         self.maxDiameter.updateProperty()
 
-    def setFields(self,  obj):
+    def setFields(self, obj):
         self.minDiameter.updateSpinBox()
         self.maxDiameter.updateSpinBox()
 
@@ -973,6 +975,7 @@ class TaskPanelDiametersPage(TaskPanelPage):
     def pageUpdateData(self, obj, prop):
         if prop in ['MinDiameter', 'MaxDiameter']:
             self.setFields(obj)
+
 
 class TaskPanel(object):
     '''
