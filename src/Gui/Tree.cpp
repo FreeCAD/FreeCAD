@@ -2781,8 +2781,17 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         FC_WARN("ignore replace operation without parent");
                         continue;
                     }
-                    if(dropName.size())
-                        dropName = targetSubname.str() + dropName;
+                    if(dropName.size()) {
+                        std::string sub = targetSubname.str();
+                        if (sub.size() > 1) {
+                            auto pos = sub.rfind(".", 0, sub.size()-1);
+                            if (pos != std::string::npos)
+                                sub = sub.substr(0, pos+1);
+                            else
+                                sub.clear();
+                        }
+                        dropName = sub + dropName;
+                    }
                     
                 }else{
                     App::DocumentObjectT parentT(vp->getObject());
