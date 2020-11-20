@@ -272,7 +272,7 @@ std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
     // the sketch is based on a feature after the tip.
     //
     // It is only absolutely safe to insert at the very end. We'll have to rely
-    // up on PartGui commands to determin the new object insertion point based
+    // up on PartGui commands to determine the new object insertion point based
     // on user selection at the time of command invoking.
     //
     // insertObject (feature, getNextSolidFeature (), [>after = <] false);

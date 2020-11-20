@@ -3503,7 +3503,7 @@ Py::Object AssignmentExpression::apply(const Expression *owner, int _catchAll,
             auto e = static_cast<CallableExpression*>(left[0].get());
             info = e->getVarInfo(!!op);
         }else
-            _EXPR_THROW("Invalid assignement",owner);
+            _EXPR_THROW("Invalid assignment",owner);
         if(!op) 
             info.rhs = right->getPyValue();
         else {
@@ -3518,7 +3518,7 @@ Py::Object AssignmentExpression::apply(const Expression *owner, int _catchAll,
     }
 
     if(op)
-        _EXPR_THROW("Invalid argumented assignement",owner);
+        _EXPR_THROW("Invalid argumented assignment",owner);
 
     PyIterable value(right->getPyValue(),owner,true);
     Py::Sequence seq(value);

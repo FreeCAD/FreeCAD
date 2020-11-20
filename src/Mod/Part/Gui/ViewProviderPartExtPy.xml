@@ -25,7 +25,7 @@ Enable/disable full selection highlight for faces, lines, and/or points.
     <Methode Name="mapShapeColors">
         <Documentation>
             <UserDocu>
-mapShapeColors(sourceDoc=None): Update shape colors based on the element map insde the shape
+mapShapeColors(sourceDoc=None): Update shape colors based on the element map inside the shape
 
 sourceDoc: the document of the source object in case the shape comes from another document. 
            If None, then use the owner document

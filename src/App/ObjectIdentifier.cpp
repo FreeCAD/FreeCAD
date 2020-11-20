@@ -849,7 +849,7 @@ ObjectIdentifier::Component::MapComponent(String &&_key)
 
 /**
  * @brief Create a range component with given begin and end.
- * @param _begin begining index of the range
+ * @param _begin beginning index of the range
  * @param _end ending index of the range
  * @return A new Component object.
  */
@@ -1100,7 +1100,7 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
                     int ptype;
                     Property *prop = resolveProperty(owner,tmpSub,pindex,sobj,ptype);
                     if(prop) {
-                        // If we found sub object in previous attemp, look further
+                        // If we found sub object in previous attempt, look further
                         // to see which one has the better match
                         if(results.propertyType == PseudoSubObject && pindex+1 < (int)components.size()) {
                             Base::PyGILStateLocker lock;
@@ -1113,7 +1113,7 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
                                 return;
                             } catch (...) {
                                 // Exception here means the sub-object
-                                // intepretation is a better match, so return
+                                // interpretation is a better match, so return
                                 // early. 
                                 return;
                             }

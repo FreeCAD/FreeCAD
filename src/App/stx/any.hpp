@@ -189,7 +189,7 @@ public:
             if(this->vtable != nullptr)
             {
                 this->vtable->move(this->storage, rhs.storage);
-                //this->vtable = nullptr; -- uneeded, see below
+                //this->vtable = nullptr; -- unneeded, see below
             }
 
             // move from tmp (previously rhs) to *this.
@@ -230,11 +230,11 @@ private: // Storage and Virtual Method Table
         /// The state of the union after this call is unspecified, caller must ensure not to use src anymore.
         void(*destroy)(storage_union&) BOOST_NOEXCEPT;
 
-        /// Copies the **inner** content of the src union into the yet unitialized dest union.
+        /// Copies the **inner** content of the src union into the yet uninitialized dest union.
         /// As such, both inner objects will have the same state, but on separate memory locations.
         void(*copy)(const storage_union& src, storage_union& dest);
 
-        /// Moves the storage from src to the yet unitialized dest union.
+        /// Moves the storage from src to the yet uninitialized dest union.
         /// The state of src after this call is unspecified, caller must ensure not to use src anymore.
         void(*move)(storage_union& src, storage_union& dest) BOOST_NOEXCEPT;
 
@@ -270,7 +270,7 @@ private: // Storage and Virtual Method Table
 
         static void swap(storage_union& lhs, storage_union& rhs) BOOST_NOEXCEPT
         {
-            // just exchage the storage pointers.
+            // just exchange the storage pointers.
             std::swap(lhs.dynamic, rhs.dynamic);
         }
     };
@@ -348,7 +348,7 @@ protected:
     /// Checks if two type infos are the same.
     ///
     /// If ANY_IMPL_FAST_TYPE_INFO_COMPARE is defined, checks only the address of the
-    /// type infos, otherwise does an actual comparision. Checking addresses is
+    /// type infos, otherwise does an actual comparison. Checking addresses is
     /// only a valid approach when there's no interaction with outside sources
     /// (other shared libraries and such).
     static bool is_same(const std::type_info& a, const std::type_info& b)

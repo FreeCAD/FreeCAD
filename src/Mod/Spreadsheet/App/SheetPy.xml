@@ -207,7 +207,7 @@ Enable/Disable given spreadsheet cell persistent edit mode.</UserDocu>
 recomputeCells(from, to=None)
 
 Manually recompute cells in the given range with the given order without
-following depedency order.
+following dependency order.
         </UserDocu>
       </Documentation>
     </Methode>

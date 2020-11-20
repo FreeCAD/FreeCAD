@@ -178,9 +178,9 @@ public:
         return false;
     }
 
-    /** Invoke a callable for each extenions of a given type
+    /** Invoke a callable for each extension of a given type
      * @param f: the callable that accepts one argument of an extension, and
-     * returns any value that is convertable to boolean.
+     * returns any value that is convertible to boolean.
      *
      * @return Returns true if the iteratorion is terminated prematurely, or else false.
      *

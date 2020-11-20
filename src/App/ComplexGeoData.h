@@ -218,7 +218,7 @@ public:
         MapToNamed,
 
         /** Lookup the indexed name with the given mapped name. If the given
-         * name starts witht elementMapPrefix(), it will be stripped before used
+         * name starts with elementMapPrefix(), it will be stripped before used
          * for lookup, or else, the given name is directly used for lookup.
          */
         MapToIndexedForced,
@@ -340,13 +340,13 @@ public:
      * @param tag: optional pointer to receive the extracted tag
      * @param len: optional pointer to receive the length field after the tag field.
      *             This gives the length of the previous hashsed element name starting
-     *             from the begining of the give element name.
+     *             from the beginning of the give element name.
      * @param postfix: optional pointer to receive the postfix starting at the found tag field.
      * @param type: optional pointer to receive the element type character
      * @param negative: return negative tag as it is. If disabled, then always return positive tag.
-     *                  Negative tag is sometimes used for element disambiguiation.
+     *                  Negative tag is sometimes used for element disambiguation.
      *
-     * @return Return the end poisition of the tag field, or return std::string::npos if not found.
+     * @return Return the end position of the tag field, or return std::string::npos if not found.
      */
     static size_t findTagInElementName(const std::string &name, long *tag=0,
             size_t *len=0, std::string *postfix=0, char *type=0, bool negative=false);

@@ -239,7 +239,7 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
             if(!Gui::SoFCSwitch::testTraverseState(Gui::SoFCSwitch::TraverseInvisible)) {
                 // If we are visible, disable transparency to get a solid
                 // outline, or else on top rendering will have some default
-                // transprency, which will give a fainted appearance that is
+                // transparency, which will give a fainted appearance that is
                 // ideal of drawing hidden line, or indicating we are invisible
                 // (but forced to shown by on top rendering)
                 SoLazyElement::setTransparency(state,this,1,&trans,&packer);

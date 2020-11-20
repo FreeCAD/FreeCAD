@@ -2312,7 +2312,7 @@ Document::readObjects(Base::XMLReader& reader)
         }
     } catch (Base::XMLParseException &e) {
         e.ReportException();
-        FC_ERR("Exception while restroing " << getName() << '.' << objName);
+        FC_ERR("Exception while restoring " << getName() << '.' << objName);
         throw;
     }
     reader.readEndElement("ObjectData");

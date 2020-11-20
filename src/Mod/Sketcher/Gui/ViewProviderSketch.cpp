@@ -5664,7 +5664,7 @@ void ViewProviderSketch::updateData(const App::Property *prop)
     // watch for. On the other hand, performing a recomputation (done in
     // onUndoRedoFinished()) is not a good idea, as it may affects multiple
     // objects and causing an inconsistent undo/redo state, which is why
-    // recomputation is now forbiden during udno/redo by the core.)
+    // recomputation is now forbidden during undo/redo by the core.)
 #if 0
     if (edit && !getSketchObject()->getDocument()->isPerformingTransaction()
              && !getSketchObject()->isPerformingInternalTransaction()
@@ -6748,7 +6748,7 @@ bool ViewProviderSketchExport::doubleClicked(void) {
                             App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
                     group = feat;
                 const char *subname = sel.SubName;
-                // Walk down the object hierachy in SubName to find the sketch
+                // Walk down the object hierarchy in SubName to find the sketch
                 for(const char *dot=strchr(subname,'.');dot;subname=dot+1,dot=strchr(subname,'.')) {
                     std::string name(subname,dot-subname+1);
                     auto sobj = feat->getSubObject(name.c_str());

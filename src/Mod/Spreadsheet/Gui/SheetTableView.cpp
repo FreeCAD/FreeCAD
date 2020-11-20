@@ -173,7 +173,7 @@ SheetTableView::SheetTableView(QWidget *parent)
     contextMenu->addAction(recomputeOnly);
     recomputeOnly->setToolTip(tr("Recompute only the selected cells without touching other depending cells\n"
                                  "It can be used as a way out of tricky cyclic dependency problem, but may\n"
-                                 "may affect cells depedency coherence. Use with care!"));
+                                 "may affect cells dependency coherence. Use with care!"));
 
     contextMenu->addSeparator();
 

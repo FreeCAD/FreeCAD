@@ -499,7 +499,7 @@ protected:
      */
     virtual const char *xmlName() const;
 
-    /// Called to retore the content from the document XML
+    /// Called to restore the content from the document XML
     virtual void restoreXML(Base::XMLReader &) {
         notImplemented();
     }
@@ -521,14 +521,14 @@ protected:
         return false;
     }
 
-    /// Called to save the content into a sperate (file) stream
+    /// Called to save the content into a separate (file) stream
     virtual void restoreStream(Base::InputStream &s, unsigned count) {
         (void)s;
         (void)count;
         notImplemented();
     }
 
-    /// Called to retore the content from a sperate (file) stream
+    /// Called to restore the content from a separate (file) stream
     virtual void saveStream(Base::OutputStream &) const {
         notImplemented();
     }

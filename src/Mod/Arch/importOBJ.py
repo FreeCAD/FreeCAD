@@ -175,7 +175,7 @@ def exportSelection(filename, colors=None):
     """exportSelection(filename,colors=None):
 
     New style exporter function called by freecad to export current selection.
-    It is added to allow the function to extract object hierarhcy from the
+    It is added to allow the function to extract object hierarchy from the
     current selection to derived to correct global placement.
 
     filename is the .obj file to export (a .mtl file with same name will also be
@@ -320,7 +320,7 @@ def _export(exportSet, filename, colors):
                         # Recursive mapping of color from group is very complex. We
                         # simply copy the shape to a temporary Part::Feature, and
                         # let its view provider to do the color mapping, which is
-                        # roughly equivalant of invoking Part_SimpleCopy command
+                        # roughly equivalent of invoking Part_SimpleCopy command
                         if not tmpobj:
                             tmpDoc = FreeCAD.newDocument('_ArchTmp', hidden=True, temp=True)
                             try:

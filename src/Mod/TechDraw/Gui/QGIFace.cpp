@@ -223,7 +223,7 @@ void QGIFace::loadSvgHatch(std::string fileSpec)
     }
     m_svgXML = f.readAll();
 
-    // search in the file for the "stroke" specifiction in order to find out what declaration style is used
+    // search in the file for the "stroke" specification in order to find out what declaration style is used
     // this is necessary to apply a color set by the user to the SVG
     QByteArray pattern("stroke:");
     QByteArrayMatcher matcher(pattern);

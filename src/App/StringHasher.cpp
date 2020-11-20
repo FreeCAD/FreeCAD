@@ -221,7 +221,7 @@ void StringHasher::Save(Base::Writer &writer) const {
     } else {
         for(auto &v : _hashes->right) {
             if(_hashes->SaveAll || v.info.getRefCount()>1) {
-                // We are omiting the indentation to save some space in case of long list of hashes
+                // We are omitting the indentation to save some space in case of long list of hashes
                 if(v.info->isHashed()) 
                     writer.Stream() <<"<Item hash=\""<< v.second.toBase64().constData();
                 else if(v.info->isBinary())

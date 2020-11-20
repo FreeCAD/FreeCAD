@@ -805,7 +805,7 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
     types.resize(objs.size());
     for (std::size_t i = 0; i < objs.size(); i++) {
         if (!objs[i]->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            FC_THROWM(AttachEngineException,"AttachEngine3D: attched to a non App::GeoFeature '"
+            FC_THROWM(AttachEngineException,"AttachEngine3D: attached to a non App::GeoFeature '"
                         << objs[i]->getNameInDocument() << "'");
         }
         App::GeoFeature* geof = static_cast<App::GeoFeature*>(objs[i]);

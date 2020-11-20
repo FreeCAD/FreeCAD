@@ -534,7 +534,7 @@ std::vector<TopoShape> TopoShape::searchSubShape(
     TopAbs_ShapeEnum shapeType = subshape.shapeType();
     switch(shapeType) {
     case TopAbs_VERTEX:
-        // Vertex search will do comparsion with tolerance to account for
+        // Vertex search will do comparison with tolerance to account for
         // rounding error inccured through transformation.
         for(auto &s : getSubTopoShapes(TopAbs_VERTEX)) {
             ++i;
@@ -571,7 +571,7 @@ std::vector<TopoShape> TopoShape::searchSubShape(
         } else
             vertices = subshape.getSubShapes(TopAbs_VERTEX);
 
-        //TODO: no implementation for inifinite edge/face, which does not have vertex
+        //TODO: no implementation for infinite edge/face, which does not have vertex
         if(vertices.empty())
             break;
 
@@ -580,7 +580,7 @@ std::vector<TopoShape> TopoShape::searchSubShape(
         // * Find the ancestor shape of the found vertex
         // * Compare each vertex of the ancestor shape and the input shape
         // * Perform geometry comparison of the ancestor and input shape.
-        //      * For face, perform addition geometry comparsion of each edges.
+        //      * For face, perform addition geometry comparison of each edges.
         std::unordered_set<TopoShape> shapeSet;
         for(auto &v : searchSubShape(vertices[0],nullptr,checkGeometry,tol,atol)) {
             for(auto idx : findAncestors(v.getShape(), shapeType)) {
@@ -2850,7 +2850,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                             newShapes.push_back(xp.Current());
 
                             if((parallelFace<0||coplanarFace<0) && checkParallel>0) {
-                                // Speciallized checking for high level mapped
+                                // Specialized checking for high level mapped
                                 // face that are either coplanar or parallel
                                 // with the source face, which are common in
                                 // operations like extrusion. Once found, the
@@ -2978,7 +2978,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     if(other_key.shapetype>=3 && first_key.shapetype<3) {
                         // shapetype>=3 means its a high level mapping (e.g. a face
                         // generates a solid). We don't want that if there are more
-                        // precise low level mapping avaialable. See comments above
+                        // precise low level mapping available. See comments above
                         // for more details.
                         break;
                     }
@@ -3691,7 +3691,7 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
     resetElementMap();
 
     TopLoc_Location loc(tmp._Shape.Location());
-    // Temperary reset shape location to make name mapping faster
+    // Temporary reset shape location to make name mapping faster
     tmp._Shape.Location(TopLoc_Location());
     _Shape.Location(TopLoc_Location());
     mapSubElement(tmp,postfix,!hasher.isNull());

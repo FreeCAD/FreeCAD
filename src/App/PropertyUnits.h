@@ -101,7 +101,7 @@ public:
     /** setting the boundaries
      * This sets the constraint struct. It can be dynamically 
      * allocated or set as an static in the class the property
-     * blongs to:
+     * belongs to:
      * \code
      * const Constraints percent = {0.0,100.0,1.0}
      * \endcode

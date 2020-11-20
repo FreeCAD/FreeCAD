@@ -920,7 +920,7 @@ void SubShapeBinder::onDocumentRestored() {
             && !testStatus(App::ObjectStatus::PartialObject))
     {
         // Older version SubShapeBinder does not treat missing sub object as
-        // error, which may cause noticable error to user. We'll perform an
+        // error, which may cause noticeable error to user. We'll perform an
         // explicit check here, and raise exception if necessary.
         for(auto &l : Support.getSubListValues()) {
             auto obj = l.getValue();

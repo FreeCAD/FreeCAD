@@ -1355,7 +1355,7 @@ App::Color ViewProviderPartExt::getElementColor(App::Color color,
         // 'history', but the last entry of 'history' actually contains the real
         // mapped element name of the 'current' modeling step. That's why we are
         // calling getElementHistory() for previous modeling step now, before
-        // retriving the element for the current step using getElementName(),
+        // retrieving the element for the current step using getElementName(),
         // because we need to check intermediate history names of the previous
         // model step. The 'original' returned by getElementHistory() here may
         // or may not contain a valid element name for the previous step. We can

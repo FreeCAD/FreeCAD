@@ -61,7 +61,7 @@ public:
     /// Origin linked to the group
     PropertyLink Origin;
     
-    //changes all links of obj to a origin to point to this groupes origin
+    //changes all links of obj to a origin to point to this groups origin
     void relinkToOrigin(App::DocumentObject* obj);
     
     virtual std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> obj) override;
