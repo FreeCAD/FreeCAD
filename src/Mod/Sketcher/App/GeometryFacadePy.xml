@@ -26,11 +26,20 @@
     <Attribute Name="InternalType" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                returns the Id of the SketchGeometryExtension.
+                returns the Internal Type of the Geometry.
             </UserDocu>
         </Documentation>
         <Parameter Name="InternalType" Type="String"/>
     </Attribute>
+    <Attribute Name="Blocked" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                returns whether the geometry is blocked or not.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="Blocked" Type="Boolean"/>
+    </Attribute>
+
     <Methode Name="mirror">
       <Documentation>
         <UserDocu>Performs the symmetrical transformation of this geometric object</UserDocu>

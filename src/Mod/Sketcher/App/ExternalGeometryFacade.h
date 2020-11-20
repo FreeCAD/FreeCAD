@@ -83,6 +83,9 @@ public:
     virtual InternalType::InternalType getInternalType() const override {return getGeoExt()->getInternalType();}
     virtual void setInternalType(InternalType::InternalType type) override {getGeoExt()->setInternalType(type);}
 
+    virtual bool testGeometryMode(int flag) const override { return getGeoExt()->testGeometryMode(flag); }
+    virtual void setGeometryMode(int flag, bool v=true) override { getGeoExt()->setGeometryMode(flag, v); }
+
     // Geometry Extension Information
     inline const std::string &getSketchExtensionName () const {return SketchGeoExtension->getName();}
     inline const std::string &getExternalExtensionName () const {return ExternalGeoExtension->getName();}

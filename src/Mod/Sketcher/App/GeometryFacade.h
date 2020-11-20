@@ -125,6 +125,12 @@ public:
     virtual InternalType::InternalType getInternalType() const override {return getGeoExt()->getInternalType();}
     virtual void setInternalType(InternalType::InternalType type) override {getGeoExt()->setInternalType(type);}
 
+    virtual bool testGeometryMode(int flag) const override { return getGeoExt()->testGeometryMode(flag); }
+    virtual void setGeometryMode(int flag, bool v=true) override { getGeoExt()->setGeometryMode(flag, v); }
+
+    bool getBlocked() const { return this->testGeometryMode(GeometryMode::Blocked);}
+    void setBlocked(bool status = true) {this->setGeometryMode(GeometryMode::Blocked, status);}
+
     // Geometry Extension Information
     inline const std::string &getExtensionName () const {return SketchGeoExtension->getName();}
 

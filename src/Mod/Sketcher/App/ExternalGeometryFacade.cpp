@@ -36,7 +36,7 @@
 
 using namespace Sketcher;
 
-TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryFacade,Part::GeometryExtension)
+TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryFacade,Base::BaseClass)
 
 ExternalGeometryFacade::ExternalGeometryFacade(): Geo(nullptr), SketchGeoExtension(nullptr), ExternalGeoExtension(nullptr)
 {
