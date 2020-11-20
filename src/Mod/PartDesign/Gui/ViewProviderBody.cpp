@@ -567,10 +567,13 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
         return false;
     }
 
-    App::Part *actPart = PartDesignGui::getActivePart();
-    App::Part* partOfBaseFeature = App::Part::getPartOfObject(obj);
-    if (partOfBaseFeature != 0 && partOfBaseFeature != actPart)
-        return false;
+    // App::Part checking is too restrictive. It may mess up things, or it may
+    // not. Just let user undo if anything is wrong.
+
+    // App::Part *actPart = PartDesignGui::getActivePart();
+    // App::Part* partOfBaseFeature = App::Part::getPartOfObject(obj);
+    // if (partOfBaseFeature != 0 && partOfBaseFeature != actPart)
+    //     return false;
 
     return true;
 }
@@ -626,6 +629,12 @@ bool ViewProviderBody::canReplaceObject(App::DocumentObject *oldObj,
     if (!body || !oldObj || !newObj || oldObj == newObj)
         return false;
 
+    if (PartDesign::Body::findBodyOf(newObj) != body)
+        return false;
+
+    if (!newObj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        return true;
+
     return body->isSibling(oldObj, newObj);
 }
 
@@ -642,8 +651,6 @@ int ViewProviderBody::replaceObject(App::DocumentObject *oldObj, App::DocumentOb
 
     auto secondFeat = Base::freecad_dynamic_cast<PartDesign::Feature>(oldObj);
     auto firstFeat = Base::freecad_dynamic_cast<PartDesign::Feature>(newObj);
-    if (!firstFeat || !secondFeat)
-        return 0;
 
     // first, second refers to the order after replaceObject() operation
     if (i > j)
@@ -656,29 +663,32 @@ int ViewProviderBody::replaceObject(App::DocumentObject *oldObj, App::DocumentOb
     objs.insert(objs.begin() + i, newObj);
     body->Group.setValues(objs);
 
-    Base::ObjectStatusLocker<App::Property::Status,App::Property>
-        guard1(App::Property::User3, &firstFeat->BaseFeature);
-    Base::ObjectStatusLocker<App::Property::Status,App::Property>
-        guard2(App::Property::User3, &secondFeat->BaseFeature);
+    if (firstFeat && secondFeat) {
 
-    if (secondFeat->NewSolid.getValue()) {
-        secondFeat->NewSolid.setValue(false);
-        firstFeat->NewSolid.setValue(true);
-    }
-    firstFeat->BaseFeature.setValue(secondFeat->BaseFeature.getValue());
-    secondFeat->BaseFeature.setValue(firstFeat);
-    for (auto obj : objs) {
-        if (obj == secondFeat
-                || !PartDesign::Body::isSolidFeature(obj)
-                || !obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
-            continue;
-        auto feat = static_cast<PartDesign::Feature*>(obj);
-        if (feat->BaseFeature.getValue() == firstFeat)
-            feat->BaseFeature.setValue(secondFeat);
-    }
+        Base::ObjectStatusLocker<App::Property::Status,App::Property>
+            guard1(App::Property::User3, &firstFeat->BaseFeature);
+        Base::ObjectStatusLocker<App::Property::Status,App::Property>
+            guard2(App::Property::User3, &secondFeat->BaseFeature);
 
-    if (body->Tip.getValue() == firstFeat)
-        body->setTip(secondFeat);
+        if (secondFeat->NewSolid.getValue()) {
+            secondFeat->NewSolid.setValue(false);
+            firstFeat->NewSolid.setValue(true);
+        }
+        firstFeat->BaseFeature.setValue(secondFeat->BaseFeature.getValue());
+        secondFeat->BaseFeature.setValue(firstFeat);
+        for (auto obj : objs) {
+            if (obj == secondFeat
+                    || !PartDesign::Body::isSolidFeature(obj)
+                    || !obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+                continue;
+            auto feat = static_cast<PartDesign::Feature*>(obj);
+            if (feat->BaseFeature.getValue() == firstFeat)
+                feat->BaseFeature.setValue(secondFeat);
+        }
+
+        if (body->Tip.getValue() == firstFeat)
+            body->setTip(secondFeat);
+    }
 
     Gui::Command::updateActive();
     return 1;
