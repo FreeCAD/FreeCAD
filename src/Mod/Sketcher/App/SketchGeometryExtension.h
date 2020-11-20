@@ -48,6 +48,13 @@ namespace Sketcher
         };
     }
 
+    namespace GeometryMode {
+        enum GeometryMode {
+            Blocked                 = 0,
+            NumGeometryMode        // Must be the last
+        };
+    }
+
 class ISketchGeometryExtension
 {
 
@@ -58,6 +65,9 @@ public:
 
     virtual InternalType::InternalType getInternalType() const = 0;
     virtual void setInternalType(InternalType::InternalType type) = 0;
+
+    virtual bool testGeometryMode(int flag) const = 0;
+    virtual void setGeometryMode(int flag, bool v=true) = 0;
 };
 
 class SketcherExport SketchGeometryExtension : public Part::GeometryExtension, private ISketchGeometryExtension
@@ -84,7 +94,12 @@ public:
     virtual InternalType::InternalType getInternalType() const override {return InternalGeometryType;}
     virtual void setInternalType(InternalType::InternalType type) override {InternalGeometryType = type;}
 
+    virtual bool testGeometryMode(int flag) const override { return GeometryModeFlags.test((size_t)(flag)); };
+    virtual void setGeometryMode(int flag, bool v=true) override { GeometryModeFlags.set((size_t)(flag), v); };
+
     constexpr static std::array<const char *,InternalType::NumInternalGeometryType> internaltype2str {{ "None", "EllipseMajorDiameter", "EllipseMinorDiameter","EllipseFocus1", "EllipseFocus2", "HyperbolaMajor", "HyperbolaMinor", "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint" }};
+
+    constexpr static std::array<const char *,GeometryMode::NumGeometryMode> geometrymode2str {{ "Blocked" }};
 
     static bool getInternalTypeFromName(std::string str, InternalType::InternalType &type);
 
@@ -92,8 +107,10 @@ private:
     SketchGeometryExtension(const SketchGeometryExtension&) = default;
 
 private:
-    long                                Id;
+    using GeometryModeFlagType = std::bitset<32>;
+    long                          Id;
     InternalType::InternalType    InternalGeometryType;
+    GeometryModeFlagType          GeometryModeFlags;
 
 private:
     static std::atomic<long> _GeometryID;
