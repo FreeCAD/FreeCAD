@@ -218,11 +218,11 @@ void View3DInventorPy::init_type()
     add_varargs_method("bindCamera",&View3DInventorPy::bindCamera,
         "bindCamera(node, sync=False)\n\n"
         "Bind a camera node to the camera of this view. Pass 'None' to unbind.\n"
-        "'sync' determins whether to sync the camera setting up on binding.");
+        "'sync' determines whether to sync the camera setting up on binding.");
     add_varargs_method("bindView",&View3DInventorPy::bindView,
         "bindView(view|view_title)\n\n"
         "Bind the camera of the given view to the camera of this view.\n"
-        "'sync' determins whether to sync the camera setting up on binding.");
+        "'sync' determines whether to sync the camera setting up on binding.");
     add_varargs_method("unbindView",&View3DInventorPy::unbindView,
         "unbindView(view|view_title|None)\n\n"
         "Unbind the camera of the given view to the camera of this view.\n"

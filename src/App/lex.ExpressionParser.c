@@ -11414,7 +11414,7 @@ case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
 #line 240 "ExpressionParser.l"
-yyless(yyleng-1); _COUNTCHARS; /* comment with immedate newline */
+yyless(yyleng-1); _COUNTCHARS; /* comment with immediate newline */
 	YY_BREAK
 case 10:
 /* rule 10 can match eol */

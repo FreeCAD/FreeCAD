@@ -1130,7 +1130,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
 
         if(Reason.Type==SelectionChanges::RmvSelection && alt) {
             // When alt is true, remove this object from the on top group
-            // regardless of whether it is previsouly selected with alt or not.
+            // regardless of whether it is previously selected with alt or not.
             info.alt = false;
             info.clearElements();
         } else {
@@ -1317,7 +1317,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
             } else if (det) {
                 // We are preselecting some element. In this case, we do not
                 // use PreSelGroup for highlighting, but instead rely on
-                // OnTopGroup. Becasue we want SoBrepFaceSet to pick the proper
+                // OnTopGroup. Because we want SoBrepFaceSet to pick the proper
                 // highlight color, in case it conflicts with the selection or
                 // the object's original color.
 

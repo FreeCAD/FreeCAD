@@ -2921,7 +2921,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
     }
 
     // We shall first exclude those names generated from high level mapping. If
-    // there are still any unamed elements left after we go through the process
+    // there are still any unnamed elements left after we go through the process
     // below, we set delayed=true, and start using those excluded names.
     bool delayed = false;
 
@@ -3050,7 +3050,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
         }
 
         // The reverse pass. Starting from the highest level element, i.e.
-        // Face, for any element that are named, assign names for its lower unamed
+        // Face, for any element that are named, assign names for its lower unnamed
         // elements. For example, if Edge1 is named E1, and its vertexes are not
         // named, then name them as E1;U1, E1;U2, etc.
         //

@@ -114,7 +114,7 @@ public:
         Frozen = 1, // freeze an external geometry
         Detached = 2, // signal the intentions of detaching the geometry from external reference
         Missing = 3, // geometry with missing external reference
-        Sync = 4, // signal the intension to synchronize a frozen geometry
+        Sync = 4, // signal the intention to synchronize a frozen geometry
     };
     std::bitset<32> Flags;
 

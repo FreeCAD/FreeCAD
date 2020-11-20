@@ -83,8 +83,8 @@ public:
     // The sub-object/pseudo property/property of the owner object is obtained
     // through struct ObjInfo, and cached inside map ExpressionCompleterModel::objMap.
     // Note that at root level, there are two way to reference the own object's
-    // property. The recommanded way is to use a leading '.' for explicit local
-    // proeprty referecing. If use without leading '.', then it may clash with
+    // property. The recommended way is to use a leading '.' for explicit local
+    // property referecing. If use without leading '.', then it may clash with
     // object name.
     //
     // struct Level1Data is used to access children of the root data. The QModelIndex
@@ -113,7 +113,7 @@ public:
     //
     //
     //
-    // For poperty data, Level1Data will generate and save the model data using
+    // For property data, Level1Data will generate and save the model data using
     // struct PropertyData. Note that, once PropertyData is generated, the next
     // time it (or its children) is accessed, it will be through the cached 
     // PropertyData (through ModelIndex lookup of dataMap), instead of Level1Data.
@@ -137,9 +137,9 @@ public:
     // ObjectIdentifier::getPyValue(), and handled the same way as other python
     // attribute values, using struct PythonData.
     //
-    // The subsequent hierarhcy is handled by Level2Data, which is the last
+    // The subsequent hierarchy is handled by Level2Data, which is the last
     // non-physical data, because all both idx fields and the row member are
-    // used up. Further hierarhcies are representd by various concrete model
+    // used up. Further hierarchies are represented by various concrete model
     // data such as ObjectData, PropertyData, and PythonData.
 
 
@@ -459,7 +459,7 @@ public:
                     txt = QObject::tr("Object not found!");
                 else {
                     if(getModel()->inList.count(obj))
-                        txt = QObject::tr("Warning! Cyclic reference may occour if you reference this object\n\n");
+                        txt = QObject::tr("Warning! Cyclic reference may occur if you reference this object\n\n");
                     txt += QString::fromLatin1("%1: %2\n%3: %4").arg(
                             QObject::tr("Internal name"), QString::fromLatin1(obj->getNameInDocument()),
                             QObject::tr("Label"), QString::fromUtf8(obj->Label.getValue()));
@@ -1604,7 +1604,7 @@ public:
             currentPath = std::move(pathString);
 
             // If the last component does not start with '.', it maybe a
-            // list/map index accesor, which cannot be completed.
+            // list/map index accessor, which cannot be completed.
             if(l.last().startsWith(QLatin1Char('.'))) {
                 Base::PyGILStateLocker lock;
                 Py::Object value = vexpr->getPyValue();
@@ -2157,7 +2157,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
             }
             break;
         }
-        catch(Py::Exception &) {// shouldn't happend, just to be safe
+        catch(Py::Exception &) {// shouldn't happen, just to be safe
             Base::PyException e;
             FC_TRACE("split path error " << e.what());
             break;

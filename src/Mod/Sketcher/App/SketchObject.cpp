@@ -523,7 +523,7 @@ void SketchObject::generateId(Part::Geometry *geo) {
     if(!geoHistory)
         updateGeoHistory();
 
-    // Search geo histroy to see if the start point and end point belongs to
+    // Search geo history to see if the start point and end point belongs to
     // some deleted geometries. Prefer matching both start and end point. If
     // can't then try start and then end. Generate new id if none is found.
     auto pstart = getPoint(geo,start);
@@ -6539,7 +6539,7 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                                         P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
                                         // P1 = P1, already defined
                                     } else {
-                                        // P1 = P1, alreday defined
+                                        // P1 = P1, already defined
                                         // P2 = P2, already defined
                                     }
                                 } else {

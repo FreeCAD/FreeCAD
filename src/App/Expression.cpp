@@ -797,7 +797,7 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
 
 bool isPyMapping(const Py::Object &obj)
 {
-    // Python3 consider sequence supportin slicing protocol as mapping as well,
+    // Python3 consider sequence supporting slicing protocol as mapping as well,
     // but they do not have keys or values.
     return obj.isMapping() && obj.hasAttr("keys") && obj.hasAttr("values");
 }
@@ -2601,8 +2601,8 @@ const std::vector<FunctionExpression::FunctionInfo> &FunctionExpression::getFunc
         {ATAN, "atan", "Iverse tangent of a value"},
         {ABS, "abs", "Absolute value of a number"},
         {EXP, "exp", "Euler's number raised to a power"},
-        {LOG, "log", "The natural (base e) logrithm of a number"},
-        {LOG10, "log10", "The common (base 10) logrithm of a number"},
+        {LOG, "log", "The natural (base e) logarithm of a number"},
+        {LOG10, "log10", "The common (base 10) logarithm of a number"},
         {SIN, "sin", "Sine of a value"},
         {SINH, "sinh", "Hybolic sine of a value"},
         {TAN, "tan", "Tangent of a value"},
@@ -2622,7 +2622,7 @@ const std::vector<FunctionExpression::FunctionInfo> &FunctionExpression::getFunc
         {LIST, "list", "list(arg...), create a Python list"},
         {TUPLE, "tuple", "tuple(arg...), create a Python tuple"},
         {EVAL, "eval", "eval(arg...), evaluate the first argument (string or sequence of string)\n"
-                       "as expression(s). Additional unamed argument are interpreted as local\n"
+                       "as expression(s). Additional unnamed argument are interpreted as local\n"
                        "variables with name _1_, _2_, and so on. Named argument are interpreted\n"
                        "as variable with the same name."},
         {FUNC, "func", "func(arg...), make a callable object using the first argument (string or\n"
@@ -2644,7 +2644,7 @@ const std::vector<FunctionExpression::FunctionInfo> &FunctionExpression::getFunc
                            "Create a new Python object with the given type.\n"
                            "Currently supported types can be specified as string\n"
                            "with value, vector, matrix, placement or rotation"},
-        {STR, "str", "str(arg), convert the input argment to string"},
+        {STR, "str", "str(arg), convert the input argument to string"},
         {HREF, "href", "href(arg), hide any object reference inside the input.\n"
                        "This allows to create cyclic references. Use with caution!"},
         {DBIND, "dbind", "dbind(arg), double binding a variable expression.\n"
@@ -6849,7 +6849,7 @@ struct Context {
     int bracket_count=0;
     bool line_continue = false;
 
-    // For the sake of performance, we make the followings static
+    // For the sake of performance, we make the following static
     static std::vector<int> IndentStack;
     static std::vector<char> ScannerBuffer; 
 

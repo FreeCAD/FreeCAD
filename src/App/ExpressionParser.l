@@ -237,7 +237,7 @@ EXPO     [eE][-+]?[0-9]+
 
 #[ \t][^\n]*                _COUNTCHARS; /* in none python mode, comment starts with a space allow document#object syntax */
 
-#\n                         yyless(yyleng-1); _COUNTCHARS; /* comment with immedate newline */
+#\n                         yyless(yyleng-1); _COUNTCHARS; /* comment with immediate newline */
 
 ^[ \t]*#([ \t]+\n|\n)       /* comment only line */ ctx.column=0; ctx.line_continue=false; 
 

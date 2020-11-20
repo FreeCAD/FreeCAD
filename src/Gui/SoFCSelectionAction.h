@@ -376,7 +376,7 @@ private:
 /** Customized ray pick action
  *
  * It differs from SoRayPickAction in that when it not set to 'PickAll', this
- * action priorities differnt types of primitives with the near same distances,
+ * action priorities different types of primitives with the near same distances,
  * so that it can pick vertex over edge, over face, when the pick points are
  * near the same.
  *
