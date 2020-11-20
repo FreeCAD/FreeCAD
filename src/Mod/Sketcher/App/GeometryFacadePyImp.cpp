@@ -117,6 +117,17 @@ void GeometryFacadePy::setInternalType(Py::String arg)
     throw Py::ValueError("Argument is not a valid internal geometry type.");
 }
 
+Py::Boolean GeometryFacadePy::getBlocked(void) const
+{
+    return Py::Boolean(getGeometryFacadePtr()->getBlocked());
+}
+
+void GeometryFacadePy::setBlocked(Py::Boolean arg)
+{
+    getGeometryFacadePtr()->setBlocked(arg);
+}
+
+
 PyObject* GeometryFacadePy::mirror(PyObject *args)
 {
     PyObject* o;
