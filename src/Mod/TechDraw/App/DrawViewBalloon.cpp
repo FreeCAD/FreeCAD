@@ -113,6 +113,8 @@ DrawViewBalloon::DrawViewBalloon(void)
     ADD_PROPERTY_TYPE(KinkLength,(prefKinkLength()),"",(App::PropertyType)(App::Prop_None),
                                   "Distance from symbol to leader kink");
 
+    ADD_PROPERTY_TYPE(LineVisible,(true),"",(App::PropertyType)(App::Prop_None),"Balloon line visible or hidden");
+
     SourceView.setScope(App::LinkScope::Global);
     Rotation.setStatus(App::Property::Hidden,true);
     Caption.setStatus(App::Property::Hidden,true);

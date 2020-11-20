@@ -738,7 +738,7 @@ void QGIViewBalloon::draw()
         float arAngle = atan2(dirballoonLinesLine.y, dirballoonLinesLine.x) * 180 / M_PI;
 
         arrow->setPos(arrowTipX, arrowTipY);
-        if ( (endType == ArrowType::FILLED_TRIANGLE) && 
+        if ( (endType == ArrowType::FILLED_TRIANGLE) &&
              (prefOrthoPyramid()) ) {
             if (arAngle < 0.0) {
                 arAngle += 360.0;
@@ -764,6 +764,11 @@ void QGIViewBalloon::draw()
     }
     dLinePath.lineTo(arrowTipX - xAdj, arrowTipY - yAdj);
     balloonLines->setPath(dLinePath);
+
+    if (!balloon->LineVisible.getValue()) {
+        arrow->hide();
+        balloonLines->setPath(QPainterPath());
+    }
 
     // redraw the Balloon and the parent View
     if (hasHover && !isSelected()) {
