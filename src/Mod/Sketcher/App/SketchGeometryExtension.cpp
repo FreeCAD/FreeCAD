@@ -66,7 +66,9 @@ void SketchGeometryExtension::Save(Base::Writer &writer) const
         writer.Stream() << "\" name=\"" << name;
 
     writer.Stream() << "\" id=\"" << Id
-                    << "\" internalGeometryType=\"" << (int) InternalGeometryType << "\"/>" << std::endl;
+                    << "\" internalGeometryType=\"" << (int) InternalGeometryType
+                    << "\" geometryModeFlags=\""    << GeometryModeFlags.to_string()
+                    << "\"/>" << std::endl;
 }
 
 void SketchGeometryExtension::Restore(Base::XMLReader &reader)
@@ -75,6 +77,8 @@ void SketchGeometryExtension::Restore(Base::XMLReader &reader)
 
     Id = reader.getAttributeAsInteger("id");
     InternalGeometryType = (InternalType::InternalType) reader.getAttributeAsInteger("internalGeometryType");
+
+    GeometryModeFlags = GeometryModeFlagType(reader.getAttribute("geometryModeFlags"));
 }
 
 std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) const
@@ -83,6 +87,7 @@ std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) con
 
     cpy->Id = this->Id;
     cpy->InternalGeometryType = this->InternalGeometryType;
+    cpy->GeometryModeFlags  = this->GeometryModeFlags;
 
     cpy->setName(this->getName()); // Base Class
 
