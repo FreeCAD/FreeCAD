@@ -50,6 +50,9 @@ public:
     virtual bool extensionOnDelete(const std::vector<std::string> &) override;
 
     virtual void extensionAttach(App::DocumentObject* pcObject) override;
+
+    virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) override;
+    virtual int extensionCanReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) override;
 };
 
 typedef ViewProviderExtensionPythonT<Gui::ViewProviderGroupExtension> ViewProviderGroupExtensionPython;

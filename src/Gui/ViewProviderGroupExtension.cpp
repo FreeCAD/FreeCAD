@@ -141,6 +141,34 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::strin
     return true;
 }
 
+int ViewProviderGroupExtension::extensionCanReplaceObject(App::DocumentObject* oldValue,
+                                                          App::DocumentObject* newValue)
+{
+    (void)newValue;
+    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
+    if (!group->Group.find(oldValue->getNameInDocument()))
+        return 0;
+    return 1;
+}
+
+int ViewProviderGroupExtension::extensionReplaceObject(App::DocumentObject* oldValue,
+                                                       App::DocumentObject* newValue)
+{
+    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
+    int idx = -1;
+    group->Group.find(oldValue->getNameInDocument(), &idx);
+    if (idx < 0)
+        return 0;
+    int idx2 = -1;
+    group->Group.find(newValue->getNameInDocument(), &idx2);
+    if (idx2 < 0)
+        return -1;
+    auto children = group->Group.getValues();
+    children.erase(children.begin()+idx2);
+    children.insert(children.begin()+idx, newValue);
+    group->Group.setValues(children);
+    return 1;
+}
 
 namespace Gui {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderGroupExtensionPython, Gui::ViewProviderGroupExtension)

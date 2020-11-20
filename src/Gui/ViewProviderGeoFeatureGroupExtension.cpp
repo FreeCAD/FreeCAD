@@ -259,6 +259,19 @@ void ViewProviderGeoFeatureGroupExtension::buildExport() const {
         group->_ExportChildren.setValues(std::move(model));
 }
 
+int ViewProviderGeoFeatureGroupExtension::extensionCanReplaceObject(
+        App::DocumentObject* oldValue, App::DocumentObject* newValue)
+{
+    (void)oldValue;
+    auto owner = getExtendedViewProvider()->getObject();
+    auto group = owner->getExtensionByType<App::GeoFeatureGroupExtension>();
+    if (!group->_ExportChildren.find(oldValue->getNameInDocument())
+                || (!group->_ExportChildren.find(newValue->getNameInDocument())
+                    && group->Group.find(newValue->getNameInDocument())))
+        return 0;
+    return 1;
+}
+
 int ViewProviderGeoFeatureGroupExtension::extensionReplaceObject(
         App::DocumentObject* oldValue, App::DocumentObject* newValue)
 {
@@ -267,14 +280,25 @@ int ViewProviderGeoFeatureGroupExtension::extensionReplaceObject(
     if(!group)
         return 0;
 
-    if(group->_ExportChildren.find(oldValue->getNameInDocument()) != oldValue)
+    int idx = -1, idx2 = -1;
+    if(group->_ExportChildren.find(oldValue->getNameInDocument(), &idx) != oldValue)
+        return 0;
+
+    group->_ExportChildren.find(newValue->getNameInDocument(), &idx2);
+    if (idx2 >= 0) {
+        auto children = group->_ExportChildren.getValues();
+        children.erase(children.begin() + idx2);
+        children.insert(children.begin() + idx, newValue);
+        group->Group.setValues({});
+        group->addObjects(children);
+        return 1;
+    }
+
+    if (group->Group.find(newValue->getNameInDocument()))
         return 0;
 
     auto children = group->_ExportChildren.getValues();
-    for(auto &child : children) {
-        if(child == oldValue)
-            child = newValue;
-    }
+    children[idx] = newValue;
 
     std::vector<std::pair<App::DocumentObjectT, std::unique_ptr<App::Property> > > propChanges;
 

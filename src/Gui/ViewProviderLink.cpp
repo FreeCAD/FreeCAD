@@ -3552,6 +3552,38 @@ void ViewProviderLink::setTransformation(const SbMatrix &rcMatrix)
     }
 }
 
+bool ViewProviderLink::canReplaceObject(App::DocumentObject* oldValue,
+                                       App::DocumentObject* newValue)
+{
+    (void)oldValue;
+    (void)newValue;
+    auto ext = getLinkExtension();
+    return ext && !ext->getLinkedObjectProperty() && ext->getElementListProperty();
+}
+
+int ViewProviderLink::replaceObject(App::DocumentObject* oldValue,
+                                    App::DocumentObject* newValue)
+{
+    auto ext = getLinkExtension();
+    if(!ext)
+        return 0;
+    if (ext->getLinkedObjectProperty() || !ext->getElementListProperty())
+        return 0;
+
+    auto prop = ext->getElementListProperty();
+    int idx=-1, idx2=-1;
+    prop->find(oldValue->getNameInDocument(), &idx);
+    if (idx < 0)
+        return 0;
+    prop->find(newValue->getNameInDocument(), &idx2);
+    if (idx2 < 0)
+        return ViewProviderDocumentObject::replaceObject(oldValue, newValue);
+    auto children = prop->getValues();
+    children.erase(children.begin()+idx2);
+    children.insert(children.begin()+idx, newValue);
+    prop->setValues(children);
+    return 1;
+}
 ////////////////////////////////////////////////////////////////////////////////////////
 
 namespace Gui {
