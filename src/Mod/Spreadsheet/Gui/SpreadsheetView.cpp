@@ -376,7 +376,7 @@ void SheetView::editingFinished()
         ui->cells->setFocus();
     } catch (Base::Exception & e) {
         e.ReportException();
-        App::GetApplication().closeActiveTransaction(true);
+        guard.close(true);
         QMessageBox::critical(getMainWindow(), tr("Edit cell"),
                 tr("Failed to edit cell: %1").arg(QString::fromUtf8(e.what())));
     }
