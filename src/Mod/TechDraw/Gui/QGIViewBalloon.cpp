@@ -717,14 +717,14 @@ void QGIViewBalloon::draw()
     double yAdj = 0.0;
     int endType = balloon->EndType.getValue();
     double arrowAdj = QGIArrow::getOverlapAdjust(endType,
-                                                 QGIArrow::getPrefArrowSize());
+                                                 balloon->EndTypeScale.getValue()*QGIArrow::getPrefArrowSize());
 
     if (endType == ArrowType::NONE) {
         arrow->hide();
     } else {
         arrow->setStyle(endType);
 
-        arrow->setSize(QGIArrow::getPrefArrowSize());
+        arrow->setSize(balloon->EndTypeScale.getValue()*QGIArrow::getPrefArrowSize());
         arrow->draw();
 
         Base::Vector3d arrowTipPos(arrowTipX, arrowTipY, 0.0);

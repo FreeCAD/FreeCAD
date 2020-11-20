@@ -105,6 +105,9 @@ DrawViewBalloon::DrawViewBalloon(void)
     ADD_PROPERTY_TYPE(ShapeScale,(1.0),"",(App::PropertyType)(App::Prop_None),"Balloon shape scale");
     ShapeScale.setConstraints(&SymbolScaleRange);
 
+    ADD_PROPERTY_TYPE(EndTypeScale,(1.0),"",(App::PropertyType)(App::Prop_None),"EndType shape scale");
+    ShapeScale.setConstraints(&SymbolScaleRange);
+
     ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Text wrap length; -1 means no wrap");
 
     ADD_PROPERTY_TYPE(KinkLength,(prefKinkLength()),"",(App::PropertyType)(App::Prop_None),
