@@ -31,6 +31,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 
 namespace TechDraw
 {
