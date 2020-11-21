@@ -3895,12 +3895,22 @@ void TreeWidget::onSelectionChanged(const SelectionChanges& msg)
                 << msg.pObjectName << '.' << msg.pSubName);
         break;
     }
-    case SelectionChanges::ClrSelection: 
-        for(auto item : selectedItems()) {
-            if(item->type() == ObjectType)
-                static_cast<DocumentObjectItem*>(item)->mySubs.clear();
+    case SelectionChanges::ClrSelection: {
+        auto sels = selectedItems();
+        if (sels.size()) {
+            for(auto item : sels) {
+                if(item->type() == ObjectType) {
+                    auto oitem = static_cast<DocumentObjectItem*>(item);
+                    oitem->mySubs.clear();
+                    oitem->selected = 0;
+                }
+            }
+            QSignalBlocker blocker(this);
+            selectionModel()->clearSelection();
         }
-        // fall through
+        selectTimer->stop();
+        break;
+    }
     case SelectionChanges::AddSelection:
     case SelectionChanges::RmvSelection:
     case SelectionChanges::SetSelection: {
