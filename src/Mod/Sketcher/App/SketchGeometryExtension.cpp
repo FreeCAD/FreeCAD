@@ -31,19 +31,21 @@
 
 using namespace Sketcher;
 
+
 //---------- Geometry Extension
+constexpr std::array<const char *, InternalType::NumInternalGeometryType> SketchGeometryExtension::internaltype2str;
 
 TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension,Part::GeometryExtension)
 
 // scoped within the class, multithread ready
 std::atomic<long> SketchGeometryExtension::_GeometryID;
 
-SketchGeometryExtension::SketchGeometryExtension():Id(++SketchGeometryExtension::_GeometryID)
+SketchGeometryExtension::SketchGeometryExtension():Id(++SketchGeometryExtension::_GeometryID),InternalGeometryType(InternalType::None)
 {
 
 }
 
-SketchGeometryExtension::SketchGeometryExtension(long cid):Id(cid)
+SketchGeometryExtension::SketchGeometryExtension(long cid):Id(cid),InternalGeometryType(InternalType::None)
 {
 
 }
@@ -63,7 +65,8 @@ void SketchGeometryExtension::Save(Base::Writer &writer) const
     if(name.size() > 0)
         writer.Stream() << "\" name=\"" << name;
 
-    writer.Stream() << "\" id=\"" << Id << "\"/>" << std::endl;
+    writer.Stream() << "\" id=\"" << Id
+                    << "\" internalGeometryType=\"" << (int) InternalGeometryType << "\"/>" << std::endl;
 }
 
 void SketchGeometryExtension::Restore(Base::XMLReader &reader)
@@ -71,6 +74,7 @@ void SketchGeometryExtension::Restore(Base::XMLReader &reader)
     restoreNameAttribute(reader);
 
     Id = reader.getAttributeAsInteger("id");
+    InternalGeometryType = (InternalType::InternalType) reader.getAttributeAsInteger("internalGeometryType");
 }
 
 std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) const
@@ -78,6 +82,7 @@ std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) con
     auto cpy = std::make_unique<SketchGeometryExtension>();
 
     cpy->Id = this->Id;
+    cpy->InternalGeometryType = this->InternalGeometryType;
 
     cpy->setName(this->getName()); // Base Class
 

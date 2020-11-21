@@ -25,9 +25,28 @@
 
 #include <Mod/Part/App/Geometry.h>
 #include <atomic>
+#include <bitset>
+#include <array>
 
 namespace Sketcher
 {
+
+    namespace InternalType {
+        enum InternalType {
+            None                    = 0,
+            EllipseMajorDiameter    = 1,
+            EllipseMinorDiameter    = 2,
+            EllipseFocus1           = 3,
+            EllipseFocus2           = 4,
+            HyperbolaMajor          = 5,
+            HyperbolaMinor          = 6,
+            HyperbolaFocus          = 7,
+            ParabolaFocus           = 8,
+            BSplineControlPoint     = 9,
+            BSplineKnotPoint        = 10,
+            NumInternalGeometryType        // Must be the last
+        };
+    }
 
 class ISketchGeometryExtension
 {
@@ -36,12 +55,16 @@ public:
     // Identification information
     virtual long getId() const = 0;
     virtual void setId(long id) = 0;
+
+    virtual InternalType::InternalType getInternalType() const = 0;
+    virtual void setInternalType(InternalType::InternalType type) = 0;
 };
 
 class SketcherExport SketchGeometryExtension : public Part::GeometryExtension, private ISketchGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
+
     SketchGeometryExtension();
     SketchGeometryExtension(long cid);
     virtual ~SketchGeometryExtension() override = default;
@@ -58,11 +81,17 @@ public:
     virtual long getId() const override {return Id;}
     virtual void setId(long id) override {Id = id;}
 
+    virtual InternalType::InternalType getInternalType() const override {return InternalGeometryType;}
+    virtual void setInternalType(InternalType::InternalType type) override {InternalGeometryType = type;}
+
+    constexpr static std::array<const char *,InternalType::NumInternalGeometryType> internaltype2str {{ "None", "EllipseMajorDiameter", "EllipseMinorDiameter","EllipseFocus1", "EllipseFocus2", "HyperbolaMajor", "HyperbolaMinor", "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint" }};
+
 private:
     SketchGeometryExtension(const SketchGeometryExtension&) = default;
 
 private:
-    long Id;
+    long                                Id;
+    InternalType::InternalType    InternalGeometryType;
 
 private:
     static std::atomic<long> _GeometryID;
