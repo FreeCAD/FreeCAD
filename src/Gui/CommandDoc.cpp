@@ -384,6 +384,7 @@ StdCmdDependencyGraph::StdCmdDependencyGraph()
     sStatusTip    = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
     sWhatsThis    = "Std_DependencyGraph";
     eType         = 0;
+    sPixmap       = "Std_DependencyGraph";
 }
 
 void StdCmdDependencyGraph::activated(int iMsg)
@@ -658,6 +659,7 @@ StdCmdProjectUtil::StdCmdProjectUtil()
     sMenuText     = QT_TR_NOOP("Project utility...");
     sToolTipText  = QT_TR_NOOP("Utility to extract or create project files");
     sStatusTip    = QT_TR_NOOP("Utility to extract or create project files");
+    sPixmap       = "Std_ProjectUtil";
 }
 
 void StdCmdProjectUtil::activated(int iMsg)

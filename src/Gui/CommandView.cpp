@@ -3009,6 +3009,7 @@ StdCmdSceneInspector::StdCmdSceneInspector()
     sWhatsThis    = "Std_SceneInspector";
     sStatusTip    = QT_TR_NOOP("Scene inspector");
     eType         = Alter3DView;
+    sPixmap       = "Std_SceneInspector";
 }
 
 void StdCmdSceneInspector::activated(int iMsg)
@@ -3067,6 +3068,7 @@ StdCmdDemoMode::StdCmdDemoMode()
     sWhatsThis    = "Std_DemoMode";
     sStatusTip    = QT_TR_NOOP("View turntable");
     eType         = Alter3DView;
+    sPixmap       = "Std_DemoMode";
 }
 
 void StdCmdDemoMode::activated(int iMsg)
