@@ -65,7 +65,7 @@ class _CommandImageScaling:
 
     def Activated(self):
         import draftguitools.gui_trackers as trackers
-        cmdCreateImageScaling(name="ImageScaling")
+        cmdCreateImageScaling(name="ImageScaling", trackers=trackers)
         
     def IsActive(self):
         if FreeCAD.ActiveDocument:
@@ -78,7 +78,7 @@ if FreeCAD.GuiUp:
 
 
 # helper
-def cmdCreateImageScaling(name):
+def cmdCreateImageScaling(name, trackers):
 
     def distance(p1,p2):
         dx=p2[0]-p1[0]
