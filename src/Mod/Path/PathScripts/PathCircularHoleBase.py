@@ -330,20 +330,21 @@ class ObjectOp(PathOp.ObjectOp):
                             PathLog.warning(msg)
 
                         # Warn user if Final Depth set lower than bottom of hole
-                        if finDep < holeBtm:
+                        if obj.FinalDepth.Value < holeBtm:
                             msg = translate("Path", "Final Depth setting is below the hole bottom for {}.".format(sub)) + '  '
                             msg += translate("Path", "{} depth is calculated at {} mm".format(sub, round(holeBtm, 4)))
                             PathLog.warning(msg)
 
                         holes.append({'x': pos.x, 'y': pos.y, 'r': self.holeDiameter(obj, base, sub),
-                                     'angle': angle, 'axis': axis, 'trgtDep': finDep,
+                                     'angle': angle, 'axis': axis, 'trgtDep': obj.FinalDepth.Value,
                                       'stkTop': stock.Shape.BoundBox.ZMax})
 
+        # haveLocations are populated from Base Locations tab as (x,y) coordinates
         if haveLocations(self, obj):
             for location in obj.Locations:
                 # holes.append({'x': location.x, 'y': location.y, 'r': 0, 'angle': 0.0, 'axis': 'X', 'holeBtm': obj.FinalDepth.Value})
                 holes.append({'x': location.x, 'y': location.y, 'r': 0,
-                             'angle': 0.0, 'axis': 'X', 'trgtDep': finDep,
+                             'angle': 0.0, 'axis': 'X', 'trgtDep': obj.FinalDepth.Value,
                               'stkTop': PathUtils.findParentJob(obj).Stock.Shape.BoundBox.ZMax})
 
         if len(holes) > 0:
