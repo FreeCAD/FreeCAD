@@ -892,7 +892,7 @@ std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char *subnam
         sub[pos+1] = 0;
         auto sobj = getSubObject(sub.c_str());
         if(!sobj || !sobj->getNameInDocument())
-            break;
+            continue;
         res.push_back(sobj);
         sub[pos+1] = c;
     }
