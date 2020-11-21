@@ -145,6 +145,9 @@ std::vector<App::DocumentObject*> ViewProviderSplit::claimChildren(void) const {
         auto children = owner->Tools.getValues();
         const auto &solids = owner->Solids.getValues();
         children.insert(children.end(),solids.begin(),solids.end());
+
+        auto res = PartDesignGui::ViewProvider::claimChildren();
+        children.insert(children.end(), res.begin(), res.end());
         return children;
     }
     return {};

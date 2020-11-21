@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QMenu>
 # include <Inventor/nodes/SoGroup.h>
 #endif
@@ -135,9 +136,10 @@ SoGroup* ViewProviderWrap::getChildRoot(void) const
 std::vector<App::DocumentObject*> ViewProviderWrap::claimChildren(void) const
 {
     auto owner = Base::freecad_dynamic_cast<PartDesign::FeatureWrap>(getObject());
+    auto res = inherited::claimChildren();
     if(owner && owner->WrapFeature.getValue())
-        return {owner->WrapFeature.getValue()};
-    return {};
+        res.insert(res.begin(), owner->WrapFeature.getValue());
+    return res;
 }
 
 std::vector<App::DocumentObject*> ViewProviderWrap::claimChildren3D(void) const
@@ -183,6 +185,12 @@ Gui::ViewProvider * ViewProviderWrap::startEditing(int mode)
 
 bool ViewProviderWrap::doubleClicked()
 {
+    if (QApplication::queryKeyboardModifiers()
+            & (Qt::ControlModifier | Qt::ShiftModifier))
+    {
+        return ViewProvider::doubleClicked();
+    }
+
     auto vp = getWrappedView();
     if (!vp)
         return false;

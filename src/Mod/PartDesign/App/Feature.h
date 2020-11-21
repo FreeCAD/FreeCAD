@@ -57,6 +57,7 @@ public:
     App::PropertyBool Suppress;
     Part::PropertyPartShape SuppressedShape;
     App::PropertyBool NewSolid;
+    App::PropertyLinkList _Siblings;
 
     short mustExecute() const;
 
@@ -90,6 +91,9 @@ public:
                                      std::vector<int> &vertices) const;
 
     virtual void onChanged(const App::Property* prop);
+
+    virtual App::DocumentObject *getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const;
 
 protected:
 

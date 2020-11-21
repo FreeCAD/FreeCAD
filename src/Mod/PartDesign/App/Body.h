@@ -168,11 +168,22 @@ public:
     /// Obtain the relationship between two features within the body
     Relation getRelation(const App::DocumentObject *, const App::DocumentObject *) const;
 
+    /// Check if two objects are siblings of this body
     bool isSibling(const App::DocumentObject *a, const App::DocumentObject *b) const {
         return getRelation(a, b) == RelationSibling;
     }
 
-    std::deque<App::DocumentObject*> getSiblings(App::DocumentObject *) const;
+    /** Return siblings of a given object in this body
+     * @param obj: input object
+     * @param all: set to true to return all siblings including the given object,
+     *             or false to return only siblings before the given object
+     *             in history order
+     * @param reverse: set true to return the sibling in their history order,
+     *                 or false to reverse the order
+     */
+    std::deque<App::DocumentObject*> getSiblings(App::DocumentObject * obj,
+                                                 bool all=true,
+                                                 bool reversed=false) const;
 
 protected:
     virtual void onSettingDocument() override;

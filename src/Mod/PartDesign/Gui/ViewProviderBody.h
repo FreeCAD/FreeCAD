@@ -33,6 +33,11 @@ class SoGroup;
 class SoSeparator;
 class SbBox3f;
 class SoGetBoundingBoxAction;
+
+namespace PartDesign{
+class Feature;
+}
+
 namespace PartDesignGui {
 
 class ViewProvider;
@@ -83,12 +88,13 @@ public:
      */
     SbBox3f getBoundBox ();
 
-    /** Check whether objects can be added to the view provider by drag and drop */
-    virtual bool canDropObjects() const override;
+    /** Check whether the object can be removed from the view provider by drag and drop */
+    virtual bool canDragObject(App::DocumentObject*) const override;
     /** Check whether the object can be dropped to the view provider by drag and drop */
     virtual bool canDropObject(App::DocumentObject*) const override;
     /** Add an object to the view provider by drag and drop */
-    virtual void dropObject(App::DocumentObject*) override;
+    virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+            const char *subname, const std::vector<std::string> &elements) override;
 
     virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj) override;
     virtual bool canReplaceObject(App::DocumentObject *, App::DocumentObject *) override;
@@ -100,6 +106,9 @@ public:
     void beforeEdit(PartDesignGui::ViewProvider *vp);
     void afterEdit(PartDesignGui::ViewProvider *vp);
 
+    void groupSiblings(PartDesign::Feature *feat, bool collapse, bool all);
+    bool checkSiblings();
+
 protected:
     /// Copy over all visual properties to the child features
     void unifyVisualProperty(const App::Property* prop);
@@ -108,8 +117,8 @@ protected:
 
 private:
     std::vector<std::pair<App::DocumentObjectT, App::DocumentObjectT> > visibleFeatures;
-
     static const char* BodyModeEnum[];
+    bool checkingSiblings = false;
 };
 
 

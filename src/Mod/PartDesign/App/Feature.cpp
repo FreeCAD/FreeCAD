@@ -62,6 +62,9 @@ Feature::Feature()
     ADD_PROPERTY_TYPE(Suppress,(false),"Base",App::Prop_None, "Suppress the current feature");
     ADD_PROPERTY(SuppressedShape,(TopoShape()));
 
+    ADD_PROPERTY_TYPE(_Siblings,(0),"Base",(App::PropertyType)(
+                App::Prop_ReadOnly|App::Prop_Hidden|App::Prop_Output),0);
+
     Placement.setStatus(App::Property::Hidden, true);
     BaseFeature.setStatus(App::Property::Hidden, true);
 
@@ -254,8 +257,11 @@ TopoShape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
 Body* Feature::getFeatureBody() const {
 
     auto body = Base::freecad_dynamic_cast<Body>(_Body.getValue());
-    if(body)
+    if(body) {
+        if (body->Group.find(getNameInDocument()) != this)
+            return nullptr;
         return body;
+    }
 
     for (auto in : this->getInList()) {
         if(!in->isDerivedFrom(Body::getClassTypeId()))
@@ -357,6 +363,23 @@ void Feature::updateSuppressedShape()
     }
     Shape.setValue(baseShape);
     SuppressedShape.setValue(res);
+}
+
+App::DocumentObject *Feature::getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
+{
+    if(subname) {
+        const char * dot = strchr(subname,'.');
+        if (dot) {
+            auto body = PartDesign::Body::findBodyOf(this);
+            if (body) {
+                auto feat = body->Group.find(std::string(subname, dot));
+                if (feat)
+                    return feat->getSubObject(dot+1, pyObj, pmat, transform, depth+1);
+            }
+        }
+    }
+    return Part::Feature::getSubObject(subname, pyObj, pmat, transform, depth);
 }
 
 }//namespace PartDesign

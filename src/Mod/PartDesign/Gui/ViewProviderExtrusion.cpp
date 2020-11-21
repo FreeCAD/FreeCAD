@@ -85,7 +85,12 @@ TaskDlgFeatureParameters *ViewProviderExtrusion::getEditDialog()
 std::vector<App::DocumentObject*>
 ViewProviderExtrusion::claimChildren(void) const {
     auto feature = Base::freecad_dynamic_cast<PartDesign::ProfileBased>(getObject());
-    if (!feature || feature->ClaimChildren.getValue())
+
+    if (!feature)
+        return {};
+
+    if(feature->ClaimChildren.getValue())
         return ViewProviderPad::claimChildren();
-    return {};
+
+    return PartDesignGui::ViewProvider::claimChildren();
 }

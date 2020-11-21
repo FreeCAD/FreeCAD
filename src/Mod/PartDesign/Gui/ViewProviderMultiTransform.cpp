@@ -42,10 +42,12 @@ TaskDlgFeatureParameters *ViewProviderMultiTransform::getEditDialog() {
 std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren(void) const
 {
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
-    if (pcMultiTransform == NULL)
+    if (pcMultiTransform)
         return std::vector<App::DocumentObject*>(); // TODO: Show error?
 
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
+    auto res = PartDesignGui::ViewProvider::claimChildren();
+    transformFeatures.insert(transformFeatures.end(), res.begin(), res.end());
     return transformFeatures;
 }
 

@@ -55,6 +55,7 @@
 
 #include "ViewProvider.h"
 #include "ViewProviderPy.h"
+#include "ViewProviderBody.h"
 
 using namespace PartDesignGui;
 
@@ -73,18 +74,60 @@ ViewProvider::~ViewProvider()
 
 bool ViewProvider::doubleClicked(void)
 {
+    auto modifiers = QApplication::queryKeyboardModifiers();
+    if (modifiers & Qt::ShiftModifier) {
+        auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
+        auto bodyVp = Base::freecad_dynamic_cast<ViewProviderBody>(
+                Gui::Application::Instance->getViewProvider(
+                    PartDesign::Body::findBodyOf(getObject())));
+
+        App::SubObjectT objT;
+        if (feat && bodyVp) {
+            auto sels = Gui::Selection().getSelectionT("*", 0);
+            if (sels.size() && sels[0].getSubObject() == feat) {
+                auto parent = sels[0].getParent();
+                if (parent.getSubObject() == bodyVp->getObject())
+                    objT = sels[0];
+                else {
+                    parent = parent.getParent();
+                    if (parent.getSubObject() == bodyVp->getObject()) {
+                        objT = parent;
+                        objT.setSubName(objT.getSubName()
+                                + feat->getNameInDocument() + ".");
+                    }
+                }
+            }
+            Gui::Selection().clearSelection();
+            bodyVp->groupSiblings(feat, feat->_Siblings.getSize() == 0, false);
+            if (objT.getObjectName().size())
+                Gui::Selection().addSelection(objT);
+            return true;
+        }
+        return false;
+    }
+
+    std::string Msg("Edit ");
+    Msg += this->pcObject->Label.getValue();
+    App::AutoTransaction committer(Msg.c_str());
     try {
 	    PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
-        std::string Msg("Edit ");
-        Msg += this->pcObject->Label.getValue();
-        Gui::Command::openCommand(Msg.c_str());
         PartDesignGui::setEdit(pcObject,body);
     }
-    catch (const Base::Exception&) {
-        Gui::Command::abortCommand();
+    catch (const Base::Exception &) {
+        committer.close(true);
     }
     return true;
 }
+
+enum PartDesignEditMode {
+    EditToggleSupress = ViewProvider::UserEditMode+1,
+    EditSelectSiblings = ViewProvider::UserEditMode+2,
+    EditExpandSiblings = ViewProvider::UserEditMode+3,
+    EditExpandAll = ViewProvider::UserEditMode+4,
+    EditCollapseSiblings = ViewProvider::UserEditMode+5,
+    EditCollapseAll = ViewProvider::UserEditMode+6,
+    EditSetTip = ViewProvider::UserEditMode+7,
+};
 
 void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
@@ -92,11 +135,34 @@ void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* 
     if(feat) {
         QAction* act = menu->addAction(QObject::tr(feat->Suppress.getValue()?"Unsuppress":"Suppress"),
                 receiver, member);
-        act->setData(QVariant((int)ViewProvider::UserEditMode+1));
+        act->setData(QVariant((int)EditToggleSupress));
+
+        if (feat->_Siblings.getSize()) {
+            act = menu->addAction(QObject::tr("Expand siblings"), receiver, member);
+            act->setData(QVariant((int)EditExpandSiblings));
+            act = menu->addAction(QObject::tr("Expand all"), receiver, member);
+            act->setData(QVariant((int)EditExpandAll));
+        }
 
         if (IconColor.getValue().getPackedValue()) {
-            QAction* act = menu->addAction(QObject::tr("Select siblings"), receiver, member);
-            act->setData(QVariant((int)ViewProvider::UserEditMode+2));
+            auto body = PartDesign::Body::findBodyOf(feat);
+            if (body) {
+                auto siblings = body->getSiblings(feat);
+                if (siblings.size() > 1) {
+                    if (siblings.front() != feat) {
+                        act = menu->addAction(QObject::tr("Collapse siblings"), receiver, member);
+                        act->setData(QVariant((int)EditCollapseSiblings));
+                    }
+                    act = menu->addAction(QObject::tr("Collapse all"), receiver, member);
+                    act->setData(QVariant((int)EditCollapseAll));
+                }
+                if (body->Tip.getValue() != feat) {
+                    act = menu->addAction(QObject::tr("Set body tip"), receiver, member);
+                    act->setData(QVariant((int)EditSetTip));
+                }
+            }
+            act = menu->addAction(QObject::tr("Select siblings"), receiver, member);
+            act->setData(QVariant((int)EditSelectSiblings));
         }
     }
     QAction* act = menu->addAction(QObject::tr("Set colors..."), receiver, member);
@@ -105,7 +171,12 @@ void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* 
 
 bool ViewProvider::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
+    auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
+    if (!feat)
+        return false;
+
+    switch(ModNum) {
+    case ViewProvider::Default: {
         // When double-clicking on the item for this feature the
         // object unsets and sets its edit mode without closing
         // the task panel
@@ -151,25 +222,44 @@ bool ViewProvider::setEdit(int ModNum)
 
         Gui::Control().showDialog(featureDlg);
         return true;
-    } else if (ModNum == ViewProvider::UserEditMode+1 ) {
-        auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
-        if(feat) {
-            std::ostringstream ss;
-            ss << (feat->Suppress.getValue()?"Unsuppress":"Suppress") << " " << feat->getNameInDocument();
-            App::GetApplication().setActiveTransaction(ss.str().c_str());
-            try {
-                if(feat->Suppress.getValue())
-                    Gui::cmdAppObject(feat, "Suppress = False"); 
-                else
-                    Gui::cmdAppObject(feat, "Suppress = True"); 
-                Gui::cmdAppDocument(App::GetApplication().getActiveDocument(), "recompute()");
-            } catch (Base::Exception &e) {
-                e.ReportException();
-            }
-            App::GetApplication().closeActiveTransaction();
+    }
+    case EditToggleSupress: {
+        std::ostringstream ss;
+        ss << (feat->Suppress.getValue()?"Unsuppress":"Suppress") << " " << feat->getNameInDocument();
+        App::AutoTransaction committer(ss.str().c_str());
+        try {
+            if(feat->Suppress.getValue())
+                Gui::cmdAppObject(feat, "Suppress = False"); 
+            else
+                Gui::cmdAppObject(feat, "Suppress = True"); 
+            Gui::cmdAppDocument(App::GetApplication().getActiveDocument(), "recompute()");
+        } catch (Base::Exception &e) {
+            e.ReportException();
         }
         return false;
-    } else if (ModNum == ViewProvider::UserEditMode+2 ) {
+    }
+    case EditCollapseSiblings:
+    case EditCollapseAll:
+    case EditExpandSiblings:
+    case EditExpandAll:
+    {
+        auto bodyVp = Base::freecad_dynamic_cast<ViewProviderBody>(
+                Gui::Application::Instance->getViewProvider(
+                    PartDesign::Body::findBodyOf(getObject())));
+        if (bodyVp)
+            bodyVp->groupSiblings(feat, 
+                    ModNum == EditCollapseSiblings || ModNum == EditCollapseAll,
+                    ModNum == EditCollapseAll || ModNum == EditExpandAll);
+        return false;
+    }
+    case EditSetTip: {
+        auto body = PartDesign::Body::findBodyOf(feat);
+        body->Tip.setValue(feat);
+        feat->Visibility.setValue(true);
+        Gui::Command::updateActive();
+        return false;
+    }
+    case EditSelectSiblings: {
         auto body = PartDesign::Body::findBodyOf(getObject());
         if (body) {
             ViewProviderDocumentObject *vpParent = 0;
@@ -193,7 +283,8 @@ bool ViewProvider::setEdit(int ModNum)
             }
         }
         return false;
-    } else {
+    }
+    default:
         return PartGui::ViewProviderPart::setEdit(ModNum);
     }
 }
@@ -274,6 +365,11 @@ void ViewProvider::updateData(const App::Property* prop)
 
     } else if (prop == &feature->Suppress) {
         signalChangeIcon();
+    } else if (prop == &feature->_Siblings) {
+        pxTipIcon = QPixmap();
+        signalChangeIcon();
+    } else if (prop == &feature->_Siblings) {
+
     } else if (prop == &feature->Shape) {
         if (!getObject()->getDocument()->isPerformingTransaction()
                 && !getObject()->getDocument()->testStatus(App::Document::Restoring)
@@ -344,6 +440,14 @@ void ViewProvider::onChanged(const App::Property* prop) {
     if (prop == &IconColor) {
         pxTipIcon = QPixmap();
         signalChangeIcon();
+
+        auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
+        auto body = PartDesign::Body::findBodyOf(getObject());
+        if (feature && body && feature->_Siblings.getSize()) {
+            auto siblings = body->getSiblings(feature);
+            if (siblings.size() && siblings.front() == feature)
+                feature->_Siblings.setValues();
+        }
     }
 
     PartGui::ViewProviderPartExt::onChanged(prop);
@@ -372,6 +476,20 @@ QPixmap ViewProvider::getTagIcon() const
         pxTipIcon = Gui::BitmapFactory().pixmapFromSvg("PartDesign_Overlay.svg",
                                                         QSizeF(64,64),
                                                         colormap);
+        auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
+        if (feat && feat->_Siblings.getSize()) {
+            QPixmap px(64, 64);
+            QPainter pt;
+            px.fill(Qt::transparent);
+            pt.begin(&px);
+            pt.setRenderHints(QPainter::Antialiasing|QPainter::SmoothPixmapTransform);
+            pt.rotate(10);
+            pt.drawPixmap(0, 0, pxTipIcon);
+            pt.rotate(-20);
+            pt.drawPixmap(0, 0, pxTipIcon);
+            pt.end();
+            pxTipIcon = px;
+        }
     }
     return pxTipIcon;
 }
@@ -495,10 +613,37 @@ ViewProviderBody* ViewProvider::getBodyViewProvider() {
 }
 
 bool ViewProvider::hasBaseFeature() const{
-    auto feature = dynamic_cast<PartDesign::Feature*>(getObject());
+    auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
     if(feature && feature->getBaseObject(true))
         return true;
     return PartGui::ViewProviderPart::hasBaseFeature();
+}
+
+bool ViewProvider::canReplaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj)
+{
+    auto vp = Gui::Application::Instance->getViewProvider(
+            PartDesign::Body::findBodyOf(getObject()));
+    return vp && vp->canReplaceObject(oldObj, newObj);
+}
+
+int ViewProvider::replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj)
+{
+    auto vp = Gui::Application::Instance->getViewProvider(
+            PartDesign::Body::findBodyOf(getObject()));
+    if (vp)
+        return vp->replaceObject(oldObj, newObj);
+    return 0;
+}
+
+std::vector<App::DocumentObject*> ViewProvider::claimChildren(void) const
+{
+    auto res = inherited::claimChildren();
+    auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
+    if (feature) {
+        auto siblings = feature->_Siblings.getValues();
+        res.insert(res.end(), siblings.begin(), siblings.end());
+    }
+    return res;
 }
 
 namespace Gui {

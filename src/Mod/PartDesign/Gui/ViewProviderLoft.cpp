@@ -70,6 +70,8 @@ std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren(void)const
             temp.push_back(obj);
     }
 
+    auto res = PartDesignGui::ViewProviderAddSub::claimChildren();
+    temp.insert(temp.end(), res.begin(), res.end());
     return temp;
 }
 
@@ -79,11 +81,6 @@ void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     act = menu->addAction(QObject::tr("Edit loft"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
-}
-
-bool ViewProviderLoft::doubleClicked(void)
-{
-    return PartDesignGui::setEdit(pcObject);
 }
 
 bool ViewProviderLoft::setEdit(int ModNum)

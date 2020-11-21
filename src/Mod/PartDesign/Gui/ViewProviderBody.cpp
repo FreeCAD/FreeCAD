@@ -313,12 +313,75 @@ unsigned long ViewProviderBody::generateIconColor(App::DocumentObject *feat) con
     return c.getPackedValue(t);
 }
 
+bool ViewProviderBody::checkSiblings()
+{
+    // This function is to make sure the sibling self grouping only contain
+    // previous siblings that are not already grouped.
+    //
+    // In addition, it makes sure any non solid feature do not mix with with
+    // grouping siblingings.
+
+    if (checkingSiblings)
+        return false;
+
+    Base::StateLocker guard(checkingSiblings);
+
+    bool touched = false;
+    std::set<App::DocumentObject *> grouped;
+    std::vector<App::DocumentObject *> children;
+    auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+    bool groupTouched = false;
+    auto group = body->Group.getValues();
+    for (auto obj : body->Group.getValues()) {
+        auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
+        if (!feat || !feat->_Siblings.getSize() || grouped.count(feat))
+            continue;
+
+        auto siblings = body->getSiblings(feat, false);
+        children.clear();
+        children.reserve(siblings.size());
+        for (auto sibling : siblings) {
+            if (grouped.insert(sibling).second) {
+                auto other = Base::freecad_dynamic_cast<PartDesign::Feature>(sibling);
+                if (other && other->_Siblings.getSize() == 0)
+                    children.insert(children.begin(), sibling);
+            }
+        }
+        if (children.size() != siblings.size()) {
+            touched = true;
+            feat->_Siblings.setValues(children);
+        }
+        if (children.size() > 1) {
+            int i = -1, j = -1;
+            body->Group.find(children.front()->getNameInDocument(), &j);
+            body->Group.find(children.back()->getNameInDocument(), &i);
+            for (int k=i; k<j; ++k) {
+                auto obj = group[k];
+                if (!obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+                    group.erase(group.begin() + k);
+                    group.insert(group.begin() + i, obj);
+                    ++i;
+                    groupTouched = true;
+                }
+            }
+        }
+    }
+    if (groupTouched) {
+        body->Group.setValues(group);
+        return true;
+    }
+    if (touched)
+        buildExport();
+    return touched;
+}
+
 void ViewProviderBody::updateData(const App::Property* prop)
 {
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
 
     if (prop == &body->Group) {
         setVisualBodyMode(true);
+        checkSiblings();
     } else if (prop == &body->BaseFeature) {
         //ensure all model features are in visual body mode
         setVisualBodyMode(true);
@@ -540,32 +603,14 @@ std::vector< std::string > ViewProviderBody::getDisplayModes(void) const {
     return modes;
 }
 
-bool ViewProviderBody::canDropObjects() const
-{
-    // if the BaseFeature property is marked as hidden or read-only then
-    // it's not allowed to modify it.
-    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
-    if (body->BaseFeature.testStatus(App::Property::Status::Hidden))
-        return false;
-    if (body->BaseFeature.testStatus(App::Property::Status::ReadOnly))
-        return false;
-    return true;
-}
-
 bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 {
-    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
-    if (!obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (!PartDesign::Body::isAllowed(obj))
         return false;
-    }
-    auto other = PartDesign::Body::findBodyOf(obj);
-    if(other == body) {
-        return true;
-    } else if (other) {
+
+    PartDesign::Body* body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+    if (!body || PartDesign::Body::findBodyOf(obj) == body)
         return false;
-    } else if (obj->isDerivedFrom (Part::BodyBase::getClassTypeId())) {
-        return false;
-    }
 
     // App::Part checking is too restrictive. It may mess up things, or it may
     // not. Just let user undo if anything is wrong.
@@ -578,10 +623,32 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
     return true;
 }
 
-void ViewProviderBody::dropObject(App::DocumentObject* obj)
+bool ViewProviderBody::canDragObject(App::DocumentObject *obj) const
 {
-    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
-    if (obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    PartDesign::Body* body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+    if (!body)
+        return false;
+    if (body->BaseFeature.getValue() == obj)
+        return false;
+
+    return PartDesignGui::isFeatureMovable(obj);
+}
+
+std::string ViewProviderBody::dropObjectEx(App::DocumentObject *obj,
+                                           App::DocumentObject *owner, 
+                                           const char *subname,
+                                           const std::vector<std::string> &elements)
+{
+    PartDesign::Body* body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+    if (!body)
+        FC_THROWM(Base::RuntimeError, "No body");
+
+    auto type = obj->getTypeId();
+    if (type.isDerivedFrom(Part::Datum::getClassTypeId())   ||
+        type.isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
+        type.isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
+        type.isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
+    {
         body->addObject(obj);
     }
     else if (PartDesign::Body::isAllowed(obj) && PartDesignGui::isFeatureMovable(obj)) {
@@ -592,44 +659,53 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
 
         PartDesign::Body* source = PartDesign::Body::findBodyOf(obj);
         if (source == body)
-            return;
-        if( source )
+            FC_THROWM(Base::RuntimeError, "Feature already inside the body");
+        if(source)
             source->removeObjects(move);
-        try {
-            body->addObjects(move);
-        }
-        catch (const Base::Exception& e) {
-            e.ReportException();
-        }
+        body->addObjects(move);
     }
-    else if (body->BaseFeature.getValue() == nullptr) {
-        body->BaseFeature.setValue(obj);
+    else if (elements.size()) {
+        auto binder = static_cast<PartDesign::SubShapeBinder*>(
+                body->getDocument()->addObject("PartDesign::SubShapeBinder",
+                                               "Binder"));
+        std::map<App::DocumentObject *, std::vector<std::string> > links;
+        auto & subs = links[owner];
+        std::string sub(subname ? subname : "");
+        for (auto & element : elements)
+            subs.emplace_back(sub + element);
+        binder->setLinks(std::move(links));
+        body->addObject(binder);
+        obj = binder;
     }
-
-    App::Document* doc  = body->getDocument();
-    doc->recompute();
-
-    // check if a proxy object has been created for the base feature
-    std::vector<App::DocumentObject*> links = body->Group.getValues();
-    for (auto it : links) {
-        if (it->getTypeId().isDerivedFrom(PartDesign::FeatureBase::getClassTypeId())) {
-            PartDesign::FeatureBase* base = static_cast<PartDesign::FeatureBase*>(it);
-            if (base && base->BaseFeature.getValue() == obj) {
-                Gui::Application::Instance->hideViewProvider(obj);
-                break;
-            }
-        }
+    else if (!body->getPrevSolidFeature() && !body->BaseFeature.getValue()) {
+        auto binder = static_cast<PartDesign::SubShapeBinder*>(
+                body->getDocument()->addObject("PartDesign::SubShapeBinder",
+                                                "BaseFeature"));
+        std::map<App::DocumentObject *, std::vector<std::string> > links;
+        auto & subs = links[owner];
+        if (subname && subname[0])
+            subs.emplace_back(subname);
+        binder->setLinks(std::move(links));
+        auto children = body->Group.getValues();
+        children.insert(children.begin(), binder);
+        body->Group.setValues(children);
+        body->BaseFeature.setValue(binder);
+        obj = binder;
     }
+    return std::string(obj->getNameInDocument()) + ".";
 }
 
 bool ViewProviderBody::canReplaceObject(App::DocumentObject *oldObj,
                                         App::DocumentObject *newObj)
 {
     auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
-    if (!body || !oldObj || !newObj || oldObj == newObj)
+    if (!body || !oldObj || !newObj || oldObj == newObj
+            || oldObj == body->BaseFeature.getValue()
+            || newObj == body->BaseFeature.getValue())
         return false;
 
-    if (PartDesign::Body::findBodyOf(newObj) != body)
+    if (!body->Group.find(oldObj->getNameInDocument())
+            || !body->Group.find(newObj->getNameInDocument()))
         return false;
 
     if (!newObj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
@@ -652,6 +728,20 @@ int ViewProviderBody::replaceObject(App::DocumentObject *oldObj, App::DocumentOb
     auto secondFeat = Base::freecad_dynamic_cast<PartDesign::Feature>(oldObj);
     auto firstFeat = Base::freecad_dynamic_cast<PartDesign::Feature>(newObj);
 
+    // In case the old object has self sibling group, repoint the old object to
+    // the earliest sibling
+    if (i < j && secondFeat && secondFeat->_Siblings.getSize()) {
+        const auto & siblings = secondFeat->_Siblings.getValues();
+        for (auto rit=siblings.rbegin(); rit!=siblings.rend(); ++rit) {
+            auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(*rit);
+            if (feat) {
+                if (feat != newObj && body->Group.find(feat->getNameInDocument(), &i))
+                    secondFeat = feat;
+                break;
+            }
+        }
+    }
+
     // first, second refers to the order after replaceObject() operation
     if (i > j)
         std::swap(secondFeat, firstFeat);
@@ -661,10 +751,11 @@ int ViewProviderBody::replaceObject(App::DocumentObject *oldObj, App::DocumentOb
     auto objs = body->Group.getValues();
     objs.erase(objs.begin() + j);
     objs.insert(objs.begin() + i, newObj);
+
+    Base::StateLocker guard(checkingSiblings); // delay sibling check
     body->Group.setValues(objs);
 
     if (firstFeat && secondFeat) {
-
         Base::ObjectStatusLocker<App::Property::Status,App::Property>
             guard1(App::Property::User3, &firstFeat->BaseFeature);
         Base::ObjectStatusLocker<App::Property::Status,App::Property>
@@ -688,6 +779,11 @@ int ViewProviderBody::replaceObject(App::DocumentObject *oldObj, App::DocumentOb
 
         if (body->Tip.getValue() == firstFeat)
             body->setTip(secondFeat);
+
+        checkingSiblings = false;
+
+        if (!checkSiblings())
+            buildExport();
     }
 
     Gui::Command::updateActive();
@@ -704,4 +800,83 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void) const 
             ++it;
     }
     return children;
+}
+
+void ViewProviderBody::groupSiblings(PartDesign::Feature *feat, bool collapse, bool all)
+{
+    auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+    if (!body)
+        return;
+
+    std::string cmd(collapse ? "Collapse " : "Expand ");
+    if (all)
+        cmd += "all";
+    else
+        cmd += "siblings";
+    App::AutoTransaction committer(cmd.c_str());
+    if (all) {
+        auto siblings = body->getSiblings(feat, true, true);
+        PartDesign::Feature *feat = nullptr;
+        while (siblings.size()) {
+            feat = Base::freecad_dynamic_cast<PartDesign::Feature>(siblings.front());
+            siblings.pop_front();
+            if (feat)
+                break;
+        }
+        if (!feat || siblings.empty())
+            return;
+        if (collapse) {
+            std::vector<App::DocumentObject*> objs(siblings.begin(), siblings.end());
+            feat->_Siblings.setValues(objs);
+        } else
+            feat->_Siblings.setValues();
+        for (auto obj : siblings) {
+            auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
+            if (feat)
+                feat->_Siblings.setValues();
+        }
+        if (!collapse || !checkSiblings())
+            buildExport();
+        return;
+    }
+
+    if (!collapse) {
+        feat->_Siblings.setValues();
+        buildExport();
+        return;
+    }
+
+    auto siblings = body->getSiblings(feat, false, true);
+
+    std::vector<App::DocumentObject*> objs;
+    objs.reserve(feat->_Siblings.getSize() + siblings.size());
+
+    objs = feat->_Siblings.getValues();
+    std::set<App::DocumentObject*> existing(objs.begin(), objs.end());
+
+    bool first = true;
+    for (auto obj : siblings) {
+        if (existing.count(obj))
+            continue;
+        auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
+        if (!feat || !feat->_Siblings.getSize()) {
+            if (feat)
+                first = false;
+            objs.push_back(obj);
+            continue;
+        }
+        if (first) {
+            // expand the first sibling that has its own group, and join its
+            // group to this feature. 
+            first = false;
+            objs.push_back(obj);
+            for (auto o : feat->_Siblings.getValues())
+                objs.push_back(o);
+            feat->_Siblings.setValues();
+            break;
+        }
+    }
+    feat->_Siblings.setValues(objs);
+    if (!checkSiblings())
+        buildExport();
 }

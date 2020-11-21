@@ -55,6 +55,8 @@ std::vector<App::DocumentObject*> ViewProviderHole::claimChildren(void)const
     std::vector<App::DocumentObject*> temp;
     temp.push_back(static_cast<PartDesign::Hole*>(getObject())->Profile.getValue());
 
+    auto res = PartDesignGui::ViewProvider::claimChildren();
+    temp.insert(temp.end(), res.begin(), res.end());
     return temp;
 }
 

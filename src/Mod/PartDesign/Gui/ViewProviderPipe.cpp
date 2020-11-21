@@ -79,6 +79,8 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
     if (auxspine != NULL && !auxspine->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
         temp.push_back(auxspine);
 
+    auto res = ViewProviderAddSub::claimChildren();
+    temp.insert(temp.end(), res.begin(), res.end());
     return temp;
 }
 
@@ -88,11 +90,6 @@ void ViewProviderPipe::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     act = menu->addAction(QObject::tr("Edit pipe"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
-}
-
-bool ViewProviderPipe::doubleClicked(void)
-{
-    return PartDesignGui::setEdit(pcObject);
 }
 
 bool ViewProviderPipe::setEdit(int ModNum) {

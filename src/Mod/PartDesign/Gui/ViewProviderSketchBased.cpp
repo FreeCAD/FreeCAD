@@ -57,6 +57,9 @@ std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren(void) c
            sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
             temp.push_back(sketch);
     }
+
+    auto res = PartDesignGui::ViewProvider::claimChildren();
+    temp.insert(temp.end(), res.begin(), res.end());
     return temp;
 }
 

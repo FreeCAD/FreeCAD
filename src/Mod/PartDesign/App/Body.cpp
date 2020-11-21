@@ -570,7 +570,8 @@ void Body::onChanged (const App::Property* prop) {
             FeatureBase* bf = nullptr;
             auto first = Group.getValues().empty() ? nullptr : Group.getValues().front();
 
-            if (BaseFeature.getValue()) {
+            if (BaseFeature.getValue()
+                    && !Group.find(BaseFeature.getValue()->getNameInDocument())) {
                 //setup the FeatureBase if needed
                 if (!first || (!first->isDerivedFrom(FeatureBase::getClassTypeId())
                                 && !first->isDerivedFrom(SubShapeBinder::getClassTypeId())))
@@ -647,6 +648,27 @@ std::vector<std::string> Body::getSubObjects(int reason) const {
 App::DocumentObject *Body::getSubObject(const char *subname, 
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
+    // PartDesign::Feature now support grouping sibling features, and the user
+    // is free to expand/collapse at any time. To not disrupt subname path
+    // because of this, the body will peek the next two sub-objects reference,
+    // and skip the first sub-object if possible.
+    if(subname) {
+        const char * firstDot = strchr(subname,'.');
+        if (firstDot) {
+            const char * secondDot = strchr(firstDot+1, '.');
+            if (secondDot) {
+                auto firstObj = Group.find(std::string(subname, firstDot).c_str());
+                if (!firstObj || firstObj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+                    auto secondObj = Group.find(std::string(firstDot+1, secondDot).c_str());
+                    if (secondObj) {
+                        // we support only one level of sibling grouping, so no
+                        // recursive call to our own getSubObject()
+                        return Part::BodyBase::getSubObject(firstDot+1,pyObj,pmat,transform,depth+1);
+                    }
+                }
+            }
+        }
+    }
 #if 1
     return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
 #else
@@ -735,7 +757,7 @@ Body::getRelation(const App::DocumentObject *obj, const App::DocumentObject *oth
 }
 
 std::deque<App::DocumentObject*>
-Body::getSiblings(App::DocumentObject *obj) const
+Body::getSiblings(App::DocumentObject *obj, bool all, bool reversed) const
 {
     std::deque<App::DocumentObject *> res;
     if (!obj || !obj->getNameInDocument()
@@ -752,14 +774,22 @@ Body::getSiblings(App::DocumentObject *obj) const
             auto base = feature->BaseFeature.getValue();
             if (!base)
                 break;
-            res.push_front(base);
+            if (reversed)
+                res.push_back(base);
+            else
+                res.push_front(base);
             if (res.size() >= Group.getValues().size())
                 break;
             if (!isSolidFeature(base))
                 break;
             feature = Base::freecad_dynamic_cast<PartDesign::Feature>(base);
         }
-        res.push_back(obj);
+        if (!all)
+            return res;
+        if (reversed)
+            res.push_front(obj);
+        else
+            res.push_back(obj);
         if (res.size() >= Group.getValues().size()) {
             // This means cyclic dependency actually
             return res;
@@ -776,7 +806,10 @@ Body::getSiblings(App::DocumentObject *obj) const
 
         if (static_cast<PartDesign::Feature*>(o)->BaseFeature.getValue() == obj) {
             obj = o;
-            res.push_back(o);
+            if (reversed)
+                res.push_front(o);
+            else
+                res.push_back(o);
         }
     }
     return res;
