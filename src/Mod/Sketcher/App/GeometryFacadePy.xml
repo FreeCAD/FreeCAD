@@ -23,6 +23,14 @@
         </Documentation>
         <Parameter Name="Id" Type="Long"/>
     </Attribute>
+    <Attribute Name="InternalType" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                returns the Id of the SketchGeometryExtension.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="InternalType" Type="String"/>
+    </Attribute>
     <Methode Name="mirror">
       <Documentation>
         <UserDocu>Performs the symmetrical transformation of this geometric object</UserDocu>

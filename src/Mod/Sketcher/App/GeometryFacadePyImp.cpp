@@ -92,6 +92,38 @@ void GeometryFacadePy::setId(Py::Long Id)
     this->getGeometryFacadePtr()->setId(long(Id));
 }
 
+Py::String GeometryFacadePy::getInternalType(void) const
+{
+    int internaltypeindex = (int)this->getGeometryFacadePtr()->getInternalType();
+
+    if(internaltypeindex >= InternalType::NumInternalGeometryType)
+        throw Py::NotImplementedError("String name of enum not implemented");
+
+    std::string typestr = SketchGeometryExtension::internaltype2str[internaltypeindex];
+
+     return Py::String(typestr);
+}
+
+void GeometryFacadePy::setInternalType(Py::String arg)
+{
+    std::string argstr = arg;
+
+    auto pos = std::find_if(    SketchGeometryExtension::internaltype2str.begin(),
+                                SketchGeometryExtension::internaltype2str.end(),
+                                [argstr](const char * val) {
+                                    return strcmp(val,argstr.c_str())==0;}
+                                );
+
+    if( pos != SketchGeometryExtension::internaltype2str.end()) {
+            int index = std::distance( SketchGeometryExtension::internaltype2str.begin(), pos );
+
+            this->getGeometryFacadePtr()->setInternalType((InternalType::InternalType)index);
+            return;
+    }
+
+    throw Py::ValueError("Argument is not a valid internal geometry type.");
+}
+
 PyObject* GeometryFacadePy::mirror(PyObject *args)
 {
     PyObject* o;
