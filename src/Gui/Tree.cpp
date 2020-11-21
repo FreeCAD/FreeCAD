@@ -2313,6 +2313,8 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
                     event->ignore();
                     return;
                 }
+                event->setDropAction(Qt::LinkAction);
+                da = Qt::LinkAction;
             }
             for(auto ti : items) {
                 if (ti->type() != TreeWidget::ObjectType) {
