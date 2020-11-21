@@ -312,7 +312,8 @@ QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
     QIcon overlayedIcon = orig;
 
     for (Gui::ViewProviderExtension* ext : vector) {
-        overlayedIcon = ext->extensionMergeOverlayIcons(overlayedIcon);
+        if (!ext->ignoreOverlayIcon())
+            overlayedIcon = ext->extensionMergeOverlayIcons(overlayedIcon);
     }
 
     return overlayedIcon;

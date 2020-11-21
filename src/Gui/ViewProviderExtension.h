@@ -94,6 +94,12 @@ public:
     //update data of extended opject
     virtual void extensionUpdateData(const App::Property*);
 
+    void setIgnoreOverlayIcon(bool on) {
+        m_ignoreOverlayIcon = on;
+    }
+    bool ignoreOverlayIcon() const {
+        return m_ignoreOverlayIcon;
+    }
     virtual QIcon extensionMergeOverlayIcons(const QIcon & orig) const {return orig;}
 
     virtual void extensionStartRestoring() {}
@@ -103,6 +109,7 @@ public:
     virtual bool extensionGetDetailPath(const char *, SoFullPath *, SoDetail *&) const {return false;}
     
 private:
+    bool m_ignoreOverlayIcon = false;
   //Gui::ViewProviderDocumentObject* m_viewBase = nullptr;
 };
 

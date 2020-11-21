@@ -52,6 +52,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderPrimitive, PartGui::ViewProviderPart)
 ViewProviderPrimitive::ViewProviderPrimitive()
 {
     extension.initExtension(this);
+    extension.setIgnoreOverlayIcon(true);
 }
 
 ViewProviderPrimitive::~ViewProviderPrimitive()
