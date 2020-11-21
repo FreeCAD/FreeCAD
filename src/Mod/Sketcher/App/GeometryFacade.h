@@ -122,6 +122,9 @@ public:
     inline virtual long getId() const override {return getGeoExt()->getId();}
     virtual void setId(long id) override {getGeoExt()->setId(id);}
 
+    virtual InternalType::InternalType getInternalType() const override {return getGeoExt()->getInternalType();}
+    virtual void setInternalType(InternalType::InternalType type) override {getGeoExt()->setInternalType(type);}
+
     // Geometry Extension Information
     inline const std::string &getExtensionName () const {return SketchGeoExtension->getName();}
 
