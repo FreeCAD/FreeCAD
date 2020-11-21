@@ -168,6 +168,11 @@
         <file>Std_WindowNext.svg</file>
         <file>Std_WindowPrev.svg</file>
         <file>Std_WindowTileVer.svg</file>
+        <file>Std_DemoMode.svg</file>
+        <file>Std_DependencyGraph.svg</file>
+        <file>Std_DlgParameter.svg</file>
+        <file>Std_ProjectUtil.svg</file>
+        <file>Std_SceneInspector.svg</file>
         <file>WhatsThis.svg</file>
         <file>colors.svg</file>
         <file>px.svg</file>
