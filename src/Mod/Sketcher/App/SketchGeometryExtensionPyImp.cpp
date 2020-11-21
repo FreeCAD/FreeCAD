@@ -89,6 +89,39 @@ void SketchGeometryExtensionPy::setId(Py::Long Id)
     this->getSketchGeometryExtensionPtr()->setId(long(Id));
 }
 
+Py::String SketchGeometryExtensionPy::getInternalType(void) const
+{
+    int internaltypeindex = (int)this->getSketchGeometryExtensionPtr()->getInternalType();
+
+    if(internaltypeindex >= InternalType::NumInternalGeometryType)
+        throw Py::NotImplementedError("String name of enum not implemented");
+
+    std::string typestr = this->getSketchGeometryExtensionPtr()->internaltype2str[internaltypeindex];
+
+     return Py::String(typestr);
+}
+
+void SketchGeometryExtensionPy::setInternalType(Py::String arg)
+{
+    std::string argstr = arg;
+
+    auto pos = std::find_if(this->getSketchGeometryExtensionPtr()->internaltype2str.begin(),
+                                getSketchGeometryExtensionPtr()->internaltype2str.end(),
+                                [argstr](const char * val) {
+                                    return strcmp(val,argstr.c_str())==0;}
+                                );
+
+    if( pos != getSketchGeometryExtensionPtr()->internaltype2str.end()) {
+            int index = std::distance( getSketchGeometryExtensionPtr()->internaltype2str.begin(), pos );
+
+            this->getSketchGeometryExtensionPtr()->setInternalType((InternalType::InternalType)index);
+            return;
+    }
+
+    throw Py::ValueError("Argument is not a valid internal geometry type.");
+}
+
+
 PyObject *SketchGeometryExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
