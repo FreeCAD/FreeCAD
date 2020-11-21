@@ -226,6 +226,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << cutting
           << "Separator"
           << "Mesh_Merge"
+          << "Mesh_SplitComponents"
           << "Separator";
     Gui::CommandManager& mgr = Gui::Application::Instance->commandManager();
     if (mgr.getCommandByName("MeshPart_CreateFlatMesh"))

@@ -1821,6 +1821,52 @@ bool CmdMeshMerge::isActive(void)
 
 //--------------------------------------------------------------------------------------
 
+DEF_STD_CMD_A(CmdMeshSplitComponents)
+
+CmdMeshSplitComponents::CmdMeshSplitComponents()
+  : Command("Mesh_SplitComponents")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Split by components");
+    sToolTipText  = QT_TR_NOOP("Split selected mesh into its components");
+    sWhatsThis    = "Mesh_SplitComponents";
+    sStatusTip    = sToolTipText;
+  //sPixmap       = "Mesh_SplitComponents";
+}
+
+void CmdMeshSplitComponents::activated(int)
+{
+    App::Document *pcDoc = App::GetApplication().getActiveDocument();
+    if (!pcDoc)
+        return;
+
+    openCommand("Mesh split");
+    std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
+    for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
+        const MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
+        std::vector<std::vector<unsigned long> > comps = mesh.getComponents();
+
+        for (const auto comp : comps ) {
+            std::unique_ptr<MeshObject> kernel(mesh.meshFromSegment(comp));
+            kernel->setTransform(mesh.getTransform());
+
+            Mesh::Feature* feature = static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Component"));
+            feature->Mesh.setValuePtr(kernel.release());
+        }
+    }
+
+    updateActive();
+    commitCommand();
+}
+
+bool CmdMeshSplitComponents::isActive(void)
+{
+    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
+}
+
+//--------------------------------------------------------------------------------------
+
 DEF_STD_CMD_A(CmdMeshScale)
 
 CmdMeshScale::CmdMeshScale()
@@ -1909,5 +1955,6 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshSegmentation());
     rcCmdMgr.addCommand(new CmdMeshSegmentationBestFit);
     rcCmdMgr.addCommand(new CmdMeshMerge());
+    rcCmdMgr.addCommand(new CmdMeshSplitComponents());
     rcCmdMgr.addCommand(new CmdMeshScale());
 }
