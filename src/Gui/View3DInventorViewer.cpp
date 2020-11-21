@@ -337,12 +337,13 @@ public:
             SoMotion3Event* motion3Event = new SoMotion3Event;
             motion3Event->setTranslation(translationVector);
             motion3Event->setRotation(xRot * yRot * zRot);
+            motion3Event->setPosition(this->mousepos);
 
             return motion3Event;
         }
 
         return NULL;
-    };
+    }
 };
 
 /** \defgroup View3D 3D Viewer
