@@ -48,6 +48,7 @@
 #include "DatumPoint.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
+#include "AuxGroup.h"
 #include "ShapeBinder.h"
 
 #include "Body.h"
@@ -231,7 +232,8 @@ bool Body::isAllowed(const Base::Type &type)
             // TODO Shouldn't we replace it with Sketcher::SketchObject? (2015-08-13, Fat-Zer)
             type.isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
             type.isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
-            type.isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())
+            type.isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()) ||
+            type.isDerivedFrom(PartDesign::AuxGroup::getClassTypeId())
             // TODO Why this lines was here? why should we allow anything of those? (2015-08-13, Fat-Zer)
             //type.isDerivedFrom(Part::FeaturePython::getClassTypeId()) // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
             //type.isDerivedFrom(Part::Feature::getClassTypeId())
@@ -246,6 +248,8 @@ Body* Body::findBodyOf(const App::DocumentObject* feature)
 
     if (feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
         return static_cast<const PartDesign::Feature*>(feature)->getFeatureBody();
+    if (feature->isDerivedFrom(PartDesign::AuxGroup::getClassTypeId()))
+        return static_cast<const PartDesign::AuxGroup*>(feature)->getBody();
     
     return Base::freecad_dynamic_cast<Body>(BodyBase::findBodyOf(feature));
 }

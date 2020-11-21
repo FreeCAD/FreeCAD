@@ -59,6 +59,7 @@
 #include <Mod/PartDesign/App/FeatureBase.h>
 #include <Mod/PartDesign/App/FeatureWrap.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
+#include <Mod/PartDesign/App/AuxGroup.h>
 
 #include "ViewProviderDatum.h"
 #include "Utils.h"
@@ -181,6 +182,51 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(tr("Toggle active body"));
     func->trigger(act, boost::bind(&ViewProviderBody::doubleClicked, this));
+
+    act = menu->addAction(tr("Toggle group"));
+    func->trigger(act,
+        [this]() {
+            auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+            if (!body)
+                return;
+            try {
+                std::vector<App::DocumentObjectT> groups;
+                for (auto obj : body->Group.getValues()) {
+                    if (obj->isDerivedFrom(PartDesign::AuxGroup::getClassTypeId()))
+                        groups.emplace_back(obj);
+                }
+                App::AutoTransaction committer("Toggle body group");
+                if (groups.empty()) {
+                    int pos = 0;
+                    auto children = body->Group.getValues();
+                    if (children.size() && children[0] == body->BaseFeature.getValue())
+                        ++pos;
+                    auto sketchGroup = static_cast<PartDesign::AuxGroup*>(
+                            body->getDocument()->addObject("PartDesign::AuxGroup", "Sketches"));
+                    auto datumGroup = static_cast<PartDesign::AuxGroup*>(
+                            body->getDocument()->addObject("PartDesign::AuxGroup", "Datums"));
+                    auto miscGroup = static_cast<PartDesign::AuxGroup*>(
+                            body->getDocument()->addObject("PartDesign::AuxGroup", "Misc"));
+                    children.insert(children.begin()+pos, miscGroup);
+                    children.insert(children.begin()+pos, datumGroup);
+                    children.insert(children.begin()+pos, sketchGroup);
+                    body->Group.setValues(children);
+                    sketchGroup->_Body.setValue(body);
+                    datumGroup->_Body.setValue(body);
+                    miscGroup->_Body.setValue(body);
+                } else {
+                    for (auto & objT : groups) {
+                        auto group = static_cast<PartDesign::AuxGroup*>(objT.getObject());
+                        if (group) {
+                            group->_Body.setValue(nullptr);
+                            body->getDocument()->removeObject(group->getNameInDocument());
+                        }
+                    }
+                }
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
+        });
 
     Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
 }
@@ -605,7 +651,8 @@ std::vector< std::string > ViewProviderBody::getDisplayModes(void) const {
 
 bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 {
-    if (!PartDesign::Body::isAllowed(obj))
+    if (obj->isDerivedFrom(PartDesign::AuxGroup::getClassTypeId())
+                || !PartDesign::Body::isAllowed(obj))
         return false;
 
     PartDesign::Body* body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
@@ -625,6 +672,8 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 
 bool ViewProviderBody::canDragObject(App::DocumentObject *obj) const
 {
+    if (obj->isDerivedFrom(PartDesign::AuxGroup::getClassTypeId()))
+        return false;
     PartDesign::Body* body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
     if (!body)
         return false;

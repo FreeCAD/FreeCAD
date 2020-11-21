@@ -63,6 +63,7 @@
 #include "ShapeBinder.h"
 #include "FeatureBase.h"
 #include "FeatureWrap.h"
+#include "AuxGroup.h"
 
 namespace PartDesign {
 extern PyObject* initModule();
@@ -158,6 +159,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::SubtractiveWedge            ::init();
     PartDesign::FeatureBase                 ::init();
     PartDesign::FeatureWrap                 ::init();
+    PartDesign::AuxGroup                    ::init();
 
     PyMOD_Return(mod);
 }

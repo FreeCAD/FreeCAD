@@ -117,6 +117,8 @@ SET(FeaturesSketchBased_SRCS
     FeatureLoft.cpp
     FeatureWrap.h
     FeatureWrap.cpp
+    AuxGroup.h
+    AuxGroup.cpp
 )
 
 SOURCE_GROUP("SketchBasedFeatures" FILES ${FeaturesSketchBased_SRCS})

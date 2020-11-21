@@ -68,6 +68,7 @@
 #include "ViewProviderShapeBinder.h"
 #include "ViewProviderBase.h"
 #include "ViewProviderWrap.h"
+#include "ViewProviderAuxGroup.h"
 
 // use a different name to CreateCommand()
 void CreatePartDesignCommands(void);
@@ -168,6 +169,7 @@ PyMOD_INIT_FUNC(PartDesignGui)
     PartDesignGui::ViewProviderLoft          ::init();
     PartDesignGui::ViewProviderBase          ::init();
     PartDesignGui::ViewProviderWrap          ::init();
+    PartDesignGui::ViewProviderAuxGroup      ::init();
 
      // add resources and reloads the translators
     loadPartDesignResource();
