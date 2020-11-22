@@ -37,8 +37,6 @@ public:
 
     App::PropertyEnumeration Display;
     
-    void setupContextMenu(QMenu*, QObject*, const char*) override;
-
     virtual void attach(App::DocumentObject*) override;
     virtual void onChanged(const App::Property* prop) override;
 
@@ -52,7 +50,6 @@ public:
     virtual bool canDragObjects() const override {return true;}
     virtual void dragObject(App::DocumentObject*) override;
     virtual bool canDelete(App::DocumentObject* obj) const override;
-    virtual bool setEdit(int ModNum);
     virtual bool onDelete(const std::vector<std::string> &) override;
 
     virtual std::vector<App::DocumentObject*> claimChildren(void) const override;

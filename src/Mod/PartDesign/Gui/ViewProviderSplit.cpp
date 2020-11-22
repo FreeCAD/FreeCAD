@@ -62,21 +62,6 @@ SoGroup *ViewProviderSplit::getChildRoot() const {
     return pcGroupChildren;
 }
 
-void ViewProviderSplit::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
-{
-    QAction* act;
-    act = menu->addAction(QObject::tr("Create bodies"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
-    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
-}
-
-bool ViewProviderSplit::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default )
-        return false;
-    return PartDesignGui::ViewProvider::setEdit(ModNum);
-}
-
 void ViewProviderSplit::attach(App::DocumentObject* obj) {
     PartGui::ViewProviderPartExt::attach(obj);
     addDisplayMaskMode(pcGroupChildren, "Solids");
