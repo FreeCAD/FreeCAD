@@ -147,7 +147,6 @@ SketchObject::SketchObject()
 
     internaltransaction=false;
     managedoperation=false;
-    afterRestoreMigration=false;
 }
 
 SketchObject::~SketchObject()
@@ -1179,6 +1178,106 @@ int SketchObject::setConstruction(int GeoId, bool on)
     return 0;
 }
 
+void SketchObject::addGeometryState(const Constraint* cstr) const
+{
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+
+    if(cstr->Type == InternalAlignment) {
+
+        switch(cstr->AlignmentType){
+            case Undef:
+            {
+                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+                gf->setInternalType(InternalType::None);
+                break;
+            }
+            case EllipseMajorDiameter:
+            {
+                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+                gf->setInternalType(InternalType::EllipseMajorDiameter);
+                break;
+            }
+            case EllipseMinorDiameter:
+            {
+                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+                gf->setInternalType(InternalType::EllipseMinorDiameter);
+                break;
+            }
+            case EllipseFocus1:
+            {
+                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+                gf->setInternalType(InternalType::EllipseFocus1);
+                break;
+            }
+            case EllipseFocus2:
+            {
+                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+                gf->setInternalType(InternalType::EllipseFocus2);
+                break;
+            }
+            case HyperbolaMajor:
+            {
+                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+                gf->setInternalType(InternalType::HyperbolaMajor);
+                break;
+            }
+            case HyperbolaMinor:
+            {
+                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+                gf->setInternalType(InternalType::HyperbolaMinor);
+                break;
+            }
+            case HyperbolaFocus:
+            {
+                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+                gf->setInternalType(InternalType::HyperbolaFocus);
+                break;
+            }
+            case ParabolaFocus:
+            {
+                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+                gf->setInternalType(InternalType::ParabolaFocus);
+                break;
+            }
+            case BSplineControlPoint:
+            {
+                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+                gf->setInternalType(InternalType::BSplineControlPoint);
+                break;
+            }
+            case BSplineKnotPoint:
+            {
+                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+                gf->setInternalType(InternalType::BSplineKnotPoint);
+                break;
+            }
+        }
+    }
+
+    // Assign Blocked geometry mode
+    if(cstr->Type == Block){
+        auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+        gf->setBlocked();
+    }
+}
+
+void SketchObject::removeGeometryState(const Constraint* cstr) const
+{
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+
+    // Assign correct Internal Geometry Type (see SketchGeometryExtension)
+    if(cstr->Type == InternalAlignment) {
+        auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+        gf->setInternalType(InternalType::None);
+    }
+
+    // Assign Blocked geometry mode (see SketchGeometryExtension)
+    if(cstr->Type == Block){
+        auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+        gf->setBlocked(false);
+    }
+}
+
 //ConstraintList is used only to make copies.
 int SketchObject::addConstraints(const std::vector<Constraint *> &ConstraintList)
 {
@@ -1204,6 +1303,8 @@ int SketchObject::addConstraints(const std::vector<Constraint *> &ConstraintList
         if( cnew->Type == Tangent || cnew->Type == Perpendicular ){
             AutoLockTangencyAndPerpty(cnew);
         }
+
+        addGeometryState(cnew);
     }
 
     this->Constraints.setValues(std::move(newVals));
@@ -1272,6 +1373,8 @@ int SketchObject::addConstraint(const Constraint *constraint)
     if (constNew->Type == Tangent || constNew->Type == Perpendicular)
         AutoLockTangencyAndPerpty(constNew);
 
+    addGeometryState(constNew);
+
     newVals.push_back(constNew); // add new constraint at the back
 
     this->Constraints.setValues(std::move(newVals));
@@ -1288,7 +1391,9 @@ int SketchObject::delConstraint(int ConstrId)
         return -1;
 
     std::vector< Constraint * > newVals(vals);
-    newVals.erase(newVals.begin()+ConstrId);
+    auto ctriter = newVals.begin()+ConstrId;
+    removeGeometryState(*ctriter);
+    newVals.erase(ctriter);
     this->Constraints.setValues(newVals);
 
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
@@ -1312,8 +1417,11 @@ int SketchObject::delConstraints(std::vector<int> ConstrIds, bool updategeometry
     if (ConstrIds.front() < 0 || ConstrIds.back() >= int(vals.size()))
         return -1;
 
-    for(auto rit = ConstrIds.rbegin(); rit!=ConstrIds.rend(); rit++)
-        newVals.erase(newVals.begin()+*rit);
+    for(auto rit = ConstrIds.rbegin(); rit!=ConstrIds.rend(); rit++) {
+        auto ctriter = newVals.begin()+*rit;
+        removeGeometryState(*ctriter);
+        newVals.erase(ctriter);
+    }
 
     this->Constraints.setValues(newVals);
 
@@ -7340,8 +7448,7 @@ void SketchObject::onUndoRedoFinished()
 void SketchObject::onDocumentRestored()
 {
     try {
-        if(afterRestoreMigration)
-            migrateSketch();
+        migrateSketch();
 
         validateExternalLinks();
         rebuildExternalGeometry();
@@ -7362,8 +7469,7 @@ void SketchObject::onDocumentRestored()
 void SketchObject::restoreFinished()
 {
     try {
-        if(afterRestoreMigration)
-            migrateSketch();
+        migrateSketch();
 
         validateExternalLinks();
         rebuildExternalGeometry();
@@ -7381,84 +7487,16 @@ void SketchObject::restoreFinished()
 
 void SketchObject::migrateSketch(void)
 {
-    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+    bool updateGeoState = false;
 
-    for( auto c : Constraints.getValues()) {
+    for( const auto & g : getInternalGeometry() )
+        if(!g->hasExtension(SketchGeometryExtension::getClassTypeId())) // no extension - legacy file
+            updateGeoState = true;
 
-        // Assign correct Internal Geometry Type
-        switch(c->AlignmentType){
-            case Undef:
-            {
-                auto gf = GeometryFacade::getFacade(vals[c->First]);
-                gf->setInternalType(InternalType::None);
-                break;
-            }
-            case EllipseMajorDiameter:
-            {
-                auto gf = GeometryFacade::getFacade(vals[c->First]);
-                gf->setInternalType(InternalType::EllipseMajorDiameter);
-                break;
-            }
-            case EllipseMinorDiameter:
-            {
-                auto gf = GeometryFacade::getFacade(vals[c->First]);
-                gf->setInternalType(InternalType::EllipseMinorDiameter);
-                break;
-            }
-            case EllipseFocus1:
-            {
-                auto gf = GeometryFacade::getFacade(vals[c->First]);
-                gf->setInternalType(InternalType::EllipseFocus1);
-                break;
-            }
-            case EllipseFocus2:
-            {
-                auto gf = GeometryFacade::getFacade(vals[c->First]);
-                gf->setInternalType(InternalType::EllipseFocus2);
-                break;
-            }
-            case HyperbolaMajor:
-            {
-                auto gf = GeometryFacade::getFacade(vals[c->First]);
-                gf->setInternalType(InternalType::HyperbolaMajor);
-                break;
-            }
-            case HyperbolaMinor:
-            {
-                auto gf = GeometryFacade::getFacade(vals[c->First]);
-                gf->setInternalType(InternalType::HyperbolaMinor);
-                break;
-            }
-            case HyperbolaFocus:
-            {
-                auto gf = GeometryFacade::getFacade(vals[c->First]);
-                gf->setInternalType(InternalType::HyperbolaFocus);
-                break;
-            }
-            case ParabolaFocus:
-            {
-                auto gf = GeometryFacade::getFacade(vals[c->First]);
-                gf->setInternalType(InternalType::ParabolaFocus);
-                break;
-            }
-            case BSplineControlPoint:
-            {
-                auto gf = GeometryFacade::getFacade(vals[c->First]);
-                gf->setInternalType(InternalType::BSplineControlPoint);
-                break;
-            }
-            case BSplineKnotPoint:
-            {
-                auto gf = GeometryFacade::getFacade(vals[c->First]);
-                gf->setInternalType(InternalType::BSplineKnotPoint);
-                break;
-            }
-        }
+    if(updateGeoState) {
+        for( auto c : Constraints.getValues()) {
 
-        // Assign Blocked geometry mode
-        if(c->Type == Block){
-            auto gf = GeometryFacade::getFacade(vals[c->First]);
-            gf->setBlocked();
+            addGeometryState(c);
         }
     }
 }
