@@ -1276,6 +1276,9 @@ CmdPartDesignPad::CmdPartDesignPad()
     sWhatsThis    = "PartDesign_Pad";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Pad";
+
+    Gui::Application::Instance->commandManager().registerCallback(
+            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Extrude");
 }
 
 void CmdPartDesignPad::activated(int iMsg)
@@ -1328,9 +1331,6 @@ CmdPartDesignExtrusion::CmdPartDesignExtrusion()
     sWhatsThis    = "PartDesign_Extrusion";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Extrusion";
-
-    Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Extrude");
 }
 
 void CmdPartDesignExtrusion::activated(int iMsg)
