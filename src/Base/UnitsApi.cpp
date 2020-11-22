@@ -57,7 +57,7 @@ using namespace Base;
 //{
 //    // check limits
 //    assert(t<9);
-//    // returns 
+//    // returns
 //    return QString::fromLatin1(QuantityNames[t]);
 //}
 // === static attributes  ================================================

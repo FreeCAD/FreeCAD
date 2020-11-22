@@ -55,7 +55,7 @@
 #include <Rpc.h>
 #endif
 
-// STL 
+// STL
 #include <string>
 #include <list>
 #include <map>

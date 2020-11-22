@@ -40,7 +40,7 @@ std::string CoordinateSystemPy::representation(void) const
 
 PyObject *CoordinateSystemPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of CoordinateSystemPy and the Twin object 
+    // create a new instance of CoordinateSystemPy and the Twin object
     return new CoordinateSystemPy(new CoordinateSystem);
 }
 
@@ -181,5 +181,5 @@ PyObject *CoordinateSystemPy::getCustomAttributes(const char* /*attr*/) const
 
 int CoordinateSystemPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

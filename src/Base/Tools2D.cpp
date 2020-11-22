@@ -36,9 +36,9 @@ using namespace Base;
 double Vector2d::GetAngle (const Vector2d &rclVect) const
 {
   double fDivid, fNum;
-  
+
   fDivid = Length() * rclVect.Length();
- 
+
   if ((fDivid < -1e-10) || (fDivid > 1e-10))
   {
     fNum = (*this * rclVect) / fDivid;
@@ -60,7 +60,7 @@ void Vector2d::ProjectToLine (const Vector2d &rclPt, const Vector2d &rclLine)
   double t1 = (rclPt * rclLine) / l;
   Vector2d clNormal = rclLine;
   clNormal.Normalize();
-  clNormal.Scale(t1);  
+  clNormal.Scale(t1);
   *this = clNormal;
 }
 
@@ -72,33 +72,33 @@ bool BoundBox2d::Intersect(const Line2d &rclLine) const
   Line2d clThisLine;
   Vector2d clVct;
 
-  // first line 
+  // first line
   clThisLine.clV1.x = MinX;
   clThisLine.clV1.y = MinY;
   clThisLine.clV2.x = MaxX;
   clThisLine.clV2.y = MinY;
-  if (clThisLine.IntersectAndContain (rclLine, clVct)) 
+  if (clThisLine.IntersectAndContain (rclLine, clVct))
     return true;
 
   // second line
   clThisLine.clV1 = clThisLine.clV2;
   clThisLine.clV2.x = MaxX;
   clThisLine.clV2.y = MaxY;
-  if (clThisLine.IntersectAndContain (rclLine, clVct)) 
+  if (clThisLine.IntersectAndContain (rclLine, clVct))
     return true;
 
   // third line
   clThisLine.clV1 = clThisLine.clV2;
   clThisLine.clV2.x = MinX;
   clThisLine.clV2.y = MaxY;
-  if (clThisLine.IntersectAndContain (rclLine, clVct)) 
+  if (clThisLine.IntersectAndContain (rclLine, clVct))
     return true;
 
   // fourth line
   clThisLine.clV1 = clThisLine.clV2;
   clThisLine.clV2.x = MinX;
   clThisLine.clV2.y = MinY;
-  if (clThisLine.IntersectAndContain (rclLine, clVct)) 
+  if (clThisLine.IntersectAndContain (rclLine, clVct))
     return true;
 
   return false;
@@ -131,7 +131,7 @@ bool BoundBox2d::Intersect(const Polygon2d &rclPoly) const
 {
   unsigned long i;
   Line2d clLine;
-  
+
   // points contained in boundbox
   for (i = 0; i < rclPoly.GetCtVectors(); i++)
     if (Contains (rclPoly[i]))
@@ -143,7 +143,7 @@ bool BoundBox2d::Intersect(const Polygon2d &rclPoly) const
       rclPoly.Contains (Vector2d (MaxX, MaxY)) ||
       rclPoly.Contains (Vector2d (MinX, MaxY)))
     return true;    /***** RETURN INTERSECTION *********/
-      
+
   // test intersections of bound-lines
   if (rclPoly.GetCtVectors() < 3) return false;
   for (i = 0; i < rclPoly.GetCtVectors(); i++)
@@ -181,7 +181,7 @@ BoundBox2d Line2d::CalcBoundBox (void) const
 bool Line2d::Intersect (const Line2d& rclLine, Vector2d &rclV) const
 {
   double m1, m2, b1, b2;
-  
+
   // calc coefficients
   if (fabs (clV2.x - clV1.x) > 1e-10)
     m1 = (clV2.y - clV1.y) / (clV2.x - clV1.x);
@@ -193,7 +193,7 @@ bool Line2d::Intersect (const Line2d& rclLine, Vector2d &rclV) const
     m2 = FLOAT_MAX;
   if (m1 == m2)     /****** RETURN ERR (parallel lines) *************/
     return false;
-  
+
   b1 = clV1.y - m1 * clV1.x;
   b2 = rclLine.clV1.y - m2 * rclLine.clV1.x;
 
@@ -214,7 +214,7 @@ bool Line2d::Intersect (const Line2d& rclLine, Vector2d &rclV) const
     rclV.x = (b2 - b1) / (m1 - m2);
     rclV.y = m1 * rclV.x + b1;
   }
-  
+
   return true;    /*** RETURN true (intersection) **********/
 }
 
@@ -269,7 +269,7 @@ BoundBox2d Polygon2d::CalcBoundBox (void) const
     clBB.MaxX = std::max<double> (clBB.MaxX, _aclVct[i].x);
     clBB.MaxY = std::max<double> (clBB.MaxY, _aclVct[i].y);
   }
-  return clBB;  
+  return clBB;
 }
 
 static short _CalcTorsion (double *pfLine, double fX, double fY)
@@ -309,7 +309,7 @@ static short _CalcTorsion (double *pfLine, double fX, double fY)
 
 bool Polygon2d::Contains (const Vector2d &rclV) const
 {
-  // Ermittelt mit dem Verfahren der Windungszahl, ob ein Punkt innerhalb 
+  // Ermittelt mit dem Verfahren der Windungszahl, ob ein Punkt innerhalb
   // eines Polygonzugs enthalten ist.
   // Summe aller Windungszahlen gibt an, ob ja oder nein.
   double pfTmp[4];
@@ -379,7 +379,7 @@ void Polygon2d::Intersect (const Polygon2d &rclPolygon, std::list<Polygon2d> &rc
     {
       clTrimPt2 = At((i + 1) % ulTrimCt);
       Line2d clToTrimLine(At(i), clTrimPt2);
-   
+
       Vector2d clV;
       if (clLine.IntersectAndContain(clToTrimLine, clV) == true)
       {
@@ -407,7 +407,7 @@ void Polygon2d::Intersect (const Polygon2d &rclPolygon, std::list<Polygon2d> &rc
           clResultPolygon.Add(clPtIS);
           bInner = true;
         }
-      }        
+      }
 
       if (bInner == true) // add line end point if inside
         clResultPolygon.Add(clPt1);
@@ -417,7 +417,7 @@ void Polygon2d::Intersect (const Polygon2d &rclPolygon, std::list<Polygon2d> &rc
       if (bInner == true)
         clResultPolygon.Add(clPt1);
     }
-  }  
+  }
 
   // add last segment
   if (clResultPolygon.GetCtVectors() > 0)
@@ -450,7 +450,7 @@ bool Polygon2d::Intersect (const Polygon2d &other) const {
             if (line.IntersectAndContain(line2, v))
                 return true;
         }
-    }  
+    }
     return false;
 }
 

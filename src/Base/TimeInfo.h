@@ -63,10 +63,10 @@ public:
     void setCurrent(void);
     void setTime_t (uint64_t seconds);
 
-    uint64_t getSeconds(void) const; 
-    unsigned short  getMiliseconds(void) const; 
+    uint64_t getSeconds(void) const;
+    unsigned short  getMiliseconds(void) const;
 
-    //void operator =  (const TimeInfo &time); 
+    //void operator =  (const TimeInfo &time);
     bool operator == (const TimeInfo &time) const;
     bool operator != (const TimeInfo &time) const;
 
@@ -98,7 +98,7 @@ protected:
  inline unsigned short  TimeInfo::getMiliseconds(void) const
  {
      return timebuffer.millitm;
- } 
+ }
 
 inline bool
 TimeInfo::operator != (const TimeInfo &time) const
@@ -107,7 +107,7 @@ TimeInfo::operator != (const TimeInfo &time) const
 }
 
 //inline void
-//TimeInfo::operator = (const TimeInfo &time) 
+//TimeInfo::operator = (const TimeInfo &time)
 //{
     //timebuffer = time.timebuffer;
 //}

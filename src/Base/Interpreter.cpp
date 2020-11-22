@@ -121,7 +121,7 @@ void PyException::raiseException() {
 
         std::string exceptionname;
         if (_exceptionType == Base::BaseExceptionFreeCADAbort)
-            edict.setItem("sclassname", 
+            edict.setItem("sclassname",
                     Py::String(typeid(Base::AbortException).name()));
         if (_isReported)
             edict.setItem("breported", Py::True());
@@ -159,7 +159,7 @@ void PyException::setPyException() const
 
 SystemExitException::SystemExitException()
 {
-    // Set exception message and code based upon the pthon sys.exit() code and/or message 
+    // Set exception message and code based upon the python sys.exit() code and/or message
     // based upon the following sys.exit() call semantics.
     //
     // Invocation       |  _exitCode  |  _sErrMsg

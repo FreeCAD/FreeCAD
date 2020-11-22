@@ -228,5 +228,5 @@ PyObject *TypePy::getCustomAttributes(const char* /*attr*/) const
 
 int TypePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
