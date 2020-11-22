@@ -436,13 +436,8 @@ class ObjectOp(PathOp.ObjectOp):
             Determine rotational radii for 4th-axis rotations, for clearance/safe heights '''
 
         parentJob = PathUtils.findParentJob(obj)
-        # bb = parentJob.Stock.Shape.BoundBox
         xlim = 0.0
         ylim = 0.0
-        zlim = 0.0
-        xRotRad = 0.01
-        yRotRad = 0.01
-        zRotRad = 0.01
 
         # Determine boundbox radius based upon xzy limits data
         if math.fabs(self.stockBB.ZMin) > math.fabs(self.stockBB.ZMax):
@@ -464,10 +459,8 @@ class ObjectOp(PathOp.ObjectOp):
             else:
                 xlim = self.stockBB.XMax
 
-        if ylim != 0.0:
-            xRotRad = math.sqrt(ylim**2 + zlim**2)
-        if xlim != 0.0:
-            yRotRad = math.sqrt(xlim**2 + zlim**2)
+        xRotRad = math.sqrt(ylim**2 + zlim**2)
+        yRotRad = math.sqrt(xlim**2 + zlim**2)
         zRotRad = math.sqrt(xlim**2 + ylim**2)
 
         clrOfst = parentJob.SetupSheet.ClearanceHeightOffset.Value
@@ -553,9 +546,9 @@ class ObjectOp(PathOp.ObjectOp):
                     if saX < 0.0:
                         angle = angle + 180.0
         elif saZ == 0.0:
-            if saY != 0.0:
-                angle = math.degrees(math.atan(saX / saY))
-                orientation = "Y"
+            # if saY != 0.0:
+            angle = math.degrees(math.atan(saX / saY))
+            orientation = "Y"
 
         if saX + nX == 0.0:
             angle = -1 * angle
@@ -601,9 +594,8 @@ class ObjectOp(PathOp.ObjectOp):
                     axis = 'Y'
                 rtn = True
 
-        if rtn is True:
+        if rtn:
             self.rotateFlag = True  # pylint: disable=attribute-defined-outside-init
-            # rtn = True
             if obj.ReverseDirection is True:
                 if angle < 180.0:
                     angle = angle + 180.0
@@ -616,8 +608,6 @@ class ObjectOp(PathOp.ObjectOp):
             praInfo += "\n - ... rotation triggered"
         else:
             praInfo += "\n - ... NO rotation triggered"
-
-        PathLog.debug("\n" + str(praInfo))
 
         return (rtn, angle, axis, praInfo)
 
@@ -651,7 +641,8 @@ class ObjectOp(PathOp.ObjectOp):
         if not FreeCAD.ActiveDocument.getObject('xAxCyl'):
             xAx = 'xAxCyl'
             yAx = 'yAxCyl'
-            FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "visualAxis")
+            # zAx = 'zAxCyl'
+            VA = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "visualAxis")
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject('visualAxis').Visibility = False
             vaGrp = FreeCAD.ActiveDocument.getObject("visualAxis")
@@ -683,6 +674,7 @@ class ObjectOp(PathOp.ObjectOp):
                 cylGui.Transparency = 85
                 cylGui.Visibility = False
             vaGrp.addObject(cyl)
+            VA.purgeTouched()
 
     def useTempJobClones(self, cloneName):
         '''useTempJobClones(cloneName)
@@ -698,6 +690,8 @@ class ObjectOp(PathOp.ObjectOp):
                     for cln in FreeCAD.ActiveDocument.getObject('rotJobClones').Group:
                         FreeCAD.ActiveDocument.removeObject(cln.Name)
                     FreeCAD.ActiveDocument.removeObject('rotJobClones')
+                else:
+                    FreeCAD.ActiveDocument.getObject('rotJobClones').purgeTouched()
         else:
             FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "rotJobClones")
             if FreeCAD.GuiUp:
@@ -748,10 +742,6 @@ class ObjectOp(PathOp.ObjectOp):
         norm = FreeCAD.Vector(0.0, 0.0, 0.0)
         surf = FreeCAD.Vector(0.0, 0.0, 0.0)
 
-        if face.ShapeType == 'Edge':
-            edgToFace = Part.Face(Part.Wire(Part.__sortEdges__([face])))
-            face = edgToFace
-
         if hasattr(face, 'normalAt'):
             n = face.normalAt(0, 0)
         elif hasattr(face, 'normal'):
@@ -760,7 +750,6 @@ class ObjectOp(PathOp.ObjectOp):
             s = face.Surface.Axis
         else:
             s = n
-
         norm.x = n.x
         norm.y = n.y
         norm.z = n.z
@@ -779,10 +768,11 @@ class ObjectOp(PathOp.ObjectOp):
         elif axis == 'Y':
             vect = FreeCAD.Vector(0, 1, 0)
 
-        if obj.InverseAngle is True:
-            angle = -1 * angle
-            if math.fabs(angle) == 0.0:
-                angle = 0.0
+        # Commented out to fix PocketShape InverseAngle rotation problem
+        # if obj.InverseAngle is True:
+        #    angle = -1 * angle
+        #    if math.fabs(angle) == 0.0:
+        #        angle = 0.0
 
         # Create a temporary clone of model for rotational use.
         (clnBase, clnStock, tag) = self.cloneBaseAndStock(obj, base, angle, axis, subCount)
@@ -809,8 +799,10 @@ class ObjectOp(PathOp.ObjectOp):
         clnStock.purgeTouched()
         # Update property and angle values
         obj.InverseAngle = True
-        obj.AttemptInverseAngle = False
+        # obj.AttemptInverseAngle = False
         angle = -1 * angle
+
+        PathLog.debug(translate("Path", "Rotated to inverse angle."))
         return (clnBase, clnStock, angle)
 
     def sortTuplesByIndex(self, TupleList, tagIdx):
