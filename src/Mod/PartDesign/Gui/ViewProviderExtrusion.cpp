@@ -94,3 +94,14 @@ ViewProviderExtrusion::claimChildren(void) const {
 
     return PartDesignGui::ViewProvider::claimChildren();
 }
+
+void ViewProviderExtrusion::updateData(const App::Property* p) {
+    auto feat = Base::freecad_dynamic_cast<PartDesign::Extrusion>(getObject());
+    if (feat) {
+        if (p == &feat->NewSolid) {
+            if (IconColor.getValue().getPackedValue() && !feat->NewSolid.getValue())
+                signalChangeIcon();
+        }
+    }
+    ViewProviderPad::updateData(p);
+}
