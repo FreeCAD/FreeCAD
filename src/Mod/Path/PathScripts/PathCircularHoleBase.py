@@ -19,12 +19,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *                                                                         *
-# *   Additional modifications and contributions beginning 2019             *
-# *   Focus: 4th-axis integration                                           *
-# *   by Russell Johnson  <russ4262@gmail.com>                              *
-# *                                                                         *
-# ***************************************************************************
 
 import FreeCAD
 import PathScripts.PathLog as PathLog
@@ -50,9 +44,6 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Base class an implementation for operations on circular holes."
 __contributors__ = "russ4262 (Russell Johnson)"
-__created__ = "2017"
-__scriptVersion__ = "2b"
-__lastModified__ = "2020-02-13 17:11 CST"
 
 
 # Qt translation handling
@@ -339,7 +330,8 @@ class ObjectOp(PathOp.ObjectOp):
                                      'angle': angle, 'axis': axis, 'trgtDep': obj.FinalDepth.Value,
                                       'stkTop': stock.Shape.BoundBox.ZMax})
 
-        # haveLocations are populated from Base Locations tab as (x,y) coordinates
+        # haveLocations are populated from user-provided (x, y) coordinates
+        # provided by the user in the Base Locations tab of the Task Editor window
         if haveLocations(self, obj):
             for location in obj.Locations:
                 # holes.append({'x': location.x, 'y': location.y, 'r': 0, 'angle': 0.0, 'axis': 'X', 'holeBtm': obj.FinalDepth.Value})

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,12 +20,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *                                                                         *
-# *   Additional modifications and contributions beginning 2019             *
-# *   Focus: 4th-axis integration                                           *
-# *   by Russell Johnson  <russ4262@gmail.com>                              *
-# *                                                                         *
-# ***************************************************************************
 
 from __future__ import print_function
 
@@ -43,6 +36,8 @@ __title__ = "Path Drilling Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Path Drilling operation."
+__contributors__ = "russ4262 (Russell Johnson)"
+
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())
@@ -198,8 +193,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         # Initial setting for EnableRotation is taken from Job SetupSheet
         # User may override on per-operation basis as needed.
-        if hasattr(parentJob.SetupSheet, 'SetupEnableRotation'):
-            obj.EnableRotation = parentJob.SetupSheet.SetupEnableRotation
+        if hasattr(job.SetupSheet, 'SetupEnableRotation'):
+            obj.EnableRotation = job.SetupSheet.SetupEnableRotation
         else:
             obj.EnableRotation = 'Off'
 
