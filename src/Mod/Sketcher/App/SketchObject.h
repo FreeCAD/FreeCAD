@@ -486,13 +486,26 @@ private:
 
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
 
+    // Geometry Extensions is used to store on geometry a state that is enforced by pre-existing constraints
+    // Like Block constraint and InternalAlignment constraint. This enables (more) convenient handling in ViewProviderSketch
+    // and solver.
+    //
+    // These functions are responsible for updating the Geometry State, currently Geometry Mode (Blocked) and
+    // Geometry InternalType (BSplineKnot, BSplinePole).
+    //
+    // The data life model for handling this state is as follows:
+    // 1. Upon restore, any migration is handled to set the status for legacy files (backwards compatibility)
+    // 2. Functionality adding constraints (of the relevant type) calls addGeometryState to set the status
+    // 3. Functionality removing constraints (of the relevant type) calls removeGeometryState to remove the status
+    // 4. Save mechanism will ensure persistance.
+    void addGeometryState(const Constraint* cstr) const;
+    void removeGeometryState(const Constraint* cstr) const;
+
     SketchAnalysis * analyser;
 
     bool internaltransaction;
 
     bool managedoperation; // indicates whether changes to properties are the deed of SketchObject or not (for input validation)
-
-    bool afterRestoreMigration;
 };
 
 typedef App::FeaturePythonT<SketchObject> SketchObjectPython;
