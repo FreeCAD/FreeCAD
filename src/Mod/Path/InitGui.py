@@ -77,15 +77,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathToolBitCmd
         from PathScripts import PathToolBitLibraryCmd
 
-
-        #if PathPreferences.experimentalFeaturesEnabled():
-        #    #toolbitcmdlist = PathToolBitCmd.CommandList + ["Separator"] + PathToolBitLibraryCmd.CommandList + ["Path_ToolController", "Separator"]
-        #    toolbitcmdlist = PathToolBitLibraryCmd.MenuList
-        #    self.toolbitctxmenu = ["Path_ToolBitLibraryLoad", "Path_ToolController"]
-        #else:
-        #    toolbitcmdlist = []
-        #    self.toolbitctxmenu = []
-
         import PathCommands
         PathGuiInit.Startup()
 

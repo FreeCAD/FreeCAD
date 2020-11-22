@@ -42,8 +42,8 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 class ViewProvider(object):
@@ -171,11 +171,9 @@ class TaskPanel:
 class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
 
     def Create(self, name='ToolBit', shapeFile=None):
-        '''
-        Create(name = 'ToolBit') ... creates a new tool bit.
-        It is assumed the tool will be edited immediately so the internal
-        bit body is still attached.
-        '''
+        '''Create(name = 'ToolBit') ... creates a new tool bit.
+        It is assumed the tool will be edited immediately so the internal bit body is still attached.'''
+
         FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit',
                                                          'Create ToolBit'))
         tool = PathToolBit.ToolBitFactory.Create(self, name, shapeFile)
