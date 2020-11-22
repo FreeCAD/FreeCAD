@@ -111,11 +111,11 @@ public:
   inline std::string getFunction() const;
   inline bool getTranslatable() const;
   inline bool getReported() const { return _isReported; }
-  
+
   /// setter methods for including debug information
   /// intended to use via macro for autofilling of debugging information
   inline void setDebugInformation(const std::string & file, const int line, const std::string & function);
-  
+
   inline void setTranslatable(bool translatable);
 
   inline void setReported(bool reported) { _isReported = reported; }
@@ -261,7 +261,7 @@ protected:
   FileInfo file;
   // necessary   for what() legacy behaviour as it returns a buffer that
   // can not be of a temporary object to be destroyed at end of what()
-  std::string _sErrMsgAndFileName; 
+  std::string _sErrMsgAndFileName;
 };
 
 /**
@@ -664,10 +664,10 @@ public:
 /* The RestoreError can be used to try to do a best recovery effort when an error during restoring
  * occurs. The best recovery effort may be to ignore the element altogether or to insert a placeholder
  * depending on where the actual element being restored is used.
- * 
- * For example, if it is part of an array (e.g. PropertyList) and the order in the array is relevant, it 
+ *
+ * For example, if it is part of an array (e.g. PropertyList) and the order in the array is relevant, it
  * is better to have a placeholder than to fail to restore the whole array.
- */ 
+ */
 class BaseExport RestoreError : public Exception
 {
 public:

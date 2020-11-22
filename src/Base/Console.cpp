@@ -728,7 +728,7 @@ PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args)
 
             Py_INCREF(Py_None);
             return Py_None;
-        } 
+        }
 	else {
             Py_Error(Base::BaseExceptionFreeCADError,"Unknown Console Type");
     }

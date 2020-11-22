@@ -60,8 +60,8 @@
 
 
 /** Python static class macro for definition
- * sets up a static function entry in a class inheriting 
- * from PyObjectBase. Its a pure convenience macro. You can also do
+ * sets up a static function entry in a class inheriting
+ * from PyObjectBase. It's a pure convenience macro. You can also do
  * it by hand if you want. It looks like that:
  * \code
  * static PyObject* X (PyObject *self,PyObject *args,PyObject *kwd);
@@ -80,7 +80,7 @@
  * \code
  * PyObject* CLASS::SFUNC (PyObject *self,PyObject *args,PyObject *kwd)
  * \endcode
- * see PYFUNCDEF_S for details 
+ * see PYFUNCDEF_S for details
  * @param CLASS is the class in which the macro take place.
  * @param SFUNC is the object method get implemented
  * @see PYFUNCDEF_S
@@ -89,7 +89,7 @@
 #define PYFUNCIMP_S(CLASS,SFUNC) PyObject* CLASS::SFUNC (PyObject *self,PyObject *args,PyObject *kwd)
 
 
-/** Macro for initialization function of Python modules. 
+/** Macro for initialization function of Python modules.
  */
 #if PY_MAJOR_VERSION >= 3
 # define PyMOD_INIT_FUNC(name) PyMODINIT_FUNC PyInit_##name(void)
@@ -128,7 +128,7 @@ inline int streq(const char *A, const char *B)  // define "streq"
 
 inline void Assert(int expr, char *msg)         // C++ assert
 {
-    if (!expr) 
+    if (!expr)
     {
       fprintf(stderr, "%s\n", msg);
       exit(-1);
@@ -174,7 +174,7 @@ namespace Base
 
 /** The PyObjectBase class, exports the class as a python type
  *  PyObjectBase is the base class for all C++ classes which
- *  need to get exported into the python namespace. This class is 
+ *  need to get exported into the python namespace. This class is
  *  very important because nearly all important classes in FreeCAD
  *  are visible in python for macro recording and automation purpose.
  *  The class App::Document is a good expample for an exported class.
@@ -191,9 +191,9 @@ namespace Base
  *  @see Py_Return
  *  @see Py_Error
  *  @see Py_Try
- *  @see Py_Assert  
+ *  @see Py_Assert
  */
-class BaseExport PyObjectBase : public PyObject 
+class BaseExport PyObjectBase : public PyObject
 {
     /** Py_Header struct from python.h.
      *  Every PyObjectBase object is also a python object. So you can use
@@ -217,7 +217,7 @@ protected:
         _pcTwinPointer = ptr;
     }
 
-public:  
+public:
     /** Constructor
      *  Sets the Type of the object (for inheritance) and decrease the
      *  the reference count of the PyObject.
@@ -228,7 +228,7 @@ public:
     {  delete ((PyObjectBase *) P);  }
     /// incref method wrapper (see python extending manual)
     PyObjectBase* IncRef(void) {Py_INCREF(this);return this;}
-    /// decref method wrapper (see python extending manual)	
+    /// decref method wrapper (see python extending manual)
     PyObjectBase* DecRef(void) {Py_DECREF(this);return this;}
 
     /** GetAttribute implementation
@@ -237,7 +237,7 @@ public:
      *  this method.
      *  You have to call the method of the base class.
      *  Note: if you reimplement _gettattr() in a inheriting class you
-     *  need to call the method of the base class! Otherwise even the 
+     *  need to call the method of the base class! Otherwise even the
      *  methods of the object will disappear!
      */
     virtual PyObject *_getattr(const char *attr);
@@ -251,7 +251,7 @@ public:
      *  You have to call the method of the base class.
      */
     virtual int _setattr(const char *attro, PyObject *value);    // _setattr method
-    /// static wrapper for pythons _setattro(). // This should be the entry in Type. 
+    /// static wrapper for pythons _setattro(). // This should be the entry in Type.
     static  int __setattro(PyObject *PyObj, PyObject *attro, PyObject *value);
 
     /** _repr method
@@ -292,7 +292,7 @@ public:
         return ((PyObjectBase*) self)->PyInit(args, kwd);
     }
 
-    void setInvalid() { 
+    void setInvalid() {
         // first bit is not set, i.e. invalid
         StatusBits.reset(Valid);
         clearAttributes();
@@ -353,7 +353,7 @@ private:
 
 
 /** Python dynamic class macro for definition
- * sets up a static/dynamic function entry in a class inheriting 
+ * sets up a static/dynamic function entry in a class inheriting
  * from PyObjectBase. Its a pure convenience macro. You can also do
  * it by hand if you want. It looks like that:
  * \code
@@ -362,7 +362,7 @@ private:
  *        {return ((FCPyParametrGrp*)self)->PyGetGrp(args);};
  * \endcode
  * first the method is defined which have the functionality then the
- * static wrapper is used to provide a callback for python. The call 
+ * static wrapper is used to provide a callback for python. The call
  * is simply mapped to the method.
  * @param CLASS is the class in which the macro take place.
  * @param DFUNC is the object method get defined and called
@@ -397,7 +397,7 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
  * PyMethodDef DocTypeStdPy::Methods[] = {
  * 	{"AddFeature",    (PyCFunction) sAddFeature,    Py_NEWARGS},
  * 	{"RemoveFeature", (PyCFunction) sRemoveFeature, Py_NEWARGS},
- *	{NULL, NULL}		
+ *	{NULL, NULL}
  * };
  * \endcode
  * instead of:
@@ -405,10 +405,10 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
  * PyMethodDef DocTypeStdPy::Methods[] = {
  *	PYMETHODEDEF(AddFeature)
  *	PYMETHODEDEF(RemoveFeature)
- *	{NULL, NULL}		
+ *	{NULL, NULL}
  * };
  * \endcode
- * see PYFUNCDEF_D for details 
+ * see PYFUNCDEF_D for details
  * @param FUNC is the object method get defined
  * @see PYFUNCDEF_D
  * @see PyObjectBase
@@ -429,9 +429,9 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
  * PYFUNCIMP_D(DocTypeStdPy,AddFeature)
  * {
  *   char *pstr;
- *   if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
- *      return NULL;                             // NULL triggers exception 
- * 
+ *   if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
+ *      return NULL;                             // NULL triggers exception
+ *
  *   try {
  *     Feature *pcFtr = _pcDocTypeStd->AddFeature(pstr);
  *   }catch(...)                                                        \
@@ -445,20 +445,20 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
  * PYFUNCIMP_D(DocTypeStdPy,AddFeature)
  * {
  *   char *pstr;
- *   if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
- *      return NULL;                             // NULL triggers exception 
- * 
+ *   if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
+ *      return NULL;                             // NULL triggers exception
+ *
  *  PY_TRY {
  *    Feature *pcFtr = _pcDocTypeStd->AddFeature(pstr);
  *  }PY_CATCH;
  * }
  * \endcode
- * this catch maps all of the FreeCAD standard exception to a clear output for the 
+ * this catch maps all of the FreeCAD standard exception to a clear output for the
  * Python exception.
  * @see PYMETHODEDEF
  * @see PyObjectBase
  */
-#define PY_TRY	try 
+#define PY_TRY	try
 
 #define __PY_CATCH(R)                                               \
     catch(Base::AbortException &e)                                  \
@@ -487,8 +487,8 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
         _Py_Error(R,Base::BaseExceptionFreeCADError,e);             \
     }                                                               \
 
-#ifndef DONT_CATCH_CXX_EXCEPTIONS 
-/// see docu of PY_TRY 
+#ifndef DONT_CATCH_CXX_EXCEPTIONS
+/// see docu of PY_TRY
 #  define _PY_CATCH(R)                                              \
     __PY_CATCH(R)                                                   \
     catch(...)                                                      \
@@ -497,13 +497,13 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
     }
 
 #else
-/// see docu of PY_TRY 
+/// see docu of PY_TRY
 #  define _PY_CATCH(R) __PY_CATCH(R)
 #endif  // DONT_CATCH_CXX_EXCEPTIONS
 
 #define PY_CATCH _PY_CATCH(return(NULL))
 
-/** Python helper class 
+/** Python helper class
  *  This class encapsulate the Decoding of UTF8 to a python object.
  *  Including exception handling.
  */

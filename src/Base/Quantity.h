@@ -55,7 +55,7 @@ struct BaseExport QuantityFormat {
     int precision;
     int denominator;
 
-    // Default denominator of minimum fractional inch. Only used in certain 
+    // Default denominator of minimum fractional inch. Only used in certain
     // schemas.
     static int defaultDenominator; // i.e 8 for 1/8"
 

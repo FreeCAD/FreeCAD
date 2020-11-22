@@ -386,7 +386,7 @@ Quantity Quantity::Gon              (360.0/400.0   ,Unit(0,0,0,0,0,0,0,1)); // g
 
 // === Parser & Scanner stuff ===============================================
 
-// include the Scanner and the Parser for the Quantitys
+// include the Scanner and the Parser for the 'Quantity's
 
 Quantity QuantResult;
 
@@ -396,20 +396,20 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     double ret_val;
     char temp[40];
     int i = 0;
-    for (char* c=yytext;*c!='\0';c++){ 
+    for (char* c=yytext;*c!='\0';c++){
         // skip group delimiter
         if (*c==grp_delim) continue;
         // check for a dez delimiter other then dot
         if (*c==dez_delim && dez_delim !='.')
              temp[i++] = '.';
         else
-            temp[i++] = *c; 
+            temp[i++] = *c;
         // check buffer overflow
         if (i>39) return 0.0;
     }
     temp[i] = '\0';
-    
-    ret_val = atof( temp ); 
+
+    ret_val = atof( temp );
     return ret_val;
 }
 
