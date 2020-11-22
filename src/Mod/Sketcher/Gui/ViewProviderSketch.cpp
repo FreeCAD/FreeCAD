@@ -110,6 +110,7 @@
 #include <Mod/Part/App/BodyBase.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/Sketch.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
 
 #include "SoZoomTranslation.h"
 #include "SoDatumLabel.h"
@@ -158,6 +159,7 @@ SbColor ViewProviderSketch::SelectColor                 (0.11f,0.68f,0.11f);  //
 SbColor ViewProviderSketch::PreselectSelectedColor      (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
 SbColor ViewProviderSketch::CreateCurveColor            (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
 SbColor ViewProviderSketch::DeactivatedConstrDimColor   (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
+SbColor ViewProviderSketch::InternalAlignedGeoColor     (0.7f,0.7f,0.5f);      // #B2B27F -> (178,178,127)
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
 SbVec2s ViewProviderSketch::prvClickPos;
@@ -2636,14 +2638,38 @@ void ViewProviderSketch::updateColor(void)
 
     float x,y,z;
 
+    // use a lambda function to only access the geometry when needed
+    // and properly handle the case where it's null
+    auto isConstructionGeom = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
+        const Part::Geometry* geom = obj->getGeometry(GeoId);
+        if (geom)
+            return geom->getConstruction();
+        return false;
+    };
+
+    auto isInternalAlignedGeom = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
+        const Part::Geometry* geom = obj->getGeometry(GeoId);
+        if (geom) {
+            auto gf = Sketcher::GeometryFacade::getFacade(geom);
+            return gf->isInternalAligned();
+        }
+        return false;
+    };
+
     // colors of the point set
     if (edit->FullyConstrained) {
         for (int  i=0; i < PtNum; i++)
             pcolor[i] = FullyConstrainedColor;
     }
     else {
-        for (int  i=0; i < PtNum; i++)
-            pcolor[i] = VertexColor;
+        for (int  i=0; i < PtNum; i++) {
+            int GeoId = edit->PointIdToGeoId[i];
+
+            if(isInternalAlignedGeom(getSketchObject(), GeoId))
+                pcolor[i] = InternalAlignedGeoColor;
+            else
+                pcolor[i] = VertexColor;
+        }
     }
 
     for (int  i=0; i < PtNum; i++) { // 0 is the origin
@@ -2682,16 +2708,6 @@ void ViewProviderSketch::updateColor(void)
     float zNormLine = (topid==1?zHighLines:midid==1?zMidLines:zLowLines);
     float zConstrLine = (topid==2?zHighLines:midid==2?zMidLines:zLowLines);
     float zExtLine = (topid==3?zHighLines:midid==3?zMidLines:zLowLines);
-
-    // use a lambda function to only access the geometry when needed
-    // and properly handle the case where it's null
-    auto isConstructionGeom = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
-        const Part::Geometry* geom = obj->getGeometry(GeoId);
-        if (geom)
-            return geom->getConstruction();
-        return false;
-    };
-
 
     int j=0; // vertexindex
 
@@ -2733,7 +2749,11 @@ void ViewProviderSketch::updateColor(void)
             }
         }
         else if (isConstructionGeom(getSketchObject(), GeoId)) {
-            color[i] = CurveDraftColor;
+            if(isInternalAlignedGeom(getSketchObject(), GeoId))
+                color[i] = InternalAlignedGeoColor;
+            else
+                color[i] = CurveDraftColor;
+
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
                 verts[j] = SbVec3f(x,y,zConstrLine);
@@ -5827,6 +5847,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = (unsigned long)(CurveDraftColor.getPackedValue());
     color = hGrp->GetUnsigned("ConstructionColor", color);
     CurveDraftColor.setPackedValue((uint32_t)color, transparency);
+    // set the construction curve color
+    color = (unsigned long)(InternalAlignedGeoColor.getPackedValue());
+    color = hGrp->GetUnsigned("InternalAlignedGeoColor", color);
+    InternalAlignedGeoColor.setPackedValue((uint32_t)color, transparency);
     // set the cross lines color
     //CrossColorV.setPackedValue((uint32_t)color, transparency);
     //CrossColorH.setPackedValue((uint32_t)color, transparency);
