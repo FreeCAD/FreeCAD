@@ -119,7 +119,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             params = {}
             params['X'] = p['x']
             params['Y'] = p['y']
-            params.update(cmdParams)
             if obj.EnableRotation != 'Off':
                 angle = p['angle']
                 axis = p['axis']
@@ -148,7 +147,14 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 # Prepare for drilling cycle
                 self.commandlist.append(Path.Command('G0', {axisOfRot: angle, 'F': self.axialRapid}))
                 self.commandlist.append(Path.Command('G0', {'X': p['x'], 'Y': p['y'], 'F': self.horizRapid}))
-                self.commandlist.append(Path.Command('G1', {'Z': p['stkTop'], 'F': self.vertFeed}))
+                self.commandlist.append(Path.Command('G1', {'Z': obj.StartDepth.Value, 'F': self.vertFeed}))
+
+                # Update retract height due to rotation
+                self.opSetDefaultRetractHeight(obj)
+                cmdParams['R'] = obj.RetractHeight.Value
+
+            # Update changes to parameters
+            params.update(cmdParams)
 
             # Perform canned drilling cycle
             self.commandlist.append(Path.Command(cmd, params))
@@ -166,23 +172,34 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
             self.commandlist.append(Path.Command('G0', {lastAxis: 0.0, 'F': self.axialRapid}))
 
-    def opSetDefaultValues(self, obj, job):
-        '''opSetDefaultValues(obj, job) ... set default value for RetractHeight'''
+    def opSetDefaultRetractHeight(self, obj, job=None):
+        '''opSetDefaultRetractHeight(obj, job) ... set default Retract Height value'''
 
-        parentJob = PathUtils.findParentJob(obj)
+        has_job = True
+        if not job:
+            job = PathUtils.findParentJob(obj)
+            has_job = False
 
-        if hasattr(parentJob.SetupSheet, 'RetractHeight'):
-            obj.RetractHeight = parentJob.SetupSheet.RetractHeight
+        if hasattr(job.SetupSheet, 'RetractHeight'):
+            obj.RetractHeight = job.SetupSheet.RetractHeight
         elif self.applyExpression(obj, 'RetractHeight', 'OpStartDepth+1mm'):
-            obj.RetractHeight = 10
+            if has_job:
+                obj.RetractHeight = 10
+            else:
+                obj.RetractHeight.Value = obj.StartDepth.Value + 1.0
 
-        if hasattr(parentJob.SetupSheet, 'PeckDepth'):
-            obj.PeckDepth = parentJob.SetupSheet.PeckDepth
+    def opSetDefaultValues(self, obj, job):
+        '''opSetDefaultValues(obj, job) ... Set default property values'''
+
+        self.opSetDefaultRetractHeight(obj, job)
+
+        if hasattr(job.SetupSheet, 'PeckDepth'):
+            obj.PeckDepth = job.SetupSheet.PeckDepth
         elif self.applyExpression(obj, 'PeckDepth', 'OpToolDiameter*0.75'):
             obj.PeckDepth = 1
 
-        if hasattr(parentJob.SetupSheet, 'DwellTime'):
-            obj.DwellTime = parentJob.SetupSheet.DwellTime
+        if hasattr(job.SetupSheet, 'DwellTime'):
+            obj.DwellTime = job.SetupSheet.DwellTime
         else:
             obj.DwellTime = 1
 
