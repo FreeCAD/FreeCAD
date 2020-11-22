@@ -67,6 +67,7 @@
         <file>icons/PartDesign_Group.svg</file>
         <file>icons/PartDesign_GroupSketch.svg</file>
         <file>icons/PartDesign_GroupDatum.svg</file>
+        <file>icons/PartDesign_GroupMisc.svg</file>
         <file>translations/PartDesign_af.qm</file>
         <file>translations/PartDesign_ar.qm</file>
         <file>translations/PartDesign_ca.qm</file>
