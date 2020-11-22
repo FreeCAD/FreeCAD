@@ -400,6 +400,7 @@ protected:
     static SbColor PreselectSelectedColor;
     static SbColor InformationColor;
     static SbColor DeactivatedConstrDimColor;
+    static SbColor InternalAlignedGeoColor;
 
     static SbTime prvClickTime;
     static SbVec2s prvClickPos; //used by double-click-detector
