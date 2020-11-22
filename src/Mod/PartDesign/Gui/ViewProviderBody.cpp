@@ -30,6 +30,7 @@
 # include <Inventor/SbColor.h>
 # include <Precision.hxx>
 # include <QMenu>
+# include <QMessageBox>
 #endif
 
 #include <Base/Console.h>
@@ -47,6 +48,7 @@
 #include <Gui/ViewProviderOrigin.h>
 #include <Gui/ViewProviderOriginFeature.h>
 #include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/MainWindow.h>
 
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
@@ -189,6 +191,7 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
             auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
             if (!body)
                 return;
+            App::AutoTransaction committer("Toggle group");
             try {
                 std::vector<App::DocumentObjectT> groups;
                 for (auto obj : body->Group.getValues()) {
@@ -198,7 +201,6 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                             groups.emplace_back(obj);
                     }
                 }
-                App::AutoTransaction committer("Toggle group");
                 if (groups.empty()) {
                     int pos = 0;
                     auto children = body->Group.getValues();
@@ -228,6 +230,9 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                 }
             } catch (Base::Exception &e) {
                 e.ReportException();
+                QMessageBox::critical(Gui::getMainWindow(), tr("Auto group"),
+                        tr("Toggle auto group failed. Please check report view for more details."));
+                committer.close(true);
             }
         });
 
@@ -245,6 +250,9 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                 group->_Body.setValue(body);
             } catch (Base::Exception &e) {
                 e.ReportException();
+                QMessageBox::critical(Gui::getMainWindow(), tr("Add group"),
+                        tr("Failed to add group. Please check report view for more details."));
+                committer.close(true);
             }
         });
 
