@@ -353,10 +353,9 @@ class ObjectSlot(PathOp.ObjectOp):
         self.arcRadius = 0.0
         self.newRadius = 0.0
         self.isDebug = False if PathLog.getLevel(PathLog.thisModule()) != 4 else True
-        self.showDebugObjects = obj.ShowTempObjects
+        self.showDebugObjects = False
         self.stockZMin = self.job.Stock.Shape.BoundBox.ZMin
         CMDS = list()
-        FCAD = FreeCAD.ActiveDocument
 
         try:
             dotIdx = __name__.index('.') + 1
@@ -364,18 +363,17 @@ class ObjectSlot(PathOp.ObjectOp):
             dotIdx = 0
         self.module = __name__[dotIdx:]
 
-        if not self.isDebug:
-            self.showDebugObjects = False
+        # Setup debugging group for temp objects, when in DEBUG mode
+        if self.isDebug:
+            self.showDebugObjects = obj.ShowTempObjects
         if self.showDebugObjects:
+            FCAD = FreeCAD.ActiveDocument
             for grpNm in ['tmpDebugGrp', 'tmpDebugGrp001']:
-                if hasattr(FreeCAD.ActiveDocument, grpNm):
-                    for go in FreeCAD.ActiveDocument.getObject(grpNm).Group:
-                        FreeCAD.ActiveDocument.removeObject(go.Name)
-                    FreeCAD.ActiveDocument.removeObject(grpNm)
-            self.tmpGrp = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup', 'tmpDebugGrp')
-            tmpGrpNm = self.tmpGrp.Name
-
-        # self.updateEnumerations(obj)
+                if hasattr(FCAD, grpNm):
+                    for go in FCAD.getObject(grpNm).Group:
+                        FCAD.removeObject(go.Name)
+                    FCAD.removeObject(grpNm)
+            self.tmpGrp = FCAD.addObject('App::DocumentObjectGroup', 'tmpDebugGrp')
 
         # Begin GCode for operation with basic information
         # ... and move cutter to clearance height and startpoint
@@ -413,8 +411,7 @@ class ObjectSlot(PathOp.ObjectOp):
         # Hide the temporary objects
         if self.showDebugObjects:
             if FreeCAD.GuiUp:
-                import FreeCADGui
-                FreeCADGui.ActiveDocument.getObject(tmpGrpNm).Visibility = False
+                FreeCADGui.ActiveDocument.getObject(self.tmpGrp.Name).Visibility = False
             self.tmpGrp.purgeTouched()
 
         return True
@@ -592,6 +589,9 @@ class ObjectSlot(PathOp.ObjectOp):
                     i += 1
         # Raise to SafeHeight when finished
         CMDS.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+
+        if self.isDebug:
+            PathLog.debug('G-code arc command is: {}'.format(PATHS[path_index][2]))
 
         return CMDS
 
@@ -1680,7 +1680,7 @@ class ObjectSlot(PathOp.ObjectOp):
             do = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmp_' + objName)
             do.Shape = objShape
             do.purgeTouched()
-            self.tempGroup.addObject(do)
+            self.tmpGrp.addObject(do)
 # Eclass
 
 
