@@ -185,6 +185,9 @@ public:
                                                  bool all=true,
                                                  bool reversed=false) const;
 
+    virtual int isElementVisible(const char *element) const override;
+    virtual int setElementVisible(const char *element, bool visible) override;
+
 protected:
     virtual void onSettingDocument() override;
 

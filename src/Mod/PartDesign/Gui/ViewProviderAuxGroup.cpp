@@ -60,6 +60,9 @@ void ViewProviderAuxGroup::attach(App::DocumentObject* obj)
         case PartDesign::AuxGroup::DatumGroup:
             sPixmap = "PartDesign_GroupDatum.svg";
             break;
+        case PartDesign::AuxGroup::MiscGroup:
+            sPixmap = "PartDesign_GroupMisc.svg";
+            break;
         default:
             sPixmap = "PartDesign_Group.svg";
         }
@@ -69,10 +72,27 @@ void ViewProviderAuxGroup::attach(App::DocumentObject* obj)
 bool ViewProviderAuxGroup::canDropObject(App::DocumentObject *obj) const
 {
     auto owner = Base::freecad_dynamic_cast<PartDesign::AuxGroup>(getObject());
-    if (!owner || !owner->isObjectAllowed(obj))
+    auto body = owner->getBody();
+    if (!body || !owner->isObjectAllowed(obj))
         return false;
-    auto bodyVp = Gui::Application::Instance->getViewProvider(owner->getBody());
+    if (owner->getGroupType() == PartDesign::AuxGroup::OtherGroup) {
+        if (PartDesign::Body::findBodyOf(obj) == body
+                && !owner->Group.find(obj->getNameInDocument()))
+            return true;
+    }
+    auto bodyVp = Gui::Application::Instance->getViewProvider(body);
     return bodyVp && bodyVp->canDropObject(obj);
+}
+
+bool ViewProviderAuxGroup::canDragAndDropObject(App::DocumentObject *obj) const
+{
+    auto owner = Base::freecad_dynamic_cast<PartDesign::AuxGroup>(getObject());
+    if (!owner)
+        return false;
+    auto body = owner->getBody();
+    if (!body)
+        return false;
+    return PartDesign::Body::findBodyOf(obj) != body;
 }
 
 void ViewProviderAuxGroup::dropObject(App::DocumentObject *obj)
@@ -80,6 +100,19 @@ void ViewProviderAuxGroup::dropObject(App::DocumentObject *obj)
     auto owner = Base::freecad_dynamic_cast<PartDesign::AuxGroup>(getObject());
     if (!owner)
         return;
+    auto body = owner->getBody();
+    if (!body || !owner->isObjectAllowed(obj))
+        return;
+    if (owner->getGroupType() == PartDesign::AuxGroup::OtherGroup) {
+        if (PartDesign::Body::findBodyOf(obj) == body
+                && !owner->Group.find(obj->getNameInDocument())) {
+            auto children = owner->Group.getValues();
+            children.push_back(obj);
+            owner->Group.setValues(children);
+            body->_GroupTouched.touch();
+            return;
+        }
+    }
     auto bodyVp = Gui::Application::Instance->getViewProvider(owner->getBody());
     if (bodyVp && owner->isObjectAllowed(obj))
         bodyVp->dropObject(obj);

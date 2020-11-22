@@ -91,6 +91,8 @@ AuxGroup::GroupType AuxGroup::getGroupType() const
         groupType = SketchGroup;
     else if (boost::starts_with(getNameInDocument(), "Datums"))
         groupType = DatumGroup;
+    else if (boost::starts_with(getNameInDocument(), "Misc"))
+        groupType = MiscGroup;
     else
         groupType = OtherGroup;
     return groupType;
@@ -100,19 +102,22 @@ bool AuxGroup::isObjectAllowed(const App::DocumentObject *obj) const
 {
     if (!obj || boost::starts_with(obj->getNameInDocument(), "BaseFeature"))
         return false;
+    auto type = obj->getTypeId();
     switch (getGroupType()) {
     case SketchGroup:
-        return obj->isDerivedFrom(Part::Part2DObject::getClassTypeId());
+        return type.isDerivedFrom(Part::Part2DObject::getClassTypeId());
     case DatumGroup:
-        return obj->isDerivedFrom(Part::Datum::getClassTypeId());
-    case OtherGroup: {
-        auto type = obj->getTypeId();
+        return type.isDerivedFrom(Part::Datum::getClassTypeId());
+    case MiscGroup:
         return !type.isDerivedFrom(Part::Part2DObject::getClassTypeId())
             && !type.isDerivedFrom(Part::Datum::getClassTypeId())
             && !type.isDerivedFrom(Feature::getClassTypeId())
             && !type.isDerivedFrom(Solid::getClassTypeId())
             && !type.isDerivedFrom(AuxGroup::getClassTypeId());
-    }
+    case OtherGroup:
+        return !type.isDerivedFrom(AuxGroup::getClassTypeId())
+            && !type.isDerivedFrom(PartDesign::Feature::getClassTypeId())
+            && PartDesign::Body::isAllowed(type);
     default:
         return false;
     }
@@ -136,9 +141,28 @@ void AuxGroup::refresh()
         return;
     }
     std::vector<App::DocumentObject *> children;
-    for (auto obj : body->Group.getValues()) {
-        if (isObjectAllowed(obj))
-            children.push_back(obj);
+    if (getGroupType() == OtherGroup) {
+        bool touched = false;
+        const auto & group = Group.getValues();
+        for (auto it=group.begin(); it!=group.end(); ++it) {
+            auto obj = *it;
+            if (body->Group.find(obj->getNameInDocument()) == obj) {
+                if (touched)
+                    children.push_back(obj);
+            }
+            else if (!touched) {
+                touched = true;
+                children.insert(children.end(), group.begin(), it);
+            }
+        }
+        if (touched)
+            Group.setValues(children);
     }
-    Group.setValues(children);
+    else {
+        for (auto obj : body->Group.getValues()) {
+            if (isObjectAllowed(obj))
+                children.push_back(obj);
+        }
+        Group.setValues(children);
+    }
 }

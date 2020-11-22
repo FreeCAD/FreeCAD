@@ -58,7 +58,8 @@ public:
         UnknownGroup,
         SketchGroup,
         DatumGroup,
-        OtherGroup
+        MiscGroup,
+        OtherGroup,
     };
     GroupType getGroupType() const;
     PartDesign::Body * getBody() const;

@@ -818,3 +818,29 @@ Body::getSiblings(App::DocumentObject *obj, bool all, bool reversed) const
     }
     return res;
 }
+
+int Body::isElementVisible(const char *element) const
+{
+    auto obj = Group.find(element);
+    if (obj && obj->isDerivedFrom(AuxGroup::getClassTypeId())) {
+        auto group = static_cast<AuxGroup*>(obj);
+        for (auto child : group->Group.getValues()) {
+            if (child->Visibility.getValue())
+                return 1;
+        }
+        return 0;
+    }
+    return -1;
+}
+
+int Body::setElementVisible(const char *element, bool visible)
+{
+    auto obj = Group.find(element);
+    if (obj && obj->isDerivedFrom(AuxGroup::getClassTypeId())) {
+        auto group = static_cast<AuxGroup*>(obj);
+        for (auto child : group->Group.getValues())
+            child->Visibility.setValue(visible);
+        return 1;
+    }
+    return -1;
+}
