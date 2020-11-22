@@ -369,6 +369,7 @@ void TaskBooleanParameters::onTypeChanged(int index)
         case 0: pcBoolean->Type.setValue("Fuse"); break;
         case 1: pcBoolean->Type.setValue("Cut"); break;
         case 2: pcBoolean->Type.setValue("Common"); break;
+        case 3: pcBoolean->Type.setValue("Compound"); break;
         default: pcBoolean->Type.setValue("Fuse");
     }
 

@@ -52,7 +52,7 @@ namespace PartDesign {
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::Boolean, PartDesign::Feature)
 
-const char* Boolean::TypeEnums[]= {"Fuse","Cut","Common",NULL};
+const char* Boolean::TypeEnums[]= {"Fuse","Cut","Common","Compound", NULL};
 
 Boolean::Boolean()
 {
@@ -142,6 +142,8 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         op = TOPOP_CUT;
     else if(type == "Common")
         op = TOPOP_COMMON;
+    else if(type == "Compound")
+        op = TOPOP_COMPOUND;
     else
         return new App::DocumentObjectExecReturn("Unsupported boolean operation");
 
