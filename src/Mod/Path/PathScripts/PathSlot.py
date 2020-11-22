@@ -44,17 +44,14 @@ Part = LazyLoader('Part', globals(), 'Part')
 if FreeCAD.GuiUp:
     import FreeCADGui
 
-DEBUG = False
-if DEBUG:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-
 
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
+
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 class ObjectSlot(PathOp.ObjectOp):
