@@ -4302,7 +4302,7 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
     return objects;
 }
 
-void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
+void Document::addObject(DocumentObject* pcObject, const char* pObjectName, bool activate)
 {
     if (pcObject->getDocument()) {
         throw Base::RuntimeError("Document object is already added to a document");
@@ -4325,7 +4325,8 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
     else
         ObjectName = getUniqueObjectName(pcObject->getTypeId().getName());
 
-    d->activeObject = pcObject;
+    if (activate)
+        d->activeObject = pcObject;
 
     // insert in the name map
     d->objectMap[ObjectName] = pcObject;

@@ -810,7 +810,10 @@ public:
         }
         try {
             auto wrap = static_cast<PartDesign::FeatureWrap*>(
-                    activeBody->newObjectAt("PartDesign::FeatureWrap", "Wrap", links));
+                    activeBody->newObjectAt("PartDesign::FeatureWrap",
+                                            "Wrap",
+                                            link->linkedObjects(),
+                                            false));
             wrap->Label.setValue(object.Label.getValue());
             wrap->WrapFeature.setValue(const_cast<App::DocumentObject*>(&object));
         } catch (Base::Exception &e) {

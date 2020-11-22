@@ -298,7 +298,7 @@ public:
      * \note The passed feature must not yet be added to a document, otherwise an exception
      * is raised.
      */
-    void addObject(DocumentObject*, const char* pObjectName=0);
+    void addObject(DocumentObject*, const char* pObjectName=0, bool activate=true);
 
 
     /** Copy objects from another document to this document

@@ -360,12 +360,13 @@ Body::getInsertionPosition(const std::vector<App::DocumentObject*> &objs)
 App::DocumentObject *
 Body::newObjectAt(const char *type,
                   const char *name,
-                  const std::vector<App::DocumentObject *> &deps)
+                  const std::vector<App::DocumentObject *> &deps,
+                  bool activate)
 {
     if (!isAllowed(Base::Type::fromName(type)))
         FC_THROWM(Base::TypeError, "Type '" << (type?type:"?")  << "' is not allowed in Body");
 
-    App::DocumentObject *obj = getDocument()->addObject(type, name);
+    App::DocumentObject *obj = getDocument()->addObject(type, name, activate);
     if (!obj)
         FC_THROWM(Base::RuntimeError, "Failed to create object");
     insertObject(obj, getInsertionPosition(deps));

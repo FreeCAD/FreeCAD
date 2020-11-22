@@ -94,7 +94,8 @@ public:
     /// Create a new object and insert it according to its dependencies
     App::DocumentObject *newObjectAt(const char *type,
                                      const char *name,
-                                     const std::vector<App::DocumentObject *> & deps);
+                                     const std::vector<App::DocumentObject *> & deps,
+                                     bool activate = true);
 
     /// Set new tip
     void setTip(App::DocumentObject *);
