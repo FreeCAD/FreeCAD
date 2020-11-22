@@ -134,12 +134,12 @@ int DlgSettingsImageImp::imageHeight() const
 
 /**
  * Returns the comment of the picture. If for the currently selected image format no comments are supported
- * QString::null is returned.
+ * QString() is returned.
  */
 QString DlgSettingsImageImp::comment() const
 {
     if ( !ui->textEditComment->isEnabled() )
-        return QString::null;
+        return QString();
     else
         return ui->textEditComment->toPlainText();
 }

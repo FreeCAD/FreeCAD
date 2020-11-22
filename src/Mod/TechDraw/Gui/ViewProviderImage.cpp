@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan   (wandererfan@gmail.com)              *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -49,6 +49,8 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderImage, TechDrawGui::ViewProviderDrawing
 ViewProviderImage::ViewProviderImage()
 {
     sPixmap = "actions/techdraw-image";
+
+    ADD_PROPERTY_TYPE(Crop ,(false),"Image", App::Prop_None, "Crop image to Width x Height");
 }
 
 ViewProviderImage::~ViewProviderImage()
@@ -78,6 +80,25 @@ void ViewProviderImage::updateData(const App::Property* prop)
 {
     ViewProviderDrawingView::updateData(prop);
 }
+
+void ViewProviderImage::onChanged(const App::Property *prop)
+{
+    App::DocumentObject* obj = getObject();
+    if (!obj || obj->isRestoring()) {
+            Gui::ViewProviderDocumentObject::onChanged(prop);
+            return;
+    }
+
+    if (prop == &Crop) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
+    }
+
+    Gui::ViewProviderDocumentObject::onChanged(prop);
+}
+
 
 TechDraw::DrawViewImage* ViewProviderImage::getViewObject() const
 {

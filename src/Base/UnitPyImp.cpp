@@ -41,24 +41,10 @@ PyObject *UnitPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pytho
 // constructor method
 int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    PyObject *object;
     Unit *self = getUnitPtr();
 
-    int i1=0;
-    int i2=0;
-    int i3=0;
-    int i4=0;
-    int i5=0;
-    int i6=0;
-    int i7=0;
-    int i8=0;
-    if (PyArg_ParseTuple(args, "|iiiiiiii", &i1,&i2,&i3,&i4,&i5,&i6,&i7,&i8)) {
-        *self = Unit(i1,i2,i3,i4,i5,i6,i7,i8);
-        return 0;
-    }
-    PyErr_Clear(); // set by PyArg_ParseTuple()
-
-    PyObject *object;
-
+    // get quantity
     if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
         // Note: must be static_cast, not reinterpret_cast
         *self = static_cast<Base::QuantityPy*>(object)->getQuantityPtr()->getUnit();
@@ -66,12 +52,15 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
 
+    // get unit
     if (PyArg_ParseTuple(args,"O!",&(Base::UnitPy::Type), &object)) {
         // Note: must be static_cast, not reinterpret_cast
         *self = *(static_cast<Base::UnitPy*>(object)->getUnitPtr());
         return 0;
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
+
+    // get string
     char* string;
     if (PyArg_ParseTuple(args,"et", "utf-8", &string)) {
         QString qstr = QString::fromUtf8(string);
@@ -82,6 +71,26 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         catch (const Base::Exception& e) {
             PyErr_SetString(PyExc_RuntimeError, e.what());
+            return -1;
+        }
+    }
+    PyErr_Clear(); // set by PyArg_ParseTuple()
+
+    int i1=0;
+    int i2=0;
+    int i3=0;
+    int i4=0;
+    int i5=0;
+    int i6=0;
+    int i7=0;
+    int i8=0;
+    if (PyArg_ParseTuple(args, "|iiiiiiii", &i1,&i2,&i3,&i4,&i5,&i6,&i7,&i8)) {
+        try {
+            *self = Unit(i1,i2,i3,i4,i5,i6,i7,i8);
+            return 0;
+        }
+        catch (const Base::OverflowError& e) {
+            PyErr_SetString(PyExc_OverflowError, e.what());
             return -1;
         }
     }

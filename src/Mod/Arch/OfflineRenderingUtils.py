@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2019 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -249,7 +248,7 @@ def saveDiffuseColor(colorlist):
         else:
             return bytes((i,))
     # if too many colors, bail out and use only the first one for now...
-    if len(colorlist) > 254: 
+    if len(colorlist) > 254:
         colorlist = colorlist[:1]
         print("debug: too many colors, reducing")
     output = tochr(len(colorlist))+3*tochr(0)
@@ -365,8 +364,8 @@ def render(outputfile,scene=None,camera=None,zoom=False,width=400,height=300,bac
         # create a default camera if none was given
         camera = coin.SoPerspectiveCamera()
         cameraRotation = coin.SbRotation.identity()
-        cameraRotation *= coin.SbRotation(coin.SbVec3f(1,0,0),-0.4)
-        cameraRotation *= coin.SbRotation(coin.SbVec3f(0,1,0), 0.4)
+        cameraRotation *= coin.SbRotation(coin.SbVec3f(1,0,0),1.0)
+        cameraRotation *= coin.SbRotation(coin.SbVec3f(0,0,1),0.4)
         camera.orientation = cameraRotation
         # make sure all objects get in the view later
         zoom = True
@@ -409,7 +408,7 @@ def buildScene(objects,colors=None):
     root = coin.SoSeparator()
     for o in objects:
         buf = None
-        if hasattr(o,'Shape'):
+        if hasattr(o,'Shape') and o.Shape and (not o.Shape.isNull()):
             # writeInventor of shapes needs tessellation values
             buf = o.Shape.writeInventor(2,0.01)
         elif o.isDerivedFrom("Mesh::Feature"):
@@ -427,6 +426,7 @@ def buildScene(objects,colors=None):
                     if isinstance(color,list):
                         # DiffuseColor, not supported here
                         color = color[0]
+                    color = color[:3]
                     mat = coin.SoMaterial()
                     mat.diffuseColor = color
                     node.insertChild(mat,0)
@@ -443,7 +443,7 @@ def getCamera(filepath):
     guidata = getGuiData(filepath)
     if "GuiCameraSettings" in guidata:
         return guidata["GuiCameraSettings"].strip()
-    print("no camera found in file")
+    print("No camera found in file")
     return None
 
 
@@ -749,12 +749,36 @@ def buildGuiDocumentFromGuiData(document,guidata):
                         guidoc += "                        <Enum value=\""+v+"\"/>\n"
                     guidoc += "                    </CustomEnumList>\n"
             elif prop["type"] in ["App::PropertyColorList"]:
-                # number of colors
-                buf = binascii.unhexlify(hex(len(prop["value"]))[2:].zfill(2))
-                # fill 3 other bytes (the number of colors occupies 4 bytes)
-                buf += binascii.unhexlify(hex(0)[2:].zfill(2))
-                buf += binascii.unhexlify(hex(0)[2:].zfill(2))
-                buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                # DiffuseColor: first 4 bytes of file tells number of Colors
+                # then rest of bytes represent colors value where each color
+                # is of 4 bytes in abgr order.
+
+                # convert number of colors into hexadecimal representation
+                hex_repr = hex(len(prop["value"]))[2:]
+
+                # if len of `hex_repr` is odd, then add 0 padding.
+                # `hex_repr` must contain an even number of hex digits
+                # as `binascii.unhexlify` only works of even hex str.
+                if len(hex_repr) % 2 != 0:
+                    hex_repr = "0" + hex_repr
+                buf = binascii.unhexlify(hex_repr)
+
+                if len(hex_repr) > 8:
+                    raise NotImplementedError(
+                        "Number of colors ({}) is greater than 4 bytes and in DiffuseColor file we only "
+                        "specify number of colors in 4 bytes.".format(len(prop["value"]))
+                    )
+                elif len(hex_repr) == 2:  # `hex_repr` == 1 byte
+                    # fill 3 other bytes (the number of colors occupies 4 bytes)
+                    buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                    buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                    buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                elif len(hex_repr) == 4:  # `hex_repr` == 2 bytes
+                    buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                    buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                elif len(hex_repr) == 6:  # `hex_repr` == 3 bytes
+                    buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+
                 # fill colors in abgr order
                 for color in prop["value"]:
                     if len(color) >= 4:

@@ -129,7 +129,7 @@ from menu Tools -> Addon Manager""")
                     QtGui.QMessageBox.information(None, "", message)
                 else:
                     FCC.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
-                    FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addons Manager\n")
+                    FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
                 break
         progressbar.stop()
         sys.path.append(FreeCAD.ConfigGet("UserAppData"))
@@ -160,7 +160,7 @@ To enabled FreeCAD to download these libraries, answer Yes.""")
             _maj = _ver[0]
             _min = _ver[1]
             if float(_maj + "." + _min) >= 0.17:
-                FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addons Manager\n")
+                FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
             else:
                 FCC.PrintWarning("Please check https://github.com/yorikvanhavre/Draft-dxf-importer\n")
 
@@ -3599,7 +3599,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
     if dxfLibrary:
         global exportList
         exportList = objectslist
-        exportList = Draft.getGroupContents(exportList)
+        exportList = Draft.get_group_contents(exportList)
 
         nlist = []
         exportLayers = []
@@ -3800,7 +3800,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                                                    style='STANDARD',
                                                    layer=getStrGroup(ob)))
 
-                elif Draft.getType(ob) == "DraftText":
+                elif Draft.getType(ob) in ("DraftText","Text"):
                     # texts
                     if gui:
                         height = float(ob.ViewObject.FontSize)
@@ -3817,7 +3817,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                                                    style='STANDARD',
                                                    layer=getStrGroup(ob)))
 
-                elif Draft.getType(ob) == "Dimension":
+                elif Draft.getType(ob) in ["Dimension","LinearDimension"]:
                     p1 = DraftVecUtils.tup(ob.Start)
                     p2 = DraftVecUtils.tup(ob.End)
                     base = Part.LineSegment(ob.Start, ob.End).toShape()
@@ -3932,7 +3932,7 @@ def exportPage(page, filename):
     c = dxfcounter()
     pat = re.compile("(_handle_)")
     template = pat.sub(c.incr, template)
-    f = pythonopen(filename, "wb")
+    f = pythonopen(filename, "w")
     f.write(template)
     f.close()
 
@@ -4169,7 +4169,7 @@ def readPreferences():
     # reading parameters
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     if FreeCAD.GuiUp and p.GetBool("dxfShowDialog", False):
-        FreeCADGui.showPreferences("Import-Export", 2)
+        FreeCADGui.showPreferences("Import-Export", 3)
     global dxfCreatePart, dxfCreateDraft, dxfCreateSketch
     global dxfDiscretizeCurves, dxfStarBlocks
     global dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth

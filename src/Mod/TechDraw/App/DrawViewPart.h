@@ -93,6 +93,7 @@ public:
     virtual ~DrawViewPart();
 
     App::PropertyLinkList     Source;
+    App::PropertyXLinkList    XSource;
     App::PropertyVector       Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
     App::PropertyVector       XDirection;
     App::PropertyBool         Perspective;
@@ -145,7 +146,8 @@ public:
     virtual std::vector<DrawViewDetail*> getDetailRefs() const;
 
 
-    virtual Base::Vector3d projectPoint(const Base::Vector3d& pt) const;
+    virtual Base::Vector3d projectPoint(const Base::Vector3d& pt,
+                                        bool invert = true) const;
     virtual BaseGeom* projectEdge(const TopoDS_Edge& e) const;
 
     virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
@@ -160,7 +162,6 @@ public:
 
 
     bool handleFaces(void);
-    bool showSectionEdges(void);
 
     bool isUnsetting(void) { return nowUnsetting; }
     
@@ -202,6 +203,9 @@ public:
     void removeAllReferencesFromGeom();
     void resetReferenceVerts();
 
+    std::vector<App::DocumentObject*> getAllSources(void) const;
+
+
 protected:
     bool checkXDirection(void) const;
 
@@ -220,8 +224,7 @@ protected:
 
     Base::Vector3d shapeCentroid;
     void getRunControl(void);
-    
-    bool m_sectionEdges;
+
     bool m_handleFaces;
 
     TopoDS_Shape m_saveShape;    //TODO: make this a Property.  Part::TopoShapeProperty??

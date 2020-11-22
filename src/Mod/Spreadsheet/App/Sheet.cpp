@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -53,7 +53,6 @@
 #include <string>
 #include <iomanip>
 #include <boost/regex.hpp>
-#include <boost/bind.hpp>
 #include <deque>
 
 FC_LOG_LEVEL_INIT("Spreadsheet",true,true)

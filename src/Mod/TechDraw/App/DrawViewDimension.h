@@ -135,14 +135,12 @@ public:
 
     virtual std::string getFormatedValue(int partial = 0);
     virtual double getDimValue();
+    QStringList getPrefixSuffixSpec(QString fSpec);
+
     virtual DrawViewPart* getViewPart() const;
     virtual QRectF getRect() const override { return QRectF(0,0,1,1);}          //pretend dimensions always fit!
-    static int getRefType1(const std::string s);
-    static int getRefType2(const std::string s1, const std::string s2);
-    static int getRefType3(const std::string g1,
-                           const std::string g2,
-                           const std::string g3);
-    virtual int getRefType() const;                                   //Vertex-Vertex, Edge, Edge-Edge
+    virtual int getRefType() const;             //Vertex-Vertex, Edge, Edge-Edge
+    static int getRefTypeSubElements(const std::vector<std::string> &);             //Vertex-Vertex, Edge, Edge-Edge
     void setAll3DMeasurement();
     void clear3DMeasurements(void);
     virtual bool checkReferences2D(void) const;
@@ -156,11 +154,12 @@ public:
     pointPair getArrowPositions(void);
     void saveArrowPositions(const Base::Vector2d positions[]);
 
+    bool showUnits() const;
+    bool useDecimals() const;
+
 protected:
     virtual void onChanged(const App::Property* prop) override;
     virtual void onDocumentRestored() override;
-    bool showUnits() const;
-    bool useDecimals() const;
     std::string getPrefix() const;
     std::string getDefaultFormatSpec() const;
     virtual pointPair getPointsOneEdge();

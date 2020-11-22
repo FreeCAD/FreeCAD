@@ -36,18 +36,21 @@
 #include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawUtil.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawTile.h>
 #include <Mod/TechDraw/App/DrawTileWeld.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
 #include <qmath.h>
 #include "Rez.h"
+#include "PreferencesGui.h"
 #include "DrawGuiUtil.h"
 #include "QGIView.h"
 #include "QGIWeldSymbol.h"
 #include "QGITile.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
     m_textL(QString::fromUtf8(" ")),
@@ -189,7 +192,7 @@ void QGITile::makeText(void)
     }
 
     double vertAdjust = 0.0;
-    double minVertAdjust = prefFontSize() * 0.1;
+    double minVertAdjust = PreferencesGui::labelFontSizePX() * 0.1;
     if (m_font.pixelSize() > m_high) {
         vertAdjust = ((m_font.pixelSize() - m_high) / 2.0) + minVertAdjust;
     }
@@ -381,19 +384,14 @@ double QGITile::getSymbolFactor(void) const
 
 double QGITile::prefFontSize(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                       GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double sizeMM = hGrp->GetFloat("FontSize", QGIView::DefaultFontSizeInMM);
-    double fontSize = QGIView::calculateFontPixelSize(sizeMM);
-    return fontSize;
+//    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+//                       GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    return Preferences::dimFontSizeMM();
 }
 
 QString QGITile::prefTextFont(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
-    return QString::fromStdString(fontName);
+    return Preferences::labelFontQString();
 }
 
 void QGITile::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

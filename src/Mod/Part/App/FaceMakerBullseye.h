@@ -74,17 +74,17 @@ protected:
     class FaceDriller
     {
     public:
-        FaceDriller(gp_Pln plane, TopoDS_Wire outerWire);
+        FaceDriller(const gp_Pln& plane, TopoDS_Wire outerWire);
 
         /**
          * @brief hitTest: returns True if point is on the face
          * @param point
          */
-        bool hitTest(gp_Pnt point) const;
+        bool hitTest(const gp_Pnt& point) const;
 
         void addHole(TopoDS_Wire w);
 
-        TopoDS_Face Face() {return myFace;}
+        const TopoDS_Face& Face() const {return myFace;}
     public:
         /**
          * @brief wireDirection: determines direction of wire with respect to

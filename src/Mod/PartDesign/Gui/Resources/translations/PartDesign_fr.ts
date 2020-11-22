@@ -1956,7 +1956,7 @@
       <location filename="../../TaskPocketParameters.cpp" line="119"/>
       <location filename="../../TaskPocketParameters.cpp" line="439"/>
       <source>Dimension</source>
-      <translation>Cote</translation>
+      <translation>Dimension</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="42"/>
@@ -3292,7 +3292,7 @@ Il vous sera néanmoins possible de migrer à tout moment, plus tard, via « Pa
     <message>
       <location filename="../../TaskHoleParameters.ui" line="353"/>
       <source>Dimension</source>
-      <translation>Cote</translation>
+      <translation>Dimension</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="358"/>

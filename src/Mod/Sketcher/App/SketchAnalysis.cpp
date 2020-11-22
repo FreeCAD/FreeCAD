@@ -68,8 +68,7 @@ struct SketchAnalysis::VertexIds {
     Sketcher::PointPos PosId;
 };
 
-struct SketchAnalysis::Vertex_Less : public std::binary_function<const VertexIds&,
-                                                                   const VertexIds&, bool>
+struct SketchAnalysis::Vertex_Less
 {
     Vertex_Less(double tolerance) : tolerance(tolerance){}
     bool operator()(const VertexIds& x,
@@ -87,8 +86,7 @@ private:
     double tolerance;
 };
 
-struct SketchAnalysis::Vertex_EqualTo : public std::binary_function<const VertexIds&,
-                                                                        const VertexIds&, bool>
+struct SketchAnalysis::Vertex_EqualTo
 {
     Vertex_EqualTo(double tolerance) : tolerance(tolerance){}
     bool operator()(const VertexIds& x,
@@ -112,8 +110,7 @@ struct SketchAnalysis::EdgeIds {
     int GeoId;
 };
 
-struct SketchAnalysis::Edge_Less : public std::binary_function<const EdgeIds&,
-const EdgeIds&, bool>
+struct SketchAnalysis::Edge_Less
 {
     Edge_Less(double tolerance) : tolerance(tolerance){}
     bool operator()(const EdgeIds& x,
@@ -127,8 +124,7 @@ private:
     double tolerance;
 };
 
-struct SketchAnalysis::Edge_EqualTo : public std::binary_function<const EdgeIds&,
-const EdgeIds&, bool>
+struct SketchAnalysis::Edge_EqualTo
 {
     Edge_EqualTo(double tolerance) : tolerance(tolerance){}
     bool operator()(const EdgeIds& x,
@@ -150,7 +146,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
     for (std::size_t i=0; i<geom.size(); i++) {
         Part::Geometry* g = geom[i];
 
-        if(g->Construction && !includeconstruction)
+        if(g->getConstruction() && !includeconstruction)
             continue;
 
         if (g->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
@@ -360,7 +356,9 @@ void SketchAnalysis::makeMissingPointOnPointCoincident(bool onebyone)
         c->SecondPos = it->SecondPos;
 
         if(onebyone) {
+            // addConstraint() creates a clone
             sketch->addConstraint(c);
+            delete c;
 
             solvesketch(status,dofs,true);
 
@@ -439,7 +437,9 @@ void SketchAnalysis::makeMissingVerticalHorizontal(bool onebyone)
         c->SecondPos = it->SecondPos;
 
         if(onebyone) {
+            // addConstraint() creates a clone
             sketch->addConstraint(c);
+            delete c;
 
             solvesketch(status,dofs,true);
 
@@ -634,7 +634,9 @@ void SketchAnalysis::makeMissingEquality(bool onebyone)
         c->SecondPos = it->SecondPos;
 
         if(onebyone) {
+            // addConstraint() creates a clone
             sketch->addConstraint(c);
+            delete c;
 
             solvesketch(status,dofs,true);
 
@@ -819,4 +821,50 @@ std::vector<Base::Vector3d> SketchAnalysis::getOpenVertices(void) const
     }
 
     return points;
+}
+
+int SketchAnalysis::detectDegeneratedGeometries(double tolerance)
+{
+    int countDegenerated = 0;
+    const std::vector<Part::Geometry *>& geom = sketch->getInternalGeometry();
+    for (std::size_t i=0; i<geom.size(); i++) {
+        Part::Geometry* g = geom[i];
+
+        if (g->getConstruction())
+            continue;
+
+        if (g->getTypeId().isDerivedFrom(Part::GeomCurve::getClassTypeId())) {
+            Part::GeomCurve* curve = static_cast<Part::GeomCurve*>(g);
+            double len = curve->length(curve->getFirstParameter(), curve->getLastParameter());
+            if (len < tolerance)
+                countDegenerated++;
+        }
+    }
+
+    return countDegenerated;
+}
+
+int SketchAnalysis::removeDegeneratedGeometries(double tolerance)
+{
+    std::set<int> delInternalGeometries;
+    const std::vector<Part::Geometry *>& geom = sketch->getInternalGeometry();
+    for (std::size_t i=0; i<geom.size(); i++) {
+        Part::Geometry* g = geom[i];
+
+        if (g->getConstruction())
+            continue;
+
+        if (g->getTypeId().isDerivedFrom(Part::GeomCurve::getClassTypeId())) {
+            Part::GeomCurve* curve = static_cast<Part::GeomCurve*>(g);
+            double len = curve->length(curve->getFirstParameter(), curve->getLastParameter());
+            if (len < tolerance)
+                delInternalGeometries.insert(static_cast<int>(i));
+        }
+    }
+
+    for (auto it = delInternalGeometries.rbegin(); it != delInternalGeometries.rend(); ++it) {
+        sketch->delGeometry(*it);
+    }
+
+    return static_cast<int>(delInternalGeometries.size());
 }

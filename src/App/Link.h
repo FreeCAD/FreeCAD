@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -54,7 +54,7 @@
 namespace App
 {
 
-class AppExport LinkBaseExtension : public App::DocumentObjectExtension 
+class AppExport LinkBaseExtension : public App::DocumentObjectExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::LinkExtension);
     typedef App::DocumentObjectExtension inherited;
@@ -181,10 +181,10 @@ public:
         const char *doc;
 
         PropInfo(int index, const char *name,Base::Type type,const char *doc)
-            :index(index),name(name),type(type),doc(doc)
+            : index(index), name(name), type(type), doc(doc)
         {}
 
-        PropInfo() {}
+        PropInfo() : index(0), name(0), doc(0) {}
     };
 
 #define LINK_PROP_INFO(_1,_var,_param) \
@@ -239,7 +239,7 @@ public:
 
     bool linkTransform() const;
 
-    const char *getSubName() const { 
+    const char *getSubName() const {
         parseSubName();
         return mySubName.size()?mySubName.c_str():0;
     }
@@ -249,12 +249,12 @@ public:
         return mySubElements;
     }
 
-    bool extensionGetSubObject(DocumentObject *&ret, const char *subname, 
+    bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
             PyObject **pyObj=0, Base::Matrix4D *mat=0, bool transform=false, int depth=0) const override;
 
     bool extensionGetSubObjects(std::vector<std::string>&ret, int reason) const override;
 
-    bool extensionGetLinkedObject(DocumentObject *&ret, 
+    bool extensionGetLinkedObject(DocumentObject *&ret,
             bool recurse, Base::Matrix4D *mat, bool transform, int depth) const override;
 
     virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
@@ -293,13 +293,13 @@ public:
     void cacheChildLabel(int enable=-1) const;
 
 protected:
-    void _handleChangedPropertyName(Base::XMLReader &reader, 
+    void _handleChangedPropertyName(Base::XMLReader &reader,
             const char * TypeName, const char *PropName);
     void parseSubName() const;
     void update(App::DocumentObject *parent, const Property *prop);
     void syncElementList();
     void detachElement(App::DocumentObject *obj);
-    void checkGeoElementMap(const App::DocumentObject *obj, 
+    void checkGeoElementMap(const App::DocumentObject *obj,
         const App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const;
     void updateGroup();
     void slotChangedPlainGroup(const App::DocumentObject &, const App::Property &);
@@ -310,7 +310,7 @@ protected:
     mutable std::vector<std::string> mySubElements;
     mutable std::string mySubName;
 
-    std::unordered_map<const App::DocumentObject*, 
+    std::unordered_map<const App::DocumentObject*,
         boost::signals2::scoped_connection> plainGroupConns;
 
     long myOwner;
@@ -336,10 +336,10 @@ public:
     LinkExtension();
     virtual ~LinkExtension();
 
-    /** \name Helpers for defining extended parameter 
+    /** \name Helpers for defining extended parameter
      *
-     * extended parameter definition 
-     * (Name, Type, Property_Type, Default, Document, Property_Name, 
+     * extended parameter definition
+     * (Name, Type, Property_Type, Default, Document, Property_Name,
      *  Derived_Property_Type, App_Property_Type, Group)
      *
      * This helper simply reuses Name as Property_Name, Property_Type as
@@ -422,7 +422,7 @@ public:
 
 #define LINK_PROP_DEFINE(_1,_2,_param) LINK_ETYPE(_param) LINK_ENAME(_param);
 #define LINK_PROPS_DEFINE(_seq) BOOST_PP_SEQ_FOR_EACH(LINK_PROP_DEFINE,_,_seq)
-    
+
     // defines the actual properties
     LINK_PROPS_DEFINE(LINK_PARAMS_EXT)
 
@@ -467,7 +467,7 @@ public:
         inherited::onDocumentRestored();
     }
 
-    void handleChangedPropertyName(Base::XMLReader &reader, 
+    void handleChangedPropertyName(Base::XMLReader &reader,
             const char * TypeName, const char *PropName) override
     {
         _handleChangedPropertyName(reader,TypeName,PropName);
@@ -508,7 +508,7 @@ public:
 
     bool canDelete() const;
 
-    void handleChangedPropertyName(Base::XMLReader &reader, 
+    void handleChangedPropertyName(Base::XMLReader &reader,
             const char * TypeName, const char *PropName) override
     {
         _handleChangedPropertyName(reader,TypeName,PropName);

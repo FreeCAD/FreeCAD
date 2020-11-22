@@ -188,6 +188,7 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
         buf += "/fileXXXXXX";
     }
 
+    /* coverity[secure_temp] mkstemp uses 0600 as the mode and is safe */
     int id = mkstemp(const_cast<char*>(buf.c_str()));
     if (id > -1) {
         FILE* file = fdopen(id, "w");

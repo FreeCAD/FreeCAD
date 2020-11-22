@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="312"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="313"/>
@@ -33,8 +33,10 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
-      <source>Curve on mesh</source>
-      <translation>Kreivė ant tinklo</translation>
+      <source>Creates an approximated curve on top of a mesh.
+This command only works with a 'mesh' object.</source>
+      <translation type="unfinished">Creates an approximated curve on top of a mesh.
+This command only works with a 'mesh' object.</translation>
     </message>
   </context>
   <context>
@@ -42,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="60"/>
@@ -52,7 +54,7 @@
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Tessellate shape</source>
-      <translation>Figūros mozaika</translation>
+      <translation>Versti paviršių į daugiasienį</translation>
     </message>
   </context>
   <context>
@@ -60,7 +62,7 @@
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -78,7 +80,7 @@
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
@@ -152,12 +154,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation type="unfinished">Connect edges if distance less than</translation>
+      <translation>Sujungti briaunas, jei atstumas yra mažesnis, nei</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="344"/>
+      <location filename="../../CrossSections.cpp" line="345"/>
       <source>Failure</source>
-      <translation type="unfinished">Failure</translation>
+      <translation>Triktys</translation>
     </message>
   </context>
   <context>
@@ -201,47 +203,56 @@
       <translation>Kreivė ant tinklo</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="20"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="23"/>
+      <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+
+This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
+      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+
+This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
       <translation>Laužtė</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="26"/>
-      <source>Snap tolerance to vertexes</source>
-      <translation>Leidžiamoji atstumo nuokrypa kibimui prie viršūnės</translation>
+      <location filename="../../TaskCurveOnMesh.ui" line="44"/>
+      <source>Snap tolerance to vertices</source>
+      <translation type="unfinished">Snap tolerance to vertices</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="33"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="51"/>
       <source> px</source>
       <translation> tšk.</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="43"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
       <translation>Perskyrimo slenkstis</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="69"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
       <translation>Apytikslis atkartojimas glodžiosiomis kreivėmis</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="78"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
       <translation>Tinklo tolerancija</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="104"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="122"/>
       <source>Continuity</source>
-      <translation type="unfinished">Continuity</translation>
+      <translation>Glotnumas</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="111"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="129"/>
       <source>Maximum curve degree</source>
       <translation>Didžiausias kreivės laipsnis</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="135"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
       <translation>Pradėti</translation>
     </message>
@@ -251,12 +262,12 @@
     <message>
       <location filename="../../Tessellation.ui" line="14"/>
       <source>Tessellation</source>
-      <translation type="unfinished">Tessellation</translation>
+      <translation>Mozaika</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
       <source>Meshing options</source>
-      <translation>Tinklo parametrai</translation>
+      <translation>Tinklo parinktys</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="30"/>
@@ -281,12 +292,12 @@
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation type="unfinished">Use the standard mesher</translation>
+      <translation>Naudoti įprastinę tinklo audyklę</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
-      <translation type="unfinished">Maximal linear deflection of a mesh section from the surface of the object</translation>
+      <translation>Didžiausias tinklo darinio nuotolis nuo kūno paviršiaus</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
@@ -296,14 +307,14 @@
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
-      <translation type="unfinished">Maximal angular deflection of a mesh section to the next section</translation>
+      <translation>Didžiausias kampinis tinklo nuokrypis nuo sekančios atkarpos</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>Bus nurodytas didžiausias tinklo atkarpos tiesinis nuokrypis
+Paviršiaus nuotolis padaugintas iš esamos tinklo atkarpos (kraštinės) ilgio</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -313,7 +324,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
       <source>Mesh will get face colors of the object</source>
-      <translation type="unfinished">Mesh will get face colors of the object</translation>
+      <translation>Tinklas įgaus kūno sienų spalvas</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
@@ -325,9 +336,8 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation type="unfinished">Mesh segments will be grouped according to the color of the object faces.
-These groups will be exported for mesh output formats supporting
-this feature (e.g. the format OBJ).</translation>
+      <translation>Tinklo daugiakampiai bus suskirstyti pagal kūno sienų spalvas.
+Šie daugiakampių junginiai bus eksportuoti rinkmenų formatais, turinčiais šią ypatybę (pvz., OBJ formatu).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
@@ -337,7 +347,7 @@ this feature (e.g. the format OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
-      <translation type="unfinished">Use the Mefisto mesher</translation>
+      <translation>Naudoti „Mefisto“ tinklo audyklę</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
@@ -348,23 +358,22 @@ this feature (e.g. the format OBJ).</translation>
       <location filename="../../Tessellation.ui" line="162"/>
       <source>If this number is smaller the mesh becomes finer.
 The smallest value is 0.</source>
-      <translation type="unfinished">If this number is smaller the mesh becomes finer.
-The smallest value is 0.</translation>
+      <translation>Jei šis skaičius mažesnis, tinklas tampa smulkesniu.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
-      <translation type="unfinished">Estimate</translation>
+      <translation>Apskaičiuoti</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
       <source>Use the Netgen mesher</source>
-      <translation type="unfinished">Use the Netgen mesher</translation>
+      <translation>Naudoti „Netgen“ tinklo audyklę</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
       <source>Fineness:</source>
-      <translation type="unfinished">Fineness:</translation>
+      <translation>Smulkumas:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="234"/>
@@ -374,12 +383,12 @@ The smallest value is 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="239"/>
       <source>Coarse</source>
-      <translation type="unfinished">Coarse</translation>
+      <translation>Retas</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
       <source>Moderate</source>
-      <translation type="unfinished">Moderate</translation>
+      <translation>Vidutinio smulkumo</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
@@ -399,27 +408,27 @@ The smallest value is 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
       <source>Mesh size grading:</source>
-      <translation>Tinklo dydžių rūšiavimas:</translation>
+      <translation>Tinklo dydžio kitimas:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>
       <source>If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</source>
-      <translation type="unfinished">If this parameter is smaller, the mesh becomes finer.
-A value in the range of 0.1-1.</translation>
+      <translation>Šiam dydžiui mažėjant, tinklas tampa smulkesniu.
+Dydis kinta 0,1-1 verčių ribose.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
       <source>Elements per edge:</source>
-      <translation>Elementų skaičius kraštinėje:</translation>
+      <translation>Narių skaičius kraštinėje:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</source>
-      <translation type="unfinished">If this parameter is larger, the mesh becomes finer.
-A value in the range of 0.2-10.</translation>
+      <translation>Šiam dydžiui didėjant, tinklas tampa smulkesniu.
+Dydis kinta 0,2-10 verčių ribose.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
@@ -429,7 +438,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
       <source>Whether optimization of surface shape will be done</source>
-      <translation type="unfinished">Whether optimization of surface shape will be done</translation>
+      <translation>Ar bus atliktas kūno paviršiaus optimizavimas</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="373"/>
@@ -439,17 +448,17 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="383"/>
       <source>Whether second order elements will be generated</source>
-      <translation type="unfinished">Whether second order elements will be generated</translation>
+      <translation>Ar tinklo akys bus antros eilės dariniai</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="386"/>
       <source>Second order elements</source>
-      <translation>Antros eilės elementai</translation>
+      <translation>Antros eilės dariniai</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation type="unfinished">Whether meshes will be arranged preferably using quadrilateral faces</translation>
+      <translation>Ar tinklų akys bus sudaromos naudojant pirmiausiai keturkampius</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
@@ -459,12 +468,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation type="unfinished">Leave panel open</translation>
+      <translation>Palikti skydelį atvertą</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="62"/>
       <source>gmsh</source>
-      <translation type="unfinished">gmsh</translation>
+      <translation>„gmsh“</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="226"/>
@@ -475,7 +484,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="247"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>Pirmiausia pasirinkite pavidalą tinklui sukurti.</translation>
+      <translation>Pirmiausia pasirinkite daiktą tinklui sukurti.</translation>
     </message>
   </context>
   <context>
@@ -516,12 +525,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Below</source>
-      <translation type="unfinished">Below</translation>
+      <translation>Žemiau</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Above</source>
-      <translation type="unfinished">Above</translation>
+      <translation>Aukščiau</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>

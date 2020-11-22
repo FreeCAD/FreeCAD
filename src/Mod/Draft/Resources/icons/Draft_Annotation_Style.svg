@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   width="64px"
+   height="64px"
+   id="svg4594"
+   version="1.1">
+  <defs
+     id="defs4596">
+    <linearGradient
+       id="linearGradient3792">
+      <stop
+         style="stop-color:#fce94f;stop-opacity:1"
+         offset="0"
+         id="stop3794" />
+      <stop
+         style="stop-color:#c4a000;stop-opacity:1"
+         offset="1"
+         id="stop3796" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3792"
+       id="linearGradient3806"
+       x1="4115.4229"
+       y1="1473.5258"
+       x2="4157.8677"
+       y2="1734.2576"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     transform="matrix(-1,0,0,1,59.999998,0)"
+     id="layer1">
+    <g
+       id="g3491"
+       transform="matrix(0.1649204,0,0,0.1649204,-643.71716,-232.01446)">
+      <path
+         id="text2714"
+         d="m 4151.8039,1655.4317 h -109.1436 l -33.475,40.7475 c -3.5157,5.2084 -2.3853,4.766 -2.9061,7.7608 0,6.0635 3.9238,9.9135 12.127,12.127 v 12.1271 h -97.0165 v -12.1271 c 5.4688,-1.0416 14.9354,-3.4593 18.1906,-6.0635 3.2552,-2.6042 6.0635,-6.0635 12.1271,-12.1271 l 139.4612,-200.0965 c 4.4269,-6.5102 5.282,-8.2206 6.0635,-12.1271 1.3019,-5.9893 0.9676,-9.5226 -6.0635,-12.127 v -12.1271 h 97.0165 v 12.1271 c -12.1271,0 -17.1492,0.595 -18.1906,6.0635 -0.7815,3.7763 -0.6532,6.3037 0.9096,11.1211 l 60.3515,205.4688 c 2.6039,8.724 2.8332,10.5692 5.4377,13.8243 2.6039,3.1251 6.9184,5.0219 12.1271,6.0635 v 12.1271 h -97.0165 v -12.1271 c 8.9841,-1.4322 10.8248,-5.4864 12.1271,-12.127 0.5206,-2.7344 1.5622,-6.7885 0,-12.1271 l -12.1271,-36.3812 m 0,-36.3812 -24.2541,-97.0165 -72.7624,97.0165 h 97.0165"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:40px;font-family:'Copperplate Gothic Bold';-inkscape-font-specification:'Copperplate Gothic Bold, Bold';fill:url(#linearGradient3806);fill-opacity:1;stroke:#302b00;stroke-width:12.1270628;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         id="text2714-1"
+         d="m 4159.5466,1643.3046 h -122.0515 l -36.1634,43.7572 c -8.9781,11.6058 -6.5743,17.6706 -7.5981,18.9453 0,5.6501 9.2106,8.5485 16.6543,10.6111 l 1.2403,-0.1378 -78.1114,-0.4134 -3.7208,2.894 c 4.9624,-0.9706 23.3368,-5.4284 26.2906,-7.855 2.9538,-2.4267 7.4313,-8.4063 12.2445,-15.4346 l 117.1771,-168.1251 c 4.017,-6.0664 15.8176,-22.4055 19.0073,-28.5262 3.3862,-5.5809 9.1465,-22.5163 2.7663,-24.9431 l -10.1978,-0.5513 h 85.1396 l -13.0918,-0.6889 c -11.0041,0 -10.738,5.2398 -11.5452,9.233 -0.709,3.5189 0.6477,7.8032 2.0658,12.2922 l 55.5901,189.1168 c 2.3628,8.1291 2.4331,9.7107 3.8319,14.9489 3.6029,9.9401 1.3166,12.3967 6.0431,13.3673 l 17.6394,4.272 h -84.8895 l 12.5405,-6.2013 c 4.9826,-8.914 5.1625,-6.4905 6.3443,-12.6783 0.4724,-2.548 -2.5789,-12.6647 -3.9965,-17.6393 l -12.9335,-35.4166 m 4.4613,-18.4109 -33.36,-122.5662 -89.8152,122.4284 122.0295,0.024"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:40px;font-family:'Copperplate Gothic Bold';-inkscape-font-specification:'Copperplate Gothic Bold, Bold';fill:none;stroke:#fce94f;stroke-width:12.1270628;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         id="text2714-7"
+         d="m 4151.8039,1655.4317 h -109.1436 l -33.4751,40.7475 c -3.5156,5.2084 -2.3852,4.766 -2.9061,7.7608 0,6.0635 3.9239,9.9135 12.1271,12.127 v 12.1271 h -97.0165 v -12.1271 c 5.4688,-1.0416 14.9354,-3.4593 18.1906,-6.0635 3.2552,-2.6042 6.0635,-6.0635 12.1271,-12.1271 l 139.4611,-200.0965 c 4.4269,-6.5102 5.2821,-8.2206 6.0636,-12.1271 1.3019,-5.9893 0.9676,-9.5226 -6.0636,-12.127 v -12.1271 h 97.0165 v 12.1271 c -12.127,0 -17.1492,0.595 -18.1906,6.0635 -0.7814,3.7763 -0.6531,6.3037 0.9097,11.1211 l 60.3514,205.4688 c 2.6039,8.724 2.8333,10.5692 5.4378,13.8243 2.6038,3.1251 6.9183,5.0219 12.1271,6.0635 v 12.1271 h -97.0165 v -12.1271 c 8.984,-1.4322 10.8247,-5.4864 12.127,-12.127 0.5207,-2.7344 1.5623,-6.7885 0,-12.1271 l -12.127,-36.3812 m 0,-36.3812 -24.2542,-97.0165 -72.7623,97.0165 h 97.0165"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:40px;font-family:'Copperplate Gothic Bold';-inkscape-font-specification:'Copperplate Gothic Bold, Bold';fill:none;stroke:#302b00;stroke-width:12.1270628;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+  </g>
+  <metadata
+     id="metadata5750">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Mon Oct 10 13:44:52 2011 +0000</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_Text.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:description>The capital letter A, slightly italicized</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>A</rdf:li>
+            <rdf:li>letter</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1-9"
+     transform="translate(-2.826126,-22.844604)">
+    <g
+       transform="matrix(0,0.98259094,-1,0,156.35711,-405.08726)"
+       id="g3973">
+      <path
+         style="fill:#ffffff;stroke:#302b00;stroke-width:2.01763964;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         d="m 477.22051,113.0061 5.08859,17 -17.3012,-5 -2.03543,-4 10.17717,-10 z"
+         id="path3969" />
+      <path
+         style="fill:#c4a000;stroke:none"
+         d="m 456.86616,93.006094 -4.07087,4 20.35435,20.000006 c 0,-3 1.01772,-4 4.07087,-4 z"
+         id="path3843" />
+      <path
+         style="fill:#edd400;stroke:#c4a000;stroke-linejoin:round"
+         d="m 452.79529,97.006087 -4.07087,4.000013 20.35435,20 c 0,-3 1.01772,-4 4.07087,-4 z"
+         id="path3843-7" />
+      <path
+         style="fill:#fce94f;stroke:none"
+         d="m 448.72442,101.0061 -4.07087,4 20.35435,20 c 0,-3 1.01772,-4 4.07087,-4 z"
+         id="path3843-5" />
+      <path
+         style="fill:none;stroke:#302b00;stroke-width:2.01763964;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         d="m 456.86616,93.006097 -4.07087,4 20.35435,20.000003 c 0,-3 1.01772,-4 4.07087,-4 z"
+         id="path3843-5-6" />
+      <path
+         style="fill:none;stroke:#302b00;stroke-width:2.01763964;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         d="m 452.79529,97.006097 -4.07087,4.000003 20.35435,20 c 0,-3 1.01772,-4 4.07087,-4 z"
+         id="path3843-5-6-2" />
+      <path
+         style="fill:none;stroke:#302b00;stroke-width:2.01763964;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         d="m 448.72442,101.0061 -4.07087,4 20.35435,20 c 0,-3 1.01772,-4 4.07087,-4 z"
+         id="path3843-5-6-9" />
+      <path
+         style="fill:#302b00;stroke:none;stroke-width:1.00881982px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         d="m 479.25595,122.0061 c -1.01772,0 -4.058,3.26642 -4.49502,5.75019 l 7.54817,2.24981 -2.28992,-7.91665 v 0"
+         id="path3971" />
+    </g>
+  </g>
+</svg>

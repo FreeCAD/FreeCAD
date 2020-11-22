@@ -77,7 +77,7 @@
 
 // Boost
 #include <boost/signals2.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <boost/tuple/tuple.hpp>
 #include <boost/utility.hpp>
@@ -93,10 +93,14 @@
 #include <boost/uuid/uuid_io.hpp>
 
 #include "OpenCascadeAll.h"
+#include <math_Gauss.hxx>
+#include <math_Matrix.hxx>
 
 #elif defined(FC_OS_WIN32)
 #define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #include <windows.h>
 #endif //_PreComp_
 

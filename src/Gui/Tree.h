@@ -26,7 +26,7 @@
 
 #include <unordered_map>
 #include <QTreeWidget>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QStyledItemDelegate>
 
 #include <Base/Parameter.h>
@@ -228,7 +228,7 @@ private:
     QTimer* statusTimer;
     QTimer* selectTimer;
     QTimer* preselectTimer;
-    QTime preselectTime;
+    QElapsedTimer preselectTime;
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;
     std::unordered_map<const Gui::Document*,DocumentItem*> DocumentMap;
@@ -416,7 +416,7 @@ public:
             std::string *topSubname=0) const;
 
     // return the top most linked group owner's name, and subname.  This method
-    // is necssary despite have getFullSubName above is because native geo group
+    // is necessary despite have getFullSubName above is because native geo group
     // cannot handle selection with sub name. So only a linked group can have
     // subname in selection
     int getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
@@ -481,9 +481,6 @@ class TreeDockWidget : public Gui::DockWindow
 public:
     TreeDockWidget(Gui::Document*  pcDocument,QWidget *parent=0);
     ~TreeDockWidget();
-
-private:
-    QTreeWidget* treeWidget;
 };
 
 

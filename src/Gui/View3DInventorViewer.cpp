@@ -146,6 +146,7 @@
 #include "SoTouchEvents.h"
 #include "WinNativeGestureRecognizers.h"
 #include "Document.h"
+#include "ViewParams.h"
 
 #include "ViewProviderLink.h"
 
@@ -269,8 +270,13 @@ public:
         // Thus, we filter out horizontal scrolling.
         if (event->type() == QEvent::Wheel) {
             QWheelEvent* we = static_cast<QWheelEvent*>(event);
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+            if (qAbs(we->angleDelta().x()) > qAbs(we->angleDelta().y()))
+                return true;
+#else
             if (we->orientation() == Qt::Horizontal)
                 return true;
+#endif
         }
         else if (event->type() == QEvent::KeyPress) {
             QKeyEvent* ke = static_cast<QKeyEvent*>(event);
@@ -331,12 +337,13 @@ public:
             SoMotion3Event* motion3Event = new SoMotion3Event;
             motion3Event->setTranslation(translationVector);
             motion3Event->setRotation(xRot * yRot * zRot);
+            motion3Event->setPosition(this->mousepos);
 
             return motion3Event;
         }
 
         return NULL;
-    };
+    }
 };
 
 /** \defgroup View3D 3D Viewer
@@ -1061,7 +1068,8 @@ void View3DInventorViewer::setupEditingRoot(SoNode *node, const Base::Matrix4D *
     ViewProviderLink::updateLinks(editViewProvider);
 }
 
-void View3DInventorViewer::resetEditingRoot(bool updateLinks) {
+void View3DInventorViewer::resetEditingRoot(bool updateLinks)
+{
     if(!editViewProvider || pcEditingRoot->getNumChildren()<=1)
         return;
     if(!restoreEditingRoot) {
@@ -1076,8 +1084,38 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks) {
     for(int i=1,count=pcEditingRoot->getNumChildren();i<count;++i)
         root->addChild(pcEditingRoot->getChild(i));
     pcEditingRoot->getChildren()->truncate(1);
-    if(updateLinks)
-        ViewProviderLink::updateLinks(editViewProvider);
+
+    // handle exceptions eventually raised by ViewProviderLink
+    try {
+        if (updateLinks)
+            ViewProviderLink::updateLinks(editViewProvider);
+    }
+    catch (const Py::Exception& e) {
+        /* coverity[UNCAUGHT_EXCEPT] Uncaught exception */
+        // Coverity created several reports when removeViewProvider()
+        // is used somewhere in a destructor which indirectly invokes
+        // resetEditingRoot().
+        // Now theoretically Py::type can throw an exception which nowhere
+        // will be handled and thus terminates the application. So, add an
+        // extra try/catch block here.
+        try {
+            Py::Object o = Py::type(e);
+            if (o.isString()) {
+                Py::String s(o);
+                Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
+            }
+            else {
+                Py::String s(o.repr());
+                Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
+            }
+            // Prints message to console window if we are in interactive mode
+            PyErr_Print();
+        }
+        catch (Py::Exception& e) {
+            e.clear();
+            Base::Console().Error("Unexpected exception raised in View3DInventorViewer::resetEditingRoot\n");
+        }
+    }
 }
 
 SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec2s& pos, ViewProvider* vp) const
@@ -1248,6 +1286,19 @@ void View3DInventorViewer::updateOverrideMode(const std::string& mode)
         return;
 
     overrideMode = mode;
+
+    if (mode == "No Shading") {
+        this->shading = false;
+        this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
+    }
+    else if (mode == "Hidden Line") {
+        this->shading = true;
+        this->getSoRenderManager()->setRenderMode(SoRenderManager::HIDDEN_LINE);
+    }
+    else {
+        this->shading = true;
+        this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
+    }
 }
 
 void View3DInventorViewer::setViewportCB(void*, SoAction* action)
@@ -1332,11 +1383,19 @@ bool View3DInventorViewer::isEnabledVBO() const
 
 void View3DInventorViewer::setRenderCache(int mode)
 {
-    if (mode<0) {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/View");
+    static int canAutoCache = -1;
 
-        int setting = hGrp->GetInt("RenderCache", 0);
+    if (mode<0) {
+        // Work around coin bug of unmatched call of
+        // SoGLLazyElement::begin/endCaching() when on top rendering
+        // transparent object with SORTED_OBJECT_SORTED_TRIANGLE_BLEND
+        // transparency type.
+        //
+        // For more details see:
+        // https://forum.freecadweb.org/viewtopic.php?f=18&t=43305&start=10#p412537
+        coin_setenv("COIN_AUTO_CACHING", "0", TRUE);
+
+        int setting = ViewParams::instance()->getRenderCache();
         if (mode == -2) {
             if (pcViewProviderRoot && setting != 1)
                 pcViewProviderRoot->renderCaching = SoSeparator::ON;
@@ -1349,10 +1408,21 @@ void View3DInventorViewer::setRenderCache(int mode)
         }
     }
 
-    SoFCSeparator::setCacheMode(
-            mode == 0 ? SoSeparator::AUTO :
-           (mode == 1 ? SoSeparator::ON : SoSeparator::OFF)
-    );
+    if (canAutoCache < 0) {
+        const char *env = coin_getenv("COIN_AUTO_CACHING");
+        canAutoCache = env ? atoi(env) : 1;
+    }
+
+    // If coin auto cache is disabled, do not use 'Auto' render cache mode, but
+    // fallback to 'Distributed' mode.
+    if (!canAutoCache && mode != 2)
+        mode = 1;
+
+    auto caching = mode == 0 ? SoSeparator::AUTO :
+                  (mode == 1 ? SoSeparator::ON :
+                               SoSeparator::OFF);
+
+    SoFCSeparator::setCacheMode(caching);
 }
 
 void View3DInventorViewer::setEnabledNaviCube(bool on)
@@ -3504,6 +3574,7 @@ void View3DInventorViewer::selectCB(void* viewer, SoPath* path)
 {
     ViewProvider* vp = static_cast<View3DInventorViewer*>(viewer)->getViewProviderByPath(path);
     if (vp && vp->useNewSelectionModel()) {
+        // do nothing here
     }
 }
 
@@ -3511,6 +3582,7 @@ void View3DInventorViewer::deselectCB(void* viewer, SoPath* path)
 {
     ViewProvider* vp = static_cast<View3DInventorViewer*>(viewer)->getViewProviderByPath(path);
     if (vp && vp->useNewSelectionModel()) {
+        // do nothing here
     }
 }
 

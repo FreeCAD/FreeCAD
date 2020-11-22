@@ -196,6 +196,8 @@
         <file>folder.svg</file>
         <file>document-python.svg</file>
         <file>document-package.svg</file>
+        <file>Std_Alignment.svg</file>
+        <file>Std_DuplicateSelection.svg</file>
     </qresource>
     <!-- Demonstrating support for an embedded icon theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 Pekka Roivainen <pekkaroi@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,9 +19,9 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 import FreeCAD
 import Path
-import Part
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
@@ -31,6 +29,10 @@ import math
 
 from PathScripts import PathUtils
 from PySide import QtCore
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
 
 if FreeCAD.GuiUp:
     import FreeCADGui

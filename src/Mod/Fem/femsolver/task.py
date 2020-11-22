@@ -116,7 +116,7 @@ class Task(object):
     def protector(self):
         try:
             self.run()
-        except:
+        except Exception:
             self.fail()
             raise
 

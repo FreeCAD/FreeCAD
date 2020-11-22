@@ -53,7 +53,9 @@
 # include <QWhatsThis>
 #endif
 
-#include <boost/bind.hpp>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+# include <QScreen>
+#endif
 
 // FreeCAD Base header
 #include <Base/Parameter.h>
@@ -118,6 +120,7 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "DlgObjectSelection.h"
+#include "Tools.h"
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
 
@@ -287,6 +290,12 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // global access 
     instance = this;
+
+    // support for grouped dragging of dockwidgets
+    // https://woboq.com/blog/qdockwidget-changes-in-56.html
+#if QT_VERSION >= 0x050600
+    setDockOptions(dockOptions() | QMainWindow::GroupedDragging);
+#endif
 
     // Create the layout containing the workspace and a tab bar
     d->mdiArea = new QMdiArea();
@@ -669,7 +678,9 @@ bool MainWindow::closeAllDocuments (bool close)
             continue;
         if(!gdoc->canClose(false))
             return false;
-        if(!gdoc->isModified() || doc->testStatus(App::Document::PartialDoc))
+        if(!gdoc->isModified() 
+                || doc->testStatus(App::Document::PartialDoc)
+                || doc->testStatus(App::Document::TempDoc))
             continue;
         bool save = saveAll;
         if(!save && checkModify) {
@@ -801,12 +812,9 @@ bool MainWindow::event(QEvent *e)
         if (!temp)
             return true;
         View3DInventorViewer *view = temp->getViewer();
-        if (!view)
-            return true;
-        QWidget *viewWidget = view->getGLWidget();
-        if (viewWidget) {
+        if (view) {
             Spaceball::MotionEvent anotherEvent(*motionEvent);
-            qApp->sendEvent(viewWidget, &anotherEvent);
+            qApp->sendEvent(view, &anotherEvent);
         }
         return true;
     }else if(e->type() == QEvent::StatusTip) {
@@ -1312,6 +1320,15 @@ void MainWindow::appendRecentFile(const QString& filename)
     }
 }
 
+void MainWindow::appendRecentMacro(const QString& filename)
+{
+    RecentMacrosAction *recent = this->findChild<RecentMacrosAction *>
+        (QString::fromLatin1("recentMacros"));
+    if (recent) {
+        recent->appendFile(filename);
+    }
+}
+
 void MainWindow::updateActions(bool delay)
 {
     //make it safe to call before the main window is actually created
@@ -1319,7 +1336,16 @@ void MainWindow::updateActions(bool delay)
         return;
 
     if (!d->activityTimer->isActive()) {
-        d->activityTimer->start(150);
+        // If for some reason updateActions() is called from a worker thread
+        // we must avoid to directly call QTimer::start() because this leaves
+        // the whole application in a weird state
+        if (d->activityTimer->thread() != QThread::currentThread()) {
+            QMetaObject::invokeMethod(d->activityTimer, "start", Qt::QueuedConnection,
+                QGenericReturnArgument(), Q_ARG(int, 150));
+        }
+        else {
+            d->activityTimer->start(150);
+        }
     }
     else if (delay) {
         if (!d->actionUpdateDelay)
@@ -1395,7 +1421,11 @@ void MainWindow::loadWindowSettings()
     QString qtver = QString::fromLatin1("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    QRect rect = QApplication::primaryScreen()->availableGeometry();
+#else
     QRect rect = QApplication::desktop()->availableGeometry();
+#endif
     int maxHeight = rect.height();
     int maxWidth = rect.width();
 
@@ -1534,14 +1564,14 @@ QPixmap MainWindow::splashImage() const
         QFont fontExe = painter.font();
         fontExe.setPointSize(20);
         QFontMetrics metricExe(fontExe);
-        int l = metricExe.width(title);
+        int l = QtTools::horizontalAdvance(metricExe, title);
         int w = splash_image.width();
         int h = splash_image.height();
 
         QFont fontVer = painter.font();
         fontVer.setPointSize(12);
         QFontMetrics metricVer(fontVer);
-        int v = metricVer.width(version);
+        int v = QtTools::horizontalAdvance(metricVer, version);
 
         int x = -1, y = -1;
         QRegExp rx(QLatin1String("(\\d+).(\\d+)"));
@@ -1781,10 +1811,10 @@ void MainWindow::unsetUrlHandler(const QString &scheme)
     d->urlHandler.remove(scheme);
 }
 
-void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
+void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
 {
     QStringList files;
-    for (QList<QUrl>::ConstIterator it = url.begin(); it != url.end(); ++it) {
+    for (QList<QUrl>::ConstIterator it = urls.begin(); it != urls.end(); ++it) {
         QMap<QString, QPointer<UrlHandler> >::iterator jt = d->urlHandler.find(it->scheme());
         if (jt != d->urlHandler.end() && !jt->isNull()) {
             // delegate the loading to the url handler
@@ -1795,7 +1825,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
         QFileInfo info((*it).toLocalFile());
         if (info.exists() && info.isFile()) {
             if (info.isSymLink())
-                info.setFile(info.readLink());
+                info.setFile(info.symLinkTarget());
             std::vector<std::string> module = App::GetApplication()
                 .getImportModules(info.completeSuffix().toLatin1());
             if (module.empty()) {

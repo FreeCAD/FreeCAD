@@ -202,7 +202,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
         }
     }
     else {
-        Base::Console().Warning("FemAnalysis object is not activated or no FemAnalysis in the active document, mesh dimension is unknown\n");
+        Base::Console().Log("FemAnalysis object is not activated or no FemAnalysis in the active document, mesh dimension is unknown\n");
         dimension = -1;  // unknown dimension of mesh
     }
     if (pcMesh != NULL) {

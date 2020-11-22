@@ -55,7 +55,7 @@ class SketchAnalysis;
 
 class SketcherExport SketchObject : public Part::Part2DObject
 {
-    PROPERTY_HEADER(Sketcher::SketchObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Sketcher::SketchObject);
 
 public:
     SketchObject();
@@ -67,12 +67,12 @@ public:
     App     ::PropertyLinkSubList    ExternalGeometry;
     /** @name methods override Feature */
     //@{
-    short mustExecute() const;
+    short mustExecute() const override;
     /// recalculate the Feature (if no recompute is needed see also solve() and solverNeedsUpdate boolean)
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute(void) override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "SketcherGui::ViewProviderSketch";
     }
     //@}
@@ -105,6 +105,8 @@ public:
      \retval int - 0 if successful
      */
     int delGeometry(int GeoId, bool deleteinternalgeo = true);
+    /// Does the same as \a delGeometry but allows to delete several geometries in one step
+    int delGeometries(const std::vector<int>& GeoIds);
     /// deletes all the elements/constraints of the sketch except for external geometry
     int deleteAllGeometry();
     /// deletes all the constraints of the sketch
@@ -254,6 +256,14 @@ public:
     bool increaseBSplineDegree(int GeoId, int degreeincrement = 1);
 
     /*!
+     \brief Decreases the degree of a BSpline by degreedecrement, which defaults to 1
+     \param GeoId - the geometry of type bspline to increase the degree
+     \param degreedecrement - the decrement in number of degrees to effect
+     \retval bool - returns true if the decrease in degree succeeded, or false if it did not succeed.
+     */
+    bool decreaseBSplineDegree(int GeoId, int degreedecrement = 1);
+
+    /*!
      \brief Increases or Decreases the multiplicity of a BSpline knot by the multiplicityincr param, which defaults to 1, if the result is multiplicity zero, the knot is removed
      \param GeoId - the geometry of type bspline to increase the degree
      \param knotIndex - the index of the knot to modify (note that index is OCC consistent, so 1<=knotindex<=knots)
@@ -302,17 +312,17 @@ public:
     int port_reversedExternalArcs(bool justAnalyze);
 
     // from base class
-    virtual PyObject *getPyObject(void);
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
+    virtual PyObject *getPyObject(void) override;
+    virtual unsigned int getMemSize(void) const override;
+    virtual void Save(Base::Writer &/*writer*/) const override;
+    virtual void Restore(Base::XMLReader &/*reader*/) override;
 
     /// returns the number of construction lines (to be used as axes)
-    virtual int getAxisCount(void) const;
+    virtual int getAxisCount(void) const override;
     /// retrieves an axis iterating through the construction lines of the sketch (indices start at 0)
-    virtual Base::Axis getAxis(int axId) const;
+    virtual Base::Axis getAxis(int axId) const override;
     /// verify and accept the assigned geometry
-    virtual void acceptGeometry();
+    virtual void acceptGeometry() override;
     /// Check if constraint has invalid indexes
     bool evaluateConstraint(const Constraint *constraint) const;
     /// Check for constraints with invalid indexes
@@ -378,6 +388,8 @@ public:
     bool isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj, eReasonList* rsn = 0) const;
 
     bool isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn = 0) const;
+
+    bool isPerformingInternalTransaction() const {return internaltransaction;};
 public:
     // Analyser functions
     int autoConstraint(double precision = Precision::Confusion() * 1000, double angleprecision = M_PI/20, bool includeconstruction = true);
@@ -408,13 +420,17 @@ public:
     // Validation routines
     std::vector<Base::Vector3d> getOpenVertices(void) const;
 
+public: // geometry extension functionalities for single element sketch object user convenience
+    int setGeometryId(int GeoId, long id);
+    int getGeometryId(int GeoId, long &id) const;
+
 protected:
     /// get called by the container when a property has changed
-    virtual void onChanged(const App::Property* /*prop*/);
-    virtual void onDocumentRestored();
-    virtual void restoreFinished();
+    virtual void onChanged(const App::Property* /*prop*/) override;
+    virtual void onDocumentRestored() override;
+    virtual void restoreFinished() override;
 
-    virtual void setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr);
+    virtual void setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr) override;
 
     std::string validateExpression(const App::ObjectIdentifier &path, boost::shared_ptr<const App::Expression> expr);
 
@@ -431,6 +447,8 @@ protected:
     // refactoring functions
     // check whether constraint may be changed driving status
     int testDrivingChange(int ConstrId, bool isdriving);
+
+    virtual void onUndoRedoFinished() override;
 
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
@@ -466,6 +484,10 @@ private:
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
 
     SketchAnalysis * analyser;
+
+    bool internaltransaction;
+
+    bool managedoperation; // indicates whether changes to properties are the deed of SketchObject or not (for input validation)
 };
 
 typedef App::FeaturePythonT<SketchObject> SketchObjectPython;

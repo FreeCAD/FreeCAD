@@ -59,16 +59,13 @@ DrawHatch::DrawHatch(void)
 {
     static const char *vgroup = "Hatch";
 
-    ADD_PROPERTY_TYPE(DirProjection ,(0,0,1.0)    ,vgroup,App::Prop_None,"Projection direction when Hatch was defined");     //sb RO?
-    ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be hatched");
+    ADD_PROPERTY_TYPE(Source, (0), vgroup, (App::PropertyType)(App::Prop_None), "The View + Face to be hatched");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(HatchPattern ,(prefSvgHatch()),vgroup,App::Prop_None,"The hatch pattern file for this area");
+    ADD_PROPERTY_TYPE(HatchPattern, (prefSvgHatch()), vgroup, App::Prop_None, "The hatch pattern file for this area");
     ADD_PROPERTY_TYPE(SvgIncluded, (""), vgroup,App::Prop_None,
-                                            "Embedded Svg hatch file. System use only.");   // n/a to end users
+                                            "Embedded SVG hatch file. System use only.");   // n/a to end users
 
-    DirProjection.setStatus(App::Property::ReadOnly,true);
-
-    std::string svgFilter("Svg files (*.svg *.SVG);;All files (*)");
+    std::string svgFilter("SVG files (*.svg *.SVG);;All files (*)");
     HatchPattern.setFilter(svgFilter);
 }
 
@@ -269,9 +266,12 @@ std::string DrawHatch::prefSvgHatch(void)
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
     std::string defaultFileName = defaultDir + "simple.svg";
-    std::string result = hGrp->GetASCII("FileHatch",defaultFileName.c_str());
-    if (result.empty()) {
+    std::string prefHatchFile = hGrp->GetASCII("FileHatch",defaultFileName.c_str());
+    std::string result = prefHatchFile;
+    Base::FileInfo fi(result);
+    if (!fi.isReadable()) {
         result = defaultFileName;
+        Base::Console().Warning("Svg Hatch File: %s is not readable\n", prefHatchFile.c_str());
     }
     return result;
 }

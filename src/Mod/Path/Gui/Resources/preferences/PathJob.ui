@@ -24,8 +24,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>467</width>
-        <height>448</height>
+        <width>424</width>
+        <height>537</height>
        </rect>
       </property>
       <attribute name="label">
@@ -142,8 +142,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>665</width>
-        <height>449</height>
+        <width>424</width>
+        <height>537</height>
        </rect>
       </property>
       <attribute name="label">
@@ -348,8 +348,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>431</width>
-        <height>718</height>
+        <width>407</width>
+        <height>570</height>
        </rect>
       </property>
       <attribute name="label">
@@ -625,8 +625,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>412</width>
-        <height>461</height>
+        <width>424</width>
+        <height>537</height>
        </rect>
       </property>
       <attribute name="label">
@@ -650,6 +650,13 @@
          </property>
          <property name="text">
           <string>Store Absolute Paths</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="toolsOpenLastLibrary">
+         <property name="text">
+          <string>Remember last library</string>
          </property>
         </widget>
        </item>

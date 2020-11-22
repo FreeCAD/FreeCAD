@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Nathan Miller         <Nathan.A.Mill[at]gmail.com> *
+ *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,6 +33,7 @@
 #include "FeatureCut.h"
 #include "FeatureGeomFillSurface.h"
 #include "FeatureExtend.h"
+#include "FeatureSections.h"
 
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
@@ -80,6 +81,7 @@ PyMOD_INIT_FUNC(Surface)
     Surface::Cut             ::init();
     Surface::GeomFillSurface ::init();
     Surface::Extend          ::init();
+    Surface::Sections        ::init();
 
     PyMOD_Return(mod);
 }

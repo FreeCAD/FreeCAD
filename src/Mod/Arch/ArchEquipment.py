@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -21,9 +20,9 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Equipment"
+__title__  = "FreeCAD Equipment"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Units
@@ -275,7 +274,15 @@ class _Equipment(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         obj.Proxy = self
         self.setProperties(obj)
-        obj.IfcType = "Furniture"
+        from ArchIFC import IfcTypes
+        if "Furniture" in IfcTypes:
+            # IfcFurniture is new in IFC4
+            obj.IfcType = "Furniture"
+        elif "Furnishing Element" in IfcTypes:
+            # IFC2x3 does know a IfcFurnishingElement
+            obj.IfcType = "Furnishing Element"
+        else:
+            obj.IfcType = "Undefined"
 
     def setProperties(self,obj):
 

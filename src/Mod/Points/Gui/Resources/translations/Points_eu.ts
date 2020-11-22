@@ -106,13 +106,13 @@
     <message>
       <location filename="../../Command.cpp" line="362"/>
       <source>Structured point cloud</source>
-      <translation type="unfinished">Structured point cloud</translation>
+      <translation>Puntu-hodei egituratua</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>
       <location filename="../../Command.cpp" line="365"/>
       <source>Convert points to structured point cloud</source>
-      <translation type="unfinished">Convert points to structured point cloud</translation>
+      <translation>Bihurtu puntuak puntu-hodei egituratu</translation>
     </message>
   </context>
   <context>

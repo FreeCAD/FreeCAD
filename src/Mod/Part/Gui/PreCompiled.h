@@ -36,7 +36,9 @@
 #endif
 
 #ifdef FC_OS_WIN32
+# ifndef NOMINMAX
 # define NOMINMAX
+# endif
 #endif
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
@@ -176,7 +178,7 @@
 
 // Boost
 #include <boost/signals2.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 // Qt Toolkit
 #ifndef __Qt4All__

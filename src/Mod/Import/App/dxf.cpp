@@ -30,7 +30,7 @@ Base::Vector3d toVector3d(const double* a)
 }
 
 CDxfWrite::CDxfWrite(const char* filepath) :
-//TODO: these should probably be parms in config file
+//TODO: these should probably be parameters in config file
 //handles:
 //boilerplate 0 - A00
 //used by dxf.cpp A01 - FFFE
@@ -1772,7 +1772,7 @@ double CDxfRead::mm( double value ) const
 {
     if(m_measurement_inch)
     {
-        value *= 0.0393700787401575;
+        value *= 25.4;
     }
 
     switch(m_eUnits)
@@ -3153,9 +3153,20 @@ void CDxfRead::get_line()
     strcpy(m_str, str);
 }
 
+void dxf_strncpy(char* dst, const char* src, size_t size)
+{
+    size_t ret = strlen(src);
+
+    if (size) {
+        size_t len = (ret >= size) ? size - 1 : ret;
+        memcpy(dst, src, len);
+        dst[len] = '\0';
+    }
+}
+
 void CDxfRead::put_line(const char *value)
 {
-    strcpy( m_unused_line, value );
+    dxf_strncpy( m_unused_line, value, sizeof(m_unused_line) );
 }
 
 

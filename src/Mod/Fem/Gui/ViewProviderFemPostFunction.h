@@ -49,7 +49,7 @@ class FemGuiExport FunctionWidget : public QWidget {
 
     Q_OBJECT
 public:
-    FunctionWidget() {}
+    FunctionWidget() : m_block(false), m_view(0), m_object(0) {}
     virtual ~FunctionWidget() {}
 
     virtual void applyPythonCode() = 0;

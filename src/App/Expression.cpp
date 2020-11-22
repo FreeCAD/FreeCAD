@@ -31,6 +31,7 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/io/ios_state.hpp>
 
 #include <Base/Console.h>
 #include "Base/Exception.h"
@@ -350,23 +351,25 @@ static inline bool definitelyLessThan(T a, T b)
 
 static inline int essentiallyInteger(double a, long &l, int &i) {
     double intpart;
-    if(std::modf(a,&intpart) == 0.0) {
-        if(intpart<0.0) {
-            if(intpart >= INT_MIN) {
-                i = (int)intpart;
+    if (std::modf(a,&intpart) == 0.0) {
+        if (intpart<0.0) {
+            if (intpart >= INT_MIN) {
+                i = static_cast<int>(intpart);
                 l = i;
                 return 1;
             }
-            if(intpart >= LONG_MIN) {
-                l = (long)intpart;
+            if (intpart >= LONG_MIN) {
+                l = static_cast<long>(intpart);
                 return 2;
             }
-        }else if(intpart <= INT_MAX) {
-            i = (int)intpart;
+        }
+        else if (intpart <= INT_MAX) {
+            i = static_cast<int>(intpart);
             l = i;
             return 1;
-        }else if(intpart <= LONG_MAX) {
-            l = (int)intpart;
+        }
+        else if (intpart <= static_cast<double>(LONG_MAX)) {
+            l = static_cast<int>(intpart);
             return 2;
         }
     }
@@ -375,14 +378,15 @@ static inline int essentiallyInteger(double a, long &l, int &i) {
 
 static inline bool essentiallyInteger(double a, long &l) {
     double intpart;
-    if(std::modf(a,&intpart) == 0.0) {
-        if(intpart<0.0) {
-            if(intpart >= LONG_MIN) {
-                l = (long)intpart;
+    if (std::modf(a,&intpart) == 0.0) {
+        if (intpart<0.0) {
+            if (intpart >= LONG_MIN) {
+                l = static_cast<long>(intpart);
                 return true;
             }
-        }else if(intpart <= LONG_MAX) {
-            l = (long)intpart;
+        }
+        else if (intpart <= static_cast<double>(LONG_MAX)) {
+            l = static_cast<long>(intpart);
             return true;
         }
     }
@@ -827,18 +831,21 @@ void Expression::Component::set(const Expression *owner, Py::Object &pyobj, cons
 
 void Expression::Component::del(const Expression *owner, Py::Object &pyobj) const {
     try {
-        if(!e1 && !e2 && !e3) {
+        if (!e1 && !e2 && !e3) {
             comp.del(pyobj);
-        } if(!comp.isRange() && !e2 && !e3) {
+        }
+        else if (!comp.isRange() && !e2 && !e3) {
             auto index = e1->getPyValue();
-            if(pyobj.isMapping())
+            if (pyobj.isMapping()) {
                 Py::Mapping(pyobj).delItem(index);
+            }
             else {
                 Py_ssize_t i = PyNumber_AsSsize_t(pyobj.ptr(), PyExc_IndexError);
-                if(PyErr_Occurred() || PySequence_DelItem(pyobj.ptr(),i)==-1)
+                if (PyErr_Occurred() || PySequence_DelItem(pyobj.ptr(),i)==-1)
                     throw Py::Exception();
             }
-        }else{
+        }
+        else {
             Py::Object v1,v2,v3;
             if(e1) v1 = e1->getPyValue();
             if(e2) v2 = e2->getPyValue();
@@ -846,13 +853,14 @@ void Expression::Component::del(const Expression *owner, Py::Object &pyobj) cons
             PyObject *s = PySlice_New(e1?v1.ptr():nullptr,
                                       e2?v2.ptr():nullptr,
                                       e3?v3.ptr():nullptr);
-            if(!s)
+            if (!s)
                 throw Py::Exception();
             Py::Object slice(s,true);
-            if(PyObject_DelItem(pyobj.ptr(),slice.ptr())<0)
+            if (PyObject_DelItem(pyobj.ptr(),slice.ptr())<0)
                 throw Py::Exception();
         }
-    }catch(Py::Exception &) {
+    }
+    catch(Py::Exception &) {
         EXPR_PY_THROW(owner);
     }
 }
@@ -1355,6 +1363,7 @@ void NumberExpression::_toString(std::ostream &ss, bool,int) const
     // https://en.cppreference.com/w/cpp/types/numeric_limits/digits10
     // https://en.cppreference.com/w/cpp/types/numeric_limits/max_digits10
     // https://www.boost.org/doc/libs/1_63_0/libs/multiprecision/doc/html/boost_multiprecision/tut/limits/constants.html
+    boost::io::ios_flags_saver ifs(ss);
     ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << getValue();
 
     /* Trim of any extra spaces */
@@ -1763,66 +1772,12 @@ bool OperatorExpression::isRightAssociative() const
 
 TYPESYSTEM_SOURCE(App::FunctionExpression, App::UnitExpression)
 
-FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f, std::vector<Expression *> _args)
+FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f, std::string &&name, std::vector<Expression *> _args)
     : UnitExpression(_owner)
     , f(_f)
+    , fname(std::move(name))
     , args(_args)
 {
-    switch (f) {
-    case ACOS:
-    case ASIN:
-    case ATAN:
-    case ABS:
-    case EXP:
-    case LOG:
-    case LOG10:
-    case SIN:
-    case SINH:
-    case TAN:
-    case TANH:
-    case SQRT:
-    case COS:
-    case COSH:
-    case ROUND:
-    case TRUNC:
-    case CEIL:
-    case FLOOR:
-    case MINVERT:
-        if (args.size() != 1)
-            EXPR_THROW("Invalid number of arguments: exactly one required.");
-        break;
-    case MOD:
-    case ATAN2:
-    case POW:
-        if (args.size() != 2)
-            EXPR_THROW("Invalid number of arguments: exactly two required.");
-        break;
-    case HYPOT:
-    case CATH:
-        if (args.size() < 2 || args.size() > 3)
-            EXPR_THROW("Invalid number of arguments: exactly two, or three required.");
-        break;
-    case STDDEV:
-    case SUM:
-    case AVERAGE:
-    case COUNT:
-    case MIN:
-    case MAX:
-    case CREATE:
-    case MSCALE:
-        if (args.size() == 0)
-            EXPR_THROW("Invalid number of arguments: at least one required.");
-        break;
-    case LIST:
-    case TUPLE:
-        break;
-    case NONE:
-    case AGGREGATES:
-    case LAST:
-    default:
-        EXPR_THROW("Unknown function");
-        break;
-    }
 }
 
 FunctionExpression::~FunctionExpression()
@@ -1859,6 +1814,7 @@ bool FunctionExpression::isTouched() const
 class Collector {
 public:
     Collector() : first(true) { }
+    virtual ~Collector() {}
     virtual void collect(Quantity value) {
         if (first)
             q.setUnit(value.getUnit());
@@ -2095,7 +2051,6 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
     if (f == MINVERT) {
         Py::Object pyobj = args[0]->getPyValue();
-        Py::Tuple args;
         if (PyObject_TypeCheck(pyobj.ptr(),&Base::MatrixPy::Type)) {
             auto m = static_cast<Base::MatrixPy*>(pyobj.ptr())->value();
             if (fabs(m.determinant()) <= DBL_EPSILON)
@@ -2389,7 +2344,7 @@ Expression *FunctionExpression::simplify() const
         return eval();
     }
     else
-        return new FunctionExpression(owner, f, a);
+        return new FunctionExpression(owner, f, std::string(fname), a);
 }
 
 /**
@@ -2470,7 +2425,7 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
     case CREATE:
         ss << "create("; break;;
     default:
-        assert(0);
+        ss << fname << "("; break;;
     }
     for (size_t i = 0; i < args.size(); ++i) {
         ss << args[i]->toString(persistent);
@@ -2495,7 +2450,7 @@ Expression *FunctionExpression::_copy() const
         a.push_back((*i)->copy());
         ++i;
     }
-    return new FunctionExpression(owner, f, a);
+    return new FunctionExpression(owner, f, std::string(fname), a);
 }
 
 void FunctionExpression::_visit(ExpressionVisitor &v)
@@ -2514,7 +2469,7 @@ void FunctionExpression::_visit(ExpressionVisitor &v)
 
 TYPESYSTEM_SOURCE(App::VariableExpression, App::UnitExpression)
 
-VariableExpression::VariableExpression(const DocumentObject *_owner, ObjectIdentifier _var)
+VariableExpression::VariableExpression(const DocumentObject *_owner, const ObjectIdentifier& _var)
     : UnitExpression(_owner)
     , var(_var)
 {
@@ -3042,7 +2997,7 @@ Range RangeExpression::getRange() const
 {
     auto c1 = stringToAddress(begin.c_str(),true);
     auto c2 = stringToAddress(end.c_str(),true);
-    if(c1.isValid() && c1.isValid())
+    if(c1.isValid() && c2.isValid())
         return Range(c1,c2);
 
     Base::PyGILStateLocker lock;

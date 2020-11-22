@@ -30,7 +30,7 @@
 # include <QFileInfo>
 # include <QMenu>
 # include <QPixmap>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoSeparator.h>
@@ -71,6 +71,7 @@ FC_LOG_LEVEL_INIT("ViewProviderPythonFeature",true,true)
 
 
 using namespace Gui;
+namespace bp = boost::placeholders;
 
 // #0003564: Python objects: updateData calls to proxy instance that should have been deleted
 // See https://forum.freecadweb.org/viewtopic.php?f=22&t=30429&p=252429#p252429
@@ -274,11 +275,11 @@ void ViewProviderPythonFeatureObserver::slotDeleteObject(const Gui::ViewProvider
 ViewProviderPythonFeatureObserver::ViewProviderPythonFeatureObserver()
 {
     Gui::Application::Instance->signalDeletedObject.connect(boost::bind
-        (&ViewProviderPythonFeatureObserver::slotDeleteObject, this, _1));
+        (&ViewProviderPythonFeatureObserver::slotDeleteObject, this, bp::_1));
     Gui::Application::Instance->signalNewObject.connect(boost::bind
-        (&ViewProviderPythonFeatureObserver::slotAppendObject, this, _1));
+        (&ViewProviderPythonFeatureObserver::slotAppendObject, this, bp::_1));
     Gui::Application::Instance->signalDeleteDocument.connect(boost::bind
-        (&ViewProviderPythonFeatureObserver::slotDeleteDocument, this, _1));
+        (&ViewProviderPythonFeatureObserver::slotDeleteDocument, this, bp::_1));
 }
 
 ViewProviderPythonFeatureObserver::~ViewProviderPythonFeatureObserver()
@@ -1404,18 +1405,20 @@ bool ViewProviderPythonFeatureImp::getLinkedViewProvider(
         if(PyObject_TypeCheck(res.ptr(),&ViewProviderDocumentObjectPy::Type)) {
             vp = static_cast<ViewProviderDocumentObjectPy*>(
                     res.ptr())->getViewProviderDocumentObjectPtr();
+            return true;
         } else if (PySequence_Check(res.ptr()) && PySequence_Length(res.ptr())==2) {
             Py::Sequence seq(res);
             Py::Object item0(seq[0].ptr());
-            Py::Object item1(seq[0].ptr());
+            Py::Object item1(seq[1].ptr());
             if(PyObject_TypeCheck(item0.ptr(), &ViewProviderDocumentObjectPy::Type) && item1.isString()) {
                 if(subname)
                     *subname = Py::String(item1).as_std_string("utf-8");
                 vp = static_cast<ViewProviderDocumentObjectPy*>(
                         item0.ptr())->getViewProviderDocumentObjectPtr();
+                return true;
             }
-        } else 
-            FC_ERR("getLinkedViewProvider(): invalid return type, expects ViewObject or (ViewObject, subname)");
+        }
+        FC_ERR("getLinkedViewProvider(): invalid return type, expects ViewObject or (ViewObject, subname)");
         return true;
     }
     catch (Py::Exception&) {

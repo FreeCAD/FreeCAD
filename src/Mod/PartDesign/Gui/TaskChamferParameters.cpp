@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QAction>
+# include <QFontMetrics>
 # include <QKeyEvent>
 # include <QListWidget>
 # include <QMessageBox>
@@ -43,6 +44,7 @@
 #include <Base/UnitsApi.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/Tools.h>
 #include <Mod/PartDesign/App/FeatureChamfer.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -63,14 +65,10 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
-    double r = pcChamfer->Size.getValue();
 
-    ui->chamferDistance->setUnit(Base::Unit::Length);
-    ui->chamferDistance->setValue(r);
-    ui->chamferDistance->setMinimum(0);
-    ui->chamferDistance->selectNumber();
-    ui->chamferDistance->bind(pcChamfer->Size);
-    QMetaObject::invokeMethod(ui->chamferDistance, "setFocus", Qt::QueuedConnection);
+    setUpUI(pcChamfer);
+    QMetaObject::invokeMethod(ui->chamferSize, "setFocus", Qt::QueuedConnection);
+
     std::vector<std::string> strings = pcChamfer->Base.getSubValues();
     for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); i++)
     {
@@ -79,8 +77,16 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
 
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->chamferDistance, SIGNAL(valueChanged(double)),
-        this, SLOT(onLengthChanged(double)));
+    connect(ui->chamferType, SIGNAL(currentIndexChanged(int)),
+        this, SLOT(onTypeChanged(int)));
+    connect(ui->chamferSize, SIGNAL(valueChanged(double)),
+        this, SLOT(onSizeChanged(double)));
+    connect(ui->chamferSize2, SIGNAL(valueChanged(double)),
+        this, SLOT(onSize2Changed(double)));
+    connect(ui->chamferAngle, SIGNAL(valueChanged(double)),
+        this, SLOT(onAngleChanged(double)));
+    connect(ui->flipDirection, SIGNAL(toggled(bool)),
+        this, SLOT(onFlipDirection(bool)));
     connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
         this, SLOT(onButtonRefAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
@@ -96,6 +102,45 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
         this, SLOT(doubleClicked(QListWidgetItem*)));
+}
+
+void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
+{
+    const int index = pcChamfer->ChamferType.getValue();
+    ui->chamferType->setCurrentIndex(index);
+
+    ui->flipDirection->setEnabled(index != 0); // Enable if type is not "Equal distance"
+    ui->flipDirection->setChecked(pcChamfer->FlipDirection.getValue());
+
+    ui->chamferSize->setUnit(Base::Unit::Length);
+    ui->chamferSize->setMinimum(0);
+    ui->chamferSize->setValue(pcChamfer->Size.getValue());
+    ui->chamferSize->bind(pcChamfer->Size);
+    ui->chamferSize->selectNumber();
+
+    ui->chamferSize2->setUnit(Base::Unit::Length);
+    ui->chamferSize2->setMinimum(0);
+    ui->chamferSize2->setValue(pcChamfer->Size2.getValue());
+    ui->chamferSize2->bind(pcChamfer->Size2);
+
+    ui->chamferAngle->setUnit(Base::Unit::Angle);
+    ui->chamferAngle->setMinimum(0.0);
+    ui->chamferAngle->setMaximum(180.0);
+    ui->chamferAngle->setValue(pcChamfer->Angle.getValue());
+    ui->chamferAngle->bind(pcChamfer->Angle);
+
+    ui->stackedWidget->setFixedHeight(ui->chamferSize2->sizeHint().height());
+
+    QFontMetrics fm(ui->typeLabel->font());
+    int minWidth = Gui::QtTools::horizontalAdvance(fm, ui->typeLabel->text());
+    minWidth = std::max<int>(minWidth, Gui::QtTools::horizontalAdvance(fm, ui->sizeLabel->text()));
+    minWidth = std::max<int>(minWidth, Gui::QtTools::horizontalAdvance(fm, ui->size2Label->text()));
+    minWidth = std::max<int>(minWidth, Gui::QtTools::horizontalAdvance(fm, ui->angleLabel->text()));
+    minWidth = minWidth + 5; //spacing
+    ui->typeLabel->setMinimumWidth(minWidth);
+    ui->sizeLabel->setMinimumWidth(minWidth);
+    ui->size2Label->setMinimumWidth(minWidth);
+    ui->angleLabel->setMinimumWidth(minWidth);
 }
 
 void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -179,7 +224,7 @@ void TaskChamferParameters::onRefDeleted(void)
         // erase the reference
         refs.erase(refs.begin() + rowNumber);
         // remove from the list
-        ui->listWidgetReferences->model()->removeRow(rowNumber);  
+        ui->listWidgetReferences->model()->removeRow(rowNumber);
     }
 
     // update the object
@@ -196,7 +241,16 @@ void TaskChamferParameters::onRefDeleted(void)
     }
 }
 
-void TaskChamferParameters::onLengthChanged(double len)
+void TaskChamferParameters::onTypeChanged(int index)
+{
+    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+    pcChamfer->ChamferType.setValue(index);
+    ui->stackedWidget->setCurrentIndex(index);
+    ui->flipDirection->setEnabled(index != 0); // Enable if type is not "Equal distance"
+    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+}
+
+void TaskChamferParameters::onSizeChanged(double len)
 {
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
     setupTransaction();
@@ -204,9 +258,53 @@ void TaskChamferParameters::onLengthChanged(double len)
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
 }
 
-double TaskChamferParameters::getLength(void) const
+void TaskChamferParameters::onSize2Changed(double len)
 {
-    return ui->chamferDistance->value().getValue();
+    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+    setupTransaction();
+    pcChamfer->Size2.setValue(len);
+    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+}
+
+void TaskChamferParameters::onAngleChanged(double angle)
+{
+    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+    setupTransaction();
+    pcChamfer->Angle.setValue(angle);
+    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+}
+
+void TaskChamferParameters::onFlipDirection(bool flip)
+{
+    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+    setupTransaction();
+    pcChamfer->FlipDirection.setValue(flip);
+    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+}
+
+int TaskChamferParameters::getType(void) const
+{
+    return ui->chamferType->currentIndex();
+}
+
+double TaskChamferParameters::getSize(void) const
+{
+    return ui->chamferSize->value().getValue();
+}
+
+double TaskChamferParameters::getSize2(void) const
+{
+    return ui->chamferSize2->value().getValue();
+}
+
+double TaskChamferParameters::getAngle(void) const
+{
+    return ui->chamferAngle->value().getValue();
+}
+
+bool TaskChamferParameters::getFlipDirection(void) const
+{
+    return ui->flipDirection->isChecked();
 }
 
 TaskChamferParameters::~TaskChamferParameters()
@@ -235,7 +333,25 @@ void TaskChamferParameters::apply()
     std::string name = DressUpView->getObject()->getNameInDocument();
 
     //Gui::Command::openCommand("Chamfer changed");
-    ui->chamferDistance->apply();
+
+    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+
+    const int chamfertype = pcChamfer->ChamferType.getValue();
+
+    switch(chamfertype) {
+
+        case 0: // "Equal distance"
+            ui->chamferSize->apply();
+            break;
+        case 1: // "Two distances"
+            ui->chamferSize->apply();
+            ui->chamferSize2->apply();
+            break;
+        case 2: // "Distance and Angle"
+            ui->chamferSize->apply();
+            ui->chamferAngle->apply();
+            break;
+    }
 }
 
 //**************************************************************************

@@ -79,7 +79,7 @@ public:
  *  name 'name'.
  */
 EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
-    : MDIView(0,parent,0), WindowParameter( "Editor" )
+    : MDIView(0,parent,Qt::WindowFlags()), WindowParameter( "Editor" )
 {
     d = new EditorViewP;
     d->lock = false;
@@ -328,7 +328,7 @@ void EditorView::setDisplayName(EditorView::DisplayName type)
 bool EditorView::saveAs(void)
 {
     QString fn = FileDialog::getSaveFileName(this, QObject::tr("Save Macro"),
-        QString::null, QString::fromLatin1("%1 (*.FCMacro);;Python (*.py)").arg(tr("FreeCAD macro")));
+        QString(), QString::fromLatin1("%1 (*.FCMacro);;Python (*.py)").arg(tr("FreeCAD macro")));
     if (fn.isEmpty())
         return false;
     setCurrentFileName(fn);

@@ -168,6 +168,73 @@ void CosmeticVertexPy::setShow(Py::Boolean arg)
     }
 }
 
+Py::Object CosmeticVertexPy::getColor(void) const
+{
+    App::Color color = getCosmeticVertexPtr()->color;
+    PyObject* pyColor = DrawUtil::colorToPyTuple(color);
+    return Py::asObject(pyColor);
+}
+
+void CosmeticVertexPy::setColor(Py::Object arg)
+{
+    PyObject* pTuple = arg.ptr();
+    double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
+    App::Color c(red, green, blue, alpha);
+    if (PyTuple_Check(pTuple)) {
+        c = DrawUtil::pyTupleToColor(pTuple);
+        CosmeticVertex* cv = getCosmeticVertexPtr();
+        cv->color = c;
+    } else {
+        Base::Console().Error("CEPI::setColor - not a tuple!\n");
+        std::string error = std::string("type must be 'tuple', not ");
+        error += pTuple->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+}
+
+Py::Object CosmeticVertexPy::getSize(void) const
+{
+    CosmeticVertex* cv = getCosmeticVertexPtr();
+    double size = cv->size;
+    PyObject* pSize = PyFloat_FromDouble(size);
+    return Py::asObject(pSize);
+}
+
+void CosmeticVertexPy::setSize(Py::Object arg)
+{
+    double size = 1.0;
+    PyObject* p = arg.ptr();
+    if (PyFloat_Check(p)) {
+        size = PyFloat_AsDouble(p);
+    } else if (PyLong_Check(p)) {
+        size = (double) PyLong_AsLong(p);
+    } else {
+        throw Py::TypeError("expected (float)");
+    }
+    CosmeticVertex* cv = getCosmeticVertexPtr();
+    cv->size = size;
+}
+
+Py::Object CosmeticVertexPy::getStyle(void) const
+{
+    CosmeticVertex* cv = getCosmeticVertexPtr();
+    double style = cv->style;
+    PyObject* pStyle = PyLong_FromLong((long) style);
+    return Py::asObject(pStyle);
+}
+
+void CosmeticVertexPy::setStyle(Py::Object arg)
+{
+    int style = 1;
+    PyObject* p = arg.ptr();
+    if (PyLong_Check(p)) {
+        style = (int) PyLong_AsLong(p);
+    } else {
+        throw Py::TypeError("expected (float)");
+    }
+    CosmeticVertex* cv = getCosmeticVertexPtr();
+    cv->style = style;
+}
 
 PyObject *CosmeticVertexPy::getCustomAttributes(const char* /*attr*/) const
 {

@@ -46,7 +46,6 @@
 #undef isalnum
 #endif
 #define slots
-#include <iostream>
 #include <bitset>
 
 #include <typeinfo>
@@ -212,6 +211,11 @@ class BaseExport PyObjectBase : public PyObject
 protected:
     /// destructor
     virtual ~PyObjectBase();
+
+    /// Overrides the pointer to the twin object
+    void setTwinPointer(void* ptr) {
+        _pcTwinPointer = ptr;
+    }
 
 public:  
     /** Constructor

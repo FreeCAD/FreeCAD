@@ -6,15 +6,48 @@ SET(SMESH_VERSION_MINOR 7)
 SET(SMESH_VERSION_PATCH 1)
 SET(SMESH_VERSION_TWEAK 0)
 
+# Suppress gcc warnings
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment -Wno-unused-parameter -Wno-empty-body -Wno-pedantic")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-variable -Wno-unused-but-set-variable")
+
+    unset(_flag_found CACHE)
+    check_cxx_compiler_flag("-Wno-unused-result" _flag_found)
+    if (_flag_found)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-result")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-result")
+    endif ()
+
+    unset(_flag_found CACHE)
+    check_cxx_compiler_flag("-Wno-maybe-uninitialized" _flag_found)
+    if (_flag_found)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-maybe-uninitialized")
+    endif ()
+
+    unset(_flag_found CACHE)
+    check_cxx_compiler_flag("-Wno-missing-field-initializers" _flag_found)
+    if (_flag_found)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-missing-field-initializers")
+    endif ()
+
+# Suppress clang warnings
 elseif(CMAKE_COMPILER_IS_CLANGXX)
-    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-private-field -Wno-unused-function -Wno-sometimes-uninitialized -Wno-overloaded-virtual -Wno-dynamic-class-memaccess -Wno-comment -Wno-unused-parameter -Wno-extra-semi")
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-self-assign -Wno-sign-compare -Wno-logical-op-parentheses -Wno-reorder -Wno-switch -Wno-switch-enum -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-private-field")
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-unused-function -Wno-sometimes-uninitialized -Wno-overloaded-virtual -Wno-dynamic-class-memaccess -Wno-comment -Wno-unused-parameter -Wno-extra-semi")
+
+    unset(_flag_found CACHE)
+    check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)
+    if (_flag_found)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-copy")
+    endif ()
+
+    unset(_flag_found CACHE)
+    check_cxx_compiler_flag("-Wno-missing-field-initializers" _flag_found)
+    if (_flag_found)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-missing-field-initializers")
+    endif ()
 endif()
 
-if(CMAKE_COMPILER_IS_CLANGXX)
-    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-self-assign -Wno-reorder -Wno-switch-enum -Wno-unknown-pragmas -Wno-logical-op-parentheses -Wno-unused-variable -Wno-unused-function -Wno-overloaded-virtual")
-endif()
 
 if (VTK_OPTIONS)
     add_definitions(${VTK_OPTIONS})
@@ -386,7 +419,10 @@ if(WIN32)
 else()
     set_target_properties(NETGENPlugin PROPERTIES COMPILE_FLAGS "${NETGEN_CXX_FLAGS}")
 endif(WIN32)
-IF(NOT NETGEN_VERSION_C LESS NETGEN_VERSION_62) # Version >= 6.2
+IF(NOT NETGEN_VERSION_C LESS NETGEN_VERSION_62_2004) # Version >= 6.2.2004
+    set_target_properties(NETGENPlugin PROPERTIES CXX_STANDARD_REQUIRED ON)
+    set_target_properties(NETGENPlugin PROPERTIES CXX_STANDARD 17) # Standard std=c++1y could work aswell
+ELSEIF(NOT NETGEN_VERSION_C LESS NETGEN_VERSION_62) # Version >= 6.2
     set_target_properties(NETGENPlugin PROPERTIES CXX_STANDARD_REQUIRED ON)
     set_target_properties(NETGENPlugin PROPERTIES CXX_STANDARD 14) # Standard std=c++1y could work aswell
 ENDIF()

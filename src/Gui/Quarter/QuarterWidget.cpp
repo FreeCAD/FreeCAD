@@ -71,6 +71,10 @@
 #include <QOpenGLDebugLogger>
 #endif
 
+#if COIN_MAJOR_VERSION >= 4
+#include <Inventor/SbByteBuffer.h>
+#endif
+
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/events/SoEvents.h>
@@ -150,7 +154,7 @@ class CustomGLWidget : public QOpenGLWidget {
 public:
     QSurfaceFormat myFormat;
 
-    CustomGLWidget(const QSurfaceFormat& format, QWidget* parent = 0, const QOpenGLWidget* shareWidget = 0, Qt::WindowFlags f = 0)
+    CustomGLWidget(const QSurfaceFormat& format, QWidget* parent = 0, const QOpenGLWidget* shareWidget = 0, Qt::WindowFlags f = Qt::WindowFlags())
      : QOpenGLWidget(parent, f), myFormat(format)
     {
         Q_UNUSED(shareWidget);
@@ -999,20 +1003,7 @@ bool QuarterWidget::viewportEvent(QEvent* event)
         QMouseEvent* mouse = static_cast<QMouseEvent*>(event);
         QGraphicsItem *item = itemAt(mouse->pos());
         if (!item) {
-            bool ok = QGraphicsView::viewportEvent(event);
-            // Avoid that wheel events are handled twice
-            // https://forum.freecadweb.org/viewtopic.php?f=3&t=44822
-            // However, this workaround seems to cause a regression on macOS
-            // so it's disabled for this platform.
-            // https://forum.freecadweb.org/viewtopic.php?f=4&t=44855
-#if defined(Q_OS_MAC)
-            Q_UNUSED(ok)
-#else
-            if (event->type() == QEvent::Wheel) {
-                event->setAccepted(ok);
-                return ok;
-            }
-#endif
+            QGraphicsView::viewportEvent(event);
             return false;
         }
     }
@@ -1043,11 +1034,33 @@ QuarterWidget::redraw(void)
   // we're triggering the next paintGL(). Set a flag to remember this
   // to avoid that we process the delay queue in paintGL()
   PRIVATE(this)->processdelayqueue = false;
-#if QT_VERSION >= 0x050500 && QT_VERSION < 0x050600
+
+  // When stylesheet is used, there is recursive repaint warning caused by
+  // repaint() here. It happens when switching active documents. Based on call
+  // stacks, it happens like this, the repaint event first triggers a series
+  // calls of QWidgetPrivate::paintSiblingsRecrusive(), and then reaches one of
+  // the QuarterWidget. From its paintEvent(), it calls
+  // SoSensorManager::processDelayQueue(), which triggers redraw() of another
+  // QuarterWidget. And if repaint() is called here, it will trigger another
+  // series call of QWidgetPrivate::paintSiblingRecursive(), and eventually
+  // back to the first QuarterWidget, at which time the "Recursive repaint
+  // detected" Qt warning message will be printed.
+  //
+  // Note that, the recursive repaint is not infinite due to setting
+  // 'processdelayqueue = false' above. However, it does cause annoying
+  // flickering, and actually crash on Windows.
+#if 1
+  this->viewport()->update();
+#else
+
+// #if QT_VERSION >= 0x050500 && QT_VERSION < 0x050600
+#if 1
   // With Qt 5.5.x there is a major performance problem
   this->viewport()->update();
 #else
   this->viewport()->repaint();
+#endif
+
 #endif
 }
 

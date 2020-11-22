@@ -21,12 +21,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Unit test for the Draft Workbench, Coin (Pivy) tests."""
+"""Unit tests for the Draft Workbench, Coin (Pivy) tests."""
+## @package test_pivy
+# \ingroup drafttests
+# \brief Unit tests for the Draft Workbench, Coin (Pivy) tests.
 
+## \addtogroup drafttests
+# @{
 import unittest
+
 import FreeCAD as App
 import FreeCADGui as Gui
 import drafttests.auxiliary as aux
+
 from draftutils.messages import _msg
 
 
@@ -39,7 +46,7 @@ class DraftPivy(unittest.TestCase):
         This is executed before every test, so we create a document
         to hold the objects.
         """
-        aux._draw_header()
+        aux.draw_header()
         self.doc_name = self.__class__.__name__
         if App.ActiveDocument:
             if App.ActiveDocument.Name != self.doc_name:
@@ -53,7 +60,7 @@ class DraftPivy(unittest.TestCase):
     def test_pivy_import(self):
         """Import Coin (Pivy)."""
         module = "pivy.coin"
-        imported = aux._import_test(module)
+        imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_pivy_draw(self):
@@ -71,3 +78,5 @@ class DraftPivy(unittest.TestCase):
         This is executed after each test, so we close the document.
         """
         App.closeDocument(self.doc_name)
+
+## @}

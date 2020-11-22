@@ -100,6 +100,10 @@ FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true,true)
 
 using namespace Gui;
 
+namespace Gui {
+std::array<std::pair<double, std::string>,3 > schemaTranslatePoint(double x, double y, double z, double precision);
+}
+
 SoFullPath * Gui::SoFCUnifiedSelection::currenthighlight = NULL;
 
 // *************************************************************************
@@ -125,6 +129,10 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0)
     SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, OFF);
     SO_NODE_SET_SF_ENUM_TYPE (highlightMode, HighlightModes);
 
+    // Documentation of SoFullPath:
+    // Since the SoFullPath is derived from SoPath and contains no private data, you can cast SoPath instances to the SoFullPath type.
+    // This will allow you to examine hidden children. Actually, you are not supposed to allocate instances of this class at all.
+    // It is only available as an "extended interface" into the superclass SoPath.
     detailPath = static_cast<SoFullPath*>(new SoPath(20));
     detailPath->ref();
 
@@ -337,36 +345,41 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
         // Do not clear currently highlighted object when setting new pre-selection
         if (!setPreSelection && hilaction->SelChange.Type == SelectionChanges::RmvPreselect) {
             if (currenthighlight) {
-                SoHighlightElementAction action;
-                action.apply(currenthighlight);
+                SoHighlightElementAction hlAction;
+                hlAction.apply(currenthighlight);
                 currenthighlight->unref();
                 currenthighlight = 0;
             }
-        } else if (highlightMode.getValue() != OFF 
+        }
+        else if (highlightMode.getValue() != OFF
                     && hilaction->SelChange.Type == SelectionChanges::SetPreselect) {
             if (currenthighlight) {
-                SoHighlightElementAction action;
-                action.apply(currenthighlight);
+                SoHighlightElementAction hlAction;
+                hlAction.apply(currenthighlight);
                 currenthighlight->unref();
                 currenthighlight = 0;
             }
+
             App::Document* doc = App::GetApplication().getDocument(hilaction->SelChange.pDocName);
             App::DocumentObject* obj = doc->getObject(hilaction->SelChange.pObjectName);
             ViewProvider*vp = Application::Instance->getViewProvider(obj);
             SoDetail* detail = vp->getDetail(hilaction->SelChange.pSubName);
-            SoHighlightElementAction action;
-            action.setHighlighted(true);
-            action.setColor(this->colorHighlight.getValue());
-            action.setElement(detail);
-            action.apply(vp->getRoot());
+
+            SoHighlightElementAction hlAction;
+            hlAction.setHighlighted(true);
+            hlAction.setColor(this->colorHighlight.getValue());
+            hlAction.setElement(detail);
+            hlAction.apply(vp->getRoot());
             delete detail;
+
             SoSearchAction sa;
             sa.setNode(vp->getRoot());
             sa.apply(vp->getRoot());
             currenthighlight = static_cast<SoFullPath*>(sa.getPath()->copy());
             currenthighlight->ref();
         }
-        if(useNewSelection.getValue())
+
+        if (useNewSelection.getValue())
             return;
     }
 
@@ -400,22 +413,24 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                             type = SoSelectionElementAction::None;
                     }
 
-                    SoSelectionElementAction action(type);
-                    action.setColor(this->colorSelection.getValue());
-                    action.setElement(detail);
+                    SoSelectionElementAction selectionAction(type);
+                    selectionAction.setColor(this->colorSelection.getValue());
+                    selectionAction.setElement(detail);
                     if(detailPath->getLength())
-                        action.apply(detailPath);
+                        selectionAction.apply(detailPath);
                     else
-                        action.apply(vp->getRoot());
+                        selectionAction.apply(vp->getRoot());
                 }
                 detailPath->truncate(0);
                 delete detail;
             }
-        }else if (selaction->SelChange.Type == SelectionChanges::ClrSelection) {
-            SoSelectionElementAction action(SoSelectionElementAction::None);
+        }
+        else if (selaction->SelChange.Type == SelectionChanges::ClrSelection) {
+            SoSelectionElementAction selectionAction(SoSelectionElementAction::None);
             for(int i=0;i<this->getNumChildren();++i)
-                action.apply(this->getChild(i));
-        }else if(selectionMode.getValue() == ON 
+                selectionAction.apply(this->getChild(i));
+        }
+        else if(selectionMode.getValue() == ON
                     && selaction->SelChange.Type == SelectionChanges::SetSelection) {
             std::vector<ViewProvider*> vps;
             if (this->pcDocument)
@@ -428,12 +443,14 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                         type = SoSelectionElementAction::All;
                     else
                         type = SoSelectionElementAction::None;
-                    SoSelectionElementAction action(type);
-                    action.setColor(this->colorSelection.getValue());
-                    action.apply(vpd->getRoot());
+
+                    SoSelectionElementAction selectionAction(type);
+                    selectionAction.setColor(this->colorSelection.getValue());
+                    selectionAction.apply(vpd->getRoot());
                 }
             }
-        } else if (selaction->SelChange.Type == SelectionChanges::SetPreselectSignal) {
+        }
+        else if (selaction->SelChange.Type == SelectionChanges::SetPreselectSignal) {
             // selection changes inside the 3d view are handled in handleEvent()
             App::Document* doc = App::GetApplication().getDocument(selaction->SelChange.pDocName);
             App::DocumentObject* obj = doc->getObject(selaction->SelChange.pObjectName);
@@ -453,7 +470,8 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 delete det;
             }
         }
-        if(useNewSelection.getValue())
+
+        if (useNewSelection.getValue())
             return;
     }
 
@@ -479,16 +497,18 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
     {
         const char *docname = vpd->getObject()->getDocument()->getName();
         const char *objname = vpd->getObject()->getNameInDocument();
-
+    
         this->preSelection = 1;
         static char buf[513];
-        snprintf(buf,512,"Preselected: %s.%s.%s (%g, %g, %g)"
-                ,docname,objname,element
-                ,fabs(x)>1e-7?x:0.0
-                ,fabs(y)>1e-7?y:0.0
-                ,fabs(z)>1e-7?z:0.0);
 
-        getMainWindow()->showMessage(QString::fromLatin1(buf));
+        auto pts = schemaTranslatePoint(x, y, z, 1e-7);
+        snprintf(buf,512,"Preselected: %s.%s.%s (%f %s, %f %s, %f %s)"
+                ,docname,objname,element
+                ,pts[0].first,pts[0].second.c_str()
+                ,pts[1].first,pts[1].second.c_str()
+                ,pts[2].first,pts[2].second.c_str());
+
+        getMainWindow()->showMessage(QString::fromUtf8(buf));
 
         int ret = Gui::Selection().setPreselect(docname,objname,element,x,y,z);
         if(ret<0 && currenthighlight)
@@ -1122,7 +1142,7 @@ SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
 
     SoFCSelectionRoot *front = stack.front();
 
-    // NOTE: _node is not necssary of type SoFCSelectionRoot, but it is safe
+    // NOTE: _node is not necessary of type SoFCSelectionRoot, but it is safe
     // here since we only use it as searching key, although it is probably not
     // a best practice.
     stack.front() = static_cast<SoFCSelectionRoot*>(node);

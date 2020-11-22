@@ -34,6 +34,7 @@
   # include <QGraphicsScene>
   # include <QGraphicsSceneMouseEvent>
   # include <QPainter>
+  # include <QPainterPath>
   # include <QPaintDevice>
   # include <QSvgGenerator>
   # include <QApplication>
@@ -48,6 +49,7 @@
 #include <Base/Parameter.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
+#include <Gui/Tools.h>
 #include <string>
 
 #include <Mod/TechDraw/App/DrawPage.h>
@@ -57,9 +59,11 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 
 #include "Rez.h"
 #include "ZVALUE.h"
+#include "PreferencesGui.h"
 #include "QGIArrow.h"
 #include "QGIDimLines.h"
 #include "QGIViewBalloon.h"
@@ -93,7 +97,9 @@ QGIBalloonLabel::QGIBalloonLabel()
     m_labelText = new QGCustomText();
     m_labelText->setParentItem(this);
 
+    verticalSep = false;
     hasHover = false;
+    parent = nullptr;
 }
 
 QVariant QGIBalloonLabel::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -245,8 +251,12 @@ void QGIBalloonLabel::setColor(QColor c)
 
 //**************************************************************
 QGIViewBalloon::QGIViewBalloon() :
+    dvBalloon(nullptr),
     hasHover(false),
-    m_lineWidth(0.0)
+    m_lineWidth(0.0),
+    m_obtuse(false),
+    parent(nullptr),
+    m_dragInProgress(false)
 {
     m_ctrl = false;
 
@@ -288,10 +298,6 @@ QGIViewBalloon::QGIViewBalloon() :
 
     balloonShape->setZValue(ZVALUE::DIMENSION + 1);    //above balloonLines!
     balloonShape->setStyle(Qt::SolidLine);
-
-    oldLabelCenter = new QPointF;
-    oldLabelCenter->setX(0.0);
-    oldLabelCenter->setY(0.0);
 
     balloonLabel->setPosFromCenter(0, 0);
 
@@ -362,9 +368,10 @@ void QGIViewBalloon::setViewPartFeature(TechDraw::DrawViewBalloon *balloon)
     DrawView* balloonParent = nullptr;
     double scale = 1.0;
     App::DocumentObject* docObj = balloon->SourceView.getValue();
-    if (docObj == nullptr) {
+    if (docObj) {
         balloonParent = dynamic_cast<DrawView*>(docObj);
-        scale = balloonParent->getScale();
+        if (balloonParent)
+            scale = balloonParent->getScale();
     }
 
     float x = Rez::guiX(balloon->X.getValue() * scale) ;
@@ -399,6 +406,11 @@ void QGIViewBalloon::updateView(bool update)
         QString labelText = QString::fromUtf8(balloon->Text.getStrValue().data());
         balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
         balloonLabel->setColor(getNormalColor());
+        balloonLines->setNormalColor(getNormalColor());
+        balloonShape->setNormalColor(getNormalColor());
+        arrow->setNormalColor(getNormalColor());
+        arrow->setFillColor(getNormalColor());
+
     }
 
     updateBalloon();
@@ -432,12 +444,12 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
     balloonLabel->verticalSep = false;
     balloonLabel->seps.clear();
 
-    if (strcmp(balloon->Shape.getValueAsString(), "Rectangle") == 0) {
+    if (strcmp(balloon->BubbleShape.getValueAsString(), "Rectangle") == 0) {
         while (labelText.contains(QString::fromUtf8("|"))) {
             int pos = labelText.indexOf(QString::fromUtf8("|"));
             labelText.replace(pos, 1, QString::fromUtf8("   "));
             QFontMetrics fm(balloonLabel->getFont());
-            balloonLabel->seps.push_back(fm.width((labelText.left(pos + 2))));
+            balloonLabel->seps.push_back(Gui::QtTools::horizontalAdvance(fm, labelText.left(pos + 2)));
             balloonLabel->verticalSep = true;
         }
     }
@@ -453,6 +465,9 @@ void QGIViewBalloon::balloonLabelDragged(bool ctrl)
 //    Base::Console().Message("QGIVB::bLabelDragged(%d)\n", ctrl);
     m_ctrl = ctrl;
     auto dvb( dynamic_cast<TechDraw::DrawViewBalloon *>(getViewObject()) );
+    if (dvb == nullptr)
+        return;
+
     if (!m_dragInProgress) {           //first drag movement
         m_dragInProgress = true;
         if (ctrl) {             //moving whole thing, remember Origin offset from Bubble
@@ -500,12 +515,9 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
         return;
     }
 
-    DrawView* balloonParent = nullptr;
-    App::DocumentObject* docObj = balloon->SourceView.getValue();
-    if (docObj == nullptr) {
+    DrawView* balloonParent = dynamic_cast<DrawView*>(balloon->SourceView.getValue());
+    if (balloonParent == nullptr) {
         return;
-    } else {
-        balloonParent = dynamic_cast<DrawView*>(docObj);
     }
     
     auto featPage = balloonParent->findParentPage();
@@ -606,7 +618,7 @@ void QGIViewBalloon::draw()
     Base::Vector3d kinkPoint;
     double kinkLength = Rez::guiX(balloon->KinkLength.getValue());
 
-    const char *balloonType = balloon->Shape.getValueAsString();
+    const char *balloonType = balloon->BubbleShape.getValueAsString();
 
     float scale = balloon->ShapeScale.getValue();
     double offsetLR     = 0;
@@ -836,11 +848,7 @@ void QGIViewBalloon::setPens(void)
 
 QColor QGIViewBalloon::getNormalColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
-    m_colNormal = fcColor.asValue<QColor>();
+    m_colNormal = PreferencesGui::dimQColor();
 
     auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
     if( balloon == nullptr )
@@ -857,10 +865,7 @@ QColor QGIViewBalloon::getNormalColor()
 
 int QGIViewBalloon::prefDefaultArrow() const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    int arrow = hGrp->GetInt("BalloonArrow", QGIArrow::getPrefArrowStyle());
-    return arrow;
+    return Preferences::balloonArrow();
 }
 
 

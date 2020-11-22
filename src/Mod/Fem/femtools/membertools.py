@@ -238,9 +238,14 @@ class AnalysisMember():
         """
 
         # get member
+        # constants
+        self.cota_vacuumpermittivity = self.get_several_member(
+            "Fem::ConstantVacuumPermittivity"
+        )
+
         # materials
         std_mats = self.get_several_member(
-            "Fem::Material"
+            "Fem::MaterialCommon"
         )
         rei_mats = self.get_several_member(
             "Fem::MaterialReinforced"
@@ -289,6 +294,9 @@ class AnalysisMember():
         )
         self.cons_pressure = self.get_several_member(
             "Fem::ConstraintPressure"
+        )
+        self.cons_sectionprint = self.get_several_member(
+            "Fem::ConstraintSectionPrint"
         )
         self.cons_selfweight = self.get_several_member(
             "Fem::ConstraintSelfWeight"

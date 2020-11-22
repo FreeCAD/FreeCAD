@@ -13,6 +13,11 @@
       <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
       <UserDocu>Feature for creating and manipulating Technical Drawing Dimensions</UserDocu>
     </Documentation>
+    <Methode Name="getRawValue">
+      <Documentation>
+        <UserDocu>getRawValue() - returns Dimension value in mm.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getText">
       <Documentation>
         <UserDocu>getText() - returns Dimension text.</UserDocu>

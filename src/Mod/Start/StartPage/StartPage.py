@@ -320,11 +320,11 @@ def handle():
                     f = QtCore.QFile(path)
                     if f.open(QtCore.QIODevice.ReadOnly | QtCore.QFile.Text):
                         ALTCSS = encode(QtCore.QTextStream(f).readAll())
+                        HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
                 else:
                     with open(path, 'r') as f:
                         ALTCSS = encode(f.read())
-
-                HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
+                        HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
 
     # turn tips off if needed
 
@@ -402,18 +402,21 @@ def handle():
     # build SECTION_CUSTOM
 
     SECTION_CUSTOM = encode("")
-    cfolder = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("ShowCustomFolder","")
-    if cfolder:
-        if not os.path.isdir(cfolder):
-            cfolder = os.path.dirname(cfolder)
-        SECTION_CUSTOM = encode("<h2>"+os.path.basename(os.path.normpath(cfolder))+"</h2>")
-        SECTION_CUSTOM += "<ul>"
-        for basename in os.listdir(cfolder):
-            filename = os.path.join(cfolder,basename)
-            SECTION_CUSTOM += encode(buildCard(filename,method="LoadCustom.py?filename="))
-        SECTION_CUSTOM += "</ul>"
-        # hide the custom section tooltip if custom section is set (users know about it if they enabled it)
-        HTML = HTML.replace("id=\"customtip\"","id=\"customtip\" style=\"display:none;\"")
+    cfolders = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("ShowCustomFolder","")
+    if cfolders:
+        dn = 0
+        for cfolder in cfolders.split(";;"): # allow several paths separated by ;;
+            if not os.path.isdir(cfolder):
+                cfolder = os.path.dirname(cfolder)
+            SECTION_CUSTOM += encode("<h2>"+os.path.basename(os.path.normpath(cfolder))+"</h2>")
+            SECTION_CUSTOM += "<ul>"
+            for basename in os.listdir(cfolder):
+                filename = os.path.join(cfolder,basename)
+                SECTION_CUSTOM += encode(buildCard(filename,method="LoadCustom.py?filename="+str(dn)+"_"))
+            SECTION_CUSTOM += "</ul>"
+            # hide the custom section tooltip if custom section is set (users know about it if they enabled it)
+            HTML = HTML.replace("id=\"customtip\"","id=\"customtip\" style=\"display:none;\"")
+            dn += 1
     HTML = HTML.replace("SECTION_CUSTOM",SECTION_CUSTOM)
 
     # build IMAGE_SRC paths

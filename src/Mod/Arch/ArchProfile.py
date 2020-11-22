@@ -19,9 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__= "FreeCAD Profile"
+__title__  = "FreeCAD Profile"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package ArchProfile
 #  \ingroup ARCH
@@ -51,19 +51,21 @@ else:
 
 # Presets in the form: Class, Name, Profile type, [profile data]
 # Search for profiles.csv in data/Mod/Arch/Presets and in the same folder as this file
+# and in the user path
 profilefiles = [os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","profiles.csv"),
-                os.path.join(os.path.dirname(__file__),"Presets","profiles.csv")]
+                os.path.join(os.path.dirname(__file__),"Presets","profiles.csv"),
+                os.path.join(FreeCAD.getUserAppDataDir(),"Arch","profiles.csv")]
 
 
 def readPresets():
 
     Presets=[]
+    bid = 1 #Unique index
     for profilefile in profilefiles:
         if os.path.exists(profilefile):
             try:
                 with open(profilefile, "r") as csvfile:
                     beamreader = csv.reader(csvfile)
-                    bid=1 #Unique index
                     for row in beamreader:
                         if (not row) or row[0].startswith("#"):
                             continue
@@ -106,13 +108,137 @@ def makeProfile(profile=[0,'REC','REC100x100','R',100,100]):
     return obj
 
 
+class Arch_Profile:
+
+    """The FreeCAD Arch_Profile command definition"""
+
+    def GetResources(self):
+
+        return {'Pixmap'  : 'Arch_Profile',
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Profile","Profile"),
+                'Accel': "P, F",
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Profile","Creates a profile object")}
+
+    def IsActive(self):
+
+        return not FreeCAD.ActiveDocument is None
+
+    def Activated(self):
+
+        self.Profile = None
+        self.Categories = []
+        self.Presets = readPresets()
+        for pre in self.Presets:
+            if pre[1] not in self.Categories:
+                self.Categories.append(pre[1])
+        FreeCADGui.Snapper.getPoint(callback=self.getPoint,extradlg=[self.taskbox()],title=translate("Arch","Create profile"))
+
+    def taskbox(self):
+
+        "sets up a taskbox widget"
+
+        w = QtGui.QWidget()
+        ui = FreeCADGui.UiLoader()
+        w.setWindowTitle(translate("Arch","Profile settings"))
+        grid = QtGui.QGridLayout(w)
+
+        # categories box
+        labelc = QtGui.QLabel(translate("Arch","Category"))
+        self.vCategory = QtGui.QComboBox()
+        self.vCategory.addItems([" "] + self.Categories)
+        grid.addWidget(labelc,1,0,1,1)
+        grid.addWidget(self.vCategory,1,1,1,1)
+
+        # presets box
+        labelp = QtGui.QLabel(translate("Arch","Preset"))
+        self.vPresets = QtGui.QComboBox()
+        self.pSelect = [None]
+        fpresets = [" "]
+        self.vPresets.addItems(fpresets)
+        grid.addWidget(labelp,2,0,1,1)
+        grid.addWidget(self.vPresets,2,1,1,1)
+
+        # connect slots
+        self.vCategory.currentIndexChanged.connect(self.setCategory)
+        self.vPresets.currentIndexChanged.connect(self.setPreset)
+
+        # restore preset
+        stored = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetString("StructurePreset","")
+        if stored:
+            if ";" in stored:
+                stored = stored.split(";")
+                if len(stored) >= 3:
+                    if stored[1] in self.Categories:
+                        self.vCategory.setCurrentIndex(1+self.Categories.index(stored[1]))
+                        self.setCategory(1+self.Categories.index(stored[1]))
+                        ps = [p[2] for p in self.pSelect]
+                        if stored[2] in ps:
+                            self.vPresets.setCurrentIndex(ps.index(stored[2]))
+        return w
+
+    def getPoint(self,point=None,obj=None):
+
+        "this function is called by the snapper when it has a 3D point"
+
+        if not point:
+            return
+        if not self.Profile:
+            return
+        pt = "FreeCAD.Vector("+str(point.x)+","+str(point.y)+","+str(point.z)+")"
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Profile"))
+        FreeCADGui.addModule("Arch")
+        FreeCADGui.doCommand('p = Arch.makeProfile('+str(self.Profile)+')')
+        FreeCADGui.doCommand('p.Placement.move('+pt+')')
+        FreeCADGui.addModule("Draft")
+        FreeCADGui.doCommand("Draft.autogroup(p)")
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+
+    def setCategory(self,i):
+
+        self.vPresets.clear()
+        if i == 0:
+            self.pSelect = [None]
+            self.vPresets.addItems([" "])
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetString("StructurePreset","")
+        else:
+            self.pSelect = [p for p in self.Presets if p[1] == self.Categories[i-1]]
+            fpresets = []
+            for p in self.pSelect:
+                f = FreeCAD.Units.Quantity(p[4],FreeCAD.Units.Length).getUserPreferred()
+                d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
+                s1 = str(round(p[4]/f[1],d))
+                s2 = str(round(p[5]/f[1],d))
+                s3 = str(f[2])
+                fpresets.append(p[2]+" ("+s1+"x"+s2+s3+")")
+            self.vPresets.addItems(fpresets)
+            self.setPreset(0)
+
+    def setPreset(self,i):
+
+        self.Profile = None
+        elt = self.pSelect[i]
+        if elt:
+            p=elt[0]-1 # Presets indexes are 1-based
+            self.Profile = self.Presets[p]
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetString("StructurePreset",";".join([str(i) for i in self.Profile]))
+
+
 class _Profile(Draft._DraftObject):
 
     '''Superclass for Profile classes'''
 
     def __init__(self,obj, profile):
-        self.Profile=profile
+        self.Profile = profile
         Draft._DraftObject.__init__(self,obj,"Profile")
+
+    def __getstate__(self):
+        if hasattr(self,"Profile"):
+            return self.Profile
+
+    def __setstate__(self,state):
+        if isinstance(state,list):
+            self.Profile = state
 
 
 class _ProfileC(_Profile):
@@ -288,7 +414,9 @@ class ProfileTaskPanel:
     def __init__(self,obj):
 
         self.obj = obj
-        self.profile = None
+        self.Profile = None
+        if hasattr(obj.Proxy,"Profile"):
+            self.Profile = obj.Proxy.Profile
         if isinstance(self.obj.Proxy,_ProfileC):
             self.type = "C"
         elif isinstance(self.obj.Proxy,_ProfileH):
@@ -310,8 +438,8 @@ class ProfileTaskPanel:
         QtCore.QObject.connect(self.comboCategory, QtCore.SIGNAL("currentIndexChanged(QString)"), self.changeCategory)
         QtCore.QObject.connect(self.comboProfile, QtCore.SIGNAL("currentIndexChanged(int)"), self.changeProfile)
         # Read preset profiles and add relevant ones
-        self.categories=[]
-        self.presets=readPresets()
+        self.categories = []
+        self.presets = readPresets()
         for pre in self.presets:
             if pre[3] == self.type:
                 if pre[1] not in self.categories:
@@ -320,20 +448,23 @@ class ProfileTaskPanel:
         if self.categories:
             self.comboCategory.addItems(self.categories)
         # Find current profile by label
-        for pre in self.presets:
-            if self.obj.Label in pre[2]:
-                self.profile = pre
-                break
-        if not self.profile:
+        if not self.Profile:
+            for pre in self.presets:
+                if self.type == pre[1]:
+                    if self.obj.Label in pre[2]:
+                        self.Profile = pre
+                        break
+        if not self.Profile:
             # try to find by size
             if hasattr(self.obj,"Width") and hasattr(self.obj,"Height"):
                 for pre in self.presets:
-                    if abs(self.obj.Width - self.Profile[4]) < 0.1 and \
-                       abs(self.obj.Height - self.Profile[5]) < 0.1:
-                        self.profile = pre
-                        break
-        if self.profile:
-            origprofile = list(self.profile) # the operation below will change self.profile
+                    if self.type == pre[1]:
+                        if abs(self.obj.Width - self.Profile[4]) < 0.1 and \
+                           abs(self.obj.Height - self.Profile[5]) < 0.1:
+                            self.Profile = pre
+                            break
+        if self.Profile:
+            origprofile = list(self.Profile) # the operation below will change self.profile
             self.comboCategory.setCurrentIndex(1+self.categories.index(origprofile[1]))
             self.changeCategory(origprofile[1])
             self.comboProfile.setCurrentIndex(self.currentpresets.index(origprofile))
@@ -355,23 +486,24 @@ class ProfileTaskPanel:
 
     def changeProfile(self,idx):
 
-        self.profile = self.currentpresets[idx]
+        self.Profile = self.currentpresets[idx]
 
     def accept(self):
 
-        if self.profile:
-            self.obj.Label = self.profile[2]
+        if self.Profile:
+            self.obj.Label = self.Profile[2]
             if self.type in ["H","R","RH","U"]:
-                self.obj.Width = self.profile[4]
-                self.obj.Height = self.profile[5]
+                self.obj.Width = self.Profile[4]
+                self.obj.Height = self.Profile[5]
                 if self.type in ["H","U"]:
-                    self.obj.WebThickness = self.profile[6]
-                    self.obj.FlangeThickness = self.profile[7]
+                    self.obj.WebThickness = self.Profile[6]
+                    self.obj.FlangeThickness = self.Profile[7]
                 elif self.type == "RH":
-                    self.obj.Thickness = self.profile[6]
+                    self.obj.Thickness = self.Profile[6]
             elif self.type == "C":
-                self.obj.OutDiameter = self.profile[4]
-                self.obj.Thickness = self.profile[5]
+                self.obj.OutDiameter = self.Profile[4]
+                self.obj.Thickness = self.Profile[5]
+            self.obj.Proxy.Profile = self.Profile
             FreeCAD.ActiveDocument.recompute()
             FreeCADGui.ActiveDocument.resetEdit()
         return True
@@ -380,3 +512,7 @@ class ProfileTaskPanel:
 
         self.form.setWindowTitle(self.type+" "+QtGui.QApplication.translate("Arch", "Profile", None))
 
+
+
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Arch_Profile',Arch_Profile())

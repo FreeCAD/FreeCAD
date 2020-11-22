@@ -1,0 +1,118 @@
+{% set name = "freecad" %}
+{% set version = "0.19.pre" %}
+{% set build_number = 142 %}
+{% set build_number = build_number + 500 %}  # [FEATURE_DEBUG]
+
+package:
+    name: {{ name }}
+    version: {{ version }}
+
+source:
+    # JZ - For local building this is the setup. 
+    path: ../
+    #git_url: https://github.com/FreeCAD/FreeCAD
+    #git_tag: master
+    patches:
+        - windows_python_interface.patch
+
+
+build:
+    number: {{ build_number }}
+    skip: true  # [py < 38]
+
+requirements:
+    build:
+        - {{ compiler("cxx") }}
+        - {{ cdt('mesa-libgl-devel') }}      # [linux]
+        - {{ cdt('mesa-dri-drivers') }}      # [linux]
+        - {{ cdt('mesa-libegl-devel') }}     # [linux]
+        - {{ cdt('libselinux') }}            # [linux]
+        - {{ cdt('libxdamage') }}            # [linux]
+        - {{ cdt('libxfixes') }}             # [linux]
+        - {{ cdt('libxxf86vm') }}            # [linux]
+        - {{ cdt('libxcb') }}                # [linux]
+        - {{ cdt('libxext') }}               # [linux]
+        - {{ cdt('xorg-x11-server-xvfb') }}  # [linux]
+        - {{ cdt('libxau') }}                # [linux]
+        - {{ cdt('libxi-devel') }}           # [linux]
+        - cmake
+        - ninja
+        - git
+    host:
+        - boost-cpp
+        - python
+        - qt
+        - occt
+        - xerces-c
+        - zlib
+        - vtk
+        - swig
+        - eigen
+        - pybind11
+        - coin3d
+        - pivy
+        - pyside2
+        - smesh
+        - netgen 6.2.1808*
+        - doxygen
+        - hdf5
+        - xorg-libxt  # [linux]
+        - freetype
+        - libspnav  # [linux]
+        - pcl
+        - six
+        - ply
+        - tbb-devel
+    run:
+        - {{ pin_compatible("pyside2") }}
+        - vtk
+        - occt
+        - qt
+        - xerces-c
+        - zlib
+        - boost-cpp
+        - hdf5
+        - python
+        - coin3d
+        - pivy
+        - smesh
+        - netgen 6.2.1808*
+        - xorg-libxt  # [linux]
+        - freetype
+        - numpy
+        - six
+        - pyyaml
+        - libspnav  # [linux]
+        - pcl
+        - ply
+    run_constrained:
+        - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.9") }}  # [osx]
+
+#test:
+#    commands:
+#        - FreeCADCmd -t 0
+
+about:
+    home: https://www.freecadweb.org/
+    license: LGPL2.1
+    license_family: LGPL
+    license_file: LICENSE
+    summary: 'FreeCAD is a parametric 3D modeler made primarily to design real-life objects of any size. '
+    description: |
+        FreeCAD is a general purpose feature-based, parametric 3D modeler for
+        CAD, MCAD, CAx, CAE and PLM, aimed directly at mechanical engineering
+        and product design but also fits a wider range of uses in engineering,
+        such as architecture or other engineering specialities. It is 100% Open
+        Source (LGPL2+ license) and extremely modular, allowing for very
+        advanced extension and customization.
+        FreeCAD is based on OpenCASCADE, a powerful geometry kernel, features an
+        Open Inventor-compliant 3D scene representation model provided by the
+        Coin 3D library, and a broad Python API. The interface is built with Qt.
+        FreeCAD runs exactly the same way on Windows, Mac OSX, BSD and Linux
+        platforms.
+    doc_url: https://www.freecadweb.org/wiki/Main_Page
+    dev_url: https://github.com/FreeCAD/FreeCAD
+
+extra:
+    recipe-maintainers:
+        - looooo

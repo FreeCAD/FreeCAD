@@ -145,7 +145,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="359"/>
       <source>Areas curve tool trim selected [deg]</source>
-      <translation>Ferramenta "Aparar áreas curvas" selecionada [deg]</translation>
+      <translation>Ferramenta de aparar área da curva selecionada[deg]</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="229"/>

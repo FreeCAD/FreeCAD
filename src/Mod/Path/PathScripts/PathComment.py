@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +19,8 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-''' Used for CNC machine comments for Path module. Create a comment and place it in the Document tree.'''
+
+'''Used for CNC machine comments for Path module. Create a comment and place it in the Document tree.'''
 
 import FreeCAD
 import FreeCADGui

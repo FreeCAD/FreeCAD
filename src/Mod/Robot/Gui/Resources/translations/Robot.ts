@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.1">
 <context>
     <name>CmdRobotAddToolShape</name>
     <message>
@@ -603,17 +603,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRobot6Axis.ui" line="314"/>
+        <location filename="../../TaskRobot6Axis.ui" line="313"/>
         <source>TCP: (200.23,300.23,400.23,234,343,343)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRobot6Axis.ui" line="331"/>
+        <location filename="../../TaskRobot6Axis.ui" line="329"/>
         <source>Tool: (0,0,400,0,0,0)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRobot6Axis.ui" line="347"/>
+        <location filename="../../TaskRobot6Axis.ui" line="345"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -707,32 +707,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTrajectory.ui" line="292"/>
+        <location filename="../../TaskTrajectory.ui" line="291"/>
         <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTrajectory.ui" line="318"/>
+        <location filename="../../TaskTrajectory.ui" line="317"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTrajectory.ui" line="323"/>
+        <location filename="../../TaskTrajectory.ui" line="322"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTrajectory.ui" line="328"/>
+        <location filename="../../TaskTrajectory.ui" line="327"/>
         <source>C</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTrajectory.ui" line="333"/>
+        <location filename="../../TaskTrajectory.ui" line="332"/>
         <source>V</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTrajectory.ui" line="338"/>
+        <location filename="../../TaskTrajectory.ui" line="337"/>
         <source>A</source>
         <translation type="unfinished"></translation>
     </message>
@@ -875,27 +875,27 @@
         <source>World</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../../TaskRobotControl.ui" line="287"/>
         <source>50mm / 5°</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../../TaskRobotControl.ui" line="292"/>
         <source>20mm / 2°</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../../TaskRobotControl.ui" line="297"/>
         <source>10mm / 1°</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../../TaskRobotControl.ui" line="302"/>
         <source>5mm / 0.5°</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../../TaskRobotControl.ui" line="307"/>
         <source>1mm / 0.1°</source>
         <translation type="unfinished"></translation>

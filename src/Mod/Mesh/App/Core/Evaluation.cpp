@@ -226,7 +226,10 @@ std::vector<unsigned long> MeshEvalOrientation::GetIndices() const
         // if the mesh consists of several topologic independent components
         // We can search from position 'iTri' on because all elements _before_ are already visited
         // what we know from the previous iteration.
-        iTri = std::find_if(iTri, iEnd, std::bind2nd(MeshIsNotFlag<MeshFacet>(), MeshFacet::VISIT));
+        MeshIsNotFlag<MeshFacet> flag;
+        iTri = std::find_if(iTri, iEnd, [flag](const MeshFacet& f) {
+            return flag(f, MeshFacet::VISIT);
+        });
 
         if (iTri < iEnd)
             ulStartFacet = iTri - iBeg;
@@ -312,8 +315,7 @@ struct Edge_Index
     unsigned long p0, p1, f;
 };
 
-struct Edge_Less  : public std::binary_function<const Edge_Index&, 
-                                                const Edge_Index&, bool>
+struct Edge_Less
 {
     bool operator()(const Edge_Index& x, const Edge_Index& y) const
     {

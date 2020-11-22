@@ -1,6 +1,4 @@
-/*
- ***************************************************************************
- *                                                                         *
+/***************************************************************************
  *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,8 +17,11 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- ***************************************************************************
- */
+ ***************************************************************************/
+
+#ifndef PATHSEGMENTWALKER_H
+#define PATHSEGMENTWALKER_H
+
 #include <Base/Vector3D.h>
 #include <Mod/Path/App/Path.h>
 
@@ -67,3 +68,5 @@ private:
 
 
 }
+
+#endif // PATHSEGMENTWALKER_H

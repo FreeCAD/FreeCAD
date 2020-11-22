@@ -181,7 +181,7 @@
       <location filename="../../Command.cpp" line="338"/>
       <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation>Kamera trenutnega pogleda ni perspektivna in zato bo rezultat slike POV-Ray morda kasneje izgledal drugače kot pričakovano.
+      <translation>Kamera trenutnega pogleda ni perspektivna in zato bo rezultat slike POV-Ray morda kasneje videti drugače, kot pričakovano.
 Ali želite nadaljevati?</translation>
     </message>
     <message>
@@ -215,7 +215,7 @@ Ali želite nadaljevati?</translation>
       <location filename="../../Command.cpp" line="773"/>
       <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation>Kamera trenutnega pogleda ni perspektivna in zato bo rezultat slike Luxrender morda kasneje izgledal drugače kot pričakovano.
+      <translation>Kamera trenutnega pogleda ni perspektivna in zato bo rezultat slike Luxrender morda kasneje videti drugače, kot pričakovano.
 Ali želite nadaljevati?</translation>
     </message>
   </context>
@@ -296,12 +296,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../Command.cpp" line="622"/>
       <source>Please set the path to the POV-Ray executable in the preferences.</source>
-      <translation>Nastavite pot do izvedljive datoteke POV-Ray v možnostih.</translation>
+      <translation>Nastavite pot do izvedljive datoteke POV-Ray v prednastavitvah.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="628"/>
       <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-      <translation>Popravite pot do izvedljive datoteke POV-Ray v možnostih.</translation>
+      <translation>Popravite pot do izvedljive datoteke POV-Ray v prednastavitvah.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="635"/>
@@ -312,12 +312,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../Command.cpp" line="636"/>
       <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation>Nastavite pot do izvedljive datoteke Luxrender ali Luxconsole v možnostih.</translation>
+      <translation>Nastavite pot do izvedljive datoteke Luxrender ali Luxconsole v prednastavitvah.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="642"/>
       <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation>Popravite pot do izvedljive datoteke Luxrender ali Luxconsole v možnostih.</translation>
+      <translation>Popravite pot do izvedljive datoteke Luxrender ali Luxconsole v prednastavitvah.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="654"/>
@@ -357,12 +357,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="26"/>
       <source>Mesh export settings</source>
-      <translation>Nastavitve izvoza mreže</translation>
+      <translation>Nastavitve izvoza ploskovja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="52"/>
       <source>Max mesh deviation:</source>
-      <translation>Največje odstopanje mreže:</translation>
+      <translation>Najv. odstopanje ploskovja:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="80"/>
@@ -387,12 +387,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="134"/>
       <source>POV-Ray output parameters:</source>
-      <translation>Vhodni parametri POV-Ray:</translation>
+      <translation>Izhodne določilke POV-Ray:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="143"/>
       <source>The POV-Ray parameters to be passed to the render.</source>
-      <translation>Parametri POV-Ray, ki naj se podajo izrisu.</translation>
+      <translation>Določilke POV-Raya, ki naj se upoštevajo pri upodobitvi.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="146"/>
@@ -472,7 +472,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="47"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>Pot do izvedljive datoteke POV-Ray, če želite izrisati iz %1</translation>
     </message>
   </context>
   <context>
@@ -496,17 +496,17 @@ Ali želite nadaljevati?</translation>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location filename="../../ViewProvider.cpp" line="146"/>
+      <location filename="../../ViewProvider.cpp" line="147"/>
       <source>Edit Povray project</source>
       <translation>Uredi projekt POV-Ray</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="177"/>
+      <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Povray template</source>
       <translation>Predloga POV-Ray</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="177"/>
+      <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Select a Povray template</source>
       <translation>Izberite predlogo POV-Ray</translation>
     </message>

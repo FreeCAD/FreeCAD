@@ -63,6 +63,11 @@
         <UserDocu>tag = makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns tag of new CosmeticEdge.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="makeCosmeticLine3D">
+      <Documentation>
+        <UserDocu>tag = makeCosmeticLine3D(p1, p2) - add a CosmeticEdge from p1 to p2(3D coordinates). Returns tag of new CosmeticEdge.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="makeCosmeticCircle">
       <Documentation>
         <UserDocu>tag = makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns tag of new CosmeticEdge.</UserDocu>
@@ -138,14 +143,29 @@
         <UserDocu>formatGeometricEdge(index, style, weight, color, visible). Returns None.</UserDocu>
       </Documentation>
     </Methode>
-        <Methode Name="getEdgeByIndex">
+    <Methode Name="getEdgeByIndex">
       <Documentation>
         <UserDocu>getEdgeByIndex(edgeIndex). Returns Part.TopoShape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getEdgeBySelection">
+      <Documentation>
+        <UserDocu>getEdgeBySelection(edgeName). Returns Part.TopoShape.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getVertexByIndex">
       <Documentation>
         <UserDocu>getVertexByIndex(vertexIndex). Returns Part.TopoShape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getVertexBySelection">
+      <Documentation>
+        <UserDocu>getVertexBySelection(vertexName). Returns Part.TopoShape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="requestPaint">
+      <Documentation>
+        <UserDocu>requestPaint(). Redraw the graphic for this View.</UserDocu>
       </Documentation>
     </Methode>
     <CustomAttributes />

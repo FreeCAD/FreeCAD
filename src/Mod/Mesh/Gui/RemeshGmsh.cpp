@@ -27,7 +27,7 @@
 # include <QMessageBox>
 # include <QPushButton>
 # include <QTextCursor>
-# include <QTime>
+# include <QElapsedTimer>
 #endif
 
 #include "RemeshGmsh.h"
@@ -51,6 +51,7 @@ public:
     Private(QWidget* parent)
       : gmsh(parent)
     {
+        /* coverity[uninit_ctor] Members of ui are set in setupUI() */
     }
 
     void appendText(const QString& text, bool error) {
@@ -69,7 +70,7 @@ public:
     QPointer<Gui::StatusWidget> label;
     QPointer<Gui::DockWnd::ReportHighlighter> syntax;
     QProcess gmsh;
-    QTime time;
+    QElapsedTimer time;
 };
 
 GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)

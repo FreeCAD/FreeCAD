@@ -37,18 +37,32 @@
 <!--      </Documentation>-->
 <!--      <Parameter Name="Owner" Type="String"/>-->
 <!--    </Attribute> -->
-<!--    <Attribute Name="Start">-->
-<!--      <Documentation>-->
-<!--        <UserDocu>Gives the position of one end of this CosmeticEdge as vector.</UserDocu>-->
-<!--      </Documentation>-->
-<!--      <Parameter Name="Start" Type="Object"/>-->
-<!--    </Attribute>-->
-<!--    <Attribute Name="End">-->
-<!--      <Documentation>-->
-<!--        <UserDocu>Gives the position of one end of this CosmeticEdge as vector.</UserDocu>-->
-<!--      </Documentation>-->
-<!--      <Parameter Name="End" Type="Object"/>-->
-<!--    </Attribute>-->
+    <Attribute Name="Start">
+      <Documentation>
+        <UserDocu>Gives the position of one end of this CosmeticEdge as vector.</UserDocu>
+      </Documentation>
+      <Parameter Name="Start" Type="Object"/>
+    </Attribute>
+    <Attribute Name="End">
+      <Documentation>
+        <UserDocu>Gives the position of one end of this CosmeticEdge as vector.</UserDocu>
+      </Documentation>
+      <Parameter Name="End" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Center">
+      <Documentation>
+        <UserDocu>Gives the position of center point of this CosmeticEdge as vector.</UserDocu>
+      </Documentation>
+      <Parameter Name="Center" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Radius">
+      <Documentation>
+        <UserDocu>Gives the radius of CosmeticEdge in mm.</UserDocu>
+      </Documentation>
+      <Parameter Name="Radius" Type="Object"/>
+    </Attribute>
+
+
 <!--    <Attribute Name="Geometry">-->
 <!--      <Documentation>-->
 <!--        <UserDocu>The edge geometry for this CosmeticEdge.</UserDocu>-->
@@ -57,7 +71,7 @@
 <!--    </Attribute> -->
     <Attribute Name="Format">
       <Documentation>
-        <UserDocu>The appearance attributes (style, color, weight, visible) for this CosmeticEdge.</UserDocu>
+        <UserDocu>The appearance attributes (style, weight, color, visible) for this CosmeticEdge.</UserDocu>
       </Documentation>
       <Parameter Name="Format" Type="Object"/>
     </Attribute>

@@ -76,6 +76,7 @@ DlgPropertyLink::DlgPropertyLink(QWidget* parent)
     ui->typeTree->hide();
     ui->searchBox->installEventFilter(this);
     ui->searchBox->setNoProperty(true);
+    ui->searchBox->setExactMatch(Gui::ExpressionParameter::instance()->isExactMatch());
 
     timer = new QTimer(this);
     timer->setSingleShot(true);
@@ -262,6 +263,8 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
         singleParent = true;
     } else if (propLink->isDerivedFrom(App::PropertyLink::getClassTypeId())) {
         singleSelect = true;
+    } else if (propLink->isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())) {
+        allowSubObject = true;
     }
 
     if(App::PropertyXLink::supportXLink(propLink)) {
@@ -572,7 +575,7 @@ QTreeWidgetItem *DlgPropertyLink::findItem(
     onItemExpanded(itDoc->second);
 
     auto it = itemMap.find(obj);
-    if(it == itemMap.end())
+    if(it == itemMap.end() || it->second->isHidden())
         return 0;
 
     if(!allowSubObject) {

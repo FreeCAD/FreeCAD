@@ -22,18 +22,24 @@
 # *                                                                         *
 # ***************************************************************************
 """Auxiliary functions for the unit tests of the Draft Workbench."""
+## @package auxiliary
+# \ingroup drafttests
+# \brief Auxiliary functions for the unit tests of the Draft Workbench.
 
+## \addtogroup drafttests
+# @{
 import traceback
+
 from draftutils.messages import _msg
 
 
-def _draw_header():
+def draw_header():
     """Draw a header for the tests."""
     _msg("")
     _msg(78*"-")
 
 
-def _import_test(module):
+def import_test(module):
     """Try importing a module."""
     _msg("  Try importing '{}'".format(module))
     try:
@@ -45,7 +51,7 @@ def _import_test(module):
     return imported
 
 
-def _no_gui(module):
+def no_gui(module):
     """Print a message that there is no user interface."""
     _msg("  #-----------------------------------------------------#\n"
          "  #    No GUI; cannot test for '{}'\n"
@@ -53,7 +59,7 @@ def _no_gui(module):
          "  Automatic PASS".format(module))
 
 
-def _no_test():
+def no_test():
     """Print a message that the test is not currently implemented."""
     _msg("  #-----------------------------------------------------#\n"
          "  #    This test is not implemented currently\n"
@@ -61,11 +67,13 @@ def _no_test():
          "  Automatic PASS")
 
 
-def _fake_function(p1=None, p2=None, p3=None, p4=None, p5=None):
+def fake_function(p1=None, p2=None, p3=None, p4=None, p5=None):
     """Print a message for a test that doesn't actually exist."""
     _msg("  Arguments to placeholder function")
     _msg("  p1={0}; p2={1}".format(p1, p2))
     _msg("  p3={0}; p4={1}".format(p3, p4))
     _msg("  p5={}".format(p5))
-    _no_test()
+    no_test()
     return True
+
+## @}

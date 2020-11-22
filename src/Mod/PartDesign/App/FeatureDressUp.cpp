@@ -51,9 +51,10 @@ DressUp::DressUp()
     Placement.setStatus(App::Property::ReadOnly, true);
 
     ADD_PROPERTY_TYPE(SupportTransform,(false),"Base", App::Prop_None,
-            "Enable support for transformed patterns");
+            "Include the base additive/subtractive shape when used in pattern features.\n"
+            "If disabled, only the dressed part of the shape is used for patterning.");
 
-    addSubType = Additive;
+    AddSubShape.setStatus(App::Property::Output, true);
 }
 
 short DressUp::mustExecute() const
@@ -61,12 +62,6 @@ short DressUp::mustExecute() const
     if (Base.getValue() && Base.getValue()->isTouched())
         return 1;
     return PartDesign::Feature::mustExecute();
-}
-
-void DressUp::setupObject()
-{
-    SupportTransform.setValue(true);
-    Feature::setupObject();
 }
 
 void DressUp::positionByBaseFeature(void)
@@ -182,43 +177,106 @@ void DressUp::onChanged(const App::Property* prop)
             BaseFeature.setValue (Base.getValue());
         }
     } else if (prop == &Shape || prop == &SupportTransform) {
-        // This is an expensive operation and to avoid to perform it unnecessarily it's not sufficient
-        // to check for the 'Restore' flag of the dress-up feature because at that time it's already reset.
-        // Instead the 'Restore' flag of the document must be checked.
-        // For more details see: https://forum.freecadweb.org/viewtopic.php?f=3&t=43799 (and issue 4276)
         if (!getDocument()->testStatus(App::Document::Restoring) &&
-            !getDocument()->isPerformingTransaction()) {
-            Part::TopoShape s;
-            auto base = Base::freecad_dynamic_cast<FeatureAddSub>(getBaseObject(true));
-            if(!base) {
-                addSubType = Additive;
-                if(!SupportTransform.getValue())
-                    s = getBaseShape();
-                else
-                    s = Shape.getShape();
-                s.setPlacement(Base::Placement());
-            } else if (!SupportTransform.getValue()) {
-                addSubType = base->getAddSubType();
-                s = base->AddSubShape.getShape();
-            } else {
-                addSubType = base->getAddSubType();
-                Part::TopoShape baseShape = base->getBaseTopoShape(true);
-                baseShape.setPlacement(Base::Placement());
-                Part::TopoShape shape = Shape.getShape();
-                shape.setPlacement(Base::Placement());
-                if (baseShape.isNull() || !baseShape.hasSubShape(TopAbs_SOLID)) {
-                    s = shape;
-                    addSubType = Additive;
-                } else if (addSubType == Additive)
-                    s = shape.cut(baseShape.getShape());
-                else
-                    s = baseShape.cut(shape.getShape());
-            }
-            AddSubShape.setValue(s);
+            !getDocument()->isPerformingTransaction())
+        {
+            // AddSubShape in DressUp acts as a shape cache. And here we shall
+            // invalidate the cache upon changes in Shape. Other features
+            // (currently only feature Transformed) shall call getAddSubShape()
+            // to rebuild the cache. This allow us to perform expensive
+            // calculation of AddSubShape only when necessary.
+            AddSubShape.setValue(Part::TopoShape());
         }
     }
 
     Feature::onChanged(prop);
+}
+
+void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape)
+{
+    Part::TopoShape res = AddSubShape.getShape();
+
+    if(res.isNull()) {
+        try {
+            std::vector<Part::TopoShape> shapes;
+            Part::TopoShape shape = Shape.getShape();
+            shape.setPlacement(Base::Placement());
+
+            FeatureAddSub *base = nullptr;
+            if(SupportTransform.getValue()) {
+                // SupportTransform means transform the support together with
+                // the dressing. So we need to find the previous support
+                // feature (which must be of type FeatureAddSub), and skipping
+                // any consecutive DressUp in-between.
+                for(Feature *current=this; ;current=static_cast<DressUp*>(base)) {
+                    base = Base::freecad_dynamic_cast<FeatureAddSub>(current->getBaseObject(true));
+                    if(!base)
+                        FC_THROWM(Base::CADKernelError, 
+                                "Cannot find additive or subtractive support for " << getFullName());
+                    if(!base->isDerivedFrom(DressUp::getClassTypeId()))
+                        break;
+                }
+            }
+
+            Part::TopoShape baseShape;
+            if(base) {
+                baseShape = base->getBaseTopoShape(true);
+                baseShape.move(base->getLocation().Inverted());
+                if (base->getAddSubType() == Additive) {
+                    if(!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID))
+                        shapes.push_back(shape.cut(baseShape.getShape()));
+                    else
+                        shapes.push_back(shape);
+                } else {
+                    BRep_Builder builder;
+                    TopoDS_Compound comp;
+                    builder.MakeCompound(comp);
+                    // push an empty compound to indicate null additive shape
+                    shapes.emplace_back(comp);
+                    if(!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID))
+                        shapes.push_back(baseShape.cut(shape.getShape()));
+                    else
+                        shapes.push_back(shape);
+                }
+            } else {
+                baseShape = getBaseTopoShape();
+                baseShape.move(getLocation().Inverted());
+                shapes.push_back(shape.cut(baseShape.getShape()));
+                shapes.push_back(baseShape.cut(shape.getShape()));
+            }
+
+            // Make a compound to contain both additive and subtractive shape,
+            // bceause a dressing (e.g. a fillet) can either be additive or
+            // subtractive. And the dressup feature can contain mixture of both.
+            AddSubShape.setValue(Part::TopoShape().makECompound(shapes));
+
+        } catch (Standard_Failure &e) {
+            FC_THROWM(Base::CADKernelError, "Failed to calculate AddSub shape: "
+                    << e.GetMessageString());
+        }
+        res = AddSubShape.getShape();
+    }
+
+    if(res.isNull())
+        throw Part::NullShapeException("Null AddSub shape");
+
+    if(res.getShape().ShapeType() != TopAbs_COMPOUND) {
+        addShape = res;
+    } else {
+        int count = res.countSubShapes(TopAbs_SHAPE);
+        if(!count)
+            throw Part::NullShapeException("Null AddSub shape");
+        if(count) {
+            Part::TopoShape s = res.getSubShape(TopAbs_SHAPE, 1);
+            if(!s.isNull() && s.hasSubShape(TopAbs_SOLID))
+                addShape = s;
+        }
+        if(count > 1) {
+            Part::TopoShape s = res.getSubShape(TopAbs_SHAPE, 2);
+            if(!s.isNull() && s.hasSubShape(TopAbs_SOLID))
+                subShape = s;
+        }
+    }
 }
 
 }

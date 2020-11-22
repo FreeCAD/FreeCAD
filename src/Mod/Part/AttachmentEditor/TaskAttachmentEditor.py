@@ -388,15 +388,10 @@ class AttachmentEditorTaskPanel(FrozenClass):
         if index >= 0  and  index <= 2:
             plm.Base = pos
 
-        rot = plm.Rotation;
-        (yaw, pitch, roll) = rot.toEuler()
-        if index==3:
-            yaw = Q(self.form.attachmentOffsetYaw.text()).getValueAs(deg)
-        if index==4:
-            pitch = Q(self.form.attachmentOffsetPitch.text()).getValueAs(deg)
-        if index==5:
-            roll = Q(self.form.attachmentOffsetRoll.text()).getValueAs(deg)
         if index >= 3  and  index <= 5:
+            yaw = Q(self.form.attachmentOffsetYaw.text()).getValueAs(deg)
+            pitch = Q(self.form.attachmentOffsetPitch.text()).getValueAs(deg)
+            roll = Q(self.form.attachmentOffsetRoll.text()).getValueAs(deg)
             rot = App.Rotation(yaw,pitch,roll)
             plm.Rotation = rot
 
@@ -599,7 +594,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
                                               .format(  mode=   self.attacher.getModeInfo(self.getCurrentMode())['UserFriendlyName']  )    )
                 if PlacementsFuzzyCompare(self.obj.Placement, new_plm) == False:
                     # assign only if placement changed. this avoids touching the object
-                    # when entering and extiting dialog without changing anything
+                    # when entering and exiting dialog without changing anything
                     self.obj.Placement = new_plm
         except Exception as err:
             self.form.message.setText(_translate('AttachmentEditor',"Error: {err}",None).format(err= str(err)))
@@ -616,3 +611,4 @@ class AttachmentEditorTaskPanel(FrozenClass):
         Gui.Selection.removeObserver(self)
         if self.tv:
             self.tv.restore()
+

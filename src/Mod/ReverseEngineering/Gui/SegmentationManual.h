@@ -43,7 +43,7 @@ class SegmentationManual : public QWidget
     Q_OBJECT
 
 public:
-    SegmentationManual(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    SegmentationManual(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~SegmentationManual();
     void reject();
     void createSegment();
@@ -57,9 +57,15 @@ public Q_SLOTS:
     void on_visibleTriangles_toggled(bool);
     void on_screenTriangles_toggled(bool);
     void on_cbSelectComp_toggled(bool);
+    void on_planeDetect_clicked();
+    void on_cylinderDetect_clicked();
+    void on_sphereDetect_clicked();
 
 protected:
     void changeEvent(QEvent *e);
+
+private:
+    class Private;
 
 private:
     std::unique_ptr<Ui_SegmentationManual> ui;

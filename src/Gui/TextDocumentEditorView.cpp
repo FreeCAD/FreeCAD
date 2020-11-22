@@ -30,11 +30,11 @@
 # include <QMessageBox>
 # include <QPushButton>
 # include <QTextBlock>
+# include <iostream>
+# include <boost_bind_bind.hpp>
+# include <boost/signals2.hpp>
 #endif
 
-#include <iostream>
-#include <boost/bind.hpp>
-#include <boost/signals2.hpp>
 
 #include <App/TextDocument.h>
 #include <Gui/Document.h>
@@ -70,6 +70,7 @@ TextDocumentEditorView::TextDocumentEditorView(
 TextDocumentEditorView::~TextDocumentEditorView()
 {
     textConnection.disconnect();
+    labelConnection.disconnect();
 }
 
 void TextDocumentEditorView::showEvent(QShowEvent* event)

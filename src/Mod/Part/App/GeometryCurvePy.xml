@@ -58,6 +58,31 @@ Part.show(s)
 </UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="getD0" Const="true">
+            <Documentation>
+                <UserDocu>Returns the point of given parameter</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getD1" Const="true">
+            <Documentation>
+                <UserDocu>Returns the point and first derivative of given parameter</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getD2" Const="true">
+            <Documentation>
+                <UserDocu>Returns the point, first and second derivatives</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getD3" Const="true">
+            <Documentation>
+                <UserDocu>Returns the point, first, second and third derivatives</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getDN" Const="true">
+            <Documentation>
+                <UserDocu>Returns the n-th derivative</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="length" Const="true">
 			<Documentation>
 				<UserDocu>Computes the length of a curve
@@ -90,6 +115,11 @@ parameterAtDistance([abscissa, startingParameter]) -> Float the</UserDocu>
 				<UserDocu>Get intersection points with another curve lying on a plane.</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="continuityWith" Const="true">
+            <Documentation>
+                <UserDocu>Computes the continuity of two curves</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="parameter" Const="true">
 			<Documentation>
 				<UserDocu>Returns the parameter on the curve

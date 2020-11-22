@@ -30,7 +30,7 @@
 # include <QRunnable>
 # include <QTextStream>
 # include <QThreadPool>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <sstream>
 #endif
 
@@ -53,14 +53,15 @@
 FC_LOG_LEVEL_INIT("App",true,true)
 
 using namespace Gui;
+namespace bp = boost::placeholders;
 
 AutoSaver* AutoSaver::self = 0;
 
 AutoSaver::AutoSaver(QObject* parent)
   : QObject(parent), timeout(900000), compressed(true)
 {
-    App::GetApplication().signalNewDocument.connect(boost::bind(&AutoSaver::slotCreateDocument, this, _1));
-    App::GetApplication().signalDeleteDocument.connect(boost::bind(&AutoSaver::slotDeleteDocument, this, _1));
+    App::GetApplication().signalNewDocument.connect(boost::bind(&AutoSaver::slotCreateDocument, this, bp::_1));
+    App::GetApplication().signalDeleteDocument.connect(boost::bind(&AutoSaver::slotDeleteDocument, this, bp::_1));
 }
 
 AutoSaver::~AutoSaver()
@@ -134,7 +135,9 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
 {
     Gui::WaitCursor wc;
     App::Document* doc = App::GetApplication().getDocument(name.c_str());
-    if (doc && !doc->testStatus(App::Document::PartialDoc)) {
+    if (doc && !doc->testStatus(App::Document::PartialDoc) 
+            && !doc->testStatus(App::Document::TempDoc)) 
+    {
         // Set the document's current transient directory
         std::string dirName = doc->TransientDir.getValue();
         dirName += "/fc_recovery_files";
@@ -146,12 +149,12 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         if (file.open(QFile::WriteOnly)) {
             QTextStream str(&file);
             str.setCodec("UTF-8");
-            str << "<?xml version='1.0' encoding='utf-8'?>" << endl
-                << "<AutoRecovery SchemaVersion=\"1\">" << endl;
-            str << "  <Status>Created</Status>" << endl;
-            str << "  <Label>" << QString::fromUtf8(doc->Label.getValue()) << "</Label>" << endl; // store the document's current label
-            str << "  <FileName>" << QString::fromUtf8(doc->FileName.getValue()) << "</FileName>" << endl; // store the document's current filename
-            str << "</AutoRecovery>" << endl;
+            str << "<?xml version='1.0' encoding='utf-8'?>\n"
+                << "<AutoRecovery SchemaVersion=\"1\">\n";
+            str << "  <Status>Created</Status>\n";
+            str << "  <Label>" << QString::fromUtf8(doc->Label.getValue()) << "</Label>\n"; // store the document's current label
+            str << "  <FileName>" << QString::fromUtf8(doc->FileName.getValue()) << "</FileName>\n"; // store the document's current filename
+            str << "</AutoRecovery>\n";
             file.close();
         }
 
@@ -242,9 +245,9 @@ void AutoSaver::timerEvent(QTimerEvent * event)
 AutoSaveProperty::AutoSaveProperty(const App::Document* doc) : timerId(-1)
 {
     documentNew = const_cast<App::Document*>(doc)->signalNewObject.connect
-        (boost::bind(&AutoSaveProperty::slotNewObject, this, _1));
+        (boost::bind(&AutoSaveProperty::slotNewObject, this, bp::_1));
     documentMod = const_cast<App::Document*>(doc)->signalChangedObject.connect
-        (boost::bind(&AutoSaveProperty::slotChangePropertyData, this, _2));
+        (boost::bind(&AutoSaveProperty::slotChangePropertyData, this, bp::_2));
 }
 
 AutoSaveProperty::~AutoSaveProperty()

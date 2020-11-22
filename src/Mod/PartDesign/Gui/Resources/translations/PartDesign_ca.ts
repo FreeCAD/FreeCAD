@@ -795,11 +795,10 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>La funció sol·licitada no es pot crear. Pot ser perquè:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â¢ El cos actiu no conté una forma base, per això no hi ha cap material per a ser eliminat;
+  â¢ L'esbós seleccionat no pertany al cos actiu.</translation>
     </message>
   </context>
   <context>
@@ -811,11 +810,10 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>La funció sol·licitada no es pot crear. Pot ser perquè:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â¢ El cos actiu no conté una forma base, per això no hi ha cap material per a ser eliminat;
+  â¢ L'esbós seleccionat no pertany al cos actiu.</translation>
     </message>
   </context>
   <context>
@@ -827,11 +825,10 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>La funció sol·licitada no es pot crear. Pot ser perquè:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â¢ El cos actiu no conté una forma base, per això no hi ha cap material per a ser eliminat;
+  â¢ L'esbós seleccionat no pertany al cos actiu.</translation>
     </message>
   </context>
   <context>
@@ -1291,7 +1288,7 @@
     <message>
       <location filename="../../TaskFeaturePick.ui" line="42"/>
       <source>From other bodies of the same part</source>
-      <translation type="unfinished">From other bodies of the same part</translation>
+      <translation>Des d'altres cossos de la mateixa peça</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>
@@ -1883,7 +1880,7 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation type="unfinished">Path to sweep along</translation>
+      <translation>Trajectòria de l'escombratge</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>

@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   (c) sliptonic (shopinthewoods@gmail.com) 2014                         *
+# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *

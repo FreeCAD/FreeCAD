@@ -794,6 +794,8 @@ private:
 
     Py::Object makeDistanceDim(const Py::Tuple& args)
     {
+    //points come in unscaled,but makeDistDim unscales them so we need to prescale here. 
+    //makeDistDim was built for extent dims which work from scaled geometry 
         PyObject* pDvp;
         PyObject* pDimType;
         PyObject* pFrom;
@@ -808,8 +810,11 @@ private:
         }
         //TODO: errors for all the type checks
         if (PyObject_TypeCheck(pDvp, &(TechDraw::DrawViewPartPy::Type))) {
-                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
-                dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
+            dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+        }
+        else {
+            throw Py::TypeError("expected (DrawViewPart, dimType, from, to");
         }
 #if PY_MAJOR_VERSION >= 3
         if (PyUnicode_Check(pDimType) ) {
@@ -827,12 +832,14 @@ private:
         if (PyObject_TypeCheck(pTo, &(Base::VectorPy::Type))) {
             to = static_cast<Base::VectorPy*>(pTo)->value();
         }
+        DrawViewDimension* dvd = 
         DrawDimHelper::makeDistDim(dvp,
                                    dimType,
-                                   from,
-                                   to);
-
-        return Py::None();
+                                   DrawUtil::invertY(from),
+                                   DrawUtil::invertY(to));
+        PyObject* dvdPy = dvd->getPyObject();
+        return Py::asObject(dvdPy);
+//        return Py::None();
     }
 
     Py::Object makeDistanceDim3d(const Py::Tuple& args)
@@ -851,8 +858,11 @@ private:
         }
         //TODO: errors for all the type checks
         if (PyObject_TypeCheck(pDvp, &(TechDraw::DrawViewPartPy::Type))) {
-                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
-                dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
+            dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+        }
+        else {
+            throw Py::TypeError("expected (DrawViewPart, dimType, from, to");
         }
 #if PY_MAJOR_VERSION >= 3
         if (PyUnicode_Check(pDimType)) {
@@ -869,8 +879,10 @@ private:
         if (PyObject_TypeCheck(pTo, &(Base::VectorPy::Type))) {
             to = static_cast<Base::VectorPy*>(pTo)->value();
         }
+        //3d points are not scaled
         from = DrawUtil::invertY(dvp->projectPoint(from));
         to   = DrawUtil::invertY(dvp->projectPoint(to));
+        //DrawViewDimension* = 
         DrawDimHelper::makeDistDim(dvp,
                                    dimType,
                                    from,

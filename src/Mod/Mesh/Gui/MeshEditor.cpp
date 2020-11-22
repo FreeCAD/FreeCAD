@@ -45,7 +45,7 @@
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "MeshEditor.h"
@@ -61,6 +61,7 @@
 #include <Gui/View3DInventorViewer.h>
 
 using namespace MeshGui;
+namespace bp = boost::placeholders;
 
 PROPERTY_SOURCE(MeshGui::ViewProviderFace, Gui::ViewProviderDocumentObject)
 
@@ -415,8 +416,7 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
 
 namespace MeshGui {
     // for sorting of elements
-    struct NofFacetsCompare : public std::binary_function<const std::vector<unsigned long>&, 
-                                                          const std::vector<unsigned long>&, bool>
+    struct NofFacetsCompare
     {
         bool operator () (const std::vector<unsigned long> &rclC1, 
                           const std::vector<unsigned long> &rclC2)
@@ -478,7 +478,7 @@ void MeshFillHole::startEditing(MeshGui::ViewProviderMesh* vp)
     viewer->addEventCallback(SoEvent::getClassTypeId(),
         MeshFillHole::fileHoleCallback, this);
     myConnection = App::GetApplication().signalChangedObject.connect(
-        boost::bind(&MeshFillHole::slotChangedObject, this, _1, _2));
+        boost::bind(&MeshFillHole::slotChangedObject, this, bp::_1, bp::_2));
 
     Gui::coinRemoveAllChildren(myBoundariesRoot);
     myBoundariesRoot->addChild(viewer->getHeadlight());
@@ -686,9 +686,7 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
     else if (ev->getTypeId() == SoMouseButtonEvent::getClassTypeId()) {
         n->setHandled();
         const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent *>(ev);
-        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
-        }
-        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
             if (self->myNumPoints > 1)
                 return;
             SoRayPickAction rp(view->getSoRenderManager()->getViewportRegion());

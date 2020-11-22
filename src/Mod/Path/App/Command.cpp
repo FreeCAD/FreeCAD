@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -250,7 +250,7 @@ void Command::setCenter(const Base::Vector3d &pos, bool clockwise)
     Parameters[k] = kval;
 }
 
-Command Command::transform(const Base::Placement other)
+Command Command::transform(const Base::Placement& other)
 {
     Base::Placement plac = getPlacement();
     plac *= other;

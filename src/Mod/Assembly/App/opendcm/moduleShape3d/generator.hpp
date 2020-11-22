@@ -28,7 +28,8 @@
 #include "defines.hpp"
 
 #include <boost/exception/errinfo_errno.hpp>
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
+namespace bp = boost::placeholders;
 
 namespace dcm {
 
@@ -159,7 +160,7 @@ struct segment3D {
                 base::append(g1);
                 g1->template linkTo<tag::segment3D>(base::m_shape,0);
                 g1->template setProperty<typename base::shape_purpose_prop>(line);
-                g1->template connectSignal<recalculated>(boost::bind(&base::Shape3D::recalc, base::m_shape, _1));
+                g1->template connectSignal<recalculated>(boost::bind(&base::Shape3D::recalc, base::m_shape, bp::_1));
 
                 //we have a segment, lets link the two points to it
                 boost::shared_ptr<Geometry3D> g2 = base::m_system->createGeometry3D();
@@ -205,7 +206,7 @@ struct segment3D {
                     base::append(g3);
                     g3->template linkTo<tag::segment3D>(base::m_shape,0);
                     g3->template setProperty<typename base::shape_purpose_prop>(line);
-                    g3->template connectSignal<recalculated>(boost::bind(&base::Shape3D::recalc, base::m_shape, _1));
+                    g3->template connectSignal<recalculated>(boost::bind(&base::Shape3D::recalc, base::m_shape, bp::_1));
 
                     //link the points to our new segment
                     g1->template linkTo<tag::point3D>(base::m_shape, 0);

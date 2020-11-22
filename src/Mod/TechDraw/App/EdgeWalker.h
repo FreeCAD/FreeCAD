@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,8 +29,6 @@
 #define TECHDRAW_EDGEWALKER_H
 
 #include <vector>
-#include <iostream>
-
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/graph/graph_traits.hpp>
@@ -56,7 +54,7 @@ typedef
           boost::property<boost::edge_index_t, int>
         >
         graph;
-        
+
 typedef
     boost::graph_traits < graph >::vertex_descriptor
         vertex_t;
@@ -94,7 +92,7 @@ public:
 
     std::vector<WalkerEdge>  wedges;      //[WE] representing 1 wire
     void push_back(WalkerEdge w);
-    void clear() {wedges.clear();};
+    void clear() {wedges.clear();}
     int size(void);
 };
 
@@ -129,7 +127,7 @@ private:
 class incidenceItem
 {
 public:
-    incidenceItem() {}
+    incidenceItem() {iEdge = 0; angle = 0.0;}
     incidenceItem(int idx, double a, edge_t ed)  {iEdge = idx; angle = a; eDesc = ed;}
     ~incidenceItem() {}
     static bool iiCompare(const incidenceItem& i1, const incidenceItem& i2);

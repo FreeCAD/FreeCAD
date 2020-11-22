@@ -65,6 +65,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
 
     def write_z88_input(self):
         timestart = time.process_time()
+        FreeCAD.Console.PrintMessage("Write z88 input files to: {}\n".format(self.dir_name))
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
         if not self.femelement_table:

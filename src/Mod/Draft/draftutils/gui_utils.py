@@ -23,7 +23,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides GUI utility functions for the Draft Workbench.
+"""Provides utility functions that deal with GUI interactions.
 
 This module contains auxiliary functions which can be used
 in other modules of the workbench, and which require
@@ -31,17 +31,19 @@ the graphical user interface (GUI), as they access the view providers
 of the objects or the 3D view.
 """
 ## @package gui_utils
-# \ingroup DRAFT
-# \brief This module provides GUI utility functions for the Draft Workbench
+# \ingroup draftutils
+# \brief Provides utility functions that deal with GUI interactions.
 
+## \addtogroup draftutils
+# @{
 import math
 import os
 import six
 
 import FreeCAD as App
-from draftutils.messages import _msg, _wrn
-from draftutils.utils import getParam
-from draftutils.utils import get_type
+import draftutils.utils as utils
+
+from draftutils.messages import _msg, _wrn, _err
 from draftutils.translate import _tr, translate
 
 if App.GuiUp:
@@ -63,14 +65,15 @@ def get_3d_view():
         Return `None` if the graphical interface is not available.
     """
     if App.GuiUp:
-        v = Gui.ActiveDocument.ActiveView
-        if "View3DInventor" in str(type(v)):
-            return v
+        if Gui.ActiveDocument:
+            v = Gui.ActiveDocument.ActiveView
+            if "View3DInventor" in str(type(v)):
+                return v
 
-        # print("Debug: Draft: Warning, not working in active view")
-        v = Gui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
-        if v:
-            return v[0]
+            # print("Debug: Draft: Warning, not working in active view")
+            v = Gui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
+            if v:
+                return v[0]
 
     _wrn(_tr("No graphical interface"))
     return None
@@ -98,55 +101,68 @@ def autogroup(obj):
     obj: App::DocumentObject
         Any type of object that will be stored in the group.
     """
+
+    # check for required conditions for autogroup to work
     if not App.GuiUp:
         return
+    if not hasattr(Gui,"draftToolBar"):
+        return
+    if not hasattr(Gui.draftToolBar,"autogroup"):
+        return
+    if Gui.draftToolBar.isConstructionMode():
+        return
 
-    doc = App.ActiveDocument
-    view = Gui.ActiveDocument.ActiveView
+    # autogroup code
+    if Gui.draftToolBar.autogroup is not None:
+        active_group = App.ActiveDocument.getObject(Gui.draftToolBar.autogroup)
+        if active_group:
+            found = False
+            for o in active_group.Group:
+                if o.Name == obj.Name:
+                    found = True
+            if not found:
+                gr = active_group.Group
+                gr.append(obj)
+                active_group.Group = gr
 
-    # Look for active Arch container
-    active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
-    if hasattr(Gui, "draftToolBar"):
-        if (hasattr(Gui.draftToolBar, "autogroup")
-                and not Gui.draftToolBar.isConstructionMode()):
-            if Gui.draftToolBar.autogroup is not None:
-                active_group = doc.getObject(Gui.draftToolBar.autogroup)
-                if active_group:
-                    found = False
-                    for o in active_group.Group:
-                        if o.Name == obj.Name:
-                            found = True
-                    if not found:
-                        gr = active_group.Group
-                        gr.append(obj)
-                        active_group.Group = gr
-            elif active_arch_obj:
-                active_arch_obj.addObject(obj)
-            elif view.getActiveObject("part", False) is not None:
-                # Add object to active part and change its placement
-                # accordingly so the object does not jump
-                # to a different position, works with App::Link if not scaled.
-                # Modified accordingly to realthunder suggestions
-                p, parent, sub = view.getActiveObject("part", False)
-                matrix = parent.getSubObject(sub, retType=4)
-                if matrix.hasScale() == 1:
-                    _msg(translate("Draft",
-                                   "Unable to insert new object into "
-                                   "a scaled part"))
-                    return
-                inverse_placement = App.Placement(matrix.inverse())
-                if get_type(obj) == 'Point':
-                    # point vector have a kind of placement, so should be
-                    # processed before generic object with placement
-                    point_vector = App.Vector(obj.X, obj.Y, obj.Z)
-                    real_point = inverse_placement.multVec(point_vector)
-                    obj.X = real_point.x
-                    obj.Y = real_point.y
-                    obj.Z = real_point.z
-                elif hasattr(obj, "Placement"):
-                    place = inverse_placement.multiply(obj.Placement)
-                    obj.Placement = App.Placement(place)
-                p.addObject(obj)
+    else:
+
+        if Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
+            # add object to active Arch Container
+            Gui.ActiveDocument.ActiveView.getActiveObject("Arch").addObject(obj)
+
+        elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
+            # add object to active part and change it's placement accordingly
+            # so object does not jump to different position, works with App::Link
+            # if not scaled. Modified accordingly to realthunder suggestions
+            p, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+            matrix = parent.getSubObject(sub, retType=4)
+            if matrix.hasScale() == 1:
+                err = translate("Draft",
+                                "Unable to insert new object into "
+                                "a scaled part")
+                App.Console.PrintMessage(err)
+                return
+            inverse_placement = App.Placement(matrix.inverse())
+            if utils.get_type(obj) == 'Point':
+                point_vector = App.Vector(obj.X, obj.Y, obj.Z)
+                real_point = inverse_placement.multVec(point_vector)
+                obj.X = real_point.x
+                obj.Y = real_point.y
+                obj.Z = real_point.z
+            elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
+                obj.Start = inverse_placement.multVec(obj.Start)
+                obj.End = inverse_placement.multVec(obj.End)
+                obj.Dimline = inverse_placement.multVec(obj.Dimline)
+                obj.Normal = inverse_placement.Rotation.multVec(obj.Normal)
+                obj.Direction = inverse_placement.Rotation.multVec(obj.Direction)
+            elif utils.get_type(obj) in ["Label"]:
+                obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
+                obj.TargetPoint = inverse_placement.multVec(obj.TargetPoint)
+            elif hasattr(obj,"Placement"):
+                # every object that have a placement is processed here
+                obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
+            p.addObject(obj)
 
 
 def dim_symbol(symbol=None, invert=False):
@@ -180,12 +196,21 @@ def dim_symbol(symbol=None, invert=False):
         that will be used as a dimension symbol.
     """
     if symbol is None:
-        symbol = getParam("dimsymbol", 0)
+        symbol = utils.get_param("dimsymbol", 0)
 
     if symbol == 0:
-        return coin.SoSphere()
+        # marker = coin.SoMarkerSet()
+        # marker.markerIndex = 80
+
+        # Returning a sphere means that the bounding box will
+        # be 3-dimensional; a marker will always be planar seen from any
+        # orientation but it currently doesn't work correctly
+        marker = coin.SoSphere()
+        return marker
     elif symbol == 1:
         marker = coin.SoMarkerSet()
+        # Should be the same as
+        # marker.markerIndex = 10
         marker.markerIndex = Gui.getMarkerIndex("circle", 9)
         return marker
     elif symbol == 2:
@@ -326,32 +351,38 @@ def format_object(target, origin=None):
     if ui:
         doc = App.ActiveDocument
         if ui.isConstructionMode():
-            col = fcol = ui.getDefaultColor("constr")
-            gname = getParam("constructiongroupname", "Construction")
-            grp = doc.getObject(gname)
+            lcol = fcol = ui.getDefaultColor("constr")
+            tcol = lcol
+            fcol = lcol
+            grp = doc.getObject("Draft_Construction")
             if not grp:
-                grp = doc.addObject("App::DocumentObjectGroup", gname)
+                grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
+                grp.Label = utils.get_param("constructiongroupname", "Construction")
             grp.addObject(target)
             if hasattr(obrep, "Transparency"):
                 obrep.Transparency = 80
         else:
-            col = ui.getDefaultColor("ui")
+            lcol = ui.getDefaultColor("line")
+            tcol = ui.getDefaultColor("text")
             fcol = ui.getDefaultColor("face")
-        col = (float(col[0]), float(col[1]), float(col[2]), 0.0)
+        lcol = (float(lcol[0]), float(lcol[1]), float(lcol[2]), 0.0)
+        tcol = (float(tcol[0]), float(tcol[1]), float(tcol[2]), 0.0)
         fcol = (float(fcol[0]), float(fcol[1]), float(fcol[2]), 0.0)
-        lw = ui.linewidth
-        fs = ui.fontsize
+        lw = utils.getParam("linewidth",2)
+        fs = utils.getParam("textheight",0.20)
         if not origin or not hasattr(origin, 'ViewObject'):
             if "FontSize" in obrep.PropertiesList:
                 obrep.FontSize = fs
+            if "TextSize" in obrep.PropertiesList:
+                obrep.TextSize = fs
             if "TextColor" in obrep.PropertiesList:
-                obrep.TextColor = col
+                obrep.TextColor = tcol
             if "LineWidth" in obrep.PropertiesList:
                 obrep.LineWidth = lw
             if "PointColor" in obrep.PropertiesList:
-                obrep.PointColor = col
+                obrep.PointColor = lcol
             if "LineColor" in obrep.PropertiesList:
-                obrep.LineColor = col
+                obrep.LineColor = lcol
             if "ShapeColor" in obrep.PropertiesList:
                 obrep.ShapeColor = fcol
         else:
@@ -640,3 +671,85 @@ def load_texture(filename, size=None, gui=App.GuiUp):
 
 
 loadTexture = load_texture
+
+
+def migrate_text_display_mode(obj_type="Text", mode="3D text", doc=None):
+    """Migrate the display mode of objects of certain type."""
+    if not doc:
+        doc = App.activeDocument()
+
+    for obj in doc.Objects:
+        if utils.get_type(obj) == obj_type:
+            obj.ViewObject.DisplayMode = mode
+
+
+def get_bbox(obj, debug=False):
+    """Return a BoundBox from any object that has a Coin RootNode.
+
+    Normally the bounding box of an object can be taken
+    from its `Part::TopoShape`.
+    ::
+        >>> print(obj.Shape.BoundBox)
+
+    However, for objects without a `Shape`, such as those
+    derived from `App::FeaturePython` like `Draft Text` and `Draft Dimension`,
+    the bounding box can be calculated from the `RootNode` of the viewprovider.
+
+    Parameters
+    ----------
+    obj: App::DocumentObject
+        Any object that has a `ViewObject.RootNode`.
+
+    Returns
+    -------
+    Base::BoundBox
+        It returns a `BoundBox` object which has information like
+        minimum and maximum values of X, Y, and Z, as well as bounding box
+        center.
+
+    None
+        If there is a problem it will return `None`.
+    """
+    _name = "get_bbox"
+    utils.print_header(_name, "Bounding box", debug=debug)
+
+    found, doc = utils.find_doc(App.activeDocument())
+    if not found:
+        _err(_tr("No active document. Aborting."))
+        return None
+
+    if isinstance(obj, str):
+        obj_str = obj
+
+    found, obj = utils.find_object(obj, doc)
+    if not found:
+        _msg("obj: {}".format(obj_str))
+        _err(_tr("Wrong input: object not in document."))
+        return None
+
+    if debug:
+        _msg("obj: {}".format(obj.Label))
+
+    if (not hasattr(obj, "ViewObject")
+            or not obj.ViewObject
+            or not hasattr(obj.ViewObject, "RootNode")):
+        _err(_tr("Does not have 'ViewObject.RootNode'."))
+
+    # For Draft Dimensions
+    # node = obj.ViewObject.Proxy.node
+    node = obj.ViewObject.RootNode
+
+    view = Gui.ActiveDocument.ActiveView
+    region = view.getViewer().getSoRenderManager().getViewportRegion()
+    action = coin.SoGetBoundingBoxAction(region)
+
+    node.getBoundingBox(action)
+    bb = action.getBoundingBox()
+
+    # xlength, ylength, zlength = bb.getSize().getValue()
+    xmin, ymin, zmin = bb.getMin().getValue()
+    xmax, ymax, zmax = bb.getMax().getValue()
+
+    return App.BoundBox(xmin, ymin, zmin, xmax, ymax, zmax)
+
+## @}

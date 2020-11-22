@@ -1,0 +1,16 @@
+{
+    "name": "ISO 14583 (partial)",
+    "cut_type": "counterbore",
+    "thread_type": "metric",
+    "data": [
+	{ "thread": "M2",	"diameter": 4.4,	"depth": 1.0 },
+	{ "thread": "M2.5",	"diameter": 5.4,	"depth": 1.4 },
+	{ "thread": "M3",	"diameter": 6.0,	"depth": 1.7 },
+	{ "thread": "M3.5",	"diameter": 7.6,	"depth": 1.7 },
+	{ "thread": "M4",	"diameter": 8.6,	"depth": 2.0 },
+	{ "thread": "M5",	"diameter": 10.1,	"depth": 2.5 },
+	{ "thread": "M6",	"diameter": 12.6,	"depth": 3.0 },
+	{ "thread": "M8",	"diameter": 16.6,	"depth": 3.9 },
+	{ "thread": "M10",	"diameter": 20.8,	"depth": 4.6 }
+    ]
+}

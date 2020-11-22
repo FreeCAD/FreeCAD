@@ -27,12 +27,13 @@
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepCheck_Status.hxx>
 #include <Message_ProgressIndicator.hxx>
+#include <Standard_Version.hxx>
 #include <TopTools_MapOfShape.hxx>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <QAbstractItemModel>
 #include <QProgressDialog>
-#include <QTime>
+#include <QElapsedTimer>
 
 class SoSeparator;
 class SoSwitch;
@@ -117,8 +118,13 @@ private:
     void dispatchError(ResultEntry *entry, const BRepCheck_Status &stat);
     bool split(QString &input, QString &doc, QString &object, QString &sub);
     void setupFunctionMap();
+#if OCC_VERSION_HEX < 0x070500
     int goBOPSingleCheck(const TopoDS_Shape &shapeIn, ResultEntry *theRoot, const QString &baseName,
                          const Handle(Message_ProgressIndicator)& theProgress);
+#else
+    int goBOPSingleCheck(const TopoDS_Shape &shapeIn, ResultEntry *theRoot, const QString &baseName,
+                         const Message_ProgressScope& theScope);
+#endif
     void buildShapeContent(const QString &baseName, const TopoDS_Shape &shape);
     ResultModel *model;
     QTreeView *treeView;
@@ -148,6 +154,7 @@ private Q_SLOTS:
     void on_runSingleThreadedCheckBox_toggled(bool isOn);
     void on_logErrorsCheckBox_toggled(bool isOn);
     void on_expandShapeContentCheckBox_toggled(bool isOn);
+    void on_advancedShapeContentCheckBox_toggled(bool isOn);
     void on_autoRunCheckBox_toggled(bool isOn);
     void on_argumentTypeModeCheckBox_toggled(bool isOn);
     void on_selfInterModeCheckBox_toggled(bool isOn);
@@ -171,6 +178,7 @@ private:
     QCheckBox *runSingleThreadedCheckBox;
     QCheckBox *logErrorsCheckBox;
     QCheckBox *expandShapeContentCheckBox;
+    QCheckBox *advancedShapeContentCheckBox;
     QCheckBox *argumentTypeModeCheckBox;
     QCheckBox *selfInterModeCheckBox;
     QCheckBox *smallEdgeModeCheckBox;
@@ -194,16 +202,21 @@ public:
     BOPProgressIndicator (const QString &title, QWidget* parent);
     virtual ~BOPProgressIndicator ();
 
+#if OCC_VERSION_HEX < 0x070500
     virtual Standard_Boolean Show (const Standard_Boolean theForce = Standard_True);
+#else
+    virtual void Show (const Message_ProgressScope& theScope,
+                       const Standard_Boolean isForce);
+    virtual void Reset();
+#endif
     virtual Standard_Boolean UserBreak();
 
 private:
     int steps;
     bool canceled;
-    QTime time;
+    QElapsedTimer time;
     QProgressDialog* myProgress;
 };
-
 }
 
 #endif // TASKCHECKGEOMETRY_H

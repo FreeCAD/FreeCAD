@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,6 +27,7 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPainterPath>
 #include <QPainterPathStroker>
 #include <QStyleOptionGraphicsItem>
 #include <QVector2D>
@@ -39,6 +40,7 @@
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 
 #include "DrawGuiStd.h"
+#include "PreferencesGui.h"
 #include "QGIPrimPath.h"
 #include "QGIVertex.h"
 #include "QGIView.h"
@@ -287,8 +289,8 @@ void QGEPath::clearMarkers()
         return;
     }
     for (auto& m: m_markers) {
-        m->hide();
         if (m != nullptr) {
+            m->hide();
             QGraphicsScene* s = m->scene();
             if (s != nullptr) {
                 s->removeItem(m);           //should this be setParentItem(nullptr) instead??
@@ -419,10 +421,7 @@ QPainterPath QGEPath::shape() const
 
  double QGEPath::getEdgeFuzz(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    double result = hGrp->GetFloat("EdgeFuzz",10.0);
-    return result;
+    return PreferencesGui::edgeFuzz();
 }
 
 void QGEPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

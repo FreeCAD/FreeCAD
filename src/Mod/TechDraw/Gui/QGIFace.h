@@ -29,6 +29,7 @@
 #include <QByteArray>
 #include <QBrush>
 #include <QPixmap>
+#include <QImage>
 
 #include <Mod/TechDraw/App/HatchLine.h>
 #include <Mod/TechDraw/App/Geometry.h>
@@ -39,11 +40,11 @@ namespace TechDrawGui
 {
 class QGCustomSvg;
 class QGCustomRect;
+class QGCustomImage;
 
     const double SVGSIZEW = 64.0;                     //width and height of standard FC SVG pattern
     const double SVGSIZEH = 64.0;
-    const std::string  SVGCOLPREFIX = "stroke:";
-    const std::string  SVGCOLDEFAULT = "#000000";
+    const std::string SVGCOLDEFAULT = "#000000";
 
 class QGIFace : public QGIPrimPath
 {
@@ -66,7 +67,7 @@ public:
         GeomHatchFill,
         PlainFill
     };
-
+    std::string SVGCOLPREFIX = ""; // will be determined on runtime
 
     int getProjIndex() const { return projIndex; }
 
@@ -92,7 +93,10 @@ public:
     void buildSvgHatch(void);
     void hideSvg(bool b);
     void clearSvg(void);
-    
+
+    //tiled pixmap fill from svg
+    void buildPixHatch();
+
     //PAT fill parms & methods
     void setGeomHatchWeight(double w) { m_geomWeight = w; }
     void setLineWeight(double w);
@@ -123,10 +127,11 @@ protected:
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
     QGCustomRect *m_rect;
 
-    QGCustomSvg *m_svg;
     QByteArray m_svgXML;
     std::string m_svgCol;
     std::string m_fileSpec;   //for svg & bitmaps
+
+    QGCustomImage* m_image;
 
     double m_fillScale;
     bool m_isHatched;

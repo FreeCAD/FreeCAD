@@ -27,6 +27,8 @@
 # include <QRectF>
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyLinks.h>
+
 
 #include <Base/BoundBox.h>
 #include <Base/Matrix.h>
@@ -55,9 +57,12 @@ public:
     DrawProjGroup();
     ~DrawProjGroup();
 
-    App::PropertyLinkList  Source;
+    App::PropertyLinkList   Source;
+    App::PropertyXLinkList  XSource;
+
     App::PropertyEnumeration ProjectionType;
 
+    /// Whether projcetion group view are automatically distributed or not
     App::PropertyBool AutoDistribute;
     /// Default horizontal spacing between adjacent views on Drawing, in mm
     App::PropertyLength spacingX;
@@ -134,6 +139,9 @@ public:
     void autoPositionChildren(void);
     void updateChildrenEnforce(void);
 
+    std::vector<App::DocumentObject*> getAllSources(void) const;
+
+
 protected:
     void onChanged(const App::Property* prop) override;
 
@@ -168,6 +176,7 @@ protected:
 
     void updateChildrenSource(void);
     void updateChildrenLock(void);
+    void updateViews(void);
     int getViewIndex(const char *viewTypeCStr) const;
     int getDefProjConv(void) const;
     Base::Vector3d dir2vec(gp_Dir d);

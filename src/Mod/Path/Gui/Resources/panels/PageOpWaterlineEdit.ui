@@ -22,18 +22,28 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLabel" name="label">
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="toolController_label">
         <property name="text">
          <string>ToolController</string>
         </property>
        </widget>
       </item>
-      <item>
+      <item row="0" column="1">
        <widget class="QComboBox" name="toolController">
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="coolantController"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="coolantController_label">
+        <property name="text">
+         <string>Coolant Mode</string>
         </property>
        </widget>
       </item>
@@ -49,6 +59,9 @@
          <font>
           <pointsize>8</pointsize>
          </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the overall boundary for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <item>
          <property name="text">
@@ -70,6 +83,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive values push the cutter toward, or beyond, the boundary. Negative values retract the cutter away from the boundary.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
        </widget>
       </item>
       <item row="2" column="3">
@@ -78,6 +94,9 @@
          <font>
           <pointsize>8</pointsize>
          </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Complete the operation in a single pass at depth, or mulitiple passes to final depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <item>
          <property name="text">
@@ -93,6 +112,9 @@
       </item>
       <item row="0" column="3">
        <widget class="QComboBox" name="algorithmSelect">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <item>
          <property name="text">
           <string>OCL Dropcutter</string>
@@ -107,6 +129,9 @@
       </item>
       <item row="11" column="3">
        <widget class="QCheckBox" name="optimizeEnabled">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Optimize Linear Paths</string>
         </property>
@@ -132,19 +157,12 @@
           <pointsize>8</pointsize>
          </font>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the geometric clearing pattern to use for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <item>
          <property name="text">
           <string>None</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Line</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>ZigZag</string>
          </property>
         </item>
         <item>
@@ -155,6 +173,26 @@
         <item>
          <property name="text">
           <string>CircularZigZag</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Line</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Offset</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spiral</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ZigZag</string>
          </property>
         </item>
        </widget>
@@ -174,12 +212,6 @@
          <number>1</number>
         </property>
         <property name="maximum">
-         <number>100</number>
-        </property>
-        <property name="singleStep">
-         <number>10</number>
-        </property>
-        <property name="value">
          <number>100</number>
         </property>
        </widget>
@@ -213,6 +245,9 @@
       </item>
       <item row="9" column="3">
        <widget class="Gui::InputField" name="sampleInterval" native="true">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the sampling resolution. Smaller values quickly increase processing time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
         </property>
@@ -260,10 +295,22 @@
  <customwidgets>
   <customwidget>
    <class>Gui::InputField</class>
-   <extends>QWidget</extends>
-   <header>gui::inputfield.h</header>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>toolController</tabstop>
+  <tabstop>coolantController</tabstop>
+  <tabstop>algorithmSelect</tabstop>
+  <tabstop>boundBoxSelect</tabstop>
+  <tabstop>layerMode</tabstop>
+  <tabstop>cutPattern</tabstop>
+  <tabstop>boundaryAdjustment</tabstop>
+  <tabstop>stepOver</tabstop>
+  <tabstop>sampleInterval</tabstop>
+  <tabstop>optimizeEnabled</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

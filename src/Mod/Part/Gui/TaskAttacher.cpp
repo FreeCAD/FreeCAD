@@ -31,7 +31,7 @@
 # include <QMessageBox>
 # include <Precision.hxx>
 # include <Standard_Failure.hxx>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include <Base/Console.h>
@@ -62,6 +62,7 @@
 using namespace PartGui;
 using namespace Gui;
 using namespace Attacher;
+namespace bp = boost::placeholders;
 
 /* TRANSLATOR PartDesignGui::TaskAttacher */
 
@@ -217,8 +218,8 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     updatePreview();
 
     // connect object deletion with slot
-    auto bnd1 = boost::bind(&TaskAttacher::objectDeleted, this, _1);
-    auto bnd2 = boost::bind(&TaskAttacher::documentDeleted, this, _1);
+    auto bnd1 = boost::bind(&TaskAttacher::objectDeleted, this, bp::_1);
+    auto bnd2 = boost::bind(&TaskAttacher::documentDeleted, this, bp::_1);
     Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
     connectDelObject = document->signalDeletedObject.connect(bnd1);
     connectDelDocument = document->signalDeleteDocument.connect(bnd2);
@@ -454,19 +455,12 @@ void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
         pl.setPosition(pos);
     }
 
-    Base::Rotation rot = pl.getRotation();
-    double yaw, pitch, roll;
-    rot.getYawPitchRoll(yaw, pitch, roll);
-    if (idx == 3) {
-        yaw = ui->attachmentOffsetYaw->value().getValueAs(Base::Quantity::Degree);
-    }
-    if (idx == 4) {
-        pitch = ui->attachmentOffsetPitch->value().getValueAs(Base::Quantity::Degree);
-    }
-    if (idx == 5) {
-        roll = ui->attachmentOffsetRoll->value().getValueAs(Base::Quantity::Degree);
-    }
     if (idx >= 3  &&  idx <= 5){
+        double yaw, pitch, roll;
+        yaw = ui->attachmentOffsetYaw->value().getValueAs(Base::Quantity::Degree);
+        pitch = ui->attachmentOffsetPitch->value().getValueAs(Base::Quantity::Degree);
+        roll = ui->attachmentOffsetRoll->value().getValueAs(Base::Quantity::Degree);
+        Base::Rotation rot;
         rot.setYawPitchRoll(yaw,pitch,roll);
         pl.setRotation(rot);
     }
@@ -943,33 +937,40 @@ void TaskAttacher::changeEvent(QEvent *e)
 void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 {
     auto defvisfunc = [] (bool opening_not_closing,
+                          const std::string &postfix,
                           Gui::ViewProviderDocumentObject* vp,
                           App::DocumentObject *editObj,
                           const std::string& editSubName) {
         if (opening_not_closing) {
             QString code = QString::fromLatin1(
                 "import Show\n"
-                "tv = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
+                "from Show.Containers import isAContainer\n"
+                "_tv_%4 = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
                 "tvObj = %1\n"
-                "dep_features = tv.get_all_dependent(%2, '%3')\n"
+                "dep_features = _tv_%4.get_all_dependent(%2, '%3')\n"
+                "dep_features = [o for o in dep_features if not isAContainer(o)]\n"
                 "if tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
                 "\tvisible_features = [feat for feat in tvObj.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
                 "\tdep_features = [feat for feat in dep_features if feat not in visible_features]\n"
                 "\tdel(visible_features)\n"
-                "tv.hide(dep_features)\n"
+                "_tv_%4.hide(dep_features)\n"
                 "del(dep_features)\n"
                 "if not tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
                 "\t\tif len(tvObj.Support) > 0:\n"
-                "\t\t\ttv.show([lnk[0] for lnk in tvObj.Support])\n"
+                "\t\t\t_tv_%4.show([lnk[0] for lnk in tvObj.Support])\n"
                 "del(tvObj)"
                 ).arg(
                     QString::fromLatin1(Gui::Command::getObjectCmd(vp->getObject()).c_str()),
                     QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
-                    QString::fromLatin1(editSubName.c_str()));
+                    QString::fromLatin1(editSubName.c_str()),
+                    QString::fromLatin1(postfix.c_str()));
             Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
-        }
-        else {
-            Base::Interpreter().runString("del(tv)");
+        } else if(postfix.size()) {
+            QString code = QString::fromLatin1(
+                "_tv_%1.restore()\n"
+                "del(_tv_%1)"
+                ).arg(QString::fromLatin1(postfix.c_str()));
+            Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
         }
     };
 
@@ -987,14 +988,23 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
         auto editDoc = Gui::Application::Instance->editDocument();
         App::DocumentObject *editObj = ViewProvider->getObject();
         std::string editSubName;
-        ViewProviderDocumentObject *editVp = 0;
-        if (editDoc) {
-            editDoc->getInEdit(&editVp,&editSubName);
-            if (editVp)
-                editObj = editVp->getObject();
+        auto sels = Gui::Selection().getSelection(0,0,true);
+        if(sels.size() && sels[0].pResolvedObject 
+                       && sels[0].pResolvedObject->getLinkedObject()==editObj) 
+        {
+            editObj = sels[0].pObject;
+            editSubName = sels[0].SubName;
+        } else {
+            ViewProviderDocumentObject *editVp = 0;
+            if (editDoc) {
+                editDoc->getInEdit(&editVp,&editSubName);
+                if (editVp)
+                    editObj = editVp->getObject();
+            }
         }
+        ObjectName = ViewProvider->getObject()->getNameInDocument();
         try {
-            visAutoFunc(opening_not_closing, ViewProvider, editObj, editSubName);
+            visAutoFunc(opening_not_closing, ObjectName, ViewProvider, editObj, editSubName);
         }
         catch (const Base::Exception &e){
             e.ReportException();
@@ -1006,7 +1016,9 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
     }
     else {
         try {
-            visAutoFunc(opening_not_closing, nullptr, nullptr, std::string());
+            std::string objName;
+            objName.swap(ObjectName);
+            visAutoFunc(opening_not_closing, objName, nullptr, nullptr, std::string());
         }
         catch (Base::Exception &e) {
             e.ReportException();

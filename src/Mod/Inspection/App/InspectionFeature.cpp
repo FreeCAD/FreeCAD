@@ -36,7 +36,7 @@
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
 
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -59,6 +59,7 @@
 
 
 using namespace Inspection;
+namespace bp = boost::placeholders;
 
 InspectActualMesh::InspectActualMesh(const Mesh::MeshObject& rMesh) : _mesh(rMesh.getKernel())
 {
@@ -587,12 +588,12 @@ void PropertyDistanceList::setPyObject(PyObject *value)
 void PropertyDistanceList::Save (Base::Writer &writer) const
 {
     if (writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<FloatList count=\"" <<  getSize() <<"\">" << endl;
+        writer.Stream() << writer.ind() << "<FloatList count=\"" <<  getSize() <<"\">" << std::endl;
         writer.incInd();
         for(int i = 0;i<getSize(); i++)
-            writer.Stream() << writer.ind() << "<F v=\"" <<  _lValueList[i] <<"\"/>" << endl; ;
+            writer.Stream() << writer.ind() << "<F v=\"" <<  _lValueList[i] <<"\"/>" << std::endl;
         writer.decInd();
-        writer.Stream() << writer.ind() <<"</FloatList>" << endl ;
+        writer.Stream() << writer.ind() <<"</FloatList>" << std::endl;
     }
     else {
         writer.Stream() << writer.ind() << "<FloatList file=\"" << 
@@ -691,7 +692,7 @@ struct DistanceInspection
 // Helper internal class for QtConcurrent map operation. Holds sums-of-squares and counts for RMS calculation
 class DistanceInspectionRMS {
 public:
-    DistanceInspectionRMS() : m_numv(0), m_sumsq(0.0) {};
+    DistanceInspectionRMS() : m_numv(0), m_sumsq(0.0) {}
     DistanceInspectionRMS& operator += (const DistanceInspectionRMS& rhs)
     {
         this->m_numv += rhs.m_numv;
@@ -737,6 +738,8 @@ short Feature::mustExecute() const
 
 App::DocumentObjectExecReturn* Feature::execute(void)
 {
+    bool useMultithreading = true;
+
     App::DocumentObject* pcActual = Actual.getValue();
     if (!pcActual)
         throw Base::ValueError("No actual geometry to inspect specified");
@@ -751,6 +754,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
         actual = new InspectActualPoints(pts->Points.getValue());
     }
     else if (pcActual->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        useMultithreading = false;
         Part::Feature* part = static_cast<Part::Feature*>(pcActual);
         actual = new InspectActualShape(part->Shape.getShape());
     }
@@ -772,6 +776,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
             nominal = new InspectNominalPoints(pts->Points.getValue(), this->SearchRadius.getValue());
         }
         else if ((*it)->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            useMultithreading = false;
             Part::Feature* part = static_cast<Part::Feature*>(*it);
             nominal = new InspectNominalShape(part->Shape.getValue(), this->SearchRadius.getValue());
         }
@@ -786,7 +791,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     std::generate(index.begin(), index.end(), Base::iotaGen<unsigned long>(0));
     DistanceInspection check(this->SearchRadius.getValue(), actual, inspectNominal);
     QFuture<float> future = QtConcurrent::mapped
-        (index, boost::bind(&DistanceInspection::mapped, &check, _1));
+        (index, boost::bind(&DistanceInspection::mapped, &check, bp::_1));
     //future.waitForFinished(); // blocks the GUI
     Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
     QFutureWatcher<float> watcher;
@@ -835,7 +840,6 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     Base::Console().Message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
         this->Label.getValue(), -this->SearchRadius.getValue(), this->SearchRadius.getValue(), fRMS);
 #else
-    bool useMultithreading = true;
     unsigned long count = actual->countPoints();
     std::vector<float> vals(count);
     std::function<DistanceInspectionRMS(int)> fMap = [&](unsigned int index)
@@ -850,10 +854,12 @@ App::DocumentObjectExecReturn* Feature::execute(void)
                 fMinDist = fDist;
         }
 
-        if (fMinDist > this->SearchRadius.getValue())
+        if (fMinDist > this->SearchRadius.getValue()) {
             fMinDist = FLT_MAX;
-        else if (-fMinDist > this->SearchRadius.getValue())
+        }
+        else if (-fMinDist > this->SearchRadius.getValue()) {
             fMinDist = -FLT_MAX;
+        }
         else {
             res.m_sumsq += fMinDist * fMinDist;
             res.m_numv++;

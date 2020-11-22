@@ -86,6 +86,7 @@ short DrawProjGroupItem::mustExecute() const
         result  =  (Direction.isTouched()  ||
                     XDirection.isTouched() ||
                     Source.isTouched()  ||
+                    XSource.isTouched()  ||
                     Scale.isTouched());
     }
 
@@ -102,16 +103,10 @@ void DrawProjGroupItem::onChanged(const App::Property *prop)
 
 bool DrawProjGroupItem::isLocked(void) const
 {
-    bool isLocked = DrawView::isLocked();
-
     if (isAnchor()) {                             //Anchor view is always locked to DPG
         return true;
     }
-    DrawProjGroup* parent = getPGroup();
-    if (parent != nullptr) {
-        isLocked = isLocked || parent->LockPosition.getValue();
-    }
-    return isLocked;
+    return DrawView::isLocked();
 }
 
 bool DrawProjGroupItem::showLock(void) const
@@ -174,6 +169,7 @@ void DrawProjGroupItem::autoPosition()
 
 void DrawProjGroupItem::onDocumentRestored()
 {
+//    Base::Console().Message("DPGI::onDocumentRestored() - %s\n", getNameInDocument());
     App::DocumentObjectExecReturn* rc = DrawProjGroupItem::execute();
     if (rc) {
         delete rc;

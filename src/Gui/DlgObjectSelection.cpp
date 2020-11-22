@@ -73,7 +73,6 @@ DlgObjectSelection::DlgObjectSelection(
         info.depItem = new QTreeWidgetItem(ui->depList);
         auto vp = Gui::Application::Instance->getViewProvider(obj);
         if(vp) info.depItem->setIcon(0, vp->getIcon());
-        info.depItem->setIcon(0, vp->getIcon());
         info.depItem->setText(0, QString::fromUtf8((obj)->Label.getValue()));
         info.depItem->setText(1, QString::fromUtf8(obj->getDocument()->getName()));
         info.depItem->setText(2, QString::fromLatin1(obj->getNameInDocument()));

@@ -118,6 +118,8 @@ void TaskMirroredParameters::setupUI()
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(ui->listWidgetFeatures->model(),
+        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
     connect(ui->comboPlane, SIGNAL(activated(int)),
             this, SLOT(onPlaneChanged(int)));
@@ -278,10 +280,15 @@ void TaskMirroredParameters::onFeatureDeleted(void)
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
+    int currentRow = ui->listWidgetFeatures->currentRow();
+    if (currentRow < 0) {
+        Base::Console().Error("PartDesign MirroredPattern: No feature selected for removing.\n");
+        return; //no current row selected
+    }
+    originals.erase(originals.begin() + currentRow);
     setupTransaction();
     pcTransformed->Originals.setValues(originals);
-    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
+    ui->listWidgetFeatures->model()->removeRow(currentRow);
     recomputeFeature();
 }
 

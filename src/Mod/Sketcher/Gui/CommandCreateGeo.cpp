@@ -183,7 +183,8 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
                     const std::map<int, Sketcher::PointPos> coincidents = psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
 
                     if(!coincidents.empty()) {
-                        ext = coincidents.begin()->first < 0; // the keys are ordered, so if the first is negative, it is coincident with external
+                        // the keys are ordered, so if the first is negative, it is coincident with external
+                        ext = coincidents.begin()->first < 0;
 
                         std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
 
@@ -235,53 +236,20 @@ char cursor_crosshair_color[12];
 
 void DrawSketchHandler::setCrosshairColor()
 {
+    unsigned long color = getCrosshairColor();
+    sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
+}
+
+unsigned long DrawSketchHandler::getCrosshairColor()
+{
     unsigned long color = 0xFFFFFFFF; // white
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
     color = hGrp->GetUnsigned("CursorCrosshairColor", color);
     // from rgba to rgb
     color = (color >> 8) & 0xFFFFFF;
-    sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
+    return color;
 }
-
-/* XPM */
-static const char *cursor_createline[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+...............###.......",
-"......+...............#.#.......",
-"......+...............###.......",
-"......+..............#..........",
-"......+.............#...........",
-"....................#...........",
-"...................#............",
-"..................#.............",
-"..................#.............",
-".................#..............",
-"................#...............",
-"................#...............",
-"...............#................",
-"..............#.................",
-"..............#.................",
-".............#..................",
-"..........###...................",
-"..........#.#...................",
-"..........###...................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
 
 class DrawSketchHandlerLine: public DrawSketchHandler
 {
@@ -297,8 +265,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createline),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Line");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -362,7 +329,7 @@ public:
             }
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool avoidredundant = hGrp->GetBool("AvoidRedundantAutoconstraints",true);
+            bool avoidredundant = sketchgui->AvoidRedundant.getValue()  && sketchgui->Autoconstraints.getValue();
 
             if(avoidredundant)
                 removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
@@ -451,45 +418,6 @@ bool CmdSketcherCreateLine::isActive(void)
 
 /* Create Box =======================================================*/
 
-/* XPM */
-static const char *cursor_createbox[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"................................",
-"..........................###...",
-"...........################.#...",
-"...........#..............###...",
-"...........#...............#....",
-"...........#...............#....",
-"...........#...............#....",
-"...........#...............#....",
-"...........#...............#....",
-"...........#...............#....",
-"..........###..............#....",
-"..........#.################....",
-"..........###...................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
 class DrawSketchHandlerBox: public DrawSketchHandler
 {
 public:
@@ -504,8 +432,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createbox),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Box");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -690,45 +617,6 @@ bool CmdSketcherCreateRectangle::isActive(void)
 
 // ======================================================================================
 
-/* XPM */
-static const char *cursor_createlineset[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+...............###.......",
-"......+...............#.#.......",
-"......+...............###.......",
-"......+..............#..#.......",
-"......+.............#....#......",
-"....................#....#......",
-"...................#......#.....",
-"..................#.......#.....",
-"..................#........#....",
-".................#.........#....",
-"................#..........###..",
-"................#..........#.#..",
-"......#........#...........###..",
-".......#......#.................",
-"........#.....#.................",
-".........#...#..................",
-"..........###...................",
-"..........#.#...................",
-"..........###...................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
 class DrawSketchHandlerLineSet: public DrawSketchHandler
 {
 public:
@@ -858,8 +746,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createlineset),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Lineset");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -1167,7 +1054,7 @@ public:
             }
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool avoidredundant = hGrp->GetBool("AvoidRedundantAutoconstraints",true);
+            bool avoidredundant = sketchgui->AvoidRedundant.getValue()  && sketchgui->Autoconstraints.getValue();
 
             if (Mode == STATUS_Close) {
 
@@ -1417,45 +1304,6 @@ bool CmdSketcherCreatePolyline::isActive(void)
 
 // ======================================================================================
 
-/* XPM */
-static const char *cursor_createarc[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+...........###...........",
-"......+...........#.#...........",
-"......+...........###...........",
-"......+..............##.........",
-"......+...............##........",
-".......................#........",
-"+++++...+++++...........#.......",
-"........................##......",
-"......+..................#......",
-"......+..................#......",
-"......+...................#.....",
-"......+...................#.....",
-"......+...................#.....",
-"..........................#.....",
-"..........................#.....",
-"..........................#.....",
-"..........................#.....",
-".........................#......",
-".........................#......",
-"........................#.......",
-"........................#.......",
-"...###.................#........",
-"...#.#................#.........",
-"...###...............#..........",
-"......##...........##...........",
-".......###.......##.............",
-"..........#######...............",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
 class DrawSketchHandlerArc : public DrawSketchHandler
 {
 public:
@@ -1479,8 +1327,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createarc),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Arc");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -1686,45 +1533,6 @@ bool CmdSketcherCreateArc::isActive(void)
 
 // ======================================================================================
 
-/* XPM */
-static const char *cursor_create3pointarc[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+...........###...........",
-"......+...........#.#...........",
-"......+...........###...........",
-"......+..............##.........",
-"......+...............##........",
-".......................#........",
-"+++++...+++++...........#.......",
-"........................##......",
-"......+..................#......",
-"......+..................#......",
-"......+...................#.....",
-"......+...................#.....",
-"......+...................#.....",
-"..........................#.....",
-"..........................#.....",
-"..........................#.....",
-"..........................#.....",
-".........................#......",
-".......................###......",
-".......................#.#......",
-".......................###......",
-"...###.................#........",
-"...#.#................#.........",
-"...###...............#..........",
-"......##...........##...........",
-".......###.......##.............",
-"..........#######...............",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
 class DrawSketchHandler3PointArc : public DrawSketchHandler
 {
 public:
@@ -1747,8 +1555,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_create3pointarc),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_3PointArc");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -2095,45 +1902,6 @@ bool CmdSketcherCompCreateArc::isActive(void)
 
 // ======================================================================================
 
-/* XPM */
-static const char *cursor_createcircle[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+........#######..........",
-"......+......##.......##........",
-"......+.....#...........#.......",
-"......+....#.............#......",
-"......+...#...............#.....",
-".........#.................#....",
-"........#...................#...",
-"........#...................#...",
-".......#.....................#..",
-".......#.....................#..",
-".......#.........###.........#..",
-".......#.........#.#.........#..",
-".......#.........###.........#..",
-".......#.....................#..",
-".......#.....................#..",
-"........#...................#...",
-"........#...................#...",
-".........#.................#....",
-"..........#...............#.....",
-"...........#.............#......",
-"............#...........#.......",
-".............##.......##........",
-"...............#######..........",
-"................................"};
-
 class DrawSketchHandlerCircle : public DrawSketchHandler
 {
 public:
@@ -2148,8 +1916,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createcircle),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Circle");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -2294,46 +2061,6 @@ bool CmdSketcherCreateCircle::isActive(void)
 }
 // ======================================================================================
 
-/**
- * @brief Creates a 32x32 pixel XPM image for the mouse cursor when making an ellipse
- */
-static const char *cursor_createellipse[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+..............#####......",
-"..................###.....#.....",
-"...............###.......##.....",
-".............##..........##.....",
-"...........##............##.....",
-"..........##.....###....##......",
-".........##.....#.#.....#.......",
-"........##.....###....##........",
-"........##...........##.........",
-".......##..........###..........",
-"......##........####............",
-"......#.....####................",
-"......######....................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
 
 /**
  * @brief This class handles user interaction to draw and save the ellipse
@@ -2407,8 +2134,7 @@ public:
      */
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createellipse),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Ellipse");
         if (constrMethod == 0) {
             method = CENTER_PERIAPSIS_B;
             mode = STATUS_SEEK_CENTROID;
@@ -3159,45 +2885,6 @@ bool CmdSketcherCreateEllipseBy3Points::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-/* XPM */
-static const char *cursor_createarcofellipse[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+................##.......",
-"......+..............##.........",
-"......+............##...........",
-"......+...........##............",
-"................##..............",
-"...............##...............",
-"..............##................",
-".............###................",
-"............##.........###......",
-"...........##.........#.#.......",
-"...........##.........###.......",
-"..........##....................",
-".........##.....................",
-"........##......................",
-"........##......................",
-"........##......................",
-"........#.....####..............",
-"........######..................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
 class DrawSketchHandlerArcOfEllipse : public DrawSketchHandler
 {
 public:
@@ -3219,8 +2906,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createarcofellipse),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfEllipse");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -3511,7 +3197,7 @@ CmdSketcherCreateArcOfEllipse::CmdSketcherCreateArcOfEllipse()
     sToolTipText    = QT_TR_NOOP("Create an arc of ellipse in the sketch");
     sWhatsThis      = "Sketcher_CreateArcOfEllipse";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Elliptical_Arc";
+    sPixmap         = "Sketcher_CreateElliptical_Arc";
     eType           = ForEdit;
 }
 
@@ -3525,45 +3211,6 @@ bool CmdSketcherCreateArcOfEllipse::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
-
-/* XPM */
-static const char *cursor_createarcofhyperbola[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+................##.......",
-"......+..............##.........",
-"......+............##...........",
-"......+...........##............",
-"................##..............",
-"...............##...............",
-"..............##................",
-".............###................",
-"..###.......##..................",
-".#.#.......##...................",
-"..###......##...................",
-"..........##....................",
-".........##.....................",
-"........##......................",
-"........##......................",
-"........##......................",
-"........#.....####..............",
-"........######..................",
-"................................",
-"................................",
-"................................",
-"................................"};
 
 class DrawSketchHandlerArcOfHyperbola : public DrawSketchHandler
 {
@@ -3587,8 +3234,7 @@ public:
 
     virtual void activated(ViewProviderSketch * /*sketchgui*/)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createarcofhyperbola),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfHyperbola");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -3894,7 +3540,7 @@ CmdSketcherCreateArcOfHyperbola::CmdSketcherCreateArcOfHyperbola()
     sToolTipText    = QT_TR_NOOP("Create an arc of hyperbola in the sketch");
     sWhatsThis      = "Sketcher_CreateArcOfHyperbola";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Hyperbolic_Arc";
+    sPixmap         = "Sketcher_CreateHyperbolic_Arc";
     eType           = ForEdit;
 }
 
@@ -3907,45 +3553,6 @@ bool CmdSketcherCreateArcOfHyperbola::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
-
-/* XPM */
-static const char *cursor_createarcofparabola[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+................##.......",
-"......+..............##.........",
-"......+............##...........",
-"......+...........##............",
-"................##..............",
-"...............##...............",
-"..............##................",
-".............###................",
-"............##......###.........",
-"...........##......#.#..........",
-"...........##.....###...........",
-"..........##....................",
-".........##.....................",
-"........##......................",
-"........##......................",
-"........##......................",
-"........#.....####..............",
-"........######..................",
-"................................",
-"................................",
-"................................",
-"................................"};
 
 class DrawSketchHandlerArcOfParabola : public DrawSketchHandler
 {
@@ -3971,8 +3578,7 @@ public:
 
     virtual void activated(ViewProviderSketch * /*sketchgui*/)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createarcofparabola),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfParabola");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -4232,7 +3838,7 @@ CmdSketcherCreateArcOfParabola::CmdSketcherCreateArcOfParabola()
     sToolTipText    = QT_TR_NOOP("Create an arc of parabola in the sketch");
     sWhatsThis      = "Sketcher_CreateArcOfParabola";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Parabolic_Arc";
+    sPixmap         = "Sketcher_CreateParabolic_Arc";
     eType           = ForEdit;
 }
 
@@ -4309,13 +3915,13 @@ Gui::Action * CmdSketcherCompCreateConic::createAction(void)
     ellipseBy3Points->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
 
     QAction* arcofellipse = pcAction->addAction(QString());
-    arcofellipse->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Elliptical_Arc"));
+    arcofellipse->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc"));
 
     QAction* arcofhyperbola = pcAction->addAction(QString());
-    arcofhyperbola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Hyperbolic_Arc"));
+    arcofhyperbola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc"));
 
     QAction* arcofparabola = pcAction->addAction(QString());
-    arcofparabola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Parabolic_Arc"));
+    arcofparabola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc"));
 
     _pcAction = pcAction;
     languageChange();
@@ -4340,17 +3946,17 @@ void CmdSketcherCompCreateConic::updateAction(int mode)
     case Normal:
         a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse"));
         a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
-        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Elliptical_Arc"));
-        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Hyperbolic_Arc"));
-        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Parabolic_Arc"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc"));
+        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc"));
+        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc"));
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
         a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_Constr"));
         a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points_Constr"));
-        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Elliptical_Arc_Constr"));
-        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Hyperbolic_Arc_Constr"));
-        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Parabolic_Arc_Constr"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc_Constr"));
+        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc_Constr"));
+        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc_Constr"));
         getAction()->setIcon(a[index]->icon());
         break;
     }
@@ -4370,21 +3976,21 @@ void CmdSketcherCompCreateConic::languageChange()
     ellipseByCenter->setToolTip(QApplication::translate("Sketcher_CreateEllipseByCenter","Create an ellipse by center, major radius and point"));
     ellipseByCenter->setStatusTip(QApplication::translate("Sketcher_CreateEllipseByCenter","Create an ellipse by center, major radius and point"));
     QAction* ellipseBy3Points = a[1];
-    ellipseBy3Points->setText(QApplication::translate("CmdSketcherCompCreateConic","Ellipse by Periapsis, apoapsis, minor radius"));
+    ellipseBy3Points->setText(QApplication::translate("CmdSketcherCompCreateConic","Ellipse by periapsis, apoapsis, minor radius"));
     ellipseBy3Points->setToolTip(QApplication::translate("Sketcher_CreateEllipseBy3Points","Create a ellipse by periapsis, apoapsis, and minor radius"));
     ellipseBy3Points->setStatusTip(QApplication::translate("Sketcher_CreateEllipseBy3Points","Create a ellipse by periapsis, apoapsis, and minor radius"));
     QAction* arcofellipse = a[2];
     arcofellipse->setText(QApplication::translate("CmdSketcherCompCreateConic","Arc of ellipse by center, major radius, endpoints"));
-    arcofellipse->setToolTip(QApplication::translate("Sketcher_CreateArcOfEllipse","Create an arc of ellipse by its center, major radius, endpoints"));
-    arcofellipse->setStatusTip(QApplication::translate("Sketcher_CreateArcOfEllipse","Create an arc of ellipse by its center, major radius, endpoints"));
+    arcofellipse->setToolTip(QApplication::translate("Sketcher_CreateArcOfEllipse","Create an arc of ellipse by its center, major radius, and endpoints"));
+    arcofellipse->setStatusTip(QApplication::translate("Sketcher_CreateArcOfEllipse","Create an arc of ellipse by its center, major radius, and endpoints"));
     QAction* arcofhyperbola = a[3];
     arcofhyperbola->setText(QApplication::translate("CmdSketcherCompCreateConic","Arc of hyperbola by center, major radius, endpoints"));
-    arcofhyperbola->setToolTip(QApplication::translate("Sketcher_CreateArcOfHyperbola","Create an arc of hyperbola by its center, major radius, endpoints"));
-    arcofhyperbola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfHyperbola","Create an arc of hyperbola by its center, major radius, endpoints"));
+    arcofhyperbola->setToolTip(QApplication::translate("Sketcher_CreateArcOfHyperbola","Create an arc of hyperbola by its center, major radius, and endpoints"));
+    arcofhyperbola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfHyperbola","Create an arc of hyperbola by its center, major radius, and endpoints"));
     QAction* arcofparabola = a[4];
     arcofparabola->setText(QApplication::translate("CmdSketcherCompCreateConic","Arc of parabola by focus, vertex, endpoints"));
-    arcofparabola->setToolTip(QApplication::translate("Sketcher_CreateArcOfParabola","Create an arc of parabola by its focus, vertex, endpoints"));
-    arcofparabola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfParabola","Create an arc of parabola by its focus, vertex, endpoints"));
+    arcofparabola->setToolTip(QApplication::translate("Sketcher_CreateArcOfParabola","Create an arc of parabola by its focus, vertex, and endpoints"));
+    arcofparabola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfParabola","Create an arc of parabola by its focus, vertex, and endpoints"));
 }
 
 bool CmdSketcherCompCreateConic::isActive(void)
@@ -4393,45 +3999,6 @@ bool CmdSketcherCompCreateConic::isActive(void)
 }
 
 // ======================================================================================
-
-/* XPM */
-static const char *cursor_createbspline[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+...............###.......",
-"......+...............#.#.......",
-"......+...............###.......",
-"......+..............#..#.......",
-"......+.............#....#......",
-"....................#.+..#......",
-"..................+#+..+..#...+.",
-"................++#.....+.#..+..",
-"......+........+..#......++#+...",
-".......+......+..#.........#....",
-"........++..++..#..........###..",
-"..........++....#..........#.#..",
-"......#........#...........###..",
-".......#......#.................",
-"........#.....#.................",
-".........#...#..................",
-"..........###...................",
-"..........#.#...................",
-"..........###...................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
 
 class DrawSketchHandlerBSpline: public DrawSketchHandler
 {
@@ -4458,8 +4025,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createbspline),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_BSpline");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -5000,45 +4566,6 @@ bool CmdSketcherCompCreateBSpline::isActive(void)
 
 // ======================================================================================
 
-/* XPM */
-static const char *cursor_create3pointcircle[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+........#######..........",
-"......+......##.......##........",
-"......+.....#...........#.......",
-"......+....#.............#......",
-"......+...#...............#.....",
-".........#.................#....",
-".......###.................###..",
-".......#.#.................#.#..",
-".......###.................###..",
-".......#.....................#..",
-".......#.........###.........#..",
-".......#.........#.#.........#..",
-".......#.........###.........#..",
-".......#.....................#..",
-".......#.....................#..",
-"........#...................#...",
-"........#...................#...",
-".........#.................#....",
-"..........#...............#.....",
-"...........#.............#......",
-"............#...........#.......",
-".............##..###..##........",
-"...............###.###..........",
-".................###............"};
-
 class DrawSketchHandler3PointCircle : public DrawSketchHandler
 {
 public:
@@ -5055,8 +4582,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_create3pointcircle),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_3PointCircle");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -5351,45 +4877,6 @@ bool CmdSketcherCompCreateCircle::isActive(void)
 
 // ======================================================================================
 
-/* XPM */
-static const char *cursor_createpoint[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"................................",
-"................................",
-".................++++...........",
-"................++++++..........",
-"...............++++++++.........",
-"...............++++++++.........",
-"...............++++++++.........",
-"...............++++++++.........",
-"................++++++..........",
-".................++++...........",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
 class DrawSketchHandlerPoint: public DrawSketchHandler
 {
 public:
@@ -5398,8 +4885,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createpoint),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Point");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -5596,46 +5082,6 @@ namespace SketcherGui {
     };
 }
 
-
-/* XPM */
-static const char *cursor_createfillet[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"* c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+..*......................",
-".........*......................",
-".........*......................",
-".........*......................",
-".........*......................",
-".........*......................",
-".........*.........***..........",
-".........*.........*.*..........",
-".........*.........***..........",
-".........*......................",
-".........*......................",
-"..........*.....................",
-"..........*.....................",
-"...........*....................",
-"............*...................",
-".............*..................",
-"..............*.................",
-"...............**...............",
-".................**************.",
-"................................"};
-
 class DrawSketchHandlerFillet: public DrawSketchHandler
 {
 public:
@@ -5653,8 +5099,7 @@ public:
     {
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createfillet),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Create_Fillet");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -5688,7 +5133,7 @@ public:
                 if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
                     const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(GeoIdList[0]);
                     const Part::Geometry *geom2 = sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);
-                    construction=geom1->Construction && geom2->Construction;
+                    construction=geom1->getConstruction() && geom2->getConstruction();
                     if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                         geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                         const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geom1);
@@ -5771,7 +5216,7 @@ public:
                         if (radius < 0)
                             return false;
 
-                        construction=lineSeg1->Construction && lineSeg2->Construction;
+                        construction=lineSeg1->getConstruction() && lineSeg2->getConstruction();
                     }
                     else { // other supported curves
                         const Part::Geometry *geo1 = static_cast<const Part::Geometry *>
@@ -5779,7 +5224,7 @@ public:
                         const Part::Geometry *geo2 = static_cast<const Part::Geometry *>
                                                                 (sketchgui->getSketchObject()->getGeometry(secondCurve));
 
-                        construction=geo1->Construction && geo2->Construction;
+                        construction=geo1->getConstruction() && geo2->getConstruction();
                     }
 
 
@@ -5900,46 +5345,6 @@ namespace SketcherGui {
     };
 }
 
-
-/* XPM */
-static const char *cursor_trimming[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"* c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+......................*..",
-"......+....................**...",
-"......+...................**....",
-".*..............................",
-"..*.....................*.......",
-"...*..................**........",
-".....*...............**.........",
-"......*.........................",
-".......*..........*.............",
-".........*......**..............",
-"..........*....**...............",
-"...........****.................",
-"............*.*.................",
-"............***.................",
-"..........*....*................",
-".........*.......*..............",
-".......*..........*.............",
-"......*............*............",
-"....*................*..........",
-"...*..................*.........",
-".*.....................*........",
-".........................*......"};
-
 class DrawSketchHandlerTrimming: public DrawSketchHandler
 {
 public:
@@ -5954,8 +5359,7 @@ public:
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new TrimmingSelection(sketchgui->getObject()));
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_trimming),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Trimming");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -6068,45 +5472,6 @@ namespace SketcherGui {
     };
 }
 
-/* XPM */
-static const char *cursor_extension[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"* c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+..........****...........",
-"..................***...........",
-".................*.**...........",
-"................*...*...........",
-"................................",
-"..............*.................",
-".............*..................",
-"................................",
-"...........*....................",
-"..........*.....................",
-"................................",
-"........*.......................",
-".......*........................",
-"......*.........................",
-"...***..........................",
-"...***..........................",
-"....**..........................",
-"................................",
-"................................",
-"................................"};
-
 class DrawSketchHandlerExtend: public DrawSketchHandler
 {
 public:
@@ -6135,8 +5500,7 @@ public:
         Gui::Selection().rmvSelectionGate();
         filterGate = new ExtendSelection(sketchgui->getObject());
         Gui::Selection().addSelectionGate(filterGate);
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_extension),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Extension");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -6441,46 +5805,6 @@ namespace SketcherGui {
     };
 }
 
-
-/* XPM */
-static const char *cursor_external[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"* c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+....***************......",
-".........**...............***...",
-"........**................***...",
-".......**................**.*...",
-"......*.................*...*...",
-"....**................**....*...",
-"...**................**.....*...",
-"..**................**......*...",
-"..******************........*...",
-"..*................*........*...",
-"..*................*........*...",
-"..*................*........*...",
-"..*................*............",
-"..*................*............",
-"..*................*............",
-"..*................*............",
-"..*................*............",
-"..*................*............",
-"................................",
-"................................"};
-
 class DrawSketchHandlerExternal: public DrawSketchHandler
 {
 public:
@@ -6503,8 +5827,7 @@ public:
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new ExternalSelection(sketchgui->getObject()));
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_external),7,7);
+        setCrosshairCursor("Sketcher_Pointer_External");
     }
 
     virtual void deactivated(ViewProviderSketch *sketchgui)
@@ -6666,45 +5989,6 @@ namespace SketcherGui {
 }
 
 
-/* XPM */
-static const char *cursor_carboncopy[]={
-    "32 32 3 1",
-    cursor_crosshair_color,
-    "* c red",
-    ". c None",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "................................",
-    "+++++...+++++...................",
-    "................................",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "......+.........................",
-    "......+....+++++++++++++++......",
-    ".........++*..............+++...",
-    "........++.*..............++*...",
-    ".......++..*.............++.*...",
-    "......+....*............+...*...",
-    "....++.....*..........++....*...",
-    "...++......*.........++.....*...",
-    "..++.......*........++......*...",
-    "..++++++++++++++++++........*...",
-    "..*........*.......*........*...",
-    "..*........*.......*........*...",
-    "..*.......+++++++++*++++++++*...",
-    "..*.....++.........*.......++...",
-    "..*....++..........*......++....",
-    "..*...+............*.....+......",
-    "..*.++.............*...++.......",
-    "..*++..............*..++........",
-    "..*+...............*.++.........",
-    "..++++++++++++++++++............",
-    "................................"};
-
     class DrawSketchHandlerCarbonCopy: public DrawSketchHandler
     {
     public:
@@ -6727,8 +6011,7 @@ static const char *cursor_carboncopy[]={
             Gui::Selection().clearSelection();
             Gui::Selection().rmvSelectionGate();
             Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
-            setCrosshairColor();
-            setCursor(QPixmap(cursor_carboncopy),7,7);
+            setCrosshairCursor("Sketcher_Pointer_CarbonCopy");
         }
 
         virtual void deactivated(ViewProviderSketch *sketchgui)
@@ -6801,7 +6084,7 @@ static const char *cursor_carboncopy[]={
     {
         sAppModule      = "Sketcher";
         sGroup          = QT_TR_NOOP("Sketcher");
-        sMenuText       = QT_TR_NOOP("CarbonCopy");
+        sMenuText       = QT_TR_NOOP("Carbon copy");
         sToolTipText    = QT_TR_NOOP("Copies the geometry of another sketch");
         sWhatsThis      = "Sketcher_CarbonCopy";
         sStatusTip      = sToolTipText;
@@ -6836,47 +6119,9 @@ static const char *cursor_carboncopy[]={
     }
 
 
-/* Create Slot =======================================================*/
-
-/* XPM */
-static const char *cursor_creatslot[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"................................",
-"..........................###...",
-"........###################.##..",
-".......#..................###.#.",
-"......#........................#",
-".....#.........................#",
-"....#.....###..................#",
-"....#.....#.#..................#",
-".....#....###.................#.",
-"......#.......................#.",
-".......#.....................#..",
-"........#####################...",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
+/**
+ * Create Slot
+ */
 class DrawSketchHandlerSlot: public DrawSketchHandler
 {
 public:
@@ -6896,8 +6141,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_creatslot),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Slot");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -7118,45 +6362,6 @@ bool CmdSketcherCreateSlot::isActive(void)
 
 /* Create Regular Polygon ==============================================*/
 
-/* XPM */
-static const char *cursor_createregularpolygon[]={
-"32 32 3 1",
-cursor_crosshair_color,
-"# c red",
-". c None",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"................................",
-"+++++...+++++...................",
-"................................",
-"......+.........................",
-"......+.........................",
-"......+.........................",
-"......+................###......",
-"......+.......##########.##.....",
-".............#.........###......",
-"............#.............#.....",
-"...........#...............#....",
-"...........#...............#....",
-"..........#.................#...",
-".........#...................#..",
-".........#...................#..",
-"........#.........###.........#.",
-".......#..........#.#..........#",
-"........#.........###.........#.",
-".........#...................#..",
-".........#...................#..",
-"..........#.................#...",
-"...........#...............#....",
-"...........#...............#....",
-"............#.............#.....",
-".............#...........#......",
-"..............###########.......",
-"................................"};
-
 class DrawSketchHandlerRegularPolygon: public DrawSketchHandler
 {
 public:
@@ -7179,8 +6384,7 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        setCrosshairColor();
-        setCursor(QPixmap(cursor_createregularpolygon),7,7);
+        setCrosshairCursor("Sketcher_Pointer_Regular_Polygon");
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)

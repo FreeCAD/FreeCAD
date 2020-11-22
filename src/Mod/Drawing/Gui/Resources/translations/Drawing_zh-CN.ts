@@ -49,7 +49,7 @@
     <message>
       <location filename="../../Command.cpp" line="729"/>
       <source>&amp;Draft View</source>
-      <translation>工程图视图(&amp;D)</translation>
+      <translation>草图视图(&amp;D)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="730"/>
@@ -151,7 +151,7 @@
     <message>
       <location filename="../../Command.cpp" line="444"/>
       <source>Open &amp;browser view</source>
-      <translation>打开浏览器视图(&amp;b)</translation>
+      <translation>打开浏览器视图(&amp;B)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="445"/>
@@ -232,132 +232,132 @@
       <location filename="../../Command.cpp" line="576"/>
       <location filename="../../Command.cpp" line="578"/>
       <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>在当前图纸中将svg文件内容作为一个符号插入</translation>
+      <translation>在当前图纸中将 svg 文件内容作为一个符号插入</translation>
     </message>
   </context>
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="215"/>
+      <location filename="../../DrawingView.cpp" line="219"/>
       <source>&amp;Background</source>
       <translation>背景(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="221"/>
+      <location filename="../../DrawingView.cpp" line="225"/>
       <source>&amp;Outline</source>
       <translation>轮廓(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="227"/>
+      <location filename="../../DrawingView.cpp" line="231"/>
       <source>&amp;Native</source>
       <translation>本地(&amp;N) </translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="231"/>
+      <location filename="../../DrawingView.cpp" line="235"/>
       <source>&amp;OpenGL</source>
       <translation>&amp;OpenGL</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="234"/>
+      <location filename="../../DrawingView.cpp" line="238"/>
       <source>&amp;Image</source>
       <translation>图片(&amp;I)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="238"/>
+      <location filename="../../DrawingView.cpp" line="242"/>
       <source>&amp;High Quality Antialiasing</source>
       <translation>高品质抗锯齿(&amp;H)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="276"/>
+      <location filename="../../DrawingView.cpp" line="280"/>
       <source>Open SVG File</source>
       <translation>打开SVG文件</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="277"/>
+      <location filename="../../DrawingView.cpp" line="281"/>
       <source>Could not open file '%1'.</source>
       <translation>无法打开文件'%1'.</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="364"/>
+      <location filename="../../DrawingView.cpp" line="368"/>
       <source>&amp;Renderer</source>
       <translation>渲染器(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="469"/>
+      <location filename="../../DrawingView.cpp" line="473"/>
       <source>Export PDF</source>
       <translation>导出PDF</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="470"/>
+      <location filename="../../DrawingView.cpp" line="474"/>
       <source>PDF file</source>
-      <translation>PDF文件</translation>
+      <translation>PDF 文件</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="486"/>
+      <location filename="../../DrawingView.cpp" line="490"/>
       <source>Page sizes</source>
       <translation>页面大小</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="487"/>
+      <location filename="../../DrawingView.cpp" line="491"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="489"/>
+      <location filename="../../DrawingView.cpp" line="493"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="491"/>
+      <location filename="../../DrawingView.cpp" line="495"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="493"/>
+      <location filename="../../DrawingView.cpp" line="497"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="495"/>
+      <location filename="../../DrawingView.cpp" line="499"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="497"/>
+      <location filename="../../DrawingView.cpp" line="501"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="578"/>
+      <location filename="../../DrawingView.cpp" line="582"/>
       <source>Different orientation</source>
       <translation>不同方向</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="579"/>
+      <location filename="../../DrawingView.cpp" line="583"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>打印机和图纸使用了不同的定位位置。你想要继续吗？</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="586"/>
-      <location filename="../../DrawingView.cpp" line="594"/>
+      <location filename="../../DrawingView.cpp" line="590"/>
+      <location filename="../../DrawingView.cpp" line="598"/>
       <source>Different paper size</source>
       <translation>不同的图纸大小</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="587"/>
-      <location filename="../../DrawingView.cpp" line="595"/>
+      <location filename="../../DrawingView.cpp" line="591"/>
+      <location filename="../../DrawingView.cpp" line="599"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>打印机和当前图纸使用了不同大小的图纸，是否继续？</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="606"/>
+      <location filename="../../DrawingView.cpp" line="610"/>
       <source>Opening file failed</source>
       <translation>打开文件失败</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="607"/>
+      <location filename="../../DrawingView.cpp" line="611"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>无法打开文件“%1”进行写入。</translation>
     </message>
@@ -449,41 +449,41 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.ui" line="605"/>
       <location filename="../../TaskOrthoViews.ui" line="805"/>
       <source>X +ve</source>
-      <translation>X轴正向</translation>
+      <translation>X 轴正向</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="610"/>
       <location filename="../../TaskOrthoViews.ui" line="685"/>
       <location filename="../../TaskOrthoViews.ui" line="810"/>
       <source>Y +ve</source>
-      <translation>Y轴正向</translation>
+      <translation>Y 轴正向</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="615"/>
       <location filename="../../TaskOrthoViews.ui" line="690"/>
       <location filename="../../TaskOrthoViews.ui" line="815"/>
       <source>Z +ve</source>
-      <translation>Z轴正向</translation>
+      <translation>Z 轴正向</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="620"/>
       <location filename="../../TaskOrthoViews.ui" line="820"/>
       <source>X -ve</source>
-      <translation>X轴负向</translation>
+      <translation>X 轴负向</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="625"/>
       <location filename="../../TaskOrthoViews.ui" line="695"/>
       <location filename="../../TaskOrthoViews.ui" line="825"/>
       <source>Y -ve</source>
-      <translation>Y轴负向</translation>
+      <translation>Y 轴负向</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="630"/>
       <location filename="../../TaskOrthoViews.ui" line="700"/>
       <location filename="../../TaskOrthoViews.ui" line="830"/>
       <source>Z -ve</source>
-      <translation>Z轴负向</translation>
+      <translation>Z 轴负向</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="642"/>
@@ -549,7 +549,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="838"/>
       <source>Axis aligned right:</source>
-      <translation>轴右对齐</translation>
+      <translation>轴右对齐：</translation>
     </message>
   </context>
   <context>
@@ -739,20 +739,20 @@ Do you want to continue?</source>
       <translation>选择一个电子表格对象。</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="53"/>
-      <location filename="../../TaskOrthoViews.cpp" line="981"/>
-      <source>Make axonometric...</source>
-      <translation>创建轴测投影</translation>
-    </message>
-    <message>
       <location filename="../../TaskOrthoViews.cpp" line="54"/>
       <location filename="../../TaskOrthoViews.cpp" line="982"/>
-      <source>Edit axonometric settings...</source>
-      <translation>编辑轴测图设置...</translation>
+      <source>Make axonometric...</source>
+      <translation>创建轴测投影...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="55"/>
       <location filename="../../TaskOrthoViews.cpp" line="983"/>
+      <source>Edit axonometric settings...</source>
+      <translation>编辑轴测图设置...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskOrthoViews.cpp" line="56"/>
+      <location filename="../../TaskOrthoViews.cpp" line="984"/>
       <source>Make orthographic</source>
       <translation>创建正交投影</translation>
     </message>

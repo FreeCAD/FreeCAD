@@ -1407,7 +1407,7 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>ISO metric coarse profile</source>
-      <translation type="unfinished">ISO metric coarse profile</translation>
+      <translation>ISO metrinis grubus skerspjūvis</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
@@ -1417,7 +1417,7 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
       <source>UTS coarse profile</source>
-      <translation type="unfinished">UTS coarse profile</translation>
+      <translation>UTS grubus skerspjūvis</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="73"/>
@@ -3038,7 +3038,7 @@ This feature is broken and can't be edited.</translation>
     <message>
       <location filename="../../WorkflowManager.cpp" line="147"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation type="unfinished">Do you want to migrate in order to use modern PartDesign features?</translation>
+      <translation>Ar norite persikelti, kad naudoti naujausias Detalių kūrybos galimybes?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="150"/>

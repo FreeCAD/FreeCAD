@@ -42,8 +42,8 @@ public:
     explicit QGIGhostHighlight();
     ~QGIGhostHighlight();
 
-   enum {Type = QGraphicsItem::UserType + 177};
-    int type() const { return Type;}
+    enum {Type = QGraphicsItem::UserType + 177};
+    int type() const override { return Type;}
 
     void setInteractive(bool state);
     void setRadius(double r);

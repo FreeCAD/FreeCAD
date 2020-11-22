@@ -3205,7 +3205,7 @@ Usage: python generateDS.py [ options ] <in_xsd_file>
 Options:
     -o <outfilename>         Output file name for data representation classes
     -s <subclassfilename>    Output file name for subclasses
-    -p <prefix>              Prefix string to be pre-pended to the class names
+    -p <prefix>              Prefix string to be prepended to the class names
     -n <mappingfilename>     Transform names with table in mappingfilename.
     -f                       Force creation of output files.  Do not ask.
     -a <namespaceabbrev>     Namespace abbreviation, e.g. "xsd:". Default = 'xs:'.

@@ -261,7 +261,7 @@ def convertToDwg(dxffilename, dwgfilename):
 
     import shutil
     if shutil.which("dxf2dwg"):
-        proc = subprocess.Popen(("dxf2dwg", dxffilename, "-o", dwgfilename))
+        proc = subprocess.Popen(("dxf2dwg", dxffilename, "-y", "-o", dwgfilename))
         proc.communicate()
         return dwgfilename
 

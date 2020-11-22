@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -44,9 +42,11 @@ PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 LastPathToolBit           = "LastPathToolBit"
 LastPathToolLibrary       = "LastPathToolLibrary"
 LastPathToolShape         = "LastPathToolShape"
+LastPathToolTable          ="LastPathToolTable"
 
 UseLegacyTools            = "UseLegacyTools"
 UseAbsoluteToolPaths      = "UseAbsoluteToolPaths"
+OpenLastLibrary           = "OpenLastLibrary"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance       = "GeometryTolerance"
@@ -82,7 +82,6 @@ def allEnabledPostProcessors(include = None):
         l.sort()
         return l
     return enabled
-
 
 def defaultPostProcessor():
     pref = preferences()
@@ -158,10 +157,14 @@ def toolsReallyUseLegacyTools():
 def toolsStoreAbsolutePaths():
     return preferences().GetBool(UseAbsoluteToolPaths, False)
 
-def setToolsSettings(legacy, relative):
+def toolsOpenLastLibrary():
+    return preferences().GetBool(OpenLastLibrary, False)
+
+def setToolsSettings(legacy, relative, lastlibrary):
     pref = preferences()
     pref.SetBool(UseLegacyTools, legacy)
     pref.SetBool(UseAbsoluteToolPaths, relative)
+    pref.SetBool(OpenLastLibrary, lastlibrary)
 
 def defaultJobTemplate():
     template = preferences().GetString(DefaultJobTemplate)
@@ -190,7 +193,6 @@ def setPostProcessorDefaults(processor, args, blacklist):
     pref.SetString(PostProcessorDefaultArgs, args)
     pref.SetString(PostProcessorBlacklist, "%s" % (blacklist))
 
-
 def setOutputFileDefaults(fileName, policy):
     pref = preferences()
     pref.SetString(PostProcessorOutputFile, fileName)
@@ -206,11 +208,13 @@ def defaultOutputPolicy():
 
 def defaultStockTemplate():
     return preferences().GetString(DefaultStockTemplate, "")
+
 def setDefaultStockTemplate(template):
     preferences().SetString(DefaultStockTemplate, template)
 
 def defaultTaskPanelLayout():
     return preferences().GetInt(DefaultTaskPanelLayout, 0)
+
 def setDefaultTaskPanelLayout(style):
     preferences().SetInt(DefaultTaskPanelLayout, style)
 
@@ -219,16 +223,24 @@ def experimentalFeaturesEnabled():
 
 def lastPathToolBit():
     return preferences().GetString(LastPathToolBit, pathDefaultToolsPath('Bit'))
+
 def setLastPathToolBit(path):
     return preferences().SetString(LastPathToolBit, path)
 
 def lastPathToolLibrary():
     return preferences().GetString(LastPathToolLibrary, pathDefaultToolsPath('Library'))
+
 def setLastPathToolLibrary(path):
     return preferences().SetString(LastPathToolLibrary, path)
 
 def lastPathToolShape():
     return preferences().GetString(LastPathToolShape, pathDefaultToolsPath('Shape'))
+
 def setLastPathToolShape(path):
     return preferences().SetString(LastPathToolShape, path)
 
+def lastPathToolTable():
+    return preferences().GetString(LastPathToolTable, "")
+
+def setLastPathToolTable(table):
+    return preferences().SetString(LastPathToolTable, table)

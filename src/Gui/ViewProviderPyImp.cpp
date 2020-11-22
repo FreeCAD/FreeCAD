@@ -34,6 +34,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/details/SoDetail.h>
+#include "SoFCDB.h"
 
 #include "ViewProvider.h"
 #include "WidgetFactory.h"
@@ -414,11 +415,9 @@ PyObject* ViewProviderPy::partialRender(PyObject* args)
 #endif
             else {
                 std::string error = std::string("type must be str or unicode");
-                if(item) {
-                    error += " not, ";
-                    error += item->ob_type->tp_name;
-                }
-                throw Base::TypeError(error + item->ob_type->tp_name);
+                error += " not, ";
+                error += item->ob_type->tp_name;
+                throw Base::TypeError(error);
             }
         }
     }
@@ -623,37 +622,10 @@ void  ViewProviderPy::setSwitchNode(Py::Object)
 
 }
 
-static char * buffer;
-static size_t buffer_size = 0;
-
-static void *
-buffer_realloc(void * bufptr, size_t size)
-{
-    buffer = (char *)realloc(bufptr, size);
-    buffer_size = size;
-    return buffer;
-}
-
-static SbString
-buffer_writeaction(SoNode * root)
-{
-    SoOutput out;
-    buffer = (char *)malloc(1024);
-    buffer_size = 1024;
-    out.setBuffer(buffer, buffer_size, buffer_realloc);
-
-    SoWriteAction wa(&out);
-    wa.apply(root);
-
-    SbString s(buffer);
-    free(buffer);
-    return s;
-}
-
 Py::String ViewProviderPy::getIV(void) const
 {
-    SbString buf = buffer_writeaction(getViewProviderPtr()->getRoot());
-    return Py::String(buf.getString());
+    std::string buf = Gui::SoFCDB::writeNodesToString(getViewProviderPtr()->getRoot());
+    return Py::String(buf);
 }
 
 Py::Object ViewProviderPy::getIcon(void) const

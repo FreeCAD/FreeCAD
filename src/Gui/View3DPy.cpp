@@ -41,6 +41,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "NavigationStyle.h"
+#include "SoMouseWheelEvent.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCOffscreenRenderer.h"
 #include "SoFCVectorizeSVGAction.h"
@@ -50,6 +51,7 @@
 #include "View3DInventorViewer.h"
 #include "View3DViewerPy.h"
 #include "ActiveObjectList.h"
+#include "WidgetFactory.h"
 
 
 #include <Base/Console.h>
@@ -202,6 +204,8 @@ void View3DInventorPy::init_type()
         "pla: clipping plane placement");
     add_varargs_method("hasClippingPlane",&View3DInventorPy::hasClippingPlane,
         "hasClippingPlane(): check whether this clipping plane is active");
+    add_varargs_method("graphicsView",&View3DInventorPy::graphicsView,
+        "graphicsView(): Access this view as QGraphicsView");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -413,7 +417,7 @@ SbRotation Camera::rotation(Camera::Orientation view)
     case Top:
         return SbRotation(0, 0, 0, 1);
     case Bottom:
-        return SbRotation(0, 1, 0, 0);
+        return SbRotation(1, 0, 0, 0);
     case Front: {
         float root = (float)(sqrt(2.0)/2.0);
         return SbRotation(root, 0, 0, root);
@@ -1992,6 +1996,10 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
 
             dict.setItem("Button", Py::String(button));
         }
+        if (e->isOfType(SoMouseWheelEvent::getClassTypeId())){
+            const SoMouseWheelEvent* mwe = static_cast<const SoMouseWheelEvent*>(e);
+            dict.setItem("Delta", Py::Long(mwe->getDelta()));
+        }
         if (e->isOfType(SoSpaceballButtonEvent::getClassTypeId())) {
             const SoSpaceballButtonEvent* sbe = static_cast<const SoSpaceballButtonEvent*>(e);
             std::string button;
@@ -2591,4 +2599,14 @@ Py::Object View3DInventorPy::hasClippingPlane(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     return Py::Boolean(_view->getViewer()->hasClippingPlane());
+}
+
+Py::Object View3DInventorPy::graphicsView(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    PythonWrapper wrap;
+    wrap.loadWidgetsModule();
+    return wrap.fromQWidget(_view->getViewer(), "QGraphicsView");
 }

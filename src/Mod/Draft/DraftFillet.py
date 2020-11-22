@@ -1,319 +1,192 @@
-"""This module provides the Draft fillet tool.
+# ***************************************************************************
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+"""Provides the Fillet class for objects created with a prototype version.
+
+The original Fillet object and Gui Command was introduced
+in the development cycle of 0.19, in commit d5ca09c77b, 2019-08-22.
+
+However, when this class was implemented, the reorganization
+of the workbench was not advanced.
+
+When the reorganization was on its way it was clear that this tool
+also needed to be broken into different modules; however, this was done
+only at the end of the reorganization.
+
+In commit 01df7c0a63, 2020-02-10, the Gui Command was removed from
+the graphical interface so that the user cannot create this object
+graphically any more. The object class was still kept
+so that previous objects created between August 2019 and February 2020
+would open correctly.
+
+Now in this module the older class is redirected to the new class
+in order to migrate the object.
+
+A new Gui Command in `draftguitools` and new make function in `draftmake`
+are now used to create `Fillet` objects. Therefore, this module
+is only required to migrate old objects created in that time
+with the 0.19 development version.
+
+Since this module is only used to migrate older objects, it is only temporary,
+and will be removed after one year, that is, in January 2021.
+
+The explanation of the migration methods is in the wiki page:
+https://wiki.freecadweb.org/Scripted_objects_migration
 """
 ## @package DraftFillet
 # \ingroup DRAFT
-# \brief This module provides the Draft fillet tool.
+# \brief Provides Fillet class for objects created with a prototype version.
+#
+# This module is only required to migrate old objects created
+# from August 2019 to February 2020. It will be removed definitely
+# in January 2021, as the new Fillet object should be available.
 
-import FreeCAD
-from FreeCAD import Console as FCC
-import Draft
-import DraftGeomUtils
-import Part
+import FreeCAD as App
+import draftobjects.fillet
+import draftobjects.base as base
+from draftutils.messages import _wrn
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-    from PySide import QtCore
-    import DraftTools
-    import draftguitools.gui_trackers as trackers
-    from DraftGui import translate
-else:
-    def QT_TRANSLATE_NOOP(context, text):
-        return text
+if App.GuiUp:
+    import draftviewproviders.view_fillet as view_fillet
 
-    def translate(context, text):
-        return text
+# -----------------------------------------------------------------------------
+# Removed definitions
+# def _extract_edges(objs):
+
+# def makeFillet(objs, radius=100, chamfer=False, delete=False):
+
+# class Fillet(Draft._DraftObject):
+
+# class CommandFillet(DraftTools.Creator):
+# -----------------------------------------------------------------------------
 
 
-def _extract_edges(objs):
-    """Extract the edges from the given objects (Draft lines or Edges).
+class Fillet(base.DraftObject):
+    """The old Fillet object. DEPRECATED.
 
-    objs : list of Draft Lines or Part.Edges
-        The list of edges from which to create the fillet.
+    This class is solely defined to migrate older objects.
+
+    When an old object is opened it will reconstruct the object
+    by searching for this class. So we implement `onDocumentRestored`
+    to test that it is the old class and we migrate it,
+    by assigning the new proxy class, and the new viewprovider.
     """
-    o1, o2 = objs
-    if hasattr(o1, "PropertiesList"):
-        if "Proxy" in o1.PropertiesList:
-            if hasattr(o1.Proxy, "Type"):
-                if o1.Proxy.Type in ("Wire", "Fillet"):
-                    e1 = o1.Shape.Edges[0]
-        elif "Shape" in o1.PropertiesList:
-            if o1.Shape.ShapeType in ("Wire", "Edge"):
-                e1 = o1.Shape
-    elif hasattr(o1, "ShapeType"):
-        if o1.ShapeType in "Edge":
-            e1 = o1
 
-    if hasattr(o1, "Label"):
-        FCC.PrintMessage("o1: " + o1.Label)
-    else:
-        FCC.PrintMessage("o1: 1")
-    FCC.PrintMessage(", length: " + str(e1.Length) + "\n")
+    def onDocumentRestored(self, obj):
+        """Run when the document that is using this class is restored."""
+        if hasattr(obj, "Proxy") and obj.Proxy.Type == "Fillet":
+            _module = str(obj.Proxy.__class__)
+            _module = _module.lstrip("<class '").rstrip("'>")
 
-    if hasattr(o2, "PropertiesList"):
-        if "Proxy" in o2.PropertiesList:
-            if hasattr(o2.Proxy, "Type"):
-                if o2.Proxy.Type in ("Wire", "Fillet"):
-                    e2 = o2.Shape.Edges[0]
-        elif "Shape" in o2.PropertiesList:
-            if o2.Shape.ShapeType in ("Wire", "Edge"):
-                e2 = o2.Shape
-    elif hasattr(o2, "ShapeType"):
-        if o2.ShapeType in "Edge":
-            e2 = o2
+            if _module == "DraftFillet.Fillet":
+                self._migrate(obj, _module)
 
-    if hasattr(o2, "Label"):
-        FCC.PrintMessage("o2: " + o2.Label)
-    else:
-        FCC.PrintMessage("o2: 2")
-    FCC.PrintMessage(", length: " + str(e2.Length) + "\n")
+    def _migrate(self, obj, _module):
+        """Migrate the object to the new object."""
+        _wrn("v0.19, {0}, '{1}' object ".format(obj.Label, _module)
+             + "will be migrated to 'draftobjects.fillet.Fillet'")
 
-    return e1, e2
+        # Save the old properties and delete them
+        old_dict = _save_properties0_19_to_0_19(obj)
+
+        # We assign the new class, which could have different properties
+        # from the older class. Since we removed the older properties
+        # we know the new properties will not collide with the old properties.
+        # The new class itself should handle some logic so that it does not
+        # add already existing properties of the same name and type.
+        draftobjects.fillet.Fillet(obj)
+
+        # Assign the old properties
+        obj = _assign_properties0_19_to_0_19(obj, old_dict)
+
+        # The same is done for the viewprovider.
+        if App.GuiUp:
+            vobj = obj.ViewObject
+            old_dict = _save_vproperties0_19_to_0_19(vobj)
+            view_fillet.ViewProviderFillet(vobj)
+            _assign_vproperties0_19_to_0_19(vobj, old_dict)
 
 
-def makeFillet(objs, radius=100, chamfer=False, delete=False):
-    """Create a fillet between two lines or edges.
+def _save_properties0_19_to_0_19(obj):
+    """Save the old property values and remove the old properties.
 
-    Parameters
-    ----------
-    objs : list
-        List of two objects of type wire, or edges.
-    radius : float, optional
-        It defaults to 100 mm. The curvature of the fillet.
-    chamfer : bool, optional
-        It defaults to `False`. If it is `True` it no longer produces
-        a rounded fillet but a chamfer (straight edge)
-        with the value of the `radius`.
-    delete : bool, optional
-        It defaults to `False`. If it is `True` it will delete
-        the pair of objects that are used to create the fillet.
-        Otherwise, the original objects will still be there.
+    Since we know the structure of the older Proxy class,
+    we can take its old values and store them before
+    we remove the property.
 
-    Returns
-    -------
-    Part::Part2DObject
-        The object of type `'Fillet'`.
-        It returns `None` if it fails producing the object.
+    We do not need to save the old properties if these
+    can be recalculated from the new data.
     """
-    if len(objs) != 2:
-        FCC.PrintError("makeFillet: "
-                       + translate("draft", "two elements needed") + "\n")
-        return None
+    _wrn("Old property values saved, old properties removed.")
+    old_dict = dict()
+    if hasattr(obj, "Length"):
+        old_dict["Length"] = obj.Length
+        obj.removeProperty("Length")
+    if hasattr(obj, "Start"):
+        old_dict["Start"] = obj.Start
+        obj.removeProperty("Start")
+    if hasattr(obj, "End"):
+        old_dict["End"] = obj.End
+        obj.removeProperty("End")
+    if hasattr(obj, "FilletRadius"):
+        old_dict["FilletRadius"] = obj.FilletRadius
+        obj.removeProperty("FilletRadius")
+    return old_dict
 
-    e1, e2 = _extract_edges(objs)
 
-    edges = DraftGeomUtils.fillet([e1, e2], radius, chamfer)
-    if len(edges) < 3:
-        FCC.PrintError("makeFillet: "
-                       + translate("draft", "radius too large"))
-        FCC.PrintError(", r=" + str(radius) + "\n")
-        return None
+def _assign_properties0_19_to_0_19(obj, old_dict):
+    """Assign the new properties from the old properties.
 
-    _d = translate("draft", "length: ")
-    FCC.PrintMessage("e1, " + _d + str(edges[0].Length) + "\n")
-    FCC.PrintMessage("e2, " + _d + str(edges[1].Length) + "\n")
-    FCC.PrintMessage("e3, " + _d + str(edges[2].Length) + "\n")
-
-    try:
-        wire = Part.Wire(edges)
-    except Part.OCCError:
-        return None
-
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",
-                                           "Fillet")
-    Fillet(obj)
-    obj.Shape = wire
-    obj.Length = wire.Length
-    obj.Start = wire.Vertexes[0].Point
-    obj.End = wire.Vertexes[-1].Point
-    obj.FilletRadius = radius
-
-    if delete:
-        FreeCAD.ActiveDocument.removeObject(objs[0].Name)
-        FreeCAD.ActiveDocument.removeObject(objs[1].Name)
-        _r = translate("draft", "removed original objects")
-        FCC.PrintMessage("makeFillet: " + _r + "\n")
-    if FreeCAD.GuiUp:
-        Draft._ViewProviderWire(obj.ViewObject)
-        Draft.formatObject(obj)
-        Draft.select(obj)
+    If new properties are named differently than the older properties
+    or if the old values need to be transformed because the class
+    now manages differently the data, this can be done here.
+    Otherwise simple assigning the old values is possible.
+    """
+    _wrn("New property values added.")
+    if hasattr(obj, "Length"):
+        obj.Length = old_dict["Length"]
+    if hasattr(obj, "Start"):
+        obj.Start = old_dict["Start"]
+    if hasattr(obj, "End"):
+        obj.End = old_dict["End"]
+    if hasattr(obj, "FilletRadius"):
+        obj.FilletRadius = old_dict["FilletRadius"]
     return obj
 
 
-class Fillet(Draft._DraftObject):
-    """The fillet object"""
+def _save_vproperties0_19_to_0_19(vobj):
+    """Save the old property values and remove the old properties.
 
-    def __init__(self, obj):
-        Draft._DraftObject.__init__(self, obj, "Fillet")
-        obj.addProperty("App::PropertyVectorDistance", "Start", "Draft", QT_TRANSLATE_NOOP("App::Property", "The start point of this line"))
-        obj.addProperty("App::PropertyVectorDistance", "End", "Draft", QT_TRANSLATE_NOOP("App::Property", "The end point of this line"))
-        obj.addProperty("App::PropertyLength", "Length", "Draft", QT_TRANSLATE_NOOP("App::Property", "The length of this line"))
-        obj.addProperty("App::PropertyLength", "FilletRadius", "Draft", QT_TRANSLATE_NOOP("App::Property", "Radius to use to fillet the corners"))
-        obj.setEditorMode("Start", 1)
-        obj.setEditorMode("End", 1)
-        obj.setEditorMode("Length", 1)
-        # Change to 0 to make it editable
-        obj.setEditorMode("FilletRadius", 1)
-
-    def execute(self, obj):
-        if hasattr(obj, "Length"):
-            obj.Length = obj.Shape.Length
-        if hasattr(obj, "Start"):
-            obj.Start = obj.Shape.Vertexes[0].Point
-        if hasattr(obj, "End"):
-            obj.End = obj.Shape.Vertexes[-1].Point
-
-    def onChanged(self, obj, prop):
-        # Change the radius of fillet. NOT IMPLEMENTED.
-        if prop in "FilletRadius":
-            pass
+    The view provider didn't add new properties so this just returns
+    an empty element.
+    """
+    _wrn("Old view property values saved, old view properties removed. NONE.")
+    old_dict = dict()
+    return old_dict
 
 
-class CommandFillet(DraftTools.Creator):
-    """The Fillet GUI command definition"""
+def _assign_vproperties0_19_to_0_19(vobj, old_dict):
+    """Assign the new properties from the old properties.
 
-    def __init__(self):
-        DraftTools.Creator.__init__(self)
-        self.featureName = "Fillet"
-
-    def GetResources(self):
-        return {'Pixmap': 'Draft_Fillet.svg',
-                'MenuText': QT_TRANSLATE_NOOP("draft", "Fillet"),
-                'ToolTip': QT_TRANSLATE_NOOP("draft", "Creates a fillet between two wires or edges.")
-                }
-
-    def Activated(self, name=translate("draft", "Fillet")):
-        DraftTools.Creator.Activated(self, name)
-        if not self.doc:
-            FCC.PrintWarning(translate("draft", "No active document") + "\n")
-            return
-        if self.ui:
-            self.rad = 100
-            self.chamfer = False
-            self.delete = False
-            label = translate("draft", "Fillet radius")
-            tooltip = translate("draft", "Radius of fillet")
-
-            # Call the Task panel for a radius
-            # The graphical widgets are defined in DraftGui
-            self.ui.taskUi(title=name, icon="Draft_Fillet")
-            self.ui.radiusUi()
-            self.ui.sourceCmd = self
-            self.ui.labelRadius.setText(label)
-            self.ui.radiusValue.setToolTip(tooltip)
-            self.ui.setRadiusValue(self.rad, "Length")
-            self.ui.check_delete = self.ui._checkbox("isdelete",
-                                                     self.ui.layout,
-                                                     checked=self.delete)
-            self.ui.check_delete.setText(translate("draft",
-                                                   "Delete original objects"))
-            self.ui.check_delete.show()
-            self.ui.check_chamfer = self.ui._checkbox("ischamfer",
-                                                      self.ui.layout,
-                                                      checked=self.chamfer)
-            self.ui.check_chamfer.setText(translate("draft",
-                                                    "Create chamfer"))
-            self.ui.check_chamfer.show()
-
-            QtCore.QObject.connect(self.ui.check_delete,
-                                   QtCore.SIGNAL("stateChanged(int)"),
-                                   self.set_delete)
-            QtCore.QObject.connect(self.ui.check_chamfer,
-                                   QtCore.SIGNAL("stateChanged(int)"),
-                                   self.set_chamfer)
-            self.linetrack = trackers.lineTracker(dotted=True)
-            self.arctrack = trackers.arcTracker()
-            # self.call = self.view.addEventCallback("SoEvent", self.action)
-            FCC.PrintMessage(translate("draft", "Enter radius") + "\n")
-
-    def action(self, arg):
-        """Scene event handler. CURRENTLY NOT USED.
-
-        Here the displaying of the trackers (previews)
-        should be implemented by considering the current value of the
-        `ui.radiusValue`.
-        """
-        if arg["Type"] == "SoKeyboardEvent":
-            if arg["Key"] == "ESCAPE":
-                self.finish()
-        elif arg["Type"] == "SoLocation2Event":
-            self.point, ctrlPoint, info = DraftTools.getPoint(self, arg)
-            DraftTools.redraw3DView()
-
-    def set_delete(self):
-        """This function is called when the delete checkbox changes"""
-        self.delete = self.ui.check_delete.isChecked()
-        FCC.PrintMessage(translate("draft", "Delete original objects: ")
-                         + str(self.delete) + "\n")
-
-    def set_chamfer(self):
-        """This function is called when the chamfer checkbox changes"""
-        self.chamfer = self.ui.check_chamfer.isChecked()
-        FCC.PrintMessage(translate("draft", "Chamfer mode: ")
-                         + str(self.chamfer) + "\n")
-
-    def numericRadius(self, rad):
-        """This function is called when a valid radius is entered"""
-        self.rad = rad
-        self.draw_arc(rad, self.chamfer, self.delete)
-        self.finish()
-
-    def draw_arc(self, rad, chamfer, delete):
-        """Processes the selection and draws the actual object"""
-        wires = FreeCADGui.Selection.getSelection()
-        _two = translate("draft", "two elements needed")
-        if not wires:
-            FCC.PrintError("CommandFillet: " + _two + "\n")
-            return
-        if len(wires) != 2:
-            FCC.PrintError("CommandFillet: " + _two + "\n")
-            return
-
-        for o in wires:
-            FCC.PrintMessage("CommandFillet: " + Draft.getType(o) + "\n")
-
-        _test = translate("draft", "Test object")
-        _test_off = translate("draft", "Test object removed")
-        _cant = translate("draft", "fillet cannot be created")
-
-        FCC.PrintMessage(4*"=" + _test + "\n")
-        arc = makeFillet(wires, rad)
-        if not arc:
-            FCC.PrintError("CommandFillet: " + _cant + "\n")
-            return
-        self.doc.removeObject(arc.Name)
-        FCC.PrintMessage(4*"=" + _test_off + "\n")
-
-        doc = 'FreeCAD.ActiveDocument.'
-        _wires = '[' + doc + wires[0].Name + ', ' + doc + wires[1].Name + ']'
-
-        FreeCADGui.addModule("DraftFillet")
-        name = translate("draft", "Create fillet")
-
-        args = _wires + ', radius=' + str(rad)
-        if chamfer:
-            args += ', chamfer=' + str(chamfer)
-        if delete:
-            args += ', delete=' + str(delete)
-        func = ['arc = DraftFillet.makeFillet(' + args + ')']
-        func.append('Draft.autogroup(arc)')
-
-        # Here we could remove the old objects, but the makeFillet()
-        # command already includes an option to remove them.
-        # Therefore, the following is not necessary
-        # rems = [doc + 'removeObject("' + o.Name + '")' for o in wires]
-        # func.extend(rems)
-        func.append('FreeCAD.ActiveDocument.recompute()')
-        self.commit(name, func)
-
-    def finish(self, close=False):
-        """Terminates the operation."""
-        DraftTools.Creator.finish(self)
-        if self.ui:
-            self.linetrack.finalize()
-            self.arctrack.finalize()
-            self.doc.recompute()
-
-
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Draft_Fillet', CommandFillet())
+    The view provider didn't add new properties so this just returns
+    the same viewprovider.
+    """
+    _wrn("New view property values added. NONE.")
+    return vobj

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -57,10 +57,12 @@
 #include <Mod/TechDraw/App/DrawTileWeld.h>
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
 
 #include "DrawGuiStd.h"
+#include "PreferencesGui.h"
 #include "QGVPage.h"
 #include "QGIView.h"
 #include "QGIPrimPath.h"
@@ -82,6 +84,10 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
     ui(new Ui_TaskWeldingSymbol),
     m_leadFeat(leader),
     m_weldFeat(nullptr),
+    m_arrowFeat(nullptr),
+    m_otherFeat(nullptr),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_createMode(true),
     m_otherDirty(false)
 {
@@ -113,6 +119,10 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
     ui(new Ui_TaskWeldingSymbol),
     m_leadFeat(nullptr),
     m_weldFeat(weld),
+    m_arrowFeat(nullptr),
+    m_otherFeat(nullptr),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_createMode(false),
     m_otherDirty(false)
 {
@@ -122,7 +132,7 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
         Base::Console().Error("TaskWeldingSymbol - bad parameters.  Can not proceed.\n");
         return;
     }
-    
+
     App::DocumentObject* obj = m_weldFeat->Leader.getValue();
     if ( (obj != nullptr) &&
          (obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) )  {
@@ -195,7 +205,7 @@ void TaskWeldingSymbol::setUiPrimary()
 {
 //    Base::Console().Message("TWS::setUiPrimary()\n");
     setWindowTitle(QObject::tr("Create Welding Symbol"));
-    m_currDir = QString::fromUtf8(prefSymbolDir().c_str());
+    m_currDir = PreferencesGui::weldingDirectory();
     ui->fcSymbolDir->setFileName(m_currDir);
 
     ui->pbArrowSymbol->setFocus();
@@ -215,7 +225,7 @@ void TaskWeldingSymbol::setUiEdit()
 //    Base::Console().Message("TWS::setUiEdit()\n");
     setWindowTitle(QObject::tr("Edit Welding Symbol"));
 
-    m_currDir = QString::fromUtf8(prefSymbolDir().c_str());  //sb path part of 1st symbol file??
+    m_currDir = PreferencesGui::weldingDirectory();
     ui->fcSymbolDir->setFileName(m_currDir);
 
     ui->cbAllAround->setChecked(m_weldFeat->AllAround.getValue());
@@ -419,7 +429,7 @@ void TaskWeldingSymbol::onDirectorySelected(const QString& newDir)
 void TaskWeldingSymbol::onSymbolSelected(QString symbolPath,
                                          QString source)
 {
-//    Base::Console().Message("TWS::onSymbolSelected(%s) - source: %s\n", 
+//    Base::Console().Message("TWS::onSymbolSelected(%s) - source: %s\n",
 //                            qPrintable(symbolPath), qPrintable(source));
     QIcon targetIcon(symbolPath);
     QSize iconSize(32,32);
@@ -473,12 +483,12 @@ void TaskWeldingSymbol::getTileFeats(void)
     std::vector<TechDraw::DrawTileWeld*> tiles = m_weldFeat->getTiles();
     m_arrowFeat = nullptr;
     m_otherFeat = nullptr;
-    
+
     if (!tiles.empty()) {
         TechDraw::DrawTileWeld* tempTile = tiles.at(0);
         if (tempTile->TileRow.getValue() == 0) {
             m_arrowFeat = tempTile;
-        } else { 
+        } else {
             m_otherFeat = tempTile;
         }
     }
@@ -486,7 +496,7 @@ void TaskWeldingSymbol::getTileFeats(void)
         TechDraw::DrawTileWeld* tempTile = tiles.at(1);
         if (tempTile->TileRow.getValue() == 0) {
             m_arrowFeat = tempTile;
-        } else { 
+        } else {
             m_otherFeat = tempTile;
         }
     }
@@ -496,7 +506,7 @@ void TaskWeldingSymbol::getTileFeats(void)
 TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol(void)
 {
 //    Base::Console().Message("TWS::createWeldingSymbol()\n");
-    
+
     std::string symbolName = m_leadFeat->getDocument()->getUniqueObjectName("WeldSymbol");
     std::string symbolType = "TechDraw::DrawWeldSymbol";
 
@@ -634,16 +644,6 @@ void TaskWeldingSymbol::enableTaskButtons(bool b)
     m_btnCancel->setEnabled(b);
 }
 
-std::string TaskWeldingSymbol::prefSymbolDir()
-{
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Symbols/Welding/AWS/";
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
-                                    
-    std::string symbolDir = hGrp->GetASCII("WeldingDir", defaultDir.c_str());
-    return symbolDir;
-}
-
 //******************************************************************************
 
 bool TaskWeldingSymbol::accept()
@@ -680,7 +680,7 @@ bool TaskWeldingSymbol::accept()
 bool TaskWeldingSymbol::reject()
 {
 //    Base::Console().Message("TWS::reject()\n");
-      //nothing to remove. 
+      //nothing to remove.
 
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");

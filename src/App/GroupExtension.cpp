@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "DocumentObjectGroup.h"
@@ -36,6 +37,7 @@
 #include <Base/Tools.h>
 
 using namespace App;
+namespace bp = boost::placeholders;
 
 EXTENSION_PROPERTY_SOURCE(App::GroupExtension, App::DocumentObjectExtension)
 
@@ -361,7 +363,7 @@ void GroupExtension::extensionOnChanged(const Property* p) {
         for(auto obj : Group.getValue()) {
             if(obj && obj->getNameInDocument()) {
                 _Conns[obj] = obj->signalChanged.connect(boost::bind(
-                            &GroupExtension::slotChildChanged,this,_1,_2));
+                            &GroupExtension::slotChildChanged,this,bp::_1, bp::_2));
             }
         }
     }

@@ -39,7 +39,7 @@
     </message>
     <message>
       <source>Align center</source>
-      <translation>Centrato</translation>
+      <translation>In centro orizzontale</translation>
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
@@ -99,7 +99,7 @@
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation>Al centro</translation>
+      <translation>In centro verticale</translation>
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
@@ -129,7 +129,7 @@
     </message>
     <message>
       <source>Import spreadsheet</source>
-      <translation>Importa foglio di calcolo</translation>
+      <translation>Importa un foglio di calcolo</translation>
     </message>
     <message>
       <source>Import CSV file into spreadsheet</source>
@@ -357,12 +357,22 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>La scheda Spreadsheet non supporta la selezione dell'intervallo in fase di incolla.
+Si prega di selezionare una sola cella.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Copia &amp; Incolla fallita</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>L'alias contiene dei caratteri non validi!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Fa riferimento alla cella tramite alias, ad esempio
+Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -447,8 +457,18 @@ Please select one cell only.</translation>
       <translation>Modulo</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Contenuto</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Contenuto:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Alias:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Fa riferimento alla cella tramite alias, ad esempio
+Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     </message>
   </context>
   <context>

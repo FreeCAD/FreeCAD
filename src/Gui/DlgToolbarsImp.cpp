@@ -73,10 +73,10 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     , type(t)
 {
     ui->setupUi(this);
-    ui->moveActionRightButton->setIcon(BitmapFactory().pixmap(":/icons/button_right.svg"));
-    ui->moveActionLeftButton->setIcon(BitmapFactory().pixmap(":/icons/button_left.svg"));
-    ui->moveActionDownButton->setIcon(BitmapFactory().pixmap(":/icons/button_down.svg"));
-    ui->moveActionUpButton->setIcon(BitmapFactory().pixmap(":/icons/button_up.svg"));
+    ui->moveActionRightButton->setIcon(BitmapFactory().iconFromTheme("button_right"));
+    ui->moveActionLeftButton->setIcon(BitmapFactory().iconFromTheme("button_left"));
+    ui->moveActionDownButton->setIcon(BitmapFactory().iconFromTheme("button_down"));
+    ui->moveActionUpButton->setIcon(BitmapFactory().iconFromTheme("button_up"));
 
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     std::map<std::string,Command*> sCommands = cCmdMgr.getCommands();
@@ -293,6 +293,14 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
                         item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
                     item->setSizeHint(0, QSize(32, 32));
                 }
+                else {
+                    // If corresponding module is not yet loaded do not lose the entry
+                    QTreeWidgetItem* item = new QTreeWidgetItem(toplevel);
+                    item->setText(0, tr("%1 module not loaded").arg(QString::fromStdString(it2->second)));
+                    item->setData(0, Qt::UserRole, QByteArray(it2->first.c_str()));
+                    item->setData(0, Qt::WhatsThisPropertyRole, QByteArray(it2->second.c_str()));
+                    item->setSizeHint(0, QSize(32, 32));
+                }
             }
         }
     }
@@ -331,6 +339,10 @@ void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
                 if (pCmd) {
                     hToolGrp->SetASCII(pCmd->getName(), pCmd->getAppModuleName());
                 }
+                else {
+                    QByteArray moduleName = child->data(0, Qt::WhatsThisPropertyRole).toByteArray();
+                    hToolGrp->SetASCII(commandName, moduleName);
+                }
             }
         }
     }
@@ -366,7 +378,7 @@ void DlgCustomToolbars::on_moveActionRightButton_clicked()
 void DlgCustomToolbars::on_moveActionLeftButton_clicked()
 {
     QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
-    if (item && item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
+    if (item && item->parent() && item->isSelected()) {
         QTreeWidgetItem* parent = item->parent();
         int index = parent->indexOfChild(item);
         parent->takeChild(index);
@@ -400,7 +412,7 @@ void DlgCustomToolbars::on_moveActionLeftButton_clicked()
 void DlgCustomToolbars::on_moveActionUpButton_clicked()
 {
     QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
-    if (item && item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
+    if (item && item->parent() && item->isSelected()) {
         QTreeWidgetItem* parent = item->parent();
         int index = parent->indexOfChild(item);
         if (index > 0) {
@@ -438,7 +450,7 @@ void DlgCustomToolbars::on_moveActionUpButton_clicked()
 void DlgCustomToolbars::on_moveActionDownButton_clicked()
 {
     QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
-    if (item && item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
+    if (item && item->parent() && item->isSelected()) {
         QTreeWidgetItem* parent = item->parent();
         int index = parent->indexOfChild(item);
         if (index < parent->childCount()-1) {
@@ -491,7 +503,7 @@ void DlgCustomToolbars::on_newButton_clicked()
         QTreeWidgetItem* item = new QTreeWidgetItem(ui->toolbarTreeWidget);
         item->setText(0, text);
         item->setCheckState(0, Qt::Checked);
-        ui->toolbarTreeWidget->setItemExpanded(item, true);
+        item->setExpanded(true);
 
         QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
         QString workbench = data.toString();
@@ -503,7 +515,7 @@ void DlgCustomToolbars::on_newButton_clicked()
 void DlgCustomToolbars::on_deleteButton_clicked()
 {
     QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
-    if (item && !item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
+    if (item && !item->parent() && item->isSelected()) {
         int index = ui->toolbarTreeWidget->indexOfTopLevelItem(item);
         ui->toolbarTreeWidget->takeTopLevelItem(index);
         removeCustomToolbar(item->text(0));
@@ -519,7 +531,7 @@ void DlgCustomToolbars::on_renameButton_clicked()
 {
     bool renamed = false;
     QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
-    if (item && !item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
+    if (item && !item->parent() && item->isSelected()) {
         bool ok;
         QString old_text = item->text(0);
         QString text = QInputDialog::getText(this, tr("Rename toolbar"), tr("Toolbar name:"),
@@ -888,8 +900,6 @@ void DlgCustomToolbarsImp::moveDownCustomCommand(const QString& name, const QByt
 
 void DlgCustomToolbarsImp::changeEvent(QEvent *e)
 {
-    if (e->type() == QEvent::LanguageChange) {
-    }
     DlgCustomToolbars::changeEvent(e);
 }
 

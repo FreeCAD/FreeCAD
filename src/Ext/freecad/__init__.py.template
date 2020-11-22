@@ -12,9 +12,9 @@ except ModuleNotFoundError:
     except KeyError:
 
         # 2. we use the default freecad defined for this package
-        _path_to_freecad_libdir = "${CMAKE_INSTALL_LIBDIR}"
+        _path_to_freecad_libdir = "${FREECAD_LIBRARY_INSTALL_DIR}"
         print("PATH_TO_FREECAD_LIBDIR not specified, using default \
-FreeCAD version in {}".format( "${CMAKE_INSTALL_LIBDIR}"))
+FreeCAD version in {}".format("${FREECAD_LIBRARY_INSTALL_DIR}"))
 
     _sys.path.append(_path_to_freecad_libdir) # this is the default version
     import FreeCAD as app

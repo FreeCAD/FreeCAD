@@ -377,12 +377,12 @@
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="153"/>
       <source>X image size</source>
-      <translation>X Bildgröße</translation>
+      <translation>X-Bildgröße</translation>
     </message>
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="158"/>
       <source>Y image size</source>
-      <translation>Y Bildgröße</translation>
+      <translation>Y-Bildgröße</translation>
     </message>
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="163"/>

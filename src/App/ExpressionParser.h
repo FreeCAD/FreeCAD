@@ -1,6 +1,6 @@
 /****************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>              *
- *   Copyright (c) 2019 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -127,8 +127,8 @@ protected:
 class AppExport ConstantExpression : public NumberExpression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    ConstantExpression(const App::DocumentObject *_owner = 0, 
-            const char *_name = "", 
+    ConstantExpression(const App::DocumentObject *_owner = 0,
+            const char *_name = "",
             const Base::Quantity &_quantity = Base::Quantity());
 
     std::string getName() const { return name; }
@@ -287,7 +287,8 @@ public:
         LAST,
     };
 
-    FunctionExpression(const App::DocumentObject *_owner = 0, Function _f = NONE, std::vector<Expression *> _args = std::vector<Expression*>());
+    FunctionExpression(const App::DocumentObject *_owner = 0, Function _f = NONE,
+            std::string &&name = std::string(), std::vector<Expression *> _args = std::vector<Expression*>());
 
     virtual ~FunctionExpression();
 
@@ -305,6 +306,7 @@ protected:
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
 
     Function f;        /**< Function to execute */
+    std::string fname;
     std::vector<Expression *> args; /** Arguments to function*/
 };
 
@@ -319,7 +321,7 @@ protected:
 class AppExport VariableExpression : public UnitExpression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    VariableExpression(const App::DocumentObject *_owner = 0, ObjectIdentifier _var = ObjectIdentifier());
+    VariableExpression(const App::DocumentObject *_owner = 0, const ObjectIdentifier& _var = ObjectIdentifier());
 
     ~VariableExpression();
 
@@ -350,10 +352,10 @@ protected:
     virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *) override;
     virtual bool _updateElementReference(App::DocumentObject *,bool,ExpressionVisitor &) override;
     virtual bool _relabeledDocument(const std::string &, const std::string &, ExpressionVisitor &) override;
-    virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
+    virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &,
                                          const ObjectIdentifier &, ExpressionVisitor &) override;
-    virtual void _collectReplacement(std::map<ObjectIdentifier,ObjectIdentifier> &, 
-                    const App::DocumentObject *parent, App::DocumentObject *oldObj, 
+    virtual void _collectReplacement(std::map<ObjectIdentifier,ObjectIdentifier> &,
+                    const App::DocumentObject *parent, App::DocumentObject *oldObj,
                     App::DocumentObject *newObj) const override;
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) override;
     virtual void _offsetCells(int, int, ExpressionVisitor &) override;
@@ -433,7 +435,7 @@ protected:
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
     virtual Py::Object _getPyValue() const override;
     virtual void _getDeps(ExpressionDeps &) const override;
-    virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
+    virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &,
                                          const ObjectIdentifier &, ExpressionVisitor &) override;
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) override;
     virtual void _offsetCells(int, int, ExpressionVisitor &) override;
@@ -484,9 +486,10 @@ public:
   std::vector<Expression*> arguments;
   std::vector<Expression*> list;
   std::string string;
-  FunctionExpression::Function func;
+  std::pair<FunctionExpression::Function,std::string> func;
   ObjectIdentifier::String string_or_identifier;
-  semantic_type() : expr(0), ivalue(0), fvalue(0), func(FunctionExpression::NONE) {}
+  semantic_type() : component(0), expr(0), ivalue(0), fvalue(0)
+                  , func({FunctionExpression::NONE, std::string()}) {}
 };
 
 #define YYSTYPE semantic_type

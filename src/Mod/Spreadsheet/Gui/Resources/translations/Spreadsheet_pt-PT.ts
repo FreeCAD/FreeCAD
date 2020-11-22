@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation type="unfinished">Merge selected cells</translation>
+      <translation>Unir células selecionadas</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation type="unfinished">Split previously merged cells</translation>
+      <translation>Dividir células anteriormente unidas</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation type="unfinished">Set text in selected cells bold</translation>
+      <translation>Definir texto em células selecionadas para negrito</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation type="unfinished">Set text in selected cells italic</translation>
+      <translation>Definir texto em células selecionadas para itálico</translation>
     </message>
   </context>
   <context>
@@ -357,12 +357,22 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>A folha de cálculo não suporta seleção de intervalo ao colar.
+Por favor, selecione apenas uma célula.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Falha ao copiar e colar</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>O Alias contém caracteres inválidos!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Consulte a célula por alias, por exemplo
+Spreadsheet.my_alias_name em vez de Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -447,8 +457,18 @@ Please select one cell only.</translation>
       <translation>Formulário</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Conteúdos</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Conteúdo:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Alias:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Consulte a célula por alias, por exemplo
+Spreadsheet.my_alias_name em vez de Spreadsheet.B1</translation>
     </message>
   </context>
   <context>

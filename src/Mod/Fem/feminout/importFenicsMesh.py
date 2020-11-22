@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD Fenics mesh reader and writer"
+__title__ = "Mesh import and export for Fenics mesh file format"
 __author__ = "Johannes Hartung"
 __url__ = "http://www.freecadweb.org"
 
@@ -33,6 +33,7 @@ import os
 
 import FreeCAD
 from FreeCAD import Console
+
 from . import importToolsFem
 from . import readFenicsXML
 from . import writeFenicsXML
@@ -186,7 +187,7 @@ def export(objectslist, fileString, group_values_dict_nogui=None):
             writeFenicsXML.write_fenics_mesh_xml(obj, fileString)
         elif fileExtension.lower() == ".xdmf":
             mesh_groups = importToolsFem.get_FemMeshObjectMeshGroups(obj)
-            if mesh_groups is not ():
+            if mesh_groups != ():
                 # if there are groups found, make task panel available if GuiUp
                 if FreeCAD.GuiUp == 1:
                     panel = WriteXDMFTaskPanel(obj, fileString)

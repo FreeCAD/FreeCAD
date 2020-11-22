@@ -18,12 +18,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provide the exporter for IFC files used above all in Arch and BIM.
+
+Internally it uses IfcOpenShell, which must be installed before using.
+"""
+## @package exportIFC
+#  \ingroup ARCH
+#  \brief IFC file format exporter
+#
+#  This module provides tools to export IFC files.
 
 from __future__ import print_function
-
-__title__ =  "FreeCAD IFC export"
-__author__ = "Yorik van Havre","Jonathan Wiedemann","Bernd Hahnebach"
-__url__ =    "https://www.freecadweb.org"
 
 import six
 import os
@@ -38,42 +43,43 @@ import Arch
 import DraftVecUtils
 import ArchIFCSchema
 import exportIFCHelper
+import exportIFCStructuralTools
 
 from DraftGeomUtils import vec
 from importIFCHelper import dd2dms
 from importIFCHelper import decode
+from draftutils.messages import _msg, _err
 
+if FreeCAD.GuiUp:
+    import FreeCADGui
 
-## @package exportIFC
-#  \ingroup ARCH
-#  \brief IFC file format exporter
-#
-#  This module provides tools to export IFC files.
+__title__  = "FreeCAD IFC export"
+__author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
+__url__    = "https://www.freecadweb.org"
 
-if open.__module__ in ['__builtin__','io']:
+# Save the Python open function because it will be redefined
+if open.__module__ in ['__builtin__', 'io']:
     pyopen = open
-    # pyopen is used in exporter to open a file in Arch
 
-
-# ************************************************************************************************
-# ********** templates and other definitions ****
-
-# specific FreeCAD <-> IFC slang translations
+# Templates and other definitions ****
+# Specific FreeCAD <-> IFC slang translations
 translationtable = {
-    "Foundation":"Footing",
-    "Floor":"BuildingStorey",
-    "Rebar":"ReinforcingBar",
-    "HydroEquipment":"SanitaryTerminal",
-    "ElectricEquipment":"ElectricAppliance",
-    "Furniture":"FurnishingElement",
-    "Stair Flight":"StairFlight",
-    "Curtain Wall":"CurtainWall",
-    "Pipe Segment":"PipeSegment",
-    "Pipe Fitting":"PipeFitting"
+    "Foundation": "Footing",
+    "Floor": "BuildingStorey",
+    "Rebar": "ReinforcingBar",
+    "HydroEquipment": "SanitaryTerminal",
+    "ElectricEquipment": "ElectricAppliance",
+    "Furniture": "FurnishingElement",
+    "Stair Flight": "StairFlight",
+    "Curtain Wall": "CurtainWall",
+    "Pipe Segment": "PipeSegment",
+    "Pipe Fitting": "PipeFitting",
+    "VisGroup": "Group",
+    "Undefined": "BuildingElementProxy",
 }
 
-
-# the base IFC template for export
+# The base IFC template for export, the $variables will be substituted
+# by specific information
 ifctemplate = """ISO-10303-21;
 HEADER;
 FILE_DESCRIPTION(('ViewDefinition [CoordinationView]'),'2;1');
@@ -103,68 +109,99 @@ END-ISO-10303-21;
 """
 
 
-# ************************************************************************************************
-# ********** get the prefs, available in import and export ****************
 def getPreferences():
-
-    """retrieves IFC preferences"""
-
+    """Retrieve the IFC preferences available in import and export."""
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
 
-    if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
-        import FreeCADGui
-        FreeCADGui.showPreferences("Import-Export",0)
-    ifcunit = p.GetInt("ifcUnit",0)
+    if FreeCAD.GuiUp and p.GetBool("ifcShowDialog", False):
+        FreeCADGui.showPreferences("Import-Export", 1)
+
+    ifcunit = p.GetInt("ifcUnit", 0)
+
+    # Factor to multiply the dimension in millimeters
+    # mm x 0.001 = metre
+    # mm x 0.00328084 = foot
+    # mm x 0.03937008 = inch
+
+    # The only real use of these units is to make Revit choose which mode
+    # to work with.
+    #
+    # Inch is not yet implemented, and I don't even know if it is actually
+    # desired
+
     f = 0.001
     u = "metre"
+
     if ifcunit == 1:
         f = 0.00328084
         u = "foot"
-    #if ifcunit == "inch":
-    #    f = 0.03937008
-    # not yet implemented, and I don't even know if it is interesting to do it.
-    # the only real use of these units is to make revit choose which mode to work with
 
+    # if ifcunit == 2:
+    #     f = 0.03937008
+    #     u = "inch"
+
+    # Be careful with setting ADD_DEFAULT_SITE, ADD_DEFAULT_BUILDING,
+    # and ADD_DEFAULT_STOREY to False. If this is done the spatial structure
+    # may no longer be fully connected to the `IfcProject`. This means
+    # some objects may be "unreferenced" and won't belong to the `IfcProject`.
+    # Some applications may fail at importing these unreferenced objects.
     preferences = {
-        'DEBUG': p.GetBool("ifcDebug",False),
-        'CREATE_CLONES': p.GetBool("ifcCreateClones",True),
-        'FORCE_BREP': p.GetBool("ifcExportAsBrep",False),
-        'STORE_UID': p.GetBool("ifcStoreUid",True),
-        'SERIALIZE': p.GetBool("ifcSerialize",False),
-        'EXPORT_2D': p.GetBool("ifcExport2D",True),
-        'FULL_PARAMETRIC': p.GetBool("IfcExportFreeCADProperties",False),
-        'ADD_DEFAULT_SITE': p.GetBool("IfcAddDefaultSite",False),
-        'ADD_DEFAULT_STOREY': p.GetBool("IfcAddDefaultStorey",False),
-        'ADD_DEFAULT_BUILDING': p.GetBool("IfcAddDefaultBuilding",True),
+        'DEBUG': p.GetBool("ifcDebug", False),
+        'CREATE_CLONES': p.GetBool("ifcCreateClones", True),
+        'FORCE_BREP': p.GetBool("ifcExportAsBrep", False),
+        'STORE_UID': p.GetBool("ifcStoreUid", True),
+        'SERIALIZE': p.GetBool("ifcSerialize", False),
+        'EXPORT_2D': p.GetBool("ifcExport2D", True),
+        'FULL_PARAMETRIC': p.GetBool("IfcExportFreeCADProperties", False),
+        'ADD_DEFAULT_SITE': p.GetBool("IfcAddDefaultSite", True),
+        'ADD_DEFAULT_BUILDING': p.GetBool("IfcAddDefaultBuilding", True),
+        'ADD_DEFAULT_STOREY': p.GetBool("IfcAddDefaultStorey", True),
         'IFC_UNIT': u,
         'SCALE_FACTOR': f,
-        'GET_STANDARD': p.GetBool("getStandardType",False)
+        'GET_STANDARD': p.GetBool("getStandardType", False),
+        'EXPORT_MODEL': ['arch', 'struct', 'hybrid'][p.GetInt("ifcExportModel", 0)]
     }
+
+    if hasattr(ifcopenshell, "schema_identifier"):
+        schema = ifcopenshell.schema_identifier
+    elif hasattr(ifcopenshell, "version") and (float(ifcopenshell.version[:3]) >= 0.6):
+        # v0.6 onwards allows to set our own schema
+        schema = ["IFC4", "IFC2X3"][p.GetInt("IfcVersion", 0)]
+    else:
+        schema = "IFC2X3"
+
+    preferences["SCHEMA"] = schema
 
     return preferences
 
 
-# ************************************************************************************************
-# ********** export IFC ****************
-def export(exportList,filename,colors=None,preferences=None):
+def export(exportList, filename, colors=None, preferences=None):
+    """Export the selected objects to IFC format.
 
-    """export(exportList,filename,colors=None,preferences=None) -- exports FreeCAD contents to an IFC file.
-    colors is an optional dictionary of objName:shapeColorTuple or objName:diffuseColorList elements
-    to be used in non-GUI mode if you want to be able to export colors."""
+    Parameters
+    ----------
+    colors:
+        It defaults to `None`.
+        It is an optional dictionary of `objName:shapeColorTuple`
+        or `objName:diffuseColorList` elements to be used in non-GUI mode
+        if you want to be able to export colors.
+    """
+    try:
+        global ifcopenshell
+        import ifcopenshell
+    except ModuleNotFoundError:
+        _err("IfcOpenShell was not found on this system. "
+             "IFC support is disabled.\n"
+             "Visit https://wiki.freecadweb.org/IfcOpenShell "
+             "to learn about installing it.")
+        return
+
+    starttime = time.time()
 
     if preferences is None:
         preferences = getPreferences()
 
-    try:
-        global ifcopenshell
-        import ifcopenshell
-    except:
-        FreeCAD.Console.PrintError("IfcOpenShell was not found on this system. IFC support is disabled\n")
-        FreeCAD.Console.PrintMessage("Visit https://www.freecadweb.org/wiki/Arch_IFC to learn how to install it\n")
-        return
-
     # process template
-
     version = FreeCAD.Version()
     owner = FreeCAD.ActiveDocument.CreatedBy
     email = ''
@@ -172,40 +209,40 @@ def export(exportList,filename,colors=None,preferences=None):
         s = owner.split("<")
         owner = s[0].strip()
         email = s[1].strip(">")
+
     global template
-    template = ifctemplate.replace("$version",version[0]+"."+version[1]+" build "+version[2])
-    if hasattr(ifcopenshell,"schema_identifier"):
-        schema = ifcopenshell.schema_identifier
-    elif hasattr(ifcopenshell,"version") and (float(ifcopenshell.version[:3]) >= 0.6):
-        # v0.6 onwards allows to set our own schema
-        schema = ["IFC4", "IFC2X3"][FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("IfcVersion",0)]
-    else:
-        schema = "IFC2X3"
-    if preferences['DEBUG']: print("Exporting an",schema,"file...")
-    template = template.replace("$ifcschema",schema)
-    template = template.replace("$owner",owner)
-    template = template.replace("$company",FreeCAD.ActiveDocument.Company)
-    template = template.replace("$email",email)
-    template = template.replace("$now",str(int(time.time())))
-    template = template.replace("$filename",os.path.basename(filename))
-    template = template.replace("$timestamp",str(time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())))
-    if hasattr(ifcopenshell,"version"):
-        template = template.replace("IfcOpenShell","IfcOpenShell "+ifcopenshell.version)
-    templatefilehandle,templatefile = tempfile.mkstemp(suffix=".ifc")
-    of = pyopen(templatefile,"w")
+    template = ifctemplate.replace("$version",
+                                   version[0] + "."
+                                   + version[1] + " build " + version[2])
+    if preferences['DEBUG']: print("Exporting an", preferences['SCHEMA'], "file...")
+    template = template.replace("$ifcschema", preferences['SCHEMA'])
+    template = template.replace("$owner", owner)
+    template = template.replace("$company", FreeCAD.ActiveDocument.Company)
+    template = template.replace("$email", email)
+    template = template.replace("$now", str(int(time.time())))
+    template = template.replace("$filename", os.path.basename(filename))
+    template = template.replace("$timestamp",
+                                str(time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())))
+    if hasattr(ifcopenshell, "version"):
+        template = template.replace("IfcOpenShell",
+                                    "IfcOpenShell " + ifcopenshell.version)
+    templatefilehandle, templatefile = tempfile.mkstemp(suffix=".ifc")
+    of = pyopen(templatefile, "w")
+
     if six.PY2:
         template = template.encode("utf8")
+
     of.write(template)
     of.close()
     os.close(templatefilehandle)
 
     # create IFC file
-
     global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs
     ifcfile = ifcopenshell.open(templatefile)
     ifcfile = exportIFCHelper.writeUnits(ifcfile,preferences["IFC_UNIT"])
     history = ifcfile.by_type("IfcOwnerHistory")[0]
-    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    objectslist = Draft.get_group_contents(exportList, walls=True,
+                                           addgroups=True)
     annotations = []
     for obj in objectslist:
         if obj.isDerivedFrom("Part::Part2DObject"):
@@ -225,7 +262,7 @@ def export(exportList,filename,colors=None,preferences=None):
     if preferences['FULL_PARAMETRIC']:
         objectslist = Arch.getAllChildren(objectslist)
 
-    # create project and context
+    # create project, context and geodata settings
 
     contextCreator = exportIFCHelper.ContextCreator(ifcfile, objectslist)
     context = contextCreator.model_view_subcontext
@@ -235,6 +272,16 @@ def export(exportList,filename,colors=None,preferences=None):
     if Draft.getObjectsOfType(objectslist, "Site"):  # we assume one site and one representation context only
         decl = Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian)
         contextCreator.model_context.TrueNorth.DirectionRatios = (math.cos(decl+math.pi/2), math.sin(decl+math.pi/2))
+
+    # reusable entity system
+
+    global ifcbin
+    ifcbin = exportIFCHelper.recycler(ifcfile)
+
+    # setup analytic model
+
+    if preferences['EXPORT_MODEL'] in ['struct','hybrid']:
+        exportIFCStructuralTools.setup(ifcfile,ifcbin,preferences['SCALE_FACTOR'])
 
     # define holders for the different types we create
 
@@ -248,11 +295,6 @@ def export(exportList,filename,colors=None,preferences=None):
     profiledefs = {} # { ProfileDefString:profiledef,...}
     shapedefs = {} # { ShapeDefString:[shapes],... }
     spatialelements = {} # {Name:IfcEntity, ... }
-
-    # reusable entity system
-
-    global ifcbin
-    ifcbin = exportIFCHelper.recycler(ifcfile)
 
     # build clones table
 
@@ -276,24 +318,37 @@ def export(exportList,filename,colors=None,preferences=None):
 
     for obj in objectslist:
 
+        # structural analysis object
+
+        structobj = None
+        if preferences['EXPORT_MODEL'] in ['struct','hybrid']:
+            structobj = exportIFCStructuralTools.createStructuralMember(ifcfile,ifcbin,obj)
+            if preferences['EXPORT_MODEL'] == 'struct':
+                continue
+
         # getting generic data
 
         name = getText("Name",obj)
         description = getText("Description",obj)
         uid = getUID(obj,preferences)
         ifctype = getIfcTypeFromObj(obj)
+        # print(ifctype)
 
         if ifctype == "IfcGroup":
             groups[obj.Name] = [o.Name for o in obj.Group]
             continue
 
         # handle assemblies (arrays, app::parts, references, etc...)
-        
+
         assemblyElements = []
 
-        if ifctype == "IfcArray":
+        # if ifctype == "IfcArray":
+        # FIXME: the first array element is not placed correct if the array is not on coordinate origin
+        # https://forum.freecadweb.org/viewtopic.php?f=39&t=50085&p=431476#p431476
+        # workaround: do not use the assembly in ifc but a normal compound instead
+        if False:
+            clonedeltas = []
             if obj.ArrayType == "ortho":
-                clonedeltas = []
                 for i in range(obj.NumberX):
                     clonedeltas.append(obj.Placement.Base+(i*obj.IntervalX))
                     for j in range(obj.NumberY):
@@ -302,30 +357,62 @@ def export(exportList,filename,colors=None,preferences=None):
                         for k in range(obj.NumberZ):
                             if k > 0:
                                 clonedeltas.append(obj.Placement.Base+(i*obj.IntervalX)+(j*obj.IntervalY)+(k*obj.IntervalZ))
+
             #print("clonedeltas:",clonedeltas)
-            for delta in clonedeltas:
+            if clonedeltas:
+                ifctype = "IfcElementAssembly"
+                for delta in clonedeltas:
+                    # print("delta: {}".format(delta))
+                    representation,placement,shapetype = getRepresentation(
+                        ifcfile,
+                        context,
+                        obj.Base,
+                        forcebrep=(getBrepFlag(obj.Base,preferences)),
+                        colors=colors,
+                        preferences=preferences,
+                        forceclone=delta
+                    )
+                    subproduct = createProduct(
+                        ifcfile,
+                        obj.Base,
+                        getIfcTypeFromObj(obj.Base),
+                        getUID(obj.Base,preferences),
+                        history,
+                        getText("Name",obj.Base),
+                        getText("Description",obj.Base),
+                        placement,
+                        representation,
+                        preferences
+                    )
+                    assemblyElements.append(subproduct)
+            # if an array was handled assemblyElements is not empty
+            # if assemblyElements is not empty later on
+            # the own Shape is ignored if representation is retrieved
+            # this because we will build an assembly for the assemblyElements
+            # from here and the assembly itself should not have a representation
+
+        elif ifctype == "IfcApp::Part":
+            for subobj in [FreeCAD.ActiveDocument.getObject(n[:-1]) for n in obj.getSubObjects()]:
                 representation,placement,shapetype = getRepresentation(
                     ifcfile,
                     context,
-                    obj.Base,
-                    forcebrep=(getBrepFlag(obj.Base,preferences)),
+                    subobj,
+                    forcebrep=(getBrepFlag(subobj,preferences)),
                     colors=colors,
-                    preferences=preferences,
-                    forceclone=delta
+                    preferences=preferences
                 )
                 subproduct = createProduct(
                     ifcfile,
-                    obj.Base,
-                    getIfcTypeFromObj(obj.Base),
-                    getUID(obj.Base,preferences),
+                    subobj,
+                    getIfcTypeFromObj(subobj),
+                    getUID(subobj,preferences),
                     history,
-                    getText("Name",obj.Base),
-                    getText("Description",obj.Base),
+                    getText("Name",subobj),
+                    getText("Description",subobj),
                     placement,
                     representation,
-                    preferences,
-                    schema)
-                
+                    preferences)
+
                 assemblyElements.append(subproduct)
                 ifctype = "IfcElementAssembly"
 
@@ -393,19 +480,26 @@ def export(exportList,filename,colors=None,preferences=None):
 
         # getting the representation
 
+        # ignore the own shape for assembly objects
+        skipshape = False
+        if assemblyElements:
+            # print("Assembly object: {}, thus own Shape will have no representation.".format(obj.Name))
+            skipshape = True
+
         representation,placement,shapetype = getRepresentation(
             ifcfile,
             context,
             obj,
             forcebrep=(getBrepFlag(obj,preferences)),
             colors=colors,
-            preferences=preferences
+            preferences=preferences,
+            skipshape=skipshape
         )
         if preferences['GET_STANDARD']:
             if isStandardCase(obj,ifctype):
                 ifctype += "StandardCase"
 
-        if preferences['DEBUG']: 
+        if preferences['DEBUG']:
             print(str(count).ljust(3)," : ", ifctype, " (",shapetype,") : ",name)
 
         # creating the product
@@ -420,12 +514,16 @@ def export(exportList,filename,colors=None,preferences=None):
             description,
             placement,
             representation,
-            preferences,
-            schema)
+            preferences)
 
         products[obj.Name] = product
         if ifctype in ["IfcBuilding","IfcBuildingStorey","IfcSite","IfcSpace"]:
             spatialelements[obj.Name] = product
+
+        # associate with structural analysis object if any
+
+        if structobj:
+            exportIFCStructuralTools.associates(ifcfile,product,structobj)
 
         # gather assembly subelements
 
@@ -808,6 +906,11 @@ def export(exportList,filename,colors=None,preferences=None):
 
         count += 1
 
+    # relate structural analysis objects to the struct model
+
+    if preferences['EXPORT_MODEL'] in ['struct','hybrid']:
+        exportIFCStructuralTools.createStructuralGroup(ifcfile)
+
     # relationships
 
     sites = []
@@ -841,9 +944,9 @@ def export(exportList,filename,colors=None,preferences=None):
 
     for floor in Draft.getObjectsOfType(objectslist,"Floor")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
         if (Draft.getType(floor) == "Floor") or (hasattr(floor,"IfcType") and floor.IfcType == "Building Storey"):
-            objs = Draft.getGroupContents(floor,walls=True,addgroups=True)
+            objs = Draft.get_group_contents(floor, walls=True, addgroups=True)
             objs = Arch.pruneIncluded(objs)
-            objs.remove(floor) # getGroupContents + addgroups will include the floor itself
+            objs.remove(floor) # get_group_contents + addgroups will include the floor itself
             buildingelements, spaces = [], []
             for c in objs:
                 if c.Name in products and c.Name not in treated:
@@ -879,13 +982,14 @@ def export(exportList,filename,colors=None,preferences=None):
 
     for building in Draft.getObjectsOfType(objectslist,"Building")+Draft.getObjectsOfType(objectslist,"BuildingPart"):
         if (Draft.getType(building) == "Building") or (hasattr(building,"IfcType") and building.IfcType == "Building"):
-            objs = Draft.getGroupContents(building,walls=True,addgroups=True)
+            objs = Draft.get_group_contents(building, walls=True,
+                                            addgroups=True)
             objs = Arch.pruneIncluded(objs)
             children = []
             childfloors = []
             for c in objs:
                 if not (c.Name in treated):
-                    if c.Name != building.Name: # getGroupContents + addgroups will include the building itself
+                    if c.Name != building.Name: # get_group_contents + addgroups will include the building itself
                         if c.Name in products.keys():
                             if Draft.getType(c) in ["Floor","BuildingPart","Space"]:
                                 childfloors.append(products[c.Name])
@@ -919,12 +1023,12 @@ def export(exportList,filename,colors=None,preferences=None):
     # sites
 
     for site in exportIFCHelper.getObjectsOfIfcType(objectslist, "Site"):
-        objs = Draft.getGroupContents(site,walls=True,addgroups=True)
+        objs = Draft.get_group_contents(site, walls=True, addgroups=True)
         objs = Arch.pruneIncluded(objs)
         children = []
         childbuildings = []
         for c in objs:
-            if c.Name != site.Name: # getGroupContents + addgroups will include the building itself
+            if c.Name != site.Name: # get_group_contents + addgroups will include the building itself
                 if c.Name in products.keys():
                     if not (c.Name in treated):
                         if Draft.getType(c) == "Building":
@@ -1144,7 +1248,7 @@ def export(exportList,filename,colors=None,preferences=None):
                                 rgb = tuple([float(f) for f in m.Material[colorslot].strip("()").split(",")])
                                 break
             if rgb:
-                psa = ifcbin.createIfcPresentationStyleAssignment(l,rgb[0],rgb[1],rgb[2])
+                psa = ifcbin.createIfcPresentationStyleAssignment(l,rgb[0],rgb[1],rgb[2],ifc4=(preferences["SCHEMA"]=="IFC4"))
                 isi = ifcfile.createIfcStyledItem(None,[psa],None)
                 isr = ifcfile.createIfcStyledRepresentation(context,"Style","Material",[isi])
                 imd = ifcfile.createIfcMaterialDefinitionRepresentation(None,None,[isr],mat)
@@ -1445,6 +1549,10 @@ def export(exportList,filename,colors=None,preferences=None):
         print("Compression ratio:",int((float(ifcbin.spared)/(s+ifcbin.spared))*100),"%")
     del ifcbin
 
+    endtime = time.time() - starttime
+
+    _msg("Finished exporting in {} seconds".format(int(endtime)))
+
 
 # ************************************************************************************************
 # ********** helper for export IFC **************
@@ -1526,14 +1634,18 @@ def getIfcTypeFromObj(obj):
 
     if ifctype in translationtable.keys():
         ifctype = translationtable[ifctype]
-    if ifctype == "VisGroup":
-        ifctype = "Group"
-    if ifctype == "Undefined":
-        ifctype = "BuildingElementProxy"
-    if ifctype == "Furniture":
-        ifctype = "FurnishingElement"
 
-    return "Ifc" + ifctype
+    if not "::" in ifctype:
+        ifctype = "Ifc" + ifctype
+    elif ifctype == "App::DocumentObjctGroup":
+        ifctype = "IfcGroup"
+    else:
+        # it makes no sense to return IfcPart::Cylinder for a Part::Cylinder
+        # this is not a ifctype at all
+        ifctype = None
+
+    # print("Return value of getIfcTypeFromObj: {}".format(ifctype))
+    return ifctype
 
 
 def exportIFC2X3Attributes(obj, kwargs, scale=0.001):
@@ -1571,6 +1683,7 @@ def exportIFC2X3Attributes(obj, kwargs, scale=0.001):
 
 def exportIfcAttributes(obj, kwargs, scale=0.001):
 
+    ifctype = getIfcTypeFromObj(obj)
     for property in obj.PropertiesList:
         if obj.getGroupOfProperty(property) == "IFC Attributes" and obj.getPropertyByName(property):
             value = obj.getPropertyByName(property)
@@ -1578,7 +1691,10 @@ def exportIfcAttributes(obj, kwargs, scale=0.001):
                 value = float(value)
                 if property in ["ElevationWithFlooring","Elevation"]:
                     value = value*scale # some properties must be changed to meters
-            kwargs.update({property: value})
+            if (ifctype == "IfcFurnishingElement") and (property == "PredefinedType"):
+                pass # IFC2x3 Furniture objects get converted to IfcFurnishingElement and have no PredefinedType anymore
+            else:
+                kwargs.update({property: value})
     return kwargs
 
 
@@ -1607,7 +1723,7 @@ def buildAddress(obj,ifcfile):
     return addr
 
 
-def createCurve(ifcfile,wire):
+def createCurve(ifcfile,wire,scaling=1.0):
 
     "creates an IfcCompositeCurve from a shape"
 
@@ -1619,6 +1735,8 @@ def createCurve(ifcfile,wire):
     else:
         edges = Part.__sortEdges__(wire.Edges)
     for e in edges:
+        if scaling not in (0,1):
+            e.scale(scaling)
         if isinstance(e.Curve,Part.Circle):
             xaxis = e.Curve.XAxis
             zaxis = e.Curve.Axis
@@ -1722,16 +1840,18 @@ def getProfile(ifcfile,p):
         pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
         if isinstance(p.Edges[0].Curve,Part.Circle):
             # extruded circle
-            profile = ifcfile.createIfcCircleProfileDef("AREA",None,pt,p.Edges[0].Curve.Radius)
+            profile = ifcbin.createIfcCircleProfileDef("AREA",None,pt,p.Edges[0].Curve.Radius)
         elif isinstance(p.Edges[0].Curve,Part.Ellipse):
             # extruded ellipse
-            profile = ifcfile.createIfcEllipseProfileDef("AREA",None,pt,p.Edges[0].Curve.MajorRadius,p.Edges[0].Curve.MinorRadius)
+            profile = ifcbin.createIfcEllipseProfileDef("AREA",None,pt,p.Edges[0].Curve.MajorRadius,p.Edges[0].Curve.MinorRadius)
     elif (checkRectangle(p.Edges)):
         # arbitrarily use the first edge as the rectangle orientation
         d = vec(p.Edges[0])
         d.normalize()
         pxvc = ifcbin.createIfcDirection(tuple(d)[:2])
-        povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass[:2]))
+        povc = ifcbin.createIfcCartesianPoint((0.0,0.0))
+        # profile must be located at (0,0) because placement gets added later
+        #povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass[:2]))
         pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
         #semiPerimeter = p.Length/2
         #diff = math.sqrt(semiPerimeter**2 - 4*p.Area)
@@ -1739,7 +1859,7 @@ def getProfile(ifcfile,p):
         #h = min(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
         b = p.Edges[0].Length
         h = p.Edges[1].Length
-        profile = ifcfile.createIfcRectangleProfileDef("AREA",'rectangular',pt,b,h)
+        profile = ifcbin.createIfcRectangleProfileDef("AREA",'rectangular',pt,b,h)
     elif (len(p.Faces) == 1) and (len(p.Wires) > 1):
         # face with holes
         f = p.Faces[0]
@@ -1772,7 +1892,7 @@ def getProfile(ifcfile,p):
     return profile
 
 
-def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1,colors=None,preferences=None,forceclone=False):
+def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1,colors=None,preferences=None,forceclone=False,skipshape=False):
 
     """returns an IfcShapeRepresentation object or None. forceclone can be False (does nothing),
     "store" or True (stores the object as clone base) or a Vector (creates a clone)"""
@@ -1786,7 +1906,6 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
     shapetype = "no shape"
     tostore = False
     subplacement = None
-    skipshape = False
 
     # check for clones
 
@@ -1819,10 +1938,6 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
     # unhandled case: object is duplicated because of Axis
     if obj.isDerivedFrom("Part::Feature") and (len(obj.Shape.Solids) > 1) and hasattr(obj,"Axis") and obj.Axis:
         forcebrep = True
-
-    # specific cases that must ignore their own shape
-    if Draft.getType(obj) in ["Array"]:
-        skipshape = True
 
     if (not shapes) and (not forcebrep) and (not skipshape):
         profile = None
@@ -1898,6 +2013,31 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 shapes.append(shape)
                                 solidType = "SweptSolid"
                                 shapetype = "extrusion"
+        if (not shapes) and obj.isDerivedFrom("Part::Extrusion"):
+            import ArchComponent
+            pstr = str([v.Point for v in obj.Base.Shape.Vertexes])
+            profile,pl = ArchComponent.Component.rebase(obj,obj.Base.Shape)
+            profile.scale(preferences['SCALE_FACTOR'])
+            pl.Base = pl.Base.multiply(preferences['SCALE_FACTOR'])
+            profile = getProfile(ifcfile,profile)
+            if profile:
+                profiledefs[pstr] = profile
+            ev = obj.Dir
+            l = obj.LengthFwd.Value
+            if l:
+                ev.multiply(l)
+                ev.multiply(preferences['SCALE_FACTOR'])
+            ev = pl.Rotation.inverted().multVec(ev)
+            xvc =       ifcbin.createIfcDirection(tuple(pl.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+            zvc =       ifcbin.createIfcDirection(tuple(pl.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+            ovc =       ifcbin.createIfcCartesianPoint(tuple(pl.Base))
+            lpl =       ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+            edir =      ifcbin.createIfcDirection(tuple(FreeCAD.Vector(ev).normalize()))
+            shape =     ifcfile.createIfcExtrudedAreaSolid(profile,lpl,edir,ev.Length)
+            shapes.append(shape)
+            solidType = "SweptSolid"
+            shapetype = "extrusion"
+
 
     if (not shapes) and (not skipshape):
 
@@ -1951,16 +2091,17 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             sh = obj.Shape.copy()
                             sh.Placement = obj.getGlobalPlacement()
                             sh.scale(preferences['SCALE_FACTOR']) # to meters
-                            p = geom.serialise(sh.exportBrepToString())
+                            try:
+                                p = geom.serialise(sh.exportBrepToString())
+                            except TypeError:
+                                # IfcOpenShell v0.6.0
+                                # Serialization.cpp:IfcUtil::IfcBaseClass* IfcGeom::serialise(const std::string& schema_name, const TopoDS_Shape& shape, bool advanced)
+                                p = geom.serialise(preferences['SCHEMA'],sh.exportBrepToString())
                             if p:
                                 productdef = ifcfile.add(p)
                                 for rep in productdef.Representations:
                                     rep.ContextOfItems = context
-                                xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
-                                zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
-                                ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-                                gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-                                placement = ifcbin.createIfcLocalPlacement(gpl)
+                                placement = ifcbin.createIfcLocalPlacement()
                                 shapetype = "advancedbrep"
                                 shapes = None
                                 serialized = True
@@ -1977,10 +2118,12 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
                         if fcshape.Solids:
                             dataset = fcshape.Solids
-                        else:
+                        elif fcshape.Shells:
                             dataset = fcshape.Shells
                             #if preferences['DEBUG']: print("Warning! object contains no solids")
-
+                        else:
+                            if preferences['DEBUG']: print("Warning! object "+obj.Label+" contains no solids or shells")
+                            dataset = [fcshape]
                         for fcsolid in dataset:
                             fcsolid.scale(preferences['SCALE_FACTOR']) # to meters
                             faces = []
@@ -2068,10 +2211,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
         colorshapes = shapes # to keep track of individual shapes for coloring below
         if tostore:
             subrep = ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)
-            xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
-            zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
-            ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-            gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+            gpl = ifcbin.createIfcAxis2Placement3D()
             repmap = ifcfile.createIfcRepresentationMap(gpl,subrep)
             pla = obj.getGlobalPlacement()
             axis1 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
@@ -2138,13 +2278,14 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     surfstyles[key] = psa
                 isi = ifcfile.createIfcStyledItem(shape,[psa],None)
 
-        xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
-        zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
-        ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-        gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-        placement = ifcbin.createIfcLocalPlacement(gpl)
-        representation = ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)
-        productdef = ifcfile.createIfcProductDefinitionShape(None,None,[representation])
+        placement = ifcbin.createIfcLocalPlacement()
+        representation = [ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)]
+        # additional representations?
+        if Draft.getType(obj) in ["Wall"]:
+            addrepr = createAxis(ifcfile,obj,preferences)
+            if addrepr:
+                representation = representation + [addrepr]
+        productdef = ifcfile.createIfcProductDefinitionShape(None,None,representation)
 
     return productdef,placement,shapetype
 
@@ -2161,7 +2302,7 @@ def getBrepFlag(obj,preferences):
     return brepflag
 
 
-def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,representation,preferences,schema):
+def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,representation,preferences):
     """creates a product in the given IFC file"""
 
     kwargs = {
@@ -2180,10 +2321,16 @@ def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,rep
             "SiteAddress":buildAddress(obj,ifcfile),
             "CompositionType": "ELEMENT"
         })
-    if schema == "IFC2X3":
+    if preferences['SCHEMA'] == "IFC2X3":
         kwargs = exportIFC2X3Attributes(obj, kwargs, preferences['SCALE_FACTOR'])
     else:
         kwargs = exportIfcAttributes(obj, kwargs, preferences['SCALE_FACTOR'])
+    # in some cases object have wrong ifctypes, thus set it
+    # https://forum.freecadweb.org/viewtopic.php?f=39&t=50085
+    if ifctype not in ArchIFCSchema.IfcProducts.keys():
+        # print("Wrong IfcType: IfcBuildingElementProxy is used. {}".format(ifctype))
+        ifctype = "IfcBuildingElementProxy"
+    # print("createProduct: {}".format(ifctype))
     product = getattr(ifcfile,"create"+ifctype)(**kwargs)
     return product
 
@@ -2207,7 +2354,7 @@ def getUID(obj,preferences):
 
 def getText(field,obj):
     """Returns the value of a text property of an object"""
-        
+
     result = ""
     if field == "Name":
         field = "Label"
@@ -2216,3 +2363,31 @@ def getText(field,obj):
     if six.PY2:
         result = result.encode("utf8")
     return result
+
+def getAxisContext(ifcfile):
+
+    """gets or creates an axis context"""
+
+    contexts = ifcfile.by_type("IfcGeometricRepresentationContext")
+    # filter out subcontexts
+    subcontexts = [c for c in contexts if c.is_a() == "IfcGeometricRepresentationSubContext"]
+    contexts = [c for c in contexts if c.is_a() == "IfcGeometricRepresentationContext"]
+    for ctx in subcontexts:
+        if ctx.ContextIdentifier == "Axis":
+            return ctx
+    ctx = contexts[0] # arbitrarily take the first one...
+    nctx = ifcfile.createIfcGeometricRepresentationSubContext('Axis','Model',None,None,None,None,ctx,None,"MODEL_VIEW",None);
+    return nctx
+
+def createAxis(ifcfile,obj,preferences):
+
+    """Creates an axis for a given wall, if applicable"""
+
+    if hasattr(obj,"Base") and hasattr(obj.Base,"Shape") and obj.Base.Shape:
+        if obj.Base.Shape.ShapeType in ["Wire","Edge"]:
+            curve = createCurve(ifcfile,obj.Base.Shape,preferences["SCALE_FACTOR"])
+            if curve:
+                ctx = getAxisContext(ifcfile)
+                axis = ifcfile.createIfcShapeRepresentation(ctx,'Axis','Curve2D',[curve])
+                return axis
+    return None

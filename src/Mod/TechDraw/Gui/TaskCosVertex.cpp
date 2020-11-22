@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -47,6 +47,8 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskCosVertex.h>
@@ -70,10 +72,19 @@ using namespace TechDrawGui;
 TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
                                TechDraw::DrawPage* page) :
     ui(new Ui_TaskCosVertex),
+    blockUpdate(false),
     m_tracker(nullptr),
+    m_mdi(nullptr),
+    m_scene(nullptr),
+    m_view(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(page),
+    m_qgParent(nullptr),
+    m_trackerMode(QGTracker::None),
+    m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_pbTrackerState(TRACKERPICK),
     m_savePoint(QPointF(0.0,0.0)),
     pointFromTracker(false)
@@ -95,7 +106,7 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
     m_view = m_mdi->getQGVPage();
 
     setUiPrimary();
-    
+
     connect(ui->pbTracker, SIGNAL(clicked(bool)),
             this, SLOT(onTrackerClicked(bool)));
 
@@ -153,7 +164,7 @@ void TaskCosVertex::addCosVertex(QPointF qPos)
 {
 //    Base::Console().Message("TCV::addCosVertex(%s)\n", TechDraw::DrawUtil::formatVector(qPos).c_str());
     Base::Vector3d pos(qPos.x(), -qPos.y());
-//    int idx = 
+//    int idx =
     (void) m_baseFeat->addCosmeticVertex(pos);
     m_baseFeat->requestPaint();
 }
@@ -218,28 +229,40 @@ void TaskCosVertex::startTracker(void)
 void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent)
 {
 //    Base::Console().Message("TCV::onTrackerFinished()\n");
+    (void) qgParent;
     if (pts.empty()) {
         Base::Console().Error("TaskCosVertex - no points available\n");
         return;
     }
-    if (qgParent != nullptr) {
-        m_qgParent = qgParent;
-    } else {
-        //if vertex is outside of baseFeat, qgParent will be nullptr
-        QGVPage* qgvp = m_mdi->getQGVPage();
-        QGIView* qgiv = qgvp->findQViewForDocObj(m_baseFeat);
-        m_qgParent = qgiv;
-        Base::Console().Message("TaskCosVertex - qgParent is nullptr\n");
-//        return;
-    }
 
-    //save point unscaled. 
+    QPointF dragEnd = pts.front();            //scene pos of mouse click
+
     double scale = m_baseFeat->getScale();
-    QPointF temp = pts.front();
-    QPointF temp2 = m_qgParent->mapFromScene(temp) / scale;
-    m_savePoint = Rez::appX(temp2);
+    double x = Rez::guiX(m_baseFeat->X.getValue());
+    double y = Rez::guiX(m_baseFeat->Y.getValue());
+
+    DrawViewPart* dvp = m_baseFeat;
+    DrawProjGroupItem* dpgi = dynamic_cast<DrawProjGroupItem*>(dvp);
+    if (dpgi != nullptr) {
+        DrawProjGroup* dpg = dpgi->getPGroup();
+        if (dpg == nullptr) {
+            Base::Console().Message("TCV:onTrackerFinished - projection group is confused\n");
+            //TODO::throw something.
+            return;
+        }
+        x += Rez::guiX(dpg->X.getValue());
+        y += Rez::guiX(dpg->Y.getValue());
+    }
+    //x,y are scene pos of dvp/dpgi
+
+    QPointF basePosScene(x, -y);                 //base position in scene coords
+    QPointF displace = dragEnd - basePosScene;
+    QPointF scenePosCV = displace / scale;
+
+    m_savePoint = Rez::appX(scenePosCV);
     pointFromTracker = true;
     updateUi();
+
     m_tracker->sleep(true);
     m_inProgressLock = false;
     ui->pbTracker->setEnabled(false);
@@ -327,7 +350,7 @@ bool TaskCosVertex::reject()
         m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     }
 
-    //make sure any dangling objects are cleaned up 
+    //make sure any dangling objects are cleaned up
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 

@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="191"/>
       <location filename="../../Command.cpp" line="193"/>
       <source>Convert to points</source>
-      <translation type="unfinished">Convert to points</translation>
+      <translation>Muunna pisteiksi</translation>
     </message>
   </context>
   <context>
@@ -68,13 +68,13 @@
     <message>
       <location filename="../../Command.cpp" line="320"/>
       <source>Merge point clouds</source>
-      <translation type="unfinished">Merge point clouds</translation>
+      <translation>Yhdistä pistepilvet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="321"/>
       <location filename="../../Command.cpp" line="323"/>
       <source>Merge several point clouds into one</source>
-      <translation type="unfinished">Merge several point clouds into one</translation>
+      <translation>Yhdistä useita pistepilviä yhdeksi</translation>
     </message>
   </context>
   <context>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../Command.cpp" line="202"/>
       <source>Enter maximum distance:</source>
-      <translation type="unfinished">Enter maximum distance:</translation>
+      <translation>Syötä enimmäisetäisyys:</translation>
     </message>
   </context>
   <context>

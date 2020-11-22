@@ -12,6 +12,7 @@
         <file>icons/PartDesign_Additive_Wedge.svg</file>
         <file>icons/PartDesign_BaseFeature.svg</file>
         <file>icons/PartDesign_Body.svg</file>
+        <file alias="icons/PartDesign_Body_Create_New.svg">icons/PartDesign_Body.svg</file>
         <file>icons/PartDesign_Body_old.svg</file>
         <file>icons/PartDesign_Body_Tree.svg</file>
         <file>icons/PartDesign_Boolean.svg</file>
@@ -20,6 +21,7 @@
         <file>icons/PartDesign_CoordinateSystem.svg</file>
         <file>icons/PartDesign_Draft.svg</file>
         <file>icons/PartDesign_Fillet.svg</file>
+        <file>icons/PartDesign_Flip_Direction.svg</file>
         <file>icons/PartDesign_Groove.svg</file>
         <file>icons/PartDesign_Hole.svg</file>
         <file>icons/PartDesign_InternalExternalGear.svg</file>
@@ -37,6 +39,7 @@
         <file>icons/PartDesign_Revolution.svg</file>
         <file>icons/PartDesign_Scaled.svg</file>
         <file>icons/PartDesign_ShapeBinder.svg</file>
+        <file>icons/PartDesign_Sprocket.svg</file>
         <file>icons/PartDesign_SubShapeBinder.svg</file>
         <file>icons/PartDesign_Subtractive_Box.svg</file>
         <file>icons/PartDesign_Subtractive_Cone.svg</file>

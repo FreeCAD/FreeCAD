@@ -330,3 +330,14 @@ PropertyForce::PropertyForce()
     setUnit(Base::Unit::Force);
 }
 
+//**************************************************************************
+//**************************************************************************
+// PropertyVacuumPermittivity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyVacuumPermittivity, App::PropertyQuantity)
+
+PropertyVacuumPermittivity::PropertyVacuumPermittivity()
+{
+    setUnit(Base::Unit::VacuumPermittivity);
+}

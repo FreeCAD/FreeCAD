@@ -29,11 +29,11 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD Fenics Mesh XML reader for FEM workbench
 
+import itertools
+from xml.etree import ElementTree as ET
 
 import FreeCAD
 from FreeCAD import Console
-from xml.etree import ElementTree as ET
-import itertools
 
 
 def read_fenics_mesh_xml(xmlfilename):

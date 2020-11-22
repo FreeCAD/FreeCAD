@@ -357,12 +357,21 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>Preglednica pri lepljenju na podpira obsegovnega izbora.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Kopiranje in Lepljenje spodletelo</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Vzdevek vsebuje neveljavne znake!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Na celico se sklicuj z vzdevkom, npr.
+Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
     </message>
   </context>
   <context>
@@ -447,8 +456,18 @@ Please select one cell only.</translation>
       <translation>Oblika</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Vsebina</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Vsebina:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Vzdevek:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Na celico se sklicuj z vzdevkom, npr.
+Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
     </message>
   </context>
   <context>

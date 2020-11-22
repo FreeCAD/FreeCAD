@@ -45,6 +45,7 @@
 # include <QImage>
 # include <QImageReader>
 # include <QPainter>
+# include <QPainterPath>
 # include <QThread>
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoImage.h>
@@ -53,10 +54,8 @@
 # include <boost/thread/thread.hpp>
 # include <boost/thread/mutex.hpp>
 # include <boost/thread/condition_variable.hpp>
-# if BOOST_VERSION >= 104100
 # include <boost/thread/future.hpp>
-# endif
-# include <boost/bind.hpp>
+# include <boost/bind/bind.hpp>
 # include <boost/shared_ptr.hpp>
 #endif
 
@@ -80,6 +79,8 @@
 #include "Workbench.h"
 #include "GLGraphicsView.h"
 #include "TaskPanelView.h"
+
+namespace bp = boost::placeholders;
 
 DEF_STD_CMD(CmdSandboxDocumentThread);
 
@@ -626,7 +627,6 @@ CmdSandboxMeshLoaderBoost::CmdSandboxMeshLoaderBoost()
 
 void CmdSandboxMeshLoaderBoost::activated(int)
 {
-# if BOOST_VERSION >= 104100
     // use current path as default
     QStringList filter;
     filter << QObject::tr("All Mesh Files (*.stl *.ast *.bms *.obj)");
@@ -652,16 +652,11 @@ void CmdSandboxMeshLoaderBoost::activated(int)
     Mesh::Feature* mesh = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature","Mesh"));
     mesh->Mesh.setValuePtr((Mesh::MeshObject*)fi.get());
     mesh->purgeTouched();
-#endif
 }
 
 bool CmdSandboxMeshLoaderBoost::isActive(void)
 {
-# if BOOST_VERSION >= 104100
     return hasActiveDocument();
-#else
-    return false;
-#endif
 }
 
 DEF_STD_CMD_A(CmdSandboxMeshLoaderFuture)
@@ -829,7 +824,7 @@ void CmdSandboxMeshTestJob::activated(int)
         Base::Console().Message("Mesh test (step %d)...\n",iteration++);
         MeshTestJob meshJob;
         QFuture<Mesh::MeshObject*> mesh_future = QtConcurrent::mapped
-            (mesh_groups, boost::bind(&MeshTestJob::run, &meshJob, _1));
+            (mesh_groups, boost::bind(&MeshTestJob::run, &meshJob, bp::_1));
 
         // keep it responsive during computation
         QFutureWatcher<Mesh::MeshObject*> mesh_watcher;

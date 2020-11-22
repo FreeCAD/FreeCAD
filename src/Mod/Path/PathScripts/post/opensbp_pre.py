@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   (c) sliptonic (shopinthewoods<at>gmail.com) 2014                      *
+# *   Copyright (c) 2014 sliptonic <shopinthewoods<at>gmail.com>            *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -19,7 +20,7 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
 
 '''
 This is a preprocessor file for the Path workbench. Its aim is to

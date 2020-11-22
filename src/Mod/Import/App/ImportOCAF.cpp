@@ -185,7 +185,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
     }
 
 #ifdef FC_DEBUG
-    Base::Console().Message("H:%d, N:%s, T:%d, A:%d, S:%d, C:%d, SS:%d, F:%d, R:%d, C:%d, SS:%d\n",
+    Base::Console().Log("H:%d, N:%s, T:%d, A:%d, S:%d, C:%d, SS:%d, F:%d, R:%d, C:%d, SS:%d\n",
         hash,
         part_name.c_str(),
         aShapeTool->IsTopLevel(label),
@@ -679,9 +679,9 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
             TCollection_ExtendedString extstr = name->Get();
             char* str = new char[extstr.LengthOfCString()+1];
             extstr.ToUTF8CString(str);
-            std::string label(str);
-            if (!label.empty())
-                myNameMap[aShape.HashCode(INT_MAX)] = label;
+            std::string labelName(str);
+            if (!labelName.empty())
+                myNameMap[aShape.HashCode(INT_MAX)] = labelName;
             delete [] str;
         }
 

@@ -446,7 +446,11 @@ public:
 
     /// is called when the provider is in edit and a key event occurs. Only ESC ends edit.
     virtual bool keyPressed(bool pressed, int key);
-    /// is called by the tree if the user double click on the object
+    /// Is called by the tree if the user double clicks on the object. It returns the string
+    /// for the transaction that will be shown in the undo/redo dialog.
+    /// If null is returned then no transaction will be opened.
+    virtual const char* getTransactionText() const { return nullptr; }
+    /// is called by the tree if the user double clicks on the object
     virtual bool doubleClicked(void) { return false; }
     /// is called when the provider is in edit and the mouse is moved
     virtual bool mouseMove(const SbVec2s &cursorPos, View3DInventorViewer* viewer);
@@ -454,7 +458,7 @@ public:
     virtual bool mouseButtonPressed(int button, bool pressed, const SbVec2s &cursorPos,
                                     const View3DInventorViewer* viewer);
     /// set up the context-menu with the supported edit modes
-    virtual void setupContextMenu(QMenu*, QObject*, const char*) {}
+    virtual void setupContextMenu(QMenu*, QObject*, const char*);
 
     /** @name direct handling methods
      *  This group of methods is to direct influence the
@@ -534,6 +538,9 @@ protected:
      */
     virtual QIcon mergeOverlayIcons (const QIcon & orig) const;
 
+    /// Turn on mode switch
+    virtual void setModeSwitch();
+
 protected:
     /// The root Separator of the ViewProvider
     SoSeparator *pcRoot;
@@ -549,7 +556,6 @@ protected:
     std::bitset<32> StatusBits;
 
 private:
-    void setModeSwitch();
     int _iActualMode;
     int _iEditMode;
     int viewOverrideMode;

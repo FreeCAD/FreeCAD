@@ -1774,7 +1774,7 @@ finns inget material att avlägsna;
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Fixerad</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>

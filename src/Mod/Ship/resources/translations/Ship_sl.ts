@@ -290,7 +290,7 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="133"/>
       <source>A loading condition instance must be selected before using this tool (no objects selected)</source>
-      <translation>Preden uporabite to orodje, izberite primerek obremenitve (noben objekt ni bil izbran)</translation>
+      <translation>Preden uporabite to orodje, izberite pogoj obteževanja (noben predmet ni bil izbran)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="196"/>
@@ -305,12 +305,12 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="182"/>
       <source>More than one loading condition have been selected (the extra loading conditions will be ignored)</source>
-      <translation>Izbrana je bila več kot ena obremenitev (dodatne obremenitve bodo prezrte)</translation>
+      <translation>Izbran je bil več kot en pogoj obtežitve (dodatni obtežbeni pogoji bodo prezrti)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="192"/>
       <source>A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</source>
-      <translation>Preden uporabite to orodje, izberite primerek obremenitve (med izbranimi objekti ni veljavne obremenitve)</translation>
+      <translation>Preden uporabite to orodje, izberite pogoj obteževanja (med izbranimi predmeti ni veljavne obtežbe)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="117"/>
@@ -550,12 +550,12 @@
     <message>
       <location filename="../../ShipGui.py" line="179"/>
       <source>Create a new loading condition</source>
-      <translation>Ustvari novo obremenitev</translation>
+      <translation>Ustvari novo obtežitev</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="182"/>
       <source>Create a new load condition spreadsheet</source>
-      <translation>Ustvari novo preglednico obremenitve</translation>
+      <translation>Ustvari novo preglednico obtežb</translation>
     </message>
   </context>
   <context>

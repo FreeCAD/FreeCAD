@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
       <source>Documents</source>
-      <translation type="unfinished">Documents</translation>
+      <translation>Mga Dokumento</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
       <source>Activity</source>
-      <translation type="unfinished">Activity</translation>
+      <translation>Aktibidad</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
@@ -31,37 +31,37 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
       <source>Tip</source>
-      <translation type="unfinished">Tip</translation>
+      <translation>Tip</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation type="unfinished">Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</translation>
+      <translation>Ayusin ang bilang ng mga kamakailang mga file na maipakita dito sa menu Edit -&gt; Kagustuhan -&gt; Pangkalahatan -&gt; Sukat ng kamakailang listahan ng file</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
       <source>Examples</source>
-      <translation type="unfinished">Examples</translation>
+      <translation>Mga Halimbawa</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
       <source>General documentation</source>
-      <translation type="unfinished">General documentation</translation>
+      <translation>Pangkalahatang dokumento</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
       <source>User hub</source>
-      <translation type="unfinished">User hub</translation>
+      <translation>User hub</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation type="unfinished">This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</translation>
+      <translation>Ang seksyon na ito ay naglalaman ng dokumentasyon na kapaki-pakinabang para sa mga gumagamit ng FreeCAD sa pangkalahatan: isang listahan ng lahat ng mga workbenches, detalyadong mga tagubilin sa kung paano i-install at gamitin ang application ng FreeCAD, mga tutorial, at lahat ng kailangan mo upang makapagsimula.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
       <source>Power users hub</source>
-      <translation type="unfinished">Power users hub</translation>
+      <translation>Power users hub</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="54"/>

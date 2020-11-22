@@ -74,7 +74,7 @@ private:
     QByteArray text;
 };
 
-/** 
+/**
  * The Server class implements a simple TCP server.
  */
 class AppServer : public QTcpServer
@@ -83,6 +83,7 @@ class AppServer : public QTcpServer
 
 public:
     AppServer(QObject* parent = 0);
+    static std::string runPython(const QByteArray&);
 
 #if QT_VERSION >=0x050000
     void incomingConnection(qintptr socket);

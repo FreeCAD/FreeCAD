@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan   (wandererfan@gmail.com)              *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -43,6 +43,7 @@
 #include <Mod/TechDraw/App/DrawViewImage.h>
 
 #include "Rez.h"
+#include "ViewProviderImage.h"
 #include "QGCustomImage.h"
 #include "QGCustomClip.h"
 #include "QGIViewImage.h"
@@ -117,9 +118,21 @@ void QGIViewImage::draw()
     auto viewImage( dynamic_cast<TechDraw::DrawViewImage*>(getViewObject()) );
     if (!viewImage)
         return;
-    QRectF newRect(0.0,0.0,viewImage->Width.getValue(),viewImage->Height.getValue());
-    m_cliparea->setRect(newRect);
+
+    auto vp = static_cast<ViewProviderImage*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
+        return;
+    }
+    bool crop = vp->Crop.getValue();
+
     drawImage();
+    if (crop) {
+        QRectF cropRect(0.0,0.0,Rez::guiX(viewImage->Width.getValue()),Rez::guiX(viewImage->Height.getValue()));
+        m_cliparea->setRect(cropRect);
+    } else {
+        QRectF cropRect(0.0, 0.0, m_imageItem->imageSize().width(), m_imageItem->imageSize().height());
+        m_cliparea->setRect(cropRect);
+    }
     m_cliparea->centerAt(0.0,0.0);
 
     QGIView::draw();

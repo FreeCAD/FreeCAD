@@ -128,13 +128,13 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="718"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="745"/>
       <source>Browser</source>
       <translation>Tarayıcı</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="547"/>
+      <location filename="../../BrowserView.cpp" line="560"/>
       <source>File does not exist!</source>
       <translation>Dosya mevcut değil!</translation>
     </message>
@@ -142,18 +142,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="538"/>
-      <location filename="../../BrowserView.cpp" line="543"/>
+      <location filename="../../BrowserView.cpp" line="551"/>
+      <location filename="../../BrowserView.cpp" line="556"/>
       <source>Error</source>
       <translation>Hata</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="543"/>
+      <location filename="../../BrowserView.cpp" line="556"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Dosya yüklemesi esnasında hatalar vardı. Bazı veriler değiştirilmiş veya hiç kurtarılmamış olabilir. İlgili nesneler hakkında daha spesifik bilgi için rapor görünümüne bakın.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="689"/>
+      <location filename="../../BrowserView.cpp" line="716"/>
       <source>Loading %1...</source>
       <translation>Yükleniyor %1...</translation>
     </message>
@@ -161,17 +161,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="300"/>
+      <location filename="../../BrowserView.cpp" line="308"/>
       <source>Open in External Browser</source>
       <translation>Dış tarayıcıda aç</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="304"/>
+      <location filename="../../BrowserView.cpp" line="312"/>
       <source>Open in new window</source>
       <translation>Yeni pencerede aç</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="336"/>
+      <location filename="../../BrowserView.cpp" line="344"/>
       <source>View source</source>
       <translation>Kaynağı görüntüle</translation>
     </message>

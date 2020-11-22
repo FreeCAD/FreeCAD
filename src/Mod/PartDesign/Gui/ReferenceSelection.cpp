@@ -195,21 +195,22 @@ bool CombineSelectionFilterGates::allow(App::Document* pDoc, App::DocumentObject
 namespace PartDesignGui
 {
 
-void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
+bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
                             App::DocumentObject*& selObj, std::vector<std::string>& selSub)
 {
+    selObj = nullptr;
     if (!thisObj)
-        return;
+        return false;
 
     if (strcmp(thisObj->getDocument()->getName(), msg.pDocName) != 0)
-        return;
-    
+        return false;
+
     selObj = thisObj->getDocument()->getObject(msg.pObjectName);
     if (selObj == thisObj)
-        return;
-    
+        return false;
+
     std::string subname = msg.pSubName;
-    
+
     //check if the selection is an external reference and ask the user what to do
     //of course only if thisObj is in a body, as otherwise the old workflow would not 
     //be supported
@@ -217,33 +218,27 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     bool originfeature = selObj->isDerivedFrom(App::OriginFeature::getClassTypeId());
     if (!originfeature && body) {
         PartDesign::Body* selBody = PartDesignGui::getBodyFor(selObj, false);
-        if(!selBody || body != selBody) {
-            
-            auto* pcActivePart = PartDesignGui::getPartFor(body, false);
-
+        if (!selBody || body != selBody) {
             QDialog dia(Gui::getMainWindow());
             Ui_DlgReference dlg;
             dlg.setupUi(&dia);
             dia.setModal(true);
             int result = dia.exec();
             if (result == QDialog::DialogCode::Rejected) {
-                selObj = NULL;
-                return;
+                selObj = nullptr;
+                return false;
             }
-            else if(!dlg.radioXRef->isChecked()) {
+
+            if (!dlg.radioXRef->isChecked()) {
                 App::Document* document = thisObj->getDocument();
                 document->openTransaction("Make copy");
                 auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selObj, subname, dlg.radioIndependent->isChecked());
-                if (body)
-                    body->addObject(copy);
-                else if (pcActivePart)
-                    pcActivePart->addObject(copy);
+                body->addObject(copy);
 
                 selObj = copy;
                 subname.erase(std::remove_if(subname.begin(), subname.end(), &isdigit), subname.end());
                 subname.append("1");
             }
-        
         }
     }
 
@@ -253,6 +248,8 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     }
 
     selSub = std::vector<std::string>(1,subname);
+
+    return true;
 }
 
 QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)

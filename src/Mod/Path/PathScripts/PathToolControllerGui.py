@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -24,7 +22,6 @@
 
 import FreeCAD
 import FreeCADGui
-import Part
 import PathScripts
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
@@ -33,6 +30,10 @@ import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtil as PathUtil
 
 from PySide import QtCore, QtGui
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
 
 # Qt translation handling
 def translate(context, text, disambig=None):

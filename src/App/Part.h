@@ -44,7 +44,7 @@ public:
     PropertyString Type;
 
     /** @name base properties of all Assembly Items
-    * This properties corospond mostly to the meta information
+    * These properties correspond mostly to the meta information
     * in the App::Document class
     */
     //@{
@@ -86,7 +86,7 @@ public:
 
     /**
      * Returns the part which contains this object.
-     * In case this object is not belongs to any Part 0 is returned.
+     * In case this object does not belong to any Part, 0 is returned.
      * @param obj       the object to search for
      */
     static App::Part* getPartOfObject (const DocumentObject* obj);

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -22,9 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-import ArchPanel
 import FreeCAD
-import Part
 import Path
 import PathScripts.PathEngraveBase as PathEngraveBase
 import PathScripts.PathLog as PathLog
@@ -32,6 +28,11 @@ import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+ArchPanel = LazyLoader('ArchPanel', globals(), 'ArchPanel')
+Part = LazyLoader('Part', globals(), 'Part')
 
 __doc__ = "Class and implementation of Path Engrave operation"
 
@@ -53,7 +54,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
     def opFeatures(self, obj):
         '''opFeatures(obj) ... return all standard features and edges based geomtries'''
-        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureCoolant 
+        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureCoolant
 
     def setupAdditionalProperties(self, obj):
         if not hasattr(obj, 'BaseShapes'):

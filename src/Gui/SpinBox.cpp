@@ -29,6 +29,9 @@
 # include <QStyle>
 # include <QLineEdit>
 # include <QKeyEvent>
+# include <QStyle>
+# include <QStyleOptionSpinBox>
+# include <QStylePainter>
 #endif
 
 #include "SpinBox.h"
@@ -405,12 +408,26 @@ void UIntSpinBox::keyPressEvent(QKeyEvent *event)
 {
     if (event->text() == QString::fromUtf8("=") && isBound())
         openFormulaDialog();
-    else {
-        if (!hasExpression())
-            QAbstractSpinBox::keyPressEvent(event);
-    }
+    else
+        QAbstractSpinBox::keyPressEvent(event);
 }
 
+void UIntSpinBox::paintEvent(QPaintEvent*)
+{
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    if (hasExpression()) {
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxUp;
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxDown;
+        opt.state &= ~QStyle::State_Active;
+        opt.stepEnabled = StepNone;
+    }
+
+    QStylePainter p(this);
+    p.drawComplexControl(QStyle::CC_SpinBox, opt);
+}
+
+// ----------------------------------------------------------------------------
 
 IntSpinBox::IntSpinBox(QWidget* parent) : QSpinBox(parent) {
 
@@ -439,7 +456,7 @@ IntSpinBox::~IntSpinBox() {
 bool IntSpinBox::apply(const std::string& propName) {
     
     if (!ExpressionBinding::apply(propName)) {
-        Gui::Command::doCommand(Gui::Command::Doc, "%s = %u", propName.c_str(), value());
+        Gui::Command::doCommand(Gui::Command::Doc, "%s = %d", propName.c_str(), value());
         return true;
     }
     else
@@ -584,12 +601,26 @@ void IntSpinBox::keyPressEvent(QKeyEvent *event)
 {
     if (event->text() == QString::fromUtf8("=") && isBound())
         openFormulaDialog();
-    else {
-        if (!hasExpression())
-            QAbstractSpinBox::keyPressEvent(event);
-    }
+    else
+        QAbstractSpinBox::keyPressEvent(event);
 }
 
+void IntSpinBox::paintEvent(QPaintEvent*)
+{
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    if (hasExpression()) {
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxUp;
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxDown;
+        opt.state &= ~QStyle::State_Active;
+        opt.stepEnabled = StepNone;
+    }
+
+    QStylePainter p(this);
+    p.drawComplexControl(QStyle::CC_SpinBox, opt);
+}
+
+// ----------------------------------------------------------------------------
 
 DoubleSpinBox::DoubleSpinBox(QWidget* parent): QDoubleSpinBox(parent) {
 
@@ -618,11 +649,11 @@ DoubleSpinBox::~DoubleSpinBox() {
 bool DoubleSpinBox::apply(const std::string& propName) {
     
     if (!ExpressionBinding::apply(propName)) {
-        Gui::Command::doCommand(Gui::Command::Doc, "%s = %u", propName.c_str(), value());
+        Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), value());
         return true;
     }
-    else
-        return false;
+
+    return false;
 }
 
 void DoubleSpinBox::bind(const ObjectIdentifier& _path) {
@@ -658,7 +689,7 @@ void DoubleSpinBox::onChange() {
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
         if (value) {
-            setValue(boost::math::round(value->getValue()));
+            setValue(value->getValue());
             setReadOnly(true);
             iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
 
@@ -762,10 +793,23 @@ void DoubleSpinBox::keyPressEvent(QKeyEvent *event)
 {
     if (event->text() == QString::fromUtf8("=") && isBound())
         openFormulaDialog();
-    else {
-        if (!hasExpression())
-            QAbstractSpinBox::keyPressEvent(event);
+    else
+        QAbstractSpinBox::keyPressEvent(event);
+}
+
+void DoubleSpinBox::paintEvent(QPaintEvent*)
+{
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    if (hasExpression()) {
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxUp;
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxDown;
+        opt.state &= ~QStyle::State_Active;
+        opt.stepEnabled = StepNone;
     }
+
+    QStylePainter p(this);
+    p.drawComplexControl(QStyle::CC_SpinBox, opt);
 }
 
 #include "moc_SpinBox.cpp"

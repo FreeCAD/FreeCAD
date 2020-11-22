@@ -47,7 +47,7 @@ namespace Gui
 	Q_OBJECT
 	public:
 		GuiNativeEvent(GUIApplicationNativeEventAware *app);
-		~GuiNativeEvent() override final;
+		~GuiNativeEvent() override;
 		void initSpaceball(QMainWindow *window) override final;
 	private:
 		GuiNativeEvent();
@@ -69,7 +69,9 @@ namespace Gui
         void OnRawInput(UINT nInputCode, HRAWINPUT hRawInput);
         UINT GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT cbSizeHeader);
         bool TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawInput);
-        bool ParseRawInput(UINT nInputCode, PRAWINPUT pRawInput);
+        bool TranslateSpaceMouseNewGeneric(UINT nInputCode, PRAWINPUT pRawInput, DWORD dwProductId);
+        bool TranslateSpaceMouseEnterprise(UINT nInputCode, PRAWINPUT pRawInput, DWORD dwProductId);
+        bool TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINPUT pRawInput, DWORD dwProductId);
         void On3dmouseInput();
 
         class TInputData

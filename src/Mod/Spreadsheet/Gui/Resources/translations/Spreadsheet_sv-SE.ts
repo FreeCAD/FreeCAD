@@ -357,12 +357,22 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>Kalkylbladet stöder inte markering av intervall när du klistrar in.
+Välj endast en cell.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Kopiera och klistra in misslyckades</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Alias innehåller ogiltiga tecken!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Referera till cellen via alias, till exempel
+Spreadsheet.my_alias_name, istället för Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -447,8 +457,18 @@ Please select one cell only.</translation>
       <translation>Form</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Innehåll</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Innehåll:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>Alias ​​</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Referera till cellen via alias, till exempel
+Spreadsheet.my_alias_name, istället för Spreadsheet.B1</translation>
     </message>
   </context>
   <context>

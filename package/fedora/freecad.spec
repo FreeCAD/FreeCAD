@@ -1,6 +1,6 @@
 # This package depends on automagic byte compilation
-# https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_2
-%global _python_bytecompile_extra 1
+# https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_3
+%global py_bytecompile 1
 
 # Setup python target for shiboken so the right cmake file is imported.
 %global py_suffix %(%{__python3} -c "import sysconfig; print(sysconfig.get_config_var('SOABI'))")
@@ -10,14 +10,15 @@
 %global plugins Drawing Fem FreeCAD Image Import Inspection Mesh MeshPart Part Points QtUnit Raytracing ReverseEngineering Robot Sketcher Start Web PartDesignGui _PartDesign Path PathGui Spreadsheet SpreadsheetGui area DraftUtils DraftUtils libDriver libDriverDAT libDriverSTL libDriverUNV libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers Measure TechDraw TechDrawGui libarea-native Surface SurfaceGui PathSimulator
 
 # Some configuration options for other environments
-# rpmbuild --with=occ:  Compile using OpenCASCADE instead of OCE
-%global occ %{?_with_occ: 1} %{?!_with_occ: 0}
 # rpmbuild --with=bundled_zipios:  use bundled version of zipios++
 %global bundled_zipios %{?_with_bundled_zipios: 1} %{?!_with_bundled_zipios: 0}
 # rpmbuild --without=bundled_pycxx:  don't use bundled version of pycxx
 %global bundled_pycxx %{?_without_bundled_pycxx: 0} %{?!_without_bundled_pycxx: 1}
 # rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
 %global bundled_smesh %{?_without_bundled_smesh: 0} %{?!_without_bundled_smesh: 1}
+
+# Prevent RPM from doing its magical 'build' directory for now
+%global __cmake_in_source_build 0
 
 # See FreeCAD-master/src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
@@ -48,15 +49,9 @@ BuildRequires:  git
 
 # Development Libraries
 
-BuildRequires:  Coin3-devel
+BuildRequires:  Coin4-devel
 BuildRequires:  Inventor-devel
-%if %{occ}
-BuildRequires:  OpenCASCADE-devel
-%else
-BuildRequires:  OCE-devel
-BuildRequires:  OCE-draw
-%endif
-
+BuildRequires:  opencascade-devel
 BuildRequires:  boost-devel
 BuildRequires:  boost-python3-devel
 BuildRequires:  eigen3-devel
@@ -78,22 +73,21 @@ BuildRequires:  netgen-mesher-devel
 BuildRequires:  netgen-mesher-devel-private
 BuildRequires:  python3-pivy
 BuildRequires:  mesa-libEGL-devel
+BuildRequires:  openmpi-devel
 BuildRequires:  pcl-devel
-%if 0%{?fedora} > 29
 BuildRequires:  pyside2-tools
-%endif
 BuildRequires:  python3
 BuildRequires:  python3-devel
 BuildRequires:  python3-matplotlib
 %if ! %{bundled_pycxx}
 BuildRequires:  python3-pycxx-devel
 %endif
-%if 0%{?fedora} > 29
 BuildRequires:  python3-pyside2-devel
 BuildRequires:  python3-shiboken2-devel
-%endif
-BuildRequires:  qt5-devel
 BuildRequires:  qt5-qtwebkit-devel
+BuildRequires:  qt5-qtsvg-devel
+BuildRequires:  qt5-qttools-static
+BuildRequires:  qt5-qtxmlpatterns-devel
 %if ! %{bundled_smesh}
 BuildRequires:  smesh-devel
 %endif
@@ -207,12 +201,10 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python3 \
        -DMEDFILE_INCLUDE_DIRS=%{MEDFILE_INCLUDE_DIRS} \
        -DOpenGL_GL_PREFERENCE=GLVND \
-       -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin3 \
-       -DCOIN3D_DOC_PATH=%{_datadir}/Coin3/Coin \
+       -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin4 \
+       -DCOIN3D_DOC_PATH=%{_datadir}/Coin4/Coin \
        -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
-%if %{occ}
        -DUSE_OCC=TRUE \
-%endif
 %if ! %{bundled_smesh}
        -DFREECAD_USE_EXTERNAL_SMESH=TRUE \
        -DSMESH_FOUND=TRUE \

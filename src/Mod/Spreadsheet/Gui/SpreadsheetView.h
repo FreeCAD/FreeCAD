@@ -83,6 +83,7 @@ public:
 
 protected Q_SLOTS:
     void editingFinished();
+    void aliasChanged(const QString& text);
     void currentChanged( const QModelIndex & current, const QModelIndex & previous );
     void columnResized(int col, int oldSize, int newSize);
     void rowResized(int row, int oldSize, int newSize);

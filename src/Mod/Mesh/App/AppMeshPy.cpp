@@ -192,6 +192,21 @@ private:
                         (pcDoc->addObject("Mesh::Feature", groupName.c_str()));
                     pcFeature->Label.setValue(groupName.c_str());
                     pcFeature->Mesh.swapMesh(*segm);
+
+                    // if colors are set per face
+                    if (mat.binding == MeshCore::MeshIO::PER_FACE &&
+                        mat.diffuseColor.size() == mesh.countFacets()) {
+                        App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
+                            (pcFeature->addDynamicProperty("App::PropertyColorList", "VertexColors"));
+                        if (prop) {
+                            std::vector<App::Color> diffuseColor;
+                            diffuseColor.reserve(group.getIndices().size());
+                            for (const auto& it : group.getIndices()) {
+                                diffuseColor.push_back(mat.diffuseColor[it]);
+                            }
+                            prop->setValues(diffuseColor);
+                        }
+                    }
                     pcFeature->purgeTouched();
                 }
             }
@@ -271,6 +286,21 @@ private:
                         (pcDoc->addObject("Mesh::Feature", groupName.c_str()));
                     pcFeature->Label.setValue(groupName.c_str());
                     pcFeature->Mesh.swapMesh(*segm);
+
+                    // if colors are set per face
+                    if (mat.binding == MeshCore::MeshIO::PER_FACE &&
+                        mat.diffuseColor.size() == mesh.countFacets()) {
+                        App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
+                            (pcFeature->addDynamicProperty("App::PropertyColorList", "VertexColors"));
+                        if (prop) {
+                            std::vector<App::Color> diffuseColor;
+                            diffuseColor.reserve(group.getIndices().size());
+                            for (const auto& it : group.getIndices()) {
+                                diffuseColor.push_back(mat.diffuseColor[it]);
+                            }
+                            prop->setValues(diffuseColor);
+                        }
+                    }
                     pcFeature->purgeTouched();
                 }
             }
@@ -331,9 +361,9 @@ private:
 
         if (!PyArg_ParseTupleAndKeywords( args.ptr(), keywds.ptr(),
 #if PY_MAJOR_VERSION >= 3
-                                          "Oet|fp",
+                                          "Oet|dp",
 #else
-                                          "Oet|fi",
+                                          "Oet|di",
 #endif // Python version switch
                                           kwList, &objects, "utf-8", &fileNamePy,
                                           &fTolerance, &exportAmfCompressed )) {

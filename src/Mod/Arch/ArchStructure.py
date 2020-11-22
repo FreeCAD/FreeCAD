@@ -48,9 +48,9 @@ else:
 #  elements that have a structural function, that is, that
 #  support other parts of the building.
 
-__title__="FreeCAD Structure"
+__title__= "FreeCAD Structure"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 
 #Reads preset profiles and categorizes them
@@ -116,7 +116,7 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
             elif height and not length:
                 obj.Width = w
                 obj.Length = h
-            
+
     if not height and not length:
         obj.IfcType = "Undefined"
     elif obj.Length > obj.Height:
@@ -344,7 +344,7 @@ class _CommandStructure:
             self.Activated()
 
     def _createItemlist(self, baselist):
-        
+
         "create nice labels for presets in the task panel"
 
         ilist=[]
@@ -818,7 +818,7 @@ class _Structure(ArchComponent.Component):
                         extrusion = obj.Tool.Shape.copy()
             else:
                 if obj.Normal.Length:
-                    normal = Vector(obj.Normal)
+                    normal = Vector(obj.Normal).normalize()
                     if isinstance(placement,list):
                         normal = placement[0].inverse().Rotation.multVec(normal)
                     else:
@@ -850,6 +850,7 @@ class _Structure(ArchComponent.Component):
             extdata = self.getExtrusionData(obj)
             if extdata and not isinstance(extdata[0],list):
                 nodes = extdata[0]
+                ev = extdata[2].Rotation.multVec(extdata[1])
                 nodes.Placement = nodes.Placement.multiply(extdata[2])
                 if IfcType not in ["Slab"]:
                     if obj.Tool:
@@ -857,7 +858,7 @@ class _Structure(ArchComponent.Component):
                     elif extdata[1].Length > 0:
                         if hasattr(nodes,"CenterOfMass"):
                             import Part
-                            nodes = Part.LineSegment(nodes.CenterOfMass,nodes.CenterOfMass.add(extdata[1])).toShape()
+                            nodes = Part.LineSegment(nodes.CenterOfMass,nodes.CenterOfMass.add(ev)).toShape()
             offset = FreeCAD.Vector()
             if hasattr(obj,"NodesOffset"):
                 offset = FreeCAD.Vector(0,0,obj.NodesOffset.Value)

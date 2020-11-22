@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -28,10 +26,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-import ArchPanel
 import FreeCAD
-import DraftGeomUtils
-import Part
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
@@ -39,8 +34,14 @@ import PathScripts.PathUtils as PathUtils
 from PySide import QtCore
 import PathScripts.PathGeom as PathGeom
 
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+ArchPanel = LazyLoader('ArchPanel', globals(), 'ArchPanel')
+Draft = LazyLoader('Draft', globals(), 'Draft')
+Part = LazyLoader('Part', globals(), 'Part')
+DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
+
 import math
-import Draft
 if FreeCAD.GuiUp:
     import FreeCADGui
 
@@ -343,7 +344,7 @@ class ObjectOp(PathOp.ObjectOp):
                 # holes.append({'x': location.x, 'y': location.y, 'r': 0, 'angle': 0.0, 'axis': 'X', 'holeBtm': obj.FinalDepth.Value})
                 holes.append({'x': location.x, 'y': location.y, 'r': 0,
                              'angle': 0.0, 'axis': 'X', 'trgtDep': finDep,
-                              'stkTop': PathUtils.findParentJob(obj).stock.Shape.BoundBox.ZMax})
+                              'stkTop': PathUtils.findParentJob(obj).Stock.Shape.BoundBox.ZMax})
 
         if len(holes) > 0:
             self.circularHoleExecute(obj, holes)  # circularHoleExecute() located in PathDrilling.py

@@ -30,6 +30,7 @@
 # include <QMessageBox>
 # include <QMouseEvent>
 # include <QPainter>
+# include <QPainterPath>
 #endif
 
 #include <App/Document.h>

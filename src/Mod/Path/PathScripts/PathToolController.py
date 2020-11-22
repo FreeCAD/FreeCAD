@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +19,8 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-''' Tool Controller defines tool, spindle speed and feed rates for Path Operations '''
+
+'''Tool Controller defines tool, spindle speed and feed rates for Path Operations'''
 
 import FreeCAD
 import Path
@@ -80,7 +79,7 @@ class ToolController:
     def onDelete(self, obj, arg2=None):
         # pylint: disable=unused-argument
         if not self.usesLegacyTool(obj):
-            if len(obj.Tool.InList) == 1:
+            if hasattr(obj.Tool, 'InList') and len(obj.Tool.InList) == 1:
                 if hasattr(obj.Tool.Proxy, 'onDelete'):
                     obj.Tool.Proxy.onDelete(obj.Tool)
                 obj.Document.removeObject(obj.Tool.Name)

@@ -31,6 +31,7 @@
 
 Q_DECLARE_METATYPE(Base::Vector3f)
 Q_DECLARE_METATYPE(Base::Vector3d)
+Q_DECLARE_METATYPE(QList<Base::Vector3d>)
 Q_DECLARE_METATYPE(Base::Matrix4D)
 Q_DECLARE_METATYPE(Base::Placement)
 Q_DECLARE_METATYPE(Base::Quantity)

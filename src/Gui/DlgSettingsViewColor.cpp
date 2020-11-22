@@ -68,7 +68,6 @@ void DlgSettingsViewColor::saveSettings()
     ui->checkBoxSelection->onSave();
     ui->HighlightColor->onSave();
     ui->SelectionColor->onSave();
-    ui->spinPickRadius->onSave();
     ui->TreeEditColor->onSave();
     ui->TreeActiveColor->onSave();
 }
@@ -86,7 +85,6 @@ void DlgSettingsViewColor::loadSettings()
     ui->checkBoxSelection->onRestore();
     ui->HighlightColor->onRestore();
     ui->SelectionColor->onRestore();
-    ui->spinPickRadius->onRestore();
     ui->TreeEditColor->onRestore();
     ui->TreeActiveColor->onRestore();
 }

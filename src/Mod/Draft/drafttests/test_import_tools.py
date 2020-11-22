@@ -21,46 +21,52 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Unit test for the Draft Workbench, tools import tests."""
+"""Unit tests for the Draft Workbench, tools import tests."""
+## @package test_import_tools
+# \ingroup drafttests
+# \brief Unit tests for the Draft Workbench, tools import tests.
 
+## \addtogroup drafttests
+# @{
 import unittest
+
 import drafttests.auxiliary as aux
 
 
 class DraftImportTools(unittest.TestCase):
     """Test for each individual module that defines a tool."""
 
-    # No document is needed to test 'import' of other modules
-    # thus 'setUp' just draws a line, and 'tearDown' isn't defined.
     def setUp(self):
-        aux._draw_header()
+        """Draw the header.
+
+        This is executed before every test.
+        No document is needed to test the import of modules so no document
+        is created, and `tearDown` isn't defined.
+        """
+        aux.draw_header()
 
     def test_import_gui_draftedit(self):
         """Import Draft Edit."""
         module = "draftguitools.gui_edit"
-        imported = aux._import_test(module)
-        self.assertTrue(imported, "Problem importing '{}'".format(module))
-
-    def test_import_gui_draftfillet(self):
-        """Import Draft Fillet."""
-        module = "DraftFillet"
-        imported = aux._import_test(module)
+        imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_draftlayer(self):
         """Import Draft Layer."""
         module = "DraftLayer"
-        imported = aux._import_test(module)
+        imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_draftplane(self):
         """Import Draft SelectPlane."""
         module = "draftguitools.gui_selectplane"
-        imported = aux._import_test(module)
+        imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_workingplane(self):
         """Import Draft WorkingPlane."""
         module = "WorkingPlane"
-        imported = aux._import_test(module)
+        imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
+
+## @}

@@ -971,7 +971,8 @@ def export(exportList,filename):
     txt = []
 
     # get all children and reorder list to get buildings and floors processed first
-    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    objectslist = Draft.get_group_contents(exportList, walls=True,
+                                           addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
 
     sites = []
@@ -1014,15 +1015,17 @@ def export(exportList,filename):
         # setting the IFC type
         if hasattr(obj,"Role"):
             ifctype = obj.Role.replace(" ","")
+        elif otype == "Foundation":
+            ifctype = "Footing"
+        elif otype == "Rebar":
+            ifctype = "ReinforcingBar"
+        elif otype == "Undefined":
+            ifctype = "BuildingElementProxy"
+        elif otype.startswith("Part::"):
+            ifctype = "BuildingElementProxy"
         else:
             ifctype = otype
-        if ifctype == "Foundation":
-            ifctype = "Footing"
-        elif ifctype == "Rebar":
-            ifctype = "ReinforcingBar"
-        elif ifctype in ["Part","Undefined"]:
-            ifctype = "BuildingElementProxy"
-            
+
         # getting the "Force BREP" flag
         brepflag = False
         if hasattr(obj,"IfcAttributes"):
@@ -1105,7 +1108,7 @@ def export(exportList,filename):
                 extra = [obj.Width.Value*scaling, obj.Height.Value*scaling]
             elif otype == "Space":
                 extra = ["ELEMENT","INTERNAL",getIfcElevation(obj)]
-            elif otype == "Part":
+            elif otype.startswith("Part::"):
                 extra = ["ELEMENT"]
             if not ifctype in supportedIfcTypes:
                 if DEBUG: print("   Type ",ifctype," is not supported yet. Exporting as IfcBuildingElementProxy instead")
@@ -1834,7 +1837,7 @@ def explorer(filename,schema="IFC2X3_TC1.exp"):
             elif e.type in ["IFCROOF"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Arch_Roof_Tree.svg"))
             elif e.type in ["IFCEXTRUDEDAREASOLID","IFCCLOSEDSHELL"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Tree_Part.svg"))
+                item.setIcon(1, QtGui.QIcon(":/icons/Part_3D_object.svg"))
             elif e.type in ["IFCFACE"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Draft_SwitchMode.svg"))
             elif e.type in ["IFCARBITRARYCLOSEDPROFILEDEF","IFCPOLYLOOP"]:

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -56,7 +56,7 @@ namespace Path
         void setFromGCode (const std::string&); // sets the parameters from the contents of the given GCode string
         void setFromPlacement (const Base::Placement&); // sets the parameters from the contents of the given placement
         bool has(const std::string&) const; // returns true if the given string exists in the parameters
-        Command transform(const Base::Placement); // returns a transformed copy of this command
+        Command transform(const Base::Placement&); // returns a transformed copy of this command
         double getValue(const std::string &name) const; // returns the value of a given parameter
         void scaleBy(double factor); // scales the receiver - use for imperial/metric conversions
 

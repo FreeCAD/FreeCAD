@@ -127,17 +127,26 @@ void EditDatumDialog::exec(bool atCursor)
         ui_ins_datum->labelEdit->selectNumber();
         ui_ins_datum->labelEdit->bind(sketch->Constraints.createPath(ConstrNbr));
         ui_ins_datum->name->setText(Base::Tools::fromStdString(Constr->Name));
-        
+
         ui_ins_datum->cbDriving->setChecked(! Constr->isDriving);
-        
+
         connect(ui_ins_datum->cbDriving, SIGNAL(toggled(bool)), this, SLOT(drivingToggled(bool)));
         connect(ui_ins_datum->labelEdit, SIGNAL(valueChanged(const Base::Quantity&)), this, SLOT(datumChanged()));
         connect(ui_ins_datum->labelEdit, SIGNAL(showFormulaDialog(bool)), this, SLOT(formEditorOpened(bool)));
         connect(&dlg, SIGNAL(accepted()), this, SLOT(accepted()));
         connect(&dlg, SIGNAL(rejected()), this, SLOT(rejected()));
 
-        if (atCursor)
-            dlg.setGeometry(QCursor::pos().x() - dlg.geometry().width() / 2, QCursor::pos().y(), dlg.geometry().width(), dlg.geometry().height());
+        if (atCursor) {
+            dlg.show(); // Need to show the dialog so geometry is computed
+            QRect pg = dlg.parentWidget()->geometry();
+            int Xmin = pg.x() + 10;
+            int Ymin = pg.y() + 10;
+            int Xmax = pg.x() + pg.width() - dlg.geometry().width() - 10;
+            int Ymax = pg.y() + pg.height() - dlg.geometry().height() - 10;
+            int x = Xmax < Xmin ? (Xmin + Xmax)/2 :  std::min(std::max(QCursor::pos().x(), Xmin), Xmax);
+            int y = Ymax < Ymin ? (Ymin + Ymax)/2 :  std::min(std::max(QCursor::pos().y(), Ymin), Ymax);
+            dlg.setGeometry(x, y, dlg.geometry().width(), dlg.geometry().height());
+        }
 
         dlg.exec();
     }
@@ -149,15 +158,15 @@ void EditDatumDialog::accepted()
     if (newQuant.isQuantity() || (Constr->Type == Sketcher::SnellsLaw && newQuant.isDimensionless())) {
         // save the value for the history
         ui_ins_datum->labelEdit->pushToHistory();
-        
+
         double newDatum = newQuant.getValue();
-        
+
         try {
-            
+
             /*if (ui_ins_datum->cbDriving->isChecked() == Constr->isDriving) {
                 Gui::cmdAppObjectArgs(sketch, "toggleDriving(%i)", ConstrNbr);
             }*/
-            
+
             if (! ui_ins_datum->cbDriving->isChecked()) {
                 if (ui_ins_datum->labelEdit->hasExpression())
                     ui_ins_datum->labelEdit->apply();
@@ -165,26 +174,30 @@ void EditDatumDialog::accepted()
                     Gui::cmdAppObjectArgs(sketch, "setDatum(%i,App.Units.Quantity('%f %s'))",
                                           ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
             }
-            
+
             QString constraintName = ui_ins_datum->name->text().trimmed();
             if (Base::Tools::toStdString(constraintName) != sketch->Constraints[ConstrNbr]->Name) {
                 std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
                 Gui::cmdAppObjectArgs(sketch, "renameConstraint(%d, u'%s')",
                                       ConstrNbr, escapedstr.c_str());
             }
-            
+
             Gui::Command::commitCommand();
-            
+
             if (sketch->noRecomputes && sketch->ExpressionEngine.depsAreTouched()) {
                 sketch->ExpressionEngine.execute();
                 sketch->solve();
             }
-            
+
             tryAutoRecompute(sketch);
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
             Gui::Command::abortCommand();
+
+            if(sketch->noRecomputes) // if setdatum failed, it is highly likely that solver information is invalid.
+                sketch->solve();
+
         }
     }
 }
@@ -201,6 +214,8 @@ void EditDatumDialog::drivingToggled(bool state)
         ui_ins_datum->labelEdit->setToLastUsedValue();
     }
     sketch->setDriving(ConstrNbr, !state);
+    if(!sketch->noRecomputes) // if noRecomputes, solve() is already done by setDriving()
+        sketch->solve();
 }
 
 void EditDatumDialog::datumChanged()

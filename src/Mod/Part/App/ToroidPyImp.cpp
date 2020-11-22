@@ -66,44 +66,6 @@ int ToroidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-PyObject* ToroidPy::uIso(PyObject * args)
-{
-    double u;
-    if (!PyArg_ParseTuple(args, "d", &u))
-        return 0;
-
-    try {
-        Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast
-            (getGeomToroidPtr()->handle());
-        Handle(Geom_Circle) c = Handle(Geom_Circle)::DownCast(torus->UIso(u));
-        return new CirclePy(new GeomCircle(c));
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
-}
-
-PyObject* ToroidPy::vIso(PyObject * args)
-{
-    double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
-        return 0;
-
-    try {
-        Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast
-            (getGeomToroidPtr()->handle());
-        Handle(Geom_Circle) c = Handle(Geom_Circle)::DownCast(torus->VIso(v));
-        return new CirclePy(new GeomCircle(c));
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
-}
-
 Py::Float ToroidPy::getMajorRadius(void) const
 {
     Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast

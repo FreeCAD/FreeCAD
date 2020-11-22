@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "TaskDlgEditSketch.h"
@@ -72,34 +72,15 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
         Constraints->hideGroupBox();
     if (!hGrp->GetBool("ExpandedElementsWidget",true))
         Elements->hideGroupBox();
-
-    App::Document* document = sketchView->getObject()->getDocument();
-    connectUndoDocument =
-        document->signalUndo.connect(boost::bind(&TaskDlgEditSketch::slotUndoDocument, this, _1));
-    connectRedoDocument =
-        document->signalRedo.connect(boost::bind(&TaskDlgEditSketch::slotRedoDocument, this, _1));
 }
 
 TaskDlgEditSketch::~TaskDlgEditSketch()
 {
-    connectUndoDocument.disconnect();
-    connectRedoDocument.disconnect();
-
     // to make sure to delete the advanced solver panel
     // it must be part to the 'Content' array
     std::vector<QWidget*>::iterator it = std::find(Content.begin(), Content.end(), SolverAdvanced);
     if (it == Content.end())
         Content.push_back(SolverAdvanced);
-}
-
-void TaskDlgEditSketch::slotUndoDocument(const App::Document& doc)
-{
-    const_cast<App::Document&>(doc).recomputeFeature(sketchView->getObject());
-}
-
-void TaskDlgEditSketch::slotRedoDocument(const App::Document& doc)
-{
-    const_cast<App::Document&>(doc).recomputeFeature(sketchView->getObject());
 }
 
 //==== calls from the TaskView ===============================================================
@@ -128,7 +109,7 @@ bool TaskDlgEditSketch::reject()
     hGrp->SetBool("ExpandedEditControlWidget",General->isGroupVisible());
     hGrp->SetBool("ExpandedConstraintsWidget",Constraints->isGroupVisible());
     hGrp->SetBool("ExpandedElementsWidget",Elements->isGroupVisible());
-    
+
     std::string document = getDocumentName(); // needed because resetEdit() deletes this instance
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.getDocument('%s').resetEdit()", document.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').recompute()", document.c_str());

@@ -37,7 +37,7 @@ namespace SurfaceGui
 {
 
 class FillingVertexPanel;
-class FillingUnboundPanel;
+class FillingEdgePanel;
 class Ui_TaskFilling;
 
 class ViewProviderFilling : public PartGui::ViewProviderSpline
@@ -101,6 +101,7 @@ private Q_SLOTS:
     void on_buttonAccept_clicked();
     void on_buttonIgnore_clicked();
     void onDeleteEdge(void);
+    void onIndexesMoved();
     void clearSelection();
 };
 
@@ -123,7 +124,7 @@ public:
 
 private:
     FillingPanel* widget1;
-    FillingUnboundPanel* widget2;
+    FillingEdgePanel* widget2;
     FillingVertexPanel* widget3;
 };
 

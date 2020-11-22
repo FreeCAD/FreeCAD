@@ -39,20 +39,16 @@ Report to Draft.py for info
 import os
 import sys
 import math
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
+
 import FreeCAD
 import FreeCADGui
 import Draft
 import DraftVecUtils
-from PySide import QtCore, QtGui
 
-
-import draftutils.translate
-translate = draftutils.translate.translate
-
-
-import draftutils.utils
-utf8_decode = draftutils.utils.utf8_decode
-
+from draftutils.translate import translate
+from draftutils.utils import utf8_decode
 
 # in-command shortcut definitions: Shortcut / Translation / related UI control
 inCommandShortcuts = {
@@ -78,65 +74,14 @@ inCommandShortcuts = {
     "NearSnap":       [Draft.getParam("inCommandShortcutNearSnap", "N"),translate("draft","Toggle near snap on/off"), None],
 }
 
-import draftutils.todo
-todo = draftutils.todo.ToDo
+from draftutils.todo import todo
 
 #---------------------------------------------------------------------------
 # UNITS handling
 #---------------------------------------------------------------------------
-def getDefaultUnit(dim):
-    '''return default Unit of Measure for a Dimension based on user preference
-    Units Schema'''
-    # only Length and Angle so far
-    if dim == 'Length':
-        qty = FreeCAD.Units.Quantity(1.0,FreeCAD.Units.Length)
-        UOM = qty.getUserPreferred()[2]
-    elif dim == 'Angle':
-        qty = FreeCAD.Units.Quantity(1.0,FreeCAD.Units.Angle)
-        UOM = qty.getUserPreferred()[2]
-    else:
-        UOM = "xx"
-    return UOM
-
-def makeFormatSpec(decimals=4,dim='Length'):
-    ''' return a % format spec with specified decimals for a specified
-    dimension based on on user preference Units Schema'''
-    if dim == 'Length':
-        fmtSpec = "%." + str(decimals) + "f "+ getDefaultUnit('Length')
-    elif dim == 'Angle':
-        fmtSpec = "%." + str(decimals) + "f "+ getDefaultUnit('Angle')
-    else:
-        fmtSpec = "%." + str(decimals) + "f " + "??"
-    return fmtSpec
-
-def displayExternal(internValue,decimals=None,dim='Length',showUnit=True,unit=None):
-    '''return an internal value (ie mm) Length or Angle converted for display according
-    to Units Schema in use. Unit can be used to force the value to express in a certain unit'''
-    if dim == 'Length':
-        q = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
-        if not unit:
-            if (decimals is None) and showUnit:
-                return q.UserString
-            conversion = q.getUserPreferred()[1]
-            uom = q.getUserPreferred()[2]
-        else:
-            uom = unit
-            internValue = q.getValueAs(unit)
-            conversion = 1
-    elif dim == 'Angle':
-        return FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Angle).UserString
-    else:
-        conversion = 1.0
-        if decimals is None:
-            decimals = 2
-        uom = "??"
-    if not showUnit:
-        uom = ""
-    decimals = abs(decimals) # prevent negative values
-    fmt = "{0:."+ str(decimals) + "f} "+ uom
-    displayExt = fmt.format(float(internValue) / float(conversion))
-    displayExt = displayExt.replace(".",QtCore.QLocale().decimalPoint())
-    return displayExt
+from draftutils.units import (getDefaultUnit,
+                              makeFormatSpec,
+                              displayExternal)
 
 #---------------------------------------------------------------------------
 # Customized widgets
@@ -222,11 +167,14 @@ class DraftToolBar:
         self.taskmode = 1  # Draft.getParam("UiMode",1)
         # taskmode = 0 was used by draft toolbar that is now obsolete.
         # print("taskmode: ",str(self.taskmode))
+        
+        # OBSOLETE BUT STILL USED BY SOME ADDONS AND MACROS
         self.paramcolor = Draft.getParam("color",255)>>8
         self.color = QtGui.QColor(self.paramcolor)
         self.facecolor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)>>8
         self.linewidth = Draft.getParam("linewidth",2)
         self.fontsize = Draft.getParam("textheight",0.20)
+        
         self.paramconstr = Draft.getParam("constructioncolor",746455039)>>8
         self.constrMode = False
         self.continueMode = False
@@ -544,6 +492,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("textChanged()"),self.checkEnterText)
         QtCore.QObject.connect(self.textOkButton,QtCore.SIGNAL("clicked()"),self.sendText)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.setFocus)
+
         # Draft Edit UI obsolete due to introduction of incommand context menu
         # QtCore.QObject.connect(self.addButton,QtCore.SIGNAL("toggled(bool)"),self.setAddMode)
         # QtCore.QObject.connect(self.delButton,QtCore.SIGNAL("toggled(bool)"),self.setDelMode)
@@ -551,6 +500,7 @@ class DraftToolBar:
         # QtCore.QObject.connect(self.tangentButton,QtCore.SIGNAL("toggled(bool)"),self.setTangentMode)
         # QtCore.QObject.connect(self.symmetricButton,QtCore.SIGNAL("toggled(bool)"),self.setSymmetricMode)
         # QtCore.QObject.connect(self.arc3PtButton,QtCore.SIGNAL("toggled(bool)"),self.setArc3PtMode)
+
         QtCore.QObject.connect(self.finishButton,QtCore.SIGNAL("pressed()"),self.finish)
         QtCore.QObject.connect(self.closeButton,QtCore.SIGNAL("pressed()"),self.closeLine)
         QtCore.QObject.connect(self.wipeButton,QtCore.SIGNAL("pressed()"),self.wipeLine)
@@ -600,34 +550,43 @@ class DraftToolBar:
             self.wplabel.setText(translate("draft","Side"))
         else:
             self.wplabel.setText(translate("draft","Auto"))
-        self.constrButton = self._pushbutton("constrButton", self.toptray, hide=False, icon='Draft_Construction',checkable=True,square=True)
-        self.constrColor = QtGui.QColor(self.paramconstr)
-        self.colorButton = self._pushbutton("colorButton",self.bottomtray, hide=False,square=True)
-        self.colorPix = QtGui.QPixmap(16,16)
-        self.colorPix.fill(self.color)
-        self.colorButton.setIcon(QtGui.QIcon(self.colorPix))
-        self.facecolorButton = self._pushbutton("facecolorButton",self.bottomtray, hide=False,square=True)
-        self.facecolorPix = QtGui.QPixmap(16,16)
-        self.facecolorPix.fill(QtGui.QColor(self.facecolor))
-        self.facecolorButton.setIcon(QtGui.QIcon(self.facecolorPix))
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
         bsize = p.GetInt("ToolbarIconSize",24)+2
-        self.widthButton = self._spinbox("widthButton", self.bottomtray, val=self.linewidth,hide=False,size=(bsize * 2,bsize))
-        self.widthButton.setSuffix("px")
-        self.fontsizeButton = self._spinbox("fontsizeButton",self.bottomtray, val=self.fontsize,vmax=999, hide=False,double=True,size=(bsize * 4,bsize))
+
+        # OBSOLETE - replaced by style button
+        #self.colorButton = self._pushbutton("colorButton",self.bottomtray, hide=False,square=True)
+        #self.colorPix = QtGui.QPixmap(16,16)
+        #self.colorPix.fill(self.color)
+        #self.colorButton.setIcon(QtGui.QIcon(self.colorPix))
+        #self.facecolorButton = self._pushbutton("facecolorButton",self.bottomtray, hide=False,square=True)
+        #self.facecolorPix = QtGui.QPixmap(16,16)
+        #self.facecolorPix.fill(QtGui.QColor(self.facecolor))
+        #self.facecolorButton.setIcon(QtGui.QIcon(self.facecolorPix))
+        #self.widthButton = self._spinbox("widthButton", self.bottomtray, val=self.linewidth,hide=False,size=(bsize * 2,bsize))
+        #self.widthButton.setSuffix("px")
+        #self.fontsizeButton = self._spinbox("fontsizeButton",self.bottomtray, val=self.fontsize,vmax=999, hide=False,double=True,size=(bsize * 4,bsize))
+        #self.applyButton = self._pushbutton("applyButton", self.toptray, hide=False, icon='Draft_Apply',square=True)
+
+        self.styleButton = self._pushbutton("stylebutton", self.toptray, icon='Draft_Apply',hide=False,width=120)
+        self.setStyleButton()
+
+        self.constrButton = self._pushbutton("constrButton", self.toptray, hide=False, icon='Draft_Construction',checkable=True,square=True)
+        self.constrColor = QtGui.QColor(self.paramconstr)
         self.autoGroupButton = self._pushbutton("autoGroup",self.bottomtray,icon=":/icons/button_invalid.svg",hide=False,width=120)
         self.autoGroupButton.setText("None")
         self.autoGroupButton.setFlat(True)
-        self.applyButton = self._pushbutton("applyButton", self.toptray, hide=False, icon='Draft_Apply',square=True)
 
         QtCore.QObject.connect(self.wplabel,QtCore.SIGNAL("pressed()"),self.selectplane)
-        QtCore.QObject.connect(self.colorButton,QtCore.SIGNAL("pressed()"),self.getcol)
-        QtCore.QObject.connect(self.facecolorButton,QtCore.SIGNAL("pressed()"),self.getfacecol)
-        QtCore.QObject.connect(self.widthButton,QtCore.SIGNAL("valueChanged(int)"),self.setwidth)
-        QtCore.QObject.connect(self.fontsizeButton,QtCore.SIGNAL("valueChanged(double)"),self.setfontsize)
-        QtCore.QObject.connect(self.applyButton,QtCore.SIGNAL("pressed()"),self.apply)
+        QtCore.QObject.connect(self.styleButton,QtCore.SIGNAL("pressed()"),self.setstyle)
         QtCore.QObject.connect(self.constrButton,QtCore.SIGNAL("toggled(bool)"),self.toggleConstrMode)
         QtCore.QObject.connect(self.autoGroupButton,QtCore.SIGNAL("pressed()"),self.runAutoGroup)
+
+        # OBSOLETE - replaced by style button
+        #QtCore.QObject.connect(self.colorButton,QtCore.SIGNAL("pressed()"),self.getcol)
+        #QtCore.QObject.connect(self.facecolorButton,QtCore.SIGNAL("pressed()"),self.getfacecol)
+        #QtCore.QObject.connect(self.widthButton,QtCore.SIGNAL("valueChanged(int)"),self.setwidth)
+        #QtCore.QObject.connect(self.fontsizeButton,QtCore.SIGNAL("valueChanged(double)"),self.setfontsize)
+        #QtCore.QObject.connect(self.applyButton,QtCore.SIGNAL("pressed()"),self.apply)
 
         QtCore.QTimer.singleShot(2000,self.retranslateTray) # delay so translations get a chance to load
 
@@ -677,12 +636,15 @@ class DraftToolBar:
         self.continueCmd.setText(translate("draft", "Continue")+" ("+inCommandShortcuts["Continue"][0]+")")
         self.occOffset.setToolTip(translate("draft", "If checked, an OCC-style offset will be performed instead of the classic offset"))
         self.occOffset.setText(translate("draft", "&OCC-style offset"))
+        
+        # OBSOLETE
         # self.addButton.setToolTip(translate("draft", "Add points to the current object"))
         # self.delButton.setToolTip(translate("draft", "Remove points from the current object"))
         # self.sharpButton.setToolTip(translate("draft", "Make Bezier node sharp"))
         # self.tangentButton.setToolTip(translate("draft", "Make Bezier node tangent"))
         # self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
         # self.arc3PtButton.setToolTip(translate("draft", "Toggle radius and angles arc editing"))
+        
         self.undoButton.setText(translate("draft", "&Undo (CTRL+Z)"))
         self.undoButton.setToolTip(translate("draft", "Undo the last segment"))
         self.closeButton.setText(translate("draft", "Close")+" ("+inCommandShortcuts["Close"][0]+")")
@@ -732,13 +694,17 @@ class DraftToolBar:
     def retranslateTray(self,widget=None):
 
         self.wplabel.setToolTip(translate("draft", "Current working plane")+":"+self.wplabel.text())
+        self.styleButton.setToolTip(translate("draft", "Change default style for new objects"))
         self.constrButton.setToolTip(translate("draft", "Toggle construction mode"))
-        self.colorButton.setToolTip(translate("draft", "Current line color"))
-        self.facecolorButton.setToolTip(translate("draft", "Current face color"))
-        self.widthButton.setToolTip(translate("draft", "Current line width"))
-        self.fontsizeButton.setToolTip(translate("draft", "Current font size"))
-        self.applyButton.setToolTip(translate("draft", "Apply to selected objects"))
         self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
+        
+        # OBSOLETE - replaced by style button
+        #self.colorButton.setToolTip(translate("draft", "Current line color"))
+        #self.facecolorButton.setToolTip(translate("draft", "Current face color"))
+        #self.widthButton.setToolTip(translate("draft", "Current line width"))
+        #self.fontsizeButton.setToolTip(translate("draft", "Current font size"))
+        #self.applyButton.setToolTip(translate("draft", "Apply to selected objects"))
+        
 
 #---------------------------------------------------------------------------
 # Interface modes
@@ -968,12 +934,15 @@ class DraftToolBar:
             self.isRelative.hide()
             self.hasFill.hide()
             self.finishButton.hide()
+            
+            # OBSOLETE
             # self.addButton.hide()
             # self.delButton.hide()
             # self.sharpButton.hide()
             # self.tangentButton.hide()
             # self.symmetricButton.hide()
             # self.arc3PtButton.hide()
+            
             self.undoButton.hide()
             self.closeButton.hide()
             self.wipeButton.hide()
@@ -1231,6 +1200,8 @@ class DraftToolBar:
 
     def getcol(self):
         """opens a color picker dialog"""
+        print("draft: warning: getcol() is obsolete")
+        return
         oldColor = self.color
         self.color=QtGui.QColorDialog.getColor(self.color)
         if not QtGui.QColor.isValid(self.color): #user canceled
@@ -1255,6 +1226,8 @@ class DraftToolBar:
 
     def getfacecol(self):
         """opens a color picker dialog"""
+        print("draft: warning: getfacecol() is obsolete")
+        return
         oldColor = self.facecolor
         self.facecolor=QtGui.QColorDialog.getColor(self.facecolor)
         if not QtGui.QColor.isValid(self.facecolor): #user canceled
@@ -1273,6 +1246,8 @@ class DraftToolBar:
                 i.ViewObject.ShapeColor = col
 
     def setwidth(self,val):
+        print("draft: warning: setwidth() is obsolete")
+        return
         self.linewidth = float(val)
         if Draft.getParam("saveonexit",False):
             Draft.setParam("linewidth",int(val))
@@ -1281,6 +1256,8 @@ class DraftToolBar:
                 i.ViewObject.LineWidth = float(val)
 
     def setfontsize(self,val):
+        print("draft: warning: setfontsize() is obsolete")
+        return
         self.fontsize = float(val)
         if Draft.getParam("saveonexit",False):
             Draft.setParam("textheight",float(val))
@@ -1295,6 +1272,8 @@ class DraftToolBar:
         self.fillmode = bool(val)
 
     def apply(self):
+        print("draft: warning: apply() is obsolete")
+        return
         for i in FreeCADGui.Selection.getSelection():
             Draft.formatObject(i)
 
@@ -1707,9 +1686,20 @@ class DraftToolBar:
             g = ((color>>16)&0xFF)/255
             b = ((color>>8)&0xFF)/255
         elif type == "ui":
+            print("draft: deprecation warning: Do not use getDefaultColor(\"ui\") anymore - use getDefaultColor(\"line\") instead.")
             r = float(self.color.red()/255.0)
             g = float(self.color.green()/255.0)
             b = float(self.color.blue()/255.0)
+        elif type == "line":
+            color = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeLineColor",255)
+            r = ((color>>24)&0xFF)/255
+            g = ((color>>16)&0xFF)/255
+            b = ((color>>8)&0xFF)/255
+        elif type == "text":
+            color = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetUnsigned("DefaultTextColor",255)
+            r = ((color>>24)&0xFF)/255
+            g = ((color>>16)&0xFF)/255
+            b = ((color>>8)&0xFF)/255
         elif type == "face":
             color = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)
             r = ((color>>24)&0xFF)/255
@@ -1774,6 +1764,37 @@ class DraftToolBar:
 
     def selectplane(self):
         FreeCADGui.runCommand("Draft_SelectPlane")
+
+    def setstyle(self):
+        FreeCADGui.runCommand("Draft_SetStyle")
+    
+    def setStyleButton(self):
+        "sets icon and text on the style button"
+        linecolor = QtGui.QColor(Draft.getParam("color",255)>>8)
+        facecolor = QtGui.QColor(FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)>>8)
+        im = QtGui.QImage(32,32,QtGui.QImage.Format_ARGB32)
+        im.fill(QtCore.Qt.transparent)
+        pt = QtGui.QPainter(im)
+        pt.setPen(QtGui.QPen(QtCore.Qt.black, 1, QtCore.Qt.SolidLine, QtCore.Qt.FlatCap))
+        pt.setBrush(QtGui.QBrush(linecolor, QtCore.Qt.SolidPattern))
+        pts = [QtCore.QPointF(4.0,4.0),QtCore.QPointF(4.0,26.0),QtCore.QPointF(26.0,4.0)]
+        pt.drawPolygon(pts,QtCore.Qt.OddEvenFill)
+        pt.setBrush(QtGui.QBrush(facecolor, QtCore.Qt.SolidPattern))
+        pts = [QtCore.QPointF(28.0,28.0),QtCore.QPointF(8.0,28.0),QtCore.QPointF(28.0,8.0)]
+        pt.drawPolygon(pts,QtCore.Qt.OddEvenFill)
+        pt.end()
+        icon = QtGui.QIcon(QtGui.QPixmap.fromImage(im))
+        linewidth = Draft.getParam("linewidth",2)
+        fontsize =  Draft.getParam("textheight",0.20)
+        txt = str(linewidth)+"px | "+FreeCAD.Units.Quantity(fontsize,FreeCAD.Units.Length).UserString
+        self.styleButton.setIcon(icon)
+        self.styleButton.setText(txt)
+
+        # FOR BACKWARDS COMPATIBILITY
+        self.color = linecolor
+        self.facecolor = facecolor
+        self.linewidth = linewidth
+        self.fontsize = fontsize
 
     def popupMenu(self,llist,ilist=None,pos=None):
         """pops up a menu filled with the given list"""
@@ -1893,8 +1914,7 @@ class DraftToolBar:
         return str(a)
 
     def togglesnap(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            FreeCADGui.Snapper.toggle()
+        FreeCADGui.doCommand('FreeCADGui.runCommand("Draft_Snap_Lock")')
 
     def togglenearsnap(self):
         if hasattr(FreeCADGui,"Snapper"):
@@ -2103,12 +2123,12 @@ class FacebinderTaskPanel:
                     for subf in f[1]:
                         item = QtGui.QTreeWidgetItem(self.tree)
                         item.setText(0,f[0].Name)
-                        item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+                        item.setIcon(0, QtGui.QIcon(":/icons/Part_3D_object.svg"))
                         item.setText(1,subf)
                 else:
                     item = QtGui.QTreeWidgetItem(self.tree)
                     item.setText(0,f[0].Name)
-                    item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+                    item.setIcon(0, QtGui.QIcon(":/icons/Part_3D_object.svg"))
                     item.setText(1,f[1])
         self.retranslateUi(self.form)
 

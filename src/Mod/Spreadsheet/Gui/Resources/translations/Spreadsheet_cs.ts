@@ -362,7 +362,17 @@ Please select one cell only.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Kopírování a vložení se nezdařilo</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation type="unfinished">Alias contains invalid characters!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation type="unfinished">Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -447,8 +457,18 @@ Please select one cell only.</translation>
       <translation>Návrh</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Obsah</translation>
+      <source>&amp;Content:</source>
+      <translation type="unfinished">&amp;Content:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation type="unfinished">&amp;Alias:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation type="unfinished">Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
   </context>
   <context>

@@ -169,6 +169,7 @@ PyObject*  MeshPy::read(PyObject *args, PyObject *kwds)
     ext["OFF" ] = MeshCore::MeshIO::OFF;
     ext["IV"  ] = MeshCore::MeshIO::IV;
     ext["X3D" ] = MeshCore::MeshIO::X3D;
+    ext["X3DZ"] = MeshCore::MeshIO::X3DZ;
     ext["VRML"] = MeshCore::MeshIO::VRML;
     ext["WRL" ] = MeshCore::MeshIO::VRML;
     ext["WRZ" ] = MeshCore::MeshIO::WRZ;
@@ -210,24 +211,27 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
 
     MeshCore::MeshIO::Format format = MeshCore::MeshIO::Undefined;
     std::map<std::string, MeshCore::MeshIO::Format> ext;
-    ext["BMS" ] = MeshCore::MeshIO::BMS;
-    ext["STL" ] = MeshCore::MeshIO::BSTL;
-    ext["AST" ] = MeshCore::MeshIO::ASTL;
-    ext["OBJ" ] = MeshCore::MeshIO::OBJ;
-    ext["SMF" ] = MeshCore::MeshIO::SMF;
-    ext["OFF" ] = MeshCore::MeshIO::OFF;
-    ext["IDTF"] = MeshCore::MeshIO::IDTF;
-    ext["MGL" ] = MeshCore::MeshIO::MGL;
-    ext["IV"  ] = MeshCore::MeshIO::IV;
-    ext["X3D" ] = MeshCore::MeshIO::X3D;
-    ext["VRML"] = MeshCore::MeshIO::VRML;
-    ext["WRL" ] = MeshCore::MeshIO::VRML;
-    ext["WRZ" ] = MeshCore::MeshIO::WRZ;
-    ext["NAS" ] = MeshCore::MeshIO::NAS;
-    ext["BDF" ] = MeshCore::MeshIO::NAS;
-    ext["PLY" ] = MeshCore::MeshIO::PLY;
-    ext["APLY"] = MeshCore::MeshIO::APLY;
-    ext["PY"  ] = MeshCore::MeshIO::PY;
+    ext["BMS"  ] = MeshCore::MeshIO::BMS;
+    ext["STL"  ] = MeshCore::MeshIO::BSTL;
+    ext["AST"  ] = MeshCore::MeshIO::ASTL;
+    ext["OBJ"  ] = MeshCore::MeshIO::OBJ;
+    ext["SMF"  ] = MeshCore::MeshIO::SMF;
+    ext["OFF"  ] = MeshCore::MeshIO::OFF;
+    ext["IDTF" ] = MeshCore::MeshIO::IDTF;
+    ext["MGL"  ] = MeshCore::MeshIO::MGL;
+    ext["IV"   ] = MeshCore::MeshIO::IV;
+    ext["X3D"  ] = MeshCore::MeshIO::X3D;
+    ext["X3DZ" ] = MeshCore::MeshIO::X3DZ;
+    ext["X3DOM"] = MeshCore::MeshIO::X3DOM;
+    ext["VRML" ] = MeshCore::MeshIO::VRML;
+    ext["WRL"  ] = MeshCore::MeshIO::VRML;
+    ext["WRZ"  ] = MeshCore::MeshIO::WRZ;
+    ext["NAS"  ] = MeshCore::MeshIO::NAS;
+    ext["BDF"  ] = MeshCore::MeshIO::NAS;
+    ext["PLY"  ] = MeshCore::MeshIO::PLY;
+    ext["APLY" ] = MeshCore::MeshIO::APLY;
+    ext["PY"   ] = MeshCore::MeshIO::PY;
+    ext["ASY"  ] = MeshCore::MeshIO::ASY;
 
     static char* keywords_path[] = {"Filename","Format","Name","Material",NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "et|ssO", keywords_path, "utf-8",
@@ -1726,14 +1730,26 @@ PyObject*  MeshPy::smooth(PyObject *args, PyObject *kwds)
 PyObject*  MeshPy::decimate(PyObject *args)
 {
     float fTol, fRed;
-    if (!PyArg_ParseTuple(args, "ff", &fTol,&fRed))
-        return NULL;
+    if (PyArg_ParseTuple(args, "ff", &fTol,&fRed)) {
+        PY_TRY {
+            getMeshObjectPtr()->decimate(fTol, fRed);
+        } PY_CATCH;
 
-    PY_TRY {
-        getMeshObjectPtr()->decimate(fTol, fRed);
-    } PY_CATCH;
+        Py_Return;
+    }
 
-    Py_Return;
+    PyErr_Clear();
+    int targetSize;
+    if (PyArg_ParseTuple(args, "i", &targetSize)) {
+        PY_TRY {
+            getMeshObjectPtr()->decimate(targetSize);
+        } PY_CATCH;
+
+        Py_Return;
+    }
+
+    PyErr_SetString(PyExc_ValueError, "decimate(tolerance=float, reduction=float) or decimate(targetSize=int)");
+    return nullptr;
 }
 
 PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
@@ -1899,7 +1915,7 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
 #else
         int num = (int)Py::Int(t[4]);
 #endif
-        segm.emplace_back(new MeshCore::MeshCurvatureFreeformSegment(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
+        segm.emplace_back(std::make_shared<MeshCore::MeshCurvatureFreeformSegment>(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
     }
 
     finder.FindSegments(segm);

@@ -54,6 +54,10 @@ namespace nglib {
 #undef NETGEN_PYTHON
 #endif
 
+#ifndef WIN32
+#undef DLL_HEADER
+#endif
+
 #include <meshing.hpp>
 
 #if defined(__clang__)

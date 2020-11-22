@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -35,13 +34,13 @@ else:
         return txt
     # \endcond
 
-__title__="FreeCAD Arch Commands"
+__title__  = "FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package ArchCommands
 #  \ingroup ARCH
-#  \brief Utility functions for theArch Workbench
+#  \brief Utility functions for the Arch Workbench
 #
 #  This module provides general functions used by Arch tools
 #  and utility commands
@@ -64,7 +63,7 @@ def string_replace(text, pattern, replacement):
     if sys.version_info.major < 3:
         text = text.encode("utf8")
     return text.replace(pattern, replacement)
-    
+
 
 def getStringList(objects):
     '''getStringList(objects): returns a string defining a list
@@ -692,7 +691,7 @@ def download(url,force=False):
 
 def check(objectslist,includehidden=False):
     """check(objectslist,includehidden=False): checks if the given objects contain only solids"""
-    objs = Draft.getGroupContents(objectslist)
+    objs = Draft.get_group_contents(objectslist)
     if not includehidden:
         objs = Draft.removeHidden(objs)
     bad = []
@@ -751,6 +750,8 @@ def pruneIncluded(objectslist,strict=False):
                             if hasattr(parent,"Host") and (parent.Host == obj):
                                 pass
                             elif hasattr(parent,"Hosts") and (obj in parent.Hosts):
+                                pass
+                            elif hasattr(parent,"TypeId") and (parent.TypeId == "Part::Mirroring"):
                                 pass
                             elif hasattr(parent,"CloneOf"):
                                 if parent.CloneOf:
@@ -1199,7 +1200,7 @@ def cleanArchSplitter(objects=None):
 
 
 def rebuildArchShape(objects=None):
-    """rebuildArchShape([objects]): takes the faces from the base shape of the given (or selected 
+    """rebuildArchShape([objects]): takes the faces from the base shape of the given (or selected
     if objects is None) Arch objects, and tries to rebuild a valid solid from them."""
     import FreeCAD,FreeCADGui,Part
     if not objects:
@@ -1242,9 +1243,38 @@ def rebuildArchShape(objects=None):
 
 
 def getExtrusionData(shape,sortmethod="area"):
-    """getExtrusionData(shape,sortmethod): returns a base face and an extrusion vector
-    if this shape can be described as a perpendicular extrusion, or None if not.
-    sortmethod can be "area" (default) or "z"."""
+    """If a shape has been extruded, returns the base face, and extrusion vector.
+
+    Determines if a shape appears to have been extruded from some base face, and
+    extruded at the normal from that base face. IE: it looks like a cuboid.
+    https://en.wikipedia.org/wiki/Cuboid#Rectangular_cuboid
+
+    If this is the case, returns what appears to be the base face, and the vector
+    used to make that extrusion.
+
+    The base face is determined based on the sortmethod parameter, which can either
+    be:
+
+    "area" = Of the faces with the smallest area, the one with the lowest z coordinate.
+    "z" = The face with the lowest z coordinate.
+    a 3D vector = the face which center is closest to the given 3D point
+
+    Parameters
+    ----------
+    shape: <Part.Shape>
+        Shape to examine.
+    sortmethod: {"area", "z"}
+        Which sorting algorithm to use to determine the base face.
+
+    Returns
+    -------
+    Extrusion data: list
+        Two item list containing the base face, and the vector used to create the
+        extrusion. In that order.
+    Failure: None
+        Returns None if the object does not appear to be an extrusion.
+    """
+
     if shape.isNull():
         return None
     if not shape.Solids:
@@ -1286,9 +1316,11 @@ def getExtrusionData(shape,sortmethod="area"):
     if valids:
         if sortmethod == "z":
             valids.sort(key=lambda v: v[0].CenterOfMass.z)
-        else:
+        elif sortmethod == "area":
             # sort by smallest area
             valids.sort(key=lambda v: v[0].Area)
+        else:
+            valids.sort(key=lambda v: (v[0].CenterOfMass.sub(sortmethod)).Length)
         return valids[0]
     return None
 

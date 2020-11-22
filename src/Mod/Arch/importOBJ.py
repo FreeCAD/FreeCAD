@@ -66,24 +66,35 @@ def getIndices(obj,shape,offsetv,offsetvn):
     elist = []
     flist = []
     curves = None
+    mesh = None
 
     if isinstance(shape,Part.Shape):
         for e in shape.Edges:
             try:
                 if not isinstance(e.Curve,Part.LineSegment):
                     if not curves:
-                        myshape = obj.Shape.copy(False)
-                        myshape.Placement=obj.getGlobalPlacement()
-                        mesh=MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
+                        if obj.isDerivedFrom("App::Link"):
+                            myshape = obj.LinkedObject.Shape.copy(False)
+                            myshape.Placement=obj.LinkPlacement
+                        else:
+                            myshape = obj.Shape.copy(False)
+                            myshape.Placement = obj.getGlobalPlacement()
+                        mesh = MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
                         FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                         break
             except: # unimplemented curve type
-                myshape = obj.Shape.copy(False)
-                myshape.Placement=obj.getGlobalPlacement()
-                mesh=MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
-                FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
-                break
+                if obj.isDerivedFrom("App::Link"):
+                    if obj.Shape:
+                        myshape = obj.Shape.copy(False)
+                        myshape.Placement=obj.LinkPlacement
+                    else:
+                        myshape = obj.Shape.copy(False)
+                        myshape.Placement=obj.getGlobalPlacement()
+                    mesh = MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
+                    FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
+                    break
     elif isinstance(shape,Mesh.Mesh):
+        mesh = shape
         curves = shape.Topology
     if mesh:
         for v in mesh.Topology[0]:
@@ -151,13 +162,14 @@ def export(exportList,filename,colors=None):
     outfile.write("# http://www.freecadweb.org\n")
     offsetv = 1
     offsetvn = 1
-    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    objectslist = Draft.get_group_contents(exportList, walls=True,
+                                           addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
     filenamemtl = filename[:-4] + ".mtl"
     materials = []
     outfile.write("mtllib " + os.path.basename(filenamemtl) + "\n")
     for obj in objectslist:
-        if obj.isDerivedFrom("Part::Feature") or obj.isDerivedFrom("Mesh::Feature"):
+        if obj.isDerivedFrom("Part::Feature") or obj.isDerivedFrom("Mesh::Feature") or obj.isDerivedFrom("App::Link"):
             hires = None
             if FreeCAD.GuiUp:
                 visible = obj.ViewObject.isVisible()
@@ -236,10 +248,10 @@ def export(exportList,filename,colors=None):
                         outfile.write("f" + f + "\n")
     outfile.close()
     FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + " " + decode(filename) + "\n")
-    if materials: 
+    if materials:
         outfile = pythonopen(filenamemtl,"w")
         outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
-        outfile.write("# http://www.freecadweb.org\n")
+        outfile.write("# https://www.freecadweb.org\n")
         kinds = {"AmbientColor":"Ka ","DiffuseColor":"Kd ","SpecularColor":"Ks ","EmissiveColor":"Ke ","Transparency":"Tr "}
         done = [] # store names to avoid duplicates
         for mat in materials:

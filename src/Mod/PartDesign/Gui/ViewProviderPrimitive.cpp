@@ -81,8 +81,6 @@ void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, con
 bool ViewProviderPrimitive::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
-        setPreviewDisplayMode(true);
-
         // When double-clicking on the item for this fillet the
         // object unsets and sets its edit mode without closing
         // the task panel
@@ -114,6 +112,8 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
         else
             Gui::Control().showDialog(new TaskPrimitiveParameters(this));
 
+        setPreviewDisplayMode(true);
+
         return true;
     }
     else {
@@ -123,8 +123,12 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
 
 void ViewProviderPrimitive::unsetEdit(int ModNum)
 {
-    Q_UNUSED(ModNum);
     setPreviewDisplayMode(false);
+
+    // Rely on parent class to:
+    // restitute old workbench (set setEdit above) and close the dialog if exiting editing
+    PartDesignGui::ViewProvider::unsetEdit(ModNum);
+
 }
 
 void ViewProviderPrimitive::updateData(const App::Property* p) {

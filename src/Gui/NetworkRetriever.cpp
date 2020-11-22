@@ -374,7 +374,12 @@ void NetworkRetriever::wgetFinished(int exitCode, QProcess::ExitStatus status)
 bool NetworkRetriever::testWget()
 {
     QProcess proc;
+#if QT_VERSION > 0x050000
+    proc.setProgram(QString::fromLatin1("wget"));
+    proc.start();
+#else
     proc.start(QString::fromLatin1("wget"));
+#endif
     bool ok = proc.state() == QProcess::Running;
     proc.kill();
     proc.waitForFinished();
@@ -460,8 +465,8 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
         bool bAuthor    = hGrp->GetBool ("Authorize", false);
 
         if (bUseProxy) {
-            QString username = QString::null;
-            QString password = QString::null;
+            QString username;
+            QString password;
 
             if (bAuthor) {
                 QDialog dlg(getMainWindow());

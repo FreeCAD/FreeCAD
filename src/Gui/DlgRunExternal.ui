@@ -26,7 +26,6 @@
       <widget class="QLabel" name="programName">
        <property name="font">
         <font>
-         <family>MS Shell Dlg 2</family>
          <pointsize>14</pointsize>
          <weight>50</weight>
          <italic>false</italic>

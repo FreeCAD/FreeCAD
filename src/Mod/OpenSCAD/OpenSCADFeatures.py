@@ -179,6 +179,43 @@ class OpenSCADPlaceholder:
         import Part
         fp.Shape = Part.Compound([]) #empty Shape
 
+class Resize :
+    def __init__(self,obj,target,vector) :
+        import FreeCAD
+        #self.Obj = obj
+        self.Target = target
+        self.Vector = vector
+        #obj.addProperty("App::PropertyPythonObject","Object","Resize", \
+        #                "Object to be resized").Object = target
+        obj.addProperty("Part::PropertyPartShape","Shape","Resize", "Shape of the Resize")
+        obj.addProperty("App::PropertyVector","Vector","Resize",
+                        " Resize Vector").Vector = FreeCAD.Vector(vector)
+        obj.Proxy = self
+
+    def onChanged(self, fp, prop):
+        if prop in ['Object','Vector'] :
+           self.createGeometry(fp)
+    
+    def execute(self, fp):
+        self.createGeometry(fp)
+
+    def createGeometry(self, fp) :
+        print("Resize create Geometry")
+        import FreeCAD
+        mat = FreeCAD.Matrix()
+        mat.A11 = self.Vector[0]
+        mat.A22 = self.Vector[1]
+        mat.A33 = self.Vector[2]
+        print(mat)
+        fp.Shape = self.Target.Shape.transformGeometry(mat) 
+
+    def __getstate__(self):
+        return None
+    
+    def __setstate__(self,state):    
+        return None
+
+
 class MatrixTransform:
     def __init__(self, obj,matrix=None,child=None):
         obj.addProperty("App::PropertyLink","Base","Base",
@@ -462,8 +499,8 @@ class CGALFeature:
     def execute(self,fp):
         #arguments are ignored
         maxmeshpoints = None #TBD: add as property
-        import Part,OpenSCADUtils
-        shape = OpenSCADUtils.process_ObjectsViaOpenSCADShape(fp.Document,fp.Children,\
+        import Part, OpenSCAD.OpenSCADUtils
+        shape = OpenSCAD.OpenSCADUtils.process_ObjectsViaOpenSCADShape(fp.Document,fp.Children,\
                 fp.Operation, maxmeshpoints=maxmeshpoints)
         if shape:
             fp.Shape = shape

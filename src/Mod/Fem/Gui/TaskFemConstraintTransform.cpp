@@ -281,7 +281,7 @@ void TaskFemConstraintTransform::addToSelection()
         for (size_t subIt = 0; subIt < (subNames.size()); ++subIt){// for every selected sub element
             bool addMe=true;
             if (subNames[subIt].substr(0, 4) != "Face") {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces or edges can be picked"));
+                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
                 return;
             }
             if (subNames[subIt].substr(0, 4) == "Face") {

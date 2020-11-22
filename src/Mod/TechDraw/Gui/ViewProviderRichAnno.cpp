@@ -48,7 +48,9 @@
 
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/LineGroup.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 
+#include "PreferencesGui.h"
 #include "MDIViewPage.h"
 #include "QGVPage.h"
 #include "QGIView.h"
@@ -56,11 +58,17 @@
 #include "ViewProviderRichAnno.h"
 
 using namespace TechDrawGui;
-
-// there are only 5 frame line styles
-App::PropertyIntegerConstraint::Constraints ViewProviderRichAnno::LineStyleRange = {0, 5, 1};
+using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderRichAnno, TechDrawGui::ViewProviderDrawingView)
+
+const char* ViewProviderRichAnno::LineStyleEnums[] = { "NoLine",
+                                                  "Continuous",
+                                                  "Dash",
+                                                  "Dot",
+                                                  "DashDot",
+                                                  "DashDotDot",
+                                                  NULL };
 
 //**************************************************************************
 // Construction/Destruction
@@ -71,11 +79,11 @@ ViewProviderRichAnno::ViewProviderRichAnno()
 
     static const char *group = "Frame Format";
 
-    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()), group,(App::PropertyType)(App::Prop_None),"Frame line width");
-    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Frame line style index");
-    ADD_PROPERTY_TYPE(LineColor,(getDefLineColor()),group,App::Prop_None,"The color of the frame");
+    ADD_PROPERTY_TYPE(LineWidth, (getDefLineWeight()), group,(App::PropertyType)(App::Prop_None), "Frame line width");
+    LineStyle.setEnums(LineStyleEnums);
+    ADD_PROPERTY_TYPE(LineStyle, (1), group, (App::PropertyType)(App::Prop_None), "Frame line style");
+    ADD_PROPERTY_TYPE(LineColor, (getDefLineColor()), group, App::Prop_None, "The color of the frame");
 
-    LineStyle.setConstraints(&LineStyleRange);
 }
 
 ViewProviderRichAnno::~ViewProviderRichAnno()
@@ -165,36 +173,23 @@ TechDraw::DrawRichAnno* ViewProviderRichAnno::getFeature() const
 
 App::Color ViewProviderRichAnno::getDefLineColor(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                 GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Markups");
-    App::Color result;
-    result.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
-    return result;
+    return PreferencesGui::leaderColor();
 }
 
 std::string ViewProviderRichAnno::getDefFont(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
-    return fontName;
+    return Preferences::labelFont();
 }
 
 double ViewProviderRichAnno::getDefFontSize()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", 5.0);
-    return fontSize;
+    return Preferences::dimFontSizeMM();
 }
 
 double ViewProviderRichAnno::getDefLineWeight(void)
 {
     double result = 0.0;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    std::string lgName = Preferences::lineGroup();
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     result = lg->getWeight("Graphics");
     delete lg;
@@ -204,7 +199,7 @@ double ViewProviderRichAnno::getDefLineWeight(void)
 void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
 // transforms properties that had been changed
 {
-    // property LineWidth had the App::PropertyFloat and was changed to App::PropertyLength
+    // property LineWidth had App::PropertyFloat and was changed to App::PropertyLength
     if (prop == &LineWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
         App::PropertyFloat LineWidthProperty;
         // restore the PropertyFloat to be able to set its value
@@ -212,10 +207,18 @@ void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, co
         LineWidth.setValue(LineWidthProperty.getValue());
     }
 
-    // property LineStyle had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    // property LineStyle had App::PropertyInteger and was changed to App::PropertyIntegerConstraint
     if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
         App::PropertyInteger LineStyleProperty;
         // restore the PropertyInteger to be able to set its value
+        LineStyleProperty.Restore(reader);
+        LineStyle.setValue(LineStyleProperty.getValue());
+    }
+
+    // property LineStyle had App::PropertyIntegerConstraint and was changed to App::PropertyEnumeration
+    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyIntegerConstraint") == 0) {
+        App::PropertyIntegerConstraint LineStyleProperty;
+        // restore the PropertyIntegerConstraint to be able to set its value
         LineStyleProperty.Restore(reader);
         LineStyle.setValue(LineStyleProperty.getValue());
     }

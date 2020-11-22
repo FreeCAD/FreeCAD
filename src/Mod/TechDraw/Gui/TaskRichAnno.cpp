@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,10 +48,12 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskRichAnno.h>
 
 #include "DrawGuiStd.h"
+#include "PreferencesGui.h"
 #include "QGVPage.h"
 #include "QGIView.h"
 #include "QGIPrimPath.h"
@@ -73,15 +75,23 @@ using namespace TechDrawGui;
 //ctor for edit
 TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     ui(new Ui_TaskRichAnno),
+    blockUpdate(false),
+    m_view(nullptr),
     m_annoVP(annoVP),
     m_baseFeat(nullptr),
     m_basePage(nullptr),
     m_annoFeat(nullptr),
+    m_qgParent(nullptr),
     m_createMode(false),
+    m_text(nullptr),
+    m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
     m_qgAnno(nullptr),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_textDialog(nullptr),
-    m_rte(nullptr)
+    m_rte(nullptr),
+    m_haveMdi(false)
 {
 //    Base::Console().Message("TRA::TRA() - edit\n");
     if (m_annoVP == nullptr)  {
@@ -98,7 +108,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
         return;
     }
 
-    //m_baseFeat can be null 
+    //m_baseFeat can be null
     App::DocumentObject* obj = m_annoFeat->AnnoParent.getValue();
     if (obj != nullptr) {
         if ( obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) )  {
@@ -113,7 +123,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     m_mdi = dvp->getMDIViewPage();
     m_qgParent = nullptr;
     m_haveMdi = true;
-    if (m_mdi != nullptr) {    
+    if (m_mdi != nullptr) {
         m_view = m_mdi->getQGVPage();
         if (m_baseFeat != nullptr) {
             m_qgParent = m_view->findQViewForDocObj(m_baseFeat);
@@ -140,15 +150,24 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
                            TechDraw::DrawPage* page) :
     ui(new Ui_TaskRichAnno),
+    blockUpdate(false),
+    m_mdi(nullptr),
+    m_view(nullptr),
     m_annoVP(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(page),
     m_annoFeat(nullptr),
+    m_qgParent(nullptr),
     m_createMode(true),
+    m_text(nullptr),
+    m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
     m_qgAnno(nullptr),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_textDialog(nullptr),
-    m_rte(nullptr)
+    m_rte(nullptr),
+    m_haveMdi(false)
 {
 //    Base::Console().Message("TRA::TRA() - create\n");
     if (m_basePage == nullptr)  {
@@ -164,7 +183,7 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     m_qgParent = nullptr;
     m_haveMdi = true;
     m_mdi = dvp->getMDIViewPage();
-    if (m_mdi != nullptr) {    
+    if (m_mdi != nullptr) {
         m_view = m_mdi->getQGVPage();
         if (baseFeat != nullptr) {
             m_qgParent = m_view->findQViewForDocObj(baseFeat);
@@ -225,7 +244,7 @@ void TaskRichAnno::setUiPrimary()
 #endif
 }
 
-void TaskRichAnno::enableTextUi(bool b) 
+void TaskRichAnno::enableTextUi(bool b)
 {
     ui->pbEditor->setEnabled(b);
     ui->teAnnoText->setEnabled(b);
@@ -247,7 +266,7 @@ void TaskRichAnno::setUiEdit()
     enableVPUi(true);
     setWindowTitle(m_title);
     enableTextUi(true);
-    
+
     if (m_annoFeat != nullptr) {
         std::string baseName("None");
         App::DocumentObject* docObj = m_annoFeat->AnnoParent.getValue();
@@ -314,10 +333,7 @@ void TaskRichAnno::onEditorExit(void)
 
 double TaskRichAnno::prefWeight() const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->
-                                        GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    std::string lgName = Preferences::lineGroup();
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     double weight = lg->getWeight("Graphic");
     delete lg;                                   //Coverity CID 174670
@@ -326,11 +342,7 @@ double TaskRichAnno::prefWeight() const
 
 App::Color TaskRichAnno::prefLineColor(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                 GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Markups");
-    App::Color result;
-    result.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
-    return result;
+    return PreferencesGui::leaderColor();
 }
 
 
@@ -391,10 +403,12 @@ void TaskRichAnno::createAnnoFeature()
     if (m_baseFeat != nullptr) {
         m_baseFeat->touch();
     }
-    if (m_basePage != nullptr) {
-        m_basePage->touch();
+
+    m_basePage->touch();
+
+    if (m_annoFeat != nullptr) {
+        m_annoFeat->requestPaint();
     }
-    m_annoFeat->requestPaint();
 }
 
 void TaskRichAnno::updateAnnoFeature()
@@ -416,7 +430,7 @@ void TaskRichAnno::commonFeatureUpdate(void)
 {
 //    Base::Console().Message("TRA::commonFeatureUpdate()\n");
     m_annoFeat->setPosition(Rez::appX(m_attachPoint.x),Rez::appX(- m_attachPoint.y), true);
-    m_annoFeat->AnnoText.setValue(ui->teAnnoText->toHtml().toUtf8()); 
+    m_annoFeat->AnnoText.setValue(ui->teAnnoText->toHtml().toUtf8());
     m_annoFeat->MaxWidth.setValue(ui->dsbMaxWidth->value().getValue());
     m_annoFeat->ShowFrame.setValue(ui->cbShowFrame->isChecked());
 }
@@ -468,7 +482,7 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
     std::vector<Base::Vector3d> points;
     if (m_baseFeat != nullptr) {
         if (m_baseFeat->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
-            TechDraw::DrawLeaderLine* dll = dynamic_cast<TechDraw::DrawLeaderLine*>(m_baseFeat);
+            TechDraw::DrawLeaderLine* dll = static_cast<TechDraw::DrawLeaderLine*>(m_baseFeat);
             points = dll->WayPoints.getValues();
         } else {
 //            Base::Console().Message("TRA::calcTextPos - m_baseFeat is not Leader\n");
@@ -551,7 +565,7 @@ bool TaskRichAnno::reject()
 //        Base::Console().Message("TRA::reject - edit in progress!!\n");
         return false;
     }
-    
+
     if (m_basePage != nullptr) {
         Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
         if (!doc) {
@@ -563,7 +577,7 @@ bool TaskRichAnno::reject()
         }
     }
 
-    //make sure any dangling objects are cleaned up 
+    //make sure any dangling objects are cleaned up
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 

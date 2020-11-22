@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -295,7 +294,7 @@ PyObject*  PropertyContainerPy::getPropertyStatus(PyObject *args)
                         break;
                     }
                 }
-                if(!found) 
+                if(!found)
                     ret.append(Py::Int((long)i));
             }
         }
@@ -396,7 +395,7 @@ PyObject* PropertyContainerPy::dumpPropertyContent(PyObject *args, PyObject *kwd
     }
     catch (...) {
        PyErr_SetString(PyExc_IOError, "Unable parse content into binary representation");
-       return NULL; 
+       return NULL;
     }
 
     //build the byte array with correct size
@@ -508,7 +507,7 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         }
         return dict;
     } else if(Base::streq(attr,"Shape")
-            && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId())) 
+            && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId()))
     {
         // Special treatment of Shape property
         static PyObject *_getShape = 0;
@@ -527,7 +526,7 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
             Py::Tuple args(1);
             args.setItem(0,Py::Object(const_cast<PropertyContainerPy*>(this)));
             auto res = PyObject_CallObject(_getShape, args.ptr());
-            if(!res) 
+            if(!res)
                 PyErr_Clear();
             else {
                 Py::Object pyres(res,true);

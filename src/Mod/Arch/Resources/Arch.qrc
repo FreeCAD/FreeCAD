@@ -17,6 +17,8 @@
         <file>icons/Arch_CloseHoles.svg</file>
         <file>icons/Arch_Component.svg</file>
         <file>icons/Arch_Component_Clone.svg</file>
+        <file>icons/Arch_CurtainWall.svg</file>
+        <file>icons/Arch_CurtainWall_Tree.svg</file>
         <file>icons/Arch_CutLine.svg</file>
         <file>icons/Arch_CutPlane.svg</file>
         <file>icons/Arch_Equipment.svg</file>
@@ -75,6 +77,8 @@
         <file>icons/Arch_Survey.svg</file>
         <file>icons/Arch_ToggleIfcBrepFlag.svg</file>
         <file>icons/Arch_ToggleSubs.svg</file>
+        <file>icons/Arch_Truss.svg</file>
+        <file>icons/Arch_Truss_Tree.svg</file>
         <file>icons/Arch_Wall.svg</file>
         <file>icons/Arch_Wall_Clone.svg</file>
         <file>icons/Arch_Wall_Tree.svg</file>
@@ -112,6 +116,7 @@
         <file>ui/preferences-archdefaults.ui</file>
         <file>ui/preferences-dae.ui</file>
         <file>ui/preferences-ifc.ui</file>
+        <file>ui/preferences-ifc-export.ui</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_ar.qm</file>
         <file>translations/Arch_ca.qm</file>

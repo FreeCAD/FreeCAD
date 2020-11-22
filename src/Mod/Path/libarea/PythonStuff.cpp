@@ -30,8 +30,10 @@
 #pragma implementation
 #endif
 
-#include <boost/progress.hpp>
-#include <boost/timer.hpp>
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
+
+//#include <boost/progress.hpp>
+//#include <boost/timer.hpp>
 #include <boost/foreach.hpp>
 #include <boost/python.hpp>
 #include <boost/python/module.hpp>

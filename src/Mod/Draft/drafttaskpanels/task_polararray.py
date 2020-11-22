@@ -20,11 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the task panel for the Draft PolarArray tool."""
+"""Provides the task panel code for the Draft PolarArray tool."""
 ## @package task_polararray
-# \ingroup DRAFT
-# \brief This module provides the task panel code for the PolarArray tool.
+# \ingroup drafttaskpanels
+# \brief Provides the task panel code for the Draft PolarArray tool.
 
+## \addtogroup drafttaskpanels
+# @{
 import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -33,9 +35,10 @@ import FreeCADGui as Gui
 import Draft_rc  # include resources, icons, ui files
 import DraftVecUtils
 import draftutils.utils as utils
+
+from FreeCAD import Units as U
 from draftutils.messages import _msg, _wrn, _err, _log
 from draftutils.translate import _tr
-from FreeCAD import Units as U
 
 # The module is used to prevent complaints from code checkers (flake8)
 bool(Draft_rc.__name__)
@@ -77,7 +80,7 @@ class TaskPanelPolarArray:
 
     def __init__(self):
         self.name = "Polar array"
-        _log(_tr("Task panel:") + "{}".format(_tr(self.name)))
+        _log(_tr("Task panel:") + " {}".format(_tr(self.name)))
 
         # The .ui file must be loaded into an attribute
         # called `self.form` so that it is displayed in the task panel.
@@ -173,7 +176,8 @@ class TaskPanelPolarArray:
                                                self.center)
         if self.valid_input:
             self.create_object()
-            self.print_messages()
+            # The internal function already displays messages
+            # self.print_messages()
             self.finish()
 
     def validate_input(self, selection,
@@ -232,17 +236,15 @@ class TaskPanelPolarArray:
             sel_obj = self.selection[0]
 
         # This creates the object immediately
-        # obj = Draft.makeArray(sel_obj,
-        #                       self.center, self.angle, self.number,
-        #                       self.use_link)
-        # if obj:
-        #     obj.Fuse = self.fuse
+        # obj = Draft.make_polar_array(sel_obj,
+        #                              self.number, self.angle, self.center,
+        #                              self.use_link)
 
-        # Instead, we build the commands to execute through the parent
+        # Instead, we build the commands to execute through the caller
         # of this class, the GuiCommand.
         # This is needed to schedule geometry manipulation
         # that would crash Coin3D if done in the event callback.
-        _cmd = "draftobjects.polararray.make_polar_array"
+        _cmd = "Draft.make_polar_array"
         _cmd += "("
         _cmd += "App.ActiveDocument." + sel_obj.Name + ", "
         _cmd += "number=" + str(self.number) + ", "
@@ -251,11 +253,11 @@ class TaskPanelPolarArray:
         _cmd += "use_link=" + str(self.use_link)
         _cmd += ")"
 
-        _cmd_list = ["Gui.addModule('Draft')",
-                     "Gui.addModule('draftobjects.polararray')",
-                     "obj = " + _cmd,
-                     "obj.Fuse = " + str(self.fuse),
-                     "Draft.autogroup(obj)",
+        Gui.addModule('Draft')
+
+        _cmd_list = ["_obj_ = " + _cmd,
+                     "_obj_.Fuse = " + str(self.fuse),
+                     "Draft.autogroup(_obj_)",
                      "App.ActiveDocument.recompute()"]
 
         # We commit the command list through the parent command
@@ -448,3 +450,5 @@ class TaskPanelPolarArray:
         Gui.ActiveDocument.resetEdit()
         # Runs the parent command to complete the call
         self.source_command.completed()
+
+## @}

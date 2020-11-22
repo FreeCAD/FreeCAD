@@ -773,17 +773,21 @@ void QGVPage::refreshViews(void)
 
 void QGVPage::setExporting(bool enable)
 {
-//    Base::Console().Message("QGVP::setExporting(%d)\n", enable);
     QList<QGraphicsItem*> sceneItems = scene()->items();
+    std::vector<QGIViewPart*> dvps;
     for (auto& qgi:sceneItems) {
         QGIViewPart* qgiPart = dynamic_cast<QGIViewPart *>(qgi);
         QGIRichAnno* qgiRTA  = dynamic_cast<QGIRichAnno *>(qgi);
         if(qgiPart) {
             qgiPart->setExporting(enable);
+            dvps.push_back(qgiPart);
         }
         if (qgiRTA) {
             qgiRTA->setExporting(enable);
         }
+    }
+    for (auto& v: dvps) {
+        v->draw();
     }
 }
 
@@ -848,13 +852,13 @@ void QGVPage::saveSvg(QString filename)
     QPainter p;
 
     p.begin(&svgGen);
-    scene()->render(&p, targetRect,sourceRect);
+    scene()->render(&p, targetRect,sourceRect);    //note: scene render, not item render!
     p.end();
 
     m_vpPage->setFrameState(saveState);
     m_vpPage->setTemplateMarkers(saveState);
     setExporting(false);
-    if (templateVisible) {
+    if (templateVisible && svgTemplate) {
         svgTemplate->show();
     }
 
@@ -919,8 +923,13 @@ void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
                                                QString::fromUtf8("stroke: none;"));
 
                     // Scale the template group correctly
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
                     templateGroup.setAttribute(QString::fromUtf8("transform"),
                         QString().sprintf("scale(%f, %f)", Rez::guiX(1.0), Rez::guiX(1.0)));
+#else
+                    templateGroup.setAttribute(QString::fromUtf8("transform"),
+                        QString::fromLatin1("scale(%1, %2)").arg(Rez::guiX(1.0), 0, 'f').arg(Rez::guiX(1.0), 0, 'f'));
+#endif
 
                     // Finally, transfer all template document child nodes under the template group
                     while (!templateDocElem.firstChild().isNull()) {
@@ -1017,7 +1026,12 @@ void QGVPage::wheelEvent(QWheelEvent *event)
     }
 
     QPointF center = mapToScene(viewport()->rect().center());
-    qreal factor = std::pow(mouseBase, event->delta() / mouseAdjust);
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    int delta = event->angleDelta().y();
+#else
+    int delta = event->delta();
+#endif
+    qreal factor = std::pow(mouseBase, delta / mouseAdjust);
     scale(factor, factor);
 
     QPointF newCenter = mapToScene(viewport()->rect().center());

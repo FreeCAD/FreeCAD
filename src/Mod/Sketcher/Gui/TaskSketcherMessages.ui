@@ -16,12 +16,6 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="labelConstrainStatus">
-     <property name="font">
-      <font>
-       <family>Bitstream Charter</family>
-       <pointsize>9</pointsize>
-      </font>
-     </property>
      <property name="text">
       <string>Undefined degrees of freedom</string>
      </property>
@@ -32,12 +26,6 @@
    </item>
    <item>
     <widget class="QLabel" name="labelSolverStatus">
-     <property name="font">
-      <font>
-       <family>Bitstream Charter</family>
-       <pointsize>9</pointsize>
-      </font>
-     </property>
      <property name="text">
       <string>Not solved yet</string>
      </property>

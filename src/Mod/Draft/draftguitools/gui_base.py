@@ -22,14 +22,113 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the Base object for all Draft Gui commands."""
+"""Provides the base classes for newer Draft Gui Commands."""
 ## @package gui_base
-# \ingroup DRAFT
-# \brief This module provides the Base object for all Draft Gui commands.
+# \ingroup draftguitools
+# \brief Provides the base classes for newer Draft Gui Commands.
 
+## \addtogroup draftguitools
+# @{
 import FreeCAD as App
 import FreeCADGui as Gui
 import draftutils.todo as todo
+
+from draftutils.messages import _msg, _log
+
+__metaclass__ = type  # to support Python 2 use of `super()`
+
+
+class GuiCommandSimplest:
+    """Simplest base class for GuiCommands.
+
+    This class only sets up the command name and the document object
+    to use for the command.
+    When it is executed, it logs the command name to the log file,
+    and prints the command name to the console.
+
+    It implements the `IsActive` method, which must return `True`
+    when the command should be available.
+    It should return `True` when there is an active document,
+    otherwise the command (button or menu) should be disabled.
+
+    This class is meant to be inherited by other GuiCommand classes
+    to quickly log the command name, and set the correct document object.
+
+    Parameter
+    ---------
+    name: str, optional
+        It defaults to `'None'`.
+        The name of the action that is being run,
+        for example, `'Heal'`, `'Flip dimensions'`,
+        `'Line'`, `'Circle'`, etc.
+
+    doc: App::Document, optional
+        It defaults to the value of `App.activeDocument()`.
+        The document object itself, which indicates where the actions
+        of the command will be executed.
+
+    Attributes
+    ----------
+    command_name: str
+        This is the command name, which is assigned by `name`.
+
+    doc: App::Document
+        This is the document object itself, which is assigned by `doc`.
+
+        This attribute should be used by functions to make sure
+        that the operations are performed in the correct document
+        and not in other documents.
+        To set the active document we can use
+
+        >>> App.setActiveDocument(self.doc.Name)
+    """
+
+    def __init__(self, name="None", doc=App.activeDocument()):
+        self.command_name = name
+        self.doc = doc
+
+    def IsActive(self):
+        """Return True when this command should be available.
+
+        It is `True` when there is a document.
+        """
+        if App.activeDocument():
+            return True
+        else:
+            return False
+
+    def Activated(self):
+        """Execute when the command is called.
+
+        Log the command name to the log file and console.
+        Also update the `doc` attribute.
+        """
+        self.doc = App.activeDocument()
+        _log("Document: {}".format(self.doc.Label))
+        _log("GuiCommand: {}".format(self.command_name))
+        _msg("{}".format(16*"-"))
+        _msg("GuiCommand: {}".format(self.command_name))
+
+
+class GuiCommandNeedsSelection(GuiCommandSimplest):
+    """Base class for GuiCommands that need a selection to be available.
+
+    It re-implements the `IsActive` method to return `True`
+    when there is both an active document and an active selection.
+
+    It inherits `GuiCommandSimplest` to set up the document
+    and other behavior. See this class for more information.
+    """
+
+    def IsActive(self):
+        """Return True when this command should be available.
+
+        It is `True` when there is a selection.
+        """
+        if App.activeDocument() and Gui.Selection.getSelection():
+            return True
+        else:
+            return False
 
 
 class GuiCommandBase:
@@ -118,3 +217,5 @@ class GuiCommandBase:
             that will be executed.
         """
         self.commit_list.append((name, func))
+
+## @}

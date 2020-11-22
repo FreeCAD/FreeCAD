@@ -71,6 +71,11 @@ void ViewProviderDatumLine::updateData(const App::Property* prop)
     if (strcmp(prop->getName(),"Placement") == 0) {
         updateExtents ();
     }
+    else if (strcmp(prop->getName(),"Length") == 0) {
+        PartDesign::Line* pcDatum = static_cast<PartDesign::Line*>(this->getObject());
+        if (pcDatum->ResizeMode.getValue() != 0)
+            setExtents(pcDatum->Length.getValue());
+    }
 
     ViewProviderDatum::updateData(prop);
 }
@@ -78,7 +83,11 @@ void ViewProviderDatumLine::updateData(const App::Property* prop)
 
 void ViewProviderDatumLine::setExtents (Base::BoundBox3d bbox) {
     PartDesign::Line* pcDatum = static_cast<PartDesign::Line*>(this->getObject());
-
+    // set manual size
+    if (pcDatum->ResizeMode.getValue() != 0) {
+        setExtents(pcDatum->Length.getValue());
+        return;
+    }
     Base::Placement plm = pcDatum->Placement.getValue ().inverse ();
 
     // Transform the box to the line's coordinates, the result line will be larger than the bbox
@@ -92,4 +101,12 @@ void ViewProviderDatumLine::setExtents (Base::BoundBox3d bbox) {
     pCoords->point.setNum (2);
     pCoords->point.set1Value(0, 0, 0, bbox.MaxZ + margin );
     pCoords->point.set1Value(1, 0, 0, bbox.MinZ - margin );
+}
+
+void ViewProviderDatumLine::setExtents(double l)
+{
+    // Change the coordinates of the line
+    pCoords->point.setNum (2);
+    pCoords->point.set1Value(0, 0, 0, l/2 );
+    pCoords->point.set1Value(1, 0, 0, -l/2 );
 }

@@ -37,9 +37,9 @@ else:
         return txt
     # \endcond
 
-__title__="FreeCAD Axis System"
+__title__  = "FreeCAD Axis System"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package ArchAxis
 #  \ingroup ARCH
@@ -246,10 +246,10 @@ class _Axis:
             obj.Shape = sh
             obj.Placement = pl
 
-    #def onChanged(self,obj,prop):
+    def onChanged(self,obj,prop):
 
-    #    if prop in ["Angles","Distances","Placement"]:
-    #        self.execute(obj)
+        if prop in ["Angles","Distances","Placement"]:
+            obj.touch()
 
     def __getstate__(self):
 
@@ -1001,8 +1001,9 @@ class AxisSystemTaskPanel:
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
         elif obj.isDerivedFrom("App::DocumentObjectGroup"):
             return QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
-        else:
-            return QtGui.QIcon(":/icons/Tree_Part.svg")
+        elif hasattr(obj.ViewObject, "Icon"):
+            return QtGui.QIcon(obj.ViewObject.Icon)
+        return QtGui.QIcon(":/icons/Part_3D_object.svg")
 
     def update(self):
 

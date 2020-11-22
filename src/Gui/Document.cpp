@@ -30,10 +30,11 @@
 # include <qdir.h>
 # include <qfileinfo.h>
 # include <QKeySequence>
+# include <QTextStream>
 # include <qmessagebox.h>
 # include <qstatusbar.h>
 # include <boost/signals2.hpp>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
@@ -75,6 +76,7 @@
 FC_LOG_LEVEL_INIT("Gui",true,true)
 
 using namespace Gui;
+namespace bp = boost::placeholders;
 
 namespace Gui {
 
@@ -165,54 +167,54 @@ Document::Document(App::Document* pcDocument,Application * app)
 
     // Setup the connections
     d->connectNewObject = pcDocument->signalNewObject.connect
-        (boost::bind(&Gui::Document::slotNewObject, this, _1));
+        (boost::bind(&Gui::Document::slotNewObject, this, bp::_1));
     d->connectDelObject = pcDocument->signalDeletedObject.connect
-        (boost::bind(&Gui::Document::slotDeletedObject, this, _1));
+        (boost::bind(&Gui::Document::slotDeletedObject, this, bp::_1));
     d->connectCngObject = pcDocument->signalChangedObject.connect
-        (boost::bind(&Gui::Document::slotChangedObject, this, _1, _2));
+        (boost::bind(&Gui::Document::slotChangedObject, this, bp::_1, bp::_2));
     d->connectRenObject = pcDocument->signalRelabelObject.connect
-        (boost::bind(&Gui::Document::slotRelabelObject, this, _1));
+        (boost::bind(&Gui::Document::slotRelabelObject, this, bp::_1));
     d->connectActObject = pcDocument->signalActivatedObject.connect
-        (boost::bind(&Gui::Document::slotActivatedObject, this, _1));
+        (boost::bind(&Gui::Document::slotActivatedObject, this, bp::_1));
     d->connectActObjectBlocker = boost::signals2::shared_connection_block
         (d->connectActObject, false);
     d->connectSaveDocument = pcDocument->signalSaveDocument.connect
-        (boost::bind(&Gui::Document::Save, this, _1));
+        (boost::bind(&Gui::Document::Save, this, bp::_1));
     d->connectRestDocument = pcDocument->signalRestoreDocument.connect
-        (boost::bind(&Gui::Document::Restore, this, _1));
+        (boost::bind(&Gui::Document::Restore, this, bp::_1));
     d->connectStartLoadDocument = App::GetApplication().signalStartRestoreDocument.connect
-        (boost::bind(&Gui::Document::slotStartRestoreDocument, this, _1));
+        (boost::bind(&Gui::Document::slotStartRestoreDocument, this, bp::_1));
     d->connectFinishLoadDocument = App::GetApplication().signalFinishRestoreDocument.connect
-        (boost::bind(&Gui::Document::slotFinishRestoreDocument, this, _1));
+        (boost::bind(&Gui::Document::slotFinishRestoreDocument, this, bp::_1));
     d->connectShowHidden = App::GetApplication().signalShowHidden.connect
-        (boost::bind(&Gui::Document::slotShowHidden, this, _1));
+        (boost::bind(&Gui::Document::slotShowHidden, this, bp::_1));
 
     d->connectChangePropertyEditor = pcDocument->signalChangePropertyEditor.connect
-        (boost::bind(&Gui::Document::slotChangePropertyEditor, this, _1, _2));
+        (boost::bind(&Gui::Document::slotChangePropertyEditor, this, bp::_1, bp::_2));
     d->connectFinishRestoreObject = pcDocument->signalFinishRestoreObject.connect
-        (boost::bind(&Gui::Document::slotFinishRestoreObject, this, _1));
+        (boost::bind(&Gui::Document::slotFinishRestoreObject, this, bp::_1));
     d->connectExportObjects = pcDocument->signalExportViewObjects.connect
-        (boost::bind(&Gui::Document::exportObjects, this, _1, _2));
+        (boost::bind(&Gui::Document::exportObjects, this, bp::_1, bp::_2));
     d->connectImportObjects = pcDocument->signalImportViewObjects.connect
-        (boost::bind(&Gui::Document::importObjects, this, _1, _2, _3));
+        (boost::bind(&Gui::Document::importObjects, this, bp::_1, bp::_2, bp::_3));
     d->connectFinishImportObjects = pcDocument->signalFinishImportObjects.connect
-        (boost::bind(&Gui::Document::slotFinishImportObjects, this, _1));
+        (boost::bind(&Gui::Document::slotFinishImportObjects, this, bp::_1));
         
     d->connectUndoDocument = pcDocument->signalUndo.connect
-        (boost::bind(&Gui::Document::slotUndoDocument, this, _1));
+        (boost::bind(&Gui::Document::slotUndoDocument, this, bp::_1));
     d->connectRedoDocument = pcDocument->signalRedo.connect
-        (boost::bind(&Gui::Document::slotRedoDocument, this, _1));
+        (boost::bind(&Gui::Document::slotRedoDocument, this, bp::_1));
     d->connectRecomputed = pcDocument->signalRecomputed.connect
-        (boost::bind(&Gui::Document::slotRecomputed, this, _1));
+        (boost::bind(&Gui::Document::slotRecomputed, this, bp::_1));
     d->connectSkipRecompute = pcDocument->signalSkipRecompute.connect
-        (boost::bind(&Gui::Document::slotSkipRecompute, this, _1, _2));
+        (boost::bind(&Gui::Document::slotSkipRecompute, this, bp::_1, bp::_2));
     d->connectTouchedObject = pcDocument->signalTouchedObject.connect
-        (boost::bind(&Gui::Document::slotTouchedObject, this, _1));
+        (boost::bind(&Gui::Document::slotTouchedObject, this, bp::_1));
 
     d->connectTransactionAppend = pcDocument->signalTransactionAppend.connect
-        (boost::bind(&Gui::Document::slotTransactionAppend, this, _1, _2));
+        (boost::bind(&Gui::Document::slotTransactionAppend, this, bp::_1, bp::_2));
     d->connectTransactionRemove = pcDocument->signalTransactionRemove.connect
-        (boost::bind(&Gui::Document::slotTransactionRemove, this, _1, _2));
+        (boost::bind(&Gui::Document::slotTransactionRemove, this, bp::_1, bp::_2));
     // pointer to the python class
     // NOTE: As this Python object doesn't get returned to the interpreter we
     // mustn't increment it (Werner Jan-12-2006)
@@ -1035,21 +1037,95 @@ App::Document* Document::getDocument(void) const
     return d->_pcDocument;
 }
 
+static bool checkCanonicalPath(const std::map<App::Document*, bool> &docs)
+{
+    std::map<QString, std::vector<App::Document*> > paths;
+    bool warn = false;
+    for (auto doc : App::GetApplication().getDocuments()) {
+        QFileInfo info(QString::fromUtf8(doc->FileName.getValue()));
+        auto &d = paths[info.canonicalFilePath()];
+        d.push_back(doc);
+        if (!warn && d.size() > 1) {
+            if (docs.count(d.front()) || docs.count(d.back()))
+                warn = true;
+        }
+    }
+    if (!warn)
+        return true;
+    QString msg;
+    QTextStream ts(&msg);
+    ts << QObject::tr("Identical physical path detected. It may cause unwanted overwrite of existing document!\n\n")
+       << QObject::tr("Are you sure you want to continue?");
+
+    auto docName = [](App::Document *doc) -> QString {
+        if (doc->Label.getStrValue() == doc->getName())
+            return QString::fromLatin1(doc->getName());
+        return QString::fromLatin1("%1 (%2)").arg(QString::fromUtf8(doc->Label.getValue()),
+                                                  QString::fromLatin1(doc->getName()));
+    };
+    int count = 0;
+    for (auto &v : paths) {
+        if (v.second.size() <= 1) continue;
+        for (auto doc : v.second) {
+            if (docs.count(doc)) {
+                FC_WARN("Physical path: " << v.first.toUtf8().constData());
+                for (auto d : v.second)
+                    FC_WARN("  Document: " << docName(d).toUtf8().constData()
+                            << ": " << d->FileName.getValue());
+                if (count == 3) {
+                    ts << QObject::tr("\n\nPlease check report view for more...");
+                } else if (count < 3) {
+                    ts << QObject::tr("\n\nPyhsical path: ") << v.first
+                    << QObject::tr("\nDocument: ") << docName(doc)
+                    << QObject::tr("\n  Path: ") << QString::fromUtf8(doc->FileName.getValue());
+                    for (auto d : v.second) {
+                        if (d == doc) continue;
+                        ts << QObject::tr("\nDocument: ") << docName(d)
+                        << QObject::tr("\n  Path: ") << QString::fromUtf8(d->FileName.getValue());
+                    }
+                }
+                ++count;
+                break;
+            }
+        }
+    }
+    int ret = QMessageBox::warning(getMainWindow(),
+            QObject::tr("Identical physical path"), msg, QMessageBox::Yes, QMessageBox::No);
+    return ret == QMessageBox::Yes;
+}
+
 /// Save the document
 bool Document::save(void)
 {
     if (d->_pcDocument->isSaved()) {
         try {
-            std::vector<std::pair<App::Document*,bool> > docs;
+            std::vector<App::Document*> docs;
+            std::map<App::Document*,bool> dmap;
             try {
-                for(auto doc : getDocument()->getDependentDocuments()) {
+                docs = getDocument()->getDependentDocuments();
+                for(auto it=docs.begin(); it!=docs.end();) {
+                    App::Document *doc = *it;
+                    if (doc == getDocument()) {
+                        dmap[doc] = doc->mustExecute();
+                        ++it;
+                        continue;
+                    }
                     auto gdoc = Application::Instance->getDocument(doc);
-                    if(gdoc && (gdoc==this || gdoc->isModified()))
-                        docs.emplace_back(doc,doc->mustExecute());
+                    if ((gdoc && !gdoc->isModified())
+                            || doc->testStatus(App::Document::PartialDoc)
+                            || doc->testStatus(App::Document::TempDoc))
+                    {
+                        it = docs.erase(it);
+                        continue;
+                    }
+                    dmap[doc] = doc->mustExecute();
+                    ++it;
                 }
             }catch(const Base::RuntimeError &e) {
                 FC_ERR(e.what());
-                docs.emplace_back(getDocument(),getDocument()->mustExecute());
+                docs = {getDocument()};
+                dmap.clear();
+                dmap[getDocument()] = getDocument()->mustExecute();
             }
             if(docs.size()>1) {
                 int ret = QMessageBox::question(getMainWindow(),
@@ -1058,16 +1134,20 @@ bool Document::save(void)
                         "Do you want to save the dependent files, too?"),
                         QMessageBox::Yes,QMessageBox::No);
                 if (ret != QMessageBox::Yes) {
-                    docs.clear();
-                    docs.emplace_back(getDocument(),getDocument()->mustExecute());
+                    docs = {getDocument()};
+                    dmap.clear();
+                    dmap[getDocument()] = getDocument()->mustExecute();
                 }
             }
+
+            if (!checkCanonicalPath(dmap))
+                return false;
+
             Gui::WaitCursor wc;
             // save all documents
-            for(auto v : docs) {
-                auto doc = v.first;
+            for(auto doc : docs) {
                 // Changed 'mustExecute' status may be triggered by saving external document
-                if(!v.second && doc->mustExecute()) {
+                if(!dmap[doc] && doc->mustExecute()) {
                     App::AutoTransaction trans("Recompute");
                     Command::doCommand(Command::Doc,"App.getDocument(\"%s\").recompute()",doc->getName());
                 }
@@ -1124,24 +1204,34 @@ bool Document::saveAs(void)
     }
 }
 
-void Document::saveAll() {
+void Document::saveAll()
+{
     std::vector<App::Document*> docs;
     try {
         docs = App::Document::getDependentDocuments(App::GetApplication().getDocuments(),true);
-    }catch(Base::Exception &e) {
+    }
+    catch(Base::Exception &e) {
         e.ReportException();
         int ret = QMessageBox::critical(getMainWindow(), QObject::tr("Failed to save document"),
                 QObject::tr("Documents contains cyclic dependencies. Do you still want to save them?"),
                 QMessageBox::Yes,QMessageBox::No);
-        if(ret!=QMessageBox::Yes)
+        if (ret != QMessageBox::Yes)
             return;
         docs = App::GetApplication().getDocuments();
     }
+
     std::map<App::Document *, bool> dmap;
-    for(auto doc : docs)
-        dmap[doc] = doc->mustExecute();
     for(auto doc : docs) {
-        if(doc->testStatus(App::Document::PartialDoc))
+        if (doc->testStatus(App::Document::PartialDoc) || doc->testStatus(App::Document::TempDoc))
+            continue;
+        dmap[doc] = doc->mustExecute();
+    }
+
+    if (!checkCanonicalPath(dmap))
+        return;
+
+    for(auto doc : docs) {
+        if (doc->testStatus(App::Document::PartialDoc) || doc->testStatus(App::Document::TempDoc))
             continue;
         auto gdoc = Application::Instance->getDocument(doc);
         if(!gdoc)
@@ -1160,7 +1250,8 @@ void Document::saveAll() {
             }
             Command::doCommand(Command::Doc,"App.getDocument('%s').save()",doc->getName());
             gdoc->setModified(false);
-        } catch (const Base::Exception& e) {
+        }
+        catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(), 
                     QObject::tr("Failed to save document") + 
                         QString::fromLatin1(": %1").arg(QString::fromUtf8(doc->getName())), 
@@ -1470,15 +1561,15 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base:
     std::map<const App::DocumentObject*,ViewProvider*>::const_iterator jt;
     for (jt = views.begin(); jt != views.end(); ++jt) {
         const App::DocumentObject* doc = jt->first;
-        ViewProvider* obj = jt->second;
+        ViewProvider* vp = jt->second;
         writer.Stream() << writer.ind() << "<ViewProvider name=\""
                         << doc->getExportName() << "\" "
                         << "expanded=\"" << (doc->testStatus(App::Expand) ? 1:0) << "\"";
-        if (obj->hasExtensions())
+        if (vp->hasExtensions())
             writer.Stream() << " Extensions=\"True\"";
 
         writer.Stream() << ">" << std::endl;
-        obj->Save(writer);
+        vp->Save(writer);
         writer.Stream() << writer.ind() << "</ViewProvider>" << std::endl;
     }
     writer.setForceXML(xml);
@@ -1648,6 +1739,7 @@ MDIView *Document::createView(const Base::Type& typeId)
             const char *ppReturn = 0;
             view3D->onMsg(cameraSettings.c_str(),&ppReturn);
         }
+
         getMainWindow()->addWindow(view3D);
         return view3D;
     }
@@ -1665,6 +1757,8 @@ Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
         View3DInventor* firstView = static_cast<View3DInventor*>(oldview);
         std::string overrideMode = firstView->getViewer()->getOverrideMode();
         view3D->getViewer()->setOverrideMode(overrideMode);
+
+        view3D->getViewer()->setAxisCross(firstView->getViewer()->hasAxisCross());
 
         // attach the viewproviders. we need to make sure that we only attach the toplevel ones
         // and not viewproviders which are claimed by other providers. To ensure this we first
@@ -2293,24 +2387,44 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
     } 
 }
 
-void Document::toggleInSceneGraph(ViewProvider *vp) {
+void Document::toggleInSceneGraph(ViewProvider *vp)
+{
+    // FIXME: What's the point of having this function?
+    //
     for (auto view : d->baseViews) {
         View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
         if (!activeView)
             continue;
+
         auto root = vp->getRoot();
-        if(!root)
+        if (!root)
             continue;
+
         auto scenegraph = dynamic_cast<SoGroup*>(
                 activeView->getViewer()->getSceneGraph());
-        if(!scenegraph)
+        if (!scenegraph)
             continue;
-        int idx = scenegraph->findChild(root);
-        if(idx<0) {
-            if(vp->canAddToSceneGraph())
+
+        // If it cannot be added then only check the top-level nodes
+        if (!vp->canAddToSceneGraph()) {
+            int idx = scenegraph->findChild(root);
+            if (idx >= 0) scenegraph->removeChild(idx);
+        }
+        else {
+            // Do a deep search of the scene because the root node
+            // isn't necessarily a top-level node when claimed by
+            // another view provider.
+            // This is to avoid to add a node twice to the scene.
+            SoSearchAction sa;
+            sa.setNode(root);
+            sa.setSearchingAll(false);
+            sa.apply(scenegraph);
+
+            SoPath* path = sa.getPath();
+            if (!path) {
                 scenegraph->addChild(root);
-        }else if(!vp->canAddToSceneGraph())
-            scenegraph->removeChild(idx);
+            }
+        }
     }
 }
 

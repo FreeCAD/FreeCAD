@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>612</width>
-    <height>574</height>
+    <height>578</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,16 +17,7 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <property name="leftMargin">
-    <number>9</number>
-   </property>
-   <property name="topMargin">
-    <number>9</number>
-   </property>
-   <property name="rightMargin">
-    <number>9</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>9</number>
    </property>
    <item>
@@ -273,53 +264,64 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_17">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
-          <property name="toolTip">
-           <string>If checked, a grid will appear when drawing</string>
-          </property>
-          <property name="text">
-           <string>Use grid</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>grid</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
+        <property name="toolTip">
+         <string>If checked, a grid will appear when drawing</string>
+        </property>
+        <property name="text">
+         <string>Use grid</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>grid</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_15">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_10">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="toolTip">
-           <string>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</string>
-          </property>
-          <property name="text">
-           <string>Always show the grid</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>alwaysShowGrid</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_10">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</string>
+        </property>
+        <property name="text">
+         <string>Always show the grid</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>alwaysShowGrid</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox">
+        <property name="toolTip">
+         <string>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</string>
+        </property>
+        <property name="text">
+         <string>Show grid border</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>gridBorder</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_13">
@@ -504,7 +506,7 @@
           <property name="toolTip">
            <string>The default color for new objects</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>50</red>
             <green>50</green>
@@ -527,7 +529,7 @@
    <item>
     <widget class="QGroupBox" name="verticalGroupBox">
      <property name="toolTip">
-      <string>Draft edit preferences</string>
+      <string>Draft Edit preferences</string>
      </property>
      <property name="title">
       <string>Edit</string>
@@ -535,22 +537,13 @@
      <layout class="QVBoxLayout" name="verticalLayout_9">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="0,0,0">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>0</number>
         </property>
         <item>
          <widget class="QLabel" name="label_8">
           <property name="toolTip">
-           <string>Sets the maximum number of objects Draft Edit can handle at the same time</string>
+           <string/>
           </property>
           <property name="text">
            <string>Maximum number of contemporary edited objects</string>
@@ -576,7 +569,7 @@
            <bool>true</bool>
           </property>
           <property name="toolTip">
-           <string>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -590,14 +583,14 @@
           <property name="value">
            <number>5</number>
           </property>
-          <property name="displayIntegerBase">
-           <number>10</number>
-          </property>
           <property name="prefEntry" stdset="0">
            <cstring>DraftEditMaxObjects</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
+          </property>
+          <property name="displayIntegerBase" stdset="0">
+           <number>10</number>
           </property>
          </widget>
         </item>
@@ -605,22 +598,13 @@
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>0</number>
         </property>
         <item>
          <widget class="QLabel" name="label_3">
           <property name="toolTip">
-           <string>Controls pick radius of edit nodes</string>
+           <string/>
           </property>
           <property name="text">
            <string>Draft edit pick radius</string>
@@ -646,7 +630,7 @@
            <bool>true</bool>
           </property>
           <property name="toolTip">
-           <string>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</string>
+           <string>Controls pick radius of edit nodes</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

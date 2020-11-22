@@ -85,6 +85,13 @@ PyObject *TopoShapeWirePy::PyMake(struct _typeobject *, PyObject *, PyObject *) 
 // constructor method
 int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined Wire
+        getTopoShapePtr()->setShape(TopoDS_Wire());
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *pcObj;
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pcObj)) {
         BRepBuilderAPI_MakeWire mkWire;
@@ -526,6 +533,37 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds)
 
     PyErr_SetString(PartExceptionOCCError,"Wrong arguments");
     return 0;
+}
+
+Py::String TopoShapeWirePy::getContinuity() const
+{
+    BRepAdaptor_CompCurve adapt(TopoDS::Wire(getTopoShapePtr()->getShape()));
+    std::string cont;
+    switch (adapt.Continuity()) {
+    case GeomAbs_C0:
+        cont = "C0";
+        break;
+    case GeomAbs_G1:
+        cont = "G1";
+        break;
+    case GeomAbs_C1:
+        cont = "C1";
+        break;
+    case GeomAbs_G2:
+        cont = "G2";
+        break;
+    case GeomAbs_C2:
+        cont = "C2";
+        break;
+    case GeomAbs_C3:
+        cont = "C3";
+        break;
+    case GeomAbs_CN:
+        cont = "CN";
+        break;
+    }
+
+    return Py::String(cont);
 }
 
 Py::Object TopoShapeWirePy::getMass(void) const

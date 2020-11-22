@@ -7,17 +7,17 @@
     <x>0</x>
     <y>0</y>
     <width>476</width>
-    <height>336</height>
+    <height>378</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Part colors</string>
+   <string>Shape appearance</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBoxDefaultColors">
      <property name="title">
-      <string>Default Part colors</string>
+      <string>Default Shape view properties</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -40,7 +40,7 @@
           <property name="toolTip">
            <string>The default color for new shapes</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>204</red>
             <green>204</green>
@@ -89,7 +89,7 @@
           <property name="toolTip">
            <string>The default line color for new shapes</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>25</red>
             <green>25</green>
@@ -157,7 +157,7 @@
           <property name="toolTip">
            <string>The default color for new vertices</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>25</red>
             <green>25</green>
@@ -225,7 +225,7 @@
           <property name="toolTip">
            <string>The color of bounding boxes in the 3D view</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>255</red>
             <green>255</green>
@@ -247,6 +247,12 @@
             <width>182</width>
             <height>0</height>
            </size>
+          </property>
+          <property name="toolTip">
+           <string>Bottom side of surface will be rendered the same way than top.
+If not checked, it depends on the option &quot;Backlight color&quot;
+(preferences section Display -&gt; 3D View); either the backlight color
+will be used or black.</string>
           </property>
           <property name="text">
            <string>Two-side rendering</string>
@@ -303,6 +309,9 @@
         </item>
         <item row="0" column="1">
          <widget class="Gui::PrefColorButton" name="AnnotationTextColor">
+          <property name="toolTip">
+           <string>Text color for document annotations</string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>AnnotationTextColor</cstring>
           </property>

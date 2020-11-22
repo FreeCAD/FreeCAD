@@ -26,16 +26,15 @@
 # include <sstream>
 # include <locale>
 # include <iostream>
+# include <QElapsedTimer>
 #endif
 
-# include <QTime>
 #include "PyExport.h"
 #include "Interpreter.h"
 #include "Tools.h"
 
 namespace Base {
-struct string_comp  : public std::binary_function<std::string, 
-                                                  std::string, bool>
+struct string_comp
 {
     // s1 and s2 must be numbers represented as string
     bool operator()(const std::string& s1, const std::string& s2)
@@ -266,7 +265,7 @@ using namespace Base;
 
 struct StopWatch::Private
 {
-    QTime t;
+    QElapsedTimer t;
 };
 
 StopWatch::StopWatch() : d(new Private)
@@ -314,6 +313,3 @@ std::string StopWatch::toString(int ms) const
         str << msec << "ms";
     return str.str();
 }
-
-
-

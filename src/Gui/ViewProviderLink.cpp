@@ -47,7 +47,7 @@
 #include <QFileInfo>
 #include <QMenu>
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <Base/Console.h>
 #include <Base/PlacementPy.h>
 #include <Base/MatrixPy.h>
@@ -2194,13 +2194,16 @@ std::string ViewProviderLink::dropObjectEx(App::DocumentObject* obj,
     const std::vector<std::string> &subElements) 
 {
     auto ext = getLinkExtension();
+    if (!ext)
+        return std::string();
+
     if(isGroup(ext)) {
         size_t size = ext->getElementListValue().size();
         ext->setLink(size,obj);
         return std::to_string(size)+".";
     }
 
-    if(!ext || !ext->getLinkedObjectProperty() || hasElements(ext))
+    if(!ext->getLinkedObjectProperty() || hasElements(ext))
         return std::string();
 
     if(!hasSubName) {
@@ -2333,6 +2336,9 @@ bool ViewProviderLink::doubleClicked() {
 void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     auto ext = getLinkExtension();
+    if (!ext)
+        return;
+
     if(linkEdit(ext)) {
         linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
     } else if(ext->getPlacementProperty() || ext->getLinkPlacementProperty()) {
@@ -2340,7 +2346,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
         act->setData(QVariant((int)ViewProvider::Transform));
     }
 
-    if(ext && ext->getColoredElementsProperty()) {
+    if(ext->getColoredElementsProperty()) {
         bool found = false;
         for(auto action : menu->actions()) {
             if(action->data().toInt() == ViewProvider::Color) {

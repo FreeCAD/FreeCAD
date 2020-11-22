@@ -11,12 +11,12 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation>若要添加引用, 请在3维视图中选择它们然后点击 "添加"。</translation>
+      <translation>若要添加引用, 请在 3D 视图中选择它们然后点击 "添加"。</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>要添加引用：在 3D 视图中选择它们，然后单击“添加”。</translation>
     </message>
   </context>
   <context>
@@ -68,6 +68,65 @@
     </message>
   </context>
   <context>
+    <name>GeometryElementsSelection</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>的几何体参考选择器</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
+      <source>Add</source>
+      <translation>添加</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
+      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
+      <translation>单击 "添加", 然后选择几何元素将它们添加到列表中。如果没有将几何元素添加到列表中, 则使用其余的几何图形。允许选择以下几何元素: </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
+      <source>Selection mode</source>
+      <translation>选择模式</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
+      <source>Solid</source>
+      <translation>实体</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolidSelector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
+      <source>Select Solids</source>
+      <translation>选择固体</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
+      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
+      <translation>选择要添加到列表中的实体元素部分。点击“添加”添加实体。</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
+      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
+      <translation>选择要添加到列表中的实体元素部分。点击“添加”添加实体。</translation>
+    </message>
+  </context>
+  <context>
+    <name>_Selector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
+      <source>Add</source>
+      <translation>添加</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>删除</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_Analysis</name>
     <message>
       <location filename="_CommandFemAnalysis.py" line="41"/>
@@ -77,7 +136,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="40"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation>以标准求解器CalculiX建立一个分析容器</translation>
+      <translation>以标准求解器 CalculiX 建立一个分析容器</translation>
     </message>
   </context>
   <context>
@@ -167,34 +226,16 @@
     </message>
   </context>
   <context>
-    <name>FEM_ConstraintTie</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="261"/>
-      <source>Constraint tie</source>
-      <translation type="unfinished">Constraint tie</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="266"/>
-      <source>Creates a FEM constraint tie</source>
-      <translation type="unfinished">Creates a FEM constraint tie</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_ElementFluid1D</name>
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation>一维流体截面</translation>
+      <translation>1D 流体截面</translation>
     </message>
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation>创建用于一维流的有限元流体截面</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="287"/>
-      <source>Creates a FEM fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
+      <translation>创建用于 1D 流的有限元流体截面</translation>
     </message>
   </context>
   <context>
@@ -295,11 +336,6 @@
       <source>Fluxsolver heat</source>
       <translation>热Flux求解器</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="450"/>
-      <source>Creates a FEM equation for heat</source>
-      <translation type="unfinished">Creates a FEM equation for heat</translation>
-    </message>
   </context>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
@@ -320,11 +356,6 @@
       <location filename="../../../femcommands/commands.py" line="397"/>
       <source>Material for fluid</source>
       <translation>流体材料</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="495"/>
-      <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
@@ -357,11 +388,6 @@
       <source>Reinforced material (concrete)</source>
       <translation>强化材料 (混凝土)</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="595"/>
-      <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
@@ -369,11 +395,6 @@
       <location filename="../../../femcommands/commands.py" line="452"/>
       <source>Material for solid</source>
       <translation>固体材料</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="616"/>
-      <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -458,11 +479,6 @@
       <source>FEM mesh from shape by Netgen</source>
       <translation>Netgen 型有限元网格</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="838"/>
-      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>通过 Netgen 内部网格生成器从实心或面形创建有限元体积网格</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MeshRegion</name>
@@ -526,17 +542,17 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="681"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation>使用 ccx 工具创建标准的有限元CalculiX求解</translation>
+      <translation>使用 ccx 工具创建标准的有限元 CalculiX 求解</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="42"/>
       <source>Solver CalculiX</source>
-      <translation>CalculiX求解器</translation>
+      <translation>CalculiX 求解器</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="44"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation>建立一个CalculiX求解器</translation>
+      <translation>建立一个 CalculiX 求解器</translation>
     </message>
   </context>
   <context>
@@ -557,12 +573,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="740"/>
       <source>Solver Elmer</source>
-      <translation>Elmer求解器</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1041"/>
-      <source>Creates a FEM solver Elmer</source>
-      <translation type="unfinished">Creates a FEM solver Elmer</translation>
+      <translation>Elmer 求解器</translation>
     </message>
   </context>
   <context>
@@ -583,12 +594,12 @@
     <message>
       <location filename="_CommandFemSolverZ88.py" line="41"/>
       <source>Solver Z88</source>
-      <translation>Z88求解器</translation>
+      <translation>Z88 求解器</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverZ88.py" line="43"/>
       <source>Creates a FEM solver Z88</source>
-      <translation>建立一个Z88求解器</translation>
+      <translation>建立一个 Z88 求解器</translation>
     </message>
   </context>
   <context>
@@ -605,34 +616,6 @@
     </message>
   </context>
   <context>
-    <name>GeometryElementsSelection</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>的几何体参考选择器</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
-      <source>Add</source>
-      <translation>添加</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
-      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
-      <translation>单击 "添加", 然后选择几何元素将它们添加到列表中。如果没有将几何元素添加到列表中, 则使用其余的几何图形。允许选择以下几何元素: </translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
-      <source>Selection mode</source>
-      <translation>选择模式</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
-      <source>Solid</source>
-      <translation>实体</translation>
-    </message>
-  </context>
-  <context>
     <name>Material_Editor</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
@@ -643,37 +626,6 @@
       <location filename="../../../femcommands/commands.py" line="384"/>
       <source>Opens the FreeCAD material editor</source>
       <translation>打开 FreeCAD 材料编辑器</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolidSelector</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
-      <source>Select Solids</source>
-      <translation>选择固体</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
-      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
-      <translation>选择要添加到列表中的实体元素部分。点击“添加”添加实体。</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
-      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
-    </message>
-  </context>
-  <context>
-    <name>_Selector</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
-      <source>Add</source>
-      <translation>添加</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
-      <source>Remove</source>
-      <translation>删除</translation>
     </message>
   </context>
   <context>
@@ -715,12 +667,12 @@
     <message>
       <location filename="_CommandFemFluidSection.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation>一维流体截面</translation>
+      <translation>1D 流体截面</translation>
     </message>
     <message>
       <location filename="_CommandFemFluidSection.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation>创建用于一维流的有限元流体截面</translation>
+      <translation>创建用于 1D 流的有限元流体截面</translation>
     </message>
   </context>
   <context>
@@ -746,7 +698,7 @@
     <message>
       <location filename="_CommandAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation>以标准求解器CalculiX建立一个分析容器</translation>
+      <translation>以标准求解器 CalculiX 建立一个分析容器</translation>
     </message>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
@@ -994,22 +946,22 @@
     <message>
       <location filename="_CommandSolverCalculix.py" line="42"/>
       <source>Solver CalculiX</source>
-      <translation>CalculiX求解器</translation>
+      <translation>CalculiX 求解器</translation>
     </message>
     <message>
       <location filename="_CommandSolverCalculix.py" line="44"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation>建立一个CalculiX求解器</translation>
+      <translation>建立一个 CalculiX 求解器</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="41"/>
       <source>Create FEM Solver CalculiX ...</source>
-      <translation>创建CalculiX有限元求解器...</translation>
+      <translation>创建 CalculiX 有限元求解器...</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="43"/>
       <source>Creates FEM Solver CalculiX</source>
-      <translation>创建CalculiX有限元求解器</translation>
+      <translation>创建 CalculiX 有限元求解器</translation>
     </message>
   </context>
   <context>
@@ -1017,12 +969,12 @@
     <message>
       <location filename="_CommandSolverZ88.py" line="41"/>
       <source>Solver Z88</source>
-      <translation>Z88求解器</translation>
+      <translation>Z88 求解器</translation>
     </message>
     <message>
       <location filename="_CommandSolverZ88.py" line="43"/>
       <source>Creates a FEM solver Z88</source>
-      <translation>建立一个Z88求解器</translation>
+      <translation>建立一个 Z88 求解器</translation>
     </message>
   </context>
   <context>
@@ -1056,7 +1008,7 @@
     <message>
       <location filename="_CommandQuickAnalysis.py" line="40"/>
       <source>Run CalculiX ccx</source>
-      <translation>执行CalculiX ccx</translation>
+      <translation>执行 CalculiX ccx</translation>
     </message>
     <message>
       <location filename="_CommandQuickAnalysis.py" line="42"/>
@@ -1291,7 +1243,7 @@
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation>请选取一个有限元格或节点集</translation>
+      <translation>请选取一个有限元格或节点集。</translation>
     </message>
   </context>
   <context>
@@ -1338,7 +1290,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="51"/>
       <source>Use internal editor for .inp files</source>
-      <translation>以内部编辑器开启.inp文档</translation>
+      <translation>以内部编辑器开启 .inp 文档</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="78"/>
@@ -1348,7 +1300,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="122"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
-      <translation>当为空白时使用默认的CalculiX ccx二进制文件</translation>
+      <translation>当为空白时使用默认的 CalculiX ccx 二进制文件</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="141"/>
@@ -1419,7 +1371,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="378"/>
       <source>Use materials from .FreeCAD/Materials directory</source>
-      <translation>使用来自.FreeCAD/Material目录内材质</translation>
+      <translation>使用来自.FreeCAD/Material 目录内材质</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="394"/>
@@ -1980,7 +1932,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="247"/>
       <source>MatWeb database...</source>
-      <translation>MatWeb数据库...</translation>
+      <translation>MatWeb 数据库...</translation>
     </message>
   </context>
   <context>
@@ -2009,7 +1961,7 @@
       <location filename="../../Command.cpp" line="177"/>
       <location filename="../../Command.cpp" line="240"/>
       <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-      <translation>您的FreeCAD没有支持NETGEN，而无法执行建立网格...</translation>
+      <translation>您的 FreeCAD 没有支持 NETGEN，而无法执行建立网格...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -2129,7 +2081,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="79"/>
       <source>Avg:</source>
-      <translation>平均值</translation>
+      <translation>平均值：</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="96"/>
@@ -2139,7 +2091,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="123"/>
       <source>Min:</source>
-      <translation>最小值</translation>
+      <translation>最小值：</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="135"/>
@@ -2200,7 +2152,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="49"/>
       <source>Nodes: 0</source>
-      <translation>节点：</translation>
+      <translation>节点： 0</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="60"/>
@@ -2397,7 +2349,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>
       <source>Displacement x</source>
-      <translation>X方向位移</translation>
+      <translation>X 方向位移</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="104"/>
@@ -2422,17 +2374,17 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
       <source>Displacement y</source>
-      <translation>Y方向位移</translation>
+      <translation>Y 方向位移</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
       <source>Displacement z</source>
-      <translation>Z方向位移</translation>
+      <translation>Z 方向位移</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
       <source>Rotations are only valid for Beam and Shell elements.</source>
-      <translation>仅梁和壳单元可以使用旋转</translation>
+      <translation>仅梁和壳单元可以使用旋转。</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>
@@ -2587,7 +2539,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="111"/>
       <source>Nbr. Segs per Edge:</source>
-      <translation>每边网格数</translation>
+      <translation>每边网格数：</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="128"/>
@@ -2602,17 +2554,17 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="166"/>
       <source>Node count: </source>
-      <translation>节点数 </translation>
+      <translation>节点数： </translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="180"/>
       <source>Triangle count:</source>
-      <translation>三角形数量</translation>
+      <translation>三角形数量：</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="194"/>
       <source>Tetraeder count:</source>
-      <translation>四边形数量</translation>
+      <translation>四边形数量：</translation>
     </message>
   </context>
   <context>

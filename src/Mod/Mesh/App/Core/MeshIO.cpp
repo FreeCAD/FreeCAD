@@ -119,8 +119,7 @@ struct QUAD {int iV[4];};
 
 namespace MeshCore {
 
-struct Color_Less  : public std::binary_function<const App::Color&,
-                                                 const App::Color&, bool>
+struct Color_Less
 {
     bool operator()(const App::Color& x,
                     const App::Color& y) const
@@ -145,6 +144,7 @@ std::vector<std::string> MeshInput::supportedMeshFormats()
     fmt.emplace_back("bms");
     fmt.emplace_back("ply");
     fmt.emplace_back("stl");
+    fmt.emplace_back("ast");
     fmt.emplace_back("obj");
     fmt.emplace_back("off");
     fmt.emplace_back("smf");
@@ -612,27 +612,14 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
 {
     // http://edutechwiki.unige.ch/en/3D_file_format
     boost::regex rx_n("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
-    boost::regex rx_p("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
-    boost::regex rx_c("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                       "\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s*$");
-    boost::regex rx_f3("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
-    boost::regex rx_f4("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
-
     boost::cmatch what;
 
     bool colorPerVertex = false;
+    std::vector<App::Color> diffuseColor;
     MeshPointArray meshPoints;
     MeshFacetArray meshFacets;
 
     std::string line;
-    float fX, fY, fZ;
-    int r, g, b, a;
-    unsigned int  i1=1,i2=1,i3=1,i4=1;
-    MeshGeomFacet clFacet;
     MeshFacet item;
 
     if (!rstrIn || rstrIn.bad() == true)
@@ -654,56 +641,63 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
 
     // get number of vertices and faces
     int numPoints=0, numFaces=0;
-    std::getline(rstrIn, line);
-    boost::algorithm::to_lower(line);
-    if (boost::regex_match(line.c_str(), what, rx_n)) {
-        numPoints = std::atoi(what[1].first);
-        numFaces = std::atoi(what[2].first);
+
+    while (true) {
+        std::getline(rstrIn, line);
+        boost::algorithm::to_lower(line);
+        if (boost::regex_match(line.c_str(), what, rx_n)) {
+            numPoints = std::atoi(what[1].first);
+            numFaces = std::atoi(what[2].first);
+            break;
+        }
     }
-    else {
-        // Cannot read number of elements
+
+    if (numPoints == 0 || numFaces == 0)
         return false;
-    }
 
     meshPoints.reserve(numPoints);
     meshFacets.reserve(numFaces);
-    if (_material && colorPerVertex) {
-        _material->binding = MeshIO::PER_VERTEX;
-        _material->diffuseColor.reserve(numPoints);
-    }
+    if (colorPerVertex)
+        diffuseColor.reserve(numPoints);
+    else
+        diffuseColor.reserve(numFaces);
 
     int cntPoints = 0;
     while (cntPoints < numPoints) {
         if (!std::getline(rstrIn, line))
             break;
-        if (colorPerVertex) {
-            if (boost::regex_match(line.c_str(), what, rx_c)) {
-                fX = static_cast<float>(std::atof(what[1].first));
-                fY = static_cast<float>(std::atof(what[4].first));
-                fZ = static_cast<float>(std::atof(what[7].first));
-                r = std::min<int>(std::atof(what[10].first),255);
-                g = std::min<int>(std::atof(what[11].first),255);
-                b = std::min<int>(std::atof(what[12].first),255);
-                a = std::min<int>(std::atof(what[13].first),255);
-                // add to the material
-                if (_material) {
-                    float fr = static_cast<float>(r)/255.0f;
-                    float fg = static_cast<float>(g)/255.0f;
-                    float fb = static_cast<float>(b)/255.0f;
-                    float fa = static_cast<float>(a)/255.0f;
-                    _material->diffuseColor.emplace_back(fr, fg, fb, fa);
+        std::istringstream str(line);
+        str.unsetf(std::ios_base::skipws);
+        str >> std::ws;
+        if (str.eof())
+            continue; // empty line
+
+        float fX, fY, fZ;
+        str >> fX >> std::ws >> fY >> std::ws >> fZ;
+        if (str) {
+            meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
+            cntPoints++;
+
+            if (colorPerVertex) {
+                std::size_t pos = std::size_t(str.tellg());
+                if (line.size() > pos) {
+                    float r,g,b,a;
+                    str >> std::ws >> r >> std::ws >> g >> std::ws >> b;
+                    if (str) {
+                        str >> std::ws >> a;
+                        // no transparency
+                        if (!str)
+                            a = 0.0f;
+
+                        if (r > 1.0f || g > 1.0f || b > 1.0f || a > 1.0f) {
+                            r = static_cast<float>(r)/255.0f;
+                            g = static_cast<float>(g)/255.0f;
+                            b = static_cast<float>(b)/255.0f;
+                            a = static_cast<float>(a)/255.0f;
+                        }
+                        diffuseColor.emplace_back(r, g, b, a);
+                    }
                 }
-                meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
-                cntPoints++;
-            }
-        }
-        else {
-            if (boost::regex_match(line.c_str(), what, rx_p)) {
-                fX = static_cast<float>(std::atof(what[1].first));
-                fY = static_cast<float>(std::atof(what[4].first));
-                fZ = static_cast<float>(std::atof(what[7].first));
-                meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
-                cntPoints++;
             }
         }
     }
@@ -712,35 +706,67 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
     while (cntFaces < numFaces) {
         if (!std::getline(rstrIn, line))
             break;
-        if (boost::regex_match(line.c_str(), what, rx_f3)) {
-            // 3-vertex face
-            if (std::atoi(what[1].first) == 3) {
-                i1 = std::atoi(what[2].first);
-                i2 = std::atoi(what[3].first);
-                i3 = std::atoi(what[4].first);
-                item.SetVertices(i1,i2,i3);
-                meshFacets.push_back(item);
-                cntFaces++;
+        std::istringstream str(line);
+        str.unsetf(std::ios_base::skipws);
+        str >> std::ws;
+        if (str.eof())
+            continue; // empty line
+        int count, index;
+        str >> count;
+        if (count >= 3) {
+            std::vector<int> faces;
+            faces.reserve(count);
+
+            for (int i = 0; i < count; i++) {
+                str >> std::ws;
+                str >> index;
+                faces.push_back(index);
             }
-        }
-        else if (boost::regex_match(line.c_str(), what, rx_f4)) {
-            // 4-vertex face
-            if (std::atoi(what[1].first) == 4) {
-                i1 = std::atoi(what[2].first);
-                i2 = std::atoi(what[3].first);
-                i3 = std::atoi(what[4].first);
-                i4 = std::atoi(what[5].first);
 
-                item.SetVertices(i1,i2,i3);
+            for (int i = 0; i < count-2; i++) {
+                item.SetVertices(faces[0],faces[i+1],faces[i+2]);
                 meshFacets.push_back(item);
+            }
+            cntFaces++;
 
-                item.SetVertices(i3,i4,i1);
-                meshFacets.push_back(item);
-                cntFaces++;
+            std::size_t pos = std::size_t(str.tellg());
+            if (line.size() > pos) {
+                float r,g,b,a;
+                str >> std::ws >> r >> std::ws >> g >> std::ws >> b;
+                if (str) {
+                    str >> std::ws >> a;
+                    // no transparency
+                    if (!str)
+                        a = 0.0f;
+
+                    if (r > 1.0f || g > 1.0f || b > 1.0f || a > 1.0f) {
+                        r = static_cast<float>(r)/255.0f;
+                        g = static_cast<float>(g)/255.0f;
+                        b = static_cast<float>(b)/255.0f;
+                        a = static_cast<float>(a)/255.0f;
+                    }
+                    for (int i = 0; i < count-2; i++) {
+                        diffuseColor.emplace_back(r, g, b, a);
+                    }
+                }
             }
         }
     }
 
+    if (_material) {
+        if (colorPerVertex) {
+            if (meshPoints.size() == diffuseColor.size()) {
+                _material->binding = MeshIO::PER_VERTEX;
+                _material->diffuseColor.swap(diffuseColor);
+            }
+        }
+        else {
+            if (meshFacets.size() == diffuseColor.size()) {
+                _material->binding = MeshIO::PER_FACE;
+                _material->diffuseColor.swap(diffuseColor);
+            }
+        }
+    }
     this->_rclMesh.Clear(); // remove all data before
 
     MeshCleanup meshCleanup(meshPoints,meshFacets);
@@ -759,9 +785,12 @@ namespace MeshCore {
         enum Number {
             int8, uint8, int16, uint16, int32, uint32, float32, float64
         };
-        struct Property : public std::binary_function<std::pair<std::string, Number>,
-                                                      std::string, bool>
+        struct Property
         {
+            typedef std::pair<std::string, int> first_argument_type;
+            typedef std::string second_argument_type;
+            typedef bool result_type;
+
             bool operator()(const std::pair<std::string, int>& x,
                             const std::string& y) const
             {
@@ -964,17 +993,17 @@ bool MeshInput::LoadPLY (std::istream &inp)
     // check if valid 3d points
     Property property;
     std::size_t num_x = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "x"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "x"); });
     if (num_x != 1)
         return false;
 
     std::size_t num_y = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "y"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "y"); });
     if (num_y != 1)
         return false;
 
     std::size_t num_z = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "z"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "z"); });
     if (num_z != 1)
         return false;
 
@@ -990,11 +1019,11 @@ bool MeshInput::LoadPLY (std::istream &inp)
 
     // check if valid colors are set
     std::size_t num_r = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "red"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "red"); });
     std::size_t num_g = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "green"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "green"); });
     std::size_t num_b = std::count_if(vertex_props.begin(), vertex_props.end(),
-                    std::bind2nd(property, "blue"));
+                    [&property](const std::pair<std::string, int>& p) { return property(p, "blue"); });
     std::size_t rgb_colors = num_r + num_g + num_b;
     if (rgb_colors != 0 && rgb_colors != 3)
         return false;
@@ -1752,6 +1781,15 @@ void MeshOutput::SetSTLHeaderData(const std::string& header)
     }
 }
 
+std::string MeshOutput::asyWidth = "500";
+std::string MeshOutput::asyHeight = "500";
+
+void MeshOutput::SetAsymptoteSize(const std::string& w, const std::string& h)
+{
+    asyWidth = w;
+    asyHeight = h;
+}
+
 void MeshOutput::Transform(const Base::Matrix4D& mat)
 {
     _transform = mat;
@@ -1769,9 +1807,12 @@ std::vector<std::string> MeshOutput::supportedMeshFormats()
     fmt.emplace_back("off");
     fmt.emplace_back("smf");
     fmt.emplace_back("x3d");
+    fmt.emplace_back("x3dz");
+    fmt.emplace_back("xhtml");
     fmt.emplace_back("wrl");
     fmt.emplace_back("wrz");
     fmt.emplace_back("amf");
+    fmt.emplace_back("asy");
     return fmt;
 }
 
@@ -1808,6 +1849,12 @@ MeshIO::Format MeshOutput::GetFormat(const char* FileName)
     else if (file.hasExtension("x3d")) {
         return MeshIO::X3D;
     }
+    else if (file.hasExtension("x3dz")) {
+        return MeshIO::X3DZ;
+    }
+    else if (file.hasExtension("xhtml")) {
+        return MeshIO::X3DOM;
+    }
     else if (file.hasExtension("py")) {
         return MeshIO::PY;
     }
@@ -1825,6 +1872,9 @@ MeshIO::Format MeshOutput::GetFormat(const char* FileName)
     }
     else if (file.hasExtension("smf")) {
         return MeshIO::SMF;
+    }
+    else if (file.hasExtension("asy")) {
+        return MeshIO::ASY;
     }
     else {
         return MeshIO::Undefined;
@@ -1917,6 +1967,18 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         if (!SaveX3D(str))
             throw Base::FileException("Export of X3D failed",FileName);
     }
+    else if (fileformat == MeshIO::X3DZ) {
+        // Compressed X3D is nothing else than a GZIP'ped X3D ascii file
+        zipios::GZIPOutputStream gzip(str);
+        // write file
+        if (!SaveX3D(gzip))
+            throw Base::FileException("Export of compressed X3D mesh failed",FileName);
+    }
+    else if (fileformat == MeshIO::X3DOM) {
+        // write file
+        if (!SaveX3DOM(str))
+            throw Base::FileException("Export of X3DOM failed",FileName);
+    }
     else if (fileformat == MeshIO::PY) {
         // write file
         if (!SavePython(str))
@@ -1943,6 +2005,11 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         // write file
         if (!SaveNastran(str))
             throw Base::FileException("Export of NASTRAN mesh failed",FileName);
+    }
+    else if (fileformat == MeshIO::ASY) {
+        // write file
+        if (!SaveAsymptote(str))
+            throw Base::FileException("Export of ASY mesh failed",FileName);
     }
     else {
         throw Base::FileException("File format not supported", FileName);
@@ -1975,6 +2042,8 @@ bool MeshOutput::SaveFormat(std::ostream &str, MeshIO::Format fmt) const
         return SaveInventor(str);
     case MeshIO::X3D:
         return SaveX3D(str);
+    case MeshIO::X3DOM:
+        return SaveX3DOM(str);
     case MeshIO::VRML:
         return SaveVRML(str);
     case MeshIO::WRZ:
@@ -1988,6 +2057,8 @@ bool MeshOutput::SaveFormat(std::ostream &str, MeshIO::Format fmt) const
         return SaveAsciiPLY(str);
     case MeshIO::PY:
         return SavePython(str);
+    case MeshIO::ASY:
+        return SaveAsymptote(str);
     default:
         throw Base::FileException("Unsupported file format");
     }
@@ -2359,6 +2430,111 @@ bool MeshOutput::SaveSMF (std::ostream &out) const
     return true;
 }
 
+/** Saves an Asymptote file. */
+bool MeshOutput::SaveAsymptote(std::ostream &out) const
+{
+    out << "/*\n"
+           " * Created by FreeCAD <http://www.freecadweb.org>\n"
+           " */\n\n";
+
+    out << "import three;\n\n";
+
+    if (!asyWidth.empty()) {
+        out << "size(" << asyWidth;
+        if (!asyHeight.empty())
+            out << ", " << asyHeight;
+        out << ");\n\n";
+    }
+
+    Base::BoundBox3f bbox = _rclMesh.GetBoundBox();
+    Base::Vector3f center = bbox.GetCenter();
+    this->_transform.multVec(center, center);
+    Base::Vector3f camera(center);
+    camera.x += std::max<float>(std::max<float>(bbox.LengthX(), bbox.LengthY()), bbox.LengthZ());
+    Base::Vector3f target(center);
+    Base::Vector3f upvec(0.0f, 0.0f, 1.0f);
+
+    out << "// CA:Camera, OB:Camera\n"
+        << "currentprojection = orthographic(camera = (" << camera.x << ", "
+                                                         << camera.y << ", "
+                                                         << camera.z << "),\n"
+        << "                                 target = (" << target.x << ", "
+                                                         << target.y << ", "
+                                                         << target.z << "),\n"
+           "                                 showtarget = false,\n"
+           "                                 up = (" << upvec.x << ", "
+                                                     << upvec.y << ", "
+                                                     << upvec.z << "));\n\n";
+
+    //out << "// LA:Spot, OB:Lamp\n"
+    //    << "// WO:World\n"
+    //    << "currentlight = light(diffuse = rgb(1, 1, 1),\n"
+    //       "                     specular = rgb(1, 1, 1),\n"
+    //       "                     background = rgb(0.078281, 0.16041, 0.25),\n"
+    //       "                     0.56639, 0.21839, 0.79467);\n\n";
+
+    out << "// ME:Mesh, OB:Mesh\n";
+
+    MeshFacetIterator clIter(_rclMesh), clEnd(_rclMesh);
+    clIter.Transform(this->_transform);
+    clIter.Begin();
+    clEnd.End();
+
+    const MeshPointArray& rPoints = _rclMesh.GetPoints();
+    const MeshFacetArray& rFacets = _rclMesh.GetFacets();
+    bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX &&
+                            _material->diffuseColor.size() == rPoints.size());
+    bool saveFaceColor   = (_material && _material->binding == MeshIO::PER_FACE &&
+                            _material->diffuseColor.size() == rFacets.size());
+    // global mesh color
+    App::Color mc(0.8f, 0.8f, 0.8f);
+    if (_material && _material->binding == MeshIO::OVERALL &&
+        _material->diffuseColor.size() == 1) {
+        mc = _material->diffuseColor[0];
+    }
+
+    std::size_t index = 0;
+    const MeshGeomFacet *pclFacet;
+    while (clIter < clEnd) {
+        pclFacet = &(*clIter);
+
+        out << "draw(surface(";
+
+        // vertices
+        for (int i = 0; i < 3; i++) {
+            out << '(' << pclFacet->_aclPoints[i].x << ", "
+                       << pclFacet->_aclPoints[i].y << ", "
+                       << pclFacet->_aclPoints[i].z << ")--";
+        }
+
+        out << "cycle";
+
+        if (saveVertexColor) {
+            const MeshFacet& face = rFacets[index];
+            out << ",\n             new pen[] {";
+            for (int i = 0; i < 3; i++) {
+                const App::Color& c = _material->diffuseColor[face._aulPoints[i]];
+                out << "rgb(" << c.r << ", " << c.g << ", " << c.b << ")";
+                if (i < 3)
+                    out << ", ";
+            }
+            out << "}));\n";
+        }
+        else if (saveFaceColor) {
+            const App::Color& c = _material->diffuseColor[index];
+            out << "),\n     rgb(" << c.r << ", " << c.g << ", " << c.b << "));\n";
+        }
+        else {
+            out << "),\n     rgb(" << mc.r << ", " << mc.g << ", " << mc.b << "));\n";
+        }
+
+        ++clIter;
+        ++index;
+    }
+
+    return true;
+}
+
 /** Saves an OFF file. */
 bool MeshOutput::SaveOFF (std::ostream &out) const
 {
@@ -2471,7 +2647,7 @@ bool MeshOutput::SaveBinaryPLY (std::ostream &out) const
 
     Base::OutputStream os(out);
     os.setByteOrder(Base::Stream::LittleEndian);
-    Base::Vector3f pt;
+
     for (std::size_t i = 0; i < v_count; i++) {
         const MeshPoint& p = rPoints[i];
         if (this->apply_transform) {
@@ -2483,9 +2659,9 @@ bool MeshOutput::SaveBinaryPLY (std::ostream &out) const
         }
         if (saveVertexColor) {
             const App::Color& c = _material->diffuseColor[i];
-            int r = (int)(255.0f * c.r);
-            int g = (int)(255.0f * c.g);
-            int b = (int)(255.0f * c.b);
+            uint8_t r = uint8_t(255.0f * c.r);
+            uint8_t g = uint8_t(255.0f * c.g);
+            uint8_t b = uint8_t(255.0f * c.b);
             os << r << g << b;
         }
     }
@@ -2529,8 +2705,6 @@ bool MeshOutput::SaveAsciiPLY (std::ostream &out) const
     out << "element face " << f_count << '\n'
         << "property list uchar int vertex_index\n"
         << "end_header\n";
-
-    Base::Vector3f pt;
 
     out.precision(6);
     out.setf(std::ios::fixed | std::ios::showpoint);
@@ -2699,7 +2873,7 @@ bool MeshOutput::SaveIDTF (std::ostream &str) const
     str << Base::tabs(3) << "}\n";
     str << Base::tabs(2) << "}\n";
     str << Base::tabs(1) << "}\n";
-    str << Base::tabs(1) << "RESOURCE_NAME \"FreeCAD\"\n";
+    str << Base::tabs(1) << "RESOURCE_NAME \"" << resource << "\"\n";
     str << Base::tabs(0) << "}\n\n";
 
     str << Base::tabs(0) << "RESOURCE_LIST \"MODEL\" {\n";
@@ -2895,18 +3069,42 @@ bool MeshOutput::SaveX3D (std::ostream &out) const
     if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
         return false;
 
+    // XML header info
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+
+    return SaveX3DContent(out, false);
+}
+
+/** Writes an X3D file. */
+bool MeshOutput::SaveX3DContent (std::ostream &out, bool exportViewpoints) const
+{
+    if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
+        return false;
+
     const MeshPointArray& pts = _rclMesh.GetPoints();
     const MeshFacetArray& fts = _rclMesh.GetFacets();
+    Base::BoundBox3f bbox = _rclMesh.GetBoundBox();
+    if (apply_transform)
+        bbox = bbox.Transformed(_transform);
+
+    App::Color mat(0.65f, 0.65f, 0.65f);
+    if (_material && _material->binding == MeshIO::Binding::OVERALL) {
+        if (!_material->diffuseColor.empty())
+            mat = _material->diffuseColor.front();
+    }
+    bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX &&
+                            _material->diffuseColor.size() == pts.size());
+    bool saveFaceColor   = (_material && _material->binding == MeshIO::PER_FACE &&
+                            _material->diffuseColor.size() == fts.size());
 
     Base::SequencerLauncher seq("Saving...", _rclMesh.CountFacets() + 1);
     out.precision(6);
     out.setf(std::ios::fixed | std::ios::showpoint);
 
     // Header info
-    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     out << "<X3D profile=\"Immersive\" version=\"3.2\" xmlns:xsd="
         << "\"http://www.w3.org/2001/XMLSchema-instance\" xsd:noNamespaceSchemaLocation="
-        << "\"http://www.web3d.org/specifications/x3d-3.2.xsd\">\n";
+        << "\"http://www.web3d.org/specifications/x3d-3.2.xsd\" width=\"1280px\"  height=\"1024px\">\n";
     out << "  <head>\n"
         << "    <meta name=\"generator\" content=\"FreeCAD\"/>\n"
         << "    <meta name=\"author\" content=\"\"/> \n"
@@ -2915,6 +3113,31 @@ bool MeshOutput::SaveX3D (std::ostream &out) const
 
     // Beginning
     out << "  <Scene>\n";
+
+    if (exportViewpoints) {
+        auto viewpoint = [&out](const char* text, const Base::Vector3f& cnt,
+                                const Base::Vector3f& pos, const Base::Vector3f& axis, float angle) {
+            out << "    <Viewpoint id=\"" << text
+                << "\" centerOfRotation=\"" << cnt.x << " " << cnt.y << " " << cnt.z
+                << "\" position=\"" << pos.x << " " << pos.y << " " << pos.z
+                << "\" orientation=\"" << axis.x << " " << axis.y << " " << axis.z << " " << angle
+                << "\" description=\"camera\" fieldOfView=\"0.9\">"
+                << "</Viewpoint>\n";
+        };
+
+        Base::Vector3f cnt = bbox.GetCenter();
+        float dist = 1.2f * bbox.CalcDiagonalLength();
+        float dist3 = 0.577350f * dist; // sqrt(1/3) * dist
+
+        viewpoint("Iso", cnt, Base::Vector3f(cnt.x + dist3, cnt.y - dist3, cnt.z + dist3), Base::Vector3f(0.742906f, 0.307722f, 0.594473f), 1.21712f);
+        viewpoint("Front", cnt, Base::Vector3f(cnt.x, cnt.y - dist, cnt.z), Base::Vector3f(1.0f, 0.0f, 0.0f), 1.5707964f);
+        viewpoint("Back", cnt, Base::Vector3f(cnt.x, cnt.y + dist, cnt.z), Base::Vector3f(0.0f, 0.707106f, 0.707106f), 3.141592f);
+        viewpoint("Right", cnt, Base::Vector3f(cnt.x + dist, cnt.y, cnt.z), Base::Vector3f(0.577350f, 0.577350f, 0.577350f), 2.094395f);
+        viewpoint("Left", cnt, Base::Vector3f(cnt.x - dist, cnt.y, cnt.z), Base::Vector3f(-0.577350f, 0.577350f, 0.577350f), 4.188790f);
+        viewpoint("Top", cnt, Base::Vector3f(cnt.x, cnt.y, cnt.z + dist), Base::Vector3f(0.0f, 0.0f, 1.0f), 0.0f);
+        viewpoint("Bottom", cnt, Base::Vector3f(cnt.x, cnt.y, cnt.z - dist), Base::Vector3f(1.0f, 0.0f, 0.0f), 3.141592f);
+    }
+
     if (apply_transform) {
         Base::Placement p(_transform);
         const Base::Vector3d& v = p.getPosition();
@@ -2936,10 +3159,19 @@ bool MeshOutput::SaveX3D (std::ostream &out) const
         out << "    <Transform>\n";
     }
     out << "      <Shape>\n";
-    out << "        <Appearance><Material DEF='Shape_Mat' diffuseColor='0.65 0.65 0.65'"
-           " shininess='0.9' specularColor='1 1 1'></Material></Appearance>\n";
+    out << "        <Appearance>\n"
+           "          <Material diffuseColor='" << mat.r << " " << mat.g << " " << mat.b << "' shininess='0.9' specularColor='1 1 1'></Material>\n"
+           "        </Appearance>\n";
 
-    out << "        <IndexedFaceSet solid=\"false\" coordIndex=\"";
+    out << "        <IndexedFaceSet solid=\"false\" ";
+    if (saveVertexColor) {
+        out << "colorPerVertex=\"true\" ";
+    }
+    else if (saveFaceColor) {
+        out << "colorPerVertex=\"false\" ";
+    }
+
+    out << "coordIndex=\"";
     for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
         out << it->_aulPoints[0] << " " << it->_aulPoints[1] << " " << it->_aulPoints[2] << " -1 ";
     }
@@ -2951,12 +3183,69 @@ bool MeshOutput::SaveX3D (std::ostream &out) const
     }
     out << "\"/>\n";
 
+    // write colors per vertex or face
+    if (saveVertexColor || saveFaceColor) {
+        out << "          <Color color=\"";
+        for (const auto& c : _material->diffuseColor) {
+            out << c.r << " " << c.g << " " << c.b << ", ";
+        }
+        out << "\"/>\n";
+    }
+
     // End
     out << "        </IndexedFaceSet>\n"
         << "      </Shape>\n"
         << "    </Transform>\n"
+        << "    <Background groundColor=\"0.7 0.7 0.7\" skyColor=\"0.7 0.7 0.7\" />\n"
+        << "    <NavigationInfo/>\n"
         << "  </Scene>\n"
         << "</X3D>\n";
+
+    return true;
+}
+
+/** Writes an X3DOM file. */
+bool MeshOutput::SaveX3DOM (std::ostream &out) const
+{
+    if ((!out) || (out.bad() == true) || (_rclMesh.CountFacets() == 0))
+        return false;
+
+    // See:
+    // https://stackoverflow.com/questions/31976056/unable-to-color-faces-using-indexedfaceset-in-x3dom
+    //
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
+    out << "<html xmlns='http://www.w3.org/1999/xhtml'>\n"
+        << "  <head>\n"
+        << "    <script type='text/javascript' src='http://www.x3dom.org/download/x3dom.js'> </script>\n"
+        << "    <link rel='stylesheet' type='text/css' href='http://www.x3dom.org/download/x3dom.css'></link>\n"
+        << "  </head>\n";
+
+    auto onclick = [&out](const char* text) {
+        out << "  <button onclick=\"document.getElementById('" << text << "').setAttribute('set_bind','true');\">" << text << "</button>\n";
+    };
+
+    onclick("Iso");
+    onclick("Front");
+    onclick("Back");
+    onclick("Right");
+    onclick("Left");
+    onclick("Top");
+    onclick("Bottom");
+
+#if 0 // https://stackoverflow.com/questions/32305678/x3dom-how-to-make-zoom-buttons
+    function zoom (delta) {
+        var x3d = document.getElementById("right");
+        var vpt = x3d.getElementsByTagName("Viewpoint")[0];
+        vpt.fieldOfView = parseFloat(vpt.fieldOfView) + delta;
+    }
+
+    <button onclick="zoom(0.15);">Zoom out</button>
+#endif
+
+    SaveX3DContent(out, true);
+
+    out << "</html>\n";
 
     return true;
 }
@@ -3238,8 +3527,9 @@ void MeshCleanup::RemoveInvalids()
 
 void MeshCleanup::RemoveInvalidFacets()
 {
+    MeshIsFlag<MeshFacet> flag;
     std::size_t countInvalidFacets = std::count_if(facetArray.begin(), facetArray.end(),
-                    std::bind2nd(MeshIsFlag<MeshFacet>(), MeshFacet::INVALID));
+                    [flag](const MeshFacet& f) { return flag(f, MeshFacet::INVALID); });
     if (countInvalidFacets > 0) {
 
         // adjust the material array if needed
@@ -3259,15 +3549,16 @@ void MeshCleanup::RemoveInvalidFacets()
         MeshFacetArray copy_facets(facetArray.size() - countInvalidFacets);
         // copy all valid facets to the new array
         std::remove_copy_if(facetArray.begin(), facetArray.end(), copy_facets.begin(),
-            std::bind2nd(MeshIsFlag<MeshFacet>(), MeshFacet::INVALID));
+            [flag](const MeshFacet& f) { return flag(f, MeshFacet::INVALID); });
         facetArray.swap(copy_facets);
     }
 }
 
 void MeshCleanup::RemoveInvalidPoints()
 {
+    MeshIsFlag<MeshPoint> flag;
     std::size_t countInvalidPoints = std::count_if(pointArray.begin(), pointArray.end(),
-                    std::bind2nd(MeshIsFlag<MeshPoint>(), MeshPoint::INVALID));
+                    [flag](const MeshPoint& p) { return flag(p, MeshPoint::INVALID); });
     if (countInvalidPoints > 0) {
         // generate array of decrements
         std::vector<unsigned long> decrements;
@@ -3310,7 +3601,7 @@ void MeshCleanup::RemoveInvalidPoints()
         MeshPointArray copy_points(validPoints);
         // copy all valid facets to the new array
         std::remove_copy_if(pointArray.begin(), pointArray.end(), copy_points.begin(),
-            std::bind2nd(MeshIsFlag<MeshPoint>(), MeshPoint::INVALID));
+            [flag](const MeshPoint& p) { return flag(p, MeshPoint::INVALID); });
         pointArray.swap(copy_points);
     }
 }

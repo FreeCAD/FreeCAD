@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -9,18 +10,18 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 # *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   License along with this program; if not, write to the Free Software   *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-
+# to run the example use:
 """
 from femexamples.thermomech_bimetall import setup
 setup()
@@ -32,7 +33,6 @@ setup()
 # analytical solution 7.05 mm deflection in the invar material direction
 # see post in the forum link
 # this file has 7.15 mm max deflection
-# to run the example use:
 
 import FreeCAD
 from FreeCAD import Rotation
@@ -49,6 +49,18 @@ def init_doc(doc=None):
     if doc is None:
         doc = FreeCAD.newDocument()
     return doc
+
+
+def get_information():
+    info = {"name": "Thermomech Bimetall",
+            "meshtype": "solid",
+            "meshelement": "Tet10",
+            "constraints": ["fixed", "initial temperature", "temperature"],
+            "solvers": ["calculix", "elmer"],
+            "material": "multimaterial",
+            "equation": "thermomechanical"
+            }
+    return info
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -101,6 +113,22 @@ def setup(doc=None, solvertype="ccxtools"):
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver_object.WorkingDir = u""
+    elif solvertype == "elmer":
+        solver_object = analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))[0]
+        solver_object.SteadyStateMinIterations = 1
+        solver_object.SteadyStateMaxIterations = 10
+        eq_heat = ObjectsFem.makeEquationHeat(doc, solver_object)
+        eq_heat.Bubbles = True
+        eq_heat.Priority = 2
+        eq_elasticity = ObjectsFem.makeEquationElasticity(doc, solver_object)
+        eq_elasticity.Bubbles = True
+        eq_elasticity.Priority = 1
+        eq_elasticity.LinearSolverType = "Direct"
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Not known or not supported solver type: {}. "
+            "No solver object was created.\n".format(solvertype)
+        )
     if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.AnalysisType = "thermomech"
         solver_object.GeometricalNonlinearity = "linear"
@@ -122,6 +150,7 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["SpecificHeat"] = "385 J/kg/K"
     mat["ThermalConductivity"] = "200 W/m/K"
     mat["ThermalExpansionCoefficient"] = "0.00002 m/m/K"
+    mat["Density"] = "1.00 kg/m^3"
     material_obj_bottom.Material = mat
     material_obj_bottom.References = [(geom_obj, "Solid1")]
     analysis.addObject(material_obj_bottom)
@@ -136,6 +165,7 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["SpecificHeat"] = "510 J/kg/K"
     mat["ThermalConductivity"] = "13 W/m/K"
     mat["ThermalExpansionCoefficient"] = "0.0000012 m/m/K"
+    mat["Density"] = "1.00 kg/m^3"
     material_obj_top.Material = mat
     material_obj_top.References = [(geom_obj, "Solid2")]
     analysis.addObject(material_obj_top)
@@ -184,9 +214,11 @@ def setup(doc=None, solvertype="ccxtools"):
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(
-        doc.addObject("Fem::FemMeshObject", mesh_name)
+        ObjectsFem.makeMeshGmsh(doc, mesh_name)
     )[0]
     femmesh_obj.FemMesh = fem_mesh
+    femmesh_obj.Part = geom_obj
+    femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()
     return doc

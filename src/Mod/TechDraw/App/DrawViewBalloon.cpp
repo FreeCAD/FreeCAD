@@ -50,6 +50,7 @@
 
 #include <Mod/Measure/App/Measurement.h>
 
+#include "Preferences.h"
 #include "Geometry.h"
 #include "DrawViewPart.h"
 #include "DrawViewBalloon.h"
@@ -98,8 +99,8 @@ DrawViewBalloon::DrawViewBalloon(void)
     EndType.setEnums(ArrowPropEnum::ArrowTypeEnums);
     ADD_PROPERTY(EndType,(prefEnd()));
 
-    Shape.setEnums(balloonTypeEnums);
-    ADD_PROPERTY(Shape,(prefShape()));
+    BubbleShape.setEnums(balloonTypeEnums);
+    ADD_PROPERTY(BubbleShape,(prefShape()));
 
     ADD_PROPERTY_TYPE(ShapeScale,(1.0),"",(App::PropertyType)(App::Prop_None),"Balloon shape scale");
     ShapeScale.setConstraints(&SymbolScaleRange);
@@ -123,7 +124,7 @@ void DrawViewBalloon::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
         if ( (prop == &EndType) ||
-             (prop == &Shape)  ||
+             (prop == &BubbleShape)  ||
              (prop == &Text)    ||
              (prop == &KinkLength) ) {
             requestPaint();
@@ -136,20 +137,20 @@ void DrawViewBalloon::handleChangedPropertyName(Base::XMLReader &reader, const c
 {
     Base::Type type = Base::Type::fromName(TypeName);
     // was sourceView in the past, now is SourceView
-    if (SourceView.getClassTypeId() == type && strcmp(PropName, "sourceView") == 0)
+    if (SourceView.getClassTypeId() == type && strcmp(PropName, "sourceView") == 0) {
         SourceView.Restore(reader);
-    else
-        DrawView::handleChangedPropertyName(reader, TypeName, PropName);
-    // was Symbol in the past, now is Shape
-    if (Shape.getClassTypeId() == type && strcmp(PropName, "Symbol") == 0)
-        Shape.Restore(reader);
-    else
-        DrawView::handleChangedPropertyName(reader, TypeName, PropName);
-    // was SymbolScale in the past, now is ShapeScale
-    if (ShapeScale.getClassTypeId() == type && strcmp(PropName, "SymbolScale") == 0)
+    } else if (BubbleShape.getClassTypeId() == type && strcmp(PropName, "Symbol") == 0) {
+        // was Symbol, then Shape in the past, now is BubbleShape
+        BubbleShape.Restore(reader);
+    } else if (BubbleShape.getClassTypeId() == type && strcmp(PropName, "Shape") == 0) {
+        // was Symbol, then Shape in the past, now is BubbleShape
+        BubbleShape.Restore(reader);
+    } else if (ShapeScale.getClassTypeId() == type && strcmp(PropName, "SymbolScale") == 0) {
+        // was SymbolScale in the past, now is ShapeScale
         ShapeScale.Restore(reader);
-    else
+    } else {
         DrawView::handleChangedPropertyName(reader, TypeName, PropName);
+    }
 }
 
 void DrawViewBalloon::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
@@ -274,11 +275,7 @@ int DrawViewBalloon::prefShape(void) const
 
 int DrawViewBalloon::prefEnd(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Decorations");
-    int end = hGrp->GetInt("BalloonArrow", 1);
-    return end;
+    return Preferences::balloonArrow();
 }
 
 Base::Vector3d DrawViewBalloon::getOriginOffset() const

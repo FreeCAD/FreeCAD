@@ -369,33 +369,33 @@ bool StdCmdMergeProjects::isActive(void)
 }
 
 //===========================================================================
-// Std_ExportGraphviz
+// Std_DependencyGraph
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdExportGraphviz)
+DEF_STD_CMD_A(StdCmdDependencyGraph)
 
-StdCmdExportGraphviz::StdCmdExportGraphviz()
-  : Command("Std_ExportGraphviz")
+StdCmdDependencyGraph::StdCmdDependencyGraph()
+  : Command("Std_DependencyGraph")
 {
     // setting the
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("Dependency graph...");
     sToolTipText  = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
     sStatusTip    = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
-    sWhatsThis    = "Std_ExportGraphviz";
+    sWhatsThis    = "Std_DependencyGraph";
     eType         = 0;
 }
 
-void StdCmdExportGraphviz::activated(int iMsg)
+void StdCmdDependencyGraph::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
     Gui::GraphvizView* view = new Gui::GraphvizView(*doc);
-    view->setWindowTitle(qApp->translate("Std_ExportGraphviz","Dependency graph"));
+    view->setWindowTitle(qApp->translate("Std_DependencyGraph","Dependency graph"));
     getMainWindow()->addWindow(view);
 }
 
-bool StdCmdExportGraphviz::isActive(void)
+bool StdCmdDependencyGraph::isActive(void)
 {
     return (getActiveGuiDocument() ? true : false);
 }
@@ -687,6 +687,7 @@ StdCmdPrint::StdCmdPrint()
     sStatusTip    = QT_TR_NOOP("Print the document");
     sPixmap       = "document-print";
     sAccel        = keySequenceToAccel(QKeySequence::Print);
+    eType         = 0;
 }
 
 void StdCmdPrint::activated(int iMsg)
@@ -717,6 +718,7 @@ StdCmdPrintPreview::StdCmdPrintPreview()
     sWhatsThis    = "Std_PrintPreview";
     sStatusTip    = QT_TR_NOOP("Print preview");
     sPixmap       = "document-print-preview";
+    eType         = 0;
 }
 
 void StdCmdPrintPreview::activated(int iMsg)
@@ -745,6 +747,7 @@ StdCmdPrintPdf::StdCmdPrintPdf()
     sToolTipText  = QT_TR_NOOP("Export the document as PDF");
     sWhatsThis    = "Std_PrintPdf";
     sStatusTip    = QT_TR_NOOP("Export the document as PDF");
+    eType         = 0;
 }
 
 void StdCmdPrintPdf::activated(int iMsg)
@@ -992,6 +995,7 @@ StdCmdDuplicateSelection::StdCmdDuplicateSelection()
     sToolTipText  = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
     sWhatsThis    = "Std_DuplicateSelection";
     sStatusTip    = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
+    sPixmap       = "Std_DuplicateSelection";
 }
 
 void StdCmdDuplicateSelection::activated(int iMsg)
@@ -1215,7 +1219,7 @@ void StdCmdDelete::activated(int iMsg)
                     }
                     std::string thisDoc = pGuiDoc->getDocument()->getName();
                     bodyMessageStream << qApp->translate("Std_Delete", 
-                                            "These items are selected for deletion, but are not in the active document. \n\n"); 
+                                            "These items are selected for deletion, but are not in the active document."); 
                     for (const auto &currentLabel : inactiveLabels)
                         bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
                 }
@@ -1434,6 +1438,7 @@ StdCmdAlignment::StdCmdAlignment()
     sToolTipText  = QT_TR_NOOP("Align the selected objects");
     sStatusTip    = QT_TR_NOOP("Align the selected objects");
     sWhatsThis    = "Std_Alignment";
+    sPixmap       = "Std_Alignment";
 }
 
 void StdCmdAlignment::activated(int iMsg)
@@ -1539,6 +1544,10 @@ class StdCmdExpression : public Gui::Command
 {
 public:
     StdCmdExpression() : Command("Std_Expressions")
+                       , pcActionCopyAll(nullptr)
+                       , pcActionCopySel(nullptr)
+                       , pcActionCopyActive(nullptr)
+                       , pcActionPaste(nullptr)
     {
         sGroup        = QT_TR_NOOP("Edit");
         sMenuText     = QT_TR_NOOP("Expression actions");
@@ -1758,7 +1767,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdImport());
     rcCmdMgr.addCommand(new StdCmdExport());
     rcCmdMgr.addCommand(new StdCmdMergeProjects());
-    rcCmdMgr.addCommand(new StdCmdExportGraphviz());
+    rcCmdMgr.addCommand(new StdCmdDependencyGraph());
 
     rcCmdMgr.addCommand(new StdCmdSave());
     rcCmdMgr.addCommand(new StdCmdSaveAs());

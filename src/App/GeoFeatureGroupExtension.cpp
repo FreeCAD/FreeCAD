@@ -29,6 +29,7 @@
 
 #include <App/Document.h>
 
+#include "Link.h"
 #include "GeoFeatureGroupExtension.h"
 #include "OriginFeature.h"
 #include "Origin.h"
@@ -193,8 +194,9 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
     //objects are only allowed in a single GeoFeatureGroup
     if(p == &Group && !Group.testStatus(Property::User3)) {
     
-        if(!getExtendedObject()->isRestoring() &&
-           !getExtendedObject()->getDocument()->isPerformingTransaction()) {
+        if((!getExtendedObject()->isRestoring()
+                || getExtendedObject()->getDocument()->testStatus(Document::Importing))
+            && !getExtendedObject()->getDocument()->isPerformingTransaction()) {
                 
             bool error = false;
             auto corrected = Group.getValues();
@@ -375,7 +377,10 @@ bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const
         }
         if(ret) {
             if(dot) ++dot;
-            if(dot && *dot && !ret->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            if(dot && *dot 
+                    && !ret->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId())
+                    && !ret->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) 
+            {
                 // Consider this
                 // Body
                 //  | -- Pad

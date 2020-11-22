@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -23,7 +21,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
 import Path
 import PathScripts.PathLog as PathLog
 import math
@@ -31,9 +28,13 @@ import math
 from FreeCAD import Vector
 from PySide import QtCore
 
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
+
 __title__ = "PathGeom - geometry utilities for Path"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."
 
 Tolerance = 0.000001

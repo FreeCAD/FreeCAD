@@ -4,9 +4,9 @@
   <context>
     <name>AssemblyGui::TaskAssemblyConstraints</name>
     <message>
-      <location filename="../../TaskAssemblyConstraints.cpp" line="53"/>
+      <location filename="../../TaskAssemblyConstraints.cpp" line="52"/>
       <source>Constraints</source>
-      <translation>Ograniczenia</translation>
+      <translation>Wiązania</translation>
     </message>
   </context>
   <context>
@@ -304,8 +304,8 @@
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="195"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblys, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblys, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblies, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mocuje pierwszą geometrię w obracaniu i tłumaczeniu. Zauważ, że to mocowanie działa tylko z bezpośrednim zespołem nadrzędnym. Jeśli zbierzesz zespoły, zespół nadrzędny nie będzie umocowany wewnątrz pozostałych zespołów.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="198"/>

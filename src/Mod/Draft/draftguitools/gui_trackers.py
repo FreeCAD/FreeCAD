@@ -18,28 +18,31 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide Coin based objects used for previews in the Draft Workbench.
+"""Provides Coin based objects used to preview objects being built.
 
 This module provides Coin (pivy) based objects
 that are used by the Draft Workbench to draw temporary geometry,
 that is, previews, of the real objects that will be created on the 3D view.
 """
-## @package DraftTrackers
-#  \ingroup DRAFT
-#  \brief Provide Coin based objects used for previews in the Draft Workbench.
+## @package gui_trackers
+# \ingroup draftguitools
+# \brief Provides Coin based objects used to preview objects being built.
 #
 # This module provides Coin (pivy) based objects
 # that are used by the Draft Workbench to draw temporary geometry,
 # that is, previews, of the real objects that will be created on the 3D view.
 
+## \addtogroup draftguitools
+# @{
 import math
-from pivy import coin
 import re
+import pivy.coin as coin
 
 import FreeCAD
 import FreeCADGui
 import Draft
 import DraftVecUtils
+
 from FreeCAD import Vector
 from draftutils.todo import ToDo
 from draftutils.messages import _msg
@@ -57,8 +60,8 @@ class Tracker:
         global Part, DraftGeomUtils
         import Part, DraftGeomUtils
         self.ontop = ontop
-        color = coin.SoBaseColor()
-        color.rgb = scolor or FreeCADGui.draftToolBar.getDefaultColor("ui")
+        self.color = coin.SoBaseColor()
+        self.color.rgb = scolor or FreeCADGui.draftToolBar.getDefaultColor("line")
         drawstyle = coin.SoDrawStyle()
         if swidth:
             drawstyle.lineWidth = swidth
@@ -67,7 +70,7 @@ class Tracker:
             drawstyle.lineWeight = 3
             drawstyle.linePattern = 0x0f0f  # 0xaa
         node = coin.SoSeparator()
-        for c in [drawstyle, color] + children:
+        for c in [drawstyle, self.color] + children:
             node.addChild(c)
         self.switch = coin.SoSwitch()  # this is the on/off switch
         if name:
@@ -956,23 +959,42 @@ class gridTracker(Tracker):
     """A grid tracker."""
 
     def __init__(self):
+        GRID_TRANSPARENCY = 0
         col = self.getGridColor()
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0, 0, 0])
         mat1 = coin.SoMaterial()
-        mat1.transparency.setValue(0.7)
+        mat1.transparency.setValue(0.7*(1-GRID_TRANSPARENCY))
         mat1.diffuseColor.setValue(col)
+        self.font = coin.SoFont()
         self.coords1 = coin.SoCoordinate3()
         self.lines1 = coin.SoLineSet()
+        texts = coin.SoSeparator()
+        t1 = coin.SoSeparator()
+        self.textpos1 = coin.SoTransform()
+        self.text1 = coin.SoAsciiText()
+        self.text1.string = " "
+        t2 = coin.SoSeparator()
+        self.textpos2 = coin.SoTransform()
+        self.textpos2.rotation.setValue((0.0, 0.0, 0.7071067811865475, 0.7071067811865476))
+        self.text2 = coin.SoAsciiText()
+        self.text2.string = " "
+        t1.addChild(self.textpos1)
+        t1.addChild(self.text1)
+        t2.addChild(self.textpos2)
+        t2.addChild(self.text2)
+        texts.addChild(self.font)
+        texts.addChild(t1)
+        texts.addChild(t2)
         mat2 = coin.SoMaterial()
-        mat2.transparency.setValue(0.3)
+        mat2.transparency.setValue(0.3*(1-GRID_TRANSPARENCY))
         mat2.diffuseColor.setValue(col)
         self.coords2 = coin.SoCoordinate3()
         self.lines2 = coin.SoLineSet()
         mat3 = coin.SoMaterial()
-        mat3.transparency.setValue(0)
+        mat3.transparency.setValue(GRID_TRANSPARENCY)
         mat3.diffuseColor.setValue(col)
         self.coords3 = coin.SoCoordinate3()
         self.lines3 = coin.SoLineSet()
@@ -989,6 +1011,7 @@ class gridTracker(Tracker):
         s.addChild(mat3)
         s.addChild(self.coords3)
         s.addChild(self.lines3)
+        s.addChild(texts)
         Tracker.__init__(self, children=[s], name="gridTracker")
         self.reset()
 
@@ -1006,9 +1029,12 @@ class gridTracker(Tracker):
         # an exact pair number of main lines
         numlines = self.numlines // self.mainlines // 2 * 2 * self.mainlines
         bound = (numlines // 2) * self.space
+        border = (numlines//2 + self.mainlines/2) * self.space
+        cursor = self.mainlines//4 * self.space
         pts = []
         mpts = []
         apts = []
+        cpts = []
         for i in range(numlines + 1):
             curr = -bound + i * self.space
             z = 0
@@ -1019,6 +1045,10 @@ class gridTracker(Tracker):
                 else:
                     mpts.extend([[-bound, curr, z], [bound, curr, z]])
                     mpts.extend([[curr, -bound, z], [curr, bound, z]])
+                cpts.extend([[-border,curr,z], [-border+cursor,curr,z]])
+                cpts.extend([[border-cursor,curr,z], [border,curr,z]])
+                cpts.extend([[curr,-border,z], [curr,-border+cursor,z]])
+                cpts.extend([[curr,border-cursor,z], [curr,border,z]])
             else:
                 pts.extend([[-bound, curr, z], [bound, curr, z]])
                 pts.extend([[curr, -bound, z], [curr, bound, z]])
@@ -1026,12 +1056,47 @@ class gridTracker(Tracker):
             idx = []
             midx = []
             aidx = []
+            cidx = []
             for p in range(0, len(pts), 2):
                 idx.append(2)
             for mp in range(0, len(mpts), 2):
                 midx.append(2)
             for ap in range(0, len(apts), 2):
                 aidx.append(2)
+            for cp in range(0, len(cpts),2):
+                cidx.append(2)
+            
+            if Draft.getParam("gridBorder", True):
+                # extra border
+                border = (numlines//2 + self.mainlines/2) * self.space
+                mpts.extend([[-border, -border, z], [border, -border, z], [border, border, z], [-border, border, z], [-border, -border, z]])
+                midx.append(5)
+                # cursors
+                mpts.extend(cpts)
+                midx.extend(cidx)
+                # texts
+                self.font.size = self.space*(self.mainlines//4) or 1
+                self.font.name = Draft.getParam("textfont","Sans")
+                txt = FreeCAD.Units.Quantity(self.space*self.mainlines,FreeCAD.Units.Length).UserString
+                self.text1.string = txt
+                self.text2.string = txt
+                self.textpos1.translation.setValue((-bound+self.space,-border+self.space,z))
+                self.textpos2.translation.setValue((-bound-self.space,-bound+self.space,z))
+                # human from BIM workbench
+                loc = FreeCAD.Vector(-bound+self.space/2,-bound+self.space/2,0)
+                try:
+                    import BimProject
+                    hpts = BimProject.getHuman(loc)
+                except:
+                    # BIM not installed
+                    pass
+                else:
+                    mpts.extend([tuple(p) for p in hpts])
+                    midx.append(len(hpts))
+            else:
+                self.text1.string = " "
+                self.text2.string = " "
+            
             self.lines1.numVertices.deleteValues(0)
             self.lines2.numVertices.deleteValues(0)
             self.lines3.numVertices.deleteValues(0)
@@ -1199,10 +1264,9 @@ class radiusTracker(Tracker):
 class archDimTracker(Tracker):
     """A wrapper around a Sketcher dim."""
 
-    def __init__(self,
-                 p1=FreeCAD.Vector(0, 0, 0),
-                 p2=FreeCAD.Vector(1, 0, 0), mode=1):
+    def __init__(self, p1=FreeCAD.Vector(0, 0, 0), p2=FreeCAD.Vector(1, 0, 0), mode=1):
         import SketcherGui
+        self.transform = coin.SoMatrixTransform()
         self.dimnode = coin.SoType.fromName("SoDatumLabel").createInstance()
         p1node = coin.SbVec3f([p1.x, p1.y, p1.z])
         p2node = coin.SbVec3f([p2.x, p2.y, p2.z])
@@ -1210,23 +1274,34 @@ class archDimTracker(Tracker):
         self.dimnode.lineWidth = 1
         color = FreeCADGui.draftToolBar.getDefaultColor("snap")
         self.dimnode.textColor.setValue(coin.SbVec3f(color))
+        self.dimnode.size = 11
+        self.offset = 0.5
         self.setString()
         self.setMode(mode)
-        Tracker.__init__(self, children=[self.dimnode], name="archDimTracker")
+        Tracker.__init__(self, children=[self.transform, self.dimnode], name="archDimTracker")
 
     def setString(self, text=None):
         """Set the dim string to the given value or auto value."""
-        self.dimnode.param1.setValue(.5)
         p1 = Vector(self.dimnode.pnts.getValues()[0].getValue())
         p2 = Vector(self.dimnode.pnts.getValues()[-1].getValue())
         m = self.dimnode.datumtype.getValue()
+        plane = FreeCAD.DraftWorkingPlane
+        self.dimnode.norm.setValue(plane.getNormal())
+        # set the offset sign to prevent the dim line from intersecting the curve near the cursor
+        sign_dx = math.copysign(1, (p2.sub(p1)).x)
+        sign_dy = math.copysign(1, (p2.sub(p1)).y)
+        sign = sign_dx*sign_dy
         if m == 2:
-            self.Distance = (DraftVecUtils.project(p2.sub(p1), Vector(1, 0, 0))).Length
+            self.Distance = abs((p2.sub(p1)).x)
+            self.dimnode.param1.setValue(sign*self.offset)
         elif m == 3:
-            self.Distance = (DraftVecUtils.project(p2.sub(p1), Vector(0, 1, 0))).Length
+            self.Distance = abs((p2.sub(p1)).y)
+            self.dimnode.param1.setValue(-1*sign*self.offset)
         else:
             self.Distance = (p2.sub(p1)).Length
+
         text = FreeCAD.Units.Quantity(self.Distance, FreeCAD.Units.Length).UserString
+        self.transform.matrix.setValue(*plane.getPlacement().Matrix.transposed().A)
         self.dimnode.string.setValue(text.encode('utf8'))
 
     def setMode(self, mode=1):
@@ -1241,16 +1316,26 @@ class archDimTracker(Tracker):
 
     def p1(self, point=None):
         """Set or get the first point of the dim."""
+        plane = FreeCAD.DraftWorkingPlane
         if point:
-            self.dimnode.pnts.set1Value(0, point.x, point.y, point.z)
+            p1_proj = plane.projectPoint(point)
+            p1_proj_u = (p1_proj - plane.position).dot(plane.u.normalize())
+            p1_proj_v = (p1_proj - plane.position).dot(plane.v.normalize())
+            self.dimnode.pnts.set1Value(0, p1_proj_u, p1_proj_v, 0)
             self.setString()
         else:
             return Vector(self.dimnode.pnts.getValues()[0].getValue())
 
     def p2(self, point=None):
         """Set or get the second point of the dim."""
+        plane = FreeCAD.DraftWorkingPlane
         if point:
-            self.dimnode.pnts.set1Value(1, point.x, point.y, point.z)
+            p2_proj = plane.projectPoint(point)
+            p2_proj_u = (p2_proj - plane.position).dot(plane.u.normalize())
+            p2_proj_v = (p2_proj - plane.position).dot(plane.v.normalize())
+            self.dimnode.pnts.set1Value(1, p2_proj_u, p2_proj_v, 0)
             self.setString()
         else:
             return Vector(self.dimnode.pnts.getValues()[-1].getValue())
+
+## @}

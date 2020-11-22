@@ -579,7 +579,7 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
 
         // Its better not to use BRepFeat_MakePrism here even if we have a support because the
         // resulting shape creates problems with Pocket
-        BRepPrimAPI_MakePrism PrismMaker(from, Ltotal*gp_Vec(dir), 0,1); // finite prism
+        BRepPrimAPI_MakePrism PrismMaker(from, Ltotal*gp_Vec(dir), 0, 1); // finite prism
         if (!PrismMaker.IsDone())
             throw Base::RuntimeError("ProfileBased: Length: Could not extrude the sketch!");
         prism = PrismMaker.Shape();
@@ -884,8 +884,7 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
 }
 
 namespace PartDesign {
-struct gp_Pnt_Less  : public std::binary_function<const gp_Pnt&,
-                                                  const gp_Pnt&, bool>
+struct gp_Pnt_Less
 {
     bool operator()(const gp_Pnt& p1,
                     const gp_Pnt& p2) const
@@ -954,6 +953,7 @@ bool ProfileBased::isEqualGeometry(const TopoDS_Shape& s1, const TopoDS_Shape& s
         }
     }
     else if (s1.ShapeType() == TopAbs_EDGE && s2.ShapeType() == TopAbs_EDGE) {
+        // Do nothing here
     }
     else if (s1.ShapeType() == TopAbs_VERTEX && s2.ShapeType() == TopAbs_VERTEX) {
         gp_Pnt p1 = BRep_Tool::Pnt(TopoDS::Vertex(s1));
@@ -1092,7 +1092,14 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
             throw Base::ValueError("No rotation axis reference specified");
         const Part::Feature* refFeature = static_cast<const Part::Feature*>(pcReferenceAxis);
         Part::TopoShape refShape = refFeature->Shape.getShape();
-        TopoDS_Shape ref = refShape.getSubShape(subReferenceAxis[0].c_str());
+        TopoDS_Shape ref;
+        try {
+            // if an exception is raised then convert it into a FreeCAD-specific exception
+            ref = refShape.getSubShape(subReferenceAxis[0].c_str());
+        }
+        catch (const Standard_Failure& e) {
+            throw Base::RuntimeError(e.GetMessageString());
+        }
 
         if (ref.ShapeType() == TopAbs_EDGE) {
             TopoDS_Edge refEdge = TopoDS::Edge(ref);

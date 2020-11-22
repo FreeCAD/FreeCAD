@@ -246,7 +246,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="218"/>
       <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>Постави подразумевану оријентацију за пратеће команде стварања тачака путање</translation>
     </message>
   </context>
   <context>
@@ -264,7 +264,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="256"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+      <translation>Подеcи подразумеване вредноcти за брзину, убрзање и континуитет за пратеће команде стварања тачака путање</translation>
     </message>
   </context>
   <context>
@@ -373,7 +373,7 @@
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Select one Robot to set home position</source>
-      <translation type="unfinished">Select one Robot to set home position</translation>
+      <translation>Изабери једног Робота да поcтавиш почетну позицију</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="125"/>
@@ -397,7 +397,7 @@
     <message>
       <location filename="../../Command.cpp" line="231"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation type="unfinished">You need at least two waypoints in a trajectory to simulate.</translation>
+      <translation>Потребне cу бар две тачке путање за cимулацију.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="88"/>
@@ -441,7 +441,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="268"/>
       <source>Set default speed</source>
-      <translation type="unfinished">Set default speed</translation>
+      <translation>Подеси подразумевану брзину</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="269"/>
@@ -451,7 +451,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="278"/>
       <source>Set default continuity</source>
-      <translation type="unfinished">Set default continuity</translation>
+      <translation>Подеси подразумевани континуитет</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="279"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="285"/>
       <source>Set default acceleration</source>
-      <translation type="unfinished">Set default acceleration</translation>
+      <translation>Подеcи подразумевано убрзање</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="286"/>
@@ -476,7 +476,7 @@
     <message>
       <location filename="../../ViewProviderTrajectory.cpp" line="164"/>
       <source>Modify</source>
-      <translation type="unfinished">Modify</translation>
+      <translation>Измени</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
@@ -603,17 +603,17 @@
       <translation>A6</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="314"/>
+      <location filename="../../TaskRobot6Axis.ui" line="313"/>
       <source>TCP: (200.23,300.23,400.23,234,343,343)</source>
       <translation>TCP: (200.23,300.23,400.23,234,343,343)</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="331"/>
+      <location filename="../../TaskRobot6Axis.ui" line="329"/>
       <source>Tool: (0,0,400,0,0,0)</source>
       <translation>Алатка: (0,0,400,0,0,0)</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="347"/>
+      <location filename="../../TaskRobot6Axis.ui" line="345"/>
       <source>...</source>
       <translation>...</translation>
     </message>
@@ -707,32 +707,32 @@
       <translation>1 с</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="292"/>
+      <location filename="../../TaskTrajectory.ui" line="291"/>
       <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
       <translation>Поз: (200.23, 300.23, 400.23, 234, 343 ,343)</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="318"/>
+      <location filename="../../TaskTrajectory.ui" line="317"/>
       <source>Type</source>
       <translation>Тип</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="323"/>
+      <location filename="../../TaskTrajectory.ui" line="322"/>
       <source>Name</source>
       <translation>Име</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="328"/>
+      <location filename="../../TaskTrajectory.ui" line="327"/>
       <source>C</source>
       <translation>C</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="333"/>
+      <location filename="../../TaskTrajectory.ui" line="332"/>
       <source>V</source>
       <translation>V</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="338"/>
+      <location filename="../../TaskTrajectory.ui" line="337"/>
       <source>A</source>
       <translation>A</translation>
     </message>

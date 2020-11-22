@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #include "PyExport.h"
 #include "Exception.h"
+#include <sstream>
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wdeprecated-register"

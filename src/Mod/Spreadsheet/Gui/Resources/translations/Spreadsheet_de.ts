@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation>Vorher zusammengeführte Zellen trennen</translation>
+      <translation>Zuletzt zusammengeführte Zellen trennen</translation>
     </message>
   </context>
   <context>
@@ -223,7 +223,7 @@
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation>Unterstreiche den Text in den markierten Zellen</translation>
+      <translation>Unterstreiche Text in den ausgewählten Zellen</translation>
     </message>
   </context>
   <context>
@@ -336,19 +336,19 @@
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation>Stellt die Vordergrundfarbe der Zelle(n) ein</translation>
+      <translation>Vordergrundfarbe der Zelle(n) einstellen</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Stellt die Vordergrundfarbe der Tabellen Zelle(n) ein</translation>
+      <translation>Vordergrundfarbe der Tabellen Zelle(n) einstellen</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation>Stellt die Hintergrundfarbe der Zelle(n) ein</translation>
+      <translation>Hintergrundfarbe der Zelle(n) einstellen</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Stellt die Hintergrundfarbe der Tabellen Zelle(n) ein</translation>
+      <translation>Hintergrundfarbe der Tabellen Zelle(n) einstellen</translation>
     </message>
     <message>
       <source>Spreadsheet</source>
@@ -357,12 +357,22 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>Tabellenblatt unterstützt beim Einfügen keine Bereichsauswahl.
+Bitte nur eine Zelle auswählen.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Kopieren &amp; Einfügen fehlgeschlagen</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Alias enthält ungültige Zeichen!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Zellbezug mit Alias, zum Beispiel
+Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     </message>
   </context>
   <context>
@@ -447,8 +457,18 @@ Please select one cell only.</translation>
       <translation>Form</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Inhalt</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Inhalt:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Alias:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Zellbezug mit Alias, zum Beispiel
+Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     </message>
   </context>
   <context>

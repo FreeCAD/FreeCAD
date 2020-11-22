@@ -411,7 +411,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="493"/>
       <source>Font family</source>
-      <translation type="unfinished">Font family</translation>
+      <translation>Skrift familie</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="502"/>

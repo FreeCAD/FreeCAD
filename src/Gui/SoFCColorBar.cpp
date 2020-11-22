@@ -213,6 +213,7 @@ void SoFCColorBar::eventCallback(void * /*userdata*/, SoEventCallback * node)
         const SoMouseButtonEvent*  e = static_cast<const SoMouseButtonEvent*>(event);
         if ((e->getButton() == SoMouseButtonEvent::BUTTON2)) {
             if (e->getState() == SoButtonEvent::UP) {
+                // do nothing here
             }
         }
     }
@@ -254,7 +255,10 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
         if ((e->getButton() == SoMouseButtonEvent::BUTTON1)) {
             if (e->getState() == SoButtonEvent::DOWN) {
                 // double click event
-                if (_timer.restart() < QApplication::doubleClickInterval()) {
+                if (!_timer.isValid()) {
+                    _timer.start();
+                }
+                else if (_timer.restart() < QApplication::doubleClickInterval()) {
                     QApplication::postEvent(
                         new SoFCColorBarProxyObject(this),
                         new QEvent(QEvent::User));
@@ -276,15 +280,15 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
 
                 menu.addSeparator();
                 QAction* option = menu.addAction(QObject::tr("Options..."));
-                QAction* action = menu.exec(QCursor::pos());
+                QAction* select = menu.exec(QCursor::pos());
 
-                if (action == option) {
+                if (select == option) {
                     QApplication::postEvent(
                         new SoFCColorBarProxyObject(this),
                         new QEvent(QEvent::User));
                 }
-                else if (action) {
-                    int id = action->data().toInt();
+                else if (select) {
+                    int id = select->data().toInt();
                     pColorMode->whichChild = id;
                 }
             }

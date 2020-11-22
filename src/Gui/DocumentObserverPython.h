@@ -27,7 +27,7 @@
 #include <CXX/Objects.hxx>
 
 #include <boost/signals2.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 namespace Gui
 {
@@ -77,7 +77,7 @@ private:
     Py::Object inst;
     static std::vector<DocumentObserverPython*> _instances;
 
-    typedef struct {
+    typedef struct PythonObject {
        boost::signals2::scoped_connection slot;
        Py::Object py;
        PyObject* ptr() {

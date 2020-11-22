@@ -27,9 +27,9 @@
 # include <QHeaderView>
 # include <QEvent>
 # include <QTimer>
+# include <boost_bind_bind.hpp>
 #endif
 
-#include <boost/bind.hpp>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Parameter.h>
@@ -57,6 +57,7 @@ using namespace std;
 using namespace Gui;
 using namespace Gui::DockWnd;
 using namespace Gui::PropertyEditor;
+namespace bp = boost::placeholders;
 
 static ParameterGrp::handle _GetParam() {
     static ParameterGrp::handle hGrp;
@@ -111,19 +112,19 @@ PropertyView::PropertyView(QWidget *parent)
 
     this->connectPropData =
     App::GetApplication().signalChangedObject.connect(boost::bind
-        (&PropertyView::slotChangePropertyData, this, _1, _2));
+        (&PropertyView::slotChangePropertyData, this, bp::_1, bp::_2));
     this->connectPropView =
     Gui::Application::Instance->signalChangedObject.connect(boost::bind
-        (&PropertyView::slotChangePropertyView, this, _1, _2));
+        (&PropertyView::slotChangePropertyView, this, bp::_1, bp::_2));
     this->connectPropAppend =
     App::GetApplication().signalAppendDynamicProperty.connect(boost::bind
-        (&PropertyView::slotAppendDynamicProperty, this, _1));
+        (&PropertyView::slotAppendDynamicProperty, this, bp::_1));
     this->connectPropRemove =
     App::GetApplication().signalRemoveDynamicProperty.connect(boost::bind
-        (&PropertyView::slotRemoveDynamicProperty, this, _1));
+        (&PropertyView::slotRemoveDynamicProperty, this, bp::_1));
     this->connectPropChange =
     App::GetApplication().signalChangePropertyEditor.connect(boost::bind
-        (&PropertyView::slotChangePropertyEditor, this, _1, _2));
+        (&PropertyView::slotChangePropertyEditor, this, bp::_1, bp::_2));
     this->connectUndoDocument =
     App::GetApplication().signalUndoDocument.connect(boost::bind
         (&PropertyView::slotRollback, this));
@@ -132,16 +133,16 @@ PropertyView::PropertyView(QWidget *parent)
         (&PropertyView::slotRollback, this));
     this->connectActiveDoc =
     Application::Instance->signalActiveDocument.connect(boost::bind
-        (&PropertyView::slotActiveDocument, this, _1));
+        (&PropertyView::slotActiveDocument, this, bp::_1));
     this->connectDelDocument = 
         Application::Instance->signalDeleteDocument.connect(
-                boost::bind(&PropertyView::slotDeleteDocument, this, _1));
+                boost::bind(&PropertyView::slotDeleteDocument, this, bp::_1));
     this->connectDelViewObject = 
         Application::Instance->signalDeletedObject.connect(
-                boost::bind(&PropertyView::slotDeletedViewObject, this, _1));
+                boost::bind(&PropertyView::slotDeletedViewObject, this, bp::_1));
     this->connectDelObject = 
         App::GetApplication().signalDeletedObject.connect(
-                boost::bind(&PropertyView::slotDeletedObject, this, _1));
+                boost::bind(&PropertyView::slotDeletedObject, this, bp::_1));
 }
 
 PropertyView::~PropertyView()
@@ -248,12 +249,29 @@ void PropertyView::slotRemoveDynamicProperty(const App::Property& prop)
 void PropertyView::slotChangePropertyEditor(const App::Document &, const App::Property& prop)
 {
     App::PropertyContainer* parent = prop.getContainer();
-    if (parent && parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        propertyEditorData->updateEditorMode(prop);
+    Gui::PropertyEditor::PropertyEditor* editor = nullptr;
+
+    if (parent && propertyEditorData->propOwners.count(parent))
+        editor = propertyEditorData;
+    else if (parent && propertyEditorView->propOwners.count(parent))
+        editor = propertyEditorView;
+    else
+        return;
+
+    if(showAll() || isPropertyHidden(&prop)) {
+        editor->updateEditorMode(prop);
+        return;
     }
-    else if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
-        propertyEditorView->updateEditorMode(prop);
+    for(auto &v : editor->propList) {
+        for(auto p : v.second)
+            if(p == &prop) {
+                editor->updateEditorMode(prop);
+                return;
+            }
     }
+    // The property is not in the list, probably because it is hidden before.
+    // So perform a full update.
+    timer->start(50);
 }
 
 void PropertyView::slotDeleteDocument(const Gui::Document &doc) {
@@ -394,7 +412,7 @@ void PropertyView::onTimer() {
         vp->getPropertyMap(viewList);
 
         // store the properties with <name,id> as key in a map
-        if (ob) {
+        {
             for (auto prop : dataList) {
                 if (isPropertyHidden(prop))
                     continue;
@@ -414,7 +432,7 @@ void PropertyView::onTimer() {
             }
         }
         // the same for the view properties
-        if (vp) {
+        {
             std::map<std::string, App::Property*>::iterator pt;
             for (pt = viewList.begin(); pt != viewList.end(); ++pt) {
                 if (isPropertyHidden(pt->second))
@@ -525,8 +543,8 @@ void PropertyView::tabChanged(int index)
 void PropertyView::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        tabs->setTabText(0, trUtf8("View"));
-        tabs->setTabText(1, trUtf8("Data"));
+        tabs->setTabText(0, tr("View"));
+        tabs->setTabText(1, tr("Data"));
     }
 
     QWidget::changeEvent(e);

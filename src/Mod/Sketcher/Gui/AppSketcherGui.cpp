@@ -32,6 +32,7 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Language/Translator.h>
 #include <Gui/WidgetFactory.h>
 #include "Workbench.h"
@@ -99,6 +100,15 @@ PyMOD_INIT_FUNC(SketcherGui)
 
     PyObject* mod = SketcherGui::initModule();
     Base::Console().Log("Loading GUI of Sketcher module... done\n");
+
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/constraints"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/elements"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/general"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/geometry"));
+  //Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/obsolete"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/pointers"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/splines"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/tools"));
 
     // instantiating the commands
     CreateSketcherCommands();

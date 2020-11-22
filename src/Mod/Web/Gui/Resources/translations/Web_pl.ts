@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Web</source>
-      <translation>Sieć www</translation>
+      <translation>Sieć</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="77"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Web</source>
-      <translation>Sieć www</translation>
+      <translation>Sieć</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="134"/>
       <source>Web</source>
-      <translation>Sieć www</translation>
+      <translation>Sieć</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../Command.cpp" line="250"/>
       <source>Web</source>
-      <translation>Sieć www</translation>
+      <translation>Sieć</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="251"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="162"/>
       <source>Web</source>
-      <translation>Sieć www</translation>
+      <translation>Sieć</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
@@ -84,7 +84,7 @@
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Web</source>
-      <translation>Sieć www</translation>
+      <translation>Sieć</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Web</source>
-      <translation>Sieć www</translation>
+      <translation>Sieć</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
@@ -112,29 +112,29 @@
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <source>Web</source>
-      <translation>Sieć www</translation>
+      <translation>Sieć</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>Open website...</source>
-      <translation>Otwórz stronę...</translation>
+      <translation>Otwórz witrynę ..</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Otwórz stronę we FreeCADzie</translation>
+      <translation>Otwórz witrynę w programie FreeCAD</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="718"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="745"/>
       <source>Browser</source>
       <translation>Przeglądarka</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="547"/>
+      <location filename="../../BrowserView.cpp" line="560"/>
       <source>File does not exist!</source>
       <translation>Plik nie istnieje!</translation>
     </message>
@@ -142,18 +142,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="538"/>
-      <location filename="../../BrowserView.cpp" line="543"/>
+      <location filename="../../BrowserView.cpp" line="551"/>
+      <location filename="../../BrowserView.cpp" line="556"/>
       <source>Error</source>
       <translation>Błąd</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="543"/>
+      <location filename="../../BrowserView.cpp" line="556"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation>Wystąpiły błędy podczas ładowania pliku. Niektóre dane mogły zostać zmodyfikowane lub nie zostały odzyskane. Przejrzyj widok raportu, aby uzyskać bardziej szczegółowe informacje o powiązanych obiektach.</translation>
+      <translation>Podczas wczytywania pliku wystąpiły błędy. Niektóre dane mogły zostać zmodyfikowane lub w ogóle nie zostały odtworzone. Zajrzyj do widoku raportu w celu uzyskania bardziej szczegółowych informacji na temat obiektów, których to dotyczy.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="689"/>
+      <location filename="../../BrowserView.cpp" line="716"/>
       <source>Loading %1...</source>
       <translation>Ładowanie %1...</translation>
     </message>
@@ -161,17 +161,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="300"/>
+      <location filename="../../BrowserView.cpp" line="308"/>
       <source>Open in External Browser</source>
       <translation>Otwórz w zewnętrznej przeglądarce</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="304"/>
+      <location filename="../../BrowserView.cpp" line="312"/>
       <source>Open in new window</source>
       <translation>Otwórz w nowym oknie</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="336"/>
+      <location filename="../../BrowserView.cpp" line="344"/>
       <source>View source</source>
       <translation>Pokaż źródło</translation>
     </message>

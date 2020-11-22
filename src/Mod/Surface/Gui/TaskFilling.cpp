@@ -42,7 +42,7 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskFilling.h"
-#include "TaskFillingUnbound.h"
+#include "TaskFillingEdge.h"
 #include "TaskFillingVertex.h"
 #include "ui_TaskFilling.h"
 
@@ -102,7 +102,7 @@ void ViewProviderFilling::unsetEdit(int ModNum)
 
 QIcon ViewProviderFilling::getIcon(void) const
 {
-    return Gui::BitmapFactory().pixmap("BSplineSurf");
+    return Gui::BitmapFactory().pixmap("Surface_Filling");
 }
 
 void ViewProviderFilling::highlightReferences(ShapeType type, const References& refs, bool on)
@@ -275,6 +275,9 @@ FillingPanel::FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj)
     ui->listBoundary->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
     ui->listBoundary->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+    connect(ui->listBoundary->model(),
+        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(onIndexesMoved()));
 }
 
 /*
@@ -287,9 +290,9 @@ FillingPanel::~FillingPanel()
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
-void FillingPanel::setEditedObject(Surface::Filling* obj)
+void FillingPanel::setEditedObject(Surface::Filling* fea)
 {
-    editedObject = obj;
+    editedObject = fea;
 
     // get the link to the initial surface if set
     App::DocumentObject* initFace = editedObject->InitialFace.getValue();
@@ -379,6 +382,11 @@ void FillingPanel::open()
     this->vp->highlightReferences(ViewProviderFilling::Face, links, true);
 
     Gui::Selection().clearSelection();
+
+    // if the surface is not yet created then automatically start "AppendEdge" mode
+    if (editedObject->Shape.getShape().isNull()) {
+        on_buttonEdgeAdd_clicked();
+    }
 }
 
 void FillingPanel::clearSelection()
@@ -529,7 +537,7 @@ void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
                 const TopTools_ListOfShape& adj_faces = edge2Face.FindFromKey(edge);
                 if (adj_faces.Extent() > 0) {
                     int n = adj_faces.Extent();
-                    ui->statusLabel->setText(tr("Edge has %n adjacent face(s)", 0, n));
+                    ui->statusLabel->setText(tr("Edge has %n adjacent faces", 0, n));
 
                     // fill up the combo boxes
                     modifyBoundary(true);
@@ -744,6 +752,42 @@ void FillingPanel::onDeleteEdge()
     }
 }
 
+void FillingPanel::onIndexesMoved()
+{
+    QAbstractItemModel* model = qobject_cast<QAbstractItemModel*>(sender());
+    if (!model)
+        return;
+
+    std::vector<App::DocumentObject*> objects;
+    std::vector<std::string> element;
+    std::vector<std::string> faces;
+    std::vector<long> order;
+
+    int rows = model->rowCount();
+    for (int i = 0; i < rows; i++) {
+        QModelIndex index = model->index(i, 0);
+        QList<QVariant> data;
+        data = index.data(Qt::UserRole).toList();
+
+        App::Document* doc = App::GetApplication().getDocument(data[0].toByteArray());
+        App::DocumentObject* obj = doc ? doc->getObject(data[1].toByteArray()) : nullptr;
+        std::string sub = data[2].toByteArray().constData();
+        std::string face = data[3].toByteArray().constData();
+        long cont = data[4].toInt();
+
+        objects.push_back(obj);
+        element.push_back(sub);
+
+        faces.push_back(face);
+        order.push_back(cont);
+    }
+
+    editedObject->BoundaryEdges.setValues(objects, element);
+    editedObject->BoundaryFaces.setValues(faces);
+    editedObject->BoundaryOrder.setValues(order);
+    editedObject->recomputeFeature();
+}
+
 void FillingPanel::on_buttonAccept_clicked()
 {
     QListWidgetItem* item = ui->listBoundary->currentItem();
@@ -818,13 +862,13 @@ TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
     // first task box
     widget1 = new FillingPanel(vp, obj);
     Gui::TaskView::TaskBox* taskbox1 = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("BezSurf"),
+        Gui::BitmapFactory().pixmap("Surface_Filling"),
         widget1->windowTitle(), true, 0);
     taskbox1->groupLayout()->addWidget(widget1);
     Content.push_back(taskbox1);
 
     // second task box
-    widget2 = new FillingUnboundPanel(vp, obj);
+    widget2 = new FillingEdgePanel(vp, obj);
     Gui::TaskView::TaskBox* taskbox2 = new Gui::TaskView::TaskBox(
         QPixmap(), widget2->windowTitle(), true, 0);
     taskbox2->groupLayout()->addWidget(widget2);

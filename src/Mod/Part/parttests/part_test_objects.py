@@ -1,12 +1,3 @@
-"""Run this file to create a standard test document for Part objects.
-
-Use as input to the freecad executable.
-    freecad part_test_objects.py
-
-Or load it as a module and use the defined function.
-    import parttests.part_test_objects as pto
-    pto.create_test_file()
-"""
 # ***************************************************************************
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -29,25 +20,43 @@ Or load it as a module and use the defined function.
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-import os
-import datetime
-import FreeCAD as App
-from FreeCAD import Vector
-import Draft
-from draftutils.messages import _msg
+"""Run this file to create a standard test document for Part objects.
 
+Use it as input to the program executable.
+
+::
+
+    freecad part_test_objects.py
+
+Or load it as a module and use the defined function.
+
+>>> import parttests.part_test_objects as pt
+>>> pt.create_test_file()
+
+This test script is based on the one created for the Draft Workbench.
+"""
+## @package part_test_objects
+# \ingroup PART
+# \brief Run this file to create a standard test document for Part objects.
+# @{
+
+import datetime
+import os
+
+import FreeCAD as App
+import Part
+
+from FreeCAD import Vector
 
 if App.GuiUp:
     import FreeCADGui as Gui
 
 
-def _set_text(obj):
-    """Set properties of text object."""
-    if App.GuiUp:
-        obj.ViewObject.FontSize = 75
+def _msg(text, end="\n"):
+    App.Console.PrintMessage(text + end)
 
 
-def create_frame():
+def _create_frame():
     """Draw a frame with information on the version of the software.
 
     It includes the date created, the version, the release type,
@@ -56,23 +65,33 @@ def create_frame():
     version = App.Version()
     now = datetime.datetime.now().strftime("%Y/%m/%dT%H:%M:%S")
 
-    record = Draft.makeText(["Part test file",
-                             "Created: {}".format(now),
-                             "\n",
-                             "Version: " + ".".join(version[0:3]),
-                             "Release: " + " ".join(version[3:5]),
-                             "Branch: " + " ".join(version[5:])],
-                            Vector(0, -1000, 0))
+    _text = ["Part test file",
+             "Created: {}".format(now),
+             "\n",
+             "Version: " + ".".join(version[0:3]),
+             "Release: " + " ".join(version[3:5]),
+             "Branch: " + " ".join(version[5:])]
+    record = App.ActiveDocument.addObject("App::Annotation", "Description")
+    record.LabelText = _text
+    record.Position = Vector(0, -1000, 0)
 
     if App.GuiUp:
+        record.ViewObject.DisplayMode = "World"
         record.ViewObject.FontSize = 400
+        record.ViewObject.TextColor = (0.0, 0.0, 0.0)
 
-    frame = Draft.makeRectangle(21000, 12000)
-    frame.Placement.Base = Vector(-1000, -3500)
+    p1 = Vector(-1000, -3500, 0)
+    p2 = Vector(20000, -3500, 0)
+    p3 = Vector(20000, 8500, 0)
+    p4 = Vector(-1000, 8500, 0)
+
+    poly = Part.makePolygon([p1, p2, p3, p4, p1])
+    frame = App.ActiveDocument.addObject("Part::Feature", "Frame")
+    frame.Shape = poly
 
 
 def create_test_file(file_name="part_test_objects",
-                     file_path="",
+                     file_path=os.environ["HOME"],
                      save=False):
     """Create a complete test file of Part objects.
 
@@ -83,27 +102,35 @@ def create_test_file(file_name="part_test_objects",
     ----------
     file_name: str, optional
         It defaults to `'part_test_objects'`.
-        It is the name of document that is created.
-
-    file_path: str, optional
-        It defaults to the empty string `''`, in which case,
-        it will use the value returned by `App.getUserAppDataDir()`,
-        for example, `'/home/user/.FreeCAD/'`.
+        It is the name of the document that is created.
 
         The `file_name` will be appended to `file_path`
         to determine the actual path to save. The extension `.FCStd`
         will be added automatically.
 
+    file_path: str, optional
+        It defaults to the value of `os.environ['HOME']`
+        which in Linux is usually `'/home/user'`.
+
+        If it is the empty string `''` it will use the value
+        returned by `App.getUserAppDataDir()`,
+        for example, `'/home/user/.FreeCAD/'`.
+
     save: bool, optional
         It defaults to `False`. If it is `True` the new document
         will be saved to disk after creating all objects.
+
+    Returns
+    -------
+    App::Document
+        A reference to the test document that was created.
     """
     doc = App.newDocument(file_name)
     _msg(16 * "-")
     _msg("Filename: {}".format(file_name))
     _msg("If the units tests fail, this script may fail as well")
 
-    create_frame()
+    _create_frame()
 
     # Part primitives
     _msg(16 * "-")
@@ -258,6 +285,8 @@ def create_test_file(file_name="part_test_objects",
         _msg("Saved: {}".format(out_name))
 
     return doc
+
+## @}
 
 
 if __name__ == "__main__":

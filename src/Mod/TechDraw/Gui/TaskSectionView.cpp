@@ -76,7 +76,9 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     ui(new Ui_TaskSectionView),
     m_base(base),
     m_section(nullptr),
+    m_saveScale(0.0),
     m_dirName(""),
+    m_doc(nullptr),
     m_createMode(true),
     m_saved(false),
     m_abort(false)
@@ -110,6 +112,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     ui(new Ui_TaskSectionView),
     m_base(nullptr),
     m_section(section),
+    m_saveScale(0.0),
+    m_doc(nullptr),
     m_createMode(false),
     m_saved(false),
     m_abort(false)
@@ -176,8 +180,10 @@ void TaskSectionView::setUiPrimary()
     this->setToolTip(QObject::tr("Select at first an orientation"));
     enableAll(false);
 
-    // now connect and not earlier to avoid premature apply() calls
-    connect(ui->leSymbol, SIGNAL(textChanged(QString)), this, SLOT(onIdentifierChanged()));
+    connect(ui->leSymbol, SIGNAL(editingFinished()), this, SLOT(onIdentifierChanged()));
+
+    // the UI file uses keyboardTracking = false so that a recomputation
+    // will only be triggered when the arrow keys of the spinboxes are used
     connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
     connect(ui->sbOrgX, SIGNAL(valueChanged(double)), this, SLOT(onXChanged()));
     connect(ui->sbOrgY, SIGNAL(valueChanged(double)), this, SLOT(onYChanged()));
@@ -206,8 +212,10 @@ void TaskSectionView::setUiEdit()
     ui->sbOrgZ->setUnit(Base::Unit::Length);
     ui->sbOrgZ->setValue(origin.z);
 
-    // connect affter initializing the object values
-    connect(ui->leSymbol, SIGNAL(textChanged(QString)), this, SLOT(onIdentifierChanged()));
+    connect(ui->leSymbol, SIGNAL(editingFinished()), this, SLOT(onIdentifierChanged()));
+
+    // the UI file uses keyboardTracking = false so that a recomputation
+    // will only be triggered when the arrow keys of the spinboxes are used
     connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
     connect(ui->sbOrgX, SIGNAL(valueChanged(double)), this, SLOT(onXChanged()));
     connect(ui->sbOrgY, SIGNAL(valueChanged(double)), this, SLOT(onYChanged()));

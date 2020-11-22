@@ -25,36 +25,34 @@
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepFeat_MakePrism.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <Geom_Surface.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopExp_Explorer.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <Precision.hxx>
-# include <BRepPrimAPI_MakeHalfSpace.hxx>
 # include <BRepAlgoAPI_Common.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <gp_Pln.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepFeat_MakePrism.hxx>
 # include <BRepLProp_SLProps.hxx>
+# include <BRepPrimAPI_MakeHalfSpace.hxx>
+# include <Geom_Surface.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <GeomLib_IsPlanarSurface.hxx>
+# include <gp_Pln.hxx>
+# include <Precision.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Wire.hxx>
+# include <TopExp_Explorer.hxx>
 #endif
 
+#include <App/Document.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
-#include <Base/Console.h>
 #include <Base/Reader.h>
-#include <App/Document.h>
 
-//#include "Body.h"
 #include "FeaturePad.h"
-
 
 using namespace PartDesign;
 
@@ -66,14 +64,20 @@ Pad::Pad()
 {
     addSubType = FeatureAddSub::Additive;
 
-    ADD_PROPERTY_TYPE(Type,((long)0),"Pad",App::Prop_None,"Pad type");
+    ADD_PROPERTY_TYPE(Type, (0L), "Pad", App::Prop_None, "Pad type");
     Type.setEnums(TypeEnums);
-    ADD_PROPERTY_TYPE(Length,(100.0),"Pad",App::Prop_None,"Pad length");
-    ADD_PROPERTY_TYPE(Length2,(100.0),"Pad",App::Prop_None,"P");
-    ADD_PROPERTY_TYPE(UpToFace,(0),"Pad",App::Prop_None,"Face where pad will end");
-    ADD_PROPERTY_TYPE(Offset,(0.0),"Pad",App::Prop_None,"Offset from face in which pad will end");
+    ADD_PROPERTY_TYPE(Length, (100.0), "Pad", App::Prop_None,"Pad length");
+    ADD_PROPERTY_TYPE(Length2, (100.0), "Pad", App::Prop_None,"Second Pad length");
+    ADD_PROPERTY_TYPE(UseCustomVector, (0), "Pad", App::Prop_None, "Use custom vector for pad direction");
+    ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pad", App::Prop_None, "Pad direction vector");
+    ADD_PROPERTY_TYPE(UpToFace, (0), "Pad", App::Prop_None, "Face where pad will end");
+    ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
-    Offset.setConstraints ( &signedLengthConstraint );
+    Offset.setConstraints(&signedLengthConstraint);
+
+    // Remove the constraints and keep the type to allow to accept negative values
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
+    Length2.setConstraints(nullptr);
 }
 
 short Pad::mustExecute() const
@@ -82,6 +86,8 @@ short Pad::mustExecute() const
         Type.isTouched() ||
         Length.isTouched() ||
         Length2.isTouched() ||
+        UseCustomVector.isTouched() ||
+        Direction.isTouched() ||
         Offset.isTouched() ||
         UpToFace.isTouched())
         return 1;
@@ -115,10 +121,10 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         base = TopoDS_Shape();
     }
 
-
     // get the Sketch plane
-    Base::Placement SketchPos    = obj->Placement.getValue();
-    Base::Vector3d  SketchVector = getProfileNormal();
+    Base::Placement SketchPos = obj->Placement.getValue();
+    // get the normal vector of the sketch
+    Base::Vector3d SketchVector = getProfileNormal();
 
     try {
         this->positionByPrevious();
@@ -126,7 +132,46 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
         base.Move(invObjLoc);
 
-        gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
+        Base::Vector3d paddingDirection;
+
+        // use the given vector if necessary
+        if (!UseCustomVector.getValue()) {
+            paddingDirection = SketchVector;
+        }
+        else {
+            // if null vector, use SketchVector
+            if ( (fabs(Direction.getValue().x) < Precision::Confusion())
+                && (fabs(Direction.getValue().y) < Precision::Confusion())
+                && (fabs(Direction.getValue().z) < Precision::Confusion()) )
+            {
+                Direction.setValue(SketchVector);
+            }
+
+            paddingDirection = Direction.getValue();
+        }
+
+        // create vector in padding direction with length 1
+        gp_Dir dir(paddingDirection.x, paddingDirection.y, paddingDirection.z);
+
+        // The length of a gp_Dir is 1 so the resulting pad would have
+        // the length L in the direction of dir. But we want to have its height in the
+        // direction of the normal vector.
+        // Therefore we must multiply L by the factor that is necessary
+        // to make dir as long that its projection to the SketchVector
+        // equals the SketchVector.
+        // This is the scalar product of both vectors.
+        // Since the pad length cannot be negative, the factor must not be negative.
+
+        double factor = fabs(dir * gp_Dir(SketchVector.x, SketchVector.y, SketchVector.z));
+
+        // factor would be zero if vectors are orthogonal
+        if (factor < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Pad: Creation failed because direction is orthogonal to sketch's normal vector");
+
+        // perform the length correction
+        L = L / factor;
+        L2 = L2 / factor;
+
         dir.Transform(invObjLoc.Transformation());
 
         if (sketchshape.IsNull())
@@ -228,7 +273,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                     return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
                 prism = PrismMaker.Shape();
 #else
-                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, 2, 1);
+                Standard_Integer fuse = fabs(Offset.getValue()) > Precision::Confusion() ? 1 : 2;
+                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, fuse, Standard_True);
 #endif
                 base.Nullify();
             } else {
@@ -253,7 +299,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                     return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
                 prism = PrismMaker.Shape();
 #else
-                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, 2, 1);
+                Standard_Integer fuse = fabs(Offset.getValue()) > Precision::Confusion() ? 1 : 2;
+                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, fuse, Standard_True);
 #endif
             }
         } else {

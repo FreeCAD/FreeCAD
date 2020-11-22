@@ -357,12 +357,21 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>Hesap tablosu, yapıştırma esnasında aralık seçimini desteklemiyor.
+Lütfen yalnızca bir hücre seçin.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Kopyala Yapıştır başarısız oldu</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Alias geçersiz karakterler içeriyor!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Hücreye alias'lı bir isim atayın, örneğin Spreadsheet.B1 yerine Spreadsheet.my_alias_name</translation>
     </message>
   </context>
   <context>
@@ -447,8 +456,17 @@ Please select one cell only.</translation>
       <translation>Şekil:</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;İçerikler</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;İçerik:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Alias:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Hücreye alias'lı bir isim atayın, örneğin Spreadsheet.B1 yerine Spreadsheet.my_alias_name</translation>
     </message>
   </context>
   <context>

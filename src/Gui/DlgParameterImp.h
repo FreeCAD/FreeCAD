@@ -46,7 +46,7 @@ class GuiExport DlgParameterImp : public QDialog
     Q_OBJECT
 
 public:
-    DlgParameterImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
+    DlgParameterImp( QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
     ~DlgParameterImp();
 
     void accept();
@@ -159,6 +159,7 @@ protected:
     void contextMenuEvent ( QContextMenuEvent* event );
     /** Invokes onDeleteSelectedItem() if the "Del" key was pressed. */
     void keyPressEvent (QKeyEvent* event);
+    void resizeEvent(QResizeEvent*);
 
 protected Q_SLOTS:
     /** Changes the value of the leaf of the selected item. */

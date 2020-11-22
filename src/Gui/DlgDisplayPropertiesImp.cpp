@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <boost/signals2.hpp>
 # include <QDockWidget>
 #endif
@@ -51,6 +51,7 @@
 
 using namespace Gui::Dialog;
 using namespace std;
+namespace bp = boost::placeholders;
 
 
 /* TRANSLATOR Gui::Dialog::DlgDisplayPropertiesImp */
@@ -111,7 +112,7 @@ DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(bool floating, QWidget* parent,
 
     d->connectChangedObject =
     Gui::Application::Instance->signalChangedObject.connect(boost::bind
-        (&DlgDisplayPropertiesImp::slotChangedObject, this, _1, _2));
+        (&DlgDisplayPropertiesImp::slotChangedObject, this, bp::_1, bp::_2));
 }
 
 /** 
@@ -167,9 +168,8 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
     // We pick out all the properties for which we need to update this dialog.
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     std::vector<Gui::ViewProvider*>::const_iterator vp = std::find_if
-        (Provider.begin(), Provider.end(), 
-        std::bind2nd(std::equal_to<Gui::ViewProvider*>(),
-        const_cast<Gui::ViewProvider*>(&obj)));
+        (Provider.begin(), Provider.end(), [&obj](Gui::ViewProvider* v) { return v == &obj; });
+
     if (vp != Provider.end()) {
         const char* name = obj.getPropertyName(&prop);
         // this is not a property of the view provider but of the document object

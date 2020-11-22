@@ -44,15 +44,18 @@ set(TechDrawGui_MOC_HDRS
     QGIViewDimension.h
     QGIViewBalloon.h
     TaskProjGroup.h
-    DlgPrefsTechDraw1Imp.h
-    DlgPrefsTechDraw2Imp.h
-    DlgPrefsTechDraw3Imp.h
-    DlgPrefsTechDraw4Imp.h
-    DlgPrefsTechDraw5Imp.h
+    DlgPrefsTechDrawGeneralImp.h
+    DlgPrefsTechDrawScaleImp.h
+    DlgPrefsTechDrawAnnotationImp.h
+    DlgPrefsTechDrawDimensionsImp.h
+    DlgPrefsTechDrawColorsImp.h
+    DlgPrefsTechDrawAdvancedImp.h
+    DlgPrefsTechDrawHLRImp.h
     TaskLinkDim.h
     DlgTemplateField.h
     TaskSectionView.h
     TaskGeomHatch.h
+    TaskHatch.h
     TaskLeaderLine.h
     TaskRichAnno.h
     TaskCosVertex.h
@@ -72,6 +75,7 @@ set(TechDrawGui_MOC_HDRS
     TaskActiveView.h
     TaskDetail.h
     QGIGhostHighlight.h
+    TaskCosmeticLine.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
@@ -84,16 +88,19 @@ else()
 endif()
 
 set(TechDrawGui_UIC_SRCS
-    DlgPrefsTechDraw1.ui
-    DlgPrefsTechDraw2.ui
-    DlgPrefsTechDraw3.ui
-    DlgPrefsTechDraw4.ui
-    DlgPrefsTechDraw5.ui
+    DlgPrefsTechDrawGeneral.ui
+    DlgPrefsTechDrawScale.ui
+    DlgPrefsTechDrawAnnotation.ui
+    DlgPrefsTechDrawDimensions.ui
+    DlgPrefsTechDrawColors.ui
+    DlgPrefsTechDrawAdvanced.ui
+    DlgPrefsTechDrawHLR.ui
     TaskProjGroup.ui
     TaskLinkDim.ui
     DlgTemplateField.ui
     TaskSectionView.ui
     TaskGeomHatch.ui
+    TaskHatch.ui
     TaskLeaderLine.ui
     TaskRichAnno.ui
     mrichtextedit.ui
@@ -106,6 +113,7 @@ set(TechDrawGui_UIC_SRCS
     SymbolChooser.ui
     TaskActiveView.ui
     TaskDetail.ui
+    TaskCosmeticLine.ui
 )
 
 if(BUILD_QT5)
@@ -145,21 +153,27 @@ SET(TechDrawGui_SRCS
     TaskProjGroup.ui
     TaskProjGroup.cpp
     TaskProjGroup.h
-    DlgPrefsTechDraw1.ui
-    DlgPrefsTechDraw1Imp.cpp
-    DlgPrefsTechDraw1Imp.h
-    DlgPrefsTechDraw2.ui
-    DlgPrefsTechDraw2Imp.cpp
-    DlgPrefsTechDraw2Imp.h
-    DlgPrefsTechDraw3.ui
-    DlgPrefsTechDraw3Imp.cpp
-    DlgPrefsTechDraw3Imp.h
-    DlgPrefsTechDraw4.ui
-    DlgPrefsTechDraw4Imp.cpp
-    DlgPrefsTechDraw4Imp.h
-    DlgPrefsTechDraw5.ui
-    DlgPrefsTechDraw5Imp.cpp
-    DlgPrefsTechDraw5Imp.h
+    DlgPrefsTechDrawGeneral.ui
+    DlgPrefsTechDrawGeneralImp.cpp
+    DlgPrefsTechDrawGeneralImp.h
+    DlgPrefsTechDrawScale.ui
+    DlgPrefsTechDrawScaleImp.cpp
+    DlgPrefsTechDrawScaleImp.h
+    DlgPrefsTechDrawAnnotation.ui
+    DlgPrefsTechDrawAnnotationImp.cpp
+    DlgPrefsTechDrawAnnotationImp.h
+    DlgPrefsTechDrawDimensions.ui
+    DlgPrefsTechDrawDimensionsImp.cpp
+    DlgPrefsTechDrawDimensionsImp.h
+    DlgPrefsTechDrawColors.ui
+    DlgPrefsTechDrawColorsImp.cpp
+    DlgPrefsTechDrawColorsImp.h
+    DlgPrefsTechDrawAdvanced.ui
+    DlgPrefsTechDrawAdvancedImp.cpp
+    DlgPrefsTechDrawAdvancedImp.h
+    DlgPrefsTechDrawHLR.ui
+    DlgPrefsTechDrawHLRImp.cpp
+    DlgPrefsTechDrawHLRImp.h
     TaskLinkDim.ui
     TaskLinkDim.cpp
     TaskLinkDim.h
@@ -175,6 +189,9 @@ SET(TechDrawGui_SRCS
     TaskGeomHatch.ui
     TaskGeomHatch.cpp
     TaskGeomHatch.h
+    TaskHatch.ui
+    TaskHatch.cpp
+    TaskHatch.h
     TaskLeaderLine.ui
     TaskLeaderLine.cpp
     TaskLeaderLine.h
@@ -209,6 +226,11 @@ SET(TechDrawGui_SRCS
     TaskDetail.ui
     TaskDetail.cpp
     TaskDetail.h
+    PreferencesGui.cpp
+    PreferencesGui.h
+    TaskCosmeticLine.ui
+    TaskCosmeticLine.cpp
+    TaskCosmeticLine.h
 )
 
 SET(TechDrawGuiView_SRCS
@@ -335,10 +357,10 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderSpreadsheet.h
     ViewProviderViewClip.cpp
     ViewProviderViewClip.h
-    ViewProviderHatch.cpp
-    ViewProviderHatch.h
     ViewProviderGeomHatch.cpp
     ViewProviderGeomHatch.h
+    ViewProviderHatch.cpp
+    ViewProviderHatch.h
     ViewProviderImage.cpp
     ViewProviderImage.h
     ViewProviderLeader.cpp
@@ -363,6 +385,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskLinkDim.ui
     TaskSectionView.ui
     TaskGeomHatch.ui
+    TaskHatch.ui
     TaskLeaderLine.ui
     TaskRichAnno.ui
     TaskCosVertex.ui
@@ -375,6 +398,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     SymbolChooser.ui
     TaskActiveView.ui
     TaskDetail.ui
+    TaskCosmeticLine.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 

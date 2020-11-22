@@ -25,7 +25,7 @@
 #define MESH_KERNEL_H
 
 #include <assert.h>
-#include <iostream>
+#include <iosfwd>
 
 #include "Elements.h"
 #include "Helpers.h"
@@ -112,6 +112,7 @@ public:
      * by summarizing the normals of the associated facets.
      */
     std::vector<Base::Vector3f> CalcVertexNormals() const;
+    std::vector<Base::Vector3f> GetFacetNormals(const std::vector<unsigned long>&) const;
 
     /** Returns the facet at the given index. This method is rather slow and should be
      * called occasionally only. For fast access the MeshFacetIterator interface should

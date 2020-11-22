@@ -34,6 +34,10 @@
 # include <QScrollBar>
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+# include <QScreen>
+#endif
+
 #include <Base/Exception.h>
 #include <Base/Console.h> 
 #include <App/Application.h>
@@ -299,6 +303,7 @@ void DlgPreferencesImp::applyChanges()
 void DlgPreferencesImp::showEvent(QShowEvent* ev)
 {
     //canEmbedScrollArea = false;
+    this->adjustSize();
     QDialog::showEvent(ev);
 }
 
@@ -307,7 +312,11 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
     if (canEmbedScrollArea) {
         // embed the widget stack into a scroll area if the size is
         // bigger than the available desktop
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+        QRect rect = QApplication::primaryScreen()->availableGeometry();
+#else
         QRect rect = QApplication::desktop()->availableGeometry();
+#endif
         int maxHeight = rect.height() - 60;
         int maxWidth = rect.width();
         if (height() > maxHeight || width() > maxWidth) {

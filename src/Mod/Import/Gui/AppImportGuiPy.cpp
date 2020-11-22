@@ -459,12 +459,17 @@ private:
                     if (aReader.ReadFile((const char*)name8bit.c_str()) != IFSelect_RetDone) {
                         throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                     }
+
+#if OCC_VERSION_HEX < 0x070500
                     Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.Reader().WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading STEP file...");
                     pi->Show();
+#endif
                     aReader.Transfer(hDoc);
+#if OCC_VERSION_HEX < 0x070500
                     pi->EndScope();
+#endif
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().Error("%s\n", e.GetMessageString());
@@ -491,12 +496,16 @@ private:
                         throw Py::Exception(Base::BaseExceptionFreeCADError, "cannot read IGES file");
                     }
 
+#if OCC_VERSION_HEX < 0x070500
                     Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading IGES file...");
                     pi->Show();
+#endif
                     aReader.Transfer(hDoc);
+#if OCC_VERSION_HEX < 0x070500
                     pi->EndScope();
+#endif
                     // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
                     Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
                             ->SetModel(new IGESData_IGESModel);
@@ -524,9 +533,9 @@ private:
             auto ret = ocaf.loadShapes();
             hApp->Close(hDoc);
             FC_DURATION_PLUS(d2,t);
-            FC_DURATION_MSG(d1,"file read");
-            FC_DURATION_MSG(d2,"import");
-            FC_DURATION_MSG((d1+d2),"total");
+            FC_DURATION_LOG(d1,"file read");
+            FC_DURATION_LOG(d2,"import");
+            FC_DURATION_LOG((d1+d2),"total");
 
             if(ret) {
                 App::GetApplication().setActiveDocument(pcDoc);
@@ -597,9 +606,10 @@ private:
                 if(keepPlacement!=Py_None)
                     ocaf.setKeepPlacement(PyObject_IsTrue(keepPlacement));
                 ocaf.exportObjects(objs);
-            } else {
-                bool keepExplicitPlacement = objs.size() > 1;
-                keepExplicitPlacement = Standard_True;
+            }
+            else {
+                //bool keepExplicitPlacement = objs.size() > 1;
+                bool keepExplicitPlacement = Standard_True;
                 ExportOCAFGui ocaf(hDoc, keepExplicitPlacement);
                 // That stuff is exporting a list of selected objects into FreeCAD Tree
                 std::vector <TDF_Label> hierarchical_label;
@@ -709,12 +719,16 @@ private:
                     throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                 }
 
+#if OCC_VERSION_HEX < 0x070500
                 Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                 aReader.Reader().WS()->MapReader()->SetProgress(pi);
                 pi->NewScope(100, "Reading STEP file...");
                 pi->Show();
+#endif
                 aReader.Transfer(hDoc);
+#if OCC_VERSION_HEX < 0x070500
                 pi->EndScope();
+#endif
             }
             else if (file.hasExtension("igs") || file.hasExtension("iges")) {
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -731,12 +745,16 @@ private:
                     throw Py::Exception(PyExc_IOError, "cannot read IGES file");
                 }
 
+#if OCC_VERSION_HEX < 0x070500
                 Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                 aReader.WS()->MapReader()->SetProgress(pi);
                 pi->NewScope(100, "Reading IGES file...");
                 pi->Show();
+#endif
                 aReader.Transfer(hDoc);
+#if OCC_VERSION_HEX < 0x070500
                 pi->EndScope();
+#endif
                 // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
                 Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
                         ->SetModel(new IGESData_IGESModel);

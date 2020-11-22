@@ -469,7 +469,7 @@ an empty dictionary if there is no intersection.
 				<UserDocu>getPlanarSegments(dev,[min faces=0]) -> list
 Get all planes of the mesh as segment.
 In the worst case each triangle can be regarded as single
-plane if none of its neighours is coplanar.</UserDocu>
+plane if none of its neighbors are coplanar.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="getSegmentsOfType" Const="true">

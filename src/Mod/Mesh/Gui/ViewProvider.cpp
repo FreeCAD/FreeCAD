@@ -57,7 +57,7 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
@@ -100,7 +100,6 @@
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/Gui/ViewProviderMeshPy.h>
 #include <zipios++/gzipoutputstream.h>
-#include <boost/bind.hpp>
 
 #include "ViewProvider.h"
 #include "SoFCIndexedFaceSet.h"
@@ -108,6 +107,7 @@
 
 
 using namespace MeshGui;
+namespace bp = boost::placeholders;
 
 using Mesh::Feature;
 using MeshCore::MeshKernel;
@@ -236,19 +236,21 @@ PROPERTY_SOURCE(MeshGui::ViewProviderMesh, Gui::ViewProviderGeometryObject)
 
 ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
 {
-    ADD_PROPERTY(LineTransparency,(0));
+    static const char *osgroup = "Object Style";
+
+    ADD_PROPERTY_TYPE(LineTransparency,(0), osgroup, App::Prop_None, "Set line transparency.");
     LineTransparency.setConstraints(&intPercent);
-    ADD_PROPERTY(LineWidth,(1.0f));
+    ADD_PROPERTY_TYPE(LineWidth,(1.0f), osgroup, App::Prop_None, "Set line width.");
     LineWidth.setConstraints(&floatRange);
-    ADD_PROPERTY(PointSize,(2.0f));
+    ADD_PROPERTY_TYPE(PointSize,(2.0f), osgroup, App::Prop_None, "Set point size.");
     PointSize.setConstraints(&floatRange);
-    ADD_PROPERTY(CreaseAngle,(0.0f));
+    ADD_PROPERTY_TYPE(CreaseAngle,(0.0f), osgroup, App::Prop_None, "Set crease angle.");
     CreaseAngle.setConstraints(&angleRange);
-    ADD_PROPERTY(OpenEdges,(false));
-    ADD_PROPERTY(Coloring,(false));
-    ADD_PROPERTY(Lighting,(1));
+    ADD_PROPERTY_TYPE(OpenEdges,(false), osgroup, App::Prop_None, "Set open edges.");
+    ADD_PROPERTY_TYPE(Coloring,(false), osgroup, App::Prop_None, "Set coloring.");
+    ADD_PROPERTY_TYPE(Lighting,(1), osgroup, App::Prop_None, "Set if the illumination comes from two sides\n or one side in the 3D view.");
     Lighting.setEnums(LightingEnums);
-    ADD_PROPERTY(LineColor,(0,0,0));
+    ADD_PROPERTY_TYPE(LineColor,(0,0,0), osgroup, App::Prop_None, "Set line color.");
 
     // Create the selection node
     pcHighlight = Gui::ViewProviderBuilder::createSelection();
@@ -739,13 +741,13 @@ void ViewProviderMesh::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     act->setCheckable(true);
     act->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
                     highlightMode == "Component");
-    func->toggle(act, boost::bind(&ViewProviderMesh::setHighlightedComponents, this, _1));
+    func->toggle(act, boost::bind(&ViewProviderMesh::setHighlightedComponents, this, bp::_1));
 
     QAction* seg = menu->addAction(QObject::tr("Display segments"));
     seg->setCheckable(true);
     seg->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
                     highlightMode == "Segment");
-    func->toggle(seg, boost::bind(&ViewProviderMesh::setHighlightedSegments, this, _1));
+    func->toggle(seg, boost::bind(&ViewProviderMesh::setHighlightedSegments, this, bp::_1));
 }
 
 bool ViewProviderMesh::setEdit(int ModNum)
@@ -1383,7 +1385,7 @@ std::vector<unsigned long> ViewProviderMesh::getVisibleFacets(const SbViewportRe
 
     Vertex v(kernel, grid, Base::convertTo<Base::Vector3f>(pos));
     QFuture<bool> future = QtConcurrent::mapped
-        (points, boost::bind(&Vertex::visible, &v, _1));
+        (points, boost::bind(&Vertex::visible, &v, bp::_1));
     QFutureWatcher<bool> watcher;
     watcher.setFuture(future);
     watcher.waitForFinished();
@@ -2045,9 +2047,10 @@ void ViewProviderMesh::invertSelection()
 {
     const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
     const MeshCore::MeshFacetArray& faces = rMesh.getKernel().GetFacets();
-    unsigned long num_notsel = std::count_if(faces.begin(), faces.end(),
-        std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
-        MeshCore::MeshFacet::SELECTED));
+    MeshCore::MeshIsNotFlag<MeshCore::MeshFacet> flag;
+    unsigned long num_notsel = std::count_if(faces.begin(), faces.end(), [flag](const MeshCore::MeshFacet& f) {
+            return flag(f, MeshCore::MeshFacet::SELECTED);
+        });
     std::vector<unsigned long> notselect;
     notselect.reserve(num_notsel);
     MeshCore::MeshFacetArray::_TConstIterator beg = faces.begin();
@@ -2363,7 +2366,7 @@ void ViewProviderMeshObject::updateData(const App::Property* prop)
     ViewProviderMesh::updateData(prop);
     if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         const Mesh::PropertyMeshKernel* mesh = static_cast<const Mesh::PropertyMeshKernel*>(prop);
-        this->pcMeshNode->mesh.setValue(mesh->getValuePtr());
+        this->pcMeshNode->mesh.setValue(Base::Reference<const Mesh::MeshObject>(mesh->getValuePtr()));
         // Needs to update internal bounding box caches
         this->pcMeshShape->touch();
     }

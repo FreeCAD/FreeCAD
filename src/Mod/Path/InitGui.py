@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   (c) Yorik van Havre (yorik@uncreated.net) 2014                        *
+# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -19,7 +19,7 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
 
 
 class PathCommandGroup:
@@ -88,13 +88,21 @@ class PathWorkbench (Workbench):
 
         # build commands list
         projcmdlist = ["Path_Job", "Path_Post"]
-        toolcmdlist = ["Path_Inspect", "Path_Simulator", "Path_ToolLibraryEdit", "Path_SelectLoop", "Path_OpActiveToggle"]
-        prepcmdlist = ["Path_Fixture", "Path_Comment", "Path_Stop", "Path_Custom", "Path_Probe"]
-        twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_MillFace", "Path_Helix", "Path_Adaptive"]
+        toolcmdlist = ["Path_Inspect", "Path_Simulator",
+                       "Path_ToolLibraryEdit", "Path_SelectLoop",
+                       "Path_OpActiveToggle"]
+        prepcmdlist = ["Path_Fixture", "Path_Comment", "Path_Stop",
+                       "Path_Custom", "Path_Probe"]
+        twodopcmdlist = ["Path_Profile", "Path_Pocket_Shape", "Path_Drilling",
+                         "Path_MillFace", "Path_Helix", "Path_Adaptive",
+                         "Path_Slot"]
         threedopcmdlist = ["Path_Pocket_3D"]
-        engravecmdlist = ["Path_Engrave", "Path_Deburr"]
+        engravecmdlist = ["Path_Engrave", "Path_Deburr", "Path_Vcarve"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy"]
-        dressupcmdlist = ["Path_DressupAxisMap", "Path_DressupPathBoundary", "Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag", "Path_DressupZCorrect"]
+        dressupcmdlist = ["Path_DressupAxisMap", "Path_DressupPathBoundary",
+                          "Path_DressupDogbone", "Path_DressupDragKnife",
+                          "Path_DressupLeadInOut", "Path_DressupRampEntry",
+                          "Path_DressupTag", "Path_DressupZCorrect"]
         extracmdlist = []
         # modcmdmore = ["Path_Hop",]
         # remotecmdlist = ["Path_Remote"]

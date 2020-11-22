@@ -2,6 +2,7 @@ import Mesh
 import FreeCAD as App
 import FreeCADGui as Gui
 import Part
+import MeshPartGui
 
 class BaseCommand(object):
     def __init__(self):
@@ -12,13 +13,13 @@ class BaseCommand(object):
             return False
         else:
             return True
-    
+
 
 class CreateFlatMesh(BaseCommand):
     """create flat wires from a meshed face"""
 
     def GetResources(self):
-        return {'MenuText': 'Unwrap Mesh', 'ToolTip': 'find a flat representation of a mesh'}
+        return {'Pixmap': 'MeshPart_Create_Flat_Mesh.svg', 'MenuText': 'Unwrap Mesh', 'ToolTip': 'find a flat representation of a mesh'}
 
     def Activated(self):
         import numpy as np
@@ -29,8 +30,8 @@ class CreateFlatMesh(BaseCommand):
         flattener = flatmesh.FaceUnwrapper(points, faces)
         flattener.findFlatNodes(5, 0.95)
         boundaries = flattener.getFlatBoundaryNodes()
-        print('number of nodes: {}'.format(len(flattener.ze_nodes)))
-        print('number of faces: {}'.format(len(flattener.tris)))
+        #print('number of nodes: {}'.format(len(flattener.ze_nodes)))
+        #print('number of faces: {}'.format(len(flattener.tris)))
 
         wires = []
         for edge in boundaries:
@@ -48,7 +49,7 @@ class CreateFlatFace(BaseCommand):
        only full faces are supported right now"""
        
     def GetResources(self):
-        return {'MenuText': 'Unwrap Face', 'ToolTip': 'find a flat representation of a mesh'}
+        return {'Pixmap': 'MeshPart_Create_Flat_Face.svg', 'MenuText': 'Unwrap Face', 'ToolTip': 'find a flat representation of a mesh'}
     
     def Activated(self):
         import numpy as np

@@ -51,13 +51,14 @@ class SMESH_EXPORT Unexpect { //save / retrieve unexpected exceptions treatment
   PVF old;
   public :
 #ifndef WNT
+  // std::set_unexpected has been removed in C++17
     Unexpect( PVF f ) 
-      { old = std::set_unexpected(f); }
-  ~Unexpect() { std::set_unexpected(old); }
+      { /*old = std::set_unexpected(f);*/old = f; }
+  ~Unexpect() { /*std::set_unexpected(old);*/ }
 #else
     Unexpect( PVF f ) 
-	  { old = std::set_unexpected(f); }
-  ~Unexpect() { std::set_unexpected(old); }
+	  { old = ::set_unexpected(f); }
+  ~Unexpect() { ::set_unexpected(old); }
 #endif
 };
 

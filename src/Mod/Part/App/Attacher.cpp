@@ -33,9 +33,17 @@
 # include <gp_Ax1.hxx>
 # include <gp_Pnt.hxx>
 # include <gp_Dir.hxx>
+# include <gp_Circ.hxx>
 # include <gp_Elips.hxx>
 # include <gp_Parab.hxx>
 # include <gp_Hypr.hxx>
+# include <Geom_Line.hxx>
+# include <Geom_Circle.hxx>
+# include <Geom_Ellipse.hxx>
+# include <Geom_Hyperbola.hxx>
+# include <Geom_Parabola.hxx>
+# include <Geom_BezierCurve.hxx>
+# include <Geom_BSplineCurve.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <Geom_Plane.hxx>
 # include <Geom2d_Curve.hxx>
@@ -977,7 +985,7 @@ AttachEngine3D* AttachEngine3D::copy() const
     return p;
 }
 
-Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement& origPlacement) const
 {
     const eMapMode mmode = this->mapMode;
     if (mmode == mmDeactivated)
@@ -1627,7 +1635,7 @@ AttachEnginePlane *AttachEnginePlane::copy() const
     return p;
 }
 
-Base::Placement AttachEnginePlane::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEnginePlane::calculateAttachedPlacement(const Base::Placement& origPlacement) const
 {
     //re-use Attacher3d
     Base::Placement plm;
@@ -1691,7 +1699,7 @@ AttachEngineLine *AttachEngineLine::copy() const
     return p;
 }
 
-Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placement& origPlacement) const
 {
     eMapMode mmode = this->mapMode;
 
@@ -1960,7 +1968,7 @@ AttachEnginePoint *AttachEnginePoint::copy() const
     return p;
 }
 
-Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEnginePoint::calculateAttachedPlacement(const Base::Placement& origPlacement) const
 {
     eMapMode mmode = this->mapMode;
 
@@ -2107,9 +2115,77 @@ gp_Pnt AttachEnginePoint::getProximityPoint(eMapMode mmode, const TopoDS_Shape& 
 
         // edge and face
         if (!edge.IsNull() && !face.IsNull()) {
+
             BRepAdaptor_Curve crv(TopoDS::Edge(edge));
+
+            GeomAdaptor_Curve typedcrv;
+
+            switch(crv.GetType()) {
+                case GeomAbs_Line:
+                {
+                    Handle(Geom_Line) geomt = new Geom_Line(crv.Line());
+                    typedcrv.Load(geomt);
+                    break;
+                }
+                case GeomAbs_Circle:
+                {
+                    Handle(Geom_Circle) geomt = new Geom_Circle(crv.Circle());
+                    typedcrv.Load(geomt);
+                    break;
+                }
+                case GeomAbs_Ellipse:
+                {
+                    Handle(Geom_Ellipse) geomt = new Geom_Ellipse(crv.Ellipse());
+                    typedcrv.Load(geomt);
+                    break;
+                }
+                case GeomAbs_Hyperbola:
+                {
+                    Handle(Geom_Hyperbola) geomt = new Geom_Hyperbola(crv.Hyperbola());
+                    typedcrv.Load(geomt);
+                    break;
+                }
+                case GeomAbs_Parabola:
+                {
+                    Handle(Geom_Parabola) geomt = new Geom_Parabola(crv.Parabola());
+                    typedcrv.Load(geomt);
+                    break;
+                }
+                case GeomAbs_BezierCurve:
+                {
+                    Handle(Geom_BezierCurve) geomt = crv.Bezier();
+                    typedcrv.Load(geomt);
+                    break;
+                }
+                case GeomAbs_BSplineCurve:
+                {
+                    Handle(Geom_BSplineCurve) geomt = crv.BSpline();
+                    typedcrv.Load(geomt);
+                    break;
+                }
+            #if OCC_VERSION_HEX >= 0x070000
+                case GeomAbs_OffsetCurve:
+            #endif
+                case GeomAbs_OtherCurve:
+                    Base::Console().Warning("AttachEnginePoint::getProximityPoint curve not supported, intersection may not work properly");
+                    typedcrv = crv.Curve();
+                    break;
+            }
+
+            // Important note about BRepIntCurveSurface_Inter and GeomAdaptor_Curve
+            //
+            // In OCCT 7.4 (and apparently <= 7.4 too):
+            //
+            // A GeomAdaptor_Curve obtained directly from BRepAdaptor_Curve will not work because it won't respect the
+            // Location/orientation of the underlying curve.
+            //
+            // This is why the code above is necessary to generate an intermediary curve handle, from which to get an
+            // GeomAdaptor_Curve that will maintain the location and orientation.
+            //
+            // To test this apparent OCCT bug, just change in intCS.Init below typedcrv with crv.Curve().
+
             BRepIntCurveSurface_Inter intCS;
-            intCS.Init(face, crv.Curve(), Precision::Confusion());
+            intCS.Init(face, typedcrv, Precision::Confusion());
             std::vector<gp_Pnt> points;
             for (; intCS.More(); intCS.Next()) {
                 gp_Pnt pnt = intCS.Pnt();

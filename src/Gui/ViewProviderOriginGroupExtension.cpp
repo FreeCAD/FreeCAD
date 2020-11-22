@@ -25,6 +25,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <boost_bind_bind.hpp>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include "ViewProviderOriginGroupExtension.h"
@@ -39,11 +42,10 @@
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
-#include <boost/bind.hpp>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/nodes/SoSeparator.h>
 
 using namespace Gui;
+namespace bp = boost::placeholders;
+
 
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderOriginGroupExtension, Gui::ViewProviderGeoFeatureGroupExtension)
 
@@ -97,10 +99,10 @@ void ViewProviderOriginGroupExtension::extensionAttach(App::DocumentObject *pcOb
     assert ( gdoc );
 
     connectChangedObjectApp = adoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectApp, this, _1) );
+            boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectApp, this, bp::_1) );
     
     connectChangedObjectGui = gdoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectGui, this, _1) );
+            boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectGui, this, bp::_1) );
 }
 
 void ViewProviderOriginGroupExtension::extensionUpdateData( const App::Property* prop ) {

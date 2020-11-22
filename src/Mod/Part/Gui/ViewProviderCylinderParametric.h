@@ -24,7 +24,7 @@
 #ifndef PARTGUI_VIEWPROVIDERCYLINDERPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERCYLINDERPARAMETRIC_H
 
-#include "ViewProvider.h"
+#include "ViewProviderPrimitive.h"
 
 
 class TopoDS_Shape;
@@ -36,7 +36,7 @@ class SoTransform;
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderCylinderParametric:public ViewProviderPart
+class PartGuiExport ViewProviderCylinderParametric : public ViewProviderPrimitive
 {
     PROPERTY_HEADER(PartGui::ViewProviderCylinderParametric);
 

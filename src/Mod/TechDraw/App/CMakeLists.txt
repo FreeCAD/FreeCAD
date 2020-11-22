@@ -155,6 +155,8 @@ SET(TechDraw_SRCS
     LineGroup.h
     ArrowPropEnum.cpp
     ArrowPropEnum.h
+    Preferences.cpp
+    Preferences.h
 )
 
 SET(Geometry_SRCS
