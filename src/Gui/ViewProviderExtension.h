@@ -93,6 +93,7 @@ public:
 
     //update data of extended opject
     virtual void extensionUpdateData(const App::Property*);
+    virtual PyObject* getExtensionPyObject();
 
     void setIgnoreOverlayIcon(bool on) {
         m_ignoreOverlayIcon = on;
