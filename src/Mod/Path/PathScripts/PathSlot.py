@@ -40,6 +40,7 @@ import math
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 Part = LazyLoader('Part', globals(), 'Part')
+Arcs = LazyLoader('draftgeoutils.arcs', globals(), 'draftgeoutils.arcs')
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -1620,8 +1621,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
             # Make wire with inside and outside arcs, and lines on ends.
             # Convert wire to face, then extrude
-            import draftgeoutils.arcs as Arcs
-            # Arc 1 - inside
+
             # verify offset does not force radius < 0
             newRadius = arcRadius - rad
             # PathLog.debug('arcRadius, newRadius: {}, {}'.format(arcRadius, newRadius))
