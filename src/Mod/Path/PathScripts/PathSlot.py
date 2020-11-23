@@ -550,7 +550,8 @@ class ObjectSlot(PathOp.ObjectOp):
         It accepts the operation object and two end points for the path.
         It returns the slot gcode for the operation."""
         CMDS = list()
-        PATHS = [(p1, p2, 'G2'), (p2, p1, 'G3')]
+        PATHS = [(p2, p1, 'G2'), (p1, p2, 'G3')]
+        path_index = 0
 
         def arcPass(PNTS, depth):
             cmds = list()
@@ -567,25 +568,29 @@ class ObjectSlot(PathOp.ObjectOp):
             return cmds
 
         if obj.LayerMode == 'Single-pass':
-            PNTS = PATHS[0]
             if obj.ReverseDirection:
-                PNTS = PATHS[1]
-            CMDS.extend(arcPass(PNTS, obj.FinalDepth.Value))
+                path_index = 1
+            CMDS.extend(arcPass(PATHS[path_index], obj.FinalDepth.Value))
         else:
             if obj.CutPattern == 'Line':
-                PNTS = PATHS[0]
                 if obj.ReverseDirection:
-                    PNTS = PATHS[1]
+                    path_index = 1
                 for dep in self.depthParams:
-                    CMDS.extend(arcPass(PNTS, dep))
+                    CMDS.extend(arcPass(PATHS[path_index], dep))
                     CMDS.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
             elif obj.CutPattern == 'ZigZag':
                 i = 0
                 for dep in self.depthParams:
-                    if i % 2.0 == 0:  # even
-                        CMDS.extend(arcPass(PATHS[0], dep))
-                    else:  # odd
-                        CMDS.extend(arcPass(PATHS[1], dep))
+                    if obj.ReverseDirection:
+                        if i % 2.0 == 0:  # even
+                            CMDS.extend(arcPass(PATHS[0], dep))
+                        else:  # odd
+                            CMDS.extend(arcPass(PATHS[1], dep))
+                    else:
+                        if i % 2.0 == 0:  # even
+                            CMDS.extend(arcPass(PATHS[1], dep))
+                        else:  # odd
+                            CMDS.extend(arcPass(PATHS[0], dep))
                     i += 1
         # Raise to SafeHeight when finished
         CMDS.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
@@ -1569,7 +1574,10 @@ class ObjectSlot(PathOp.ObjectOp):
         Make arch face between circles. Fuse and extrude it vertically.
         Check for collision with model."""
         # Make path travel of tool as 3D solid.
-        rad = self.tool.Diameter / 2.0
+        if hasattr(self.tool.Diameter, 'Value'):
+            rad = self.tool.Diameter.Value / 2.0
+        else:
+            rad = self.tool.Diameter / 2.0
         extFwd = obj.StartDepth.Value - obj.FinalDepth.Value
         extVect = FreeCAD.Vector(0.0, 0.0, extFwd)
 
