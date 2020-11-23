@@ -47,7 +47,7 @@
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
@@ -75,6 +75,7 @@
 #include "TaskCheckGeometry.h"
 #include "BoxSelection.h"
 
+using namespace Gui;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -260,6 +261,23 @@ bool checkForSolids(const TopoDS_Shape& shape)
 }
 }
 
+static void finishFeature(App::DocumentObject *feat, const std::vector<Gui::SelectionObject> &sels)
+{
+    // hide the input objects and remove them from the parent group
+    App::DocumentObjectGroup* targetGroup = 0;
+    for (auto & sel : sels) {
+        auto obj = sel.getObject();
+        cmdAppObject(obj, "Visibility = False");
+        App::DocumentObjectGroup* group = obj->getGroup();
+        if (group) {
+            targetGroup = group;
+            cmdAppObjectArgs(group, "removeObject(%s)", obj->getFullName(true));
+        }
+    }
+    if (targetGroup)
+        cmdAppObjectArgs(targetGroup, "addObject(%s)", feat->getFullName(true));
+}
+
 //===========================================================================
 // Part_Cut
 //===========================================================================
@@ -302,32 +320,20 @@ void CmdPartCut::activated(int iMsg)
         }
     }
 
-    std::string FeatName = getUniqueObjectName("Cut");
+    auto obj1 = Sel[0].getObject();
+    auto obj2 = Sel[1].getObject();
+    std::string FeatName = getUniqueObjectName("Cut", obj1);
 
     openCommand("Part Cut");
-    doCommand(Doc,"App.activeDocument().addObject(\"Part::Cut\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",FeatName.c_str(),Sel[0].getFeatName());
-    doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),Sel[1].getFeatName());
+    cmdAppDocument(obj1, std::ostringstream() << "addObject(\"Part::Cut\",\"" << FeatName << "\")");
+    auto feat = obj1->getDocument()->getObject(FeatName.c_str());
+    cmdAppObjectArgs(feat, "Base = %s", obj1->getFullName(true));
+    cmdAppObjectArgs(feat, "Tool = %s", obj2->getFullName(true));
 
-    // hide the input objects and remove them from the parent group
-    App::DocumentObjectGroup* targetGroup = 0;
-    for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
-        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->getFeatName());
-        App::DocumentObjectGroup* group = it->getObject()->getGroup();
-        if (group) {
-            targetGroup = group;
-            doCommand(Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                group->getNameInDocument(), it->getFeatName());
-        }
-    }
+    finishFeature(feat, Sel);
 
-    if (targetGroup) {
-        doCommand(Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-            targetGroup->getNameInDocument(), FeatName.c_str());
-    }
-
-    copyVisual(FeatName.c_str(), "ShapeColor", Sel[0].getFeatName());
-    copyVisual(FeatName.c_str(), "DisplayMode", Sel[0].getFeatName());
+    copyVisual(feat, "ShapeColor", obj1);
+    copyVisual(feat, "DisplayMode", obj2);
     updateActive();
     commitCommand();
 }
@@ -384,11 +390,10 @@ void CmdPartCommon::activated(int iMsg)
     }
 
     bool askUser = false;
-    std::string FeatName = getUniqueObjectName("Common");
+    std::string FeatName = getUniqueObjectName("Common", Sel[0].getObject());
     std::stringstream str;
-    std::vector<Gui::SelectionObject> partObjects;
 
-    str << "App.activeDocument()." << FeatName << ".Shapes = [";
+    str << "[";
     for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
         App::DocumentObject* obj = it->getObject();
         const TopoDS_Shape& shape = Part::Feature::getShape(obj);
@@ -400,34 +405,20 @@ void CmdPartCommon::activated(int iMsg)
                 return;
             askUser = true;
         }
-        str << "App.activeDocument()." << it->getFeatName() << ",";
-        partObjects.push_back(*it);
+        str << it->getObject()->getFullName(true) << ",";
     }
     str << "]";
 
     openCommand("Common");
-    doCommand(Doc,"App.activeDocument().addObject(\"Part::MultiCommon\",\"%s\")",FeatName.c_str());
-    runCommand(Doc,str.str().c_str());
+    auto sel = Sel[0].getObject();
+    cmdAppDocument(sel, std::ostringstream() << "addObject(\"Part::MultiCommon\",\"" << FeatName << "\")");
+    auto feat = sel->getDocument()->getObject(FeatName.c_str());
+    cmdAppObjectArgs(feat, "Shapes = %s", str.str());
 
-    // hide the input objects and remove them from the parent group
-    App::DocumentObjectGroup* targetGroup = 0;
-    for (std::vector<Gui::SelectionObject>::iterator it = partObjects.begin(); it != partObjects.end(); ++it) {
-        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->getFeatName());
-        App::DocumentObjectGroup* group = it->getObject()->getGroup();
-        if (group) {
-            targetGroup = group;
-            doCommand(Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                group->getNameInDocument(), it->getFeatName());
-        }
-    }
+    finishFeature(feat, Sel);
 
-    if (targetGroup) {
-        doCommand(Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-            targetGroup->getNameInDocument(), FeatName.c_str());
-    }
-
-    copyVisual(FeatName.c_str(), "ShapeColor", partObjects.front().getFeatName());
-    copyVisual(FeatName.c_str(), "DisplayMode", partObjects.front().getFeatName());
+    copyVisual(feat, "ShapeColor", sel);
+    copyVisual(feat, "DisplayMode", sel);
     updateActive();
     commitCommand();
 }
@@ -484,11 +475,10 @@ void CmdPartFuse::activated(int iMsg)
     }
 
     bool askUser = false;
-    std::string FeatName = getUniqueObjectName("Fusion");
+    std::string FeatName = getUniqueObjectName("Fusion", Sel[0].getObject());
     std::stringstream str;
-    std::vector<Gui::SelectionObject> partObjects;
 
-    str << "App.activeDocument()." << FeatName << ".Shapes = [";
+    str << "[";
     for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
         App::DocumentObject* obj = it->getObject();
         const TopoDS_Shape& shape = Part::Feature::getShape(obj);
@@ -500,34 +490,20 @@ void CmdPartFuse::activated(int iMsg)
                 return;
             askUser = true;
         }
-        str << "App.activeDocument()." << it->getFeatName() << ",";
-        partObjects.push_back(*it);
+        str << it->getObject()->getFullName(true)<< ",";
     }
     str << "]";
 
     openCommand("Fusion");
-    doCommand(Doc,"App.activeDocument().addObject(\"Part::MultiFuse\",\"%s\")",FeatName.c_str());
-    runCommand(Doc,str.str().c_str());
+    auto sel = Sel[0].getObject();
+    cmdAppDocument(sel, std::ostringstream() << "addObject(\"Part::MultiFuse\",\"" << FeatName << "\")");
+    auto feat = sel->getDocument()->getObject(FeatName.c_str());
+    cmdAppObjectArgs(feat, "Shapes = %s", str.str());
 
-    // hide the input objects and remove them from the parent group
-    App::DocumentObjectGroup* targetGroup = 0;
-    for (std::vector<Gui::SelectionObject>::iterator it = partObjects.begin(); it != partObjects.end(); ++it) {
-        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->getFeatName());
-        App::DocumentObjectGroup* group = it->getObject()->getGroup();
-        if (group) {
-            targetGroup = group;
-            doCommand(Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                group->getNameInDocument(), it->getFeatName());
-        }
-    }
+    finishFeature(feat, Sel);
 
-    if (targetGroup) {
-        doCommand(Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-            targetGroup->getNameInDocument(), FeatName.c_str());
-    }
-
-    copyVisual(FeatName.c_str(), "ShapeColor", partObjects.front().getFeatName());
-    copyVisual(FeatName.c_str(), "DisplayMode", partObjects.front().getFeatName());
+    copyVisual(feat, "ShapeColor", sel);
+    copyVisual(feat, "DisplayMode", sel);
     updateActive();
     commitCommand();
 }
@@ -894,33 +870,28 @@ CmdPartCompound::CmdPartCompound()
 void CmdPartCompound::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    unsigned int n = getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(),0,3);
-    if (n < 1) {
+
+    auto sels = Gui::Selection().getSelectionEx();
+    if (sels.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one shape or more, please."));
         return;
     }
+    auto sel = sels[0].getObject();
+    std::string FeatName = getUniqueObjectName("Compound", sel);
 
-    std::string FeatName = getUniqueObjectName("Compound");
-
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     std::stringstream str;
 
     // avoid duplicates without changing the order
-    std::set<std::string> tempSelNames;
-    str << "App.activeDocument()." << FeatName << ".Links = [";
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
-        auto pos = tempSelNames.insert(it->FeatName);
-        if (pos.second) {
-            str << "App.activeDocument()." << it->FeatName << ",";
-        }
-    }
+    str << "Links = [";
+    for (auto & s : sels)
+        str << s.getObject()->getFullName(true) << ", ";
     str << "]";
 
     openCommand("Compound");
-    doCommand(Doc,"App.activeDocument().addObject(\"Part::Compound\",\"%s\")",FeatName.c_str());
-    runCommand(Doc,str.str().c_str());
+    cmdAppDocument(sel, std::ostringstream() << "addObject(\"Part::Compound\",\"" << FeatName << "\")");
+    auto feat = sel->getDocument()->getObject(FeatName.c_str());
+    finishFeature(feat, sels);
     updateActive();
     commitCommand();
 }
@@ -951,25 +922,27 @@ CmdPartSection::CmdPartSection()
 void CmdPartSection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> Sel = 
-        getSelection().getSelectionEx(0, App::DocumentObject::getClassTypeId(),3);
+    auto Sel = getSelection().getSelectionEx();
     if (Sel.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select two shapes please."));
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("Section");
-    std::string BaseName  = Sel[0].getFeatName();
-    std::string ToolName  = Sel[1].getFeatName();
+    auto base = Sel[0].getObject();
+    auto tool = Sel[1].getObject();
+    std::string FeatName = getUniqueObjectName("Section", base);
 
     openCommand("Section");
-    doCommand(Doc,"App.activeDocument().addObject(\"Part::Section\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),ToolName.c_str());
-    doCommand(Gui,"Gui.activeDocument().hide('%s')",BaseName.c_str());
-    doCommand(Gui,"Gui.activeDocument().hide('%s')",ToolName.c_str());
-    doCommand(Gui,"Gui.activeDocument().%s.LineColor = Gui.activeDocument().%s.ShapeColor", FeatName.c_str(),BaseName.c_str());
+    cmdAppDocument(base, std::ostringstream() << "addObject(\"Part::Section\",\"" << FeatName << "\")");
+    auto feat = base->getDocument()->getObject(FeatName.c_str());
+    cmdAppObjectArgs(feat, "Base = %s", base->getFullName(true));
+    cmdAppObjectArgs(feat, "Tool = %s", tool->getFullName(true));
+    cmdAppObject(base, "Visibility = False");
+    cmdAppObject(tool, "Visibility = False");
+    auto vp = Gui::Application::Instance->getViewProvider(base);
+    if (vp)
+        cmdGuiObjectArgs(feat, "LineColor = %s.ShapeColor", vp->getFullName(true));
     updateActive();
     commitCommand();
 }
@@ -1646,27 +1619,28 @@ CmdPartOffset::CmdPartOffset()
 void CmdPartOffset::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    auto shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),0,3);
+    auto shapes = getSelection().getSelectionEx();
     if(shapes.empty())
         return;
-    App::DocumentObject* shape = shapes.front();
-    std::string offset = getUniqueObjectName("Offset");
+    App::DocumentObject* shape = shapes.front().getObject();;
+    std::string offset = getUniqueObjectName("Offset", shape);
 
     openCommand("Make Offset");
-    doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Offset\",\"%s\")",offset.c_str());
-    doCommand(Doc,"App.ActiveDocument.%s.Source = App.ActiveDocument.%s" ,offset.c_str(), shape->getNameInDocument());
-    doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
+    cmdAppDocument(shape, std::ostringstream() << "addObject(\"Part::Offset\",\"" << offset << "\")");
+    auto feat = shape->getDocument()->getObject(offset.c_str());
+    cmdAppObjectArgs(feat, "Source = %s", shape->getFullName(true));
+    cmdAppObject(feat, "Value = 1.0");
     updateActive();
     //if (isActiveObjectValid())
     //    doCommand(Gui,"Gui.ActiveDocument.hide(\"%s\")",shape->getNameInDocument());
-    doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());
+    cmdSetEdit(feat);
 
     //commitCommand();
     adjustCameraPosition();
 
-    copyVisual(offset.c_str(), "ShapeColor", shape->getNameInDocument());
-    copyVisual(offset.c_str(), "LineColor" , shape->getNameInDocument());
-    copyVisual(offset.c_str(), "PointColor", shape->getNameInDocument());
+    copyVisual(feat, "ShapeColor", shape);
+    copyVisual(feat, "LineColor" , shape);
+    copyVisual(feat, "PointColor", shape);
 }
 
 bool CmdPartOffset::isActive(void)
@@ -1698,27 +1672,28 @@ CmdPartOffset2D::CmdPartOffset2D()
 void CmdPartOffset2D::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    auto shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),0,3);
+    auto shapes = getSelection().getSelectionEx();
     if(shapes.empty())
         return;
-    App::DocumentObject* shape = shapes.front();
-    std::string offset = getUniqueObjectName("Offset2D");
+    App::DocumentObject* shape = shapes.front().getObject();
+    std::string offset = getUniqueObjectName("Offset2D", shape);
 
     openCommand("Make 2D Offset");
-    doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Offset2D\",\"%s\")",offset.c_str());
-    doCommand(Doc,"App.ActiveDocument.%s.Source = App.ActiveDocument.%s" ,offset.c_str(), shape->getNameInDocument());
-    doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
+    cmdAppDocument(shape, std::ostringstream() << "addObject(\"Part::Offset2D\",\"" << offset << "\")");
+    auto feat = shape->getDocument()->getObject(offset.c_str());
+    cmdAppObjectArgs(feat, "Source = %s", shape->getFullName(true));
+    cmdAppObject(feat, "Value = 1.0");
     updateActive();
     //if (isActiveObjectValid())
     //    doCommand(Gui,"Gui.ActiveDocument.hide(\"%s\")",shape->getNameInDocument());
-    doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());
+    cmdSetEdit(feat);
 
     //commitCommand();
     adjustCameraPosition();
 
-    copyVisual(offset.c_str(), "ShapeColor", shape->getNameInDocument());
-    copyVisual(offset.c_str(), "LineColor" , shape->getNameInDocument());
-    copyVisual(offset.c_str(), "PointColor", shape->getNameInDocument());
+    copyVisual(feat, "ShapeColor", shape);
+    copyVisual(feat, "LineColor" , shape);
+    copyVisual(feat, "PointColor", shape);
 }
 
 bool CmdPartOffset2D::isActive(void)
@@ -1870,23 +1845,24 @@ void CmdPartThickness::activated(int iMsg)
         return;
     }
 
-    std::string thick = getUniqueObjectName("Thickness");
+    std::string thick = getUniqueObjectName("Thickness", shape);
 
     openCommand("Make Thickness");
-    doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Thickness\",\"%s\")",thick.c_str());
-    doCommand(Doc,"App.ActiveDocument.%s.Faces = %s" ,thick.c_str(), selection.c_str());
-    doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",thick.c_str());
-    updateActive();
+    cmdAppDocument(shape, std::ostringstream() << "addObject(\"Part::Thickness\",\"" << thick << "\")");
+    auto feat = shape->getDocument()->getObject(thick.c_str());
+    cmdAppObjectArgs(feat, "Faces = %s" , selection.c_str());
+    cmdAppObjectArgs(feat, "Value = 1.0");
     if (isActiveObjectValid())
-        doCommand(Gui,"Gui.ActiveDocument.hide(\"%s\")",shape->getNameInDocument());
-    doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",thick.c_str());
+        cmdAppObjectArgs(shape, "Visibility = False");
+    updateActive();
+    cmdSetEdit(feat);
 
     //commitCommand();
     adjustCameraPosition();
 
-    copyVisual(thick.c_str(), "ShapeColor", shape->getNameInDocument());
-    copyVisual(thick.c_str(), "LineColor" , shape->getNameInDocument());
-    copyVisual(thick.c_str(), "PointColor", shape->getNameInDocument());
+    copyVisual(feat, "ShapeColor", shape);
+    copyVisual(feat, "LineColor" , shape);
+    copyVisual(feat, "PointColor", shape);
 }
 
 bool CmdPartThickness::isActive(void)
@@ -2019,7 +1995,7 @@ void CmdPartRuledSurface::activated(int iMsg)
     Q_UNUSED(iMsg);
     bool ok = false;
     TopoDS_Shape curve1, curve2;
-    std::string link1, link2, obj1, obj2;
+    App::SubObjectT obj1, obj2;
     Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..2");
     Gui::SelectionFilter wireFilter  ("SELECT Part::Feature SUBELEMENT Wire COUNT 1..2");
     Gui::SelectionFilter partFilter  ("SELECT Part::Feature COUNT 2");
@@ -2042,10 +2018,8 @@ void CmdPartRuledSurface::activated(int iMsg)
                 const Part::TopoShape& shape = part->Shape.getValue();
                 curve1 = shape.getSubShape(edges[0].c_str());
                 curve2 = shape.getSubShape(edges[1].c_str());
-                obj1 = result[0].getObject()->getNameInDocument();
-                link1 = edges[0];
-                obj2 = result[0].getObject()->getNameInDocument();
-                link2 = edges[1];
+                obj1 = App::SubObjectT(part, edges[0].c_str());
+                obj2 = App::SubObjectT(part, edges[1].c_str());
             }
         }
         // two objects and one edge per object
@@ -2063,10 +2037,8 @@ void CmdPartRuledSurface::activated(int iMsg)
                 curve1 = shape1.getSubShape(edges1[0].c_str());
                 const Part::TopoShape& shape2 = part2->Shape.getValue();
                 curve2 = shape2.getSubShape(edges2[0].c_str());
-                obj1 = result[0].getObject()->getNameInDocument();
-                link1 = edges1[0];
-                obj2 = result[1].getObject()->getNameInDocument();
-                link2 = edges2[0];
+                obj1 = App::SubObjectT(part1, edges1[0].c_str());
+                obj2 = App::SubObjectT(part2, edges2[0].c_str());
             }
         }
     }
@@ -2078,8 +2050,8 @@ void CmdPartRuledSurface::activated(int iMsg)
         curve1 = shape1.getShape();
         const Part::TopoShape& shape2 = part2->Shape.getValue();
         curve2 = shape2.getShape();
-        obj1 = part1->getNameInDocument();
-        obj2 = part2->getNameInDocument();
+        obj1 = App::SubObjectT(part1, "");
+        obj2 = App::SubObjectT(part2, "");
 
         if (!curve1.IsNull() && !curve2.IsNull()) {
             if (curve1.ShapeType() == TopAbs_EDGE &&
@@ -2098,13 +2070,13 @@ void CmdPartRuledSurface::activated(int iMsg)
     }
 
     openCommand("Create ruled surface");
-    doCommand(Doc, "FreeCAD.ActiveDocument.addObject('Part::RuledSurface', 'Ruled Surface')");
-    doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.Curve1=(FreeCAD.ActiveDocument.%s,['%s'])"
-                 ,obj1.c_str(), link1.c_str());
-    doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.Curve2=(FreeCAD.ActiveDocument.%s,['%s'])"
-                 ,obj2.c_str(), link2.c_str());
-    commitCommand();
+    std::string FeatName = getUniqueObjectName("RuledSurface", obj1.getObject());
+    cmdAppDocument(obj1.getDocument(), std::ostringstream() << "addObject('Part::RuledSurface', '" << FeatName << "')");
+    auto feat = obj1.getDocument()->getObject(FeatName.c_str());
+    cmdAppObject(feat, std::ostringstream() << "Curve1 = " << obj1.getSubObjectPython());
+    cmdAppObject(feat, std::ostringstream() << "Curve2 = " << obj2.getSubObjectPython());
     updateActive();
+    commitCommand();
 }
 
 bool CmdPartRuledSurface::isActive(void)

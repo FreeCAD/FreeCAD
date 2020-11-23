@@ -83,7 +83,8 @@ void _cmdDocument(Gui::Command::DoCmd_Type cmdType, const App::Document* doc, co
         str << mod << ".getDocument('" << doc->getName() << "')."
             << FormatString::str(cmd);
         Gui::Command::runCommand(cmdType, str.str().c_str());
-    }
+    } else
+        throw Base::RuntimeError("Invalid document");
 }
 
 /** Runs a command for accessing App.Document attribute or method
@@ -139,7 +140,10 @@ inline void cmdGuiDocument(const App::Document* doc, T&& cmd) {
  */
 template<typename T>
 inline void _cmdDocument(Gui::Command::DoCmd_Type cmdType, const App::DocumentObject* obj, const std::string& mod, T&& cmd) {
-    if (obj) _cmdDocument(cmdType, obj->getDocument(), mod, std::forward<T>(cmd));
+    if (obj && obj->getDocument())
+        _cmdDocument(cmdType, obj->getDocument(), mod, std::forward<T>(cmd));
+    else
+        throw Base::RuntimeError("Invalid object");
 }
 
 /** Runs a command for accessing an object's App::Document attribute or method
@@ -188,7 +192,8 @@ void _cmdObject(Gui::Command::DoCmd_Type cmdType, const App::DocumentObject* obj
                       ".getObject('" << obj->getNameInDocument() << "')."
                    << FormatString::str(cmd);
         Gui::Command::runCommand(cmdType, str.str().c_str());
-    }
+    } else
+        throw Base::RuntimeError("Invalid object");
 }
 
 /** Runs a command for accessing an document object's attribute or method
@@ -237,7 +242,8 @@ inline void cmdSetEdit(const App::DocumentObject* obj) {
         Gui::Command::doCommand(Gui::Command::Gui,
             "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'))",
             obj->getDocument()->getName(), obj->getNameInDocument());
-    }
+    } else
+        throw Base::RuntimeError("Invalid object");
 }
 
 /** Runs a command for accessing a document object's attribute or method
@@ -259,6 +265,8 @@ inline void cmdSetEdit(const App::DocumentObject* obj) {
 template<typename...Args>
 void cmdAppObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Args&&... args) {
     std::string _cmd;
+    if (!obj || !obj->getNameInDocument())
+        throw Base::RuntimeError("Invalid object");
     try {
         boost::format fmt(cmd);
         _cmd = FormatString::toStr(fmt, std::forward<Args>(args)...);
@@ -284,6 +292,8 @@ void cmdAppObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
 template<typename...Args>
 void cmdGuiObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Args&&... args) {
     std::string _cmd;
+    if (!obj || !obj->getNameInDocument())
+        throw Base::RuntimeError("Invalid object");
     try {
         boost::format fmt(cmd);
         _cmd = FormatString::toStr(fmt, std::forward<Args>(args)...);
