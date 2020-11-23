@@ -77,6 +77,8 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 
+# include <Inventor/nodes/SoIndexedMarkerSet.h>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Converter.h>
 #include <Base/Tools.h>
@@ -198,6 +200,8 @@ struct EditData {
     RootCrossSet(0),
     EditCurveSet(0),
     PointSet(0),
+    SelectedPointSet(0),
+    PreSelectedPointSet(0),
     textX(0),
     textPos(0),
     constrGroup(0),
@@ -262,6 +266,8 @@ struct EditData {
     SoLineSet     *RootCrossSet;
     SoLineSet     *EditCurveSet;
     SoMarkerSet   *PointSet;
+    SoIndexedMarkerSet   *SelectedPointSet;
+    SoIndexedMarkerSet   *PreSelectedPointSet;
 
     SoText2       *textX;
     SoTranslation *textPos;
@@ -2745,16 +2751,30 @@ void ViewProviderSketch::updateColor(void)
 
     if (edit->PreselectCross == 0) {
         pcolor[0] = PreselectColor;
+        edit->PreSelectedPointSet->coordIndex.setValue(0);
     }
     else if (edit->PreselectPoint != -1) {
-        if (edit->PreselectPoint + 1 < PtNum)
+        if (edit->PreselectPoint + 1 < PtNum) {
             pcolor[edit->PreselectPoint + 1] = PreselectColor;
+            edit->PreSelectedPointSet->coordIndex.setValue(edit->PreselectPoint+1);
+        }
     }
 
+    int selcount = 0;
     for (std::set<int>::iterator it = edit->SelPointSet.begin(); it != edit->SelPointSet.end(); ++it) {
         if (*it < PtNum) {
+            ++selcount;
             pcolor[*it] = (*it==(edit->PreselectPoint + 1) && (edit->PreselectPoint != -1))
                 ? PreselectSelectedColor : SelectColor;
+        }
+    }
+    edit->SelectedPointSet->coordIndex.setNum(selcount);
+    if (selcount) {
+        auto indices = edit->SelectedPointSet->coordIndex.startEditing();
+        int i=0;
+        for (int idx : edit->SelPointSet) {
+            if (idx < PtNum)
+                indices[i++] = idx;
         }
     }
 
@@ -6030,7 +6050,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
 {
     assert(edit);
 
-    edit->EditRoot = new SoSeparator;
+    edit->EditRoot = new SoAnnotation;
     edit->EditRoot->ref();
     edit->EditRoot->setName("Sketch_EditRoot");
     pcRoot->addChild(edit->EditRoot);
@@ -6038,7 +6058,6 @@ void ViewProviderSketch::createEditInventorNodes(void)
 
     // stuff for the points ++++++++++++++++++++++++++++++++++++++
     edit->PointSwitch = new SoSwitch;
-    edit->EditRoot->addChild(edit->PointSwitch);
     SoSeparator* pointsRoot = new SoSeparator;
     edit->PointSwitch->addChild(pointsRoot);
     edit->PointSwitch->whichChild = 0;
@@ -6064,6 +6083,23 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->PointSet->setName("PointSet");
     edit->PointSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", edit->MarkerSize);
     pointsRoot->addChild(edit->PointSet);
+
+    MtlBind = new SoMaterialBinding;
+    MtlBind->setName("IndexPointsMaterialBinding");
+    MtlBind->value = SoMaterialBinding::PER_VERTEX_INDEXED;
+    pointsRoot->addChild(MtlBind);
+
+    edit->SelectedPointSet = new SoIndexedMarkerSet;
+    edit->SelectedPointSet->setName("SelectedPointSet");
+    pointsRoot->addChild(edit->SelectedPointSet);
+    edit->SelectedPointSet->markerIndex = edit->PointSet->markerIndex;
+    edit->SelectedPointSet->materialIndex.setNum(0);
+
+    edit->PreSelectedPointSet = new SoIndexedMarkerSet;
+    edit->PreSelectedPointSet->setName("PreSelectedPointSet");
+    pointsRoot->addChild(edit->PreSelectedPointSet);
+    edit->PreSelectedPointSet->markerIndex = edit->PointSet->markerIndex;
+    edit->PreSelectedPointSet->materialIndex.setNum(0);
 
     // stuff for the Curves +++++++++++++++++++++++++++++++++++++++
     edit->CurveSwitch = new SoSwitch;
@@ -6147,6 +6183,11 @@ void ViewProviderSketch::createEditInventorNodes(void)
     float transparency;
     SbColor cursorTextColor(0,0,1);
     cursorTextColor.setPackedValue((uint32_t)hGrp->GetUnsigned("CursorTextColor", cursorTextColor.getPackedValue()), transparency);
+
+    // Adding points switch after curve switch because we are using
+    // SoAnnotation to disable the sketch always on top, where the rendering is
+    // done with depth test disabled.
+    edit->EditRoot->addChild(edit->PointSwitch);
 
     // stuff for the edit coordinates ++++++++++++++++++++++++++++++++++++++
     SoSeparator *Coordsep = new SoSeparator();
@@ -6416,6 +6457,7 @@ void ViewProviderSketch::setPreselectPoint(int PreselectPoint)
         pverts[newPtId].getValue(x,y,z);
         pverts[newPtId].setValue(x,y,zHighlight);
         edit->PreselectPoint = PreselectPoint;
+        edit->PreSelectedPointSet->coordIndex.setValue(PreselectPoint+1);
         edit->PointsCoordinate->point.finishEditing();
     }
 }
@@ -6437,6 +6479,7 @@ void ViewProviderSketch::resetPreselectPoint(void)
             pverts[oldPtId].setValue(x,y,zLowPoints);
             edit->PointsCoordinate->point.finishEditing();
         }
+        edit->PreSelectedPointSet->coordIndex.setNum(0);
         edit->PreselectPoint = -1;
     }
 }
@@ -6481,6 +6524,7 @@ void ViewProviderSketch::clearSelectPoints(void)
             pverts[*it].setValue(x,y,zLowPoints);
         }
         edit->PointsCoordinate->point.finishEditing();
+        edit->SelectedPointSet->coordIndex.setNum(0);
         edit->SelPointSet.clear();
     }
 }
