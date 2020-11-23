@@ -25,6 +25,7 @@ import FreeCADGui
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathGui as PathGui
+import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPreferences as PathPreferences
@@ -211,6 +212,9 @@ class TaskPanelPage(object):
         self.parent = None
         self.panelTitle = 'Operation'
 
+        if hasattr(self.form, 'toolController'):
+            PathJob.Notification.updateTC.connect(self.resetToolController)
+
     def setParent(self, parent):
         '''setParent() ... used to transfer parent object link to child class.
         Do not overwrite.'''
@@ -360,6 +364,12 @@ class TaskPanelPage(object):
             combo.blockSignals(True)
             combo.setCurrentIndex(index)
             combo.blockSignals(False)
+
+    def resetToolController(self, job, tc):
+        if self.obj is not None:
+            self.obj.ToolController = tc
+            combo = self.form.toolController
+            self.setupToolController(self.obj, combo)
 
     def setupToolController(self, obj, combo):
         '''setupToolController(obj, combo) ...
@@ -535,7 +545,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                     PathLog.error(translate("PathProject", "Faces are not supported"))
                 return False
         else:
-            if not self.supportsPanels() or not 'Panel' in sel.Object.Name:
+            if not self.supportsPanels() or 'Panel' not in sel.Object.Name:
                 if not ignoreErrors:
                     PathLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
                 return False
@@ -625,6 +635,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         col = qList.width()  # 300
         row = (qList.count() + qList.frameWidth()) * 15
         qList.setFixedSize(col, row)
+
 
 class TaskPanelBaseLocationPage(TaskPanelPage):
     '''Page controller for base locations. Uses PathGetPoint.'''
@@ -926,6 +937,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.startDepthSet.setEnabled(False)
             self.form.finalDepthSet.setEnabled(False)
 
+
 class TaskPanelDiametersPage(TaskPanelPage):
     '''Page controller for diameters.'''
 
@@ -950,7 +962,7 @@ class TaskPanelDiametersPage(TaskPanelPage):
         self.minDiameter.updateProperty()
         self.maxDiameter.updateProperty()
 
-    def setFields(self,  obj):
+    def setFields(self, obj):
         self.minDiameter.updateSpinBox()
         self.maxDiameter.updateSpinBox()
 
@@ -963,6 +975,7 @@ class TaskPanelDiametersPage(TaskPanelPage):
     def pageUpdateData(self, obj, prop):
         if prop in ['MinDiameter', 'MaxDiameter']:
             self.setFields(obj)
+
 
 class TaskPanel(object):
     '''

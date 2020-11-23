@@ -45,29 +45,32 @@ __doc__ = "Class to deal with and represent a tool bit."
 # PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 # PathLog.trackModule()
 
+
 def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 ParameterTypeConstraint = {
         'Angle':        'App::PropertyAngle',
         'Distance':     'App::PropertyLength',
         'DistanceX':    'App::PropertyLength',
         'DistanceY':    'App::PropertyLength',
-        'Radius':       'App::PropertyLength'
-        }
+        'Radius':       'App::PropertyLength'}
 
 
 def _findTool(path, typ, dbg=False):
-    if os.path.exists(path):
+    if os.path.exists(path):  # absolute reference
         if dbg:
             PathLog.debug("Found {} at {}".format(typ, path))
         return path
 
     def searchFor(pname, fname):
+        # PathLog.debug("pname: {} fname: {}".format(pname, fname))
         if dbg:
             PathLog.debug("Looking for {}".format(pname))
         if fname:
             for p in PathPreferences.searchPathsTool(typ):
+                PathLog.track(p)
                 f = os.path.join(p, fname)
                 if dbg:
                     PathLog.debug("  Checking {}".format(f))
@@ -76,6 +79,7 @@ def _findTool(path, typ, dbg=False):
                         PathLog.debug("  Found {} at {}".format(typ, f))
                     return f
         if pname and os.path.sep != pname:
+            PathLog.track(pname)
             ppname, pfname = os.path.split(pname)
             ffname = os.path.join(pfname, fname) if fname else pfname
             return searchFor(ppname, ffname)
@@ -83,19 +87,27 @@ def _findTool(path, typ, dbg=False):
 
     return searchFor(path, '')
 
+
 def findShape(path):
-    '''findShape(path) ... search for path, full and partially in all known shape directories.'''
+    '''
+    findShape(path) ... search for path, full and partially
+    in all known shape directories.
+    '''
     return _findTool(path, 'Shape')
 
+
 def findBit(path):
+    PathLog.track(path)
     if path.endswith('.fctb'):
         return _findTool(path, 'Bit')
     return _findTool("{}.fctb".format(path), 'Bit')
+
 
 def findLibrary(path, dbg=False):
     if path.endswith('.fctl'):
         return _findTool(path, 'Library', dbg)
     return _findTool("{}.fctl".format(path), 'Library', dbg)
+
 
 def _findRelativePath(path, typ):
     relative = path
@@ -108,14 +120,18 @@ def _findRelativePath(path, typ):
                 relative = p
     return relative
 
+
 def findRelativePathShape(path):
     return _findRelativePath(path, 'Shape')
+
 
 def findRelativePathTool(path):
     return _findRelativePath(path, 'Bit')
 
+
 def findRelativePathLibrary(path):
     return _findRelativePath(path, 'Library')
+
 
 def updateConstraint(sketch, name, value):
     for i, constraint in enumerate(sketch.Constraints):
@@ -128,7 +144,9 @@ def updateConstraint(sketch, name, value):
 
             if constr is not None:
                 if not PathGeom.isRoughly(constraint.Value, value.Value):
-                    PathLog.track(name, constraint.Type, 'update', i, "(%.2f -> %.2f)" % (constraint.Value, value.Value))
+                    PathLog.track(name, constraint.Type,
+                                  'update', i, "(%.2f -> %.2f)"
+                                  % (constraint.Value, value.Value))
                     sketch.delConstraint(i)
                     sketch.recompute()
                     n = sketch.addConstraint(constr)
@@ -141,15 +159,21 @@ def updateConstraint(sketch, name, value):
 PropertyGroupBit       = 'Bit'
 PropertyGroupAttribute = 'Attribute'
 
+
 class ToolBit(object):
 
     def __init__(self, obj, shapeFile):
         PathLog.track(obj.Label, shapeFile)
         self.obj = obj
-        obj.addProperty('App::PropertyFile', 'BitShape', 'Base', translate('PathToolBit', 'Shape for bit shape'))
-        obj.addProperty('App::PropertyLink', 'BitBody',  'Base', translate('PathToolBit', 'The parametrized body representing the tool bit'))
-        obj.addProperty('App::PropertyFile', 'File',     'Base', translate('PathToolBit', 'The file of the tool'))
-        obj.addProperty('App::PropertyString', 'ShapeName', 'Base', translate('PathToolBit', 'The name of the shape file'))
+        obj.addProperty('App::PropertyFile', 'BitShape', 'Base',
+                        translate('PathToolBit', 'Shape for bit shape'))
+        obj.addProperty('App::PropertyLink', 'BitBody', 'Base',
+                        translate('PathToolBit',
+                        'The parametrized body representing the tool bit'))
+        obj.addProperty('App::PropertyFile', 'File', 'Base',
+                        translate('PathToolBit', 'The file of the tool'))
+        obj.addProperty('App::PropertyString', 'ShapeName', 'Base',
+                        translate('PathToolBit', 'The name of the shape file'))
         if shapeFile is None:
             obj.BitShape = 'endmill.fcstd'
             self._setupBitShape(obj)
@@ -184,14 +208,14 @@ class ToolBit(object):
         for prop in self.propertyNamesBit(obj):
             obj.setEditorMode(prop, 1)
         # I currently don't see why these need to be read-only
-        #for prop in self.propertyNamesAttribute(obj):
+        # for prop in self.propertyNamesAttribute(obj):
         #    obj.setEditorMode(prop, 1)
 
     def onChanged(self, obj, prop):
         PathLog.track(obj.Label, prop)
-        if prop == 'BitShape' and not 'Restore' in obj.State:
+        if prop == 'BitShape' and 'Restore' not in obj.State:
             self._setupBitShape(obj)
-        #elif obj.getGroupOfProperty(prop) == PropertyGroupBit:
+        # elif obj.getGroupOfProperty(prop) == PropertyGroupBit:
         #    self._updateBitShape(obj, [prop])
 
     def onDelete(self, obj, arg2=None):
@@ -200,7 +224,7 @@ class ToolBit(object):
         obj.Document.removeObject(obj.Name)
 
     def _updateBitShape(self, obj, properties=None):
-        if not obj.BitBody is None:
+        if obj.BitBody is not None:
             if not properties:
                 properties = self.propertyNamesBit(obj)
             for prop in properties:
@@ -234,7 +258,6 @@ class ToolBit(object):
         return (doc, docOpened)
 
     def _removeBitBody(self, obj):
-        print('in _removebitbody')
         if obj.BitBody:
             obj.BitBody.removeObjectsFromDocument()
             obj.Document.removeObject(obj.BitBody.Name)
@@ -286,7 +309,7 @@ class ToolBit(object):
                     prop = parts[0]
                     desc = ''
                     if len(parts) > 1:
-                        desc  = parts[1]
+                        desc = parts[1]
                     obj.addProperty(typ, prop, PropertyGroupBit, desc)
                     obj.setEditorMode(prop, 1)
                     value = constraint.Value
@@ -307,7 +330,7 @@ class ToolBit(object):
         return None
 
     def saveToFile(self, obj, path, setFile=True):
-        print('were saving now')
+        PathLog.track(path)
         try:
             with open(path, 'w') as fp:
                 json.dump(self.templateAttrs(obj), fp, indent='  ')
@@ -315,12 +338,13 @@ class ToolBit(object):
                 obj.File = path
             return True
         except (OSError, IOError) as e:
-            PathLog.error("Could not save tool %s to %s (%s)" % (obj.Label, path, e))
+            PathLog.error("Could not save tool {} to {} ({})".format(
+                          obj.Label, path, e))
             raise
 
     def templateAttrs(self, obj):
         attrs = {}
-        attrs['version'] = 2 # Path.Tool is version 1
+        attrs['version'] = 2  # Path.Tool is version 1
         attrs['name'] = obj.Label
         if PathPreferences.toolsStoreAbsolutePaths():
             attrs['shape'] = obj.BitShape
@@ -332,7 +356,6 @@ class ToolBit(object):
         attrs['parameter'] = params
         params = {}
         for name in self.propertyNamesAttribute(obj):
-            #print(f"shapeattr {name}")
             if name == "UserAttributes":
                 for key, value in obj.UserAttributes.items():
                     params[key] = value
@@ -341,26 +364,43 @@ class ToolBit(object):
         attrs['attribute'] = params
         return attrs
 
+
 def Declaration(path):
+    PathLog.track(path)
     with open(path, 'r') as fp:
         return json.load(fp)
+
 
 class AttributePrototype(PathSetupSheetOpPrototype.OpPrototype):
 
     def __init__(self):
         PathSetupSheetOpPrototype.OpPrototype.__init__(self, 'ToolBitAttribute')
-        self.addProperty('App::PropertyEnumeration', 'Material', PropertyGroupAttribute, translate('PathToolBit', 'Tool bit material'))
-        self.Material = ['Carbide', 'CastAlloy', 'Ceramics', 'Diamond', 'HighCarbonToolSteel', 'HighSpeedSteel', 'Sialon']
-        self.addProperty('App::PropertyDistance', 'LengthOffset', PropertyGroupAttribute, translate('PathToolBit', 'Length offset in Z direction'))
-        self.addProperty('App::PropertyInteger',  'Flutes', PropertyGroupAttribute, translate('PathToolBit', 'The number of flutes'))
-        self.addProperty('App::PropertyDistance', 'ChipLoad', PropertyGroupAttribute, translate('PathToolBit', 'Chipload as per manufacturer'))
-        self.addProperty('App::PropertyMap', 'UserAttributes', PropertyGroupAttribute, translate('PathTooolBit', 'User Defined Values'))
+        self.addProperty('App::PropertyEnumeration', 'Material',
+                PropertyGroupAttribute,
+                translate('PathToolBit', 'Tool bit material'))
+        self.Material = ['Carbide', 'CastAlloy', 'Ceramics', 'Diamond',
+                'HighCarbonToolSteel', 'HighSpeedSteel', 'Sialon']
+        self.addProperty('App::PropertyDistance', 'LengthOffset',
+                PropertyGroupAttribute, translate('PathToolBit',
+                'Length offset in Z direction'))
+        self.addProperty('App::PropertyInteger', 'Flutes',
+                PropertyGroupAttribute, translate('PathToolBit',
+                'The number of flutes'))
+        self.addProperty('App::PropertyDistance', 'ChipLoad',
+                PropertyGroupAttribute, translate('PathToolBit',
+                'Chipload as per manufacturer'))
+        self.addProperty('App::PropertyMap', 'UserAttributes',
+                PropertyGroupAttribute, translate('PathToolBit',
+                'User Defined Values'))
+        self.addProperty('App::PropertyBool', 'SpindlePower',
+                PropertyGroupAttribute, translate('PathToolBit',
+                'Whether Spindle Power should be allowed'))
 
 
 class ToolBitFactory(object):
 
     def CreateFromAttrs(self, attrs, name='ToolBit'):
-        # pylint: disable=protected-access
+        PathLog.debug(attrs)
         obj = Factory.Create(name, attrs['shape'])
         obj.Label = attrs['name']
         params = attrs['parameter']
@@ -372,23 +412,17 @@ class ToolBitFactory(object):
         proto = AttributePrototype()
         uservals = {}
         for pname in params:
-            #print(f"pname: {pname}")
             try:
                 prop = proto.getProperty(pname)
-                val =  prop.valueFromString(params[pname])
                 prop.setupProperty(obj, pname, PropertyGroupAttribute, prop.valueFromString(params[pname]))
-            except:
-                # prop = obj.addProperty('App::PropertyString', pname, "Attribute", translate('PathTooolBit', 'User Defined Value'))
-                # setattr(obj, pname, params[pname])
+            except Exception:
                 prop = proto.getProperty("UserAttributes")
                 uservals.update({pname: params[pname]})
-                #prop.setupProperty(obj, pname, "UserAttributes", prop.valueFromString(params[pname]))
 
         if len(uservals.items()) > 0:
-            prop.setupProperty(obj, "UserAttributes", PropertyGroupAttribute, uservals)
+            prop.setupProperty(obj, "UserAttributes",
+                               PropertyGroupAttribute, uservals)
 
-            # print("prop[%s] = %s (%s)" % (pname, params[pname], type(val)))
-            #prop.setupProperty(obj, pname, PropertyGroupAttribute, prop.valueFromString(params[pname]))
         return obj
 
     def CreateFrom(self, path, name='ToolBit'):
@@ -405,5 +439,6 @@ class ToolBitFactory(object):
         obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', name)
         obj.Proxy = ToolBit(obj, shapeFile)
         return obj
+
 
 Factory = ToolBitFactory()
