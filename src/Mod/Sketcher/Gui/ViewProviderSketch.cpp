@@ -272,6 +272,7 @@ struct EditData {
     SoText2       *textX;
     SoTranslation *textPos;
 
+    std::unordered_map<SoSeparator *, int> constraNodeMap;
     SmSwitchboard *constrGroup;
     SoGroup       *infoGroup;
     SoPickStyle   *pickStyleAxes;
@@ -1744,13 +1745,23 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                                                            const SbVec2s &cursorPos)
 {
     std::set<int> constrIndices;
+    SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
+    if (!pCam)
+        return constrIndices;
+
     SoPath *path = Point->getPath();
     SoNode *tail = path->getTail();
-    SoNode *tailFather = path->getNode(path->getLength()-2);
 
-    for (int i=0; i < edit->constrGroup->getNumChildren(); ++i) {
-        if (edit->constrGroup->getChild(i) == tailFather) {
-            SoSeparator *sep = static_cast<SoSeparator *>(tailFather);
+    for (int i=1; i<path->getLength(); ++i) {
+        SoNode * tailFather = path->getNodeFromTail(i);
+        if (tailFather == edit->constrGroup || tailFather == edit->EditRoot)
+            break;
+        if (!tailFather->isOfType(SoSeparator::getClassTypeId()))
+            continue;
+        SoSeparator *sep = static_cast<SoSeparator *>(tailFather);
+        auto it = edit->constraNodeMap.find(sep);
+        if (it != edit->constraNodeMap.end()) {
+            int i = it->second;
             if (sep->getNumChildren() > CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID) {
                 SoInfo *constrIds = NULL;
                 if (tail == sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON)) {
@@ -1766,7 +1777,7 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
 
                 if (constrIds) {
                     QString constrIdsStr = QString::fromLatin1(constrIds->string.getValue().getString());
-                    if (edit->combinedConstrBoxes.count(constrIdsStr) && dynamic_cast<SoImage *>(tail)) {
+                    if (edit->combinedConstrBoxes.count(constrIdsStr) && tail->isOfType(SoImage::getClassTypeId())) {
                         // If it's a combined constraint icon
 
                         // Screen dimensions of the icon
@@ -1790,32 +1801,27 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                         SbVec3f absPos;
                         SbVec3f trans;
 
-                        absPos = static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos.getValue();
+                        absPos = static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos.getValue();
 
-                        trans = static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation.getValue();
+                        trans = static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation.getValue();
 
                         if (tail != sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON)) {
 
-                            absPos += static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos.getValue();
+                            absPos += static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos.getValue();
 
-                            trans += static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation.getValue();
+                            trans += static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation.getValue();
                         }
 
-                        double x,y;
+                        absPos += trans * getScaleFactor();
+                        Base::Vector3d pos(absPos[0], absPos[1], absPos[2]);
 
-                        SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
+                        // pos is in sketch plane coordinate. Now transform it to global (world) coordinate space
+                        getEditingPlacement().multVec(pos, pos);
 
-                        if (!pCam)
-                            continue;
-
-                        SbViewVolume vol = pCam->getViewVolume();
-
-                        getCoordsOnSketchPlane(x,y,absPos+trans*getScaleFactor(),vol.getProjectionDirection());
-
-                        Gui::ViewVolumeProjection proj(viewer->getSoRenderManager()->getCamera()->getViewVolume());
-
+                        // Then project it to normalized screen coordinate space, which is
                         // dimensionless [0 1] (or 1.5 see View3DInventorViewer.cpp )
-                        Base::Vector3d screencoords = proj(Base::Vector3d(x,y,0));
+                        Gui::ViewVolumeProjection proj(pCam->getViewVolume());
+                        Base::Vector3d screencoords = proj(pos);
 
                         int width = viewer->getGLWidget()->width(),
                             height = viewer->getGLWidget()->height();
@@ -1844,8 +1850,8 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                             iconY = cursorPos[1] - iconCoords[1] + iconSize[1]/2;
                         iconY = iconSize[1] - iconY;
 
-                        for (ConstrIconBBVec::iterator b = edit->combinedConstrBoxes[constrIdsStr].begin();
-                            b != edit->combinedConstrBoxes[constrIdsStr].end(); ++b) {
+                        auto bboxes = edit->combinedConstrBoxes[constrIdsStr];
+                        for (ConstrIconBBVec::iterator b = bboxes.begin(); b != bboxes.end(); ++b) {
 
 #ifdef FC_DEBUG
                             // Useful code to debug coordinates and bounding boxes that does not need to be compiled in for
@@ -1869,9 +1875,8 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                     }
                 }
             }
-            else {
+            if (constrIndices.empty()) {
                 // other constraint icons - eg radius...
-                constrIndices.clear();
                 constrIndices.insert(i);
             }
             break;
@@ -1898,7 +1903,6 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
         //Base::Console().Log("Point pick\n");
         SoPath *path = Point->getPath();
         SoNode *tail = path->getTail();
-        SoNode *tailFather2 = path->getNode(path->getLength()-3);
 
         // checking for a hit in the points
         if (tail == edit->PointSet) {
@@ -1928,8 +1932,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
                 }
             } else {
                 // checking if a constraint is hit
-                if (tailFather2 == edit->constrGroup)
-                    constrIndices = detectPreselectionConstr(Point, viewer, cursorPos);
+                constrIndices = detectPreselectionConstr(Point, viewer, cursorPos);
             }
         }
 
@@ -2046,6 +2049,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
                    (edit->PreselectPoint != -1 || edit->PreselectCurve != -1 || edit->PreselectCross != -1
                     || edit->PreselectConstraintSet.empty() != true || edit->blockedPreselection)) {
             // we have just left a preselection
+            Gui::Selection().rmvPreselect();
             resetPreselectPoint();
             edit->PreselectCurve = -1;
             edit->PreselectCross = -1;
@@ -2061,6 +2065,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
 // if(Point)
     } else if (edit->PreselectCurve != -1 || edit->PreselectPoint != -1 ||
                edit->PreselectConstraintSet.empty() != true || edit->PreselectCross != -1 || edit->blockedPreselection) {
+        Gui::Selection().rmvPreselect();
         resetPreselectPoint();
         edit->PreselectCurve = -1;
         edit->PreselectCross = -1;
@@ -5437,6 +5442,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
     const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
     // clean up
     Gui::coinRemoveAllChildren(edit->constrGroup);
+    edit->constraNodeMap.clear();
     edit->vConstrType.clear();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
@@ -5492,6 +5498,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 anno->addChild(text);
                 // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(text);
+                edit->constraNodeMap[anno] = edit->constrGroup->getNumChildren();
                 edit->constrGroup->addChild(anno);
                 edit->vConstrType.push_back((*it)->Type);
                 // nodes not needed
@@ -5610,6 +5617,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 edit->vConstrType.push_back((*it)->Type);
         }
 
+        edit->constraNodeMap[sep] = edit->constrGroup->getNumChildren();
         edit->constrGroup->addChild(sep);
         // decrement ref counter again
         sep->unref();
