@@ -45,6 +45,7 @@
 #include "FeatureSketchBased.h"
 #include "FeatureTransformed.h"
 #include "FeatureMultiTransform.h"
+#include "FeatureWrap.h"
 #include "DatumPoint.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
@@ -205,10 +206,14 @@ bool Body::isSolidFeature(const App::DocumentObject* f)
     if (f == NULL)
         return false;
 
-    if (f->isDerivedFrom(PartDesign::Extrusion::getClassTypeId()))
+    auto type = f->getTypeId();
+    if (type.isDerivedFrom(PartDesign::Extrusion::getClassTypeId()))
         return static_cast<const PartDesign::Extrusion*>(f)->NewSolid.getValue();
 
-    if (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())
+    if (type.isDerivedFrom(PartDesign::FeatureWrap::getClassTypeId()))
+        return static_cast<const PartDesign::FeatureWrap*>(f)->isSolidFeature();
+
+    if (type.isDerivedFrom(PartDesign::Feature::getClassTypeId())
             && !PartDesign::Feature::isDatum(f)) {
         // Transformed Features inside a MultiTransform are not solid features
         return !isMemberOfMultiTransform(f);

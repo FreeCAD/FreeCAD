@@ -46,17 +46,32 @@ FeatureWrap::FeatureWrap()
             "Wrapped feature");
     WrapFeature.setScope(App::LinkScope::Global);
 
-    ADD_PROPERTY_TYPE(Type,((long)0),"Part Design",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Type,((long)3),"Part Design",(App::PropertyType)(App::Prop_None),
             "Additive: fuse the wrapped feature with the base feature.\n"
             "Subtractive: cut the wrapped feature from the base feature.\n"
-            "Standalone: standalone feature, which may or may not be a solid.\n");
-    static const char *TypeEnums[] = {"Additive", "Subtractive", "Standalone"};
+            "Standalone: standalone feature, which may or may not be a solid.\n"
+            "AutoDetect: auto detect feature type based on resulting shape.\n");
+    static const char *TypeEnums[] = {"Additive", "Subtractive", "Standalone", "Auto Detect", nullptr};
     Type.setEnums(TypeEnums);
 
     ADD_PROPERTY_TYPE(Frozen,(false),"Part Design",(App::PropertyType)(App::Prop_None),
             "Whether to update shape on change of wrapped feature");
 
     AddSubShape.setStatus(App::Property::Transient, true);
+}
+
+void FeatureWrap::setWrappedLinkScope()
+{
+    auto wrapped = WrapFeature.getValue();
+    if (!wrapped)
+        return;
+    std::vector<App::Property*> props;
+    wrapped->getPropertyList(props);
+    for (auto prop : props) {
+        auto propLink = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+        if (propLink && propLink->getScope() == App::LinkScope::Local)
+            propLink->setScope(App::LinkScope::Global);
+    }
 }
 
 void FeatureWrap::onChanged(const App::Property * prop)
@@ -70,8 +85,9 @@ void FeatureWrap::onChanged(const App::Property * prop)
             this->addSubType = Additive;
         }
     } else if (prop == &Frozen || prop == &WrapFeature) {
-        auto wrap = Base::freecad_dynamic_cast<Part::Feature>(WrapFeature.getValue());
-        AddSubShape.setStatus(App::Property::Transient, wrap && !Frozen.getValue());
+        if (!getDocument()->testStatus(App::Document::Restoring) && prop == &WrapFeature)
+            setWrappedLinkScope();
+        AddSubShape.setStatus(App::Property::Transient, WrapFeature.getValue() && !Frozen.getValue());
     }
 
     FeatureAddSub::onChanged(prop);
@@ -83,12 +99,6 @@ App::DocumentObjectExecReturn * FeatureWrap::execute(void)
     if (!feat || !feat->getNameInDocument())
         return new App::DocumentObjectExecReturn("No wrap feature");
 
-    TopoShape base;
-    try {
-        base = getBaseShape();
-    } catch (const Base::Exception&) {
-    }
-
     try {
         TopoShape shape;
 
@@ -99,6 +109,16 @@ App::DocumentObjectExecReturn * FeatureWrap::execute(void)
 
         if (shape.isNull())
             return new App::DocumentObjectExecReturn("No shape from wrap feature");
+
+        if (Type.getValue() == 3) {
+            Type.setValue((long)2);
+            NewSolid.setValue(!getSolid(shape).isNull());
+            if (!NewSolid.getValue())
+                BaseFeature.setValue(nullptr);
+        }
+
+        TopoShape base;
+        base = getBaseShape(true);
 
         Part::Feature* feat = getBaseObject(/* silent = */ true);
         if (feat)
@@ -113,8 +133,15 @@ App::DocumentObjectExecReturn * FeatureWrap::execute(void)
         if (!Frozen.getValue())
             AddSubShape.setValue(shape);
 
-        if(base.isNull()) {
-            Shape.setValue(getSolid(shape));
+        if(base.isNull() || Type.getValue() > 1) {
+            if (Type.getValue() < 2)
+                return new App::DocumentObjectExecReturn("No base shape");
+            if (Type.getValue() != 2) {
+                shape = getSolid(shape);
+                if (shape.isNull())
+                    return new App::DocumentObjectExecReturn("No solid shape");
+            }
+            Shape.setValue(shape);
             return App::DocumentObject::StdReturn;
         }
 
@@ -149,7 +176,10 @@ App::DocumentObjectExecReturn * FeatureWrap::execute(void)
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
             boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
+            boolOp = getSolid(boolOp);
+            if (boolOp.isNull())
+                return new App::DocumentObjectExecReturn("Resulting shape is null");
+            Shape.setValue(boolOp);
         }
 
         return App::DocumentObject::StdReturn;
@@ -171,6 +201,7 @@ void FeatureWrap::onDocumentRestored()
         if (!shape.isNull())
             AddSubShape.setValue(shape);
     }
+    setWrappedLinkScope();
     FeatureAddSub::onDocumentRestored();
 }
 
@@ -191,6 +222,11 @@ bool FeatureWrap::isElementGenerated(const TopoShape &shape, const char *name) c
         });
 
     return res;
+}
+
+bool FeatureWrap::isSolidFeature() const
+{
+    return NewSolid.getValue() || (BaseFeature.getValue() && Type.getValue() <= 1);
 }
 
 namespace App {

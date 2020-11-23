@@ -711,28 +711,7 @@ public:
                 resetEdit();
             });
 
-        Gui::Control().signalShowDialog.connect(
-            [this](QWidget *parent, std::vector<QWidget*> &contents) {
-                auto doc = Gui::Application::Instance->editDocument();
-                if (!doc)
-                    return;
-                Gui::ViewProviderDocumentObject *parentVp = nullptr;
-                std::string subname;
-                doc->getInEdit(&parentVp, &subname);
-                if (!parentVp)
-                    return;
-                App::SubObjectT sobjT(parentVp->getObject(), subname.c_str());
-                auto wrap = Base::freecad_dynamic_cast<PartDesign::FeatureWrap>(sobjT.getSubObject());
-                if (!wrap)
-                    wrap = Base::freecad_dynamic_cast<PartDesign::FeatureWrap>(
-                            sobjT.getParent().getSubObject());
-                auto wrapVp = Base::freecad_dynamic_cast<ViewProviderWrap>(
-                        Gui::Application::Instance->getViewProvider(wrap));
-                if (wrapVp) {
-                    taskWidget = new TaskWrapParameters(wrapVp, parent);
-                    contents.insert(contents.begin(), taskWidget);
-                }
-            });
+        Gui::Control().signalShowDialog.connect(boost::bind(&Monitor::slotShowDialog, this, bp::_1, bp::_2));
 
         Gui::Control().signalRemoveDialog.connect(
             [this](QWidget *, std::vector<QWidget*> &contents) {
@@ -747,6 +726,33 @@ public:
                 }
             });
 
+    }
+
+    void slotShowDialog(QWidget *parent, std::vector<QWidget*> &contents) {
+        auto doc = Gui::Application::Instance->editDocument();
+        if (!doc)
+            return;
+        Gui::ViewProviderDocumentObject *parentVp = nullptr;
+        std::string subname;
+        doc->getInEdit(&parentVp, &subname);
+        if (!parentVp)
+            return;
+        App::SubObjectT sobjT(parentVp->getObject(), subname.c_str());
+        auto editObj = sobjT.getSubObject();
+        if (!editObj)
+            return;
+        for (auto obj : editObj->getInList()) {
+            if (obj && !obj->isDerivedFrom(PartDesign::FeatureWrap::getClassTypeId()))
+                continue;
+            auto wrap = static_cast<PartDesign::FeatureWrap*>(obj);
+            auto wrapVp = Base::freecad_dynamic_cast<ViewProviderWrap>(
+                    Gui::Application::Instance->getViewProvider(wrap));
+            if (wrapVp) {
+                taskWidget = new TaskWrapParameters(wrapVp, parent);
+                contents.insert(contents.begin(), taskWidget);
+            }
+            break;
+        }
     }
 
     void resetEdit()
@@ -774,26 +780,44 @@ public:
     {
         if (Part::PartParams::EnableWrapFeature() == 0)
             return;
-        if (!activeBody || !prop.isDerivedFrom(App::PropertyLinkBase::getClassTypeId()))
+        if (!activeBody|| activeBody->getDocument() != object.getDocument()
+                       || !prop.isDerivedFrom(App::PropertyLinkBase::getClassTypeId()))
             return;
-        if (!object.isDerivedFrom(Part::Feature::getClassTypeId())
-                || object.isDerivedFrom(PartDesign::Feature::getClassTypeId())
-                || object.isDerivedFrom(PartDesign::Body::getClassTypeId())
-                || object.isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
-                || object.isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())
+        auto type = object.getTypeId();
+        if (!type.isDerivedFrom(Part::Feature::getClassTypeId())
+                || type.isDerivedFrom(PartDesign::Feature::getClassTypeId())
+                || type.isDerivedFrom(PartDesign::Body::getClassTypeId())
+                || type.isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
+                || type.isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())
                 || object.hasExtension(App::LinkBaseExtension::getExtensionClassTypeId()))
             return;
-        auto link = static_cast<const App::PropertyLinkBase*>(&prop);
         if (App::GeoFeatureGroupExtension::getGroupOfObject(&object))
             return;
 
-        std::vector<App::DocumentObject*> links;
+        // The current criteria of triggering wrap feature is quite
+        // restrictive. The feature must contain only links that are inside the
+        // active body.
+        auto link = static_cast<const App::PropertyLinkBase*>(&prop);
+        bool found = false;
         for (auto obj : link->linkedObjects()) {
-            if (PartDesign::Body::findBodyOf(obj) == activeBody)
-                links.push_back(obj);
+            if (PartDesign::Body::findBodyOf(obj) != activeBody)
+                return;
+            else
+                found = true;
         }
-        if (links.empty())
+        if (!found)
             return;
+
+        for (auto obj : object.getOutList()) {
+            if (PartDesign::Body::findBodyOf(obj) != activeBody)
+                return;
+        }
+
+        // Check if the object has been wrapped before
+        for (auto parent : object.getInList()) {
+            if (parent->isDerivedFrom(PartDesign::FeatureWrap::getClassTypeId()))
+                return;
+        }
 
         if (Part::PartParams::EnableWrapFeature() > 1) {
             QMessageBox box(Gui::getMainWindow());

@@ -47,6 +47,9 @@ public:
     virtual App::DocumentObjectExecReturn *execute(void) override;
     virtual void onDocumentRestored() override;
     virtual bool isElementGenerated(const TopoShape &shape, const char *name) const override;
+
+    bool isSolidFeature() const;
+    void setWrappedLinkScope();
 };
 
 typedef App::FeaturePythonT<FeatureWrap> FeatureWrapPython;
