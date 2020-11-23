@@ -37,8 +37,11 @@
 #include <boost/bind/bind.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost_bind_bind.hpp>
 
 FC_LOG_LEVEL_INIT("App",true);
+
+namespace bp = boost::placeholders;
 
 using namespace App;
 using namespace Base;
@@ -203,10 +206,10 @@ void PropertyExpressionEngine::hasSetValue()
                         if(propDeps.empty()) {
                             if(propName.size()) 
                                 pimpl->conns.push_back(obj->signalChanged.connect(boost::bind(
-                                            &PropertyExpressionEngine::slotChangedProperty,this,boost::placeholders::_1,boost::placeholders::_2)));
+                                            &PropertyExpressionEngine::slotChangedProperty,this,bp::_1,bp::_2)));
                             else
                                 pimpl->conns.push_back(obj->signalChanged.connect(boost::bind(
-                                            &PropertyExpressionEngine::slotChangedObject,this,boost::placeholders::_1,boost::placeholders::_2)));
+                                            &PropertyExpressionEngine::slotChangedObject,this,bp::_1,bp::_2)));
                         }
                         propDeps.push_back(e.first);
                     }
