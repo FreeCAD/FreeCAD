@@ -51,6 +51,7 @@ public:
     bool toCString(const Py::Object&, std::string&);
     QObject* toQObject(const Py::Object&);
     QGraphicsItem* toQGraphicsItem(PyObject* ptr);
+    Py::Object fromQObject(QObject*, const char* className=0);
     Py::Object fromQWidget(QWidget*, const char* className=0);
     const char* getWrapperName(QObject*) const;
     /*!

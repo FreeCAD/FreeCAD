@@ -449,6 +449,44 @@ QIcon *PythonWrapper::toQIcon(PyObject *pyobj)
     return 0;
 }
 
+Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    // Access shiboken/PySide via C++
+    //
+    PyTypeObject * type = getPyTypeObjectForTypeName<QObject>();
+    if (type) {
+        SbkObjectType* sbk_type = reinterpret_cast<SbkObjectType*>(type);
+        std::string typeName;
+        if (className)
+            typeName = className;
+        else
+            typeName = object->metaObject()->className();
+        PyObject* pyobj = Shiboken::Object::newObject(sbk_type, object, false, false, typeName.c_str());
+        return Py::asObject(pyobj);
+    }
+    throw Py::RuntimeError("Failed to wrap object");
+
+#elif QT_VERSION >= 0x050000
+    // Access shiboken2/PySide2 via Python
+    //
+    return qt_wrapInstance<QObject*>(object, className, "shiboken2", "PySide2.QtCore", "wrapInstance");
+#else
+    // Access shiboken/PySide via Python
+    //
+    return qt_wrapInstance<QObject*>(object, className, "shiboken", "PySide.QtCore", "wrapInstance");
+#endif
+
+#if 0 // Unwrapping using sip/PyQt
+    Q_UNUSED(className);
+#if QT_VERSION >= 0x050000
+    return qt_wrapInstance<QObject*>(object, "QObject", "sip", "PyQt5.QtCore", "wrapinstance");
+#else
+    return qt_wrapInstance<QObject*>(object, "QObject", "sip", "PyQt4.Qt", "wrapinstance");
+#endif
+#endif
+}
+
 Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
