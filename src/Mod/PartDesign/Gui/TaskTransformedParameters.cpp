@@ -209,7 +209,7 @@ void TaskTransformedParameters::setupUI() {
     App::GetApplication().getActiveTransaction(&transactionID);
 
     connMessage = TransformedView->signalDiagnosis.connect(
-            boost::bind(&TaskTransformedParameters::slotDiagnosis, this,_1));
+            boost::bind(&TaskTransformedParameters::slotDiagnosis, this,boost::placeholders::_1));
     labelMessage = new QLabel(this);
     labelMessage->hide();
     labelMessage->setWordWrap(true);

@@ -36,7 +36,7 @@
 #define STX_NO_STD_ANY
 #endif
 
-#if defined(__has_include) && !defined(STX_NO_STD_ANY)
+#if defined(__has_include) && !defined(STX_NO_STD_ANY) && !defined(__APPLE_CC__)
 #    if __has_include(<any>) && (__cplusplus > 201402)
 #       include <any>
         namespace STX_NAMESPACE_NAME {
