@@ -30,6 +30,8 @@
 # include <gp_Pln.hxx>
 #endif
 
+#include <boost_bind_bind.hpp>
+
 #include <Base/Console.h>
 #include <App/Part.h>
 #include <App/Origin.h>
@@ -62,6 +64,8 @@
 #include "WorkflowManager.h"
 #include "ViewProviderBody.h"
 #include "TaskWrapParameters.h"
+
+namespace bp = boost::placeholders;
 
 FC_LOG_LEVEL_INIT("PartDesignGui",true,true)
 
@@ -641,11 +645,11 @@ public:
                     activeBody = Base::freecad_dynamic_cast<PartDesign::Body>(vp.getObject());
                     if (activeBody) {
                         connChangedObject = activeBody->getDocument()->signalChangedObject.connect(
-                                boost::bind(&Monitor::slotChangedObject, this, _1, _2));
+                                boost::bind(&Monitor::slotChangedObject, this, bp::_1, bp::_2));
                         connDeletedObject = activeBody->getDocument()->signalDeletedObject.connect(
-                                boost::bind(&Monitor::slotDeletedObject, this, _1));
+                                boost::bind(&Monitor::slotDeletedObject, this, bp::_1));
                         connDeleteDocument = App::GetApplication().signalDeleteDocument.connect(
-                                boost::bind(&Monitor::slotDeleteDocument, this, _1));
+                                boost::bind(&Monitor::slotDeleteDocument, this, bp::_1));
                         if (parent)
                             activeBodyT = App::SubObjectT(parent, subname);
                         else
@@ -664,35 +668,42 @@ public:
                 if (!view)
                     return;
 
-                for(auto obj : vp.getObject()->getInList()) {
-                    if (obj->isDerivedFrom(PartDesign::FeatureWrap::getClassTypeId())) {
-                        auto wrap = static_cast<PartDesign::FeatureWrap*>(obj);
-                        Gui::ViewProviderDocumentObject *parentVp = nullptr;
-                        std::string subname;
-                        doc->getInEdit(&parentVp, &subname);
-                        App::DocumentObject *parent = nullptr;
-                        if (parentVp)
-                            parent = parentVp->getObject();
-                        else if (activeBody && activeBody == PartDesign::Body::findBodyOf(wrap)) {
-                            parent = activeBodyT.getObject();
-                            subname = activeBodyT.getSubName() + wrap->getNameInDocument() + ".";
-                        } else
-                            return;
-                        editObj = App::SubObjectT(parent, subname.c_str());
-                        if (editObj.getSubObject() == wrap) {
-                            editObj.setSubName(editObj.getSubName()
-                                    + vp.getObject()->getNameInDocument() + ".");
+                Gui::ViewProviderDocumentObject *parentVp = nullptr;
+                std::string subname;
+                doc->getInEdit(&parentVp, &subname);
+                if (parentVp && vp.getObject()->isDerivedFrom(
+                            PartDesign::FeaturePrimitive::getClassTypeId())) {
+                    editObj = App::SubObjectT(parentVp->getObject(), subname.c_str());
+                } else {
+                    for(auto obj : vp.getObject()->getInList()) {
+                        if (obj->isDerivedFrom(PartDesign::FeatureWrap::getClassTypeId())) {
+                            auto wrap = static_cast<PartDesign::FeatureWrap*>(obj);
+                            App::DocumentObject *parent = nullptr;
+                            if (parentVp)
+                                parent = parentVp->getObject();
+                            else if (activeBody && activeBody == PartDesign::Body::findBodyOf(wrap)) {
+                                parent = activeBodyT.getObject();
+                                subname = activeBodyT.getSubName() + wrap->getNameInDocument() + ".";
+                            } else
+                                return;
+                            editObj = App::SubObjectT(parent, subname.c_str());
+                            if (editObj.getSubObject() == wrap) {
+                                editObj.setSubName(editObj.getSubName()
+                                        + vp.getObject()->getNameInDocument() + ".");
+                            }
+                            break;
                         }
-                        editView = view;
-                        view->getViewer()->checkGroupOnTop(
-                                Gui::SelectionChanges(
-                                    Gui::SelectionChanges::AddSelection,
-                                    editObj.getDocumentName().c_str(),
-                                    editObj.getObjectName().c_str(),
-                                    editObj.getSubName().c_str()), true);
-                        break;
                     }
+                    if (!editObj.getObject())
+                        return;
                 }
+                editView = view;
+                view->getViewer()->checkGroupOnTop(
+                        Gui::SelectionChanges(
+                            Gui::SelectionChanges::AddSelection,
+                            editObj.getDocumentName().c_str(),
+                            editObj.getObjectName().c_str(),
+                            editObj.getSubName().c_str()), true);
             });
 
         Gui::Application::Instance->signalResetEdit.connect(
@@ -755,7 +766,7 @@ public:
                                     editObj.getSubName().c_str()), true);
                 });
         }
-
+        editObj = App::SubObjectT();
         editView = nullptr;
     }
 

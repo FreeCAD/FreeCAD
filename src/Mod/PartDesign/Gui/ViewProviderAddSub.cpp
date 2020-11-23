@@ -49,6 +49,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/SoFCSelectionAction.h>
+#include <Gui/SoFCUnifiedSelection.h>
 #include <Base/Console.h>
 
 
@@ -68,6 +69,7 @@ ViewProviderAddSub::ViewProviderAddSub()
     previewNorm = new SoNormal();
     previewNorm->ref();
     whichChild = -1;
+    defaultChild = 0;
 }
 
 ViewProviderAddSub::~ViewProviderAddSub()
@@ -288,7 +290,12 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
             return;
         displayMode = getActiveDisplayMode();
         whichChild = pcModeSwitch->whichChild.getValue();
+        if (pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId()))
+            defaultChild = static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->defaultChild.getValue();
         setDisplayMaskMode("Shape preview");
+        if (pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId()))
+            static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->defaultChild = 
+                pcModeSwitch->whichChild.getValue();
     }
 
     if (!onoff) {
@@ -296,6 +303,8 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
             return;
         setDisplayMaskMode(displayMode.c_str());
         pcModeSwitch->whichChild.setValue(whichChild);
+        if (pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId()))
+            static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->defaultChild.setValue(defaultChild);
     }
 
     App::DocumentObject* obj = static_cast<PartDesign::Feature*>(getObject())->BaseFeature.getValue();

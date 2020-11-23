@@ -53,6 +53,7 @@ protected:
 
 private:
     int                         whichChild;
+    int                         defaultChild;
     std::string                 displayMode;
 };
 

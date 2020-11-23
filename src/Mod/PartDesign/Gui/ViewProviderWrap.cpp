@@ -64,8 +64,11 @@ void ViewProviderWrap::attach(App::DocumentObject* obj) {
 void ViewProviderWrap::updateData(const App::Property* p) {
     auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureWrap>(getObject());
     if (feat) {
-        if (p == &feat->Type || p == &feat->Frozen || p == &feat->WrapFeature)
+        if (p == &feat->Type || p == &feat->Frozen || p == &feat->WrapFeature) {
+            if (IconColor.getValue().getPackedValue() && !feat->isSolidFeature())
+                IconColor.setValue(0);
             signalChangeIcon();
+        }
     }
     inherited::updateData(p);
 }
