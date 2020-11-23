@@ -1,5 +1,5 @@
 # FEM unit test information
-- Find in this fils some informatin how to run unit test for FEM
+- Find in this file some information how to run unit test for FEM
 
 ## more information 
 - how to run a specific test class or a test method see file

@@ -660,7 +660,7 @@ public:
 
     /** @name sub shape cached functions
      *
-     * These functions uses internal caches for sub shape maps to imporve performance
+     * These functions use internal caches for sub-shape maps to improve performance
      */
     //@{
     void initCache(int reset=0, const char *file=0, int line=0) const;

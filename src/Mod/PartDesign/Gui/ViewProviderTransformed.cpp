@@ -176,7 +176,7 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
         if (rejected>0) {
             msg = QString::fromLatin1("<font color='orange'>%1</font>");
             if (rejected == 1)
-                msg = msg.arg(QObject::tr("One transformed shape is cuasing error"));
+                msg = msg.arg(QObject::tr("One transformed shape is causing error"));
             else {
                 msg = msg.arg(QObject::tr("%1 transformed shapes are causing error"));
                 msg = msg.arg(rejected);

@@ -839,7 +839,7 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
 #if 1
     (void)newShape;
     // Realthunder: with the new topological naming, I don't think this function
-    // is necessary. A missing element will cause an explicity error, and the
+    // is necessary. A missing element will cause an explicitly error, and the
     // user will be force to manually select the element. Various editors, such
     // as dress up editors, can perform element guessing when activated.
 #else
@@ -1231,7 +1231,7 @@ Base::Vector3d ProfileBased::getProfileNormal(const TopoShape &profileShape) con
         }
     }
 
-    // If the shape is a line, then return an arbitary direction that is perpendicular to the line
+    // If the shape is a line, then return an arbitrary direction that is perpendicular to the line
     auto geom = Part::Geometry::fromShape(shape.getSubShape(TopAbs_EDGE, 1), true);
     auto geomLine = Base::freecad_dynamic_cast<Part::GeomLine>(geom.get());
     if (geomLine) {

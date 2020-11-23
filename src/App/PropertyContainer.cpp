@@ -282,7 +282,7 @@ void PropertyContainer::Save (Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Properties Count=\"" << Map.size()
                     << "\" TransientCount=\"" << transients.size() << "\">\n";
 
-    // First store transient properties to persisit their status value. We use
+    // First store transient properties to persist their status value. We use
     // a new element named "_Property" so that the save file can be opened by
     // older versions of FC.
     writer.incInd();
@@ -405,7 +405,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
                         && !status.test(Property::PropTransient)
                         && !prop->testStatus(Property::PropTransient))
                 {
-                    FC_TRACE("restoring proeprty " << prop->getFullName());
+                    FC_TRACE("restoring property " << prop->getFullName());
                     prop->Restore(reader);
                 }else
                     FC_TRACE("skip transient " << prop->getFullName());

@@ -341,7 +341,7 @@ void TaskDressUpParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 continue;
             }
             if(element) {
-                showMessage("Ambiguious selection");
+                showMessage("Ambiguous selection");
                 return;
             }
             element = hist.element.c_str();

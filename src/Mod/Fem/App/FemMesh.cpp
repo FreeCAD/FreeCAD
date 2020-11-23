@@ -1914,7 +1914,7 @@ Base::BoundBox3d FemMesh::getBoundBox(void) const
 const std::vector<const char*>& FemMesh::getElementTypes(void) const
 {
     static std::vector<const char*> temp = 
-        {"Vertex", "Edge", "Face", "Volumne"};
+        {"Vertex", "Edge", "Face", "Volume"};
     return temp;
 }
 

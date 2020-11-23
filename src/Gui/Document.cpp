@@ -1620,7 +1620,7 @@ void Document::SaveDocFile (Base::Writer &writer) const
         auto obj = getDocument()->getObject(objName.c_str());
         auto it = d->_ViewProviderMap.find(obj);
         if(it == d->_ViewProviderMap.end())
-            FC_ERR("View object not fount: " << getDocument()->getName() << '#' << objName);
+            FC_ERR("View object not found: " << getDocument()->getName() << '#' << objName);
         else {
             writer.Stream() << "<!-- FreeCAD ViewProvider -->\n"
                 << "<Document SchemaVersion=\"" << FC_GUI_SCHEMA_VER 

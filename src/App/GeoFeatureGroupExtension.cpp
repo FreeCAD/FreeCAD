@@ -193,7 +193,7 @@ void GeoFeatureGroupExtension::buildExport(
     // attached (e.g. Gui module is not loaded), we rely on the following logic
     // to include only children that do not appear in the inList of any other
     // child. This logic is similar to ViewProviderGeoFeatureGroupExtension,
-    // but not exactly the same.  So there may have some discrepency depending
+    // but not exactly the same.  So there may have some discrepancy depending
     // on whether the Gui module is loaded or not.
     if(owner->testStatus(ObjectStatus::ViewProviderAttached))
         return;

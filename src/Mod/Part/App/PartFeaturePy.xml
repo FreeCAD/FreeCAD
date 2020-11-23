@@ -21,7 +21,7 @@ getElementHistory(name,recursive=True,sameType=False,showName=False) - returns t
 name: mapped element name belonging to this shape
 recursive: if True, then track back the history through other objects till the origin
 sameType: if True, then stop trace back when element type changes
-showName: if False, return the owner object, or else return a tuple of object name and lable
+showName: if False, return the owner object, or else return a tuple of object name and label
 
 If not recursive, then return tuple(sourceObject, sourceElementName, [intermediateNames...]),
 otherwise return a list of tuple.

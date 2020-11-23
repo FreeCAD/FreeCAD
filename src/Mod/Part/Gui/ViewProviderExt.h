@@ -143,7 +143,7 @@ public:
     void enableFullSelectionHighlight(bool face=true, bool line=true, bool point=true);
     //@}
 
-    /** @name Color mangement methods 
+    /** @name Color management methods 
      */
     //@{
     virtual void setElementColors(const std::map<std::string,App::Color> &colors) override;

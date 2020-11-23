@@ -131,7 +131,7 @@ void TaskFeatureParameters::addNewSolidCheckBox(QWidget *widget)
     if (layout) {
         checkBoxNewSolid = new QCheckBox(widget);
         checkBoxNewSolid->setText(tr("New solid"));
-        checkBoxNewSolid->setToolTip(tr("Make a new seperate solid using this feature"));
+        checkBoxNewSolid->setToolTip(tr("Make a new separate solid using this feature"));
         layout->insertWidget(0, checkBoxNewSolid);
         connect(checkBoxNewSolid, SIGNAL(toggled(bool)), this, SLOT(onNewSolidChanged(bool)));
     }

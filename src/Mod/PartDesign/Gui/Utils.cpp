@@ -599,11 +599,11 @@ PartDesign::Body *queryCommandOverride()
     if (sels.empty())
         box.setText(QObject::tr("You are invoking a non-PartDesign command while referecing a "
                                 "PartDesign feature.\n\nDo you want to override this command with "
-                                "an equivalant PartDesign command?"));
+                                "an equivalent PartDesign command?"));
     else
         box.setText(QObject::tr("You are invoking a non-PartDesign command while having an active"
                                 "PartDesign body.\n\nDo you want to override this command with an "
-                                "equivalant PartDesign command?"));
+                                "equivalent PartDesign command?"));
     box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     box.setDefaultButton(QMessageBox::Yes);
     box.setEscapeButton(QMessageBox::No);
@@ -824,7 +824,7 @@ public:
             box.setIcon(QMessageBox::Question);
             box.setWindowTitle(QObject::tr("PartDesign feature wrap"));
             box.setText(QObject::tr("You are referencing a PartDesign feature in a non-PartDesign "
-                                    "object.\n\nDo you want to incoporate this object into PartDesign "
+                                    "object.\n\nDo you want to incorporate this object into PartDesign "
                                     "body using a wrap feature?"));
             box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             box.setDefaultButton(QMessageBox::Yes);

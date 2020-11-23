@@ -96,9 +96,9 @@ public:
     void setPersistenceFileName(const char *name) const;
     const std::string &getPersistenceFileName() const;
 
-    /** Maps an arbitary string to an integer
+    /** Maps an arbitrary string to an integer
      *
-     * The function maps an arbitary text string to a unique integer ID, which
+     * The function maps an arbitrary text string to a unique integer ID, which
      * is returned as a shared pointer to reference count the ID so that it is
      * possible to prune any unused strings.
      *
@@ -118,7 +118,7 @@ public:
      *
      * This function exists because the stored string may be one way hashed,
      * and the original text is not persistent. The caller use this function to
-     * retieve the reference count ID object after restore
+     * retrieve the reference count ID object after restore
      */
     StringIDRef getID(long id) const;
 

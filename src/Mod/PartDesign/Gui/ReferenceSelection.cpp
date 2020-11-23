@@ -289,7 +289,7 @@ bool populateRefElement(App::PropertyLinkSub *prop, QLabel *label, bool canTouch
 
     QString fmt = QString::fromLatin1("%1:%2");
 
-    // Sheck if the element is missing
+    // Check if the element is missing
     bool touched = false;
     if(Data::ComplexGeoData::hasMissingElement(sub.second.c_str())) {
         if(canTouch) {

@@ -501,7 +501,7 @@ public:
     (const App::DocumentObject* from, const App::DocumentObject* to) const;
     //@}
 
-    /** Called by property during properly save its continaing StringHasher
+    /** Called by property during properly save its containing StringHasher
      *
      * @param hasher: the input hasher
      * @return Returns a pair<bool,int>. Boolean member indicate if the

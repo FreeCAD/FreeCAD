@@ -1897,7 +1897,7 @@ bool SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
         FC_COIN_THREAD_LOCAL std::vector<unsigned char> vertex_array;
 
         buf.basestripe = sizeof(VertexAttr);
-        // Incase material binding is not overall, we include color into the
+        // In case material binding is not overall, we include color into the
         // VBO, hence plus 4 below. Must do this before calling buf.stripe()
 #ifndef FC_VBO_FORCE_COLOR
         if (mbind != OVERALL)
@@ -2276,7 +2276,7 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action) {
             int start = 0;
             int next = 0;
             for(int id : RenderIndices) {
-                // try to render together consequtive indices
+                // try to render together consecutive indices
                 if(next == id) {
                     ++next;
                     continue;

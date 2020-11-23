@@ -1086,10 +1086,10 @@ void PropertyExpressionEngine::onRelabeledDocument(const App::Document &doc)
 bool PropertyExpressionEngine::isTouched() const {
     // Document recomputation optimization checks for any touched property to
     // decide whether to call DocumentObject::recompute().
-    // PropertyExpressionEngine is sepecial, as it will always be executed
+    // PropertyExpressionEngine is special, as it will always be executed
     // before DocumentObject::recompute() as long as the object itself is
     // touched. PropertyExpressionEngine::execute() will touch other property if
-    // the expression evalutes to a difference result. So there is no need for
+    // the expression evaluates to a difference result. So there is no need for
     // PropertyExpressionEngine itself to report isTouched().
     
     return false;

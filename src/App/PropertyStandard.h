@@ -589,9 +589,9 @@ public:
         bool candelete;
     };
     /** setting the boundaries
-     * This sets the constraint struct. It can be dynamcly 
+     * This sets the constraint struct. It can be dynamincally 
      * allocated or set as an static in the class the property
-     * blongs to:
+     * belongs to:
      * \code
      * const Constraints percent = {0.0,100.0,1.0}
      * \endcode
