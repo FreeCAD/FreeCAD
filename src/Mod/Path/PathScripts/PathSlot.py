@@ -183,7 +183,8 @@ class ObjectSlot(PathOp.ObjectOp):
         ENUMS = self.opPropertyEnumerations()
         if hasattr(obj, 'Base'):
             if obj.Base:
-                (base, subsList) = obj.Base[0]
+                # (base, subsList) = obj.Base[0]
+                subsList = obj.Base[0][1]
                 subCnt = len(subsList)
                 if subCnt == 1:
                     # Adjust available enumerations
@@ -229,7 +230,8 @@ class ObjectSlot(PathOp.ObjectOp):
         C = 0
         if hasattr(obj, 'Base'):
             if obj.Base:
-                (base, subsList) = obj.Base[0]
+                # (base, subsList) = obj.Base[0]
+                subsList = obj.Base[0][1]
                 subCnt = len(subsList)
                 if subCnt == 1:
                     A = 0
@@ -283,7 +285,7 @@ class ObjectSlot(PathOp.ObjectOp):
                     if isinstance(val, int) or isinstance(val, float):
                         setVal = True
                 if setVal:
-                    propVal = getattr(prop, 'Value')
+                    # propVal = getattr(prop, 'Value')
                     setattr(prop, 'Value', val)
                 else:
                     setattr(obj, n, val)
@@ -423,9 +425,6 @@ class ObjectSlot(PathOp.ObjectOp):
         pnts = False
         featureCnt = 0
 
-        def eLen(E):
-            return E.Length
-
         if not hasattr(obj, 'Base'):
             msg = translate('PathSlot',
                     'No Base Geometry object in the operation.')
@@ -444,30 +443,27 @@ class ObjectSlot(PathOp.ObjectOp):
                 FreeCAD.Console.PrintError(msg + '\n')
                 return False
 
-        if pnts:
-            (p1, p2) = pnts
+        baseGeom = obj.Base[0]
+        base, subsList = baseGeom
+        self.base = base
+        lenSL = len(subsList)
+        featureCnt = lenSL
+        if lenSL == 1:
+            PathLog.debug('Reference 1: {}'.format(obj.Reference1))
+            sub1 = subsList[0]
+            shape_1 = getattr(base.Shape, sub1)
+            self.shape1 = shape_1
+            pnts = self._processSingle(obj, shape_1, sub1)
         else:
-            baseGeom = obj.Base[0]
-            base, subsList = baseGeom
-            self.base = base
-            lenSL = len(subsList)
-            featureCnt = lenSL
-            if lenSL == 1:
-                PathLog.debug('Reference 1: {}'.format(obj.Reference1))
-                sub1 = subsList[0]
-                shape_1 = getattr(base.Shape, sub1)
-                self.shape1 = shape_1
-                pnts = self._processSingle(obj, shape_1, sub1)
-            else:
-                PathLog.debug('Reference 1: {}'.format(obj.Reference1))
-                PathLog.debug('Reference 2: {}'.format(obj.Reference2))
-                sub1 = subsList[0]
-                sub2 = subsList[1]
-                shape_1 = getattr(base.Shape, sub1)
-                shape_2 = getattr(base.Shape, sub2)
-                self.shape1 = shape_1
-                self.shape2 = shape_2
-                pnts = self._processDouble(obj, shape_1, sub1, shape_2, sub2)
+            PathLog.debug('Reference 1: {}'.format(obj.Reference1))
+            PathLog.debug('Reference 2: {}'.format(obj.Reference2))
+            sub1 = subsList[0]
+            sub2 = subsList[1]
+            shape_1 = getattr(base.Shape, sub1)
+            shape_2 = getattr(base.Shape, sub2)
+            self.shape1 = shape_1
+            self.shape2 = shape_2
+            pnts = self._processDouble(obj, shape_1, sub1, shape_2, sub2)
 
         if not pnts:
             return False
@@ -698,7 +694,6 @@ class ObjectSlot(PathOp.ObjectOp):
     def _processSingle(self, obj, shape_1, sub1):
         """This is the control method for slots based on a
         single Base Geometry feature."""
-        cmds = False
         make = False
         cat1 = sub1[:4]
 
@@ -896,7 +891,7 @@ class ObjectSlot(PathOp.ObjectOp):
             return True
 
         def circleCentFrom3Points(P1, P2, P3):
-            # Source code for this function copied from:
+            # Source code for this function copied from (with modifications):
             # https://wiki.freecadweb.org/Macro_Draft_Circle_3_Points_3D
             P1P2 = (P2 - P1).Length
             P2P3 = (P3 - P2).Length
@@ -904,21 +899,20 @@ class ObjectSlot(PathOp.ObjectOp):
 
             # Circle radius.
             l = ((P1 - P2).cross(P2 - P3)).Length
-            try:
-                r = P1P2 * P2P3 * P3P1 / 2 / l
-            except:
+            # r = P1P2 * P2P3 * P3P1 / 2 / l
+            if round(l, 8) == 0.0:
                 PathLog.error("The three points are aligned.")
                 return False
-            else:
-                # Sphere center.
-                a = P2P3**2 * (P1 - P2).dot(P1 - P3) / 2 / l**2
-                b = P3P1**2 * (P2 - P1).dot(P2 - P3) / 2 / l**2
-                c = P1P2**2 * (P3 - P1).dot(P3 - P2) / 2 / l**2
-                P1.multiply(a)
-                P2.multiply(b)
-                P3.multiply(c)
-                PC = P1 + P2 + P3
-                return PC
+
+            # Sphere center.
+            a = P2P3**2 * (P1 - P2).dot(P1 - P3) / 2 / l**2
+            b = P3P1**2 * (P2 - P1).dot(P2 - P3) / 2 / l**2
+            c = P1P2**2 * (P3 - P1).dot(P3 - P2) / 2 / l**2
+            P1.multiply(a)
+            P2.multiply(b)
+            P3.multiply(c)
+            PC = P1 + P2 + P3
+            return PC
 
         # Process edge based on curve type
         if edge.Curve.TypeId in lineTypes:
@@ -982,9 +976,7 @@ class ObjectSlot(PathOp.ObjectOp):
         PathLog.debug('_processDouble()')
         """This is the control method for slots based on a
         two Base Geometry features."""
-        cmds = False
-        make = False
-        cat2 = sub2[:4]
+
         p1 = None
         p2 = None
         dYdX1 = None
@@ -1076,7 +1068,7 @@ class ObjectSlot(PathOp.ObjectOp):
         for V in shape_1.Vertexes:
             if V.Z < zmin:
                 zmin = V.Z
-                vMin = V
+                # vMin = V
             elif V.Z == zmin:
                 same.append(V)
         if len(same) > 1:
@@ -1096,7 +1088,7 @@ class ObjectSlot(PathOp.ObjectOp):
         for V in shape_1.Vertexes:
             if V.Z > zmax:
                 zmax = V.Z
-                vMax = V
+                # vMax = V
             elif V.Z == zmax:
                 same.append(V)
         if len(same) > 1:
@@ -1181,7 +1173,6 @@ class ObjectSlot(PathOp.ObjectOp):
             y = self.newRadius * math.sin(rads)
             a = FreeCAD.Vector(self.newRadius, 0.0, 0.0)
             b = FreeCAD.Vector(x, y, 0.0)
-            c = FreeCAD.Vector(0.0, 0.0, 0.0)
             return Part.makeLine(a, b)
 
         if begExt or endExt:
@@ -1290,7 +1281,6 @@ class ObjectSlot(PathOp.ObjectOp):
             return (n1, n2)
         else:
             toEnd = p2.sub(p1)
-            factor = halfDist / toEnd.Length
             perp = FreeCAD.Vector(-1 * toEnd.y, toEnd.x, 0.0)
             perp.normalize()
             perp.multiply(halfDist)
@@ -1466,8 +1456,6 @@ class ObjectSlot(PathOp.ObjectOp):
         for i in slcs:
             wires.append(i)
         if len(wires) > 0:
-            isFace = False
-            csWire = wires[0]
             if wires[0].isClosed():
                 face = Part.Face(wires[0])
                 if face.Area > 0:
