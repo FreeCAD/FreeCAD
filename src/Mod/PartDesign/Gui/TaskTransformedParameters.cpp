@@ -35,6 +35,7 @@
 # include <BRepAdaptor_Surface.hxx>
 #endif
 
+#include <boost_bind_bind.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Console.h>
@@ -63,6 +64,8 @@
 #include "Utils.h"
 
 #include "TaskTransformedParameters.h"
+
+namespace bp = boost::placeholders;
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
@@ -209,7 +212,7 @@ void TaskTransformedParameters::setupUI() {
     App::GetApplication().getActiveTransaction(&transactionID);
 
     connMessage = TransformedView->signalDiagnosis.connect(
-            boost::bind(&TaskTransformedParameters::slotDiagnosis, this,_1));
+            boost::bind(&TaskTransformedParameters::slotDiagnosis, this,bp::_1));
     labelMessage = new QLabel(this);
     labelMessage->hide();
     labelMessage->setWordWrap(true);

@@ -51,6 +51,8 @@
 
 #endif // _PreComp_
 
+#include <boost_bind_bind.hpp>
+
 #include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -75,6 +77,8 @@
 #include "TopoShapeCompSolidPy.h"
 #include "TopoShapeCompoundPy.h"
 #include "PartParams.h"
+
+namespace bp = boost::placeholders;
 
 FC_LOG_LEVEL_INIT("PropShape",true,true);
 
@@ -897,7 +901,7 @@ PropertyShapeCache *PropertyShapeCache::get(const App::DocumentObject *obj, bool
         FC_ERR("Failed to add shape cache for " << obj->getFullName());
     else
         prop->connChanged = const_cast<App::DocumentObject*>(obj)->signalEarlyChanged.connect(
-                boost::bind(&PropertyShapeCache::slotChanged,prop,_1,_2));
+                boost::bind(&PropertyShapeCache::slotChanged,prop,bp::_1,bp::_2));
     return prop;
 }
 

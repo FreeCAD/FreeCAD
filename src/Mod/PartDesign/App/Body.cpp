@@ -28,6 +28,7 @@
 
 #include <stack>
 
+#include <boost_bind_bind.hpp>
 #include <Base/Console.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
@@ -55,6 +56,8 @@
 #include "Body.h"
 #include "FeatureBase.h"
 #include "BodyPy.h"
+
+namespace bp = boost::placeholders;
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
@@ -313,9 +316,9 @@ void Body::checkChildren()
             continue;
 
         info.visibilityConn = feature->Visibility.signalChanged.connect(
-                boost::bind(&Body::checkChild, this, _1));
+                boost::bind(&Body::checkChild, this, bp::_1));
         info.baseFeatureConn = feature->BaseFeature.signalChanged.connect(
-                boost::bind(&Body::checkChild, this, _1));
+                boost::bind(&Body::checkChild, this, bp::_1));
 
         checkChild(feature->Visibility);
     }
@@ -719,9 +722,9 @@ void Body::onDocumentRestored()
 
         auto &info = this->childrenConns[feature];
         info.visibilityConn = feature->Visibility.signalChanged.connect(
-                boost::bind(&Body::checkChild, this, _1));
+                boost::bind(&Body::checkChild, this, bp::_1));
         info.baseFeatureConn = feature->BaseFeature.signalChanged.connect(
-                boost::bind(&Body::checkChild, this, _1));
+                boost::bind(&Body::checkChild, this, bp::_1));
         info.flag = childrenFlag;
     }
     _GroupTouched.setStatus(App::Property::Output,true);

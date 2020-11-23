@@ -110,6 +110,7 @@
 
 #include <QVariantAnimation>
 
+#include <boost_bind_bind.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <sstream>
 #include <Base/Console.h>
@@ -170,6 +171,8 @@
 #include "ViewParams.h"
 
 #include "ViewProviderLink.h"
+
+namespace bp = boost::placeholders;
 
 FC_LOG_LEVEL_INIT("3DViewer",true,true)
 
@@ -685,7 +688,7 @@ void View3DInventorViewer::init()
     restoreEditingRoot = false;
     pcEditingRoot->addChild(pcEditingTransform);
     // pcViewProviderRoot->addChild(pcEditingRoot);
-    static_cast<SoGroup*>(sceneNode)->insertChild(pcEditingRoot,rootIndex+1);
+    static_cast<SoGroup*>(sceneNode)->addChild(pcEditingRoot);
 
     pcRootMaterial = new SoMaterial;
     pcRootMaterial->ref();
@@ -891,7 +894,7 @@ void View3DInventorViewer::setDocument(Gui::Document* pcDocument)
         }
 
         pcDocument->getDocument()->signalChanged.connect(boost::bind(
-                    &View3DInventorViewer::slotChangeDocument, this, _1, _2));
+                    &View3DInventorViewer::slotChangeDocument, this, bp::_1, bp::_2));
     }
 }
 
