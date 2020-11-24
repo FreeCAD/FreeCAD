@@ -52,7 +52,8 @@ ViewProviderAttachExtension::ViewProviderAttachExtension()
 
 void ViewProviderAttachExtension::extensionGetExtraIcons(std::vector<QPixmap> &icons) const
 {
-    if (getExtendedViewProvider()->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
+    if (!ignoreOverlayIcon()
+            && getExtendedViewProvider()->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
 
         auto* attach = getExtendedViewProvider()->getObject()->getExtensionByType<Part::AttachExtension>();
 
