@@ -36,7 +36,12 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('C13',  '4mm')
         sheet.set('C14',  '5mm')
         sheet.set('C15',  '6mm')
-        sheet.set('C16',  '6')
+
+        #  Spreadsheet now support adding/subtracting dimensionless quantity.
+        #  Just treat it with the same quantity.
+        #
+        #  sheet.set('C16',  '6')
+        sheet.set('C16',  '6g')
 
         sheet.set('A1',  '=sum(1)')
         sheet.set('A2',  '=sum(1;2)')
