@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>280</width>
-    <height>404</height>
+    <height>431</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -242,6 +242,42 @@ the sketch plane's normal vector will be used</string>
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <item>
+      <widget class="QLabel" name="labelTaperAngle">
+       <property name="text">
+        <string>Tape angle</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="taperAngleEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_9">
+     <item>
+      <widget class="QLabel" name="labelTaperAngle2">
+       <property name="text">
+        <string>2nd tape angle</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="taperAngleEdit2" native="true">
+       <property name="keyboardTracking" stdset="0">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QPushButton" name="buttonFace">
@@ -254,23 +290,6 @@ the sketch plane's normal vector will be used</string>
       <widget class="QLineEdit" name="lineFaceName"/>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxUpdateView">
-     <property name="text">
-      <string>Update view</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>

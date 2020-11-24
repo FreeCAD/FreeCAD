@@ -74,8 +74,6 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
             this, SLOT(onRuled(bool)));
     connect(ui->checkBoxClosed, SIGNAL(toggled(bool)),
             this, SLOT(onClosed(bool)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
@@ -92,8 +90,8 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
         SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
     this->addNewSolidCheckBox(proxy);
+    this->initUI(proxy);
     this->groupLayout()->addWidget(proxy);
-
     refresh();
 }
 

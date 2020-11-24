@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>262</width>
-    <height>270</height>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,7 +37,7 @@
       <item>
        <layout class="QHBoxLayout">
         <item>
-         <widget class="QToolButton" name="buttonProfileBase">
+         <widget class="QPushButton" name="buttonProfileBase">
           <property name="text">
            <string>Object</string>
           </property>
@@ -57,7 +57,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <widget class="QToolButton" name="buttonRefAdd">
+      <widget class="QPushButton" name="buttonRefAdd">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -73,7 +73,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="buttonRefRemove">
+      <widget class="QPushButton" name="buttonRefRemove">
        <property name="text">
         <string>Remove Section</string>
        </property>
@@ -81,19 +81,6 @@
         <bool>true</bool>
        </property>
       </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>
@@ -104,23 +91,6 @@
      </property>
      <property name="dragDropMode">
       <enum>QAbstractItemView::InternalMove</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxUpdateView">
-     <property name="text">
-      <string>Update view</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
      </property>
     </widget>
    </item>

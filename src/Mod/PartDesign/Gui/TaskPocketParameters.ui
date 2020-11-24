@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>241</width>
-    <height>233</height>
+    <height>292</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,11 +44,11 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit">
-       <property name="keyboardTracking">
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
       </widget>
@@ -65,8 +65,8 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit">
-       <property name="keyboardTracking">
+      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
       </widget>
@@ -100,8 +100,44 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2">
-       <property name="keyboardTracking">
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2" native="true">
+       <property name="keyboardTracking" stdset="0">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <item>
+      <widget class="QLabel" name="labelTaperAngle">
+       <property name="text">
+        <string>Tape angle</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="taperAngleEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_9">
+     <item>
+      <widget class="QLabel" name="labelTaperAngle2">
+       <property name="text">
+        <string>2nd tape angle</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="taperAngleEdit2" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
       </widget>
@@ -121,23 +157,6 @@
       <widget class="QLineEdit" name="lineFaceName"/>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxUpdateView">
-     <property name="text">
-      <string>Update view</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>

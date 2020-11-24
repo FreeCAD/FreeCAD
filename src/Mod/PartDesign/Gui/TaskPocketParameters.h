@@ -54,6 +54,7 @@ public:
 
     virtual void saveHistory() override;
     virtual void apply() override;
+    virtual void refresh() override;
 
 private Q_SLOTS:
     void onLengthChanged(double);
@@ -64,6 +65,8 @@ private Q_SLOTS:
     void onButtonFace(const bool pressed = true);
     void onFaceName(const QString& text);
     void onModeChanged(int);
+    void onAngleChanged(double);
+    void onAngle2Changed(double);
 
 protected:
     void changeEvent(QEvent *e) override;

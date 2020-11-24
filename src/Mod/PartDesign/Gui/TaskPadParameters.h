@@ -72,6 +72,8 @@ private Q_SLOTS:
     void onButtonFace(const bool pressed = true);
     void onFaceName(const QString& text);
     void onModeChanged(int);
+    void onAngleChanged(double);
+    void onAngle2Changed(double);
 
 protected:
     void changeEvent(QEvent *e) override;

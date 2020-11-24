@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>306</width>
+    <width>296</width>
     <height>421</height>
    </rect>
   </property>
@@ -23,7 +23,7 @@
       <item>
        <layout class="QHBoxLayout">
         <item>
-         <widget class="QToolButton" name="buttonProfileBase">
+         <widget class="QPushButton" name="buttonProfileBase">
           <property name="text">
            <string>Object</string>
           </property>
@@ -88,7 +88,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QToolButton" name="buttonSpineBase">
+         <widget class="QPushButton" name="buttonSpineBase">
           <property name="text">
            <string>Object</string>
           </property>
@@ -105,7 +105,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
-         <widget class="QToolButton" name="buttonRefAdd">
+         <widget class="QPushButton" name="buttonRefAdd">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -127,7 +127,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="buttonRefRemove">
+         <widget class="QPushButton" name="buttonRefRemove">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>

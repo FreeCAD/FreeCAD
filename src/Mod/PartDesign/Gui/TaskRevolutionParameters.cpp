@@ -74,10 +74,9 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
             this, SLOT(onMidplane(bool)));
     connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
             this, SLOT(onReversed(bool)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
 
     this->addNewSolidCheckBox(proxy);
+    this->initUI(proxy);
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());

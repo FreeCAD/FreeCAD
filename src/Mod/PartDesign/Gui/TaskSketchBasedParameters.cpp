@@ -33,6 +33,7 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 
+#include <Base/Tools.h>
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -45,8 +46,10 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/PrefWidgets.h>
 
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/FeatureOffset.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureExtrusion.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -67,6 +70,103 @@ TaskSketchBasedParameters::TaskSketchBasedParameters(PartDesignGui::ViewProvider
     : TaskFeatureParameters(vp, parent, pixmapname, parname)
 {
 
+}
+
+void TaskSketchBasedParameters::initUI(QWidget *widget) {
+    if(!vp)
+        return;
+
+    QBoxLayout * boxLayout = qobject_cast<QBoxLayout*>(widget->layout());
+    if (!boxLayout)
+        return;
+
+    PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+
+    QHBoxLayout *layout = new QHBoxLayout();
+    layout->addWidget(new QLabel(tr("Fit tolerance"), this));
+    fitEdit = new Gui::PrefQuantitySpinBox(this);
+    fitEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/ProfileFit"));
+    fitEdit->bind(pcSketchBased->Fit);
+    fitEdit->setUnit(Base::Unit::Length);
+    layout->addWidget(fitEdit);
+    connect(fitEdit, SIGNAL(valueChanged(double)), this, SLOT(onFitChanged(double)));
+    boxLayout->addLayout(layout);
+
+    layout = new QHBoxLayout();
+    layout->addWidget(new QLabel(tr("Fit join type")));
+    fitJoinType = new QComboBox(this);
+    for (int i=0;;++i) {
+        const char * type = Part::Offset::JoinEnums[i];
+        if (!type)
+            break;
+        fitJoinType->addItem(tr(type));
+    }
+    connect(fitJoinType, SIGNAL(currentIndexChanged(int)), this, SLOT(onFitJoinChanged(int)));
+    layout->addWidget(fitJoinType);
+    boxLayout->addLayout(layout);
+
+    fitIntersection = new QCheckBox(tr("Fit intersection"), this);
+    connect(fitIntersection, SIGNAL(toggled(bool)), this, SLOT(onFitIntersectionChanged(bool)));
+    boxLayout->addWidget(fitIntersection);
+
+    auto line = new QFrame(this);
+    line->setFrameShape(QFrame::HLine);
+    line->setFrameShadow(QFrame::Sunken);
+    boxLayout->addWidget(line);
+
+    auto checkBoxUpdateView = new QCheckBox(tr("Update view"), this);
+    connect(checkBoxUpdateView, SIGNAL(toggled(bool)), this, SLOT(onUpdateView(bool)));
+    boxLayout->addWidget(checkBoxUpdateView);
+}
+
+void TaskSketchBasedParameters::refresh()
+{
+    if (!vp || !vp->getObject())
+        return;
+
+    PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    if (fitEdit) {
+        QSignalBlocker guard(fitEdit);
+        fitEdit->setValue(pcSketchBased->Fit.getValue());
+    }
+
+    if (fitJoinType) {
+        QSignalBlocker guard(fitJoinType);
+        fitJoinType->setCurrentIndex(pcSketchBased->FitJoin.getValue());
+    }
+
+    if (fitIntersection) {
+        QSignalBlocker guard(fitIntersection);
+        fitIntersection->setChecked(pcSketchBased->FitIntersection.getValue());
+    }
+    TaskFeatureParameters::refresh();
+}
+
+void TaskSketchBasedParameters::saveHistory(void)
+{
+    if (fitEdit)
+        fitEdit->pushToHistory();
+}
+
+void TaskSketchBasedParameters::onFitChanged(double v)
+{
+    PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    pcSketchBased->Fit.setValue(v);
+    recomputeFeature();
+}
+
+void TaskSketchBasedParameters::onFitIntersectionChanged(bool checked)
+{
+    PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    pcSketchBased->FitIntersection.setValue(checked);
+    recomputeFeature();
+}
+
+void TaskSketchBasedParameters::onFitJoinChanged(int v)
+{
+    PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    pcSketchBased->FitJoin.setValue((long)v);
+    recomputeFeature();
 }
 
 const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChanges& msg)

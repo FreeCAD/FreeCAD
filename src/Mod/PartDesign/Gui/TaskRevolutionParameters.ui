@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>278</width>
-    <height>193</height>
+    <height>132</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -69,23 +69,23 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="revolveAngle">
-       <property name="keyboardTracking">
+      <widget class="Gui::QuantitySpinBox" name="revolveAngle" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">deg</string>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
-       <property name="maximum">
+       <property name="maximum" stdset="0">
         <double>360.000000000000000</double>
        </property>
-       <property name="singleStep">
+       <property name="singleStep" stdset="0">
         <double>10.000000000000000</double>
        </property>
-       <property name="value">
+       <property name="value" stdset="0">
         <double>360.000000000000000</double>
        </property>
       </widget>
@@ -106,23 +106,6 @@
     <widget class="QCheckBox" name="checkBoxReversed">
      <property name="text">
       <string>Reversed</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxUpdateView">
-     <property name="text">
-      <string>Update view</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
      </property>
     </widget>
    </item>

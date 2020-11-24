@@ -65,11 +65,80 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
 #endif
 
     this->groupLayout()->addWidget(proxy);
+    initUI(proxy);
 
     // set the history path
     ui->lengthEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketLength"));
     ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketLength2"));
     ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketOffset"));
+    ui->taperAngleEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/TaperAngle"));
+    ui->taperAngleEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/TaperAngle2"));
+
+    ui->taperAngleEdit->setUnit(Base::Unit::Angle);
+    ui->taperAngleEdit2->setUnit(Base::Unit::Angle);
+
+    ui->changeMode->clear();
+    ui->changeMode->insertItem(0, tr("Dimension"));
+    ui->changeMode->insertItem(1, tr("Through all"));
+    ui->changeMode->insertItem(2, tr("To first"));
+    ui->changeMode->insertItem(3, tr("Up to face"));
+    ui->changeMode->insertItem(4, tr("Two dimensions"));
+
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+
+    // Bind input fields to properties
+    ui->lengthEdit->bind(pcPocket->Length);
+    ui->lengthEdit2->bind(pcPocket->Length2);
+    ui->offsetEdit->bind(pcPocket->Offset);
+    ui->taperAngleEdit->bind(pcPocket->TaperAngle);
+    ui->taperAngleEdit2->bind(pcPocket->TaperAngleRev);
+
+    QMetaObject::connectSlotsByName(this);
+
+    connect(ui->lengthEdit, SIGNAL(valueChanged(double)),
+            this, SLOT(onLengthChanged(double)));
+    connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
+            this, SLOT(onLength2Changed(double)));
+    connect(ui->taperAngleEdit, SIGNAL(valueChanged(double)),
+            this, SLOT(onAngleChanged(double)));
+    connect(ui->taperAngleEdit2, SIGNAL(valueChanged(double)),
+            this, SLOT(onAngle2Changed(double)));
+    connect(ui->offsetEdit, SIGNAL(valueChanged(double)),
+            this, SLOT(onOffsetChanged(double)));
+    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
+            this, SLOT(onMidplaneChanged(bool)));
+    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
+            this, SLOT(onReversedChanged(bool)));
+    connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onModeChanged(int)));
+    connect(ui->buttonFace, SIGNAL(clicked()),
+            this, SLOT(onButtonFace()));
+    connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
+            this, SLOT(onFaceName(QString)));
+
+    // Due to signals attached after changes took took into effect we should update the UI now.
+    refresh();
+
+    // if it is a newly created object use the last value of the history
+    // TODO: newObj doesn't supplied normally by any caller (2015-07-24, Fat-Zer)
+    if(newObj){
+        ui->lengthEdit->setToLastUsedValue();
+        ui->lengthEdit->selectNumber();
+        ui->lengthEdit2->setToLastUsedValue();
+        ui->lengthEdit2->selectNumber();
+        ui->offsetEdit->setToLastUsedValue();
+        ui->offsetEdit->selectNumber();
+        ui->taperAngleEdit->setToLastUsedValue();
+        ui->taperAngleEdit->selectNumber();
+        ui->taperAngleEdit2->setToLastUsedValue();
+        ui->taperAngleEdit2->selectNumber();
+    }
+}
+
+void TaskPocketParameters::refresh()
+{
+    if (!vp || !vp->getObject())
+        return;
 
     // Get the feature data
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
@@ -88,6 +157,12 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
         if (upToFace.substr(0,4) == "Face")
             faceId = std::atoi(&upToFace[4]);
     }
+    double angle = pcPocket->TaperAngle.getValue();
+    double angle2 = pcPocket->TaperAngleRev.getValue();
+
+    // Temporarily prevent unnecessary feature recomputes
+    for (QWidget* child : proxy->findChildren<QWidget*>())
+        child->blockSignals(true);
 
     // Fill data into dialog elements
     ui->lengthEdit->setValue(l);
@@ -95,6 +170,8 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->offsetEdit->setValue(off);
     ui->checkBoxMidplane->setChecked(midplane);
     ui->checkBoxReversed->setChecked(reversed);
+    ui->taperAngleEdit->setValue(angle);
+    ui->taperAngleEdit2->setValue(angle2);
 
     // Set object labels
     if (obj && PartDesign::Feature::isDatum(obj)) {
@@ -115,54 +192,16 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
 
     ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
 
-    ui->changeMode->clear();
-    ui->changeMode->insertItem(0, tr("Dimension"));
-    ui->changeMode->insertItem(1, tr("Through all"));
-    ui->changeMode->insertItem(2, tr("To first"));
-    ui->changeMode->insertItem(3, tr("Up to face"));
-    ui->changeMode->insertItem(4, tr("Two dimensions"));
     ui->changeMode->setCurrentIndex(index);
 
-    // Bind input fields to properties
-    ui->lengthEdit->bind(pcPocket->Length);
-    ui->lengthEdit2->bind(pcPocket->Length2);
-    ui->offsetEdit->bind(pcPocket->Offset);
+    // Temporarily prevent unnecessary feature recomputes
+    for (QWidget* child : proxy->findChildren<QWidget*>())
+        child->blockSignals(false);
 
-    QMetaObject::connectSlotsByName(this);
-
-    connect(ui->lengthEdit, SIGNAL(valueChanged(double)),
-            this, SLOT(onLengthChanged(double)));
-    connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
-            this, SLOT(onLength2Changed(double)));
-    connect(ui->offsetEdit, SIGNAL(valueChanged(double)),
-            this, SLOT(onOffsetChanged(double)));
-    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
-            this, SLOT(onMidplaneChanged(bool)));
-    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
-            this, SLOT(onReversedChanged(bool)));
-    connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onModeChanged(int)));
-    connect(ui->buttonFace, SIGNAL(clicked()),
-            this, SLOT(onButtonFace()));
-    connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
-            this, SLOT(onFaceName(QString)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
-
-    // Due to signals attached after changes took took into effect we should update the UI now.
     updateUI(index);
-
-    // if it is a newly created object use the last value of the history
-    // TODO: newObj doesn't supplied normally by any caller (2015-07-24, Fat-Zer)
-    if(newObj){
-        ui->lengthEdit->setToLastUsedValue();
-        ui->lengthEdit->selectNumber();
-        ui->lengthEdit2->setToLastUsedValue();
-        ui->lengthEdit2->selectNumber();
-        ui->offsetEdit->setToLastUsedValue();
-        ui->offsetEdit->selectNumber();
-    }
+    TaskSketchBasedParameters::refresh();
 }
+
 
 void TaskPocketParameters::updateUI(int index)
 {
@@ -238,6 +277,14 @@ void TaskPocketParameters::updateUI(int index)
     if (!isFaceEditEnabled) {
         onButtonFace(false);
     }
+
+    bool angleVisible = index == 0 || index == 4;
+    ui->taperAngleEdit->setVisible( angleVisible );
+    ui->taperAngleEdit->setEnabled( angleVisible );
+    ui->labelTaperAngle->setVisible( angleVisible );
+    ui->taperAngleEdit2->setVisible( angleVisible );
+    ui->taperAngleEdit2->setEnabled( angleVisible );
+    ui->labelTaperAngle2->setVisible( angleVisible );
 }
 
 void TaskPocketParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -279,6 +326,20 @@ void TaskPocketParameters::onLength2Changed(double len)
 {
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     pcPocket->Length2.setValue(len);
+    recomputeFeature();
+}
+
+void TaskPocketParameters::onAngleChanged(double angle)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    pcPocket->TaperAngle.setValue(angle);
+    recomputeFeature();
+}
+
+void TaskPocketParameters::onAngle2Changed(double angle)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    pcPocket->TaperAngleRev.setValue(angle);
     recomputeFeature();
 }
 
@@ -482,6 +543,8 @@ void TaskPocketParameters::saveHistory(void)
     ui->lengthEdit->pushToHistory();
     ui->lengthEdit2->pushToHistory();
     ui->offsetEdit->pushToHistory();
+    ui->taperAngleEdit->pushToHistory();
+    ui->taperAngleEdit2->pushToHistory();
 }
 
 void TaskPocketParameters::apply()

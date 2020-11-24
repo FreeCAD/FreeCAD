@@ -30,8 +30,15 @@
 
 #include "TaskFeatureParameters.h"
 
+class QComboBox;
+class QCheckBox;
+
 namespace App {
 class Property;
+}
+
+namespace Gui {
+class PrefQuantitySpinBox;
 }
 
 namespace PartDesignGui {
@@ -59,6 +66,21 @@ protected:
     QVariant objectNameByLabel(const QString& label, const QVariant& suggest) const;
 
     QString getFaceReference(const QString& obj, const QString& sub) const;
+
+    void saveHistory();
+
+    void initUI(QWidget *);
+    void refresh();
+
+protected Q_SLOTS:
+    void onFitChanged(double);
+    void onFitJoinChanged(int);
+    void onFitIntersectionChanged(bool);
+
+protected:
+    Gui::PrefQuantitySpinBox * fitEdit = nullptr;
+    QCheckBox *fitIntersection = nullptr;
+    QComboBox *fitJoinType = nullptr;
 };
 
 class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgFeatureParameters

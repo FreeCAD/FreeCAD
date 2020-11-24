@@ -87,6 +87,7 @@ void TaskPadParameters::setupUI(bool newObj)
     }
 
     this->addNewSolidCheckBox(proxy);
+    this->initUI(proxy);
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
@@ -95,10 +96,17 @@ void TaskPadParameters::setupUI(bool newObj)
     ui->lengthEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength"));
     ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength2"));
     ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadOffset"));
+    ui->taperAngleEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/TaperAngle"));
+    ui->taperAngleEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/TaperAngle2"));
+
+    ui->taperAngleEdit->setUnit(Base::Unit::Angle);
+    ui->taperAngleEdit2->setUnit(Base::Unit::Angle);
 
     // Bind input fields to properties
     ui->lengthEdit->bind(pcPad->Length);
     ui->lengthEdit2->bind(pcPad->Length2);
+    ui->taperAngleEdit->bind(pcPad->TaperAngle);
+    ui->taperAngleEdit2->bind(pcPad->TaperAngleRev);
 
     ui->XDirectionEdit->bind(App::ObjectIdentifier::parse(pcPad, std::string("Direction.x")));
     ui->YDirectionEdit->bind(App::ObjectIdentifier::parse(pcPad, std::string("Direction.y")));
@@ -128,6 +136,10 @@ void TaskPadParameters::setupUI(bool newObj)
             this, SLOT(onLengthChanged(double)));
     connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
             this, SLOT(onLength2Changed(double)));
+    connect(ui->taperAngleEdit, SIGNAL(valueChanged(double)),
+            this, SLOT(onAngleChanged(double)));
+    connect(ui->taperAngleEdit2, SIGNAL(valueChanged(double)),
+            this, SLOT(onAngle2Changed(double)));
     connect(ui->groupBoxDirection, SIGNAL(toggled(bool)),
         this, SLOT(onGBDirectionChanged(bool)));
     connect(ui->XDirectionEdit, SIGNAL(valueChanged(double)),
@@ -148,8 +160,6 @@ void TaskPadParameters::setupUI(bool newObj)
             this, SLOT(onButtonFace()));
     connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
             this, SLOT(onFaceName(QString)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
 
     refresh();
 
@@ -162,6 +172,10 @@ void TaskPadParameters::setupUI(bool newObj)
         ui->lengthEdit2->selectNumber();
         ui->offsetEdit->setToLastUsedValue();
         ui->offsetEdit->selectNumber();
+        ui->taperAngleEdit->setToLastUsedValue();
+        ui->taperAngleEdit->selectNumber();
+        ui->taperAngleEdit2->setToLastUsedValue();
+        ui->taperAngleEdit2->selectNumber();
     }
 }
 
@@ -182,6 +196,8 @@ void TaskPadParameters::refresh()
     bool midplane = pcPad->Midplane.getValue();
     bool reversed = pcPad->Reversed.getValue();
     int index = pcPad->Type.getValue(); // must extract value here, clear() kills it!
+    double angle = pcPad->TaperAngle.getValue();
+    double angle2 = pcPad->TaperAngleRev.getValue();
 
     // Temporarily prevent unnecessary feature recomputes
     for (QWidget* child : proxy->findChildren<QWidget*>())
@@ -195,6 +211,8 @@ void TaskPadParameters::refresh()
     ui->YDirectionEdit->setValue(ys);
     ui->ZDirectionEdit->setValue(zs);
     ui->offsetEdit->setValue(off);
+    ui->taperAngleEdit->setValue(angle);
+    ui->taperAngleEdit2->setValue(angle2);
 
     ui->checkBoxMidplane->setChecked(midplane);
     // According to bug #0000521 the reversed option
@@ -228,7 +246,6 @@ void TaskPadParameters::refresh()
         child->blockSignals(false);
 
     updateUI(index);
-
     TaskSketchBasedParameters::refresh();
 }
 
@@ -291,6 +308,14 @@ void TaskPadParameters::updateUI(int index)
     ui->lengthEdit2->setEnabled( isLengthEdit2Visable );
     ui->labelLength2->setVisible( isLengthEdit2Visable );
 
+    bool angleVisible = index == 0 || index == 4;
+    ui->taperAngleEdit->setVisible( angleVisible );
+    ui->taperAngleEdit->setEnabled( angleVisible );
+    ui->labelTaperAngle->setVisible( angleVisible );
+    ui->taperAngleEdit2->setVisible( angleVisible );
+    ui->taperAngleEdit2->setEnabled( angleVisible );
+    ui->labelTaperAngle2->setVisible( angleVisible );
+
     ui->buttonFace->setEnabled( isFaceEditEnabled );
     ui->lineFaceName->setEnabled( isFaceEditEnabled );
     if (!isFaceEditEnabled) {
@@ -337,6 +362,20 @@ void TaskPadParameters::onLength2Changed(double len)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Length2.setValue(len);
+    recomputeFeature();
+}
+
+void TaskPadParameters::onAngleChanged(double angle)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->TaperAngle.setValue(angle);
+    recomputeFeature();
+}
+
+void TaskPadParameters::onAngle2Changed(double angle)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->TaperAngleRev.setValue(angle);
     recomputeFeature();
 }
 
@@ -595,6 +634,10 @@ void TaskPadParameters::saveHistory(void)
     ui->lengthEdit->pushToHistory();
     ui->lengthEdit2->pushToHistory();
     ui->offsetEdit->pushToHistory();
+    ui->taperAngleEdit->pushToHistory();
+    ui->taperAngleEdit2->pushToHistory();
+
+    TaskSketchBasedParameters::saveHistory();
 }
 
 void TaskPadParameters::apply()

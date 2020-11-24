@@ -103,6 +103,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     this->addNewSolidCheckBox(proxy);
+    this->initUI(proxy);
     this->groupLayout()->addWidget(proxy);
 
     refresh();
