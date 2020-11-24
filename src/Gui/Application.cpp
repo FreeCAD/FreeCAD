@@ -406,7 +406,7 @@ Application::Application(bool GUIenabled)
             if(hasError)
                 QMessageBox::critical(getMainWindow(), QObject::tr("Recompute error"),
                         QObject::tr("Failed to recompute some document(s).\n"
-                                    "Please check report view for mor details."));
+                                    "Please check report view for more details."));
         });
 
         // install the last active language

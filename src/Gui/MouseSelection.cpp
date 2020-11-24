@@ -49,7 +49,7 @@ using namespace Gui;
 enum CursorType
 {
     CursorNone,
-    // waiting for the first keybord event, or else prevent cursor change on mouse move
+    // waiting for the first keyboard event, or else prevent cursor change on mouse move
     CursorPending, 
     CursorNormal,
     CursorAdd,

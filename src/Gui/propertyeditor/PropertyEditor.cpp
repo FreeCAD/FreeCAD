@@ -333,7 +333,7 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
         // When removing rows, QTreeView will temporary hide the editor which
         // will trigger Event::FocusOut and subsequently trigger call of
         // closeEditor() here. Since we are using persistent editor, QTreeView
-        // will not destory the editor. But we still needs to call
+        // will not destroy the editor. But we still needs to call
         // QTreeView::closeEditor() here, in case the editor belongs to the
         // removed rows.
         QTreeView::closeEditor(editor, hint);

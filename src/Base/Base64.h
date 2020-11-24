@@ -67,7 +67,7 @@ namespace Base
      * 
      * The table maps from any 8-bit character to the decoded binary bits.
      * Valid base64 characters are mapped to the corresponding 6-bit binary
-     * data. White space (space, tab, vtab, CR and LF) charachters are mapped
+     * data. White space (space, tab, vtab, CR and LF) characters are mapped
      * to -2. Other invalid characters are mapped to -1.
      */
     BaseExport const signed char *base64_decode_table();

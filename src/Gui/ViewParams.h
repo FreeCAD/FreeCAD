@@ -242,7 +242,7 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Whether to cast shadow from transparent objects."))\
     FC_VIEW_PARAM(PropertyViewTimer, unsigned long, Unsigned, 100, "") \
     FC_VIEW_PARAM(HierarchyAscend, bool, Bool, false, \
-        QT_TRANSLATE_NOOP("ViewParams","Enable selection of upper hierarhcy by repeatedly click some already\n"\
+        QT_TRANSLATE_NOOP("ViewParams","Enable selection of upper hierarchy by repeatedly click some already\n"\
                                        "selected sub-element."))\
     FC_VIEW_PARAM(CommandHistorySize, int, Int, 20, \
         QT_TRANSLATE_NOOP("ViewParams","Maximum number of commands saved in history"))\

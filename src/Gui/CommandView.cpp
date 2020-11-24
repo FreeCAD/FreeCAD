@@ -3258,7 +3258,7 @@ StdCmdPickGeometry::StdCmdPickGeometry()
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("Pick geometry");
   sToolTipText  = QT_TR_NOOP("Pick hidden geometires under the mouse cursor in 3D view.\n"
-                             "This command is supposed to be actived by keyboard shortcut.");
+                             "This command is supposed to be activated by keyboard shortcut.");
   sWhatsThis    = "Std_PickGeometry";
   sStatusTip    = sToolTipText;
   // sPixmap       = "sel-geo";

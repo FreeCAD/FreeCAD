@@ -124,7 +124,7 @@ void View3DInventorViewerPy::init_type()
         "unselect: if True, then return picked elements/objects that are already selected.\n"
         "\n"
         "mapCoords: if True, map the point coordinate from Qt global screen coordinate to\n"
-        "\tthe local coodinate of this view.\n"
+        "\tthe local coordinate of this view.\n"
         "\n"
         "resolve: whether to resolve the subname references.\n"
         "\t0: do not resolve,\n"

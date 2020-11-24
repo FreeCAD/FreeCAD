@@ -2358,7 +2358,7 @@ void OverlaySplitterHandle::mouseReleaseEvent(QMouseEvent *me)
                                                 dragOffset,
                                                 dragSize,
                                                 true);
-    // Warning! the handle iteself maybe deleted after return from
+    // Warning! the handle itself maybe deleted after return from
     // dragDockWidget().
 }
 

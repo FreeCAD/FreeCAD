@@ -393,7 +393,7 @@ std::istream &Base::XMLReader::beginCharStream(bool base64) {
     if(CharStream) 
         FC_READER_THROW("recursive character stream");
 
-    // TODO: An XML element can actually contain a mix of child elemens and
+    // TODO: An XML element can actually contain a mix of child elements and
     // characters. So we should not actually demand 'StartElement' here. But
     // with the current implementation of character stream, we cannot track
     // child elements and character content at the same time.

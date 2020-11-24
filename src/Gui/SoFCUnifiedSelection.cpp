@@ -414,7 +414,7 @@ SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &
     // The disadvantage of doing post process here is that we must obtain all
     // picked points of all objects. When the user zooms the camera far out,
     // the pick radius (default to 5 pixel) may cause large amount (100k+ for
-    // bigger assembly) of primitves (mostly points and lines) in the picked
+    // bigger assembly) of primitives (mostly points and lines) in the picked
     // point list. The fact that each SoPickedPoint contains a full path of the
     // node hierarchy may cause system slow down, with most of the time
     // spending on cleaning up the path.
