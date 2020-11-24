@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -372,7 +372,7 @@ std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool
         if (BRep_Tool::IsClosed(w)) {
             closedWires.push_back(w);
         }
-    }        
+    }
     std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(closedWires,false);           //biggest 1st
     if (!sortedWires.size()) {
         Base::Console().Log("INFO - EW::sortStrip - no sorted Wires!\n");
@@ -382,7 +382,7 @@ std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool
     if (!includeBiggest) {
         sortedWires.erase(sortedWires.begin());
     }
-    
+
     return sortedWires;
 }
 

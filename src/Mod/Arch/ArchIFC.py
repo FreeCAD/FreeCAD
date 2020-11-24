@@ -1,3 +1,26 @@
+#***************************************************************************
+#*   Copyright (c) 2019 Dion Moult <dion@thinkmoult.com>                   *
+#*   Copyright (c) 2019 Yorik van Havre <yorik@uncreated.net>              *
+#*   Copyright (c) 2020 FreeCAD Developers                                 *
+#*                                                                         *
+#*   This program is free software; you can redistribute it and/or modify  *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
+#*                                                                         *
+#***************************************************************************
+
 """This modules sets up and manages the IFC-related properties, types
 and attributes of Arch/BIM objects.
 """
@@ -174,7 +197,7 @@ class IfcRoot:
 
     def getIfcAttributeSchema(self, ifcTypeSchema, name):
         """Get the schema of an IFC attribute with the given name.
-        
+
         Convert the IFC attribute's name from the human readable version Arch
         uses, and convert it to the less readable name it has in the IFC
         schema.
@@ -260,17 +283,17 @@ class IfcRoot:
 
         obj.IfcData = IfcData
         if attribute["is_enum"]:
-            obj.addProperty("App::PropertyEnumeration", 
-                            attribute["name"], 
-                            "IFC Attributes", 
+            obj.addProperty("App::PropertyEnumeration",
+                            attribute["name"],
+                            "IFC Attributes",
                             QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
             setattr(obj, attribute["name"], attribute["enum_values"])
         else:
             import ArchIFCSchema
             propertyType = "App::" + ArchIFCSchema.IfcTypes[attribute["type"]]["property"]
-            obj.addProperty(propertyType, 
-                            attribute["name"], 
-                            "IFC Attributes", 
+            obj.addProperty(propertyType,
+                            attribute["name"],
+                            "IFC Attributes",
                             QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
 
     def addIfcAttributeValueExpressions(self, obj, attribute):
@@ -420,7 +443,7 @@ class IfcRoot:
             if r in IfcTypes:
                 obj.IfcType = r
                 FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" IfcRole property to IfcType\n")
-        
+
         if "IfcAttributes"in obj.PropertiesList:
             obj.IfcData = obj.IfcAttributes
             obj.removeProperty("IfcAttributes")

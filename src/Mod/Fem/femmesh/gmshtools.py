@@ -831,7 +831,7 @@ class GmshTools():
             # but the warnings are in stderr and thus printed :-)
             # print(output)
             # print(error)
-        except:
+        except Exception:
             error = "Error executing: {}\n".format(" ".join(comandlist))
             Console.PrintError(error)
             self.error = True

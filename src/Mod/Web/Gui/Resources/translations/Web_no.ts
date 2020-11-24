@@ -62,7 +62,7 @@
       <location filename="../../Command.cpp" line="251"/>
       <location filename="../../Command.cpp" line="252"/>
       <source>Set URL</source>
-      <translation type="unfinished">Set URL</translation>
+      <translation>Sett URL</translation>
     </message>
   </context>
   <context>
@@ -129,12 +129,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="88"/>
-      <location filename="../../BrowserView.cpp" line="741"/>
+      <location filename="../../BrowserView.cpp" line="745"/>
       <source>Browser</source>
       <translation>Nettleser</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="556"/>
+      <location filename="../../BrowserView.cpp" line="560"/>
       <source>File does not exist!</source>
       <translation>Filen finnes ikke!</translation>
     </message>
@@ -142,18 +142,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="547"/>
-      <location filename="../../BrowserView.cpp" line="552"/>
+      <location filename="../../BrowserView.cpp" line="551"/>
+      <location filename="../../BrowserView.cpp" line="556"/>
       <source>Error</source>
       <translation>Feil</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="552"/>
+      <location filename="../../BrowserView.cpp" line="556"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation type="unfinished">There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</translation>
+      <translation>Det oppstod feil under innlasting av filen. Enkelte data kan være endret eller ikke gjenopprettet i det hele tatt. Se i rapportvisningen for mer spesifikk informasjon om de involverte objektene.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="712"/>
+      <location filename="../../BrowserView.cpp" line="716"/>
       <source>Loading %1...</source>
       <translation>Laster inn %1...</translation>
     </message>
@@ -161,19 +161,19 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="304"/>
+      <location filename="../../BrowserView.cpp" line="308"/>
       <source>Open in External Browser</source>
       <translation>Åpne i ekstern nettleser</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="308"/>
+      <location filename="../../BrowserView.cpp" line="312"/>
       <source>Open in new window</source>
       <translation>Åpne i nytt vindu</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="340"/>
+      <location filename="../../BrowserView.cpp" line="344"/>
       <source>View source</source>
-      <translation type="unfinished">View source</translation>
+      <translation>Se kildekode</translation>
     </message>
   </context>
   <context>

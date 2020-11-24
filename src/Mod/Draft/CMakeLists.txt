@@ -98,6 +98,8 @@ SET(Draft_functions
     draftfunctions/scale.py
     draftfunctions/split.py
     draftfunctions/svg.py
+    draftfunctions/svgshapes.py
+    draftfunctions/svgtext.py
     draftfunctions/upgrade.py
     draftfunctions/README.md
 )
@@ -266,6 +268,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_dimension_ops.py
     draftguitools/gui_lineslope.py
     draftguitools/gui_layers.py
+    draftguitools/gui_setstyle.py
     ${Creator_tools}
     ${Modifier_tools}
     draftguitools/README.md

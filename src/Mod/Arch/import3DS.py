@@ -1,5 +1,5 @@
 #***************************************************************************
-#*   Copyright (c) 2016 Yorik van Havre <yorik@uncreated.net>              *  
+#*   Copyright (c) 2016 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,9 +22,9 @@
 from __future__ import print_function
 import os,FreeCAD,Mesh
 
-__title__="FreeCAD 3DS importer"
+__title__  = "FreeCAD 3DS importer"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 DEBUG = True
 
@@ -45,11 +45,11 @@ def check3DS():
         return False
     else:
         return True
-        
+
 
 def open(filename):
     "called when freecad wants to open a file"
-    if not check3DS(): 
+    if not check3DS():
         return
     docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
     doc = FreeCAD.newDocument(docname)
@@ -61,7 +61,7 @@ def open(filename):
 
 def insert(filename,docname):
     "called when freecad wants to import a file"
-    if not check3DS(): 
+    if not check3DS():
         return
     try:
         doc = FreeCAD.getDocument(docname)

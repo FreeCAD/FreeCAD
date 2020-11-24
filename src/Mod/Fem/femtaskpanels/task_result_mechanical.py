@@ -235,7 +235,7 @@ class _TaskPanel:
             # self.result_widget.hsb_displacement_factor.setValue(df)
             self.result_widget.sb_displacement_factor_max.setValue(dfm)
             self.result_widget.sb_displacement_factor.setValue(df)
-        except:
+        except Exception:
             self.restore_initial_result_dialog()
 
     def restore_initial_result_dialog(self):

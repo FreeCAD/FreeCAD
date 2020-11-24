@@ -126,7 +126,7 @@ void Rotation::evaluateVector()
     if ((this->quat[3] > -1.0) && (this->quat[3] < 1.0)) {
         double rfAngle = acos(this->quat[3]) * 2.0;
         double scale = sin(rfAngle / 2.0);
-        // Get a normalized vector 
+        // Get a normalized vector
         double l = this->_axis.Length();
         if (l < Base::Vector3d::epsilon()) l = 1;
         this->_axis.x = this->quat[0] * l / scale;
@@ -276,7 +276,7 @@ void Rotation::setValue(const Vector3d & rotateFrom, const Vector3d & rotateTo)
     Vector3d u(rotateFrom); u.Normalize();
     Vector3d v(rotateTo); v.Normalize();
 
-    // The vector from x to is the rotation axis because it's the normal of the plane defined by (0,u,v) 
+    // The vector from x to is the rotation axis because it's the normal of the plane defined by (0,u,v)
     const double dot = u * v;
     Vector3d w = u % v;
     const double wlen = w.Length();

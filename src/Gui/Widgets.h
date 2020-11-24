@@ -357,7 +357,7 @@ private:
 
 // ----------------------------------------------------------------------
 
-class GuiExport StatusWidget : public QWidget
+class GuiExport StatusWidget : public QDialog
 {
     Q_OBJECT
 
@@ -371,7 +371,6 @@ public:
 protected:
     void showEvent(QShowEvent*);
     void hideEvent(QHideEvent*);
-    void adjustPosition(QWidget* w);
 
 private:
     QLabel* label;

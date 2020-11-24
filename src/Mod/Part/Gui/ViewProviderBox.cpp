@@ -36,7 +36,7 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderBox, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderBox, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderBox::ViewProviderBox()

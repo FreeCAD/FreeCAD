@@ -189,6 +189,11 @@
         <file>Std_WindowNext.svg</file>
         <file>Std_WindowPrev.svg</file>
         <file>Std_WindowTileVer.svg</file>
+        <file>Std_DemoMode.svg</file>
+        <file>Std_DependencyGraph.svg</file>
+        <file>Std_DlgParameter.svg</file>
+        <file>Std_ProjectUtil.svg</file>
+        <file>Std_SceneInspector.svg</file>
         <file>WhatsThis.svg</file>
         <file>colors.svg</file>
         <file>px.svg</file>
@@ -223,6 +228,8 @@
         <file>Std_DatumCS.svg</file>
         <file>Std_SubShapeBinder.svg</file>
         <file>cursor-through.svg</file>
+        <file>Std_Alignment.svg</file>
+        <file>Std_DuplicateSelection.svg</file>
     </qresource>
     <!-- Demonstrating support for an embedded icon theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->

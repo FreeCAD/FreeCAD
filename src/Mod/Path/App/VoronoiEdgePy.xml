@@ -5,7 +5,7 @@
         Name="VoronoiEdgePy" 
         Twin="VoronoiEdge" 
         TwinPointer="VoronoiEdge" 
-        Include="Mod/Path/App/Voronoi.h" 
+        Include="Mod/Path/App/VoronoiEdge.h" 
         FatherInclude="Base/BaseClassPy.h" 
         Namespace="Path" 
         FatherNamespace="Base"
@@ -100,9 +100,9 @@
                 <UserDocu>Returns true if edge goes through endpoint of the segment site</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="toGeom" Const="true">
+        <Methode Name="toShape" Const="true">
             <Documentation>
-                <UserDocu>Returns a geom representation of the edge (line segment or arc of parabola)</UserDocu>
+                <UserDocu>Returns a shape for the edge</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getDistances" Const="true">

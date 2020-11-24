@@ -192,7 +192,7 @@ public:
      * @return -1 if element visibility is not supported, 0 if element is not
      * found, 1 if success
      */
-    virtual int setElementVisible(const char *element, bool visible); 
+    virtual int setElementVisible(const char *element, bool visible);
 
     /** Get sub-element visibility
      *
@@ -264,7 +264,7 @@ public:
      * @param inList [in, out]: optional pointer to a vector holding the output
      * objects, with the furthest linking object ordered last.
      */
-    void getInListEx(std::set<App::DocumentObject*> &inSet, 
+    void getInListEx(std::set<App::DocumentObject*> &inSet,
             bool recursive, std::vector<App::DocumentObject*> *inList=0) const;
     /** Return a set of all objects linking to this object, including possible external parent objects
      * @param recursive [in]: whether to obtain recursive in list
@@ -363,10 +363,10 @@ public:
      * include the transformation applied by the final object reference in \c
      * subname. For Part::Feature, the transformation is applied to the
      * TopoShape inside \c pyObj before returning.
-     * 
+     *
      * @param transform: if false, then it will not apply the object's own
      * transformation to \c mat, which lets you override the object's placement
-     * (and possibly scale). 
+     * (and possibly scale).
      *
      * @param depth: depth limitation as hint for cyclic link detection
      *
@@ -374,7 +374,7 @@ public:
      * then it shall return itself. If subname is invalid, then it shall return
      * zero.
      */
-    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0, 
+    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0,
             Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
 
     /// Return a list of objects referenced by a given subname including this object
@@ -409,13 +409,13 @@ public:
     std::vector<std::pair<App::DocumentObject*,std::string> > getParents(int depth=0) const;
 
     /** Return the linked object with optional transformation
-     * 
+     *
      * @param recurse: If false, return the immediate linked object, or else
      * recursively call this function to return the final linked object.
      *
      * @param mat: If non zero, it is used as the current transformation matrix
      * on input.  And output as the accumulated transformation till the final
-     * linked object. 
+     * linked object.
      *
      * @param transform: if false, then it will not accumulate the object's own
      * placement into \c mat, which lets you override the object's placement.
@@ -423,7 +423,7 @@ public:
      * @return Return the linked object. This function must return itself if the
      * it is not a link or the link is invalid.
      */
-    virtual DocumentObject *getLinkedObject(bool recurse=true, 
+    virtual DocumentObject *getLinkedObject(bool recurse=true,
             Base::Matrix4D *mat=0, bool transform=false, int depth=0) const;
 
     /* Return true to cause PropertyView to show linked object's property */
@@ -471,10 +471,10 @@ public:
             short attr=0, bool ro=false, bool hidden=false) override;
 
     /** Resolve the last document object referenced in the subname
-     * 
+     *
      * @param subname: dot separated subname
      * @param parent: return the direct parent of the object
-     * @param childName: return child name to be passed to is/setElementVisible() 
+     * @param childName: return child name to be passed to is/setElementVisible()
      * @param subElement: return non-object sub-element name if found. The
      * pointer is guaranteed to be within the buffer pointed to by 'subname'
      *
@@ -482,7 +482,7 @@ public:
      * @return Returns the last referenced document object in the subname. If no
      * such object in subname, return pObject.
      */
-    App::DocumentObject *resolve(const char *subname, App::DocumentObject **parent=0, 
+    App::DocumentObject *resolve(const char *subname, App::DocumentObject **parent=0,
         std::string *childName=0, const char **subElement=0,
         PyObject **pyObj=0, Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
 
@@ -530,7 +530,7 @@ public:
      *
      * The common parent 'Group' is removed.
      */
-    App::DocumentObject *resolveRelativeLink(std::string &subname, 
+    App::DocumentObject *resolveRelativeLink(std::string &subname,
             App::DocumentObject *&link, std::string &linkSub) const;
 
     /** Called to adjust link properties to avoid cyclic links
@@ -563,7 +563,7 @@ public:
     /** Allow object to redirect a subname path
      *
      * @param ss: input as the current subname path from \a topParent leading
-     * just before this object, i.e. ends at the parent of this object. This 
+     * just before this object, i.e. ends at the parent of this object. This
      * function should append its own name to this path, or redirect the
      * subname to other place.
      * @param topParent: top parent of this subname path
@@ -571,7 +571,7 @@ public:
      *
      * This function is called by tree view to generate a subname path when an
      * item is selected in the tree. Document object can use this function to
-     * redirect the selection to some other objects. 
+     * redirect the selection to some other objects.
      */
     virtual bool redirectSubName(std::ostringstream &ss,
             DocumentObject *topParent, DocumentObject *child) const;
@@ -670,7 +670,7 @@ private:
 
     // unique identifier (among a document) of this object.
     long _Id;
-    
+
 private:
     // Back pointer to all the fathers in a DAG of the document
     // this is used by the document (via friend) to have a effective DAG handling

@@ -1,12 +1,5 @@
-# FreeCAD init module
-# (c) 2001 Jürgen Riegel
-#
-# Gathering all the information to start FreeCAD
-# This is the second one of three init scripts, the third one
-# runs when the gui is up
-
 #***************************************************************************
-#*   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+#*   Copyright (c) 2001,2002 Jürgen Riegel <juergen.riegel@web.de>         *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -28,6 +21,11 @@
 #*                                                                         *
 #***************************************************************************/
 
+# FreeCAD init module
+#
+# Gathering all the information to start FreeCAD.
+# This is the second of of three init scripts.
+# The third one runs when the gui is up,
 
 # imports the one and only
 import FreeCAD
@@ -44,6 +42,41 @@ def removeFromPath(module_name):
 			return
 	else:
 		Wrn(module_name + " not found in sys.path\n")
+
+def setupSearchPaths(PathExtension):
+	# DLL resolution in Python 3.8 on Windows has changed
+	if sys.platform == 'win32' and hasattr(os, "add_dll_directory"):
+		if "FREECAD_LIBPACK_BIN" in os.environ:
+			os.add_dll_directory(os.environ["FREECAD_LIBPACK_BIN"])
+		for path in PathExtension:
+			os.add_dll_directory(path)
+
+	PathEnvironment = PathExtension.pop(0) + os.pathsep
+	for path in PathExtension:
+		try:
+			PathEnvironment += path + os.pathsep
+		except UnicodeDecodeError:
+			Wrn('Filter invalid module path: u{}\n'.format(repr(path)))
+
+	# new paths must be prepended to avoid to load a wrong version of a library
+	try:
+		os.environ["PATH"] = PathEnvironment + os.environ["PATH"]
+	except UnicodeDecodeError:
+		# See #0002238. FIXME: check again once ported to Python 3.x
+		Log('UnicodeDecodeError was raised when concatenating unicode string with PATH. Try to remove non-ascii paths...\n')
+		path = os.environ["PATH"].split(os.pathsep)
+		cleanpath=[]
+		for i in path:
+			if test_ascii(i):
+				cleanpath.append(i)
+		os.environ["PATH"] = PathEnvironment + os.pathsep.join(cleanpath)
+		Log('done\n')
+	except UnicodeEncodeError:
+		Log('UnicodeEncodeError was raised when concatenating unicode string with PATH. Try to replace non-ascii chars...\n')
+		os.environ["PATH"] = PathEnvironment.encode(errors='replace') + os.environ["PATH"]
+		Log('done\n')
+	except KeyError:
+		os.environ["PATH"] = PathEnvironment
 
 FreeCAD._importFromFreeCAD = removeFromPath
 
@@ -125,8 +158,8 @@ def InitApplications():
 	# from FreeCAD.Module import package
 	FreeCAD.__path__ = [ModDir] + libpaths + [HomeMod]
 
-	# also add these directories to the sys.path to 
-	# not change the old behaviour. once we have moved to 
+	# also add these directories to the sys.path to
+	# not change the old behaviour. once we have moved to
 	# proper python modules this can eventuelly be removed.
 	sys.path = [ModDir] + libpaths + [ExtDir] + sys.path
 
@@ -185,32 +218,7 @@ def InitApplications():
 	Log("Using "+ModDir+" as module path!\n")
 	# In certain cases the PathExtension list can contain invalid strings. We concatenate them to a single string
 	# but check that the output is a valid string
-	PathEnvironment = PathExtension.pop(0) + os.pathsep
-	for path in PathExtension:
-		try:
-			PathEnvironment += path + os.pathsep
-		except UnicodeDecodeError:
-			Wrn('Filter invalid module path: u{}\n'.format(repr(path)))
-
-	# new paths must be prepended to avoid to load a wrong version of a library
-	try:
-		os.environ["PATH"] = PathEnvironment + os.environ["PATH"]
-	except UnicodeDecodeError:
-		# See #0002238. FIXME: check again once ported to Python 3.x
-		Log('UnicodeDecodeError was raised when concatenating unicode string with PATH. Try to remove non-ascii paths...\n')
-		path = os.environ["PATH"].split(os.pathsep)
-		cleanpath=[]
-		for i in path:
-			if test_ascii(i):
-				cleanpath.append(i)
-		os.environ["PATH"] = PathEnvironment + os.pathsep.join(cleanpath)
-		Log('done\n')
-	except UnicodeEncodeError:
-		Log('UnicodeEncodeError was raised when concatenating unicode string with PATH. Try to replace non-ascii chars...\n')
-		os.environ["PATH"] = PathEnvironment.encode(errors='replace') + os.environ["PATH"]
-		Log('done\n')
-	except KeyError:
-		os.environ["PATH"] = PathEnvironment
+	setupSearchPaths(PathExtension)
 	path = os.environ["PATH"].split(os.pathsep)
 	Log("System path after init:\n")
 	for i in path:
@@ -255,7 +263,7 @@ if sys.version_info.major < 3:
 
 class FCADLogger(object):
     '''Convenient class for tagged logging.
-    
+
        Example usage:
            >>> logger = FreeCAD.Logger('MyModule')
            >>> logger.info('log test {}',1)

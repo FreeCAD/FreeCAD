@@ -121,6 +121,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Редактировать</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -2529,6 +2536,18 @@ opening or creation</source>
       <source>Show axis cross by default</source>
       <translation>Показывать перекрестие осей по умолчанию</translation>
     </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Укажите радиус (пикс.):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>Область выбора элементов в 3D виде.
+Большее значение облегчает выбор элемента, но может сделать невозможным выбор небольших элементов.
+               </translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -3552,7 +3571,7 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
-      <translation type="unfinished">FEM (mm, N, sec)</translation>
+      <translation>Метод конечных элементов (мм, Н, с)</translation>
     </message>
   </context>
   <context>
@@ -3590,10 +3609,6 @@ Mouse tilting is not disabled by this setting.</source>
       <translation>Один цвет</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Укажите радиус (пикс.):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Объект редактируется</translation>
     </message>
@@ -3608,12 +3623,6 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation>Включить подсветку выделения и использовать указанный цвет</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation>Область выбора элементов в 3D представлении.
-Большее значение облегчает выбор элементов, но может помешать выбрать небольшие элементы.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -6749,7 +6758,7 @@ Document: </source>
     </message>
     <message>
       <source>Identical physical path</source>
-      <translation type="unfinished">Identical physical path</translation>
+      <translation>Идентичная физическая траектория</translation>
     </message>
   </context>
   <context>
@@ -7965,11 +7974,11 @@ Document: </source>
     </message>
     <message>
       <source>Recent macros</source>
-      <translation type="unfinished">Recent macros</translation>
+      <translation>Недавние макросы</translation>
     </message>
     <message>
       <source>Recent macro list</source>
-      <translation type="unfinished">Recent macro list</translation>
+      <translation>Список недавних макросов</translation>
     </message>
   </context>
   <context>

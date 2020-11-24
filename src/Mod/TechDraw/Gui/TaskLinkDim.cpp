@@ -99,12 +99,7 @@ void TaskLinkDim::loadAvailDims()
     std::vector<App::DocumentObject*> pageViews = m_page->Views.getValues();
     std::vector<App::DocumentObject*>::iterator itView = pageViews.begin();
     std::string result;
-    int selRefType = 0;   //invalidRef;
-    if (m_subs.size() == 1) {
-        selRefType = TechDraw::DrawViewDimension::getRefType1(m_subs[0]);
-    } else {
-        selRefType = TechDraw::DrawViewDimension::getRefType2(m_subs[0],m_subs[1]);
-    }
+    int selRefType = TechDraw::DrawViewDimension::getRefTypeSubElements(m_subs);
     int found = 0;
     for (; itView != pageViews.end(); itView++) {
         if ((*itView)->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {

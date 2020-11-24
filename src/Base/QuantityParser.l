@@ -1,6 +1,25 @@
 %{
+/***************************************************************************
+ *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
 /* Lexer for the FreeCAD  Units language   */
-/* (c) 2013 Juergen Riegel  LGPL           */
 
 /* use this file to generate the file 'QuantityLexer.c' using the program flex
  * the command for this operation is:
@@ -20,11 +39,11 @@
 
 /* the manual says "somewhat more optimized" */
 %option batch
-%option never-interactive 
+%option never-interactive
 
 
 /* no support for include files is planned */
-%option noyywrap nounput 
+%option noyywrap nounput
 
 DIGIT    [0-9]
 ID       [a-z][a-z0-9]*
@@ -58,7 +77,7 @@ CGRP     '\,'[0-9][0-9][0-9]
 
 "pi"                   {yylval = Quantity(M_PI)          ; return NUM;} // constant pi
 "e"                    {yylval = Quantity(M_E)           ; return NUM;} // constant e
-                     
+
 "acos"                 return ACOS;
 "asin"                 return ASIN;
 "atan"                 return ATAN;

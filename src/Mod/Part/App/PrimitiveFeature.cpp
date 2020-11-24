@@ -106,10 +106,20 @@ App::DocumentObjectExecReturn* Primitive::execute(void) {
     return Part::Feature::execute();
 }
 
+// suppress warning about tp_print for Py3.8
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 namespace Part {
     PYTHON_TYPE_DEF(PrimitivePy, PartFeaturePy)
     PYTHON_TYPE_IMP(PrimitivePy, PartFeaturePy)
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 PyObject* Primitive::getPyObject()
 {

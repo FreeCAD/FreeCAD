@@ -39,53 +39,49 @@
     CardName:  # first in group
       Type: 'String'
       URL: ''
-      Description: " "
+      Description: "This is the name under which this material should be saved as a file"
     AuthorAndLicense:
       Type: 'String'
       URL: ''
-      Description: " "
+      Description: "Optional author name and license information"
 - General:
     Name:  # first in group
       Type: 'String'
       URL: ''
       Description: "General name"  # used to be equal with card name, TODO: should all cards be changed back to this?
-    NameDE:
-      Type: 'String'
-      URL: ''
-      Description: "German localized name"
-    NamePL:
-      Type: 'String'
-      URL: ''
-      Description: "Polish localized name"
+#    NameDE:
+#      Type: 'String'
+#      URL: ''
+#      Description: "German localized name"
+#    NamePL:
+#      Type: 'String'
+#      URL: ''
+#      Description: "Polish localized name"
     Description:
       Type: 'String'
       URL: ''
       Description: "A more elaborate description of the material"
-    DescriptionDE:
-      Type: 'String'
-      URL: ''
-      Description: "German localized description"
-    DescriptionPL:
-      Type: 'String'
-      URL: ''
-      Description: "Polish localized description"
+#    DescriptionDE:
+#      Type: 'String'
+#      URL: ''
+#      Description: "German localized description"
+#    DescriptionPL:
+#      Type: 'String'
+#      URL: ''
+#      Description: "Polish localized description"
     Father:
       Type: 'String'
       URL: ''
-      Description: "Father of the material, i.e. for PLA is Thermoplast, for Steel is Metal"
+      Description: "Father of the material, ex. the father of PLA is Thermoplast, the father of Steel is Metal"
     KindOfMaterial:
       Type: 'String'
       URL: ''
       Description: " "
-    KindOfMaterialDE:
-      Type: 'String'
-      URL: ''
-      Description: "Germand localized kind of material"
+#    KindOfMaterialDE:
+#      Type: 'String'
+#      URL: ''
+#      Description: "Germand localized kind of material"
     MaterialNumber:
-      Type: 'String'
-      URL: ''
-      Description: " "
-    Norm:  # should be merged with StandardCode
       Type: 'String'
       URL: ''
       Description: " "
@@ -100,7 +96,7 @@
     StandardCode:
       Type: 'String'
       URL: ''
-      Description: " "
+      Description: "This is a reference to a norm or standards system where this material is referenced by a precise ID or number"
 - Mechanical:
     AngleOfFriction:
       Type: 'Quantity'
@@ -243,6 +239,10 @@
       Description: " "
     SectionLinewidth:
       Type: 'Float'
+      URL: ''
+      Description: " "
+    SectionColor:
+      Type: 'Color'
       URL: ''
       Description: " "
     ViewColor:

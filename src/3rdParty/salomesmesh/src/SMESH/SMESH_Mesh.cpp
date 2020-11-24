@@ -20,6 +20,12 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
+// Suppress warning due to use of #import an macOS inside Aspect_RenderingContext.hxx
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wimport-preprocessor-directive-pedantic"
+#endif
+
 //  File   : SMESH_Mesh.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH

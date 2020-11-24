@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -89,7 +87,7 @@ class DressupPathBoundary(object):
         if begin.z < self.clearanceHeight:
             cmds.append(self.strG0ZclearanceHeight)
         if end:
-            cmds.append(Path.Command('G0', {'X': end.x, 'Y': end.y}))             
+            cmds.append(Path.Command('G0', {'X': end.x, 'Y': end.y}))
             if end.z < self.clearanceHeight:
                 cmds.append(Path.Command('G0', {'Z': max(self.safeHeight, end.z)}))
             if end.z < self.safeHeight:
@@ -109,8 +107,8 @@ class DressupPathBoundary(object):
             self.strG0ZclearanceHeight = Path.Command('G0', {'Z': self.clearanceHeight})
 
             boundary = obj.Stock.Shape
-            cmd = obj.Base.Path.Commands[0] 
-            pos = cmd.Placement.Base # bogus m/c position to create first edge 
+            cmd = obj.Base.Path.Commands[0]
+            pos = cmd.Placement.Base # bogus m/c position to create first edge
             bogusX = True
             bogusY = True
             commands = [cmd]
@@ -136,7 +134,7 @@ class DressupPathBoundary(object):
                             # cmd fully included by boundary
                             if lastExit:
                                 if not ( bogusX or bogusY ) : # don't insert false paths based on bogus m/c position
-                                    commands.extend(self.boundaryCommands(obj, lastExit, pos, tc.VertFeed.Value)) 
+                                    commands.extend(self.boundaryCommands(obj, lastExit, pos, tc.VertFeed.Value))
                                 lastExit = None
                             commands.append(cmd)
                             pos = PathGeom.commandEndPoint(cmd, pos)
@@ -164,7 +162,7 @@ class DressupPathBoundary(object):
                                         lastExit = None
                                     PathLog.track(e, flip)
                                     if not ( bogusX or bogusY ) : # don't insert false paths based on bogus m/c position
-                                        commands.extend(PathGeom.cmdsForEdge(e, flip, False, 50, tc.HorizFeed.Value, tc.VertFeed.Value))  
+                                        commands.extend(PathGeom.cmdsForEdge(e, flip, False, 50, tc.HorizFeed.Value, tc.VertFeed.Value))
                                     inside.remove(e)
                                     pos = newPos
                                     lastExit = newPos

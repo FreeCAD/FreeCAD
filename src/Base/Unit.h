@@ -85,17 +85,17 @@ public:
     Unit pow(signed char exp)const;
     //@}
     /// get the unit signature
-    const UnitSignature & getSignature(void)const {return Sig;} 
+    const UnitSignature & getSignature(void)const {return Sig;}
     bool isEmpty(void)const;
-    
+
     QString getString(void) const;
 
     std::string getStdString(void) const;
 
-    /// get the type as an string such as "Area", "Length" or "Pressure". 
+    /// get the type as an string such as "Area", "Length" or "Pressure".
     const char *getType() const;
 
-    /// get the type as an string such as "Area", "Length" or "Pressure". 
+    /// get the type as an string such as "Area", "Length" or "Pressure".
     QString getTypeString(void) const;
 
     std::size_t hash() const;
@@ -112,7 +112,7 @@ public:
     /// Angle
     static Unit Angle;
     static Unit AngleOfFriction;
-    
+
     static Unit Density;
 
     static Unit Area;

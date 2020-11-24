@@ -344,7 +344,7 @@ StdCmdDlgParameter::StdCmdDlgParameter()
   sToolTipText  = QT_TR_NOOP("Opens a Dialog to edit the parameters");
   sWhatsThis    = "Std_DlgParameter";
   sStatusTip    = QT_TR_NOOP("Opens a Dialog to edit the parameters");
-  //sPixmap     = "settings";
+  sPixmap       = "Std_DlgParameter";
   eType         = 0;
 }
 

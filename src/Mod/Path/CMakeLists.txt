@@ -198,6 +198,7 @@ SET(PathTests_SRCS
     PathTests/TestPathToolController.py
     PathTests/TestPathTooltable.py
     PathTests/TestPathUtil.py
+    PathTests/TestPathVoronoi.py
     PathTests/boxtest.fcstd
     PathTests/test_centroid_00.ngc
     PathTests/test_geomop.fcstd

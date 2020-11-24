@@ -91,13 +91,21 @@ public:
     virtual void extensionReattach(App::DocumentObject* ) { }
     virtual void extensionSetDisplayMode(const char* ) { }
     virtual void extensionGetDisplayModes(std::vector<std::string> &) const {}
+    virtual void extensionSetupContextMenu(QMenu*, QObject*, const char*) {}
 
     //update data of extended opject
     virtual void extensionUpdateData(const App::Property*);
+    virtual PyObject* getExtensionPyObject();
 
     virtual void extensionMergeOverlayIcons(QIcon &) const {}
 
     virtual void extensionGetExtraIcons(std::vector<QPixmap> &) const {}
+    void setIgnoreOverlayIcon(bool on) {
+        m_ignoreOverlayIcon = on;
+    }
+    bool ignoreOverlayIcon() const {
+        return m_ignoreOverlayIcon;
+    }
 
     virtual void extensionStartRestoring() {}
     virtual void extensionFinishRestoring() {}
@@ -106,6 +114,7 @@ public:
     virtual bool extensionGetDetailPath(const char *, SoFullPath *, SoDetail *&) const {return false;}
     
 private:
+    bool m_ignoreOverlayIcon = false;
   //Gui::ViewProviderDocumentObject* m_viewBase = nullptr;
 };
 

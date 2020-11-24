@@ -259,8 +259,10 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry,
 
     // Do not insert directly to the data structure because we should get the correct size of new
     // facets, otherwise std::vector reallocates too much memory which can't be freed so easily
-    unsigned long countValid = std::count_if(rclFAry.begin(), rclFAry.end(),
-        std::bind2nd(MeshIsNotFlag<MeshFacet>(), MeshFacet::INVALID));
+    MeshIsNotFlag<MeshFacet> flag;
+    unsigned long countValid = std::count_if(rclFAry.begin(), rclFAry.end(), [flag](const MeshFacet& f) {
+        return flag(f, MeshFacet::INVALID);
+    });
     _aclFacetArray.reserve( _aclFacetArray.size() + countValid );
     // now start inserting the facets to the data structure and set the correct neighbourhood as well
     unsigned long startIndex = CountFacets();
@@ -374,8 +376,9 @@ void MeshKernel::Merge(const MeshPointArray& rPoints, const MeshFacetArray& rFac
         this->_aclFacetArray.push_back(face);
     }
 
-    unsigned long countNewPoints = std::count_if(increments.begin(), increments.end(),
-                                   std::bind2nd(std::greater<unsigned long>(), 0));
+    unsigned long countNewPoints = std::count_if(increments.begin(), increments.end(),[](unsigned long v) {
+        return v > 0;
+    });
     // Reserve the additional memory to append the new points
     unsigned long index = this->_aclPointArray.size();
     this->_aclPointArray.reserve(this->_aclPointArray.size() + countNewPoints);
@@ -657,7 +660,7 @@ void MeshKernel::RemoveInvalids ()
 
     // delete point, number of valid points
     unsigned long ulNewPts = std::count_if(_aclPointArray.begin(), _aclPointArray.end(),
-        std::mem_fun_ref(&MeshPoint::IsValid));
+                                           [](const MeshPoint& p) { return p.IsValid(); });
     // tmp. point array
     MeshPointArray  aclTempPt(ulNewPts);
     MeshPointArray::_TIterator pPTemp = aclTempPt.begin();
@@ -702,7 +705,7 @@ void MeshKernel::RemoveInvalids ()
 
     // delete facets, number of valid facets
     unsigned long ulDelFacets = std::count_if(_aclFacetArray.begin(), _aclFacetArray.end(),
-        std::mem_fun_ref(&MeshFacet::IsValid));
+                                              [](const MeshFacet& f) { return f.IsValid(); });
     MeshFacetArray aclFArray(ulDelFacets);
     MeshFacetArray::_TIterator pFTemp = aclFArray.begin();  
     pFEnd  = _aclFacetArray.end();

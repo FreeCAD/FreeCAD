@@ -167,6 +167,37 @@ PyObject*  TypePy::getAllDerived(PyObject *args)
     return Py::new_reference_to(res);
 }
 
+PyObject* TypePy::createInstance (PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Base::BaseClass* base = static_cast<Base::BaseClass*>(getBaseTypePtr()->createInstance());
+    if (!base) {
+        Py_Return;
+    }
+
+    //TODO: At the moment "base" will never be destroyed and causes a memory leak
+    return base->getPyObject();
+}
+
+PyObject* TypePy::createInstanceByName (PyObject *args)
+{
+    const char* type;
+    PyObject* load = Py_False;
+    if (!PyArg_ParseTuple(args, "s|O!", &type, &PyBool_Type, &load))
+        return nullptr;
+
+    Base::BaseClass* base = static_cast<Base::BaseClass*>
+                                (Base::Type::createInstanceByName(type, PyObject_IsTrue(load) ? true : false));
+    if (!base) {
+        Py_Return;
+    }
+
+    //TODO: At the moment "base" will never be destroyed and causes a memory leak
+    return base->getPyObject();
+}
+
 Py::String TypePy::getName(void) const
 {
     return Py::String(std::string(getBaseTypePtr()->getName()));
@@ -197,5 +228,5 @@ PyObject *TypePy::getCustomAttributes(const char* /*attr*/) const
 
 int TypePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

@@ -50,7 +50,7 @@ namespace Base
 class Persistence;
 
 
-/** The Writer class 
+/** The Writer class
  * This is an important helper class for the store and retrieval system
  * of persistent objects in FreeCAD.
  * \see Base::Persistence
@@ -190,9 +190,9 @@ private:
 };
 
 
-/** The ZipWriter class 
+/** The ZipWriter class
  * This is an important helper class implementation for the store and retrieval system
- * of persistent objects in FreeCAD. 
+ * of persistent objects in FreeCAD.
  * \see Base::Persistence
  * \author Juergen Riegel
  */
@@ -215,9 +215,9 @@ private:
     zipios::ZipOutputStream ZipStream;
 };
 
-/** The StringWriter class 
+/** The StringWriter class
  * This is an important helper class implementation for the store and retrieval system
- * of objects in FreeCAD. 
+ * of objects in FreeCAD.
  * \see Base::Persistence
  * \author Juergen Riegel
  */

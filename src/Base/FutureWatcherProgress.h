@@ -47,4 +47,4 @@ private:
 };
 }
 
-#endif // BASE_FUTUREWATCHER_H 
+#endif // BASE_FUTUREWATCHER_H

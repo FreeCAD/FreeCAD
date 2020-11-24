@@ -308,6 +308,11 @@ void ViewProviderDocumentObject::show(void)
     }
 }
 
+const char* ViewProviderDocumentObject::getTransactionText() const
+{
+    return QT_TRANSLATE_NOOP("Command", "Edit");
+}
+
 void ViewProviderDocumentObject::updateView()
 {
     if(!pcObject || testStatus(ViewStatus::UpdatingView))

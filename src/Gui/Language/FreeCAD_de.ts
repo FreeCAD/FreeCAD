@@ -121,6 +121,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Bearbeiten</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -433,11 +440,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source> "</source>
-      <translation type="unfinished"> "</translation>
+      <translation> "</translation>
     </message>
     <message>
       <source>"</source>
-      <translation type="unfinished">"</translation>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -2520,6 +2527,17 @@ angezeigt</translation>
       <source>Show axis cross by default</source>
       <translation>Achsenkreuz standardmäßig anzeigen</translation>
     </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Auswahlradius (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>Bereich für das Auswählen von Elementen in der 3D-Ansicht.
+Größere Werte erleichtern das Selektieren von Dingen, können aber die Auswahl kleiner Merkmale unmöglich machen.               </translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -3211,11 +3229,11 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     </message>
     <message>
       <source>Recent macros menu</source>
-      <translation type="unfinished">Recent macros menu</translation>
+      <translation>Liste der aktuellen Makros</translation>
     </message>
     <message>
       <source>Size of recent macro list</source>
-      <translation type="unfinished">Size of recent macro list</translation>
+      <translation>Länge der Liste der aktuellen Makros</translation>
     </message>
     <message>
       <source>How many macros should be listed in recent macros list</source>
@@ -3223,19 +3241,19 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     </message>
     <message>
       <source>Shortcut count</source>
-      <translation type="unfinished">Shortcut count</translation>
+      <translation>Verknüpfungsanzahl</translation>
     </message>
     <message>
       <source>How many recent macros should have shortcuts</source>
-      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+      <translation>Wie viele der aktuellen Makros sollten Verknüpfungen haben</translation>
     </message>
     <message>
       <source>Keyboard Modifiers</source>
-      <translation type="unfinished">Keyboard Modifiers</translation>
+      <translation>Tastatur Modifikatoren</translation>
     </message>
     <message>
       <source>Keyboard modifiers, default = Ctrl+Shift+</source>
-      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+      <translation>Tastatur Modifikatoren, Standard = Strg + Shift</translation>
     </message>
   </context>
   <context>
@@ -3577,10 +3595,6 @@ Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation
       <translation>Einfache Farbe</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Auswahlradius (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Objekt in Bearbeitung</translation>
     </message>
@@ -3595,12 +3609,6 @@ Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation>Aktivieren der Auswahlhervorhebung und Verwenden der angegebene Farbe</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation>Bereich für das Auswählen von Elementen in der 3D-Ansicht.
-Größere Werte erleichtern das Selektieren von Dingen, können aber die Auswahl kleiner Merkmale unmöglich machen.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -5356,7 +5364,7 @@ Wollen Sie sie beenden, ohne Ihre Daten zu speichern?</translation>
     <name>Gui::RecentMacrosAction</name>
     <message>
       <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
+      <translation>Makro %1 ausführen (Umschalt+Klick zum Bearbeiten) Verknüpfung: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6714,9 +6722,9 @@ Wählen Sie 'Abbrechen' um abzubrechen</translation>
       <source>
 
 Please check report view for more...</source>
-      <translation type="unfinished">
+      <translation>
 
-Please check report view for more...</translation>
+Bitte überprüfen Sie die Berichtsansicht für mehr...</translation>
     </message>
     <message>
       <source>
@@ -6724,7 +6732,7 @@ Please check report view for more...</translation>
 Pyhsical path: </source>
       <translation>
 
-Physikalischer Pfad: </translation>
+Physischer Pfad: </translation>
     </message>
     <message>
       <source>

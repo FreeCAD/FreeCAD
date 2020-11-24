@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *   Copyright (c) 2020 Schildkroet                                        *
@@ -43,7 +41,7 @@ from PySide import QtCore
 
 __title__ = "Path Drilling Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Path Drilling operation."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
@@ -227,9 +225,9 @@ def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Drilling operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    
+
     obj.Proxy = ObjectDrilling(obj, name)
     if obj.Proxy:
         obj.Proxy.findAllHoles(obj)
-    
+
     return obj

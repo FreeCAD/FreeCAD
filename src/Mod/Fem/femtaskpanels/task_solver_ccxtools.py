@@ -285,7 +285,7 @@ class _TaskPanel:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         try:
             self.fea.load_results()
-        except:
+        except Exception:
             FreeCAD.Console.PrintError("loading results failed\n")
 
         QApplication.restoreOverrideCursor()

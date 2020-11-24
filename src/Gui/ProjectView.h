@@ -31,7 +31,8 @@
 
 #include <Gui/DockWindow.h>
 #include <Gui/Selection.h>
-class QDirModel;
+
+class QFileSystemModel;
 
 namespace Gui {
 
@@ -48,7 +49,7 @@ public:
     ~ProjectWidget();
 
 private:
-    QDirModel *fileModel;
+    QFileSystemModel *fileModel;
  
 };
 

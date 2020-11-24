@@ -1,4 +1,3 @@
-"""Initialization of the Arch workbench (graphical interface)."""
 # ***************************************************************************
 # *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -19,6 +18,9 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
+"""Initialization of the Arch workbench (graphical interface)."""
+
 import os
 import FreeCAD
 import FreeCADGui

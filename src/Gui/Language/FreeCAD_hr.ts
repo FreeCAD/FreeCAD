@@ -121,6 +121,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Uredi</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -2555,6 +2562,18 @@ otvaranja ili stvaranja datoteke
 
 </translation>
     </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Odaberite radijus (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -3623,10 +3642,6 @@ Naginjanje miša nije onemogućeno ovom postavkom.</translation>
       <translation>Jednostavna boja</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Odaberite radijus (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Objekt uređivanja</translation>
     </message>
@@ -3642,12 +3657,6 @@ Naginjanje miša nije onemogućeno ovom postavkom.</translation>
       <source>Enable selection highlighting and use specified color</source>
       <translation>Omogući isticanje odabira i korištenje određene boje
 </translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation>Područje za odabir elemenata u 3D prikazu.
-Veća vrijednost olakšava odabir stvari, ali može onemogućiti odabir malih značajki.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>

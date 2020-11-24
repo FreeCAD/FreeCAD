@@ -238,126 +238,126 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="215"/>
+      <location filename="../../DrawingView.cpp" line="219"/>
       <source>&amp;Background</source>
       <translation>&amp;Fundal </translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="221"/>
+      <location filename="../../DrawingView.cpp" line="225"/>
       <source>&amp;Outline</source>
       <translation>&amp;Contur</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="227"/>
+      <location filename="../../DrawingView.cpp" line="231"/>
       <source>&amp;Native</source>
       <translation>&amp;Nativ </translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="231"/>
+      <location filename="../../DrawingView.cpp" line="235"/>
       <source>&amp;OpenGL</source>
       <translation>&amp;OpenGL </translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="234"/>
+      <location filename="../../DrawingView.cpp" line="238"/>
       <source>&amp;Image</source>
       <translation>&amp;Imagine </translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="238"/>
+      <location filename="../../DrawingView.cpp" line="242"/>
       <source>&amp;High Quality Antialiasing</source>
       <translation>&amp;Antialiasing de înaltă calitate</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="276"/>
+      <location filename="../../DrawingView.cpp" line="280"/>
       <source>Open SVG File</source>
       <translation>Deschide fişier SVG </translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="277"/>
+      <location filename="../../DrawingView.cpp" line="281"/>
       <source>Could not open file '%1'.</source>
       <translation>Fişierul '%1' nu a putut fi deschis.</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="364"/>
+      <location filename="../../DrawingView.cpp" line="368"/>
       <source>&amp;Renderer</source>
       <translation>&amp;Renderizator</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="469"/>
+      <location filename="../../DrawingView.cpp" line="473"/>
       <source>Export PDF</source>
       <translation>Export format PDF</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="470"/>
+      <location filename="../../DrawingView.cpp" line="474"/>
       <source>PDF file</source>
       <translation>Fişier PDF</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="486"/>
+      <location filename="../../DrawingView.cpp" line="490"/>
       <source>Page sizes</source>
       <translation>Dimensiuni de pagină</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="487"/>
+      <location filename="../../DrawingView.cpp" line="491"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="489"/>
+      <location filename="../../DrawingView.cpp" line="493"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="491"/>
+      <location filename="../../DrawingView.cpp" line="495"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="493"/>
+      <location filename="../../DrawingView.cpp" line="497"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="495"/>
+      <location filename="../../DrawingView.cpp" line="499"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="497"/>
+      <location filename="../../DrawingView.cpp" line="501"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="578"/>
+      <location filename="../../DrawingView.cpp" line="582"/>
       <source>Different orientation</source>
       <translation>Orientare diferită</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="579"/>
+      <location filename="../../DrawingView.cpp" line="583"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>Imprimanta utilizează o orientare diferită a hârtiei decât desenul. Doriţi să continuaţi?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="586"/>
-      <location filename="../../DrawingView.cpp" line="594"/>
+      <location filename="../../DrawingView.cpp" line="590"/>
+      <location filename="../../DrawingView.cpp" line="598"/>
       <source>Different paper size</source>
       <translation>Hârtie de dimensiune diferită</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="587"/>
-      <location filename="../../DrawingView.cpp" line="595"/>
+      <location filename="../../DrawingView.cpp" line="591"/>
+      <location filename="../../DrawingView.cpp" line="599"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Imprimanta utilizează o altă dimensiune de hârtie decât desenul. Doriţi să continuaţi?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="606"/>
+      <location filename="../../DrawingView.cpp" line="610"/>
       <source>Opening file failed</source>
       <translation>Deschiderea fișierului a eșuat</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="607"/>
+      <location filename="../../DrawingView.cpp" line="611"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>Fișierul r '%1' nu acceptă scrierea.</translation>
     </message>

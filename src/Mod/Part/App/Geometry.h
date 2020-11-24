@@ -61,6 +61,8 @@
 #include <bitset>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
+#include <Base/Matrix.h>
+#include <Base/Placement.h>
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
@@ -99,7 +101,8 @@ public:
     /// construction geometry (means no impact on a later built topo)
     /// Note: In the Sketcher and only for the specific case of a point, it has a special meaning:
     /// a construction point has fixed coordinates for the solver (it has fixed parameters)
-    bool Construction;
+    inline bool getConstruction(void) const {return Construction;};
+    inline void setConstruction(bool construction) {Construction = construction;};
     /// returns the tag of the geometry object
     boost::uuids::uuid getTag() const;
 
@@ -121,15 +124,22 @@ public:
     bool testFlag(int flag) const { return Flags.test((size_t)(flag)); }
     void setFlag(int flag, bool v=true) { Flags.set((size_t)(flag),v); }
 
-    const std::vector<std::weak_ptr<GeometryExtension>> getExtensions() const;
+    std::vector<std::weak_ptr<const GeometryExtension>> getExtensions() const;
 
     bool hasExtension(Base::Type type) const;
     bool hasExtension(std::string name) const;
-    const std::weak_ptr<GeometryExtension> getExtension(Base::Type type) const;
-    const std::weak_ptr<GeometryExtension> getExtension(std::string name) const;
+    std::weak_ptr<const GeometryExtension> getExtension(Base::Type type) const;
+    std::weak_ptr<const GeometryExtension> getExtension(std::string name) const;
     void setExtension(std::unique_ptr<GeometryExtension> &&geo);
     void deleteExtension(Base::Type type);
     void deleteExtension(std::string name);
+
+    void mirror(const Base::Vector3d& point);
+    void mirror(const Base::Vector3d& point, const Base::Vector3d& dir);
+    void rotate(const Base::Placement& plm);
+    void scale(const Base::Vector3d& vec, double scale);
+    void transform(const Base::Matrix4D& mat);
+    void translate(const Base::Vector3d& vec);
 
 protected:
     /// create a new tag for the geometry object
@@ -147,6 +157,9 @@ protected:
 private:
     Geometry(const Geometry&);
     Geometry& operator = (const Geometry&);
+
+protected:
+    bool Construction;
 };
 
 class PartExport GeomPoint : public Geometry
@@ -318,7 +331,8 @@ public:
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;
 
-    void increaseDegree(double degree);
+    void increaseDegree(int degree);
+    bool approximate(double tol3d, int maxSegments, int maxDegree, int continuity);
 
     void increaseMultiplicity(int index, int multiplicity);
     bool removeKnot(int index, int multiplicity, double tolerance = Precision::PConfusion());

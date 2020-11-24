@@ -1789,7 +1789,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="56"/>
       <source>Binormal</source>
-      <translation type="unfinished">Binormal</translation>
+      <translation>Бинормала</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>

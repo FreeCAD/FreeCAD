@@ -181,7 +181,7 @@ class Offset(gui_base_original.Modifier):
                                                    self.point)
                     v2 = DraftGeomUtils.getTangent(self.shape.Edges[dist[1]],
                                                    self.point)
-                    a = -DraftVecUtils.angle(v1, v2)
+                    a = -DraftVecUtils.angle(v1, v2, plane.axis)
                     self.dvec = DraftVecUtils.rotate(d, a, plane.axis)
                     occmode = self.ui.occOffset.isChecked()
                     utils.param.SetBool("Offset_OCC", occmode)
@@ -196,7 +196,7 @@ class Offset(gui_base_original.Modifier):
                     self.npts = []
                     for p in self.sel.Points:
                         currtan = DraftGeomUtils.getTangent(e, p)
-                        a = -DraftVecUtils.angle(currtan, basetan)
+                        a = -DraftVecUtils.angle(currtan, basetan, plane.axis)
                         self.dvec = DraftVecUtils.rotate(d, a, plane.axis)
                         self.npts.append(p.add(self.dvec))
                     self.ghost.update(self.npts)
@@ -294,6 +294,13 @@ class Offset(gui_base_original.Modifier):
                     delta = str(rad)
                 else:
                     _err("Draft.Offset error: Unhandled case")
+            # to offset bspline
+            elif self.mode == "BSpline":
+                new_points = []
+                for old_point, new_point in zip(self.sel.Points, self.npts):
+                    diff_direction = new_point.sub(old_point).normalize()
+                    new_points.append(old_point.add(diff_direction*rad))
+                delta = DraftVecUtils.toString(new_points)
             else:
                 self.dvec.normalize()
                 self.dvec.multiply(rad)
@@ -301,6 +308,7 @@ class Offset(gui_base_original.Modifier):
             copymode = False
             occmode = self.ui.occOffset.isChecked()
             utils.param.SetBool("Offset_OCC", occmode)
+
             if self.ui.isCopy.isChecked():
                 copymode = True
             Gui.addModule("Draft")

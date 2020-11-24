@@ -22,8 +22,6 @@
 
 
 #include "PreCompiled.h"
-#include "PyExport.h"
-#include "Exception.h"
 #include <sstream>
 #include "Console.h"
 FC_LOG_LEVEL_INIT("swig")
@@ -32,6 +30,7 @@ FC_LOG_LEVEL_INIT("swig")
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wdeprecated-register"
+# pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #elif defined (__GNUC__)
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wmissing-field-initializers"
@@ -39,6 +38,8 @@ FC_LOG_LEVEL_INIT("swig")
 # pragma GCC diagnostic ignored "-Wcast-function-type"
 # endif
 #endif
+#include "PyExport.h"
+#include "Exception.h"
 namespace Swig_python {
 #define SWIG_PYTHON_NO_BUILD_NONE
 #include <swigpyrun.h>

@@ -1,6 +1,6 @@
 /****************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>              *
- *   Copyright (c) 2019 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *

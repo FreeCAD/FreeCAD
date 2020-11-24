@@ -69,7 +69,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="977"/>
       <source>Add Cosmetic Line Through 2 Points</source>
-      <translation type="unfinished">Add Cosmetic Line Through 2 Points</translation>
+      <translation>2 nokta boyunca yardımcı doğru ekle</translation>
     </message>
   </context>
   <context>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1129"/>
       <source>Remove Cosmetic Object</source>
-      <translation>Kozmetik nesneyi kaldır</translation>
+      <translation>Yardımcı nesneyi kaldır</translation>
     </message>
   </context>
   <context>
@@ -235,7 +235,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="395"/>
       <source>Add Cosmetic Vertex</source>
-      <translation>Yeni Yüzeysel Köşe</translation>
+      <translation>Yardımcı Nokta Ekle</translation>
     </message>
   </context>
   <context>
@@ -248,12 +248,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="216"/>
       <source>Insert Cosmetic Vertex</source>
-      <translation>Yüzeysel köşe ekle</translation>
+      <translation>Yardımcı nokta ekle</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="291"/>
       <source>Add Cosmetic Vertex</source>
-      <translation>Yeni Yüzeysel Köşe</translation>
+      <translation>Yardımcı Nokta Ekle</translation>
     </message>
   </context>
   <context>
@@ -1058,7 +1058,7 @@
       <location filename="../../Command.cpp" line="339"/>
       <location filename="../../Command.cpp" line="592"/>
       <source>No Shapes, Groups or Links in this selection</source>
-      <translation>Seçim içinde şekil(ler) ya da Bağlantılar(lar) yok</translation>
+      <translation>Bu seçimde Şekil, Grup veya Bağlantı Yok</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="453"/>
@@ -1281,7 +1281,7 @@
       <location filename="../../Command.cpp" line="742"/>
       <location filename="../../CommandCreateDims.cpp" line="1460"/>
       <source>No View of a Part in selection.</source>
-      <translation>Seçimdeki Parçanın Görünümü Yok.</translation>
+      <translation>Seçimde Parça Görünümü Yok.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1477"/>
@@ -1429,22 +1429,22 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1038"/>
       <source>Selection is empty.</source>
-      <translation type="unfinished">Selection is empty.</translation>
+      <translation>Seçim boş.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1052"/>
       <source>Not enough points in selection.</source>
-      <translation type="unfinished">Not enough points in selection.</translation>
+      <translation>Seçimde yeterli nokta yok.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1072"/>
       <source>Selection is not a Cosmetic Line.</source>
-      <translation type="unfinished">Selection is not a Cosmetic Line.</translation>
+      <translation>Seçim bir yardımcı doğru değil.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1109"/>
       <source>You must select 2 Vertexes.</source>
-      <translation type="unfinished">You must select 2 Vertexes.</translation>
+      <translation>2 Nokta seçmelisiniz.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1285"/>
@@ -1459,7 +1459,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1363"/>
       <source>No Part Views in this selection</source>
-      <translation>Bu seçimde Bölüm görünümü yok</translation>
+      <translation>Bu seçimde Parça Görünümü yok</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1432"/>
@@ -1475,7 +1475,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1169"/>
       <source>At least 1 object in selection is not a part view</source>
-      <translation>Seçimdeki en az bir nesne bölüm görünümü değil</translation>
+      <translation>Seçimdeki en az 1 nesne bir parça görünümü değil</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1219"/>
@@ -1625,7 +1625,7 @@
     <message>
       <location filename="../../TaskCosVertex.cpp" line="138"/>
       <source>New Cosmetic Vertex</source>
-      <translation>Yeni Yüzeysel Köşe</translation>
+      <translation>Yeni Yardımcı Nokta</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.cpp" line="62"/>
@@ -1681,12 +1681,12 @@
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="151"/>
       <source>Create Cosmetic Line</source>
-      <translation type="unfinished">Create Cosmetic Line</translation>
+      <translation>Yardımcı çizgi oluştur</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="186"/>
       <source>Edit Cosmetic Line</source>
-      <translation type="unfinished">Edit Cosmetic Line</translation>
+      <translation>Yardımcı doğruyu düzenle</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="125"/>
@@ -1884,7 +1884,7 @@ the top and left view border</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="242"/>
       <source>Bounding box</source>
-      <translation type="unfinished">Bounding box</translation>
+      <translation>Sınır kutusu</translation>
     </message>
   </context>
   <context>
@@ -2975,7 +2975,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="96"/>
       <source>Show smooth lines</source>
-      <translation>Düzgünleştirilmiş çizgileri göster</translation>
+      <translation>Düzgün çizgileri göster</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="99"/>
@@ -3591,7 +3591,7 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskCosVertex.ui" line="26"/>
       <source>Cosmetic Vertex</source>
-      <translation>Kozmetik Köşe</translation>
+      <translation>Yardımcı Nokta</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="54"/>
@@ -3626,7 +3626,7 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="197"/>
       <source>Pick a point for cosmetic vertex</source>
-      <translation>Yüzeysel köşe için bir nokta seçin</translation>
+      <translation>Yardımcı nokta için bir hedef seçin</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="224"/>
@@ -3644,7 +3644,7 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="26"/>
       <source>Cosmetic Line</source>
-      <translation type="unfinished">Cosmetic Line</translation>
+      <translation>Yardımcı doğru</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="34"/>
@@ -3655,13 +3655,13 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
       <location filename="../../TaskCosmeticLine.ui" line="61"/>
       <location filename="../../TaskCosmeticLine.ui" line="134"/>
       <source>2d Point</source>
-      <translation type="unfinished">2d Point</translation>
+      <translation>2d Nokta</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="74"/>
       <location filename="../../TaskCosmeticLine.ui" line="147"/>
       <source>3d Point</source>
-      <translation type="unfinished">3d Point</translation>
+      <translation>3d Nokta</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="88"/>
@@ -4385,7 +4385,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="43"/>
       <source>Cosmetic</source>
-      <translation type="unfinished">Cosmetic</translation>
+      <translation>Yardımcı</translation>
     </message>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="50"/>
@@ -4662,7 +4662,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="292"/>
       <source>Inserts a Cosmetic Vertex into a View</source>
-      <translation type="unfinished">Inserts a Cosmetic Vertex into a View</translation>
+      <translation>Görünüme Yardımcı Nokta Ekler</translation>
     </message>
   </context>
   <context>
@@ -4686,7 +4686,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="296"/>
       <source>Inserts Cosmetic Vertices at Midpoint of selected Edges</source>
-      <translation type="unfinished">Inserts Cosmetic Vertices at Midpoint of selected Edges</translation>
+      <translation>Seçili Kenarların Ortasına Yardımcı Noktalar Ekler</translation>
     </message>
   </context>
   <context>
@@ -4694,7 +4694,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="300"/>
       <source>Inserts Cosmetic Vertices at Quadrant Points of selected Circles</source>
-      <translation type="unfinished">Inserts Cosmetic Vertices at Quadrant Points of selected Circles</translation>
+      <translation>Seçili Çemberin Çeyrek Kısımlarına Yardımcı Noktalar Ekler</translation>
     </message>
   </context>
   <context>

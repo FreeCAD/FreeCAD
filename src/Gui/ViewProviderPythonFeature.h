@@ -215,6 +215,8 @@ public:
         QIcon icon = imp->getIcon();
         if (icon.isNull())
             icon = ViewProviderT::getIcon();
+        else
+            icon = ViewProviderT::mergeOverlayIcons(icon);
         return icon;
     }
 

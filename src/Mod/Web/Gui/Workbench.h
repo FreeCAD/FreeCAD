@@ -56,4 +56,4 @@ protected:
 }; // namespace WebGui
 
 }
-#endif // WEB_WORKBENCH_H 
+#endif // WEB_WORKBENCH_H

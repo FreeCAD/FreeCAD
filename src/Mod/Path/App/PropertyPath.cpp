@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -60,7 +60,7 @@ void PropertyPath::setValue(const Toolpath& pa)
 }
 
 
-const Toolpath &PropertyPath::getValue(void)const 
+const Toolpath &PropertyPath::getValue(void)const
 {
     return _Path;
 }
@@ -87,7 +87,7 @@ App::Property *PropertyPath::Copy(void) const
 {
     PropertyPath *prop = new PropertyPath();
     prop->_Path = this->_Path;
- 
+
     return prop;
 }
 

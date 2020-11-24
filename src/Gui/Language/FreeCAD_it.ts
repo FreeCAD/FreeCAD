@@ -121,6 +121,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Modifica</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -2533,6 +2540,18 @@ opening or creation</source>
       <source>Show axis cross by default</source>
       <translation>Mostra di default il sistema di assi</translation>
     </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Raggio di selezione (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>Area per selezionare gli elementi nella vista 3D.
+Un valore maggiore facilita la selezione delle cose, ma può rendere impossibile la selezione di funzionalità piccole.
+               </translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -3232,7 +3251,7 @@ Si può anche utilizzare il modulo: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>How many macros should be listed in recent macros list</source>
-      <translation>Quante macro dovrebbero essere elencate nell'elenco delle macro recenti</translation>
+      <translation>Quante macro devono essere elencate nella lista delle macro recenti</translation>
     </message>
     <message>
       <source>Shortcut count</source>
@@ -3240,11 +3259,11 @@ Si può anche utilizzare il modulo: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>How many recent macros should have shortcuts</source>
-      <translation>Quante macro recenti dovrebbero avere scorciatoie</translation>
+      <translation>Quante macro recenti devono avere scorciatoie</translation>
     </message>
     <message>
       <source>Keyboard Modifiers</source>
-      <translation>Modificatori Tastiera</translation>
+      <translation>Modificatori tastiera</translation>
     </message>
     <message>
       <source>Keyboard modifiers, default = Ctrl+Shift+</source>
@@ -3590,10 +3609,6 @@ Questa impostazione non disabilitata l'inclinazione tramite mouse.</translation>
       <translation>Colore semplice</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Raggio di selezione (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Oggetto in fase di modifica</translation>
     </message>
@@ -3608,12 +3623,6 @@ Questa impostazione non disabilitata l'inclinazione tramite mouse.</translation>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation>Abilita l'evidenziazione della selezione e usa il colore specificato</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation>Area per la selezione degli elementi nella vista 3D.
-Un valore più grande facilita la selezione, ma può rendere impossibile la selezione di piccole funzioni.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -5369,7 +5378,7 @@ Vuoi uscire senza salvare i tuoi dati?</translation>
     <name>Gui::RecentMacrosAction</name>
     <message>
       <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
+      <translation>Esegue la macro %1 (Maiusc+clic per modificare) scorciatoia: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6715,7 +6724,7 @@ Scegli 'Annulla' per interrompere</translation>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
-      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+      <translation>Identico percorso fisico rilevato. Può causare una sovrascrittura indesiderata del documento esistente!
 
 </translation>
     </message>
@@ -6727,33 +6736,33 @@ Scegli 'Annulla' per interrompere</translation>
       <source>
 
 Please check report view for more...</source>
-      <translation type="unfinished">
+      <translation>
 
-Please check report view for more...</translation>
+Si prega di controllare la vista report per ulteriori informazioni...</translation>
     </message>
     <message>
       <source>
 
 Pyhsical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Pyhsical path: </translation>
+Percorso fisico: </translation>
     </message>
     <message>
       <source>
 Document: </source>
-      <translation type="unfinished">
-Document: </translation>
+      <translation>
+Documento: </translation>
     </message>
     <message>
       <source>
   Path: </source>
-      <translation type="unfinished">
-  Path: </translation>
+      <translation>
+  Percorso: </translation>
     </message>
     <message>
       <source>Identical physical path</source>
-      <translation type="unfinished">Identical physical path</translation>
+      <translation>Percorso fisico identico</translation>
     </message>
   </context>
   <context>
@@ -7074,7 +7083,7 @@ Document: </translation>
     <name>StdCmdDlgMacroRecord</name>
     <message>
       <source>&amp;Macro recording ...</source>
-      <translation>Registra &amp;Macro...</translation>
+      <translation>Registra una &amp;macro...</translation>
     </message>
     <message>
       <source>Opens a dialog to record a macro</source>
@@ -7417,7 +7426,7 @@ Document: </translation>
     </message>
     <message>
       <source>Import links</source>
-      <translation>Importa link</translation>
+      <translation>Importa un link</translation>
     </message>
     <message>
       <source>Import selected external link(s)</source>
@@ -7477,7 +7486,7 @@ Document: </translation>
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation>Crea un sotto-link</translation>
+      <translation>Crea un link relativo</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>
@@ -7567,11 +7576,11 @@ Document: </translation>
     </message>
     <message>
       <source>Unlink</source>
-      <translation>Scollega</translation>
+      <translation>Annulla il link</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
-      <translation>Pulisci i livelli dei collegamenti</translation>
+      <translation>Elimina il link e lo sostituisce con l'oggetto</translation>
     </message>
   </context>
   <context>
@@ -7969,11 +7978,11 @@ Document: </translation>
     </message>
     <message>
       <source>Recent macros</source>
-      <translation type="unfinished">Recent macros</translation>
+      <translation>Macro recenti</translation>
     </message>
     <message>
       <source>Recent macro list</source>
-      <translation type="unfinished">Recent macro list</translation>
+      <translation>Elenco delle macro recenti</translation>
     </message>
   </context>
   <context>

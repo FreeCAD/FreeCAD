@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="1303"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projekt części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1304"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="1637"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Fazowanie zaznaczonych krawędzi kształtu</translation>
+      <translation>Fazuj wybrane krawędzie obiektu</translation>
     </message>
   </context>
   <context>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1878"/>
       <source>Mirrored</source>
-      <translation>Dublowane</translation>
+      <translation>Odbicie lustrzane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1879"/>
@@ -710,7 +710,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="49"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation>Szkicuj należącą do innej zawartości funkcję</translation>
+      <translation>Szkic należy do innej funkcji zawartości</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="50"/>
@@ -1091,12 +1091,12 @@
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
       <source>Add body</source>
-      <translation>Dodaj zawartość</translation>
+      <translation>Dodaj kontener</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="32"/>
       <source>Remove body</source>
-      <translation>Usuń zawartość</translation>
+      <translation>Usuń kontener</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="48"/>
@@ -1336,7 +1336,7 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="69"/>
       <source>Belongs to another body</source>
-      <translation>Należy do innej części</translation>
+      <translation>Należy do innego kontenera</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="70"/>
@@ -2285,7 +2285,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="100"/>
       <source>Recto Verso</source>
-      <translation>Druk obustronny</translation>
+      <translation>Obie strony</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="109"/>
@@ -2300,7 +2300,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="124"/>
       <source>Make thickness inwards</source>
-      <translation>Stwórz gęstość do wewnątrz</translation>
+      <translation>Stwórz grubość do wewnątrz</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="98"/>
@@ -2381,7 +2381,7 @@
     <message>
       <location filename="../../ViewProviderBody.cpp" line="137"/>
       <source>Toggle active body</source>
-      <translation>Przełącz aktywną zawartość</translation>
+      <translation>Przełącz aktywność zawartości</translation>
     </message>
   </context>
   <context>
@@ -2584,7 +2584,7 @@
       <location filename="../../ViewProviderPrimitive.cpp" line="94"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="93"/>
       <source>Do you want to close this dialog?</source>
-      <translation>Czy chcesz zamknąć to okno dialogowe?</translation>
+      <translation>Czy chcesz zamknąć to okno?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="907"/>
@@ -2607,7 +2607,7 @@
     <message>
       <location filename="../../Command.cpp" line="1514"/>
       <source>Select an edge, face or body.</source>
-      <translation>Wybierz krawędź, ścianę lub zawartość.</translation>
+      <translation>Wybierz krawędź, ścianę lub kontener.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1518"/>
@@ -2702,7 +2702,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="135"/>
       <source>Body can't be based on another body.</source>
-      <translation>Ciało nie może opierać się na innej zawartości.</translation>
+      <translation>Podstawą zawartości nie może być inna zawartość.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="143"/>
@@ -2887,7 +2887,7 @@ Jeśli masz starszy dokument z obiektami PartDesign bez obiektu Body, użyj funk
     <message>
       <location filename="../../Utils.cpp" line="104"/>
       <source>Active Body Required</source>
-      <translation>Aktywne Body Wymagane</translation>
+      <translation>Wymagana jest aktywna zawartość</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="105"/>

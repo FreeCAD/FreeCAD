@@ -64,6 +64,16 @@ namespace Base {
         <UserDocu>Returns all descendants</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="createInstance">
+      <Documentation>
+        <UserDocu>Creates an instance of this type</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="createInstanceByName" Static="true">
+      <Documentation>
+        <UserDocu>Creates an instance of the named type</UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="Name" ReadOnly="true">
       <Documentation>
         <UserDocu>The name of the type id</UserDocu>

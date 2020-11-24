@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Python.h>
 # include <SMESH_Gen.hxx>
 # include <SMESH_Mesh.hxx>
 # include <SMDS_PolyhedralVolumeOfNodes.hxx>

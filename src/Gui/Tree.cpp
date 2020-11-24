@@ -1998,24 +1998,35 @@ bool TreeWidget::onDoubleClickItem(QTreeWidgetItem *item)
         }
         else if (item->type() == TreeWidget::ObjectType) {
             DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(item);
-            objitem->getOwnerDocument()->document()->setActiveView(objitem->object());
+            ViewProviderDocumentObject* vp = objitem->object();
+
+            objitem->getOwnerDocument()->document()->setActiveView(vp);
             auto manager = Application::Instance->macroManager();
             auto lines = manager->getLines();
-            auto editDoc = Application::Instance->editDocument();
-            std::ostringstream ss;
-            ss << "Double click " << objitem->object()->getObject()->getNameInDocument();
-            App::AutoTransaction committer(ss.str().c_str(), true);
-            ss.str("");
-            ss << Command::getObjectCmd(objitem->object()->getObject())
-                << ".ViewObject.doubleClicked()";
-            if (!objitem->object()->doubleClicked())
-                return false;
-            else if(lines == manager->getLines())
-                manager->addLine(MacroManager::Gui,ss.str().c_str());
 
-            // If the double click starts an editing, let the transaction persist
-            if(!editDoc && Application::Instance->editDocument()) {
-                committer.setEnable(false);
+            std::ostringstream ss;
+            ss << Command::getObjectCmd(vp->getObject())
+                << ".ViewObject.doubleClicked()";
+
+            const char* commandText = vp->getTransactionText();
+            if (commandText) {
+                auto editDoc = Application::Instance->editDocument();
+                App::AutoTransaction committer(commandText, true);
+
+                if (!vp->doubleClicked())
+                    return false;
+                else if (lines == manager->getLines())
+                    manager->addLine(MacroManager::Gui, ss.str().c_str());
+
+                // If the double click starts an editing, let the transaction persist
+                if (!editDoc && Application::Instance->editDocument())
+                    committer.setEnable(false);
+            }
+            else {
+                if (!vp->doubleClicked())
+                    return false;
+                else if (lines == manager->getLines())
+                    manager->addLine(MacroManager::Gui, ss.str().c_str());
             }
         }
     } catch (Base::Exception &e) {
@@ -3131,13 +3142,16 @@ void TreeWidget::onReloadDoc() {
     }
 }
 
-void TreeWidget::onCloseDoc() {
+void TreeWidget::onCloseDoc()
+{
     if (!this->contextItem || this->contextItem->type() != DocumentType)
         return;
-    DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
-    App::Document* doc = docitem->document()->getDocument();
     try {
-        Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", doc->getName());
+        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        Gui::Document* gui = docitem->document();
+        App::Document* doc = gui->getDocument();
+        if (gui->canClose(true, true))
+            Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", doc->getName());
     } catch (const Base::Exception& e) {
         e.ReportException();
     } catch (std::exception &e) {

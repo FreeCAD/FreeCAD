@@ -60,6 +60,13 @@ PyObject *TopoShapeCompoundPy::PyMake(struct _typeobject *, PyObject *, PyObject
 // constructor method
 int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined Compound
+        getTopoShapePtr()->setShape(TopoDS_Compound());
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *pcObj;
     if (!PyArg_ParseTuple(args, "O", &pcObj))
         return -1;

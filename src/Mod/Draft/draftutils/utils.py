@@ -723,7 +723,7 @@ def load_svg_patterns():
     import importSVG
     App.svgpatterns = {}
 
-    # Getting default patterns in the resource file
+    # Get default patterns in the resource file
     patfiles = QtCore.QDir(":/patterns").entryList()
     for fn in patfiles:
         file = ":/patterns/" + str(fn)
@@ -745,6 +745,21 @@ def load_svg_patterns():
                 if p:
                     for k in p:
                         p[k] = [p[k], file]
+                    App.svgpatterns.update(p)
+
+    # Get TechDraw patterns
+    altpat = os.path.join(App.getResourceDir(),"Mod","TechDraw","Patterns")
+    if os.path.isdir(altpat):
+        for f in os.listdir(altpat):
+            if f[-4:].upper() == ".SVG":
+                file = os.path.join(altpat, f)
+                p = importSVG.getContents(file, 'pattern')
+                if p:
+                    for k in p:
+                        p[k] = [p[k], file]
+                else:
+                    # some TD pattern files have no <pattern> definition but can still be used by Draft
+                    p = {f[:-4]:["<pattern></pattern>",file]}
                     App.svgpatterns.update(p)
 
 

@@ -35,48 +35,7 @@
 namespace Part {
 PartExport Py::Object shape2pyshape(const TopoShape &shape)
 {
-    PyObject* ret = 0;
-    if (!shape.isNull()) {
-        TopAbs_ShapeEnum type = shape.getShape().ShapeType();
-        switch (type)
-        {
-        case TopAbs_COMPOUND:
-            ret = new TopoShapeCompoundPy(new TopoShape(shape));
-            break;
-        case TopAbs_COMPSOLID:
-            ret = new TopoShapeCompSolidPy(new TopoShape(shape));
-            break;
-        case TopAbs_SOLID:
-            ret = new TopoShapeSolidPy(new TopoShape(shape));
-            break;
-        case TopAbs_SHELL:
-            ret = new TopoShapeShellPy(new TopoShape(shape));
-            break;
-        case TopAbs_FACE:
-            ret = new TopoShapeFacePy(new TopoShape(shape));
-            break;
-        case TopAbs_WIRE:
-            ret = new TopoShapeWirePy(new TopoShape(shape));
-            break;
-        case TopAbs_EDGE:
-            ret = new TopoShapeEdgePy(new TopoShape(shape));
-            break;
-        case TopAbs_VERTEX:
-            ret = new TopoShapeVertexPy(new TopoShape(shape));
-            break;
-        case TopAbs_SHAPE:
-            ret = new TopoShapePy(new TopoShape(shape));
-            break;
-        default:
-            //shouldn't happen
-            ret = new TopoShapePy(new TopoShape(shape));
-            break;
-        }
-    } else {
-        ret = new TopoShapePy(new TopoShape(shape));
-    }
-    assert(ret);
-
+    PyObject* ret = const_cast<TopoShape &>(shape).getPyObject();
     return Py::asObject(ret);
 }
 

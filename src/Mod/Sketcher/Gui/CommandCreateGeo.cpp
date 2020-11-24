@@ -5133,7 +5133,7 @@ public:
                 if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
                     const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(GeoIdList[0]);
                     const Part::Geometry *geom2 = sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);
-                    construction=geom1->Construction && geom2->Construction;
+                    construction=geom1->getConstruction() && geom2->getConstruction();
                     if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                         geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                         const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geom1);
@@ -5216,7 +5216,7 @@ public:
                         if (radius < 0)
                             return false;
 
-                        construction=lineSeg1->Construction && lineSeg2->Construction;
+                        construction=lineSeg1->getConstruction() && lineSeg2->getConstruction();
                     }
                     else { // other supported curves
                         const Part::Geometry *geo1 = static_cast<const Part::Geometry *>
@@ -5224,7 +5224,7 @@ public:
                         const Part::Geometry *geo2 = static_cast<const Part::Geometry *>
                                                                 (sketchgui->getSketchObject()->getGeometry(secondCurve));
 
-                        construction=geo1->Construction && geo2->Construction;
+                        construction=geo1->getConstruction() && geo2->getConstruction();
                     }
 
 

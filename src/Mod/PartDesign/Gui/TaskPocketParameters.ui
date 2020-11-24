@@ -104,9 +104,6 @@
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
-       <property name="minimum">
-        <double>0.000000000000000</double>
-       </property>
       </widget>
      </item>
     </layout>

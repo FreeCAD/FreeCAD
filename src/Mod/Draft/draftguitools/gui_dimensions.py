@@ -129,7 +129,10 @@ class Dimension(gui_base_original.Creator):
                 self.indices = []
                 self.center = None
                 self.arcmode = False
+                self.point1 = None
                 self.point2 = None
+                self.proj_point1 = None
+                self.proj_point2 = None
                 self.force = None
                 self.info = None
                 self.selectmode = False
@@ -168,7 +171,7 @@ class Dimension(gui_base_original.Creator):
                     if v.Point == edge.Vertexes[1].Point:
                         v2 = i
 
-                if v1 and v2:
+                if v1 != None and v2 != None: # note that v1 or v2 can be zero
                     self.link = [sel_object.Object, v1, v2]
             elif DraftGeomUtils.geomType(edge) == "Circle":
                 self.node.extend([edge.Curve.Center,
@@ -296,10 +299,13 @@ class Dimension(gui_base_original.Creator):
         _cmd += ')'
         _cmd_list = ['_dim_ = ' + _cmd]
 
+        plane = App.DraftWorkingPlane
+        dir_u = DraftVecUtils.toString(plane.u)
+        dir_v = DraftVecUtils.toString(plane.v)
         if direction == "X":
-            _cmd_list += ['_dim_.Direction = FreeCAD.Vector(1, 0, 0)']
+            _cmd_list += ['_dim_.Direction = ' + dir_u]
         elif direction == "Y":
-            _cmd_list += ['_dim_.Direction = FreeCAD.Vector(0, 1, 0)']
+            _cmd_list += ['_dim_.Direction = ' + dir_v]
 
         _cmd_list += ['Draft.autogroup(_dim_)',
                       'FreeCAD.ActiveDocument.recompute()']
@@ -444,30 +450,22 @@ class Dimension(gui_base_original.Creator):
                 # Draw constraint tracker line.
                 if shift and (not self.arcmode):
                     if len(self.node) == 2:
+                        if not self.point1:
+                            self.point1 = self.node[0]
                         if not self.point2:
                             self.point2 = self.node[1]
-                        else:
-                            self.node[1] = self.point2
-                        if not self.force:
-                            _p = self.point.sub(self.node[0])
-                            a = abs(_p.getAngle(App.DraftWorkingPlane.u))
-                            if (a > math.pi/4) and (a <= 0.75*math.pi):
-                                self.force = 1
-                            else:
-                                self.force = 2
-                        if self.force == 1:
-                            self.node[1] = App.Vector(self.node[0].x,
-                                                      self.node[1].y,
-                                                      self.node[0].z)
-                        elif self.force == 2:
-                            self.node[1] = App.Vector(self.node[1].x,
-                                                      self.node[0].y,
-                                                      self.node[0].z)
+                        # else:
+                        #     self.node[1] = self.point2
+                        self.set_constraint_node()
                 else:
                     self.force = None
+                    self.proj_point1 = None
+                    self.proj_point2 = None
+                    if self.point1:
+                        self.node[0] = self.point1
                     if self.point2 and (len(self.node) > 1):
                         self.node[1] = self.point2
-                        self.point2 = None
+                        # self.point2 = None
                 # update the dimline
                 if self.node and not self.arcmode:
                     self.dimtrack.update(self.node
@@ -578,6 +576,34 @@ class Dimension(gui_base_original.Creator):
             self.createObject()
             if not self.cont:
                 self.finish()
+
+    def set_constraint_node(self):
+        """Set constrained nodes for vertical or horizontal dimension
+        by projecting on the working plane.
+        """
+        if not self.proj_point1 or not self.proj_point2:
+            plane = App.DraftWorkingPlane
+            self.proj_point1 = plane.projectPoint(self.node[0])
+            self.proj_point2 = plane.projectPoint(self.node[1])
+            proj_u= plane.u.dot(self.proj_point2 - self.proj_point1)
+            proj_v= plane.v.dot(self.proj_point2 - self.proj_point1)
+            active_view = Gui.ActiveDocument.ActiveView
+            cursor = active_view.getCursorPos()
+            cursor_point = active_view.getPoint(cursor)
+            self.point = plane.projectPoint(cursor_point)
+            if not self.force:
+                ref_point = self.point - (self.proj_point2 + self.proj_point1)*1/2
+                ref_angle = abs(ref_point.getAngle(plane.u))
+                if (ref_angle > math.pi/4) and (ref_angle <= 0.75*math.pi):
+                    self.force = 2
+                else:
+                    self.force = 1
+            if self.force == 1:
+                self.node[0] = self.proj_point1
+                self.node[1] = self.proj_point1 + plane.v*proj_v
+            elif self.force == 2:
+                self.node[0] = self.proj_point1
+                self.node[1] = self.proj_point1 + plane.u*proj_u
 
 
 Gui.addCommand('Draft_Dimension', Dimension())

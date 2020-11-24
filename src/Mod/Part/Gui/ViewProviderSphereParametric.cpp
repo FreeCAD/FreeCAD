@@ -34,7 +34,7 @@ using namespace PartGui;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderSphereParametric, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderSphereParametric, PartGui::ViewProviderPrimitive)
 
 ViewProviderSphereParametric::ViewProviderSphereParametric()
 {
@@ -61,7 +61,7 @@ std::vector<std::string> ViewProviderSphereParametric::getDisplayModes(void) con
 
 // ----------------------------------------------------------------------------
 
-PROPERTY_SOURCE(PartGui::ViewProviderEllipsoid, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderEllipsoid, PartGui::ViewProviderPrimitive)
 
 ViewProviderEllipsoid::ViewProviderEllipsoid()
 {

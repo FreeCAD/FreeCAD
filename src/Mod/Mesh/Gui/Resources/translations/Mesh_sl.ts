@@ -94,7 +94,7 @@
       <location filename="../../Command.cpp" line="1466"/>
       <location filename="../../Command.cpp" line="1467"/>
       <source>Decimates a mesh</source>
-      <translation>Decimacija mreže</translation>
+      <translation>Decimacija ploskovja</translation>
     </message>
   </context>
   <context>
@@ -747,7 +747,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
       <source>Tolerance</source>
-      <translation>Toleranca</translation>
+      <translation>Dopustno odstopanje</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="85"/>
@@ -851,7 +851,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="507"/>
       <source>Degenerated faces</source>
-      <translation>Popačene ploskve</translation>
+      <translation>Izrojene ploskve</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="587"/>
@@ -994,7 +994,7 @@ Najprej zaženite ukaz za odpravljaje pregibov</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="733"/>
       <source>%1 degenerated faces</source>
-      <translation>%1 popačenih ploskev</translation>
+      <translation>%1 izrojenih ploskev</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="758"/>
@@ -1280,7 +1280,7 @@ Najprej zaženite ukaz za odpravljaje pregibov</translation>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="37"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
-      <translation>Ta parameter prikazuje ali je pri zapisovanju datoteke
+      <translation>Ta določilka nakazuje ali je pri zapisovanju datoteke
  v zapis AMF uporabljeno ZIP stiskanje</translation>
     </message>
   </context>
@@ -1447,7 +1447,7 @@ s Phongovim senčenjem doseže gladkejši videz.
     <message>
       <location filename="../../DlgSmoothing.ui" line="49"/>
       <source>Parameter</source>
-      <translation>Parameter</translation>
+      <translation>Določilka</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="55"/>
@@ -1475,7 +1475,7 @@ s Phongovim senčenjem doseže gladkejši videz.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
-      <translation>Avtomatsko</translation>
+      <translation>Samodejno</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="99"/>
@@ -1628,7 +1628,7 @@ s Phongovim senčenjem doseže gladkejši videz.
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
       <source>Angle:</source>
-      <translation>Kot:</translation>
+      <translation>Kót:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
@@ -1694,7 +1694,7 @@ s Phongovim senčenjem doseže gladkejši videz.
       <location filename="../../RemoveComponents.ui" line="63"/>
       <location filename="../../RemoveComponents.ui" line="182"/>
       <source>Components</source>
-      <translation>Komponente</translation>
+      <translation>Sestavine</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="83"/>
@@ -1756,7 +1756,7 @@ s Phongovim senčenjem doseže gladkejši videz.
       <location filename="../../Segmentation.ui" line="252"/>
       <location filename="../../Segmentation.ui" line="286"/>
       <source>Tolerance</source>
-      <translation>Toleranca</translation>
+      <translation>Dopustno odstopanje</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
@@ -1800,12 +1800,12 @@ s Phongovim senčenjem doseže gladkejši videz.
     <message>
       <location filename="../../Segmentation.ui" line="235"/>
       <source>Max. Curvature</source>
-      <translation>Maks. Ukrivljenost</translation>
+      <translation>Najv. Ukrivljenost</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="269"/>
       <source>Min. Curvature</source>
-      <translation>Min. Ukrivljenost</translation>
+      <translation>Najm. Ukrivljenost</translation>
     </message>
   </context>
   <context>
@@ -1825,7 +1825,7 @@ s Phongovim senčenjem doseže gladkejši videz.
       <location filename="../../SegmentationBestFit.ui" line="82"/>
       <location filename="../../SegmentationBestFit.ui" line="135"/>
       <source>Tolerance</source>
-      <translation>Toleranca</translation>
+      <translation>Dopustno odstopanje</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="46"/>
@@ -1839,7 +1839,7 @@ s Phongovim senčenjem doseže gladkejši videz.
       <location filename="../../SegmentationBestFit.ui" line="116"/>
       <location filename="../../SegmentationBestFit.ui" line="169"/>
       <source>Parameters...</source>
-      <translation>Spremenljivke ...</translation>
+      <translation>Določilke ...</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
@@ -2057,12 +2057,12 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     <message>
       <location filename="../../Command.cpp" line="519"/>
       <source>Compressed X3D</source>
-      <translation type="unfinished">Compressed X3D</translation>
+      <translation>Stisnjen X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="520"/>
       <source>WebGL/X3D</source>
-      <translation type="unfinished">WebGL/X3D</translation>
+      <translation>WebGL/X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="522"/>
@@ -2087,7 +2087,7 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Asymptote Format</source>
-      <translation type="unfinished">Asymptote Format</translation>
+      <translation>Oblika približevalnice</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="534"/>
@@ -2211,12 +2211,12 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>&amp;Meshes</source>
-      <translation>&amp;Mreže</translation>
+      <translation>&amp;Ploskovja</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh tools</source>
-      <translation>Orodja za mreže</translation>
+      <translation>Orodja za ploskovja</translation>
     </message>
   </context>
 </TS>

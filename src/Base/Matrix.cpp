@@ -39,7 +39,7 @@ Matrix4D::Matrix4D (void)
     setToUnity();
 }
 
-Matrix4D::Matrix4D (float a11, float a12, float a13, float a14, 
+Matrix4D::Matrix4D (float a11, float a12, float a13, float a14,
                     float a21, float a22, float a23, float a24,
                     float a31, float a32, float a33, float a34,
                     float a41, float a42, float a43, float a44 )
@@ -62,7 +62,7 @@ Matrix4D::Matrix4D (float a11, float a12, float a13, float a14,
     dMtrx4D[3][3] = static_cast<double>(a44);
 }
 
-Matrix4D::Matrix4D (double a11, double a12, double a13, double a14, 
+Matrix4D::Matrix4D (double a11, double a12, double a13, double a14,
                     double a21, double a22, double a23, double a24,
                     double a31, double a32, double a33, double a34,
                     double a41, double a42, double a43, double a44 )
@@ -269,7 +269,7 @@ void Matrix4D::rotLine(const Vector3f& rclBase, const Vector3f& rclDir, float fA
 /**
  * If this matrix describes a rotation around an arbitrary axis with a translation (in axis direction)
  * then the base point of the axis, its direction, the rotation angle and the translation part get calculated.
- * In this case the return value is set to true, if this matrix doesn't describe a rotation false is returned. 
+ * In this case the return value is set to true, if this matrix doesn't describe a rotation false is returned.
  *
  * The translation vector can be calculated with \a fTranslation * \a rclDir, whereas the length of \a rclDir
  * is normalized to 1.
@@ -451,7 +451,7 @@ void Matrix4D::inverse (void)
   for (iz = 0 ;iz < 3; iz++)
     for (is = 0 ;is < 3; is++)
       clInvRotMat.dMtrx4D[iz][is] = dMtrx4D[is][iz];
-      
+
   /**** inv(M) = inv(Mtrl * Mrot) = inv(Mrot) * inv(Mtrl) ****/
   (*this) = clInvRotMat * clInvTrlMat;
 }
@@ -572,11 +572,11 @@ void  Matrix4D::inverseOrthogonal(void)
 
 void Matrix4D::inverseGauss (void)
 {
-  double matrix        [16]; 
+  double matrix        [16];
   double inversematrix [16] = { 1 ,0 ,0 ,0 ,
                                 0 ,1 ,0 ,0 ,
                                 0 ,0 ,1 ,0 ,
-                                0 ,0 ,0 ,1 }; 
+                                0 ,0 ,0 ,1 };
   getGLMatrix(matrix);
 
 //  Matrix_invert(matrix, inversematrix);
@@ -657,7 +657,7 @@ std::string Matrix4D::toString(void) const
     for (int j = 0; j < 4; j++)
       str << dMtrx4D[i][j] << " ";
   }
-    
+
   return str.str();
 }
 
@@ -671,7 +671,7 @@ void Matrix4D::fromString(const std::string &str)
   {
     for (int j = 0; j < 4; j++)
       input >> dMtrx4D[i][j];
-  }    
+  }
 }
 
 // Analyse the a transformation Matrix and describe the transformation
@@ -693,7 +693,7 @@ std::string Matrix4D::analyse(void) const
         {
             text = "Projection";
         }
-        else //translation and affine 
+        else //translation and affine
         {
             if (dMtrx4D[0][1] == 0.0 &&  dMtrx4D[0][2] == 0.0 &&
                 dMtrx4D[1][0] == 0.0 &&  dMtrx4D[1][2] == 0.0 &&

@@ -121,6 +121,13 @@ PyObject *TopoShapeEdgePy::PyMake(struct _typeobject *, PyObject *, PyObject *) 
 // constructor method
 int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined Edge
+        getTopoShapePtr()->setShape(TopoDS_Edge());
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *pcObj, *pcObj2;
     double first=DBL_MAX, last=DBL_MAX;
     if (PyArg_ParseTuple(args, "O!|dd", &(Part::GeometryPy::Type), &pcObj, &first, &last)) {
@@ -814,43 +821,12 @@ Py::Object TopoShapeEdgePy::getCurve() const
     {
     case GeomAbs_Line:
         {
-            static bool LineOld = true;
-            static bool init = false;
-            if (!init) {
-                init = true;
-                Base::Reference<ParameterGrp> hPartGrp = App::GetApplication().GetUserParameter()
-                    .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
-                Base::Reference<ParameterGrp> hGenPGrp = hPartGrp->GetGroup("General");
-                LineOld = hGenPGrp->GetBool("LineOld", false);
-            }
-
-            if (LineOld) {
-                GeomLineSegment* line = new GeomLineSegment();
-                Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast
-                    (line->handle());
-                Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
-                    (this_curv->BasisCurve());
-                this_line->SetLin(adapt.Line());
-                this_curv->SetTrim(adapt.FirstParameter(), adapt.LastParameter());
-                PyErr_SetString(PyExc_DeprecationWarning,
-                    "For future usage 'Curve' will return 'Line' which is infinite "
-                    "instead of the limited 'LineSegment'.\n"
-                    "If you need a line segment then use this:\n"
-                    "Part.LineSegment(edge.Curve,edge.FirstParameter,edge.LastParameter)\n"
-                    "To suppress the warning set BaseApp/Preferences/Mod/Part/General/LineOld to false");
-                PyErr_Print();
-
-                curve = new LineSegmentPy(line); // LinePyOld
-                break;
-            }
-            else {
-                GeomLine* line = new GeomLine();
-                Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
-                    (line->handle());
-                this_curv->SetLin(adapt.Line());
-                curve = new LinePy(line);
-                break;
-            }
+            GeomLine* line = new GeomLine();
+            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
+                (line->handle());
+            this_curv->SetLin(adapt.Line());
+            curve = new LinePy(line);
+            break;
         }
     case GeomAbs_Circle:
         {

@@ -67,13 +67,13 @@ public:
     /** Builds box from an array of points. */
     inline BoundBox3 (const Vector3<_Precision> *pclVect, unsigned long ulCt);
 
-    /** Defines a bounding box around the center \a rcCnt with the 
+    /** Defines a bounding box around the center \a rcCnt with the
      * distances \a fDistance in each coordinate.
      */
     BoundBox3 (const Vector3<_Precision> &rcCnt, _Precision fDistance);
     ~BoundBox3 ();
 
-    /// Assignment operator 
+    /// Assignment operator
     inline  BoundBox3<_Precision>& operator = (const BoundBox3<_Precision> &rcBound);
 
     inline bool operator == (const BoundBox3<_Precision> &rcBound) const;
@@ -129,8 +129,8 @@ public:
      * Returns the corner point \a usPoint.
      * 0: front,bottom,left    1: front,bottom,right
      * 2: front,top,right      3: front,top,left
-     * 4: back,bottom,left     5: back,bottom,right 
-     * 6: back,top,right       7: back,top,left 
+     * 4: back,bottom,left     5: back,bottom,right
+     * 6: back,top,right       7: back,top,left
      */
     inline Vector3<_Precision> CalcPoint (unsigned short usPoint) const;
     /** Returns the plane of the given side. */
@@ -139,7 +139,7 @@ public:
      * 0. edge P0-P1      1. edge P1-P2      2. edge P2-P3
      * 3. edge P3-P0      4. edge P4-P5      5. edge P5-P6
      * 6. edge P6-P7      7. edge P7-P4      8. edge P0-P4
-     * 9. edge P1-P5     10. edge P2-P6     11. edge P3-P7 
+     * 9. edge P1-P5     10. edge P2-P6     11. edge P3-P7
      */
     bool  CalcEdge (unsigned short usEdge, Vector3<_Precision>& rcP0, Vector3<_Precision>& rcP1) const;
     /** Intersection point of an inner search ray with the bounding box, built of
@@ -147,7 +147,7 @@ public:
      * bounding box.
      */
     bool IntersectionPoint (const Vector3<_Precision> &rcVct, const Vector3<_Precision> &rcVctDir, Vector3<_Precision>& cVctRes, _Precision epsilon) const;
-    /** Checks for intersection with line incl. search tolerance. */      
+    /** Checks for intersection with line incl. search tolerance. */
     bool IsCutLine ( const Vector3<_Precision>& rcBase, const Vector3<_Precision>& rcDir, _Precision fTolerance = 0.0f) const;
     /** Checks if this plane specified by (point,normal) cuts this box.
      * @note It's up to the client programmer to make sure that this bounding box is valid.
@@ -156,7 +156,7 @@ public:
     /** Computes the intersection points of line and bounding box. */
     bool IntersectWithLine (const Vector3<_Precision>& rcBase, const Vector3<_Precision>& rcDir, Vector3<_Precision>& rcP0, Vector3<_Precision>& rcP1) const;
     /** Computes the intersection point of line and a plane of the bounding box. */
-    bool IntersectPlaneWithLine (unsigned short usSide, const Vector3<_Precision>& rcBase, const Vector3<_Precision>& rcDir, 
+    bool IntersectPlaneWithLine (unsigned short usSide, const Vector3<_Precision>& rcBase, const Vector3<_Precision>& rcDir,
                                  Vector3<_Precision>& rcP0) const;
     /** Returns the side of the bounding box the ray exits. */
     typename BoundBox3<_Precision>::SIDE GetSideFromRay (const Vector3<_Precision> &rclPt, const Vector3<_Precision> &rclDir) const;
@@ -164,7 +164,7 @@ public:
     typename BoundBox3<_Precision>::SIDE GetSideFromRay (const Vector3<_Precision> &rclPt, const Vector3<_Precision> &rclDir, Vector3<_Precision>& rcInt) const;
 
     /**
-     * Searches for the closest point of the bounding box. 
+     * Searches for the closest point of the bounding box.
      */
     Vector3<_Precision> ClosestPoint (const Vector3<_Precision> &rclPt) const;
     /** Projects the box onto a plane and returns a 2D box. */
@@ -183,9 +183,9 @@ public:
     void SetVoid (void);
 
     /** Enlarges the box with factor \a fLen. */
-    inline void Enlarge (_Precision fLen);   
+    inline void Enlarge (_Precision fLen);
     /** Shrinks the box with factor \a fLen. */
-    inline void Shrink  (_Precision fLen);   
+    inline void Shrink  (_Precision fLen);
 
     /** Calculates expansion in x-direction. */
     inline _Precision LengthX (void) const;
@@ -256,11 +256,11 @@ inline BoundBox3<_Precision>::BoundBox3 (const Vector3<_Precision> *pclVect, uns
 template <class _Precision>
 inline BoundBox3<_Precision>::BoundBox3 (const Vector3<_Precision> &rcVector, _Precision fDistance)
 {
-    MinX = rcVector.x - fDistance; 
+    MinX = rcVector.x - fDistance;
     MaxX = rcVector.x + fDistance;
-    MinY = rcVector.y - fDistance; 
+    MinY = rcVector.y - fDistance;
     MaxY = rcVector.y + fDistance;
-    MinZ = rcVector.z - fDistance; 
+    MinZ = rcVector.z - fDistance;
     MaxZ = rcVector.z + fDistance;
 }
 
@@ -621,7 +621,7 @@ inline bool BoundBox3<_Precision>::IntersectionPoint (const Vector3<_Precision> 
         // test sides
         for (i = 0; (i < 6) && (!rc); i++) {
             rc = IntersectPlaneWithLine(i, rcVct, rcVctDir, cVctRes);
-            if (!cCmpBound.IsInBox(cVctRes)) 
+            if (!cCmpBound.IsInBox(cVctRes))
                 rc = false;
             if (rc == true) {
                 // does intersection point lie in desired direction
@@ -751,7 +751,7 @@ inline bool BoundBox3<_Precision>::IntersectWithLine (const Vector3<_Precision> 
         }
     }
 
-    return false; 
+    return false;
 }
 
 template <class _Precision>
@@ -849,7 +849,7 @@ inline Vector3<_Precision> BoundBox3<_Precision>::ClosestPoint (const Vector3<_P
         _Precision fDist = (clTemp - rclPt).Length();
         if (fDist < fMinDist) {
             fMinDist = fDist;
-            clRet = clTemp; 
+            clRet = clTemp;
         }
     }
 

@@ -543,8 +543,8 @@ void QGIFace::buildSvgHatch()
     m_rect->centerAt(fCenter);
     r = m_rect->rect();
     QByteArray before,after;
-    before.append(QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT));
-    after.append(QString::fromStdString(SVGCOLPREFIX + m_svgCol));
+    before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
+    after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
     QByteArray colorXML = m_svgXML.replace(before,after);
     long int tileCount = 0;
     for (int iw = 0; iw < int(nw); iw++) {
@@ -590,8 +590,8 @@ void QGIFace::buildPixHatch()
 
     r = m_rect->rect();
     QByteArray before,after;
-    before.append(QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT));
-    after.append(QString::fromStdString(SVGCOLPREFIX + m_svgCol));
+    before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
+    after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
     QByteArray colorXML = m_svgXML.replace(before,after);
     QSvgRenderer renderer;
     bool success = renderer.load(colorXML);

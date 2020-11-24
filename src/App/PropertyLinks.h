@@ -55,7 +55,7 @@ class PropertyXLink;
 /**
  * @brief Defines different scopes for which a link can be valid
  * The scopes defined in this enum describe the different possibilities of where a link can point to.
- * Local:    links are valid only within the same GeoFeatureGroup as the linkowner is in or in none. 
+ * Local:    links are valid only within the same GeoFeatureGroup as the linkowner is in or in none.
  * Child:    links are valid within the same or any sub GeoFeatureGroup
  * Global:   all possible links are valid
  * Hidden:   links are not included in dependency calculation
@@ -70,30 +70,30 @@ enum class LinkScope {
 /**
  * @brief Enables scope handling for links
  * This class is a base for all link properties and enables them to handle scopes of the linked objects.
- * The possible scopes are defined by LinkScope enum class. The default value is Local. 
+ * The possible scopes are defined by LinkScope enum class. The default value is Local.
  * The scope of a property is not saved in the document. It is a value that needs to be fixed when
- * the object holding the property is loaded. That is possible with two methods: 
+ * the object holding the property is loaded. That is possible with two methods:
  * 1. Set the scope value in the constructor of the link property
  * 2. Use setScope to change the scope in the constructor of the link property
- * 
- * The second option is only available in c++, not in python, as setscope is not exposed. It would 
+ *
+ * The second option is only available in c++, not in python, as setscope is not exposed. It would
  * not make sense to expose it there, as restoring python objects does not call the constructor again.
- * Hence in python the only way to create a LinkProperty with different scope than local is to use a 
- * specialized property for that. In c++ existing properties can simply be changed via setScope in the 
- * objects constructor. 
+ * Hence in python the only way to create a LinkProperty with different scope than local is to use a
+ * specialized property for that. In c++ existing properties can simply be changed via setScope in the
+ * objects constructor.
  */
 class AppExport ScopedLink {
-  
+
 public:
     /**
      * @brief Set the links scope
-     * Allows to define what kind of links are allowed. Only in the Local GeoFeatureGroup, in this and 
+     * Allows to define what kind of links are allowed. Only in the Local GeoFeatureGroup, in this and
      * all Childs or to all objects within the Glocal scope.
      */
-    void setScope(LinkScope scope) {_pcScope = scope;};    
+    void setScope(LinkScope scope) {_pcScope = scope;};
     /**
      * @brief Get the links scope
-     * Retrieve what kind of links are allowed. Only in the Local GeoFeatureGroup, in this and 
+     * Retrieve what kind of links are allowed. Only in the Local GeoFeatureGroup, in this and
      * all Childs or to all objects within the Glocal scope.
      */
     LinkScope getScope() const {return _pcScope;};
@@ -125,7 +125,7 @@ public:
      * @sa _updateElementReference()
      */
     virtual void updateElementReference(App::DocumentObject *feature,
-            bool reverse=false, bool notify=false) 
+            bool reverse=false, bool notify=false)
     {
         (void)feature;
         (void)reverse;
@@ -181,9 +181,9 @@ public:
      *             this LinkScope. If false, then return only if the LinkScope
      *             is not hidden.
      * @param sub: if given, then return subname references.
-     * @param newStyle: whether to return new or old style subname reference 
+     * @param newStyle: whether to return new or old style subname reference
      */
-    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const = 0;
 
     /** Called to reset this link property
@@ -206,8 +206,8 @@ public:
      */
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) = 0;
 
-    /** Return a copy of the property if the link replacement affects this property 
-     * 
+    /** Return a copy of the property if the link replacement affects this property
+     *
      * @param owner: the parent object whose link property is to be replace.
      *               Note that The parent may not be the container of this
      *               property. Link sub property can use this opportunity to
@@ -221,7 +221,7 @@ public:
     virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
             App::DocumentObject *oldObj, App::DocumentObject *newObj) const = 0;
 
-    /** Return a copy of the property if any changes caused by importing external linked object 
+    /** Return a copy of the property if any changes caused by importing external linked object
      *
      * @param nameMap: a map from the original external object name to the
      * imported new object name
@@ -244,7 +244,7 @@ public:
      * @return Returns a copy of the property if its link reference is affected.
      * The copy will later be assgiend to this property by calling its Paste().
      */
-    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+    virtual Property *CopyOnLabelChange(App::DocumentObject *obj,
                         const std::string &ref, const char *newLabel) const
     {
         (void)obj;
@@ -269,8 +269,8 @@ public:
     }
 
     /// Helper function to return a map of linked object and its subname references
-    void getLinkedElements(std::map<App::DocumentObject*, std::vector<std::string> > &elements, 
-            bool newStyle=true, bool all=true) const 
+    void getLinkedElements(std::map<App::DocumentObject*, std::vector<std::string> > &elements,
+            bool newStyle=true, bool all=true) const
     {
         std::vector<App::DocumentObject*> ret;
         std::vector<std::string> subs;
@@ -282,8 +282,8 @@ public:
     }
 
     /// Helper function to return a map of linked object and its subname references
-    std::map<App::DocumentObject*, std::vector<std::string> > 
-        linkedElements(bool newStyle=true, bool all=true) const 
+    std::map<App::DocumentObject*, std::vector<std::string> >
+        linkedElements(bool newStyle=true, bool all=true) const
     {
         std::map<App::DocumentObject*, std::vector<std::string> > ret;
         getLinkedElements(ret,newStyle,all);
@@ -329,8 +329,8 @@ public:
      * and correct any link sub reference.
      */
     static std::pair<App::DocumentObject*,std::string> tryReplaceLink(
-            const App::PropertyContainer *owner, App::DocumentObject *obj, 
-            const App::DocumentObject *parent, App::DocumentObject *oldObj, 
+            const App::PropertyContainer *owner, App::DocumentObject *obj,
+            const App::DocumentObject *parent, App::DocumentObject *oldObj,
             App::DocumentObject *newObj, const char *sub=0);
 
     /** Helper function to check and replace a link with multiple subname references
@@ -349,9 +349,9 @@ public:
      */
     static std::pair<App::DocumentObject*, std::vector<std::string> >
         tryReplaceLinkSubs( const App::PropertyContainer *owner,
-                            App::DocumentObject *obj, 
-                            const App::DocumentObject *parent, 
-                            App::DocumentObject *oldObj, 
+                            App::DocumentObject *obj,
+                            const App::DocumentObject *parent,
+                            App::DocumentObject *oldObj,
                             App::DocumentObject *newObj,
                             const std::vector<std::string> &subs);
 
@@ -378,11 +378,11 @@ public:
      * geometry element reference change due to geometry model changes.
      */
      bool _updateElementReference(App::DocumentObject *feature,
-        App::DocumentObject *obj, std::string &sub, ShadowSub &shadow, 
+        App::DocumentObject *obj, std::string &sub, ShadowSub &shadow,
         bool reverse, bool notify=false);
 
     /** Helper function to register geometry element reference
-     * 
+     *
      * @param obj: the linked object
      * @param sub: the subname reference
      * @param shadow: a pair of new and old style element references to be updated.
@@ -417,9 +417,9 @@ public:
      * the API CopyOnImportExternal(). This function helps to rewrite subname
      * reference to point to the correct sub objects that are imported.
      */
-    static std::string tryImportSubName(const App::DocumentObject *obj, const char *sub, 
-            const App::Document *doc, const std::map<std::string,std::string> &nameMap); 
-                                        
+    static std::string tryImportSubName(const App::DocumentObject *obj, const char *sub,
+            const App::Document *doc, const std::map<std::string,std::string> &nameMap);
+
     /** Helper function for link import operation
      *
      * @param doc: owner document of the imported objects
@@ -457,7 +457,7 @@ public:
      * restoreLabelReference() can be used together to restore the reference
      * during import.
      */
-    static const char *exportSubName(std::string &output, 
+    static const char *exportSubName(std::string &output,
             const App::DocumentObject *obj, const char *subname, bool first_obj=false);
 
     /** Helper function to import a subname reference
@@ -515,7 +515,7 @@ public:
      *
      * @param obj: the object that owns the label
      * @param newLabel: the new label
-     * 
+     *
      * @return return a map from the affected property to a copy of it with
      * updated subname references
      */
@@ -577,11 +577,11 @@ private:
 };
 
 /** The general Link Property
- *  Main Purpose of this property is to Link Objects and Features in a document. Like all links this 
- *  property is scope aware, meaning it does define which objects are allowed to be linked depending 
+ *  Main Purpose of this property is to Link Objects and Features in a document. Like all links this
+ *  property is scope aware, meaning it does define which objects are allowed to be linked depending
  *  of the GeoFeatureGroup where it is in. Default is Local.
- * 
- *  @note Links that are invalid in respect to the scope of this property is set to are not rejected. 
+ *
+ *  @note Links that are invalid in respect to the scope of this property is set to are not rejected.
  *        They are only detected to be invalid and prevent the feature from recomputing.
  */
 class AppExport PropertyLink : public PropertyLinkBase
@@ -637,7 +637,7 @@ public:
     virtual const char* getEditorName(void) const override
     { return "Gui::PropertyEditor::PropertyLinkItem"; }
 
-    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
 
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
@@ -692,7 +692,7 @@ public:
     }
 };
 
-class AppExport PropertyLinkList : 
+class AppExport PropertyLinkList :
     public PropertyListsT<DocumentObject*,std::vector<DocumentObject*>, PropertyLinkListBase>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -733,7 +733,7 @@ public:
     virtual const char* getEditorName(void) const override
     { return "Gui::PropertyEditor::PropertyLinkListItem"; }
 
-    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
 
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
@@ -787,7 +787,7 @@ public:
 /** the Link Property with sub elements
  *  This property links an object and a defined sequence of
  *  sub elements. These subelements (like Edges of a Shape)
- *  are stored as names, which can be resolved by the 
+ *  are stored as names, which can be resolved by the
  *  ComplexGeoDataType interface to concrete sub objects.
  */
 class AppExport PropertyLinkSub : public PropertyLinkBase
@@ -821,7 +821,7 @@ public:
      */
     App::DocumentObject * getValue(void) const;
 
-    /// return the list of sub elements 
+    /// return the list of sub elements
     const std::vector<std::string>& getSubValues(void) const;
 
     /// return the list of sub elements with mapped names
@@ -831,7 +831,7 @@ public:
 
     std::vector<std::string> getSubValues(bool newStyle) const;
 
-    /// return the list of sub elements starts with a special string 
+    /// return the list of sub elements starts with a special string
     std::vector<std::string> getSubValuesStartsWith(const char*, bool newStyle=false) const;
 
     /** Returns the link type checked
@@ -857,10 +857,10 @@ public:
     virtual const char* getEditorName(void) const override
     { return "Gui::PropertyEditor::PropertyLinkItem"; }
 
-    /// Return a copy of the property if any changes caused by importing external object 
+    /// Return a copy of the property if any changes caused by importing external object
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
 
-    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+    virtual Property *CopyOnLabelChange(App::DocumentObject *obj,
             const std::string &ref, const char *newLabel) const override;
 
     virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
@@ -875,7 +875,7 @@ public:
 
     virtual bool referenceChanged() const override;
 
-    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
 
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
@@ -1007,10 +1007,10 @@ public:
     virtual const char* getEditorName(void) const override
     { return "Gui::PropertyEditor::PropertyLinkListItem"; }
 
-    /// Return a copy of the property if any changes caused by importing external object 
+    /// Return a copy of the property if any changes caused by importing external object
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
 
-    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+    virtual Property *CopyOnLabelChange(App::DocumentObject *obj,
             const std::string &ref, const char *newLabel) const override;
 
     virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
@@ -1023,7 +1023,7 @@ public:
 
     virtual bool referenceChanged() const override;
 
-    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
 
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
@@ -1099,7 +1099,7 @@ public:
     void setValue(App::DocumentObject *,std::vector<std::string> &&SubList,
             std::vector<ShadowSub> &&ShadowSubList = {});
 
-    void setValue(App::DocumentObject *,const std::vector<std::string> &SubList, 
+    void setValue(App::DocumentObject *,const std::vector<std::string> &SubList,
             std::vector<ShadowSub > &&ShadowSubList={});
 
     void setSubValues(std::vector<std::string> &&SubList,
@@ -1107,7 +1107,7 @@ public:
 
     const char *getSubName(bool newStyle=true) const;
     void setSubName(const char *subname);
-    
+
     bool hasSubName() const {return !_SubList.empty();}
 
     App::Document *getDocument() const;
@@ -1122,10 +1122,10 @@ public:
     virtual Property *Copy(void) const override;
     virtual void Paste(const Property &from) override;
 
-    /// Return a copy of the property if any changes caused by importing external object 
+    /// Return a copy of the property if any changes caused by importing external object
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
 
-    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+    virtual Property *CopyOnLabelChange(App::DocumentObject *obj,
             const std::string &ref, const char *newLabel) const override;
 
     virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
@@ -1148,7 +1148,7 @@ public:
 
     virtual bool referenceChanged() const override;
 
-    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
 
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
@@ -1299,7 +1299,7 @@ public:
 
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
 
-    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+    virtual Property *CopyOnLabelChange(App::DocumentObject *obj,
             const std::string &ref, const char *newLabel) const override;
 
     virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
@@ -1312,7 +1312,7 @@ public:
 
     virtual bool referenceChanged() const override;
 
-    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
 
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
@@ -1371,9 +1371,9 @@ public:
     virtual void Save (Base::Writer &writer) const override;
     virtual void Restore(Base::XMLReader &reader) override;
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
-    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
-    
+
     bool isLinkedToDocument(const App::Document &doc) const;
 
 protected:

@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -44,9 +43,9 @@ else:
 #
 #  This module provides tools to build Project objects.
 
-__title__="FreeCAD Project"
+__title__  = "FreeCAD Project"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 def makeProject(sites=None, name="Project"):
     """Create an Arch project.
@@ -81,12 +80,12 @@ def makeProject(sites=None, name="Project"):
     return obj
 
 class _CommandProject:
-    """The command definition for the Arch workbench's gui tool, Arch Project. 
+    """The command definition for the Arch workbench's gui tool, Arch Project.
 
     A tool for creating Arch projects.
 
     Creates a project from the objects selected by the user that have the Site
-    IfcType, if any. 
+    IfcType, if any.
 
     Find documentation on the end user usage of Arch Project here:
     https://wiki.freecadweb.org/Arch_Project
@@ -100,7 +99,7 @@ class _CommandProject:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Project", "Creates a project entity aggregating the selected sites.")}
 
     def IsActive(self):
-        """Determine whether or not the Arch Project tool is active. 
+        """Determine whether or not the Arch Project tool is active.
 
         Inactive commands are indicated by a greyed-out icon in the menus and toolbars.
         """
@@ -110,7 +109,7 @@ class _CommandProject:
         """Executed when Arch Project is called.
 
         Create a project from the objects selected by the user that have the
-        Site IfcType, if any. 
+        Site IfcType, if any.
         """
 
         selection = FreeCADGui.Selection.getSelection()

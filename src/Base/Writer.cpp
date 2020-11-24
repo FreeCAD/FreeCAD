@@ -315,7 +315,7 @@ void Writer::putNextEntry(const char *file, const char *obj) {
 
 // ----------------------------------------------------------------------------
 
-ZipWriter::ZipWriter(const char* FileName) 
+ZipWriter::ZipWriter(const char* FileName)
   : ZipStream(FileName)
 {
 #ifdef _MSC_VER
@@ -327,7 +327,7 @@ ZipWriter::ZipWriter(const char* FileName)
     ZipStream.setf(ios::fixed,ios::floatfield);
 }
 
-ZipWriter::ZipWriter(std::ostream& os) 
+ZipWriter::ZipWriter(std::ostream& os)
   : ZipStream(os)
 {
 #ifdef _MSC_VER

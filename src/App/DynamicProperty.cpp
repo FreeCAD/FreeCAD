@@ -92,7 +92,7 @@ std::vector<std::string> DynamicProperty::getDynamicPropertyNames() const
     std::vector<std::string> names;
     auto &index = props.get<0>();
     names.reserve(index.size());
-    for(auto &v : index) 
+    for(auto &v : index)
         names.push_back(v.name);
     return names;
 }
@@ -153,7 +153,7 @@ const char* DynamicProperty::getPropertyDocumentation(const char *name) const
     return 0;
 }
 
-Property* DynamicProperty::addDynamicProperty(PropertyContainer &pc, const char* type, 
+Property* DynamicProperty::addDynamicProperty(PropertyContainer &pc, const char* type,
         const char* name, const char* group, const char* doc, short attr, bool ro, bool hidden)
 {
     return _addDynamicProperty(pc,type,name,group,doc,StringIDRef(),attr,ro,hidden);
@@ -288,7 +288,7 @@ std::string DynamicProperty::getUniquePropertyName(PropertyContainer &pc, const 
     }
 }
 
-void DynamicProperty::save(const Property *prop, Base::Writer &writer) const 
+void DynamicProperty::save(const Property *prop, Base::Writer &writer) const
 {
     auto &index = props.get<1>();
     auto it = index.find(const_cast<Property*>(prop));
@@ -305,8 +305,8 @@ void DynamicProperty::save(const Property *prop, Base::Writer &writer) const
     }
 }
 
-Property *DynamicProperty::restore(PropertyContainer &pc, 
-        const char *PropName, const char *TypeName, Base::XMLReader &reader) 
+Property *DynamicProperty::restore(PropertyContainer &pc,
+        const char *PropName, const char *TypeName, Base::XMLReader &reader)
 {
     if (!reader.hasAttribute("group"))
         return 0;

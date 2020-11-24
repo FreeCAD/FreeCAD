@@ -59,4 +59,4 @@ protected:
 }; // namespace StartGui
 
 }
-#endif // START_WORKBENCH_H 
+#endif // START_WORKBENCH_H

@@ -180,8 +180,9 @@ void PropertyPartShape::transformGeometry(const Base::Matrix4D &rclTrf)
 
 PyObject *PropertyPartShape::getPyObject(void)
 {
-    auto prop = static_cast<Base::PyObjectBase*>(Py::new_reference_to(shape2pyshape(getShape())));
-    if (prop) prop->setConst();
+    Base::PyObjectBase* prop = static_cast<Base::PyObjectBase*>(_Shape.getPyObject());
+    if (prop)
+        prop->setConst();
     return prop;
 }
 

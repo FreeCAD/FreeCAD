@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -31,7 +29,7 @@ import PySide
 
 __title__ = "Setup Sheet for a Job."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "A container for all default values and job specific configuration values."
 
 _RegisteredOps = {}
@@ -82,7 +80,7 @@ class SetupSheet:
     TemplateReference = '${SetupSheet}'
 
     DefaultSafeHeightOffset      = '3 mm'
-    DefaultClearanceHeightOffset = '5 mm' 
+    DefaultClearanceHeightOffset = '5 mm'
     DefaultSafeHeightExpression      = "OpStockZMax+${SetupSheet}.SafeHeightOffset"
     DefaultClearanceHeightExpression = "OpStockZMax+${SetupSheet}.ClearanceHeightOffset"
 
@@ -90,8 +88,8 @@ class SetupSheet:
     DefaultFinalDepthExpression = 'OpFinalDepth'
     DefaultStepDownExpression   = 'OpToolDiameter'
 
-    DefaultCoolantModes = ['None', 'Flood', 'Mist'] 
-   
+    DefaultCoolantModes = ['None', 'Flood', 'Mist']
+
     def __init__(self, obj):
         self.obj = obj
         obj.addProperty('App::PropertySpeed', 'VertRapid',  'ToolController', translate('PathSetupSheet', 'Default speed for horizontal rapid moves.'))
@@ -273,7 +271,7 @@ class SetupSheet:
         if not hasattr(obj, 'CoolantModes'):
             obj.addProperty('App::PropertyStringList', 'CoolantModes', 'CoolantMode', translate('PathSetupSheet', 'Coolant Modes'))
             obj.CoolantModes = self.DefaultCoolantModes
-        
+
 
         if not hasattr(obj, 'CoolantMode'):
             obj.addProperty('App::PropertyEnumeration', 'CoolantMode', 'CoolantMode', translate('PathSetupSheet', 'Default coolant mode.'))

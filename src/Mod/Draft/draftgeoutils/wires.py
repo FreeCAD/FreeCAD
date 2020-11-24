@@ -29,11 +29,12 @@
 import math
 import lazy_loader.lazy_loader as lz
 
+import FreeCAD as App
 import DraftVecUtils
 import WorkingPlane
 
 from draftgeoutils.general import geomType, vec, precision
-from draftgeoutils.geometry import getNormal
+from draftgeoutils.geometry import get_normal
 from draftgeoutils.edges import findMidpoint, isLine
 
 # Delay import of module until first use because it is heavy
@@ -157,9 +158,10 @@ def findWiresOld(edges):
 
 def flattenWire(wire):
     """Force a wire to get completely flat along its normal."""
-    n = getNormal(wire)
-    if not n:
-        return
+    n = get_normal(wire)
+    # for backward compatibility with previous getNormal implementation
+    if n == None:
+        n = App.Vector(0, 0, 1)
 
     o = wire.Vertexes[0].Point
     plane = WorkingPlane.plane()

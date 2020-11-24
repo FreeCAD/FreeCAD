@@ -19,9 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__= "FreeCAD Arch API"
+__title__  = "FreeCAD Arch API"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \defgroup ARCH Arch
 #  \ingroup PYTHONWORKBENCHES

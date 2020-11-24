@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>360</width>
-    <height>380</height>
+    <height>298</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QComboBox" name="comboBox1">
+    <widget class="QComboBox" name="PrimitiveTypeCB">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -181,19 +181,19 @@
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
-       <number>9</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
-       <number>9</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>9</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>9</number>
+       <number>0</number>
       </property>
       <property name="spacing">
-       <number>6</number>
+       <number>0</number>
       </property>
       <item row="1" column="0">
        <widget class="QStackedWidget" name="widgetStack2">
@@ -236,6 +236,9 @@
             </property>
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="planeLength">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -260,6 +263,9 @@
             </item>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="planeWidth">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -337,6 +343,9 @@
             </property>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="boxWidth">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -347,6 +356,9 @@
             </item>
             <item row="2" column="2">
              <widget class="Gui::QuantitySpinBox" name="boxHeight">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -378,6 +390,9 @@
             </item>
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="boxLength">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -433,6 +448,9 @@
             </item>
             <item>
              <widget class="Gui::QuantitySpinBox" name="cylinderAngle">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -502,6 +520,9 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="cylinderHeight">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -512,6 +533,9 @@
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="cylinderRadius">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -567,6 +591,9 @@
             </item>
             <item>
              <widget class="Gui::QuantitySpinBox" name="coneAngle">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -622,6 +649,9 @@
             </property>
             <item row="3" column="2">
              <widget class="Gui::QuantitySpinBox" name="coneHeight">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -632,6 +662,9 @@
             </item>
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="coneRadius1">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -663,6 +696,9 @@
             </item>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="coneRadius2">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -751,6 +787,9 @@
             </item>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="sphereAngle1">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -761,6 +800,9 @@
             </item>
             <item row="2" column="2">
              <widget class="Gui::QuantitySpinBox" name="sphereAngle2">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -771,6 +813,9 @@
             </item>
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="sphereAngle3">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -823,6 +868,9 @@
             </item>
             <item>
              <widget class="Gui::QuantitySpinBox" name="sphereRadius">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -915,6 +963,9 @@
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius1">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -925,6 +976,9 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius2">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -935,6 +989,9 @@
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius3">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -994,6 +1051,9 @@
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidAngle3">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -1004,6 +1064,9 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidAngle1">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -1014,6 +1077,9 @@
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidAngle2">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -1102,6 +1168,9 @@
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="torusAngle3">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -1112,6 +1181,9 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="torusAngle1">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -1122,6 +1194,9 @@
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="torusAngle2">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -1167,6 +1242,9 @@
             </property>
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="torusRadius1">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1191,6 +1269,9 @@
             </item>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="torusRadius2">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1239,6 +1320,9 @@
             </property>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="prismCircumradius">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1256,6 +1340,9 @@
             </item>
             <item row="0" column="2">
              <widget class="QSpinBox" name="prismPolygon">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="minimum">
                <number>3</number>
               </property>
@@ -1283,6 +1370,9 @@
             </item>
             <item row="2" column="2">
              <widget class="Gui::QuantitySpinBox" name="prismHeight">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1302,6 +1392,9 @@
              <widget class="Gui::QuantitySpinBox" name="prismXSkew">
               <property name="toolTip">
                <string>Angle in first direction</string>
+              </property>
+              <property name="keyboardTracking">
+               <bool>false</bool>
               </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
@@ -1325,6 +1418,9 @@
              <widget class="Gui::QuantitySpinBox" name="prismYSkew">
               <property name="toolTip">
                <string>Angle in second direction</string>
+              </property>
+              <property name="keyboardTracking">
+               <bool>false</bool>
               </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
@@ -1401,6 +1497,9 @@
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeXmin">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1408,6 +1507,9 @@
             </item>
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeXmax">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1418,6 +1520,9 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeYmin">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1425,6 +1530,9 @@
             </item>
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeYmax">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1435,6 +1543,9 @@
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeZmin">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1442,6 +1553,9 @@
             </item>
             <item row="2" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeZmax">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1452,6 +1566,9 @@
             </item>
             <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeX2min">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1462,6 +1579,9 @@
             </item>
             <item row="3" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeX2max">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1472,6 +1592,9 @@
             </item>
             <item row="4" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeZ2min">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1482,6 +1605,9 @@
             </item>
             <item row="4" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeZ2max">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1605,6 +1731,9 @@
             </item>
             <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="helixAngle">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -1612,6 +1741,9 @@
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="helixPitch">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1622,6 +1754,9 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="helixHeight">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1632,6 +1767,9 @@
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="helixRadius">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1714,6 +1852,9 @@
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="spiralGrowth">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1724,6 +1865,9 @@
             </item>
             <item row="1" column="1">
              <widget class="QDoubleSpinBox" name="spiralRotation">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="maximum">
                <double>1000.000000000000000</double>
               </property>
@@ -1734,6 +1878,9 @@
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="spiralRadius">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1788,6 +1935,9 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="circleAngle0">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -1795,6 +1945,9 @@
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="circleAngle1">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -1805,6 +1958,9 @@
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="circleRadius">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1888,6 +2044,9 @@
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipseMajorRadius">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1898,6 +2057,9 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipseMinorRadius">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1908,6 +2070,9 @@
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipseAngle0">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -1915,6 +2080,9 @@
             </item>
             <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipseAngle1">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -1976,6 +2144,9 @@
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="vertexX">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1983,6 +2154,9 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="vertexY">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -1990,6 +2164,9 @@
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="vertexZ">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -2016,6 +2193,23 @@
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="0">
            <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="1">
+             <widget class="QLabel" name="Start_Vertex">
+              <property name="text">
+               <string>Start point</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="Finish_Vertex">
+              <property name="text">
+               <string>End point</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="X1">
               <property name="text">
@@ -2023,6 +2217,29 @@
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="Gui::QuantitySpinBox" name="edgeX1">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="Gui::QuantitySpinBox" name="edgeX2">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
+              <property name="value">
+               <double>10.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -2036,6 +2253,29 @@
               </property>
              </widget>
             </item>
+            <item row="2" column="1">
+             <widget class="Gui::QuantitySpinBox" name="edgeY1">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="Gui::QuantitySpinBox" name="edgeY2">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
+              <property name="value">
+               <double>10.000000000000000</double>
+              </property>
+             </widget>
+            </item>
             <item row="3" column="0">
              <widget class="QLabel" name="Z1">
               <property name="text">
@@ -2046,103 +2286,21 @@
               </property>
              </widget>
             </item>
-            <item row="4" column="0">
-             <widget class="Line" name="line_6">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="0">
-             <widget class="QLabel" name="Finish_Vertex">
-              <property name="text">
-               <string>End point</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="Start_Vertex">
-              <property name="text">
-               <string>Start point</string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="0">
-             <widget class="QLabel" name="X2">
-              <property name="text">
-               <string>X:</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="7" column="0">
-             <widget class="QLabel" name="Y2">
-              <property name="text">
-               <string>Y:</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="0">
-             <widget class="QLabel" name="Z2">
-              <property name="text">
-               <string>Z:</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="edgeX1">
-              <property name="unit" stdset="0">
-               <string notr="true">mm</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="Gui::QuantitySpinBox" name="edgeY1">
-              <property name="unit" stdset="0">
-               <string notr="true">mm</string>
-              </property>
-             </widget>
-            </item>
             <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="edgeZ1">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
              </widget>
             </item>
-            <item row="6" column="1">
-             <widget class="Gui::QuantitySpinBox" name="edgeX2">
-              <property name="unit" stdset="0">
-               <string notr="true">mm</string>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="7" column="1">
-             <widget class="Gui::QuantitySpinBox" name="edgeY2">
-              <property name="unit" stdset="0">
-               <string notr="true">mm</string>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="1">
+            <item row="3" column="2">
              <widget class="Gui::QuantitySpinBox" name="edgeZ2">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -2161,7 +2319,7 @@
             <property name="sizeHint" stdset="0">
              <size>
               <width>20</width>
-              <height>0</height>
+              <height>81</height>
              </size>
             </property>
            </spacer>
@@ -2211,6 +2369,9 @@
             </item>
             <item row="0" column="1">
              <widget class="QSpinBox" name="regularPolygonPolygon">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="minimum">
                <number>3</number>
               </property>
@@ -2231,6 +2392,9 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="regularPolygonCircumradius">
+              <property name="keyboardTracking">
+               <bool>false</bool>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -2272,7 +2436,7 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>comboBox1</tabstop>
+  <tabstop>PrimitiveTypeCB</tabstop>
   <tabstop>planeLength</tabstop>
   <tabstop>planeWidth</tabstop>
   <tabstop>boxLength</tabstop>
@@ -2346,7 +2510,7 @@
  </resources>
  <connections>
   <connection>
-   <sender>comboBox1</sender>
+   <sender>PrimitiveTypeCB</sender>
    <signal>activated(int)</signal>
    <receiver>widgetStack2</receiver>
    <slot>setCurrentIndex(int)</slot>

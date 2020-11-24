@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +19,8 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-'''used to create material stock around a machined part- for visualization '''
+
+'''Used to create material stock around a machined part - for visualization'''
 
 import FreeCAD
 import PathScripts.PathIconViewProvider as PathIconViewProvider
@@ -367,7 +367,7 @@ def CreateFromTemplate(job, template):
             rotZ = template.get('rotZ')
             rotW = template.get('rotW')
             if posX is not None and posY is not None and posZ is not None and rotX is not None and rotY is not None and rotZ is not None and rotW is not None:
-                pos = FreeCAD.Vector(float(posX), float(posY), float(posZ)) 
+                pos = FreeCAD.Vector(float(posX), float(posY), float(posZ))
                 rot = FreeCAD.Rotation(float(rotX), float(rotY), float(rotZ), float(rotW))
                 placement = FreeCAD.Placement(pos, rot)
             elif posX is not None or posY is not None or posZ is not None or rotX is not None or rotY is not None or rotZ is not None or rotW is not None:

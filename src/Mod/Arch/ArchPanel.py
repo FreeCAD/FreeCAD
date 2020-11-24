@@ -43,10 +43,9 @@ else:
 #  Panels consist of a closed shape that gets extruded to
 #  produce a flat object.
 
-
-__title__="FreeCAD Panel"
+__title__  = "FreeCAD Panel"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 #           Description                 l    w    t
 
@@ -1611,8 +1610,10 @@ class NestTaskPanel:
         if hasattr(obj.ViewObject,"Proxy"):
             if hasattr(obj.ViewObject.Proxy,"getIcon"):
                 i.setIcon(QtGui.QIcon(obj.ViewObject.Proxy.getIcon()))
+        elif hasattr(obj.ViewObject, "Icon"):
+            i.setIcon(QtGui.QIcon(obj.ViewObject.Icon))
         else:
-            i.setIcon(QtGui.QIcon(":/icons/Tree_Part.svg"))
+            i.setIcon(QtGui.QIcon(":/icons/Part_3D_object.svg"))
         form.addItem(i)
 
     def removeShapes(self):

@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -19,6 +19,8 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                 *
  *                                                                          *
  ****************************************************************************/
+
+
 #include "PreCompiled.h"
 
 // From Boost 1.75 on the geometry component requires C++14
@@ -3209,7 +3211,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     wires = sortWires(shapes,_pstart!=0,&pstart,pend,&stepdown_hint,
             PARAM_REF(PARAM_FARG,AREA_PARAMS_ARC_PLANE),
             PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
-    
+
     if (wires.size() == 0)
         return;
 

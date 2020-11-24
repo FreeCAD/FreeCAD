@@ -379,7 +379,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="225"/>
       <source>Create Scale Mesh Feature</source>
-      <translation type="unfinished">Create Scale Mesh Feature</translation>
+      <translation>Stvori Svojstvo Skaliranje Mreža</translation>
     </message>
   </context>
   <context>

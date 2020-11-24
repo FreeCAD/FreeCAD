@@ -319,7 +319,12 @@ void ViewProvider::getExtraIcons(std::vector<QPixmap> &icons) const
 QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
 {
     QIcon overlayedIcon = orig;
-    callExtension(&ViewProviderExtension::extensionMergeOverlayIcons,overlayedIcon);
+    foreachExtension<ViewProviderExtension>([&overlayedIcon](ViewProviderExtension *ext) {
+        if (!ext->ignoreOverlayIcon())
+            ext->extensionMergeOverlayIcons(overlayedIcon);
+        return true;
+    });
+
     return overlayedIcon;
 }
 
@@ -653,6 +658,13 @@ bool ViewProvider::mouseButtonPressed(int button, bool pressed,
     (void)cursorPos;
     (void)viewer;
     return false;
+}
+
+void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* method)
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for (Gui::ViewProviderExtension* ext : vector)
+        ext->extensionSetupContextMenu(menu, receiver, method);
 }
 
 bool ViewProvider::onDelete(const vector< string >& subNames)

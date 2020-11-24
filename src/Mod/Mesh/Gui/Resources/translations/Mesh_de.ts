@@ -2083,7 +2083,7 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Asymptote Format</source>
-      <translation type="unfinished">Asymptote Format</translation>
+      <translation>Asymptote-Format</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="534"/>

@@ -92,7 +92,11 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
     // When saving the text to XML the newlines get lost. So we store also the newlines as '\n'.
     // See also accept().
     QString comment = QString::fromUtf8(doc->Comment.getValue());
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    QStringList lines = comment.split(QLatin1String("\\n"), Qt::KeepEmptyParts);
+#else
     QStringList lines = comment.split(QLatin1String("\\n"), QString::KeepEmptyParts);
+#endif
     QString text = lines.join(QLatin1String("\n"));
     ui->textEditComment->setPlainText( text );
     connect(ui->pushButtonOpenURL, SIGNAL(clicked()),this, SLOT(open_url()));
@@ -124,7 +128,11 @@ void DlgProjectInformationImp::accept()
 
     // Replace newline escape sequence through '\\n' string
     QStringList lines = ui->textEditComment->toPlainText().split
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+        (QLatin1String("\n"), Qt::KeepEmptyParts);
+#else
         (QLatin1String("\n"), QString::KeepEmptyParts);
+#endif
     QString text = lines.join(QLatin1String("\\n"));
     _doc->Comment.setValue(text.isEmpty() ? "" : text.toUtf8());
 

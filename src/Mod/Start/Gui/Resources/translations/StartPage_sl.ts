@@ -126,7 +126,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Spodaj je seznam razpoložljivih dodatnih delovnih okolij, ki so lahko dodane FreeCAD namestitvi. Poiščite in namestite z menija Orodja -&gt; Dodatki. Več lahko izveste o katerem koli s klikom na spodnje povezave.</translation>
+      <translation>Spodaj je seznam razpoložljivih delovnih okolij, ki so lahko dodane FreeCAD namestitvi. Poiščite in namestite jih z menija Orodja -&gt; Upravljalnik dodatkov. Več lahko izveste o katerem koli s klikom na spodnje povezave.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="289"/>
       <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>Če je to označeno in je seznam slogov določen v Splošnih prednastavitvah, bo uporabljen in bo preglasil barve spodaj</translation>
+      <translation>Če je to označeno in je seznam slogov določen v Splošnih prednastavitvah, bo uporabljen in bo povozil barve spodaj</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="308"/>

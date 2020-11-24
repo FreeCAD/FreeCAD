@@ -317,7 +317,12 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     iconLabel->hide();
     lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
     // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
+#ifndef Q_OS_MAC
     lineEdit()->setTextMargins(0, 2, 0, 2);
+#else
+    // https://forum.freecadweb.org/viewtopic.php?f=8&t=50615
+    lineEdit()->setTextMargins(0, 2, 0, 0);
+#endif
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }

@@ -149,12 +149,12 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         if (file.open(QFile::WriteOnly)) {
             QTextStream str(&file);
             str.setCodec("UTF-8");
-            str << "<?xml version='1.0' encoding='utf-8'?>" << endl
-                << "<AutoRecovery SchemaVersion=\"1\">" << endl;
-            str << "  <Status>Created</Status>" << endl;
-            str << "  <Label>" << QString::fromUtf8(doc->Label.getValue()) << "</Label>" << endl; // store the document's current label
-            str << "  <FileName>" << QString::fromUtf8(doc->FileName.getValue()) << "</FileName>" << endl; // store the document's current filename
-            str << "</AutoRecovery>" << endl;
+            str << "<?xml version='1.0' encoding='utf-8'?>\n"
+                << "<AutoRecovery SchemaVersion=\"1\">\n";
+            str << "  <Status>Created</Status>\n";
+            str << "  <Label>" << QString::fromUtf8(doc->Label.getValue()) << "</Label>\n"; // store the document's current label
+            str << "  <FileName>" << QString::fromUtf8(doc->FileName.getValue()) << "</FileName>\n"; // store the document's current filename
+            str << "</AutoRecovery>\n";
             file.close();
         }
 

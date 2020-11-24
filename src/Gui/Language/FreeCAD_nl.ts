@@ -121,6 +121,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Bewerken</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -2533,6 +2540,18 @@ het openen of aanmaken van bestand</translation>
       <source>Show axis cross by default</source>
       <translation>Toon assenkruis standaard</translation>
     </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Kies straal (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -3589,10 +3608,6 @@ De kanteling van de muis wordt niet uitgeschakeld door deze instelling.</transla
       <translation>Eenvoudige kleur</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Kies straal (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Object in bewerking</translation>
     </message>
@@ -3607,12 +3622,6 @@ De kanteling van de muis wordt niet uitgeschakeld door deze instelling.</transla
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation>Selectiemarkering mogelijk maken en een bepaalde kleur gebruiken</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation>Ruimte voor het selecteren van elementen in 3D-weergave.
-Grotere waarde vergemakkelijkt de selectie van dingen, maar kan de selectie van kleine functies onmogelijk maken.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>

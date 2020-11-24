@@ -341,9 +341,9 @@ void StdCmdFreezeViews::onSaveViews()
         QTextStream str(&file);
         ActionGroup* pcAction = qobject_cast<ActionGroup*>(_pcAction);
         QList<QAction*> acts = pcAction->actions();
-        str << "<?xml version='1.0' encoding='utf-8'?>" << endl
-            << "<FrozenViews SchemaVersion=\"1\">" << endl;
-        str << "  <Views Count=\"" << savedViews <<"\">" << endl;
+        str << "<?xml version='1.0' encoding='utf-8'?>\n"
+            << "<FrozenViews SchemaVersion=\"1\">\n";
+        str << "  <Views Count=\"" << savedViews <<"\">\n";
 
         for (QList<QAction*>::ConstIterator it = acts.begin()+offset; it != acts.end(); ++it) {
             if ( !(*it)->isVisible() )
@@ -360,11 +360,11 @@ void StdCmdFreezeViews::onSaveViews()
                 viewPos = lines.join(QString::fromLatin1(" "));
             }
 
-            str << "    <Camera settings=\"" << viewPos.toLatin1().constData() << "\"/>" << endl;
+            str << "    <Camera settings=\"" << viewPos.toLatin1().constData() << "\"/>\n";
         }
 
-        str << "  </Views>" << endl;
-        str << "</FrozenViews>" << endl;
+        str << "  </Views>\n";
+        str << "</FrozenViews>\n";
     }
 }
 
@@ -1913,8 +1913,12 @@ void StdViewScreenShot::activated(int iMsg)
                 // Replace newline escape sequence through '\\n' string to build one big string,
                 // otherwise Python would interpret it as an invalid command.
                 // Python does the decoding for us.
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+                QStringList lines = comment.split(QLatin1String("\n"), Qt::KeepEmptyParts );
+#else
                 QStringList lines = comment.split(QLatin1String("\n"), QString::KeepEmptyParts );
-                    comment = lines.join(QLatin1String("\\n"));
+#endif
+                comment = lines.join(QLatin1String("\\n"));
                 doCommand(Gui,"Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s','%s')",
                             fn.toUtf8().constData(),w,h,background,comment.toUtf8().constData());
             }
@@ -3008,6 +3012,7 @@ StdCmdSceneInspector::StdCmdSceneInspector()
     sStatusTip    = QT_TR_NOOP("Scene inspector");
     eType         = Alter3DView;
     sAccel        = "T, I";
+    sPixmap       = "Std_SceneInspector";
 }
 
 void StdCmdSceneInspector::activated(int iMsg)
@@ -3066,6 +3071,7 @@ StdCmdDemoMode::StdCmdDemoMode()
     sWhatsThis    = "Std_DemoMode";
     sStatusTip    = QT_TR_NOOP("View turntable");
     eType         = Alter3DView;
+    sPixmap       = "Std_DemoMode";
 }
 
 void StdCmdDemoMode::activated(int iMsg)

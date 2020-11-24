@@ -29,7 +29,7 @@
 #endif
 
 #include "ViewProviderExtension.h"
-//#include "ViewProviderExtensionPy.h"
+#include "ViewProviderExtensionPy.h"
 
 using namespace Gui;
 
@@ -59,6 +59,16 @@ ViewProviderDocumentObject* ViewProviderExtension::getExtendedViewProvider() {
 
 void ViewProviderExtension::extensionUpdateData(const App::Property*) {
 
+}
+
+PyObject* ViewProviderExtension::getExtensionPyObject(void) {
+
+    if (ExtensionPythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        auto ext = new ViewProviderExtensionPy(this);
+        ExtensionPythonObject = Py::asObject(ext);
+    }
+    return Py::new_reference_to(ExtensionPythonObject);
 }
 
 namespace Gui {

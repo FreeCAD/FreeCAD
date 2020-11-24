@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) sliptonic (shopinthewoods@gmail.com) 2020               *
+ *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,6 +58,7 @@ namespace Path
 
     // types
     typedef double coordinate_type;
+    typedef boost::polygon::voronoi_vertex<double> vertex_type;
     typedef boost::polygon::point_data<coordinate_type> point_type;
     typedef boost::polygon::segment_data<coordinate_type> segment_type;
     typedef boost::polygon::voronoi_diagram<double> voronoi_diagram_type;

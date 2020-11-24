@@ -994,7 +994,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="733"/>
       <source>%1 degenerated faces</source>
-      <translation>%1 dejenere yüzler</translation>
+      <translation>%1 bozulmuş yüzeyler</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="758"/>
@@ -1009,7 +1009,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="799"/>
       <source>%1 duplicated faces</source>
-      <translation>%1 Çoğaltılan Yüzler</translation>
+      <translation>%1 Çoğaltılan Yüzeyler</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="825"/>
@@ -1046,7 +1046,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1035"/>
       <source>%1 folds on surface</source>
-      <translation>Yüzey üzerinde% 1 kıvrım var</translation>
+      <translation>Yüzeyde %1 kıvrım var</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1061"/>
@@ -1324,7 +1324,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="148"/>
       <source>A bounding box will be displayed</source>
-      <translation type="unfinished">A bounding box will be displayed</translation>
+      <translation>Bir sınır kutusu görüntülenecek</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="151"/>
@@ -1937,7 +1937,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Command.cpp" line="1580"/>
       <source>Boundings of %1:</source>
-      <translation>% 1'in limiti:</translation>
+      <translation>%1'in limiti:</translation>
     </message>
   </context>
   <context>
@@ -2056,12 +2056,12 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
     <message>
       <location filename="../../Command.cpp" line="519"/>
       <source>Compressed X3D</source>
-      <translation type="unfinished">Compressed X3D</translation>
+      <translation>Sıkıştırılmış X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="520"/>
       <source>WebGL/X3D</source>
-      <translation type="unfinished">WebGL/X3D</translation>
+      <translation>WebGL/X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="522"/>
@@ -2086,7 +2086,7 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Asymptote Format</source>
-      <translation type="unfinished">Asymptote Format</translation>
+      <translation>Asimptot Biçimi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="534"/>

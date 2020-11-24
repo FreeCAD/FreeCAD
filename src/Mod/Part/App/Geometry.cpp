@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Approx_Curve3d.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
@@ -53,6 +54,7 @@
 # include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_SurfaceOfRevolution.hxx>
 # include <Geom_SurfaceOfLinearExtrusion.hxx>
+# include <GeomAdaptor_HCurve.hxx>
 # include <GeomAPI_Interpolate.hxx>
 # include <GeomConvert.hxx>
 # include <GeomConvert_CompCurveToBSplineCurve.hxx>
@@ -300,9 +302,9 @@ boost::uuids::uuid Geometry::getTag() const
     return tag;
 }
 
-const std::vector<std::weak_ptr<GeometryExtension>> Geometry::getExtensions() const
+std::vector<std::weak_ptr<const GeometryExtension>> Geometry::getExtensions() const
 {
-    std::vector<std::weak_ptr<GeometryExtension>> wp;
+    std::vector<std::weak_ptr<const GeometryExtension>> wp;
 
     for(auto & ext:extensions)
         wp.push_back(ext);
@@ -330,7 +332,7 @@ bool Geometry::hasExtension(std::string name) const
     return false;
 }
 
-const std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type) const
+std::weak_ptr<const GeometryExtension> Geometry::getExtension(Base::Type type) const
 {
     for( auto ext : extensions) {
         if(ext->getTypeId() == type)
@@ -340,7 +342,7 @@ const std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type) c
     throw Base::ValueError("No geometry extension of the requested type.");
 }
 
-const std::weak_ptr<GeometryExtension> Geometry::getExtension(std::string name) const
+std::weak_ptr<const GeometryExtension> Geometry::getExtension(std::string name) const
 {
     for( auto ext : extensions) {
         if(ext->getName() == name)
@@ -428,6 +430,58 @@ Geometry *Geometry::clone(void) const
 
     return cpy;
 }
+
+void Geometry::mirror(const Base::Vector3d& point)
+{
+    gp_Pnt pnt(point.x, point.y, point.z);
+    handle()->Mirror(pnt);
+}
+
+void Geometry::mirror(const Base::Vector3d& point, const Base::Vector3d& dir)
+{
+    gp_Ax1 ax1(gp_Pnt(point.x,point.y,point.z), gp_Dir(dir.x,dir.y,dir.z));
+    handle()->Mirror(ax1);
+}
+
+void Geometry::rotate(const Base::Placement& plm)
+{
+    Base::Rotation rot(plm.getRotation());
+    Base::Vector3d pnt, dir;
+
+    double angle;
+
+    rot.getValue(dir, angle);
+    pnt = plm.getPosition();
+
+    gp_Ax1 ax1(gp_Pnt(pnt.x,pnt.y,pnt.z), gp_Dir(dir.x,dir.y,dir.z));
+    handle()->Rotate(ax1, angle);
+}
+
+void Geometry::scale(const Base::Vector3d& vec, double scale)
+{
+    gp_Pnt pnt(vec.x, vec.y, vec.z);
+    handle()->Scale(pnt, scale);
+}
+
+void Geometry::transform(const Base::Matrix4D& mat)
+{
+    gp_Trsf trf;
+    trf.SetValues(mat[0][0],mat[0][1],mat[0][2],mat[0][3],
+                mat[1][0],mat[1][1],mat[1][2],mat[1][3],
+                mat[2][0],mat[2][1],mat[2][2],mat[2][3]
+#if OCC_VERSION_HEX < 0x060800
+                , 0.00001,0.00001
+#endif
+                ); //precision was removed in OCCT CR0025194
+    handle()->Transform(trf);
+}
+
+void Geometry::translate(const Base::Vector3d& vec)
+{
+    gp_Vec trl(vec.x, vec.y, vec.z);
+    handle()->Translate(trl);
+}
+
 
 // -------------------------------------------------
 
@@ -1041,7 +1095,7 @@ void GeomBezierCurve::Restore(Base::XMLReader& reader)
 
 PyObject *GeomBezierCurve::getPyObject(void)
 {
-    return new BezierCurvePy((GeomBezierCurve*)this->clone());
+    return new BezierCurvePy(static_cast<GeomBezierCurve*>(this->clone()));
 }
 
 bool GeomBezierCurve::isSame(const Geometry &_other, double tol, double) const
@@ -1136,9 +1190,14 @@ const Handle(Geom_Geometry)& GeomBSplineCurve::handle() const
 
 Geometry *GeomBSplineCurve::copy(void) const
 {
-    GeomBSplineCurve *newCurve = new GeomBSplineCurve(myCurve);
-    newCurve->Construction = this->Construction;
-    return newCurve;
+    try {
+        GeomBSplineCurve *newCurve = new GeomBSplineCurve(myCurve);
+        newCurve->Construction = this->Construction;
+        return newCurve;
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError, e.GetMessageString())
+    }
 }
 
 int GeomBSplineCurve::countPoles() const
@@ -1161,7 +1220,6 @@ void GeomBSplineCurve::setPole(int index, const Base::Vector3d& pole, double wei
             myCurve->SetPole(index,pnt,weight);
     }
     catch (Standard_Failure& e) {
-
         THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
@@ -1412,17 +1470,45 @@ void GeomBSplineCurve::makeC1Continuous(double tol, double ang_tol)
     GeomConvert::C0BSplineToC1BSplineCurve(this->myCurve, tol, ang_tol);
 }
 
-void GeomBSplineCurve::increaseDegree(double degree)
+void GeomBSplineCurve::increaseDegree(int degree)
 {
     try {
         Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(this->handle());
         curve->IncreaseDegree(degree);
-        return;
     }
     catch (Standard_Failure& e) {
-
         THROWM(Base::CADKernelError,e.GetMessageString())
     }
+}
+
+/*!
+ * \brief GeomBSplineCurve::approximate
+ * \param tol3d
+ * \param maxSegments
+ * \param maxDegree
+ * \param continuity
+ * \return true if the approximation succeeded, false otherwise
+ */
+bool GeomBSplineCurve::approximate(double tol3d, int maxSegments, int maxDegree, int continuity)
+{
+    try {
+        GeomAbs_Shape cont = GeomAbs_C0;
+        if (continuity >= 0 && continuity <= 6)
+            cont = static_cast<GeomAbs_Shape>(continuity);
+
+        GeomAdaptor_Curve adapt(myCurve);
+        Handle(GeomAdaptor_HCurve) hCurve = new GeomAdaptor_HCurve(adapt);
+        Approx_Curve3d approx(hCurve, tol3d, cont, maxSegments, maxDegree);
+        if (approx.IsDone() && approx.HasResult()) {
+            this->setHandle(approx.Curve());
+            return true;
+        }
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError,e.GetMessageString())
+    }
+
+    return false;
 }
 
 void GeomBSplineCurve::increaseMultiplicity(int index, int multiplicity)
@@ -1433,7 +1519,6 @@ void GeomBSplineCurve::increaseMultiplicity(int index, int multiplicity)
         return;
     }
     catch (Standard_Failure& e) {
-
         THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
@@ -1441,11 +1526,25 @@ void GeomBSplineCurve::increaseMultiplicity(int index, int multiplicity)
 bool GeomBSplineCurve::removeKnot(int index, int multiplicity, double tolerance)
 {
     try {
-        Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(this->handle());
-        return curve->RemoveKnot(index, multiplicity, tolerance) == Standard_True;
+        Handle(Geom_BSplineCurve) curve =Handle(Geom_BSplineCurve)::DownCast(myCurve->Copy());
+        if (curve->RemoveKnot(index, multiplicity, tolerance)) {
+
+            // It can happen that OCCT computes a negative weight but still claims the removal was successful
+            TColStd_Array1OfReal weights(1, curve->NbPoles());
+            curve->Weights(weights);
+            for (Standard_Integer i = weights.Lower(); i <= weights.Upper(); i++) {
+                double v = weights(i);
+                if (v <= gp::Resolution())
+                    return false;
+            }
+
+            myCurve = curve;
+            return true;
+        }
+
+        return false;
     }
     catch (Standard_Failure& e) {
-
         THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
@@ -1570,7 +1669,7 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
 
 PyObject *GeomBSplineCurve::getPyObject(void)
 {
-    return new BSplineCurvePy((GeomBSplineCurve*)this->clone());
+    return new BSplineCurvePy(static_cast<GeomBSplineCurve*>(this->clone()));
 }
 
 bool GeomBSplineCurve::isSame(const Geometry &_other, double tol, double atol) const
@@ -1784,7 +1883,7 @@ void GeomTrimmedCurve::Restore (Base::XMLReader &/*reader*/) {
 
 PyObject *GeomTrimmedCurve::getPyObject(void)
 {
-    return 0;
+    return new TrimmedCurvePy(static_cast<GeomTrimmedCurve*>(this->clone()));
 }
 
 bool GeomTrimmedCurve::isSame(const Geometry &_other, double tol, double atol) const
@@ -2725,7 +2824,7 @@ void GeomEllipse::Restore(Base::XMLReader& reader)
 
 PyObject *GeomEllipse::getPyObject(void)
 {
-    return new EllipsePy((GeomEllipse*)this->clone());
+    return new EllipsePy(static_cast<GeomEllipse*>(this->clone()));
 }
 
 bool GeomEllipse::isSame(const Geometry &_other, double tol, double atol) const
@@ -3929,7 +4028,7 @@ void GeomLine::Restore(Base::XMLReader &reader)
 
 PyObject *GeomLine::getPyObject(void)
 {
-    return 0;
+    return new LinePy(static_cast<GeomLine*>(this->clone()));
 }
 
 bool GeomLine::isSame(const Geometry &_other, double tol, double atol) const
@@ -4172,7 +4271,7 @@ void GeomOffsetCurve::Restore (Base::XMLReader &/*reader*/) {
 
 PyObject *GeomOffsetCurve::getPyObject(void)
 {
-    return new OffsetCurvePy((GeomOffsetCurve*)this->clone());
+    return new OffsetCurvePy(static_cast<GeomOffsetCurve*>(this->clone()));
 }
 
 bool GeomOffsetCurve::isSame(const Geometry &_other, double tol, double atol) const
@@ -4361,7 +4460,7 @@ void GeomBezierSurface::Restore (Base::XMLReader &/*reader*/) {
 
 PyObject *GeomBezierSurface::getPyObject(void)
 {
-    return new BezierSurfacePy((GeomBezierSurface*)this->clone());
+    return new BezierSurfacePy(static_cast<GeomBezierSurface*>(this->clone()));
 }
 
 bool GeomBezierSurface::isSame(const Geometry &_other, double tol, double atol) const
@@ -4454,7 +4553,7 @@ void GeomBSplineSurface::Restore (Base::XMLReader &/*reader*/) {
 
 PyObject *GeomBSplineSurface::getPyObject(void)
 {
-    return new BSplineSurfacePy((GeomBSplineSurface*)this->clone());
+    return new BSplineSurfacePy(static_cast<GeomBSplineSurface*>(this->clone()));
 }
 
 bool GeomBSplineSurface::isSame(const Geometry &_other, double tol, double atol) const
@@ -4609,7 +4708,7 @@ void GeomCylinder::Restore (Base::XMLReader &/*reader*/) {
 
 PyObject *GeomCylinder::getPyObject(void)
 {
-    return new CylinderPy((GeomCylinder*)this->clone());
+    return new CylinderPy(static_cast<GeomCylinder*>(this->clone()));
 }
 
 double GeomCylinder::getRadius() const
@@ -4673,7 +4772,7 @@ void         GeomCone::Restore    (Base::XMLReader &/*reader*/)    {assert(0);  
 
 PyObject *GeomCone::getPyObject(void)
 {
-    return new ConePy((GeomCone*)this->clone());
+    return new ConePy(static_cast<GeomCone*>(this->clone()));
 }
 
 double GeomCone::getRadius() const
@@ -4742,7 +4841,7 @@ void         GeomToroid::Restore    (Base::XMLReader &/*reader*/)    {assert(0);
 
 PyObject *GeomToroid::getPyObject(void)
 {
-    return new ToroidPy((GeomToroid*)this->clone());
+    return new ToroidPy(static_cast<GeomToroid*>(this->clone()));
 }
 
 double GeomToroid::getMajorRadius() const
@@ -4812,7 +4911,7 @@ void         GeomSphere::Restore    (Base::XMLReader &/*reader*/)    {assert(0);
 
 PyObject *GeomSphere::getPyObject(void)
 {
-    return new SpherePy((GeomSphere*)this->clone());
+    return new SpherePy(static_cast<GeomSphere*>(this->clone()));
 }
 
 double GeomSphere::getRadius() const
@@ -4876,7 +4975,7 @@ void         GeomPlane::Restore    (Base::XMLReader &/*reader*/)    {assert(0); 
 
 PyObject *GeomPlane::getPyObject(void)
 {
-    return new PlanePy((GeomPlane*)this->clone());
+    return new PlanePy(static_cast<GeomPlane*>(this->clone()));
 }
 
 bool GeomPlane::isSame(const Geometry &_other, double tol, double atol) const
@@ -4934,7 +5033,7 @@ void         GeomOffsetSurface::Restore    (Base::XMLReader &/*reader*/)    {ass
 
 PyObject *GeomOffsetSurface::getPyObject(void)
 {
-    return new OffsetSurfacePy((GeomOffsetSurface*)this->clone());
+    return new OffsetSurfacePy(static_cast<GeomOffsetSurface*>(this->clone()));
 }
 
 double GeomOffsetSurface::getOffset() const
@@ -5187,7 +5286,7 @@ void         GeomSurfaceOfRevolution::Restore    (Base::XMLReader &/*reader*/)  
 
 PyObject *GeomSurfaceOfRevolution::getPyObject(void)
 {
-    return new SurfaceOfRevolutionPy((GeomSurfaceOfRevolution*)this->clone());
+    return new SurfaceOfRevolutionPy(static_cast<GeomSurfaceOfRevolution*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -5236,7 +5335,7 @@ void         GeomSurfaceOfExtrusion::Restore    (Base::XMLReader &/*reader*/)   
 
 PyObject *GeomSurfaceOfExtrusion::getPyObject(void)
 {
-    return new SurfaceOfExtrusionPy((GeomSurfaceOfExtrusion*)this->clone());
+    return new SurfaceOfExtrusionPy(static_cast<GeomSurfaceOfExtrusion*>(this->clone()));
 }
 
 

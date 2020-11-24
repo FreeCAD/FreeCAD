@@ -1,9 +1,29 @@
 %{
-/* Lexer for the FreeCAD  Expression language   */
-/* (c) 2010 Jürgen Riegel LGPL                 */
-/* (c) 2015 Eivind Kvedalen LGPL           */
-/* (c) 2018 Zheng, Lei      LGPL           */
+/***************************************************************************
+ *   Copyright (c) 2010 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
+ *   Copyright (c) 2018 Zheng, Lei <realthunder.dev@gmail.com>             *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
 
+/* Lexer for the FreeCAD Expression language   */
 
 /* This disables inclusion of unistd.h, which is not available under Visual C++
  * on Win32. The C++ scanner uses STL streams instead. */
@@ -98,7 +118,7 @@
 /* the manual says "somewhat more optimized" */
 %option batch
 
-%option never-interactive 
+%option never-interactive
 
 /* no support for include files is planned */
 %option noyywrap nounput noinput
@@ -362,33 +382,3 @@ not[ \t]+in                  COUNTCHARS; RET_TOKEN(TOK_NOT_IN);
 {DIGIT}+"."{DIGIT}*{EXPO}?              COUNTCHARS; RET_NUM(num_change(yytext,',','.'));
 {DIGIT}+{EXPO}                          COUNTCHARS; RET_NUM(num_change(yytext,',','.'));
 
-{DIGIT}+                     { COUNTCHARS;
-                            
-                               auto v = strtoll( yytext, NULL, 0 );
-                               if (v == LLONG_MIN) {
-                                  throw ParserError("Integer underflow");
-                               } else if (v == LLONG_MAX) {
-                                  throw ParserError("Integer overflow");
-                               }
-                               if (v == 1) { RET_NUM(1); } else RET_INTEGER(std::move(v));
-                             }
-
-<INITIAL>"pi"                COUNTCHARS; RET_CONSTANT(M_PI,"pi"); // constant pi
-<INITIAL>"e"                 COUNTCHARS; RET_CONSTANT(M_E,"e"); // constant e
-"None"                       COUNTCHARS; RET_CONSTANT(0,"None"); // constant None
-"True"                       COUNTCHARS; RET_CONSTANT(1,"True"); // constant None
-"true"                       COUNTCHARS; RET_CONSTANT(1,"True"); // constant None
-"False"                      COUNTCHARS; RET_CONSTANT(0,"False"); // constant None
-"false"                      COUNTCHARS; RET_CONSTANT(0,"False"); // constant None
-
-$[A-Za-z]{1,2}+${DIGIT}+     COUNTCHARS; RET_TEXT(TOK_CELLADDRESS);
-[A-Za-z]{1,2}${DIGIT}+       COUNTCHARS; RET_TEXT(TOK_CELLADDRESS);
-$[A-Za-z]{1,2}{DIGIT}+       COUNTCHARS; RET_TEXT(TOK_CELLADDRESS);
-
-({L}{M}*|_)({L}{M}*|{N}|_|@)*  COUNTCHARS; RET_TEXT(TOK_IDENTIFIER);
-
-'|\"|[^[:space:][:graph:]]+    COUNTCHARS; RET_UNIT();
-                               /* For other tokens that cannot be classified as IDENTIFIER, treat
-                                * as unit and let parser check
-                                */
-                                

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2017 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
- 
+
 //! LineGroup - Classes related to processing LineGroup definition CSV files
 
 #ifndef _TechDraw_LINEGROUP_H_
@@ -32,7 +32,7 @@ namespace TechDraw
 
 class TechDrawExport LineGroup
 {
-public: 
+public:
     LineGroup();
     LineGroup(std::string groupName);
     ~LineGroup();
@@ -52,7 +52,7 @@ public:
     //static LineGroup maker
     static LineGroup* lineGroupFactory(std::string groupName);
 
-    static double getDefaultWidth(std::string weightName, 
+    static double getDefaultWidth(std::string weightName,
                                   std::string groupName = std::string());
 
 

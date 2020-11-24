@@ -1026,7 +1026,12 @@ void QGVPage::wheelEvent(QWheelEvent *event)
     }
 
     QPointF center = mapToScene(viewport()->rect().center());
-    qreal factor = std::pow(mouseBase, event->delta() / mouseAdjust);
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+    int delta = event->angleDelta().y();
+#else
+    int delta = event->delta();
+#endif
+    qreal factor = std::pow(mouseBase, delta / mouseAdjust);
     scale(factor, factor);
 
     QPointF newCenter = mapToScene(viewport()->rect().center());

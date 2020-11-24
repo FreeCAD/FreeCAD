@@ -292,7 +292,11 @@ bool WebView::event(QEvent *event) {
 void WebView::wheelEvent(QWheelEvent *event)
 {
     if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+        qreal factor = zoomFactor() + (-event->angleDelta().y() / 800.0);
+#else
         qreal factor = zoomFactor() + (-event->delta() / 800.0);
+#endif
         setZoomFactor(factor);
         event->accept();
         return;

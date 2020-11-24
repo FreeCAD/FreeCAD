@@ -84,7 +84,7 @@ public:
         EndVertex = sketch->getVertexIndexGeoPos(elementnr,Sketcher::end),
         GeometryType = geo->getTypeId();
         isMissing = geo->testFlag(Part::Geometry::Missing);
-        isConstruction = geo->Construction;
+        isConstruction = geo->getConstruction();
         isExternal = !geo->Ref.empty();
 
         static std::map<Base::Type,QString> typeMap;
@@ -106,7 +106,7 @@ public:
         else
             setText(ColType, it->second);
         if(ElementNbr>=0) {
-            if(geo->Construction)
+            if(geo->getConstruction())
                 setText(ColFlags,QObject::tr("Construction"));
         }else{
             QString text;
@@ -928,7 +928,7 @@ TaskSketcherElements::MultIcon::MultIcon(const char* name)
     Normal = Gui::BitmapFactory().iconFromTheme(name);
     QImage imgConstr(Normal.pixmap(Normal.availableSizes()[0]).toImage());
     QImage imgExt(imgConstr);
-    
+
     for(int ix=0 ; ix<imgConstr.width() ; ix++) {
         for(int iy=0 ; iy<imgConstr.height() ; iy++) {
             QColor clr = QColor::fromRgba(imgConstr.pixel(ix,iy));
@@ -954,7 +954,7 @@ TaskSketcherElements::MultIcon::MultIcon(const char* name)
     External = QIcon(QPixmap::fromImage(imgExt));
 
 }
-    
+
 QIcon TaskSketcherElements::MultIcon::getIcon(bool construction, bool external) const
 {
     if (construction && external) return QIcon();

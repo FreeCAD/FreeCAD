@@ -63,7 +63,7 @@ PyObject *DocumentObjectGroup::getPyObject()
 // Python feature ---------------------------------------------------------
 
 namespace App {
-    
+
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(App::DocumentObjectGroupPython, App::DocumentObjectGroup)
 

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
@@ -153,7 +151,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         # obj.Side = side[0]
 
         # Set direction of op
-        forward = (obj.Direction == 'CCW')
+        forward = (obj.Direction == 'CW')
 
         zValues = []
         z = 0

@@ -322,7 +322,7 @@ void Base::XMLReader::readEndElement(const char* ElementName, int *guard)
 
     // if we are already at the end of the current element
     if ((ReadType == EndElement || ReadType == StartEndElement)
-            && ElementName 
+            && ElementName
             && LocalName == ElementName
             && (level<0 || level==Level))
     {
@@ -340,8 +340,8 @@ void Base::XMLReader::readEndElement(const char* ElementName, int *guard)
         read();
         if (ReadType == EndDocument)
             break;
-    } while (ReadType != EndElement 
-                || (ElementName 
+    } while (ReadType != EndElement
+                || (ElementName
                     && (LocalName != ElementName
                         || (level>=0 && level!=Level))));
 

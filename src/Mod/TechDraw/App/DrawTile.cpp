@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wanderer Fan <wandererfan@gmail.com>               *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -81,7 +81,7 @@ short DrawTile::mustExecute() const
 }
 
 App::DocumentObjectExecReturn *DrawTile::execute(void)
-{ 
+{
 //    Base::Console().Message("DT::execute()\n");
     return DocumentObject::execute();
 }

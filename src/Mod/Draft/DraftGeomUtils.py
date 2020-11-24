@@ -68,16 +68,22 @@ from draftgeoutils.general import (precision,
 from draftgeoutils.geometry import (findPerpendicular,
                                     findDistance,
                                     getSplineNormal,
+                                    get_spline_normal,
                                     getNormal,
+                                    get_normal,
                                     getRotation,
                                     isPlanar,
+                                    is_planar,
                                     calculatePlacement,
-                                    mirror)
+                                    mirror,
+                                    are_coplanar,
+                                    is_straight_line)
 
 from draftgeoutils.edges import (findEdge,
                                  orientEdge,
                                  isSameLine,
                                  isLine,
+                                 is_line,
                                  invert,
                                  findMidpoint,
                                  getTangent)

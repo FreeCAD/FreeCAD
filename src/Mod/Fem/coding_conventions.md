@@ -34,6 +34,13 @@ These coding rules apply to FEM module code only. Other modules or the base syst
 - maximal line length is 100
 - double quotes as string identifier
 
+### Exceptione
+- Do not use bare 'except'.
+- Be more specific. If not possible use:
+- Either use 'except Exception' or if really everything should be caught 'except BaseException'
+- https://stackoverflow.com/a/18982772
+- https://github.com/PyCQA/pycodestyle/issues/703
+
 ### Imports
 - Only one import per line.
 - Even on import from some_module import something. There should only be one something per line.
