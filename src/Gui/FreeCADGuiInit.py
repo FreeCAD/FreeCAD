@@ -108,6 +108,7 @@ class NoneWorkbench ( Workbench ):
 
 def InitApplications():
     import sys,os,traceback
+    import codecs
     try:
         # Python3
         import io as cStringIO
@@ -125,7 +126,7 @@ def InitApplications():
             if (os.path.exists(InstallFile)):
                 try:
                     # XXX: This looks scary securitywise...
-                    with open(InstallFile) as f:
+                    with codecs.open(filename=InstallFile, encoding="utf-8") as f:
                         exec(f.read())
                 except Exception as inst:
                     Log('Init:      Initializing ' + Dir + '... failed\n')

@@ -45,6 +45,7 @@ def removeFromPath(module_name):
 
 def setupSearchPaths(PathExtension):
 	# DLL resolution in Python 3.8 on Windows has changed
+	import sys, os
 	if sys.platform == 'win32' and hasattr(os, "add_dll_directory"):
 		if "FREECAD_LIBPACK_BIN" in os.environ:
 			os.add_dll_directory(os.environ["FREECAD_LIBPACK_BIN"])
@@ -172,7 +173,7 @@ def InitApplications():
 				try:
 					# XXX: This looks scary securitywise...
 
-					with open(InstallFile) as f:
+					with codecs.open(filename=InstallFile, encoding="utf-8") as f:
 						exec(f.read())
 				except Exception as inst:
 					Log('Init:      Initializing ' + Dir + '... failed\n')
@@ -629,6 +630,7 @@ FreeCAD.Logger = FCADLogger
 # init every application by importing Init.py
 try:
 	import traceback
+	import codecs
 	InitApplications()
 except Exception as e:
 	Err('Error in InitApplications ' + str(e) + '\n')
