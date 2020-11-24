@@ -160,6 +160,8 @@
 # include <BRepOffsetAPI_DraftAngle.hxx>
 # include <BRepPrimAPI_MakeHalfSpace.hxx>
 # include <gp_Pln.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <BRepGProp_Face.hxx>
 #endif
 # include <ShapeAnalysis_FreeBoundsProperties.hxx>
 # include <ShapeAnalysis_FreeBoundData.hxx>
@@ -188,6 +190,7 @@
 #include "FaceMaker.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "Geometry.h"
+#include "FaceMakerBullseye.h"
 
 #define TOPOP_VERSION 15
 
@@ -1877,11 +1880,26 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
             BRepLib_FindSurface planefinder(compoundSourceWires, -1, Standard_True);
             if (!planefinder.Found())
                 FC_THROWM(Base::CADKernelError,"makeOffset2D: wires are nonplanar or noncoplanar");
+            workingPlane = GeomAdaptor_Surface(planefinder.Surface()).Plane();
             if (haveFaces){
-                //extract plane from first face (useful for preserving the plane of face precisely if dealing with only one face)
-                workingPlane = BRepAdaptor_Surface(TopoDS::Face(shapesToProcess[0].getShape())).Plane();
-            } else {
-                workingPlane = GeomAdaptor_Surface(planefinder.Surface()).Plane();
+                //extract plane from first face (useful for preserving the plane
+                //of face precisely if dealing with only one face). To following
+                //code works for any shape, even non planar. Although we are
+                //only making planar face here, the underlying face may not be a
+                //Geom_Plane. It could be a Geom_BSplineSurface.
+                const TopoDS_Shape & s = shapesToProcess[0].getShape();
+                BRepAdaptor_Surface adapt(TopoDS::Face(s));
+                double u = adapt.FirstUParameter()
+                    + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
+                double v = adapt.FirstVParameter()
+                    + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
+                BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
+                if(prop.IsNormalDefined()) {
+                    gp_Pnt pnt; gp_Vec vec;
+                    // handles the orientation state of the shape
+                    BRepGProp_Face(TopoDS::Face(s)).Normal(u,v,pnt,vec);
+                    workingPlane = gp_Pln(pnt, gp_Dir(vec));
+                }
             }
         }
 
@@ -2033,8 +2051,21 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
         }
 
         //make faces
-        if (wiresForMakingFaces.size()>0)
-            expandCompound(TopoShape(Tag,Hasher).makEFace(wiresForMakingFaces,op),shapesToReturn);
+        if (wiresForMakingFaces.size()>0) {
+            FaceMakerBullseye mkFace;
+            mkFace.MyHasher = Hasher;
+            mkFace.setPlane(workingPlane);
+            for(auto &s : wiresForMakingFaces) {
+                if (s.getShape().ShapeType() == TopAbs_COMPOUND)
+                    mkFace.useTopoCompound(s);
+                else
+                    mkFace.addTopoShape(s);
+            }
+            mkFace.Build();
+            auto res = mkFace.getTopoShape();
+            res.Tag = Tag;
+            expandCompound(res, shapesToReturn);
+        }
     }
 
     return makECompound(shapesToReturn,op,forceOutputCompound);
