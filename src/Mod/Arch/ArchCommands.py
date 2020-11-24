@@ -1204,7 +1204,6 @@ def rebuildArchShape(objects=None):
     if objects is None) Arch objects, and tries to rebuild a valid solid from them."""
     import FreeCAD,Part
     if not objects and FreeCAD.GuiUp:
-        import FreeCADGui
         objects = FreeCADGui.Selection.getSelection()
     if not isinstance(objects,list):
         objects = [objects]
