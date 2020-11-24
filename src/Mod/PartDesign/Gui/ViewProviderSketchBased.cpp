@@ -35,7 +35,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderSketchBased, PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderSketchBased, PartDesignGui::ViewProviderAddSub)
 
 
 ViewProviderSketchBased::ViewProviderSketchBased()
@@ -77,4 +77,17 @@ bool ViewProviderSketchBased::onDelete(const std::vector<std::string> &s) {
         Gui::Application::Instance->getViewProvider(pcSketch)->show();
 
     return ViewProvider::onDelete(s);
+}
+
+bool ViewProviderSketchBased::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default)
+        setPreviewDisplayMode(true);
+
+    return ViewProviderAddSub::setEdit(ModNum);
+}
+
+void ViewProviderSketchBased::unsetEdit(int ModNum) {
+    setPreviewDisplayMode(false);
+    ViewProviderAddSub::unsetEdit(ModNum);
 }

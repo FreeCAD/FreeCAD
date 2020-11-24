@@ -133,6 +133,7 @@ PyMOD_INIT_FUNC(PartDesignGui)
     PartDesignGui::ViewProvider              ::init();
     PartDesignGui::ViewProviderPython        ::init();
     PartDesignGui::ViewProviderBody          ::init();
+    PartDesignGui::ViewProviderAddSub        ::init();
     PartDesignGui::ViewProviderSketchBased   ::init();
     PartDesignGui::ViewProviderPocket        ::init();
     PartDesignGui::ViewProviderHole          ::init();
@@ -163,7 +164,6 @@ PyMOD_INIT_FUNC(PartDesignGui)
     PartDesignGui::ViewProviderBoolean       ::init();
     PartDesignGui::ViewProviderSplit         ::init();
     PartDesignGui::ViewProviderSolid         ::init();
-    PartDesignGui::ViewProviderAddSub        ::init();
     PartDesignGui::ViewProviderPrimitive     ::init();
     PartDesignGui::ViewProviderPipe          ::init();
     PartDesignGui::ViewProviderLoft          ::init();

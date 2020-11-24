@@ -64,6 +64,7 @@
 #include "WorkflowManager.h"
 #include "ViewProviderBody.h"
 #include "TaskWrapParameters.h"
+#include "ViewProviderAddSub.h"
 
 namespace bp = boost::placeholders;
 
@@ -671,10 +672,25 @@ public:
                 Gui::ViewProviderDocumentObject *parentVp = nullptr;
                 std::string subname;
                 doc->getInEdit(&parentVp, &subname);
-                if (parentVp && vp.getObject()->isDerivedFrom(
-                            PartDesign::FeaturePrimitive::getClassTypeId())) {
-                    editObj = App::SubObjectT(parentVp->getObject(), subname.c_str());
-                } else {
+                if (parentVp && vp.isDerivedFrom(ViewProviderAddSub::getClassTypeId())) {
+                    auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(vp.getObject());
+                    auto body = PartDesign::Body::findBodyOf(feat);
+                    if (feat && !feat->AddSubShape.getShape().isNull() && body) {
+                        editObj = App::SubObjectT(parentVp->getObject(), subname.c_str());
+                        App::DocumentObject *prev = nullptr;
+                        for (auto sibling : body->getSiblings(feat)) {
+                            if (sibling->Visibility.getValue())
+                                visibleObj = App::DocumentObjectT(sibling);
+                            if (sibling == feat && prev)
+                                siblingObj = App::DocumentObjectT(prev);
+                        }
+                        auto obj = siblingObj.getObject();
+                        if (obj)
+                            obj->Visibility.setValue(true);
+                    }
+                } 
+                
+                if (editObj.getObjectName().empty()) {
                     for(auto obj : vp.getObject()->getInList()) {
                         if (obj->isDerivedFrom(PartDesign::FeatureWrap::getClassTypeId())) {
                             auto wrap = static_cast<PartDesign::FeatureWrap*>(obj);
@@ -772,7 +788,12 @@ public:
                                     editObj.getSubName().c_str()), true);
                 });
         }
+        auto obj = visibleObj.getObject();
+        if (obj && obj != siblingObj.getObject())
+            obj->Visibility.setValue(true);
         editObj = App::SubObjectT();
+        siblingObj = App::DocumentObjectT();
+        visibleObj = App::DocumentObjectT();
         editView = nullptr;
     }
 
@@ -883,6 +904,8 @@ public:
     PartDesign::Body *activeBody = nullptr;
     App::SubObjectT activeBodyT;
     App::SubObjectT editObj;
+    App::DocumentObjectT siblingObj;
+    App::DocumentObjectT visibleObj;
     Gui::View3DInventor *editView = nullptr;
     QPointer<QWidget> taskWidget;
 };
