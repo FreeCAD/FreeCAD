@@ -79,6 +79,7 @@
 #include <App/Document.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/FeatureOffset.h>
 #include "FeatureSketchBased.h"
 #include "DatumPlane.h"
 #include "DatumLine.h"
@@ -97,6 +98,11 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(Reversed, (0),"SketchBased", App::Prop_None, "Reverse extrusion direction");
     ADD_PROPERTY_TYPE(UpToFace,(0),"SketchBased",(App::PropertyType)(App::Prop_None),"Face where feature will end");
     ADD_PROPERTY_TYPE(AllowMultiFace,(false),"SketchBased", App::Prop_None, "Allow multiple faces in profile");
+
+    ADD_PROPERTY_TYPE(Fit, (0.0), "SketchBased", App::Prop_None, "Shrink or expand the profile for fitting");
+    ADD_PROPERTY_TYPE(FitJoin,(long(0)),"SketchBased",App::Prop_None,"Fit join type");
+    FitJoin.setEnums(Part::Offset::JoinEnums);
+    ADD_PROPERTY_TYPE(FitIntersection,(false),"SketchBased",App::Prop_None,"Fit intersection");
 }
 
 short ProfileBased::mustExecute() const
@@ -213,7 +219,7 @@ TopoShape ProfileBased::getVerifiedFace(bool silent) const {
                     shape = shape.makEWires();
                 if(shape.hasSubShape(TopAbs_WIRE)) {
                     shape.Hasher = getDocument()->getStringHasher();
-                    return shape.makEFace(0,"Part::FaceMakerCheese");
+                    shape = shape.makEFace(0,"Part::FaceMakerCheese");
                 }
             } catch (const Base::Exception &) {
                 if (silent)
@@ -231,6 +237,15 @@ TopoShape ProfileBased::getVerifiedFace(bool silent) const {
                 return TopoShape();
             throw Base::CADKernelError("Cannot make face from profile");
         }
+
+        if (std::abs(Fit.getValue()) > Precision::Confusion()) {
+            shape = shape.makEOffset2D(Fit.getValue(),
+                                       static_cast<short>(FitJoin.getValue()),
+                                       false,
+                                       false,
+                                       FitIntersection.getValue());
+        }
+
         if(count>1) {
             if(AllowMultiFace.getValue() || allowMultiSolid())
                 return shape;

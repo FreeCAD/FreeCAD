@@ -56,7 +56,6 @@ public:
     }
     //@}
 
-private:
     static const char* ModeEnums[];
     static const char* JoinEnums[];
 };

@@ -25,6 +25,7 @@
 #define PARTDESIGN_SketchBased_H
 
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include "FeatureAddSub.h"
 
@@ -57,6 +58,10 @@ public:
     App::PropertyBool    ClaimChildren;
 
     App::PropertyBool AllowMultiFace;
+
+    App::PropertyDistance    Fit;
+    App::PropertyEnumeration FitJoin;
+    App::PropertyBool        FitIntersection;
 
     short mustExecute() const;
 
