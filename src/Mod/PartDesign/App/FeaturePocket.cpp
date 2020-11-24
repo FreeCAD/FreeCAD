@@ -157,7 +157,6 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             return new App::DocumentObjectExecReturn("Pocket: Creating a face from sketch failed");
         profileshape.move(invObjLoc);
 
-        std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToFace") {
             if (base.isNull())
                 return new App::DocumentObjectExecReturn("Pocket: Extruding up to a face is only possible if the sketch is located on a face");
@@ -199,6 +198,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             prism.makEShape(PrismMaker,{base,profileshape});
 #else
             TopoShape prism(0,getDocument()->getStringHasher());
+            profileshape.reTagElementMap(-getID(), getDocument()->getStringHasher());
             generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, 0, Standard_True);
 #endif
             // And the really expensive way to get the SubShape...
@@ -218,11 +218,18 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
             Part::Extrusion::ExtrusionParameters params;
             params.dir = dir;
-            params.lengthFwd = L;
-            params.lengthRev = L2;
-            params.solid = true;
             params.taperAngleFwd = this->TaperAngle.getValue() * M_PI / 180.0;
             params.taperAngleRev = this->TaperAngleRev.getValue() * M_PI / 180.0;
+            if (L2 == 0.0 && Midplane.getValue()) {
+                params.lengthFwd = L/2;
+                params.lengthRev = L/2;
+                if (params.taperAngleRev == 0.0)
+                    params.taperAngleRev = params.taperAngleFwd;
+            } else {
+                params.lengthFwd = L;
+                params.lengthRev = L2;
+            }
+            params.solid = true;
             if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
                     std::fabs(params.taperAngleRev) >= Precision::Angular() ) {
                 if (fabs(params.taperAngleFwd) > M_PI * 0.5 - Precision::Angular()
@@ -247,7 +254,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             prism = refineShapeIfActive(prism);
             this->AddSubShape.setValue(prism);
 
-            // prism.Tag = -this->getID();
+            prism.Tag = -this->getID();
 
             // Cut the SubShape out of the base feature
             TopoShape result(0,getDocument()->getStringHasher());
@@ -271,7 +278,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     catch (Standard_Failure& e) {
 
         if (std::string(e.GetMessageString()) == "TopoDS::Face" &&
-            (std::string(Type.getValueAsString()) == "UpToFirst" || std::string(Type.getValueAsString()) == "UpToFace"))
+            (method == "UpToFirst" || method == "UpToFace"))
             return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"
                 "Intersecting sketch entities or multiple faces in a sketch are not allowed "
                 "for making a pocket up to a face.");

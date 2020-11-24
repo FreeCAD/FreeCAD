@@ -56,6 +56,7 @@
 #include <Base/Placement.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <App/Document.h>
 #include <App/Application.h>
@@ -64,6 +65,8 @@
 
 #include "json.hpp"
 #include "FeatureHole.h"
+
+FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
 namespace PartDesign {
 
@@ -1432,34 +1435,68 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             Part::ShapeMapper mapper;
             mapper.populate(true, profileEdge, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
 
-            TopoShape hole(profile->getID(), getDocument()->getStringHasher());
+            TopoShape hole(-getID(), getDocument()->getStringHasher());
             hole.makESHAPE(protoHole, mapper, {profileEdge});
 
             // transform and generate element map.
             hole = hole.makETransform(localSketchTransformation);
             holes.push_back(hole);
-
-            try {
-                result.makECut({base,hole});
-            }catch(Standard_Failure &) {
-                std::string msg("Hole: Cut failed on profile Edge");
-                msg += std::to_string(i);
-                return new App::DocumentObjectExecReturn(msg.c_str());
-            }
-            base = getSolid(result);
-            if (base.isNull()) {
-                std::string msg("Hole: Cut produced non-solid on profile Edge");
-                msg += std::to_string(i);
-                return new App::DocumentObjectExecReturn(msg.c_str());
-            }
         }
 
+        TopoShape compound = TopoShape().makECompound(holes, "", false);
+
         // set the subtractive shape property for later usage in e.g. pattern
-        this->AddSubShape.setValue(TopoShape().makECompound(holes));
+        this->AddSubShape.setValue(compound);
 
-        remapSupportShape(base.getShape());
+        if (base.isNull()) {
+            Shape.setValue(compound);
+            return App::DocumentObject::StdReturn;
+        }
 
-        this->Shape.setValue(base);
+        // First try cuting with compound which will be faster as it is done in
+        // parallel
+        bool retry = true;
+        try {
+            result.makECut({base,compound});
+            result = getSolid(result);
+            retry = false;
+        } catch (Standard_Failure & e) {
+            FC_WARN(getFullName() << ": cutting with compound failed ("
+                    << e.GetMessageString() << "), retry...");
+        } catch (Base::Exception & e)  {
+            FC_WARN(getFullName() << ": cutting with compound failed ("
+                    << e.what() << "), retry...");
+        }
+
+        if (retry) {
+            int i = 0;
+            for (auto & hole : holes) {
+                ++i;
+                try {
+                    result.makECut({base,hole});
+                } catch (Standard_Failure &) {
+                    std::string msg("Cut failed on profile Edge");
+                    msg += std::to_string(i);
+                    return new App::DocumentObjectExecReturn(msg.c_str());
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                    std::string msg("Cut failed on profile Edge");
+                    msg += std::to_string(i);
+                    return new App::DocumentObjectExecReturn(msg.c_str());
+                }
+                base = getSolid(result);
+                if (base.isNull()) {
+                    std::string msg("Cut produced non-solid on profile Edge");
+                    msg += std::to_string(i);
+                    return new App::DocumentObjectExecReturn(msg.c_str());
+                }
+            }
+            result = base;
+        }
+
+        remapSupportShape(result.getShape());
+
+        this->Shape.setValue(result);
 
         return App::DocumentObject::StdReturn;
     }

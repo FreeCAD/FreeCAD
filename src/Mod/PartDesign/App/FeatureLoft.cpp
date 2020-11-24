@@ -177,6 +177,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         }
 
         AddSubShape.setValue(result);
+        result.Tag = -getID();
         
         if(base.isNull()) {
             Shape.setValue(getSolid(result));

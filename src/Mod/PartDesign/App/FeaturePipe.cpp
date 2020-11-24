@@ -291,6 +291,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
 
         //result.Move(invObjLoc);
         AddSubShape.setValue(result);
+        result.Tag = -getID();
 
         if(base.isNull()) {
             Shape.setValue(getSolid(result));

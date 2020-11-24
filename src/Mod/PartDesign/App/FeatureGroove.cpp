@@ -147,15 +147,19 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         }
         
         // revolve the face to a solid
-        if(!sketchshape.Hasher)
-            sketchshape.Hasher = getDocument()->getStringHasher();
-        TopoShape result;
+        TopoShape result(0, getDocument()->getStringHasher());
         try {
-            result = sketchshape.makERevolve(gp_Ax1(pnt, dir), angle);
+            result.makERevolve(sketchshape, gp_Ax1(pnt, dir), angle);
         }catch(Standard_Failure &) {
             return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
         }
         this->AddSubShape.setValue(result);
+        result.Tag = -getID();
+
+        if(base.isNull()) {
+            Shape.setValue(getSolid(result));
+            return App::DocumentObject::StdReturn;
+        }
 
         try {
             result = TopoShape(0,getDocument()->getStringHasher()).makECut({base,result});

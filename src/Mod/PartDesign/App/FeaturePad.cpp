@@ -351,11 +351,18 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
         } else {
             Part::Extrusion::ExtrusionParameters params;
             params.dir = dir;
-            params.lengthFwd = L;
-            params.lengthRev = L2;
-            params.solid = true;
             params.taperAngleFwd = this->TaperAngle.getValue() * M_PI / 180.0;
             params.taperAngleRev = this->TaperAngleRev.getValue() * M_PI / 180.0;
+            if (L2 == 0.0 && Midplane.getValue()) {
+                params.lengthFwd = L/2;
+                params.lengthRev = L/2;
+                if (params.taperAngleRev == 0.0)
+                    params.taperAngleRev = params.taperAngleFwd;
+            } else {
+                params.lengthFwd = L;
+                params.lengthRev = L2;
+            }
+            params.solid = true;
             if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
                     std::fabs(params.taperAngleRev) >= Precision::Angular() ) {
                 if (fabs(params.taperAngleFwd) > M_PI * 0.5 - Precision::Angular()
@@ -368,7 +375,7 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
                 Part::Extrusion::makeDraft(params, sketchshape, drafts, getDocument()->getStringHasher());
                 if (drafts.empty())
                     return new App::DocumentObjectExecReturn("Padding with draft angle failed");
-                prism.makECompound(drafts,0,false);
+                prism.makECompound(drafts, nullptr, false);
 
             } else
                 generatePrism(prism, sketchshape, method, dir, L, L2,
@@ -378,7 +385,7 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
         // set the additive shape property for later usage in e.g. pattern
         prism = refineShapeIfActive(prism);
         this->AddSubShape.setValue(prism);
-        // prism.Tag = -this->getID();
+        prism.Tag = -this->getID();
 
         if (!base.isNull() && fuse) {
 //             auto obj = getDocument()->addObject("Part::Feature", "prism");
