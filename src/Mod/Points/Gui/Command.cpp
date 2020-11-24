@@ -191,6 +191,7 @@ CmdPointsConvert::CmdPointsConvert()
     sToolTipText  = QT_TR_NOOP("Convert to points");
     sWhatsThis    = "Points_Convert";
     sStatusTip    = QT_TR_NOOP("Convert to points");
+    sPixmap       = "Points_Convert";
 }
 
 void CmdPointsConvert::activated(int iMsg)
@@ -321,6 +322,7 @@ CmdPointsMerge::CmdPointsMerge()
     sToolTipText  = QT_TR_NOOP("Merge several point clouds into one");
     sWhatsThis    = "Points_Merge";
     sStatusTip    = QT_TR_NOOP("Merge several point clouds into one");
+    sPixmap       = "Points_Merge";
 }
 
 void CmdPointsMerge::activated(int iMsg)
@@ -363,6 +365,7 @@ CmdPointsStructure::CmdPointsStructure()
     sToolTipText  = QT_TR_NOOP("Convert points to structured point cloud");
     sWhatsThis    = "Points_Structure";
     sStatusTip    = QT_TR_NOOP("Convert points to structured point cloud");
+    sPixmap       = "Points_Structure";
 }
 
 void CmdPointsStructure::activated(int iMsg)
