@@ -26,10 +26,9 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <App/DocumentObserver.h>
 
-class QuantitySpinBox;
-
 namespace Gui
 {
+  class QuantitySpinBox;
   class SoFCCSysDragger;
   class ViewProviderDragger;
   
