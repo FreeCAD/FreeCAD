@@ -46,6 +46,8 @@ public:
     App::PropertyBool        UseCustomVector;
     App::PropertyVector      Direction;
     App::PropertyLength      Offset;
+    App::PropertyAngle       TaperAngle;
+    App::PropertyAngle       TaperAngleRev;
 
     /** @name methods override feature */
     //@{

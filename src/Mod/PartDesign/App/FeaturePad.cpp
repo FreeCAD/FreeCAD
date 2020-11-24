@@ -52,6 +52,7 @@
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
+#include <Mod/Part/App/FeatureExtrusion.h>
 
 #include "FeaturePad.h"
 
@@ -74,13 +75,17 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(UseCustomVector, (0), "Pad", App::Prop_None, "Use custom vector for pad direction");
     ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pad", App::Prop_None, "Pad direction vector");
     ADD_PROPERTY_TYPE(UpToFace, (0), "Pad", App::Prop_None, "Face where pad will end");
-    ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
-    static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
-    Offset.setConstraints(&signedLengthConstraint);
 
     // Remove the constraints and keep the type to allow to accept negative values
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
     Length2.setConstraints(nullptr);
+
+    ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
+    static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
+    Offset.setConstraints(&signedLengthConstraint);
+
+    ADD_PROPERTY_TYPE(TaperAngle,(0.0), "Pad", App::Prop_None, "Sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yields inward tapering.");
+    ADD_PROPERTY_TYPE(TaperAngleRev,(0.0), "Pad", App::Prop_None, "Taper angle of reverse part of padding.");
 }
 
 short Pad::mustExecute() const
@@ -104,13 +109,18 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
 App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
 {
+    std::string method(Type.getValueAsString());                
+
     // Validate parameters
     double L = Length.getValue();
-    if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
+    if ((method == "Length") && (L < Precision::Confusion()))
         return new App::DocumentObjectExecReturn("Length too small");
-    double L2 = Length2.getValue();
-    if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn("Second length too small");
+    double L2 = 0;
+    if ((method == "TwoLengths")) {
+        L2 = Length2.getValue();
+        if (std::abs(L2) < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Second length too small");
+    }
 
     Part::Feature* obj = 0;
     TopoShape sketchshape;
@@ -212,7 +222,6 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
         sketchshape.move(invObjLoc);
 
         TopoShape prism(0,getDocument()->getStringHasher());
-        std::string method(Type.getValueAsString());                
 
         if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
             // Note: This will return an unlimited planar face if support is a datum plane
@@ -334,13 +343,36 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
                     return new App::DocumentObjectExecReturn("Pad: Resulting shape is empty");
                 prism.makEShape(PrismMaker,{base,sketchshape});
 #else
+
                 Standard_Integer fuse = fabs(Offset.getValue()) > Precision::Confusion() ? 1 : 2;
                 generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, fuse, Standard_True);
 #endif
             }
         } else {
-            generatePrism(prism, sketchshape, method, dir, L, L2,
-                          Midplane.getValue(), Reversed.getValue());
+            Part::Extrusion::ExtrusionParameters params;
+            params.dir = dir;
+            params.lengthFwd = L;
+            params.lengthRev = L2;
+            params.solid = true;
+            params.taperAngleFwd = this->TaperAngle.getValue() * M_PI / 180.0;
+            params.taperAngleRev = this->TaperAngleRev.getValue() * M_PI / 180.0;
+            if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
+                    std::fabs(params.taperAngleRev) >= Precision::Angular() ) {
+                if (fabs(params.taperAngleFwd) > M_PI * 0.5 - Precision::Angular()
+                        || fabs(params.taperAngleRev) > M_PI * 0.5 - Precision::Angular())
+                    return new App::DocumentObjectExecReturn("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
+
+                if (Reversed.getValue())
+                    params.dir.Reverse();
+                std::vector<TopoShape> drafts;
+                Part::Extrusion::makeDraft(params, sketchshape, drafts, getDocument()->getStringHasher());
+                if (drafts.empty())
+                    return new App::DocumentObjectExecReturn("Padding with draft angle failed");
+                prism.makECompound(drafts,0,false);
+
+            } else
+                generatePrism(prism, sketchshape, method, dir, L, L2,
+                            Midplane.getValue(), Reversed.getValue());
         }
         
         // set the additive shape property for later usage in e.g. pattern

@@ -47,6 +47,7 @@
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <App/Document.h>
+#include <Mod/Part/App/FeatureExtrusion.h>
 
 #include "FeaturePocket.h"
 
@@ -76,6 +77,9 @@ Pocket::Pocket()
     // Remove the constraints and keep the type to allow to accept negative values
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
     Length2.setConstraints(nullptr);
+
+    ADD_PROPERTY_TYPE(TaperAngle,(0.0), "Pocket", App::Prop_None, "Sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yields inward tapering.");
+    ADD_PROPERTY_TYPE(TaperAngleRev,(0.0), "Pocket", App::Prop_None, "Taper angle of reverse part of pocketing.");
 }
 
 short Pocket::mustExecute() const
@@ -92,20 +96,24 @@ short Pocket::mustExecute() const
 
 App::DocumentObjectExecReturn *Pocket::execute(void)
 {
+    std::string method(Type.getValueAsString());                
+
     // Handle legacy features, these typically have Type set to 3 (previously NULL, now UpToFace),
     // empty FaceName (because it didn't exist) and a value for Length
-    if (std::string(Type.getValueAsString()) == "UpToFace" &&
+    if (method == "UpToFace" &&
         (UpToFace.getValue() == NULL && Length.getValue() > Precision::Confusion()))
         Type.setValue("Length");
 
     // Validate parameters
     double L = Length.getValue();
-    if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn("Pocket: Length of pocket too small");
-
-    double L2 = Length2.getValue();
-    if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
-        return new App::DocumentObjectExecReturn("Pocket: Second length of pocket too small");
+    if ((method == "Length") && (L < Precision::Confusion()))
+        return new App::DocumentObjectExecReturn("Length too small");
+    double L2 = 0;
+    if ((method == "TwoLengths")) {
+        L2 = Length2.getValue();
+        if (std::abs(L2) < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Second length too small");
+    }
 
     Part::Feature* obj = 0;
     TopoShape profileshape;
@@ -207,8 +215,31 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             this->Shape.setValue(getSolid(prism));
         } else {
             TopoShape prism(0,getDocument()->getStringHasher());
-            generatePrism(prism, profileshape, method, dir, L, L2,
-                        Midplane.getValue(), Reversed.getValue());
+
+            Part::Extrusion::ExtrusionParameters params;
+            params.dir = dir;
+            params.lengthFwd = L;
+            params.lengthRev = L2;
+            params.solid = true;
+            params.taperAngleFwd = this->TaperAngle.getValue() * M_PI / 180.0;
+            params.taperAngleRev = this->TaperAngleRev.getValue() * M_PI / 180.0;
+            if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
+                    std::fabs(params.taperAngleRev) >= Precision::Angular() ) {
+                if (fabs(params.taperAngleFwd) > M_PI * 0.5 - Precision::Angular()
+                        || fabs(params.taperAngleRev) > M_PI * 0.5 - Precision::Angular())
+                    return new App::DocumentObjectExecReturn("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
+
+                if (Reversed.getValue())
+                    params.dir.Reverse();
+                std::vector<TopoShape> drafts;
+                Part::Extrusion::makeDraft(params, profileshape, drafts, getDocument()->getStringHasher());
+                if (drafts.empty())
+                    return new App::DocumentObjectExecReturn("Pocket with draft angle failed");
+                prism.makECompound(drafts,0,false);
+            } else
+                generatePrism(prism, profileshape, method, dir, L, L2,
+                            Midplane.getValue(), Reversed.getValue());
+
             if (prism.isNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is empty");
 

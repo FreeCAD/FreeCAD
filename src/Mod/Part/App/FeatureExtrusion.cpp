@@ -227,9 +227,11 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
     TopExp_Explorer ex(sh, TopAbs_FACE);
     if(ex.More()) {
         BRepAdaptor_Surface surf(TopoDS::Face(ex.Current()));
-        normal = surf.Plane().Axis().Direction();
-        if (ex.Current().Orientation() == TopAbs_REVERSED){
-            normal.Reverse();
+        if (surf.GetType() == GeomAbs_Plane) { // could be BSplineSurface, which will throw
+            normal = surf.Plane().Axis().Direction();
+            if (ex.Current().Orientation() == TopAbs_REVERSED){
+                normal.Reverse();
+            }
         }
     }
 

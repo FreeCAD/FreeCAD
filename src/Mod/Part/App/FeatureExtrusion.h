@@ -120,11 +120,8 @@ public: //mode enumerations
         dmNormal
     };
     static const char* eDirModeStrings[];
-
-protected:
     static void makeDraft(const ExtrusionParameters& params, const TopoShape&, 
             std::vector<TopoShape>&, App::StringHasherRef hasher);
-
 
 protected:
     virtual void setupObject() override;
