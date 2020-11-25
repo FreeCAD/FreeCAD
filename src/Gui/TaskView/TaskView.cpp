@@ -499,6 +499,13 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
 {
     if (ActiveCtrl && ActiveDialog) {
         if (ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter) {
+            // spin box uses Key_Return to signal finish editing. At least for
+            // PartDesign, most task panel disable spin box keyboard tracking,
+            // therefore it expects the user press enter key to confirm.
+            QWidget* focusWidget = qApp->focusWidget();
+            if(qobject_cast<QAbstractSpinBox*>(focusWidget))
+                return;
+
             // get all buttons of the complete task dialog
             QList<QPushButton*> list = this->findChildren<QPushButton*>();
             for (int i=0; i<list.size(); ++i) {
