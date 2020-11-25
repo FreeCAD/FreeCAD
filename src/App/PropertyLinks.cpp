@@ -3546,7 +3546,7 @@ void PropertyXLink::setPyObject(PyObject *value) {
         } else if (pySub.isSequence()) {
             Py::Sequence seq(pySub);
             subs.reserve(seq.size());
-            for(size_t i=0;i<seq.size();++i) {
+            for(Py_ssize_t i=0;i<seq.size();++i) {
                 Py::Object sub(seq[i]);
                 if(!sub.isString())
                     throw Base::TypeError("Expect only string inside second argument");

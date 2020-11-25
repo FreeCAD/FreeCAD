@@ -300,7 +300,7 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
     bool single = false;
     if (PySequence_Check(obj)) {
         Py::Sequence seq(obj);
-        for (size_t i=0;i<seq.size();++i) {
+        for (Py_ssize_t i=0;i<seq.size();++i) {
             if (!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
                 return 0;
@@ -339,7 +339,7 @@ PyObject*  DocumentPy::importLinks(PyObject *args)
     std::vector<App::DocumentObject*> objs;
     if (PySequence_Check(obj)) {
         Py::Sequence seq(obj);
-        for (size_t i=0;i<seq.size();++i) {
+        for (Py_ssize_t i=0;i<seq.size();++i) {
             if (!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
                 return 0;
@@ -487,7 +487,7 @@ PyObject*  DocumentPy::recompute(PyObject * args)
             }
 
             Py::Sequence seq(pyobjs);
-            for (size_t i=0;i<seq.size();++i) {
+            for (Py_ssize_t i=0;i<seq.size();++i) {
                 if (!PyObject_TypeCheck(seq[i].ptr(), &DocumentObjectPy::Type)) {
                     PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
                     return nullptr;

@@ -893,7 +893,7 @@ PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)
     std::vector<App::DocumentObject*> objs;
     if(PySequence_Check(obj)) {
         Py::Sequence seq(obj);
-        for(size_t i=0;i<seq.size();++i) {
+        for(Py_ssize_t i=0;i<seq.size();++i) {
             if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
                 return 0;

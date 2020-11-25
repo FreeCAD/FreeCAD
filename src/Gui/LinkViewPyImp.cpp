@@ -106,7 +106,7 @@ PyObject* LinkViewPy::setMaterial(PyObject *args) {
             Py::Sequence seq(pyObj);
             std::vector<App::Material*> materials;
             materials.resize(seq.size(),0);
-            for(size_t i=0;i<seq.size();++i) {
+            for(Py_ssize_t i=0;i<seq.size();++i) {
                 PyObject* item = seq[i].ptr();
                 if(item == Py_None) continue;
                 if(!PyObject_TypeCheck(item,&App::MaterialPy::Type)) {
@@ -156,7 +156,7 @@ PyObject* LinkViewPy::setTransform(PyObject *args) {
             Py::Sequence seq(pyObj);
             std::vector<Base::Matrix4D*> mat;
             mat.resize(seq.size(),0);
-            for(size_t i=0;i<seq.size();++i) {
+            for(Py_ssize_t i=0;i<seq.size();++i) {
                 PyObject* item = seq[i].ptr();
                 if(!PyObject_TypeCheck(item,&Base::MatrixPy::Type)) {
                     PyErr_SetString(PyExc_TypeError, "exepcting a type of Matrix");
