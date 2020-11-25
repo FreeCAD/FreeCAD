@@ -1406,6 +1406,19 @@ int Sketch::addConstraint(const Constraint *constraint)
         rtn = addDiameterConstraint(constraint->First, c.value,c.driving);
         break;
     }
+    case Weight:
+    {
+        c.value = new double(constraint->getValue());
+        if(c.driving)
+            FixParameters.push_back(c.value);
+        else {
+            Parameters.push_back(c.value);
+            DrivenParameters.push_back(c.value);
+        }
+
+        rtn = addRadiusConstraint(constraint->First, c.value,c.driving);
+        break;
+    }
     case Equal:
         rtn = addEqualConstraint(constraint->First,constraint->Second);
         break;
