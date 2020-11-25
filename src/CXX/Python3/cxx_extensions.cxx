@@ -90,6 +90,15 @@ void Object::validate()
     }
 }
 
+bool Object::accepts(PyObject * pyob) const
+{
+    // Object::getItem/getAttr() do not check for python error, and is
+    // therefore very easy to have null object assigned here.
+    //
+    // assert(pyob);
+    return (pyob != 0);
+}
+
 //================================================================================
 //
 //    Implementation of MethodTable
