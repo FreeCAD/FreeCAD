@@ -842,9 +842,29 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()||
                             geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                             getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Curve"));
+
+                            auto geo = getSketchObject()->getGeometry(edit->DragCurve);
+                            auto gf = GeometryFacade::getFacade(geo);
+
+                            Base::Vector3d vec(x-xInit,y-yInit,0);
+
+                            // BSpline weights have a radius corresponding to the weight value
+                            // However, in order for them to have a visual size irrespective of the
+                            // zoom, the scenograph has a size getScaleFactor() times the weight
+                            //
+                            // This code normalizes the information sent to the solver.
+                            if(gf->getInternalType() == InternalType::BSplineControlPoint) {
+                                auto circle = static_cast<const Part::GeomCircle *>(geo);
+                                Base::Vector3d center = circle->getCenter();
+
+                                Base::Vector3d dir = vec - center;
+
+                                vec = center - dir / getScaleFactor();
+                            }
+
                             try {
                                 Gui::cmdAppObjectArgs(getObject(), "movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
-                                        ,edit->DragCurve, Sketcher::none, x-xInit, y-yInit, relative ? 1 : 0);
+                                        ,edit->DragCurve, Sketcher::none, vec.x, vec.y, relative ? 1 : 0);
                                 getDocument()->commitCommand();
 
                                 tryAutoRecomputeIfNotSolve(getSketchObject());
@@ -1133,7 +1153,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 getSketchObject()->getSolvedSketch().initMove(edit->DragCurve, Sketcher::none, false);
                 const Part::Geometry *geo = getSketchObject()->getGeometry(edit->DragCurve);
                 if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
-                    geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ) {
+                    geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                     relative = true;
                     //xInit = x;
                     //yInit = y;
@@ -1185,7 +1205,25 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             return true;
         case STATUS_SKETCH_DragCurve:
             if (edit->DragCurve != -1) {
+                auto geo = getSketchObject()->getGeometry(edit->DragCurve);
+                auto gf = GeometryFacade::getFacade(geo);
+
                 Base::Vector3d vec(x-xInit,y-yInit,0);
+
+                // BSpline weights have a radius corresponding to the weight value
+                // However, in order for them to have a visual size irrespective of the
+                // zoom, the scenograph has a size getScaleFactor() times the weight
+                //
+                // This code normalizes the information sent to the solver.
+                if(gf->getInternalType() == InternalType::BSplineControlPoint) {
+                    auto circle = static_cast<const Part::GeomCircle *>(geo);
+                    Base::Vector3d center = circle->getCenter();
+
+                    Base::Vector3d dir = vec - center;
+
+                    vec = center - dir / getScaleFactor();
+                }
+
                 if (getSketchObject()->getSolvedSketch().movePoint(edit->DragCurve, Sketcher::none, vec, relative) == 0) {
                     setPositionText(Base::Vector2d(x,y));
                     draw(true,false);
@@ -1261,7 +1299,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
 #endif
 
     if (Constr->Type == Distance || Constr->Type == DistanceX || Constr->Type == DistanceY ||
-        Constr->Type == Radius || Constr->Type == Diameter) {
+        Constr->Type == Radius || Constr->Type == Diameter || Constr-> Type == Weight) {
 
         Base::Vector3d p1(0.,0.,0.), p2(0.,0.,0.);
         if (Constr->SecondPos != Sketcher::none) { // point to point distance
@@ -1331,14 +1369,14 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
         Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p2;
 
         Base::Vector3d dir;
-        if (Constr->Type == Distance || Constr->Type == Radius || Constr->Type == Diameter)
+        if (Constr->Type == Distance || Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight)
             dir = (p2-p1).Normalize();
         else if (Constr->Type == DistanceX)
             dir = Base::Vector3d( (p2.x - p1.x >= FLT_EPSILON) ? 1 : -1, 0, 0);
         else if (Constr->Type == DistanceY)
             dir = Base::Vector3d(0, (p2.y - p1.y >= FLT_EPSILON) ? 1 : -1, 0);
 
-        if (Constr->Type == Radius || Constr->Type == Diameter) {
+        if (Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight) {
             Constr->LabelDistance = vec.x * dir.x + vec.y * dir.y;
             Constr->LabelPosition = atan2(dir.y, dir.x);
         } else {
@@ -2804,6 +2842,7 @@ void ViewProviderSketch::updateColor(void)
         bool hasDatumLabel  = (type == Sketcher::Angle ||
                                type == Sketcher::Radius ||
                                type == Sketcher::Diameter ||
+                               type == Sketcher::Weight ||
                                type == Sketcher::Symmetric ||
                                type == Sketcher::Distance ||
                                type == Sketcher::DistanceX ||
@@ -3621,17 +3660,68 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         else if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) { // add a circle
             const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(*it);
             Handle(Geom_Circle) curve = Handle(Geom_Circle)::DownCast(circle->handle());
+            auto gf = GeometryFacade::getFacade(circle);
 
             int countSegments = stdcountsegments;
             Base::Vector3d center = circle->getCenter();
-            double segment = (2 * M_PI) / countSegments;
-            for (int i=0; i < countSegments; i++) {
-                gp_Pnt pnt = curve->Value(i*segment);
+
+            // BSpline weights have a radius corresponding to the weight value
+            // However, in order for them to have a visual size irrespective of the
+            // zoom, the scenograph has a size getScaleFactor() times the weight
+            //
+            // This code draws the scaled up version of the geometry for the scenograph
+            if(gf->getInternalType() == InternalType::BSplineControlPoint) {
+                for( auto c : getSketchObject()->Constraints.getValues()) {
+                    if( c->Type == InternalAlignment && c->AlignmentType == BSplineControlPoint && c->First == GeoId) {
+                        auto bspline = dynamic_cast<const Part::GeomBSplineCurve *>((*geomlist)[c->Second]);
+
+                        if(bspline){
+                            auto weights = bspline->getWeights();
+
+                            double weight = 1.0;
+                            if(c->InternalAlignmentIndex < int(weights.size()))
+                                weight =  weights[c->InternalAlignmentIndex];
+
+                            // tentative scaling factor:
+                            // proportional to the length of the bspline
+                            // inversely proportional to the number of poles
+                            //double scalefactor = bspline->length(bspline->getFirstParameter(), bspline->getLastParameter())/10.0/weights.size();
+                            double scalefactor = getScaleFactor();
+                            double vradius = weight*scalefactor;
+
+                            // virtual circle or radius vradius
+                            auto mcurve = [&center, vradius](double param, double &x, double &y) {
+                                x = center.x + vradius*cos(param);
+                                y = center.y + vradius*sin(param);
+                            };
+
+                            double x;
+                            double y;
+                            for (int i=0; i < countSegments; i++) {
+                                double param = 2*M_PI*i/countSegments;
+                                mcurve(param,x,y);
+                                Coords.emplace_back(x, y, 0);
+                            }
+
+                            mcurve(0,x,y);
+                            Coords.emplace_back(x, y, 0);
+                        }
+                        break;
+                    }
+                }
+            }
+            else {
+
+                double segment = (2 * M_PI) / countSegments;
+
+                for (int i=0; i < countSegments; i++) {
+                    gp_Pnt pnt = curve->Value(i*segment);
+                    Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
+                }
+
+                gp_Pnt pnt = curve->Value(0);
                 Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
             }
-
-            gp_Pnt pnt = curve->Value(0);
-            Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -5344,11 +5434,13 @@ Restart:
                         asciiText->pnts.finishEditing();
                     }
                     break;
+                    case Weight:
                     case Radius:
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
 
                         Base::Vector3d pnt1(0.,0.,0.), pnt2(0.,0.,0.);
+
                         if (Constr->First != Constraint::GeoUndef) {
                             const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
 
@@ -5366,7 +5458,15 @@ Restart:
                             }
                             else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
                                 const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo);
-                                double radius = circle->getRadius();
+                                auto gf = GeometryFacade::getFacade(geo);
+
+                                double radius;
+
+                                if(Constr->Type == Weight)
+                                    radius = circle->getRadius()*getScaleFactor();
+                                else
+                                    radius = circle->getRadius();
+
                                 double angle = (double) Constr->LabelPosition;
                                 if (angle == 10) {
                                     angle = 0;
@@ -5385,7 +5485,10 @@ Restart:
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
 
                         // Get display string with units hidden if so requested
-                        asciiText->string = SbString( getPresentationString(Constr).toUtf8().constData() );
+                        if(Constr->Type == Weight)
+                            asciiText->string = SbString( QString::number(Constr->getValue()).toStdString().c_str());
+                        else
+                            asciiText->string = SbString( getPresentationString(Constr).toUtf8().constData() );
 
                         asciiText->datumtype    = SoDatumLabel::RADIUS;
                         asciiText->param1       = Constr->LabelDistance;
@@ -5475,6 +5578,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
             case DistanceY:
             case Radius:
             case Diameter:
+            case Weight:
             case Angle:
             {
                 SoDatumLabel *text = new SoDatumLabel();
