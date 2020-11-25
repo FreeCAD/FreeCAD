@@ -43,6 +43,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
+#include <Mod/PartDesign/App/ShapeBinder.h>
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
@@ -84,21 +85,46 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
     auto itEnd = tools.end();
 
     // Get the base shape to operate on
-    TopoShape baseTopShape;
-    try {
-        if (!NewSolid.getValue()) {
-            App::DocumentObject * base = getBaseObject(true);
-            // In case the base is inside the tools, just ignore the base for now.
-            if (std::find(tools.begin(), tools.end(), base) == tools.end())
-                baseTopShape = getBaseShape();
+    TopoShape baseShape;
+    App::DocumentObject * base = getBaseObject(true);
+    if (base && !NewSolid.getValue()) {
+        // In case the base is referenced inside the tools, just ignore the base for now.
+        bool found = false;
+        for (auto tool : tools) {
+            if (tool == base) {
+                found = true;
+                break;
+            }
+            if (!tool->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
+                continue;
+            auto binder = static_cast<PartDesign::SubShapeBinder*>(tool);
+            for (auto & link : binder->Support.getSubListValues()) {
+                auto linked = link.getValue();
+                if (!linked)
+                    continue;
+                if (base == linked) {
+                    found = true;
+                    break;
+                }
+                for (auto & sub : link.getSubValues()) {
+                    auto sobj = linked->getSubObject(sub.c_str());
+                    if (sobj == base) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found)
+                    break;
+            }
+            if (found)
+                break;
         }
-    } catch (const Base::Exception&) {
-        if (type == "Cut")
-            return new App::DocumentObjectExecReturn("Cannot do boolean cut without BaseFeature");
+        if (!found)
+            baseShape = getBaseShape();
     }
 
     // If not base shape, use the first tool shape as base
-    if(baseTopShape.isNull()) {
+    if(baseShape.isNull()) {
         if (tools.empty())
             return new App::DocumentObjectExecReturn("No tool objects");
 
@@ -114,15 +140,15 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
             else
                 ++itBegin;
         }
-        baseTopShape = getTopoShape(feature);
-        if (baseTopShape.isNull()) {
+        baseShape = getTopoShape(feature);
+        if (baseShape.isNull()) {
             return new App::DocumentObjectExecReturn(
                     "Cannot do boolean operation with invalid base shape");
         }
     }
         
     std::vector<TopoShape> shapes;
-    shapes.push_back(baseTopShape);
+    shapes.push_back(baseShape);
     for(auto it=itBegin; it<itEnd; ++it) {
         auto shape = getTopoShape(*it);
         if (shape.isNull())

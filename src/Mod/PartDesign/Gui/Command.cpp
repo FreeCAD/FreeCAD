@@ -2637,12 +2637,12 @@ void CmdPartDesignBoolean::activated(int iMsg)
             v.second.push_back("");
         for(auto &s : v.second)
             subs.push_back(v.first.second + s);
-        binder->setLinks(std::move(links));
         if (subs.size() == 1 && boost::starts_with(binder->Label.getValue(), "Reference")) {
             auto sobj = v.first.first->getSubObject(subs.front().c_str());
             if (sobj && !boost::starts_with(sobj->Label.getValue(), "Reference"))
                 binder->Label.setValue(sobj->Label.getValue());
         }
+        binder->setLinks(std::move(links));
         objs.push_back(binder);
     }
     
