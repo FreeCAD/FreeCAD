@@ -270,7 +270,8 @@ PyObject* ExternalGeometryFacadePy::getExtensionOfType(PyObject *args)
                 std::shared_ptr<const Part::GeometryExtension> ext(this->getExternalGeometryFacadePtr()->getExtension(type));
 
                 // we create a copy and transfer this copy's memory management responsibility to Python
-                PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(ext)->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
+                Py::Tuple tuple;
+                PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(ext)->getPyObject())->copy(tuple.ptr());
 
                 return cpy;
             }
@@ -304,7 +305,8 @@ PyObject* ExternalGeometryFacadePy::getExtensionOfName(PyObject *args)
             std::shared_ptr<const Part::GeometryExtension> ext(this->getExternalGeometryFacadePtr()->getExtension(std::string(o)));
 
             // we create a copy and transfer this copy's memory management responsibility to Python
-            PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(ext)->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
+            Py::Tuple tuple;
+            PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(ext)->getPyObject())->copy(tuple.ptr());
 
             return cpy;
         }
@@ -430,15 +432,14 @@ PyObject* ExternalGeometryFacadePy::getExtensions(PyObject *args)
 
         PyObject* list = PyList_New(ext.size());
 
-        Py::Tuple tuple(ext.size());
-
         for (std::size_t i=0; i<ext.size(); ++i) {
 
             std::shared_ptr<const Part::GeometryExtension> p = ext[i].lock();
 
             if(p) {
                 // we create a python copy and add it to the list
-                PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(p)->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
+                Py::Tuple tuple;
+                PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(p)->getPyObject())->copy(tuple.ptr());
 
                 PyList_SetItem( list, i, cpy);
             }
