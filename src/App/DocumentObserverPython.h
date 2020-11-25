@@ -117,7 +117,7 @@ private:
     Py::Object inst;
     static std::vector<DocumentObserverPython*> _instances;
 
-    typedef struct {
+    typedef struct PythonObject {
        boost::signals2::scoped_connection slot;
        Py::Object py;
        PyObject* ptr() {
