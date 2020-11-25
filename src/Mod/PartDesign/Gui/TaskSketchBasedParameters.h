@@ -75,11 +75,9 @@ protected:
 protected Q_SLOTS:
     void onFitChanged(double);
     void onFitJoinChanged(int);
-    void onFitIntersectionChanged(bool);
 
 protected:
     Gui::PrefQuantitySpinBox * fitEdit = nullptr;
-    QCheckBox *fitIntersection = nullptr;
     QComboBox *fitJoinType = nullptr;
 };
 

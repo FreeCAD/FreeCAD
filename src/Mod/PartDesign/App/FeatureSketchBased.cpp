@@ -102,7 +102,6 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(Fit, (0.0), "SketchBased", App::Prop_None, "Shrink or expand the profile for fitting");
     ADD_PROPERTY_TYPE(FitJoin,(long(0)),"SketchBased",App::Prop_None,"Fit join type");
     FitJoin.setEnums(Part::Offset::JoinEnums);
-    ADD_PROPERTY_TYPE(FitIntersection,(false),"SketchBased",App::Prop_None,"Fit intersection");
 }
 
 short ProfileBased::mustExecute() const
@@ -243,7 +242,7 @@ TopoShape ProfileBased::getVerifiedFace(bool silent) const {
                                        static_cast<short>(FitJoin.getValue()),
                                        false,
                                        false,
-                                       FitIntersection.getValue());
+                                       false);
         }
 
         if(count>1) {

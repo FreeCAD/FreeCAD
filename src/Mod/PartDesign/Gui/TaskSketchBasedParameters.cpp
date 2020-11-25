@@ -106,10 +106,6 @@ void TaskSketchBasedParameters::initUI(QWidget *widget) {
     layout->addWidget(fitJoinType);
     boxLayout->addLayout(layout);
 
-    fitIntersection = new QCheckBox(tr("Fit intersection"), this);
-    connect(fitIntersection, SIGNAL(toggled(bool)), this, SLOT(onFitIntersectionChanged(bool)));
-    boxLayout->addWidget(fitIntersection);
-
     addUpdateViewCheckBox(widget);
 }
 
@@ -129,10 +125,6 @@ void TaskSketchBasedParameters::refresh()
         fitJoinType->setCurrentIndex(pcSketchBased->FitJoin.getValue());
     }
 
-    if (fitIntersection) {
-        QSignalBlocker guard(fitIntersection);
-        fitIntersection->setChecked(pcSketchBased->FitIntersection.getValue());
-    }
     TaskFeatureParameters::refresh();
 }
 
@@ -147,13 +139,6 @@ void TaskSketchBasedParameters::onFitChanged(double v)
 {
     PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
     pcSketchBased->Fit.setValue(v);
-    recomputeFeature();
-}
-
-void TaskSketchBasedParameters::onFitIntersectionChanged(bool checked)
-{
-    PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
-    pcSketchBased->FitIntersection.setValue(checked);
     recomputeFeature();
 }
 

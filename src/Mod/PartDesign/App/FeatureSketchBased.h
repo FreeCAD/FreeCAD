@@ -61,7 +61,6 @@ public:
 
     App::PropertyDistance    Fit;
     App::PropertyEnumeration FitJoin;
-    App::PropertyBool        FitIntersection;
 
     short mustExecute() const;
 
