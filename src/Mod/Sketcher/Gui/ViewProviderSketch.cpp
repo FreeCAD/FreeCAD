@@ -349,7 +349,11 @@ ViewProviderSketch::ViewProviderSketch()
     zMidLines=0.006f;
     zHighLines=0.007f;  // Lines that are somehow selected to be in the high position (higher than other line categories)
     zHighLine=0.008f;   // highlighted line (of any group)
-    zConstr=0.009f; // constraint not construction
+
+    // lower constraint z height because it often blocks selection of line and
+    // point. Constraint normally has a bigger hit area unlike line and point.
+    zConstr=0.003f; // constraint not construction
+
     //zPoints=0.010f;
     zLowPoints = 0.010f;
     zHighPoints = 0.011f;
@@ -6208,7 +6212,6 @@ void ViewProviderSketch::createEditInventorNodes(void)
 
     // stuff for the Curves +++++++++++++++++++++++++++++++++++++++
     edit->CurveSwitch = new SoSwitch;
-    edit->EditRoot->addChild(edit->CurveSwitch);
     SoSeparator* curvesRoot = new SoSeparator;
     edit->CurveSwitch->addChild(curvesRoot);
     edit->CurveSwitch->whichChild = 0;
@@ -6239,7 +6242,6 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->pickStyleAxes = new SoPickStyle();
     edit->pickStyleAxes->style = SoPickStyle::SHAPE;
     crossRoot->addChild(edit->pickStyleAxes);
-    edit->EditRoot->addChild(crossRoot);
     MtlBind = new SoMaterialBinding;
     MtlBind->setName("RootCrossMaterialBinding");
     MtlBind->value = SoMaterialBinding::PER_FACE;
@@ -6266,7 +6268,6 @@ void ViewProviderSketch::createEditInventorNodes(void)
 
     // stuff for the EditCurves +++++++++++++++++++++++++++++++++++++++
     SoSeparator* editCurvesRoot = new SoSeparator;
-    edit->EditRoot->addChild(editCurvesRoot);
     edit->EditCurvesMaterials = new SoMaterial;
     edit->EditCurvesMaterials->setName("EditCurvesMaterials");
     editCurvesRoot->addChild(edit->EditCurvesMaterials);
@@ -6288,11 +6289,6 @@ void ViewProviderSketch::createEditInventorNodes(void)
     float transparency;
     SbColor cursorTextColor(0,0,1);
     cursorTextColor.setPackedValue((uint32_t)hGrp->GetUnsigned("CursorTextColor", cursorTextColor.getPackedValue()), transparency);
-
-    // Adding points switch after curve switch because we are using
-    // SoAnnotation to disable the sketch always on top, where the rendering is
-    // done with depth test disabled.
-    edit->EditRoot->addChild(edit->PointSwitch);
 
     // stuff for the edit coordinates ++++++++++++++++++++++++++++++++++++++
     SoSeparator *Coordsep = new SoSeparator();
@@ -6321,41 +6317,49 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->textX->justification = SoText2::LEFT;
     edit->textX->string = "";
     Coordsep->addChild(edit->textX);
-    edit->EditRoot->addChild(Coordsep);
 
     // group node for the Constraint visual +++++++++++++++++++++++++++++++++++
-    MtlBind = new SoMaterialBinding;
-    MtlBind->setName("ConstraintMaterialBinding");
-    MtlBind->value = SoMaterialBinding::OVERALL ;
-    edit->EditRoot->addChild(MtlBind);
+    auto cstrMtlBind = new SoMaterialBinding;
+    cstrMtlBind->setName("ConstraintMaterialBinding");
+    cstrMtlBind->value = SoMaterialBinding::OVERALL ;
 
     // use small line width for the Constraints
-    drawStyle = new SoDrawStyle;
-    drawStyle->setName("ConstraintDrawStyle");
-    drawStyle->lineWidth = 1;
-    edit->EditRoot->addChild(drawStyle);
+    auto cstrDrawStyle = new SoDrawStyle;
+    cstrDrawStyle->setName("ConstraintDrawStyle");
+    cstrDrawStyle->lineWidth = 1;
 
     // add the group where all the constraints has its SoSeparator
     edit->constrGroup = new SmSwitchboard();
     edit->constrGroup->setName("ConstraintGroup");
-    edit->EditRoot->addChild(edit->constrGroup);
 
     // group node for the Geometry information visual +++++++++++++++++++++++++++++++++++
-    MtlBind = new SoMaterialBinding;
-    MtlBind->setName("InformationMaterialBinding");
-    MtlBind->value = SoMaterialBinding::OVERALL ;
-    edit->EditRoot->addChild(MtlBind);
+    auto infoMtlBind = new SoMaterialBinding;
+    infoMtlBind->setName("InformationMaterialBinding");
+    infoMtlBind->value = SoMaterialBinding::OVERALL ;
 
     // use small line width for the information visual
-    drawStyle = new SoDrawStyle;
-    drawStyle->setName("InformationDrawStyle");
-    drawStyle->lineWidth = 1;
-    edit->EditRoot->addChild(drawStyle);
+    auto infoDrawStyle = new SoDrawStyle;
+    infoDrawStyle->setName("InformationDrawStyle");
+    infoDrawStyle->lineWidth = 1;
 
     // add the group where all the information entity has its SoSeparator
     edit->infoGroup = new SoGroup();
     edit->infoGroup->setName("InformationGroup");
+
+    // Reorder child nodes of edit root, because we are now using SoAnnoation as
+    // edit root.
+    edit->EditRoot->addChild(crossRoot);
+    edit->EditRoot->addChild(infoMtlBind);
+    edit->EditRoot->addChild(infoDrawStyle);
     edit->EditRoot->addChild(edit->infoGroup);
+    edit->EditRoot->addChild(edit->CurveSwitch);
+    edit->EditRoot->addChild(editCurvesRoot);
+    edit->EditRoot->addChild(Coordsep);
+    edit->EditRoot->addChild(cstrMtlBind);
+    edit->EditRoot->addChild(cstrDrawStyle);
+    edit->EditRoot->addChild(edit->constrGroup);
+    edit->EditRoot->addChild(edit->PointSwitch);
+
 }
 
 void ViewProviderSketch::showGeometry(bool visible) {
