@@ -126,6 +126,7 @@ Quantity Constraint::getPresentationValue() const
         quantity.setUnit(Unit::Angle);
         break;
     case SnellsLaw:
+    case Weight:
         quantity.setValue(Value);
         break;
     default:

@@ -327,7 +327,7 @@ int SketchObject::setDatum(int ConstrId, double Datum)
         type != Perpendicular)
         return -1;
 
-    if ((type == Distance || type == Radius || type == Diameter) && Datum <= 0)
+    if ((type == Distance || type == Radius || type == Diameter || type == Weight) && Datum <= 0)
         return (Datum == 0) ? -5 : -4;
 
     // copy the list
@@ -1243,6 +1243,9 @@ void SketchObject::addGeometryState(const Constraint* cstr) const
             {
                 auto gf = GeometryFacade::getFacade(vals[cstr->First]);
                 gf->setInternalType(InternalType::BSplineControlPoint);
+
+                // handle constraint as adimensional
+
                 break;
             }
             case BSplineKnotPoint:
@@ -3839,6 +3842,7 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                             (*it)->Type ==  Sketcher::Equal ||
                             (*it)->Type ==  Sketcher::Radius ||
                             (*it)->Type ==  Sketcher::Diameter ||
+                            (*it)->Type ==  Sketcher::Weight ||
                             (*it)->Type ==  Sketcher::Angle ||
                             (*it)->Type ==  Sketcher::PointOnObject ){
                                 Constraint *constNew = (*it)->copy();
@@ -4133,9 +4137,10 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                             if( ((*it)->Type != Sketcher::DistanceX && (*it)->Type != Sketcher::DistanceY ) ||
                                 (*it)->FirstPos == Sketcher::none ) { // if it is not a point locking DistanceX/Y
                                     if (((*it)->Type == Sketcher::DistanceX ||
-                                        (*it)->Type == Sketcher::DistanceY ||
-                                        (*it)->Type == Sketcher::Distance  ||
-                                        (*it)->Type == Sketcher::Diameter ||
+                                        (*it)->Type == Sketcher::DistanceY  ||
+                                        (*it)->Type == Sketcher::Distance   ||
+                                        (*it)->Type == Sketcher::Diameter   ||
+                                        (*it)->Type == Sketcher::Weight     ||
                                         (*it)->Type == Sketcher::Radius ) && clone ) {
                                         // Distances on a single Element are mapped to equality constraints in clone mode
                                         Constraint *constNew = (*it)->copy();
@@ -4831,11 +4836,8 @@ int SketchObject::exposeInternalGeometry(int GeoId)
             // search for first pole weight constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                 it != vals.end(); ++it) {
-                if((*it)->Type == Sketcher::Radius && (*it)->First == controlpointgeoids[0]) {
+                if((*it)->Type == Sketcher::Weight && (*it)->First == controlpointgeoids[0]) {
                     isfirstweightconstrained = true ;
-                }
-                else if((*it)->Type == Sketcher::Diameter && (*it)->First == controlpointgeoids[0]) {
-                        isfirstweightconstrained = true ;
                 }
             }
         }
@@ -5218,8 +5220,8 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
                         }
 
                     }
-                    // ignore radii and diameters
-                    else if (((*itc)->Type!=Sketcher::Radius && (*itc)->Type!=Sketcher::Diameter) && ( (*itc)->Second == (*it) || (*itc)->First == (*it) || (*itc)->Third == (*it)) ) {
+                    // ignore weight constraints
+                    else if (((*itc)->Type!=Sketcher::Weight) && ( (*itc)->Second == (*it) || (*itc)->First == (*it) || (*itc)->Third == (*it)) ) {
                         (*ita)++;
                     }
                 }
@@ -5756,6 +5758,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
         if ((*it)->Type == Sketcher::Distance   ||
             (*it)->Type == Sketcher::Radius     ||
             (*it)->Type == Sketcher::Diameter   ||
+            (*it)->Type == Sketcher::Weight     ||
             (*it)->Type == Sketcher::Angle      ||
             (*it)->Type == Sketcher::SnellsLaw  ||
             (*it)->Type == Sketcher::DistanceX  ||
@@ -7067,6 +7070,7 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
     switch (constraint->Type) {
         case Radius:
         case Diameter:
+        case Weight:
         case Horizontal:
         case Vertical:
         case Distance:
@@ -7487,16 +7491,39 @@ void SketchObject::restoreFinished()
 
 void SketchObject::migrateSketch(void)
 {
-    bool updateGeoState = false;
+    bool noextensions = false;
 
     for( const auto & g : getInternalGeometry() )
         if(!g->hasExtension(SketchGeometryExtension::getClassTypeId())) // no extension - legacy file
-            updateGeoState = true;
+            noextensions = true;
 
-    if(updateGeoState) {
+    if(noextensions) {
         for( auto c : Constraints.getValues()) {
 
             addGeometryState(c);
+
+            // Convert B-Spline controlpoints radius/diameter constraints to Weight cosntraints
+            if(c->Type == InternalAlignment && c->AlignmentType == BSplineControlPoint) {
+                int circlegeoid = c->First;
+                int bsplinegeoid = c->Second;
+
+                auto bsp = static_cast<const Part::GeomBSplineCurve*>(getGeometry(bsplinegeoid));
+
+                std::vector<double> weights = bsp->getWeights();
+
+                for( auto ccp : Constraints.getValues()) {
+
+                    if( (ccp->Type == Radius || ccp->Type == Diameter ) &&
+                        ccp->First == circlegeoid ) {
+
+                        if(c->InternalAlignmentIndex < int(weights.size())) {
+                            ccp->Type = Weight;
+                            ccp->setValue(weights[c->InternalAlignmentIndex]);
+
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -7911,9 +7938,6 @@ int SketchObject::getGeometryId(int GeoId, long &id) const
 
    return 0;
 }
-
-
-
 
 // Python Sketcher feature ---------------------------------------------------------
 
