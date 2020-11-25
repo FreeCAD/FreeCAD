@@ -329,18 +329,18 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoShape& _s
     TopoShape sourceWire;
     if (shape.IsNull())
         Standard_Failure::Raise("Not a valid shape");
-    if (shape.ShapeType() == TopAbs_WIRE) {
-        sourceWire = _shape;
-        ShapeFix_Wire aFix;
-        aFix.Load(TopoDS::Wire(shape));
-        aFix.FixReorder();
-        aFix.FixConnected();
-        aFix.FixClosed();
-        sourceWire.setShape(aFix.Wire(),false);
-    }
-    else if (shape.ShapeType() == TopAbs_FACE) {
-        TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
-        sourceWire.setShape(outerWire);
+    if (shape.ShapeType() == TopAbs_WIRE || shape.ShapeType() == TopAbs_FACE) {
+        if (shape.ShapeType() == TopAbs_WIRE) {
+            ShapeFix_Wire aFix;
+            aFix.Load(TopoDS::Wire(shape));
+            aFix.FixReorder();
+            aFix.FixConnected();
+            aFix.FixClosed();
+            sourceWire.setShape(aFix.Wire());
+        } else {
+            TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
+            sourceWire.setShape(outerWire);
+        }
         sourceWire.Tag = _shape.Tag;
         sourceWire.mapSubElement(_shape);
     }
@@ -365,47 +365,11 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoShape& _s
         int numEdges = sourceWire.countSubShapes(TopAbs_EDGE);
 
         auto makeOffset = [&numEdges,&sourceWire](const gp_Vec& translation, double offset) -> TopoShape {
-            BRepOffsetAPI_MakeOffset mkOffset;
-#if OCC_VERSION_HEX >= 0x060800
-            mkOffset.Init(GeomAbs_Arc);
-#endif
-#if OCC_VERSION_HEX >= 0x070000
-            mkOffset.Init(GeomAbs_Intersection);
-#endif
             gp_Trsf mat;
             mat.SetTranslation(translation);
             TopoShape offsetShape(sourceWire.makETransform(mat,"RV"));
-
-            if (fabs(offset)>Precision::Confusion()){
-                TopLoc_Location wireLocation;
-                TopLoc_Location edgeLocation;
-                if (numEdges == 1) {
-                    wireLocation = offsetShape.getShape().Location();
-
-                    BRepBuilderAPI_MakeWire mkWire;
-                    TopExp_Explorer xp(offsetShape.getShape(), TopAbs_EDGE);
-                    while (xp.More()) {
-                        TopoDS_Edge edge = TopoDS::Edge(xp.Current());
-                        edgeLocation = edge.Location();
-                        edge.Location(TopLoc_Location());
-                        mkWire.Add(edge);
-                        xp.Next();
-                    }
-                    offsetShape.setShape(mkWire.Wire(),false);
-                }
-                mkOffset.AddWire(TopoDS::Wire(offsetShape.getShape()));
-                mkOffset.Perform(offset);
-
-                offsetShape = offsetShape.makEShape(mkOffset,TOPOP_OFFSET);
-
-                if (numEdges==1) {
-                    TopoDS_Shape s = offsetShape.getShape();
-                    s.Move(edgeLocation);
-                    s.Move(wireLocation);
-                    offsetShape.setShape(s,false);
-                }
-            }
-
+            if (fabs(offset)>Precision::Confusion())
+                offsetShape = offsetShape.makEOffset2D(offset, GeomAbs_Intersection);
             return offsetShape;
         };
 
