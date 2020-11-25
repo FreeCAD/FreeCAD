@@ -91,6 +91,7 @@ from draftgeoutils.edges import (findEdge,
 from draftgeoutils.faces import (concatenate,
                                  getBoundary,
                                  isCoplanar,
+                                 is_coplanar,
                                  bind,
                                  cleanFaces,
                                  removeSplitter)
