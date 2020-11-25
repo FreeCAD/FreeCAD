@@ -74,9 +74,6 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->taperAngleEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/TaperAngle"));
     ui->taperAngleEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/TaperAngle2"));
 
-    ui->taperAngleEdit->setUnit(Base::Unit::Angle);
-    ui->taperAngleEdit2->setUnit(Base::Unit::Angle);
-
     ui->changeMode->clear();
     ui->changeMode->insertItem(0, tr("Dimension"));
     ui->changeMode->insertItem(1, tr("Through all"));

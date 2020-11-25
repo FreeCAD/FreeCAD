@@ -234,9 +234,6 @@ the sketch plane's normal vector will be used</string>
        <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
-       <property name="minimum" stdset="0">
-        <double>0.000000000000000</double>
-       </property>
       </widget>
      </item>
     </layout>
@@ -255,6 +252,15 @@ the sketch plane's normal vector will be used</string>
        <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
+       <property name="unit" stdset="0">
+        <string>deg</string>
+       </property>
+       <property name="maximum" stdset="0">
+        <double>360.000000000000000</double>
+       </property>
+       <property name="singleStep" stdset="0">
+        <double>10.000000000000000</double>
+       </property>
       </widget>
      </item>
     </layout>
@@ -272,6 +278,15 @@ the sketch plane's normal vector will be used</string>
       <widget class="Gui::PrefQuantitySpinBox" name="taperAngleEdit2" native="true">
        <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string>deg</string>
+       </property>
+       <property name="maximum" stdset="0">
+        <double>360.000000000000000</double>
+       </property>
+       <property name="singleStep" stdset="0">
+        <double>10.000000000000000</double>
        </property>
       </widget>
      </item>

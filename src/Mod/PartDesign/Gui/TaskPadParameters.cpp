@@ -99,9 +99,6 @@ void TaskPadParameters::setupUI(bool newObj)
     ui->taperAngleEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/TaperAngle"));
     ui->taperAngleEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/TaperAngle2"));
 
-    ui->taperAngleEdit->setUnit(Base::Unit::Angle);
-    ui->taperAngleEdit2->setUnit(Base::Unit::Angle);
-
     // Bind input fields to properties
     ui->lengthEdit->bind(pcPad->Length);
     ui->lengthEdit2->bind(pcPad->Length2);
