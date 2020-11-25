@@ -211,16 +211,15 @@ bool ViewProvider::setEdit(int ModNum)
         auto bodyVp = Base::freecad_dynamic_cast<ViewProviderBody>(
                 Gui::Application::Instance->getViewProvider(
                     PartDesign::Body::findBodyOf(getObject())));
-        if (bodyVp)
-            bodyVp->beforeEdit(this);
-
         // start the edit dialog if
         if (!featureDlg) {
             featureDlg = this->getEditDialog();
-            if (!featureDlg) { // Shouldn't generally happen
-                throw Base::RuntimeError ("Failed to create new edit dialog.");
-            }
+            if (!featureDlg) // Shouldn't generally happen
+                return false;
         }
+
+        if (bodyVp)
+            bodyVp->beforeEdit(this);
 
         Gui::Control().showDialog(featureDlg);
         return true;
@@ -293,7 +292,7 @@ bool ViewProvider::setEdit(int ModNum)
 
 
 TaskDlgFeatureParameters *ViewProvider::getEditDialog() {
-    throw Base::NotImplementedError("getEditDialog() not implemented");
+    return nullptr;
 }
 
 
