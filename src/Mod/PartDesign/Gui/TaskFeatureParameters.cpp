@@ -32,6 +32,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/PrefWidgets.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
 #include <Mod/PartDesign/App/Body.h>
 
@@ -52,6 +53,7 @@ TaskFeatureParameters::TaskFeatureParameters(PartDesignGui::ViewProvider *vp, QW
 {
     Gui::Document* doc = vp->getDocument();
     this->attachDocument(doc);
+    App::GetApplication().getActiveTransaction(&transactionID);
 }
 
 TaskFeatureParameters::TaskFeatureParameters(PartDesignGui::ViewProvider *vp, QWidget *parent,
@@ -61,6 +63,7 @@ TaskFeatureParameters::TaskFeatureParameters(PartDesignGui::ViewProvider *vp, QW
 {
     Gui::Document* doc = vp->getDocument();
     this->attachDocument(doc);
+    App::GetApplication().getActiveTransaction(&transactionID);
 }
 
 void TaskFeatureParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
@@ -97,11 +100,16 @@ void TaskFeatureParameters::onUpdateView(bool on)
     recomputeFeature();
 }
 
-void TaskFeatureParameters::recomputeFeature()
+void TaskFeatureParameters::recomputeFeature(bool delay)
 {
-    if (!blockUpdate) {
+    if (blockUpdate || !vp || !vp->getObject())
+        return;
+
+    if (delay && updateViewTimer)
+        updateViewTimer->start(300);
+    else {
+        setupTransaction();
         App::DocumentObject* obj = vp->getObject ();
-        assert (obj);
         obj->getDocument()->recomputeFeature ( obj );
     }
 }
@@ -116,6 +124,64 @@ void TaskFeatureParameters::onNewSolidChanged(bool on)
             recomputeFeature();
         }
     }
+}
+
+void TaskFeatureParameters::saveHistory()
+{
+    if (checkBoxUpdateView)
+        checkBoxUpdateView->onSave();
+}
+
+void TaskFeatureParameters::addUpdateViewCheckBox(QWidget *widget)
+{
+    QBoxLayout * boxLayout = qobject_cast<QBoxLayout*>(widget->layout());
+    if (!boxLayout)
+        return;
+
+    updateViewTimer = new QTimer(this);
+    updateViewTimer->setSingleShot(true);
+    connect(updateViewTimer, SIGNAL(timeout()), this, SLOT(onUpdateViewTimer()));
+
+    auto line = new QFrame(this);
+    line->setFrameShape(QFrame::HLine);
+    line->setFrameShadow(QFrame::Sunken);
+    boxLayout->addWidget(line);
+
+    auto checkBoxUpdateView = new Gui::PrefCheckBox(this);
+    checkBoxUpdateView->setText(tr("Update view"));
+    checkBoxUpdateView->setChecked(true);
+    connect(checkBoxUpdateView, SIGNAL(toggled(bool)), this, SLOT(onUpdateView(bool)));
+    boxLayout->addWidget(checkBoxUpdateView);
+    checkBoxUpdateView->setParamGrpPath(QByteArray("User parameter:BaseApp/History/UpdateView"));
+    checkBoxUpdateView->onRestore();
+}
+
+void TaskFeatureParameters::onUpdateViewTimer()
+{
+    recomputeFeature(false);
+}
+
+void TaskFeatureParameters::setupTransaction()
+{
+    if (!vp || !vp->getObject())
+        return;
+
+    auto obj = vp->getObject();
+    if (!obj)
+        return;
+
+    int tid = 0;
+    const char *name = App::GetApplication().getActiveTransaction(&tid);
+    if(tid && tid == transactionID)
+        return;
+
+    std::string n("Edit ");
+    n += obj->getNameInDocument();
+    if(!name || n!=name)
+        tid = App::GetApplication().setActiveTransaction(n.c_str());
+
+    if(!transactionID)
+        transactionID = tid;
 }
 
 void TaskFeatureParameters::addNewSolidCheckBox(QWidget *widget)

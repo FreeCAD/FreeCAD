@@ -30,6 +30,11 @@
 #include "ViewProvider.h"
 
 class QCheckBox;
+class QTimer;
+
+namespace Gui {
+class PrefCheckBox;
+}
 
 namespace PartDesignGui {
 
@@ -48,20 +53,24 @@ public:
     virtual ~TaskFeatureParameters() {}
 
     /// save field history
-    virtual void saveHistory(void) {}
+    virtual void saveHistory(void);
     /// apply changes made in the parameters input to the model via commands
     virtual void apply() {}
 
-    void recomputeFeature();
+    void recomputeFeature(bool delay=true);
 
     void addNewSolidCheckBox(QWidget *widget);
+    void addUpdateViewCheckBox(QWidget *widget);
 
     virtual void refresh();
+
+    void setupTransaction();
 
 protected Q_SLOTS:
     // TODO Add update view to all dialogs (2015-12-05, Fat-Zer)
     void onUpdateView(bool on);
     void onNewSolidChanged(bool);
+    void onUpdateViewTimer();
 
 private:
     /** Notifies when the object is about to be removed. */
@@ -77,6 +86,9 @@ protected:
     bool blockUpdate;
 
     QCheckBox *checkBoxNewSolid = nullptr;
+    Gui::PrefCheckBox * checkBoxUpdateView = nullptr;
+    QTimer *updateViewTimer = nullptr;
+    int transactionID = 0;
 };
 
 /// A common base for sketch based, dressup and other solid parameters dialogs

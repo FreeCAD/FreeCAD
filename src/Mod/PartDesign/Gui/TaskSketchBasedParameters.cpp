@@ -88,6 +88,7 @@ void TaskSketchBasedParameters::initUI(QWidget *widget) {
     fitEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/ProfileFit"));
     fitEdit->bind(pcSketchBased->Fit);
     fitEdit->setUnit(Base::Unit::Length);
+    fitEdit->setKeyboardTracking(false);
     layout->addWidget(fitEdit);
     connect(fitEdit, SIGNAL(valueChanged(double)), this, SLOT(onFitChanged(double)));
     boxLayout->addLayout(layout);
@@ -109,14 +110,7 @@ void TaskSketchBasedParameters::initUI(QWidget *widget) {
     connect(fitIntersection, SIGNAL(toggled(bool)), this, SLOT(onFitIntersectionChanged(bool)));
     boxLayout->addWidget(fitIntersection);
 
-    auto line = new QFrame(this);
-    line->setFrameShape(QFrame::HLine);
-    line->setFrameShadow(QFrame::Sunken);
-    boxLayout->addWidget(line);
-
-    auto checkBoxUpdateView = new QCheckBox(tr("Update view"), this);
-    connect(checkBoxUpdateView, SIGNAL(toggled(bool)), this, SLOT(onUpdateView(bool)));
-    boxLayout->addWidget(checkBoxUpdateView);
+    addUpdateViewCheckBox(widget);
 }
 
 void TaskSketchBasedParameters::refresh()
@@ -146,6 +140,7 @@ void TaskSketchBasedParameters::saveHistory(void)
 {
     if (fitEdit)
         fitEdit->pushToHistory();
+    TaskFeatureParameters::saveHistory();
 }
 
 void TaskSketchBasedParameters::onFitChanged(double v)
