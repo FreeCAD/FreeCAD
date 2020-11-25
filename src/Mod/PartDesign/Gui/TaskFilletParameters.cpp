@@ -162,7 +162,6 @@ TaskDlgFilletParameters::~TaskDlgFilletParameters()
 //}
 bool TaskDlgFilletParameters::accept()
 {
-    parameter->showObject();
     parameter->apply();
 
     return TaskDlgDressUpParameters::accept();

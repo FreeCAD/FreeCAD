@@ -25,16 +25,17 @@
 #ifndef PARTGUI_ViewProviderDressUp_H
 #define PARTGUI_ViewProviderDressUp_H
 
-#include "ViewProvider.h"
+#include "ViewProviderAddSub.h"
 
 
 namespace PartDesignGui {
 
 class TaskDlgDressUpParameters;
 
-class PartDesignGuiExport ViewProviderDressUp : public ViewProvider
+class PartDesignGuiExport ViewProviderDressUp : public ViewProviderAddSub
 {
     PROPERTY_HEADER(PartDesignGui::ViewProviderDressUp);
+    typedef ViewProviderAddSub inherited;
 
 public:
     /// constructor
@@ -55,6 +56,9 @@ public:
      * Should be reimplemented in the successor.
      */
     virtual const std::string & featureName() const;
+
+    virtual void updateAddSubShapeIndicator();
+    virtual void updateData(const App::Property*);
 
 protected:
     virtual bool setEdit(int ModNum);

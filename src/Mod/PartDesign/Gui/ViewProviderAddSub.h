@@ -34,6 +34,8 @@ class PartDesignGuiExport ViewProviderAddSub : public ViewProvider
     PROPERTY_HEADER(PartDesignGui::ViewProviderAddSub);
 
 public:
+    App::PropertyColor AddSubColor;
+
     /// constructor
     ViewProviderAddSub();
     /// destructor
@@ -41,18 +43,22 @@ public:
     
     virtual void attach(App::DocumentObject*);
     virtual void updateData(const App::Property*);
+    virtual void onChanged(const App::Property *p);
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
     
 protected: 
-    void updateAddSubShapeIndicator();
+    virtual void updateAddSubShapeIndicator();
+    void updateAddSubShape(const TopoDS_Shape &shape);
     void setPreviewDisplayMode(bool);
     
     SoSeparator*                previewShape;
     PartGui::SoBrepFaceSet*     previewFaceSet;
     SoCoordinate3*              previewCoords;
     SoNormal*                   previewNorm;
+    SoMaterial*                 previewMaterial;
 
 private:
-    int                         whichChild;
     int                         defaultChild;
     std::string                 displayMode;
 };

@@ -92,19 +92,6 @@ void ViewProviderPipe::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderPipe::setEdit(int ModNum) {
-    if (ModNum == ViewProvider::Default )
-        setPreviewDisplayMode(true);
-
-    return PartDesignGui::ViewProvider::setEdit(ModNum);
-}
-
-void ViewProviderPipe::unsetEdit(int ModNum) {
-    setPreviewDisplayMode(false);
-    PartDesignGui::ViewProvider::unsetEdit(ModNum);
-}
-
-
 TaskDlgFeatureParameters* ViewProviderPipe::getEditDialog() {
     return new TaskDlgPipeParameters(this, false);
 }

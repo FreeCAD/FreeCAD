@@ -24,14 +24,17 @@
 #ifndef PARTGUI_ViewProviderHole_H
 #define PARTGUI_ViewProviderHole_H
 
-#include "ViewProvider.h"
+#include "ViewProviderAddSub.h"
 
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderHole : public ViewProvider
+class TaskDlgFeatureParameters;
+
+class PartDesignGuiExport ViewProviderHole : public ViewProviderAddSub
 {
     PROPERTY_HEADER(PartDesignGui::ViewProviderHole);
+    typedef ViewProviderAddSub inherited;
 
 public:
     /// constructor
@@ -43,8 +46,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren(void)const;
     void setupContextMenu(QMenu *menu, QObject *receiver, const char *member);
     bool onDelete(const std::vector<std::string> &s);
-protected:
-    bool setEdit(int ModNum);
+    TaskDlgFeatureParameters* getEditDialog();
 };
 
 

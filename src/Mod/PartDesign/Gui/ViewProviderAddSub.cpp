@@ -30,6 +30,7 @@
 # include <Inventor/nodes/SoNormal.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoAnnotation.h>
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
@@ -42,6 +43,7 @@
 #include "ViewProviderAddSub.h"
 #include "Mod/Part/Gui/SoBrepFaceSet.h"
 #include <Mod/PartDesign/App/FeatureAddSub.h>
+#include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
@@ -53,14 +55,15 @@
 #include <Base/Console.h>
 
 
-
 using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderAddSub,PartDesignGui::ViewProvider)
 
 ViewProviderAddSub::ViewProviderAddSub()
 {
-    previewShape = new SoSeparator();
+    ADD_PROPERTY(AddSubColor,((long)0));
+
+    previewShape = new SoAnnotation();
     previewShape->ref();
     previewFaceSet = new PartGui::SoBrepFaceSet();
     previewFaceSet->ref();
@@ -68,7 +71,8 @@ ViewProviderAddSub::ViewProviderAddSub()
     previewCoords->ref();
     previewNorm = new SoNormal();
     previewNorm->ref();
-    whichChild = -1;
+    previewMaterial = new SoMaterial();
+    previewMaterial->ref();
     defaultChild = 0;
 }
 
@@ -78,6 +82,7 @@ ViewProviderAddSub::~ViewProviderAddSub()
     previewCoords->unref();
     previewNorm->unref();
     previewShape->unref();
+    previewMaterial->unref();
 }
 
 void ViewProviderAddSub::attach(App::DocumentObject* obj) {
@@ -86,19 +91,14 @@ void ViewProviderAddSub::attach(App::DocumentObject* obj) {
 
     auto* bind = new SoMaterialBinding();
     bind->value = SoMaterialBinding::OVERALL;
-    auto* material = new SoMaterial();
-    if (static_cast<PartDesign::FeatureAddSub*>(obj)->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        material->diffuseColor = SbColor(1,1,0);
-    else
-        material->diffuseColor = SbColor(1,0,0);
-
-    material->transparency = 0.7f;
     auto* pick = new SoPickStyle();
     pick->style = SoPickStyle::UNPICKABLE;
 
+    onChanged(&AddSubColor);
+
     previewShape->addChild(pick);
     previewShape->addChild(bind);
-    previewShape->addChild(material);
+    previewShape->addChild(previewMaterial);
     previewShape->addChild(previewCoords);
     previewShape->addChild(previewNorm);
     previewShape->addChild(previewFaceSet);
@@ -108,12 +108,44 @@ void ViewProviderAddSub::attach(App::DocumentObject* obj) {
 }
 
 void ViewProviderAddSub::updateAddSubShapeIndicator() {
+    TopoDS_Shape cShape(static_cast<PartDesign::FeatureAddSub*>(getObject())->AddSubShape.getValue());
+    updateAddSubShape(cShape);
+}
 
+void ViewProviderAddSub::onChanged(const App::Property *p)
+{
+    if (p == & AddSubColor) {
+        if (AddSubColor.getValue().getPackedValue()) {
+            const auto & color = AddSubColor.getValue();
+            previewMaterial->diffuseColor = SbColor(color.r,color.g,color.b);
+            float t = 1.0 - color.a;
+            if (t < 0.1)
+                t = 0.7;
+            if (t > 0.9)
+                t = 0.7;
+            previewMaterial->transparency = t;
+        } else {
+            auto feat = static_cast<PartDesign::FeatureAddSub*>(getObject());
+            if (feat) {
+                if (feat->isDerivedFrom(PartDesign::DressUp::getClassTypeId())) {
+                    previewMaterial->diffuseColor = SbColor(1,0,1);
+                } else if (feat->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+                    previewMaterial->diffuseColor = SbColor(1,1,0);
+                else
+                    previewMaterial->diffuseColor = SbColor(1,0,0);
+                previewMaterial->transparency = 0.7f;
+            }
+        }
+    }
+    ViewProvider::onChanged(p);
+}
+
+void ViewProviderAddSub::updateAddSubShape(const TopoDS_Shape &_shape)
+{
     Gui::SoUpdateVBOAction action;
     action.apply(this->previewFaceSet);
 
-    TopoDS_Shape cShape(static_cast<PartDesign::FeatureAddSub*>(getObject())->AddSubShape.getValue());
-    if (cShape.IsNull()) {
+    if (_shape.IsNull()) {
         previewCoords  ->point      .setNum(0);
         previewNorm    ->vector     .setNum(0);
         previewFaceSet ->coordIndex .setNum(0);
@@ -125,6 +157,8 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
     std::set<int> faceEdges;
 
     try {
+        TopoDS_Shape cShape = _shape;
+
         // calculating the deflection value
         Bnd_Box bounds;
         BRepBndLib::Add(cShape, bounds);
@@ -289,7 +323,6 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
         if(pcModeSwitch->getChild(getDefaultMode()) == previewShape) 
             return;
         displayMode = getActiveDisplayMode();
-        whichChild = pcModeSwitch->whichChild.getValue();
         if (pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId()))
             defaultChild = static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->defaultChild.getValue();
         setDisplayMaskMode("Shape preview");
@@ -302,7 +335,8 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
         if(pcModeSwitch->getChild(getDefaultMode()) != previewShape) 
             return;
         setDisplayMaskMode(displayMode.c_str());
-        pcModeSwitch->whichChild.setValue(whichChild);
+        if (!Visibility.getValue())
+            Gui::ViewProvider::hide();
         if (pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId()))
             static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->defaultChild.setValue(defaultChild);
     }
@@ -310,4 +344,20 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
     App::DocumentObject* obj = static_cast<PartDesign::Feature*>(getObject())->BaseFeature.getValue();
     if (obj)
         static_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(obj))->makeTemporaryVisible(onoff);
+}
+
+bool ViewProviderAddSub::setEdit(int ModNum)
+{
+    if (ViewProvider::setEdit(ModNum)) {
+        if (ModNum == ViewProvider::Default)
+            setPreviewDisplayMode(true);
+        return true;
+    }
+    return false;
+}
+
+void ViewProviderAddSub::unsetEdit(int ModNum) {
+    if (ModNum == ViewProvider::Default)
+        setPreviewDisplayMode(false);
+    ViewProvider::unsetEdit(ModNum);
 }

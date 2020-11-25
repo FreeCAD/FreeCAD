@@ -242,8 +242,6 @@ bool TaskDlgFeatureParameters::accept() {
             throw Base::RuntimeError(vp->getObject()->getStatusString());
         }
 
-        App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
-
         // detach the task panel from the selection to avoid to invoke
         // eventually onAddSelection when the selection changes
         std::vector<QWidget*> subwidgets = getDialogContent();
@@ -255,8 +253,6 @@ bool TaskDlgFeatureParameters::accept() {
 
         Gui::cmdGuiDocument(feature, "resetEdit()");
         Gui::Command::commitCommand();
-
-        Gui::cmdAppObjectHide(previous);
 
     } catch (const Base::Exception& e) {
         // Generally the only thing that should fail is feature->isValid() others should be fine
@@ -274,14 +270,6 @@ bool TaskDlgFeatureParameters::accept() {
 
 bool TaskDlgFeatureParameters::reject()
 {
-    PartDesign::Feature* feature = static_cast<PartDesign::Feature*>(vp->getObject());
-
-    PartDesign::Body* body = PartDesign::Body::findBodyOf(feature);
-
-    // Find out previous feature we won't be able to do it after abort
-    // (at least in the body case)
-    App::DocumentObject* previous = feature->getBaseObject(/* silent = */ true );
-
     // detach the task panel from the selection to avoid to invoke
     // eventually onAddSelection when the selection changes
     std::vector<QWidget*> subwidgets = getDialogContent();
@@ -294,21 +282,6 @@ bool TaskDlgFeatureParameters::reject()
     // roll back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-
-    // if abort command deleted the object make the previous feature visible again
-    if (!Gui::Application::Instance->getViewProvider(feature)) {
-        // Make the tip or the previous feature visible again with preference to the previous one
-        // TODO: ViewProvider::onDelete has the same code. May be this one is excess?
-        if (previous && Gui::Application::Instance->getViewProvider(previous)) {
-            Gui::Application::Instance->getViewProvider(previous)->show();
-        } else if (body != NULL) {
-            App::DocumentObject* tip = body->Tip.getValue();
-            if (tip && Gui::Application::Instance->getViewProvider(tip)) {
-                Gui::Application::Instance->getViewProvider(tip)->show();
-            }
-        }
-    }
-
     return true;
 }
 

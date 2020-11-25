@@ -78,16 +78,3 @@ bool ViewProviderSketchBased::onDelete(const std::vector<std::string> &s) {
 
     return ViewProvider::onDelete(s);
 }
-
-bool ViewProviderSketchBased::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default)
-        setPreviewDisplayMode(true);
-
-    return ViewProviderAddSub::setEdit(ModNum);
-}
-
-void ViewProviderSketchBased::unsetEdit(int ModNum) {
-    setPreviewDisplayMode(false);
-    ViewProviderAddSub::unsetEdit(ModNum);
-}

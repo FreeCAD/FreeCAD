@@ -46,8 +46,6 @@ public:
     void highlightReferences(const bool on, bool auxiliary);
     
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
     virtual TaskDlgFeatureParameters* getEditDialog();
     
     virtual QIcon getIcon(void) const;

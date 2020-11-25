@@ -55,8 +55,6 @@ public:
     
 protected:
     virtual QIcon getIcon(void) const;
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
     
     /// Returns a newly created TaskDlgPipeParameters
     virtual TaskDlgFeatureParameters *getEditDialog();

@@ -75,7 +75,6 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
     App::GetApplication().getActiveTransaction(&transactionID);
 
     selectionMode = none;
-    showObject();
 
     onTopEnabled = Gui::ViewParams::instance()->getShowSelectionOnTop();
     if(!onTopEnabled)
@@ -666,19 +665,6 @@ std::vector<std::string> TaskDressUpParameters::getReferences() const
     return result;
 }
 
-void TaskDressUpParameters::hideObject()
-{
-    App::DocumentObject* base = getBase();
-    if(base)
-        base->Visibility.setValue(true);
-}
-
-void TaskDressUpParameters::showObject()
-{
-    if(DressUpView)
-        DressUpView->getObject()->Visibility.setValue(true);
-}
-
 Part::Feature* TaskDressUpParameters::getBase(void) const
 {
     if(!DressUpView)
@@ -697,7 +683,6 @@ void TaskDressUpParameters::exitSelectionMode()
     selectionMode = none;
     Gui::Selection().rmvSelectionGate();
     Gui::Selection().clearSelection();
-    showObject();
 }
 
 bool TaskDressUpParameters::event(QEvent *e)

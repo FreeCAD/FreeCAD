@@ -83,22 +83,8 @@ void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderLoft::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default)
-        setPreviewDisplayMode(true);
-
-    return ViewProviderAddSub::setEdit(ModNum);
-}
-
 TaskDlgFeatureParameters* ViewProviderLoft::getEditDialog() {
     return new TaskDlgLoftParameters(this);
-}
-
-
-void ViewProviderLoft::unsetEdit(int ModNum) {
-    setPreviewDisplayMode(false);
-    ViewProviderAddSub::unsetEdit(ModNum);
 }
 
 

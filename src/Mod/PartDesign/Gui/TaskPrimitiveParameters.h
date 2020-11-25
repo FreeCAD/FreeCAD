@@ -121,7 +121,7 @@ private:
     QCheckBox* checkBoxNewSolid = nullptr;
 };
 
-class TaskPrimitiveParameters : public Gui::TaskView::TaskDialog
+class TaskPrimitiveParameters :  public TaskDlgFeatureParameters
 {
     Q_OBJECT
 
@@ -131,9 +131,6 @@ public:
 
 protected:
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
-
-    virtual bool accept();
-    virtual bool reject();
 
 private:
     TaskBoxPrimitives*     primitive;

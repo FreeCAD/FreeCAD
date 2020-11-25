@@ -252,8 +252,6 @@ TaskDlgThicknessParameters::~TaskDlgThicknessParameters()
 
 bool TaskDlgThicknessParameters::accept()
 {
-    parameter->showObject();
-
     TaskThicknessParameters* draftparameter = static_cast<TaskThicknessParameters*>(parameter);
 
     auto obj = vp->getObject();

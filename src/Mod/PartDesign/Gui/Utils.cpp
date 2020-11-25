@@ -669,50 +669,30 @@ public:
                 if (!view)
                     return;
 
-                Gui::ViewProviderDocumentObject *parentVp = nullptr;
-                std::string subname;
-                doc->getInEdit(&parentVp, &subname);
-                if (parentVp && vp.isDerivedFrom(ViewProviderAddSub::getClassTypeId())) {
-                    auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(vp.getObject());
-                    auto body = PartDesign::Body::findBodyOf(feat);
-                    if (feat && !feat->AddSubShape.getShape().isNull() && body) {
-                        editObj = App::SubObjectT(parentVp->getObject(), subname.c_str());
-                        App::DocumentObject *prev = nullptr;
-                        for (auto sibling : body->getSiblings(feat)) {
-                            if (sibling->Visibility.getValue())
-                                visibleObj = App::DocumentObjectT(sibling);
-                            if (sibling == feat && prev)
-                                siblingObj = App::DocumentObjectT(prev);
+                for(auto obj : vp.getObject()->getInList()) {
+                    if (obj->isDerivedFrom(PartDesign::FeatureWrap::getClassTypeId())) {
+                        auto wrap = static_cast<PartDesign::FeatureWrap*>(obj);
+                        App::DocumentObject *parent = nullptr;
+                        Gui::ViewProviderDocumentObject *parentVp = nullptr;
+                        std::string subname;
+                        doc->getInEdit(&parentVp, &subname);
+                        if (parentVp)
+                            parent = parentVp->getObject();
+                        else if (activeBody && activeBody == PartDesign::Body::findBodyOf(wrap)) {
+                            parent = activeBodyT.getObject();
+                            subname = activeBodyT.getSubName() + wrap->getNameInDocument() + ".";
+                        } else
+                            return;
+                        editObj = App::SubObjectT(parent, subname.c_str());
+                        if (editObj.getSubObject() == wrap) {
+                            editObj.setSubName(editObj.getSubName()
+                                    + vp.getObject()->getNameInDocument() + ".");
                         }
-                        auto obj = siblingObj.getObject();
-                        if (obj)
-                            obj->Visibility.setValue(true);
+                        break;
                     }
-                } 
-                
-                if (editObj.getObjectName().empty()) {
-                    for(auto obj : vp.getObject()->getInList()) {
-                        if (obj->isDerivedFrom(PartDesign::FeatureWrap::getClassTypeId())) {
-                            auto wrap = static_cast<PartDesign::FeatureWrap*>(obj);
-                            App::DocumentObject *parent = nullptr;
-                            if (parentVp)
-                                parent = parentVp->getObject();
-                            else if (activeBody && activeBody == PartDesign::Body::findBodyOf(wrap)) {
-                                parent = activeBodyT.getObject();
-                                subname = activeBodyT.getSubName() + wrap->getNameInDocument() + ".";
-                            } else
-                                return;
-                            editObj = App::SubObjectT(parent, subname.c_str());
-                            if (editObj.getSubObject() == wrap) {
-                                editObj.setSubName(editObj.getSubName()
-                                        + vp.getObject()->getNameInDocument() + ".");
-                            }
-                            break;
-                        }
-                    }
-                    if (!editObj.getObject())
-                        return;
                 }
+                if (!editObj.getObject())
+                    return;
                 editView = view;
                 view->getViewer()->checkGroupOnTop(
                         Gui::SelectionChanges(
@@ -788,12 +768,7 @@ public:
                                     editObj.getSubName().c_str()), true);
                 });
         }
-        auto obj = visibleObj.getObject();
-        if (obj && obj != siblingObj.getObject())
-            obj->Visibility.setValue(true);
         editObj = App::SubObjectT();
-        siblingObj = App::DocumentObjectT();
-        visibleObj = App::DocumentObjectT();
         editView = nullptr;
     }
 
@@ -904,8 +879,6 @@ public:
     PartDesign::Body *activeBody = nullptr;
     App::SubObjectT activeBodyT;
     App::SubObjectT editObj;
-    App::DocumentObjectT siblingObj;
-    App::DocumentObjectT visibleObj;
     Gui::View3DInventor *editView = nullptr;
     QPointer<QWidget> taskWidget;
 };

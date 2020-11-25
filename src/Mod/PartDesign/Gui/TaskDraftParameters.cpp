@@ -385,8 +385,6 @@ TaskDlgDraftParameters::~TaskDlgDraftParameters()
 
 bool TaskDlgDraftParameters::accept()
 {
-    parameter->showObject();
-
     std::vector<std::string> strings;
     App::DocumentObject* obj;
     TaskDraftParameters* draftparameter = static_cast<TaskDraftParameters*>(parameter);

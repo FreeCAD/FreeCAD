@@ -39,7 +39,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderHole,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderHole,PartDesignGui::ViewProviderAddSub)
 
 ViewProviderHole::ViewProviderHole()
 {
@@ -55,7 +55,7 @@ std::vector<App::DocumentObject*> ViewProviderHole::claimChildren(void)const
     std::vector<App::DocumentObject*> temp;
     temp.push_back(static_cast<PartDesign::Hole*>(getObject())->Profile.getValue());
 
-    auto res = PartDesignGui::ViewProvider::claimChildren();
+    auto res = inherited::claimChildren();
     temp.insert(temp.end(), res.begin(), res.end());
     return temp;
 }
@@ -65,49 +65,11 @@ void ViewProviderHole::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     QAction* act;
     act = menu->addAction(QObject::tr("Edit hole"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    ViewProvider::setupContextMenu(menu,receiver,member);
+    inherited::setupContextMenu(menu,receiver,member);
 }
 
-bool ViewProviderHole::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default ) {
-        // When double-clicking on the item for this hole the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgHoleParameters *holeDlg = qobject_cast<TaskDlgHoleParameters *>(dlg);
-        if (holeDlg && holeDlg->getHoleView() != this)
-            holeDlg = 0; // another hole left open its task panel
-        if (dlg && !holeDlg) {
-            QMessageBox msgBox;
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().closeDialog();
-            else
-                return false;
-        }
-
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-
-        // always change to PartDesign WB, remember where we come from
-        oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-        // start the edit dialog
-        if (holeDlg)
-            Gui::Control().showDialog(holeDlg);
-        else
-            Gui::Control().showDialog(new TaskDlgHoleParameters(this));
-
-        return true;
-    }
-    else {
-        return PartGui::ViewProviderPart::setEdit(ModNum);
-    }
+TaskDlgFeatureParameters* ViewProviderHole::getEditDialog() {
+    return new TaskDlgHoleParameters(this);
 }
 
 bool ViewProviderHole::onDelete(const std::vector<std::string> &s)
@@ -122,5 +84,5 @@ bool ViewProviderHole::onDelete(const std::vector<std::string> &s)
     if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
         Gui::Application::Instance->getViewProvider(pcSketch)->show();
 
-    return ViewProvider::onDelete(s);
+    return inherited::onDelete(s);
 }

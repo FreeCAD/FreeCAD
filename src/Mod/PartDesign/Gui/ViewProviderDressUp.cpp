@@ -41,7 +41,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp,PartDesignGui::ViewProviderAddSub)
 
 
 void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -49,7 +49,7 @@ void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const
     QAction* act;
     act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromStdString(featureName())), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+    inherited::setupContextMenu(menu, receiver, member);
 }
 
 
@@ -66,7 +66,7 @@ bool ViewProviderDressUp::setEdit(int ModNum) {
         PartDesign::DressUp* dressUp = static_cast<PartDesign::DressUp*>(getObject());
         assert (dressUp);
         if (dressUp->getBaseObject (/*silent =*/ true)) {
-            return ViewProvider::setEdit(ModNum);
+            return inherited::setEdit(ModNum);
         } else {
             QMessageBox::warning ( 0, QObject::tr("Feature error"),
                     QObject::tr("%1 misses a base feature.\n"
@@ -77,7 +77,7 @@ bool ViewProviderDressUp::setEdit(int ModNum) {
         }
 
     } else {
-        return ViewProvider::setEdit(ModNum);
+        return inherited::setEdit(ModNum);
     }
 }
 
@@ -139,3 +139,40 @@ void ViewProviderDressUp::highlightReferences(const bool on)
     }
 }
 
+void ViewProviderDressUp::updateAddSubShapeIndicator()
+{
+    auto pcDressUp = Base::freecad_dynamic_cast<PartDesign::DressUp>(getObject());
+    if (pcDressUp) {
+        std::vector<int> faces;
+        std::vector<int> edges;
+        std::vector<int> vertices;
+        pcDressUp->getGeneratedIndices(faces,edges,vertices);
+        if (faces.empty()) {
+            updateAddSubShape(TopoDS_Shape());
+            return;
+        }
+
+        BRep_Builder builder;
+        TopoDS_Compound comp;
+        builder.MakeCompound(comp);
+        auto shape = pcDressUp->Shape.getShape();
+        shape.setPlacement(Base::Placement());
+        for (int idx : faces)
+            builder.Add(comp, shape.getSubShape(TopAbs_FACE, idx+1));
+        updateAddSubShape(comp);
+    }
+}
+
+void ViewProviderDressUp::updateData(const App::Property* p) {
+    auto pcDressUp = Base::freecad_dynamic_cast<PartDesign::DressUp>(getObject());
+    if (pcDressUp) {
+        if (p == & pcDressUp->Shape)
+            updateAddSubShapeIndicator();
+        else if (p == & pcDressUp->AddSubShape) {
+            // Skip ViewProviderAddSub::updateData()
+            ViewProvider::updateData(p);
+            return;
+        }
+    }
+    ViewProviderAddSub::updateData(p);
+}

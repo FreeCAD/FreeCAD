@@ -78,57 +78,8 @@ void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, con
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderPrimitive::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default ) {
-        // When double-clicking on the item for this fillet the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskPrimitiveParameters *primitiveDlg = qobject_cast<TaskPrimitiveParameters *>(dlg);
-        if (dlg && !primitiveDlg) {
-            QMessageBox msgBox;
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().closeDialog();
-            else
-                return false;
-        }
-
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-
-        // always change to PartDesign WB, remember where we come from
-        oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-        // start the edit dialog
-        // another pad left open its task panel
-        if (primitiveDlg)
-            Gui::Control().showDialog(primitiveDlg);
-        else
-            Gui::Control().showDialog(new TaskPrimitiveParameters(this));
-
-        setPreviewDisplayMode(true);
-
-        return true;
-    }
-    else {
-        return ViewProviderAddSub::setEdit(ModNum);
-    }
-}
-
-void ViewProviderPrimitive::unsetEdit(int ModNum)
-{
-    setPreviewDisplayMode(false);
-
-    // Rely on parent class to:
-    // restitute old workbench (set setEdit above) and close the dialog if exiting editing
-    PartDesignGui::ViewProvider::unsetEdit(ModNum);
-
+TaskDlgFeatureParameters* ViewProviderPrimitive::getEditDialog() {
+    return new TaskPrimitiveParameters(this);
 }
 
 void ViewProviderPrimitive::updateData(const App::Property* p) {

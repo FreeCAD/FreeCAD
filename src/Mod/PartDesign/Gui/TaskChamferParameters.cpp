@@ -304,7 +304,6 @@ TaskDlgChamferParameters::~TaskDlgChamferParameters()
 //}
 bool TaskDlgChamferParameters::accept()
 {
-    parameter->showObject();
     parameter->apply();
 
     return TaskDlgDressUpParameters::accept();

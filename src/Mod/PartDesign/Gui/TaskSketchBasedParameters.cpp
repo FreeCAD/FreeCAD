@@ -216,23 +216,11 @@ void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool
         App::DocumentObject* prevSolid = pcSketchBased->getBaseObject( /* silent =*/ true );
 
         if (pressed) {
-            Gui::Document* doc = vp->getDocument();
-            if (doc) {
-                doc->setHide(pcSketchBased->getNameInDocument());
-                if (prevSolid)
-                    doc->setShow(prevSolid->getNameInDocument());
-            }
             Gui::Selection().clearSelection();
             Gui::Selection().addSelectionGate
                 (new ReferenceSelection(prevSolid, edge, face, planar));
         } else {
             Gui::Selection().rmvSelectionGate();
-            Gui::Document* doc = vp->getDocument();
-            if (doc) {
-                doc->setShow(pcSketchBased->getNameInDocument());
-                if (prevSolid)
-                    doc->setHide(prevSolid->getNameInDocument());
-            }
         }
     }
 }
@@ -359,32 +347,12 @@ bool TaskDlgSketchBasedParameters::accept() {
         throw Base::TypeError("Bad object processed in the sketch based dialog.");
     }
 
-    App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(feature)->Profile.getValue();
-
-    FCMD_OBJ_HIDE(sketch);
-
     return TaskDlgFeatureParameters::accept();
 }
 
 bool TaskDlgSketchBasedParameters::reject()
 {
-    PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
-    // get the Sketch
-    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcSketchBased->Profile.getValue());
-    bool rv;
-
-    // rv should be true anyway but to be on the safe side due to further changes better respect it.
-    rv = TaskDlgFeatureParameters::reject();
-
-    // if abort command deleted the object the sketch is visible again.
-    // The previous one feature already should be made visible
-    if (!Gui::Application::Instance->getViewProvider(pcSketchBased)) {
-        // Make the sketch visible
-        if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-            Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    }
-
-    return rv;
+    return TaskDlgFeatureParameters::reject();
 }
 
 #include "moc_TaskSketchBasedParameters.cpp"
