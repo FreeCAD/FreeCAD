@@ -98,7 +98,9 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
         this->viewer->imageFromFramebuffer(this->size, this->size, 0, invalid, img);
     }
 
-    QPixmap px = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
+    // Get app icon and resize to half size to insert in topbottom position over the current view snapshot
+    QPixmap app_icon = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
+    QPixmap px =  app_icon.scaled(this->size / 4, this->size /4);
     if (!img.isNull()) {
         if (App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Document")->GetBool("AddThumbnailLogo",true))
