@@ -1298,8 +1298,8 @@ namespace Py
 
         virtual size_type max_size() const
         {
-            //return std::string::npos; // ?
-            return std::numeric_limits<size_type>::max();
+            return std::string::npos; // ?
+            //return std::numeric_limits<size_type>::max();
         }
 
         virtual size_type capacity() const
