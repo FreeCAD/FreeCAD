@@ -350,7 +350,7 @@ Body::getInsertionPosition(const std::vector<App::DocumentObject*> &objs)
     const auto siblings = getSiblings(tip);
 
     int index = -1;
-    for (auto obj : App::Document::getDependencyList(objs)) {
+    for (auto obj : objs) {
         int idx;
         if (!obj || !Group.find(obj->getNameInDocument(), &idx) || index>=idx)
             continue;
