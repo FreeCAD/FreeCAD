@@ -615,6 +615,8 @@ class Component(ArchIFC.IfcProduct):
 
         # Get the object's normal.
         n = DraftGeomUtils.getNormal(shape[0])
+        if (not n) or (not n.Length):
+            n = FreeCAD.Vector(0, 0, 1)
 
         # Reverse the normal if the hint vector and the normal vector have more
         # than a 90 degree angle between them.
