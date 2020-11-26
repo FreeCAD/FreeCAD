@@ -1429,12 +1429,9 @@ void FemMesh::readNastran95(const std::string &Filename)
         }
         else if (nastran_free_format && line1.find("CTETRA")!= std::string::npos)
         {
+            //Quadratic Tetrahedral Elements
             //Base::Console().Log("Found a CTETRA\n");
             tetra_element.clear();
-            //Lets extract the elements
-            //As each Element Line consists of two subsequent lines as well
-            //we have to take care of that
-            //At a first step we only extract Quadratic Tetrahedral Elements
             std::getline(inputfile,line2);
             char_separator<char> sep(",");
             tokenizer<char_separator<char> > tokens(line1.append(line2), sep);
