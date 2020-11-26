@@ -76,9 +76,9 @@ static ParameterGrp::handle _GetParam() {
  * in two tabs.
  */
 PropertyView::PropertyView(QWidget *parent)
-  : QWidget(parent),SelectionObserver(false,0) 
+  : QWidget(parent),SelectionObserver(false,0)
 {
-    QGridLayout* pLayout = new QGridLayout( this ); 
+    QGridLayout* pLayout = new QGridLayout( this );
     pLayout->setSpacing(0);
     pLayout->setMargin (0);
 
@@ -134,13 +134,13 @@ PropertyView::PropertyView(QWidget *parent)
     this->connectActiveDoc =
     Application::Instance->signalActiveDocument.connect(boost::bind
         (&PropertyView::slotActiveDocument, this, bp::_1));
-    this->connectDelDocument = 
+    this->connectDelDocument =
         Application::Instance->signalDeleteDocument.connect(
                 boost::bind(&PropertyView::slotDeleteDocument, this, bp::_1));
-    this->connectDelViewObject = 
+    this->connectDelViewObject =
         Application::Instance->signalDeletedObject.connect(
                 boost::bind(&PropertyView::slotDeletedViewObject, this, bp::_1));
-    this->connectDelObject = 
+    this->connectDelObject =
         App::GetApplication().signalDeletedObject.connect(
                 boost::bind(&PropertyView::slotDeletedObject, this, bp::_1));
 }
@@ -227,7 +227,7 @@ bool PropertyView::isPropertyHidden(const App::Property *prop) {
 
 void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
 {
-    if (isPropertyHidden(&prop)) 
+    if (isPropertyHidden(&prop))
         return;
 
     if (propertyEditorData->appendProperty(prop)
@@ -365,7 +365,7 @@ void PropertyView::onTimer() {
         auto doc = gdoc->getDocument();
         std::map<std::string,App::Property*> props;
         doc->getPropertyMap(props);
-        for(auto &v : props) 
+        for(auto &v : props)
             docProps.emplace_back(v.first,
                     std::vector<App::Property*>(1,v.second));
         propertyEditorData->buildUp(std::move(docProps));

@@ -258,4 +258,4 @@ public:
 
 } // namespace Gui
 
-#endif // MOUSESELECTION_H 
+#endif // MOUSESELECTION_H

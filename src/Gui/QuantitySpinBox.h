@@ -66,7 +66,7 @@ public:
 
     /** Sets the Unit this widget is working with.
      *  After setting the Unit the widget will only accept
-     *  user input with this unit type. Or if the user input 
+     *  user input with this unit type. Or if the user input
      *  a value without unit, this one will be added to the resulting
      *  Quantity.
      */
@@ -79,17 +79,17 @@ public:
 
     /// Get the value of the singleStep property
     double singleStep() const;
-    /// Set the value of the singleStep property 
+    /// Set the value of the singleStep property
     void setSingleStep(double val);
 
     /// Gets the value of the minimum property
     double minimum() const;
-    /// Sets the value of the minimum property 
+    /// Sets the value of the minimum property
     void setMinimum(double min);
 
     /// Gets the value of the maximum property
     double maximum() const;
-    /// Sets the value of the maximum property 
+    /// Sets the value of the maximum property
     void setMaximum(double max);
 
     /// Gets the number of decimals

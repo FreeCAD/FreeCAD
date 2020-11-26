@@ -66,7 +66,7 @@ std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::constructChi
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
     if(!group)
         return children;
-    
+
     App::DocumentObject *originObj = group->Origin.getValue();
 
     // Origin must be first
@@ -100,13 +100,13 @@ void ViewProviderOriginGroupExtension::extensionAttach(App::DocumentObject *pcOb
 
     connectChangedObjectApp = adoc->signalChangedObject.connect (
             boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectApp, this, bp::_1) );
-    
+
     connectChangedObjectGui = gdoc->signalChangedObject.connect (
             boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectGui, this, bp::_1) );
 }
 
 void ViewProviderOriginGroupExtension::extensionUpdateData( const App::Property* prop ) {
-    
+
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
     if ( group && prop == &group->Group ) {
         updateOriginSize();
@@ -124,7 +124,7 @@ void ViewProviderOriginGroupExtension::slotChangedObjectApp ( const App::Documen
 
 void ViewProviderOriginGroupExtension::slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& vp) {
     if ( !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () )) {
-        // Ignore origins to avoid infinite recursion (not likely in a well-formed document, 
+        // Ignore origins to avoid infinite recursion (not likely in a well-formed document,
         //          but may happen in documents designed in old versions of assembly branch )
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
         App::DocumentObject *obj = vp.getObject ();
@@ -137,12 +137,12 @@ void ViewProviderOriginGroupExtension::slotChangedObjectGui ( const Gui::ViewPro
 
 void ViewProviderOriginGroupExtension::updateOriginSize () {
     auto owner = getExtendedViewProvider()->getObject();
-    
+
     if(!owner->getNameInDocument() ||
        owner->isRemoving() ||
        owner->getDocument()->testStatus(App::Document::Restoring))
         return;
-    
+
     auto* group = owner->getExtensionByType<App::OriginGroupExtension>();
     if(!group)
         return;
@@ -167,13 +167,13 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
     }
 
     Gui::Document* gdoc = getExtendedViewProvider()->getDocument();
-    if(!gdoc) 
+    if(!gdoc)
         return;
-    
+
     Gui::MDIView* view = gdoc->getViewOfViewProvider(getExtendedViewProvider());
     if(!view)
         return;
-    
+
     Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
     SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
 
@@ -188,7 +188,7 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
         bboxAction.apply ( vp->getRoot () );
         bbox.extendBy ( bboxAction.getBoundingBox () );
     };
-    
+
     // get the bounding box values
     SbVec3f max = bbox.getMax();
     SbVec3f min = bbox.getMin();

@@ -875,7 +875,7 @@ void TaskPlacement::setPropertyName(const QString& name)
 }
 
 QDialogButtonBox::StandardButtons TaskPlacement::getStandardButtons() const
-{ 
+{
     return QDialogButtonBox::Ok|
            QDialogButtonBox::Cancel|
            QDialogButtonBox::Apply;

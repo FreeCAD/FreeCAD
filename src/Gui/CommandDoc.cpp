@@ -565,7 +565,7 @@ StdCmdSaveAll::StdCmdSaveAll()
 
 void StdCmdSaveAll::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::Document::saveAll();
 }
 
@@ -1050,7 +1050,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
                 "To link to external objects, the document must be saved at least once.\n"
                 "Do you want to save the document now?"),
                 QMessageBox::Yes,QMessageBox::No);
-            if(ret == QMessageBox::Yes) 
+            if(ret == QMessageBox::Yes)
                 proceed = Application::Instance->getDocument(doc)->saveAs();
         }
         if(proceed) {
@@ -1220,8 +1220,8 @@ void StdCmdDelete::activated(int iMsg)
                         bodyMessageStream << "\n";
                     }
                     std::string thisDoc = pGuiDoc->getDocument()->getName();
-                    bodyMessageStream << qApp->translate("Std_Delete", 
-                                            "These items are selected for deletion, but are not in the active document."); 
+                    bodyMessageStream << qApp->translate("Std_Delete",
+                                            "These items are selected for deletion, but are not in the active document.");
                     for (const auto &currentLabel : inactiveLabels)
                         bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
                 }
@@ -1620,7 +1620,7 @@ protected:
                            << " (" << obj->Label.getValue() << ')' << std::endl;
                         ss << "##@@";
                         if(v.second->comment.size()) {
-                            if(v.second->comment[0] == '&' 
+                            if(v.second->comment[0] == '&'
                                     || v.second->comment.find('\n') != std::string::npos
                                     || v.second->comment.find('\r') != std::string::npos)
                             {
@@ -1641,7 +1641,7 @@ protected:
     }
 
     void pasteExpressions() {
-        std::map<App::Document*, std::map<App::PropertyExpressionContainer*, 
+        std::map<App::Document*, std::map<App::PropertyExpressionContainer*,
             std::map<App::ObjectIdentifier, App::ExpressionPtr> > > exprs;
 
         bool failed = false;

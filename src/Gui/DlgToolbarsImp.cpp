@@ -130,7 +130,7 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
         }
     }
 
-    QStringList labels; 
+    QStringList labels;
     labels << tr("Icon") << tr("Command");
     ui->commandTreeWidget->setHeaderLabels(labels);
     ui->commandTreeWidget->header()->hide();

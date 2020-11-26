@@ -115,15 +115,15 @@ public:
     /// signal on leaving edit mode
     mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
     /// signal on changed Object, the 2nd argument is the highlite mode to use
-    mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&, 
-                                          const Gui::HighlightMode&, 
+    mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&,
+                                          const Gui::HighlightMode&,
                                           bool,
-                                          App::DocumentObject *parent, 
-                                          const char *subname)> signalHighlightObject; 
+                                          App::DocumentObject *parent,
+                                          const char *subname)> signalHighlightObject;
     /// signal on changed Object, the 2nd argument is the highlite mode to use
     mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&,
                                           const Gui::TreeItemMode&,
-                                          App::DocumentObject *parent, 
+                                          App::DocumentObject *parent,
                                           const char *subname)> signalExpandObject;
     /// signal on changed ShowInTree property in view provider
     mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalShowItem;
@@ -246,7 +246,7 @@ public:
     /// reset edit of this document
     void _resetEdit(void);
     /// get the in edit ViewProvider or NULL
-    ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=0, 
+    ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=0,
             std::string *subname=0, int *mode=0, std::string *subElement=0) const;
     /// set the in edit ViewProvider subname reference
     void setInEdit(ViewProviderDocumentObject *parentVp, const char *subname);

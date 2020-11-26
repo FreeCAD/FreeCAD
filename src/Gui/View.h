@@ -32,16 +32,16 @@ namespace App
 class Document;
 }
 
-namespace Gui 
+namespace Gui
 {
 class Document;
 class ViewProvider;
 
 /** Base class of all windows belonging to a document
- *  there are two ways of belonging to a document. The 
+ *  there are two ways of belonging to a document. The
  *  first way is to a fixed one. The second way is to always
  *  belonging to the Active document. that means switching every time
- *  the active document is changing. It also means that the view 
+ *  the active document is changing. It also means that the view
  *  belongs sometimes to no document at all!
  *  @see TreeView
  *  @see Gui::Document
@@ -65,7 +65,7 @@ public:
     virtual ~BaseView();
 
 
-    /** @name methods used by the Application and the GuiDocument 
+    /** @name methods used by the Application and the GuiDocument
      */
     //@{
     /// sets the view to another document (called by Application)
@@ -81,7 +81,7 @@ public:
     /// indicates if the view is in passive mode
     bool isPassive(void) const {return bIsPassive;}
 
-    /** @name methods to override 
+    /** @name methods to override
      */
     //@{
     /// get called when the document is updated
@@ -111,4 +111,4 @@ protected:
 
 } // namespace Gui
 
-#endif // GUI_VIEW_H 
+#endif // GUI_VIEW_H

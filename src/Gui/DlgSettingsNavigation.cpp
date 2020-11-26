@@ -51,7 +51,7 @@ using namespace Gui::Dialog;
 
 /**
  *  Constructs a DlgSettingsNavigation which is a child of 'parent', with the
- *  name 'name' and widget flags set to 'f' 
+ *  name 'name' and widget flags set to 'f'
  */
 DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     : PreferencePage( parent )
@@ -62,7 +62,7 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     retranslate();
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsNavigation::~DlgSettingsNavigation()
@@ -127,7 +127,7 @@ void DlgSettingsNavigation::loadSettings()
     index = hGrp->GetInt("OrbitStyle", int(NavigationStyle::Trackball));
     index = Base::clamp(index, 0, ui->comboOrbitStyle->count()-1);
     ui->comboOrbitStyle->setCurrentIndex(index);
-    
+
     index = hGrp->GetInt("CornerNaviCube", 1);
     ui->naviCubeCorner->setCurrentIndex(index);
 

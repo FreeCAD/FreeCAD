@@ -103,7 +103,7 @@ public:
 
     void run() {
         QByteArray preprocessed = str;
-        
+
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
         if(hGrp->GetBool("Unflatten", true)) {
             // Write data to unflatten process
@@ -116,7 +116,7 @@ public:
             unflattenProc.closeWriteChannel();
             unflattenProc.waitForFinished();
         }
-        
+
         dotProc.write(preprocessed);
         dotProc.closeWriteChannel();
         if (!dotProc.waitForFinished()) {
@@ -131,7 +131,7 @@ public:
     QProcess * dotProcess() {
         return &dotProc;
     }
-    
+
     QProcess * unflattenProcess() {
         return &unflattenProc;
     }
@@ -343,13 +343,13 @@ QByteArray GraphvizView::exportGraph(const QString& format)
     QString exe = QString::fromLatin1("%1/dot").arg(path);
     QString unflatten = QString::fromLatin1("%1/unflatten").arg(path);
 #endif
-       
+
     dotProc.setEnvironment(QProcess::systemEnvironment());
     dotProc.start(exe, args);
     if (!dotProc.waitForStarted()) {
         return QByteArray();
     }
-    
+
     ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
     if(depGrp->GetBool("Unflatten", true)) {
         flatProc.setEnvironment(QProcess::systemEnvironment());
@@ -361,12 +361,12 @@ QByteArray GraphvizView::exportGraph(const QString& format)
         flatProc.closeWriteChannel();
         if (!flatProc.waitForFinished())
             return QByteArray();
-        
+
         dotProc.write(flatProc.readAll());
     }
-    else 
-        dotProc.write(graphCode.c_str(), graphCode.size());   
-    
+    else
+        dotProc.write(graphCode.c_str(), graphCode.size());
+
     dotProc.closeWriteChannel();
     if (!dotProc.waitForFinished())
         return QByteArray();
@@ -434,11 +434,11 @@ bool GraphvizView::onHasMsg(const char* pMsg) const
     else if (strcmp("SaveAs",pMsg) == 0)
         return true;
     else if (strcmp("Print",pMsg) == 0)
-        return true; 
+        return true;
     else if (strcmp("PrintPreview",pMsg) == 0)
-        return true; 
+        return true;
     else if (strcmp("PrintPdf",pMsg) == 0)
-        return true; 
+        return true;
     return false;
 }
 

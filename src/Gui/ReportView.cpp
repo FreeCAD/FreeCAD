@@ -50,8 +50,8 @@ using namespace Gui::DockWnd;
 /* TRANSLATOR Gui::DockWnd::ReportView */
 
 /**
- *  Constructs a ReportView which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a ReportView which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 ReportView::ReportView( QWidget* parent )
   : QWidget(parent)
@@ -206,7 +206,7 @@ void ReportHighlighter::setErrorColor( const QColor& col )
 // ----------------------------------------------------------
 
 /**
- * The CustomReportEvent class is used to send report events in the methods Log(), 
+ * The CustomReportEvent class is used to send report events in the methods Log(),
  * Error(), Warning() and Message() of the ReportOutput class to itself instead of
  * printing the messages directly in its text view.
  *
@@ -217,7 +217,7 @@ class CustomReportEvent : public QEvent
 {
 public:
     CustomReportEvent(ReportHighlighter::Paragraph p, const QString& s)
-    : QEvent(QEvent::Type(QEvent::User)) 
+    : QEvent(QEvent::Type(QEvent::User))
     { par = p; msg = s;}
     ~CustomReportEvent()
     { }
@@ -348,8 +348,8 @@ PyObject* ReportOutput::Data::replace_stderr = 0;
 /* TRANSLATOR Gui::DockWnd::ReportOutput */
 
 /**
- *  Constructs a ReportOutput which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a ReportOutput which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 ReportOutput::ReportOutput(QWidget* parent)
   : QTextEdit(parent)
@@ -714,7 +714,7 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
     else if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
         int fontSize = rclGrp.GetInt("FontSize", 10);
         QString fontFamily = QString::fromLatin1(rclGrp.GetASCII("Font", "Courier").c_str());
-        
+
         QFont font(fontFamily, fontSize);
         setFont(font);
         QFontMetrics metric(font);

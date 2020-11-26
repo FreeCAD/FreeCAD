@@ -41,7 +41,7 @@ class PythonDebugger;
  * a macro file (so far).
  * \author Jürgen Riegel
  */
-class GuiExport MacroManager : public Base::Observer<const char*> 
+class GuiExport MacroManager : public Base::Observer<const char*>
 {
 protected:
     MacroManager();
@@ -50,22 +50,22 @@ protected:
 public:
 
     /** Macro type enumeration  */
-    enum MacroType { 
-        File, /**< The macro will be saved in a file */  
-        User, /**< The macro belongs to the Application and will be saved in the UserParameter */  
-        Doc   /**< The macro belongs to the Document and will be saved and restored with the Document */  
-    }; 
+    enum MacroType {
+        File, /**< The macro will be saved in a file */
+        User, /**< The macro belongs to the Application and will be saved in the UserParameter */
+        Doc   /**< The macro belongs to the Document and will be saved and restored with the Document */
+    };
 
     /** Line type enumeration  */
-    enum LineType { 
+    enum LineType {
         App,  /**< The line effects only the document and Application (FreeCAD) */
         Gui,  /**< The line effects the Gui (FreeCADGui) */
         Cmt,  /**< The line is handled as a comment */
-    }; 
+    };
 
     /** Opens a new Macro recording session
      * Starts a session with the type and the name of the macro.
-     * All user interactions will be recorded as long as the commit() or cancel() isn't called. 
+     * All user interactions will be recorded as long as the commit() or cancel() isn't called.
      * There is only one recording session possible. Trying to open a second one causes an exception:
      * @param eType Type of the macro
      * @param sName Name or path of the macro
@@ -81,7 +81,7 @@ public:
     bool isOpen(void) const {return openMacro;}
     /// insert a new line in the macro
     void addLine(LineType Type,const char* sLine,bool pending=false);
-    /** Set the active module 
+    /** Set the active module
      * This is normally done by the workbench switch. It sets
      * the actually active application module so when the macro
      * gets started the right import can be issued.

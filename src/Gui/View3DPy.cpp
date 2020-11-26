@@ -295,7 +295,7 @@ Py::Object View3DInventorPy::message(const Py::Tuple& args)
 {
     const char **ppReturn = 0;
     char *psMsgStr;
-    if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)",&psMsgStr))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)",&psMsgStr))     // convert args: Python->C
         throw Py::Exception();
 
     try {
@@ -1100,8 +1100,8 @@ Py::Object View3DInventorPy::getViewDirection(const Py::Tuple& args)
 Py::Object View3DInventorPy::setViewDirection(const Py::Tuple& args)
 {
     PyObject* object;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &object)) 
-        throw Py::Exception(); 
+    if (!PyArg_ParseTuple(args.ptr(), "O", &object))
+        throw Py::Exception();
 
     try {
         if (PyTuple_Check(object)) {
@@ -1182,7 +1182,7 @@ Py::Object View3DInventorPy::getCameraType(const Py::Tuple& args)
 Py::Object View3DInventorPy::setCameraType(const Py::Tuple& args)
 {
     int cameratype=-1;
-    if (!PyArg_ParseTuple(args.ptr(), "i", &cameratype)) {    // convert args: Python->C 
+    if (!PyArg_ParseTuple(args.ptr(), "i", &cameratype)) {    // convert args: Python->C
         char* modename;
         PyErr_Clear();
         if (!PyArg_ParseTuple(args.ptr(), "s", &modename))
@@ -1259,7 +1259,7 @@ Py::Object View3DInventorPy::dump(const Py::Tuple& args)
 Py::Object View3DInventorPy::dumpNode(const Py::Tuple& args)
 {
     PyObject* object;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &object))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args.ptr(), "O", &object))     // convert args: Python->C
         throw Py::Exception();
 
     void* ptr = 0;
@@ -1387,7 +1387,7 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
     try {
         //Note: For gcc (4.2) we need the 'const' keyword to avoid the compiler error:
         //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Int' requested
-        //We should report this problem to the PyCXX project as in the documentation an 
+        //We should report this problem to the PyCXX project as in the documentation an
         //example without the 'const' keyword is used.
         //Or we can also write Py::Int x(tuple[0]);
         const Py::Tuple tuple(object);
@@ -1494,7 +1494,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
     try {
         //Note: For gcc (4.2) we need the 'const' keyword to avoid the compiler error:
         //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Int' requested
-        //We should report this problem to the PyCXX project as in the documentation an 
+        //We should report this problem to the PyCXX project as in the documentation an
         //example without the 'const' keyword is used.
         //Or we can also write Py::Int x(tuple[0]);
         const Py::Tuple tuple(object);
@@ -2287,7 +2287,7 @@ Py::Object View3DInventorPy::addEventCallbackPivy(const Py::Tuple& args)
             throw Py::TypeError("object is not callable");
         }
 
-        SoEventCallbackCB* callback = (ex == 1 ? 
+        SoEventCallbackCB* callback = (ex == 1 ?
             View3DInventorPy::eventCallbackPivyEx :
             View3DInventorPy::eventCallbackPivy);
         _view->getViewer()->addEventCallback(*eventId, callback, method);
@@ -2329,7 +2329,7 @@ Py::Object View3DInventorPy::removeEventCallbackPivy(const Py::Tuple& args)
             throw Py::TypeError("object is not callable");
         }
 
-        SoEventCallbackCB* callback = (ex == 1 ? 
+        SoEventCallbackCB* callback = (ex == 1 ?
             View3DInventorPy::eventCallbackPivyEx :
             View3DInventorPy::eventCallbackPivy);
         _view->getViewer()->removeEventCallback(*eventId, callback, method);
@@ -2515,7 +2515,7 @@ Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
     PyObject *resolve = Py_True;
     if (!PyArg_ParseTuple(args.ptr(), "s|O", &name,&resolve))
                 throw Py::Exception();
-    
+
     App::DocumentObject *parent = 0;
     std::string subname;
     App::DocumentObject* obj = _view->getActiveObject<App::DocumentObject*>(name,&parent,&subname);
@@ -2526,8 +2526,8 @@ Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
         return Py::asObject(obj->getPyObject());
 
     return Py::TupleN(
-            Py::asObject(obj->getPyObject()), 
-            Py::asObject(parent->getPyObject()), 
+            Py::asObject(obj->getPyObject()),
+            Py::asObject(parent->getPyObject()),
             Py::String(subname.c_str()));
 }
 

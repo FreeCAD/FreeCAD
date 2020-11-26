@@ -1086,7 +1086,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 			glVertex3f(0.0f, 0.0f, 0.0f);
 			glEnd();
 		}
-		
+
 		QColor& c = m_ButtonColor;
 		glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF());
 		glBindTexture(GL_TEXTURE_2D, m_Textures[TEX_VIEW_MENU_ICON]);

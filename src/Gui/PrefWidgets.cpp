@@ -38,7 +38,7 @@
 using Base::Console;
 using namespace Gui;
 
-/** Constructs a preference widget. 
+/** Constructs a preference widget.
  */
 PrefWidget::PrefWidget()
  : WindowParameter("")
@@ -94,9 +94,9 @@ QByteArray PrefWidget::paramGrpPath() const
   return m_sPrefGrp;
 }
 
-/** 
- * This method is called if one or more values in the parameter settings are changed 
- * where getParamGrp() points to. 
+/**
+ * This method is called if one or more values in the parameter settings are changed
+ * where getParamGrp() points to.
  * Note: This method is called for each parameter inside the parameter group. So
  * you have to filter out the appropriate parameter with the name \a sReason.
  * \a rCaller calls this method.
@@ -711,7 +711,7 @@ void PrefFontBox::restorePreferences()
 
   QFont currFont = currentFont();                         //QFont from selector widget
   QString currName = currFont.family();
-  
+
   std::string prefName = getWindowParameter()->GetASCII(entryName(), currName.toUtf8());  //font name from cfg file
 
   currFont.setFamily(QString::fromStdString(prefName));

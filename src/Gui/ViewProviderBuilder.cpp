@@ -36,7 +36,7 @@ using namespace Gui;
 
 std::map<Base::Type, Base::Type> ViewProviderBuilder::_prop_to_view;
 
-ViewProviderBuilder::ViewProviderBuilder() 
+ViewProviderBuilder::ViewProviderBuilder()
 {
 }
 
@@ -93,7 +93,7 @@ Gui::SoFCSelection* ViewProviderBuilder::createSelection()
 
 // --------------------------------------
 
-ViewProviderColorBuilder::ViewProviderColorBuilder() 
+ViewProviderColorBuilder::ViewProviderColorBuilder()
 {
 }
 

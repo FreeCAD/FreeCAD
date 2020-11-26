@@ -31,7 +31,7 @@ namespace Gui
   class QuantitySpinBox;
   class SoFCCSysDragger;
   class ViewProviderDragger;
-  
+
   class TaskCSysDragger : public Gui::TaskView::TaskDialog
   {
       Q_OBJECT

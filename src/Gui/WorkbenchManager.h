@@ -34,7 +34,7 @@ class Workbench;
  * The WorkbenchManager class manages all workbench objects.
  * @author Werner Mayer
  */
-class GuiExport WorkbenchManager  
+class GuiExport WorkbenchManager
 {
 public:
     /** Creates the only instance of the WorkbenchManager. */
@@ -51,7 +51,7 @@ public:
      */
     void removeWorkbench(const std::string& name);
     /** Returns an instance of the workbench with name \a name. If there is
-     * no such workbench 0 is returned. 
+     * no such workbench 0 is returned.
      */
     Workbench* getWorkbench (const std::string& name) const;
     /** Activates the workbench with name \a name. */
@@ -74,4 +74,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_WORKBENCHMANAGER_H 
+#endif // GUI_WORKBENCHMANAGER_H
