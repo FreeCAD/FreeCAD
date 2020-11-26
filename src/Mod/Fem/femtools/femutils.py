@@ -183,7 +183,7 @@ def get_beside_base(obj):
                 "Can't start Solver or Mesh creation besides FC file.",
                 error_message
             )
-        
+
         # from .errors import MustSaveError
         # raise MustSaveError()
         return new_path
