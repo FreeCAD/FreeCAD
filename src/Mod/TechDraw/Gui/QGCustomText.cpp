@@ -60,6 +60,7 @@ QGCustomText::QGCustomText(QGraphicsItem* parent) :
 
     m_colCurrent = getNormalColor();
     m_colNormal  = m_colCurrent;
+    tightBounding = false;
 }
 
 void QGCustomText::centerAt(QPointF centerPos)
@@ -173,7 +174,12 @@ void QGCustomText::setColor(QColor c)
     m_colNormal = c;
     m_colCurrent = c;
     QGraphicsTextItem::setDefaultTextColor(c);
- }
+}
+
+void QGCustomText::setTightBounding(bool tight)
+{
+    tightBounding = tight;
+}
 
 void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
@@ -183,6 +189,32 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
 //    painter->drawRect(boundingRect());          //good for debugging
 
     QGraphicsTextItem::paint (painter, &myOption, widget);
+}
+
+QRectF QGCustomText::boundingRect() const
+{
+    if (toPlainText().isEmpty()) {
+        return QRectF();
+    }
+
+    if (tightBounding) {
+        return tightBoundingRect();
+    }
+
+    return QGraphicsTextItem::boundingRect();
+}
+
+QRectF QGCustomText::tightBoundingRect() const
+{
+    QFontMetrics qfm(font());
+    QRectF result = QGraphicsTextItem::boundingRect();
+    QRectF tight = qfm.tightBoundingRect(toPlainText());
+    qreal x_adj = (result.width() - tight.width())/4.0;
+    qreal y_adj = (result.height() - tight.height())/4.0;
+
+    result.adjust(x_adj, 2*y_adj, -x_adj, -y_adj);
+
+    return result;
 }
 
 QColor QGCustomText::getNormalColor()    //preference!
