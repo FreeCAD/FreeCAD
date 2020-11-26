@@ -47,6 +47,8 @@ public:
     enum {Type = QGraphicsItem::UserType + 130};
     int type() const { return Type;}
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual QRectF boundingRect() const override;
+    QRectF tightBoundingRect() const;
 
     void setHighlighted(bool state);
     virtual void setPrettyNormal();
@@ -68,6 +70,8 @@ public:
     virtual QColor getSelectColor(void);
     virtual void setColor(QColor c);
 
+    virtual void setTightBounding(bool tight);
+
     void makeMark(double x, double y);
     void makeMark(Base::Vector3d v);
 
@@ -79,6 +83,7 @@ protected:
     Base::Reference<ParameterGrp> getParmGroup(void);
 
     bool isHighlighted;
+    bool tightBounding;
     QColor m_colCurrent;
     QColor m_colNormal;
 

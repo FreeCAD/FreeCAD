@@ -107,12 +107,16 @@ QGIDatumLabel::QGIDatumLabel()
     setFiltersChildEvents(true);
 
     m_dimText = new QGCustomText();
+    m_dimText->setTightBounding(true);
     m_dimText->setParentItem(this);
     m_tolTextOver = new QGCustomText();
+    m_tolTextOver->setTightBounding(true);
     m_tolTextOver->setParentItem(this);
     m_tolTextUnder = new QGCustomText();
+    m_tolTextUnder->setTightBounding(true);
     m_tolTextUnder->setParentItem(this);
     m_unitText = new QGCustomText();
+    m_unitText->setTightBounding(true);
     m_unitText->setParentItem(this);
 
     m_ctrl = false;
@@ -266,8 +270,8 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
     }
     double tolRight = unitRight + width;
 
-    m_tolTextOver->justifyRightAt(tolRight, middle, false);
-    m_tolTextUnder->justifyRightAt(tolRight, middle + underBox.height(), false);
+    m_tolTextOver->justifyRightAt(tolRight, middle - overBox.height() + underBox.height()/4, false);
+    m_tolTextUnder->justifyRightAt(tolRight, middle + underBox.height()/4, false);
 
 }
 
