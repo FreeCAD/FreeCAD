@@ -55,6 +55,7 @@
 namespace Py
 {
     typedef Py_ssize_t sequence_index_type;    // type of an index into a sequence
+    Py_ssize_t numeric_limits_max();
 
     // Forward declarations
     class Object;
@@ -1298,8 +1299,16 @@ namespace Py
 
         virtual size_type max_size() const
         {
-            return std::string::npos; // ?
-            //return std::numeric_limits<size_type>::max();
+            // Hint: Upstream version returns std::string::npos that is the maximum
+            // value of a size_t. But when assigned to a ssize_t it will become -1.
+            // Now Python provides 'sys.maxsize' that is the maximum value of a ssize_t
+            // and thus this method should return the same value.
+            // This can be done with 'std::numeric_limits<size_type>::max()' but due
+            // to a name collision with a macro on Windows we cannot directly call it
+            // here.
+            // So, a workaround is to implement the helper function 'numeric_limits_max'.
+            //return std::string::npos; // ?
+            return numeric_limits_max();
         }
 
         virtual size_type capacity() const
