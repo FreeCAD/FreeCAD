@@ -264,7 +264,7 @@ private:
  * in the above dialog.
  * This mechanism is useful to implement special navigation styles which are
  * only needed for certain purposes. Thus, it should not be possible to be
- * choosable by the user 
+ * choosable by the user
  * @author Werner Mayer
  */
 class GuiExport UserNavigationStyle : public NavigationStyle {
@@ -410,4 +410,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_NAVIGATIONSTYLE_H 
+#endif // GUI_NAVIGATIONSTYLE_H

@@ -54,8 +54,8 @@ public:
 
     virtual bool extensionOnDelete(const std::vector<std::string> &){ return true;}
     virtual void extensionBeforeDelete(){}
- 
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void) const { 
+
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void) const {
         return std::vector<App::DocumentObject*>(); }
 
     virtual bool extensionCanDragObjects() const { return false; }
@@ -65,14 +65,14 @@ public:
     virtual bool extensionCanDropObject(App::DocumentObject*) const { return true; }
     virtual bool extensionCanDragAndDropObject(App::DocumentObject*) const { return true; }
     virtual void extensionDropObject(App::DocumentObject*) { }
-    virtual bool extensionCanDropObjectEx(App::DocumentObject *, App::DocumentObject *, 
+    virtual bool extensionCanDropObjectEx(App::DocumentObject *, App::DocumentObject *,
             const char *, const std::vector<std::string> &) const
         { return false; }
-    virtual std::string extensionDropObjectEx(App::DocumentObject *obj, App::DocumentObject *, 
-            const char *, const std::vector<std::string> &) 
+    virtual std::string extensionDropObjectEx(App::DocumentObject *obj, App::DocumentObject *,
+            const char *, const std::vector<std::string> &)
         { extensionDropObject(obj); return std::string(); }
 
-    virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) 
+    virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/)
         { return -1; }
 
     /// Hides the view provider
@@ -108,7 +108,7 @@ public:
 
     virtual bool extensionGetElementPicked(const SoPickedPoint *, std::string &) const {return false;}
     virtual bool extensionGetDetailPath(const char *, SoFullPath *, SoDetail *&) const {return false;}
-    
+
 private:
     bool m_ignoreOverlayIcon = false;
   //Gui::ViewProviderDocumentObject* m_viewBase = nullptr;

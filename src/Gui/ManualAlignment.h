@@ -67,7 +67,7 @@ public:
     void addView(App::DocumentObject*);
     std::vector<App::DocumentObject*> getViews() const;
     /**
-     * Checks for the view provider of one of the added views. 
+     * Checks for the view provider of one of the added views.
      */
     bool hasView(Gui::ViewProviderDocumentObject*) const;
     /**

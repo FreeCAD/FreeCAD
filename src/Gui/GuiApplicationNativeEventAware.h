@@ -43,7 +43,7 @@ namespace Gui
         ~GUIApplicationNativeEventAware();
         void initSpaceball(QMainWindow *window);
         bool isSpaceballPresent() const {return spaceballPresent;}
-        void setSpaceballPresent(bool present) {spaceballPresent = present;} 
+        void setSpaceballPresent(bool present) {spaceballPresent = present;}
         bool processSpaceballEvent(QObject *object, QEvent *event);
         void postMotionEvent(std::vector<int> motionDataArray);
         void postButtonEvent(int buttonNumber, int buttonPress);

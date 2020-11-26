@@ -42,8 +42,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgMacroRecordImp */
 
 /**
- *  Constructs a DlgMacroRecordImp which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgMacroRecordImp which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
@@ -70,7 +70,7 @@ DlgMacroRecordImp::DlgMacroRecordImp( QWidget* parent, Qt::WindowFlags fl )
     this->macroManager->isOpen() ? ui->buttonStart->setEnabled(false) : ui->buttonStop->setEnabled(false);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgMacroRecordImp::~DlgMacroRecordImp()
@@ -132,7 +132,7 @@ void DlgMacroRecordImp::on_buttonCancel_clicked()
     if (this->macroManager->isOpen()) {
         this->macroManager->cancel();
     }
-  
+
     QDialog::reject();
 }
 

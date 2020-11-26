@@ -200,7 +200,7 @@ View3DInventor::~View3DInventor()
 {
     if(_pcDocument) {
         SoCamera * Cam = _viewer->getSoRenderManager()->getCamera();
-        if (Cam) 
+        if (Cam)
             _pcDocument->saveCameraSettings(SoFCDB::writeNodesToString(Cam).c_str());
     }
     hGrp->Detach(this);

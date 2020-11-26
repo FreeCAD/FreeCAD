@@ -219,7 +219,7 @@ void SoFCColorBar::eventCallback(void * /*userdata*/, SoEventCallback * node)
     }
 }
 
-void SoFCColorBar::handleEvent (SoHandleEventAction *action) 
+void SoFCColorBar::handleEvent (SoHandleEventAction *action)
 {
     const SoEvent * event = action->getEvent();
 
@@ -229,7 +229,7 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
 
         // calculate the mouse position relative to the colorbar
         //
-        const SbViewportRegion&  vp = action->getViewportRegion(); 
+        const SbViewportRegion&  vp = action->getViewportRegion();
         float fRatio = vp.getViewportAspectRatio();
         SbVec2f pos = event->getNormalizedPosition(vp);
         float pX,pY; pos.getValue(pX,pY);

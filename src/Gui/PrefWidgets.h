@@ -42,14 +42,14 @@ class WidgetFactoryInst;
 
 /** The preference widget class.
  * If you want to extend a QWidget class to save/restore its data
- * you just have to derive from this class and implement the methods 
+ * you just have to derive from this class and implement the methods
  * restorePreferences() and savePreferences().
  *
  * To restore and save the settings of any widgets in own dialogs you have
  * call onRestore() e.g. in the dialog's constructor and call onSave() e.g.
- * in accept() for each widget you want to enable this mechanism. 
- * 
- * For more information of how to use these widgets in normal container widgets 
+ * in accept() for each widget you want to enable this mechanism.
+ *
+ * For more information of how to use these widgets in normal container widgets
  * which are again in a dialog refer to the description of Gui::Dialog::DlgPreferencesImp.
  *
  * \author Werner Mayer
@@ -324,7 +324,7 @@ public:
     void setToLastUsedValue();
     /// get the value of the history size property
     int historySize() const;
-    /// set the value of the history size property 
+    /// set the value of the history size property
     void setHistorySize(int);
     /// Convenience method as offered by PrefWidget. Does the same as pushToHistory().
     void onSave();

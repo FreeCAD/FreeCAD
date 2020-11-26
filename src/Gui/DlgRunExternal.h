@@ -37,7 +37,7 @@ class Ui_DlgRunExternal;
  * \author Jürgen Riegel
  */
 class GuiExport DlgRunExternal : public QDialog
-{ 
+{
     Q_OBJECT
 
 public:

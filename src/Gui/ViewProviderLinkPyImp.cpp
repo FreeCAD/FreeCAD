@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -79,5 +79,5 @@ PyObject *ViewProviderLinkPy::getCustomAttributes(const char* /*attr*/) const
 
 int ViewProviderLinkPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

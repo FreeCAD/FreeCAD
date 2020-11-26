@@ -40,7 +40,7 @@
 // Include file the binaray of SoNavigationDraggerLayout.iv, the layout of the dragger.
 #include "SoNavigationDraggerLayout.h"
 
-// This file contains RotTransDragger::geomBuffer, which 
+// This file contains RotTransDragger::geomBuffer, which
 // describes the default geometry resources for this class.
 //#include "RotTransDraggerGeom.h"
 
@@ -52,14 +52,14 @@ SO_KIT_SOURCE(RotTransDragger)
 void
 RotTransDragger::initClass()
 {
-   SO_KIT_INIT_CLASS(RotTransDragger, SoDragger, "Dragger");    
+   SO_KIT_INIT_CLASS(RotTransDragger, SoDragger, "Dragger");
 }
 
 RotTransDragger::RotTransDragger()
 {
    SO_KIT_CONSTRUCTOR(RotTransDragger);
 
-   // Don't create "surroundScale" by default. It's only put 
+   // Don't create "surroundScale" by default. It's only put
    // to use if this dragger is used within a manipulator.
    SO_KIT_ADD_CATALOG_ENTRY(surroundScale, SoSurroundScale, true,
                             topSeparator, geomSeparator, true);
@@ -92,7 +92,7 @@ RotTransDragger::RotTransDragger()
    // scene graphs in the file:
    // $(SO_DRAGGER_DIR)/rotTransDragger.iv"
    if (SO_KIT_IS_FIRST_INSTANCE())
-     readDefaultParts("SoNavigationDraggerLayout.iv", 
+     readDefaultParts("SoNavigationDraggerLayout.iv",
 					  NavigationDraggerLayout,
                       strlen(NavigationDraggerLayout));
 
@@ -109,37 +109,37 @@ RotTransDragger::RotTransDragger()
    myAntiSquish->sizing = SoAntiSquish::BIGGEST_DIMENSION;
 
    // Create the simple draggers that comprise this dragger.
-   // This dragger has four simple pieces:  
+   // This dragger has four simple pieces:
    //    1 TranslateRadialDragger
    //    3 RotateCylindricalDraggers
    // In the constructor, we just call SO_GET_ANY_PART to
    // build each dragger.
    // Within the setUpConnections() method, we will
-   // take care of giving these draggers new geometry and 
+   // take care of giving these draggers new geometry and
    // establishing their callbacks.
 
-   // Create the translator dragger.    
-   SoDragger *tDragger = SO_GET_ANY_PART(this, "translator", 
+   // Create the translator dragger.
+   SoDragger *tDragger = SO_GET_ANY_PART(this, "translator",
                          SoTranslate1Dragger);
    (void)tDragger;
 
-   // Create the XRotator dragger.    
-   SoDragger *XDragger = SO_GET_ANY_PART(this, "XRotator", 
+   // Create the XRotator dragger.
+   SoDragger *XDragger = SO_GET_ANY_PART(this, "XRotator",
                          SoRotateCylindricalDragger);
    (void)XDragger;
 
-   // Create the YRotator dragger.    
-   SoDragger *YDragger = SO_GET_ANY_PART(this, "YRotator", 
+   // Create the YRotator dragger.
+   SoDragger *YDragger = SO_GET_ANY_PART(this, "YRotator",
                          SoRotateCylindricalDragger);
    (void)YDragger;
 
-   // Create the ZRotator dragger.    
-   SoDragger *ZDragger = SO_GET_ANY_PART(this, "ZRotator", 
+   // Create the ZRotator dragger.
+   SoDragger *ZDragger = SO_GET_ANY_PART(this, "ZRotator",
                          SoRotateCylindricalDragger);
    (void)ZDragger;
 
    // Set rotations in "XRotatorRot" and "ZRotatorRot" parts.
-   // These parts will orient the draggers from their default 
+   // These parts will orient the draggers from their default
    // (rotating about Y) to the desired configurations.
    // By calling 'setAnyPartAsDefault' instead of 'setAnyPart'
    // we ensure that they will not be written out, unless
@@ -154,7 +154,7 @@ RotTransDragger::RotTransDragger()
      SbRotation(SbVec3f(0,1,0), SbVec3f(0,0,1)));
    setAnyPartAsDefault("ZRotatorRot", ZRot);
 
-   // Updates the fields when motionMatrix changes 
+   // Updates the fields when motionMatrix changes
    addValueChangedCallback(&RotTransDragger::valueChangedCB);
 
    // Updates motionMatrix when either field changes.
@@ -187,18 +187,18 @@ RotTransDragger::setUpConnections(SbBool onOff, SbBool doItAlways)
      SoDragger::setUpConnections(onOff, doItAlways);
 
      // For each of the simple draggers that compries this:
-     // [a]Call setPart after looking up our replacement parts 
+     // [a]Call setPart after looking up our replacement parts
      //    in the global dictionary.
      // [b]Add the invalidateSurroundScaleCB as a start and end
-     //    callback. When using a surroundScale node, these 
-     //    trigger it to recalculate a bounding box at the 
+     //    callback. When using a surroundScale node, these
+     //    trigger it to recalculate a bounding box at the
      //    beginning and end of dragging.
-     // [c]Register the dragger as a 'childDragger' of this 
-     //    one. This has the following effects: 
-     //    [1] This dragger's callbacks will be invoked 
-     //        following the child manip's callbacks.  
-     //    [2] When the child is dragged, the child's motion 
-     //        will be transferred into motion of the entire 
+     // [c]Register the dragger as a 'childDragger' of this
+     //    one. This has the following effects:
+     //    [1] This dragger's callbacks will be invoked
+     //        following the child manip's callbacks.
+     //    [2] When the child is dragged, the child's motion
+     //        will be transferred into motion of the entire
      //        dragger.
       SoDragger *tD =
                (SoDragger *) getAnyPart("translator", false);
@@ -369,9 +369,9 @@ RotTransDragger::fieldSensorCB(void *inDragger, SoSensor *)
 }
 
 // When any child dragger starts or ends a drag, tell the
-// "surroundScale" part (if it exists) to invalidate its 
+// "surroundScale" part (if it exists) to invalidate its
 // current bounding box value.
-void 
+void
 RotTransDragger::invalidateSurroundScaleCB(void *parent, SoDragger *)
 {
    RotTransDragger *myParentDragger = (RotTransDragger *) parent;
@@ -386,7 +386,7 @@ RotTransDragger::invalidateSurroundScaleCB(void *parent, SoDragger *)
 void
 RotTransDragger::setDefaultOnNonWritingFields()
 {
-   // The nodes pointed to by these part-fields may 
+   // The nodes pointed to by these part-fields may
    // change after construction, but we
    // don't want to write them out.
    surroundScale.setDefault(true);

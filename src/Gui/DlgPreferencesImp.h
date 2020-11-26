@@ -36,29 +36,29 @@ class Ui_DlgPreferences;
 
 /**
  * This class implements a dialog containing several preference pages.
- * 
+ *
  * To append your own page you just have to take note of these points:
  *
  * \li Each preference page can be created by the Qt Designer selecting the "Widget" item
  * in the project dialog.
  *
- * \li To save or load the widgets' settings automatically (e.g. combo boxes, line edits, 
+ * \li To save or load the widgets' settings automatically (e.g. combo boxes, line edits,
  * check boxes, ...) you can make use of the classes inherited from @ref PrefWidget such as:
  * PrefSpinBox, PrefLineEdit, PrefComboBox, PrefListBox, PrefCheckBox, PrefRadioButton and
  * PrefSlider. If you have compiled and installed the library under src/Tools/plugins/widgets
- * to QTDIR/plugins/designer you should see the new category "Preferences". 
- * Moreover you have to make sure to have specified the "prefEntry" and "prefPath" properties for each 
+ * to QTDIR/plugins/designer you should see the new category "Preferences".
+ * Moreover you have to make sure to have specified the "prefEntry" and "prefPath" properties for each
  * preference widget you have used inside your form in Qt Designer.
  *
- * \li For each widget inside your page - you want to save or load - you have to call 
- * \<objectname\>->onSave() or \<objectname\>->onRestore(). The best way to this is either to 
+ * \li For each widget inside your page - you want to save or load - you have to call
+ * \<objectname\>->onSave() or \<objectname\>->onRestore(). The best way to this is either to
  * define the protected slots saveSettings() and loadSettings() in your form and overwrite
- * them in a subclass or define these slots in this subclass directly. 
+ * them in a subclass or define these slots in this subclass directly.
  *
  * See the example below for more details:
  *
  * \code
- *  // This class was created by Qt's uic tool 
+ *  // This class was created by Qt's uic tool
  *  class MyPrefPage : public QWidget
  *  {
  *  public:

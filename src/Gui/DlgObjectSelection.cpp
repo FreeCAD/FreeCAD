@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2018 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -196,7 +196,7 @@ App::DocumentObject *DlgObjectSelection::objFromItem(QTreeWidgetItem *item) {
 }
 
 void DlgObjectSelection::onItemExpanded(QTreeWidgetItem * item) {
-    if(item->childCount()) 
+    if(item->childCount())
         return;
     auto obj = objFromItem(item);
     if(!obj)

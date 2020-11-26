@@ -133,7 +133,7 @@ void DlgMacroExecuteImp::fillUpList(void)
     }
 }
 
-/** 
+/**
  * Selects a macro file in the list view.
  */
 void DlgMacroExecuteImp::on_userMacroListBox_currentItemChanged(QTreeWidgetItem* item)

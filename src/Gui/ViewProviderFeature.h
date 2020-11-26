@@ -24,7 +24,7 @@
 #ifndef GUI_VIEWPROVIDER_FEATURE_H
 #define GUI_VIEWPROVIDER_FEATURE_H
 
-#include <Inventor/lists/SoPickedPointList.h> 
+#include <Inventor/lists/SoPickedPointList.h>
 #include <App/PropertyStandard.h>
 #include "ViewProviderDocumentObject.h"
 

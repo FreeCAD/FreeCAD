@@ -84,7 +84,7 @@ void Gui::ExpressionBinding::setExpression(boost::shared_ptr<Expression> expr)
 
     if(m_autoApply)
         apply();
-    
+
     if(transaction)
         App::GetApplication().closeActiveTransaction();
 
@@ -97,7 +97,7 @@ void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
     Q_ASSERT(prop != 0);
 
     path = prop->canonicalPath(_path);
-    
+
     //connect to be informed about changes
     DocumentObject * docObj = path.getDocumentObject();
     connection = docObj->ExpressionEngine.expressionChanged.connect(boost::bind(&ExpressionBinding::expressionChange, this, bp::_1));
@@ -170,7 +170,7 @@ QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
 
 bool ExpressionBinding::apply(const std::string & propName)
 {
-    Q_UNUSED(propName); 
+    Q_UNUSED(propName);
     if (hasExpression()) {
         DocumentObject * docObj = path.getDocumentObject();
 

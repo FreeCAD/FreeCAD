@@ -165,7 +165,7 @@ NavigationStyleEvent::~NavigationStyleEvent()
 }
 
 const Base::Type& NavigationStyleEvent::style() const
-{ 
+{
     return t;
 }
 
@@ -459,7 +459,7 @@ void NavigationStyle::setCameraOrientation(const SbRotation& rot, SbBool moveToC
 
 void NavigationStyleP::viewAnimationCB(void * data, SoSensor * sensor)
 {
-    Q_UNUSED(sensor); 
+    Q_UNUSED(sensor);
     NavigationStyle* that = reinterpret_cast<NavigationStyle*>(data);
     if (PRIVATE(that)->animationsteps > 0) {
         // here the camera rotates from the current rotation to a given
@@ -494,7 +494,7 @@ void NavigationStyleP::viewAnimationCB(void * data, SoSensor * sensor)
 void NavigationStyle::boxZoom(const SbBox2s& box)
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (!cam) return; // no camera 
+    if (!cam) return; // no camera
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
     SbViewVolume vv = cam->getViewVolume(vp.getViewportAspectRatio());
 
@@ -504,7 +504,7 @@ void NavigationStyle::boxZoom(const SbBox2s& box)
 
     // The bbox must not be empty i.e. width and length is zero, but it is possible that
     // either width or length is zero
-    if (sizeX == 0 && sizeY == 0) 
+    if (sizeX == 0 && sizeY == 0)
         return;
 
     // Get the new center in normalized pixel coordinates
@@ -543,8 +543,8 @@ void NavigationStyle::viewAll()
     // check whether the box is very wide or tall, if not do nothing
     float box_width, box_height, box_depth;
     box.getSize( box_width, box_height, box_depth );
-    if (box_width < 5.0f*box_height && box_width < 5.0f*box_depth && 
-        box_height < 5.0f*box_width && box_height < 5.0f*box_depth && 
+    if (box_width < 5.0f*box_height && box_width < 5.0f*box_depth &&
+        box_height < 5.0f*box_width && box_height < 5.0f*box_depth &&
         box_depth < 5.0f*box_width && box_depth < 5.0f*box_height )
         return;
 #endif
@@ -1039,7 +1039,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
                 float ratio = vp.getViewportAspectRatio();
 
                 SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-                if (!cam) return; // no camera 
+                if (!cam) return; // no camera
                 SbViewVolume vv = cam->getViewVolume(ratio);
 
                 SbLine line;
@@ -1173,7 +1173,7 @@ void NavigationStyle::stopAnimating(void)
     if (this->currentmode != NavigationStyle::SPINNING) {
         return;
     }
-    this->setViewingMode(this->isViewing() ? 
+    this->setViewingMode(this->isViewing() ?
         NavigationStyle::IDLE : NavigationStyle::INTERACT);
 }
 
@@ -1262,7 +1262,7 @@ void NavigationStyle::startSelection(NavigationStyle::SelectionMode mode)
         return;
     if (isSelecting())
         stopSelection();
-  
+
     switch (mode)
     {
     case Lasso:
@@ -1418,14 +1418,14 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
         else if (hd==AbstractMouseSelection::Finish) {
             pcPolygon = mouseSelection->getPositions();
             selectedRole = mouseSelection->selectedRole();
-            delete mouseSelection; 
+            delete mouseSelection;
             mouseSelection = 0;
             syncWithEvent(ev);
             return NavigationStyle::processSoEvent(ev);
         }
         else if (hd==AbstractMouseSelection::Cancel) {
             pcPolygon.clear();
-            delete mouseSelection; 
+            delete mouseSelection;
             mouseSelection = 0;
             syncWithEvent(ev);
             return NavigationStyle::processSoEvent(ev);
@@ -1585,7 +1585,7 @@ SbBool NavigationStyle::isPopupMenuEnabled(void) const
 
 void NavigationStyle::openPopupMenu(const SbVec2s& position)
 {
-    Q_UNUSED(position); 
+    Q_UNUSED(position);
     // ask workbenches and view provider, ...
     MenuItem* view = new MenuItem;
     Gui::Application::Instance->setupContextMenu("View", view);

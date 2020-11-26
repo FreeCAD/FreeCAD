@@ -91,7 +91,7 @@ NetworkRetriever::NetworkRetriever( QObject * parent )
     wget = new QProcess(this);
 
     // if wgets exits emit signal
-    connect(wget, SIGNAL(finished(int, QProcess::ExitStatus)), 
+    connect(wget, SIGNAL(finished(int, QProcess::ExitStatus)),
             this, SLOT(wgetFinished(int, QProcess::ExitStatus)));
 
     // if application quits kill wget immediately to avoid dangling processes
@@ -107,11 +107,11 @@ NetworkRetriever::~NetworkRetriever()
 /**
  * This method is connected to QTimer::singleShot() and executed after 5 seconds. If wget then is still running
  * we can assume that everything is fine.
- * \note This test is necessary since \a wget writes all its output on stderr and we cannot determine surely 
+ * \note This test is necessary since \a wget writes all its output on stderr and we cannot determine surely
  * if an error occurred or not.
  *
- * There is still a problem that is not solved so far. If wget requires the proxy settings and if these 
- * are not set, wget could take more than 5 seconds without downloading anything. 
+ * There is still a problem that is not solved so far. If wget requires the proxy settings and if these
+ * are not set, wget could take more than 5 seconds without downloading anything.
  */
 void NetworkRetriever::testFailure()
 {
@@ -164,7 +164,7 @@ void NetworkRetriever::setProxy( const QString& proxy, const QString& user, cons
 
 /**
  * If \a recursive is true all referenced files are downloaded recursively.
- * As default recursion is disabled. \a level specifies the maximum recursion 
+ * As default recursion is disabled. \a level specifies the maximum recursion
  * depth. If \a level is 0 the recursion depth is infinite. As default the level
  * property is 1.
  * \note: Use this with care!
@@ -185,7 +185,7 @@ void NetworkRetriever::setFollowRelative( bool folRel )
 }
 
 /**
- * If \a convert is true all non-relative links are converted to 
+ * If \a convert is true all non-relative links are converted to
  * relative links. As default the convert property is true.
  */
 void NetworkRetriever::setEnableConvert( bool convert )
@@ -357,8 +357,8 @@ void NetworkRetriever::abort()
 
 void NetworkRetriever::wgetFinished(int exitCode, QProcess::ExitStatus status)
 {
-    Q_UNUSED(exitCode); 
-    Q_UNUSED(status); 
+    Q_UNUSED(exitCode);
+    Q_UNUSED(status);
     wget->setReadChannel(QProcess::StandardError);
     if (wget->canReadLine()) {
         QByteArray data = wget->readAll();
@@ -455,7 +455,7 @@ void StdCmdDownloadOnlineHelp::languageChange()
 
 void StdCmdDownloadOnlineHelp::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     if (!wget->isDownloading()) {
         ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
         hGrp = hGrp->GetGroup("Preferences")->GetGroup("OnlineHelp");
@@ -496,16 +496,16 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
             loop--;
             QFileInfo fi( path);
             if (!fi.exists()) {
-                if (QMessageBox::critical(getMainWindow(), tr("Non-existing directory"), 
+                if (QMessageBox::critical(getMainWindow(), tr("Non-existing directory"),
                      tr("The directory '%1' does not exist.\n\n"
-                        "Do you want to specify an existing directory?").arg(fi.filePath()), 
-                     QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) != 
+                        "Do you want to specify an existing directory?").arg(fi.filePath()),
+                     QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) !=
                      QMessageBox::Yes)
                 {
                     // exit the command
                     return;
                 }
-                else 
+                else
                 {
                     path = FileDialog::getExistingDirectory();
                     if ( path.isEmpty() )
@@ -514,10 +514,10 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
             }
 
             if (!fi.permission( QFile::WriteUser)) {
-                if (QMessageBox::critical(getMainWindow(), tr("Missing permission"), 
+                if (QMessageBox::critical(getMainWindow(), tr("Missing permission"),
                      tr("You don't have write permission to '%1'\n\n"
-                        "Do you want to specify another directory?").arg(fi.filePath()), 
-                     QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) != 
+                        "Do you want to specify another directory?").arg(fi.filePath()),
+                     QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) !=
                      QMessageBox::Yes)
                 {
                     // exit the command

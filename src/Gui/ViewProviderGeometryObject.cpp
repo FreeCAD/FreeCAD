@@ -39,9 +39,9 @@
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoDirectionalLight.h>
 # include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/sensors/SoNodeSensor.h> 
+# include <Inventor/sensors/SoNodeSensor.h>
 # include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoRayPickAction.h> 
+# include <Inventor/actions/SoRayPickAction.h>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -90,8 +90,8 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     }
     else {
         unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor",3435973887UL); // light gray (204,204,204)
-        r = ((shcol >> 24) & 0xff) / 255.0; 
-        g = ((shcol >> 16) & 0xff) / 255.0; 
+        r = ((shcol >> 24) & 0xff) / 255.0;
+        g = ((shcol >> 16) & 0xff) / 255.0;
         b = ((shcol >> 8) & 0xff) / 255.0;
     }
 

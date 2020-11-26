@@ -34,7 +34,7 @@
 namespace Gui {
 
 /**
- * The SoFCOffscreenRenderer class is used for rendering scenes in offscreen buffers. 
+ * The SoFCOffscreenRenderer class is used for rendering scenes in offscreen buffers.
  * @author Werner Mayer
  */
 class GuiExport SoFCOffscreenRenderer : public SoOffscreenRenderer
@@ -54,32 +54,32 @@ private:
 
 protected:
   /**
-   * Constructor. Argument is the \a viewportregion we should use when rendering. An internal 
-   * SoGLRenderAction will be constructed. 
+   * Constructor. Argument is the \a viewportregion we should use when rendering. An internal
+   * SoGLRenderAction will be constructed.
    */
   SoFCOffscreenRenderer (const SbViewportRegion &viewportregion);
   /**
-   * Constructor. Argument is the \a action we should apply to the scene graph when rendering the 
-   * scene. Information about the viewport is extracted from the \a action. 
+   * Constructor. Argument is the \a action we should apply to the scene graph when rendering the
+   * scene. Information about the viewport is extracted from the \a action.
    */
   SoFCOffscreenRenderer (SoGLRenderAction *action);
   /**
-   * Destructor. 
+   * Destructor.
    */
   ~SoFCOffscreenRenderer();
 
 public:
-  /** 
+  /**
    * Writes the rendered image buffer directly into a QImage object
    * instead of an image file.
    */
   void writeToImage (QImage&) const;
-  /** 
+  /**
    * Saves the buffer to \a filename, in the filetype specified by \a filetypeextensions.
    *
-   * Note that you must still specify the full filename for the first argument, i.e. the second argument will 
+   * Note that you must still specify the full filename for the first argument, i.e. the second argument will
    * not automatically be attached to the filename -- it is only used to decide the filetype.
-   * 
+   *
    * If \a comment is set to '$MIBA' information regarding the MIBA standard is
    * embedded to the picture, otherwise the \a comment is embedded as is.
    * The appropriate file format must support embedding meta information which
@@ -90,7 +90,7 @@ public:
    */
   void writeToImageFile(const char* filename, const char* comment, const SbMatrix& mat, const QImage& img);
   /**
-   * This method returns all image file formats supported by Coin3D (see getWriteFiletypeInfo()) with all QImage file formats that are 
+   * This method returns all image file formats supported by Coin3D (see getWriteFiletypeInfo()) with all QImage file formats that are
    * not directly supported by Coin3D, if so.
    */
   QStringList getWriteImageFiletypeInfo();
@@ -160,4 +160,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_SOFCOFFSCREENRENDERER_H 
+#endif // GUI_SOFCOFFSCREENRENDERER_H

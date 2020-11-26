@@ -58,6 +58,6 @@ void TransactionViewProvider::applyNew(App::Document& Doc, App::TransactionalObj
 void TransactionViewProvider::applyDel(App::Document& Doc, App::TransactionalObject* pcObj)
 {
     // nothing to do here
-    Q_UNUSED(Doc); 
-    Q_UNUSED(pcObj); 
+    Q_UNUSED(Doc);
+    Q_UNUSED(pcObj);
 }

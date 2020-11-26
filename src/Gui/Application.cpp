@@ -1089,7 +1089,7 @@ Gui::MDIView* Application::editViewOfNode(SoNode *node) const
 void Application::setEditDocument(Gui::Document *doc) {
     if(doc == d->editDocument)
         return;
-    if(!doc) 
+    if(!doc)
         d->editDocument = 0;
     for(auto &v : d->documents)
         v.second->_resetEdit();
@@ -2504,7 +2504,7 @@ App::Document *Application::reopen(App::Document *doc) {
     WaitCursor wc;
     wc.setIgnoreEvents(WaitCursor::NoEvents);
 
-    if(doc->testStatus(App::Document::PartialDoc) 
+    if(doc->testStatus(App::Document::PartialDoc)
             || doc->testStatus(App::Document::PartialRestore))
     {
         App::GetApplication().openDocument(name.c_str());

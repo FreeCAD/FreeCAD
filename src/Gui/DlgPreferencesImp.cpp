@@ -39,7 +39,7 @@
 #endif
 
 #include <Base/Exception.h>
-#include <Base/Console.h> 
+#include <Base/Console.h>
 #include <App/Application.h>
 #include "DlgPreferencesImp.h"
 #include "ui_DlgPreferences.h"
@@ -94,7 +94,7 @@ void DlgPreferencesImp::setupPages()
     for (std::list<TGroupPages>::iterator it = _pages.begin(); it != _pages.end(); ++it) {
         QTabWidget* tabWidget = new QTabWidget;
         ui->tabWidgetStack->addWidget(tabWidget);
-        
+
         QByteArray group = it->first.c_str();
         QListWidgetItem *item = new QListWidgetItem(ui->listBox);
         item->setData(Qt::UserRole, QVariant(group));

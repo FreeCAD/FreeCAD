@@ -422,7 +422,7 @@ QString Gui::QuantitySpinBox::expressionText() const
 void Gui::QuantitySpinBox::onChange()
 {
     Q_ASSERT(isBound());
-    
+
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
@@ -463,7 +463,7 @@ bool QuantitySpinBox::apply(const std::string & propName)
         if (isBound()) {
             const App::ObjectIdentifier & path = getPath();
             const Property * prop = path.getProperty();
-            
+
             /* Skip update if property is bound and we know it is read-only */
             if (prop && prop->isReadOnly())
                 return true;

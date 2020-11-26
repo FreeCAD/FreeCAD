@@ -314,7 +314,7 @@ void InputField::pushToHistory(const QString &valueq)
     for(std::vector<QString>::const_iterator it = hist.begin();it!=hist.end();++it)
         if( *it == val)
             return;
-    
+
     std::string value(val.toUtf8());
     if(_handle.isValid()){
         char hist1[21];
@@ -489,7 +489,7 @@ double InputField::singleStep(void)const
     return StepSize;
 }
 
-/// set the value of the singleStep property 
+/// set the value of the singleStep property
 void InputField::setSingleStep(double s)
 {
     StepSize = s;
@@ -501,7 +501,7 @@ double InputField::maximum(void)const
     return Maximum;
 }
 
-/// set the value of the maximum property 
+/// set the value of the maximum property
 void InputField::setMaximum(double m)
 {
     Maximum = m;
@@ -517,7 +517,7 @@ double InputField::minimum(void)const
     return Minimum;
 }
 
-/// set the value of the minimum property 
+/// set the value of the minimum property
 void InputField::setMinimum(double m)
 {
     Minimum = m;
@@ -581,7 +581,7 @@ int InputField::historySize(void)const
     return HistorySize;
 }
 
-// set the value of the minimum property 
+// set the value of the minimum property
 void InputField::setHistorySize(int i)
 {
     assert(i>=0);

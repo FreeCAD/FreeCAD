@@ -682,7 +682,7 @@ void WidgetFactoryInst::destruct ()
 
 /**
  * Creates a widget with the name \a sName which is a child of \a parent.
- * To create an instance of this widget once it must has been registered. 
+ * To create an instance of this widget once it must has been registered.
  * If there is no appropriate widget registered 0 is returned.
  */
 QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) const
@@ -724,7 +724,7 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
 
 /**
  * Creates a widget with the name \a sName which is a child of \a parent.
- * To create an instance of this widget once it must has been registered. 
+ * To create an instance of this widget once it must has been registered.
  * If there is no appropriate widget registered 0 is returned.
  */
 Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char* sName, QWidget* parent) const
@@ -762,9 +762,9 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
 }
 
 /**
- * Creates a preference widget with the name \a sName and the preference name \a sPref 
+ * Creates a preference widget with the name \a sName and the preference name \a sPref
  * which is a child of \a parent.
- * To create an instance of this widget once it must has been registered. 
+ * To create an instance of this widget once it must has been registered.
  * If there is no appropriate widget registered 0 is returned.
  * After creation of this widget its recent preferences are restored automatically.
  */
@@ -1434,7 +1434,7 @@ void PyResource::load(const char* name)
 /**
  * Makes a connection between the sender widget \a sender and its signal \a signal
  * of the created resource and Python callback function \a cb.
- * If the sender widget does not exist or no resource has been loaded this method returns false, 
+ * If the sender widget does not exist or no resource has been loaded this method returns false,
  * otherwise it returns true.
  */
 bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)

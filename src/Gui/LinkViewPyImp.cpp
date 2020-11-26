@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -119,7 +119,7 @@ PyObject* LinkViewPy::setMaterial(PyObject *args) {
                 lv->setMaterial(i,materials[i]);
             Py_Return;
         }
-                
+
         PyErr_SetString(PyExc_TypeError, "exepcting a type of Material, [Material,...] or {Int:Material,}");
         return 0;
     } PY_CATCH;
@@ -168,7 +168,7 @@ PyObject* LinkViewPy::setTransform(PyObject *args) {
                 lv->setTransform(i,*mat[i]);
             Py_Return;
         }
-                
+
         PyErr_SetString(PyExc_TypeError, "exepcting a type of Matrix, [Matrix,...] or {Int:Matrix,...}");
         return 0;
     } PY_CATCH;
@@ -221,7 +221,7 @@ PyObject*  LinkViewPy::setLink(PyObject *args)
             else if(PyObject_TypeCheck(pyObj,&ViewProviderDocumentObjectPy::Type))
                 vpd = static_cast<ViewProviderDocumentObjectPy*>(pyObj)->getViewProviderDocumentObjectPtr();
             else {
-                PyErr_SetString(PyExc_TypeError, 
+                PyErr_SetString(PyExc_TypeError,
                         "exepcting a type of DocumentObject or ViewProviderDocumentObject");
                 return 0;
             }
@@ -233,9 +233,9 @@ PyObject*  LinkViewPy::setLink(PyObject *args)
             prop.setPyObject(pySubName);
 
         if(obj)
-            getLinkViewPtr()->setLink(obj,prop.getValue());  
+            getLinkViewPtr()->setLink(obj,prop.getValue());
         else
-            getLinkViewPtr()->setLinkViewObject(vpd,prop.getValue());  
+            getLinkViewPtr()->setLinkViewObject(vpd,prop.getValue());
         Py_Return;
     } PY_CATCH;
 }
@@ -283,7 +283,7 @@ PyObject* LinkViewPy::getElementPicked(PyObject* args)
     void *ptr = 0;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPickedPoint *", obj, &ptr, 0);
     SoPickedPoint *pp = reinterpret_cast<SoPickedPoint*>(ptr);
-    if(!pp) 
+    if(!pp)
         throw Py::TypeError("type must be of coin.SoPickedPoint");
     PY_TRY{
         std::string name;
@@ -302,7 +302,7 @@ PyObject* LinkViewPy::getDetailPath(PyObject* args)
     void *ptr = 0;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPath *", path, &ptr, 0);
     SoPath *pPath = reinterpret_cast<SoPath*>(ptr);
-    if(!pPath) 
+    if(!pPath)
         throw Py::TypeError("type must be of coin.SoPath");
     PY_TRY{
         SoDetail *det = 0;

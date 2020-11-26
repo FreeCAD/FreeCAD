@@ -23,7 +23,7 @@
 
 #ifndef GUI_PRECOMPILED_H
 #define GUI_PRECOMPILED_H
- 
+
 #include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
