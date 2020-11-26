@@ -70,7 +70,9 @@ public:
     void setWhatsThis (const QString &);
     QString whatsThis() const;
     void setMenuRole(QAction::MenuRole menuRole);
-    QAction *action() {return _action;};
+    QAction *action() const {
+        return _action;
+    }
 
 public Q_SLOTS:
     virtual void onActivated ();
