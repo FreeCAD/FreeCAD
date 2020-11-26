@@ -54,7 +54,7 @@ private Q_SLOTS:
     void commitAndCloseEditor();
 private:
     Spreadsheet::Sheet * sheet;
-    bool commiting = false;
+    bool committing = false;
     mutable bool updating = false;
     mutable bool syncCombo = false;
 

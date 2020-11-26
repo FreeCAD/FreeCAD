@@ -127,7 +127,7 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
 
 void SpreadsheetDelegate::commitAndCloseEditor()
 {
-    Base::FlagToggler<> flag(commiting);
+    Base::FlagToggler<> flag(committing);
     Gui::ExpressionTextEdit *editor = qobject_cast<Gui::ExpressionTextEdit *>(sender());
     if(editor) {
         if(!updating)
@@ -284,7 +284,7 @@ void SpreadsheetDelegate::setModelData(QWidget *editor,
     if(button) {
         // For button widget, make sure we are triggered by user clicking not
         // something else, like lost of focus.
-        if(commiting)
+        if(committing)
             model->setData(index, QVariant());
         return;
     }
