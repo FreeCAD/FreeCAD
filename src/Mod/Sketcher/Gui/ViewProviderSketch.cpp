@@ -2777,12 +2777,16 @@ void ViewProviderSketch::updateColor(void)
         }
     }
     edit->SelectedPointSet->coordIndex.setNum(selcount);
+    edit->SelectedPointSet->markerIndex.setNum(selcount);
     if (selcount) {
+        auto mindices = edit->SelectedPointSet->markerIndex.startEditing();
         auto indices = edit->SelectedPointSet->coordIndex.startEditing();
         int i=0;
         for (int idx : edit->SelPointSet) {
-            if (idx < PtNum)
-                indices[i++] = idx;
+            if (idx < PtNum) {
+                indices[i] = idx;
+                mindices[i++] = edit->PointSet->markerIndex[0];
+            }
         }
     }
 
