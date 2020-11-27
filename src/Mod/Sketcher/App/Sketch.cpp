@@ -2256,9 +2256,7 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
         double dy2 = (*l2.p2.y - *l2.p1.y);
         double value = (sqrt(dx1*dx1+dy1*dy1)+sqrt(dx2*dx2+dy2*dy2))/2;
         // add the parameter for the common length (this is added to Parameters, not FixParameters)
-        double *drivenvalue = new double(value);
-        Parameters.push_back(drivenvalue);
-        DrivenParameters.push_back(drivenvalue);
+        Parameters.push_back(new double(value));
         double *length = Parameters[Parameters.size()-1];
         int tag = ++ConstraintsCounter;
         GCSsys.addConstraintEqualLength(l1, l2, length, tag);
