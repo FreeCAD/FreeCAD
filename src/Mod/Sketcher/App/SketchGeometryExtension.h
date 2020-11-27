@@ -63,9 +63,11 @@ public:
     virtual long getId() const = 0;
     virtual void setId(long id) = 0;
 
+    // Internal Alignment Geometry Type
     virtual InternalType::InternalType getInternalType() const = 0;
     virtual void setInternalType(InternalType::InternalType type) = 0;
 
+    // Geometry functional mode
     virtual bool testGeometryMode(int flag) const = 0;
     virtual void setGeometryMode(int flag, bool v=true) = 0;
 };

@@ -120,6 +120,7 @@
 #include "TaskDlgEditSketch.h"
 #include "TaskSketcherValidation.h"
 #include "CommandConstraints.h"
+#include "ViewProviderSketchGeometryExtension.h"
 
 FC_LOG_LEVEL_INIT("Sketch",true,true)
 
@@ -849,9 +850,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             Base::Vector3d vec(x-xInit,y-yInit,0);
 
                             // BSpline weights have a radius corresponding to the weight value
-                            // However, in order for them to have a visual size irrespective of the
-                            // zoom, the scenograph has a size getScaleFactor() times the weight
-                            //
+                            // However, in order for them proportional to the B-Spline size,
+                            // the scenograph has a size scalefactor times the weight
                             // This code normalizes the information sent to the solver.
                             if(gf->getInternalType() == InternalType::BSplineControlPoint) {
                                 auto circle = static_cast<const Part::GeomCircle *>(geo);
@@ -859,7 +859,17 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 
                                 Base::Vector3d dir = vec - center;
 
-                                vec = center - dir / getScaleFactor();
+                                double scalefactor = 1.0;
+
+                                if(circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
+                                {
+                                    auto vpext = std::static_pointer_cast<const SketcherGui::ViewProviderSketchGeometryExtension>(
+                                                    circle->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock());
+
+                                    scalefactor = vpext->getRepresentationFactor();
+                                }
+
+                                vec = center + dir / scalefactor;
                             }
 
                             try {
@@ -1150,8 +1160,34 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 edit->PreselectCurve != -1 && edit->DragCurve != edit->PreselectCurve) {
                 Mode = STATUS_SKETCH_DragCurve;
                 edit->DragCurve = edit->PreselectCurve;
-                getSketchObject()->getSolvedSketch().initMove(edit->DragCurve, Sketcher::none, false);
                 const Part::Geometry *geo = getSketchObject()->getGeometry(edit->DragCurve);
+
+                // BSpline Control points are edge draggable only if their radius is movable
+                // This is because dragging gives unwanted cosmetic results due to the scale ratio.
+                // This is an heuristic as it does not check all indirect routes.
+                if(GeometryFacade::isInternalType(geo, InternalType::BSplineControlPoint)) {
+                    bool weight = false;
+                    bool weight_driven = false;
+                    bool equal = false;
+                    bool block = false;
+
+                    for(auto c : getSketchObject()->Constraints.getValues()) {
+                        weight = weight || (c->Type == Sketcher::Weight && c->First == edit->DragCurve);
+                        weight_driven = weight_driven || (c->Type == Sketcher::Weight && !c->isDriving && c->First == edit->DragCurve);
+                        equal = equal || (c->Type == Sketcher::Equal && (c->First == edit->DragCurve || c->Second == edit->DragCurve));
+                        block = block || (c->Type == Sketcher::Block && c->First == edit->DragCurve);
+                    }
+
+                    if( (weight && !weight_driven)  ||
+                        (equal && !weight_driven)   ||
+                        block) {
+                        Mode = STATUS_NONE;
+                        return false;
+                    }
+                }
+
+                getSketchObject()->getSolvedSketch().initMove(edit->DragCurve, Sketcher::none, false);
+
                 if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
                     geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                     relative = true;
@@ -1211,9 +1247,8 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 Base::Vector3d vec(x-xInit,y-yInit,0);
 
                 // BSpline weights have a radius corresponding to the weight value
-                // However, in order for them to have a visual size irrespective of the
-                // zoom, the scenograph has a size getScaleFactor() times the weight
-                //
+                // However, in order for them proportional to the B-Spline size,
+                // the scenograph has a size scalefactor times the weight
                 // This code normalizes the information sent to the solver.
                 if(gf->getInternalType() == InternalType::BSplineControlPoint) {
                     auto circle = static_cast<const Part::GeomCircle *>(geo);
@@ -1221,7 +1256,17 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
 
                     Base::Vector3d dir = vec - center;
 
-                    vec = center - dir / getScaleFactor();
+                    double scalefactor = 1.0;
+
+                    if(circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
+                    {
+                        auto vpext = std::static_pointer_cast<const SketcherGui::ViewProviderSketchGeometryExtension>(
+                                        circle->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock());
+
+                        scalefactor = vpext->getRepresentationFactor();
+                    }
+
+                    vec = center + dir / scalefactor;
                 }
 
                 if (getSketchObject()->getSolvedSketch().movePoint(edit->DragCurve, Sketcher::none, vec, relative) == 0) {
@@ -3666,10 +3711,10 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Base::Vector3d center = circle->getCenter();
 
             // BSpline weights have a radius corresponding to the weight value
-            // However, in order for them to have a visual size irrespective of the
-            // zoom, the scenograph has a size getScaleFactor() times the weight
+            // However, in order for them proportional to the B-Spline size,
+            // the scenograph has a size scalefactor times the weight
             //
-            // This code draws the scaled up version of the geometry for the scenograph
+            // This code produces the scaled up version of the geometry for the scenograph
             if(gf->getInternalType() == InternalType::BSplineControlPoint) {
                 for( auto c : getSketchObject()->Constraints.getValues()) {
                     if( c->Type == InternalAlignment && c->AlignmentType == BSplineControlPoint && c->First == GeoId) {
@@ -3685,8 +3730,8 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                             // tentative scaling factor:
                             // proportional to the length of the bspline
                             // inversely proportional to the number of poles
-                            //double scalefactor = bspline->length(bspline->getFirstParameter(), bspline->getLastParameter())/10.0/weights.size();
-                            double scalefactor = getScaleFactor();
+                            double scalefactor = bspline->length(bspline->getFirstParameter(), bspline->getLastParameter())/10.0/weights.size();
+                            //double scalefactor = getScaleFactor();
                             double vradius = weight*scalefactor;
 
                             // virtual circle or radius vradius
@@ -3705,6 +3750,21 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                             mcurve(0,x,y);
                             Coords.emplace_back(x, y, 0);
+
+                            // save scale factor for any prospective dragging operation
+                            if(!circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
+                            {
+                                // It is ok to add this kind of extension to a const geometry because:
+                                // 1. It does not modify the object in a way that affects property state, just ViewProvider representation
+                                // 2. If it is lost (for example upon undo), redrawing will reinstate it with the correct value
+                                const_cast<Part::GeomCircle *>(circle)->setExtension(std::make_unique<SketcherGui::ViewProviderSketchGeometryExtension>());
+                            }
+
+                            auto vpext = std::const_pointer_cast<SketcherGui::ViewProviderSketchGeometryExtension>(
+                                            std::static_pointer_cast<const SketcherGui::ViewProviderSketchGeometryExtension>(
+                                                circle->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock()));
+
+                            vpext->setRepresentationFactor(scalefactor);
                         }
                         break;
                     }
@@ -5462,10 +5522,22 @@ Restart:
 
                                 double radius;
 
-                                if(Constr->Type == Weight)
-                                    radius = circle->getRadius()*getScaleFactor();
-                                else
+                                if(Constr->Type == Weight) {
+                                    double scalefactor = 1.0;
+
+                                    if(circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
+                                    {
+                                        auto vpext = std::static_pointer_cast<const SketcherGui::ViewProviderSketchGeometryExtension>(
+                                                        circle->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock());
+
+                                        scalefactor = vpext->getRepresentationFactor();
+                                    }
+
+                                    radius = circle->getRadius()*scalefactor;
+                                }
+                                else {
                                     radius = circle->getRadius();
+                                }
 
                                 double angle = (double) Constr->LabelPosition;
                                 if (angle == 10) {
